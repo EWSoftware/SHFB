@@ -1,0 +1,8 @@
+1. Rebuild all affected Sandcastle Help File Builder projects if needed and copy the MSI file to the
+   InstallResources folder.
+
+2. Update the other install resources using the latest Sandcastle Styles install resources if necessary.
+
+3. Update the installer configuration file if necessary.
+
+4. Compress this folder, relative paths, no read-only attributes, exclude this file.

@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+  <!-- This indicates the release date and version of Sandcastle with which
+       this installer is associated.-->
+  <sandcastle date="June 2010" version="v2.6.10621.1" />
+
+  <!-- Define the installer pages.  Third-party build tool and component
+       providers can add new pages that they have created to install their
+       own products as well. -->
+  <pages>
+    <!-- These are the pages used by the installer.  Their order here will
+         determine their order in the installation form.  If set, the
+         assembly attribute is the assembly containing the given type.  If
+         not set, the given installer page type is assumed to be in the same
+         assembly as the currently executing installer. -->
+    <page type="Sandcastle.Installer.InstallerPages.WelcomePage" />
+    <page type="Sandcastle.Installer.InstallerPages.RequiredFrameworkPage" />
+    <page type="Sandcastle.Installer.InstallerPages.HelpFileFormatsPage">
+      <page type="Sandcastle.Installer.InstallerPages.Help1CompilerPage" />
+      <page type="Sandcastle.Installer.InstallerPages.Help2CompilerPage" />
+    </page>
+    <page type="Sandcastle.Installer.InstallerPages.SandcastlePage"
+      frameworkVersion="3.5" sandcastleVersion="2.6.10621.1" installerName="Sandcastle_Jun_2010.msi"/>
+    <page type="Sandcastle.Installer.InstallerPages.SandcastleStylesPage">
+      <page type="Sandcastle.Installer.InstallerPages.SandcastlePatchPage"
+        patchRevision="Revision 1" patchFilename="SCPatch_Jun2010_2_6_10621_1_Rev1.zip"/>
+      <page type="Sandcastle.Installer.InstallerPages.SandcastleLanguagePackPage"
+        packFilename="SandcastleLanguagePack_Jun2010.zip">
+        <language name="German (de-DE) contributed by Sebastian Spreng" />
+      </page>
+      <page type="Sandcastle.Installer.InstallerPages.MamlGuidePage"
+        guideFilename="SandcastleMAMLGuide_1101.zip" />
+      <page type="Sandcastle.Installer.InstallerPages.WebCodeProvidersPage"
+        providersFilename="WebCodeProviders_1100.zip" />
+      <page type="Sandcastle.Installer.InstallerPages.HtmlToMamlConverterPage"
+        converterFilename="HtmlToMamlConverter_1001.zip" />
+    </page>
+    <page type="Sandcastle.Installer.InstallerPages.MamlIntelliSensePage"
+      schemaFilename="SCPatch_Jun2010_2_6_10621_1_Rev1.zip" />
+    <page assembly="SandcastleInstaller.SHFB.dll" type="Sandcastle.Installer.SHFB.SandcastleHelpFileBuilderPage"
+      frameworkVersion="3.5" shfbVersion="1.9.1.0" installerName="SandcastleHelpFileBuilder_1910.msi"/>
+    <page type="Sandcastle.Installer.InstallerPages.CompletionPage" />
+  </pages>
+</configuration>
