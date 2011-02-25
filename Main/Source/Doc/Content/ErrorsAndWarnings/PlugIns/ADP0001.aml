@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="3e4812bb-7bf5-4752-9eaf-5e982312d1f7" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>TODO: Error message goes here</para>
+    </introduction>
+    <section>
+      <title>Cause</title>
+      <content>
+        <para>TODO: Describe the cause</para>
+      </content>
+    </section>
+    <section>
+      <title>Solution</title>
+      <content>
+        <para>TODO: Describe possible solution</para>
+      </content>
+    </section>
+    <relatedTopics>
+      <!-- TODO: Link to parent topic -->
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

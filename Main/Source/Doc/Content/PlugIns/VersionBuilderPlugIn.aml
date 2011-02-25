@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="6c03afba-18d0-4270-b521-c2015c4d97b3" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+      <para>This plug-in is used to generate version information for
+assemblies in the current project and other projects related to the same
+product that can be merged into the current project's help file topics. Unlike
+the <link xlink:href="58ce80ee-eb4b-4027-8871-7e83fad8e476" /> which only adds
+the version number for the assembly in which the member appears to the
+assembly information message in each topic, this plug-in creates a separate
+<legacyBold>Version Information</legacyBold> section in each topic that can
+list one or more frameworks and/or versions in which the member appears. When
+the plug-in is used, the version number in the assembly information message
+added by the build component is omitted.  Topics such as the namespace list,
+class member lists, and overloads lists do not contain a version information
+section.</para>
+
+    </introduction>
+
+<section>
+  <content><para>The configuration options consist of a framework label and a
+version number for the current project and a list of other projects that will
+be built and have their API information merged with the current project.  Note
+that these will only produce a partial build, enough to generate reflection
+information.  XML comments files for the documented assemblies are optional.
+In the configuration, each additional project is assigned a framework label and
+a version number to uniquely identify it.  The framework labels can be identical
+to the current project or they can be unique or matched between the other
+projects.  The framework label controls how the version information is grouped.
+Both are free-form text so you can enter any value to identify the framework
+and version. The order of the projects in the configuration is not relevant.
+Version information is sorted by version number in descending order within
+framework label at the time the help file is actually built.  For example:</para>
+
+<list class="bullet">
+    <listItem>Current project label: Windows Forms Controls, Version: 2.1</listItem>
+    <listItem>Other Project 1 label: Windows Forms Controls, Version: 1.3.5</listItem>
+    <listItem>Other Project 2 label: Compact Framework Controls, Version: 1.3.2</listItem>
+    <listItem>Other Project 3 label: Compact Framework Controls, Version: 2.3.1</listItem>
+</list>
+
+<para>Depending on the presentation style selected, this would produce a
+<legacyBold>Version Information</legacyBold> section in each member topic
+similar to the following:</para>
+
+<markup>
+<div style="margin-left: 2em;">
+<h3>Version Information</h3>
+<b>Compact Framework Controls</b>
+<br/>Supported in: 2.3.1, 1.3.2
+<br/><br/>
+<b>Windows Forms Controls</b>
+<br/>Supported in: 2.1, 1.3.5
+<br/><br/><br/>
+</div>
+</markup>
+
+<para>If the framework label is common to all versions being documented, you
+can leave it blank.  However, this may affect the display of the version
+information in some styles such as <legacyBold>Prototype</legacyBold> which
+expect to have a framework label value.</para>
+
+<para>If checked, the <ui>Remove old APIs no longer in latest versions</ui> option
+will cause the version builder tool to remove all API members that no longer appear
+in the latest version within each set of assemblies with a common framework label
+value.  If left unchecked (the default), all members from all versions will be
+included in the help file.</para>
+
+<para>Since the plug-in uses help file builder projects to generate the other
+version information, you are free to mix projects built against different .NET
+framework versions, ones that use different API filters specific to that
+version, ones that use a different set of dependencies, or that contain other
+project settings specific to the related version.  As noted, the additional
+projects only go through a partial build, enough to generate reflection
+information.  As such, the following project properties are ignored in the
+other projects:</para>
+
+<list class="bullet">
+    <listItem><legacyBold>Build</legacyBold> category:
+<codeInline>CleanIntermediates</codeInline>,
+<codeInline>ComponentConfigurations</codeInline>,
+<codeInline>HelpFileFormat</codeInline></listItem>
+    <listItem><legacyBold>Help File</legacyBold> category: All properties</listItem>
+    <listItem><legacyBold>HTML Help 1</legacyBold> category: All properties</listItem>
+    <listItem><legacyBold>MS Help 2</legacyBold> category: All properties</listItem>
+    <listItem><legacyBold>Paths</legacyBold> category:
+<codeInline>HtmlHelp1xCompilerPath</codeInline>,
+<codeInline>HtmlHelp2xCompilerPath</codeInline></listItem>
+    <listItem><legacyBold>Show Missing Tags</legacyBold> category: All
+properties</listItem>
+</list>
+
+<para>XML comments files from the other versions are included in the current
+project's build so that members not appearing in all projects are still
+documented correctly.  Where there are XML comments common to multiple
+versions, those from the current project will always take precedence. As noted
+above, XML comments files are optional.  If omitted, no comments will be
+associated with the given assembly.</para>
+
+<para>In certain presentation styles such as <legacyBold>VS2005</legacyBold>,
+the list pages contain a framework filter in the page header.  Hovering the
+mouse over the filter link displays a popup containing a list of the framework
+labels.  The intended use is to allow you to filter the list to only show
+members related to the checked frameworks.  However, as of the January 2008
+release, the Sandcastle transformations use hard-coded .NET framework values
+rather than the ones specified in the configuration file and the filter will
+not have any effect.  This has been reported and hopefully it will be fixed in
+a later release of Sandcastle.</para>
+
+  </content>
+</section>
+
+    <relatedTopics>
+    <link xlink:href="e031b14e-42f0-47e1-af4c-9fed2b88cbc7" />
+    </relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

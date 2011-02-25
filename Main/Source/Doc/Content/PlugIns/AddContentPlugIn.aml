@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="2d483967-30cb-421c-81ff-fdba705e1e6b" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+	<para>This plug-in can be used to build a help file consisting of nothing
+but conceptual and additional content items.  All documentation sources and
+references in the project are ignored.  Since this results in a much faster
+build, it is useful for proofreading your additional content without having to
+build all the API topics.</para>
+
+	<para>This plug-in contains no configuration options.  It simply suppresses
+several of the build steps that generate API topics.  Since the API topic
+generation is suppressed, links to API topics in the conceptual and additional
+content files will be rendered as bold, non-clickable links.  All other
+content features such as colorized code blocks, project and shared content item
+replacement, etc. are still handled.</para>
+
+    </introduction>
+
+    <relatedTopics>
+    <link xlink:href="e031b14e-42f0-47e1-af4c-9fed2b88cbc7" />
+    </relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

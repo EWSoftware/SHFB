@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="48f5a893-acde-4e50-8c17-72b83d9c3f9d" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+		<para>Namespace comments can also be specified and maintained in your
+source code by adding an empty <codeInline>NamespaceDoc</codeInline> class to
+each namespace.  When comments for this class are found in the XML comments
+files they will be used as the namespace comments.  Note that you can use the
+class and also specify namespace comments in the help file builder project.
+When this occurs, the project namespace summary comments will be appended to
+the comments from the <codeInline>NamespaceDoc</codeInline> class comments.</para>
+
+    </introduction>
+
+<section>
+  <content><para>To keep the <codeInline>NamespaceDoc</codeInline> class from
+appearing in the help file, leave off the <codeInline>public</codeInline>
+keyword and mark it with a <codeInline>CompilerGenerated</codeInline>
+attribute.  This will cause the class to be automatically ignored when
+reflection information is generated for the assembly.  The following is an
+example:</para>
+
+<code lang="cs" title="C# NamespaceDoc Example">
+namespace Company.Product.Widgets
+{
+    /// &lt;summary&gt;
+    /// These are the namespace comments for &lt;c&gt;Company.Product.Widgets&lt;/c&gt;.
+    /// &lt;/summary&gt;
+    [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+    class NamespaceDoc
+    {
+    }
+}
+</code>
+
+<code lang="vbnet" title="VB.NET NamespaceDoc Example">
+Namespace Company.Product.Widgets
+    ''' &lt;summary&gt;
+    ''' These are the namespace comments for &lt;c&gt;Company.Product.Widgets&lt;/c&gt;.
+    ''' &lt;/summary&gt;
+    &lt;System.Runtime.CompilerServices.CompilerGeneratedAttribute()&gt; _
+    Class NamespaceDoc
+    End Class
+End Namespace
+</code>
+
+  </content>
+</section>
+
+    <relatedTopics>
+	<link xlink:href="eb7e1bc7-21c5-4453-bbaf-dec8c62c15bd" />
+	<link xlink:href="52aa172a-a310-4f75-b20f-7e2c7d870c65" />
+	<link xlink:href="e32086c6-de17-4e54-a746-1ac80bf0c45a" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

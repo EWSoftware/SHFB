@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="7421d29a-7df1-4e59-b6b6-ad24904cca17" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Version 1.2.0.0 was released on September 6th, 2006.</para>
+    </introduction>
+
+    <section>
+      <title>Changes in This Release</title>
+      <content>
+<list class="bullet">
+    <listItem>A new <legacyBold>Prj Summary</legacyBold> button appears on the main form in the
+Assemblies to Document section.  It opens a form in which you can enter
+summary comments that should appear in the root namespaces page of the
+compiled help file.</listItem>
+
+    <listItem>A new <legacyBold>Namespaces</legacyBold> button appears on the main form that allows
+you to specify which assemblies should appear in the help file and the
+namespace summaries to display in the root namespaces page and on the help
+page for each namespace.  By default, all namespaces in all assemblies are
+documented with the exception of the global (unnamed) namespace that
+sometimes appears and contains private module details.</listItem>
+
+    <listItem>The <legacyBold>Add</legacyBold> button used to add an assembly to document now opens a
+file selection dialog in which you can select one or more assemblies,
+executables, or comments files to document.  It will assume that the matching
+file (assembly or comments file) has the same name as the selected file.  If a
+match is not found, the missing file's name is set to <legacyBold>Unknown</legacyBold> and the
+<legacyBold>Edit</legacyBold> option can be used to fix it.</listItem>
+
+    <listItem>The dependencies editor now allows the selection of a GAC item.
+This allows you to specify a dependency that only resides in the GAC and
+has no copy that resides elsewhere.  At build-time, the GAC is queried and
+the necessary assembly is copied to the working folder for use by
+MRefBuilder.</listItem>
+
+    <listItem>Added the <codeInline>ContentPlacement</codeInline> property that allows you to
+specify whether the additional content goes in ahead of the namespaces or
+after the namespaces in the table of contents.</listItem>
+
+    <listItem>Added the <codeInline>IsDefaultPage</codeInline> property to the
+<codeInline>ContentItem</codeInline> class that allows you to indicate whether or not
+the content item is the default page.  If no item is marked as the default
+page, the root namespaces page is used as the default page.</listItem>
+
+    <listItem>Fixed a bug that caused the <codeInline>RootNamespaceContainer</codeInline>
+property to be ignored if there was no additional content defined.</listItem>
+
+    <listItem>Fixed up issues in various properties related to ampersands causing
+exceptions because they cannot be interpreted by the .NET XML parser.  The
+values are now HTML or URL encoded as needed.</listItem>
+
+    <listItem>The value of the <codeInline>CopyrightText</codeInline> property is now treated
+as plain text.  It will be HTML encoded where necessary to resolve issues
+related to the ampersand and the .NET XML parser.  In addition, you can
+encode special characters such as the copyright symbol using an escaped hex
+value (i.e. &#169; = \xA9).</listItem>
+
+    <listItem>Reworked the "run process" code so that it now reports progress as
+the tools are running rather than at the end after the tool completes.
+This gives more immediate feedback especially during long running builds so
+that you can see that it is still alive.  It also captures the standard
+error stream output so that if a tool throws an exception, that information
+is now captured in the log file as well.  Where appropriate, the name of
+the script being executed is also logged.</listItem>
+
+    <listItem>Increased the font size in the log viewer dialog box to 10pt so
+that it is easier to read.</listItem>
+
+    <listItem>Path-related properties are now grouped in a new <legacyBold>Paths</legacyBold>
+category in the property grid on the main form.</listItem>
+
+    <listItem>Visual Studio 2003 projects are now loaded using the default encoding
+rather than UTF-8 encoding to handle foreign language characters in the
+project properties.</listItem>
+
+</list>
+
+      </content>
+    </section>
+
+    <relatedTopics>
+    <link xlink:href="6110ac54-04d8-4624-8a2b-2a58af63c20d" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

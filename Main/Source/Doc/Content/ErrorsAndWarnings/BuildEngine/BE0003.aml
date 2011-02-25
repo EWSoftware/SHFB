@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="7f4054ff-9490-452e-b842-5b783f31a8af" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Warning BE0003: Sandcastle shared content for the
+'<legacyItalic>[langId]</legacyItalic>' language could not be found.  Using
+'en-US, English (US)' defaults.</para>
+    </introduction>
+
+    <section>
+      <title>Cause</title>
+      <content>
+        <para>This warning indicates that a set of Sandcastle shared content
+files do not exist for the selected language.</para>
+      </content>
+    </section>
+
+    <section>
+      <title>Solution</title>
+      <content>
+        <para>If a set of language resource files do not exist, the US-English
+defaults are used.  If you need resources to appear in the language selected
+in the project file, you will need to create a set of content files for the
+selected language.  See the <link xlink:href="e2ed6222-c3ee-4c6e-b0f9-fa3c86bc3e2c" />
+topic for details.</para>
+
+<alert class="note">
+  <para>While you can send translations of the help file builder shared content
+files to the <token>SHFB</token> project, do not send any translated Sandcastle
+presentation style files as they are not part of the help file builder and will
+not be included as part of it.</para>
+</alert>
+
+      </content>
+    </section>
+
+    <relatedTopics>
+    <link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

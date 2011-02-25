@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="d0c2dabd-3caf-4586-b81d-cbd765dec7cf" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+      xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+		<autoOutline lead="The MS Help 2 category properties control the features of MS Help 2 (HxS) files."
+		    excludeRelatedTopics="true" />
+
+<alert class="tip">
+  <para>For information on Named URL Index support, see the
+<link xlink:href="74664b00-b83f-450a-833a-25984ba812e3" /> topic.  For
+information on deploying Help 2 files, see the
+<link xlink:href="68a2fa4e-c6de-47ed-a9a6-60cc6ef01df4" /> topic.</para>
+</alert>
+    </introduction>
+
+<section address="CollectionTocStyle">
+	<title>CollectionTocStyle</title>
+	<content><para>This property is used to set the collection table of
+contents style used when the help file content is plugged into an MS Help 2
+collection.  If set to <codeInline>Hierarchical</codeInline> (the default), the
+help file's table of contents entries will be grouped under a container node in
+the merged table of contents.  The <codeInline>HelpTitle</codeInline> property
+setting is used for the container's title. If set to <codeInline>Flat</codeInline>,
+the help file's table of contents entries will appear at the root level in the
+merged table of contents.</para>
+
+<alert class="note">
+	<para>This property will not cause the entries in your help file's
+table of contents to change from flat to hierarchical.  To do that, use the
+<link xlink:href="aa7bcd07-1a86-42dc-9f1d-49bd4afeb5d2" />.</para>
+</alert>
+
+	</content>
+</section>
+		
+<section address="HelpAttributes">
+	<title>HelpAttributes</title>
+	<content><para>This property represents a collection of additional
+<codeInline>&lt;MSHelp:Attr&gt;</codeInline> attributes that will be added to
+the XML data island in each generated API help topic.  Click the "..." button
+to the right of the property when it is selected to open the editor.  In it,
+you can enter a name and value for each additional attribute.  Click the
+<ui>Default</ui> button to add a default set of attributes
+(<codeInline>DocSet/NETFramework</codeInline>,
+<codeInline>DocSet/{@HtmlHelpName}</codeInline>, and
+<codeInline>TargetOS/Windows</codeInline>).  If producing an MS Help 2 file,
+you should at least add the default attributes so that filtering is supported.
+When attributes exist in this property, the
+<link xlink:href="85c08740-1190-471c-8fea-360a4a8e4612" /> is automatically
+added to the Sandcastle configuration file at build time.</para>
+		
+		<para>For the attribute value, you can specify any of the
+<link xlink:href="69d998a7-1af5-4bf5-889b-59cd00b64000">replacement tags</link>
+to substitute a project setting at build time.  For example, when you add the
+default attributes, a <codeInline>DocSet</codeInline> entry is added with the
+value set to <codeInline>{@HtmlHelpName}</codeInline> so that the current HTML
+Help name value is used.</para>
+		
+		<para>Be aware that the Sandcastle transformations add
+<codeInline>ApiLocation</codeInline>, <codeInline>ApiType</codeInline>,
+<codeInline>DevLang</codeInline>, <codeInline>Locale</codeInline>, and
+<codeInline>TopicType</codeInline> attributes with appropriate values to each
+generated API topic so there is no need to add them here.</para>
+		
+	</content>
+</section>
+		
+<section address="HelpFileVersion">
+	<title>HelpFileVersion</title>
+	<content><para>This property is used to specify the version number
+that will be applied to the help file.  The version number appears when you
+view the properties of the help file in Windows Explorer.  You can set it to
+match the version number of the product to which the help file belongs.  The
+value is a string which allows you to use custom project properties to
+define the value (i.e. <codeInline>{@Version}</codeInline> or
+<codeInline>{@Major}.{@Minor}.{@Build}.{@Revision}</codeInline>).  The end
+result must still evaluate to a valid four-part version number.  If not, a
+build error will occur (<link xlink:href="e4c00c10-9368-4790-b1c4-4a47adeb2af9">BE0066</link>).</para>
+
+	</content>
+</section>
+		
+<section address="IncludeStopWordList">
+	<title>IncludeStopWordList</title>
+	<content><para>This property is used to specify whether or not the
+stop word list will be compiled into the help file.  The stop word list is used
+to identify words that should be omitted from the Help 2 full text search
+index.</para>
+		
+	</content>
+</section>
+
+<section address="MSHelp2SdkLinkType">
+	<title>MSHelp2SdkLinkType</title>
+	<content><para>This property is used to define the type of links used to reference
+other help topics referring to framework (SDK) help topics. It can be set to
+<codeInline>None</codeInline> which renders non-clickable links,
+<codeInline>Index</codeInline> which renders MS Help 2 style <codeInline>mshelp</codeInline>
+style links, or <codeInline>MSDN</codeInline> (the default) which renders links to the online
+MSDN help content for the topic.  When set to <codeInline>MSDN</codeInline>, the
+<link xlink:href="1b2dff59-92cc-4578-b261-f3849f30c26c#SdkLinkTarget">SdkLinkTarget</link>
+property is used to define where the MSDN links will open in the browser.</para>
+	</content>
+</section>
+
+<section address="PlugInNamespaces">
+	<title>PlugInNamespaces</title>
+	<content><para>This property is used to specify a comma-separated
+list of namespaces that the collection will be plugged into when deployed
+using <localUri>H2Reg.exe</localUri>.  The default setting will plug the
+collection into any help namespace starting with <codeInline>ms.vsipcc</codeInline>
+or <codeInline>ms.vsexpresscc</codeInline>.  See the <application>H2Reg</application>
+documentation for more information on what namespaces can be used and how to
+specify them.</para>
+		
+	</content>
+</section>
+
+    <relatedTopics>
+    	<link xlink:href="e32086c6-de17-4e54-a746-1ac80bf0c45a" />
+    	<link xlink:href="7d28bf8f-923f-44c1-83e1-337a416947a1" />
+    	<link xlink:href="5f743a6e-3239-409a-a8c1-0bff4b5375f4" />
+    	<link xlink:href="f818e4d1-3457-4be6-a833-1b700f1e2f18" />
+    	<link xlink:href="74664b00-b83f-450a-833a-25984ba812e3" />
+    	<link xlink:href="68a2fa4e-c6de-47ed-a9a6-60cc6ef01df4" />
+    </relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

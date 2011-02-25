@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="ff831dbb-fa08-414e-be84-3982d9df1970" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Warning BE0008: '<legacyItalic>[file]</legacyItalic>' matches a
+previously copied comments filename.  The duplicate will be copied to a
+unique name to preserve the comments it contains.</para>
+    </introduction>
+
+    <section>
+      <title>Cause</title>
+      <content>
+        <para>This warning occurs if a duplicate XML comments filename is
+found while validating the documentation sources.</para>
+      </content>
+    </section>
+
+    <section>
+      <title>Solution</title>
+      <content>
+        <para>The file will be given a unique GUID-based name for the build.
+To suppress the warning, give the indicated comments file a unique name in
+the project in which it is defined.</para>
+      </content>
+    </section>
+
+    <relatedTopics>
+    <link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

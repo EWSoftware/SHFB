@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="f5051d32-b973-4fe1-9ffe-e30531007691" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>This plug-in is used to add assembly binding redirection support to
+the <application>MRefBuilder</application> configuration file.  With this in
+place, it is possible to document assemblies that use binding redirection to
+reference assemblies of a different version than the ones they were built
+against.</para>
+    </introduction>
+
+<section address="Configuring">
+  <title>Configuring the Plug-In</title>
+  <content>
+    <para>Once added to the project, this plug-in must be configured.  The
+configuration consists of one or more entries that define how to redirect an
+assembly reference or an application configuration file from which the
+settings should be imported.  A list box at the top of the configuration dialog
+box lists the current definitions.  Click the <ui>Add</ui> button to the right
+of the list box to add a new item.  The property grid a the bottom of the
+dialog box is used to edit each entry's settings.  Click the <ui>Delete</ui>
+button to the right of the list box to delete an entry.</para>
+
+  </content>
+</section>
+
+<section address="Options">
+  <title>Configuration Item Options</title>
+  <content>
+    <para>Each entry consists of the following configuration options:</para>
+
+<table>
+  <tableHeader>
+    <row>
+      <entry>Option</entry>
+      <entry>Description</entry>
+    </row>
+  </tableHeader>
+  <row>
+    <entry><codeInline>ConfigurationFile</codeInline></entry>
+    <entry>This option allows you to specify a configuration file from which
+the binding redirection settings are imported.  This should be an application
+or web configuration file (i.e. <localUri>App.exe.config</localUri> or
+<localUri>Web.config</localUri>) that contains an <codeInline>assemblyBinding</codeInline>
+section that defines the dependent assemblies and how they should be
+redirected.  If specifed, all other configuration options are ignored.  The
+value can contain replacement tags to specify the path to the file (i.e.
+<localUri>{@ProjectFolder}..\bin\MyApp.exe.config</localUri>).</entry>
+  </row>
+  <row>
+    <entry><codeInline>AssemblyName</codeInline></entry>
+    <entry>The assembly name that will be redirected.  Specify only the name of
+the assembly.  Do not include a path or extension.</entry>
+  </row>
+  <row>
+    <entry><codeInline>PublicKeyToken</codeInline></entry>
+    <entry>Specify the public key token of the assembly.  If left blank, "null"
+is assumed.</entry>
+  </row>
+  <row>
+    <entry><codeInline>Culture</codeInline></entry>
+    <entry>Specify the culture of the assembly.  If left blank, "neutral" is
+assumed.</entry>
+  </row>
+  <row>
+    <entry><codeInline>OldVersion</codeInline></entry>
+    <entry>Use this to specify the old version that will be redirected.  If the
+<codeInline>OldVersionTo</codeInline> property is left blank, this will be used
+as the single version to redirect.  This can be a version value from 0.0.0.0 to
+65535.65535.65535.65535.</entry>
+  </row>
+  <row>
+    <entry><codeInline>OldVersionTo</codeInline></entry>
+    <entry>To redirect a range of assembly versions, enter the starting version
+number in the <codeInline>OldVersion</codeInline> property and the ending
+version number in this property.  If this property is left blank, only the
+version specified in <codeInline>OldVersion</codeInline> is redirected.  This
+can be a version value from 0.0.0.0 to 65535.65535.65535.65535.</entry>
+  </row>
+  <row>
+    <entry><codeInline>NewVersion</codeInline></entry>
+    <entry>This defines the new assembly version to which the old versions are
+redirected.</entry>
+  </row>
+</table>
+
+  </content>
+</section>
+
+    <relatedTopics>
+	  <link xlink:href="e031b14e-42f0-47e1-af4c-9fed2b88cbc7" />
+	  <externalLink>
+<linkText>Assembly Binding Redirection</linkText>
+<linkUri>http://msdn.microsoft.com/en-us/library/2fc472t2.aspx</linkUri>
+<linkTarget>_blank</linkTarget>
+</externalLink>
+	  <externalLink>
+<linkText>assemblyBinding Configuration File Element</linkText>
+<linkUri>http://msdn.microsoft.com/en-us/library/twy1dw1e.aspx</linkUri>
+<linkTarget>_blank</linkTarget>
+</externalLink>
+
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

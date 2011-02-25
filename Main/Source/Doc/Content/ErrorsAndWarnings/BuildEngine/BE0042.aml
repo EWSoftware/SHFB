@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="9a54f7c2-2ca6-425e-89fb-c939ff50224f" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Error BE0042: You must specify at least one documentation source in
+the form of an assembly or a Visual Studio solution/project file</para>
+    </introduction>
+
+    <section>
+      <title>Cause</title>
+      <content>
+        <para>This error occurs if there are no assembly documentation sources
+or Visual Studio solution/project documentation sources that contain a useable
+assembly for reference information.</para>
+      </content>
+    </section>
+
+    <section>
+      <title>Solution</title>
+      <content>
+<para>Check the following conditions which can cause this error:</para>
+
+<list class="bullet">
+  <listItem>You need to include at least one assembly or Visual Studio
+solution/project file in the help file project as a documentation source.  Add
+the assembly, solution, or project to the <ui>Documentation Sources</ui>
+project node in the <ui>Project Explorer</ui> window.</listItem>
+
+  <listItem>If you are trying to build a help file based solely on additional or
+conceptual content, add the
+<link xlink:href="2d483967-30cb-421c-81ff-fdba705e1e6b" />
+to the project via the <codeInline>PlugInConfigurations</codeInline>
+project property.</listItem>
+
+  <listItem>If the plug-in is included in the project, make sure that it is
+enabled by checking the box next to it in the plug-in configuration dialog box.</listItem>
+
+</list>
+
+      </content>
+    </section>
+
+    <relatedTopics>
+    <link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

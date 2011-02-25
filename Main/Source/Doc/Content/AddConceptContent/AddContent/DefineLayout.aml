@@ -1,0 +1,133 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="54de66c4-a57a-4bfc-9eb6-bd9e6fb56589" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+      <para>The following information only applies if a site map file is
+<legacyUnderline>not</legacyUnderline> defined in the project.  When using a
+site map file, its layout definition overrides all file-level definitions.  See
+the <link xlink:href="3dd5fe3b-1bc3-42e5-8900-56165e3f9aed" /> topic for
+details.</para>
+
+<alert class="warning">
+	<legacyBold>Deprecated</legacyBold>
+	<para>The additional content model of adding extra content to a help file
+has been deprecated.  While it will continue to be supported and will not be
+removed, it will not receive any more features or updates.  Going forward,
+<link xlink:href="3d4edd2d-7883-4508-b9d2-bd7b4d848b0d">conceptual content</link>
+is the preferred method of adding non-reference content to the help file.  The
+additional content feature can still be used to
+<link xlink:href="77d2d693-db84-4ae3-a84c-e33c71f92e9a">override stock content</link>
+and add supporting files to the help file.</para>
+</alert>
+
+    </introduction>
+
+<section>
+  <content><para>All HTML files copied as additional content will automatically
+be added to the help file's table of contents.  Subfolders will also create
+folder entries within the table of contents and the HTML files within them
+become children of the folder entry in the table of contents.  This makes it
+fairly simple to create hierarchical content with matching table of contents
+entries.  The table of contents will mimic the folder structure on disk.</para>
+
+	<para>The help file builder scans each HTML file for the following tags and
+specially formatted comments that allow you to define the related properties
+of the table of contents entries.  They can appear anywhere in the file.</para>
+
+<list class="bullet">
+    <listItem><codeInline>&lt;title&gt;Page Title&lt;/title&gt;</codeInline> -
+The value from the title tag in the HTML file is used as the title in the table
+of contents.  If no title tag is found, the filename without the path and
+extension is used as the title.</listItem>
+
+    <listItem><codeInline>&lt;!-- @TOCExclude --&gt;</codeInline> - This
+special comment can be used to exclude the page from the table of contents.  The
+file will still be copied to the output folder but will not appear in the table
+of contents.  Instead, a link to it must exist from another help page.  This is
+also useful for setting the title and sort order on folder entries without
+associating a page with the folder entry in the table of contents.  See below
+for more information.</listItem>
+
+    <listItem><codeInline>&lt;!-- @DefaultTopic --&gt;</codeInline> - This
+special comment is used to indicate that the page should be selected as the
+default topic for the help file.  If multiple pages contain this comment, the
+last one seen will be used as the default topic.  If no additional content
+items are defined or none are marked as the default topic, the root namespaces
+page is selected as the default topic.</listItem>
+
+    <listItem><codeInline>&lt;!-- @SortOrder nnn --&gt;</codeInline> - This
+special comment is used to set the sort order of the item within the group
+where "nnn" represents an integer value.  The "group" is all other additional
+content table of contents entries at the same level as the current item.  In the
+absence of a sort order indicator, table of contents entries are sorted
+alphabetically.  By specifying a sort order, you can rearrange the entries in a
+different order.  Items within a group that have the same sort order value will
+also sort alphabetically.  Items without a sort order indicator are placed
+below those with a sort order indicator and are sorted alphabetically.</listItem>
+
+    <listItem><codeInline>&lt;!-- @SplitTOC --&gt;</codeInline> - This special
+comment is used to indicate that the table of contents should be split by the
+API content.  It is only valid on table of contents entries that appear at the
+root level.  All table of contents entries prior to the entry with this tag will
+appear before the API content.  The entry with the tag and all entries
+following it will appear after the API content.</listItem>
+
+</list>
+
+	<para>By default, folder entries in the table of contents will not have any
+HTML page associated with them and will not show a specific page in the help
+file when selected.  The title will be the folder name and they will be sorted
+alphabetically within the same group of items below any items that have a sort
+order indicator.  You can control these properties for folder entries by
+placing an HTML file in the folder that has the same name as the folder (i.e.
+place a file called <localUri>OtherContent.html</localUri> in the
+<localUri>OtherContent\</localUri> folder to set its properties).  If the
+<codeInline>@TOCExclude</codeInline> comment does not appear in the file, the
+associated page will be displayed when the folder is selected in the table
+of contents.  Below are a couple of examples:</para>
+
+<code lang="xml" title="OtherContent\OtherContent.html">
+&lt;!-- @TOCExclude --&gt;
+&lt;!-- @SortOrder 3 --&gt;
+&lt;title&gt;Other Content&lt;/title&gt;
+</code>
+
+	<para>The example above sets the sort order and title of the folder entry
+but does not display anything when the folder is selected as it contains the
+<codeInline>@TOCExclude</codeInline> comment.</para>
+
+<code lang="xml" title="FolderWithPage\FolderWithPage.html">
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;Folder Entry with a Content Page&lt;/title&gt;
+&lt;/head&gt;
+
+&lt;!-- @SortOrder 2 --&gt;
+
+&lt;body&gt;
+This is a content page for a folder entry in the
+table of contents.
+&lt;/body&gt;
+&lt;/html&gt;
+</code>
+
+	<para>The example above sets the sort order and title of the folder entry
+and specifies content that will be displayed when the folder is selected as the
+<codeInline>@TOCExclude</codeInline> comment is omitted.  It could also be made
+the default topic by adding the <codeInline>@DefaultTopic</codeInline>
+comment.</para>
+
+  </content>
+</section>
+
+    <relatedTopics>
+      <link xlink:href="3dd5fe3b-1bc3-42e5-8900-56165e3f9aed" />
+      <link xlink:href="4fd3b2b6-dfad-4513-983b-5e74d2342ff0" />
+      <link xlink:href="4bf6d6d9-ecc1-4e7c-92ae-e011752431f1" />
+    </relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

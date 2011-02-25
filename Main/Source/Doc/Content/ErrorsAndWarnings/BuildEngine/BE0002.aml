@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="726e79fd-260d-4f9f-96c7-cc62d3c210db" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Warning BE0002: Shared builder content for the
+'<legacyItalic>[langId]</legacyItalic>' language could not be found.  Using
+'en-US, English (US)' defaults.</para>
+    </introduction>
+
+    <section>
+      <title>Cause</title>
+      <content>
+        <para>This warning indicates that a help file builder shared content
+file does not exist for the selected language.</para>
+      </content>
+    </section>
+
+    <section>
+      <title>Solution</title>
+      <content>
+        <para>If a language resource file does not exist, the US-English
+defaults are used.  If you need resources to appear in the language selected
+in the project file, you will need to create a shared content file for the
+selected language.  See the <link xlink:href="e2ed6222-c3ee-4c6e-b0f9-fa3c86bc3e2c" />
+topic for details.  Once done, you can create a work item in the
+<token>SHFB</token> project on CodePlex and attach the translated help file
+builder resource files so that they can be included in a future release of
+the help file builder.</para>
+
+
+<alert class="note">
+  <para>Do not send any translated Sandcastle presentation style files.  These
+are not part of the help file builder and will not be included as part of it.</para>
+</alert>
+
+      </content>
+    </section>
+
+    <relatedTopics>
+    <link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

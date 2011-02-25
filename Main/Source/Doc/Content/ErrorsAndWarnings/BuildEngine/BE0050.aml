@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="62fe32a8-7c35-4fda-835f-1b2cf84e2b5f" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Error BE0050: Error removing protected members from sealed classes:
+<legacyItalic>[error]</legacyItalic></para>
+    </introduction>
+
+    <section>
+      <title>Cause</title>
+      <content>
+        <para>This error occurs if there is a problem removing protected
+members from sealed classes in the reflection information.</para>
+      </content>
+    </section>
+
+    <section>
+      <title>Solution</title>
+      <content>
+        <para>This most likely indicates an internal error in the build
+process.  Open a work item in the <token>SHFB</token> project at CodePlex
+containing the details from the error message and attach a small example
+project with any related files that can be used to duplicate the
+problem.</para>
+      </content>
+    </section>
+
+    <relatedTopics>
+    <link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

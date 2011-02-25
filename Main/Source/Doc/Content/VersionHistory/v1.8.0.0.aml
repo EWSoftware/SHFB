@@ -1,0 +1,418 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="5a484e94-6940-4c97-940c-3f46fb8736d2" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <autoOutline lead="Version 1.8.0.0 was released on October 20th, 2008."
+          excludeRelatedTopics="true" />
+    </introduction>
+
+<section address="NewFormat">
+  <title>A New Project File Format and a New Look</title>
+  <content><para>The main goal of this release was to rework the help file
+builder project file format and build engine to ready them for use in a
+Visual Studio package that will provide full Visual Studio integration in a
+future release.  This resulted in a number of major changes.</para>
+
+<alert class="note">
+  <para>Although Visual Studio integration is planned for a future release, the
+standalone GUI will still be produced and supported for those who do not use
+Visual Studio.</para>
+</alert>
+
+<list class="bullet">
+    <listItem>The help file builder now uses an MSBuild project file to store
+its settings.  Along with the associated MSBuild tasks and target definition
+file, this allows you to build help file builder projects using MSBuild.  It
+also makes it possible to create a Visual Studio package that will let you work
+with help file builder projects from within Visual Studio just like any other
+project in a solution file (planned for a future release).</listItem>
+
+	<listItem>A <environmentVariable>SHFBROOT</environmentVariable>
+environment variable is now used to locate the root help file builder folder
+for various tools.  The value should point to the root installation folder.
+The installer will create the environment variable automatically but you may
+need to reboot in order for it to take effect.  You will also need to manually
+define it on any system to which you manually copy the help file builder
+tools.</listItem>
+
+	<listItem>With the use of an MSBuild project file format,
+<localUri>SandcastleBuilderConsole.exe</localUri> was rendered obsolete and has
+been removed.  Use <link xlink:href="8ffc0d37-0215-4609-b6f8-dba53a6c5063">MSBuild</link>,
+<link xlink:href="ec822059-b179-4add-984d-485580050ffb">Team Build</link>, or
+another such tool to build a help file project from the command line or in
+automtated scripts.</listItem>
+
+	<listItem>Due to the change in format, help file builder projects from
+prior versions will need to be converted before use with the latest release.
+Once converted, they cannot be changed back or used with prior versions of the
+help file builder.  See the <link xlink:href="f68822d2-97ba-48da-a98b-46747983b4a0" />
+topic for details.</listItem>
+
+	<listItem>Several project properties have been removed or altered and
+their functionality has moved elsewhere in the standalone GUI.  See the
+"<link xlink:href="#WhereIsIt">Where Did That Feature Go?</link>" section below
+for details.</listItem>
+
+	<listItem>The NDoc-style GUI has been replaced by one that looks more like
+Visual Studio.  This was required as by moving to an MSBuild project format,
+the conceptual content and supporting files are now part of the project and
+appear in the project file as build items.  The new GUI provides a
+<legacyBold>Project Explorer</legacyBold> window that lets you manage these
+items.  The <legacyBold>Properties</legacyBold> window retains the NDoc-like
+property grid and is used to edit the various non-file project properties.
+
+	<alert class="note">
+	  <para>See the <link xlink:href="8e3f8757-0ef3-4772-bb2f-5d7ae57e50da" />
+topic for more information on the new GUI and how to use it effectively.</para>
+	</alert></listItem>
+
+	<listItem>The underlying namespace in the code for the GUI changed so any
+prior user preferences will not be carried forward when you first open the
+new version.  You can set them up again via the <legacyBold>File | User
+Preferences</legacyBold> menu option.
+
+	<alert class="note">
+	  <para>It is no longer necessary to define external editors in the
+<legacyBold>User Preferences</legacyBold> dialog to edit files such as XML
+files, stylesheets, HTML files, etc.  Common text-based file types recognized
+by filename extension will be edited within the GUI by default.  As such, you
+do not need to add any custom editor associations for them in your user
+preferences.</para>
+	</alert></listItem>
+
+	<listItem><legacyBold>Assemblies to Document</legacyBold> are now referred
+to using the more generic term <newTerm>Documentation Sources</newTerm>.  A
+documentation source can be an individual assembly (executable or DLL), an
+individual XML comments file, a Visual Studio project file (C#, VB.NET, or J#),
+a Visual Studio solution file containing one or more of the noted project types,
+or a wildcard item that results in a list of one or more of the previously
+mentioned file types.  Documentation sources are now managed using the
+<legacyBold>Documentation Sources</legacyBold> project node in the
+<legacyBold>Project Explorer</legacyBold> window.
+	<token>SolutionDocSource</token></listItem>
+
+	<listItem>A <codeInline>Configuration</codeInline> and a
+<codeInline>Platform</codeInline> option can be defined to determine which
+assemblies are used in solution and project documentation sources.</listItem>
+
+	<listItem><para><legacyBold>Dependencies</legacyBold> are now referred to
+using the term <newTerm>References</newTerm>.  The old
+<legacyBold>Dependencies</legacyBold> property has been removed from the
+Properties window.  They are now managed via the <legacyBold>References</legacyBold>
+project node in the <legacyBold>Project Explorer</legacyBold> window.
+References can be GAC entries, assembly files, COM objects, or Visual Studio
+project files.</para>
+
+	<alert class="note">
+	  <para>While COM references are supported in the project file and will be
+handled correctly at build time, they cannot be added to the project via the
+standalone GUI.  An alternative is to add the COM-callable wrapper assemblies
+as references instead.</para>
+	</alert></listItem>
+
+	<listItem>All build step script files (.bat) have been replaced with
+MSBuild project files (.proj) with corresponding build tasks.  This allows for
+better extensibility either directly or through plug-ins.  In addition, it
+allows for support of Unicode values in such properties as the help filename.</listItem>
+
+	<listItem>The code has been heavily refactored and some project option
+collection classes and property names have been changed to reflect their
+purpose in relation to the MSBuild project file format.  Others have been
+removed as they are no longer relevant.  As such, expect build errors in any
+custom plug-ins that you have created.  Most of the affected objects and
+properties are listed below.
+
+<table>
+  <tableHeader>
+    <row>
+      <entry>Old Item</entry>
+      <entry>New Item</entry>
+    </row>
+  </tableHeader>
+  <row>
+    <entry><codeInline>DependencyItem</codeInline></entry>
+    <entry>Replaced by <codeInline>ReferenceItem</codeInline> (GAC or file),
+<codeInline>COMReferenceItem</codeInline> (COM object), and
+<codeInline>ProjectReferenceItem</codeInline> (Visual Studio project).</entry>
+  </row>
+  <row>
+    <entry><codeInline>DependencyItemCollection</codeInline></entry>
+    <entry>Replaced by <codeInline>ReferenceItemCollection</codeInline>.</entry>
+  </row>
+  <row>
+    <entry><codeInline>DocumentAssembly</codeInline></entry>
+    <entry>Replaced by <codeInline>DocumentationSource</codeInline>.</entry>
+  </row>
+  <row>
+    <entry><codeInline>DocumentAssemblyCollection</codeInline></entry>
+    <entry>Replaced by <codeInline>DocumentationSourceCollection</codeInline>.</entry>
+  </row>
+  <row>
+    <entry><codeInline>SandcastleProject.Assemblies</codeInline></entry>
+    <entry>Renamed <codeInline>SandcastleProject.DocumentationSources</codeInline>.</entry>
+  </row>
+  <row>
+    <entry><codeInline>SandcastleProject.Dependencies</codeInline></entry>
+    <entry>Renamed <codeInline>SandcastleProject.References</codeInline>.</entry>
+  </row>
+  <row>
+    <entry><codeInline>BuildStep.CopyDependencies</codeInline></entry>
+    <entry>Deleted as it was no longer relevant.</entry>
+  </row>
+  <row>
+    <entry><codeInline>BuildStep.ValidatingAssemblies</codeInline></entry>
+    <entry>Renamed <codeInline>BuildStep.ValidatingDocumentationSources</codeInline>.</entry>
+  </row>
+</table></listItem>	
+
+</list>
+  </content>
+</section>
+
+<section address="WhereIsIt">
+  <title>Where Did That Feature Go?</title>
+  <content><para>Several features and project options were removed and their
+functionality is now handled in a different manner.  The following items
+will help you locate the old feature and determine how to do the same thing in
+the new version of the help file builder.</para>
+
+<definitionTable>
+  <definedTerm>The Console Mode Builder (SandcastleBuilderConsole.exe)</definedTerm>
+  <definition>With the use of an MSBuild project file format,
+<localUri>SandcastleBuilderConsole.exe</localUri> was rendered obsolete and has
+been removed.  Use <link xlink:href="8ffc0d37-0215-4609-b6f8-dba53a6c5063">MSBuild</link>,
+<link xlink:href="ec822059-b179-4add-984d-485580050ffb">Team Build</link>, or
+another such tool to build a help file project from the command line or in
+automtated scripts.</definition>
+
+  <definedTerm>Assemblies to Document</definedTerm>
+  <definition>This has been replaced by a more generic term:
+<newTerm>Documentation Sources</newTerm>.  These are added to the
+<legacyBold>Documentation Sources</legacyBold> project node in the
+<legacyBold>Project Explorer</legacyBold> window.</definition>
+
+	<definedTerm>Project and Namespace Summaries</definedTerm>
+	<definition>Edit these via the <legacyBold>Project Properties</legacyBold>
+window.  The <codeInline>NamespaceSummaries</codeInline> and
+<codeInline>ProjectSummary</codeInline> properties can be found in the
+<legacyBold>Comments</legacyBold> category.  Click the "..." button to the
+right of each property to open the expanded property editor.</definition>
+
+    <definedTerm>The AdditionalContent Property</definedTerm>
+    <definition>Additional content files are now handled as project file items.
+They should have a <codeInline>BuildAction</codeInline> value of
+<codeInline>Content</codeInline>.  The folder structure of the items determines
+their location in the compiled help file and, for HTML and .topic files in the
+absence of a site map file, their order and layout in the table of contents.
+Items at the root level end up in the root level of the help file and projects
+in subfolders end up in like-named subfolders in the compiled help file.  For
+control over how the files appear in the table of contents, add a site map file
+to the project and use it to arrange the additional content files.</definition>
+
+    <definedTerm>The AdditionalContent.ContentSiteMap Property</definedTerm>
+    <definition>Site map files are handled as project file items.  They should
+have a <codeInline>BuildAction</codeInline> value of <codeInline>SiteMap</codeInline>.
+Multiple site map and content layout files (used for conceptual content) can
+be specified in a project.  The <codeInline>SortOrder</codeInline> property
+on them determines in what order their content is merged into the table of
+contents.</definition>
+
+	<definedTerm>The AdditionalContent.TopicFileTransform Property</definedTerm>
+	<definition>Topic file transformations used for <localUri>.topic</localUri>
+files are handled as project file items.  They should have a
+<codeInline>BuildAction</codeInline> value of <codeInline>TopicTransform</codeInline>.
+Note that only the first <codeInline>TopicTransform</codeInline> item found
+during a build will be used.  All others will be ignored.</definition>
+
+	<definedTerm>The ConceptualContent Property</definedTerm>
+	<definition>All conceptual content file types are handled as project
+file items.  See the following items for details.</definition>
+
+	<definedTerm>The ConceptualContent.CodeSnippets Property</definedTerm>
+	<definition>Code snippets files are handled as project file items.  They
+should have a <codeInline>BuildAction</codeInline> value of
+<codeInline>CodeSnippets</codeInline>.  Multiple code snippets files can exist
+in a project and all will be included in the build.</definition>
+
+	<definedTerm>The ConceptualContent.Images Property</definedTerm>
+	<definition>Conceptual content image files are handled as project file
+items.  They should have a <codeInline>BuildAction</codeInline> value of
+<codeInline>Image</codeInline>.  Image properties such as their ID and
+alternate text are managed via the project file item properties.</definition>
+
+	<definedTerm>The ConceptualContent.Tokens Property</definedTerm>
+	<definition>Tokens are now handled via token files which are project file
+items.  They should have a <codeInline>BuildAction</codeInline> value of
+<codeInline>Tokens</codeInline>.  Multiple token files can exist in a project
+and all will be included in the build.</definition>
+
+	<definedTerm address="TopicsProp">The ConceptualContent.Topics Property</definedTerm>	
+  	<definition>Conceptual topic files are handled as project file items.  They
+now have an extension of <localUri>.aml</localUri> and should have a
+<codeInline>BuildAction</codeInline> value of <codeInline>None</codeInline>.
+Content layout files determine which topics are compiled into the help file and
+their order in the table of contents.  They have a <localUri>.content</localUri>
+file extension and a <codeInline>BuildAction</codeInline> value of
+<codeInline>ContentLayout</codeInline>.  As noted above, multiple site map and
+content layout files can be specified in a project.  The
+<codeInline>SortOrder</codeInline> property on them determines in what order
+their content is merged into the table of contents.
+
+	<alert class="note">
+	  <para>Topics added via the content layout editor are automatically
+added to the project file.  In addition, topics are now tracked by their ID
+number so you are free to rearrange the files in the project folders without
+having to update their location in the content layout file.</para>
+	</alert></definition>
+
+  <definedTerm>The Dependencies Property</definedTerm>
+  <definition>Dependencies are now referred to as <newTerm>References</newTerm>.
+References can be GAC entries, assemblies, COM objects, or Visual Studio project
+files.  They are added to the <legacyBold>References</legacyBold> project node
+in the <legacyBold>Project Explorer</legacyBold> window.</definition>
+
+	<definedTerm>Editing Conceptual Content Layout and Related Topic Properties</definedTerm>
+	<definition>Add a <legacyBold>Content Layout</legacyBold> file to the
+project.  This lets you edit the layout of the conceptual topics and manage
+their properties much like the conceptual content editor in prior versions
+of the help file builder.  See also: <link xlink:href="#TopicsProp">The
+ConceptualContent.Topics Property</link></definition>
+
+	<definedTerm>Inserting Image, Token, and Code Snippet References Into Topics</definedTerm>
+	<definition>Image, token, code snippet, and code entity references are
+now all handled by the <legacyBold>Entity References</legacyBold> window.
+Select the type of entity to insert in the window's dropdown.  Then drag and
+drop or double click the item to insert it into the topic.  A <ui>Refresh</ui>
+button is available to update the available items if you make changes to their
+related project files.</definition>
+
+  <definedTerm>New Project From NDoc Project/Visual Studio Project</definedTerm>
+  <definition>The option to create a new project from an NDoc project (or
+<link xlink:href="f68822d2-97ba-48da-a98b-46747983b4a0">various other project
+types</link>) can be found in the <ui>File | New Project from Other Format</ui>
+menu option.  The option to create a project from a Visual Studio solution or
+project has been removed.  Visual Studio 2005/2008 solution and project files
+are supported natively as documentation sources.</definition>
+
+	<definedTerm>Locating Third-Party Custom Build Components, Plug-Ins, and
+User-Defined Templates</definedTerm>
+	<definition><para>To be Vista-compliant by not making changes to the
+installation folder, all files such as third-party custom build components,
+custom plug-ins, build component data cache files, and user-defined template
+files should now be located in subfolders under the
+<localUri>EWSoftware\Sandcastle Help File Builder</localUri> folder in the
+<localUri>Common Application Data</localUri> or <localUri>Local Application
+Data</localUri> folder.  See the <link xlink:href="a24489fb-45d6-46f4-9eaa-9a9c4e0919b2" />
+topic for more information.</para>
+
+<alert class="note">
+  <para>Performing a build using one of the cached data components will
+create the root local application data folder automatically.  However, if you
+need to place files there before then, you will need to create the folder
+manually.</para>
+</alert></definition>
+
+</definitionTable>
+  
+  </content>
+</section>
+
+<section address="BugFixes">
+  <title>Bug Fixes</title>
+  <content>
+<list class="bullet">
+	<listItem>Fixed a couple of bugs in the <legacyBold>Hierarchical TOC</legacyBold>
+plug-in that caused the namespaces to be nested incorrectly.</listItem>
+
+	<listItem>Fixed the <legacyBold>Code Block Component</legacyBold> so that
+nested code blocks in conceptual content are imported correctly.</listItem>
+
+	<listItem>Fixed a bug in the <legacyBold>Split TOC</legacyBold> option that
+caused the TOC items to be excluded if it was set on the first content item.</listItem>
+
+	<listItem>Exceptions in the namespace generation step in partial builds are
+now ignored so that you can get into the <legacyBold>Namespace Comments</legacyBold>
+dialog to fix the issue.</listItem>
+
+	<listItem>Fixed a bug in the HTML extract tool that caused it to fail on
+nodes without an associated file.</listItem>
+
+</list>
+
+  </content>
+</section>
+
+<section address="OtherFeatures">
+  <title>Other Changes and New Features</title>
+  <content>
+<list class="bullet">
+	<listItem>Documented assemblies and reference (dependency) assemblies are
+no longer copied to the working folder for the build.  Instead, they are
+resolved and parsed in place at their given location.  This prevents issues
+with similarly named assemblies overwriting each other in the working folder.</listItem>
+
+	<listItem>XML comments files are still copied to the working folder as they
+may be modified.  Duplicates are given a unique name if a file by the same name
+already exists in the working folder.  This prevents the loss of comments due
+to XML comments files in different projects that use the same name.</listItem>
+
+	<listItem>The project used by the build process is a clone of the active
+project. As such, it can be modified without affecting the active project.</listItem>
+
+	<listItem>All tool/build engine warnings and errors are now reported with a
+code and in a format compatible with the  Visual Studio Error List tool window.
+The warning and error codes are
+<link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09">documented</link> and
+provide information about what the error means along with possible
+solutions.</listItem>
+
+	<listItem>Just prior to building a Help 1 (CHM) file, warnings are issued
+if the working path, the <codeInline>HTMLHelpName</codeInline> property, or any
+filename contains ".h" or a comma.  Paths or files containing ".h" or a comma
+can cause odd compiler crashes.  If you see this warning and the
+<link xlink:href="1aea789d-b226-4b39-b534-4c97c256fac8#HHC3002">help compiler
+fails</link>, change the names of the paths or files listed in the warning(s).</listItem>
+
+	<listItem>Added an <codeInline>allowMissingSource</codeInline> option to
+the <legacyBold>Code Block Component</legacyBold> to allow missing source code
+files/regions to generate warnings rather than errors.  It also gives a more
+descriptive error when it fails to find a required attribute.</listItem>
+
+	<listItem>Added <ui>All</ui> and <ui>None</ui> buttons to the
+<legacyBold>Namespace Comments</legacyBold> dialog to check or uncheck all
+namespaces at once.</listItem>
+
+    <listItem>The default presentation style in new projects has changed from
+<codeInline>Prototype</codeInline> to <codeInline>VS2005</codeInline>.</listItem>
+
+	<listItem>Implemented basic find and replace support in the topic editor
+window (Ctrl+F and Ctrl+H).  Also added Goto Line (Ctrl+G) and expanded the
+number of elements that can be inserted from the toolbar.</listItem>
+
+	<listItem>All help windows are now opened non-modally.</listItem>
+
+	<listItem>Thanks to Golo Roden for the Python keywords and code colorizer
+rule definitions.  Use the language ID <codeInline>python</codeInline> or
+<codeInline>py</codeInline> to colorize a code block as Python code.</listItem>
+
+	<listItem>In the code download, all help file builder solutions and
+projects are now in Visual Studio 2008 SP1 format.</listItem>
+
+	<listItem>The help file content has been converted to MAML and uses
+the VS2005 style.</listItem>
+
+</list>
+
+  </content>
+</section>
+
+    <relatedTopics>
+    	<link xlink:href="2bba4e09-e9bd-4ef4-9bf4-800af246e97d" />
+    	<link xlink:href="9f1a5c32-7c10-47e1-bbea-319ee0866e3d" />
+    	<link xlink:href="95c85ec6-9f23-426a-b0ad-6b10a0453eaf" />
+        <link xlink:href="078cc1c7-7995-431e-bf9c-8813becbe8df" />
+        <link xlink:href="21c2a363-6c94-440b-8985-6b224d275463" />
+        <link xlink:href="1aea789d-b226-4b39-b534-4c97c256fac8" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="13b7b97f-6a6d-442a-aabf-b00a026b54c0" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Error CT0001: Unable to clean output folder.  Reason:
+<legacyItalic>[reason]</legacyItalic></para>
+    </introduction>
+
+    <section>
+      <title>Cause</title>
+      <content>
+        <para>This error occurs if the <codeInline>CleanHelp</codeInline>
+build task is unable to purge the folders specified in the
+<codeInline>WorkingPath</codeInline> and <codeInline>OutputPath</codeInline>
+properties.</para>
+      </content>
+    </section>
+
+    <section>
+      <title>Solution</title>
+      <content>
+        <para>This is a generic, catch-all error that occurs if the specified
+folders could not be purged.  Refer to the additional error information for
+information about why the error occurred and how it can be fixed (i.e. the
+folder is in use, no permission, etc.).</para>
+      </content>
+    </section>
+
+    <relatedTopics>
+    <link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

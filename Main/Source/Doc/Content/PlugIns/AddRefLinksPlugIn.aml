@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="15b6b7be-3778-4487-b524-d558d02e6460" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+      <para>This plug-in is used to add additional reference link targets to
+the <legacyBold>Reflection Index Data</legacyBold> and
+<legacyBold>Resolve Reference Links</legacyBold> build components so that index
+links can be created to other third party help topics in a Help 2 collection or
+to additional online MSDN content.  <codeInline>Index</codeInline> links are
+only used by MS Help 2 files.  The <codeInline>Msdn</codeInline> link type can
+be used to create links to additional online MSDN content such as for
+SharePoint libraries, etc.  The <codeInline>None</codeInline> link type can
+also be specified to render the references as non-clickable labels.  This may
+be of use in reducing the number of warnings about unresolved reference links
+in a build but isn't really needed as unresolved links are automatically
+rendered as non-clickable labels.</para>
+
+	<para>This component is also helpful if you create separate Help 2 files
+for each assembly in a project.  By referencing the other related assembly help
+projects with this plug-in, you can ensure that the links to API topics in the
+other help files will work.  For example, consider a product consisting of the
+following assemblies.</para>
+
+<list class="bullet">
+    <listItem>MyCompany.MyProduct.Base.dll</listItem>
+    <listItem>MyCompany.MyProduct.Windows.Forms.dll</listItem>
+    <listItem>MyCompany.MyProduct.Web.Controls.dll</listItem>
+</list>
+
+	<para>The Windows Forms and the Web Controls assemblies both reference
+types found in the base assembly.  If you want to segregate the help for each
+assembly into its own help file, you can create one help file builder project
+for each assembly. In the projects for the Windows Forms and the Web Controls
+assemblies, you would add this plug-in and reference the project for the base
+assembly.</para>
+    </introduction>
+
+<section>
+  <title>Configuration Options</title>
+  <content><para>The configuration options consist of a list of other projects
+that will be built and have their reference link information merged with the
+current project.  Note that these will only produce a partial build, enough to
+generate reflection information.  XML comments files for the documented
+assemblies are optional.  A link type is associated with each project in the
+configuration (<codeInline>Index</codeInline> to produce MS Help 2 index links,
+<codeInline>Msdn</codeInline> to produce URLs that link to online MSDN content,
+or <codeInline>None</codeInline> to produce non-clickable labels). The order of
+the projects in the configuration is not relevant.</para>
+
+	<para>Since the plug-in uses help file builder projects to generate the
+reference information, you are free to mix projects built against different
+.NET framework versions, ones that use different API filters specific to that
+project, ones that use a different set of dependencies, or that contain other
+project settings specific to the related project.  As noted, the additional
+projects only go through a partial build, enough to generate reflection
+information.  As such, the following project properties are ignored in the
+other projects:</para>
+
+<list class="bullet">
+    <listItem><legacyBold>Build</legacyBold> category:
+<codeInline>CleanIntermediates</codeInline>,
+<codeInline>ComponentConfigurations</codeInline>,
+<codeInline>HelpFileFormat</codeInline></listItem>
+    <listItem><legacyBold>Help File</legacyBold> category: All properties</listItem>
+    <listItem><legacyBold>HTML Help 1</legacyBold> category: All properties</listItem>
+    <listItem><legacyBold>MS Help 2</legacyBold> category: All properties</listItem>
+    <listItem><legacyBold>Paths</legacyBold> category:
+<codeInline>HtmlHelp1xCompilerPath</codeInline>,
+<codeInline>HtmlHelp2xCompilerPath</codeInline></listItem>
+    <listItem><legacyBold>Show Missing Tags</legacyBold> category: All
+properties</listItem>
+</list>
+
+	<para>XML comments files from the other projects are included in the
+current project's build so that inherited members are still documented
+correctly.  Where there are XML comments common to multiple projects, those
+from the current project will always take precedence.  As noted above, XML
+comments files are optional.  If omitted, no comments will be associated with
+the given assembly.</para>
+
+  </content>
+</section>
+
+    <relatedTopics>
+    <link xlink:href="e031b14e-42f0-47e1-af4c-9fed2b88cbc7" />
+    </relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

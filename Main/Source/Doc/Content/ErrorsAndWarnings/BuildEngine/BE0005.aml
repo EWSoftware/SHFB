@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="ed7661b1-f675-4a8d-a0a2-6eed59cd3720" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Warning BE0005: File '<legacyItalic>[file]</legacyItalic>' does not
+contain a '<codeInline>doc/members</codeInline>' node and will not be used as
+an XML comments file.</para>
+    </introduction>
+
+    <section>
+      <title>Cause</title>
+      <content>
+        <para>This warning occurs if an XML file is found during the validation
+of the documentation sources and it does not contain a <codeInline>doc/members</codeInline>
+node which is required for an XML comments file.</para>
+      </content>
+    </section>
+
+    <section>
+      <title>Solution</title>
+      <content>
+        <para>This usually occurs when a wildcard is used to find all file in
+a given location.  In certain cases, this may pick up extra XML comments files
+that are not comments files.  These will be ignored.  To suppress the warning
+you can refine the wildcard to only match the needed XML comments files or
+specify them by name individually.</para>
+      </content>
+    </section>
+
+    <relatedTopics>
+    <link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

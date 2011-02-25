@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+	<?include Product.wxi ?>
+
+	<Product Id="*" UpgradeCode="$(var.UpgradeCode)"
+		Name="$(var.ProductName)" Version="!(bind.fileVersion.SandcastleBuilderGUI.exe)"
+		Language="1033" Manufacturer="$(var.Manufacturer)">
+
+		<!-- Package Definition -->
+		<Package Id="*" Compressed="yes" Description="$(var.ProductShortName) !(bind.fileVersion.SandcastleBuilderGUI.exe)" InstallerVersion="200"
+				 ShortNames="no" Manufacturer="$(var.Manufacturer)" Languages="1033" SummaryCodepage="1252" />
+
+		<!-- Major Upgrade Support -->
+		<Upgrade Id="$(var.UpgradeCode)">
+			<UpgradeVersion Minimum="!(bind.fileVersion.SandcastleBuilderGUI.exe)" IncludeMinimum="no" OnlyDetect="yes" Property="NEWERVERSIONDETECTED" />
+			<UpgradeVersion Minimum="0.0.0.0" IncludeMinimum="yes" Maximum="!(bind.fileVersion.SandcastleBuilderGUI.exe)" IncludeMaximum="no" Property="OLDERVERSIONBEINGUPGRADED" />
+		</Upgrade>
+
+		<!-- Properties -->
+		<Property Id="ARPPRODUCTICON"   Value="SandcastleBuilder.exe" />
+		<Property Id="ARPCONTACT"       Value="Eric Woodruff" />
+		<Property Id="ARPHELPLINK"      Value="$(var.ProductHomePage)" />
+		<Property Id="ARPURLINFOABOUT"  Value="http://www.EWoodruff.us" />
+		<Property Id="ARPURLUPDATEINFO" Value="$(var.ProductHomePage)" />
+		<Property Id="ARPCOMMENTS"      Value="Sandcastle Help File Builder GUI and MSBuild tasks." />
+
+		<!-- Launch Conditions -->
+		<Condition Message="An administrator must approve or install [ProductName].">
+			Privileged
+		</Condition>
+
+		<Condition Message="[ProductName] is already installed in a newer version on your computer.">
+			NOT NEWERVERSIONDETECTED
+		</Condition>
+
+		<PropertyRef Id="NETFRAMEWORK35"/>
+		<PropertyRef Id="NETFRAMEWORK35_SP_LEVEL"/>
+		<Condition Message="[ProductName] requires .NET Framework 3.5 SP1. You can download it here: http://go.microsoft.com/fwlink/?LinkId=76617">
+			<![CDATA[Installed OR NETFRAMEWORK35 AND NETFRAMEWORK35_SP_LEVEL >= "#1"]]>
+		</Condition>
+
+		<!-- Media -->
+		<Media Id="1" Cabinet="$(var.ProductShortName).cab" CompressionLevel="high" EmbedCab="yes" />
+
+		<!-- Icons -->
+		<Icon Id="Help.ico" SourceFile="$(var.BinFolder)..\..\Images\Help.ico" />
+		<Icon Id="SandcastleBuilder.exe" SourceFile="$(var.BinFolder)..\..\Images\SandcastleBuilder.ico" />
+		<Icon Id="Cmd.ico" SourceFile="Resources\Cmd.ico" />
+		<Icon Id="HtmlDocument.ico" SourceFile="Resources\HtmlDocument.ico" />
+
+		<!-- Files and Directories -->
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder">
+				<Directory Id="EWSoftware" Name="EWSoftware">
+					<Directory Id="INSTALLDIR" Name="Sandcastle Help File Builder" />
+				</Directory>
+			</Directory>
+			<Directory Id="ProgramMenuFolder">
+				<Directory Id="ShfbProgramMenuDir" Name="Sandcastle Help File Builder">
+					<Directory Id="CodePlexProjectsDir" Name="CodePlex Projects" />
+				</Directory>
+			</Directory>
+		</Directory>
+
+		<!-- Features -->
+		<Feature Id="Main" Level="1" Absent="disallow" AllowAdvertise="no">
+			<ComponentGroupRef Id="Binaries" />
+			<ComponentGroupRef Id="Colorizer" />
+			<ComponentGroupRef Id="SharedContent"/>
+			<ComponentGroupRef Id="Templates" />
+			<ComponentGroupRef Id="Web" />
+		</Feature>
+
+		<!-- Install Sequences -->
+		<InstallExecuteSequence>
+			<FindRelatedProducts Before="LaunchConditions" />
+			<RemoveExistingProducts After="InstallValidate" />
+		</InstallExecuteSequence>
+
+		<InstallUISequence>
+			<FindRelatedProducts Before="LaunchConditions" />
+		</InstallUISequence>
+
+		<!-- WixUI scaffolding -->
+		<Property Id="ALLUSERS" Value="1" />
+		<Property Id="WIXUI_INSTALLDIR" Value="INSTALLDIR" />
+		<WixVariable Id="WixUILicenseRtf" Value="$(var.SolutionDir)License.rtf" />
+		<WixVariable Id="WixUIBannerBmp"  Value="Resources\Banner.jpg" />
+		<WixVariable Id="WixUIDialogBmp"  Value="Resources\Dialog.jpg" />
+		<UIRef Id="WixUI_InstallDir" />
+	</Product>
+</Wix>

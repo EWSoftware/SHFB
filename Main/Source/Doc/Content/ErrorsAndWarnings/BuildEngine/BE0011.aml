@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="4a961b0a-7558-472a-9ec1-3a0b9f0f6410" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Warning BE0011: Multiple topic transformations found.  Using
+'<localUri>[file]</localUri>'</para>
+    </introduction>
+
+    <section>
+      <title>Cause</title>
+      <content>
+        <para>This warning occurs if a <localUri>.topic</localUri> additional
+content file is found and multiple project file items are found with a
+<codeInline>BuildAction</codeInline> of <codeInline>TopicTransform</codeInline>.</para>
+      </content>
+    </section>
+
+    <section>
+      <title>Solution</title>
+      <content>
+        <para>In such cases, only the first topic transformation file found will
+be used to transform the <localUri>.topic</localUri> files into HTML.  If the
+wrong file is selected, change the <codeInline>BuildAction</codeInline> on all
+other transformation files to <codeInline>None</codeInline> so that only the
+file you want to use is found at build time.</para>
+      </content>
+    </section>
+
+    <relatedTopics>
+    <link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

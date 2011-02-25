@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="cc3ac64c-a882-47ff-b104-bf497f56b42d" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Warning SHE0004: The key '<legacyItalic>[key]</legacyItalic>' used
+for '<legacyItalic>[file]</legacyItalic>' is already in use by
+'<legacyItalic>[otherFile]</legacyItalic>'.
+'<legacyItalic>[file]</legacyItalic>' will be ignored.</para>
+    </introduction>
+
+    <section>
+      <title>Cause</title>
+      <content>
+        <para>This warning occurs if a duplicate topic filename is encountered
+while parsing files for titles and keywords.  This can occur if HTML files
+are added to a project as additional content.  If an identically named file
+occurs in two separate folders, only the first file will be included in the
+table of contents.</para>
+      </content>
+    </section>
+
+    <section>
+      <title>Solution</title>
+      <content>
+        <para>To correct the problem, give the duplicate file a unique name
+in the project.  If the file is referenced in a site map file, edit the
+site map file to use the new name as well.</para>
+      </content>
+    </section>
+
+    <relatedTopics>
+    <link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

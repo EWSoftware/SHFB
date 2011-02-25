@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="041d7ee8-1698-4256-aa9b-507c1b366cf6" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>This is a custom assembly resolver for Sandcastle's
+<application>MRefBuilder</application> tool that supports assembly binding
+redirect elements in its configuration that let you redirect an unknown
+assembly's strong name to another by version number when resolving an unknown
+reference.</para>
+    </introduction>
+
+<section>
+  <content><para>This component solves the problem reported in Sandcastle
+<externalLink><linkText>work item #1014</linkText>
+<linkUri>http://Sandcastle.CodePlex.com/WorkItem/View.aspx?WorkItemId=1014</linkUri>
+<linkTarget>_blank</linkTarget></externalLink>.  To use the resolver, it must
+be added to the <localUri>MRefBuilder.config</localUri> file by defining the
+<codeInline>resolver</codeInline> element as shown in the example below.
+Within the <codeInline>resolver</codeInline> element, add an
+<codeInline>assemblyBinding</codeInline> element that contains one or more
+<codeInline>dependentAssembly</codeInline> elements that define the
+redirections.  If you have a set of redirections in an application or web
+configuration file, you can define a <codeInline>dependentAssembly</codeInline>
+element with an <codeInline>importFrom</codeInline> custom attribute that
+specifies the location of the configuration file from which to import the
+redirects.  The other option is to specify individual redirects using the
+<codeInline>assemblyIdentity</codeInline> and <codeInline>bindingRedirect</codeInline>
+child elements of each <codeInline>dependentAssembly</codeInline> element.  See
+the MSDN help for those elements for more information on their usage.  Any
+child elements within the <codeInline>dependentAssembly</codeInline> element
+are ignored when the <codeInline>importFrom</codeInline> attribute is used.</para>
+
+<alert class="important">
+  <para>The assembly version(s) to which the entries are redirected must be one
+of the documented assemblies or must be referenced as a dependency using the
+<system>/dep</system> command line switch.</para>
+</alert>
+
+<code lang="xml" title="Sample MRefBuilder.config">
+<![CDATA[
+<configuration>
+  <dduetools>
+    <platform version="2.0"
+      path="%SystemRoot%\Microsoft.NET\Framework\v2.0.50727\" />
+
+    <!-- Replace the resolver element with this.  Update the path
+         to point to the location of the assembly on your system. -->
+    <resolver type="SandcastleBuilder.Components.BindingRedirectResolver"
+        assembly="C:\SandcastleBuilder\SandcastleBuilder.MRefBuilder.dll"
+        use-gac="false">
+
+      <!-- Add an assemblyBinding element to contain the redirects -->
+      <assemblyBinding>
+        <!-- Import bindings from an application or web config file -->
+        <dependentAssembly importFrom=".\Web.config" />
+
+        <!-- Define a redirect for a range of versions -->
+        <dependentAssembly>
+          <assemblyIdentity name="NationalInstruments.Common"
+              publicKeyToken="4544464cdeaab541" />
+          <bindingRedirect oldVersion="1.0.0.0-8.1.20.168"
+              newVersion="8.1.20.237" />
+        </dependentAssembly>
+
+        <!-- Define a redirect for a single version -->
+        <dependentAssembly>
+          <assemblyIdentity name="MyCompany.Util.ComponentFactory"
+              publicKeyToken="E1458197622051B1" culture="neutral"/>
+          <bindingRedirect oldVersion="1.2.3.4"
+              newVersion="2.1.4.3"/>
+        </dependentAssembly>
+
+      </assemblyBinding>
+    </resolver>
+
+    <!-- ... rest of MRefBuilder.config ... -->
+
+  </dduetools>
+</configuration>]]>
+</code>
+
+  </content>
+</section>
+
+    <relatedTopics>
+      <link xlink:href="4e92303d-66ad-4a5d-9a03-94f316a0dd38" />
+	  <externalLink>
+<linkText>Assembly Binding Redirection</linkText>
+<linkUri>http://msdn.microsoft.com/en-us/library/2fc472t2.aspx</linkUri>
+<linkTarget>_blank</linkTarget>
+</externalLink>
+	  <externalLink>
+<linkText>assemblyBinding Configuration File Element</linkText>
+<linkUri>http://msdn.microsoft.com/en-us/library/twy1dw1e.aspx</linkUri>
+<linkTarget>_blank</linkTarget>
+</externalLink>
+     
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

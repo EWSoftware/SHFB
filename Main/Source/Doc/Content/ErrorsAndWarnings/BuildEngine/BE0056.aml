@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="7ebfa7b8-e0ba-453c-a236-094b4ec076c4" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Error BE0056: The conceptual content file '<localUri>[file]</localUri>'
+with ID '<legacyItalic>[id]</legacyItalic>' does not exist</para>
+    </introduction>
+
+    <section>
+      <title>Cause</title>
+      <content>
+        <para>This error occurs if the indicated topic file with the given ID
+could not be found on disk.</para>
+      </content>
+    </section>
+
+    <section>
+      <title>Solution</title>
+      <content>
+        <para>Check to be sure that the file exists on disk.</para>
+      </content>
+    </section>
+
+    <relatedTopics>
+    <link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

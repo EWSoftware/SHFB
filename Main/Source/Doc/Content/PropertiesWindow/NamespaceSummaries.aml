@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="eb7e1bc7-21c5-4453-bbaf-dec8c62c15bd" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+      <para>The Comments category properties allow you to specify project
+summary and namespace summary comments.</para>
+    </introduction>
+
+<section>
+  <title>ProjectSummary</title>
+  <content><para>The <codeInline>ProjectSummary</codeInline> property
+allows you to enter summary comments that should appear in the root namespaces
+page of the compiled help file.  This is the standard default page unless
+additional or conceptual content is defined that is marked as the default page.
+Depending on the presentation style, the Namespaces page is also accessible via
+the breadcrumb link available at the top of the namespace item help pages in
+the generated help file.  These comments will appear above the list of
+namespaces and can contain HTML markup (i.e. text formatting, e-mail links,
+etc.).  The comments can also include the <codeInline>&lt;inheritdoc /&gt;</codeInline>
+tag so that you can import the description or parts of a description from
+another namespace, type, or member.  If no project summary is defined, the page
+just shows the list of namespaces.  Click the "..." button to the right of the
+property value to open an expanded editor for the comments.</para>
+  </content>
+</section>
+
+<section>
+  <title>NamespaceSummaries</title>
+  <content><para>The <codeInline>NamespaceSummaries</codeInline> property
+allows you to specify which namespaces should appear in the help file as well
+as the namespace summaries to display in the root namespaces page and on the
+help page for each namespace.</para>
+
+<mediaLink><image xlink:href="Namespaces" placement="center" /></mediaLink>
+
+	<para>When the form is opened, it scans the documentation assemblies for
+new namespaces and adds them to the list if it finds any.  As you select each
+namespace, the list of assemblies in which it appears is shown to the right and
+its current description appears in the text box below the lists.  Namespaces
+can be filtered by assembly and/or by entering some text or a regular
+expression to match and clicking the <ui>Apply</ui> button.  Setting the
+assembly combo box back to "&lt;All&gt;", clearing the search text, and
+clicking <ui>Apply</ui> will redisplay all assemblies.</para>
+
+	<para>To edit a namespace summary, select the namespace in the list and
+edit the comments in the text box at the bottom of the form.  The comments can
+include HTML markup (i.e. bolding, e-mail links, etc).  If no summary is
+defined, a red warning note will appear for the namespace on the root
+namespaces page and above the namespace content in the help page for the
+namespace itself.  If you build a help file without updating the namespace
+list, any unknown namespaces will appear in the help file but they will also
+contain a red warning message indicating that the namespace summary is missing.
+The warning can be removed by setting the <codeInline>ShowMissingNamespaces</codeInline>
+project option to false.  Namespace summaries also support the
+<codeInline>&lt;inheritdoc /&gt;</codeInline> tag so that you can import the
+description or parts of a description from another namespace, type, or
+member.</para>
+
+	<para>Namespaces are never removed from the list even if the namespace no
+longer appears in one of the documented assemblies.  You can remove old
+namespaces from the list by selecting them and clicking the <ui>Delete</ui>
+button.  The "<codeInline>(global)</codeInline>" namespace is a special case
+and, although it can be deleted, it will be added automatically to remove
+unwanted information that appears in the global namespace.</para>
+
+	<para>You may check the namespaces that you want to appear and uncheck
+those that you do not want to appear.  By default, all namespaces in all
+assemblies are documented with the exception of the global (unnamed) namespace
+that sometimes appears and contains private module details.  This information
+is automatically merged with the project's <codeInline>ApiFilter</codeInline>
+settings at build time.  To avoid conflicts, you may want to leave all of your
+namespaces checked here and use the
+<link xlink:href="7df16a60-f718-4b8f-bfa2-88c42906070c" />
+exclusively to manage the namespaces excluded from the documentation.</para>
+
+  </content>
+</section>
+
+    <relatedTopics>
+    <link xlink:href="48f5a893-acde-4e50-8c17-72b83d9c3f9d" />
+    <link xlink:href="52aa172a-a310-4f75-b20f-7e2c7d870c65" />
+    <link xlink:href="e32086c6-de17-4e54-a746-1ac80bf0c45a" />
+    </relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

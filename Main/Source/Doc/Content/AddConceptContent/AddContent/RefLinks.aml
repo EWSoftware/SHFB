@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="3e3772fb-f8d2-49cf-8199-5f61f2d57ce8" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+      <para>The additional content help text may need to link to other topics
+in the help file such as help pages for a namespace, class, method, property,
+etc.  To provide this ability, the help file builder will scan each HTML
+additional content file for XML comment style <codeInline>&lt;see&gt;</codeInline>
+tags.  If found, an attempt is made to convert the tag to a link that takes
+you to the related help page for the indicated item.  Some examples are shown
+below.</para>
+
+    <alert class="warning">
+	<legacyBold>Deprecated</legacyBold>
+	<para>The additional content model of adding extra content to a help file
+has been deprecated.  While it will continue to be supported and will not be
+removed, it will not receive any more features or updates.  Going forward,
+<link xlink:href="3d4edd2d-7883-4508-b9d2-bd7b4d848b0d">conceptual content</link>
+is the preferred method of adding non-reference content to the help file.  The
+additional content feature can still be used to
+<link xlink:href="77d2d693-db84-4ae3-a84c-e33c71f92e9a">override stock content</link>
+and add supporting files to the help file.</para>
+</alert>
+
+	</introduction>
+
+<section>
+  <content>
+
+<code lang="xml" title=" ">
+For a list of all classes, see the
+&lt;see cref="N:SandcastleBuilder.Utils"&gt;SandcastleBuilder.Utils
+Namespace&lt;/see&gt; topic.
+
+See the help for &lt;see cref="SomeClass.DoesNotExist"/&gt; for
+more information.
+</code>
+
+<para>In this help file, these are rendered as:</para>
+
+<list class="bullet">
+    <listItem>For a list of all classes, see the
+<codeEntityReference qualifyHint="true">N:SandcastleBuilder.Utils</codeEntityReference>
+topic.</listItem>
+    <listItem>See the help for <legacyBold>SomeClass.DoesNotExist</legacyBold>
+for more information.</listItem>
+</list>
+
+	<para>The first example uses the supplied inner text as the text for the
+hyperlink.  The second example will use the <codeInline>cref</codeInline> value
+for the text of the hyperlink.  The <codeInline>cref</codeInline> value can be
+a full or partial identifier for an item in any documented namespace as it
+appears in the <localUri>reflection.xml</localUri> file created by
+Sandcastle.  The page names for the namespace items are generated at build time
+so the help file builder attempts to match the identifier with an entry in the
+reflection information XML file in order to obtain the correct filename as the
+target of the hyperlink.  If a prefix is supplied on the identifier such as
+<codeInline>N:</codeInline> (namespace), <codeInline>T:</codeInline> (type),
+<codeInline>M:</codeInline> (method), etc. as shown in the first example, an
+attempt is made to find an entry starting with the identifier.  If no prefix is
+supplied, as shown in the second example, an attempt is made to find a match
+that ends with the identifier. If neither of those returns a match, it searches
+for any entry that contains the identifier.</para>
+
+	<para>Messages are written to the log file indicating how the link was
+resolved.  If no matches are found, a message appears in the log stating that
+the identifier could not be found and it will be rendered in bold rather than
+as a link in the help file as is the case with the second example.  If a single
+best match is found, the log message indicates the fully qualified name that
+was matched and the tag is converted to a link to the associated page in the
+help file.  If multiple matches are found, the log will include a list of all
+fully qualified names that contained the identifier and the first entry found
+will be used as the target of the hyperlink.</para>
+
+	<para>If a <codeInline>cref</codeInline> attribute appears in any other
+HTML tag, it will also be resolved and converted to an <codeInline>href</codeInline>
+attribute.  For example, if you have an image map of a class, you could use
+<codeInline>cref</codeInline> attributes on the <codeInline>area</codeInline>
+tags to have them resolve to links to the classes represented by the image
+areas as in the following example.</para>
+
+<code lang="xml" title=" ">
+&lt;img src ="images/TestClass.jpg" width="300" height="300" alt="TestClass"
+    usemap ="#TestClass" /&gt;
+
+&lt;map id ="TestClass" name="TestClass"&gt;
+  &lt;area shape ="rect" coords ="10,10,10,20"
+    cref="TestClass.Method1" alt="Method1" /&gt;
+  &lt;area shape ="rect" coords ="20,20,20,20"
+    cref="TestClass.Method2" alt="Method2" /&gt;
+  &lt;area shape ="rect" coords ="30,30,30,30"
+    cref="TestClass.Method3" alt="Method3" /&gt;
+&lt;/map&gt;
+</code>
+
+  </content>
+</section>
+
+    <relatedTopics>
+      <link xlink:href="4fd3b2b6-dfad-4513-983b-5e74d2342ff0" />
+      <link xlink:href="4bf6d6d9-ecc1-4e7c-92ae-e011752431f1" />
+    </relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

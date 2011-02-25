@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="e4c00c10-9368-4790-b1c4-4a47adeb2af9" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Error BE0066: The <codeInline>HelpFileVersion</codeInline> property
+value '<legacyItalic>[value]</legacyItalic>' is not in the correct format
+(#.#.#.#) <legacyItalic>[additional info]</legacyItalic></para>
+    </introduction>
+
+    <section>
+      <title>Cause</title>
+      <content>
+        <para>The value of the <codeInline>HelpFileVersion</codeInline> property
+is not valid.  Refer to the additional information following the error for the
+specific problem.</para>
+      </content>
+    </section>
+
+    <section>
+      <title>Solution</title>
+      <content>
+        <para>Edit the value of the <codeInline>HelpFileVersion</codeInline>
+project property so that it is in an acceptable format with four numeric parts
+separated by periods.  Specify zero for any unused parts (i.e. 1.4.35.0).</para>
+      </content>
+    </section>
+
+    <relatedTopics>
+    <link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

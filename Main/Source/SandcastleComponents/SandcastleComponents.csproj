@@ -1,0 +1,172 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{9708B799-DC83-4404-B8C6-FA444C310DCD}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SandcastleBuilder.Components</RootNamespace>
+    <AssemblyName>SandcastleBuilder.Components</AssemblyName>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>SandcastleBuilderComponents.snk</AssemblyOriginatorKeyFile>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\SandcastleBuilder.Components.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\SandcastleBuilder.Components.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'ReleaseNoDoc|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>bin\Release\SandcastleBuilder.Components.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="BuildAssemblerLibrary, Version=2.5.10626.0, Culture=neutral, PublicKeyToken=0b1f36dea51a29e2, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(DXROOT)\ProductionTools\BuildAssemblerLibrary.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="BuildComponents, Version=2.5.10626.0, Culture=neutral, PublicKeyToken=0b1f36dea51a29e2, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(DXROOT)\ProductionTools\BuildComponents.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="SyntaxComponents, Version=2.5.10626.0, Culture=neutral, PublicKeyToken=0b1f36dea51a29e2, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(DXROOT)\ProductionTools\SyntaxComponents.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\SandcastleBuilderUtils\Properties\AssemblyInfoShared.cs">
+      <Link>Properties\AssemblyInfoShared.cs</Link>
+    </Compile>
+    <Compile Include="CachedCopyFromIndexComponent.cs" />
+    <Compile Include="CachedResolveReferenceLinksComponent.cs" />
+    <Compile Include="CodeBlockComponent.cs" />
+    <Compile Include="CodeBlockConfigDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CodeBlockConfigDlg.Designer.cs">
+      <DependentUpon>CodeBlockConfigDlg.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConceptualLinkInfo.cs" />
+    <Compile Include="IntelliSenseComponent.cs" />
+    <Compile Include="IntelliSenseConfigDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="IntelliSenseConfigDlg.Designer.cs">
+      <DependentUpon>IntelliSenseConfigDlg.cs</DependentUpon>
+    </Compile>
+    <Compile Include="JavaScriptDeclarationSyntaxGenerator.cs" />
+    <Compile Include="MSHCComponent.cs" />
+    <Compile Include="MSHelpAttrComponent.cs" />
+    <Compile Include="MultiFormatOutputComponent.cs" />
+    <Compile Include="PostTransformComponent.cs" />
+    <Compile Include="PostTransformConfigDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PostTransformConfigDlg.Designer.cs">
+      <DependentUpon>PostTransformConfigDlg.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResolveConceptualLinksComponent.cs" />
+    <Compile Include="ShowMissingComponent.cs" />
+    <Compile Include="TargetDirectory.cs" />
+    <Compile Include="TargetDirectoryCollection.cs" />
+    <Compile Include="TargetInfo.cs" />
+    <Compile Include="VersionInfoComponent.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CodeColorizer\ColorizerLibrary\ColorizerLibrary.csproj">
+      <Project>{72331A21-C452-4BE4-BFDB-B8029A6BC1C0}</Project>
+      <Name>ColorizerLibrary</Name>
+      <Private>True</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="SandcastleBuilder.filters">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="SandcastleBuilderComponents.snk" />
+    <Content Include="SandcastleBuilder.components">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="CodeBlockConfigDlg.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>CodeBlockConfigDlg.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="IntelliSenseConfigDlg.resx">
+      <DependentUpon>IntelliSenseConfigDlg.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PostTransformConfigDlg.resx">
+      <DependentUpon>PostTransformConfigDlg.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PostBuildEvent>XCopy /q /y "$(TargetDir)*.dll" "$(SolutionDir)SandcastleBuilderGUI\$(OutDir)"
+XCopy /q /y "$(TargetDir)*.xml" "$(SolutionDir)SandcastleBuilderGUI\$(OutDir)"
+XCopy /q /y "$(ProjectDir)*.components" "$(SolutionDir)SandcastleBuilderGUI\$(OutDir)"
+XCopy /q /y "$(ProjectDir)*.filters" "$(SolutionDir)SandcastleBuilderGUI\$(OutDir)"
+</PostBuildEvent>
+  </PropertyGroup>
+</Project>

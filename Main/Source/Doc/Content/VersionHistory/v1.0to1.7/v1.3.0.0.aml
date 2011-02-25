@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="b63812cf-9caa-4e79-9c68-661d0ef9f660" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Version 1.3.0.0 was released on September 25th, 2006.</para>
+    </introduction>
+
+    <section>
+      <title>Changes in This Release</title>
+      <content>
+<list class="bullet">
+    <listItem>Improved the help file.  The article was getting rather long so I
+have moved a lot of the information to the help file and expanded on it as
+needed to make it more useful.  See it for more information on how to use
+the help file builder.</listItem>
+
+    <listItem>Added <codeInline>Website</codeInline>, <codeInline>Help1xAndWebsite</codeInline>, and
+<codeInline>Help2xAndWebsite</codeInline> options to the <codeInline>HelpFileFormat</codeInline>
+property to allow generating the help as a website, a website plus an
+HTML Help 1 file, or a website plus an MS Help 2 file.  The website
+output includes an index page complete with tree view for navigating the
+table of contents.</listItem>
+
+    <listItem>The <codeInline>ContentItem</codeInline> class's <codeInline>IsDefaultPage</codeInline> and
+<codeInline>ContentDescription</codeInline> properties have been removed as they are
+now obtained along with a sort order while copying the additional content
+items and building table of contents entries for them.  See
+<legacyBold>The Additional Content Property</legacyBold> topic for more information on the new
+features.</listItem>
+
+    <listItem>Added a preview option to the Additional Content editor dialog box
+to preview the table of contents entries for the additional content.  You can
+also arrange items and set the default topic from it.</listItem>
+
+    <listItem>Added the ability to create links to namespace help content from
+the additional content files.  See the <legacyBold>Linking to
+Namespace Content</legacyBold> topic for more information.</listItem>
+
+    <listItem>Modified the file I/O code to detect the encoding of the files when
+reading them and to use the same encoding when writing them back out to
+preserve the character encodings within the files.</listItem>
+
+    <listItem>The table of contents file for HTML Help 1 files is now saved
+using the default encoding based on the system's code page rather than
+UTF-8 encoding to ensure that the character encodings are correctly
+interpretted by the help compiler and viewer.</listItem>
+
+    <listItem>Some additional notes regarding encoding have been added to the
+information on how to create language resource files for other languages.</listItem>
+
+    <listItem>Added a command to the <legacyBold>Documentation</legacyBold> menu to clear the
+output window on the main form.  The <legacyBold>View Log</legacyBold> form now loads the log
+text from the last build's log file.</listItem>
+
+    <listItem>Added a version check on <legacyBold>MRefBuilder.exe</legacyBold> to ensure that a
+valid version is being used.  An exception is thrown if the version found
+is less than the expected version (you need to update Sandcastle).  A
+warning is issued if the version found is greater than the expected version
+(you need to update the help file builder).</listItem>
+
+    <listItem>The <legacyBold>New Project from Visual Studio Project</legacyBold> option now
+recognizes VB.NET and J# solution files.</listItem>
+
+    <listItem>Fixed a bug that caused assembly loading to fail under certain
+circumstances when determining namespaces for the <legacyBold>Namespace
+Summaries</legacyBold> dialog box.</listItem>
+
+    <listItem>Fixed a bug that caused the build process to try and scan a drive that
+didn't exist when looking for the MS Help 2 compiler.</listItem>
+
+    <listItem>The <codeInline>Language</codeInline> property now only shows the list of
+languages for which resource files exist.</listItem>
+
+</list>
+
+      </content>
+    </section>
+
+    <relatedTopics>
+    <link xlink:href="6110ac54-04d8-4624-8a2b-2a58af63c20d" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

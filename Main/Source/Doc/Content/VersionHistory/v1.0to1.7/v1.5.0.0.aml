@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="658e9623-a4a1-442c-8e50-74cec804784e" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Version 1.5.0.0 was released on June 25th, 2007.</para>
+    </introduction>
+    <section>
+      <title>Changes in This Release</title>
+      <content>
+<list class="bullet">
+    <listItem>Added support for the June 2007 CTP of Sandcastle.</listItem>
+    
+    <listItem>Fixed a bug that caused a crash when removing private framework
+field members.</listItem>
+
+    <listItem>Fixed a bug in the handling of <codeInline>&lt;exclude/&gt;</codeInline> that
+caused it to also remove base class members when removing a type.</listItem>
+
+    <listItem>Fixed a bug when generating the website table of contents caused
+by the angle brackets on nested generic types.</listItem>
+
+    <listItem>Fixed a bug in <codeInline>ShowMissingComponent</codeInline> caused by incorrect
+handling of generic template parameter names.</listItem>
+
+    <listItem>Fixed a bug in the code colorizer that caused it to match some
+<codeInline>pre</codeInline> tags incorrectly.  Also fixed the "include file" regular
+expression so that it didn't match similar looking managed C++ generic
+declarations.</listItem>
+
+    <listItem>Fixed inconsistent handling of the tab size property in both the code
+colorizer and the code block component.</listItem>
+
+    <listItem>Added managed C++ keywords to the C++ colorizer template.</listItem>
+    
+    <listItem>The list of assemblies to document is now maintained in sorted order.</listItem>
+    
+    <listItem>Added code to verify that <codeInline>OutputPath</codeInline> and
+<codeInline>WorkingPath</codeInline> do not point to a root or well-known folder (i.e.
+C:\ or My Documents) to prevent users from accidentally deleting everything
+in it.</listItem>
+
+    <listItem>Support was added for finding <codeInline>&lt;code&gt;</codeInline> tags with
+closing <codeInline>&lt;/code&gt;</codeInline> tags in addition to the self-closing
+tags for importing code blocks in additional content files.</listItem>
+
+    <listItem>Support was added for merging two or more code snippets into a
+single code example by nesting <codeInline>code</codeInline> tags within a parent
+<codeInline>code</codeInline> tag.  Nested code tags are supported in XML comments and
+additional content files. See the
+<link xlink:href="7f03ba39-09f8-4320-bdbd-ed31a3bd885f" /> topic and
+<link xlink:href="1863a4d7-61b6-4dde-862d-a358d0cfbd54" /> topic for details.</listItem>
+
+    <listItem>The code colorizer was updated to be more flexible in matching
+language IDs to rule sets.  It will now match the ID case-insensitively to
+the ID or friendly name.  It will also match several common variations to
+the correct rule sets (i.e. VB to VB.NET, CSharp to C#, etc.).</listItem>
+
+    <listItem>Added a <codeInline>ShowMissingNamespaces</codeInline> project option so that
+"missing namespace comments" messages in the help file can be suppressed if
+not wanted.</listItem>
+
+    <listItem>The website output option has been modified.  It no longer uses
+a frame set. Instead, it uses a combination of <codeInline>DIV</codeInline>
+tags, CSS, Javascript, and an <codeInline>IFRAME</codeInline> to display the
+table of contents and the selected page.</listItem>
+
+    <listItem>In addition, a couple of ASP.NET pages are supplied that should
+work more efficiently than the basic <legacyBold>Index.html</legacyBold> page.
+The main <legacyBold>Index.aspx</legacyBold> page only loads the root nodes
+for the table of contents when first displayed.  Ajax calls are used to load
+child nodes dynamically when they are first expanded (done using
+<legacyBold>FillNode.aspx</legacyBold>).  A <localUri>Web.config</localUri>
+file is included that contains some necessary namespace declarations for the
+pages.  The pages use inline code so there shouldn't be any need to compile
+them before deployment.</listItem>
+
+    <listItem>When viewing the ASP.NET index page, full-text search is also
+available.  The search results are returned using an Ajax call to the
+<legacyBold>SearchHelp.aspx</legacyBold> page.  Search results are sorted by rank (most likely
+match first) by default or they can be sorted by title.</listItem>
+
+    <listItem>Expanded the output viewing options to let you choose which format
+to view when multiple formats have been built.  This includes the ASP.NET
+website option using the .NET 2.0 development web server (IIS not
+required).</listItem>
+
+    <listItem>The <legacyBold>Verbose Logging</legacyBold> option on the <legacyBold>Documentation</legacyBold> menu
+has been removed.  There is now a <legacyBold>User Preferences</legacyBold> option on the
+<legacyBold>Project</legacyBold> menu that lets you edit non-project related user preferences
+such as the verbose logging option, an MS Help 2 viewer application,
+and the port to use for the ASP.NET development web server used to view
+website output.</listItem>
+
+    <listItem>The output and log viewing options were modified so that you can
+view the results from a prior session without having to do a build after
+restarting the help file builder.</listItem>
+
+    <listItem>Added some more common problems and solutions to the FAQ.</listItem>
+    
+    <listItem>Localized versions of the shared content files were removed.  See the
+1.6.0.0 release notes for the reasons and information on the new
+implementation.</listItem>
+</list>
+
+      </content>
+    </section>
+    <relatedTopics>
+    <link xlink:href="6110ac54-04d8-4624-8a2b-2a58af63c20d" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

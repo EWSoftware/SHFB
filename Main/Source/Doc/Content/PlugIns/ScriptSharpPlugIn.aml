@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="93c452fd-71d4-470e-8d27-ec3d979679a4" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+      <para>This plug-in is used to modify the reflection information file
+produced after running <application>MRefBuilder</application> on assemblies
+created by the <externalLink><linkText>Script# compiler</linkText>
+<linkUri>http://projects.nikhilk.net/ScriptSharp</linkUri>
+<linkTarget>_blank</linkTarget></externalLink> so that it is suitable for use
+in producing a help file.  This plug-in contains no configuration options.  It
+simply adds an additional transformation that runs after the reflection
+information file has been generated that fixes up certain elements in it so
+that they are documented correctly.</para>
+
+	<para>Add the Script# generated assemblies or the Visual Studio project or
+solution that produces them to the project as documentation sources.  If you
+add the assemblies, be sure to add the necessary Script# dependency assemblies
+to the <codeInline>References</codeInline> project node.  You can find them in
+the Script# installation folder
+(<localUri>C:\Program Files\nStuff\ScriptSharp\v1.0\Framework</localUri> by
+default).</para>
+
+<para>You can select the <legacyBold>JavaScript</legacyBold> option in the
+<codeInline>SyntaxFilters</codeInline> project property so that the syntax
+section in the API topics renders the declarations in JavaScript.</para>
+
+    </introduction>
+
+    <relatedTopics>
+    <link xlink:href="e031b14e-42f0-47e1-af4c-9fed2b88cbc7" />
+    </relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

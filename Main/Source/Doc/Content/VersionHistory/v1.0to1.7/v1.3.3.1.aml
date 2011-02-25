@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="b6429b69-6364-4efe-9306-9b647e9e26b0" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Version 1.3.3.1 was released on December 11th, 2006.</para>
+    </introduction>
+
+    <section>
+      <title>Changes in This Release</title>
+      <content>
+<list class="bullet">
+    <listItem><legacyBold><legacyUnderline>NOTE TO VERSION 1.3.3.0 RC USERS:</legacyUnderline></legacyBold>  You
+<legacyBold><legacyUnderline>must</legacyUnderline></legacyBold> reset the <legacyBold>Post-transform Component</legacyBold> configuration
+and reconfigure it before performing a build with this release due to
+changes in the configuration.</listItem>
+
+    <listItem>Updated for use with the December 2006 CTP.  A patch file for the
+Sandcastle style and transformation files is supplied separately to fix
+missing support for <legacyBold>br</legacyBold> and <legacyBold>hr</legacyBold> tags in the Prototype style, to
+fixed numbered lists, and to add support for displaying the "Obsolete"
+messages on obsolete items. Extract the patch to your Sandcastle
+installation folder.  See the ReadMe.txt file included with it for details
+on the fixes that I made.</listItem>
+    <listItem>Implemented a code block custom build component with the following
+features:
+    <list class="bullet">
+        <listItem>Syntax highlighting of code blocks in <codeInline>&lt;code&gt;</codeInline>
+tags. Languages supported: C#, VB.NET, C++, C, JavaScript, VBScript, J#, and
+XML.</listItem>
+
+        <listItem>Excess leading whitespace is stripped from the
+<codeInline>&lt;code&gt;</codeInline> blocks to left align them correctly.</listItem>
+
+        <listItem>Support for optional line numbering.</listItem>
+
+        <listItem>Support for optional collapsible regions for code in #region
+and #if/#else/#endif blocks with support for nested collapsible regions.</listItem>
+
+        <listItem>Support for reading in an external source file or a defined
+region of an external source file so that you can keep code samples in a
+buildable project to test for correctness and do away with managing the
+code samples in the XML comments and include files.</listItem>
+    </list></listItem>
+
+    <listItem>Implemented a post-transform custom build component with the following
+features:
+    <list class="bullet">
+        <listItem>Companion to the Code Block Component to add the supporing
+links for the colorizer script and stylesheet.</listItem>
+
+        <listItem>It can insert a logo image at the top of each help topic.</listItem>
+
+        <listItem>For the Prototype style, it hides the language combo box if
+only one language appears in the Syntax section.</listItem>
+
+        <listItem>Version information will be added to the help topics if used with
+the help file builder.  If used outside the help file builder, a modification
+is required to the Sandcastle reference content files.</listItem>
+    </list></listItem>
+
+    <listItem>Added support for the XML comments <codeInline>&lt;exclude/&gt;</codeInline>
+tag.</listItem>
+
+    <listItem>Added the <codeInline>locale</codeInline> attribute to the
+<codeInline>ResolveReferenceLinksComponent</codeInline> in <legacyBold>sandcastle.config</legacyBold> to
+use the project language for the MSDN URLs.  Note that there is a small bug
+in the component that causes the first reference to still point to the
+English site.  This bug has been reported and will hopefully be fixed in
+the next Sandcastle CTP.</listItem>
+
+    <listItem>The build components are configured individually via the new
+project option <codeInline>ComponentConfigurations</codeInline>.  Additional third
+party build components can be plugged into the help file builder by adding
+the default configuration to the sandcastle.config template with a unique
+ID attribute and implementing a public static <codeInline>ConfigureComponent</codeInline>
+method in the component.  See the help file for more details.</listItem>
+
+    <listItem>Added a <codeInline>SyntaxFilters</codeInline> property that lets you specify
+which languages appear in the Syntax section of the help topics and, for
+the Prototype presentation style, the dropdown in the upper right of the
+topics.  It can be set to CSharp, VisualBasic, CPlusPlus, JSharp, a
+combination of those values, All to include them all, Standard (the
+default) for C#, VB.NET, and C++ only, or to None to remove the Syntax
+section entirely.</listItem>
+
+    <listItem>Added the <codeInline>CppCommentsFixup</codeInline> project property to work
+around an issue with methods that take generics as parameters in XML
+comments files created by the C++ compiler (it doesn't match the other .NET
+compilers' naming conventions).</listItem>
+
+    <listItem>The <codeInline>FrameworkVersion</codeInline> property is now always saved in
+the project to prevent building against the wrong version when a project is
+edited on two different systems, one with a more recent version of .NET
+than another.  It also defaults to .NET 2.0 for new projects rather than
+the most recent framework version on the system which may be .NET 3.0
+to prevent unexpected problems.  If you need .NET 3.0, you must select it
+manually.</listItem>
+
+    <listItem>The <codeInline>HelpTitle</codeInline> property is now displayed in the help
+topics at the top of the page where "Reference Library" used to be.</listItem>
+
+    <listItem>The <codeInline>ObsoleteAttribute</codeInline>, <codeInline>FlagsAttribute</codeInline>,
+and <codeInline>SerializableAttribute</codeInline> are now always included even if
+<codeInline>DocumentAttributes</codeInline> is set to false. These provide useful
+information and should not be filtered out.</listItem>
+
+    <listItem>The <legacyBold>Preview and Arrange</legacyBold> dialog for additional content no
+longer prompts for the project folder as it is maintained internally now.</listItem>
+
+    <listItem>Code in <codeInline>&lt;pre&gt;</codeInline> tags in additional content HTML
+files can be colorized by adding the colorizer attributes to them.  See the
+<legacyBold>Syntax Highlighting &lt;pre&gt; Tag Content</legacyBold> topic for details.</listItem>
+
+    <listItem>Modified the tool search to also try to find Sandcastle via the
+<environmentVariable>DXROOT</environmentVariable> environment variable.</listItem>
+</list>
+
+      </content>
+    </section>
+    <relatedTopics>
+    <link xlink:href="6110ac54-04d8-4624-8a2b-2a58af63c20d" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

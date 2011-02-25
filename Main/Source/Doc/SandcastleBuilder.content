@@ -1,0 +1,1416 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Topics>
+  <Topic id="bd1ddb51-1c4f-434f-bb1a-ce2135d3a909" visible="True" isDefault="true" title="Welcome">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="Welcome" />
+      <HelpKeyword index="K" term="Getting started, Welcome" />
+      <HelpKeyword index="K" term="CodePlex" />
+      <HelpKeyword index="K" term="SHFB" />
+      <HelpKeyword index="K" term="project location" />
+      <HelpKeyword index="NamedURLIndex" term="HomePage" />
+      <HelpKeyword index="NamedURLIndex" term="DefaultPage" />
+    </HelpKeywords>
+  </Topic>
+  <Topic id="24504fda-d3ef-4dd9-8335-6db8b25d00f2" visible="True" title="License Agreement">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="License agreement" />
+    </HelpKeywords>
+  </Topic>
+  <Topic id="21c2a363-6c94-440b-8985-6b224d275463" visible="True" title="Known Issues and Limitations">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="known issues" />
+      <HelpKeyword index="K" term="versions, known issues" />
+    </HelpKeywords>
+  </Topic>
+  <Topic id="b772e00e-1705-4062-adb6-774826ce6700" visible="True" title="Getting Started">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="Getting Started" />
+    </HelpKeywords>
+    <Topic id="8c0c97d0-c968-4c15-9fe9-e8f3a443c50a" visible="True" title="Installation Instructions">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Getting started, installation" />
+        <HelpKeyword index="K" term="installation" />
+        <HelpKeyword index="K" term="prerequisites" />
+        <HelpKeyword index="K" term="requirements" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="8e3f8757-0ef3-4772-bb2f-5d7ae57e50da" visible="True" title="Sandcastle Help File Builder Overview">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Getting started, overview" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="c47d9242-b3a8-4153-aa9e-ae8cb41cefe2" visible="True" title="Walkthrough: Enabling and Using XML Comments">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Getting started, enable XML comments" />
+        <HelpKeyword index="K" term="Getting started, Visual Studio" />
+        <HelpKeyword index="K" term="Getting started, Visual Studio projects" />
+        <HelpKeyword index="K" term="XML comment tags, tag reference" />
+        <HelpKeyword index="K" term="XML comments" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="d5dbf017-25f1-48cb-86db-90f76ee8f4d7" visible="True" title="Walkthrough: Creating Your First Project">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Getting started, create a new project" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="f68822d2-97ba-48da-a98b-46747983b4a0" visible="True" title="Project File Converters">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="converters, all" />
+      </HelpKeywords>
+      <Topic id="5864f501-6433-4bd3-825d-1843b9b27540" visible="True" title="SHFB v1.7.0.0 or Earlier Converter">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="converters, SHFB v1.7.0.0 or earlier" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="0a38fb2a-1166-4a4f-bd76-12390655df5c" visible="True" title="NDoc 1.x Converter">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="converters, NDoc 1.x" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="6236b6e2-b27f-45d6-a8de-7a7913ff7ce1" visible="True" title="DocProject 1.x Converter">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="converters, DocProject 1.x" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="b91996c3-4c92-4c99-8958-92ce04bca0f9" visible="True" title="SandcastleGUI 1.x Converter">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="converters, SandcastleGUI 1.x" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="14a10de0-b38b-403d-8fc3-4d36a737e3b3" visible="True" title="Sandcastle Example GUI Converter">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="converters, example GUI" />
+        </HelpKeywords>
+      </Topic>
+    </Topic>
+    <Topic id="576b6a36-0808-4857-bec0-e6eeeae4e36b" visible="True" title="Relative and Absolute Paths">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Getting started, absolute and relative paths" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="96956ab6-fd5e-4bc7-a577-a18b0ff258ea" visible="True" title="The Log File">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="log file" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="2152ed96-bf69-4b9b-b1a7-4fffc71b3095" visible="True" title="User Preferences">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Getting started, user preferences" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="a24489fb-45d6-46f4-9eaa-9a9c4e0919b2" visible="True" title="Special Folder Locations">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="build components, build component assembly location" />
+        <HelpKeyword index="K" term="conceptual content, user defined template file location" />
+        <HelpKeyword index="K" term="getting started, special folder locations" />
+        <HelpKeyword index="K" term="plug-ins, plug-in assembly location" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="79897974-ffc9-4b84-91a5-e50c66a0221d" visible="True" title="Using the &lt;inheritdoc /&gt; Tag">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Getting started, &lt;inheritdoc /&gt;" />
+        <HelpKeyword index="K" term="inheritdoc tag" />
+        <HelpKeyword index="K" term="XML comment tags, inheritdoc" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="94c7f744-9b90-4254-93ab-9b15f47d9f42" visible="True" title="Documenting Web Projects">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Getting started, websites and web projects" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="8ffc0d37-0215-4609-b6f8-dba53a6c5063" visible="True" title="Building Projects Outside the GUI">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="console mode, build tool" />
+        <HelpKeyword index="K" term="console mode, command line options" />
+        <HelpKeyword index="K" term="console mode, project option overrides" />
+        <HelpKeyword index="K" term="console mode, response file" />
+        <HelpKeyword index="K" term="console mode, post-build event" />
+        <HelpKeyword index="K" term="console mode, third-party build tools" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="ec822059-b179-4add-984d-485580050ffb" visible="True" title="Generating Documentation with Team Build">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Team Build" />
+        <HelpKeyword index="K" term="console mode, Team Build" />
+      </HelpKeywords>
+    </Topic>
+  </Topic>
+  <Topic id="e12c2b9f-18c7-4718-850b-ac3c2e293672" visible="True" title="Project Explorer Window">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="Project Explorer, overview" />
+    </HelpKeywords>
+    <Topic id="64f0576f-51b3-4dae-aaac-06568c6c2f68" visible="True" title="Documentation Sources">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="documentation sources" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="9309b01b-87bf-4d68-b035-c10ac77d1522" visible="True">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="references" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="0a9d6da4-cff6-4664-8b64-b7df04c8a37d" visible="True" title="Folder and File Items">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="file items" />
+        <HelpKeyword index="K" term="folder items" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="c38461a6-6edd-42cf-9d91-73c4b11cdd70" visible="True" title="Build Actions">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="build actions" />
+      </HelpKeywords>
+    </Topic>
+  </Topic>
+  <Topic id="e32086c6-de17-4e54-a746-1ac80bf0c45a" visible="True" title="Project Properties Window">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="property categories, Overview" />
+    </HelpKeywords>
+    <Topic id="da405a33-3eeb-4451-9aa8-a55be5026434" visible="True" title="Build Category Properties">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="property categories, Build" />
+        <HelpKeyword index="K" term="properties, BuildLogFile" />
+        <HelpKeyword index="K" term="properties, CleanIntermediates" />
+        <HelpKeyword index="K" term="properties, ComponentConfigurations" />
+        <HelpKeyword index="K" term="properties, CppCommentsFixup" />
+        <HelpKeyword index="K" term="properties, Dependencies" />
+        <HelpKeyword index="K" term="properties, FrameworkVersion" />
+        <HelpKeyword index="K" term="properties, HelpFileFormat" />
+        <HelpKeyword index="K" term="properties, KeepLogFile" />
+        <HelpKeyword index="K" term="properties, PlugInConfigurations" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="eb7e1bc7-21c5-4453-bbaf-dec8c62c15bd" visible="True" title="Comments Category Properties">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="properties, NamespaceSummaries" />
+        <HelpKeyword index="K" term="properties, ProjectSummary" />
+        <HelpKeyword index="K" term="property categories, Comments" />
+      </HelpKeywords>
+      <Topic id="48f5a893-acde-4e50-8c17-72b83d9c3f9d" visible="True" title="Using NamespaceDoc Classes">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="NamespaceDoc classes" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="52aa172a-a310-4f75-b20f-7e2c7d870c65" visible="True" title="Sharing Project Summary and Namespace Comments">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="property categories, Shared summaries" />
+        </HelpKeywords>
+      </Topic>
+    </Topic>
+    <Topic id="1b2dff59-92cc-4578-b261-f3849f30c26c" visible="True" title="Help File Category Properties">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="properties, CopyrightHref" />
+        <HelpKeyword index="K" term="properties, CopyrightText" />
+        <HelpKeyword index="K" term="properties, FeedbackEMailAddress" />
+        <HelpKeyword index="K" term="properties, FeedbackEMailLinkText" />
+        <HelpKeyword index="K" term="properties, FooterText" />
+        <HelpKeyword index="K" term="properties, HeaderText" />
+        <HelpKeyword index="K" term="properties, HelpTitle" />
+        <HelpKeyword index="K" term="properties, HtmlHelpName" />
+        <HelpKeyword index="K" term="properties, IndentHtml" />
+        <HelpKeyword index="K" term="properties, Language" />
+        <HelpKeyword index="K" term="properties, NamingMethod" />
+        <HelpKeyword index="K" term="properties, Preliminary" />
+        <HelpKeyword index="K" term="properties, PresentationStyle" />
+        <HelpKeyword index="K" term="properties, RootNamespaceContainer" />
+        <HelpKeyword index="K" term="properties, RootNamespaceTitle" />
+        <HelpKeyword index="K" term="properties, SdkLinkTarget" />
+        <HelpKeyword index="K" term="properties, SyntaxFilters" />
+        <HelpKeyword index="K" term="property categories, Help File" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="7d28bf8f-923f-44c1-83e1-337a416947a1" visible="True" title="HTML Help 1 Category Properties">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="properties, BinaryTOC" />
+        <HelpKeyword index="K" term="properties, HtmlSdkLinkType" />
+        <HelpKeyword index="K" term="properties, IncludeFavorites" />
+        <HelpKeyword index="K" term="property categories, HTML Help 1" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="d0c2dabd-3caf-4586-b81d-cbd765dec7cf" visible="True" title="MS Help 2 Category Properties">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="properties, CollectionTocStyle" />
+        <HelpKeyword index="K" term="properties, HelpAttributes" />
+        <HelpKeyword index="K" term="properties, HelpFileVersion" />
+        <HelpKeyword index="K" term="properties, IncludeStopWordList" />
+        <HelpKeyword index="K" term="properties, MSHelp2SdkLinkType" />
+        <HelpKeyword index="K" term="properties, PlugInNamespaces" />
+        <HelpKeyword index="K" term="property categories, MS Help 2" />
+      </HelpKeywords>
+      <Topic id="74664b00-b83f-450a-833a-25984ba812e3" visible="True" title="Named URL Index Support">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="NamedUrlIndex" />
+          <HelpKeyword index="K" term="named URL index, NamedUrlIndex" />
+          <HelpKeyword index="K" term="named URL index, AboutPageIcon" />
+          <HelpKeyword index="K" term="named URL index, AboutPageInfo" />
+          <HelpKeyword index="K" term="named URL index, DefaultPage" />
+          <HelpKeyword index="K" term="named URL index, EmptyIndexTerm" />
+          <HelpKeyword index="K" term="named URL index, FilterEditPage" />
+          <HelpKeyword index="K" term="named URL index, HomePage" />
+          <HelpKeyword index="K" term="named URL index, NavFailPage" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="68a2fa4e-c6de-47ed-a9a6-60cc6ef01df4" visible="True" title="Deploying an MS Help 2 File">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="deployment, MS Help 2" />
+          <HelpKeyword index="K" term="HXS" />
+          <HelpKeyword index="K" term="MS Help 2" />
+        </HelpKeywords>
+      </Topic>
+    </Topic>
+    <Topic id="5f743a6e-3239-409a-a8c1-0bff4b5375f4" visible="True" title="MS Help Viewer Category Properties">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="properties, MSHelpViewerSdkLinkType" />
+        <HelpKeyword index="K" term="properties, ProductTitle" />
+        <HelpKeyword index="K" term="properties, SelfBranded" />
+        <HelpKeyword index="K" term="properties, TocOrder" />
+        <HelpKeyword index="K" term="properties, TocParentId" />
+        <HelpKeyword index="K" term="properties, TocParentVersion" />
+        <HelpKeyword index="K" term="properties, TopicVersion" />
+        <HelpKeyword index="K" term="properties, VendorName" />
+        <HelpKeyword index="K" term="property categories, MS Help Viewer" />
+      </HelpKeywords>
+      <Topic id="4baf93f2-f395-4281-b7ef-bfe6c878a4d7" visible="True" title="Deploying an MS Help Viewer File">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="deployment, MS Help Viewer" />
+          <HelpKeyword index="K" term="MS Help Viewer" />
+          <HelpKeyword index="K" term="MSHA" />
+          <HelpKeyword index="K" term="MSHC" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="534c4ff1-3bba-4431-a3a6-76dcb2d374f8" visible="True" title="Help Library Manager Launcher Utility">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="deployment, Help Library Manager Launcher" />
+          <HelpKeyword index="K" term="HelpLibraryManagerLauncher.exe" />
+        </HelpKeywords>
+      </Topic>
+    </Topic>
+    <Topic id="e6fcfa33-e7ee-430a-abfe-6b7962e6d068" visible="True" title="Paths Category Properties">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="property categories, Paths" />
+        <HelpKeyword index="K" term="properties, HtmlHelp1xCompilerPath" />
+        <HelpKeyword index="K" term="properties, HtmlHelp2xCompilerPath" />
+        <HelpKeyword index="K" term="properties, OutputPath" />
+        <HelpKeyword index="K" term="properties, SandcastlePath" />
+        <HelpKeyword index="K" term="properties, WorkingPath" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="5a2ab898-7161-454d-b5d3-959df0de0e36" visible="True" title="Show Missing Tags Category Properties">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="properties, AutoDocumentConstructors" />
+        <HelpKeyword index="K" term="properties, AutoDocumentDisposeMethods" />
+        <HelpKeyword index="K" term="properties, ShowMissingNamespaces" />
+        <HelpKeyword index="K" term="properties, ShowMissingParams" />
+        <HelpKeyword index="K" term="properties, ShowMissingRemarks" />
+        <HelpKeyword index="K" term="properties, ShowMissingReturns" />
+        <HelpKeyword index="K" term="properties, ShowMissingSummaries" />
+        <HelpKeyword index="K" term="properties, ShowMissingTypeParams" />
+        <HelpKeyword index="K" term="properties, ShowMissingValues" />
+        <HelpKeyword index="K" term="property categories, Show Missing" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="3c489bd6-598c-4684-aafb-fbe9400864d3" visible="True" title="Visibility Category Properties">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="property categories, Visibility" />
+        <HelpKeyword index="K" term="properties, DocumentAttributes" />
+        <HelpKeyword index="K" term="properties, DocumentExplicitInterfaceImplementations" />
+        <HelpKeyword index="K" term="properties, DocumentInheritedFrameworkInternalMembers" />
+        <HelpKeyword index="K" term="properties, DocumentInheritedFrameworkMembers" />
+        <HelpKeyword index="K" term="properties, DocumentInheritedFrameworkPrivateMembers" />
+        <HelpKeyword index="K" term="properties, DocumentInheritedMembers" />
+        <HelpKeyword index="K" term="properties, DocumentInternals" />
+        <HelpKeyword index="K" term="properties, DocumentPrivateFields" />
+        <HelpKeyword index="K" term="properties, DocumentPrivates" />
+        <HelpKeyword index="K" term="properties, DocumentProtected" />
+        <HelpKeyword index="K" term="properties, DocumentProtectedInternalAsProtected" />
+        <HelpKeyword index="K" term="properties, DocumentSealedProtected" />
+      </HelpKeywords>
+      <Topic id="7df16a60-f718-4b8f-bfa2-88c42906070c" visible="True" title="API Filter Property">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="API filter" />
+          <HelpKeyword index="K" term="exclude members" />
+          <HelpKeyword index="K" term="exclude tag" />
+          <HelpKeyword index="K" term="XML comment tags, exclude" />
+          <HelpKeyword index="K" term="properties, ApiFilter" />
+        </HelpKeywords>
+      </Topic>
+    </Topic>
+    <Topic id="f818e4d1-3457-4be6-a833-1b700f1e2f18" visible="True" title="Website Category Properties">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="properties, WebsiteSdkLinkType" />
+        <HelpKeyword index="K" term="property categories, Website" />
+      </HelpKeywords>
+    </Topic>
+  </Topic>
+  <Topic id="e49eea91-a9ef-4aa5-ad8f-16ebd61b798a" visible="True" title="Entity References Window">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="Entity References window" />
+    </HelpKeywords>
+  </Topic>
+  <Topic id="a76a88ff-d67f-4eb5-9622-90287c786c1b" visible="True" title="Text Editor Window">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="text editor" />
+    </HelpKeywords>
+  </Topic>
+  <Topic id="fcf8e4ac-5b32-4d5f-9bce-2e85c3468fdc" visible="True" title="Resource File Item Editor Window">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="resource item file editor" />
+    </HelpKeywords>
+  </Topic>
+  <Topic id="5292ce5c-fda1-4a77-9155-a11755ef1730" visible="True" title="Conceptual and Additional Content">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="additional content, general overview" />
+      <HelpKeyword index="K" term="conceptual content, general overview" />
+    </HelpKeywords>
+    <Topic id="3d4edd2d-7883-4508-b9d2-bd7b4d848b0d" visible="True" title="Conceptual Content">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="conceptual content, overview" />
+      </HelpKeywords>
+      <Topic id="54e3dc97-5125-441e-8e84-7f9303e95f26" visible="True" title="Content Layout File Editor">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="conceptual content, content layout file editor" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="4b8ab701-2321-4d24-a287-8848de086f68" visible="True" title="Topic Files">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="conceptual content, topic files" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="ed6870bb-772d-4596-9fc1-5638ae6d621b" visible="True" title="Token Files">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="conceptual content, token files" />
+        </HelpKeywords>
+      </Topic>
+    </Topic>
+    <Topic id="ba42b2c2-985d-46f1-ba4c-3d921edcafe3" visible="True" tocTitle="Content Placement Options">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="conceptual content, content placement options" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="4fd3b2b6-dfad-4513-983b-5e74d2342ff0" visible="True" title="Additional Content">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="additional content, overview" />
+      </HelpKeywords>
+      <Topic id="77d2d693-db84-4ae3-a84c-e33c71f92e9a" visible="True" title="Replacing Stock Content">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="additional content, replace stock content" />
+          <HelpKeyword index="K" term="additional content, stylesheet" />
+          <HelpKeyword index="K" term="change style" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="4bf6d6d9-ecc1-4e7c-92ae-e011752431f1" visible="True" title="Deprecated Features">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="additional content, deprecated features" />
+        </HelpKeywords>
+        <Topic id="d80219be-54ba-4c5f-8903-83ef29fbaa00" visible="True" title="Syntax Highlighting &lt;pre&gt; Tag Content">
+          <HelpKeywords>
+            <HelpKeyword index="K" term="additional content, syntax highlighting code" />
+          </HelpKeywords>
+        </Topic>
+        <Topic id="1863a4d7-61b6-4dde-862d-a358d0cfbd54" visible="True" title="Importing and Colorizing Code from Source Files">
+          <HelpKeywords>
+            <HelpKeyword index="K" term="additional content, import code blocks" />
+          </HelpKeywords>
+        </Topic>
+        <Topic id="8ea650b6-ab50-4288-a930-baf5b58a4cb0" visible="True" title="Project Properties and Shared Content">
+          <HelpKeywords>
+            <HelpKeyword index="K" term="additional content, resolve project property values" />
+            <HelpKeyword index="K" term="additional content, resolve shared content" />
+          </HelpKeywords>
+        </Topic>
+        <Topic id="3e3772fb-f8d2-49cf-8199-5f61f2d57ce8" visible="True" title="Linking to Namespace Content">
+          <HelpKeywords>
+            <HelpKeyword index="K" term="additional content, &lt;see&gt; tag" />
+            <HelpKeyword index="K" term="additional content, cref attribute" />
+            <HelpKeyword index="K" term="additional content, resolve reference links" />
+            <HelpKeyword index="K" term="XML comment tags, see (in additional content)" />
+          </HelpKeywords>
+        </Topic>
+        <Topic id="54de66c4-a57a-4bfc-9eb6-bd9e6fb56589" visible="True" title="Defining the Table of Contents Layout">
+          <HelpKeywords>
+            <HelpKeyword index="K" term="additional content, table of contents layout (folder based)" />
+          </HelpKeywords>
+        </Topic>
+        <Topic id="3dd5fe3b-1bc3-42e5-8900-56165e3f9aed" visible="True" title="Site Map File Editor">
+          <HelpKeywords>
+            <HelpKeyword index="K" term="additional content, site map file" />
+            <HelpKeyword index="K" term="additional content, table of contents layout (site map based)" />
+          </HelpKeywords>
+        </Topic>
+        <Topic id="a31e4dd4-7466-4c12-b734-60bd50fc91af" visible="True" title="Topic File Transformation">
+          <HelpKeywords>
+            <HelpKeyword index="K" term="additional content, presentation style look and feel" />
+            <HelpKeyword index="K" term="additional content, XSL transformation" />
+          </HelpKeywords>
+        </Topic>
+      </Topic>
+    </Topic>
+  </Topic>
+  <Topic id="e031b14e-42f0-47e1-af4c-9fed2b88cbc7" visible="True" title="Build Process Plug-Ins">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="plug-ins, configuring" />
+      <HelpKeyword index="K" term="plug-ins, overview" />
+    </HelpKeywords>
+    <Topic id="2d483967-30cb-421c-81ff-fdba705e1e6b" visible="True" title="Additional Content Only Plug-In">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="plug-ins, additional content only plug-in" />
+        <HelpKeyword index="K" term="AdditionalContentOnlyPlugIn, configuration options" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="15b6b7be-3778-4487-b524-d558d02e6460" visible="True" title="Additional Reference Links Plug-In">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="plug-ins, additional reference links plug-in" />
+        <HelpKeyword index="K" term="AdditionalReferenceLinksPlugIn, configuration options" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="99773472-ff05-4eba-8194-b36a0536280e" visible="True" title="AjaxDoc Builder Plug-In">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="AjaxDocPlugIn, configuration options" />
+        <HelpKeyword index="K" term="plug-ins, AjaxDoc plug-in" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="f5051d32-b973-4fe1-9ffe-e30531007691" visible="True" title="Assembly Binding Redirection Plug-In">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="BindingRedirectResolverPlugIn, configuration options" />
+        <HelpKeyword index="K" term="plug-ins, assembly binding redirection plug-in" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="161537d9-6f89-42ef-9c51-3a15ef94df65" visible="True" title="Bibliography Support Plug-In">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="BibliographySupportPlugIn, configuration options" />
+        <HelpKeyword index="K" term="plug-ins, bibliography support plug-in" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="d0ac3f31-bc25-4c5a-b2e6-d64a74fdb67c" visible="True" title="Completion Notification Plug-In">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="CompletionNotificationPlugIn, configuration options" />
+        <HelpKeyword index="K" term="plug-ins, completion notification plug-in" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="31696f39-8f4e-4c4d-ab08-41a40793df03" visible="True" title="DBCS Fix for CHM Builds Plug-In">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="plug-ins, DBCS fix for CHM builds plug-in" />
+        <HelpKeyword index="K" term="DbcsFixPlugIn, configuration options" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="aa7bcd07-1a86-42dc-9f1d-49bd4afeb5d2" visible="True" title="Hierarchical Table of Contents Plug-In">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="plug-ins, hierarchical table of contents plug-in" />
+        <HelpKeyword index="K" term="HierarchicalTocPlugIn, configuration options" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="796d6bbe-5130-4c87-8790-5cceb66219c7" visible="True" title="Output Deployment Plug-In">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="plug-ins, output deployment plug-in" />
+        <HelpKeyword index="K" term="DeploymentPlugIn, configuration options" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="93c452fd-71d4-470e-8d27-ec3d979679a4" visible="True" title="Script# Reflection File Fixer Plug-In">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="plug-ins, Script# reflection file fixer plug-in" />
+        <HelpKeyword index="K" term="ScriptSharpPlugIn, configuration options" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="d0e91b66-135e-446b-9239-c02fcafabd09" visible="True" title="Table of Contents Exclusion Plug-In">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="plug-ins, table of contents exclusion plug-in" />
+        <HelpKeyword index="K" term="TocExcludePlugIn, configuration options" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="6c03afba-18d0-4270-b521-c2015c4d97b3" visible="True" title="Version Builder Plug-In">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="plug-ins, version builder plug-in" />
+        <HelpKeyword index="K" term="VersionBuilderPlugIn, configuration options" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="cd68ef02-3493-4af6-96de-1957b0aaf858" visible="True" title="XPath Reflection File Filter Plug-In">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="plug-ins, XPath reflection file filter" />
+        <HelpKeyword index="K" term="XPathReflectionFileFilterPlugIn, configuration options" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="a14e026e-642f-4ce6-9506-341e57cc3d1f" visible="True" title="Creating Build Process Plug-Ins">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="plug-ins, creating a plug-in" />
+        <HelpKeyword index="K" term="plug-ins, execution notes" />
+        <HelpKeyword index="K" term="plug-ins, plug-in documentation" />
+        <HelpKeyword index="K" term="plug-ins, skeleton class" />
+      </HelpKeywords>
+    </Topic>
+  </Topic>
+  <Topic id="8dcbb69b-7a1a-4049-8e6b-2bf344efbbc9" visible="True" title="Custom Build Components">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="build components, configuring" />
+      <HelpKeyword index="K" term="build components, overview" />
+      <HelpKeyword index="K" term="build components, syntax filter" />
+      <HelpKeyword index="K" term="syntax filter generator" />
+    </HelpKeywords>
+    <Topic id="3a1c4bf1-8ecf-4ab3-8010-277bed8d3819" visible="True" title="Cached Build Components">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="build components, cached build components" />
+        <HelpKeyword index="K" term="CachedCopyFromIndexComponent, configuration options" />
+        <HelpKeyword index="K" term="CachedResolveReferenceLinksComponent, configuration options" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="7f03ba39-09f8-4320-bdbd-ed31a3bd885f" visible="True" title="Code Block Component">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="build components, code block component" />
+        <HelpKeyword index="K" term="CodeBlockComponent, configuration options" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="85c08740-1190-471c-8fea-360a4a8e4612" visible="True" title="Help Attributes Component">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="build components, help attributes component" />
+        <HelpKeyword index="K" term="MSHelpAttrComponent, configuration options" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="5d546511-6aec-455a-ba09-9daffb124c6d" visible="True" title="IntelliSense Component">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="build components, IntelliSense component" />
+        <HelpKeyword index="K" term="IntelliSenseComponent, configuration options" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="f47527c7-67ce-487d-a2a0-91d1cb08e15e" visible="True" title="JavaScript Declaration Syntax Generator">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="build components, JavaScript declaration syntax generator" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="16dc54c2-84bf-4bab-a875-0b1d49c9b1b8" visible="True" title="Microsoft Help Viewer Component">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="build components, Microsoft Help Viewer Component" />
+        <HelpKeyword index="K" term="MSHCComponent, configuration options" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="92a6e678-48fb-4e6c-a7e5-34f264b01212" visible="True" title="Multi-Format Output Component">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="build components, multi-format output component" />
+        <HelpKeyword index="K" term="MultiFormatOutputComponent, configuration options" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="f502c07b-8110-477d-8953-73255296206b" visible="True" title="Post-Transform Component">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="build components, post-transform component" />
+        <HelpKeyword index="K" term="PostTransformComponent, configuration options" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="da0332e0-a7d3-4f9d-a9e4-5027502ea9ea" visible="True" title="Resolve Conceptual Links Component">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="build components, version information component" />
+        <HelpKeyword index="K" term="VersionInfoComponent, configuration options" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="7e6e0e96-36cd-4541-9477-2657b98661f5" visible="True" title="Show Missing Documentation Component">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="build components, show missing documentation component" />
+        <HelpKeyword index="K" term="ShowMissingComponent, configuration options" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="58ce80ee-eb4b-4027-8871-7e83fad8e476" visible="True" title="Version Information Component">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="build components, version information component" />
+        <HelpKeyword index="K" term="VersionInfoComponent, configuration options" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="e6d18448-2459-46f1-bbdc-a7db415f2bda" visible="True" title="Creating a Component Configuration File">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="build components, add third-party build component" />
+        <HelpKeyword index="K" term="build components, component configuration file" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="5e80d139-811c-48ed-9b52-dcd8a3f5aef3" visible="True" title="Creating a Syntax Filter Generator Definition File">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="build components, add third-party syntax filter generator" />
+        <HelpKeyword index="K" term="build components, syntax filter generator" />
+      </HelpKeywords>
+    </Topic>
+  </Topic>
+  <Topic id="46d1f76e-a97e-4ee6-971c-fdeab725ff09" visible="True" title="Errors and Warnings">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="error list" />
+      <HelpKeyword index="K" term="warning list" />
+    </HelpKeywords>
+    <Topic id="b8d73995-2acc-446b-92b7-1ac8884a1424" visible="True" noFile="true" title="Build Engine">
+      <Topic id="13bf1e14-bf8f-478b-8fe6-932d18922a85" visible="True" title="BE0001: Unable to determine presentation style from folder '[folder]'">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="warnings, BE0001" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="726e79fd-260d-4f9f-96c7-cc62d3c210db" visible="True" title="BE0002: Shared builder content for the '[langId]' language could not be found">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="warnings, BE0002" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="7f4054ff-9490-452e-b842-5b783f31a8af" visible="True" title="BE0003: Sandcastle shared content for the '[langId]' language could not be found">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="warnings, BE0003" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="06ad726a-d35b-419c-bff6-0157f32d659b" visible="True" title="BE0004: MRefBuilder has a version of '[installedVersion]' but version '[expectedVersion]' was expected">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BE0004" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="ed7661b1-f675-4a8d-a0a2-6eed59cd3720" visible="True" title="BE0005: File '[file]' does not contain a 'doc/members' node">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="warnings, BE0005" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="c7b03c89-be8f-42d8-8a8e-a16034e4c9e0" visible="True" title="BE0006: Unable to location any documentation sources for '[source]'">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="warnings, BE0006" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="74ced26b-73de-42f7-aa8e-b6a6d8c8aa40" visible="True" title="BE0007: A project with a higher framework version was found">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="warnings, BE0007" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="89a0728c-fe7c-49b1-9b6b-14ac952630dc" visible="True" title="BE0008: Namespace '[namespace]' excluded via namespace comments conflicted with API filter">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="warnings, BE0008" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="4fc20fd3-6ed3-49ed-ac97-c99b08c72f38" visible="True" title="BE0009: '[memberId]' is marked with &lt;exclude /&gt; but conflicted with the API filter">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="warnings, BE0009" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="29685951-0496-4717-bf33-a14bf065a8b8" visible="True" title="BE0010: Image file '[imageFile]' already exists">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="warnings, BE0010" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="4a961b0a-7558-472a-9ec1-3a0b9f0f6410" visible="True" title="BE0011: Multiple topic transformations found.  Using '[file]'">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="warnings, BE0011" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="44bd5bf4-6cf0-41ca-b12c-41c34076c298" visible="True" title="BE0012: Error generating namespace summaries (Namespace = [namespace]): [error]">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BE0012" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="7b30aec2-4942-4805-a072-c22db33ab2b6" visible="True" title="BE0013: Possible invalid path '[path]'">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BE0013" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="757d284c-5c04-4bf1-93c5-f00961b92132" visible="True" title="BE0014: Unable to load source file '[file]'">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BE0014" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="40f7d484-1b99-4bf9-a905-9a67b4801568" visible="True" title="BE0015: Unable to locate start of region '[region]' in source file '[file]'">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BE0015" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="ced6d9d6-33df-4b14-abfd-4cc18b9b0ea8" visible="True" title="BE0016: Unable to extract region '[region]' in source file '[file]' (missing #endregion?)">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BE0016" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="1dcdb33a-4227-4aaa-833f-1354e683180a" visible="True" title="BE0017: Unexpected error using '[transformFile]' to transform additional content file">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BE0017" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="c03a9cf5-553c-4a93-9da2-cb70605232d8" visible="True" title="BE0018: Unable to transform template text '[value]': [error]">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BE0018" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="6976940c-6e75-4b8f-a812-57265911b51d" visible="True" title="BE0019: Unable to transform template '[file]': [error]">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BE0019" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="e4c67ec0-236c-449f-8def-ce0ae480e2eb" visible="True" title="BE0020: Unknown field tag: '[tagName]'">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BE0020" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="4fd3af24-e11f-409f-9725-59f4bdedab51" visible="True" title="BE0021: The project contains a reference to a custom build component '[name]' that could not be found">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BE0021" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="db8785bc-617c-4b3f-ae1e-2f886b0e3b88" visible="True" title="BE0022: The project's ApiTocParent property value '[ID]' must be associated with a topic in your project">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BE0022" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="56534d41-8d1f-41bd-a3a1-ed2787ab3b89" visible="True" title="BE0023: The project contains a reference to a custom build component '[name]'...">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BE0023" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="fec21ccb-1873-4bad-a04e-7d6c01ab70a7" visible="True" title="BE0024: Unable to add dependent configuration: [name]">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BE0024" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="155a7ef8-6cce-420a-b2ff-4d6217f71075" visible="True" title="BE0025: Unable to remove prior build output: [error]">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BE0025" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="e91ccee4-4e65-4e41-9d15-88cc327b370b" visible="True" title="BE0026: Unable to determine default topic in '[tocFile]'.">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BE0026" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="d78a99d7-248c-4711-8967-096b8e936cb4" visible="True" title="BE0027: Error modifying help topic filenames: [error]">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BE0027" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="25036a28-bd82-4032-8108-ac614423a2cf" visible="True" title="BE0028: [Plug-in loading error]">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BE0028" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="72ef66af-a2ea-4947-a5d3-b64ec7a0b943" visible="True" title="BE0029: Unexpected error while executing plug-in '[plugInName]': [error]">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BE0029" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="bbbf3033-0d53-4d23-98cc-7b4f0c5f960b" visible="True" title="BE0030: The OutputPath and WorkingPath properties cannot be set to the same path">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BE0030" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="8e2f5ce6-0815-4635-949d-4b314926bb3d" visible="True" title="BE0031: For MS Help 2 builds, the HtmlHelpName property cannot contain spaces">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BE0031" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="bc38b398-4cca-4972-b4b5-966def8428b4" visible="True" title="BE0032: Reflection data files do not exist yet">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BE0032" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="0d0868d8-6ee2-472e-b627-bc5890017190" visible="True" title="BE0033: No APIs found to document">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BE0033" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="3e506dda-8d9e-4e87-a265-cd213b97d815" visible="True" title="BE0034: The '[propName]' property resolved to '[folder]' which is a reserved folder name">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BE0034" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="378d6894-02b8-4ee9-9c50-58f278490ed8" visible="True" title="BE0035: Could not find the path to the Microsoft Sandcastle documentation compiler tools">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BE0035" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="593259a3-ea02-4023-b318-0d33362f1e2c" visible="True" title="BE0036: Your version of the Microsoft Sandcastle documentation compiler tools is out of date">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BE0036" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="e2af12c6-af9e-4b59-9fe1-fc3c413022ae" visible="True" title="BE0037: Could not find the path the the HTML Help 1 compiler">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BE0037" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="b9604d2f-3c75-4b84-9164-82e2dbaa75e5" visible="True" title="BE0038: Could not find the path the the MS Help 2 compiler">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BE0038" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="2d72ecc9-b388-44f4-a76a-5786ca708b4f" visible="True" title="BE0039: The project does not have any documentation sources defined">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BE0039" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="24033cf4-69c1-4fc9-baac-103699ac90f8" visible="True" title="BE0040: Project assembly does not exist: [assembly]">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BE0040" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="f5ebb418-9a07-4854-89e1-13fbf8de4630" visible="True" title="BE0041: Project XML comments file does not exist: [commentsFile]">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BE0041" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="9a54f7c2-2ca6-425e-89fb-c939ff50224f" visible="True" title="BE0042: You must specify at least one documentation source in the form...">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BE0042" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="50c2326c-5f1d-4615-9ee6-ad1d4952eded" visible="True" title="BE0043: Unexpected error detected in the last build step">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BE0043" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="4acd8d52-bdf9-4794-a880-da34e46d743a" visible="True" title="BE0044: Error applying Visibility properties: [error]">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BE0044" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="2cf8d4a0-14c8-46db-a18d-f56eda1e4f4f" visible="True" title="BE0045: Error removing attributes nodes: [error]">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BE0045" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="5e951c2b-d012-46e0-b80e-17ebd741410b" visible="True" title="BE0046: Error removing EII nodes: [error]">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BE0046" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="f94a8e73-784a-4a3c-9688-28202a4462c3" visible="True" title="BE0047: Error removing inherited members: [error]">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BE0047" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="ba3f61ed-0b01-4986-9442-6488b960d83f" visible="True" title="BE0048: Error removing [memberType]: [error]">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BE0048" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="97715366-3002-4735-8004-29205cd522b9" visible="True" title="BE0049: Error changed protected internal to protected: [error]">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BE0049" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="62fe32a8-7c35-4fda-835f-1b2cf84e2b5f" visible="True" title="BE0050: Error removing protected members from sealed classes: [error]">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BE0050" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="34b2d026-649e-4822-9e48-c1d095eeec66" visible="True" title="BE0051: The specified project file does not exist: [projectFile]">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BE0051" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="b04316ef-8b8f-4374-acb5-0880e44daea4" visible="True" title="BE0052: One or more token files could not be found">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BE0052" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="b0632326-5af8-4ab3-9d11-a80191978477" visible="True" title="BE0053: One or more code snippets files could not be found">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BE0053" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="1aad4b53-77df-4a0e-b6a9-676c2f753953" visible="True" title="BE0054: The conceptual topic '[title]' (ID: [id]) does not match any file in the project">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BE0054" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="802873dd-138e-4b35-9298-730c188cb991" visible="True" title="BE0055: The conceptual topic '[title]' (ID: [id]) must either specify a topic file or it must contains sub-topics">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BE0055" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="7ebfa7b8-e0ba-453c-a236-094b4ec076c4" visible="True" title="BE0056: The conceptual content file '[file]' with ID '[id]' does not exist">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BE0056" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="f645ebaa-e368-4cc4-bca8-8deb9117e25e" visible="True" title="BE0057: The conceptual content file '[file]' with ID '[id]' is not valid: [error]">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BE0057" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="a68cc0cf-11cf-41dd-acd3-6955f5209e41" visible="True" title="BE0058: Two conceptual content files have the same ID ({0})">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BE0058" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="d7c089fd-1dfc-47a2-8d1f-874288e0655d" visible="True" title="BE0059: LCID '[id]' not found in configuration file">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="warnings, BE0059" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="e076c319-ff84-40dc-bb00-ff4c72718215" visible="True" title="BE0060: The [itemType] '[item]' contains a comma or '.h' which may cause the Help 1 compiler to fail">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, HHC3002" />
+          <HelpKeyword index="K" term="errors, HHC3004" />
+          <HelpKeyword index="K" term="warnings, BE0060" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="fe808500-7b87-4f68-ae13-c3e68cae8b13" visible="True" title="BE0061: File '[file]' could not be loaded and will not be used as an XML comments file">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="warnings, BE0061" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="270ef6fd-7bec-4db0-875c-5d857294e9c6" visible="True" title="BE0062: No XML comments found.  The help file will not contain any member comments">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="warnings, BE0062" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="ff831dbb-fa08-414e-be84-3982d9df1970" visible="True" title="BE0063: '[file]' matches a previously copied comments filename">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="warnings, BE0063" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="082d9890-6de5-43c9-ae5e-2e1533b82f6b" visible="True" title="BE0064: BUILD CANCELLED BY USER">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BE0064" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="cdaaca46-b815-4763-9dac-c4a57cdb2a58" visible="True" title="BE0065: BUILD FAILED: [error]">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BE0065" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="e4c00c10-9368-4790-b1c4-4a47adeb2af9" visible="True" title="BE0066: The HelpFileVersion property value '[value]' is not in the correct format">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BE0066" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="355bb237-acf6-4df8-bfc6-d89736837abb" visible="True" title="BE0067: Unable to obtain assembly name from project file">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BE0067" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="e0b6a8f5-27d3-48ce-b37b-0c328735b106" visible="True" title="BE0068: Incompatible Visual Studio project file format">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BE0068" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="a01d4e99-a9d8-487e-af30-50f04696036a" visible="True" title="BE0069: The project's RootContentContainer property value '[ID]' must be associated with a topic in your project">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BE0069" />
+        </HelpKeywords>
+      </Topic>
+    </Topic>
+    <Topic id="5d721885-2307-4df0-a0d5-1bd332ccfeae" visible="True" noFile="true" title="Generate Inherited Documentation">
+      <Topic id="ceaee6cc-6393-40c6-bca4-869b0553f2b3" visible="True" title="GID0001: Unexpected error while generating inherited documentation">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, GID0001" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="ac7c5fc5-134a-495c-a743-f4f577ffa31a" visible="True" title="GID0002: No comments found for cref '[cref]' on member '[id]">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="warnings, GID0002" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="f6fd25df-5d9c-449e-a63a-32c05ee731d7" visible="True" title="GID0003: Unable to locate API ID '[id]'">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="warnings, GID0003" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="c472d97b-e5b9-4e60-8746-dc1ec660167b" visible="True" title="GID0004: No comments found for member '[id]'">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="warnings, GID0004" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="82ead344-5447-484d-acfe-e778b7ac12cf" visible="True" title="GID0005: No comments found for cref '[cref]'">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="warnings, GID0005" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="93aecba9-ef0e-40d8-a82e-34399bee6ca3" visible="True" title="GID0006: No comments found for member '[memberId]'">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="warnings, GID0006" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="6038c08c-de58-4579-a018-bdbbce3134f5" visible="True" title="GID0007: Ignoring non-XML comments file">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="warnings, GID0100" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="efa6ca2b-c052-4555-90d8-a9cc9093f793" visible="True" title="GID0008: Entries for the key '[id]' occur in both '[file1]' and '[file2]'">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="warnings, GID0101" />
+        </HelpKeywords>
+      </Topic>
+    </Topic>
+    <Topic id="bfc1ad84-8316-4e4f-abb7-ada9d79eff16" visible="True" noFile="true" title="HTML Extract">
+      <Topic id="c3dbcf13-6585-4b45-ae2f-6bd8acd8b62b" visible="True" title="SHE0001: LCID '[id]' not found in configuration file">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="warnings, SHE0001" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="0f17b9b9-8e80-41d7-85cc-d9a97ff529ea" visible="True" title="SHE0002: Unexpected error: [error]">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, SHE0002" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="7cf02d57-8cb3-4f29-ab90-236ae57f9c23" visible="True" title="SHE0003: Unexpected error applying command line option">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="error, SHE0003" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="cc3ac64c-a882-47ff-b104-bf497f56b42d" visible="True" title="SHE0004: The key '[key]' used for '[file]' is already in use">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="warnings, SHE0004" />
+        </HelpKeywords>
+      </Topic>
+    </Topic>
+    <Topic id="5d8bf748-a38f-422c-bae7-9ae5f210347c" visible="True" noFile="true" title="MSBuild Tasks">
+      <Topic id="e4b1c387-d296-42ed-9458-7c6b460b5c35" visible="True" title="B1X0001: A help compiler path must be specified">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, B1X0001" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="c47b9dfb-e27c-4af2-b9e9-68258a8eca01" visible="True" title="B1X0002: A help project file must be specified and it must exist">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, B1X0002" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="93d73e6e-2b07-4bc4-9535-c706dbf8540a" visible="True" title="B2X0001: A help compiler path must be specified">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, B2X0001" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="a707806a-1173-4a0e-a21d-7b2d5a42f7fe" visible="True" title="B2X0002: An HTML help base name must be specified">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, B2X0002" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="c1f743fb-2040-4d5e-bf9f-5a4985481cc8" visible="True" title="BAT0001: A configuration file must be specified and it must exist">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BAT0001" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="bc626934-b59f-4557-9db7-9bedcec39bc0" visible="True" title="BAT0002: A manifest file must be specified and it must exist">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BAT0002" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="842594b8-d1ba-4baa-9082-de991e376d4f" visible="True" title="BHT0001: Unable to get executing project">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="warnings, BHT0001" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="e8c8417f-ac01-450c-8aef-984a69ecbb93" visible="True" title="BHT0002: Unable to build project '[projectFile]': [error]">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BHT0002" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="20cf4894-e127-46f7-a0f3-6da7252f3652" visible="True" title="BHT0003: The specified project file does not exist: [projectFile]">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BHT0003" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="42262e8b-6aa4-4ca0-85cb-a395cabb96c7" visible="True" title="BHT0004: An older MSBuild version is being used">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BHT0004" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="13b7b97f-6a6d-442a-aabf-b00a026b54c0" visible="True" title="CT0001: Unable to clean output folder.  Reason: [reason]">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, CT0001" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="bddb17b5-2733-4b82-9b0f-7e9cef5e8c56" visible="True" title="MBT0001: At least one assembly (.dll or .exe) is required for MRefBuilder to parse">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, MBT0001" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="3eedd8d1-9172-49c3-9f54-f75d21f251d9" visible="True" title="MBT0002: Unable to generate response file.  Reason: [reason]">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, MBT0002" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="3c2c627c-8cbe-4f41-82f4-e383efe5c7cb" visible="True" title="XTT0001: At least one XSL transformation is required">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, XTT0001" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="bc743362-c234-4684-973e-0710543314dc" visible="True" title="XTT0002: An input file must be specified and it must exist">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, XTT0002" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="a763207e-4afd-400d-afb5-fa7c632f5144" visible="True" title="XTT0003: An output filename must be specified">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, XTT0003" />
+        </HelpKeywords>
+      </Topic>
+    </Topic>
+    <Topic id="5e17c24b-0626-4864-96ee-372d226af346" visible="True" noFile="true" title="Plug-Ins">
+      <Topic id="26e07376-2016-4e02-8ac1-7cc1dd971463" visible="True" title="ACP0001: The Additional Content Only plug-in requires...">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, ACP001" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="926b78d3-1064-41db-a4c0-09208ea7f104" visible="True" title="ARL0001: The Additional Reference Links plug-in has not been configured yet">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, ARL0001" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="e10bf048-ccc0-4c30-81c6-7273ecdae052" visible="True" title="ARL0002: At least one target is required for the Additional Reference Links plug-in">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, ARL0002" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="7eb5290e-8d18-4dc7-983d-a01e665063bd" visible="True" title="ARL0003: Unable to build additional target project: [projectFile]">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, ARL0003" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="a6039b1c-e54a-49a6-9527-68a1944d4b75" visible="True" title="ARL0004: Unable to locate Reflection Index Data component in [configFile]">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, ARL0004" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="ce4fdb97-f919-4a01-83cd-7df21f9c20bc" visible="True" title="ARL0005: Unable to locate Resolve Reference Links component in [configFile]">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, ARL0005" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="77616f29-e121-4175-8874-15e682097c19" visible="True" title="ARL0006: Fatal error, unable to compile project '[projectFile]': [error]">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, ARL0006" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="03e02231-a326-4c6b-9d59-8b005dcd959c" visible="True" title="ARL0007: The help file project cannot be blank">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, ARL0007" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="3e4812bb-7bf5-4752-9eaf-5e982312d1f7" visible="True" title="ADP0001: Placeholder">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, ADP0001" />
+        </HelpKeywords>
+      </Topic>
+    </Topic>
+    <Topic id="580ad347-ae7f-4fa2-a064-ec7115e0663e" visible="True" noFile="true" title="Project File">
+      <Topic id="f6258ea1-df3f-4397-81e4-3e0a39abcdc2" visible="True" title="PRJ0001: Invalid or missing SchemaVersion">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, PRJ0001" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="d813065b-c867-44a8-9315-56fc951c374e" visible="True" title="PRJ0002: The selected file is for a more recent version">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, PRJ0002" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="2c0b4d20-b8a3-40ce-b3ac-fff52918b454" visible="True" title="PRJ0003: Error reading project from '[file]': [reason]">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, PRJ0003" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="c5acba93-0ecf-449c-b968-df0572f75203" visible="True" title="PRJ0004: An attempt was made to set a read-only or ignored property">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, PRJ0004" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="1d095fa4-c79c-4728-988d-48ad040f8c1c" visible="True" title="PRJ0005: Unable to parse value '[value]' for property '[property]'">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, PRJ0005" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="b490911e-d7ce-42ee-920a-1615f6bc3b19" visible="True" title="PRJ0006: Error saving project to '[file]': [reason]">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, PRJ0006" />
+        </HelpKeywords>
+      </Topic>
+    </Topic>
+    <Topic id="11957043-0f49-40fc-9ee8-6c9ed97f2fa8" visible="True" noFile="true" title="Project File Converters">
+      <Topic id="6c55e03c-0b22-4913-ab2a-f0148309b2b5" visible="True" title="CVT0001: Unable to parse value '[value]' for property '[name]'">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, CVT0001" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="4854d16a-93bf-4701-997d-049ce91f82cf" visible="True" title="CVT0002: An attempt was made to set an unknown or read-only property">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, CVT0002" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="07498c61-02a4-4f04-ac76-a89cafedbfec" visible="True" title="CVT0003: Invalid or missing schema version">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, CVT0003" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="6417667f-ea10-421f-839c-647561ed207b" visible="True" title="CVT0004: Unrecognized schema version">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, CVT0004" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="860e4647-cb23-448f-93cb-da45f52c3ec7" visible="True" title="CVT0005: Error reading project from '[file]'">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, CVT0005" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="e50090cc-d866-4428-9b44-d7d145df5eb7" visible="True" title="CVT0006: Error converting content layout file">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, CVT0006" />
+        </HelpKeywords>
+      </Topic>
+    </Topic>
+  </Topic>
+  <Topic id="e2ed6222-c3ee-4c6e-b0f9-fa3c86bc3e2c" visible="True" title="Localizing Language Resource Files">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="customize, language resource files" />
+      <HelpKeyword index="K" term="language" />
+    </HelpKeywords>
+  </Topic>
+  <Topic id="c7378077-fc10-45f9-b52a-c57dda96fe8d" visible="True" title="Customizing the Header and Footer Text">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="customize, header and footer text" />
+    </HelpKeywords>
+  </Topic>
+  <Topic id="69d998a7-1af5-4bf5-889b-59cd00b64000" visible="True" title="Customizing the Build Process">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="customize, build scripts" />
+      <HelpKeyword index="K" term="customize, build tags" />
+    </HelpKeywords>
+  </Topic>
+  <Topic id="1aea789d-b226-4b39-b534-4c97c256fac8" visible="True" title="Frequently Asked Questions (FAQ)" linkText="FAQ">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="errors, HHC3002" />
+      <HelpKeyword index="K" term="errors, HHC3004" />
+      <HelpKeyword index="K" term="errors, HHC5007" />
+      <HelpKeyword index="K" term="errors, HHC6000" />
+      <HelpKeyword index="K" term="errors, HHC6003" />
+      <HelpKeyword index="K" term="FAQ" />
+      <HelpKeyword index="K" term="Frequently asked questions" />
+    </HelpKeywords>
+  </Topic>
+  <Topic id="c18d6cb6-e4e4-4944-84ee-f867aa6cfb0d" visible="True" title="Links to Resources">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="build components, links to third-party components" />
+      <HelpKeyword index="K" term="build components, article on creating components" />
+      <HelpKeyword index="K" term="plug-ins, links to third-party plug-ins" />
+      <HelpKeyword index="K" term="resources" />
+      <HelpKeyword index="K" term="support, articles" />
+      <HelpKeyword index="K" term="support, links to resources" />
+      <HelpKeyword index="K" term="support, tools" />
+      <HelpKeyword index="K" term="support, third-party build components" />
+      <HelpKeyword index="K" term="support, third-party plug-ins" />
+    </HelpKeywords>
+  </Topic>
+  <Topic id="717ca8cf-1a2f-4e63-a8a9-f836825f3509" visible="True" title="Making a Donation">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="donate" />
+      <HelpKeyword index="K" term="support, donate" />
+    </HelpKeywords>
+  </Topic>
+  <Topic id="078cc1c7-7995-431e-bf9c-8813becbe8df" visible="True" title="Version History">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="History" />
+      <HelpKeyword index="K" term="Version History" />
+    </HelpKeywords>
+    <Topic id="ef1dba5d-bb3b-4d27-9ccf-6f1ec8d1e793" visible="True" title="Version 1.9.1.0">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 1.9.1.0" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="2bba4e09-e9bd-4ef4-9bf4-800af246e97d" visible="True" title="Version 1.8.0.3">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 1.8.0.3" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="9f1a5c32-7c10-47e1-bbea-319ee0866e3d" visible="True" title="Version 1.8.0.2 (Beta 2)">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 1.8.0.2" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="95c85ec6-9f23-426a-b0ad-6b10a0453eaf" visible="True" title="Version 1.8.0.1 (Beta 1)">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 1.8.0.1" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="5a484e94-6940-4c97-940c-3f46fb8736d2" visible="True" title="Version 1.8.0.0 (Alpha)">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 1.8.0.0" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="6110ac54-04d8-4624-8a2b-2a58af63c20d" visible="True" title="Versions 1.0.0.0 through 1.7.0.0">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="prior versions" />
+      </HelpKeywords>
+      <Topic id="a44fe561-efb9-40ac-84eb-b1a00a4a9596" visible="True" title="Version 1.7.0.0">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="versions, 1.7.0.0" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="90e889f7-194b-411e-a376-8e0d91b1f6fd" visible="True" title="Version 1.6.0.4">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="versions, 1.6.0.4" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="540d2250-8823-4028-b147-98192837002b" visible="True" title="Version 1.6.0.2">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="versions, 1.6.0.2" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="f8a3ab8c-1ccb-4108-8953-c613af46ee12" visible="True" title="Version 1.6.0.1">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="versions, 1.6.0.1" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="a96e26f7-7a2c-475f-9733-4936609f5791" visible="True" title="Version 1.6.0.0">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="versions, 1.6.0.0" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="86677ca7-1132-4718-8bf1-c9bd03377089" visible="True" title="Version 1.5.0.1">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="versions, 1.5.0.1" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="658e9623-a4a1-442c-8e50-74cec804784e" visible="True" title="Version 1.5.0.0">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="versions, 1.5.0.0" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="c7cc3fb1-60cf-4cfe-9728-eb571524b4c7" visible="True" title="Version 1.4.0.1">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="versions, 1.4.0.1" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="b3d3c9d4-34ff-4f48-b6e5-98b8095eb347" visible="True" title="Version 1.4.0.0">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="versions, 1.4.0.0" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="b6429b69-6364-4efe-9306-9b647e9e26b0" visible="True" title="Version 1.3.3.1">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="versions, 1.3.3.1" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="e95d1fff-4a68-4e78-b854-270993088f66" visible="True" title="Version 1.3.2.0">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="versions, 1.3.2.0" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="bd8fb1cd-b913-4cb4-afb4-8cf2260cf634" visible="True" title="Version 1.3.1.1">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="versions, 1.3.1.1" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="c3177693-041c-455e-9c13-08d473006f14" visible="True" title="Version 1.3.1.0">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="versions, 1.3.1.0" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="b63812cf-9caa-4e79-9c68-661d0ef9f660" visible="True" title="Version 1.3.0.0">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="versions, 1.3.0.0" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="7421d29a-7df1-4e59-b6b6-ad24904cca17" visible="True" title="Version 1.2.0.0">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="versions, 1.2.0.0" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="21cf9c3e-ae15-44e0-a68e-7afe730097c3" visible="True" title="Version 1.1.0.0">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="versions, 1.1.0.0" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="b4dafbd0-e5fa-449e-a16d-e832e68d7bc6" visible="True" title="Version 1.0.0.1">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="versions, 1.0.0.1" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="936bc328-bcbf-4e5b-91fd-8d81bdf9e928" visible="True" title="Version 1.0.0.0">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="versions, 1.0.0.0" />
+        </HelpKeywords>
+      </Topic>
+    </Topic>
+  </Topic>
+  <Topic id="66bf98c7-7179-4940-8767-7085052f2f53" visible="True">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="Glossary" />
+    </HelpKeywords>
+  </Topic>
+</Topics>

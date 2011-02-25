@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="d0e91b66-135e-446b-9239-c02fcafabd09" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+      <para>This plug-in can be used to exclude API members from the table of
+contents via the <codeInline>&lt;tocexclude /&gt;</codeInline> XML comment tag.
+This can simplify the table of contents to show only selected API members.  The
+members that are excluded from the table of contents are accessible from the
+namespace and class members list pages as well as any other reference links
+created via <codeInline>&lt;see&gt;</codeInline> and
+<codeInline>&lt;seealso&gt;</codeInline> tags, etc.</para>
+
+	<para>This plug-in contains no configuration options.  It simply searches
+the XML comments files for members that contain a
+<codeInline>&lt;tocexclude/&gt;</codeInline> tag and removes those members from
+the table of contents.</para>
+
+<para>If needed, the <codeInline>&lt;tocexclude /&gt;</codeInline> tag can be
+placed in a namespace summary in the project settings to remove an entire
+namespace from the table of contents but still leave it's content accessible
+via other reference links.</para>
+
+    </introduction>
+
+    <relatedTopics>
+    <link xlink:href="e031b14e-42f0-47e1-af4c-9fed2b88cbc7" />
+    </relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

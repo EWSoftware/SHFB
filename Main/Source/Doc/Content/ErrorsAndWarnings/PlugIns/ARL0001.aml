@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="926b78d3-1064-41db-a4c0-09208ea7f104" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Error ARL0001: The Additional Reference Links plug-in has not been
+configured yet</para>
+    </introduction>
+
+    <section>
+      <title>Cause</title>
+      <content>
+        <para>The plug-in was added to the project but was not configured.  The
+default configuration is not sufficient to use it in a build.</para>
+      </content>
+    </section>
+
+    <section>
+      <title>Solution</title>
+      <content>
+        <para>Open the editor for the <codeInline>PlugInConfigurations</codeInline>
+project property, select the plug-in, and click the <ui>Configure</ui> button
+to specify a valid configuration for it.</para>
+      </content>
+    </section>
+
+    <relatedTopics>
+    <link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

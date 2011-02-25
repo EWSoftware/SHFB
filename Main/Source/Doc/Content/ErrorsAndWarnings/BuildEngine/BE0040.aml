@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="24033cf4-69c1-4fc9-baac-103699ac90f8" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Error BE0040: Project assembly does not exist: [assembly]</para>
+    </introduction>
+
+    <section>
+      <title>Cause</title>
+      <content>
+        <para>This error occurs if the assembly from a project file
+documenation source cannot be found.</para>
+      </content>
+    </section>
+
+    <section>
+      <title>Solution</title>
+      <content>
+        <para>The most likely cause of this error is that the project has not
+been built.  Build the project so that the assembly exists and then build the
+help file project.  In addition, check the <codeInline>Configuration</codeInline>
+and <codeInline>Platform</codeInline> settings on the documentation source to
+ensure that they are selecting the assembly that was built (i.e.
+<codeInline>Debug</codeInline> or <codeInline>Release</codeInline>).  If they
+are not specified, check the settings in the GUI (if used) or the command line
+options (if built with MSBuild) for the correct settings.  If not specified,
+they default to <codeInline>Debug</codeInline> and
+<codeInline>AnyCPU</codeInline> respectively.</para>
+      </content>
+    </section>
+
+    <relatedTopics>
+    <link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

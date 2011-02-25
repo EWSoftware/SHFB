@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="9f1a5c32-7c10-47e1-bbea-319ee0866e3d" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Version 1.8.0.2 was released on May 31st, 2009.</para>
+    </introduction>
+
+<section>
+  <title>Changes in This Release</title>
+  <content>
+<list class="bullet">
+    <listItem>Fixed the <codeInline>BuildHelp</codeInline> task so that it can
+find the executing project when ran via an <application>MSBuild</application>
+build task inside another project file.</listItem>
+
+    <listItem>Fixed up XML encoding issues on property values in the
+<application>MSBuild</application> project template files.</listItem>
+
+    <listItem>Fixed project documenation sources so that the assembly name can
+be determined regardless of the case of the <codeInline>OutputType</codeInline>
+property value.</listItem>
+
+	<listItem>Fixed handling of the <codeInline>Platform</codeInline>
+configuration option so that if "Any CPU" (with a space) is passed to the build
+and it does not exist in the project documentation sources, it will be converted
+to "AnyCPU" (no space).  This works around the issue in Team Build caused by
+it always passing in the value with a space.</listItem>
+
+    <listItem>Fixed a bug that caused the <application>GenerateInheritedDocs</application>
+tool to crash when the <codeInline>inheritdoc</codeInline> tag was nested
+within other XML comment tags.</listItem>
+
+    <listItem>Fixed a bug in the API Filter that caused a crash if you tried to
+go to, include, or exclude an inherited namespace from the search results.</listItem>
+
+    <listItem>Fixed a bug in the table of contents handling caused by using the
+<ui>Split TOC</ui> option on a container node without a topic association.</listItem>
+
+    <listItem>Fixed a couple of bugs in the <codeInline>UserDefinedProperties</codeInline>
+editor that caused it to lock up if a property was added after modifying a
+standard project property or if no value was set on a newly added property.</listItem>
+
+    <listItem>Fixed a bug that caused topics in sub-folders in content layout
+files selected as the default topic to not be set as the default topic when
+the project was built.</listItem>
+
+    <listItem>Fixed the content file editor collection so that it is
+serializable and can be saved with the user settings.</listItem>
+
+    <listItem><para>On Visual Studio solution documentation sources, each project
+loaded from the solution will have the following Visual Studio macros defined
+in it so that project properties that use them will be resolved correctly:</para>
+
+	<list class="bullet">
+        <listItem><codeInline>SolutionPath</codeInline> - Full solution path
+and filename.</listItem>
+        <listItem><codeInline>SolutionDir</codeInline> - Path to solution with
+trailing backslash.</listItem>
+        <listItem><codeInline>SolutionFileName</codeInline> - Solution filename
+plus extension.</listItem>
+        <listItem><codeInline>SolutionName</codeInline> - Solution filename
+without extension.</listItem>
+        <listItem><codeInline>SolutionExt</codeInline> - The solution file
+extension (<localUri>.sln</localUri>).</listItem>
+	</list></listItem>
+
+    <listItem>Added a <codeInline>DumpLogOnFailure</codeInline> property to the
+<codeInline>BuildHelp</codeInline> task that allows you to dump the log file to
+the <application>MSBuild</application> log when the build fails.</listItem>
+
+    <listItem>The API filter is now applied during partial builds.  This fixes
+a problem in the Version Builder Plug-in where members where not being excluded
+from prior versions.  If you need to suppress the API filter in a plug-in that
+performs a partial build, use the new <codeInline>SuppressApiFilter</codeInline>
+build engine property.</listItem>
+
+    <listItem>Added the <codeInline>XamlAttachedMembersAddIn</codeInline> add-in
+to the <application>MRefBuilder</application> configuration file template to
+add attached property and attached event information to the reflection
+information for WPF classes.</listItem>
+
+    <listItem>Added a new replacement tag (<codeInline>ScriptHelpTitle</codeInline>)
+to use as the parameter to JavaScript calls that take the help title as a
+parameter.  This allows escaping single quotes to prevent script errors.</listItem>
+
+    <listItem>Added a user preference to show or hide line numbers in the text
+editor.</listItem>
+
+    <listItem>When editing a file, preference is now given to user-defined
+content file editors.  If one is found, it will be launched.  If not, the
+default built in editor will be used if there is one.</listItem>
+
+    <listItem>The behavior of the "various elements" dropdown on the text
+editor window toolbar has been changed.  It now inserts the last element
+selected from the dropdown.  By default, it inserts an <codeInline>alert</codeInline>
+element.  Once another element is selected, that element becomes the default
+element inserted by clicking the toolbar button.</listItem>
+
+</list>
+  </content>
+</section>
+
+    <relatedTopics>
+      <link xlink:href="2bba4e09-e9bd-4ef4-9bf4-800af246e97d" />
+      <link xlink:href="95c85ec6-9f23-426a-b0ad-6b10a0453eaf" />
+      <link xlink:href="5a484e94-6940-4c97-940c-3f46fb8736d2" />
+      <link xlink:href="078cc1c7-7995-431e-bf9c-8813becbe8df" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

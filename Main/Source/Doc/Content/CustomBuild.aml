@@ -1,0 +1,481 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="69d998a7-1af5-4bf5-889b-59cd00b64000" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+      <para>In order to provide the ability to customize the main build steps
+in earlier versions of the help file builder, the scripts used to run the
+tools and the related configuration files were placed in the
+<localUri>.\Templates</localUri> folder beneath the main help file builder
+installation folder rather than embedding them in the executables.  In each
+file are a set of substitution tags that will be resolved to one of the
+project properties and, in some cases, a list of files at build time.</para>
+
+<alert class="note">
+  <para>All current and future versions of the help file builder support
+<link xlink:href="e031b14e-42f0-47e1-af4c-9fed2b88cbc7">plug-ins</link> which
+provide a much more flexible way of altering and extending the build process
+without the need to modify the supplied templates.  You can use the same set of
+substitution tags in your own scripts, configuration files, and plug-ins and
+resolve them at build-time as well.</para>
+</alert>
+    </introduction>
+
+<section address="ReplacementTags">
+  <title>Replacement Tags</title>
+  <content><para>The help file builder template files as well as various files
+in your own projects such as token files may contain one or more of the
+following substitution tags.  At build-time, these tags will be replaced with
+the appropriate project value in order to produce the help file.  Some of these
+tags also appear in the language resource files and are used to place items in
+the page header and footer.  These tags can also be entered into text project
+properties such as <codeInline>HeaderText</codeInline> or
+<codeInline>FooterText</codeInline> to have them appear in the help
+topics.</para>
+
+<alert class="tip">
+  <para>Any MSBuild property can also be referenced using the substitution
+tag syntax (<codeInline>{@PropertyName}</codeInline>).  This allows you to
+define custom properties via the
+<link xlink:href="da405a33-3eeb-4451-9aa8-a55be5026434#UserDefProps">UserDefinedProperties</link>
+project property and use them in other project properties such as
+<codeInline>HelpFileVersion</codeInline>, <codeInline>HeaderText</codeInline>,
+etc.</para>
+</alert>
+
+<table>
+  <tableHeader>
+    <row>
+      <entry>Replacement Tag</entry>
+      <entry>Description</entry>
+    </row>
+  </tableHeader>
+  <row>
+    <entry>{@AppDataFolder} and {@LocalDataFolder}</entry>
+    <entry><codeInline>{@AppDataFolder}</codeInline> is replaced with the
+common application data folder for the help file builder.  This is used to
+store third-party build components and plug-ins.  <codeInline>{@LocalDataFolder}</codeInline>
+is replaced with the local application data folder for the help file builder.
+This is used to store cache files and other user settings.  See the
+<link xlink:href="a24489fb-45d6-46f4-9eaa-9a9c4e0919b2" /> topic for more
+information.</entry>
+  </row>
+  <row>
+    <entry>{@AutoDocumentConstructors}, {@AutoDocumentDisposeMethods},
+{@ShowMissingNamespaces}, {@ShowMissingParams}, {@ShowMissingRemarks},
+{@ShowMissingReturns}, {@ShowMissingSummaries}, {@ShowMissingTypeParams},
+{@ShowMissingValues}</entry>
+    <entry>These tags equates to the <codeInline>ShowMissing*</codeInline>
+project properties and are used to set the <codeInline>ShowMissingComponent</codeInline>
+build component configuration settings in the <localUri>sandcastle.config</localUri>
+file templates.</entry>
+  </row>
+  <row>
+    <entry>{@BinaryTOC}</entry>
+    <entry>This tag equates to a Yes or No value based on the
+<codeInline>BinaryTOC</codeInline> project setting.  This is placed in the help file
+project template.</entry>
+  </row>
+  <row>
+    <entry>{@BuildDate} or {@BuildDate:[date-format]}</entry>
+    <entry>This tag allows you to insert a build date/time into a project file
+or a text project property such as <codeInline>HeaderText</codeInline> or
+<codeInline>FooterText</codeInline>.  If <codeInline>{@BuildDate}</codeInline>
+is used, the full date time is inserted using the default format.  You can also
+specify a custom date format.  For example:
+<codeInline>{@BuildDate:MMMM d, yyyy a\t hh:mm tt}</codeInline></entry>
+  </row>
+  <row>
+    <entry>{@CodeSnippetsFiles}</entry>
+    <entry>This tag expands to a list of the conceptual content code snippets
+files that will be used by the Example Component in conceptual content
+builds.  To be included, the project file must have its <codeInline>BuildAction</codeInline>
+set to <codeInline>CodeSnippets</codeInline>.</entry>
+  </row>
+  <row>
+    <entry>{@CommentFileList}</entry>
+    <entry>This tag expands to a list of the XML comment files that will be used
+to produce the help file.  This tag is placed in the Sandcastle configuration
+file.</entry>
+  </row>
+  <row>
+    <entry>{@Comments}</entry>
+    <entry>If a <codeInline>FeedbackEMailAddress</codeInline> is specified in
+the project, this tag expands to the include directive that adds the
+"send e-mail" note to the page footers.</entry>
+  </row>
+  <row>
+    <entry>{@ComponentsFolder}</entry>
+    <entry>This tag expands to the path where the custom build components can
+be found.  This will be the <localUri>Build Components\</localUri> folder under
+common application data folder (<codeLine>{@AppDataFolder}</codeLine>).</entry>
+  </row>
+  <row>
+    <entry>{@CopyrightHref}</entry>
+    <entry>This tag expands to the <codeInline>CopyrightHref</codeInline>
+project option.</entry>
+  </row>
+  <row>
+    <entry>{@CopyrightInfo} and {@HtmlEncCopyrightInfo}</entry>
+    <entry>These tags expand to an empty string if neither the
+<codeInline>CopyrightHref</codeInline> nor the <codeInline>CopyrightText</codeInline>
+project options are specified.  If only one or the other is specified, then it
+results in the value of the project option that is present.  If both are
+specified, it results in a link to the specified URL with the specified
+copyright text.  The first version is plain text, the second version is
+HTML encoded.</entry>
+  </row>
+  <row>
+    <entry>{@CopyrightText} and {@HtmlEncCopyrightText}</entry>
+    <entry>These tags expand to the <codeInline>CopyrightText</codeInline>
+project option (plain text and HTML encoded).</entry>
+  </row>
+  <row>
+    <entry>{@Copyright}</entry>
+    <entry>If either or both of the copyright project options are specified,
+this tag will expand to the include directive necessary to place the text
+in the page footers.</entry>
+  </row>
+  <row>
+    <entry>{@DefaultTopic} and {@WebDefaultTopic}</entry>
+    <entry>These tags appear in the help file project template and the website
+index page respectively and expand to the filename of the default topic.</entry>
+  </row>
+  <row>
+    <entry>{@DocInternals}</entry>
+    <entry>This tag expands to "true" if either the <codeInline>DocumentInternals</codeInline>
+or <codeInline>DocumentPrivates</codeInline> project property is set to true.
+If both are set to false, this expands to "false".</entry>
+  </row>
+  <row>
+    <entry>{@ExtractFlags}</entry>
+    <entry>This tag expands to the flags that tell the HTML extract tool what
+files to create.  It will generate files for the HTML Help 1 and website builds
+as needed.</entry>
+  </row>
+  <row>
+    <entry>{@FeedbackEMailAddress}, {@HtmlEncFeedbackEMailAddress},
+{UrlEncFeedbackEMailAddress}, {@FeedbackEMailLinkText}</entry>
+    <entry>These tags expand to the <codeInline>FeedbackEMailAddress</codeInline>
+project option if it is specified (plain text, HTML encoded, and URL encoded)
+and the <codeInline>FeedbackEMailLinkText</codeInline> project option if
+specified (plain text).  Note that if <codeInline>FeedbackEMailLinkText</codeInline>
+is specified, it will be used in place of the e-mail address for the
+<codeInline>{@HtmlEncFeedbackEMailAddress}</codeInline> tag's value.</entry>
+  </row>
+  <row>
+    <entry>{@FrameworkVersion}, {@FrameworkVersionShort},
+{@MRefFrameworkVersion}, {@MRefFrameworkVersionShort}</entry>
+    <entry>These tags expand to the selected <codeInline>FrameworkVersion</codeInline>
+project option (full and "major.minor" respectively) and are placed in the
+<localUri>sandcastle.config</localUri> and <localUri>MRefBuilder.config</localUri>
+configuration files.</entry>
+  </row>
+  <row>
+    <entry>{@H2RegPlugInEntries} and {@H2RegMergeNamespaces}</entry>
+    <entry>These two tags expand to the plug-in and merge namespace entries in
+the <localUri>H2Reg.ini</localUri> file.</entry>
+  </row>
+  <row>
+    <entry>{@HHCPath}</entry>
+    <entry>This tag expands to the path to the HTML Help 1 compiler.  This
+will be the path that the help builder found or the
+<codeInline>HtmlHelp1xCompilerPath</codeInline> project option if it is
+specified instead.</entry>
+  </row>
+  <row>
+    <entry>{@HTMLHelpName} and {@HTMLEncHelpName}</entry>
+    <entry>These expand to the value of the <codeInline>HtmlHelpName</codeInline>
+project option (plain text and HTML encoded).</entry>
+  </row>
+  <row>
+    <entry>{@HXCompPath}</entry>
+    <entry>This tag expands to the path to the MS Help 2 compiler.  This
+will be the path that the help builder found or the
+<codeInline>HtmlHelp2xCompilerPath</codeInline> project option if it is
+specified instead.</entry>
+  </row>
+  <row>
+    <entry>{@HeaderText}</entry>
+    <entry>This tag expands to the value of the <codeInline>HeaderText</codeInline>
+project option.</entry>
+  </row>
+  <row>
+    <entry>{@Help1xProjectFiles} and {@Help2xProjectFiles}</entry>
+    <entry>These tags appear in the help file project templates and are used to
+return a list of all files that should be compiled into the help file.</entry>
+  </row>
+  <row>
+    <entry>{@HelpTitle}, {@HtmlEncHelpTitle}, {@UrlEncHelpTitle}, and
+{@ScriptHelpTitle}</entry>
+    <entry>These tags expand to the <codeInline>HelpTitle</codeInline> project
+option (plain text, HTML encoded, URL encoded, and quote-escaped for
+JavaScript).</entry>
+  </row>
+  <row>
+    <entry>{@IncludeProjectNode}</entry>
+    <entry>This tag expands to the parameter used to indicate that the "Project"
+root namespace node should be included in the table of contents for the Hana
+and VS2005 presentation styles based on the setting of the
+<codeInline>RootNamespaceContainer</codeInline> project property.</entry>
+  </row>
+  <row>
+    <entry>{@IndentHtml}</entry>
+    <entry>This tag expands to the parameter used to indicate whether or not the
+HTML rendered by <application>BuildAssembler</application> is indented.  This
+is mainly a debugging aid.  When true, the HTML is indented to make it more
+readable.  Leave it set to false to produce more compact HTML.</entry>
+  </row>
+  <row>
+    <entry>{@InheritedCommentFileList}</entry>
+    <entry>This tag expands to a list of the XML comment files that will be
+used to produce the inherited documentation.  This tag is placed in the
+<application>Generate Inherited Documentation</application> tool's
+configuration file.</entry>
+  </row>
+  <row>
+    <entry>{@LanguageFolder}</entry>
+    <entry>This tag expands to the language folder to use for the Sandcastle
+shared content files.  If a folder is not found for the selected language,
+the default US-English Sandcastle shared content files are used.</entry>
+  </row>
+  <row>
+    <entry>{@LangId} and {@LanguageName}</entry>
+    <entry>These tags expands to the locale ID (LCID) and the locale ID plus
+language name for the <codeInline>Language</codeInline> project option.</entry>
+  </row>
+  <row>
+    <entry>{@Locale}</entry>
+    <entry>This tag expands to the locale name for the
+<codeInline>Language</codeInline> project option.</entry>
+  </row>
+  <row>
+    <entry>{@OutputFolder}</entry>
+    <entry>This tag expands to the full path to the output folder and is used
+in the templates to help the tools locate the output folder.</entry>
+  </row>
+  <row>
+    <entry>{@Preliminary}</entry>
+    <entry>This tag will expand to the include directive to place the
+"preliminary documentation" warning in all page headers if the
+<codeInline>Preliminary</codeInline> project option is set to true.</entry>
+  </row>
+  <row>
+    <entry>{@PresentationPath} and {@PresentationStyle}</entry>
+    <entry>The first tag expands to the path of the presentation folder that
+contains the art, scripts, style sheets, and transformations for the style
+selected with the project's <codeInline>PresentationStyle</codeInline>
+property.  The second expands to the name of the style itself.</entry>
+  </row>
+  <row>
+    <entry>{@ProjectFolder} and {@HtmlEncProjectFolder}</entry>
+    <entry>These tags expand to the path that contains the project file (plain
+text and HTML encoded).  This is useful for build components that need paths
+relative to the project.</entry>
+  </row>
+  <row>
+    <entry>{@ResourceItemFiles}</entry>
+    <entry>This tag expands to a list of the resource item files in the project
+that contain project overrides for the Sandcastle resource items used in the
+generated help topics.  To be included, the project file must have its
+<codeInline>BuildAction</codeInline> set to <codeInline>ResourceItems</codeInline>.</entry>
+  </row>
+  <row>
+    <entry>{@RootNamespaceTitle}</entry>
+    <entry>This tag expands to the value of the
+<codeInline>RootNamespaceTitle</codeInline> project option.</entry>
+  </row>
+  <row>
+    <entry>{@SandcastlePath}</entry>
+    <entry>This tag expands to the path to the Sandcastle installation folder.
+This will be the path that the help builder found or the
+<codeInline>SandcastlePath</codeInline> project option if it is specified
+instead.</entry>
+  </row>
+  <row>
+    <entry>{@HtmlSdkLinkType}, {@MSHelp2SdkLinkType},
+{@MSHelpViewerSdkLinkType}, and {@WebsiteSdkLinkType}</entry>
+    <entry>These tags expands to the value of the matching named project
+properties.</entry>
+  </row>
+  <row>
+    <entry>{@SHFBFolder}</entry>
+    <entry>This tag expands to the path to the Sandcastle Help File Builder
+installation folder.</entry>
+  </row>
+  <row>
+    <entry>{@StopWordFile}</entry>
+    <entry>This tag expands to the <codeInline>StopWordFile</codeInline> option
+in the Help 2 project file when the <codeInline>IncludeStopWordFile</codeInline>
+project property is set to true.</entry>
+  </row>
+  <row>
+    <entry>{@SyntaxFilters} and {@SyntaxFiltersDropDown}</entry>
+    <entry>These tags expand to the language filter components that determine
+which languages appear in the <legacyBold>Syntax</legacyBold> section of each
+help topic and the dropdown in the upper right corner of the topic in the
+Prototype style.</entry>
+  </row>
+  <row>
+    <entry>{@TokenFiles}</entry>
+    <entry>This tag expands to a list of the conceptual content token files
+that will be used by the token Shared Content Component in conceptual content
+builds.  To appear in the list, the project file must have its
+<codeInline>BuildAction</codeInline> set to <codeInline>Tokens</codeInline>.</entry>
+  </row>
+  <row>
+    <entry>{@WindowOptions}</entry>
+    <entry>This tag expands to a value in the help file project that determines
+the window options available.  Currently, a default set of options is used
+to display most of the common features such as the basic toolbar buttons and
+the search tab.  If the <codeInline>IncludeFavorites</codeInline> project
+property is set to true, the value includes the option to show the
+<legacyBold>Favorites</legacyBold> tab too.</entry>
+  </row>
+  <row>
+    <entry>{@WorkingFolder} and {@HtmlEncWorkingFolder}</entry>
+    <entry>These tags expand to the full path to the working folder (plain
+text and HTML encoded) and are used in the templates to help the tools locate
+the files in the temporary working folder.</entry>
+  </row>
+</table>
+
+  </content>
+</section>
+
+<section address="TemplateFiles">
+  <title>Template Files</title>
+  <content><para>The following files are found in the
+<localUri>.\Templates</localUri> folder under the main help file builder
+installation folder.</para>
+
+<table>
+  <tableHeader>
+    <row>
+      <entry>Template File</entry>
+      <entry>Description</entry>
+    </row>
+  </tableHeader>
+  <row>
+    <entry>Build1xHelpFile.proj and Build2xHelpFile.proj</entry>
+    <entry>These MSBuild projects are used to build the HTML Help 1 and
+MS Help 2 help file projects respectively and copy the resulting help file
+and supporting files to the project's output folder.</entry>
+  </row>
+  <row>
+    <entry>BuildConceptualTopics.proj and BuildReferenceTopics.proj</entry>
+    <entry>These MSBuild projects are used to build the conceptual and reference
+help topics respectively using <application>BuildAssembler</application>.</entry>
+  </row>
+  <row>
+    <entry>conceptual.config</entry>
+    <entry>This is the Sandcastle configuration file template used to build
+conceptual help topics using <application>BuildAssembler</application>.  The
+conceptual help build component stack is currently not dependent on the
+presentation style so the same one is used for all of them.</entry>
+  </row>
+  <row>
+    <entry>ExtractHtmlInfo.proj</entry>
+    <entry>This MSBuild project runs a tool used to generate the index file
+and table of contents file for HTML Help 1 files and the table of contents
+file for websites. It can also localize the content files by performing
+several character replacements and saving the files using a different encoding
+to work around encoding issues encountered while using the HTML Help 1 compiler
+with certain languages that require double-byte characters.</entry>
+  </row>
+  <row>
+    <entry>FixScriptSharp.xsl</entry>
+    <entry>This XSL transformation is used to fix up the reflection information
+file produced by runing <application>MRefBuilder</application> on assemblies
+created by the <application>Script#</application> compiler.  It adds fixes
+up some of the entries for use with Sandcastle and adds a
+<codeInline>scriptSharp</codeInline> element to the members so that the
+JavaScript syntax generator produces code that matches the actual output of
+the <application>Script#</application> tools.</entry>
+  </row>
+  <row>
+    <entry>GenerateInheritedDocs.proj and GenerateInheritedDocs.config</entry>
+    <entry>This MSBuild project and configuration file are used to generate the
+inherited documentation file.</entry>
+  </row>
+  <row>
+    <entry>GenerateIntermediateTOC.proj and Generate2xTOC.proj</entry>
+    <entry>These MSBuild projects are used to generate the intermediate table
+of contents file and the MS Help 2 specific table of contents file by performing
+an XSL transformation on the <localUri>reflection.xml</localUri> file.</entry>
+  </row>
+  <row>
+    <entry>GenerateRefInfo.proj</entry>
+    <entry>This MSBuild project is used to generate the reflection information
+from the documentation assemblies using <application>MRefBuilder</application>.
+The result is the <localUri>reflection.org</localUri> file that contains
+information about the types in each assembly.</entry>
+  </row>
+  <row>
+    <entry>Hana.config, Prototype.config, and VS2005.config</entry>
+    <entry>These are the Sandcastle configuration file templates.  One of these
+will be updated with the necessary paths and project options based on the
+presentation style selected.  The transformed file is used as the
+<localUri>sandcastle.config</localUri> for <application>BuildAssembler</application>
+to produce the API help topic files.</entry>
+  </row>
+  <row>
+    <entry>Hana.xsl, Prototype.xsl, and VS2005.xsl</entry>
+    <entry>These are the default XSL transformation files used to convert
+additional content <localUri>.topic</localUri> files into HTML files if a
+user-defined transformation file is not supplied.
+
+<alert class="warning">
+  <para>This feature has been deprecated in favor of using conceptual content.
+While it will continue to be supported, it will receive no future enhancements.</para>
+</alert></entry>
+  </row>
+  <row>
+    <entry>Help1x.hhp</entry>
+    <entry>This is the help file project template for HTML Help 1 help files.
+This defines the basic help file options and the help window properties.</entry>
+  </row>
+  <row>
+    <entry>Help2x*.*</entry>
+    <entry>This set of files defines the help file project templates for
+MS Help 2 help files.</entry>
+  </row>
+  <row>
+    <entry>HelpFileBuilderTokens.tokens</entry>
+    <entry>This contains a default set of tokens used by all help projects.
+Currently, it only contains a single entry for the standard
+<codeInline>autoOutline</codeInline> token.</entry>
+  </row>
+  <row>
+    <entry>MRefBuilder.config</entry>
+    <entry>This configuration file is used to supply some configuration
+information to <application>MRefBuilder</application> that it uses when
+generating the reflection information file.</entry>
+  </row>
+  <row>
+    <entry>TransformBuildLog.xsl</entry>
+    <entry>This XSL transformation file is used to transform the build log into
+something that is more readable by formatting the build steps into collapsible
+sections and highlight errors, warnings, and build step project names.</entry>
+  </row>
+  <row>
+    <entry>TransformManifest.proj</entry>
+    <entry>This MSBuild project applies some XSL transformations to the
+reflection output file generated by <application>MRefBuilder</application> and
+results in the production of the <localUri>reflection.xml</localUri> and
+<localUri>manifest.xml</localUri> files.</entry>
+  </row>
+</table>
+  </content>
+</section>
+
+  <relatedTopics>
+    <link xlink:href="e2ed6222-c3ee-4c6e-b0f9-fa3c86bc3e2c" />
+    <link xlink:href="c7378077-fc10-45f9-b52a-c57dda96fe8d" />
+    <link xlink:href="e031b14e-42f0-47e1-af4c-9fed2b88cbc7" />
+  </relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

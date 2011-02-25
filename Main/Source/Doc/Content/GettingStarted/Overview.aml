@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="8e3f8757-0ef3-4772-bb2f-5d7ae57e50da" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+      <para>The Sandcastle Help File Builder standalone GUI provides an
+environment in which you can edit the properties that control the features and
+appearance of the compiled help file.  In addition, it lets you manage various
+files associated with the help project.</para>
+    </introduction>
+
+<section>
+  <content>
+
+<mediaLink><image xlink:href="MainForm" placement="center" /></mediaLink>
+
+<para>Shown above is the help file builder's main form.  The menu bar at the
+top provides access to the various program options:</para>
+
+<list class="bullet">
+  <listItem>The <ui>File</ui> menu provides access to the various project and
+file related commands such as creating a new project, saving the project, and
+interacting with the Project Explorer window to manage the files in the project.
+</listItem>
+
+  <listItem>The <ui>Documentation</ui> menu contains the commands used to build
+the help file, view the log file from a build, and view the compiled help in
+its various formats.</listItem>
+
+  <listItem>The <ui>Window</ui> menu contains the commands used to show the
+various task windows and jump to any of the open topic or file editors.</listItem>
+
+  <listItem>The <ui>Help</ui> menu allows you to open the help file, view the
+<link xlink:href="1aea789d-b226-4b39-b534-4c97c256fac8" /> help topic, and
+view product version and copyright information.</listItem>
+
+</list>
+
+	<para>Many of these options are also available within the individual tabbed
+windows and docked panes via keyboard shortcuts, context menus, and toolbar
+buttons.  The toolbar just below the menu bar contains buttons for most of the
+common options.  The images on each button correspond to the images on the
+matching menu option in the menu bar dropdown menus.  In addition, it contains
+two dropdowns: one for the Configuration option and one for the Platform
+option.  These values are used to specify the default configuration and
+platform values to use when extracting information from Visual Studio project
+documentation sources when they do not specify a value for themselves in their
+properties.</para>
+
+	<para>The central area of the main form is where you will see the various
+file editors and task windows.  The windows can be dragged around and docked in
+various locations.  Shown above are the two main windows that you will use most
+often: the <link xlink:href="e12c2b9f-18c7-4718-850b-ac3c2e293672" />
+and the <link xlink:href="e32086c6-de17-4e54-a746-1ac80bf0c45a" />.  If you
+are at all familiar with either Visual Studio or NDoc, these windows should
+look and feel quite similar in appearance and usage.</para>
+
+  </content>
+</section>
+
+    <relatedTopics>
+    <link xlink:href="b772e00e-1705-4062-adb6-774826ce6700" />
+    <link xlink:href="8c0c97d0-c968-4c15-9fe9-e8f3a443c50a" />
+    <link xlink:href="c47d9242-b3a8-4153-aa9e-ae8cb41cefe2" />
+    <link xlink:href="d5dbf017-25f1-48cb-86db-90f76ee8f4d7" />
+    <link xlink:href="e12c2b9f-18c7-4718-850b-ac3c2e293672" />
+    <link xlink:href="e32086c6-de17-4e54-a746-1ac80bf0c45a" />
+    </relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

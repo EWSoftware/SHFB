@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="e2ed6222-c3ee-4c6e-b0f9-fa3c86bc3e2c" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+      <para>Sandcastle uses a set of resource files to contain text such as
+table of contents item titles, common topic element titles, messages, etc.
+Copies of the four main resource files are located in a <localUri>.\Content</localUri>
+subfolder beneath each presentation style folder under the
+<localUri>.\Presentation</localUri> folder in the main Sandcastle installation
+folder.  An additional content file used by all presentation styles is located
+in the <localUri>.\Shared\Content</localUri> folder under the main
+<localUri>.\Presentation</localUri> folder.</para>
+    </introduction>
+
+<section>
+  <title>The Resource Files</title>
+  <content><para>The following files contain the resources:</para>
+  
+<list class="bullet">
+    <listItem><localUri>conceptual_content.xml</localUri> contains titles for
+items in conceptual content files.</listItem>
+
+    <listItem><localUri>feedBack_content.xml</localUri> contains items related
+to the feedback control in the VS2005 presentation style.  Currently, the
+feedback control is not used by any of the presentation styles.</listItem>
+
+    <listItem><localUri>reference_content.xml</localUri> contains titles for
+the various class library parts, filter text, and alternate image text.</listItem>
+
+    <listItem><localUri>shared_content.xml</localUri> contains paths to the
+shared content (art, scripts, and style sheets), code section labels, and
+customizable text for the header and footer in each page.  The help file
+builder overrides many of these using its own content file.</listItem>
+
+    <listItem><localUri>syntax_content.xml</localUri> contains some programming 
+language limitation messages.  This is in the shared folder and is used by all
+presentation styles.</listItem>
+
+    <listItem><localUri>token_content.xml</localUri> contains some supplemental
+reference messages.</listItem>
+
+</list>
+
+<para>The supplied files are all in English but can be translated into other
+languages for use in your help files.  The help file builder includes its own
+shared content files which are used to override elements in the above files
+for such things as the help title, header and footer text, preliminary
+documentation message, etc. There are several copies of the shared content
+files, each representing a different language.  You can find the files in the
+<localUri>.\SharedContent</localUri> folder under the Sandcastle Help File
+Builder installation folder.  The files all start with
+<legacyBold>SharedBuilderContent_</legacyBold> or
+<legacyBold>XXXBuilderContent_</legacyBold> where "XXX" is a presentation style
+name and all are suffixed with a language ID based on the value returned by the
+<codeInline>CultureInfo.Name</codeInline> property (i.e. en-US, fr-FR, de-DE).
+Each file has a ".xml" extension.</para>
+
+<para>A set of stop word list files also exists in the help file builder's
+shared content folder that are used when creating the full text index for the
+website build and for the MS Help 2 file.  The files contain a list of
+common words that are excluded from the full-text index.  This prevents the
+index files from getting too large and containing useless information.  You
+can add additional words to these files as needed.  The files all start with
+<legacyBold>StopWordList_</legacyBold> and are suffixed with a language ID
+based on the value returned by the <codeInline>CultureInfo.Name</codeInline>
+property (i.e. en-US, fr-FR, de-DE).  Each file has a <localUri>.txt</localUri>
+extension.</para>
+
+  </content>
+</section>
+
+<section>
+  <title>Localizing Language Resources</title>
+  <content><para>To create a help file builder resource file for a new
+language, copy one of the existing files and change the name to use the
+culture name's ID as described above.  If you are not sure what ID to use in
+the filename, go to the <externalLink>
+  <linkText>Locale Identifier Constants and Strings</linkText>
+  <linkUri>http://msdn.microsoft.com/en-us/library/dd318693.aspx</linkUri>
+  <linkTarget>_blank</linkTarget></externalLink> MSDN topic and
+locate the locale that you need.  The locale name column contains the value
+to use for the filename.  Edit the new file and translate the text to the
+selected language.  If people are kind enough to supply additional
+translated files, I'll add them to later releases.</para>
+
+<para>Due to the number of presentation styles and the number of files that
+would be created, it is not possible to maintain a matching set of
+Sandcastle's content files for each language.  You will need to create
+localized copies of them for each language that you want.  The standard files
+in the noted <localUri>.\Content</localUri> folders will always be used when
+English (en-US) is used as the selected language or if files for the selected
+language cannot be found.  Note that these files tend to change with each new
+release of Sandcastle so you will have to compare and merge changes with your
+localized versions after each new release is issued.</para>
+
+<para>To create your own localized versions of the content files, create a
+folder below each of the noted <localUri>.\Content</localUri> folders. The new
+folder should be named after the selected language ID (i.e. fr-FR, de-DE, etc.).
+You will also need to create a language sub-folder in
+<localUri>.\Presentation\Shared\Content</localUri> as well to contain translated
+copies of the shared content resource files.  Copy the Sandcastle content files
+to the new language folder and translate their content.  When translating
+<localUri>shared_content.xml</localUri>, be sure to set the value of the item
+with the <legacyBold>locale</legacyBold> ID to the correct language ID.  When
+you do a build with a language other than English, the help file builder will
+automatically look for a folder named after the selected language and will use
+the translated files if it finds them.  If the translated files cannot be found,
+a warning is issued in the log file and the English versions will be used.</para>
+
+<para>How the files are encoded is very important if they contain extended
+characters.  To ensure that the help file builder and the Sandcastle tools
+properly interpret the encoding within the files, it is best to save the
+files such that they contain byte order marks at the start of the file for
+Unicode encoded formats as well as an XML header tag that specifies the
+correct encoding. In the absence of byte order marks, the encoding in the
+XML header tag ensures that the file is still interpreted correctly.  The
+supplied default language resource files contain examples of this.</para>
+
+<para>When using entities to represent special characters in the XML language
+resource files or in the header text, copyright text, etc, use the numeric
+form rather than the name form as the XML parser will not recognize them
+and will throw an exception.  For example, if you specify
+<codeInline>&amp;Auml;</codeInline> (Latin capital letter A with diaeresis) an
+exception will be generated.  To fix it, use the numeric form instead
+(<codeInline>&amp;#196;</codeInline>).  This also applies to symbols such as
+<codeInline>&amp;copy;</codeInline> in the copyright text. Instead, you should use
+<codeInline>&amp;#169;</codeInline> to get the copyright symbol.</para>
+
+  </content>
+</section>
+
+    <relatedTopics>
+    <link xlink:href="c7378077-fc10-45f9-b52a-c57dda96fe8d" />
+    <link xlink:href="69d998a7-1af5-4bf5-889b-59cd00b64000" />
+    </relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

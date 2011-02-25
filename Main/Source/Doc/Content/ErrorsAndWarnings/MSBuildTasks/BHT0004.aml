@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="42262e8b-6aa4-4ca0-85cb-a395cabb96c7" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Error BHT0004: An older MSBuild version is being used.  Unable to
+build help project.</para>
+    </introduction>
+
+    <section>
+      <title>Cause</title>
+      <content>
+        <para>The <codeInline>BuildHelp</codeInline> build task was unable to
+build the project because it is running under an older version of MSBuild.</para>
+      </content>
+    </section>
+
+    <section>
+      <title>Solution</title>
+      <content>
+        <para>Your build process must be changed to use MSBuild 3.5 or later to
+build the help project.  For example, modify your build script to use the
+MSBuild 3.5 executable or, if using an MSBuild project, use the
+<codeInline>Exec</codeInline> task to execute it.</para>
+
+      </content>
+    </section>
+
+    <relatedTopics>
+    <link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
+    </relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

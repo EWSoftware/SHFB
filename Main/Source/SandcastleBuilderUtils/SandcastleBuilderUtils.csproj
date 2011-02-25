@@ -1,0 +1,462 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{330DADF7-3AB1-49A0-B3C6-A69D2C4F06A6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SandcastleBuilder.Utils</RootNamespace>
+    <AssemblyName>SandcastleBuilder.Utils</AssemblyName>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>SandcastleBuilderUtils.snk</AssemblyOriginatorKeyFile>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\SandcastleBuilder.Utils.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\SandcastleBuilder.Utils.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'ReleaseNoDoc|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>bin\Release\SandcastleBuilder.Utils.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Ionic.Zip.Reduced, Version=1.8.4.5, Culture=neutral, PublicKeyToken=c551e179877da246, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ReferenceAssemblies\Ionic.Zip.Reduced.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Build.Engine" />
+    <Reference Include="Microsoft.Build.Framework" />
+    <Reference Include="Microsoft.Build.Utilities.v3.5">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ApiEntryType.cs" />
+    <Compile Include="BaseBuildItem.cs" />
+    <Compile Include="BuildComponent\BuildComponentConfiguration.cs" />
+    <Compile Include="BuildComponent\BuildComponentInfo.cs" />
+    <Compile Include="BuildComponent\BuildComponentManager.cs" />
+    <Compile Include="BuildComponent\ComponentPosition.cs" />
+    <Compile Include="BuilderException.cs" />
+    <Compile Include="BuildEngine\BuildProcess.HelpFileUtils.cs" />
+    <Compile Include="BuildEngine\BuildProcess.MSHelp2.cs" />
+    <Compile Include="BuildEngine\BuildProcess.NamespaceRipping.cs" />
+    <Compile Include="BuildEngine\BuildProcess.Namespaces.cs" />
+    <Compile Include="BuildEngine\BuildProcess.AdditionalContent.cs" />
+    <Compile Include="BuildEngine\BuildProcess.PlugIns.cs" />
+    <Compile Include="BuildEngine\BuildProcess.Transform.cs" />
+    <Compile Include="BuildEngine\BuildProgressEventArgs.cs" />
+    <Compile Include="BuildEngine\BuildProcess.cs" />
+    <Compile Include="BuildEngine\BuildStep.cs" />
+    <Compile Include="BuildComponent\ComponentConfigurationDictionary.cs" />
+    <Compile Include="CollectionTocStyle.cs" />
+    <Compile Include="COMReferenceItem.cs" />
+    <Compile Include="ConceptualContent\CodeEntityReference.cs" />
+    <Compile Include="ConceptualContent\CodeReference.cs" />
+    <Compile Include="ConceptualContent\ConceptualContentSettings.cs" />
+    <Compile Include="ConceptualContent\ContentType.cs" />
+    <Compile Include="ConceptualContent\DocumentType.cs" />
+    <Compile Include="ConceptualContent\ImageReference.cs" />
+    <Compile Include="ConceptualContent\ImageReferenceCollection.cs" />
+    <Compile Include="ConceptualContent\Token.cs" />
+    <Compile Include="ConceptualContent\TokenCollection.cs" />
+    <Compile Include="ConceptualContent\Topic.cs" />
+    <Compile Include="ConceptualContent\TopicCollection.cs" />
+    <Compile Include="ContentPlacement.cs" />
+    <Compile Include="Controls\CustomPropertyGrid.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\DividerGroupBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Conversion\ConvertFromShfbFile.cs" />
+    <Compile Include="Design\ApiFilterCollectionTypeConverter.cs" />
+    <Compile Include="Design\ApiFilterEditor.cs" />
+    <Compile Include="Design\ApiFilterEditorDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Design\ApiFilterEditorDlg.Designer.cs">
+      <DependentUpon>ApiFilterEditorDlg.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\ComponentConfigurationDictionaryTypeConverter.cs" />
+    <Compile Include="Design\ComponentConfigurationEditor.cs" />
+    <Compile Include="Design\ComponentConfigurationEditorDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Design\ComponentConfigurationEditorDlg.Designer.cs">
+      <DependentUpon>ComponentConfigurationEditorDlg.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\ConfigurationEditorDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Design\ConfigurationEditorDlg.Designer.cs">
+      <DependentUpon>ConfigurationEditorDlg.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\ContentFileEditor.cs" />
+    <Compile Include="Design\ContentFileEditorCollection.cs" />
+    <Compile Include="Design\NamespaceSummaryItemCollectionTypeConverter.cs" />
+    <Compile Include="Design\EscapeValueAttribute.cs" />
+    <Compile Include="Design\FilePathObjectEditor.cs" />
+    <Compile Include="Design\FilePathTypeConverter.cs" />
+    <Compile Include="Design\FlagsEnumEditor.cs" />
+    <Compile Include="Design\FolderPathObjectEditor.cs" />
+    <Compile Include="Design\FolderPathTypeConverter.cs" />
+    <Compile Include="Design\MSHelpAttrCollectionTypeConverter.cs" />
+    <Compile Include="Design\MSHelpAttrEditor.cs" />
+    <Compile Include="Design\MSHelpAttrEditorDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Design\MSHelpAttrEditorDlg.Designer.cs">
+      <DependentUpon>MSHelpAttrEditorDlg.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\MSHelpKeywordCollectionTypeConverter.cs" />
+    <Compile Include="Design\MSHelpKeywordEditor.cs" />
+    <Compile Include="Design\MSHelpKeywordEditorDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Design\MSHelpKeywordEditorDlg.Designer.cs">
+      <DependentUpon>MSHelpKeywordEditorDlg.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\PlugInConfigurationDictionaryTypeConverter.cs" />
+    <Compile Include="Design\PlugInConfigurationEditor.cs" />
+    <Compile Include="Design\PlugInConfigurationEditorDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Design\PlugInConfigurationEditorDlg.Designer.cs">
+      <DependentUpon>PlugInConfigurationEditorDlg.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\PresentationStyleTypeConverter.cs" />
+    <Compile Include="Design\VersionTypeConverter.cs" />
+    <Compile Include="FilePath.cs" />
+    <Compile Include="FolderPath.cs" />
+    <Compile Include="BuildEngine\FullTextIndex.cs" />
+    <Compile Include="Gac\GacEnumerator.cs" />
+    <Compile Include="Gac\GacApi.cs" />
+    <Compile Include="IBasePathProvider.cs" />
+    <Compile Include="InheritedDocumentation\CommentsCacheEventArgs.cs" />
+    <Compile Include="InheritedDocumentation\IndexedCommentsCache.cs" />
+    <Compile Include="InheritedDocumentation\IndexedCommentsFile.cs" />
+    <Compile Include="InheritedDocumentation\InheritedDocsException.cs" />
+    <Compile Include="MSBuild\Build1xHelpFile.cs" />
+    <Compile Include="MSBuild\Build2xHelpFile.cs" />
+    <Compile Include="MSBuild\BuildAssembler.cs" />
+    <Compile Include="MSBuild\BuildHelp.cs" />
+    <Compile Include="MSBuild\CleanHelp.cs" />
+    <Compile Include="MSBuild\MRefBuilder.cs" />
+    <Compile Include="MSBuild\MSBuildProject.cs" />
+    <Compile Include="MSBuild\XslTransform.cs" />
+    <Compile Include="MSHelpAttr.cs" />
+    <Compile Include="MSHelpAttrCollection.cs" />
+    <Compile Include="HelpFileFormat.cs" />
+    <Compile Include="ApiFilter.cs" />
+    <Compile Include="ApiFilterCollection.cs" />
+    <Compile Include="MSHelpKeyword.cs" />
+    <Compile Include="MSHelpKeywordCollection.cs" />
+    <Compile Include="PlugIn\ExecutionContext.cs" />
+    <Compile Include="PlugIn\ExecutionPoint.cs" />
+    <Compile Include="PlugIn\ExecutionBehaviors.cs" />
+    <Compile Include="PlugIn\ExecutionPointCollection.cs" />
+    <Compile Include="PlugIn\IPlugIn.cs" />
+    <Compile Include="PlugIn\PlugInConfiguration.cs" />
+    <Compile Include="PlugIn\PlugInConfigurationDictionary.cs" />
+    <Compile Include="PlugIn\PlugInInfo.cs" />
+    <Compile Include="PlugIn\PlugInManager.cs" />
+    <Compile Include="ProjectElement.cs" />
+    <Compile Include="ProjectPropertyChangedEventArgs.cs" />
+    <Compile Include="ProjectReferenceItem.cs" />
+    <Compile Include="PropertyBasedCollectionItem.cs" />
+    <Compile Include="XPath\MatchesRegexFunction.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="NamingMethod.cs" />
+    <Compile Include="VisibleItems.cs" />
+    <Compile Include="ReferenceItem.cs" />
+    <Compile Include="ReferenceItemCollection.cs" />
+    <Compile Include="Design\NamespaceSummaryItemEditor.cs" />
+    <Compile Include="Design\LanguageResourceConverter.cs" />
+    <Compile Include="Controls\RefreshableItemListBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Design\FileDialogAttribute.cs" />
+    <Compile Include="Design\FilePathStringEditor.cs" />
+    <Compile Include="Design\FolderDialogAttribute.cs" />
+    <Compile Include="Design\FolderPathStringEditor.cs" />
+    <Compile Include="Controls\DividerLabel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Design\FrameworkVersionTypeConverter.cs" />
+    <Compile Include="DocumentationSource.cs" />
+    <Compile Include="DocumentationSourceCollection.cs" />
+    <Compile Include="MissingTags.cs" />
+    <Compile Include="NamespaceSummaryItem.cs" />
+    <Compile Include="NamespaceSummaryItemCollection.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Controls\StatusBarTextProvider.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="BuildEngine\BuildProcess.PurgeItems.cs" />
+    <Compile Include="SandcastleProject.cs" />
+    <Compile Include="ConceptualContent\TocEntry.cs" />
+    <Compile Include="ConceptualContent\TocEntryCollection.cs" />
+    <Compile Include="BuildEngine\XmlCommentsFile.cs" />
+    <Compile Include="BuildEngine\XmlCommentsFileCollection.cs" />
+    <Compile Include="XPath\ResolveNameFunction.cs" />
+    <Compile Include="XPath\XPathFunctionContext.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SandcastleBuilderUtils.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Controls\StatusBarTextProvider.bmp" />
+    <EmbeddedResource Include="Controls\DividerLabel.bmp" />
+    <EmbeddedResource Include="Controls\CustomPropertyGrid.bmp" />
+    <EmbeddedResource Include="Controls\DividerGroupBox.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Design\ApiFilterEditorDlg.resx">
+      <DependentUpon>ApiFilterEditorDlg.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Design\ComponentConfigurationEditorDlg.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ComponentConfigurationEditorDlg.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Design\ConfigurationEditorDlg.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ConfigurationEditorDlg.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Design\NamespaceSummaryItemEditorDlg.resx">
+      <DependentUpon>NamespaceSummaryItemEditorDlg.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Design\ProjectSummaryEditorDlg.resx">
+      <DependentUpon>ProjectSummaryEditorDlg.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Design\MSHelpAttrEditorDlg.resx">
+      <DependentUpon>MSHelpAttrEditorDlg.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Design\MSHelpKeywordEditorDlg.resx">
+      <DependentUpon>MSHelpKeywordEditorDlg.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Design\PlugInConfigurationEditorDlg.resx">
+      <DependentUpon>PlugInConfigurationEditorDlg.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Design\UserDefinedPropertyEditorDlg.resx">
+      <DependentUpon>UserDefinedPropertyEditorDlg.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\About.bmp" />
+    <None Include="Resources\AddChildItem.bmp" />
+    <None Include="Resources\AddFolder.bmp" />
+    <None Include="Resources\AddGAC.bmp" />
+    <None Include="Resources\AddImage.png" />
+    <None Include="Resources\AddItem.bmp" />
+    <None Include="Resources\AddRootItem.bmp" />
+    <None Include="Resources\AddToken.png" />
+    <None Include="Resources\Api_Documented.bmp" />
+    <None Include="Resources\Api_Internal.bmp" />
+    <None Include="Resources\Api_Internal_Class.bmp" />
+    <None Include="Resources\Api_Internal_Constructor.bmp" />
+    <None Include="Resources\Api_Internal_Delegate.bmp" />
+    <None Include="Resources\Api_Internal_Enum.bmp" />
+    <None Include="Resources\Api_Internal_Event.bmp" />
+    <None Include="Resources\Api_Internal_Field.bmp" />
+    <None Include="Resources\Api_Internal_Interface.bmp" />
+    <None Include="Resources\Api_Internal_Method.bmp" />
+    <None Include="Resources\Api_Internal_Operator.bmp" />
+    <None Include="Resources\Api_Internal_Property.bmp" />
+    <None Include="Resources\Api_Internal_Structure.bmp" />
+    <None Include="Resources\Api_Namespace.bmp" />
+    <None Include="Resources\Api_Private.bmp" />
+    <None Include="Resources\Api_Private_Class.bmp" />
+    <None Include="Resources\Api_Private_Constructor.bmp" />
+    <None Include="Resources\Api_Private_Delegate.bmp" />
+    <None Include="Resources\Api_Private_Enum.bmp" />
+    <None Include="Resources\Api_Private_Event.bmp" />
+    <None Include="Resources\Api_Private_Field.bmp" />
+    <None Include="Resources\Api_Private_Interface.bmp" />
+    <None Include="Resources\Api_Private_Method.bmp" />
+    <None Include="Resources\Api_Private_Operator.bmp" />
+    <None Include="Resources\Api_Private_Property.bmp" />
+    <None Include="Resources\Api_Private_Structure.bmp" />
+    <None Include="Resources\Api_Protected.bmp" />
+    <None Include="Resources\Api_Protected_Class.bmp" />
+    <None Include="Resources\Api_Protected_Constructor.bmp" />
+    <None Include="Resources\Api_Protected_Delegate.bmp" />
+    <None Include="Resources\Api_Protected_Enum.bmp" />
+    <None Include="Resources\Api_Protected_Event.bmp" />
+    <None Include="Resources\Api_Protected_Field.bmp" />
+    <None Include="Resources\Api_Protected_Interface.bmp" />
+    <None Include="Resources\Api_Protected_Method.bmp" />
+    <None Include="Resources\Api_Protected_Operator.bmp" />
+    <None Include="Resources\Api_Protected_Property.bmp" />
+    <None Include="Resources\Api_Protected_Structure.bmp" />
+    <None Include="Resources\Api_Public_Class.bmp" />
+    <None Include="Resources\Api_Public_Constructor.bmp" />
+    <None Include="Resources\Api_Public_Delegate.bmp" />
+    <None Include="Resources\Api_Public_Enum.bmp" />
+    <None Include="Resources\Api_Public_Event.bmp" />
+    <None Include="Resources\Api_Public_Field.bmp" />
+    <None Include="Resources\Api_Public_Interface.bmp" />
+    <None Include="Resources\Api_Public_Method.bmp" />
+    <None Include="Resources\Api_Public_Operator.bmp" />
+    <None Include="Resources\Api_Public_Property.bmp" />
+    <None Include="Resources\Api_Public_Structure.bmp" />
+    <None Include="Resources\Api_Undocumented.bmp" />
+    <None Include="Resources\Api_Unknown.bmp" />
+    <None Include="Resources\CodeClass.ico" />
+    <None Include="Resources\CodeFile.bmp" />
+    <None Include="Resources\Content.ico" />
+    <None Include="Resources\Copy.bmp" />
+    <None Include="Resources\Cut.bmp" />
+    <None Include="Resources\DefaultAndSplit.bmp" />
+    <None Include="Resources\DefaultTopic.bmp" />
+    <None Include="Resources\Delete.bmp" />
+    <None Include="Resources\Dependencies.ico" />
+    <None Include="Resources\Filter.ico" />
+    <None Include="Resources\HelpAttrs.ico" />
+    <None Include="Resources\HelpDoc.ico" />
+    <None Include="Resources\ImageFile.bmp" />
+    <None Include="Resources\MoveDown.bmp" />
+    <None Include="Resources\MoveUp.bmp" />
+    <None Include="Resources\NormalTopic.bmp" />
+    <None Include="Resources\PageEdit.png" />
+    <None Include="Resources\Paste.bmp" />
+    <None Include="Resources\PlugInAdd.png" />
+    <None Include="Resources\PreviewTOC.bmp" />
+    <None Include="Resources\Properties.bmp" />
+    <None Include="Resources\Save.bmp" />
+    <None Include="Resources\SaveAll.bmp" />
+    <None Include="Resources\SiteMap.png" />
+    <None Include="Resources\SplitTOC.bmp" />
+    <None Include="Resources\Token.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CodeColorizer\ColorizerLibrary\ColorizerLibrary.csproj">
+      <Project>{72331A21-C452-4BE4-BFDB-B8029A6BC1C0}</Project>
+      <Name>ColorizerLibrary</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="MSBuild\SandcastleHelpFileBuilder.targets" />
+    <None Include="Resources\SpinningWheel.gif" />
+    <Compile Include="BuildAction.cs" />
+    <Compile Include="BuildComponent\SyntaxFilterInfo.cs" />
+    <Compile Include="ConceptualContent\ApiParentMode.cs" />
+    <Compile Include="ConceptualContent\CodeSnippetCollection.cs" />
+    <Compile Include="ConceptualContent\ITableOfContents.cs" />
+    <Compile Include="ConceptualContent\ResourceItem.cs" />
+    <Compile Include="ConceptualContent\TopicFile.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="Conversion\ConvertConceptualContent.cs" />
+    <Compile Include="Conversion\ConvertFromDocProject.cs" />
+    <Compile Include="Conversion\ConvertFromMSExampleGui.cs" />
+    <Compile Include="Conversion\ConvertFromNDoc.cs" />
+    <Compile Include="Conversion\ConvertFromSandcastleGui.cs" />
+    <Compile Include="Conversion\ConvertToMSBuildFormat.cs" />
+    <Compile Include="Design\BuildActionEnumConverter.cs" />
+    <Compile Include="Design\SyntaxFilterTypeConverter.cs" />
+    <Compile Include="Design\SyntaxFilterValueEditor.cs" />
+    <Compile Include="Design\UserDefinedPropertyEditor.cs" />
+    <Compile Include="Design\DynamicReadOnlyPropertyDescriptor.cs" />
+    <Compile Include="Design\NamespaceSummaryItemEditorDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Design\NamespaceSummaryItemEditorDlg.Designer.cs">
+      <DependentUpon>NamespaceSummaryItemEditorDlg.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\ProjectSummaryEditor.cs" />
+    <Compile Include="Design\ProjectSummaryEditorDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Design\ProjectSummaryEditorDlg.Designer.cs">
+      <DependentUpon>ProjectSummaryEditorDlg.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\UserDefinedPropertyEditorDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Design\UserDefinedPropertyEditorDlg.Designer.cs">
+      <DependentUpon>UserDefinedPropertyEditorDlg.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\UserDefinedPropertyTypeConverter.cs" />
+    <Compile Include="FileItem.cs" />
+    <Compile Include="FileItemCollection.cs" />
+    <Compile Include="HtmlSdkLinkType.cs" />
+    <Compile Include="MSBuild\BuildHelpViewerFile.cs" />
+    <Compile Include="MSHelp2SdkLinkType.cs" />
+    <Compile Include="MSHelpViewerSdkLinkType.cs" />
+    <Compile Include="ProjectFileConfiguration.cs" />
+    <Compile Include="Properties\AssemblyInfoShared.cs" />
+    <Compile Include="SdkLinkTarget.cs" />
+    <None Include="Resources\ProjectTemplate.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PostBuildEvent>XCopy /q /s /y "$(ProjectDir)MSBuild\*.targets" "$(SolutionDir)SandcastleBuilderGUI\$(OutDir)"
+</PostBuildEvent>
+  </PropertyGroup>
+</Project>

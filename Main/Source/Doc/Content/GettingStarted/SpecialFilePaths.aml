@@ -1,0 +1,258 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="a24489fb-45d6-46f4-9eaa-9a9c4e0919b2" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>The help file builder has the ability to utilize third-party custom
+build components and plug-ins.  In addition, the project system allows you to
+add files based on user-defined template files.  Build components and plug-ins
+can also create configuration or cache files to use across builds if needed.
+In order to work correctly, each type of file must be located in the correct
+place.</para>
+
+	  <autoOutline lead="none" excludeRelatedTopics="true" />
+	  
+<alert class="note">
+  <para>None of the folders mentioned below exist by default so you will need
+to create them yourself.  The exception is the root local application data
+folder.  It will be created on first use by the help file builder if referenced
+by a build component or a plug-in configuration.</para>
+</alert>
+	  
+    </introduction>
+
+<section address="RootFolders">
+  <title>Root Application Data Folders</title>
+  <content>
+    <para>There are two root application data folders (<legacyBold>Common
+Application Data</legacyBold> and <legacyBold>Local Application Data</legacyBold>).
+These equate to one of the following folders based on your operating system:</para>
+
+<table>
+  <tableHeader>
+    <row>
+      <entry>Operating System</entry>
+      <entry>Folder Location</entry>
+    </row>
+  </tableHeader>
+  <row>
+    <entry>Vista/Windows 7</entry>
+    <entry><para>Common Application Data: <localUri>%ProgramData%\EWSoftware\Sandcastle
+Help File Builder</localUri></para>
+	<para>Local Application Data: <localUri>%LOCALAPPDATA%\EWSoftware\Sandcastle Help File
+Builder</localUri></para></entry>
+  </row>
+  <row>
+    <entry>Windows XP</entry>
+    <entry><para>Common Application Data: <localUri>%ALLUSERSPROFILE%\Application
+Data\EWSoftware\Sandcastle Help File Builder</localUri></para>
+	<para>Local Application Data Folder: <localUri>%USERPROFILE%\Local Settings\Application
+Data\EWSoftware\Sandcastle Help File Builder</localUri></para></entry>
+  </row>
+</table>
+
+<alert class="tip">
+  <para>The <codeInline>{@AppDataFolder}</codeInline> substitution tag will
+resolve to the root common application data folder for the help file builder.
+The <codeInline>{@LocalDataFolder}</codeInline> substitution tag will resolve
+to the root local application data folder for the help file builder.</para>
+</alert>
+
+  </content>
+</section>
+
+<section address="BuildComponents">
+  <title>Third-Party Build Components and Syntax Filter Generators</title>
+  <content>
+    <para>Third-party build components that you want to use from within the
+help file builder via the <codeInline>ComponentConfigurations</codeInline>
+project property and custom syntax filter generators accessible via the
+<codeInline>SyntaxFilters</codeInline> project property must be placed in the
+<legacyBold>Common Application Data</legacyBold> folder.  This equates to one
+of the following folders based on your operating system:</para>
+
+<table>
+  <tableHeader>
+    <row>
+      <entry>Operating System</entry>
+      <entry>Folder Location</entry>
+    </row>
+  </tableHeader>
+  <row>
+    <entry>Vista/Windows 7</entry>
+    <entry><localUri>%ProgramData%\EWSoftware\Sandcastle Help File
+Builder\Components and Plug-Ins</localUri></entry>
+  </row>
+  <row>
+    <entry>Windows XP</entry>
+    <entry><localUri>%ALLUSERSPROFILE%\Application Data\EWSoftware\Sandcastle
+Help File Builder\Components and Plug-Ins</localUri></entry>
+  </row>
+</table>
+
+	<para>Put the build components and any of their required configuration and
+supporting files within the noted folder or a subfolder beneath it.  These
+will be shared by all users on the same computer.  All component configuration
+filenames must have <localUri>.components</localUri> as their extension.  All
+syntax filter generator definition files must have <localUri>.filters</localUri>
+as their extension.</para>
+
+  </content>
+</section>
+
+<section address="PlugIns">
+  <title>Third-Party Build Process Plug-Ins</title>
+  <content>
+    <para>Third-party build process plug-ins that you want to use from within
+the help file builder via the <codeInline>PlugInConfigurations</codeInline>
+project property must be placed in the <legacyBold>Common Application Data</legacyBold>
+folder.  This equates to one of the following folders based on your operating
+system:</para>
+
+<table>
+  <tableHeader>
+    <row>
+      <entry>Operating System</entry>
+      <entry>Folder Location</entry>
+    </row>
+  </tableHeader>
+  <row>
+    <entry>Vista/Windows 7</entry>
+    <entry><localUri>%ProgramData%\EWSoftware\Sandcastle Help File
+Builder\Components and Plug-Ins</localUri></entry>
+  </row>
+  <row>
+    <entry>Windows XP</entry>
+    <entry><localUri>%ALLUSERSPROFILE%\Application Data\EWSoftware\Sandcastle
+Help File Builder\Components and Plug-Ins</localUri></entry>
+  </row>
+</table>
+
+	<para>Put the plug-ins and any of their required configuration and
+supporting files within the noted folder or a subfolder beneath it.  These will
+be shared by all users on the same computer.  All plug-in assembly filenames
+must have <localUri>.plugins</localUri> as their extension.</para>
+
+  </content>
+</section>
+
+<section address="BuildSettings">
+  <title>User Configuration Settings and Cache Files</title>
+  <content>
+    <para>Due to various folder/file permission issues and in order to allow
+multiple users on the same computer to have their own custom settings and cache
+files used by build components and plug-ins, these types of files must be
+stored in the <legacyBold>Local Application Data</legacyBold> folder (see the
+<link xlink:href="#RootFolders">Root Application Data Folders</link> section
+above).</para>
+
+	<para>As an example, the cached build components supplied with the help
+file builder create their cache files in the following location based on the
+operating system:</para>
+
+<table>
+  <tableHeader>
+    <row>
+      <entry>Operating System</entry>
+      <entry>Folder Location</entry>
+    </row>
+  </tableHeader>
+  <row>
+    <entry>Vista/Windows 7</entry>
+    <entry><localUri>%LOCALAPPDATA%\EWSoftware\Sandcastle Help File
+Builder\Cache</localUri></entry>
+  </row>
+  <row>
+    <entry>Windows XP</entry>
+    <entry><localUri>%USERPROFILE%\Local Settings\Application
+Data\EWSoftware\Sandcastle Help File Builder\Cache</localUri></entry>
+  </row>
+</table>
+
+	<para>Each user is free to delete such files to get back to a default state
+without affecting other users on the same computer.  Likewise, they can give
+copies of their settings files to other users for them to place in a like named
+folder in their settings area to make use of them as well.</para>
+
+  </content>
+</section>
+
+<section address="FileTemplates">
+  <title>User-Defined File Templates</title>
+  <content>
+    <para>Due to various folder/file permission issues and in order to allow
+multiple users on the same computer to have their own custom file templates,
+these types of files must be stored in the <legacyBold>Local Application Data</legacyBold>
+folder.  This equates to one of the following folders based on your operating system:</para>
+
+<table>
+  <tableHeader>
+    <row>
+      <entry>Operating System</entry>
+      <entry>Folder Location</entry>
+    </row>
+  </tableHeader>
+  <row>
+    <entry>Vista/Windows 7</entry>
+    <entry><para><localUri>%LOCALAPPDATA%\EWSoftware\Sandcastle Help File
+Builder\Item Templates</localUri></para>
+	<para><localUri>%LOCALAPPDATA%\EWSoftware\Sandcastle Help File
+Builder\Conceptual Templates</localUri></para></entry>
+  </row>
+  <row>
+    <entry>Windows XP</entry>
+    <entry><para><localUri>%USERPROFILE%\Local Settings\Application
+Data\EWSoftware\Sandcastle Help File Builder\Item Templates</localUri></para>
+	<para><localUri>%USERPROFILE%\Local Settings\Application
+Data\EWSoftware\Sandcastle Help File Builder\Conceptual Templates</localUri></para></entry>
+  </row>
+</table>
+
+	<para>Use the <localUri>Item Templates</localUri> folder to store custom
+templates for project files such as images, HTML files, stylesheets, script
+files, tokens, code snippets, or XML files.  Use the <localUri>Conceptual
+Templates</localUri> folder to store custom MAML topic template files.  These
+template files appear on the <ui>Custom Templates</ui> submenus within the
+project explorer, site map editor, and content layout file editor.</para>
+
+	<para>Each user is free to delete such files to get back to a default state
+without affecting other users on the same computer.  Likewise, they can give
+copies of their template files to other users for them to place in the templates
+folder in their settings area to make use of them as well.</para>
+
+  </content>
+</section>
+
+<section address="XCopyDeployment">
+  <title>XCOPY/Build Server Deployment</title>
+  <content>
+  	<para>For use in a build server environment the Sandcastle Help File Builder
+also supports simple XCOPY deployment.  As long as the
+<environmentVariable>SHFBROOT</environmentVariable> environment variable points
+to the location of the help file builder assemblies, it will be able to find
+everything it needs at build time.  In such situations, custom build components
+and plug-ins may also be copied to the help file builder folder or a sub-folder
+beneath it.  When searching for custom build components and plug-ins the
+following search order is used:</para>
+
+<list class="bullet">
+  <listItem>If a <environmentVariable>SHFBCOMPONENTROOT</environmentVariable>
+environment variable is defined (optional), it is searched first.</listItem>
+  <listItem>Next, the help file builder installation folder
+(<environmentVariable>SHFBROOT</environmentVariable>) is searched.</listItem>
+  <listItem>Finally, the common application data folders noted above are searched.</listItem>
+</list>
+
+	<para>If any duplicate components or plug-ins are encountered, the first
+one loaded based on the above search order will be used.</para>
+
+  </content>
+</section>
+
+    <relatedTopics>
+      <link xlink:href="b772e00e-1705-4062-adb6-774826ce6700" />
+      <link xlink:href="3d4edd2d-7883-4508-b9d2-bd7b4d848b0d" />
+      <link xlink:href="e031b14e-42f0-47e1-af4c-9fed2b88cbc7" />
+      <link xlink:href="8dcbb69b-7a1a-4049-8e6b-2bf344efbbc9" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

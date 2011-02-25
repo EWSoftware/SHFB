@@ -1,0 +1,158 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="2152ed96-bf69-4b9b-b1a7-4fffc71b3095" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+      <para>The <ui>User Preferences</ui> option on the <ui>File</ui> menu
+allows you to set some common non-project application settings.  The dialog box
+contains two tabs.  The first is for general preferences and the second is for
+defining custom content editors for project files.</para>
+    </introduction>
+
+<section>
+  <title>General Preferences</title>
+  <content><para>The general preferences are as follows:</para>
+
+<list class="bullet">
+    <listItem><ui>MS Help 2 (.HxS) Viewer Path</ui> - This allows you to specify
+the path to an external application that can be used to view MS Help 2 (.HxS)
+files.  If you need one, see the
+<link xlink:href="8c0c97d0-c968-4c15-9fe9-e8f3a443c50a" /> for the download
+location of the <application>H2 Viewer</application>.</listItem>
+
+    <listItem><ui>MS Help Viewer (.mshc) Viewer Path</ui> - This allows you to
+specify the path to an external application that can be used to view MS Help Viewer
+(.mshc) files.  If you need one, see the
+<link xlink:href="8c0c97d0-c968-4c15-9fe9-e8f3a443c50a" /> for the download
+location of the <application>H3 Viewer</application>.  If not specified, the
+default browser will be used to open MS Help Viewer content.</listItem>
+
+    <listItem><ui>ASP.NET Development Web Server Port</ui> - This allows you to
+specify the port number to use when starting the built-in .NET 2.0 development
+web server to view website output using the <localUri>Index.aspx</localUri>
+page.  By default, it is set to port 12345.  You can alter this if it conflicts
+with something on your system.</listItem>
+
+	<listItem><ui>Before Building</ui> - This lets you specify whether or not
+the help file builder should save the project and/or modified document windows
+prior to performing a build or previewing a topic.  The options are:
+
+	<list class="bullet">
+		<listItem>Save all changes - Save the project and any modified document
+editors.</listItem>
+		<listItem>Save changes to open documents only - Only open, modified
+document editors are saved.  Changes to the project file are not saved.</listItem>
+		<listItem>Prompt to save all changes - You will be asked to save all
+changes.  If documents are not saved, the resulting help file may not contain
+current information.</listItem>
+		<listItem>Don't save any changes - Nothing is saved.  The resulting
+help file may not contain current information if there are unsaved documents.</listItem>
+	</list>
+
+<alert class="note">
+  <para>When opening the topic preview window, the previewed document is always
+saved regardless of this setting so that it shows current information.</para>
+</alert></listItem>
+
+    <listItem><ui>Build window verbose logging enabled</ui> - This allows you
+to specify whether or not full logging information is displayed in the output
+window during a build.  It is checked by default.  If unchecked, only build
+step messages are reported during the build.  All messages are still written to
+the log file.  This is useful for very large projects where the generated
+output can consume large quantities of memory.</listItem>
+
+	<listItem><ui>Open help file after successful build</ui> - If enabled, the
+help file will be opened after a successful build.  The format opened will
+depend on the format chosen in the <codeInline>HelpFileFormat</codeInline>
+project property.  Preference is given to Help 1, then Help 2, and finally
+website output.  This option can also be toggled on and off via the
+<ui>Documentation | View Help File</ui> menu.</listItem>
+
+	<listItem><ui>Build Output Background/Foreground/Font</ui> - These options
+let you specify the background color, foreground color, and font used in the
+output window for the build output (the text shown during the build).</listItem>
+
+	<listItem><ui>Text Editor Font</ui> - This option lets you set the font
+used in the text editor windows.  The syntax highlighter controls the colors
+and they are not editable.</listItem>
+
+	<listItem><ui>Show line numbers in text editor</ui> - If enabled, all
+text editor windows will show line numbers down the left side.  If not enabled,
+no line numbers are shown within the text editor windows.</listItem>
+
+	<listItem><ui>Enter matching brackets, parentheses, and quotes</ui> - If
+enabled, all editor windows will automatically insert the matching closing
+character when an opening bracket, parentheses, or double quote is entered.  If
+not enabled, the matching character is not entered automatically.</listItem>
+
+</list>
+
+  </content>
+</section>
+
+<section>
+  <title>Content File Editors</title>
+  <content><para>This tab allows you to define custom editors for project files
+that are not recognized by the standalone GUI as being editable text files
+based on their filename extension.  In such cases, the GUI will look for a
+custom editor definition and, if found, will launch the associated application.
+If no custom editor definition is found, the GUI attempts to launch the file
+using the shell to let it decide how the file should be edited.</para>
+
+	<para>To add a new content file editor, click the <ui>Add</ui> button
+located next to the upper right corner of the editor list.  Select the new
+entry in the list and use the property grid at the bottom of the tab to alter
+its settings.</para>
+
+<list class="bullet">
+    <listItem><ui>Description</ui> - Enter a description for the editor.</listItem>
+
+    <listItem><ui>Extensions</ui> - Enter a list of filename extensions with
+which this editor will be associated.  If specifying multiple extensions,
+separate them with a space, semi-colon, period, or a comma.</listItem>
+
+    <listItem><ui>ApplicationPath</ui> - Enter the path to the editor
+application.  As with other project properties, this can be an absolute or a
+relative path and can contain environment variable references for expansion
+when actually invoked.</listItem>
+
+    <listItem><para><ui>Arguments</ui> - Specify any necessary command line
+arguments.  At the minimum, the <codeInline>$ContentItem</codeInline> macro
+should be specified so that the file to edit is passed to the application.
+Enclose arguments in quote marks if the value will contain spaces.  Macros that
+you can use are as follows:</para>
+
+    <list class="bullet">
+        <listItem><codeInline>$ContentItem</codeInline> - This expands to the
+full path and filename of the item to be edited.</listItem>
+        <listItem><codeInline>$ProjectFile</codeInline> - This expands to the
+full path and filename of the current project.</listItem>
+        <listItem><codeInline>$ProjectFolder</codeInline> - This expands to the
+full path of the current project without the filename.</listItem>
+    </list>
+
+	<para>Macro names are case-insensitive.</para></listItem>
+
+    <listItem><ui>StartupFolder</ui> - An optional folder name in which the
+application is started.  If left blank, the current project's folder is used.
+As with the application path, this can be an absolute or relative path and can
+contain environment variable references for expansion when actually invoked.</listItem>
+
+</list>
+
+	<para>To delete an editor definition, select it in the list and click the
+<ui>Delete</ui> button located next to the bottom right corner of the editor
+list.</para>
+
+  </content>
+</section>
+
+    <relatedTopics>
+    <link xlink:href="b772e00e-1705-4062-adb6-774826ce6700" />
+    <link xlink:href="8e3f8757-0ef3-4772-bb2f-5d7ae57e50da" />
+    </relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

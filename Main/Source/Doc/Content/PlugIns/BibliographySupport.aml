@@ -1,0 +1,192 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="161537d9-6f89-42ef-9c51-3a15ef94df65" revisionNumber="1">
+  <developerHowToDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<introduction>
+    <para>This plug-in adds support for the auto-generated bibliography feature
+that was added to Sandcastle by the <token>SandcastleStyles</token> patch.  The
+patch must have been applied to Sandcastle in order for this plug-in to work
+correctly.</para>
+
+  </introduction>
+  
+  <section>
+    <title>Generating a Bibliography</title>
+    <content>
+      <para>The auto-generated bibliography feature allows an author to
+create an external bibliography XML file and then share it between multiple
+topics by specifying short identifiers in <codeInline>cite</codeInline> 
+elements that match one of the references contained in the file.  When one or
+more <codeInline>cite</codeInline> elements are used, Sandcastle will
+automatically generate a bibliography for the topic in the place that the
+<codeInline>bibliography</codeInline> element is specified and the
+<codeInline>cite</codeInline> elements themselves will be replaced with
+hyperlinks to corresponding bookmarked entries in the bibliography.</para>
+
+<alert class="tip">
+    <para>The <codeInline>bibliography</codeInline> element is typically
+specified immediately before the <codeInline>relatedTopics</codeInline> section
+that appears at the bottom of the topic.</para>
+</alert>
+
+	<para>To use citations, a bibliography XML file must be created to store
+the identifiers and entries.  A default bibliography file named,
+<localUri>bibliography.xml</localUri> can be found in each presentation style's
+<localUri>.\Data</localUri> folder.  The presenation styles are located in the
+main Sandcastle installation folder in the <localUri>.\Presentation</localUri>
+folder.  An example file is also shown below.</para>
+
+<procedure>
+	<title>Defining Citation Identifiers and Bibliography Entries</title>
+		<steps class="ordered">
+          <step>
+            <content>
+            	<para>If it does not already exist, create a new XML file and
+add it to the project.  The suggested name is <localUri>bibliography.xml</localUri>
+but you can name it what you like.  Set the <codeInline>BuildAction</codeInline>
+to <codeInline>None</codeInline> so that the build ignores it.</para>
+            </content>
+          </step>
+          <step>
+            <content>
+              <para>Add content similar to the following to the
+bibliography XML file.</para>
+
+<code lang="xml" title="Sample Bibliography.xml File">
+<![CDATA[<?xml version="1.0" encoding="utf-8"?>
+<bibliography>
+  <reference name="sandcastle activity">
+    <title>Sandcastle Activity Statistics</title>
+    <author>Microsoft</author>
+    <publisher>CodePlex.com</publisher>
+    <link>http://Sandcastle.codeplex.com/stats/view</link>
+  </reference>
+  <reference name="sandcastle styles">
+    <title>Sandcastle Styles</title>
+    <author>Paul Selormey, Eric Woodruff, Dave Sexton</author>
+    <publisher>CodePlex.com</publisher>
+    <link>http://SandcastleStyles.codeplex.com</link>
+  </reference>
+</bibliography>]]>
+</code>
+
+		<para>The previous example defines a bibliography XML file that
+contains two <codeInline>reference</codeInline> elements, which can be referred
+to by <codeInline>cite</codeInline> elements in a MAML topic using the values
+of the <codeInline>name</codeInline> attributes.</para>
+              
+<alert class="tip">
+	<para>Reference names are not case-sensitive.</para>
+</alert>
+
+		<para>The <codeInline>title</codeInline> and <codeInline>author</codeInline>
+elements are required.  The <codeInline>publisher</codeInline> and
+<codeInline>link</codeInline> elements are optional.  The only supported
+content type for each element is plain text.</para>
+            </content>
+          </step>
+          <step>
+          	<content>
+          		<para>Add the plug-in to the project's
+<codeInline>PlugInConfigurations</codeInline> project property.  Once added,
+click the <ui>Configure</ui> button to specify the path to the bibliography XML
+file.  You can use a replacement tag in the path to specify a special folder
+such as the project folder (i.e. <localUri>{@ProjectFolder}Bibliography.xml</localUri>).</para>
+          	</content>
+          </step>
+        </steps>
+      </procedure>
+
+      <procedure>
+        <title>Using the Bibliography in a MAML Topic</title>
+
+        <steps class="ordered">
+          <step>
+            <content>
+              <para>Add a <codeInline>bibliography</codeInline> element to the
+topic, preferably just before the <codeInline>relatedTopics</codeInline>
+element (see example). </para>
+            </content>
+          </step>
+          <step>
+          	<content>
+          		<para>Use <codeInline>cite</codeInline> elements to reference
+items in the bibliography.  The inner text of the element is the value of the
+<codeInline>name</codeInline> attribute for the entry.</para>
+          	</content>
+          </step>
+        </steps>
+      </procedure>
+
+      <procedure>
+        <title>Using the Bibliography in XML Code Comments</title>
+
+        <steps class="ordered">
+          <step>
+          	<content>
+          		<para>Use <codeInline>cite</codeInline> elements to reference
+items in the bibliography.  The inner text of the element is the value of the
+<codeInline>name</codeInline> attribute for the entry.  The Sandcastle
+transformations will add a bibliography section to the API member's page
+automatically if any <codeInline>cite</codeInline> elements are found.</para>
+          	</content>
+          </step>
+        </steps>
+      </procedure>
+
+    </content>
+  </section>
+
+  <codeExample>
+    <description>
+      <content>
+        <para>The following example MAML topic uses multiple <codeInline>cite</codeInline>
+elements to reference bibliography entries defined in the
+<localUri>bibliography.xml</localUri> file.</para>
+
+<alert class="important">
+	<para>The <codeInline>bibliography</codeInline> element is also specified
+so that a bibliography section is generated automatically near the bottom of
+the topic.</para>
+        </alert>
+      </content>
+    </description>
+    
+<code lang="xml" title="Sample Topic with Bibliography">
+<![CDATA[<?xml version="1.0" encoding="utf-8"?>
+<topic id="00000000-0000-0000-0000-000000000000" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+      <para>This topic discusses Sandcastle's popularity.</para>
+    </introduction>
+
+    <section>
+      <title>Sandcsatle's Popularity</title>
+
+      <content>
+        <para>Sandcastle is a popular download<cite>sandcastle activity</cite>.</para>
+
+        <para>Sandcastle Styles<cite>sandcastle styles</cite> adds even more value.</para>
+
+        <para>I expect Sandcastle's popularity<cite>sandcastle activity</cite>
+to increase as more community members become aware of its usefulness, with the
+help of projects like Sandcastle Styles<cite>sandcastle styles</cite>.</para>
+      </content>
+    </section>
+
+    <!-- Place the bibliography before the relatedTopics section -->
+    <bibliography/>
+  
+    <relatedTopics/>
+  </developerConceptualDocument>
+</topic>]]></code>
+  </codeExample>
+
+  <relatedTopics>
+    <link xlink:href="e031b14e-42f0-47e1-af4c-9fed2b88cbc7" />
+    <token>SandcastleStyles</token>
+  </relatedTopics>
+
+  </developerHowToDocument>
+</topic>

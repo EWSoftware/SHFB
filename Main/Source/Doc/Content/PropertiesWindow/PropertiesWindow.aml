@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="e32086c6-de17-4e54-a746-1ac80bf0c45a" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+	  <para>All of the main project properties except documentation sources and
+references can be edited via the <ui>Project Properties</ui> window.
+The options in the property grid are grouped into several categories and are
+listed alphabetically within them.  Most are simple data types and can be
+edited directly in the text box or dropdown to the right of the property name.
+Other values, such as <codeInline>ComponentConfigurations</codeInline> are
+collection-based and use a pop-up editor accessed by clicking the "..." button
+that appears to the right of the property value when it is selected.</para>
+    </introduction>
+
+<section>
+  <title>Property Categories</title>
+  <content><para>Select a topic below to learn more about the properties in
+each category.</para>
+
+<list class="bullet">
+    <listItem><link xlink:href="da405a33-3eeb-4451-9aa8-a55be5026434"/></listItem>
+    <listItem><link xlink:href="eb7e1bc7-21c5-4453-bbaf-dec8c62c15bd" />
+        <list class="bullet">
+        	<listItem><link xlink:href="48f5a893-acde-4e50-8c17-72b83d9c3f9d" /></listItem>
+            <listItem><link xlink:href="52aa172a-a310-4f75-b20f-7e2c7d870c65" /></listItem>
+        </list>
+    </listItem>
+    <listItem><link xlink:href="1b2dff59-92cc-4578-b261-f3849f30c26c"/></listItem>
+    <listItem><link xlink:href="7d28bf8f-923f-44c1-83e1-337a416947a1"/></listItem>
+	<listItem><link xlink:href="d0c2dabd-3caf-4586-b81d-cbd765dec7cf" />
+		<list class="bullet">
+			<listItem><link xlink:href="74664b00-b83f-450a-833a-25984ba812e3" /></listItem>
+			<listItem><link xlink:href="68a2fa4e-c6de-47ed-a9a6-60cc6ef01df4" /></listItem>
+		</list>
+	</listItem>
+	<listItem><link xlink:href="5f743a6e-3239-409a-a8c1-0bff4b5375f4" />
+		<list class="bullet">
+			<listItem><link xlink:href="4baf93f2-f395-4281-b7ef-bfe6c878a4d7" /></listItem>
+			<listItem><link xlink:href="534c4ff1-3bba-4431-a3a6-76dcb2d374f8" /></listItem>
+		</list></listItem>
+    <listItem><link xlink:href="e6fcfa33-e7ee-430a-abfe-6b7962e6d068"/></listItem>
+    <listItem><link xlink:href="5a2ab898-7161-454d-b5d3-959df0de0e36"/></listItem>
+    <listItem><link xlink:href="3c489bd6-598c-4684-aafb-fbe9400864d3"/>
+    	<list class="bullet">
+    		<listItem><link xlink:href="7df16a60-f718-4b8f-bfa2-88c42906070c" /></listItem>
+    	</list>
+    </listItem>
+	<listItem><link xlink:href="f818e4d1-3457-4be6-a833-1b700f1e2f18" /></listItem>
+</list>
+
+  </content>
+</section>
+
+    <relatedTopics>
+    <link xlink:href="4fd3b2b6-dfad-4513-983b-5e74d2342ff0"/>
+	<link xlink:href="3d4edd2d-7883-4508-b9d2-bd7b4d848b0d"/>
+	<link xlink:href="e12c2b9f-18c7-4718-850b-ac3c2e293672" />
+    </relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

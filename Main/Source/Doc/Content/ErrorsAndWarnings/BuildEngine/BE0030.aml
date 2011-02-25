@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="bbbf3033-0d53-4d23-98cc-7b4f0c5f960b" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Error BE0030: The <codeInline>OutputPath</codeInline> and
+<codeInline>WorkingPath</codeInline> properties cannot be set to the same
+path.</para>
+    </introduction>
+
+    <section>
+      <title>Cause</title>
+      <content>
+        <para>This error occurs if the value of the <codeInline>OutputPath</codeInline>
+and the <codeInline>WorkingPath</codeInline> project property values equate to
+the same location.</para>
+      </content>
+    </section>
+
+    <section>
+      <title>Solution</title>
+      <content>
+        <para>When a website build is performed, the content of the output path
+is cleared before the website files are generated.  Likewise, when a build
+completes, the intermediate files in the working folder will be deleted if the
+<codeInline>CleanIntermediates</codeInline> property is set to true.  In either
+case, this would result in the loss of the output files.  To correct the error
+either clear the <legacyBold>WorkingPath</legacyBold> property so that it
+uses a default location for the working files or set it to a folder that is
+different from the <codeInline>OutputPath</codeInline> property value.</para>
+      </content>
+    </section>
+
+    <relatedTopics>
+    <link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="d0ac3f31-bc25-4c5a-b2e6-d64a74fdb67c" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+      <para>This plug-in is used to send notification of the build completion
+status via e-mail.  The log file can be included as an optional attachment.
+Configuration options must be defined before it can be used.  The configuration
+options are as follows:</para>
+    </introduction>
+
+<section>
+  <content>
+<table>
+  <tableHeader>
+    <row>
+      <entry>Configuration Option</entry>
+      <entry>Description</entry>
+    </row>
+  </tableHeader>
+  <row>
+    <entry>SMTP Server</entry>
+    <entry>Enter the name of the SMTP server used to send the e-mail.</entry>
+  </row>
+  <row>
+    <entry>Port #</entry>
+    <entry>Enter the port number to use on the server when sending the e-mail.</entry>
+  </row>
+  <row>
+    <entry>Use default credentials</entry>
+    <entry>If this checkbox is checked, the current user's credentials at build
+time will be used to send the e-mail.  If running this on a build server or
+if your e-mail server requires authentication, uncheck this box and supply a
+user name and password.</entry>
+  </row>
+  <row>
+    <entry>User Name and Password</entry>
+    <entry><para>Use these to enter specific credentials for sending the
+e-mail</para>
+
+<alert class="security">
+  <para>The password is stored in the project file in plain text.</para>
+</alert></entry>
+  </row>
+  <row>
+    <entry>From E-Mail Address</entry>
+    <entry>Enter a From e-mail address.  If one is not supplied, the address
+<fictitiousUri>noreply@noreply.com</fictitiousUri> will be used as the sender.
+
+<alert class="note">
+  <para>Some e-mail servers require a valid From address on the e-mail or at
+least one that comes from the same domain.</para>
+</alert></entry>
+  </row>
+  <row>
+    <entry>Success E-Mail Address</entry>
+    <entry>If you want an e-mail sent on a successful build, enter the e-mail
+address here.  If no address is entered, no e-mail will be sent on successful
+builds.</entry>
+  </row>
+  <row>
+    <entry>Failure E-Mail Address</entry>
+    <entry>A failure e-mail address is required.  This is where the failure
+notification will be sent.</entry>
+  </row>
+  <row>
+    <entry>Attach build log on successful build</entry>
+    <entry>Check this box if you would like the build log to be attached to the
+success e-mail.  If unchecked, the log will not be sent.</entry>
+  </row>
+  <row>
+    <entry>Attach build log on failed build</entry>
+    <entry>Check this box if you would like the build log to be attached to the
+failure e-mail.  If unchecked, the log will not be sent.</entry>
+  </row>
+  <row>
+    <entry>Optional XSL Transform</entry>
+    <entry>If specified and the log file is to be attached to the e-mail, the
+log file is ran through the specified transform and the resulting HTML file is
+attached in its place.  If not specified, the raw log file is attached.  The
+default transform can be used by specifying
+<localUri>{@SHFBFolder}Templates\TransformBuildLog.xsl</localUri>.</entry>
+  </row>
+</table>
+
+	<para>This plug-in runs after the build has completed and the log file has
+been closed but before it is deleted if the <codeInline>KeepLogFile</codeInline>
+option is set to false.  Note that because the log file is closed, any failure
+messages reported by this plug-in as it tries to send the e-mail will not
+appear in the log file itself.</para>
+
+  </content>
+</section>
+
+    <relatedTopics>
+    <link xlink:href="e031b14e-42f0-47e1-af4c-9fed2b88cbc7" />
+    </relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

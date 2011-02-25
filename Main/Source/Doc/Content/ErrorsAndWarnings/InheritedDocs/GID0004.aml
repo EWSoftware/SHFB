@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="c472d97b-e5b9-4e60-8746-dc1ec660167b" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Warning GID0004: No comments found for member '<legacyItalic>[id]</legacyItalic>'</para>
+    </introduction>
+
+    <section>
+      <title>Cause</title>
+      <content>
+        <para>No inheritable comments were found for the indicated member ID.</para>
+      </content>
+    </section>
+
+    <section>
+      <title>Solution</title>
+      <content>
+        <para>The possible causes for this warning are as follows:</para>
+        
+<list class="bullet">
+  <listItem>The indicated ID name is misspelled or does not exist.  In this,
+case, you must correct the ID so that it refers to a valid member ID.</listItem>
+
+  <listItem>The member does not represent an item from which comments can be
+inherited (i.e. not a class, an interface member, a virtual member, etc.).</listItem>
+
+  <listItem>The member's base elements do not contain comments.  In this case,
+you must add comments on the base members so that they can be inherited.</listItem>
+
+  <listItem>If you specified a <codeInline>cref</codeInline> and/or a
+<codeInline>select</codeInline> attribute check them to make sure that they are
+accurate and will result in member comments that can be inherited.</listItem>
+</list>
+      </content>
+    </section>
+
+    <relatedTopics>
+    <link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
+    <link xlink:href="79897974-ffc9-4b84-91a5-e50c66a0221d" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

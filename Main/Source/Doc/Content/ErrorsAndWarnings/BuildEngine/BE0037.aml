@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="e2af12c6-af9e-4b59-9fe1-fc3c413022ae" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Error BE0037: Could not find the path the the HTML Help 1 compiler</para>
+    </introduction>
+
+    <section>
+      <title>Cause</title>
+      <content>
+        <para>This error occurs when the HTML Help 1 compiler could not be
+found in the standard location or anywhere in the Program Files folders on
+any fixed drive.</para>
+      </content>
+    </section>
+
+    <section>
+      <title>Solution</title>
+      <content>
+        <para>The following information can help solve this problem:</para>
+
+<list class="bullet">
+  <listItem>Review the <link xlink:href="8c0c97d0-c968-4c15-9fe9-e8f3a443c50a" />
+carefully and make sure that you have installed all of the required tools and
+have the latest version of each.</listItem>
+
+  <listItem>If all else fails, manually specify the location of the HTML Help
+1 compiler by entering the path in the <codeInline>HtmlHelp1xCompilerPath</codeInline>
+project property.  This usually needs to be done if performing the build on
+a build server.</listItem>
+</list>
+
+      </content>
+    </section>
+
+    <relatedTopics>
+    <link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

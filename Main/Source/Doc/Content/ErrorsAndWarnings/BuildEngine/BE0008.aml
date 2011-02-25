@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="89a0728c-fe7c-49b1-9b6b-14ac952630dc" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Warning BE0008: Namespace '<legacyItalic>[namespace]</legacyItalic>'
+excluded via namespace comments conflicted with API filter setting.  Exclusion
+ignored.</para>
+    </introduction>
+
+    <section>
+      <title>Cause</title>
+      <content>
+        <para>This warning occurs if a namespace in the
+<codeInline>NamespaceSummaries</codeInline> project property is marked as
+excluded but the <codeInline>ApiFilter</codeInline> has it marked as included.
+In such cases, the API filter wins and the namespace is included in the
+help file.</para>
+      </content>
+    </section>
+
+    <section>
+      <title>Solution</title>
+      <content>
+        <para>Edit either the <codeInline>NamespaceSummaries</codeInline>
+property or the <codeInline>ApiFilter</codeInline> property such that the
+exclusion setting for the indicated namespace matches in both.  If you want to
+exclude an entire namespace, the preferred way is to use the
+<codeInline>ApiFilter</codeInline> project property.  Excluding namespaces
+via the <codeInline>NamespaceSummaries</codeInline> property is supported
+for backward compatibility with older projects.</para>
+      </content>
+    </section>
+
+    <relatedTopics>
+    <link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="7b30aec2-4942-4805-a072-c22db33ab2b6" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Error BE0013: Possible invalid path '<localUri>[path]</localUri>'</para>
+    </introduction>
+
+    <section>
+      <title>Cause</title>
+      <content>
+        <para>This is caused by a potentially invalid path on a
+<codeInline>source</codeInline> attribute on a <codeInline>code</codeInline>
+element in an HTML additional content file.</para>
+      </content>
+    </section>
+
+    <section>
+      <title>Solution</title>
+      <content>
+        <para>The file in which the error occurred will be listed just above
+the error message in the log file.  Load it and search for <codeInline>code</codeInline>
+elements that import source code from external files.  Check the paths to
+ensure that they are correct and valid.</para>
+      </content>
+    </section>
+
+    <relatedTopics>
+    <link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

@@ -1,0 +1,165 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="5a2ab898-7161-454d-b5d3-959df0de0e36" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+      <para>The following properties are available in the Show Missing Tags
+category.  These define for which help topic elements a red "missing" message
+will appear if the related tag has not been used where needed or contains no
+text.  These can help you locate help topics that need additional work to fully
+specify the documentation.  In addition to the inserted messages, a warning is
+written to the log file noting the missing item as well.</para>
+
+<alert class="tip">
+  <para>You can simplify your project comments for derived classes, interface
+implementations, overridden members, and other members with other common
+comments by making use of the
+<link xlink:href="79897974-ffc9-4b84-91a5-e50c66a0221d">&lt;inheritdoc /&gt;</link>
+tag.</para>
+</alert>
+
+	  <autoOutline lead="none" excludeRelatedTopics="true" />
+    </introduction>
+
+<section address="AutoDocCtors">
+  <title>AutoDocumentConstructors</title>
+  <content><para>This is used to indicate whether or not constructors are
+automatically documented if they are missing the <codeInline>&lt;summary&gt;</codeInline>
+tag and for classes with compiler-generated constructors. Set this to True (the
+default) to automatically add default text for the <codeInline>&lt;summary&gt;</codeInline>
+tag on constructors that are missing it and for classes with a
+compiler-generated constructor. If set to false and
+<codeInline>ShowMissingSummaries</codeInline> is true, a "missing summary"
+warning will appear instead.  A message is also written to the log file when a
+constructor is auto-documented.</para>
+
+  </content>
+</section>
+
+<section address="AutoDocDispose">
+  <title>AutoDocumentDisposeMethods</title>
+  <content><para>This is used to indicate whether or not dispose methods are
+automatically documented if they are missing the <codeInline>&lt;summary&gt;</codeInline>
+tag and for classes with compiler-generated dispose methods. Set this to True (the
+default) to automatically add default text for the <codeInline>&lt;summary&gt;</codeInline>
+tag on dispose methods that are missing it and for classes with compiler-generated
+dispose methods. If set to false and <codeInline>ShowMissingSummaries</codeInline>
+is true, a "missing summary" warning will appear instead.  A message is also
+written to the log file when a dispose method is auto-documented.  If a
+<codeInline>Dispose(Boolean)</codeInline> method is present, its parameter will
+also be auto-documented if necessary.  If set to false and
+<codeInline>ShowMissingParams</codeInline> is true, a "missing parameter"
+message will appear instead.</para>
+
+  </content>
+</section>
+
+<section address="MissingIncTargets">
+  <title>ShowMissingIncludeTargets</title>
+  <content><para>This property lets you indicate whether or not a red "missing"
+message is inserted into each topic in which an <codeInline>include</codeInline>
+tag is found.  This indicates that the target of the include (either the file
+or the XPath query) could not be found at the time the assembly was compiled.
+The default is False to ignore <codeInline>include</codeInline> tags.</para>
+
+<alert class="note">
+  <para>If you are writing C# code, invalid <codeInline>include</codeInline>
+comment tags are easy to find at the time the assembly is built as the
+compiler issues a warning (CS1589 or CS1592).  The VB.NET compiler does not
+output a warning, nor does it write the invalid tag to the comments file.  As
+such, this option will have no effect in VB.NET generated XML comments files.
+The same is true for managed C++ generated XML comments files except the
+compiler does generate a warning (C4637).</para>
+
+  <para>By now you're probably wondering "So, what was the point of adding
+this property?" Well, somebody requested it and I didn't find out it was only
+useful with C# XML comments files until after I'd done the work and by then I
+couldn't be bothered to go back and take out all the code and resource items.
+So, it's there but off by default.</para>
+</alert>
+
+  </content>
+</section>
+
+<section address="MissingNS">
+  <title>ShowMissingNamespaces</title>
+  <content><para>This property lets you indicate whether or not a red "missing"
+message is inserted into each namespace topic that is missing its namespace
+comments.  The default is True to add the message.  Namespace comments can be
+added using the <codeInline>NamespaceSummaries</codeInline> project property,
+by using an external XML comments file, or by using a <codeInline>NamespaceDoc</codeInline>
+class in your code.  See the <link xlink:href="eb7e1bc7-21c5-4453-bbaf-dec8c62c15bd" />
+for details.</para>
+
+  </content>
+</section>
+
+<section address="MissingParams">
+  <title>ShowMissingParams</title>
+  <content><para>This property lets you indicate whether or not a red "missing"
+message is inserted into the help topic for each method parameter that is
+missing its related <codeInline>&lt;param&gt;</codeInline> tag documentation.
+The default is True to add the message.</para>
+
+  </content>
+</section>
+
+<section address="MissingRemarks">
+  <title>ShowMissingRemarks</title>
+  <content><para>This property lets you indicate whether or not a red "missing"
+message is inserted into the help topic if the <codeInline>&lt;remarks&gt;</codeInline>
+tag has not been specified for the item.  The default is False to ignore items
+with missing or empty <codeInline>&lt;remarks&gt;</codeInline> tags.</para>
+
+  </content>
+</section>
+
+<section address="MissingReturns">
+  <title>ShowMissingReturns</title>
+  <content><para>This property lets you indicate whether or not a red "missing"
+message is inserted into the help topic if the method returns a value and the
+<codeInline>&lt;returns&gt;</codeInline> tag has not been specified for the
+item.  The default is True to add the message.</para>
+
+  </content>
+</section>
+
+<section address="MissingSummaries">
+  <title>ShowMissingSummaries</title>
+  <content><para>This property lets you indicate whether or not a red "missing"
+message is inserted into the help topic if the <codeInline>&lt;summary&gt;</codeInline>
+tag has not been specified for the item.  The default is True to add the
+message.</para>
+
+  </content>
+</section>
+
+<section address="MissingTypeParams">
+  <title>ShowMissingTypeParams</title>
+  <content><para>This property lets you indicate whether or not a red "missing"
+message is inserted into the help topic for each generic type or method type
+parameter that is missing its related <codeInline>&lt;typeparam&gt;</codeInline>
+tag documentation.  The default is True to add the message.</para>
+
+  </content>
+</section>
+
+<section address="MissingValues">
+  <title>ShowMissingValues</title>
+  <content><para>This property lets you indicate whether or not a red "missing"
+message is inserted into the help topic for property items that are missing the
+<codeInline>&lt;value&gt;</codeInline> tag documentation.  The default is False
+to ignore properties with missing or empty <codeInline>&lt;value&gt;</codeInline>
+tags.</para>
+
+  </content>
+</section>
+
+    <relatedTopics>
+    <link xlink:href="e32086c6-de17-4e54-a746-1ac80bf0c45a" />
+    </relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

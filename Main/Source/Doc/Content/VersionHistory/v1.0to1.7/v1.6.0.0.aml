@@ -1,0 +1,162 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="a96e26f7-7a2c-475f-9733-4936609f5791" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Version 1.6.0.0 was released on October 4th, 2007.</para>
+    </introduction>
+    <section>
+      <title>Changes in This Release</title>
+      <content>
+<list class="bullet">
+    <listItem>Added support for the September 2007 CTP of Sandcastle.</listItem>
+
+    <listItem>Versions of SharpDevelop 3.0.0.2658 and later now contain a copy of
+the Sandcastle Help File Builder.  See the <link xlink:href="1aea789d-b226-4b39-b534-4c97c256fac8" /> for
+information on how to install an update of Sandcastle and the help file
+builder for SharpDevelop.</listItem>
+
+    <listItem>Custom build process plug-ins are now supported that can be used to
+extend or alter the build process in various ways.  Plug-ins supplied with
+the help file builder include:
+    <list class="bullet">
+        <listItem>Additional Content Only - Build help files based on nothing but
+the additional content items (documentation assemblies are excluded).</listItem>
+        <listItem>AjaxDoc Builder - Build help files for Atlas script libraries.</listItem>
+        <listItem>Completion Notification - E-mail the build results to someone
+optionally attaching the log file.</listItem>
+    </list></listItem>
+
+    <listItem>Added support for runing *.topic additional content files through
+an XSL transform so that they can match the appearance of the API topic
+pages. Basic transforms for the Hana, Prototype, and VS2005 styles are
+supplied. The <codeInline>TopicFileTransform</codeInline> property can be used to
+specify your own XSL transformation file.</listItem>
+
+    <listItem>Fixed a bug that caused private types to remain in the documentation
+if <codeInline>DocumentInternals</codeInline> was true but <codeInline>DocumentPrivates</codeInline>
+was false (and vice versa for internal types).</listItem>
+
+    <listItem>After MRefBuilder is executed, a check is performed to see if there
+is anything to document.  If there are no public APIs, no private or
+internal APIs, or all namespaces are removed from the reflection
+information, the build is stopped with an error stating the problem.</listItem>
+
+    <listItem>Added a <legacyBold>Content File Editors</legacyBold> tab to the <legacyBold>User
+Preferences</legacyBold> dialog box. This allows you to associate non-default
+editors with content file extensions such as those for HTML files,
+stylesheets, images, etc.</listItem>
+
+    <listItem>Added an <legacyBold>Edit</legacyBold> button to the <legacyBold>Additional Content Editor</legacyBold>
+dialog box. When clicked on an entry representing a single file, the
+appropriate editor is launched to allow you to edit the file.  If one has
+been defined using the User Preferences dialog box, that editor will be
+used. If one is not defined, the shell is used to launch the item with the
+Edit verb to invoke the default editor for the file. If an entry representing
+a wildcard is selected, a dialog opens first to let you choose a file to
+edit.</listItem>
+
+    <listItem>Added a <codeInline>ContentSiteMap</codeInline> project option
+which is used to specify the optional site map file that defines the table of
+contents layout for the additional content files.  If used, the site map
+structure overrides the default table of contents layout derived from the
+folder structure of the additional content items.</listItem>
+
+    <listItem>Added an <legacyBold>Edit Site Map</legacyBold> button to the <legacyBold>Content Item
+Editor</legacyBold> dialog. This allows you to create or modify the layout of the
+site map entries.</listItem>
+
+    <listItem>Excluded namespaces and members with an
+<codeInline>&lt;exclude /&gt;</codeInline> tag are now removed using MRefBuilder's
+namespace ripping feature which is more efficient than removing them
+afterwards from the reflection information file. Excluded namespace and
+member information is merged with the new <codeInline>ApiFilter</codeInline> property.
+The <codeInline>ApiFilter</codeInline> property will take precedence if there is a
+conflict in exposure.</listItem>
+
+    <listItem>Added the <codeInline>ApiFilter</codeInline> project property to the
+<legacyBold>Visibility</legacyBold> category so that you can exclude documented API members
+and/or inherited API members using MRefBuilder's namespace ripping feature.
+This can provide more flexibility than using <codeInline>&lt;exclude /&gt;</codeInline>
+tags and is more efficient as the members are removed at the time the
+reflection information is generated.</listItem>
+
+    <listItem>The <codeInline>ApiFilter</codeInline> property designer lets you view the
+documented and inherited namespace members in a tree view and to check and
+uncheck items to include or exclude them.  The namespace hierarchies are
+searchable using regular expressions and category options.</listItem>
+
+    <listItem>The console mode builder supports <legacyBold>-include</legacyBold> and
+<legacyBold>-exclude</legacyBold> command line options to add entries to the
+<codeInline>ApiFilter</codeInline> collection property.</listItem>
+
+    <listItem>Added <codeInline>DocumentInheritedPrivateFrameworkMembers</codeInline> and
+<codeInline>DocumentInheritedInternalFrameworkMembers</codeInline> properties to allow
+the removal of private and/or internal inherited framework members.
+Inherited protected framework members are now removed as well if
+<codeInline>DocumentProtected</codeInline> is set to false.</listItem>
+
+    <listItem>A <codeInline>KeepLogFile</codeInline> property was added to the project's
+<legacyBold>Build</legacyBold> category properties.  The default is true to keep the log file
+after a successful build.  If set to false, the log file is deleted after a
+successful build.</listItem>
+
+    <listItem>Added a <codeInline>FlagsEnumEditor</codeInline> type editor to the
+<codeInline>HelpFileFormat</codeInline> and <codeInline>SyntaxFilters</codeInline> project properties
+to make it easier to select multiple help file formats and language syntax
+filters in the dropdown editor.</listItem>
+
+    <listItem>The <codeInline>SyntaxFilters</codeInline> property now supports the
+<codeInline>JScript</codeInline>, <codeInline>VisualBasicUsage</codeInline>, and
+<codeInline>XamlUsage</codeInline> syntax filters.  There is a lack of information on the
+XAML Usage filter right now so it is not clear how it can be fully used.</listItem>
+
+    <listItem>Project option replacement tags can now appear in text project
+properties such as <codeInline>HeaderText</codeInline> and <codeInline>FooterText</codeInline>.</listItem>
+
+    <listItem>Added a <codeInline>{@BuildDate}</codeInline> tag to insert the build date.  It
+supports an optional format specifier.  See the
+<link xlink:href="69d998a7-1af5-4bf5-889b-59cd00b64000" /> topic for
+details on the available tags.</listItem>
+
+    <listItem>The language filter is now connected for all three presentation
+styles.</listItem>
+
+    <listItem>Added support for finding C++ <codeInline>#pragma region</codeInline>/<codeInline>#pragma
+endregion</codeInline> sections when extracting regions for code blocks.</listItem>
+
+    <listItem>The context menu for the property grid now contains a <legacyBold>Copy
+property name to clipboard</legacyBold> option that copies the current property's name
+to the clipboard.</listItem>
+
+    <listItem>The main form's size and location are saved to user settings on exit
+and the main form is restored to its prior size and location when opened the
+next time.</listItem>
+
+    <listItem>Thanks to JKendrick for the SQL script keywords and code colorizer
+rule definitions.  Use the language ID <codeInline>sql</codeInline>, <codeInline>sql
+server</codeInline>, or <codeInline>sqlserver</codeInline> to colorize a code block as SQL
+script.</listItem>
+
+    <listItem><legacyUnderline><legacyBold>PLEASE NOTE: - Localized versions of the Sandcastle shared
+content files have been removed</legacyBold></legacyUnderline>.  The selected language will still
+be passed to the help compiler to localize the help window items but the
+table of contents and the actual help topic content will NOT be localized.
+This was necessary as with a third presentation style and a growing number
+of languages, it was becoming a project unto itself to merge and manage
+them all and to coordinate with all the other people to maintain them with
+each new CTP.  A simplified localization model has been implemented. A
+small subset of shared content items are maintained that override items in
+user-managed translations of the different presentation style files.  I
+will no longer manage a full, merged set of shared content resources.  See
+the <link xlink:href="e2ed6222-c3ee-4c6e-b0f9-fa3c86bc3e2c" /> help file
+topic for details.  As of this release, not all items in the shared builder
+content files have been translated yet.</listItem>
+</list>
+
+      </content>
+    </section>
+    <relatedTopics>
+    <link xlink:href="6110ac54-04d8-4624-8a2b-2a58af63c20d" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

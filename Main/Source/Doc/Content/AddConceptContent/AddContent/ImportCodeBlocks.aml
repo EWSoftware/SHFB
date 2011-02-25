@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="1863a4d7-61b6-4dde-862d-a358d0cfbd54" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+      <para>The help file builder allows you to import source code into an
+additional content HTML page and colorize it using the <codeInline>&lt;code&gt;</codeInline>
+tag.  It supports the same colorizer options as the <codeInline>&lt;pre&gt;</codeInline>
+tag and the <codeInline>CodeBlockComponent</codeInline>. The main difference is
+that you specify a required <codeInline>source</codeInline> attribute to
+specify the source code file and an optional <codeInline>region</codeInline>
+attribute to limit the code to a defined region of the source file.  The tag
+should be self-closing or should contain no content.  The <codeInline>lang</codeInline>
+attribute must also appear in order to specify the language to use for
+colorizing the code. All other colorizer attributes are optional.  The path
+specified can be relative.  If so, it is always assumed to be relative to the
+project file's folder.  See the <link xlink:href="7f03ba39-09f8-4320-bdbd-ed31a3bd885f" />
+help topic for option details.  Below are several examples of its use.</para>
+
+<alert class="warning">
+	<legacyBold>Deprecated</legacyBold>
+	<para>The additional content model of adding extra content to a help file
+has been deprecated.  While it will continue to be supported and will not be
+removed, it will not receive any more features or updates.  Going forward,
+<link xlink:href="3d4edd2d-7883-4508-b9d2-bd7b4d848b0d">conceptual content</link>
+is the preferred method of adding non-reference content to the help file.  The
+additional content feature can still be used to
+<link xlink:href="77d2d693-db84-4ae3-a84c-e33c71f92e9a">override stock content</link>
+and add supporting files to the help file.</para>
+</alert>
+    </introduction>
+
+<section>
+  <content>
+
+<code lang="xml" title=" ">
+&lt;!-- Import an entire file --&gt;
+&lt;code lang="xml" source="..\Test.xml" numberLines="true" title=" "/&gt;
+
+&lt;!-- Import a defined region --&gt;
+&lt;code lang="vbnet" source="..\Class1.vb" region="Test Region"
+    title="Test region from class" /&gt;&lt;/code&gt;
+
+&lt;!-- A few more examples --&gt;
+&lt;code lang="vbnet" source="..\Class1.vb" region="Embedded snippet"
+    title="Test region from method" numberLines="true" /&gt;
+
+&lt;code lang="cs" source="..\TestClass.cs" region="Methods"
+    numberLines="true" outlining="true" /&gt;
+
+&lt;code source="..\GenericClass.cs" lang="cs" &gt; &lt;/code&gt;
+</code>
+
+	<para>You can also import multiple code snippets into one common colorized
+code block by nesting them within a <codeInline>pre</codeInline> tag and
+including the <codeInline>nested="true"</codeInline> attribute.  Nested code
+tags should be flush left or the leading spaces before the tag will be included
+before the first line of the imported code block.  Only the <codeInline>source</codeInline>
+and <codeInline>region</codeInline> attributes will be utilized.  All other
+attributes that control colorization of the merged code block will be retrieved
+from the parent <codeInline>pre</codeInline> tag.</para>
+
+<code lang="xml" title=" ">
+&lt;pre title="Nested code block example" lang="VB.NET"&gt;
+&lt;code source="..\Class1.vb" region="Snippet #1" nested="true" /&gt;
+&lt;code source="..\Class1.vb" region="Snippet #2" nested="true" /&gt;
+&lt;/pre&gt;
+</code>
+
+	<para>Literal code can also be mixed in between the nested
+<codeInline>code</codeInline> tags.</para>
+
+<code lang="xml" title=" ">
+&lt;pre title="Nested code block example" lang="VB.NET"&gt;
+&lt;code source="..\Class1.vb" region="Snippet #1" nested="true" /&gt;
+
+' ... Some stuff happens here ...
+
+&lt;code source="..\Class1.vb" region="Snippet #2" nested="true" /&gt;
+&lt;/pre&gt;
+</code>
+
+  </content>
+</section>
+
+    <relatedTopics>
+      <link xlink:href="d80219be-54ba-4c5f-8903-83ef29fbaa00" />
+      <link xlink:href="4fd3b2b6-dfad-4513-983b-5e74d2342ff0" />
+      <link xlink:href="4bf6d6d9-ecc1-4e7c-92ae-e011752431f1" />
+    </relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

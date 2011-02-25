@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="355bb237-acf6-4df8-bfc6-d89736837abb" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Error BE0067: Unable to obtain assembly name from project file
+'<localUri>[projectFile]</localUri>' using Configuration
+'<legacyItalic>[config]</legacyItalic>', Platform '<legacyItalic>[platform]</legacyItalic>'
+</para>
+    </introduction>
+
+    <section>
+      <title>Cause</title>
+      <content>
+        <para>The assembly name was unable to be determined in the specified
+Visual Studio project file because it does not contain a definition for the
+indicated configuration and platform value combination.</para>
+      </content>
+    </section>
+
+    <section>
+      <title>Solution</title>
+      <content>
+        <para>Check the following conditions and correct as indicated:</para>
+
+<list class="bullet">
+	<listItem>Check the configuration and platform values to make sure that you
+did not misspell them.  If misspelled, correct the spelling either on the
+command line if doing a command line build or in the project's documentation
+source entry in the <codeInline>Configuration</codeInline> and
+<codeInline>Platform</codeInline> property settings.</listItem>
+
+	<listItem>If a <environmentVariable>Configuration</environmentVariable>
+or <environmentVariable>Platform</environmentVariable> environment variable
+is defined (the names are case-insensitive), MSBuild will pick up that value
+and use it as a default if not defined elsewhere.  If not needed, delete the
+environment variables.  If they are needed, override their values by specifying
+the correct value using MSBuild command line options or the
+<codeInline>Configuration</codeInline> and <codeInline>Platform</codeInline>
+properties on the documentation source entry for the project.</listItem>
+
+	<listItem>Check the Visual Studio project to ensure that it contains a
+configuration and platform definition for the specified values.  If not, add
+them using the configuration manager.  If not applicable to the project,
+use the documentation source entry's <codeInline>Configuration</codeInline>
+and <codeInline>Platform</codeInline> properties to specify the values to use
+for this particular project.</listItem>
+
+</list>
+
+      </content>
+    </section>
+
+    <relatedTopics>
+      <link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

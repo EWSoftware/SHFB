@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+	<?include Product.wxi ?>
+
+	<Fragment>
+		<DirectoryRef Id="INSTALLDIR">
+			<Directory Id="Colorizer" Name="Colorizer">
+				<Component Id="CopyCode.gif" Guid="{D9977B45-5847-423F-AD00-C2A1A0AA1A48}">
+					<File Id="CopyCode.gif" KeyPath="yes" Source="$(var.BinFolder)Colorizer\CopyCode.gif" />
+				</Component>
+				<Component Id="CopyCode_h.gif" Guid="{6FF3AF10-B8F8-4727-B322-5F39B8286905}">
+					<File Id="CopyCode_h.gif" KeyPath="yes" Source="$(var.BinFolder)Colorizer\CopyCode_h.gif" />
+				</Component>
+				<Component Id="highlight.css" Guid="{1FC03F96-40F0-46A1-8970-8E9E3C7C7260}">
+					<File Id="highlight.css" KeyPath="yes" Source="$(var.BinFolder)Colorizer\highlight.css" />
+				</Component>
+				<Component Id="highlight.js" Guid="{98EB7EF1-6B2F-4C47-B240-9FE3A255CCFC}">
+					<File Id="highlight.js" KeyPath="yes" Source="$(var.BinFolder)Colorizer\highlight.js" />
+				</Component>
+				<Component Id="highlight.xml" Guid="{688083E8-9233-4E9E-B204-37B90FCC78EB}">
+					<File Id="highlight.xml" KeyPath="yes" Source="$(var.BinFolder)Colorizer\highlight.xml" />
+				</Component>
+				<Component Id="highlight.xsl" Guid="{814839FB-2EA2-4F09-B4D0-2880C93D1375}">
+					<File Id="highlight.xsl" KeyPath="yes" Source="$(var.BinFolder)Colorizer\highlight.xsl" />
+				</Component>
+			</Directory>
+		</DirectoryRef>
+
+		<ComponentGroup Id="Colorizer">
+			<ComponentRef Id="CopyCode.gif" />
+			<ComponentRef Id="CopyCode_h.gif" />
+			<ComponentRef Id="highlight.css" />
+			<ComponentRef Id="highlight.js" />
+			<ComponentRef Id="highlight.xml" />
+			<ComponentRef Id="highlight.xsl" />
+		</ComponentGroup>
+	</Fragment>
+</Wix>

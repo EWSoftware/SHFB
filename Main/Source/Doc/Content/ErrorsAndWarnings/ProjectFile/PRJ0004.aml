@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="c5acba93-0ecf-449c-b968-df0572f75203" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Error PRJ0004: An attempt was made to set a read-only or ignored
+property: <legacyItalic>[property]</legacyItalic> Value:
+<legacyItalic>[value]</legacyItalic></para>
+    </introduction>
+
+    <section>
+      <title>Cause</title>
+      <content>
+        <para>This is an internal error that indicates a problem with the
+project system or the project file.  If you have been modifying the project
+file by hand, it could indicate that you have introduced an error into the
+help file properties.</para>
+      </content>
+    </section>
+
+    <section>
+      <title>Solution</title>
+      <content>
+        <para>If you have been modifying the help file project by hand rather
+than by using the help file builder standalone GUI, back out your changes and
+try to reload the project.  If you have not made any such modifications, open
+a work item in the <token>SHFB</token> project at CodePlex containing the
+details from the error message.  Attach the affected project as an example.</para>
+      </content>
+    </section>
+
+    <relatedTopics>
+    <link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

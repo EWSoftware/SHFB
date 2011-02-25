@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="e8c8417f-ac01-450c-8aef-984a69ecbb93" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Error BHT0002: Unable to build project
+'<localUri>[projectFile]</localUri>': <legacyItalic>[error]</legacyItalic></para>
+    </introduction>
+
+    <section>
+      <title>Cause</title>
+      <content>
+        <para>This is a generic catch-all error that occurs when a build fails
+unexpectedly.</para>
+      </content>
+    </section>
+
+    <section>
+      <title>Solution</title>
+      <content>
+        <para>Review the build log output and look for other error or warning
+messages that may have contributed to the problem.  If you cannot resolve the
+problem, please post a message in the <token>SHFB</token> discussion forum
+asking for help along with the details from the build log.</para>
+      </content>
+    </section>
+
+    <relatedTopics>
+    <link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

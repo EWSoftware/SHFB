@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="90e889f7-194b-411e-a376-8e0d91b1f6fd" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Version 1.6.0.4 was released on January 22nd, 2008.</para>
+    </introduction>
+
+    <section>
+      <title>Changes in This Release</title>
+      <content>
+<list class="bullet">
+    <listItem>Added support for the January 2008 release of Sandcastle.</listItem>
+
+    <listItem>Added <codeInline>CachedCopyFromIndexComponent</codeInline> and
+<codeInline>CachedResolveReferenceLinksComponent</codeInline> to the custom build
+components assembly. These cache key information for use across builds that
+should speed up the builds in many cases.</listItem>
+
+    <listItem>Added the <codeInline>DeploymentPlugIn</codeInline> which allows you to deploy
+the resulting help file output to a location other than the output folder
+(i.e. a file share, a web server, an FTP site, etc.).</listItem>
+
+    <listItem>Added the <codeInline>VersionBuilderPlugIn</codeInline> that allows you to
+generate version information for assemblies in the current project and other
+projects related to the same product that can be merged into the current
+project's help file topics.</listItem>
+
+    <listItem>Fixed a bug that caused the <codeInline>{@WorkingFolder}</codeInline> replacement
+tag to fail if used in a template file.</listItem>
+
+    <listItem>Fixed a bug in the Code Block and Post-transform Components that caused
+"none" language code blocks in API topics to always be hidden.</listItem>
+
+    <listItem>Fixed a bug in the default topic file transforms that caused it to not
+find the code colorizer script and stylesheet if the topic was not in the root
+folder.</listItem>
+
+    <listItem>Fixed issues caused by characters such as ampersand in the table
+of contents topic titles and filenames for Help 2 and website output.</listItem>
+
+    <listItem>If a topic file transform's output contains replacement tags, include
+items, blocks of code that need colorizing, or include code tags, they are now
+processed after the transform has occurred as well.</listItem>
+
+    <listItem>Added the <codeInline>map</codeInline> and <codeInline>area</codeInline> tags to the HTML
+passthrough section of the default transform files so that image maps can be
+used in additional content topics.</listItem>
+
+    <listItem>Added support for the Script# syntax generator to the
+<codeInline>SyntaxFilters</codeInline> project property.</listItem>
+
+    <listItem>The <legacyBold>Assemblies to Document</legacyBold> list now accepts files dragged and
+dropped from Windows Explorer.</listItem>
+
+    <listItem>When clearing the output folder, hidden folders and files are now
+ignored in addition to read-only folders and files.</listItem>
+
+    <listItem>When copying stock and additional content, hidden folders are ignored.</listItem>
+    
+    <listItem>Added a <legacyBold>Help2x_NamedURLIndex.HxK</legacyBold> file to support the
+<codeInline>NamedURLIndex</codeInline> keyword options such as <codeInline>HomePage</codeInline> and
+<codeInline>DefaultPage</codeInline> within API and/or additional content topics.</listItem>
+
+    <listItem>Modified the Help 2 compiler check to also look for the Common
+Files\Microsoft Shared\Help 2.0 Compiler folder to handle versions installed
+by the VS 2008 SDK.</listItem>
+
+    <listItem>Fixed up handling of empty string literals in the code colorizer rules
+and added support for character literals (all C-style languages) and regular
+expression literals (JavaScript).</listItem>
+
+    <listItem>Added "Open help file after successful build" option to the View Help
+File submenu and toolbar button dropdown menu.  If checked, the help file
+will be opened after the build completes successfully.  This is a user setting
+and is saved across sessions.</listItem>
+
+    <listItem>Thanks to Joey Bradshaw for the PowerShell script keywords and code
+colorizer rule definitions.  Use the language ID <codeInline>pshell</codeInline>,
+<codeInline>powershell</codeInline>, or <codeInline>ps1</codeInline> to colorize a code block as
+PowerShell script.</listItem>
+
+    <listItem>Thanks to Milly for supplying the Japanese translations of the help
+file builder's shared content files.</listItem>
+
+</list>
+
+      </content>
+    </section>
+
+    <relatedTopics>
+    <link xlink:href="6110ac54-04d8-4624-8a2b-2a58af63c20d" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

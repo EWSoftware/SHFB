@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="7e6e0e96-36cd-4541-9477-2657b98661f5" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+      <para>The "show missing documentation" build component is used to
+add "missing" notes for missing namespace comments and summary, parameter,
+returns, value, and remarks tags.  It can also add default summary
+documentation for constructors.  The functionality in this component used to
+be integrated with the help file builder itself. However, the XPath queries
+used to look up the information in the comments files and reflection
+information file proved to be too slow when used on extremely large builds
+with tens of thousands of topics.  By moving the processing to a build
+component, the amount of information to search is greatly reduced and the time
+to add missing item comments is now negligible.</para>
+    </introduction>
+
+<section>
+  <title>Example Configuration</title>
+  <content><para>The following is the default configuration for the "show
+missing documentation" component. It should be inserted into the configuration
+file before the <codeInline>TransformComponent</codeInline>.  All attribute
+names and values are case-sensitive.</para>
+
+<code lang="xml" title="Example Configuration">
+&lt;!-- Show missing documentation component configuration.  This must
+     appear before the TransformComponent. --&gt;
+&lt;component type="SandcastleBuilder.Components.ShowMissingComponent"
+  assembly="{@SHFBFolder}SandcastleBuilder.Components.dll"&gt;
+    &lt;!-- All elements are optional. --&gt;
+
+    &lt;!-- Auto-document constructors (true by default) --&gt;
+    &lt;AutoDocumentConstructors value="{@AutoDocumentConstructors}" /&gt;
+
+	&lt;!-- Auto-document dispose methods (true by default) --&gt;
+	&lt;AutoDocumentDisposeMethods value="{@AutoDocumentDisposeMethods}" /&gt;
+
+    &lt;!-- Show missing param tags (true by default) --&gt;
+    &lt;ShowMissingParams value="{@ShowMissingParams}" /&gt;
+
+    &lt;!-- Show missing typeparam tags (true by default) --&gt;
+    &lt;ShowMissingTypeParams value="{@ShowMissingTypeParams}" /&gt;
+
+    &lt;!-- Show missing remarks tags (false by default) --&gt;
+    &lt;ShowMissingRemarks value="{@ShowMissingRemarks}" /&gt;
+
+    &lt;!-- Show missing returns tags (true by default) --&gt;
+    &lt;ShowMissingReturns value="{@ShowMissingReturns}" /&gt;
+
+    &lt;!-- Show missing summary tags (true by default) --&gt;
+    &lt;ShowMissingSummaries value="{@ShowMissingSummaries}" /&gt;
+
+    &lt;!-- Show missing value tags (false by default) --&gt;
+    &lt;ShowMissingValues value="{@ShowMissingValues}" /&gt;
+
+    &lt;!-- Show missing namespace comments (true by default) --&gt;
+    &lt;ShowMissingNamespaces value="{@ShowMissingNamespaces}" /&gt;
+
+    &lt;!-- Show missing include targets (false by default) --&gt;
+    &lt;ShowMissingIncludeTargets value="{@ShowMissingIncludeTargets}" /&gt;
+
+    &lt;!-- Shared content file containing the localized
+         messages (optional) --&gt;
+    &lt;contentFile filename="{@WorkingFolder}SharedBuilderContent.xml" /&gt;
+&lt;/component&gt;
+</code>
+
+<para>The example given above is taken from the Sandcastle Help File Builder's
+configuration file.  When used with it, the replacement tag
+<codeInline>{@SHFBFolder}</codeInline> is used to insert the help file
+builder's folder in the file path.  This is replaced at build time with the
+appropriate value.  The other elements also use replacement tags that map to
+the help file builder project options of the same name.  If using the component
+in your own build scripts, replace the tags with actual values.  All elements
+are optional. If not specified, the default value noted in the comment before
+the element is used.</para>
+  </content>
+</section>
+
+<section>
+  <title>Localized Messages</title>
+  <content><para>If present, <codeInline>contentFile</codeInline> should point
+to a shared content file that contains the localized auto-documented
+constructor and "show missing" messages.  If omitted, default English language
+messages are used.  The format of the content should be similar to the
+following (lines wrapped for display purposes):</para>
+
+<code lang="xml" title="Localized Messages Example">
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;content xml:space="preserve"&gt;
+    &lt;!-- SHFB Show Missing Component messages --&gt;
+    &lt;item id="shfbAutoDocConstructor"&gt;Initializes a new instance
+of the &amp;lt;see cref="T:{0}"/&amp;gt; class&lt;/item&gt;
+
+    &lt;item id="shfbAutoDocStaticConstructor"&gt;Initializes the static
+fields of the &amp;lt;see cref="T:{0}"/&amp;gt; class&lt;/item&gt;
+
+    &lt;item id="shfbAutoDocDispose"&gt;Releases all resources used
+by the &amp;lt;see cref="T:{0}"/&amp;gt;&lt;/item&gt;
+
+    &lt;item id="shfbAutoDocDisposeBool"&gt;Releases the unmanaged
+resources used by the &amp;lt;see cref="T:{0}"/&amp;gt; and optionally
+releases the managed resources&lt;/item&gt;
+
+    &lt;item id="shfbAutoDocDisposeParam"&gt;True to release both
+managed and unmanaged resources; false to release only unmanaged
+resources&lt;/item&gt;
+
+    &lt;item id="shfbMissingTag"&gt;&amp;lt;p
+style="color: #dc143c; font-size: 8.5pt; font-weight: bold;"&amp;gt;[Missing
+&amp;amp;lt;{0}&amp;amp;gt; documentation for "{1}"]&amp;lt;/p&amp;gt;&lt;/item&gt;
+
+    &lt;item id="shfbMissingParamTag"&gt;&amp;lt;p
+style="color: #dc143c; font-size: 8.5pt; font-weight: bold;"&amp;gt;[Missing
+&amp;amp;lt;{0} name="{1}"/&amp;amp;gt; documentation for
+"{2}"]&amp;lt;/p&amp;gt;&lt;/item&gt;
+
+    &lt;item id="shfbMissingIncludeTarget"&gt;&amp;lt;p
+style="color: #dc143c; font-size: 8.5pt; font-weight:bold;"&amp;gt;[Missing
+&amp;amp;lt;include&amp;amp;gt; target documentation in '{0}'.  File: '{1}'
+Path: '{2}']&amp;lt;/p&amp;gt;&lt;/item&gt;
+
+&lt;/content&gt;
+</code>
+
+<para>The Sandcastle Help File Builder's content files contain these entries by
+default.  For information on what each of the "show missing" options does, see
+<link xlink:href="5a2ab898-7161-454d-b5d3-959df0de0e36" /> help topic.</para>
+
+  </content>
+</section>
+
+    <relatedTopics>
+    <link xlink:href="5a2ab898-7161-454d-b5d3-959df0de0e36" />
+    <link xlink:href="8dcbb69b-7a1a-4049-8e6b-2bf344efbbc9" />
+    </relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

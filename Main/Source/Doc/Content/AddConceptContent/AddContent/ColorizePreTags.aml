@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="d80219be-54ba-4c5f-8903-83ef29fbaa00" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+      <para>The help file builder allows you to add custom attributes to the
+<codeInline>&lt;pre&gt;</codeInline> tags in additional content HTML pages to
+specify how the text should be colorized.  The same attributes defined for the
+code block component can be used on <codeInline>&lt;pre&gt;</codeInline> tags
+with the exception of the <codeInline>source</codeInline> and
+<codeInline>region</codeInline> attributes. For the remaining attributes,
+the <codeInline>lang</codeInline> attribute must appear or they will be
+ignored.  If the <codeInline>keepSeeTags</codeInline> attribute is used, be
+aware that additional content files can only resolve links to help file topics,
+not online MSDN content.  See the <link xlink:href="7f03ba39-09f8-4320-bdbd-ed31a3bd885f" />
+help topic for details.  Below is an example.</para>
+
+<alert class="warning">
+	<legacyBold>Deprecated</legacyBold>
+	<para>The additional content model of adding extra content to a help file
+has been deprecated.  While it will continue to be supported and will not be
+removed, it will not receive any more features or updates.  Going forward,
+<link xlink:href="3d4edd2d-7883-4508-b9d2-bd7b4d848b0d">conceptual content</link>
+is the preferred method of adding non-reference content to the help file.  The
+additional content feature can still be used to
+<link xlink:href="77d2d693-db84-4ae3-a84c-e33c71f92e9a">override stock content</link>
+and add supporting files to the help file.</para>
+</alert>
+
+    </introduction>
+
+<section>
+  <content>
+
+<code lang="xml" title="As specified in the HTML">
+&lt;pre lang="cs" numberLines="true" outlining="true"
+  title="Example of Syntax Highlighting"&gt;
+#region Collapsible region
+// Test method
+public void TestMethod(string s, int x)
+{
+#if DEBUG
+    // Debug code
+    x = x + 1;
+    s = x.ToString();
+#else
+    // Release code
+    x = x + 5;
+    s = x.ToString();
+#endif
+
+    Console.WriteLine("The string = " + s);
+}
+#endregion
+&lt;/pre&gt;
+
+</code>
+
+<para>As rendered with colorizing and collapsible regions:</para>
+
+<code lang="cs" numberLines="true" outlining="true"
+  title="Example of Syntax Highlighting">
+
+#region Collapsible region
+// Test method
+public void TestMethod(string s, int x)
+{
+#if DEBUG
+    // Debug code
+    x = x + 1;
+    s = x.ToString();
+#else
+    // Release code
+    x = x + 5;
+    s = x.ToString();
+#endif
+
+    Console.WriteLine("The string = " + s);
+}
+#endregion
+</code>
+
+  </content>
+</section>
+
+    <relatedTopics>
+      <link xlink:href="1863a4d7-61b6-4dde-862d-a358d0cfbd54" />
+      <link xlink:href="4fd3b2b6-dfad-4513-983b-5e74d2342ff0" />
+      <link xlink:href="4bf6d6d9-ecc1-4e7c-92ae-e011752431f1" />
+    </relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

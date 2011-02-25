@@ -1,0 +1,1631 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>TestDoc</name>
+    </assembly>
+    <members>
+        <member name="T:TestDoc.Customer">
+            <summary>
+            A customer
+            </summary>
+        </member>
+        <member name="M:TestDoc.Customer.#ctor(System.Int32,System.String)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="id">The ID</param>
+            <param name="name">The name</param>
+        </member>
+        <member name="M:TestDoc.Customer.TestMethod">
+            <summary>
+            Base method implementation.
+            <para>Paragraph 1</para>
+            <para>Paragraph 2</para>
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:TestDoc.Customer.MyMethod">
+            <summary>Base class method summary.</summary>
+            <remarks>
+            Base class remarks.
+            <para>Info about the base class implementation.</para>
+            </remarks>
+            <example>
+            <code lang="cs" title="Test Inherited example">
+            /// Here is a code sample
+            </code>
+            </example>
+        </member>
+        <member name="P:TestDoc.Customer.ID">
+            <summary>
+            Gets the unique ID of this Customer.
+            </summary>
+            <returns>A <see cref="T:System.Int32"/> value representing the customer's unique ID.</returns>
+        </member>
+        <member name="P:TestDoc.Customer.Name">
+            <summary>
+            Gets the full name of the Customer.
+            </summary>
+            <returns>A <see cref="T:System.String"/> value representing the customer's name.</returns>
+        </member>
+        <member name="T:TestDoc.Visitor">
+            <inheritdoc />
+            <remarks>Actually, it's a visitor but we inherited the summary
+            documentation from the parent class</remarks>
+        </member>
+        <member name="M:TestDoc.Visitor.#ctor(System.String)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="name">The name</param>
+        </member>
+        <member name="M:TestDoc.Visitor.TestMethod">
+            <summary>
+            <inheritdoc select="para[last()]" />
+            </summary>
+        </member>
+        <member name="M:TestDoc.Visitor.MyMethod">
+            <summary><inheritdoc/> <p/>Extra stuff added.</summary>
+            <remarks>
+              <para>
+              My new remarks, including the last paragraph from the remarks
+              in the base class:
+              </para>
+              <inheritdoc select="para[last()]"/>
+            </remarks>
+            <example>
+            <inheritdoc/>
+            <para>Extra example: ... </para>
+            </example>
+        </member>
+        <member name="P:TestDoc.Visitor.ID">
+            <summary>
+            This type of customer cannot have a unique ID.
+            </summary>
+            <remarks>This property must not appear in the documentation of this class.</remarks>
+            <exclude/>
+        </member>
+        <member name="T:GenericOverloadBug.NamespaceDoc">
+             <summary>
+             Reported by David Hearn:
+             
+             <p/>The following problem occurs when a class inherits from a generic
+             base class that contains overloaded methods. One of the overloaded
+             methods has the generic type as a parameter.
+            
+             <p/>Hana and Prototype style: The generated documentation for the base
+             class looks correct, but the derived class (Class2) shows the
+             overloaded method with the generic parameter twice in the list of
+             members, one time without an icon and one with an icon. The description
+             for the one without an icon is messed up. The description for the one
+             with the icon lists the summary twice. The second overloaded method is
+             not shown.
+             
+             <p/>VS2005 style: The overloaded methods are not listed at all in the
+             derived class but are listed correctly in the base class.
+             </summary>
+        </member>
+        <member name="T:GenericOverloadBug.Class1`1">
+            <summary>
+            Class to test contains.
+            </summary>
+            <typeparam name="T">
+            Type of items.
+            </typeparam>
+        </member>
+        <member name="M:GenericOverloadBug.Class1`1.Contains(`0)">
+            <summary>
+            Determine if item exists.
+            </summary>
+            <param name="item">
+            The item to check.
+            </param>
+            <returns>
+            Returns false.
+            </returns>
+        </member>
+        <member name="M:GenericOverloadBug.Class1`1.Contains(System.Guid)">
+            <summary>
+            Determine if item exists by id.
+            </summary>
+            <param name="id">
+            The id to check.
+            </param>
+            <returns>
+            Returns false.
+            </returns>
+        </member>
+        <member name="T:GenericOverloadBug.Class2">
+            <summary>
+            Class that inherits from <see cref="T:GenericOverloadBug.Class1`1"/>.
+            </summary>
+        </member>
+        <member name="T:TestDoc.ServicedComponentTest">
+            <summary>
+            A test serviced component
+            </summary>
+        </member>
+        <member name="M:TestDoc.ServicedComponentTest.TestMethod">
+            <summary>
+            A test method
+            </summary>
+        </member>
+        <member name="M:TestDoc.ServicedComponentTest.System#EnterpriseServices#IServicedComponentInfo#GetComponentInfo(System.Int32@,System.String[]@)">
+            <inheritdoc />
+        </member>
+        <member name="M:TestDoc.ServicedComponentTest.System#EnterpriseServices#IRemoteDispatch#RemoteDispatchAutoDone(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:TestDoc.ServicedComponentTest.System#EnterpriseServices#IRemoteDispatch#RemoteDispatchNotAutoDone(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="T:SealedOverrideBug.BaseTest">
+            <summary>
+            A base class
+            </summary>
+        </member>
+        <member name="M:SealedOverrideBug.BaseTest.SomeMethod">
+            <summary>
+            A protected method. Test UTF-8: propriété attachée
+            <para>
+            Another UTF-8 Test:
+            Implementa el comportamiento de los grupos de trabajo, los cuáles,
+            en este sistema pueden ser tres
+            </para>
+            <para>
+            And more:
+            Příliš žluťoučký kůň uháněl s úplavicí
+            </para>
+            </summary>
+            <example>
+            <code>
+            // Test UTF-8 chars in code sample: aaaÖÖbbb
+            </code>
+            </example>
+        </member>
+        <member name="T:SealedOverrideBug.SealedTest">
+            <summary>
+            A sealed derived class
+            </summary>
+        </member>
+        <member name="M:SealedOverrideBug.SealedTest.#ctor">
+            <summary>
+            A public constructor
+            </summary>
+        </member>
+        <member name="M:SealedOverrideBug.SealedTest.SomeMethod">
+            <summary>
+            An override in the sealed class.<br/><br/>Test <b>break</b><br/>Another break.
+            </summary>
+            <inheritdoc />
+        </member>
+        <member name="M:SealedOverrideBug.SealedTest.CallMethod">
+            <summary>
+            A test
+            </summary>
+        </member>
+        <member name="T:SealedOverrideBug.FailingClass">
+            <summary>
+            A sealed derived class.
+            </summary>
+        </member>
+        <member name="M:SealedOverrideBug.FailingClass.#ctor">
+            <summary>
+            A public constructor
+            </summary>
+        </member>
+        <member name="M:SealedOverrideBug.FailingClass.SomeMethod">
+            <summary>
+            An override for the virtual method.  This doesn't show up in
+            the class documentation for a public build.  reflection.org
+            contains a reference to the base class method and not this one.
+            If you use /internal+ or remove the "sealed" keyword, then it
+            does show up correctly.
+            </summary>
+        </member>
+        <member name="M:SealedOverrideBug.FailingClass.CallMethod">
+            <summary>
+            A test
+            </summary>
+        </member>
+        <member name="T:IJM.Library.Threading.Windows.BackgroundRunner">
+            <summary>
+            Kan bewerkingen op de achtergrond uitvoeren en roept
+            een event aan op de UI thread wanneer deze klaar is.
+            </summary>
+        </member>
+        <member name="T:IJM.Library.Threading.Windows.IBackgroundRunner">
+            <summary>
+            Interface voor de background runner. Kan bewerkingen
+            op de achtergrond uitvoeren en roept een event aan
+            op de UI thread wanneer deze klaar is.
+            </summary>
+        </member>
+        <member name="M:IJM.Library.Threading.Windows.IBackgroundRunner.Run(System.ComponentModel.DoWorkEventHandler,System.ComponentModel.RunWorkerCompletedEventHandler,System.EventHandler{IJM.Library.Threading.Windows.DataEventArgs{System.Exception}})">
+            <summary>
+            Start de achtergrond bewerking. De functionaliteit in de
+            <see cref="T:System.ComponentModel.DoWorkEventHandler"/> zal op een aparte
+            thread worden aangeroepen. Wanneer deze klaar is,
+            zal de <see cref="T:System.ComponentModel.RunWorkerCompletedEventHandler"/> worden
+            aangroepen op de main thread(UI).
+            </summary>
+            <param name="doWork">Event waarin het werk moet gebeuren.</param>
+            <param name="completedEvent">Event dat wordt aangeroepen wanneer
+            het werk is gedaan.</param>
+            <param name="onError">Event dat wordt aangeroepen wanneer er een fout optreedt.</param>
+            Is met anonymous delegate niet zo'n probleem:
+        </member>
+        <member name="M:IJM.Library.Threading.Windows.BackgroundRunner.Run(System.ComponentModel.DoWorkEventHandler,System.ComponentModel.RunWorkerCompletedEventHandler,System.EventHandler{IJM.Library.Threading.Windows.DataEventArgs{System.Exception}})">
+            <inheritdoc />
+        </member>
+        <member name="M:IJM.Library.Threading.Windows.BackgroundRunner.GetSynchronizationContext">
+            <summary>
+            Geeft een <see cref="T:System.Threading.SynchronizationContext"/>, als er een huidige
+            is, dan wordt deze teruggegeven. Anders wordt er een nieuwe
+            aangemaakt. De <see cref="T:System.Threading.SynchronizationContext"/> wordt gebruikt
+            om op de User Interface thread terug te melden, waardoor
+            er geen invoke code nodig is in de user interface.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:TestDoc.ExtensionMethods.ExtensionTest">
+            <summary>
+            Test extension method documentation
+            </summary>
+        </member>
+        <member name="M:TestDoc.ExtensionMethods.ExtensionTest.ExtendTest(System.String,System.String)">
+            <summary>
+            Simple test of extension method documentation
+            </summary>
+            <param name="s">The string to modify</param>
+            <param name="x">The string to append</param>
+        </member>
+        <member name="T:XMLTagsDemo.NamespaceDoc">
+            <summary>
+            These are comments from the XMLTagsDemo namespace's NamespaceDoc class.
+            </summary>
+        </member>
+        <member name="T:XMLTagsDemo.IMyInstalledModules">
+             <summary>
+             Represents the list of all installed modules.
+             </summary>
+             <example>
+             This partial example shows the class implementing this interface.
+             <code>
+                 public class ModuleCollection : IMyInstalledModules
+                 {
+                     #region IEnumerable&lt;IMyInstalledModules&gt; Members
+            
+                     /// &lt;summary&gt;
+                     /// Get an enumeration of modules
+                     /// &lt;/summary&gt;
+                     /// &lt;returns&gt;&lt;/returns&gt;
+                     public IEnumerator&lt;IMyInstalledModules&gt; GetEnumerator()
+                     {
+                         EnsureLoaded();
+                         return installedModules.Values.GetEnumerator();
+                     }
+            
+                     #endregion
+                 }
+             </code>
+             </example>
+        </member>
+        <member name="M:XMLTagsDemo.IMyInstalledModules.Load">
+            <summary>
+            Loads the installed modules.
+            </summary>
+            <remarks>The installed modules would normally be listed in the
+            database in the dbo.ApplicationModule table.</remarks>
+        </member>
+        <member name="T:OverloadsPageBug.MyDialog">
+            <summary>
+            A form class.  Compiling help for this using the Hana or VS2005 styles
+            results in a bunch of Overloads pages in the TOC that shouldn't be
+            there as they belong to the base Form class, not this one.  The
+            Prototype style works as expected.
+            </summary>
+        </member>
+        <member name="M:OverloadsPageBug.MyDialog.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:OverloadsPageBug.MyDialog.Dispose(System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="T:DocumentationInheritance.NamespaceDoc">
+            <summary>
+            These are comments from the DocumentationInheritance namespace's
+            NamespaceDoc class.
+            </summary>
+        </member>
+        <member name="T:DocumentationInheritance.CustomException">
+            <summary>
+            This exception class is thrown by the application if it encounters an
+            unrecoverable error.
+            </summary>
+        </member>
+        <member name="M:DocumentationInheritance.CustomException.#ctor">
+            <summary>
+            Default constructor.
+            </summary>
+            <overloads>There are four overloads for the constructor</overloads>
+        </member>
+        <member name="M:DocumentationInheritance.CustomException.#ctor(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:DocumentationInheritance.CustomException.#ctor(System.String,System.Exception)">
+            <inheritdoc />
+        </member>
+        <member name="M:DocumentationInheritance.CustomException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <inheritdoc />
+        </member>
+        <member name="T:GlobalNamespaceTest">
+            <summary>
+            A class in the global namespace
+            </summary>
+        </member>
+        <member name="M:GlobalNamespaceTest.Test">
+            <summary>
+            A test method
+            </summary>
+        </member>
+        <member name="T:AnotherGlobalNamespaceTest">
+            <summary>
+            Another class in the global namespace
+            </summary>
+        </member>
+        <member name="M:AnotherGlobalNamespaceTest.Test">
+            <summary>
+            A test method
+            </summary>
+        </member>
+        <member name="T:TestDoc.TestGeneral">
+            <summary>
+            Test general enumerated type
+            </summary>
+        </member>
+        <member name="F:TestDoc.TestGeneral.None">
+            <summary>None</summary>
+        </member>
+        <member name="F:TestDoc.TestGeneral.One">
+            <summary>One</summary>
+        </member>
+        <member name="F:TestDoc.TestGeneral.Two">
+            <summary>Two</summary>
+        </member>
+        <member name="F:TestDoc.TestGeneral.Three">
+            <summary>Three</summary>
+        </member>
+        <member name="T:TestDoc.TestSerializable">
+            <summary>
+            Test serializable enumerated type
+            </summary>
+        </member>
+        <member name="F:TestDoc.TestSerializable.None">
+            <summary>None</summary>
+        </member>
+        <member name="F:TestDoc.TestSerializable.One">
+            <summary>One</summary>
+        </member>
+        <member name="F:TestDoc.TestSerializable.Two">
+            <summary>Two</summary>
+        </member>
+        <member name="F:TestDoc.TestSerializable.Three">
+            <summary>Three</summary>
+        </member>
+        <member name="T:TestDoc.TestFlags">
+            <summary>
+            Test flags enumerated type
+            </summary>
+        </member>
+        <member name="F:TestDoc.TestFlags.None">
+            <summary>None</summary>
+        </member>
+        <member name="F:TestDoc.TestFlags.One">
+            <summary>One</summary>
+        </member>
+        <member name="F:TestDoc.TestFlags.Two">
+            <summary>Two</summary>
+        </member>
+        <member name="F:TestDoc.TestFlags.Four">
+            <summary>Three</summary>
+        </member>
+        <member name="T:TestDoc.TestFlagsSerializable">
+            <summary>
+            Test flags, serializable enumerated type
+            </summary>
+        </member>
+        <member name="F:TestDoc.TestFlagsSerializable.None">
+            <summary>None</summary>
+        </member>
+        <member name="F:TestDoc.TestFlagsSerializable.One">
+            <summary>One</summary>
+        </member>
+        <member name="F:TestDoc.TestFlagsSerializable.Two">
+            <summary>Two</summary>
+        </member>
+        <member name="F:TestDoc.TestFlagsSerializable.Four">
+            <summary>Three</summary>
+        </member>
+        <member name="T:IJM.Library.Threading.Windows.SynchronousBackgroundRunner">
+            <summary>
+            Kan bewerkingen op de achtergrond uitvoeren en roept
+            een event aan op de UI thread wanneer deze klaar is.
+            Synchrone versie voor de Unit Tests.
+            </summary>
+        </member>
+        <member name="M:IJM.Library.Threading.Windows.SynchronousBackgroundRunner.Run(System.ComponentModel.DoWorkEventHandler,System.ComponentModel.RunWorkerCompletedEventHandler,System.EventHandler{IJM.Library.Threading.Windows.DataEventArgs{System.Exception}})">
+            <inheritdoc />
+        </member>
+        <member name="T:TestDoc.GenericClass`2">
+            <summary>
+            A test generic class
+            </summary>
+        </member>
+        <member name="M:TestDoc.GenericClass`2.#ctor(`0,`1)">
+            <summary>
+            </summary>
+            <param name="x"></param>
+            <param name="y"></param>
+        </member>
+        <member name="M:TestDoc.GenericClass`2.MethodWithBadComments">
+            <summary>
+            The Infragistics UltraGrid control is designed to present, and 
+            optionally edit, both flat data (containing a single set of rows
+            and columns) as well as hierarchical data in a variety of view
+            styles.
+            </summary>
+            <remarks>
+            <p class="body">Most of the settings that apply to the control are
+            set off the <see cref="P:Infragistics.Win.UltraWinGrid.UltraGridBase.DisplayLayout"/>
+            property.</p>
+            <p></p>
+            <p class="body">
+            The following code snippet illustrates.
+            </p>
+            <p></p>
+            <code>
+            &lt;pre&gt; Literal pre tags are bad when nested in a code block
+                        they should be removed or encoded if really needed.
+            private void button5_Click(object sender, System.EventArgs e)
+            {
+            this.ultraGrid1.DisplayLayout.AutoFitStyle = AutoFitStyle.ResizeAllColumns;
+            this.ultraGrid1.DisplayLayout.Bands0.Columns1.Hidden = true;
+            }
+            &lt;/pre&gt;
+            </code>
+            </remarks>
+        </member>
+        <member name="M:TestDoc.GenericClass`2.Swap``1(``0@,``0@)">
+            <summary>
+            A generic method in the generic class
+            </summary>
+            <typeparam name="T">The type</typeparam>
+            <param name="lhs">The left hand value</param>
+            <param name="rhs">The right hand value</param>
+        </member>
+        <member name="T:DocumentationInheritance.ExplicitImplementation">
+            <summary>
+            A class with an explicit interface implementation
+            </summary>
+            <remarks>Note that you must enable the <b>DocumentPrivates</b> and
+            <b>DocumentExplicitInterfaceImplementations</b> SHFB project options
+            in order to see the explicitly implemented members.</remarks>
+        </member>
+        <member name="M:DocumentationInheritance.ExplicitImplementation.System#Collections#IEnumerable#GetEnumerator">
+            <inheritdoc />
+            <returns>This is a dummy class so it throws an exception</returns>
+        </member>
+        <member name="M:DocumentationInheritance.ExplicitImplementation.Clone">
+            <inheritdoc />
+        </member>
+        <member name="P:DocumentationInheritance.ExplicitImplementation.System#Collections#ICollection#SyncRoot">
+            <inheritdoc />
+            <remarks>This is a dummy class and always returns null.</remarks>
+        </member>
+        <member name="T:TestDoc.TestClass">
+            <summary>
+            A test class
+            </summary>
+        </member>
+        <member name="F:TestDoc.TestClass.publicStringField">
+            <summary>
+            A public string field
+            </summary>
+        </member>
+        <member name="F:TestDoc.TestClass.protectedStringField">
+            <summary>
+            A protected string field
+            </summary>
+        </member>
+        <member name="F:TestDoc.TestClass.internalStringField">
+            <summary>
+            An internal string field
+            </summary>
+        </member>
+        <member name="F:TestDoc.TestClass.protectedInternalStringField">
+            <summary>
+            A protected internal string field
+            </summary>
+        </member>
+        <member name="F:TestDoc.TestClass.privateStringField">
+            <summary>
+            A private string field
+            </summary>
+        </member>
+        <member name="M:TestDoc.TestClass.#ctor">
+            <summary>
+            A public constructor
+            </summary>
+            <remarks>This has see and seealso tags with href attributes.
+            
+            <p/>See href: <see href="http://SHFB.CodePlex.com" />
+            <p/>See href: <see href="http://Sandcastle.CodePlex.com">Sandcastle
+            on CodePlex</see></remarks>
+            <seealso href="http://SHFB.CodePlex.com"/>
+            <seealso href="http://Sandcastle.CodePlex.com">Sandcastle on
+            CodePlex</seealso>
+        </member>
+        <member name="M:TestDoc.TestClass.#ctor(System.String,System.Int32)">
+            <summary>
+            A protected constructor
+            </summary>
+            <param name="test">Test</param>
+            <param name="test2">Test 2</param>
+        </member>
+        <member name="M:TestDoc.TestClass.#ctor(System.String,System.Int64)">
+            <summary>
+            An internal constructor
+            </summary>
+            <param name="test">Test</param>
+            <param name="test2">Test 2</param>
+        </member>
+        <member name="M:TestDoc.TestClass.#ctor(System.String,System.Decimal)">
+            <summary>
+            A protected internal constructor
+            </summary>
+            <param name="test">Test</param>
+            <param name="test2">Test 2</param>
+        </member>
+        <member name="M:TestDoc.TestClass.#ctor(System.String,System.Single)">
+            <summary>
+            A private constructor
+            </summary>
+            <param name="test">Test</param>
+            <param name="test2">Test 2</param>
+        </member>
+        <member name="M:TestDoc.TestClass.PublicMethod">
+             <summary>
+             A public method
+             </summary>
+             <remarks>See <see cref="T:System.Collections.Generic.List`1"/>
+             for a generic list class.
+             <p/>See <see cref="M:IndexTest.IndexTest.TestArrayMethod(System.String[])">IndexTest.TestArrayMethod</see> for
+             other details.</remarks>
+             <example>
+             <code lang="JavaScript">
+             function Test()
+             {
+                var x;
+                x = 1;
+                return x + 1;
+             }
+             </code>
+            
+             <code lang="jscript.net">
+             // JScript.NET
+             function Test() : Integer
+             {
+                var x;
+                x = 1;
+                return x + 1;
+             }
+             </code>
+            
+             <code lang="XAML">
+             <![CDATA[
+             <!-- A XAML Example -->
+             <Style x:Key="SpecialButton" TargetType="{x:Type Button}">
+               <Style.Triggers>
+                 <!-- #region XAML Snippet -->
+                 <Trigger Property="Button.IsMouseOver" Value="true">
+                   <Setter Property = "Background" Value="Red"/>
+                 </Trigger>
+                 <Trigger Property="Button.IsPressed" Value="true">
+                   <Setter Property = "Foreground" Value="Green"/>
+                 </Trigger>
+                 <!-- #endregion -->
+               </Style.Triggers>
+             </Style>]]>
+             </code>
+            
+             <code lang="cs" title="Test Code" keepSeeTags="true">
+             // Test
+             public void M1()
+             {
+             }
+            
+             #region Test
+            
+             // &lt;summary&gt;
+             // This is called to generate the namespace summary file and to
+             // purge the unwanted namespaces from the reflection information
+             // file.
+             // &lt;/summary&gt;
+             // &lt;param name="reflectionFile"&gt;The reflection file to fix&lt;/param&gt;
+             protected void GenerateNamespaceSummaries(string reflectionFile)
+             {
+                 XmlDocument sourceFile;
+                 XmlNodeList nsElements, nsItems;
+                 XmlNode item, member, tag;
+                 NamespaceSummaryItem nsi;
+                 string nsName, summaryText;
+                 bool hasExclusions = false, isDocumented;
+            
+                 // Test &lt;see&gt; tag retention
+                 this.<see cref="M:TestDoc.TestClass.ProtectedMethod"/>;
+                 string x = this.<see cref="M:System.Object.ToString">ToString</see>();
+            
+                 this.ReportProgress(BuildStep.GenerateNamespaceSummaries,
+                     "-------------------------------\r\n" +
+                     "Generating namespace summary information...");
+            
+                 try
+                 {
+                     // Test
+                 }
+                 catch(Exception ex)
+                 {
+                     throw new BuilderException("Error generating namespace " +
+                         "summaries: " + ex.Message, ex);
+                 }
+             }
+             #endregion
+            
+             // Another test
+             public void M2()
+             {
+             }
+            
+             // End Test
+             </code>
+             </example>
+        </member>
+        <member name="M:TestDoc.TestClass.ProtectedMethod">
+            <summary>
+            A protected method (debug)
+            </summary>
+        </member>
+        <member name="M:TestDoc.TestClass.InternalMethod">
+            <summary>
+            An internal method
+            </summary>
+        </member>
+        <member name="M:TestDoc.TestClass.ProtectedInternalMethod">
+            <summary>
+            A protected internal method
+            </summary>
+            <example>
+            <code title="NOTE: Watch &amp; learn">
+            // See VB.NET example for VB.NET code extraction test
+            </code>
+            <code lang="vbnet" source="..\Class1.vb" title="Whole class" />
+            <code lang="vbnet" source="..\Class1.vb" region="Test Region"
+              title="Test region from class" />
+            <code lang="vbnet" source="..\Class1.vb" region="Embedded snippet"
+              title="Test region from method" />
+            <code source="..\CppClass.cpp" region="How to xyz" lang="cpp" />
+            <code lang="xaml" source="..\Test.xaml" title="Whole XAML File" />
+            <code lang="xaml" source="..\Test.xaml" region="XAML Snippet"
+              title="Test region from XAML file" />
+            <code lang="sql" source="..\Test.sql" title="Whole SQL File" />
+            <code lang="sql" source="..\Test.sql" region="SQL Snippet"
+              title="Test region from SQL file" />
+            </example>
+        </member>
+        <member name="M:TestDoc.TestClass.PrivateMethod">
+            <summary>
+            A private method()
+            </summary>
+        </member>
+        <member name="M:TestDoc.TestClass.Sum(System.Double[])">
+            <summary>
+            Computes the sum of an array of double values.
+            </summary>
+            <param name="values">The array of doubles</param>
+            <returns>Returns the sum for the array of double values if the array is
+            not null and not empty.</returns>
+        </member>
+        <member name="P:TestDoc.TestClass.PublicProperty">
+             <summary>
+             A public property
+             </summary>
+             <value>If the value is <see cref="F:System.String.Empty"/>, blah blah blah.</value>
+             <remarks>// Die Fehlermeldung an den ScriptManager übergeben</remarks>
+             <example>
+             <code title="Nested code block example" lang="VB.NET">
+             <code source="..\Class1.vb" region="Test Region"/>
+            
+             ' ... more stuff here ...
+            
+             <code source="..\Class1.vb" region="Embedded snippet"/>
+             </code>
+             </example>
+        </member>
+        <member name="P:TestDoc.TestClass.ProtectedProperty">
+            <summary>
+            A protected property
+            </summary>
+        </member>
+        <member name="P:TestDoc.TestClass.InternalProperty">
+            <summary>
+            An internal property
+            </summary>
+        </member>
+        <member name="P:TestDoc.TestClass.ProtectedInternalProperty">
+            <summary>
+            A protected internal property
+            </summary>
+        </member>
+        <member name="P:TestDoc.TestClass.PrivateProperty">
+            <summary>
+            A private property
+            </summary>
+        </member>
+        <member name="P:TestDoc.TestClass.HasIt">
+                    <summary>
+                    C-style XML comments test.
+                    A boolean value indicating whether this instance has it.
+                    </summary>
+                    <returns>
+                    True iff the instance has it.
+                    </returns>
+                    <example>
+                    The following code prints the value of
+                    the <see cref="P:TestDoc.TestClass.HasIt"/> property for a few numbers.
+                    <code>
+                    for (int i = 0; i &lt; 5; i++) {
+                    Thing x = new Thing(i);
+                    Console.WriteLine("{0}: {1}", x, x.HasIt);
+                    </code>
+                    The output is shown below.
+                    <code lang="none">
+                    0: True
+                    1: False
+                    2: False
+                    3: False
+                    4: True
+                    </code>
+                    </example>
+        </member>
+        <member name="E:TestDoc.TestClass.TestEvent">
+            <summary>
+            A test event
+            </summary>
+        </member>
+        <member name="E:TestDoc.TestClass.CancelableEvent">
+            <summary>
+            A cancelable event
+            </summary>
+        </member>
+        <member name="T:TestDoc.TestDerivedClass">
+            <summary>
+            A test derived class
+            </summary>
+        </member>
+        <member name="M:TestDoc.TestDerivedClass.ProtectedMethod">
+             <summary>
+             Override of protected method
+             </summary>
+             <returns>A string</returns>
+             <example>
+             Test code block colorizer:
+            
+             <code lang="cs" outlining="false">
+             // Test
+             protected override string ProtectedMethod()
+             {
+                 return base.ProtectedMethod();
+             }
+             </code>
+             </example>
+        </member>
+        <member name="M:TestDoc.TestDerivedClass.ProtectedInternalMethod">
+            <summary>
+            An override of the protected internal method
+            </summary>
+            <example>
+            <code source="..\TestClass.cs" region="Methods"
+                title="Methods Region" />
+            </example>
+            <returns></returns>
+        </member>
+        <member name="M:TestDoc.TestDerivedClass.OnDirtyChanged(System.EventArgs)">
+            <summary>
+            This raises the <see cref="E:TestDoc.TestDerivedClass.DirtyChanged"/> event.
+            </summary>
+            <param name="e">The event arguments</param>
+        </member>
+        <member name="M:TestDoc.TestDerivedClass.Swap``1(``0@,``0@)">
+            <summary>
+            A generic method in a non-generic class
+            </summary>
+            <typeparam name="T">The type</typeparam>
+            <param name="lhs">The left hand value</param>
+            <param name="rhs">The right hand value</param>
+        </member>
+        <member name="M:TestDoc.TestDerivedClass.ToString">
+            <inheritdoc cref="M:System.Object.ToString"/>
+        </member>
+        <member name="P:TestDoc.TestDerivedClass.PublicProperty">
+             <summary>
+             Override of public property
+             </summary>
+             <example>
+             Test code block colorizer:
+            
+             <code lang="cs" numberLines="false" outlining="false">
+             // Test
+             public override string PublicProperty
+             {
+                 get
+                 {
+                     return base.PublicProperty;
+                 }
+             }
+             </code>
+             <code lang="vbnet" numberLines="false" outlining="false">
+             ' Test
+             Public ReadOnly Overrides PublicProperty As String
+                 Get
+                     Return MyBase.PublicProperty
+                 End Get
+             End Property
+             </code>
+             </example>
+        </member>
+        <member name="E:TestDoc.TestDerivedClass.DirtyChanged">
+            <summary>
+            This event is raised when the dirty property changes
+            </summary>
+        </member>
+        <member name="T:TestDoc.TestSealedDerivedClass">
+            <summary>
+            A test sealed derived class
+            </summary>
+        </member>
+        <member name="M:TestDoc.TestSealedDerivedClass.PublicMethod">
+            <summary>
+            An override of the public method in the sealed class
+            </summary>
+            <returns></returns>
+            <!-- Failed to insert some or all of included XML --><include file="MissingExample.xml" path="Examples/Not/There[@name=&quot;Ex1&quot;]/*"/>
+        </member>
+        <member name="M:TestDoc.TestSealedDerivedClass.ProtectedMethod">
+            <summary>
+            An override of the protected method in the sealed class
+            </summary>
+            <returns></returns>
+            <!-- Badly formed XML file "c:\DotNet35\CS\TestDoc\Example.xml" cannot be included -->
+        </member>
+        <member name="P:TestDoc.TestSealedDerivedClass.PublicProperty">
+            <summary>
+            An override of the public property in the sealed class
+            </summary>
+        </member>
+        <member name="T:WoodDreams.Report.Excel.Excel">
+            <summary>
+            Excel class
+            </summary>
+        </member>
+        <member name="T:WoodDreams.Reporting.Reporting">
+            <summary>
+            Reporting class
+            </summary>
+        </member>
+        <member name="T:WoodDreams.Reporting.Standard.Standard">
+            <summary>
+            Standard reporting class
+            </summary>
+        </member>
+        <member name="T:WoodDreams.Reporting.WordXML.WordXML">
+            <summary>
+            Word XML reporting class
+            </summary>
+        </member>
+        <member name="T:IJM.Library.Threading.Windows.NamespaceDoc">
+            <summary>
+            These are comments from the IJM.Library.Threading.Windows namespace's
+            NamespaceDoc class.
+            </summary>
+        </member>
+        <member name="T:SandcastleTest.Test1">
+            <summary>
+            Test1
+            </summary>
+        </member>
+        <member name="M:SandcastleTest.Test1.op_Addition(SandcastleTest.Test1,SandcastleTest.Test1)">
+            <summary>
+            Operator +s the specified left.
+            </summary>
+            <param name="left">The left.</param>
+            <param name="right">The right.</param>
+            <returns></returns>
+        </member>
+        <member name="M:SandcastleTest.Test1.op_Addition(SandcastleTest.Test1,SandcastleTest.Test2)">
+            <summary>
+            Operator +s the specified left.
+            </summary>
+            <param name="left">The left.</param>
+            <param name="right">The right.</param>
+            <returns></returns>
+        </member>
+        <member name="M:SandcastleTest.Test1.op_Addition(SandcastleTest.Test2,SandcastleTest.Test1)">
+            <summary>
+            Operator +s the specified left.
+            </summary>
+            <param name="left">The left.</param>
+            <param name="right">The right.</param>
+            <returns></returns>
+        </member>
+        <member name="T:SandcastleTest.Test2">
+            <summary>
+            Test2
+            </summary>
+        </member>
+        <member name="M:SandcastleTest.Test2.op_Addition(SandcastleTest.Test2,SandcastleTest.Test2)">
+            <summary>
+            Operator +s the specified left.
+            </summary>
+            <param name="left">The left.</param>
+            <param name="right">The right.</param>
+            <returns></returns>
+        </member>
+        <member name="M:SandcastleTest.Test2.op_Addition(SandcastleTest.Test1,SandcastleTest.Test2)">
+            <summary>
+            Operator +s the specified left.
+            </summary>
+            <param name="left">The left.</param>
+            <param name="right">The right.</param>
+            <returns></returns>
+        </member>
+        <member name="M:SandcastleTest.Test2.op_Addition(SandcastleTest.Test2,SandcastleTest.Test1)">
+            <summary>
+            Operator +s the specified left.
+            </summary>
+            <param name="left">The left.</param>
+            <param name="right">The right.</param>
+            <returns></returns>
+        </member>
+        <member name="T:SandcastleTest.Test3">
+            <summary>
+            Test2 - Supposedly causes a "file not found" exception with the
+            VS2005 style.
+            </summary>
+        </member>
+        <member name="M:SandcastleTest.Test3.op_Multiply(SandcastleTest.Test3,System.Double)">
+            <summary>
+            operator *
+            </summary>
+            <param name="x"></param>
+            <param name="y"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SandcastleTest.Test3.op_Multiply(SandcastleTest.Test3,SandcastleTest.Test3)">
+            <summary>
+            operator *
+            </summary>
+            <param name="x">x</param>
+            <param name="y">y</param>
+            <returns>returns</returns>
+        </member>
+        <member name="M:SandcastleTest.Test3.Multiply(SandcastleTest.Test3)">
+            <summary>
+            Multiply method
+            </summary>
+            <param name="x">x</param>
+            <returns>returns</returns>
+        </member>
+        <member name="M:SandcastleTest.Test3.Multiply(System.Double)">
+            <summary>
+            Multiply method
+            </summary>
+            <param name="x">x</param>
+            <returns>returns</returns>
+        </member>
+        <member name="M:SandcastleTest.Test3.op_Implicit(SandcastleTest.Test3)~System.Int32">
+            <summary>
+            Implicit conversion
+            </summary>
+            <param name="value">The value to use</param>
+            <returns>The converted value</returns>
+        </member>
+        <member name="M:SandcastleTest.Test3.op_Explicit(SandcastleTest.Test3)~System.Int64">
+            <summary>
+            Explicit conversion
+            </summary>
+            <param name="value">The value to use</param>
+            <returns>The converted value</returns>
+        </member>
+        <member name="T:InteropAttributesBug.InteropAttributeTest">
+            <summary>
+            Demonstrate bug with certain System.Runtime.InteropServices
+            attributes.
+            </summary>
+            <remarks>Certain System.Runtime.InteropServices attributes will not
+            show up in the reflection information even when the attribute filter
+            is completely removed.</remarks>
+        </member>
+        <member name="M:InteropAttributesBug.InteropAttributeTest.FindFirstUrlCacheEntry(System.String,System.IntPtr,System.Int32@)">
+            <summary>
+            This begins the enumeration of the Internet cache
+            </summary>
+        </member>
+        <member name="M:InteropAttributesBug.InteropAttributeTest.FindNextUrlCacheEntry(System.IntPtr,System.IntPtr,System.Int32@)">
+            <summary>
+            This retrieves the next entry in the Internet cache
+            </summary>
+        </member>
+        <member name="T:InteropAttributesBug.INTERNET_CACHE_ENTRY_INFOA">
+            <summary>
+            Another case where the attributes don't show up
+            </summary>
+        </member>
+        <member name="F:InteropAttributesBug.INTERNET_CACHE_ENTRY_INFOA.dwStructSize">
+            <summary></summary>
+        </member>
+        <member name="F:InteropAttributesBug.INTERNET_CACHE_ENTRY_INFOA.lpszSourceUrlName">
+            <summary></summary>
+        </member>
+        <member name="F:InteropAttributesBug.INTERNET_CACHE_ENTRY_INFOA.lpszLocalFileName">
+            <summary></summary>
+        </member>
+        <member name="F:InteropAttributesBug.INTERNET_CACHE_ENTRY_INFOA.CacheEntryType">
+            <summary></summary>
+        </member>
+        <member name="F:InteropAttributesBug.INTERNET_CACHE_ENTRY_INFOA.dwUseCount">
+            <summary></summary>
+        </member>
+        <member name="F:InteropAttributesBug.INTERNET_CACHE_ENTRY_INFOA.dwHitRate">
+            <summary></summary>
+        </member>
+        <member name="F:InteropAttributesBug.INTERNET_CACHE_ENTRY_INFOA.dwSizeLow">
+            <summary></summary>
+        </member>
+        <member name="F:InteropAttributesBug.INTERNET_CACHE_ENTRY_INFOA.dwSizeHigh">
+            <summary></summary>
+        </member>
+        <member name="F:InteropAttributesBug.INTERNET_CACHE_ENTRY_INFOA.LastModifiedTime">
+            <summary></summary>
+        </member>
+        <member name="F:InteropAttributesBug.INTERNET_CACHE_ENTRY_INFOA.ExpireTime">
+            <summary></summary>
+        </member>
+        <member name="F:InteropAttributesBug.INTERNET_CACHE_ENTRY_INFOA.LastAccessTime">
+            <summary></summary>
+        </member>
+        <member name="F:InteropAttributesBug.INTERNET_CACHE_ENTRY_INFOA.LastSyncTime">
+            <summary></summary>
+        </member>
+        <member name="F:InteropAttributesBug.INTERNET_CACHE_ENTRY_INFOA.lpHeaderInfo">
+            <summary></summary>
+        </member>
+        <member name="F:InteropAttributesBug.INTERNET_CACHE_ENTRY_INFOA.dwHeaderInfoSize">
+            <summary></summary>
+        </member>
+        <member name="F:InteropAttributesBug.INTERNET_CACHE_ENTRY_INFOA.lpszFileExtension">
+            <summary></summary>
+        </member>
+        <member name="F:InteropAttributesBug.INTERNET_CACHE_ENTRY_INFOA.dwReserved">
+            <summary></summary>
+        </member>
+        <member name="F:InteropAttributesBug.INTERNET_CACHE_ENTRY_INFOA.dwExemptDelta">
+            <summary></summary>
+        </member>
+        <member name="T:InteropAttributesBug.IAssemblyEnum">
+            <summary>
+            Certain attributes will show up such as Guid and InterfaceType.
+            ComImport and PreserveSig do not.
+            </summary>
+        </member>
+        <member name="M:InteropAttributesBug.IAssemblyEnum.GetNextAssembly(System.IntPtr,System.Object@,System.UInt32)">
+            <summary></summary>
+        </member>
+        <member name="M:InteropAttributesBug.IAssemblyEnum.Reset">
+            <summary></summary>
+        </member>
+        <member name="M:InteropAttributesBug.IAssemblyEnum.Clone(InteropAttributesBug.IAssemblyEnum@)">
+            <summary></summary>
+        </member>
+        <member name="T:IndexTest.IndexTest">
+            <summary>
+            Test for duplicate/incorrect entries in CHM index file
+            </summary>
+        </member>
+        <member name="M:IndexTest.IndexTest.#ctor">
+            <summary>
+            Constructor
+            </summary>
+            <example>
+            Test language ID mapping.
+            
+            <code lang="C#">
+            // C#
+            public void Test(string a)
+            {
+                int x;
+            
+                Console.WriteLine("Test");
+            }
+            </code>
+            <code lang="J#">
+            // J#
+            public void Test(string a)
+            {
+                int x;
+            
+                Console.WriteLine("Test");
+            }
+            </code>
+            <code lang="c#">
+            // c#
+            public void Test(string a)
+            {
+                int x;
+            
+                Console.WriteLine("Test");
+            }
+            </code>
+            <code lang="j#">
+            // j#
+            public void Test(string a)
+            {
+                int x;
+            
+                Console.WriteLine("Test");
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:IndexTest.IndexTest.#ctor(System.Object)">
+            <summary>
+            A method
+            </summary>
+            <param name="o"></param>
+        </member>
+        <member name="M:IndexTest.IndexTest.MethodA(System.String)">
+            <summary>
+            An overloaded method
+            </summary>
+            <param name="s"></param>
+        </member>
+        <member name="M:IndexTest.IndexTest.MethodA(System.Int32)">
+            <summary>
+            Another overload
+            </summary>
+            <param name="i"></param>
+        </member>
+        <member name="M:IndexTest.IndexTest.MethodB">
+            <summary>
+            Another method
+            </summary>
+            <remarks>See <see cref="M:IndexTest.IndexTest.TestArrayMethod(System.String[])"/> for details</remarks>
+        </member>
+        <member name="M:IndexTest.IndexTest.TestArrayMethod(System.String[])">
+            <summary>
+            Test method with array parameter
+            </summary>
+            <param name="args">A string array</param>
+            <remarks>The indexer is <see cref="P:IndexTest.IndexTest.Item(System.Int32)"/>.</remarks>
+        </member>
+        <member name="P:IndexTest.IndexTest.PropertyA">
+            <summary>
+            A property.  See <see cref="M:IndexTest.IndexTest.MethodA(System.String)">Method A (&lt;see&gt;
+            inner text test)</see>. See <see cref="M:IndexTest.IndexTest.MethodB">IndexText.Method B</see>.
+            </summary>
+            <seealso cref="M:IndexTest.IndexTest.MethodB">Method B (&lt;see&gt; inner text
+            test)</seealso>
+            <seealso cref="P:IndexTest.IndexTest.PropertyB">Method B (and another)</seealso>
+        </member>
+        <member name="P:IndexTest.IndexTest.PropertyB">
+            <inheritdoc />
+        </member>
+        <member name="P:IndexTest.IndexTest.Item(System.Int32)">
+            <summary>
+            Item indexer
+            </summary>
+            <param name="idx">The index to return</param>
+            <returns>Test property.  Always returns 0</returns>
+        </member>
+        <member name="T:IJM.Library.Threading.Windows.DataEventArgs`1">
+            <summary>
+            Generic <see cref="T:System.EventArgs"/> implementatie,
+            waarmee een generic data argument kan worden meegegeven.
+            </summary>
+            <typeparam name="TData">Het data argument.</typeparam>
+        </member>
+        <member name="M:IJM.Library.Threading.Windows.DataEventArgs`1.#ctor(`0)">
+            <summary>
+            Initialiseert een nieuwe instantie van
+            de <see cref="T:IJM.Library.Threading.Windows.DataEventArgs`1"/> class.
+            </summary>
+            <param name="data">De data.</param>
+        </member>
+        <member name="M:IJM.Library.Threading.Windows.DataEventArgs`1.ToString">
+            <inheritdoc />
+        </member>
+        <member name="P:IJM.Library.Threading.Windows.DataEventArgs`1.Data">
+            <summary>
+            Het data veld.
+            </summary>
+            <value>The data.</value>
+        </member>
+        <member name="T:TestDoc.OverloadClass">
+            <summary>
+            A test class with overloads
+            </summary>
+        </member>
+        <member name="M:TestDoc.OverloadClass.Test(System.String)">
+            <summary>
+            Tests the specified x.
+            </summary>
+            <param name="x">The x.</param>
+        </member>
+        <member name="M:TestDoc.OverloadClass.Test(System.Int32)">
+            <summary>
+            Tests the specified x.
+            </summary>
+            <param name="y">The y.</param>
+            <obsolete>This method should not be used as it is obsolete.</obsolete>
+        </member>
+        <member name="M:TestDoc.OverloadClass.HtmlTagCommentTest">
+             <summary>
+             A test of HTML tags in comment text.
+             </summary>
+             <remarks>Test some common HTML tags:<br/><br/>Two breaks above.
+             <hr/>Horizontal rules<hr/>
+            
+             <p/>Entities: &#169; &lt; &gt; &amp; Space: !&#x20;!
+            
+             <p/>Paragraph 1.
+             <p/>Paragraph 2.
+             <p>Paragraph 3.</p>
+             <p>Paragraph 4.</p>
+            
+             <h1>Heading 1</h1>
+             <h2>Heading 2</h2>
+             <h3>Heading 3</h3>
+             <h4>Heading 4</h4>
+             <h5>Heading 5</h5>
+             <h6>Heading 6</h6>
+            
+             <p/><b>Bold</b> and <em>Emphasis</em>
+             <p/><i>Italic</i> and <strong>Strong</strong>
+             <p/><sub>Subscript</sub> and <sup>Superscript</sup>
+             <p/><ins>Inserted</ins> and <del>Deleted</del>
+            
+             <pre>
+                 Pre tag
+                 text block
+             </pre>
+            
+             <div style="background-color: yellow;">Yellow div</div>
+             <p/><span style="background-color: cyan;">Cyan span</span>
+            
+             <p/>Here comes a long quotation:
+             <blockquote>
+             here is a long quotation
+             here is a long quotation
+             here is a long quotation
+             here is a long quotation
+             </blockquote>
+            
+             <p/>Abbreviation: <abbr title="United Nations">UN</abbr>
+             <p/>Acronym: <acronym title="World Wide Web">WWW</acronym>
+            
+             <p/>Hyperlink: <a href="http://www.microsoft.com">Microsoft.com</a>
+            
+             <p/><table border="1">
+             <tr>
+             <th>Header 1</th>
+             <th>Header 2</th>
+             </tr>
+             <tr>
+             <td>row 1, cell 1</td>
+             <td>row 1, cell 2</td>
+             </tr>
+             <tr>
+             <td>row 2, cell 1</td>
+             <td>row 2, cell 2</td>
+             </tr>
+             </table>
+            
+             <ul>
+             <li>Coffee</li>
+             <li>Milk</li>
+             </ul>
+            
+             <ol>
+             <li>Coffee</li>
+             <li>Milk</li>
+             </ol>
+            
+             <dl>
+             <dt>Coffee</dt>
+             <dd>Black hot drink</dd>
+             <dt>Milk</dt>
+             <dd>White cold drink</dd>
+             </dl>
+            
+             <p/><img src="../Images/AddContent.gif" alt="Additional Content"/>
+             </remarks>
+        </member>
+        <member name="M:TestDoc.OverloadClass.CallStoredProcedure(System.String,System.Int32)">
+            <summary>
+            Executes an <see cref="T:System.Data.SqlClient.SqlCommand"/> with the specified
+            <paramref name="storedProcName"/> as a stored procedure
+            initialized for updating the values of the specified
+            <paramref name="row"/>
+            </summary>
+            <param name="storedProc">The stored procedure</param>
+            <param name="row">The row</param>
+        </member>
+        <member name="T:NestedClassTest.ParentClass">
+            <summary>
+            This is the parent class
+            </summary>
+        </member>
+        <member name="M:NestedClassTest.ParentClass.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:NestedClassTest.ParentClass.ParentClassMethod">
+            <summary>
+            A method on the parent class
+            </summary>
+            <exclude/>
+        </member>
+        <member name="T:NestedClassTest.ParentClass.NestedClass">
+            <summary>
+            This is the nested class
+            </summary>
+        </member>
+        <member name="M:NestedClassTest.ParentClass.NestedClass.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:NestedClassTest.ParentClass.NestedClass.NestedClassMethod">
+            <summary>
+            A method on the parent class
+            </summary>
+            <exclude/>
+        </member>
+        <member name="T:NestedClassTest.ParentClass.NestedClass.InnermostClass">
+            <summary>
+            This is the innermost nested class
+            </summary>
+        </member>
+        <member name="M:NestedClassTest.ParentClass.NestedClass.InnermostClass.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:NestedClassTest.ParentClass.NestedClass.InnermostClass.InnermostClassMethod">
+            <summary>
+            A method on the parent class
+            </summary>
+            <exclude/>
+        </member>
+        <member name="T:NestedClassTest.AnotherParentClass">
+            <summary>
+            Another parent class
+            </summary>
+        </member>
+        <member name="T:NestedClassTest.AnotherParentClass.TestClass2">
+            <summary>
+            A nested class with the same name as a non-nested class
+            </summary>
+        </member>
+        <member name="M:NestedClassTest.AnotherParentClass.TestClass2.#ctor">
+            <summary>
+            Nested version's constructor
+            </summary>
+        </member>
+        <member name="T:NestedClassTest.TestClass2">
+            <summary>
+            A non-nested class with the same name as a nested class
+            </summary>
+        </member>
+        <member name="M:NestedClassTest.TestClass2.#ctor">
+            <summary>
+            Non-nested version's constructor
+            </summary>
+        </member>
+        <member name="T:NestedClassTest.NonStaticParentClass">
+            <summary>
+            Non-static parent class
+            </summary>
+        </member>
+        <member name="T:NestedClassTest.NonStaticParentClass.NestedStaticClass">
+            <summary>
+            A nested static class
+            </summary>
+        </member>
+        <member name="M:NestedClassTest.NonStaticParentClass.NestedStaticClass.TestMethod1">
+            <summary>
+            Test method 1
+            </summary>
+            <returns>A string</returns>
+        </member>
+        <member name="M:NestedClassTest.NonStaticParentClass.NestedStaticClass.TestMethod2">
+            <summary>
+            Test method 2
+            </summary>
+            <returns>A integer</returns>
+        </member>
+        <member name="T:NestedClassTest.CoordinateSystem">
+            <summary>The CoordinateSystem Class</summary>
+        </member>
+        <member name="T:NestedClassTest.CoordinateSystem.ProjectedCoordinateSystems">
+            <summary>The ProjectedCoordinateSystems class</summary>
+        </member>
+        <member name="T:NestedClassTest.CoordinateSystem.ProjectedCoordinateSystems.World">
+            <summary>The World class</summary>
+        </member>
+        <member name="P:NestedClassTest.CoordinateSystem.ProjectedCoordinateSystems.World.Mercator">
+            <summary>The Mercator coordinate system</summary>
+        </member>
+        <member name="P:NestedClassTest.CoordinateSystem.ProjectedCoordinateSystems.World.Robinson">
+            <summary>The Robinson coordinate system</summary>
+        </member>
+        <member name="P:NestedClassTest.CoordinateSystem.ProjectedCoordinateSystems.World.Mollweide">
+            <summary>The Mollweide coordinate system</summary>
+        </member>
+        <member name="T:DocumentationInheritance.BaseInheritDoc">
+            <summary>
+            A base class from which to inherit documentation
+            </summary>
+            <remarks>
+            <para>These remarks are for the base class.</para>
+            
+            <para>This information applies to all classes that derive from
+            <see cref="T:DocumentationInheritance.BaseInheritDoc"/>:
+            <list type="bullet">
+            <item><description>Point #1.</description></item>
+            <item><description>Point #2.</description></item>
+            <item><description>Point #3.</description></item>
+            </list>
+            </para>
+            </remarks>
+        </member>
+        <member name="M:DocumentationInheritance.BaseInheritDoc.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:DocumentationInheritance.BaseInheritDoc.ToString">
+            <summary>
+            The ToString implementation for BaseInheritDoc
+            </summary>
+            <returns>A string representing the object</returns>
+        </member>
+        <member name="M:DocumentationInheritance.BaseInheritDoc.MethodWithExample">
+            <summary>
+            Summary for the method with an example
+            </summary>
+            <returns>True all the time</returns>
+            <example>
+            This example is from the base class
+            <code>
+            // 'x' is always true
+            bool x = instance.MethodWithExample();
+            </code>
+            </example>
+        </member>
+        <member name="M:DocumentationInheritance.BaseInheritDoc.MethodWithLotsOfComments(System.Int32)">
+            <summary>
+            The method in the base class has lots of comments.
+            </summary>
+            <remarks>Remarks for the base class</remarks>
+            <param name="x">The parameter</param>
+            <exception cref="T:System.ArgumentException">Thrown if x is zero</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">Thrown if x is
+            less than zero.</exception>
+            <example>
+            <code>
+            /// Example goes here
+            </code>
+            </example>
+            <seealso cref="M:DocumentationInheritance.BaseInheritDoc.ToString"/>
+            <seealso cref="M:DocumentationInheritance.BaseInheritDoc.MethodWithExample"/>
+        </member>
+        <member name="M:DocumentationInheritance.BaseInheritDoc.MethodWithTwoExamples">
+            <summary>
+            A method with two examples
+            </summary>
+            <example>
+            <span id="Example 1">
+            This is example #1:
+            <code>
+            // Example #1
+            </code>
+            </span>
+            <span id="Example 2">
+            This is example #2:
+            <code>
+            // Example #2
+            </code>
+            </span>
+            </example>
+        </member>
+        <member name="T:DocumentationInheritance.DerivedClassWithInheritedDocs">
+            <summary>
+            This is a derived class with inherited documentation.
+            </summary>
+            <remarks>This will inherit just the last &lt;para&gt; tag from
+            the base class's &lt;remarks&gt; tag:
+            <inheritdoc select="para[last()]" />
+            </remarks>
+        </member>
+        <member name="M:DocumentationInheritance.DerivedClassWithInheritedDocs.ToString">
+            <inheritdoc cref="M:System.Object.ToString"/>
+        </member>
+        <member name="M:DocumentationInheritance.DerivedClassWithInheritedDocs.OverloadedMethod(System.String)">
+            <summary>
+            This overloaded method does something
+            </summary>
+            <param name="p1">The string parameter</param>
+            <overloads>
+            <summary>There are two overloads for this method.</summary>
+            <remarks>These remarks are from the overloads tag on the
+            first version.</remarks>
+            </overloads>
+        </member>
+        <member name="M:DocumentationInheritance.DerivedClassWithInheritedDocs.OverloadedMethod(System.String,System.String)">
+            <inheritdoc cref="M:DocumentationInheritance.DerivedClassWithInheritedDocs.OverloadedMethod(System.String)"/>
+            <param name="p2">The second string parameter</param>
+        </member>
+        <member name="M:DocumentationInheritance.DerivedClassWithInheritedDocs.OverloadedMethod(System.String,System.Int32)">
+            <inheritdoc cref="M:DocumentationInheritance.DerivedClassWithInheritedDocs.OverloadedMethod(System.String)" select="param|overloads/*"/>
+            <param name="x">An integer parametr</param>
+        </member>
+        <member name="M:DocumentationInheritance.DerivedClassWithInheritedDocs.MethodWithExample">
+            <summary>
+            An override of the method with an example
+            </summary>
+            <returns>Always returns false</returns>
+            <example>
+            <inheritdoc />
+            <p/>This example applies to the derived class:
+            <code>
+            if(derivedInstance.MethodWithExample())
+                Console.WriteLine("This is never reached");
+            </code>
+            </example>
+        </member>
+        <member name="M:DocumentationInheritance.DerivedClassWithInheritedDocs.MethodWithLotsOfComments(System.Int32)">
+            <inheritdoc select="summary|remarks|param" />
+        </member>
+        <member name="M:DocumentationInheritance.DerivedClassWithInheritedDocs.MethodWithTwoExamples">
+            <summary>
+            This only includes one of the examples
+            </summary>
+            <example>
+            <inheritdoc select="span[@id='Example 2']" />
+            </example>
+        </member>
+        <member name="M:DocumentationInheritance.DerivedClassWithInheritedDocs.MethodUsingSharedExample">
+            <summary>
+            This uses a shared example from a base member that is not
+            public and this doesn't override.
+            </summary>
+            <example>
+            <inheritdoc cref="M:DocumentationInheritance.DerivedClassWithInheritedDocs.MethodWithTwoExamples" select="span[@id='Example 2']"/>
+            </example>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="1dcdb33a-4227-4aaa-833f-1354e683180a" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Error BE0017: Unexpected error using
+'<localUri>[transformFile]</localUri>' to transform additional content file
+'<localUri>[inputFile]</localUri>' to '<localUri>[outputFile]</localUri>'.  The
+error is: <legacyItalic>[error]</legacyItalic></para>
+    </introduction>
+
+    <section>
+      <title>Cause</title>
+      <content>
+        <para>This error occurs if the transformation of a <localUri>.topic</localUri>
+additional content file fails.</para>
+      </content>
+    </section>
+
+    <section>
+      <title>Solution</title>
+      <content>
+        <para>This is a generic catch-all error that occurs if the
+transformation fails.  Refer to the additional error information in the
+message to locate the cause of the problem and fix it (i.e. ill-formed
+XML in the input file, an unknown entity name in the input file, an error in
+the transformation file itself, etc.).</para>
+      </content>
+    </section>
+
+    <relatedTopics>
+    <link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

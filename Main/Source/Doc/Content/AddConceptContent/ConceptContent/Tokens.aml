@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="ed6870bb-772d-4596-9fc1-5638ae6d621b" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+      <para>A token is used as a replaceable tag within a conceptual content
+topic and is represented using a <codeInline>token</codeInline> MAML element.
+The inner text of the element is a token name.  When the help file is built,
+the token is replaced with its value.  They are an easy way to represent common
+items that you use regularly such as a common phrase or external link.
+Updating the token's value will cause the new value to be used in all topics
+in which the token appears.</para>
+    </introduction>
+
+<section>
+  <content><para>Token definitions are stored in an XML file.  In the help file
+builder, these files usually have a <localUri>.tokens</localUri> extension
+and will be edited using the editor window shown below.  Be sure to set the
+file's <codeInline>BuildAction</codeInline> to <codeInline>Tokens</codeInline>
+so that it is included correctly at build time.</para>
+
+<mediaLink><image xlink:href="TokenFileEditor" placement="center"/></mediaLink>
+
+	<para>To add a new token, click the <ui>Add</ui> button.  Edit the token
+name and its content in the fields on the right.  The changes to the name
+and/or content are stored automatically as you move from token to token in the
+list on the left.  To delete a token, click the <ui>Delete</ui> button.</para>
+
+	<para>If you embed MAML elements within a token, you must prefix each
+element name with "<codeInline>ddue:</codeInline>" (without the quotes) as
+shown in the example below.  If not, the elements are inserted using the
+default empty namespace and they will not be processed by the Sandcastle
+transformations.</para>
+
+<code lang="xml" title="Token with MAML Elements">
+&lt;ddue:externalLink&gt;
+    &lt;ddue:linkText&gt;Sandcastle Help File Builder&lt;/ddue:linkText&gt;
+    &lt;ddue:linkUri&gt;http://shfb.codeplex.com&lt;/ddue:linkUri&gt;
+&lt;/ddue:externalLink&gt;
+</code>
+
+	<para>The token value can contain help file builder substitution tag
+references.  See the <link xlink:href="69d998a7-1af5-4bf5-889b-59cd00b64000" />
+topic for a list of the possible replacement tag values.</para>
+
+  </content>
+</section>
+
+    <relatedTopics>
+      <link xlink:href="3d4edd2d-7883-4508-b9d2-bd7b4d848b0d" />
+    </relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

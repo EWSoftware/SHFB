@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="f645ebaa-e368-4cc4-bca8-8deb9117e25e" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Error BE0057: The conceptual content file '<localUri>[file]</localUri>'
+with ID '<legacyItalic>[id]</legacyItalic>' is not valid: <legacyItalic>[error]</legacyItalic></para>
+    </introduction>
+
+    <section>
+      <title>Cause</title>
+      <content>
+        <para>This error occurs if the given topic file is not valid for some
+reason (i.e. ill-formed XML, unrecognized entity, etc.).</para>
+      </content>
+    </section>
+
+    <section>
+      <title>Solution</title>
+      <content>
+        <para>Refer to the error message for information about the cause of
+the problem.  The most likely reason is ill-formed XML.  In that case the error
+message will contain the line number and column of the element that caused
+the problem.  This will help you locate and fix the problem.</para>
+      </content>
+    </section>
+
+    <relatedTopics>
+    <link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

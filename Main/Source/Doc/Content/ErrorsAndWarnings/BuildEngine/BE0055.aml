@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="802873dd-138e-4b35-9298-730c188cb991" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Error BE0055: The conceptual topic '<legacyItalic>[title]</legacyItalic>'
+(ID: <legacyItalic>[id]</legacyItalic>) must either specify a topic file or it
+must contains sub-topics</para>
+    </introduction>
+
+    <section>
+      <title>Cause</title>
+      <content>
+        <para>This error occurs if a conceptual content layout file contains
+an entry that has to file associated with it and does not have any child nodes.</para>
+      </content>
+    </section>
+
+    <section>
+      <title>Solution</title>
+      <content>
+        <para>Container nodes are valid in a content layout file but they must
+have child nodes in order to make them useful.  Either remove the indicated
+node, associate it with a topic, or add child nodes with topics to it so that
+it is valid.  If you are in the process of creating the file, you can add
+a placeholder topic to make it valid for the build.</para>
+      </content>
+    </section>
+
+    <relatedTopics>
+    <link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

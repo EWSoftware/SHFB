@@ -1,0 +1,184 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="ec822059-b179-4add-984d-485580050ffb" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+      <para>This topic provides instructions for using the help file builder in
+conjunction with Team Build to generate documentation for your projects.  This
+information was originally supplied by Tim Dallmann in the MSDN Developer
+Documentation and Help System forum.  It was revised by Jeroen Vos to provide
+up to date information on using the Sandcastle Help File Builder v1.8.0.0 or
+later with Visual Studio Team Foundation Server 2008 SP1.</para>
+
+<alert class="note">
+  <para>Since I do not have a copy of Team Build to test against, the
+information in this topic may not be completely accurate for all users.  Also
+note that a future version of the help file builder will provide a Visual
+Studio Package that allows integration of help file builder projects into Visual
+Studio solutions.  As such, this information is subject to change.</para>
+</alert>
+
+    </introduction>
+
+<section>
+  <title>The Process</title>
+  <content><para>The Sandcastle Help File Builder includes a GUI for editing
+documentation generation properties on the client.  The project file is a
+standard MSBuild project file and can be built from the command line using
+the MSBuild executable.  While Visual Studio does not currently support the
+file as a true project, it can be added to a Visual Studio solution as a 
+Solution Item and therefore can be added to source control.  The output from
+Sandcastle can be copied with the build script to any location you like.  For
+example, it can be copied to Team Foundation Server and a link to it can be
+placed on the team's project site.</para>
+
+<list class="ordered">
+    <listItem>Download and
+<link xlink:href="8c0c97d0-c968-4c15-9fe9-e8f3a443c50a">install</link>
+Sandcastle, the HTML Help Workshop, and the Sandcastle Help File Builder on
+your development machine and your build server.</listItem>
+
+    <listItem><para>Run the Sandcastle Help File builder and create a new
+project.  Save it in the root folder of your solution.</para>
+
+    <list class="bullet">
+        <listItem>Add the solution or the project files as documentation
+sources. That way, the help file builder will include all projects and project
+outputs in the build. If you do not add Visual Studio Solution or project
+files, make sure the assemblies you want to document are built to the same
+location relative to the help file builder's project file on your development
+machine as they are on your build machine.  In addition, you can specify the
+<codeInline>Configuration</codeInline> and <codeInline>Platform</codeInline>
+project properties in the build script to select the <codeInline>Debug</codeInline>
+or <codeInline>Release</codeInline> version rather than hard coding the paths
+to them in the project file.</listItem>
+
+        <listItem>If you used solution or project files as the documentation
+sources you do not need to worry about dependencies as they are taken care of
+automatically.  However, if you add assemblies or XML comments files as
+documentation sources you may need to add dependencies manually too.  In that
+case, make sure that the dependencies are located in the same location relative
+to the help file builder project file on both the development machine and the
+build machine.</listItem>
+
+        <listItem>You may find that the build fails on the build machine
+because it cannot find one or more of the tools (the Sandcastle tools such as
+<application>MRefBuilder</application> or the help compiler).  If this occurs,
+specify the paths to the tools in the help file project's <legacyBold>Paths</legacyBold>
+category properties.</listItem>
+
+        <listItem>Set all other project properties as needed.</listItem>
+    </list></listItem>
+
+    <listItem>Add the generated <localUri>.shfbproj</localUri> project file to
+your Visual Studio solution as a Solution Item and check it in.</listItem>
+
+    <listItem><para>Modify your build file.  This example uses a daily build to
+generate documentation:</para>
+
+    <list class="bullet">
+        <listItem><para>Add a <codeInline>GenerateDocumentation</codeInline>
+target to your build script.  This target was chosen because the TFS team meant
+it to be used specifically for this purpose.  This will call the Sandcastle
+Help File Builder project to create the help files.</para>
+
+<alert class="important">
+	<para>Because Team Build overrides the <codeInline>OutDir</codeInline>
+property for all built solutions/projects to point to one folder that will
+store all build output, you should provide this property to the help file
+builder project file if Visual Studio solution or project files were specified
+as the documentation sources.  If you do not, the help file builder will look
+in the wrong place for the assemblies to document.</para>
+</alert>
+
+<code lang="xml" title=" ">
+&lt;Target Name="GenerateDocumentation"&gt;
+  &lt;!-- Build source code docs --&gt;
+  &lt;MSBuild Projects="$(SolutionRoot)\src\MyProjectHelp.shfbproj"
+      Properties="Configuration=Release;Platform=AnyCPU;OutDir=$(OutDir)" /&gt;
+&lt;/Target&gt;
+</code>
+
+<alert class="tip">
+	<para>The <codeInline>Configuration</codeInline> and <codeInline>Platform</codeInline>
+properties can be obtained from predefined Team Build properties as well.
+However, be aware that the help file builder as well as most Visual Studio
+projects default to a value of "AnyCPU" for the <codeInline>Platform</codeInline>
+property whereas Team Build will use "Any CPU" (with as space) as the default.</para>
+</alert>
+
+	<para>See the <link xlink:href="8ffc0d37-0215-4609-b6f8-dba53a6c5063" />
+help topic for details on building a help file builder project manually
+from the command line.</para></listItem>
+    </list></listItem>
+
+    <listItem><para>The following steps are optional and can be used to deploy
+the help file.  This example assumes you are deploying website output to a web
+server.</para>
+
+      <list class="bullet">
+        <listItem>Add a new web share to your destination server (i.e. the Team
+Foundation Server).  The following example assumes it is called
+<localUri>Code Documentation</localUri>.</listItem>
+
+        <listItem>Make sure the folder properties grant full access to the
+process user running the build (<legacyBold>TFSBuild</legacyBold> for
+example).</listItem>
+
+        <listItem>Add <localUri>Index.aspx</localUri> and/or
+<localUri>Index.html</localUri> to the default documents for the site.</listItem>
+
+        <listItem>Place a subfolder within this folder for the project
+documentation.</listItem>
+
+        <listItem>Add an <codeInline>AfterDropBuild</codeInline> target to
+your build script to copy all the new help files to the web server:
+
+<code lang="xml" title=" ">
+&lt;Target Name="AfterDropBuild"&gt;
+  &lt;!-- Delete old source code docs --&gt;
+  &lt;CreateItem Include="\\tfsserver\Code Documentation\MyProject\**\*.*"&gt;
+    &lt;Output TaskParameter="Include" ItemName="DocDeployFiles" /&gt;
+  &lt;/CreateItem&gt;
+  &lt;Delete Files="@(DocDeployFiles)" /&gt;
+
+  &lt;!-- Copy new source code docs to team system --&gt;
+  &lt;CreateItem Include="$(SolutionRoot)\src\Help\**\*.*"
+      Exclude="$(SolutionRoot)\src\Help\Working\**\*.*"&gt;
+    &lt;Output TaskParameter="Include" ItemName="NewDocFiles" /&gt;
+  &lt;/CreateItem&gt;
+  &lt;Copy SourceFiles="@(NewDocFiles)"
+    DestinationFolder="\\tfsserver\Code Documentation\MyProject\%(NewDocFiles.RecursiveDir)" /&gt;
+&lt;/Target&gt;
+</code>
+
+<alert class="note">
+  <para>You do not need the <codeInline>Exclude</codeInline> attribute for the
+<codeInline>NewDocFiles</codeInline> property if you set the help file
+project's <codeInline>CleanIntermediates</codeInline> property to true.</para>
+</alert></listItem>
+
+    </list></listItem>
+
+    <listItem>Check in your build script and run it.</listItem>
+</list>
+
+	<para>You should now have fresh documentation available every day.  You
+can also set up a separate build using a different name that allows you to
+create new documentation during the day without running all the other items in
+the daily build.  This can be useful if someone adds a lot of new documentation
+into the code that you want to make available immediately.</para>
+
+  </content>
+</section>
+
+    <relatedTopics>
+    <link xlink:href="b772e00e-1705-4062-adb6-774826ce6700" />
+    <link xlink:href="8c0c97d0-c968-4c15-9fe9-e8f3a443c50a" />
+    <link xlink:href="8ffc0d37-0215-4609-b6f8-dba53a6c5063" />
+    </relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

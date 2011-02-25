@@ -1,0 +1,174 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="74664b00-b83f-450a-833a-25984ba812e3" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+      <autoOutline />
+    </introduction>
+
+<section address="NamedUrl">
+  <title>The Named URL Index</title>
+  <content><para>The MS Help 2 system supports an index called
+<codeInline>NamedUrlIndex</codeInline> that makes it possible to customize some
+display aspects of a Help collection such as which page is displayed when a
+Help collection is first opened.  Index terms are added to the data island
+within the page to specify the options.  The most common ones are shown in the
+table below.</para>
+
+<table>
+  <tableHeader>
+    <row>
+      <entry>Index Term</entry>
+      <entry>Description</entry>
+    </row>
+  </tableHeader>
+  <row>
+    <entry><codeInline>AboutPageIcon</codeInline></entry>
+    <entry>The HTML file that displays the Help About image.  See below for an
+example.</entry>
+  </row>
+  <row>
+    <entry><codeInline>AboutPageInfo</codeInline></entry>
+    <entry>The HTML file that displays product information in Help About.  See
+below for an example.</entry>
+  </row>
+  <row>
+    <entry><codeInline>DefaultPage</codeInline></entry>
+    <entry>The page that appears when a user opens a help collection. This is
+often the same as the home page.</entry>
+  </row>
+  <row>
+    <entry><codeInline>EmptyIndexTerm</codeInline></entry>
+    <entry>The page that displays when a user chooses a keyword index term that
+has sub-keywords but is not directly associated with a topic itself.</entry>
+  </row>
+  <row>
+    <entry><codeInline>FilterEditPage</codeInline></entry>
+    <entry>Displays a page that can be used to edit help filters.</entry>
+  </row>
+  <row>
+    <entry><codeInline>HomePage</codeInline></entry>
+    <entry>The page that appears when a uses chooses the <legacyBold>Home</legacyBold>
+command or button.</entry>
+  </row>
+  <row>
+    <entry><codeInline>NavFailPage</codeInline></entry>
+    <entry>The page that opens if a link to a topic or URL is broken.</entry>
+  </row>
+</table>
+
+<para>To add a term to a conceptual topic, create or open a content layout
+file and add the topic to it.  In the properties for the topic in the layout
+file, edit the <codeInline>Keywords</codeInline> property.  Select the
+<codeInline>NamedUrlIndex</codeInline> item as the index and enter one of the
+terms above in the value column.  Add one entry for each term that you want to
+use.</para>
+
+<alert class="note">
+  <para>If you mark a conceptual topic as the default using the layout designer,
+the <codeInline>DefaultPage</codeInline> and <codeInline>HomePage</codeInline>
+keywords are added to the topic automatically at build time.  As such, you do
+not need to specify them in the topic's keywords.</para>
+</alert>
+
+<para>To add a term to an HTML file, add a data island to the page's
+<codeInline>&lt;head&gt;</codeInline> section if it does not already exist and
+add an <codeInline>&lt;MSHelp:Keyword&gt;</codeInline> entry with the
+<codeInline>Index</codeInline> attribute set to <codeInline>NamedUrlIndex</codeInline>
+and the <codeInline>Term</codeInline> attribute set to one of the index terms
+above.  Specify one entry for each term that you want to use.  For example:</para>
+
+<code lang="xml" title="HTML Page NamedUrlIndex Example">
+&lt;head&gt;
+&lt;title&gt;Welcome&lt;/title&gt;
+&lt;xml xmlns:msxsl="urn:schemas-microsoft-com:xslt"&gt;
+    &lt;MSHelp:Keyword Index="K" Term="Welcome" /&gt;
+    &lt;MSHelp:Keyword Index="NamedUrlIndex" Term="HomePage"/&gt;
+    &lt;MSHelp:Keyword Index="NamedUrlIndex" Term="DefaultPage"/&gt;
+&lt;/xml&gt;
+&lt;/head&gt;
+</code>
+
+  </content>
+</section>
+
+<section address="AboutPage">
+  <title>AboutPageIcon and AboutPageInfo</title>
+  <content><para>These two terms are unique.  Both are HTML pages but
+<codeInline>AboutPageIcon</codeInline> is used to display an image in the
+<application>Document Explorer</application> About box and
+<codeInline>AboutPageInfo</codeInline> is used to display product information
+in the <application>Document Explorer</application> About box.  Below are
+examples of each.</para>
+
+<code lang="xml" title="AboutPageIcon.html">
+&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN"&gt;
+&lt;html xmlns:MSHelp="http://msdn.microsoft.com/mshelp"&gt;
+&lt;head&gt;
+  &lt;meta HTTP-EQUIV="Content-Type"
+    Content="text/html; charset=Windows-1252"&gt;
+  &lt;title&gt;About My Product&lt;/title&gt;
+  &lt;xml&gt;
+    &lt;MSHelp:NoSearch /&gt;
+    &lt;MSHelp:Keyword Index="NamedUrlIndex" Term="AboutPageIcon" /&gt;
+  &lt;/xml&gt;
+&lt;/head&gt;
+
+&lt;body scroll="no" topmargin="0" rightmargin="0" bottommargin="0"
+  leftmargin="0"&gt;
+    &lt;img src="Media/MyLogo.jpg"&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code>
+
+<code lang="xml" title="AboutPageInfo.html">
+&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN"&gt;
+&lt;html xmlns:MSHelp="http://msdn.microsoft.com/mshelp" DIR="LTR"&gt;
+&lt;head&gt;
+  &lt;meta HTTP-EQUIV="Content-Type"
+    Content="text/html; charset=Windows-1252"&gt;
+  &lt;title&gt;About My Product&lt;/title&gt;
+  &lt;xml&gt;
+    &lt;MSHelp:NoSearch /&gt;
+    &lt;MSHelp:Keyword Index="NamedUrlIndex" Term="AboutPageInfo"/&gt;
+  &lt;/xml&gt;
+  &lt;style type="text/css"&gt;
+    body { font-family: Verdana; font-size: 65%; margin: 5px; width: 100%; }
+  &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;p/&gt;Here is some info about My Product.
+&lt;/body&gt;
+&lt;/html&gt;
+</code>
+
+	<para>The two HTML pages and the associated image file can be added as
+content items to the project (set the <codeInline>BuildAction</codeInline> on
+them to <codeInline>Content</codeInline>).  The HTML files can be placed in any
+folder but if not placed in the root folder, adjust the URL to the image
+as needed.  Set the <codeInline>ExcludeFromToc</codeInline> property to false
+on the HTML pages to ensure that they are excluded from the table of contents
+when the help file is built.  The image should be placed in the
+<localUri>.\Media</localUri> folder.</para>
+
+	<para>You can also include the HTML pages using the content layout
+designer.  If done this way, set the <codeInline>Visible</codeInline> property
+to false on the HTML pages so that they do not appear in the table of contents.
+If the image you use is also used in conceptual content, set the image's
+<codeInline>AlwaysCopy</codeInline> property to true so that it is always
+copied to the <localUri>.\Media</localUri> folder even if the reference in
+the conceptual content goes away or the page is not included in the layout.</para>
+
+  </content>
+</section>
+
+    <relatedTopics>
+    <link xlink:href="68a2fa4e-c6de-47ed-a9a6-60cc6ef01df4" />
+    <link xlink:href="d0c2dabd-3caf-4586-b81d-cbd765dec7cf" />
+    </relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

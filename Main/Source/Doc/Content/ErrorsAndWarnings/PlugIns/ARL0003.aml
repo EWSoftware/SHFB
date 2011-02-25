@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="7eb5290e-8d18-4dc7-983d-a01e665063bd" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Error ARL0003: Unable to build additional target project:
+<localUri>[projectFile]</localUri></para>
+    </introduction>
+
+    <section>
+      <title>Cause</title>
+      <content>
+        <para>This error occurs if there was a problem building the specified
+project file in order to obtain reference link information.</para>
+      </content>
+    </section>
+
+    <section>
+      <title>Solution</title>
+      <content>
+        <para>This is a generic, catch-all error.  Load the indicated project
+and build it by itself to see if you can locate the cause of the problem.  If
+it works by itself, look in the <localUri>.\Working</localUri> folder under the
+build folder of the project that uses it in the plug-in.  You will find a
+build subfolder for it containing a log file.  Review it to see if it can
+help you locate the cause of the error.  If you are unable to resolve the
+issue, open a work item in the <token>SHFB</token> project at CodePlex
+containing the details from the error message and attach a small example
+project with any related files that can be used to duplicate the problem.</para>
+      </content>
+    </section>
+
+    <relatedTopics>
+    <link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

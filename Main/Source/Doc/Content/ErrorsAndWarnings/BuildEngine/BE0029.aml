@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="72ef66af-a2ea-4947-a5d3-b64ec7a0b943" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Error BE0029: Unexpected error while executing plug-in
+'<legacyItalic>[plugInName]</legacyItalic>': <legacyItalic>[error]</legacyItalic></para>
+    </introduction>
+
+    <section>
+      <title>Cause</title>
+      <content>
+        <para>This is a generic catch-all error that occurs when the build
+process attempts to run a plug-in during the build.</para>
+      </content>
+    </section>
+
+    <section>
+      <title>Solution</title>
+      <content>
+        <para>Since this is a generic catch-all error, you will need to refer
+to the text of the error message in order to determine the exact cause of the
+problem.</para>
+
+		<para>If you are unable to resolve the issue and the plug-in is one
+of the <link xlink:href="e031b14e-42f0-47e1-af4c-9fed2b88cbc7">standard
+ones</link> supplied with the help file builder, post a message in the
+<token>SHFB</token> Discussion group asking for help.  For all third-party
+plug-ins, contact the author of the plug-in for assistance.</para>
+
+      </content>
+    </section>
+
+    <relatedTopics>
+    <link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

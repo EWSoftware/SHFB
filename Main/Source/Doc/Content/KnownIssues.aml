@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="21c2a363-6c94-440b-8985-6b224d275463" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <autoOutline lead="The following are the known issues and limitations in the current release of Sandcastle and the help file builder."
+          excludeRelatedTopics="true" />
+    </introduction>
+
+    <section address="MSHelpViewer">
+      <title>Microsoft Help Viewer</title>
+      <content>
+<list class="bullet">
+	<listItem>Full Microsoft Help Viewer support has been implemented within the
+Sandcastle Help File Builder.  However, please note that only the <legacyBold>VS2005</legacyBold>
+presentation style contains the necessary resources and XSL transformations to output
+the necessary metadata.  This was Microsoft's decision:
+
+<quote>The <legacyBold>Hana</legacyBold> presentation is not supported because
+its support was already dropped in the latest Sandcastle code before our changes.
+The <legacyBold>Prototype</legacyBold> presentation is not supported because we
+consider it outdated, existing only for compatibility purposes even in the
+earlier Sandcastle version.</quote>
+
+<para>Support for the <legacyBold>Hana</legacyBold> and <legacyBold>Prototype</legacyBold>
+styles is present in the help file builder but the Sandcastle transformations and
+resource files will need updating in order to support the generation of Microsoft
+Help Viewer files with them.  There are no plans to do this and it is recommended that
+you switch to the <legacyBold>VS2005</legacyBold> presentation style.</para></listItem>
+
+	<listItem>The Hierarchical TOC plug-in is not compatible with MS Help Viewer output
+and there is currently no fix available.  The problem is that the table of contents is
+generated off of the help topics when the help viewer file is installed and, since there
+are no physical topics for the namespace nodes added to the intermediate table of contents
+file by the plug-in, they do not appear in the help file.  Updating the plug-in to support
+help viewer output would have required more work than time would allow for this release.
+If building other output formats in which you want to use the plug-in, build them
+separately from the MS Help Viewer output.</listItem>
+
+	<listItem>The deprecated raw HTML additional content model, site maps, and file system-based
+table of contents generation is not supported for help viewer output.  All additional topics
+must be in the form of MAML <link xlink:href="3d4edd2d-7883-4508-b9d2-bd7b4d848b0d">conceptual
+content</link> and must be defined in a content layout file.  There are too many requirements
+of the format to support raw HTML files and the deprecated additional content options.  See the
+<token>SandcastleStyles</token> project on CodePlex if you need an HTML to MAML converter utility.</listItem>
+
+	<listItem>Microsoft's Help Viewer Power Tool introduces some changes that are
+incompatible with content that uses the <codeInline>SelfBranded=True</codeInline> attribute
+as Sandcastle will emit.</listItem>
+
+	<listItem>Microsoft Help Viewer content generated with the <token>SandcastleVersion</token>
+release of Sandcastle will produce content that in some contexts produces two vertical
+scrollbars.</listItem>
+
+</list>
+
+      </content>
+    </section>
+  
+    <section address="Sandcastle">
+      <title>Sandcastle</title>
+      <content>
+<list class="bullet">
+	<listItem>Due to the help formats each loading their own copies of several of the
+build components and outputing a separate copy of the HTML output file, there can be a
+significant increase in the amount of memory and disk space used during a build that
+generates more than one output format. If this is an issue, you may need to build each
+help format separately. This issue may be addressed in a future release of the help
+file builder with components that are format aware and only need to be loaded once.</listItem>
+</list>
+
+      </content>
+    </section>
+
+
+    <section address="SHFB">
+      <title>Sandcastle Help File Builder</title>
+      <content>
+<list class="bullet">
+	<listItem>Certain Visual Studio 2010 project types may fail to load when
+used as documentation sources because they use MSBuild 4.0 specific attributes
+in their projects files.  The help file builder is currently built to use
+MSBuild 3.5 and cannot interpret the newer attributes.  If this happens, you
+must add the assembly, XML comments file, and references to the help file
+builder project individually.</listItem>
+
+	<listItem>Not all build errors and warnings have been documented yet.
+You will recognize these by a "TODO:" comment where the introduction
+should be or in the topic body.  If you need help for one of these errors or
+warnings, please ask in the Discussion area of the <token>SHFB</token> project
+at CodePlex.</listItem>
+
+	<listItem>The standalone GUI does not support source control providers.</listItem>
+
+	<listItem>Linked items (file items in which the physical file is located in
+a folder outside the project's folder) are supported but cannot be added from
+the standalone GUI.</listItem>
+
+	<listItem>COM object references are supported in the projects but they
+cannot be added from the standalone GUI.</listItem>
+
+	<listItem>Due to their non-standard format, managed C++ projects from Visual
+Studio 2008 and before are not currently supported as documentation sources or project
+references.  Add the targets and references individually for the time being.</listItem>
+
+	<listItem>The display of editor windows, the Properties window, or the
+Preview window sometimes gets corrupted such that the content area disappears
+or is not sized correctly in the tabbed area of the UI. Selecting a different
+file tab and switching back to the affected tab, closing and reopening the
+affected file/window, or resizing the width of a docked window to force a
+repaint will work around the issue.</listItem>
+
+	<listItem>Renaming a folder or file in the Project Explorer will not rename
+any open document editors associated with the renamed folder or file.  If
+necessary, do a <ui>File | Save As</ui> to save it in the right location or
+just close and reopen the file if it has not been changed.</listItem>
+
+	<listItem>A standard tree control is used in the Project Explorer window
+and does not allow selection of multiple tree nodes.  As such, all operations
+within it only affect the currently selected node.</listItem>
+
+	<listItem>When doing search and replace in a text editor window, the
+highlight on the found text is not always retained when doing a subsequent
+search/replace.  The cursor is positioned correctly though.</listItem>
+
+	<listItem>When using the dropdown on the editor window's "various elements"
+toolbar button (shows <ui>alert</ui> as the default action when first opened),
+the cursor occassionally disappears from the editor window after the dropdown
+closes even though it has the focus and text can be entered.  Change the focus
+to another window and back to restore it.</listItem>
+
+</list>
+
+      </content>
+    </section>
+
+    <relatedTopics>
+    	<link xlink:href="ef1dba5d-bb3b-4d27-9ccf-6f1ec8d1e793" />
+    	<link xlink:href="2bba4e09-e9bd-4ef4-9bf4-800af246e97d" />
+    	<link xlink:href="9f1a5c32-7c10-47e1-bbea-319ee0866e3d" />
+		<link xlink:href="95c85ec6-9f23-426a-b0ad-6b10a0453eaf" />
+		<link xlink:href="5a484e94-6940-4c97-940c-3f46fb8736d2" />
+		<link xlink:href="078cc1c7-7995-431e-bf9c-8813becbe8df" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

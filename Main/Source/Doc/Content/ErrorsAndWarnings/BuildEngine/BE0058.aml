@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="a68cc0cf-11cf-41dd-acd3-6955f5209e41" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Error BE0058: Two conceptual content files have the same ID
+(<legacyItalic>[id]</legacyItalic>).  The file with the duplicate ID is
+'<localUri>[file]</localUri>'</para>
+    </introduction>
+
+    <section>
+      <title>Cause</title>
+      <content>
+        <para>This error occurs if two conceptual content topics have the same
+ID.  This can happen if you copy and paste a topic to create a new one but
+forget to give the new file a new unique ID.</para>
+      </content>
+    </section>
+
+    <section>
+      <title>Solution</title>
+      <content>
+        <para>Each conceptual content topic file must have a unique ID.  Locate
+the topics with the duplicate ID and change one of them by giving it a new
+unique ID value.</para>
+
+<alert class="note">
+  <para>You should probably search for occurrences of the ID in link elements
+and check to make sure that the links go to the correct topic.</para>
+</alert>
+
+<alert class="tip">
+  <para>If you need to clone a topic, it is usually best to add a new
+conceptual content topic so that it gets a unique ID and then copy and paste
+just the content from the <codeInline>introduction</codeInline> element
+through the <codeInline>relatedTopics</codeInline> element from the source
+topic into the new topic.</para>
+</alert>
+
+      </content>
+    </section>
+
+    <relatedTopics>
+    <link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

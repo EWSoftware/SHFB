@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="efa6ca2b-c052-4555-90d8-a9cc9093f793" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Warning GID0008: Entries for the key '<legacyItalic>[id]</legacyItalic>'
+occur in both '<localUri>[file1]</localUri>' and '<localUri>[file2]</localUri>'.
+The entries in '<localUri>[file2]</localUri>' will be used.</para>
+    </introduction>
+
+    <section>
+      <title>Cause</title>
+      <content>
+        <para>This warning occurs if a member ID occurs in more than one
+comments file.  In such cases, the ID and its related comments from the
+second file will be used rather than those in the first file.</para>
+      </content>
+    </section>
+
+    <section>
+      <title>Solution</title>
+      <content>
+        <para>This warning can usually be safely ignored as it simply means
+that a subsequent comments file is overriding the comments for the given ID
+with an alternate set of comments.  This can happen frequently in the base
+.NET Framework classes.  If the second set of comments used are not appropriate,
+you may need to take steps to rearrrange the files, remove the duplicate set
+of comments, or supply an additional file that further overrides the comments.</para>
+      </content>
+    </section>
+
+    <relatedTopics>
+    <link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
+    <link xlink:href="79897974-ffc9-4b84-91a5-e50c66a0221d" />
+    </relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="bd8fb1cd-b913-4cb4-afb4-8cf2260cf634" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Version 1.3.1.1 was released on October 9th, 2006.</para>
+    </introduction>
+
+    <section>
+      <title>Changes in This Release</title>
+      <content>
+<list class="bullet">
+    <listItem>Support for the October 7th Sandcastle CTP Refresh was confirmed.
+A patch file for some of the Sandcastle style and transformation files is
+supplied separately to fix a few issues that still remain with the stock
+versions supplied with Sandcastle.  Extract the patch to your Sandcastle
+installation folder.  See the ReadMe.txt file included with it for details
+on the fixes that I made.</listItem>
+
+    <listItem>The UTF-8 encoding is now preserved on XML comments files when
+adding the missing documentation tags.  They lack an encoding attribute and
+byte order marks but are UTF-8 encoded and are now always treated as such
+to preserve the encodings on extended characters in the authored comments.</listItem>
+
+    <listItem>If <codeInline>DocumentAttributes</codeInline> is set to false, the
+<codeInline>[Serializable]</codeInline> attributes are removed from the syntax section
+now as well.</listItem>
+
+    <listItem>Implemented several new <codeInline>Document*</codeInline> properties that
+behave like the matching NDoc properties.  See the <legacyBold>Visibility Category
+Properties</legacyBold> topic in the help file for more information.</listItem>
+
+</list>
+
+      </content>
+    </section>
+
+    <relatedTopics>
+    <link xlink:href="6110ac54-04d8-4624-8a2b-2a58af63c20d" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

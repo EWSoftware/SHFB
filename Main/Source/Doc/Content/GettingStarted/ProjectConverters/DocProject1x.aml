@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="6236b6e2-b27f-45d6-a8de-7a7913ff7ce1" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>This is used to convert MSBuild project files created with Dave
+Sexton's <application>DocProject</application> Visual Studio add-in to the help
+file builder project file format.</para>
+    </introduction>
+
+    <section>
+      <title>Post-Conversion Review</title>
+      <content>
+        <para>There are several significant differences between DocProject and
+help file builder project files.  However, the conversion process should give
+you a jumpstart and get you on your way to producing a help file with the
+new project.  The following are some issues that you may encounter:</para>
+
+<list class="bullet">
+	<listItem><para>The first thing that you will notice is that there are
+significantly fewer files and folders in the converted project.  This is
+because the help file builder uses the default set of presentation style files
+installed with Sandcastle rather than importing them into each project.  If you
+made no changes to those files, you will not see any differences.  If you did
+customize the presentation style files, it is possible that you may see
+differences in the layout and style of help files built with the converted
+project.  Note that the help file builder contains many project properties
+that map to the equivalent resource file items that you might have changed in
+the DocProject version (i.e. the help file title, e-mail address, copyright
+information, etc.).  Such items are not imported so review the project
+properties and set the equivalent items accordingly.</para>
+	<para>If you do need to create a customized version of a presentation
+style, simply make a clone of the stock presentation style folder found in the
+<localUri>C:\Program Files\Sandcastle\Presentation</localUri> folder and make
+your changes to it.  Be sure to keep the base presentation style name in the
+new folder name (Prototype, Hana, or VS2005) as certain build steps change
+based on the style selected and this gives the help file builder the necessary
+hint it needs to know what to do.  Once you create the folder, restart the
+help file builder and your new folder will appear in the
+<codeInline>PresentationStyle</codeInline> project property's dropdown.</para></listItem>
+
+    <listItem>All other project files will be converted to matching file items
+with an appropriate build action.  However, since the converter cannot
+determine whether or not some files are actually used, the project may contain
+some leftovers that can be removed during the review.</listItem>
+
+	<listItem>While it does provide a website output format, the help file
+builder does not currently have an equivalent that matches all of the
+functionality from the DocProject DocSite project option.</listItem>
+
+	<listItem>The API filtering methods differs significantly and those
+settings are not converted.  Instead, review the options in the help file
+builder's <link xlink:href="3c489bd6-598c-4684-aafb-fbe9400864d3" />.  These
+can be used to exclude groups of items and the
+<link xlink:href="7df16a60-f718-4b8f-bfa2-88c42906070c" /> can
+be used for finer control over which items are excluded.</listItem>
+
+    <listItem><para>Review the <legacyBold>Documentation Sources</legacyBold> and
+<legacyBold>References</legacyBold> project nodes to see that the required
+items were imported correctly and make any necessary adjustments.</para>
+		<token>SolutionDocSource</token>
+	</listItem>
+
+	<listItem>Conceptual content topics are imported as-is.  However the
+properties from the related companion files are imported and stored in a
+<newTerm>content layout file</newTerm>.  This file can be edited to arrange
+the topics in the table of contents and specify their properties such as the
+title, help index keywords, and additional topic-specific help attributes.  The
+file has a <localUri>.content</localUri> extension and the
+<codeInline>BuildAction</codeInline> is set to <codeInline>ContentLayout</codeInline>
+to indicate that it should be treated as such in the build.</listItem>
+
+	<listItem>If a media content file is found, its content is imported and the
+images are added as project items.  Their <codeInline>BuildAction</codeInline>
+is set to <codeInline>Image</codeInline> and the additional properties such as
+the ID and alternate text are stored in the file item properties.</listItem>
+
+	<listItem>Token files are added to the project and their
+<codeInline>BuildAction</codeInline> is set to <codeInline>Tokens</codeInline>
+to indicate that they should be treated as such in the build.  The extension
+on the filename is changed to <localUri>.tokens</localUri>.</listItem>
+
+	<listItem>Code snippets files are added to the project and their
+<codeInline>BuildAction</codeInline> is set to <codeInline>CodeSnippets</codeInline>
+to indicate that they should be treated as such in the build.  The extension
+on the filename is changed to <localUri>.snippets</localUri>.</listItem>
+
+	<listItem>If you were using the standalone custom build components that
+are distributed at the <token>SHFB</token> CodePlex project site, you will
+need to add them to the project.  This is done as follows:
+
+	<list class="ordered">
+	  <listItem>Select the <codeInline>ComponentConfigurations</codeInline>
+property in the <ui>Properties</ui> window and click the "..." button to the
+right of the property.</listItem>
+	  <listItem>In the Component Configuration dialog that appears, double
+click on the components that you want to add to the project.</listItem>
+	  <listItem>To configure them, select each component in the right-hand list
+and click the <ui>Configure</ui> button.</listItem>
+	</list>
+
+	<alert class="note">
+	  <para>The help file builder includes the <legacyBold>Code Block Component</legacyBold>
+	and the <legacyBold>Post-Transform Component</legacyBold> in every project by
+	default via the template configuration files used during the build.  You will
+	only need to add them to your projects if you want to override their default
+	configurations.</para>
+	</alert></listItem>
+
+	<listItem>Not all files can be detected and added to the project (i.e.
+files referenced in topics such as example code files, etc.).  If build errors
+result from missing files, simply add them to the project or adjust the paths
+and/or filenames as needed.</listItem>
+
+	<listItem>If you were using the Code Block Component in DocProject, you
+may need to adjust the path to external source files in the source attribute
+on the <codeInline>&lt;code&gt;</codeInline> elements.</listItem>
+
+</list>
+
+      </content>
+    </section>
+
+    <relatedTopics>
+	<link xlink:href="f68822d2-97ba-48da-a98b-46747983b4a0" />
+	<link xlink:href="8e3f8757-0ef3-4772-bb2f-5d7ae57e50da" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

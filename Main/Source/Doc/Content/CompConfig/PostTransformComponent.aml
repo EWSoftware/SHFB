@@ -1,0 +1,175 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="f502c07b-8110-477d-8953-73255296206b" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+      <para>The Post-Transform Component is used to provide the following additional
+features to modify the transformed HTML for a help topic:</para>
+
+<list class="bullet">
+    <listItem>It can insert a logo image at the top of each help topic to the
+left, right, or above the topic title.</listItem>
+
+    <listItem>It acts as a companion component to the Code Block Component to
+add the supporting links for the colorizer script and stylesheet only when
+required.</listItem>
+
+    <listItem>For the Prototype style, it hides the language combo box if only
+one language appears in the Syntax section.</listItem>
+
+    <listItem>It acts as a companion component to the Version Information
+Component to add version information to the help topics if used with the help
+file builder.  If used outside the help file builder, a shared content file
+containing the necessary overrides is needed or a modification is required to
+the Sandcastle reference content files (see below).</listItem>
+
+</list>
+
+    </introduction>
+
+<section>
+  <title>Example Configuration</title>
+  <content><para>The following is the default configuration for the
+post-transform component. All attribute names and values are case-sensitive.
+It should be inserted into the configuration file right after the
+<codeInline>TransformComponent</codeInline>.  This component can be used by
+itself if you do not want to use the code block and/or version information
+components.  However, this component is required and must be used if you do use
+the code block and/or version information components.</para>
+
+<para>If the version information component is used, this component will insert
+the version information found into the help topic.  For the code block
+component, it adds the script and stylesheet links to the document's
+<codeInline>&lt;head&gt;</codeInline> section.  While they could both be
+inserted into the first code element by the code block component and would
+work, the link for the stylesheet is only considered valid HTML if it appears
+in the <codeInline>&lt;head&gt;</codeInline> section. By using this component
+to insert it, it keeps the HTML well formed and valid.  Since it is inserting
+the stylesheet link, I placed the code to insert the script element in here as
+well.</para>
+
+<code lang="xml" title="Example Configuration">
+&lt;!-- Post-transform component configuration.  This must appear after the
+     TransformComponent.  See also: CodeBlockComponent. --&gt;
+&lt;component type="SandcastleBuilder.Components.PostTransformComponent"
+  assembly="{@SHFBFolder}SandcastleBuilder.Components.dll"
+  id="Post-transform Component"&gt;
+    &lt;!-- Code colorizer files (required).
+         Attributes:
+            Stylesheet file (required)
+            Script file (required)
+            "Copy" image file (required) --&gt;
+    &lt;colorizer stylesheet="{@SHFBFolder}Colorizer\highlight.css"
+        scriptFile="{@SHFBFolder}Colorizer\highlight.js"
+        copyImage="{@SHFBFolder}Colorizer\CopyCode.gif" /&gt;
+
+    &lt;!-- Base output paths for the files (required).  These should
+         match the parent folder of the output path of the HTML files
+         (see each of the SaveComponent instances below). --&gt;
+    &lt;outputPaths&gt;
+      &lt;path value="Output\HtmlHelp1\" /&gt;
+      &lt;path value="Output\MSHelp2\" /&gt;
+      &lt;path value="Output\MSHelpViewer\" /&gt;
+      &lt;path value="Output\Website\" /&gt;
+    &lt;/outputPaths&gt;
+
+    &lt;!-- Logo image file (optional).  Filename is required. The height,
+         width, altText, placement, and alignment attributes are
+         optional. --&gt;
+    &lt;logoFile filename="" height="0" width="0" altText=""
+        placement="left" alignment="left" /&gt;
+&lt;/component&gt;
+</code>
+
+<para>The example given above is taken from the Sandcastle Help File Builder's
+configuration file.  When used with it, you may specify the replacement tag
+<codeInline>{@SHFBFolder}</codeInline> to insert the help file builder's folder
+in the file path.  This is replaced at build time with the appropriate value.
+This replacement tag can also be specified in the configuration dialog when
+configuring project-specific configurations for the component from within the
+help file builder.  The same applies to the <codeInline>{@ProjectFolder}</codeInline>
+replacement tag which can be used in the logo image's <codeInline>filename</codeInline>
+attribute to insert a reference to the project folder.  If using the component
+in your own build scripts, replace the tags with an actual absolute or relative
+path.  If a relative file path is specified, it will be relative to the current
+working folder at build time.</para>
+
+<para>The colorizer element defines the files used by the code colorizer
+script.  The <codeInline>stylesheet</codeInline> attribute defines the
+stylesheet to use for the colorized code.  The <codeInline>scriptFile</codeInline>
+attribute defines the script file containing the JavaScript code used to show
+and hide the collapsible sections and copy the code to the clipboard (Internet
+Explorer only).  The <codeInline>copyImage</codeInline> attribute defines the
+image file to use for the "Copy Code" link.  The supplied <localUri>highlight.css</localUri>,
+<localUri>highlight.js</localUri>, and <localUri>CopyCode.gif</localUri> files
+are used by default.  A copy of the image file with an "_h" suffix should also
+exist if you would like to see a different image when the mouse hovers over the
+link (i.e. <localUri>CopyCode_h.gif</localUri>).  If it does not exist, the
+same image is used for both. You can edit the stylesheet to use different
+colors for the highlighted code elements.  If using the help file builder, you
+can also add a new stylesheet using the same name to an <localUri>html\</localUri>
+folder in the project.  The project's copy will overwrite the default
+stylesheet.  The same applies to the image files.  However, their location is
+determined by the <codeInline>copyImageUrl</codeInline> attribute in the code
+block component's configuration.</para>
+
+<para>The <codeInline>outputPaths</codeInline> element is used to specify where
+the stylesheet and script files are to be copied.  One or more child
+<codeInline>path</codeInline> elements must be specified that match the parent
+folder of the paths used in the <codeInline>SaveComponent</codeInline> instances
+that save the help topic HTML files.  The help file builder supports output of
+multiple formats in a single build.  As such, there is one child element for each
+of the different help file formats.  The image files are copied to the location
+specified in the <codeInline>CodeBlockComponent</codeInline> configuration which
+is relative to these paths.  See its description for details.  The script is
+copied to the <localUri>scripts\</localUri> folder and the stylesheet is copied
+to the <localUri>styles\</localUri> folder under these paths.</para>
+
+<para>The <codeInline>logoFile</codeInline> element is optional.  Using it, you
+can add a logo image to the header of each help topic page that will appear to
+the left, right, or above the topic title.  If no image file is specified or
+the element is omitted, no image will appear in the header.  The
+<codeInline>height</codeInline> and <codeInline>width</codeInline> attributes
+can be used to specify the height and width of the image.  If omitted or set to
+zero, the image will be displayed using its actual size. By using these
+attributes, you can scale a larger image down or scale a smaller image up to
+get a better fit.  The configuration dialog for the component allows you to
+select an image and adjust its size with a preview area.  The
+<codeInline>altText</codeInline> attribute lets you specify some alternate text
+that can appear for the image.  The <codeInline>placement</codeInline>
+attribute allows you to specify where the image is placed (to the left, to the
+right, or above the topic title).  When set to <codeInline>above</codeInline>,
+the <codeInline>alignment</codeInline> attribute specifies how the image is
+aligned (left, right, or centered).</para>
+
+  </content>
+</section>
+
+<section>
+  <title>Version Information</title>
+  <content><para>As noted, the component can insert version information into
+the topic when used with the <codeInline>VersionInformationComponent</codeInline>.
+If not used, no version information will be listed.  The help file builder
+contains the necessary modifications to its shared content files to add version
+information.  If you use this component in your own scripts or build tools, you
+will need to include a copy of this shared content file or modify the
+Sandcastle reference content files in order to add the version parameter.  To
+do so, add the text "Version: {2}" to the <codeInline>locationInformation</codeInline>
+entry in the <localUri>reference_content.xml</localUri> file for the
+Prototype, VS2005, and Hana styles and the <codeInline>requirementsAssemblyLayout</codeInline>
+entry in the <localUri>reference_content.xml</localUri> file for the VS2005
+and Hana styles.</para>
+
+  </content>
+</section>
+
+    <relatedTopics>
+    <link xlink:href="7f03ba39-09f8-4320-bdbd-ed31a3bd885f" />
+    <link xlink:href="58ce80ee-eb4b-4027-8871-7e83fad8e476" />
+    <link xlink:href="8dcbb69b-7a1a-4049-8e6b-2bf344efbbc9" />
+    </relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="6417667f-ea10-421f-839c-647561ed207b" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Error CVT0004: Unrecognized schema version</para>
+    </introduction>
+
+    <section>
+      <title>Cause</title>
+      <content>
+        <para>This error is caused by an unrecognized schema version.</para>
+      </content>
+    </section>
+
+    <section>
+      <title>Solution</title>
+      <content>
+        <para>The most likely cause of this error is that you have attempted
+to load a help file builder version 1.7.0.0 or earlier project file that is not
+valid.  Check the file to be sure that it is a help file builder project file.
+If you are unable to solve the problem based on the reported error, open a work
+item in the <token>SHFB</token> project at CodePlex containing the details from
+the error message.  Attach the affected source project as an example.</para>
+      </content>
+    </section>
+
+    <relatedTopics>
+    <link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

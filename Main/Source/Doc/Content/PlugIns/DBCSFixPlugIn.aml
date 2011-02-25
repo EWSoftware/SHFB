@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="31696f39-8f4e-4c4d-ab08-41a40793df03" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+      <para>DBCS stands for Double Byte Character Set.  Several languages, most
+notably East Asian languages and Russian, cause problems for HTML Help 1 (.chm)
+builds because the help compiler is not Unicode-aware.  This can cause the
+table of contents, index, and in some cases the help topics to display
+incorrect characters.  This plug-in is designed to correct these issues.</para>
+
+	<autoOutline />
+    </introduction>
+
+<section address="Features">
+  <title>Features</title>
+  <content><para>The plug-in modifies the topic files and the build in the
+following ways:</para>
+
+<list class="bullet">
+    <listItem>It converts unsupported high-order characters to 7-bit ASCII
+equivalents.</listItem>
+    <listItem>It converts several unsupported high-order characters to named
+entities.</listItem>
+    <listItem>It replaces the UTF-8 reference in the <codeInline>CHARSET</codeInline> meta tag
+in each HTML page with a character set reference appropriate to the selected
+language.</listItem>
+    <listItem>It saves each HTML page using the encoding appropriate to the
+selected language.</listItem>
+    <listItem>It uses the <legacyBold>SBAppLocale</legacyBold> tool from
+<externalLink>
+  <linkText>Steel Bytes</linkText>
+  <linkUri>http://www.steelbytes.com/?mid=45</linkUri>
+  <linkTarget>_blank</linkTarget>
+</externalLink> to run the HTML Help 1 compiler under the appropriate locale
+for the selected language. This saves you from having to manually change the
+language in your Regional Settings, reboot, and perform the help compile
+step.</listItem>
+</list>
+
+	<para>To use the plug-in, add it to the project and configure it.  The only
+option needed is the location of the <localUri>SBAppLocale.exe</localUri>
+application.</para>
+  </content>
+</section>
+
+<section address="Issues">
+  <title>Method Naming Issues</title>
+  <content><para>Note that if your code uses Unicode characters in the member
+names, it may not be possible to use the <codeInline>MemberName</codeInline>
+option for the <codeInline>NamingMethod</codeInline> property.  If you receive
+build errors that indicate that it cannot find certain files and the names do
+not look correct, change the naming method to use either the
+<codeInline>GUID</codeInline> or <codeInline>HashedMemberName</codeInline>
+option.</para>
+
+  </content>
+</section>
+
+<section address="ContentFiles">
+  <title>Additional Content Files</title>
+  <content><para>If you add HTML pages as additional content or use a topic
+transformation file to create HTML additional content pages, you should ensure
+that a <codeInline>meta</codeInline> tag specifying UTF-8 encoding appears in
+each file.  This will ensure that all additional content pages are also
+properly encoded if necessary.  For example:</para>
+
+<code lang="xml" title="Example Character Set Encoding Meta Tag">
+&lt;head&gt;
+&lt;title&gt;My Additional Content&lt;title&gt;
+&lt;meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /&gt;
+&lt;/head&gt;
+</code>
+
+  </content>
+</section>
+
+<section address="Config">
+  <title>Language Configuration</title>
+  <content><para>The tool that performs the encoding translation relies on the
+<legacyBold>SandcastleHtmlExtract.config</legacyBold> file to provide
+information about the language locale ID, code page, and character set encoding
+name.  The configuration file is located in the root help file builder
+installation folder.  If the project's locale ID cannot be found in the file, a
+warning is issued in the log file and a default code page and character set
+encoding will be used based on the language selected in the project.  If the
+defaults are not appropriate, you can add new entries to the configuration
+file.</para>
+
+<para>The settings consist of a set of <codeInline>language</codeInline>
+elements, one for each language identified by locale ID, that specify the
+settings.  The <codeInline>id</codeInline> attribute refers to the locale ID
+(LCID) for the language. The <codeInline>codepage</codeInline> attribute is the
+code page to use when determining the encoding for the files based on the given
+locale ID.  The <codeInline>charset</codeInline> attribute value will be
+written to the HTML files in place of the UTF-8 value when localizing the files
+for use with the HTML Help 1 compiler.</para>
+
+<para>If you do add entries to this file, please report them so that they can
+be added to a future release of the help file builder.</para>
+
+  </content>
+</section>
+
+    <relatedTopics>
+    <link xlink:href="e031b14e-42f0-47e1-af4c-9fed2b88cbc7" />
+    </relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

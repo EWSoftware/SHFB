@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="757d284c-5c04-4bf1-93c5-f00961b92132" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Error BE0014: Unable to load source file
+'<localUri>[file]</localUri>'</para>
+    </introduction>
+
+    <section>
+      <title>Cause</title>
+      <content>
+        <para>This error occurs if the source code file referenced in a
+<codeInline>source</codeInline> attribute on a <codeInline>code</codeInline>
+element in an HTML additional content file cannot be loaded.</para>
+      </content>
+    </section>
+
+    <section>
+      <title>Solution</title>
+      <content>
+        <para>Refer to the additional error information following this error
+message in the log file for information about the possible cause of the
+problem (i.e. file not found, permission issues, etc.).</para>
+      </content>
+    </section>
+
+    <relatedTopics>
+    <link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

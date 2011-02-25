@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="f8a3ab8c-1ccb-4108-8953-c613af46ee12" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Version 1.6.0.1 was released on October 31st, 2007.</para>
+    </introduction>
+    <section>
+      <title>Changes in This Release</title>
+      <content>
+<list class="bullet">
+    <listItem>Added support for the October 2007 CTP of Sandcastle.</listItem>
+    
+    <listItem>Fixed a couple of bugs related to topic file transformation.</listItem>
+    
+    <listItem>Fixed a couple of bugs that caused the <codeInline>ApiFilter</codeInline> editor
+dialog to crash.</listItem>
+
+    <listItem>Fixed a couple of bugs in the AjaxDoc plug-in.  It has also been
+updated to work correctly with AjaxDoc 1.1.</listItem>
+
+    <listItem>Adjusted the logo placement code in <codeInline>PostTransformComponent</codeInline>
+for the VS2005 style so that the logo appears correctly.</listItem>
+
+    <listItem>Added support for the VS2005 style's feedback control.  It can be
+shown by setting the new <codeInline>ShowFeedbackControl</codeInline> property to true.
+Setting it to false hides it.</listItem>
+
+    <listItem>Added the <codeInline>SdkLinkTarget</codeInline> property to allow defining where
+MSDN links will open in the browser.</listItem>
+
+    <listItem>Support was added for the root namespaces page in the Hana and VS2005
+styles when a root namespace container is used.</listItem>
+
+    <listItem>In additional content files, any HTML tag with a <codeInline>cref</codeInline>
+attribute will have the attribute converted to an <codeInline>href</codeInline> attribute
+that points to the found API topic (i.e. &lt;area&gt; tags in an image
+map).</listItem>
+
+    <listItem>Modified the VB.NET and VBScript comment colorization rules to fix
+problems with end of line detection.  Added support for handling "&lt;! &gt;"
+entries such as those for DOCTYPE in the XML colorizer rules.</listItem>
+
+    <listItem>For consistency, the code colorizer scripts and stylesheets are now
+copied to the Scripts and Styles folders rather than the HTML folder. The
+<codeInline>outputPath</codeInline> property of the <codeInline>PostTransformComponent</codeInline>
+should now point to "Output" rather than "Output\html".  The component will
+correct the path if it ends with "\html".  The logo file is also copied to the
+Images folder rather than the root of the help content.</listItem>
+
+    <listItem>Some of the shared content items have been moved into presentation
+style specific shared content files due to differences in how those items are
+now handled by the style (specifically the header and footer items).</listItem>
+
+    <listItem>Added ".topic" and ".xslt" to the related File Open dialogs.</listItem>
+    
+    <listItem>If building multiple output formats, website output is now built last
+to prevent unnecessary files ending up in the CHM and HxS files.</listItem>
+
+    <listItem>The MS Help 2 project files are now copied to the output folder to
+aid in creating a deployment file.  Note that they will need modification to
+remove the DTD, compiler options, etc.</listItem>
+
+    <listItem>Improved the performance of various reflection file XPath queries
+which can speed up some of the build steps.</listItem>
+
+    <listItem>Merged changes from Martin Darilek into the version information
+build component to show the file version attribute value if present.</listItem>
+</list>
+
+      </content>
+    </section>
+
+    <relatedTopics>
+    <link xlink:href="6110ac54-04d8-4624-8a2b-2a58af63c20d" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

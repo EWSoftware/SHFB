@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="21cf9c3e-ae15-44e0-a68e-7afe730097c3" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Version 1.1.0.0 was released on August 28th, 2006.</para>
+    </introduction>
+
+    <section>
+      <title>Changes in This Release</title>
+      <content>
+<list class="bullet">
+    <listItem>Updated for use with the August 2006 CTP.</listItem>
+
+    <listItem>Added the option to create a new Sandcastle Help File Builder
+project by importing the assembly information from a Visual Studio
+2003/2005 solution or project file.</listItem>
+
+    <listItem>Added the <codeInline>HelpFileFormat</codeInline> property to let you define the
+help file output format (HTML Help 1 or MS Help 2).</listItem>
+
+    <listItem>Renamed the <codeInline>HtmlHelpCompilerPath</codeInline> property to
+<codeInline>HtmlHelp1xCompilerPath</codeInline> for the HTML Help 1 help compiler
+(<legacyBold>HHC.EXE</legacyBold>) and added the <codeInline>HtmlHelp2xCompilerPath</codeInline> property
+for the MS Help 2 help compiler (<legacyBold>HXCOMP.EXE</legacyBold>).</listItem>
+
+    <listItem>Added the project files necessary to build MS Help 2 files and
+renamed a few of the template files to reflect their use in building HTML Help
+1 files.</listItem>
+
+    <listItem>Fixed a problem in the final build step caused by a help filename with
+spaces in it.</listItem>
+
+    <listItem>The <codeInline>Dependencies</codeInline> property has been changed to a
+collection to allow easier specification of dependency items for
+<legacyBold>MRefBuilder</legacyBold>.</listItem>
+
+    <listItem>The <legacyBold>{@IndexFile}</legacyBold> tag has been removed and a new step added
+to generate the HTML Help 1 index file via the new Sandcastle XSL transformation.</listItem>
+
+    <listItem>Renamed <codeInline>ShowAttributes</codeInline> to <codeInline>DocumentAttributes</codeInline>
+to match NDoc and put it in the <legacyBold>Visibility</legacyBold> category.</listItem>
+
+    <listItem>Added the <codeInline>DocumentInternals</codeInline> property to allow the
+documentation of private and internal members to be enabled.</listItem>
+
+    <listItem>Added <codeInline>ProjectLinkType</codeInline> and <codeInline>SdkLinkType</codeInline>
+options to control how links to other help topics are rendered in the help
+file.</listItem>
+
+    <listItem>Added a <codeInline>RootNamespaceContainer</codeInline> option.
+If true, a root <legacyBold>Namespaces</legacyBold> table of contents entry
+will be made the container of the namespaces.  If false, the default, the
+namespaces are listed in the table of contents as root entries.</listItem>
+
+</list>
+
+      </content>
+    </section>
+
+    <relatedTopics>
+    <link xlink:href="6110ac54-04d8-4624-8a2b-2a58af63c20d" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

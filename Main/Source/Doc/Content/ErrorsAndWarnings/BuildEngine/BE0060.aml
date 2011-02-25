@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="e076c319-ff84-40dc-bb00-ff4c72718215" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Warning BE0060: The <legacyItalic>[itemType]</legacyItalic>
+'<legacyItalic>[item]</legacyItalic>' contains a comma or '.h' which may cause
+the Help 1 compiler to fail.</para>
+    </introduction>
+
+    <section>
+      <title>Cause</title>
+      <content>
+        <para>This warning is issued if the build process detects the text
+".h" or a comma within the value of the indicated item while generating the
+file list for the Help 1 project file.  In such cases, the help compiler may
+generate spurious <codeInline>HHC3002</codeInline> and <codeInline>HHC3004</codeInline>
+errors reporting that the content files are invalid.</para>
+      </content>
+    </section>
+
+    <section>
+      <title>Solution</title>
+      <content>
+        <para>The HTML Help 1 compiler has problems interpretting paths
+and filenames that end with something equal to or starting with ".help" or
+".hlp" or that contain ".h" in general (i.e.
+<localUri>C:\Project.Help\</localUri>).  Rename the offending folder or
+filename to remove the period or comma or change the "help" or "hlp" part and
+try the build again (i.e. <localUri>C:\Project_Help\</localUri>,
+<localUri>C:\ProjectHelp\</localUri>, or <localUri>C:\Project.Docs\</localUri>).
+There may also be issues with paths containing commas so you may need to remove
+them as well if any are present in the path.</para>
+      </content>
+    </section>
+
+    <relatedTopics>
+	<link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="51558d8f-f789-4952-a9fd-ed0c51f47b86" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Version 1.8.0.2 was released on May 31st, 2009.</para>
+    </introduction>
+    
+<section>
+  <title>Changes in This Release</title>
+  <content>
+    <list class="bullet">
+      <listItem>Fixed a bug that caused the <application>GenerateInheritedDocs</application>
+tool to crash when the <codeInline>inheritdoc</codeInline> tag was nested
+within other XML comment tags.</listItem>
+    </list>
+  </content>
+</section>
+
+    <relatedTopics>
+      <link xlink:href="9916374d-681f-4869-9b10-bb4a31161998" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="74ced26b-73de-42f7-aa8e-b6a6d8c8aa40" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Warning BE0007: A project with a higher framework version was
+found.  Changing project <codeInline>FrameworkVersion</codeInline> property
+from '<legacyItalic>[projectValue]</legacyItalic>' to
+'<legacyItalic>[foundValue]</legacyItalic>' for the build</para>
+    </introduction>
+
+    <section>
+      <title>Cause</title>
+      <content>
+        <para>This warning occurs if a project documentation source contains
+a framework version value higher than the one specified in the help project.
+To ensure that the correct framework comments are included the highest
+framework version found will be used for the build.</para>
+      </content>
+    </section>
+
+    <section>
+      <title>Solution</title>
+      <content>
+        <para>To suppress this warning, change the <codeInline>FrameworkVersion</codeInline>
+project property to match the value noted in the warning.</para>
+      </content>
+    </section>
+
+    <relatedTopics>
+    <link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

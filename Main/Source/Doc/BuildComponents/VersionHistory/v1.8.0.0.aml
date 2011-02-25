@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="5566ecfa-085b-476c-a7db-622dc5b6c545" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Version 1.8.0.0 was released on October 20th, 2008.</para>
+    </introduction>
+
+    <section>
+      <title>Changes in This Release</title>
+      <content>
+<list class="bullet">
+	<listItem>Fixed the <legacyBold>Code Block Component</legacyBold> so that
+nested code blocks in conceptual content are imported correctly.</listItem>
+
+	<listItem>Added an <codeInline>allowMissingSource</codeInline> option to
+the <legacyBold>Code Block Component</legacyBold> to allow missing source code
+files/regions to generate warnings rather than errors.  It also gives a more
+descriptive error when it fails to find a required attribute.</listItem>
+
+	<listItem>Thanks to Golo Roden for the Python keywords and code colorizer
+rule definitions.  Use the language ID <codeInline>python</codeInline> or
+<codeInline>py</codeInline> to colorize a code block as Python code.</listItem>
+
+	<listItem>In the code download, all help file builder solutions and
+projects are now in Visual Studio 2008 SP1 format.</listItem>
+
+	<listItem>The help file content has been converted to MAML and uses
+the VS2005 style.</listItem>
+
+</list>
+      </content>
+    </section>
+
+    <relatedTopics>
+    <link xlink:href="9916374d-681f-4869-9b10-bb4a31161998" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

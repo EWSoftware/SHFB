@@ -1,0 +1,261 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="8ffc0d37-0215-4609-b6f8-dba53a6c5063" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+      <para>Starting with version 1.8.0.0 of the help file builder, the project
+file uses a standard MSBuild file format.  Projects can be built from
+the command line using the MSBuild executable.  As such, the console mode
+executable used in prior versions of the help file builder has been removed.</para>
+	<autoOutline />
+    </introduction>
+
+<section address="Options">
+  <title>Building From the Command Line</title>
+  <content><para>Use <localUri>MSBuild.exe</localUri> to build help file builder
+projects from the command line.  It can be found in the
+<localUri>%SystemRoot%\Microsoft.NET\Framework\v[version]</localUri> folder
+where "[version]" is an appropriate version of the .NET Framework
+(currently 3.5).  All of the usual MSBuild command line options can be used.
+You can use the <system>/property:n=v</system> option (short form:
+<system>/p:n=v</system>) to override project property values where "n" is a
+property name and "v" is the value to use.  Below are some common command line
+option and property overrides not directly represented by a matching help file
+builder project property.  For a full list of MSBuild command line options, see
+the <externalLink><linkText>MSBuild Command Line Reference</linkText>
+<linkUri>http://msdn.microsoft.com/en-us/library/ms164311.aspx?ppud=4</linkUri>
+<linkTarget>_blank</linkTarget></externalLink></para>
+
+<table>
+  <tableHeader>
+    <row>
+      <entry>Option</entry>
+      <entry>Description</entry>
+    </row>
+  </tableHeader>
+  <row>
+    <entry>/verbosity:[level] or /v:[level]></entry>
+    <entry>Set the overall verbosity level of the build.  This controls which
+messages MSBuild will display.  The default is <codeInline>normal</codeInline>
+which shows informational messages, errors, and warnings.</entry>
+  </row>
+  <row>
+    <entry>/p:Verbose=[True|False]</entry>
+    <entry>This property value can be specified to control the output from the
+build process.  The default is false to only output build step names as the
+build is performed.  Setting this property value to true will display all
+output from all build steps.  This is equivalent to the information written to
+the log file.</entry>
+  </row>
+  <row>
+    <entry>/p:DumpLogOnFailure=[True|False]</entry>
+    <entry>This property value can be specified to control whether or not the
+log file is dumped to the MSBuild log if the project fails to build.  The
+default is false to not dump the log.  Setting this property value to
+true will dump the log content if the build fails.</entry>
+  </row>
+  <row>
+    <entry>/p:Configuration=[configName]</entry>
+    <entry>This can be used to specify the <codeInline>Configuration</codeInline>
+value to use for any solution or project file documentation sources.  If not
+set, it defaults to <codeInline>Debug</codeInline>.</entry>
+  </row>
+  <row>
+    <entry>/p:Platform=[configName]</entry>
+    <entry>This can be used to specify the <codeInline>Platform</codeInline>
+value to use for any solution or project file documentation sources.  If not
+set, it defaults to <codeInline>AnyCPU</codeInline>.</entry>
+  </row>
+  <row>
+    <entry>/p:CustomBeforeSHFBTargets=[projectFile]</entry>
+    <entry>This can be used to specify a custom project file containing
+property or target overrides that should be evaluated prior to the help file
+builder's targets.  Specify the full path to the project file.</entry>
+  </row>
+  <row>
+    <entry>/p:CustomAfterSHFBTargets=[projectFile]</entry>
+    <entry>This can be used to specify a custom project file containing
+property or target overrides that should be evaluated after the help file
+builder's targets.  Specify the full path to the project file.</entry>
+  </row>
+</table>
+
+<alert class="note">
+  <para>Regardless of any verbosity level setting, full output from the build
+is always saved to the log file.  As with the GUI builder, the help file and
+the log file can be found in the folder specified in the project's
+<codeInline>OutputPath</codeInline> property after a build.</para>
+</alert>
+
+	<para>Prefix options with '-' or '/'.  Property values should be enclosed
+in double quotes if they contain spaces, commas, or other special characters.
+All relative paths specified on the command line and those in a response file
+(see below) are relative to the project's path as usual.  Below are a couple of
+example command lines:</para>
+
+<code lang="none" title="Note: Lines wrapped for display purposes">
+%SystemRoot%\Microsoft.NET\Framework\v3.5\MSBuild.exe
+  /p:Configuration=Release HelpFile.shfbproj
+
+%SystemRoot%\Microsoft.NET\Framework\v3.5\MSBuild.exe
+	/p:CopyrightText="Copyright \xa9 2006-2011"
+	/p:FeedbackEMailAdress="Eric@EWoodruff.us"
+	HelpFile.shfbproj
+</code>
+
+<alert class="note">
+  <para>Property names specified on the command line or in response files are
+case-insensitive as are simple property values.  However, XML-based property
+values (the collection-based ones) are case-sensitive with regard to the
+element names.  The values of the elements themselves are case-insensitive.</para>
+</alert>
+
+  </content>
+</section>
+
+<section address="ResponseFile">
+  <title>Response Files</title>
+  <content><para>In addition to specifying project option overrides on the
+command line, MSBuild supports response (.rsp) files that contain a complex
+list of command line options used to build help file projects.  Each option can
+be on a separate line or all options can be on one line.  Comment lines are
+prefaced with a <codeInline>#</codeInline> symbol.  The <codeInline>@</codeInline>
+switch is used to pass another response file to <localUri>MSBuild.exe</localUri>.</para>
+
+<code language="none" title=" ">
+%SystemRoot%\Microsoft.NET\Framework\v3.5\MSBuild.exe @ResponseFile.rsp
+</code>
+
+  </content>
+</section>
+
+<section address="TargetOverrides">
+  <title>Target Override Files</title>
+  <content><para>As noted above, the <codeInline>CustomBeforeSHFBTargets</codeInline>
+and <codeInline>CustomAfterSHFBTargets</codeInline> properties can be set to
+the names of MSBuild project files containing property and/or target definition
+overrides.  The <codeInline>CustomBeforeSHFBTargets</codeInline> property
+is useful for specifying overrides for complex properties such as those for
+build component configurations, plug-in configurations, and API filter settings
+as you can specify them using normal XML that spans multiple lines.  An example
+override file is shown below:</para>
+
+<alert class="important">
+  <para>The paths to the target override files should be fully qualified as
+relative paths on them are evaluated by MSBuild based on the help file
+builder's target file location.</para>
+</alert>
+
+<code lang="xml" title="Example Override Project File">
+<![CDATA[<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <HtmlHelpName>TestDoc</HtmlHelpName>
+    <CleanIntermediates>True</CleanIntermediates>
+    <RootNamespaceTitle>Root Namespace Container</RootNamespaceTitle>
+    <PresentationStyle>Hana</PresentationStyle>
+    <HelpTitle>Test Help File</HelpTitle>
+  </PropertyGroup>
+</Project>]]>
+</code>
+
+	<para>The help file builder target definition file contains several targets
+that can be overridden to define custom behavior that occurs before and after
+the help file builder build targets.  These can be defined in a custom project
+file specified with the <codeInline>CustomAfterSHFBTargets</codeInline>
+property.</para>
+
+<alert class="note">
+  <para>These targets are not executed when built from within the standalone
+help file builder GUI.  These are only executed when built using MSBuild.</para>
+</alert>
+
+<table>
+  <tableHeader>
+    <row>
+      <entry>Target</entry>
+      <entry>Purpose</entry>
+    </row>
+  </tableHeader>
+  <row>
+    <entry>BeforeBuildHelp</entry>
+    <entry>This target executes before the help file is built.</entry>
+  </row>
+  <row>
+    <entry>AfterBuildHelp</entry>
+    <entry>This target executes after the help file is built.</entry>
+  </row>
+  <row>
+    <entry>BeforeCleanHelp</entry>
+    <entry>This target executes before the prior build's output is cleared.</entry>
+  </row>
+  <row>
+    <entry>AfterCleanHelp</entry>
+    <entry>This target executes after the prior build's output is cleared.</entry>
+  </row>
+  <row>
+    <entry>BeforeRebuildHelp</entry>
+    <entry>This target executes before the help file is rebuilt.</entry>
+  </row>
+  <row>
+    <entry>AfterRebuildHelp</entry>
+    <entry>This target executes after the help file is rebuilt.</entry>
+  </row>
+</table>
+
+  </content>
+</section>
+
+<section address="PostBuildEvent">
+  <title>Specifying a Post-Build Event to Build a Help File</title>
+  <content><para>Currently, help file builder projects are not directly
+supported as solution project items.  However, a post-build event in a Visual
+Studio project can be used to build them.  To do so, right click on a project
+name in the Solution Explorer, select <legacyBold>Properties</legacyBold>, and
+select the <legacyBold>Build Events</legacyBold> sub-item.  Click in the
+<legacyBold>Post-build Event Command Line</legacyBold> option to enter the
+command line to run.  You can click the <legacyBold>Edit Post-build</legacyBold>
+button to open a dialog with a larger editor and a list of available macros.
+Below is an example of a common command line script that can be used (lines
+wrapped for display purposes). Replace the path to the tool with the path where
+you installed it on your PC.  The <codeInline>IF</codeInline> statement
+prevents building the help file in debug builds where it may not be needed.</para>
+
+<code lang="none" title="Note: Lines wrapped for display purposes">
+IF "$(ConfigurationName)"=="Debug" Goto Exit
+
+ECHO Building SHFB help file via MSBuild
+"$(SystemRoot)\Microsoft.NET\Framework\v3.5\MSBuild.exe"
+    /p:CleanIntermediates=True /p:Configuration=Release
+    "$(SolutionDir)Doc\SandcastleBuilder.shfbproj"
+
+:Exit
+</code>
+
+<para>In a solution with multiple projects that are documented by the same
+help file builder project, the post-build event should be defined on the
+last project built by Visual Studio.  If the projects are documented
+individually, you can place a post-build event on each one.</para>
+
+  </content>
+</section>
+
+<section address="OtherTools">
+  <title>Other Build Tools</title>
+  <content><para>Other automated build tools also exist.  As long as the build
+tool supports execution of command line based executables with parameters such
+as <localUri>MSBuild.exe</localUri>, you should be able to integrate it with
+the build process in a similar fashion.</para>
+
+  </content>
+</section>
+
+    <relatedTopics>
+    <link xlink:href="b772e00e-1705-4062-adb6-774826ce6700" />
+    <link xlink:href="ec822059-b179-4add-984d-485580050ffb" />
+    <link xlink:href="96956ab6-fd5e-4bc7-a577-a18b0ff258ea" />
+    </relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

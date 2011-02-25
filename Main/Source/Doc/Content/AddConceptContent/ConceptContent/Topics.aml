@@ -1,0 +1,176 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="4b8ab701-2321-4d24-a287-8848de086f68" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+      <para>Topic files contain Microsoft Assistance Markup Language (MAML) to
+define non-reference content such as usage notes, walkthroughs, tutorials, etc.
+MAML topic files have a <localUri>.aml</localUri> extension and should have
+their <codeInline>BuildAction</codeInline> set to <codeInline>None</codeInline>
+in the Project Explorer.  A
+<link xlink:href="54e3dc97-5125-441e-8e84-7f9303e95f26">content layout file</link>
+is used to determine which topics are included in the compiled help file and
+sets their layout in the table of contents.</para>
+
+	  <autoOutline lead="none" excludeRelatedTopics="true" />
+    </introduction>
+
+<section address="LayoutProperties">
+  <title>Content Layout Properties</title>
+  <content><para>Each topic is assigned a unique ID that can be referenced in
+topics using a <codeInline>link</codeInline> MAML element. Changes can be made
+to the topic properties such as the file associated with the ID and its title
+text without having to visit each topic in which it is referenced.  When
+creating new topics using the help file builder, templates are used and new
+ID and revision numbers are assigned automatically.</para>
+
+<alert class="note">
+	<para>The value of the ID assigned to a topic should not be changed.  If it
+is, you will be required to manually locate and update the old ID in all topics
+that reference it.</para>
+</alert>
+
+	<para>Within the content layout editor, each topic contains several
+properties which are described below.</para>
+
+<table>
+  <tableHeader>
+    <row>
+      <entry>Property</entry>
+      <entry>Description</entry>
+    </row>
+  </tableHeader>
+  <row>
+    <entry><codeInline>Id</codeInline>, <codeInline>RevisionNumber</codeInline>,
+and <codeInline>TopicFilename</codeInline></entry>
+    <entry><para>These read-only properties display the ID and revision number
+of the topic and the project file related to the ID.  The content layout editor
+contains options that let you clear the file associated with an entry or
+associate an existing topic with an entry.</para>
+
+	<para>The content layout editor tracks topics by ID rather than by
+filename.  As such, you can rearrange and rename the files in the project
+without being concerned about updating references to them in the content layout
+files.  As long as the ID remains the same, the same topic will be associated
+with the entry regardless of where it is moved or what it is named.</para>
+
+	<para>If an entry is not associated with a topic file, it will serve as an
+empty container node for its children and will not display a topic when
+selected in the help file's table of contents.</para></entry>
+  </row>
+  <row>
+    <entry><codeInline>Title</codeInline></entry>
+    <entry>This is used as the title for the topic.  In addition, it will be
+used as the table of contents title unless a <codeInline>TocTitle</codeInline>
+value is specified.  It will also be used as the link text unless a
+<codeInline>LinkText</codeInline> value is specified.</entry>
+  </row>
+  <row>
+    <entry><codeInline>TocTitle</codeInline></entry>
+    <entry>This is used to specify an optional table of contents title for a
+topic.  If not set, the <codeInline>Title</codeInline> value will be used. In
+some cases, the title may not be appropriate for the table of contents or is too
+long to be practical. In such cases you can specify shorter or more appropriate
+text for the table of contents via this property.</entry>
+  </row>
+  <row>
+    <entry><codeInline>LinkText</codeInline></entry>
+    <entry>This property can be used to specify an alternate value to use as
+the inner text for links.  If not set, the <codeInline>Title</codeInline> value
+will be used.  In some cases the title may not be appropriate or may be too
+long to be practical for links that refer to the topic.  In such cases you can
+specify shorter or more appropriate text for the link via this property.  This
+saves you from having to specify the shorter inner text on each link that uses
+the topic ID.</entry>
+  </row>
+  <row>
+    <entry><codeInline>Visible</codeInline></entry>
+    <entry>This allows you to specify whether or not a topic will appear in the
+table of contents.  The default is True to show it.  If set to False, the
+topic will be included in the help file but will only be accessible via links
+in other topics.  This is a convenient way of adding content to the help file
+but limiting the amount of information displayed in the table of contents.</entry>
+  </row>
+  <row>
+    <entry><codeInline>HelpAttributes</codeInline></entry>
+    <entry><para>This property allows you to add custom <codeInline>MSHelp:Attr</codeInline>
+attributes to the topic.  Attribute values can contain
+<link xlink:href="69d998a7-1af5-4bf5-889b-59cd00b64000">substitution tags</link>
+which will be converted to their appropriate value at build time.</para>
+
+<alert class="tip">
+  <para>Project-level help attributes in the project <codeInline>HelpAttributes</codeInline>
+property will be added automatically to each topic at build time and do not
+need to be added here.</para>
+</alert>
+
+<alert class="note">
+  <para>Attributes will only be added to MAML topics, not HTML files.</para>
+</alert></entry>
+  </row>
+  <row>
+    <entry><codeInline>Keywords</codeInline></entry>
+    <entry><para>This property allows you to add <codeInline>MSHelp:Keyword</codeInline>
+attributes to the help topic to define its index keywords.  In the designer
+for this property, select the index and enter the terms for it.  Keyword terms
+can contain <link xlink:href="69d998a7-1af5-4bf5-889b-59cd00b64000">substitution
+tags</link> which will be converted to their appropriate value at build time.</para>
+
+	<para>The most common index used in the "K" index (keywords).  The terms
+consist of one word or a phrase.  If you separate two terms with a comma, the
+first term becomes a group in the index.  If that same grouping term appears in
+other topics, the term that follows the comma in each of them will appear as a
+child of the grouping term in the help file's index.  If your intent is to add
+two terms to the same index but have them appear as two distinct entries, enter
+them on two separate rows in the designer.</para>
+
+<alert class="tip">
+  <para>If a topic is marked as the default using the designer, entries for the
+<codeInline>NamedUrlIndex</codeInline> terms <codeInline>DefaultPage</codeInline>
+and <codeInline>HomePage</codeInline> are added to it automatically at build
+time so there is no need to add them via this property.</para>
+</alert>
+
+<alert class="note">
+  <para>Keywords will only be added to MAML topics, not HTML files.</para>
+</alert></entry>
+  </row>
+</table>
+
+  </content>
+</section>
+
+<section address="Naming">
+  <title>Topic Filenames and Locations</title>
+  <content><para>Topic files can be named however you like and can reside in
+any folder within the project.  As such, you can arrange them on disk to match
+the layout in the table of contents and give them meaningful names to aid in
+managing them outside of the project and the designer.  When the help file is
+built, all topic files are copied to the help file's <localUri>.\html</localUri>
+folder and are named using their unique ID with a <localUri>.htm</localUri>
+extension.  You can use that name to link to the topic from other HTML pages
+or the XML comments on API members.  For example:</para>
+
+<code lang="xml" title="Link Examples">
+Link to a topic from an HTML file in the .\html folder:
+&lt;a href="303c996a-2911-4c08-b492-6496c82b3edb.htm"&gt;Test Topic&lt;/a&gt;
+
+Link to a topic from the root folder:
+&lt;a href="html/303c996a-2911-4c08-b492-6496c82b3edb.htm"&gt;Test Topic&lt;/a&gt;
+
+Link to a topic from another folder:
+&lt;a href="../html/303c996a-2911-4c08-b492-6496c82b3edb.htm"&gt;Test Topic&lt;/a&gt;
+</code>
+
+  </content>
+</section>
+
+    <relatedTopics>
+      <link xlink:href="3d4edd2d-7883-4508-b9d2-bd7b4d848b0d" />
+      <link xlink:href="54e3dc97-5125-441e-8e84-7f9303e95f26" />
+    </relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

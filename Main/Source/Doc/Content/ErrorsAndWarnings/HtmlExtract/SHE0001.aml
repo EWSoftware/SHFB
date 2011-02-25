@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="c3dbcf13-6585-4b45-ae2f-6bd8acd8b62b" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Warning SHE0001: LCID '<legacyItalic>[id]</legacyItalic>' not found
+in configuration file.  Defaulting to ANSI code page value of
+'<legacyItalic>[codePage]</legacyItalic>', encoding charset
+'<legacyItalic>[charset]</legacyItalic>'.</para>
+    </introduction>
+
+    <section>
+      <title>Cause</title>
+      <content>
+        <para>This warning appears if the specified locale ID cannot be found
+in the help file builder's <localUri>SandcastleHtmlExtract.config</localUri>
+file.  In such cases, the indicated default ANSI code page value and encoding
+character set are used instead.</para>
+      </content>
+    </section>
+
+    <section>
+      <title>Solution</title>
+      <content>
+        <para>This will occur if you select a language for which there is no
+corresponding <codeInline>language</codeInline> element in the
+<localUri>SandcastleHtmlExtract.config</localUri> file.  This file can be found
+in the help file builder installation folder.  You can edit this file to add
+an element that defines the code page and character set to use for the
+given locale ID.  If you do make an addition, please open a work item at the
+<token>SHFB</token> project on CodePlex to have the change added to the next
+release of the help file builder.</para>
+      </content>
+    </section>
+
+    <relatedTopics>
+    <link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
+    </relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

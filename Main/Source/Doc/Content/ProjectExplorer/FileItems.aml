@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="0a9d6da4-cff6-4664-8b64-b7df04c8a37d" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Folder nodes can be used to organize the content items in a project.
+The file nodes represent conceptual content topics, images, content layout
+files, and various other supporting files that may or may not be compiled into
+the help file.</para>
+
+		<autoOutline lead="none">2</autoOutline>
+    </introduction>
+
+    <section address="AddItems">
+      <title>Adding Folders and Files</title>
+      <content><para>To add a folder or file, right click on the root project
+node or any other folder or file node and select one of the <ui>Add</ui> menu
+options.  These options can also be selected from the <ui>File | Project
+Explorer | Files</ui> menu.  Files can also be dragged and dropped on the
+folder and file nodes from Windows Explorer.</para>
+
+	<para>Folders and files added while the root project node or a root file
+node is selected will be added to the root folder of the project.  Folders and
+files added while a folder item is selected will be added as children of the
+selected folder.  Folders and files added while a child of a folder node is
+selected will be added as children of the parent folder of the selected item.</para>
+
+<alert class="note">
+  <para>Folders and files become part of the project and will reside in the
+project folder.  Existing files that are not under the project folder are
+copied to it.</para>
+</alert>
+	</content>
+	
+	<sections>
+		<section address="AddOptions">
+			<title>Add Options</title>
+			<content><para>The following options can be used to add items to
+the project:</para>
+
+
+<list class="bullet">
+  <listItem><ui>New Item</ui> - This lets you add a new file
+item based on a template.  A set of common template files appears in the
+submenu along with additional submenus containing conceptual content topic
+templates and custom template files that you can create.
+
+<alert class="tip">
+  <para>To add your own custom project template files, place them in the
+<localUri>Item Templates</localUri> folder in the help file builder's
+<localUri>Local Application Data</localUri> folder.  To add your
+own conceptual content topic template files, place them in the
+<localUri>Conceptual Templates</localUri> folder in the help file builder's
+<localUri>Local Application Data</localUri> folder.  See the
+<link xlink:href="a24489fb-45d6-46f4-9eaa-9a9c4e0919b2#FileTemplates" /> topic
+for more information.</para>
+</alert></listItem>
+
+  <listItem><ui>New Folder</ui> - Add a new folder to the
+project.</listItem>
+
+  <listItem><ui>Existing Folder</ui> - Add an existing folder
+to the project.  If the folder contains subfolders and/or files, they are
+added to the project recursively as well.  The folder must be a child of
+the project folder or one of its subfolders.</listItem>
+
+  <listItem><ui>Existing Item</ui> - Add an existing file to
+the project.  The build action will be set based on the file's extension.</listItem>
+
+  <listItem><ui>Import from Media Content File</ui> - This option will add
+images to the project based on the information in a conceptual content media
+content file.  The images added will have their build action set to
+<codeInline>Image</codeInline> and their additional properties will be set to
+the values from the content file.  If referenced in conceptual content topics,
+these image will be copied to the <localUri>.\Media</localUri> folder in the
+resulting help file output.</listItem>
+
+</list>
+
+			</content>
+		</section>
+	</sections>
+  </section>
+
+    <section address="EditItems">
+      <title>Editing a Folder or File Item</title>
+	  <content><para>When selected, folders allow you to edit their name.
+Changing a folder name changes the parent folder name in all child items as
+well.  All file items have a <codeInline>Name</codeInline> property that lets
+you edit their name.  In addition, they all have a <codeInline>BuildAction</codeInline>
+property that specifies how the file is treated at build time.  Other
+properties, if any, depend on the selected build action.</para>
+
+<alert class="tip">
+  <para>Files and folders can be dragged and dropped or cut/copied and pasted
+to move them from one folder to another within the project.</para>
+</alert>
+
+<alert class="tip">
+  <para>To edit the content of a file, double-click it, hit Enter while it is
+selected, or select the <ui>Open</ui> option on its context menu.</para>
+</alert>
+
+      </content>
+    </section>
+
+    <section address="RemoveItems">
+      <title>Removing a Folder or File Item</title>
+	  <content><para>To remove a folder or file, right click on it and select
+the <ui>Exclude from Project</ui> or <ui>Delete</ui> option.  These can also be
+selected from the <ui>File | Project Explorer | Files</ui> menu.  The
+<ui>Exclude from Project</ui> option will remove the item from the project but
+leaves it on disk.  <ui>Delete</ui> will remove it from the project and
+permanently deletes it from the disk as well.</para>
+
+
+<alert class="warning">
+  <para>If a folder is deleted, all child items are deleted recursively as well.</para>
+</alert>
+
+
+<alert class="note">
+  <para>The project supports linked items as well (adding them is not supported
+from the standalone GUI).  Linked items will have a <ui>Remove</ui> option
+rather than a <ui>Delete</ui> option.  This removes them from the project but
+leaves them on disk in their original location since they may belong to another
+project.</para>
+</alert>
+
+      </content>
+    </section>
+
+    <relatedTopics>
+    <link xlink:href="c38461a6-6edd-42cf-9d91-73c4b11cdd70" />
+    <link xlink:href="e12c2b9f-18c7-4718-850b-ac3c2e293672" />
+    <link xlink:href="e32086c6-de17-4e54-a746-1ac80bf0c45a" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

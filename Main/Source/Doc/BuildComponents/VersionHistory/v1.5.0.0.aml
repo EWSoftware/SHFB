@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="63643cce-6694-46fe-9923-77c84132aa9d" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Version 1.5.0.0 was released on June 25th, 2007.</para>
+    </introduction>
+
+<section>
+  <title>Changes in This Release</title>
+  <content>
+
+<list class="bullet">
+    <listItem>Added support for the June 2007 CTP of Sandcastle.</listItem>
+
+    <listItem>Fixed a bug in <codeInline>ShowMissingComponent</codeInline> caused by incorrect
+handling of generic template parameter names.</listItem>
+
+    <listItem>Fixed a bug in the code colorizer that caused it to match some
+<codeInline>pre</codeInline> tags incorrectly.  Also fixed the "include file" regular
+expression so that it didn't match similar looking managed C++ generic
+declarations.</listItem>
+
+    <listItem>Fixed inconsistent handling of the tab size property in both the code
+colorizer and the code block component.</listItem>
+
+    <listItem>Added managed C++ keywords to the C++ colorizer template.</listItem>
+
+    <listItem>Support was added for merging two or more code snippets into a single
+code example by nesting <codeInline>code</codeInline> tags within a parent
+<codeInline>code</codeInline> tag.  Nested code tags are supported in XML comments and
+additional content files. See the
+<link xlink:href="7f03ba39-09f8-4320-bdbd-ed31a3bd885f">Code Block Component</link>
+topic for details.</listItem>
+
+    <listItem>The code colorizer was updated to be more flexible in matching
+language IDs to rule sets.  It will now match the ID case-insensitively to
+the ID or friendly name.  It will also match several common variations to
+the correct rule sets (i.e. VB to VB.NET, CSharp to C#, etc.).</listItem>
+
+    <listItem>Added a <codeInline>ShowMissingNamespaces</codeInline> project option so that
+"missing namespace comments" messages in the help file can be suppressed if
+not wanted.</listItem>
+</list>
+
+  </content>
+</section>
+
+    <relatedTopics>
+    <link xlink:href="9916374d-681f-4869-9b10-bb4a31161998" />
+    </relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="52aa172a-a310-4f75-b20f-7e2c7d870c65" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+		<para>If you are documenting multiple, related assemblies but wish to
+use a separate help file builder project for each assembly, you may want to
+share project summary and namespace comments between each of the projects and
+specify a common set of namespaces to exclude from the build.  Rather than
+managing this information in each individual project, you can create a
+standalone XML comments file to contain the information.</para>
+
+	</introduction>
+
+<section>
+  <content><para>Start by creating an XML comments file like the following and
+give it a unique name that will not conflict with any other XML comments file
+in the related projects.</para>
+
+<code lang="xml" title="Sample Project/Namespace XML Comments File">
+&lt;?xml version="1.0"?&gt;
+&lt;doc&gt;
+  &lt;assembly&gt;
+    &lt;name&gt;_SharedItems_&lt;/name&gt;
+  &lt;/assembly&gt;
+  &lt;members&gt;
+    &lt;member name="R:Project"&gt;
+      &lt;summary&gt;
+        Shared project summary comments go in here.
+      &lt;/summary&gt;
+    &lt;/member&gt;
+    &lt;member name="N:"&gt;
+      &lt;exclude /&gt;
+      &lt;summary&gt;
+        Exclude the global namespace from all projects.
+      &lt;/summary&gt;
+    &lt;/member&gt;
+    &lt;member name="N:CustomControls.Internal"&gt;
+      &lt;exclude /&gt;
+    &lt;/member&gt;
+    &lt;member name="N:CustomControls.Design"&gt;
+      &lt;summary&gt;
+        Common namespace summary info for the CustomControls.Design
+        namespace go here.
+      &lt;/summary&gt;
+    &lt;/member&gt;
+  &lt;/members&gt;
+&lt;/doc&gt;
+</code>
+
+<para>Next, do one or more of the following:</para>
+
+<list class="bullet">
+    <listItem>To specify shared project summary comments, add them to the
+<codeInline>&lt;summary&gt;</codeInline> tag in the <legacyBold>R:Project</legacyBold>
+node.  Any project summary comments in the help file projects will be appended
+to these comments.  If you do not have any shared project summary notes, you
+may remove this node from the file.</listItem>
+
+    <listItem>To exclude a namespace from all shared projects, add a
+<codeInline>&lt;member&gt;</codeInline> node, set it's <codeInline>name</codeInline>
+attribute to the namespace name prefixed with "<codeInline>N:</codeInline>",
+and place an <codeInline>&lt;exclude /&gt;</codeInline> tag in it.  Any other
+tags are optional.  The example above would exclude the unnamed global
+namespace and the <codeInline>CustomControls.Internal</codeInline> namespace
+from all projects.</listItem>
+
+    <listItem>To specify shared namespace summary comments, add a
+<codeInline>&lt;member&gt;</codeInline> node, set it's <codeInline>name</codeInline>
+attribute to the namespace name prefixed with "<codeInline>N:</codeInline>",
+and add the comments to the <codeInline>&lt;summary&gt;</codeInline> tag in the
+node.  Any namespace summary comments in the help file projects will be
+appended to these comments.</listItem>
+
+</list>
+
+	<para>Once you have created the file, open each project that needs to use
+it, right click on the <ui>Documentation Sources</ui> node in the Project
+Explorer window, select the option to add a documentation source, and select
+the shared comments file.  You may now build your project and the shared
+comments will be included in it.</para>
+
+  </content>
+</section>
+
+    <relatedTopics>
+    <link xlink:href="eb7e1bc7-21c5-4453-bbaf-dec8c62c15bd" />
+    <link xlink:href="48f5a893-acde-4e50-8c17-72b83d9c3f9d" />
+    <link xlink:href="e32086c6-de17-4e54-a746-1ac80bf0c45a" />
+    </relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

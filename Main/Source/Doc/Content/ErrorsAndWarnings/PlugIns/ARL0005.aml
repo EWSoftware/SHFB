@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="ce4fdb97-f919-4a01-83cd-7df21f9c20bc" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Error ARL0005: Unable to locate Resolve Reference Links component
+in <localUri>[configFile]</localUri></para>
+    </introduction>
+
+    <section>
+      <title>Cause</title>
+      <content>
+        <para>The Resolve Reference Links component could not be located in the
+indicated configuration file.</para>
+      </content>
+    </section>
+
+    <section>
+      <title>Solution</title>
+      <content>
+        <para>This most likely indicates an internal error in the plug-in.
+Open a work item in the <token>SHFB</token> project at CodePlex containing the
+details from the error message and attach a small example project with any
+related files that can be used to duplicate the problem.</para>
+      </content>
+    </section>
+
+    <relatedTopics>
+    <link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

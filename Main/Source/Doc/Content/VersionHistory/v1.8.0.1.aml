@@ -1,0 +1,175 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="95c85ec6-9f23-426a-b0ad-6b10a0453eaf" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <autoOutline lead="Version 1.8.0.1 was released on February 4th, 2009."
+        excludeRelatedTopics="true" />
+
+    </introduction>
+
+<section address="BreakingChanges">
+  <title>Breaking Changes</title>
+  <content>
+<list class="bullet">
+    <listItem>All projects and components are now built using the .NET
+Framework 3.5 SP1.  As such, you must have the .NET Framework 3.5 SP1
+installed to use the help file builder and components.  It can still build
+help files for any framework version from .NET 1.1 to .NET 3.5.</listItem>
+
+    <listItem>When a custom build component was added to the project in prior
+releases, attributes from the <codeInline>component</codeInline> node other
+than the ID, type, and assembly were not included in the project's copy of the
+configuration.  This problem has been corrected.  The only component affected
+by this fix is the <legacyBold>Cached MSDN URL References</legacyBold>
+component.  If you use it in your projects, you should delete it and re-add it
+in the <codeInline>ComponentConfigurations</codeInline> project property so
+that it picks up the locale and link target attributes in order to use the
+appropriate settings for them during a build.</listItem>
+
+    <listItem>The IDs on the <codeInline>HierarchicalTocPlugIn</codeInline> and
+the <codeInline>TocExcludePlugIn</codeInline> changed.  You will need to delete
+them from the <codeInline>PlugInConfigurations</codeInline> project property
+and add them back in to pick up the new IDs.</listItem>
+
+    <listItem>The location of user-defined template files and build component
+cache files has changed.  They are now stored in the
+<localUri>Local Application Data</localUri> folder rather than the
+<localUri>Common Application Data</localUri> folder.  However, the custom
+build components and plug-ins will themselves still reside in the
+<localUri>Common Application Data</localUri> folder.  You should remove and
+add the three cached build components to the project file so that they use the
+new location.  Any existing cache files can be moved to the new local data
+folder.  This change was made to avoid problems with security and clashes with
+modified template and cache files when multiple people use the same PC.  See
+the <link xlink:href="a24489fb-45d6-46f4-9eaa-9a9c4e0919b2" /> topic for more
+information.</listItem>
+
+</list>
+
+  </content>
+</section>
+
+<section address="OtherChanges">
+  <title>Other Changes in This Release</title>
+  <content>
+
+<list class="bullet">
+    <listItem>Relative hint paths on reference items are now converted to full
+paths at build time so that they are located correctly.</listItem>
+
+    <listItem>Added <codeInline>ExtensionAttribute</codeInline> to the
+<application>MRefBuilder </application> attribute filter and excluded it from
+the <codeInline>DocumentAttributes</codeInline> property processing so that
+extension methods are documented correctly.</listItem>
+
+    <listItem>Fixed a bug in the Help 1 build project template that caused it
+to use the table of contents definition file for the index.</listItem>
+
+    <listItem>Fixed a bug that caused the Output Deployment plug-in to fail if
+a folder did not already exist when deploying to a file path.</listItem>
+
+    <listItem>Added " " (space), "*", and "?" to the characters replaced with
+an underscore by the <codeInline>MemberName</codeInline> naming method code to
+prevent save failures when the help topics are saved.</listItem>
+
+    <listItem>Paths to the comments files in <localUri>sandcastle.config</localUri>
+are now expanded fully before being written to it to prevent issues with
+environment variables expanding differently when the build engine runs as a
+32-bit MSBuild process but the build step project runs as a 64-bit MSBuild
+process.</listItem>
+
+    <listItem>Added code to turn off the read-only attribute on MAML topics
+when they are copied to the working folder.</listItem>
+
+    <listItem>Added code to the <legacyBold>Post-Transform Component</legacyBold>
+so that <codeInline>see</codeInline> tags within code blocks are converted to
+links when the Code Block Component's <codeInline>keepSeeTags</codeInline>
+option is used.  A prior release broke it due to changes needed to get the
+components to colorize code in conceptual builds.  Note that the referenced
+target names must be fully qualified in order to get resolved.</listItem>
+
+    <listItem>Fixed a bug in the <legacyBold>Show Missing Documentation</legacyBold>
+component that caused it to fail if an auto-documented constructor's signature
+contained unencoded special XML characters.</listItem>
+
+    <listItem>If the <codeInline>DocumentSealedProtected</codeInline> property
+is set to False, it now removes inherited protected members too.</listItem>
+
+    <listItem>Added the <codeInline>ShowMissingIncludeTargets</codeInline>
+project property.  This is used to add a "missing" message if an
+<codeInline>&lt;include&gt;</codeInline> tag is found in the comments for a
+topic indicating a missing file or invalid XPath query.  However, it's really
+only useful for C# generated XML comments files
+<link xlink:href="5a2ab898-7161-454d-b5d3-959df0de0e36#MissingIncTargets">(don't ask)</link>.</listItem>
+
+    <listItem>Added the <codeInline>UserDefinedProperties</codeInline> project
+property to the <legacyBold>Build</legacyBold> category.  This allows you to
+add or edit user-defined MSBuild project properties that can be used to hold
+additional information or for use in substitution tags within other help file
+builder project properties.</listItem>
+
+	<listItem>Added support for <codeInline>CustomBeforeSHFBTargets</codeInline>
+and <codeInline>CustomAfterSHFBTargets</codeInline> properties that can define
+custom projects containing property or target overrides imported and
+evaluated before and after the help file builder targets respectively.  These
+can be defined on the command line to import the custom targets and property
+overrides.</listItem>
+
+    <listItem>Substitution tag replacement (i.e. <codeInline>{@PropName}</codeInline>)
+now includes support for using any property name defined in the project.  This
+includes user-defined MSBuild properties not recognized as help file builder
+properties and all global properties defined in the MSBuild build
+engine (reserved properties, environment variables, etc.).</listItem>
+
+    <listItem>The <codeInline>HelpFileVersion</codeInline> project property is
+now a string value.  This allows you to specify user-defined MSBuild project
+properties to define the value (i.e. <codeInline>{@Version}</codeInline> or
+<codeInline>{@Major}.{@Minor}.{@Build}.{@Revision}</codeInline>).  The end
+result must still evaluate to a valid four-part version number.  If not, a
+build error will occur (<link
+xlink:href="e4c00c10-9368-4790-b1c4-4a47adeb2af9">BE0066</link>).</listItem>
+
+    <listItem>Added an optional execution priority value to the
+<codeInline>ExecutionPoint</codeInline> object so that plug-ins can set
+an execution priority for each build step.  It is used to determine the order
+in which the plug-ins will be executed.  Those with a higher priority value
+will be executed before those with a lower value.  Those with an identical
+priority may be executed in any order within their group.  If not explicitly
+defined, the default priority value is 1000.</listItem>
+
+    <listItem>Added the <codeInline>SandcastleBuilder.MRefBuilder</codeInline>
+assembly which contains the <codeInline>BindingRedirectResolver</codeInline>
+component used by the <legacyBold>Assembly Binding Redirection</legacyBold>
+plug-in.  The resolver component can be used in other third-party tools and
+standalone build scripts.</listItem>
+
+    <listItem>Added the <link xlink:href="2152ed96-bf69-4b9b-b1a7-4fffc71b3095">Before
+Building</link> user preference that lets you specify how to handle project and
+document changes prior to building the help file or previewing a topic.</listItem>
+
+	<listItem><para>Added the following new plug-ins:</para>
+	<list class="bullet">
+		<listItem><link xlink:href="f5051d32-b973-4fe1-9ffe-e30531007691" /></listItem>
+		<listItem><link xlink:href="161537d9-6f89-42ef-9c51-3a15ef94df65" /></listItem>
+		<listItem><link xlink:href="cd68ef02-3493-4af6-96de-1957b0aaf858" /> -
+Thanks to Eyal Post for donating the code upon which this plug-in is based.</listItem>
+	</list></listItem>
+
+    <listItem>Thanks to Jeroen Vos for providing up to date information on
+using the Sandcastle Help File Builder v1.8.0.0 or later with Visual Studio
+Team Foundation Server 2008 SP1.</listItem>
+
+</list>
+
+  </content>
+</section>
+
+    <relatedTopics>
+      <link xlink:href="2bba4e09-e9bd-4ef4-9bf4-800af246e97d" />
+      <link xlink:href="9f1a5c32-7c10-47e1-bbea-319ee0866e3d" />
+      <link xlink:href="5a484e94-6940-4c97-940c-3f46fb8736d2" />
+      <link xlink:href="078cc1c7-7995-431e-bf9c-8813becbe8df" />
+    </relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

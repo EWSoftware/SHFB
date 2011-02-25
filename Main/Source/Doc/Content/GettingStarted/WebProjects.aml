@@ -1,0 +1,471 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="94c7f744-9b90-4254-93ab-9b15f47d9f42" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+  <introduction>
+    <autoOutline />
+
+    <para>A question that comes up with some regularity is how to produce a
+help file from the XML comments in the code for a web project using
+<token>Sandcastle</token>. There are two types of web project: a
+<legacyItalic>web application</legacyItalic> project and a
+<legacyItalic>website</legacyItalic> project (both include a web service and
+an AJAX-enabled variant of the project type). A web application project is the
+simplest to document as it generates a single assembly with a fixed name much
+like any other non-web project.  A website project, however, requires some
+extra effort to document and has a number of limitations:</para>
+
+    <list class="bullet">
+      <listItem>It does not necessarily generate a single assembly.</listItem>
+      <listItem>It only generates assemblies when you actually publish the
+project.</listItem>
+      <listItem>The assembly names may vary from build to build depending on
+the options you use when publishing the website.</listItem>
+      <listItem>There is no project-level option to produce XML comments
+files. Instead, you have to add a section to the
+<localUri>Web.config</localUri> file to produce them.</listItem>
+      <listItem>Even after adding the option to produce XML comments files,
+there are limitations:
+      <list class="bullet">
+        <listItem>If you specify a single comments filename, only the comments
+from the last assembly compiled will be saved.  The VB.NET compiler has a
+<codeInline>/doc+</codeInline> option to work around this issue.  However, the
+C# compiler does not so this makes it impossible to fully document a C#
+website project.</listItem>
+        <listItem>The comments files produced using the VB.NET
+<codeInline>/doc+</codeInline> option are not placed in the folder to which
+the project was published. Instead, they are left in the system's temporary
+ASP.NET folder for the related .NET version (i.e.
+<localUri>C:\WINDOWS\Microsoft.NET\Framework\v2.0.50727\Temporary ASP.NET
+files</localUri> so you must locate and retrieve them after each build.</listItem>
+      </list></listItem>
+    </list>
+
+    <para>To work around the limitations present when documenting website
+projects, you can use the custom code providers available at the
+<token>SandcastleStyles</token> project website (one for C# and one for VB.NET).
+By using these code providers, you can specify a folder to which the XML
+comments files should be copied.  This saves you from having to locate and copy
+them manually and solves the issue of the C# compiler not being able to output
+one comments file per assembly.  Below are instructions for documenting each
+type of web project and information about how the code providers work.</para>
+  </introduction>
+
+  <section address="DocWebApps">
+    <title>Documenting Web Application and Web Service Application Projects</title>
+    <content>
+      <para>As noted, web applications are the easiest to document and do not
+require the use of the custom code providers.  These projects are created in
+Visual Studio by selecting <legacyBold>File | New | Project</legacyBold> and
+then selecting <legacyBold>ASP.NET Web Application</legacyBold> or
+<legacyBold>ASP.NET Web Service Application</legacyBold> from the
+<legacyBold>Web</legacyBold> category of your preferred language.  Note that
+these options are only available in Visual Studio 2005 after you install
+Service Pack 1.</para>
+
+    <para>You must enable the XML comments option in your application projects
+so that an XML comments file is produced when the projects are built.  This is
+done as follows:</para>
+
+    <list class="ordered">
+      <listItem>In the Solution Explorer, right click on the project and
+select <legacyBold>Properties</legacyBold>.</listItem>
+
+      <listItem>Select the <legacyBold>Build</legacyBold> property page (C#)
+or the <legacyBold>Compile</legacyBold> property page (VB.NET).</listItem>
+
+      <listItem>The XML comments filename is a per configuration option.  As
+such, you can either select the <legacyBold>All Configurations</legacyBold>
+option at the top of the page to set the XML comments options for all
+configurations at the same time or select each configuration individually and
+repeat the next step for each one.</listItem>
+
+      <listItem>For C#, in the <legacyBold>Output</legacyBold> section, check
+the checkbox next to the <legacyBold>XML documentation file</legacyBold>  text
+box and specify a name for the XML comments file. Although not required, a
+common convention is to name the XML comments file after the related assembly
+except with a <localUri>.xml</localUri> extension. The assembly name can
+be found on the <legacyBold>Application</legacyBold> property page.
+
+      <para>For VB.NET, just check the <legacyBold>Generate XML documentation
+file</legacyBold> checkbox.  It names the file after the assembly
+automatically.</para></listItem>
+
+      <listItem>If you have a solution with multiple web application or web
+service application projects that need to be documented, repeat the above
+steps for each project in the solution.  If using the Sandcastle Help File
+Builder, be sure to give each project's XML comments file a unique name as
+they are copied to a common location for the build. Identically named files
+would overwrite each other and the documentation in the overwritten files
+would not appear in the help file.</listItem>
+    </list>
+
+    <para>Once the above has been done, Visual Studio will create the XML
+comments file each time the project is built.  It is placed in the
+<localUri>.\bin</localUri> folder along with the assembly.  These can be
+used in conjunction with your preferred documentation tool to produce a help
+file.</para>
+    </content>
+  </section>
+
+  <section address="DocWebsites">
+    <title>Documenting Website and Web Service Website Projects</title>
+    <content>
+      <para>These projects are created in Visual Studio by selecting
+<legacyBold>File | New | Web Site</legacyBold> and then selecting
+<legacyBold>ASP.NET Web Site</legacyBold> or <legacyBold>ASP.NET Web
+Service</legacyBold> from the template dialog box.  In order to create XML
+comments files, you must add the custom code providers to the
+<localUri>Web.config</localUri> file and publish the website.  This is
+done as follows:</para>
+
+    <list class="ordered">
+      <listItem>If your project does not yet contain one, add a
+<localUri>Web.config</localUri> configuration file.</listItem>
+
+      <listItem>Add the following
+<codeInline>&lt;system.codedom&gt;</codeInline> section to the
+<codeInline>&lt;configuration&gt;</codeInline> section as shown in the example
+below.  You only need to add the <codeInline>&lt;compiler&gt;</codeInline>
+element for the language that you are using but it will not hurt anything if
+they are both present.
+
+<code lang="xml" title="Example Code Provider Configurations">
+&lt;configuration&gt;
+  &lt;system.codedom&gt;
+    &lt;compilers&gt;
+      &lt;!-- For C# --&gt;
+      &lt;compiler language="c#;cs;csharp" extension=".cs"
+        compilerOptions="/docpath:C:\Publish\Docs"
+        type="EWSoftware.CodeDom.CSharpCodeProviderWithDocs,
+              EWSoftware.CodeDom, Version=1.1.0.0, Culture=neutral,
+              PublicKeyToken=d633d7d5b41cbb65"&gt;
+        &lt;!-- NOTE: Change value to "v3.5" for .NET 3.5 projects -->
+        &lt;providerOption name=&quot;CompilerVersion&quot; value=&quot;v2.0&quot;/&gt;
+      &lt;/compiler&gt;
+
+      &lt;!-- For VB.NET --&gt;
+      &lt;compiler language="vb;vbs;visualbasic;vbscript" extension=".vb"
+        compilerOptions="/docpath:C:\Publish\Docs"
+        type="EWSoftware.CodeDom.VBCodeProviderWithDocs,
+              EWSoftware.CodeDom, Version=1.1.0.0, Culture=neutral,
+              PublicKeyToken=d633d7d5b41cbb65"&gt;
+        &lt;!-- NOTE: Change value to "v3.5" for .NET 3.5 projects -->
+        &lt;providerOption name=&quot;CompilerVersion&quot; value=&quot;v2.0&quot;/&gt;
+      &lt;/compiler&gt;
+    &lt;/compilers&gt;
+  &lt;/system.codedom&gt;
+&lt;/configuration&gt;
+</code>
+
+    <para>Instead of a <codeInline>/doc</codeInline> option, the custom code
+providers use a custom <codeInline>/docpath</codeInline> option in the
+<codeInline>compilerOptions</codeInline> attribute that specifies the fully
+qualified folder name into which the XML comments files are placed.  The
+folder will be created by the code provider if it does not exist.  Any other
+compiler options that you might need can also be specified in the attribute
+value separated by a space.</para></listItem>
+
+    <listItem>In order to use the code providers, the ASP.NET compiler must be
+able to find them.  You can either copy the
+<legacyBold>EWSoftware.CodeDom.dll</legacyBold> assembly into your project's
+<localUri>.\bin</localUri> folder or you can register it in the Global
+Assembly Cache (GAC) so that it is available to any project. To do so, use the
+<legacyBold>gacutil</legacyBold> command line tool as follows replacing the
+path to the assembly to match the installed location on your system:
+
+<code lang="none" title=" ">
+gacutil -i \DotNet\Web\WebCodeProviders\Bin\Release\EWSoftware.CodeDom.dll
+</code>
+
+<para>To remove the assembly from the Global Assembly Cache, use the
+<legacyBold>gacutil</legacyBold> command line tool as follows:</para>
+
+<code lang="none" title=" ">
+gacutil -u EWSoftware.CodeDom
+</code>
+
+<para>You can find a copy of the tool in the Visual Studio installation folder
+in the <localUri>.\SDK\v2.0\bin</localUri> subfolder.</para></listItem>
+    </list>
+
+    <para>Once the above has been done, you can publish your website.  Right
+click on the project in the Solution Explorer, select <legacyBold>Publish Web
+Site</legacyBold>, set the options, and click OK to publish it.  When
+finished, look in the location you specified in the
+<codeInline>/docpath</codeInline> option and you will find one XML comments
+file for each assembly that was built for your website.  These can be used in
+conjunction with the assemblies and your preferred documentation tool to
+produce a help file.</para>
+
+    <para>As an alternative to publishing the website, you can use a web
+deployment project.  Add-ins are available at the following locations:
+    <list class="bullet">
+        <listItem><externalLink><linkText>Visual Studio 2005 Web Deployment Add-In</linkText>
+<linkUri>http://msdn.microsoft.com/en-us/asp.net/aa336619.aspx</linkUri></externalLink></listItem>
+        <listItem><externalLink><linkText>Visual Studio 2008 Web Deployment Add-In</linkText>
+<linkUri>http://www.microsoft.com/downloads/details.aspx?FamilyId=0AA30AE8-C73B-4BDD-BB1B-FE697256C459&amp;displaylang=en</linkUri></externalLink></listItem>
+    </list></para>
+
+    <para>The <token>SHFB</token> version 1.8.0.0 and later supports wildcard
+documentation sources.  As such, just add one entry with the path set to
+<localUri>[appPath]\bin\App_*.dll</localUri> where
+<legacyItalic>[appPath]</legacyItalic> is the path to the published website and
+another entry with the path set to <localUri>[docPath]\App_*.xml</localUri>
+where <legacyItalic>[docPath]</legacyItalic> is the path to the XML comments
+files.</para>
+
+    <para>Since the code providers are not needed after the website is
+published, you can delete the <codeInline>system.codedom</codeInline> section
+from the published <localUri>Web.Config</localUri> file and delete the
+assembly from the <localUri>.\bin</localUri> folder if you added it to the
+project for publishing.</para>
+
+    </content>
+  </section>
+
+  <section address="Automation">
+    <title>Automating the Process</title>
+    <content>
+      <para>Using the <legacyBold>aspnet_compiler</legacyBold> tool, it is
+possible to automate the publishing of a website project.  The tool is located
+in the .NET Framework folder.  For .NET 2.0 through 3.5, this is usually
+<localUri>C:\Windows\Microsoft.NET\Framework\v2.0.50727</localUri>.  To
+run it, issue a command similar to the following (lines wrapped for display
+purposes):</para>
+
+<code lang="none" title=" ">
+C:\Windows\Microsoft.NET\Framework\v2.0.50727\aspnet_compiler
+    -f -v /MyWebSite
+    -p C:\Path\To\MyWebsite C:\Publish\MyWebSite
+</code>
+
+      <para>The <codeInline>-f</codeInline> option tells it to delete any
+existing content in the target folder (C:\Publish\MyWebsite in the example
+above).  The <codeInline>-v [path]</codeInline> option tells it the virtual
+path of the website to compile (i.e. the path you use to load it in the web
+browser).  The <codeInline>-p [path]</codeInline> option tells it the physical
+location of the website related to the virtual path to compile. Using a
+script, you could for example publish the website, build the help file,
+replace the <localUri>Web.config</localUri> in the published website with one
+that has had the <codeInline>system.codedom</codeInline> section removed, and
+delete the code provider assembly if it was copied locally.  This is left as
+an exercise for the reader.  The web deployment add-ins noted above support
+post-build events so they may provide better support for such tasks.</para>
+
+    </content>
+  </section>
+
+
+  <section address="KnownIssues">
+    <title>Usage Notes and Known Issues</title>
+    <content>
+      <para>The following are some known issues and things to be aware of when
+using the custom code providers.</para>
+
+      <list class="bullet">
+        <listItem>If any part of the XML comments file path contains spaces,
+enclose it in <codeInline>&amp;quot;</codeInline> entities (i.e.
+<codeInline>compilerOptions="/docpath:&amp;quot;C:\My Path With
+Spaces&amp;quot;"</codeInline>).</listItem>
+
+        <listItem>Do not use a relative path in the
+<codeInline>/docpath</codeInline> option. Always use a fully qualified path.
+When using the project's publish option, the ASP.NET compiler always runs in
+the .NET Framework folder so your XML comments files will end up in a location
+relative to it rather than your project's folder if you do.</listItem>
+
+        <listItem>You can specify any folder except one that is under the
+location to which you publish the website.  The act of publishing the website
+clears the destination folder and, since the comments files are produced
+first, you will lose them if you place them under it.</listItem>
+
+        <listItem>The code providers will delete any "App_*.xml" files from
+the specified folder on the first use.  This prevents lots of files from
+accumulating in the comments file folder that contain duplicate information
+when not using fixed names.  It also means that you should publish each
+website's comments files to a unique folder so that they are not lost if you
+are publishing and documenting multiple projects.</listItem>
+
+        <listItem>Unless you are using fixed names when publishing, the
+assembly and comments filenames will change each time you publish the website.
+As such, use wildcards (App_*.dll and App_*.xml) to specify the files to use
+in your preferred documentation tool.</listItem>
+
+        <listItem>When using the VB.NET custom code provider, the commonly
+imported namespaces such as <codeInline>System</codeInline> and
+<codeInline>Microsoft.VisualBasic</codeInline> are not included automatically
+for some unknown reason.  The custom code provider will add a
+<codeInline>/imports</codeInline> command line option automatically for most
+of the common namespaces to work around the problem.  If publishing fails due
+to undefined types when using the custom code providers, simply add a
+<codeInline>/imports:[Namespace]</codeInline> option to the
+<codeInline>compilerOptions</codeInline> attribute where "[Namespace]" is the
+missing namespace.   You can generally identify namespaces that may cause
+problems by checking <localUri>Web.Config</localUri> for
+<codeInline>&lt;namespace&gt;</codeInline> elements in the
+<codeInline>&lt;pages&gt;</codeInline> configuration section.  See below for a
+list of the common namespaces added automatically by the VB.NET custom code
+provider. Another workaround to this issue is to add
+<codeInline>Imports</codeInline> statements to the code for each of the
+required namespaces rather than relying on the automatically included
+references.</listItem>
+
+        <listItem>Related to the item above, when the custom code providers
+are active in the <localUri>Web.Config</localUri> file, you may see lots
+of errors indicated by the red squiggly underline related to missing types
+while viewing VB.NET code. During development, you can comment out the custom
+code providers so that this does not happen.  As noted, the other workaround
+is to add an <codeInline>Imports</codeInline> statement to the code that
+includes the missing namespace that contains the types.</listItem>
+
+      </list>
+    </content>
+  </section>
+
+  <section address="HowTheyWork">
+    <title>How The Code Providers Work</title>
+    <content>
+      <para>The custom code providers are actually quite simple.  Both the C#
+and VB.NET custom code providers are identical with the exception of their
+base class and an extra set of compiler options passed by the VB.NET version.
+The C# version is shown below.</para>
+
+<code lang="cs" title="Example Code Provider">
+public class CSharpCodeProviderWithDocs : CSharpCodeProvider
+{
+    public override CompilerResults CompileAssemblyFromDom(
+      CompilerParameters options,
+      params CodeCompileUnit[] compilationUnits)
+    {
+        CodeProviderHelper.ReplaceDocPathOption(options, null);
+        return base.CompileAssemblyFromDom(options,
+            compilationUnits);
+    }
+
+    public override CompilerResults CompileAssemblyFromFile(
+      CompilerParameters options, params string[] fileNames)
+    {
+        CodeProviderHelper.ReplaceDocPathOption(options, null);
+        return base.CompileAssemblyFromFile(options, fileNames);
+    }
+
+    public override CompilerResults CompileAssemblyFromSource(
+      CompilerParameters options, params string[] sources)
+    {
+        CodeProviderHelper.ReplaceDocPathOption(options, null);
+        return base.CompileAssemblyFromSource(options, sources);
+    }
+}
+</code>
+
+      <para>The derived version simply overrides three key methods and, prior
+to calling the base implementation, calls the
+<codeInline>CodeProviderHelper.ReplaceDocPathOption</codeInline> method which
+takes care of updating the compiler options to produce a unique XML comments
+file for the assembly in the specified folder.  It is shown below.</para>
+
+<code lang="cs" title="Replace Doc Path Option Method">
+internal static void ReplaceDocPathOption(
+  CompilerParameters options,
+  string[] additionalOptions)
+{
+    Match m;
+    string docPath, docFile;
+
+    // Replace /docpath with /doc
+    if(!String.IsNullOrEmpty(options.CompilerOptions))
+    {
+        m = reDocPathOpt.Match(options.CompilerOptions);
+
+        if(m.Success)
+        {
+            docPath = m.Groups[1].Value.Replace("\"",
+                String.Empty);
+
+            if(!Directory.Exists(docPath))
+            {
+                Directory.CreateDirectory(docPath);
+                docFilesPurged = true;
+            }
+            else
+                if(!docFilesPurged)
+                {
+                    // Purge the comments files from the folder
+                    // on the first call.
+                    foreach(string file in Directory.GetFiles(
+                      docPath, "App_*.xml"))
+                        File.Delete(file);
+
+                    docFilesPurged = true;
+                }
+
+            docFile = Path.Combine(docPath, Path.GetFileName(
+                Path.ChangeExtension(options.OutputAssembly,
+                ".xml")));
+
+            options.CompilerOptions = String.Format(
+                "{0} /doc:\"{1}\"", reDocPathOpt.Replace(
+                options.CompilerOptions, String.Empty), docFile);
+        }
+    }
+
+    // Append the other options
+    if(additionalOptions != null &amp;&amp; additionalOptions.Length != 0)
+        options.CompilerOptions = String.Concat(
+            options.CompilerOptions, " ", String.Join(" ",
+            additionalOptions));
+}
+</code>
+
+      <para>A regular expression is used to locate the
+<codeInline>/docpath</codeInline> option. If found, it extracts the folder
+name and either creates it if it does not exist or deletes all existing
+"App_*.xml" files in it the first time it is called.  It then combines the
+path with the output assembly's name and a ".xml" extension and replaces the
+<codeInline>/docpath</codeInline> option with a <codeInline>/doc</codeInline>
+command line option.  If any additional options are passed to the method, they
+are also appended to the command line options.  The VB.NET code provider
+passes in an extra <codeInline>/imports</codeInline> command line option to
+specify the following default import namespaces to work around the issue noted
+earlier:</para>
+
+      <list class="bullet">
+        <listItem>System</listItem>
+        <listItem>System.Collections</listItem>
+        <listItem>System.Collections.Generic</listItem>
+        <listItem>System.Collections.ObjectModel</listItem>
+        <listItem>System.Configuration</listItem>
+        <listItem>System.Data</listItem>
+        <listItem>System.Web</listItem>
+        <listItem>System.Web.Configuration</listItem>
+        <listItem>System.Web.UI</listItem>
+        <listItem>System.Web.UI.HtmlControls</listItem>
+        <listItem>System.Web.UI.WebControls</listItem>
+        <listItem>System.Web.Util</listItem>
+        <listItem>System.Xml</listItem>
+        <listItem>Microsoft.VisualBasic</listItem>
+      </list>
+    </content>
+  </section>
+
+  <section address="Conclusion">
+    <title>Conclusion</title>
+    <content>
+      <para>By using the custom code providers and the instructions above, you
+can now easily produce XML comments files for website projects in order to
+create help files for them.</para>
+    </content>
+  </section>
+
+  <relatedTopics>
+    <link xlink:href="c47d9242-b3a8-4153-aa9e-ae8cb41cefe2" />
+    <token>Sandcastle</token>
+    <token>SandcastleStyles</token>
+    <token>SHFB</token>
+  </relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

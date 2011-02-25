@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="7d28bf8f-923f-44c1-83e1-337a416947a1" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+		<autoOutline lead="The HTML Help 1 category properties control the features of HTML Help 1 (CHM) files."
+		    excludeRelatedTopics="true" />
+    </introduction>
+
+<section address="BinaryTOC">
+	<title>BinaryTOC</title>
+	<content><para>When set to True, the default, a binary table of
+contents is created for the help file. According to the HTML Help Compiler
+documentation this can significantly reduce the amount of time required to
+load a very large help document.</para>
+	</content>
+</section>
+
+<section address="HtmlSdkLinkType">
+	<title>HtmlSdkLinkType</title>
+	<content><para>This property is used to define the type of links used to reference
+other help topics referring to framework (SDK) help topics. It can be set to
+<codeInline>None</codeInline> which renders non-clickable links or
+<codeInline>MSDN</codeInline> (the default) which renders links to the online MSDN
+help content for the topic.  When set to <codeInline>MSDN</codeInline>, the
+<link xlink:href="1b2dff59-92cc-4578-b261-f3849f30c26c#SdkLinkTarget">SdkLinkTarget</link>
+property is used to define where the MSDN links will open in the browser.</para>
+	</content>
+</section>
+
+<section address="IncludeFavorites">
+	<title>IncludeFavorites</title>
+	<content><para>If this property is set to True, a Favorites tab will
+be included in the compiled help file. By default, it is set to false and only
+the Contents, Index, and Search tabs are available.</para>
+	</content>
+</section>
+
+    <relatedTopics>
+    	<link xlink:href="e32086c6-de17-4e54-a746-1ac80bf0c45a" />
+    	<link xlink:href="d0c2dabd-3caf-4586-b81d-cbd765dec7cf" />
+    	<link xlink:href="5f743a6e-3239-409a-a8c1-0bff4b5375f4" />
+    	<link xlink:href="f818e4d1-3457-4be6-a833-1b700f1e2f18" />
+    </relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

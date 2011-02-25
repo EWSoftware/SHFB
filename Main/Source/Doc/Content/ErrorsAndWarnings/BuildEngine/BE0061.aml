@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="fe808500-7b87-4f68-ae13-c3e68cae8b13" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Warning BE0061: File '<legacyItalic>[file]</legacyItalic>' could
+not be loaded and will not be used as an XML comments file.  Error:
+<legacyItalic>[error]</legacyItalic></para>
+    </introduction>
+
+    <section>
+      <title>Cause</title>
+      <content>
+        <para>This warning occurs if an XML file is found during the validation
+of the documentation sources and it could not be loaded for some reason.</para>
+      </content>
+    </section>
+
+    <section>
+      <title>Solution</title>
+      <content>
+        <para>This is a generic catch-all error that occurs if an XML comments
+file could not be loaded.  Refer to the error message for information on how
+the problem can be resolved.  This is a warning so the build will continue.
+However, if the indicated file does contain comments, they will not appear in
+the help file.</para>
+      </content>
+    </section>
+
+    <relatedTopics>
+    <link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

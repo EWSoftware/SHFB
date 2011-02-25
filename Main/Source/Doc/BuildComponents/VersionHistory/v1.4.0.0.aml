@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="0efe033f-d6c8-4da7-9250-8f08ef289eea" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Version 1.4.0.0 was released on March 11th, 2007.</para>
+    </introduction>
+
+<section>
+  <title>Changes in This Release</title>
+  <content>
+
+<list class="bullet">
+    <listItem>Added support for the March 2007 CTP of Sandcastle.</listItem>
+
+    <listItem><legacyBold>NOTE:</legacyBold> The default configurations for the
+<codeInline>CodeBlockComponent</codeInline> and <codeInline>PostTransformComponent</codeInline>
+have changed and <legacyBold><legacyUnderline>must be reset</legacyUnderline></legacyBold> and reconfigured if you
+customized them via the <codeInline>ComponentConfigurations</codeInline> project
+option.  Line numbering and outlining are now off by default.  A new option
+"Connect code blocks to language filter" has been added to allow connecting
+the code blocks to the language filter.  If enabled (the default), code
+blocks are shown or hidden based on the language filter setting.  If
+disabled, code blocks are always shown regardless of the language filter
+setting.  Options are also present to set the location of the "Copy" image
+and the file path for it.</listItem>
+
+    <listItem>Fixed a bug in the code colorizer caused by the description for the
+collapsed region not being HTML encoded.  Also fixed up the definitions so
+that it doesn't colorize preprocessor text within quotes and comments and
+handles XML attribute names containing colons.</listItem>
+
+    <listItem>Fixed the <codeInline>CodeBlockComponent</codeInline> and the code colorizer so
+that they recognize VB.NET style <codeInline>#Else If</codeInline>, <codeInline>#End
+If</codeInline>, and <codeInline>#End Region</codeInline> statements.</listItem>
+
+    <listItem>The code colorizer now renders a "Copy" icon and text to the right
+of each title line on the code blocks and allows you to copy the code to
+the clipboard.  The code is copied as plain text without the highlighting
+and line numbers if used. Default titles are also used on code block that
+do not have a title.  The default title is based on the language specified.</listItem>
+
+    <listItem>The post-transform component now turns off all file attributes when
+copying the highlighter and logo files so that they can be deleted at the
+end of the build when <codeInline>CleanIntermediates</codeInline> is set to true.</listItem>
+
+    <listItem>Added <codeInline>placement</codeInline> and <codeInline>alignment</codeInline> attributes
+to the <codeInline>logoFile</codeInline> element of the post-transform component.  This
+allows the logo to be placed to the left, right, or above the topic title.
+When placed above the topic title, it can be aligned to the left or right
+or centered.</listItem>
+
+    <listItem>Moved the version information text to the end of the location
+information shared content items.  The <codeInline>PostTransformComponent</codeInline>
+now moves the location/version text to the end of the footer in the
+Prototype style.</listItem>
+</list>
+
+  </content>
+</section>
+
+    <relatedTopics>
+    <link xlink:href="9916374d-681f-4869-9b10-bb4a31161998" />
+    </relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

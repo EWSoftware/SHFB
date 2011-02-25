@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="9309b01b-87bf-4d68-b035-c10ac77d1522" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>The <application>MRefBuilder</application> tool may not resolve
+references to all assemblies used by a target, especially those found in the
+Global Assembly Cache (GAC).  As such, it needs a hint to find the files and
+load them when needed (the <system>/dep</system> command line option).  The
+<ui>References</ui> project node is used to specify a list of dependencies used
+by the <application>MRefBuilder</application> tool when it generates reflection
+information for the documentation source assemblies.  Dependency information
+allows inherited members to be listed for a type but the information will not
+appear in the table of contents of the help file.</para>
+    </introduction>
+
+    <section>
+      <title>Adding a Reference</title>
+      <content><para>To add a reference, right click on the <ui>References</ui>
+project node and select <ui>Add File/Project Reference...</ui> or <ui>Add GAC
+Reference...</ui>.  These options can also be selected from the <ui>File |
+Project Explorer | References</ui> menu.  Files can also be dragged and dropped
+on the node from Windows Explorer.  The following reference types are supported
+in the project.</para>
+
+<list class="bullet">
+  <listItem><legacyBold>File Reference</legacyBold> - Select an assembly to use
+as the reference.</listItem>
+
+  <listItem><legacyBold>Project Reference</legacyBold> - Select a Visual Studio
+project to use as a reference.  In this case, the output assembly of the
+project is used as the reference.</listItem>
+
+  <listItem><legacyBold>GAC Reference</legacyBold> - Select an entry from the
+Global Assembly Cache to use as the reference.</listItem>
+
+  <listItem><legacyBold>COM Reference</legacyBold> - COM references are also
+supported.  However, they cannot currently be added via the standalone GUI.  As
+an alternative, you can add the COM-callable wrappers that Visual Studio
+creates as file references.</listItem>
+
+</list>
+
+<token>SolutionDocSource</token>
+
+	</content>
+  </section>
+
+    <section>
+      <title>Editing a Reference</title>
+	  <content><para>When selected, file and project references allow you to
+edit the <codeInline>HintPath</codeInline> property to specify the referenced
+file.  All other references have read-only properties.  To change them, remove
+them and add the desired references in their place.</para>
+
+
+<alert class="note">
+  <para>If using environment variables in the hint path, use the MSBuild format
+rather than percent signs so that they are expanded correctly (i.e.
+<codeInline>$(MyVar)\Ref.dll</codeInline>).</para>
+</alert>
+
+      </content>
+    </section>
+
+    <section>
+      <title>Removing a Reference</title>
+	  <content><para>To remove a reference, right click on it and select the
+<ui>Remove</ui> option.  This can also be selected from the <ui>File | Project
+Explorer | References</ui> menu.</para>
+
+      </content>
+    </section>
+
+    <relatedTopics>
+	<link xlink:href="e12c2b9f-18c7-4718-850b-ac3c2e293672" />
+	<link xlink:href="e32086c6-de17-4e54-a746-1ac80bf0c45a" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

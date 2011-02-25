@@ -1,0 +1,257 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="bd1ddb51-1c4f-434f-bb1a-ce2135d3a909" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+      <para>Welcome to the Sandcastle Help File Builder.  Sandcastle, created
+by Microsoft, is a tool used for creating MSDN-style documentation from .NET
+assemblies and their associated XML comments files.  The current version is the
+<token>SandcastleVersion</token> release.  It is command line based and has no
+GUI front-end, project management features, or an automated build process like
+those that you can find in NDoc.  The Sandcastle Help File Builder was created
+to fill in the gaps, provide the missing NDoc-like features that are used most
+often, and provide graphical and command line based tools to build a help file
+in an automated fashion.  The project is hosted at CodePlex in the
+<token>SHFB</token> project.  Go there for the latest release, source code,
+the issue tracker, and discussion boards.</para>
+
+<alert class="tip">
+  <para>See the <link xlink:href="8c0c97d0-c968-4c15-9fe9-e8f3a443c50a" /> for
+information about the required set of additional tools that need to be
+installed, where to get them, and how to make sure everything is configured
+correctly.</para>
+</alert>
+
+<alert class="tip">
+  <para>If you are new to Sandcastle and the help file builder, see the topics
+in the <link xlink:href="8e3f8757-0ef3-4772-bb2f-5d7ae57e50da">Getting Started</link>
+section to get familiar with it, set up your projects to produce XML comments,
+and create a help file project.</para>
+</alert>
+
+    </introduction>
+
+<section>
+  <title>Benefits and Features</title>
+  <content><para>Using the help file builder provides the following advantages:</para>
+
+<list class="bullet">
+    <listItem>The GUI interface provides an NDoc-like properties window so
+anyone familiar with NDoc should be quite comfortable using it.  In addition,
+it provides a Visual Studio-like project explorer that lets you manage and
+edit the files associated with the project.</listItem>
+
+    <listItem>The builder can produce an HTML Help 1 (.chm) file, an MS Help
+2 (.HxS) file, MS Help Viewer (.mshc), and/or a website.</listItem>
+
+    <listItem>The MS Help 2 output includes a valid set of collection files
+and an <localUri>H2Reg.exe</localUri> configuration file to simplify deployment
+and integration of the help file into existing collections such as those used
+by Visual Studio.</listItem>
+
+	<listItem>The MS Help Viewer output includes a valid help content setup
+file that can be used to install the content in the help viewer using the
+Help Library Manager tool.</listItem>
+
+	<listItem>A Help Library Manager launcher utility is also supplied to ease
+installation and removal of MS Help Viewer content.  This utility is freely
+distributable for use with your product installers.</listItem>
+
+    <listItem>The website output contains an HTML and an ASP.NET index page
+with tree view that can be used to navigate the table of contents and a
+full-text index search feature.</listItem>
+
+    <listItem>The settings are saved in a standard MSBuild-format project file
+and can be built from within the standalone GUI, from the command line using
+MSBuild, or in a post-build step to a Visual Studio project that runs MSBuild.
+Support for full Visual Studio integration is planned for a future release.</listItem>
+
+    <listItem>A project file conversion option is provided to convert projects
+from other third-party tools such as NDoc, DocProject, SandcastleGUI, and the
+example GUI provided with Sandcastle to the help file builder's MSBuild project
+format.</listItem>
+
+    <listItem>Visual Studio 2005/2008 solution and project files are supported
+directly as documentation sources.  When the help project is built, the
+assembly, XML comments file, and reference information is imported from them
+and used automatically.</listItem>
+
+    <listItem>In addition, both executable (.EXE) and library (.DLL) assemblies
+can be added individually as documentation sources along with any related XML
+comments files.</listItem>
+
+	<listItem>Dependency references can also be specified individually.  File,
+GAC, project, and COM references are supported (COM references are supported in
+the project file but currently cannot be added via the standalone GUI).</listItem>
+
+    <listItem>The builder will automatically locate both Sandcastle and the HTML
+help compilers by looking at the common environment variables, in the system
+path, and in the Program Files special folder on all fixed hard drives.
+Properties are also supplied for you to specify the paths in the off-chance
+that it cannot locate them automatically.</listItem>
+
+    <listItem>The build process provides full logging and error handling.  All
+output from the build is stored in a log file in the output folder.  The log
+is in XML format and can be ran through an XSL transformation to make it more
+readable, to highlight warnings and errors, etc.</listItem>
+
+    <listItem>The intermediate files used to create the help file are placed in
+a working folder beneath an output folder of your choosing.  They can be
+automatically removed after a successful build or kept around for further
+modifications.</listItem>
+
+    <listItem>Most of the NDoc features have been built into the Sandcastle
+help file builder including:
+    <list class="bullet">
+        <listItem>Definition of project summary and namespace summary comments
+that will appear in the help file.  You can also easily indicate which
+namespaces to include or exclude from the help file.  Support is also included
+for specifying namespace comments via a <codeInline>NamespaceDoc</codeInline>
+class within each namespace.</listItem>
+
+        <listItem>The ability to turn off documentation of attributes and various
+other unwanted API elements.</listItem>
+
+        <listItem>Automatic determination of the default topic for the help
+file.</listItem>
+
+        <listItem>You have control over the help file name, title, header text,
+and footer information such as the e-mail address, copyright text, and
+copyright URL.</listItem>
+    </list></listItem>
+    
+    <listItem>Support for conceptual content is fully integrated.  This allows
+you to define additional content that appears in the table of contents such as
+usage notes, tutorials, etc.  Conceptual content is created using Microsoft
+Assistance Markup Language (MAML).</listItem>
+
+    <listItem>Standard HTML files can also be included and merged with the
+table of contents.  A site map file can be used to define the layout.</listItem>
+
+    <listItem>Language selection and localization support is built in.
+Translations are provided for the help file builder resource files in several
+languages and information is provided on how to localize the
+<link xlink:href="e2ed6222-c3ee-4c6e-b0f9-fa3c86bc3e2c">Sandcastle content
+files</link>.</listItem>
+
+    <listItem>Steps have been taken to make the build process more open so that
+you have a chance to customize it without having to modify the code for the
+builder application itself.  Custom build process plug-ins are supported that
+can be used to extend or alter the build process in various ways.  Plug-ins
+supplied with the help file builder include:
+    <list class="bullet">
+        <listItem>Additional Content Only - Build help files based on nothing
+but the conceptual and/or additional content items (no API content).</listItem>
+
+        <listItem>Additional Reference Links - Add additional sources of
+reference links for third-party libraries or MSDN content that does not appear
+in your help file.</listItem>
+
+        <listItem>AjaxDoc Builder - Build help files for Atlas script libraries in
+conjunction with <externalLink><linkText>AjaxDoc</linkText>
+  <linkUri>http://AjaxDoc.codeplex.com</linkUri><linkTarget>_blank</linkTarget>
+</externalLink>.</listItem>
+
+        <listItem>Completion Notification - E-mail the build results to someone
+optionally attaching the log file (raw or transformed via XSL).</listItem>
+
+        <listItem>DBCS Fix for CHM Builds - Fixes the HTML content and runs the
+Help 1 compiler in the proper locale to overcome its encoding issues.</listItem>
+
+        <listItem>Hierarchical Table of Contents - Used to rearrange the table
+of contents such that namespaces are nested within their parent namespaces.</listItem>
+
+        <listItem>Output Deployment - Copy the resulting help file to a file
+share, web server, FTP site, etc.</listItem>
+
+        <listItem>Script# Reflection File Fixer - Fixes up the reflection information
+file so that <externalLink><linkText>Script#</linkText>
+<linkUri>http://projects.nikhilk.net/ScriptSharp</linkUri><linkTarget>_blank</linkTarget>
+</externalLink> assemblies are documented correctly.</listItem>
+
+        <listItem>Table of Contents Exclusion - Used to exclude API members
+from the table of contents (the members still appear in the help file).</listItem>
+
+        <listItem>Version Builder - Generate version information for the current
+project and others related to the same product and merge that information into
+a single help file for all of them.</listItem>
+    </list>
+    
+    <para>The plug-in interface is public and is
+<link xlink:href="a14e026e-642f-4ce6-9506-341e57cc3d1f">documented</link> in
+this help file allowing you to create your own custom plug-ins.</para></listItem>
+
+    <listItem>Support is included for the <codeInline>&lt;inheritdoc /&gt;</codeInline>
+tag which allows you to inherit documentation from base types/members.  This is
+implemented via a standalone tool so it can also be used by other third-party
+tools and build scripts.  This tool provides features beyond those found in
+the build component supplied with Sandcastle.</listItem>
+</list>
+
+<para>In addition to the help file builder, the following custom build
+components are supplied:</para>
+
+<list class="bullet">
+    <listItem>A code block component that extends the <codeInline>&lt;code&gt;</codeInline>
+XML comment tag with file inclusion, syntax highlighting, line numbering,
+collapsible <codeInline>#region</codeInline> and <codeInline>#if/#else/#endif</codeInline>
+sections, and a copy to clipboard option.  This is useable in both reference
+and conceptual content.</listItem>
+
+    <listItem>A post-transform component that can be used to add a logo image
+to the header of each page, make some minor adjustments to the syntax section,
+and add basic version information to the help topics.  This is useable in both
+reference and conceptual content.</listItem>
+
+    <listItem>A "show missing" component that adds "missing" notes for missing
+<codeInline>summary</codeInline>, <codeInline>returns</codeInline>,
+<codeInline>param</codeInline>, <codeInline>value</codeInline>, and
+<codeInline>remarks</codeInline> documentation tags and that can also
+auto-document constructors.</listItem>
+
+    <listItem>An IntelliSense component used to extract the XML comments into
+files that can be used for IntelliSense.  Only the basic set of tags needed for
+IntelliSense are exported and only for documented API members.  This can
+greatly reduce the size of the IntelliSense files and removes all private
+implementation details when only documenting the public API.</listItem>
+
+    <listItem>A help attribute component that can be used to add extra
+<codeInline>MSHelp:Attr</codeInline> attributes to each generated API topic.
+This is useful for adding extra <codeInline>DocSet</codeInline> and other
+attributes to the topics that are not added by the default Sandcastle
+transformations.</listItem>
+
+    <listItem>A JavaScript declaration syntax generator that can be used for
+regular JavaScript as well as Script# projects.</listItem>
+
+    <listItem>A Resolve Conceptual Links build component that fixes some bugs
+in the standard version of the component and also adds some new features.</listItem>
+
+    <listItem>A set of cached build data components that cache key information
+such as comment, reflection index information, and MSDN URLs across builds in
+order to speed them up.</listItem>
+</list>
+
+<para>The custom build components can also be used outside of the help file
+builder in other custom build scripts and third-party tools as well.</para>
+
+<alert class="note">
+  <para>This help file was built using the help file builder and demonstrates
+many of the features that it provides.</para>
+</alert>
+
+  </content>
+</section>
+
+    <relatedTopics>
+    <link xlink:href="b772e00e-1705-4062-adb6-774826ce6700" />
+    <link xlink:href="8c0c97d0-c968-4c15-9fe9-e8f3a443c50a" />
+    <link xlink:href="8e3f8757-0ef3-4772-bb2f-5d7ae57e50da" />
+    <link xlink:href="c18d6cb6-e4e4-4944-84ee-f867aa6cfb0d" />
+    <link xlink:href="078cc1c7-7995-431e-bf9c-8813becbe8df" />
+    </relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="29685951-0496-4717-bf33-a14bf065a8b8" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Warning BE0010: Image file '<localUri>[imageFile]</localUri>'
+already exists.  It will be replaced by '<localUri>[duplicateFile]</localUri>'.</para>
+    </introduction>
+
+    <section>
+      <title>Cause</title>
+      <content>
+        <para>This warning occurs if two conceptual content media files with
+the same filename but from different source locations are copied to the
+<localUri>.\Media</localUri> folder during the build.</para>
+      </content>
+    </section>
+
+    <section>
+      <title>Solution</title>
+      <content>
+        <para>Although source image files with the same name can reside in
+different project folders, all conceptual content images are copied to the
+<localUri>.\Media</localUri> folder during the build.  As such, like-named
+files will overwrite each other.  If this is an issue, rename one of the files.
+The image IDs should remain the same or you will have to locate their
+occurrences in the topics and update them manually.</para>
+      </content>
+    </section>
+
+    <relatedTopics>
+    <link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="6038c08c-de58-4579-a018-bdbbce3134f5" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Warning GID0007: Ignoring non-XML comments file</para>
+    </introduction>
+
+    <section>
+      <title>Cause</title>
+      <content>
+        <para>This warning occurs if a filename is encountered while indexing
+comments files that does not have a <localUri>.xml</localUri> extension.</para>
+      </content>
+    </section>
+
+    <section>
+      <title>Solution</title>
+      <content>
+        <para>If the file is not an XML comments file, the warning can be
+ignored.  If it is intended to be a n XML comments file, rename it to use a
+<localUri>.xml</localUri> extension.</para>
+      </content>
+    </section>
+
+    <relatedTopics>
+    <link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
+    <link xlink:href="79897974-ffc9-4b84-91a5-e50c66a0221d" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

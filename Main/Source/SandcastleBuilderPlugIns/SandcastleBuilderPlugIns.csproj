@@ -1,0 +1,228 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{49720D17-40AD-4452-B60A-A5DEA226BA06}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SandcastleBuilder.PlugIns</RootNamespace>
+    <AssemblyName>SandcastleBuilder.PlugIns</AssemblyName>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>SandcastleBuilderPlugIns.snk</AssemblyOriginatorKeyFile>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\SandcastleBuilder.PlugIns.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\SandcastleBuilder.PlugIns.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'ReleaseNoDoc|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>bin\Release\SandcastleBuilder.PlugIns.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Build.Engine" />
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\SandcastleBuilderUtils\Properties\AssemblyInfoShared.cs">
+      <Link>Properties\AssemblyInfoShared.cs</Link>
+    </Compile>
+    <Compile Include="AdditionalContentOnlyPlugIn.cs" />
+    <Compile Include="AdditionalReferenceLinksConfigDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AdditionalReferenceLinksConfigDlg.Designer.cs">
+      <DependentUpon>AdditionalReferenceLinksConfigDlg.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AdditionalReferenceLinksPlugIn.cs" />
+    <Compile Include="AjaxDocConfigDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AjaxDocConfigDlg.Designer.cs">
+      <DependentUpon>AjaxDocConfigDlg.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AjaxDocPlugIn.cs" />
+    <Compile Include="BibliographySupportConfigDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BibliographySupportConfigDlg.Designer.cs">
+      <DependentUpon>BibliographySupportConfigDlg.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BibliographySupportPlugIn.cs" />
+    <Compile Include="BindingRedirectResolverConfigDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BindingRedirectResolverConfigDlg.Designer.cs">
+      <DependentUpon>BindingRedirectResolverConfigDlg.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BindingRedirectResolverPlugIn.cs" />
+    <Compile Include="BindingRedirectSettings.cs" />
+    <Compile Include="BindingRedirectSettingsCollection.cs" />
+    <Compile Include="CompletionNotificationConfigDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CompletionNotificationConfigDlg.Designer.cs">
+      <DependentUpon>CompletionNotificationConfigDlg.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CompletionNotificationPlugIn.cs" />
+    <Compile Include="DbcsFixConfigDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DbcsFixConfigDlg.Designer.cs">
+      <DependentUpon>DbcsFixConfigDlg.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DbcsFixPlugIn.cs" />
+    <Compile Include="DeploymentConfigUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DeploymentConfigUserControl.Designer.cs">
+      <DependentUpon>DeploymentConfigUserControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HierarchicalTocConfigDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="HierarchicalTocConfigDlg.Designer.cs">
+      <DependentUpon>HierarchicalTocConfigDlg.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HierarchicalTocPlugIn.cs" />
+    <Compile Include="ReferenceLinkSettings.cs" />
+    <Compile Include="ReferenceLinkSettingsCollection.cs" />
+    <Compile Include="ScriptSharpPlugIn.cs" />
+    <Compile Include="TestPlugIn.cs" />
+    <Compile Include="TocExcludePlugIn.cs" />
+    <Compile Include="VersionBuilderConfigDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VersionBuilderConfigDlg.Designer.cs">
+      <DependentUpon>VersionBuilderConfigDlg.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DeploymentConfigDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DeploymentConfigDlg.Designer.cs">
+      <DependentUpon>DeploymentConfigDlg.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DeploymentLocation.cs" />
+    <Compile Include="DeploymentPlugIn.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProxyCredentials.cs" />
+    <Compile Include="UserCredentials.cs" />
+    <Compile Include="VersionBuilderPlugIn.cs" />
+    <Compile Include="VersionSettings.cs" />
+    <Compile Include="VersionSettingsCollection.cs" />
+    <Compile Include="XPathReflectionFileFilterPlugin.cs" />
+    <Compile Include="XPathReflectionFileFilterConfigDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="XPathReflectionFileFilterConfigDlg.Designer.cs">
+      <DependentUpon>XPathReflectionFileFilterConfigDlg.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SandcastleBuilderUtils\SandcastleBuilderUtils.csproj">
+      <Project>{330DADF7-3AB1-49A0-B3C6-A69D2C4F06A6}</Project>
+      <Name>SandcastleBuilderUtils</Name>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SandcastleBuilderPlugIns.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="AdditionalReferenceLinksConfigDlg.resx">
+      <DependentUpon>AdditionalReferenceLinksConfigDlg.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AjaxDocConfigDlg.resx">
+      <DependentUpon>AjaxDocConfigDlg.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BibliographySupportConfigDlg.resx">
+      <DependentUpon>BibliographySupportConfigDlg.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BindingRedirectResolverConfigDlg.resx">
+      <DependentUpon>BindingRedirectResolverConfigDlg.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CompletionNotificationConfigDlg.resx">
+      <DependentUpon>CompletionNotificationConfigDlg.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DbcsFixConfigDlg.resx">
+      <DependentUpon>DbcsFixConfigDlg.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DeploymentConfigUserControl.resx">
+      <DependentUpon>DeploymentConfigUserControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="HierarchicalTocConfigDlg.resx">
+      <DependentUpon>HierarchicalTocConfigDlg.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VersionBuilderConfigDlg.resx">
+      <DependentUpon>VersionBuilderConfigDlg.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DeploymentConfigDlg.resx">
+      <DependentUpon>DeploymentConfigDlg.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XPathReflectionFileFilterConfigDlg.resx">
+      <DependentUpon>XPathReflectionFileFilterConfigDlg.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PostBuildEvent>Copy /y "$(TargetDir)$(TargetName).xml" "$(SolutionDir)SandcastleBuilderGUI\$(OutDir)$(TargetName).xml"
+Copy /y "$(TargetPath)" "$(SolutionDir)SandcastleBuilderGUI\$(OutDir)$(TargetName).plugins"
+</PostBuildEvent>
+  </PropertyGroup>
+</Project>

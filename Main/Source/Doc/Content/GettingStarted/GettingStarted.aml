@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="b772e00e-1705-4062-adb6-774826ce6700" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>The topics in this section will help you install all of the
+required tools, become familiar with the Sandcastle Help File Builder, and
+create your first project.</para>
+    </introduction>
+
+    <section>
+      <content>
+
+<list class="bullet">
+  <listItem><link xlink:href="8c0c97d0-c968-4c15-9fe9-e8f3a443c50a" /></listItem>
+  <listItem><link xlink:href="8e3f8757-0ef3-4772-bb2f-5d7ae57e50da" /></listItem>
+  <listItem><link xlink:href="c47d9242-b3a8-4153-aa9e-ae8cb41cefe2" /></listItem>
+  <listItem><link xlink:href="d5dbf017-25f1-48cb-86db-90f76ee8f4d7" /></listItem>
+  <listItem><link xlink:href="f68822d2-97ba-48da-a98b-46747983b4a0" /></listItem>
+  <listItem><link xlink:href="576b6a36-0808-4857-bec0-e6eeeae4e36b" /></listItem>
+  <listItem><link xlink:href="96956ab6-fd5e-4bc7-a577-a18b0ff258ea" /></listItem>
+  <listItem><link xlink:href="2152ed96-bf69-4b9b-b1a7-4fffc71b3095" /></listItem>
+  <listItem><link xlink:href="a24489fb-45d6-46f4-9eaa-9a9c4e0919b2" /></listItem>
+  <listItem><link xlink:href="79897974-ffc9-4b84-91a5-e50c66a0221d" /></listItem>
+  <listItem><link xlink:href="94c7f744-9b90-4254-93ab-9b15f47d9f42" /></listItem>
+  <listItem><link xlink:href="8ffc0d37-0215-4609-b6f8-dba53a6c5063" /></listItem>
+  <listItem><link xlink:href="ec822059-b179-4add-984d-485580050ffb" /></listItem>
+</list>
+
+      </content>
+    </section>
+
+    <relatedTopics>
+	<link xlink:href="bd1ddb51-1c4f-434f-bb1a-ce2135d3a909" />
+	<link xlink:href="1aea789d-b226-4b39-b534-4c97c256fac8" />
+	<link xlink:href="c18d6cb6-e4e4-4944-84ee-f867aa6cfb0d" />
+	<link xlink:href="078cc1c7-7995-431e-bf9c-8813becbe8df" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

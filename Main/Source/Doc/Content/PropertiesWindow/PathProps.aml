@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="e6fcfa33-e7ee-430a-abfe-6b7962e6d068" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+      <autoOutline lead="The Paths category properties define the location of the tools and the output location of the help file."
+           excludeRelatedTopics="true" />
+    </introduction>
+
+<section address="HHCPath">
+  <title>HtmlHelp1xCompilerPath</title>
+  <content><para>This property lets you specify the path to the HTML Help 1
+compiler (<localUri>HHC.EXE</localUri>).  By default, the builder will try
+to locate it automatically by searching the <localUri>Program Files</localUri>
+special folder on all fixed hard drives.  As such, you only need to specify the
+path if the build fails with a message stating that it could not be found.</para>
+
+  </content>
+</section>
+
+<section address="HXCompPath">
+  <title>HtmlHelp2xCompilerPath</title>
+  <content><para>This property lets you specify the path to the MS Help 2
+compiler (<localUri>HXCOMP.EXE</localUri>).  By default, the builder will try
+to locate it automatically by searching the <localUri>Program Files</localUri>
+special folder on all fixed hard drives.  As such, you only need to specify the
+path if the build fails with a message stating that it could not be found.</para>
+
+  </content>
+</section>
+
+<section address="OutputPath">
+  <title>OutputPath</title>
+  <content><para>This property lets you specify where the compiled help file
+should be placed.  The default is to store it in a folder called
+<localUri>.\Help\</localUri> relative to the project folder.  It is also the
+location of the temporary <localUri>.\Working\</localUri> folder used to store
+the generated build files unless it is changed with the
+<codeInline>WorkingPath</codeInline> property.  This property cannot be set to
+the same value as the <codeInline>WorkingPath</codeInline> property as the
+working path folder is cleared prior to the build.</para>
+
+<alert class="warning">
+  <para>Be aware that if an option is selected that produces a website, the
+output folder specified by the <codeInline>OutputPath</codeInline> property
+will be cleared of all of its current content without any prompting before the
+web site content is copied to it.  In other words, don't do something stupid
+like set it to the root of your C: drive or your desktop folder.  When
+producing Help 1 and/or Help 2 files, the output folder is not cleared.</para>
+</alert>
+
+  </content>
+</section>
+
+<section address="SCPath">
+  <title>SandcastlePath</title>
+  <content><para>This property lets you specify the path to Sandcastle.  By
+default, the builder will try to locate it automatically by extracting its
+location from the <environmentVariable>DXROOT</environmentVariable> environment
+variable, the system path or, if not found there, by searching the
+<localUri>Program Files</localUri> special folder on all fixed hard drives.  As
+such, you only need to specify the path if the build fails with a message
+stating that it could not be found.</para>
+
+  </content>
+</section>
+
+<section address="WorkingPath">
+  <title>WorkingPath</title>
+  <content><para>This property lets you specify an alternate location with a
+shorter path in which to perform the build if it fails due to long file path
+names.  If not specified, the working folder will be placed under the output
+path and will be called <localUri>.\Working</localUri>.  This property cannot
+be set to the same value as the <codeInline>OutputPath</codeInline> property as
+the working path folder is cleared prior to the build.</para>
+
+<alert class="warning">
+  <para>Be aware that the working folder specified by the
+<codeInline>WorkingPath</codeInline> property will be cleared of all of its
+current content without any prompting before the build begins.  In other words,
+don't do something stupid like set it to the root of your C: drive or your
+desktop folder.</para>
+</alert>
+
+  </content>
+</section>
+
+    <relatedTopics>
+    <link xlink:href="e32086c6-de17-4e54-a746-1ac80bf0c45a" />
+    </relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

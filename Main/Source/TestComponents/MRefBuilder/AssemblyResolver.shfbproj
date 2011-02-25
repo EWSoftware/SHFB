@@ -1,0 +1,90 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <!-- The configuration and platform will be used to determine which
+         assemblies to include from solution and project documentation
+         sources -->
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4a23ee29-ae45-4051-9760-88d0cb97209b}</ProjectGuid>
+    <SHFBSchemaVersion>1.9.0.0</SHFBSchemaVersion>
+    <!-- AssemblyName, Name, and RootNamespace are not used by SHFB but Visual
+         Studio adds them anyway -->
+    <AssemblyName>Documentation</AssemblyName>
+    <RootNamespace>Documentation</RootNamespace>
+    <Name>Documentation</Name>
+    <!-- SHFB properties -->
+    <OutputPath>.\Help\</OutputPath>
+    <HtmlHelpName>Documentation</HtmlHelpName>
+    <DocumentationSources>
+      <DocumentationSource sourceFile="NationalInstruments.DAQmx.ComponentModel.dll" xmlns="" />
+      <DocumentationSource sourceFile="NationalInstruments.DAQmx.ComponentModel.xml" xmlns="" />
+      <DocumentationSource sourceFile="NationalInstruments.DAQmx.dll" xmlns="" />
+      <DocumentationSource sourceFile="NationalInstruments.DAQmx.xml" xmlns="" />
+    </DocumentationSources>
+    <PlugInConfigurations>
+      <PlugInConfig id="Assembly Binding Redirection" enabled="True">
+        <configuration>
+          <assemblyBinding>
+            <dependentAssembly>
+              <assemblyIdentity name="NationalInstruments.Common" publicKeyToken="4544464cdeaab541" />
+              <bindingRedirect oldVersion="8.1.20.168" newVersion="8.1.20.237" />
+            </dependentAssembly>
+          </assemblyBinding>
+        </configuration>
+      </PlugInConfig>
+    </PlugInConfigurations>
+    <ComponentConfigurations>
+      <ComponentConfig id="Cached Framework Comments Index Data" enabled="True">
+        <component id="Cached Framework Comments Index Data" type="SandcastleBuilder.Components.CachedCopyFromIndexComponent" assembly="{@SHFBFolder}SandcastleBuilder.Components.dll">
+<index name="comments" value="/doc/members/member" key="@name" cache="100">
+{@CachedFrameworkCommentList}
+{@CommentFileList}
+            </index>
+<copy name="comments" source="*" target="/document/comments" />
+</component>
+      </ComponentConfig>
+<ComponentConfig id="Cached MSDN URL References" enabled="True"><component id="Cached MSDN URL References" type="SandcastleBuilder.Components.CachedResolveReferenceLinksComponent" assembly="{@SHFBFolder}SandcastleBuilder.Components.dll" locale="{@Locale}" linkTarget="{@SdkLinkTarget}">
+<helpOutput format="HtmlHelp1">
+  <cache filename="{@LocalDataFolder}Cache\MsdnUrl.cache" />
+  <targets base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" type="{@HtmlSdkLinkType}" />
+  <targets files="reflection.xml" type="Local" />
+</helpOutput>
+<helpOutput format="MSHelp2">
+  <cache filename="{@LocalDataFolder}Cache\MsdnUrl.cache" />
+  <targets base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" type="{@MSHelp2SdkLinkType}" />
+  <targets files="reflection.xml" type="Index" />
+</helpOutput>
+<helpOutput format="MSHelpViewer">
+  <cache filename="{@LocalDataFolder}Cache\MsdnUrl.cache" />
+  <targets base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" type="{@MSHelpViewerSdkLinkType}" />
+  <targets files="reflection.xml" type="Id" />
+</helpOutput>
+<helpOutput format="Website">
+  <cache filename="{@LocalDataFolder}Cache\MsdnUrl.cache" />
+  <targets base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" type="{@WebsiteSdkLinkType}" />
+  <targets files="reflection.xml" type="Local" />
+</helpOutput>
+</component></ComponentConfig>
+<ComponentConfig id="Cached Reflection Index Data" enabled="True"><component id="Cached Reflection Index Data" type="SandcastleBuilder.Components.CachedCopyFromIndexComponent" assembly="{@SHFBFolder}SandcastleBuilder.Components.dll">
+<index name="reflection" value="/reflection/apis/api" key="@id" cache="10">
+  <cache base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" cacheFile="{@LocalDataFolder}Cache\Reflection.cache" />
+  <data files="reflection.xml" />
+</index>
+<copy name="reflection" source="*" target="/document/reference" />
+</component></ComponentConfig></ComponentConfigurations>
+  </PropertyGroup>
+  <!-- There are no properties for these two groups but they need to appear in
+       order for Visual Studio to perform the build. -->
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="NationalInstruments.Common">
+      <HintPath>NationalInstruments.Common.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <!-- Import the SHFB build targets -->
+  <Import Project="$(SHFBROOT)\SandcastleHelpFileBuilder.targets" />
+</Project>

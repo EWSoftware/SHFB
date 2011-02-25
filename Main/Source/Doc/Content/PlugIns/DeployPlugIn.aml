@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="796d6bbe-5130-4c87-8790-5cceb66219c7" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+      <para>This plug-in is used to deploy the resulting help file output to a
+location other than the output folder (i.e. a file share, a web server, an FTP
+site, etc.).  This plug-in will require configuration before it can be used.
+The configuration options are as follows:</para>
+    </introduction>
+
+<section>
+  <content>
+<table>
+  <tableHeader>
+    <row>
+      <entry>Configuration Option</entry>
+      <entry>Description</entry>
+    </row>
+  </tableHeader>
+  <row>
+    <entry>Delete source files after deploying them</entry>
+    <entry>Check this box to delete the source help files after they have been
+deployed.  This option applies to all help file formats built by the project
+and deployed by the plug-in.</entry>
+  </row>
+  <row>
+    <entry>Help file format options</entry>
+    <entry>For each help file format (HTML Help 1, MS Help 2, and website), you
+can define a different set of deployment options.  Fill in the options for each
+help file format built by the project.  The options are the same for all
+formats and are described below.</entry>
+  </row>
+</table>
+
+<para>The following options are available for each help file format.</para>
+
+<table>
+  <tableHeader>
+    <row>
+      <entry>Configuration Option</entry>
+      <entry>Description</entry>
+    </row>
+  </tableHeader>
+  <row>
+    <entry>Target Location</entry>
+    <entry><para>Enter the location to which the help file output should be
+copied.  This can be a file path, a UNC path, or a URL for a website or FTP
+site.  If a relative file path is specified, it will be relative to the project
+folder.</para>
+
+<alert class="note">
+  <para><legacyBold>HTTP/FTP Limitation</legacyBold>: Be aware that there is a
+limitation when deploying output to an HTTP or FTP URL.  Any subfolders in the
+source website and/or destination URL must already exist in the destination
+website or FTP site.  If not, the deployment will fail.  If possible, deploy to
+a file or UNC path that maps to the URL as they do not have this limitation.</para>
+</alert>
+
+<alert class="security">
+  <para>Using HTTP for uploads is not recommended as you must grant write
+permissions to the folders which is a security risk.</para>
+</alert></entry>
+  </row>
+  <row>
+    <entry>Use default credentials</entry>
+    <entry>If this checkbox is checked, the current user's credentials at
+build time will be used to upload the resulting files to the given URL.
+If running this on a build server and/or authentication is required, uncheck
+this box and supply a user name and password.</entry>
+  </row>
+  <row>
+    <entry>User Name and Password</entry>
+    <entry><para>Use these to enter specific credentials for uploading the
+files to the target URL.</para>
+
+<alert class="security">
+  <para>The password is stored in the project file in plain text.</para>
+</alert></entry>
+  </row>
+  <row>
+    <entry>Use Proxy Server</entry>
+    <entry>If the upload of the files fails and you are behind a proxy server,
+you may need to supply proxy server credentials.  Uncheck this box to enter
+the proxy server name and credentials.</entry>
+  </row>
+  <row>
+    <entry>Proxy Server</entry>
+    <entry>Enter the name of the proxy server to use.</entry>
+  </row>
+  <row>
+    <entry>Use default credentials (Proxy server)</entry>
+    <entry>If checked, default credentials for the current user will be passed
+to the proxy server at build time.  If specific credentials are needed, uncheck
+this box and enter a user name and password.</entry>
+  </row>
+  <row>
+    <entry>User Name and Password (Proxy server)</entry>
+    <entry><para>Use these to enter specific credentials for the proxy server.</para>
+
+<alert class="security">
+  <para>The password is stored in the project file in plain text.</para>
+</alert></entry>
+  </row>
+</table>
+
+<para>You only need to enter information for the help file formats that are
+built by the project and/or that you want to deploy.  If a target location is
+left blank for any given format, deployment of that format will be skipped.</para>
+
+  </content>
+</section>
+
+    <relatedTopics>
+    <link xlink:href="e031b14e-42f0-47e1-af4c-9fed2b88cbc7" />
+    </relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

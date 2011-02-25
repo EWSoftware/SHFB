@@ -1,0 +1,250 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Topics>
+  <Topic id="d45c5080-a13f-42a7-bba5-ea6a8193d719" visible="False" isMSHVRoot="true" title="Sancastle Standalone Build Components and Tools">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="Sandcastle Build Components" />
+    </HelpKeywords>
+  </Topic>
+  <Topic id="90a1d911-0315-4865-a414-58189cca1ecb" visible="True" isDefault="true" title="Welcome">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="Welcome" />
+      <HelpKeyword index="K" term="Overview" />
+      <HelpKeyword index="NamedURLIndex" term="HomePage" />
+      <HelpKeyword index="NamedURLIndex" term="DefaultPage" />
+    </HelpKeywords>
+  </Topic>
+  <Topic id="24504fda-d3ef-4dd9-8335-6db8b25d00f2" visible="True" title="License Agreement">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="License Agreement" />
+    </HelpKeywords>
+  </Topic>
+  <Topic id="c47d9242-b3a8-4153-aa9e-ae8cb41cefe2" visible="True" title="Setting Up Your Projects">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="Getting started, Visual Studio" />
+      <HelpKeyword index="K" term="Getting started, Visual Studio projects" />
+      <HelpKeyword index="K" term="Getting started, enable XML comments" />
+      <HelpKeyword index="K" term="XML comments" />
+      <HelpKeyword index="K" term="XML comment tags, tag reference" />
+    </HelpKeywords>
+  </Topic>
+  <Topic id="94c7f744-9b90-4254-93ab-9b15f47d9f42" visible="True" title="Documenting Web Projects">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="Getting started, websites and web projects" />
+    </HelpKeywords>
+  </Topic>
+  <Topic id="79897974-ffc9-4b84-91a5-e50c66a0221d" visible="True" title="Using the &lt;inheritdoc /&gt; Tag">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="Getting started, &lt;inheritdoc /&gt;" />
+      <HelpKeyword index="K" term="inheritdoc tag" />
+      <HelpKeyword index="K" term="XML comment tags, inheritdoc" />
+    </HelpKeywords>
+  </Topic>
+  <Topic id="c77f178b-383e-47dc-99ed-f8538a8057a8" visible="True" title="Generating Inherited Documentation">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="inherited documentation" />
+    </HelpKeywords>
+  </Topic>
+  <Topic id="534c4ff1-3bba-4431-a3a6-76dcb2d374f8" visible="True" title="Help Library Manager Launcher">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="Help Library Manager Launcher" />
+    </HelpKeywords>
+  </Topic>
+  <Topic id="8dcbb69b-7a1a-4049-8e6b-2bf344efbbc9" visible="True" title="BuildAssembler Components">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="BuildAssembler components, configuring" />
+      <HelpKeyword index="K" term="BuildAssembler components, overview" />
+      <HelpKeyword index="K" term="BuildAssembler components, syntax filter" />
+      <HelpKeyword index="K" term="syntax filter generator" />
+    </HelpKeywords>
+    <Topic id="3a1c4bf1-8ecf-4ab3-8010-277bed8d3819" visible="True" title="Cached Build Components">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="BuildAssembler components, cached build components" />
+        <HelpKeyword index="K" term="CachedCopyFromIndexComponent, configuration options" />
+        <HelpKeyword index="K" term="CachedResolveReferenceLinksComponent, configuration options" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="7f03ba39-09f8-4320-bdbd-ed31a3bd885f" visible="True" title="Code Block Component">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="BuildAssembler components, code block component" />
+        <HelpKeyword index="K" term="CodeBlockComponent, configuration options" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="85c08740-1190-471c-8fea-360a4a8e4612" visible="True" title="Help Attributes Component">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="BuildAssembler components, help attributes component" />
+        <HelpKeyword index="K" term="MSHelpAttrComponent, configuration options" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="5d546511-6aec-455a-ba09-9daffb124c6d" visible="True" title="IntelliSense Component">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="BuildAssembler components, IntelliSense component" />
+        <HelpKeyword index="K" term="IntelliSenseComponent, configuration options" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="f47527c7-67ce-487d-a2a0-91d1cb08e15e" visible="True" title="JavaScript Declaration Syntax Generator">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="BuildAssembler components, JavaScript declaration syntax generator" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="16dc54c2-84bf-4bab-a875-0b1d49c9b1b8" visible="True" title="Microsoft Help Viewer Component">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="build components, Microsoft Help Viewer component" />
+        <HelpKeyword index="K" term="MSHCComponent, configuration settings" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="92a6e678-48fb-4e6c-a7e5-34f264b01212" visible="True" title="Multi-Format Output Component">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="BuildAssembler components, multi-format output component" />
+        <HelpKeyword index="K" term="MultiFormatOutputComponent, configuration options" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="f502c07b-8110-477d-8953-73255296206b" visible="True" title="Post-Transform Component">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="BuildAssembler components, post-transform component" />
+        <HelpKeyword index="K" term="PostTransformComponent, configuration options" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="da0332e0-a7d3-4f9d-a9e4-5027502ea9ea" visible="True" title="Resolve Conceptual Links Component">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="BuildAssembler components, resolve conceptual links component" />
+        <HelpKeyword index="K" term="ResolveConceptualLinksComponent, configuration options" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="3baa826b-d8df-44d9-bb3f-144af2d191ef" visible="True" title="Show Missing Documentation Component">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="BuildAssembler components, show missing documentation component" />
+        <HelpKeyword index="K" term="ShowMissingComponent, configuration options" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="58ce80ee-eb4b-4027-8871-7e83fad8e476" visible="True" title="Version Information Component">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="BuildAssembler components, version information component" />
+        <HelpKeyword index="K" term="VersionInfoComponent, configuration options" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="e6d18448-2459-46f1-bbdc-a7db415f2bda" visible="True" title="Creating a Component Configuration File">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="BuildAssembler components, add third-party build component" />
+        <HelpKeyword index="K" term="BuildAssembler components, component configuration file" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="5e80d139-811c-48ed-9b52-dcd8a3f5aef3" visible="True" title="Creating a Syntax Filter Generator Definition File">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="build components, add third-party syntax filter generator" />
+        <HelpKeyword index="K" term="build components, syntax filter generator" />
+      </HelpKeywords>
+    </Topic>
+  </Topic>
+  <Topic id="4e92303d-66ad-4a5d-9a03-94f316a0dd38" visible="True" title="MRefBuilder Components">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="MRefBuilder components, configuring" />
+      <HelpKeyword index="K" term="MRefBuilder components, overview" />
+    </HelpKeywords>
+    <Topic id="041d7ee8-1698-4256-aa9b-507c1b366cf6" visible="True" title="Assembly Binding Redirection Resolver">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="BindingRedirectResolver, configuration options" />
+        <HelpKeyword index="K" term="MRefBuilder components, assembly binding redirection resolver" />
+      </HelpKeywords>
+    </Topic>
+  </Topic>
+  <Topic id="c18d6cb6-e4e4-4944-84ee-f867aa6cfb0d" visible="True" title="Links to Resources">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="BuildAssembler components, article on creating components" />
+      <HelpKeyword index="K" term="BuildAssembler components, links to third-party components" />
+      <HelpKeyword index="K" term="plug-ins, links to third-party plug-ins" />
+      <HelpKeyword index="K" term="resources" />
+      <HelpKeyword index="K" term="support, articles" />
+      <HelpKeyword index="K" term="support, links to resources" />
+      <HelpKeyword index="K" term="support, third-party build components" />
+      <HelpKeyword index="K" term="support, third-party plug-ins" />
+      <HelpKeyword index="K" term="support, tools" />
+    </HelpKeywords>
+  </Topic>
+  <Topic id="717ca8cf-1a2f-4e63-a8a9-f836825f3509" visible="True" title="Making a Donation">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="donate" />
+      <HelpKeyword index="K" term="support, donate" />
+    </HelpKeywords>
+  </Topic>
+  <Topic id="9916374d-681f-4869-9b10-bb4a31161998" visible="True" title="Version History">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="History" />
+      <HelpKeyword index="K" term="Version History" />
+    </HelpKeywords>
+    <Topic id="b6054780-7245-455a-913d-b2ee9e8c9574" visible="True" title="Version 1.9.1.0">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 1.9.1.0" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="5a570cbb-cfbf-4cc1-931f-132ce9412cad" visible="True" title="Version 1.8.0.3">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 1.8.0.3" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="51558d8f-f789-4952-a9fd-ed0c51f47b86" visible="True" title="Version 1.8.0.2">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 1.8.0.2" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="6bbb2fd1-8f15-4666-b390-31d2a54ca448" visible="True" title="Version 1.8.0.1">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 1.8.0.1" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="5566ecfa-085b-476c-a7db-622dc5b6c545" visible="True" title="Version 1.8.0.0">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 1.8.0.0" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="9fa3fe24-0a99-4332-a0ab-dd040b1f504f" visible="True" title="Version 1.7.0.0">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 1.7.0.0" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="4b996553-81b3-48d0-9f57-84e132b13a68" visible="True" title="Version 1.6.0.4">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 1.6.0.4" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="8c369407-9e9d-4646-ac29-b0e6e339a19f" visible="True" title="Version 1.6.0.2">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 1.6.0.2" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="11a12829-1ba9-4442-8f07-d033eee2186f" visible="True" title="Version 1.6.0.1">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 1.6.0.1" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="e7e0ab4d-149a-4b45-bbb1-87cba1a9bf36" visible="True" title="Version 1.6.0.0">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 1.6.0.0" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="73f7fa7c-02f8-4164-a5b9-de3b469a16ab" visible="True" title="Version 1.5.0.1">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 1.5.0.1" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="63643cce-6694-46fe-9923-77c84132aa9d" visible="True" title="Version 1.5.0.0">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 1.5.0.0" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="8ef72bc5-11d8-416f-8e9a-43245f2ad320" visible="True" title="Version 1.4.0.1">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 1.4.0.1" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="0efe033f-d6c8-4da7-9250-8f08ef289eea" visible="True" title="Version 1.4.0.0">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 1.4.0.0" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="4a2223d1-71b2-4335-9716-1d33e32911b3" visible="True" title="Version 1.3.3.1">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 1.3.3.1" />
+      </HelpKeywords>
+    </Topic>
+  </Topic>
+</Topics>

@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="e12c2b9f-18c7-4718-850b-ac3c2e293672" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>The <ui>Project Explorer</ui> allows you to add items to the
+project and manage their related build action and additional properties.</para>
+    </introduction>
+
+    <section>
+      <content>
+	<mediaLink><image xlink:href="ProjectExplorer" placement="center" /></mediaLink>
+
+	<para>The Project Explorer tree view consists of the following node types:</para>
+
+<list class="bullet">
+	<listItem>The root project node is always named after the project and lets
+you add folder and file items to the root folder of the project.</listItem>
+
+	<listItem>The <link xlink:href="64f0576f-51b3-4dae-aaac-06568c6c2f68"/>
+node is where you will specify the assemblies, XML comments files, and/or
+solutions and projects that go into the reference (API) content of the help
+file.</listItem>
+
+	<listItem>The <link xlink:href="9309b01b-87bf-4d68-b035-c10ac77d1522" />
+node is where you specify dependent assemblies that provide base class
+information for the documented assemblies but themselves do not appear in the
+help file's table of contents.</listItem>
+
+	<listItem><link xlink:href="0a9d6da4-cff6-4664-8b64-b7df04c8a37d">Folder
+nodes</link> can be created to organize the file content of the project.</listItem>
+
+	<listItem><link xlink:href="0a9d6da4-cff6-4664-8b64-b7df04c8a37d">File nodes</link>
+represent conceptual content topics, images, content layout files, and various
+other supporting files that may or may not be compiled into the help file.
+Each file has a <link xlink:href="c38461a6-6edd-42cf-9d91-73c4b11cdd70">build
+action</link> that determines how it is handled during the build process.</listItem>
+
+</list>
+
+	<para>Right-clicking a node in the Project Explorer or selecting <ui>File |
+Project Explorer</ui> and then a submenu option from it allows you to perform
+various tasks within the pane such as adding and removing documentation sources,
+adding and removing references, and adding and removing files and folders.  The
+property grid below the explorer tree view allows you to modify the build
+action and related properties for the selected file node.</para>
+
+	<para>The following keyboard shortcuts can also be used to perform the
+indicated actions:</para>
+
+<list class="bullet">
+  <listItem>Context menu key - Show the context menu for the selected item.</listItem>
+
+  <listItem>Delete - Delete the selected item.</listItem>
+  
+  <listItem>Enter - Edit the selected file (file nodes only).</listItem>
+  	
+  <listItem>F2 - Edit the selected node's name (project, folder, and file nodes only).</listItem>
+</list>
+
+	<para>Double-clicking a file node will also open it for editing.</para>
+        
+      </content>
+    </section>
+    
+    <relatedTopics>
+	<link xlink:href="b772e00e-1705-4062-adb6-774826ce6700" />
+	<link xlink:href="e32086c6-de17-4e54-a746-1ac80bf0c45a" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

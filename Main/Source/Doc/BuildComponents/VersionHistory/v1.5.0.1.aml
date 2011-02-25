@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="73f7fa7c-02f8-4164-a5b9-de3b469a16ab" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Version 1.5.0.1 was released on June 26th, 2007.</para>
+    </introduction>
+
+<section>
+  <title>Changes in This Release</title>
+  <content>
+
+<list class="bullet">
+    <listItem>Fixed a bug that caused "Missing namespace summary" messages and
+failure to exclude namespaces when using the VS2005 or HANA presentation
+style.</listItem>
+
+    <listItem>Fixed a bug in the code colorizer that caused it to fail to match C#
+and J# language IDs to the correct rule set.</listItem>
+</list>
+
+  </content>
+</section>
+
+    <relatedTopics>
+    <link xlink:href="9916374d-681f-4869-9b10-bb4a31161998" />
+    </relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

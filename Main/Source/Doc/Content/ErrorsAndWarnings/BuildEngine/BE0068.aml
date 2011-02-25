@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="e0b6a8f5-27d3-48ce-b37b-0c328735b106" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Error BE0068: Incompatible Visual Studio project file format.
+<legacyItalic>[error]</legacyItalic></para>
+    </introduction>
+
+    <section>
+      <title>Cause</title>
+      <content>
+        <para>An attempt was made to use a Visual Studio project as a documentation
+source that has an incompatible format.  C++ projects created with Visual Studio
+2008 and earlier do not use an MSBuild-based format and cannot be parsed.  Visual
+Studio 2010 projects use MSBuild 4.0 which defines some new elements and attributes
+not recognized by the MSBuid 3.5 engine used by the help file builder to load
+project files.  If a project is encountered that uses these new elements, it
+cannot be loaded.</para>
+      </content>
+    </section>
+
+    <section>
+      <title>Solution</title>
+      <content>
+        <para>Add the assembly and XML comments file created by the Visual Studio
+project to the help file builder project as documentation sources rather than
+the project file that contains them.  Likewise, add any required references from
+the Visual Studio project to the help file builder project's References project
+node.</para>
+
+      </content>
+    </section>
+
+    <relatedTopics>
+      <link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="4bf6d6d9-ecc1-4e7c-92ae-e011752431f1" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>These features are included for backward compatibility with NDoc
+and prior versions of the help file builder.  These features are unsupported
+for the MS Help Viewer help file format.</para>
+    </introduction>
+
+<section>
+	<title>Deprecated Features</title>
+	<content>
+<alert class="note">
+	<para>The additional content model of adding extra content to a help file
+has been deprecated.  While it will continue to be supported and will not be
+removed, it will not receive any more features or updates.  Going forward,
+<link xlink:href="3d4edd2d-7883-4508-b9d2-bd7b4d848b0d">conceptual content</link>
+is the preferred method of adding non-reference content to the help file.  The
+additional content feature can still be used to
+<link xlink:href="77d2d693-db84-4ae3-a84c-e33c71f92e9a">override stock content</link>
+and add supporting files to the help file.</para>
+</alert>
+
+<list class="bullet">
+	<listItem>Code samples in <codeInline>&lt;pre&gt;</codeInline> elements
+can be colorized.</listItem>
+
+	<listItem>Code samples can be imported using the <codeInline>&lt;code&gt;</codeInline>
+element and specifying the custom <codeInline>source</codeInline> attribute.</listItem>
+
+    <listItem>For finer control over the layout of the table of contents entries
+for the additional content, a site map file can be defined.  This allows you to
+create a table of contents structure that differs from the physical folder
+layout of the additional content items.  One or more site map files can be
+specified by adding them to the project and setting their
+<codeInline>BuildAction</codeInline> to <codeInline>SiteMap</codeInline>.
+The <codeInline>SortOrder</codeInline> property on each site map file item
+can be used to specify the order in which the content from the site maps is
+merged into the table of contents.  Site map files are also editable from
+within the help file builder's GUI.</listItem>
+
+    <listItem>When no content site map file is specified, all HTML files
+(<localUri>*.htm</localUri> and <localUri>*.html</localUri>) and transformable
+topic files (<localUri>*.topic</localUri>, see below) are automatically added
+to the table of contents unless their <codeInline>ExcludeFromToc</codeInline>
+property is set to True.  Subfolders below the source folder containing HTML
+files automatically create folder entries in the table of contents.  As such,
+it is fairly simple to create a hierarchy of entries in the help file table of
+contents based on the folder structure of the additional content items.</listItem>
+
+    <listItem>Files with a <localUri>.topic</localUri> extension will be
+processed using an XSL transformation to convert them to HTML files.  If a file
+is found in the project that has a <codeInline>BuildAction</codeInline> of
+<codeInline>TopicTransform</codeInline>, that file will be used as the XSL
+transformation.  If no such files exist in the project, a default transform
+based on the currently selected presentation style will be used instead.  See
+the <link xlink:href="a31e4dd4-7466-4c12-b734-60bd50fc91af" /> topic for more
+information.</listItem>
+
+    <listItem>The help file builder scans each HTML file for some special
+comment tags.  The comment tags can be used to indicate the default topic,
+exclude a file from the table of contents, and set the sort order of items
+within the table of contents group.</listItem>
+
+    <listItem>The help file builder will also scan the HTML files for XML
+comment style <codeInline>&lt;see&gt;</codeInline> tags and will replace them
+with links to the appropriate help file content (i.e. methods, properties,
+etc).</listItem>
+
+</list>
+
+	</content>
+</section>
+
+    <relatedTopics>
+    	<link xlink:href="4fd3b2b6-dfad-4513-983b-5e74d2342ff0" />
+    	<link xlink:href="d80219be-54ba-4c5f-8903-83ef29fbaa00" />
+    	<link xlink:href="1863a4d7-61b6-4dde-862d-a358d0cfbd54" />
+    	<link xlink:href="8ea650b6-ab50-4288-a930-baf5b58a4cb0" />
+    	<link xlink:href="3e3772fb-f8d2-49cf-8199-5f61f2d57ce8" />
+    	<link xlink:href="54de66c4-a57a-4bfc-9eb6-bd9e6fb56589" />
+    	<link xlink:href="3dd5fe3b-1bc3-42e5-8900-56165e3f9aed" />
+    	<link xlink:href="a31e4dd4-7466-4c12-b734-60bd50fc91af" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

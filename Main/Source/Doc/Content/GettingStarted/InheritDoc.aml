@@ -1,0 +1,225 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="79897974-ffc9-4b84-91a5-e50c66a0221d" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+      <para>The use of the <codeInline>&lt;inheritdoc /&gt;</codeInline> custom
+XML comments tag can help minimize the effort required to document complex APIs
+by allowing common documentation to be inherited from base types/members.</para>
+
+	  <autoOutline lead="none" />
+    </introduction>
+
+<section address="Usage">
+  <title>Usage and Syntax</title>
+  <content><para>The use of the tag by itself on a member is enough to satisfy
+the compiler so that it will not issue warnings about missing comments on
+public members.  Using it in conjunction with other tags allows you to inherit
+common information such as value and parameter descriptions while overriding
+the inherited documentation for other tags such as <codeInline>&lt;summary&gt;</codeInline>
+and <codeInline>&lt;remarks&gt;</codeInline>.  Documentation can be inherited
+from any member from classes within your own assemblies or from members of
+other assemblies as well as the base .NET Framework class library.  The syntax
+of the tag is as follows:</para>
+
+<code lang="xml" title="Tag Syntax">
+&lt;inheritdoc [cref="link-ref"] [select="filter-expr"] /&gt;
+</code>
+
+<definitionTable>
+    <definedTerm><codeInline>cref="link-ref"</codeInline></definedTerm>
+    <definition>This optional attribute overrides the standard search method to
+allow documentation inheritance from an alternate user-specified member
+indicated by the <codeInline>link-ref</codeInline> value.</definition>
+
+    <definedTerm><codeInline>select="filter-expr"</codeInline></definedTerm>
+    <definition>This optional attribute applies a specified XPath filter
+expression to the inherited comments.  This is useful if you want to limit the
+inherited documentation to a specific subset of tags or just select a particular
+instance or set of comments.  The expression can be any valid XPath query that
+will result in a node set.</definition>
+
+</definitionTable>
+
+	<para>By making use of the <codeInline>cref</codeInline> and
+<codeInline>select</codeInline> attributes either by themselves or together,
+you can fine tune the inheritance of documentation.  You can also nest the tag
+within other tags to further refine the level of inheritance.</para>
+
+  </content>
+</section>
+
+<section address="RootLevel">
+  <title>Root Level Inheritance Rules</title>
+  <content><para>The <codeInline>&lt;inheritdoc /&gt;</codeInline> tag is valid
+at the root level (i.e. the same level as <codeInline>&lt;summary&gt;</codeInline>
+tags) on types, interfaces, virtual members, interface member implementations,
+and constructors.  Its use on any other member type will result in no comments
+being inherited unless a <codeInline>cref</codeInline> attribute is specified.
+Note that the tag is also valid in project summary and namespace summary
+comments as long as a <codeInline>cref</codeInline> attribute is specified to
+indicate from where to inherit the comments.  When specified at the root level
+in a set of XML comments, the documentation search is performed as follows:</para>
+
+<list class="bullet">
+    <listItem>If an explicit <codeInline>cref</codeInline> attribute is
+specified, the documentation from the specified namespace/type/member is
+inherited.  If a <codeInline>cref</codeInline> attribute is not specified,
+the following rules apply.</listItem>
+
+    <listItem><para>For types and interfaces:</para>
+    <list class="bullet">
+        <listItem>Inherit documentation from all base classes working backwards
+up the inheritance chain.</listItem>
+
+        <listItem>Inherit documentation from all interface implementations (if
+any) working through them in the order listed in the reflection information
+file (usually alphabetically).</listItem>
+    </list></listItem>
+
+    <listItem><para>For constructors:</para>
+    <list class="bullet">
+        <listItem>Search backwards up the type inheritance chain for a
+constructor with a matching signature.</listItem>
+
+		<listItem>If a match is found, its documentation is inherited.</listItem>
+    </list></listItem>
+
+    <listItem><para>For virtual members and interface implementations:</para>
+    <list class="bullet">
+        <listItem>If the member is an override, documentation is inherited from
+the member it overrides.</listItem>
+
+        <listItem>If the member is part of an interface, documentation is
+inherited from the interface member being implemented.</listItem>
+    </list></listItem>
+
+    <listItem>Explicit interface implementations will automatically inherit
+documentation from the interface member that they implement if no documentation
+is supplied by the user.  This is done automatically because these members are
+by definition private and the compiler will not issue a warning if the user
+does not supply documentation.  As such, you can omit the
+<codeInline>&lt;inheritdoc /&gt;</codeInline> tag from them unless you want to
+customize the comments.</listItem>
+
+    <listItem>With or without an explicit <codeInline>cref</codeInline>
+attribute, if the inherited documentation itself contains
+<codeInline>&lt;inheritdoc /&gt;</codeInline> tags, they will be expanded
+recursively working backwards up the inheritance chain.</listItem>
+
+    <listItem>In all cases, if a <codeInline>select</codeInline> attribute is
+present, it is used to filter the inherited comments based on the specified
+XPath query.</listItem>
+
+</list>
+
+	<para>When inheriting documentation at the root level, if the following
+tags already exist in the member's comments, the inherited versions are
+ignored:</para>
+
+<list class="bullet">
+    <listItem><codeInline>&lt;example&gt;</codeInline></listItem>
+    <listItem><codeInline>&lt;exclude&gt;</codeInline></listItem>
+    <listItem><codeInline>&lt;filterpriority&gt;</codeInline></listItem>
+    <listItem><codeInline>&lt;preliminary&gt;</codeInline></listItem>
+    <listItem><codeInline>&lt;summary&gt;</codeInline></listItem>
+    <listItem><codeInline>&lt;remarks&gt;</codeInline></listItem>
+    <listItem><codeInline>&lt;returns&gt;</codeInline></listItem>
+    <listItem><codeInline>&lt;threadsafety&gt;</codeInline></listItem>
+    <listItem><codeInline>&lt;value&gt;</codeInline></listItem>
+</list>
+
+	<para>The <codeInline>&lt;overloads&gt;</codeInline> tag will never be
+inherited.  This prevents the doubling of comments on the overloads page.
+However, you can inherit the contents of the <codeInline>&lt;overloads&gt;</codeInline>
+tag using a <codeInline>select</codeInline> attribute with a value of
+"overloads/*".  See below for an example.</para>
+
+	<para>All other tags will be inherited unless they match a tag by the same
+name that contains a <codeInline>cref</codeInline>, <codeInline>href</codeInline>,
+<codeInline>name</codeInline>, <codeInline>vref</codeInline>, or
+<codeInline>xref</codeInline> attribute with an identical value in the member's
+comments.  To merge comments in one of the above tags from one or more sources,
+use one or more nested <codeInline>&lt;inheritdoc /&gt;</codeInline> tags
+within the given tag.  See below for examples.</para>
+
+	<para>Be aware that when <codeInline>&lt;param&gt;</codeInline> tags are
+inherited, the parameter's name in your class's member must match the base
+member's parameter name.  If they do not match, you will not see any inherited
+documentation for the parameter.  Also, if you supply comments for one
+parameter but omit comments for other parameters in order to inherit their
+documentation from a base implementation, the compiler will issue a warning.
+In this case, you can use a <codeInline>#pragma warning</codeInline> directive
+to disable the warning temporarily or add it to the project settings to disable
+the warning globally. See below for an example.</para>
+
+  </content>
+</section>
+
+<section address="Nested">
+  <title>Nested Inheritance Rules</title>
+  <content><para>The <codeInline>&lt;inheritdoc /&gt;</codeInline> tag can
+also be nested within other XML comments tags such as <codeInline>&lt;summary&gt;</codeInline>,
+<codeInline>&lt;remarks&gt;</codeInline>, <codeInline>&lt;example&gt;</codeInline>
+etc. in order to inherit specific parts of the documentation within those
+tags. When nested, the same root level inheritance rules apply and will be
+used to locate the first member with comments from which to inherit
+documentation.  In addition, a filter will be automatically included based on
+the parent tag or tags within which the <codeInline>&lt;inheritdoc /&gt;</codeInline>
+tag is nested.  The <codeInline>cref</codeInline> and <codeInline>select</codeInline>
+attributes can also be applied to further qualify how the documentation is
+inherited.  If you do not want to have the parent tags automatically included
+in the filter, you must supply a <codeInline>select</codeInline> attribute
+with a rooted XPath query that specifies from where to obtain the comments (i.e.
+<codeInline>select="/summary/node()"</codeInline>).</para>
+
+  </content>
+</section>
+
+<section address="IntelliSense">
+  <title>Additional Comment File Sources and IntelliSense</title>
+  <content><para>Additional sources of inherited documentation (i.e. comments
+from third party class libraries) can be added to the <ui>Documentation
+Sources</ui> project node.  This allows you to inherit documentation from base
+class libraries without having to add them as documentated assemblies in your
+project.</para>
+
+	<para>Since the XML comments produced by the compiler are incomplete, it is
+recommended that you make use of the
+<link xlink:href="5d546511-6aec-455a-ba09-9daffb124c6d" /> to produce an
+IntelliSense XML comments file.  It will include the fully expanded set of
+inherited documentation so that Visual Studio can provide useful and accurate
+API help in the code editor and object browser.</para>
+
+  </content>
+</section>
+
+<section address="Examples">
+  <title>Examples</title>
+  <content><para>The following show various examples of using the
+<codeInline>&lt;inheritdoc /&gt;</codeInline> tag.  See the comments within
+each for details about what the examples are showing.</para>
+
+<code source="..\TestDoc\DocumentationInheritance\CustomException.cs"
+    region="Constructor documentation inheritance" outlining="true"
+    lang="cs" title="Constructor Documentation Inheritance" />
+
+<code source="..\TestDoc\DocumentationInheritance\ExplicitImplementation.cs"
+    region="Interface implementation documentation inheritance" outlining="true"
+    lang="cs" title="Interface Implementation Examples" />
+
+<code source="..\TestDoc\DocumentationInheritance\DocumentationInheritance.cs"
+    region="Various documentation inheritance examples" outlining="true"
+    lang="cs" title="Various Other Examples" />
+
+  </content>
+</section>
+
+    <relatedTopics>
+    <link xlink:href="c47d9242-b3a8-4153-aa9e-ae8cb41cefe2" />
+    </relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

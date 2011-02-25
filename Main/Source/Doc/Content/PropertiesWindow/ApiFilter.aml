@@ -1,0 +1,276 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="7df16a60-f718-4b8f-bfa2-88c42906070c" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+		<para>The API Filter editor provides a form used to choose the API
+topics that will appear in the help file. It allows you to include or exclude
+namespaces, types, and members from the documented assemblies as well as those
+from inherited .NET Framework and third-party dependency assemblies.  To access
+it, select the <codeInline>ApiFilter</codeInline> project property and click
+the "..." button that appears to the right of the property.  When selected, the
+following dialog box appears.</para>
+
+		<mediaLink><image xlink:href="ApiFilter" placement="center" /></mediaLink>
+
+		<autoOutline />
+    </introduction>
+
+<section address="APITree">
+  <title>The API Tree</title>
+  <content><para>When first opened, there is a slight delay as a partial build
+of the project is performed in order to generate a list of the API members that
+can appear in the help file.  A tree view containing the API members appears on
+the left side of the dialog.  The tree contains two root nodes. The first,
+<ui>Documented APIs</ui>, contains all members from the documented assemblies
+that can appear in the help file.  This list is based on the current project
+settings.  Members excluded by the other <codeInline>Document*</codeInline>
+project properties in the <legacyBold>Visibility</legacyBold> category will not
+appear here.  The second root node, <ui>Inherited APIs</ui>, lists the base
+classes from which the documented APIs inherit.  This list will include classes
+from the base .NET Framework and other third-party dependency assemblies.
+Information from these classes will appear on the member list pages for each of
+the documented classes.  By unchecking items in this set of classes, you can
+remove unwanted members that may otherwise clutter the member list pages.</para>
+
+	<para>You will notice that some tree nodes are in <legacyItalic>italic</legacyItalic>
+text.  This indicates that the node cannot be unchecked by you.  Hovering the
+mouse over the node will show a tooltip describing why it cannot be unchecked.
+The reasons include:</para>
+
+<list class="bullet">
+    <listItem>It is one of the two root nodes.  These are general containers
+and cannot be unchecked.</listItem>
+
+    <listItem>It is a namespace that contains a set of inherited types from the
+.NET Framework or a dependency assembly.  These namespaces will not be
+represented in the help file.  You may exclude individual inherited classes
+from the namespace as well as inherited class members to control what
+information appears in a documented class's member list page.</listItem>
+
+    <listItem>A namespace is excluded via the
+<link xlink:href="eb7e1bc7-21c5-4453-bbaf-dec8c62c15bd">NamespaceSummaries</link>
+property or an item is excluded because its XML comments include an
+<codeInline>&lt;exclude /&gt;</codeInline> tag.  This information is merged
+automatically with the API filter settings.  To alter these items, you will
+need to use the <codeInline>NamespaceSummaries</codeInline> property or remove
+the tag from the item's XML comments.</listItem>
+
+</list>
+
+	<para>An icon appears next to each node that provides information about
+what it represents and its visibility.  These icons correspond to the search
+options in the upper right side of the dialog.  Public members show the basic
+icons from Namespaces through Fields.  Protected, internal, and private members
+will show a combination of the basic icon plus the appropriate visibility icon.
+The names of the items will appear as they do in the help file.  One difference
+is that parameter information and any overloaded members are not listed.  This
+is because the API filter only goes by name.  Parameter information is not
+used.  As such, if one overloaded member is excluded, all overloaded members
+are excluded.</para>
+
+  </content>
+</section>
+
+<section address="IncludeExclude">
+  <title>Including and Excluding Members</title>
+  <content><para>All checked items will appear in the help file.  To exclude
+an item, simply uncheck it.  Checking or unchecking a namespace or type will
+automatically check or uncheck all of its nested members as well.  On a
+similar note, if you uncheck a majority of the members of a namespace or type,
+you may notice that the parent node is also unchecked and changes color.
+Checking a majority of the members will cause the parent node to also become
+checked and resets the background color.  This behavior is normal and is done
+to produce a more efficient API filter.  The different color helps identify
+namespaces and types in which not all child members are excluded.</para>
+
+  </content>
+</section>
+
+<section address="Search">
+  <title>Searching for Members</title>
+  <content><para>The search options appear in the upper right side of the
+dialog.  To search for an item, simply type some text in the search text box,
+set the filter options as needed, and click the <ui>Find</ui> button.  The
+search results will appear in the list view below the options.  The <ui>Members
+Found</ui> column lists the name as it will appear in the help file.  The
+<ui>Full Name</ui> column lists the item's full name including the namespace
+and type information.  The items are grouped by namespace and type in
+alphabetical order.  Documented API matches are listed first followed by
+matches from the inherited APIs.  The search text can be as simple as a
+fragment of a member name or it can be a regular expression used to find more
+complex patterns.  See <externalLink><linkText>The 30 Minute Regex Tutorial</linkText>
+  <linkUri>http://www.codeproject.com/KB/dotnet/regextutorial.aspx</linkUri>
+  <linkTarget>_blank</linkTarget></externalLink> for a brief introduction to
+regular expressions and how to use them.  See the <externalLink>
+  <linkText>.NET Framework Regular Expressions</linkText>
+  <linkUri>http://msdn2.microsoft.com/en-us/library/hs600312.aspx</linkUri>
+  <linkTarget>_blank</linkTarget></externalLink> topic on MSDN for complete
+details about the various regular expression elements and options.  A few
+simple search examples are show in the table below.</para>
+
+<table>
+  <tableHeader>
+    <row>
+      <entry>Search Expression</entry>
+      <entry>Description</entry>
+    </row>
+  </tableHeader>
+  <row>
+    <entry>project</entry>
+    <entry>Find members containing the text "project".</entry>
+  </row>
+  <row>
+    <entry>^To</entry>
+    <entry>Find members starting with "To".</entry>
+  </row>
+  <row>
+    <entry>\d$</entry>
+    <entry>Find members ending with a digit.</entry>
+  </row>
+  <row>
+    <entry>s{2}$</entry>
+    <entry>Find members ending with two occurrences of the letter "s" (and/or
+uppercase "S" as well if case-insensitive).</entry>
+  </row>
+  <row>
+    <entry>File(Path|Folder)</entry>
+    <entry>Find members containing "File" followed by either "Path" or
+"Folder".</entry>
+  </row>
+  <row>
+    <entry>^FilePath$</entry>
+    <entry>Find members named "FilePath" exactly.</entry>
+  </row>
+  <row>
+    <entry>SandcastleBuilder\.Utils.*Project</entry>
+    <entry>Find any member in a namespace starting with "SandcastleBuilder.Utils"
+containing the text "Project" (when the "Fully-qualified" option is
+enabled).</entry>
+  </row>
+</table>
+
+	<para>In the absence of any regular expression operators, the search will
+return all members containing the specified text as shown in the first example.</para>
+
+  </content>
+</section>
+
+<section address="SearchOpts">
+  <title>The Search Options</title>
+  <content><para>The following options affect how the search is performed and
+the results that it will return.  By default, the searches are
+case-insensitive, only search the member names as displayed in the tree view,
+and include members of all types and visibility in the results.</para>
+
+<table>
+  <tableHeader>
+    <row>
+      <entry>Option</entry>
+      <entry>Description</entry>
+    </row>
+  </tableHeader>
+  <row>
+    <entry>Case-sensitive</entry>
+    <entry>Check this box to make the searches case-sensitive.  By default,
+searches are case-insensitive.</entry>
+  </row>
+  <row>
+    <entry>Fully-qualified</entry>
+    <entry>By default, searches only match text in the member name displayed
+in the tree view.  By checking this option, you can search the fully-qualified
+names instead (full namespace, type, and member name).</entry>
+  </row>
+  <row>
+    <entry>Namespaces</entry>
+    <entry>Include namespaces in the search results.</entry>
+  </row>
+  <row>
+    <entry>Classes</entry>
+    <entry>Include classes in the search results.</entry>
+  </row>
+  <row>
+    <entry>Structures</entry>
+    <entry>Include structures in the search results.</entry>
+  </row>
+  <row>
+    <entry>Interfaces</entry>
+    <entry>Include interfaces in the search results.</entry>
+  </row>
+  <row>
+    <entry>Enumerations</entry>
+    <entry>Include enumerations in the search results.  Note that you can
+search for enumerations by name or for members of the enumerated type.  The
+individual members of the enumerated type are classed as fields and do not
+appear in the tree though.</entry>
+  </row>
+  <row>
+    <entry>Delegates</entry>
+    <entry>Include delegates in the search results.</entry>
+  </row>
+  <row>
+    <entry>Constructors</entry>
+    <entry>Include constructors in the search results.</entry>
+  </row>
+  <row>
+    <entry>Methods</entry>
+    <entry>Include methods in the search results.</entry>
+  </row>
+  <row>
+    <entry>Operators</entry>
+    <entry>Include operators in the search results (i.e. Equality, Inequality,
+GreaterThan, etc.). </entry>
+  </row>
+  <row>
+    <entry>Properties</entry>
+    <entry>Include properties in the search results.</entry>
+  </row>
+  <row>
+    <entry>Events</entry>
+    <entry>Include events in the search results.</entry>
+  </row>
+  <row>
+    <entry>Fields</entry>
+    <entry>Include fields in the search results.  The individual members of
+enumerated types are included in this category as well.</entry>
+  </row>
+  <row>
+    <entry>Public</entry>
+    <entry>Include public members in the search results.</entry>
+  </row>
+  <row>
+    <entry>Protected</entry>
+    <entry>Include protected members in the search results.</entry>
+  </row>
+  <row>
+    <entry>Internal</entry>
+    <entry>Include internal members in the search results.  These will only be
+present if the <codeInline>DocumentInternals</codeInline> project property is enabled.</entry>
+  </row>
+  <row>
+    <entry>Private</entry>
+    <entry>Include private members in the search results.  These will only be
+present if the <codeInline>DocumentPrivates</codeInline> project property is enabled.</entry>
+  </row>
+</table>
+
+	<para>Double-clicking on a member in the search results or clicking the
+<ui>Goto</ui> button below the list will take you to the selected member in the
+tree view.  You can select multiple members in the search results by clicking
+and dragging the mouse or by using the keyboard.  Clicking <ui>Include</ui> or
+<ui>Exclude</ui> will include (check) or exclude (uncheck) all of the currently
+selected members in the search results.  To clear the API filter and set it
+back to its default state, click the <ui>Reset</ui> button.</para>
+
+  </content>
+</section>
+
+    <relatedTopics>
+    <link xlink:href="3c489bd6-598c-4684-aafb-fbe9400864d3" />
+    <link xlink:href="e32086c6-de17-4e54-a746-1ac80bf0c45a" />
+    </relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

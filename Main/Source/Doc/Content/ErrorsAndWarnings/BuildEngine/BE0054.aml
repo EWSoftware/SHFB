@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="1aad4b53-77df-4a0e-b6a9-676c2f753953" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Error BE0054: The conceptual topic '<legacyItalic>[title]</legacyItalic>'
+(ID: <legacyItalic>[id]</legacyItalic>) does not match any file in the project</para>
+    </introduction>
+
+    <section>
+      <title>Cause</title>
+      <content>
+        <para>This error occurs if a conceptual content layout file contains
+a reference to a topic with the given ID and title that does not correspond
+to a conceptual content topic in the project.</para>
+      </content>
+    </section>
+
+    <section>
+      <title>Solution</title>
+      <content>
+        <para>Locate the ID in the conceptual content topic and determine
+whether or not it should have a file associated with it.  If no, use the
+<ui>Clear Topic Association</ui> context menu option to remove the file
+association.  If a file is supposed to be associated with it, make sure that
+a topic file with a <localUri>.aml</localUri> extension exists in the project.
+You can use the <ui>Associate Topic File</ui> context menu option to connect
+the topic file to the content layout entry.</para>
+      </content>
+    </section>
+
+    <relatedTopics>
+    <link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

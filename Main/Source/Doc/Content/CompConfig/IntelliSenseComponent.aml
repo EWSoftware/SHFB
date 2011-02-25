@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="5d546511-6aec-455a-ba09-9daffb124c6d" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+      <para>The IntelliSense Component is used to extract the XML comments into
+files that can be used for IntelliSense.  Only the basic set of tags needed for
+IntelliSense are exported and only for documented API members.  This can
+significantly reduce the size of the XML comments files used for IntelliSense
+and will remove any details about undocumented API members such as private and
+internal members unless they are included in the build.  When used in
+conjunction with the <legacyBold>Show Missing Documentation Component</legacyBold>,
+this component can be used to produce XML comments files for assemblies that do
+not currently have one so that you can fill in comments for them.</para>
+    </introduction>
+
+<section>
+  <content><para>The following is the default configuration for the IntelliSense
+component. It should be inserted into the configuration file before the
+<codeInline>TransformComponent</codeInline>.  If you are using the Show Missing
+Documentation component, you should insert it after that one so that you can
+get information about missing documentation items as well.</para>
+
+<code lang="xml" title="Example Configuration">
+&lt;!-- IntelliSense component configuration.  This must appear
+     before the TransformComponent. --&gt;
+&lt;component type="SandcastleBuilder.Components.IntelliSenseComponent"
+  assembly="{@SHFBFolder}SandcastleBuilder.Components.dll"&gt;
+ &lt;!-- Output options (optional)
+      Attributes:
+         Include Namespaces (false by default)
+         Namespaces filename ("Namespaces" if not specified or empty)
+         Directory (current folder if not specified or empty) --&gt;
+ &lt;output includeNamespaces="false" namespacesFile="Namespaces"
+     folder="{@OutputFolder}" /&gt;
+&lt;/component&gt;
+</code>
+
+	<para>The example given above is taken from the Sandcastle Help File
+Builder's configuration file.  When used with it, the replacement tags
+<codeInline>{@SHFBFolder}</codeInline> and <codeInline>{@OutputFolder}</codeInline>
+are used to insert the help file builder's folder and the project's output
+folder in the file paths.  These are replaced at build time with the
+appropriate values.  If using the component in your own build scripts, replace
+the tags with a relative or absolute path to the component assembly and output
+folder respectively.</para>
+
+	<para>The <codeInline>folder</codeInline> attribute identifies the folder in
+which to place the IntelliSense files.  One file is created for each assembly.
+If set to true, the <codeInline>includeNamespaces</codeInline> option will
+cause the build component to output project summary and namespace summary
+comments to a file identified by the <codeInline>namespacesFile</codeInline>
+attribute in the given output folder.  If specified, you should enter only the
+name and omit any file path and extension.  The namespaces file is not used for
+IntelliSense but can be added to one or more help file builder projects as a
+common documentation source to share project and namespace summary information
+betwen projects.</para>
+
+  </content>
+</section>
+
+    <relatedTopics>
+    <link xlink:href="8dcbb69b-7a1a-4049-8e6b-2bf344efbbc9" />
+    </relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

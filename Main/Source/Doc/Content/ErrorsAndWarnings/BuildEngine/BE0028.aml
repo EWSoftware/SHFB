@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="25036a28-bd82-4032-8108-ac614423a2cf" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Error BE0028: [Plug-in loading error(s)]</para>
+    </introduction>
+
+    <section>
+      <title>Cause</title>
+      <content>
+        <para>This is a generic catch-all error that occurs when the build
+process attempts to load plug-ins for use in the build and one or more of them
+fails to initialize correctly.</para>
+      </content>
+    </section>
+
+    <section>
+      <title>Solution</title>
+      <content>
+        <para>Since this is a generic catch-all error, you will need to refer
+to the text of the error message in order to determine the exact cause of the
+problem.  Some common issues include:</para>
+
+<list class="bullet">
+  <listItem>The plug-in was added to the project but was not configured and the
+default configuration is not valid for use in a build.</listItem>
+
+  <listItem>The assembly for a plug-in referenced in the project does not
+exist.  Place the assembly in the custom plug-ins folder (see the
+<link xlink:href="a24489fb-45d6-46f4-9eaa-9a9c4e0919b2#PlugIns" />
+topic).</listItem>
+
+  <listItem>The plug-in assembly is compiled against an earlier version of
+the help file builder and cannot be loaded.  Obtain a newer version of the
+plug-in assembly.</listItem>
+
+</list>
+
+		<para>If you are unable to resolve the issue and the plug-in is one
+of the <link xlink:href="e031b14e-42f0-47e1-af4c-9fed2b88cbc7">standard
+ones</link> supplied with the help file builder, post a message in the
+<token>SHFB</token> Discussion group asking for help.  For all third-party
+plug-ins, contact the author of the plug-in for assistance.</para>
+
+      </content>
+    </section>
+
+    <relatedTopics>
+    <link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

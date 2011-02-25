@@ -1,0 +1,904 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F5362C80-44E3-47E4-AAFD-49050B22B550}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SandcastleBuilder.Gui</RootNamespace>
+    <AssemblyName>SandcastleBuilderGUI</AssemblyName>
+    <ApplicationIcon>Images\SandcastleBuilder.ico</ApplicationIcon>
+    <StartupObject>SandcastleBuilder.Gui.StartUp</StartupObject>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>SandcastleBuilderGui.snk</AssemblyOriginatorKeyFile>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\SandcastleBuilderGUI.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\SandcastleBuilderGUI.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'ReleaseNoDoc|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>bin\Release\SandcastleBuilderGUI.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ICSharpCode.TextEditor, Version=3.0.0.2970, Culture=neutral, PublicKeyToken=4d61825e8dd49f1a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ReferenceAssemblies\ICSharpCode.TextEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Build.Engine" />
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=2.2.3199.27942, Culture=neutral, PublicKeyToken=7c3444e32642107f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ReferenceAssemblies\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\HelpLibraryManagerLauncher\HelpLibraryManager.cs">
+      <Link>HelpLibraryManager.cs</Link>
+    </Compile>
+    <Compile Include="..\HelpLibraryManagerLauncher\HelpLibraryManagerException.cs">
+      <Link>HelpLibraryManagerException.cs</Link>
+    </Compile>
+    <Compile Include="..\SandcastleBuilderUtils\Properties\AssemblyInfoShared.cs">
+      <Link>Properties\AssemblyInfoShared.cs</Link>
+    </Compile>
+    <Compile Include="AboutDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BeforeBuildAction.cs" />
+    <Compile Include="ContentEditors\BaseContentEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ContentEditors\EntityReferenceWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ContentEditors\EntityReferenceWindow.Designer.cs">
+      <DependentUpon>EntityReferenceWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ContentEditors\ContentLayoutWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ContentEditors\ContentLayoutWindow.Designer.cs">
+      <DependentUpon>ContentLayoutWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ContentEditors\ContentEditorControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ContentEditors\EditorActions.cs" />
+    <Compile Include="ContentEditors\FileTree.cs" />
+    <Compile Include="ContentEditors\FindAndReplaceWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ContentEditors\FindAndReplaceWindow.Designer.cs">
+      <DependentUpon>FindAndReplaceWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ContentEditors\GotoLineDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ContentEditors\GotoLineDlg.Designer.cs">
+      <DependentUpon>GotoLineDlg.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ContentEditors\NodeData.cs" />
+    <Compile Include="ContentEditors\NodeIcon.cs" />
+    <Compile Include="ContentEditors\OutputWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ContentEditors\OutputWindow.Designer.cs">
+      <DependentUpon>OutputWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ContentEditors\PreviewTopicWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ContentEditors\PreviewTopicWindow.Designer.cs">
+      <DependentUpon>PreviewTopicWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ContentEditors\ProjectExplorerWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ContentEditors\ProjectExplorerWindow.Designer.cs">
+      <DependentUpon>ProjectExplorerWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ContentEditors\ProjectPropertiesWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ContentEditors\ProjectPropertiesWindow.Designer.cs">
+      <DependentUpon>ProjectPropertiesWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ContentEditors\ResourceItemEditorWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ContentEditors\ResourceItemEditorWindow.Designer.cs">
+      <DependentUpon>ResourceItemEditorWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ContentEditors\SelectGacEntriesDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ContentEditors\SelectGacEntriesDlg.Designer.cs">
+      <DependentUpon>SelectGacEntriesDlg.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ContentEditors\SiteMapEditorWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ContentEditors\SiteMapEditorWindow.Designer.cs">
+      <DependentUpon>SiteMapEditorWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ContentEditors\TokenEditorWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ContentEditors\TokenEditorWindow.Designer.cs">
+      <DependentUpon>TokenEditorWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ContentEditors\TopicEditorWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ContentEditors\TopicEditorWindow.Designer.cs">
+      <DependentUpon>TopicEditorWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LaunchMSHelpViewerDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LaunchMSHelpViewerDlg.Designer.cs">
+      <DependentUpon>LaunchMSHelpViewerDlg.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NewFromOtherFormatDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NewFromOtherFormatDlg.Designer.cs">
+      <DependentUpon>NewFromOtherFormatDlg.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PromptToSaveDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PromptToSaveDlg.Designer.cs">
+      <DependentUpon>PromptToSaveDlg.cs</DependentUpon>
+    </Compile>
+    <Compile Include="StartUp.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="AboutDlg.resx">
+      <DependentUpon>AboutDlg.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ContentEditors\EntityReferenceWindow.resx">
+      <DependentUpon>EntityReferenceWindow.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ContentEditors\ContentLayoutWindow.resx">
+      <DependentUpon>ContentLayoutWindow.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ContentEditors\FindAndReplaceWindow.resx">
+      <DependentUpon>FindAndReplaceWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ContentEditors\GotoLineDlg.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>GotoLineDlg.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ContentEditors\OutputWindow.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>OutputWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ContentEditors\PreviewTopicWindow.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>PreviewTopicWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ContentEditors\ProjectExplorerWindow.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ProjectExplorerWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ContentEditors\ProjectPropertiesWindow.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ProjectPropertiesWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ContentEditors\ResourceItemEditorWindow.resx">
+      <DependentUpon>ResourceItemEditorWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ContentEditors\SelectGacEntriesDlg.resx">
+      <DependentUpon>SelectGacEntriesDlg.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ContentEditors\SiteMapEditorWindow.resx">
+      <DependentUpon>SiteMapEditorWindow.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ContentEditors\TokenEditorWindow.resx">
+      <DependentUpon>TokenEditorWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ContentEditors\TopicEditorWindow.resx">
+      <DependentUpon>TopicEditorWindow.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LaunchMSHelpViewerDlg.resx">
+      <DependentUpon>LaunchMSHelpViewerDlg.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NewFromOtherFormatDlg.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>NewFromOtherFormatDlg.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PromptToSaveDlg.resx">
+      <DependentUpon>PromptToSaveDlg.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserPreferencesDlg.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>UserPreferencesDlg.cs</DependentUpon>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="UnsafeNativeMethods.cs" />
+    <Compile Include="UserPreferencesDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserPreferencesDlg.Designer.cs">
+      <DependentUpon>UserPreferencesDlg.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WindowPlacement.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\SandcastleBuilder.ico" />
+    <None Include="SandcastleBuilderGui.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SandcastleBuilderUtils\SandcastleBuilderUtils.csproj">
+      <Project>{330DADF7-3AB1-49A0-B3C6-A69D2C4F06A6}</Project>
+      <Name>SandcastleBuilderUtils</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="Images\About.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Sandcastle.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\BuildProject.bmp" />
+    <None Include="Images\NewProject.bmp" />
+    <None Include="Images\OpenProject.bmp" />
+    <None Include="Images\SaveProject.bmp" />
+    <None Include="Images\ViewHelpFile.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\SelectAssembly.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\CancelBuild.bmp" />
+    <None Include="Images\ViewLog.bmp" />
+    <None Include="Images\ViewLog.ico" />
+    <None Include="Images\Help.ico" />
+    <None Include="Images\FAQ.bmp" />
+    <None Include="Images\SpinningWheel.gif" />
+    <None Include="Images\Content.ico" />
+    <None Include="Images\InsertApiBefore.bmp" />
+    <None Include="Images\AddImage.png" />
+    <None Include="Images\AddItem.bmp" />
+    <None Include="Images\AddRootItem.bmp" />
+    <None Include="Images\AddToken.png" />
+    <None Include="Images\CodeFile.bmp" />
+    <None Include="Images\Copy.bmp" />
+    <None Include="Images\Cut.bmp" />
+    <None Include="Images\DefaultTopic.bmp" />
+    <None Include="Images\Delete.bmp" />
+    <None Include="Images\MoveDown.bmp" />
+    <None Include="Images\MoveUp.bmp" />
+    <None Include="Images\PageEdit.png" />
+    <None Include="Images\Paste.bmp" />
+    <None Include="Images\SaveAll.bmp" />
+    <None Include="Images\SandcastleSmall.png" />
+    <None Include="Images\Table.bmp" />
+    <None Include="Images\Bold.bmp" />
+    <None Include="Images\ExternalLink.bmp" />
+    <None Include="Images\Italic.bmp" />
+    <None Include="Images\List_Bullets.bmp" />
+    <None Include="Images\List_Numbered.bmp" />
+    <None Include="Images\LocalLink.bmp" />
+    <None Include="Images\Underline.bmp" />
+    <None Include="Images\Redo.png" />
+    <None Include="Images\Undo.png" />
+    <None Include="Images\HtmlEncode.bmp" />
+    <None Include="Images\TokenFile.ico" />
+    <None Include="Images\ResourceItemFile.ico" />
+    <Content Include="Images\DefaultApiBefore.bmp" />
+    <Content Include="Images\DefaultApiAsChild.bmp" />
+    <Content Include="Images\DefaultApiAfter.bmp" />
+    <Content Include="Images\InsertApiAfter.bmp" />
+    <Content Include="Images\InsertApiAsChild.bmp" />
+    <Content Include="Images\RootContentContainer.bmp" />
+    <Content Include="ItemTemplates\Site Map.sitemap">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ItemTemplates\Content Layout.content">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ItemTemplates\Code Snippets.snippets">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ItemTemplates\Token File.tokens">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ItemTemplates\Resource Item File.items">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Resources\Properties.bmp" />
+    <None Include="Resources\Print.bmp" />
+    <None Include="Images\AddChildItem.bmp" />
+    <None Include="Images\Properties.ico" />
+    <None Include="Images\ImageFile.bmp" />
+    <None Include="Images\SnippetsFile.bmp" />
+    <None Include="Images\TokenFile.bmp" />
+    <None Include="Images\Html.bmp" />
+    <None Include="Images\SiteMap.png" />
+    <None Include="Images\Xml.bmp" />
+    <None Include="Images\Xsl.bmp" />
+    <None Include="Images\DocSource.png" />
+    <None Include="Images\DocSourcesFolder.bmp" />
+    <None Include="Images\Document.bmp" />
+    <None Include="Images\Folder.bmp" />
+    <None Include="Images\ReferenceItem.bmp" />
+    <None Include="Images\ReferencesFolder.bmp" />
+    <None Include="Resources\Refresh.bmp" />
+    <None Include="Images\NormalTopic.bmp" />
+    <Content Include="ItemTemplates\Bitmap.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ItemTemplates\Html Page.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ItemTemplates\Script File.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ItemTemplates\Style Sheet.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ItemTemplates\Text File.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ItemTemplates\XML File.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ItemTemplates\XSLT File.xslt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Resources\Explorer.bmp" />
+    <None Include="Resources\TopicPreview.bmp" />
+    <None Include="Resources\Filter2.bmp" />
+    <Content Include="Templates\InstallMSHC.bat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\RemoveMSHC.bat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\HelpContentSetup.msha">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\PlaceHolderNode.aml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\BuildHelpViewerFile.proj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\Build2xHelpFile.proj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\Build1xHelpFile.proj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\Generate2xTOC.proj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\ExtractHtmlInfo.proj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\GenerateIntermediateTOC.proj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\BuildConceptualTopics.proj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\BuildReferenceTopics.proj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\HelpFileBuilderTokens.tokens">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\TransformManifest.proj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\GenerateInheritedDocs.proj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\GenerateRefInfo.proj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ConceptualTemplates\Conceptual.aml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ConceptualTemplates\Error Message.aml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ConceptualTemplates\Glossary.aml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ConceptualTemplates\How To.aml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ConceptualTemplates\Orientation.aml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ConceptualTemplates\Reference With Syntax.aml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ConceptualTemplates\Reference Without Syntax.aml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ConceptualTemplates\Reference.aml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ConceptualTemplates\Sample.aml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ConceptualTemplates\SDK Technology Architecture.aml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ConceptualTemplates\SDK Technology Code Directory.aml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ConceptualTemplates\SDK Technology Orientation.aml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ConceptualTemplates\SDK Technology Scenarios.aml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ConceptualTemplates\SDK Technology Summary.aml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ConceptualTemplates\Troubleshooting.aml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ConceptualTemplates\User Interface Reference.aml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ConceptualTemplates\Walkthrough.aml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ConceptualTemplates\Whitepaper.aml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ConceptualTemplates\XML Reference.aml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\conceptual.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\FixScriptSharp.xsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\Help2x_H2Reg.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SharedContent\StopWordList_de-DE.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SharedContent\StopWordList_en-US.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SharedContent\StopWordList_es-ES.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SharedContent\StopWordList_fr-FR.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SharedContent\StopWordList_it-IT.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SharedContent\StopWordList_ja-JP.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SharedContent\StopWordList_ko-KR.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SharedContent\StopWordList_pt-BR.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SharedContent\StopWordList_ru-RU.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SharedContent\StopWordList_zh-CHS.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SharedContent\StopWordList_zh-CN.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\GenerateInheritedDocs.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\Help2x_NamedURLIndex.HxK">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SharedContent\HanaBuilderContent_de-DE.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SharedContent\HanaBuilderContent_en-US.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SharedContent\HanaBuilderContent_es-ES.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SharedContent\HanaBuilderContent_fr-FR.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SharedContent\HanaBuilderContent_it-IT.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SharedContent\HanaBuilderContent_ja-JP.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SharedContent\HanaBuilderContent_ko-KR.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SharedContent\HanaBuilderContent_pt-BR.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SharedContent\HanaBuilderContent_ru-RU.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SharedContent\HanaBuilderContent_zh-CHS.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SharedContent\HanaBuilderContent_zh-CN.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SharedContent\PrototypeBuilderContent_de-DE.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SharedContent\PrototypeBuilderContent_en-US.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SharedContent\PrototypeBuilderContent_es-ES.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SharedContent\PrototypeBuilderContent_fr-FR.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SharedContent\PrototypeBuilderContent_it-IT.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SharedContent\PrototypeBuilderContent_ja-JP.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SharedContent\PrototypeBuilderContent_ko-KR.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SharedContent\PrototypeBuilderContent_pt-BR.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SharedContent\PrototypeBuilderContent_ru-RU.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SharedContent\PrototypeBuilderContent_zh-CHS.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SharedContent\PrototypeBuilderContent_zh-CN.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SharedContent\SharedBuilderContent_ja-JP.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SharedContent\VS2005BuilderContent_de-DE.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SharedContent\VS2005BuilderContent_en-US.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SharedContent\VS2005BuilderContent_es-ES.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SharedContent\VS2005BuilderContent_fr-FR.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SharedContent\VS2005BuilderContent_it-IT.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SharedContent\VS2005BuilderContent_ja-JP.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SharedContent\VS2005BuilderContent_ko-KR.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SharedContent\VS2005BuilderContent_pt-BR.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SharedContent\VS2005BuilderContent_ru-RU.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SharedContent\VS2005BuilderContent_zh-CHS.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SharedContent\VS2005BuilderContent_zh-CN.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\CodeColorizer\ColorizerLibrary\Template\CopyCode_h.gif">
+      <Link>Colorizer\CopyCode_h.gif</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SharedContent\SharedBuilderContent_de-DE.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SharedContent\SharedBuilderContent_en-US.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SharedContent\SharedBuilderContent_es-ES.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SharedContent\SharedBuilderContent_fr-FR.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SharedContent\SharedBuilderContent_it-IT.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SharedContent\SharedBuilderContent_ko-KR.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SharedContent\SharedBuilderContent_pt-BR.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SharedContent\SharedBuilderContent_ru-RU.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SharedContent\SharedBuilderContent_zh-CHS.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SharedContent\SharedBuilderContent_zh-CN.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\Hana.xsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\Prototype.xsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\TransformBuildLog.xsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\VS2005.xsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Web\CloseSearch.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Web\CollapseAll.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Web\ExpandAll.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Web\favicon.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Web\Index.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Web\LoadIndexKeywords.aspx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="Web\Search.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Web\SearchHelp.aspx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
+    <Content Include="Web\Web.Config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\Prototype.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\VS2005.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\Hana.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\CodeColorizer\ColorizerLibrary\Template\CopyCode.gif">
+      <Link>Colorizer\CopyCode.gif</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\CodeColorizer\ColorizerLibrary\Template\highlight.css">
+      <Link>Colorizer\highlight.css</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\CodeColorizer\ColorizerLibrary\Template\highlight.js">
+      <Link>Colorizer\highlight.js</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\CodeColorizer\ColorizerLibrary\Template\highlight.xml">
+      <Link>Colorizer\highlight.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\CodeColorizer\ColorizerLibrary\Template\highlight.xsl">
+      <Link>Colorizer\highlight.xsl</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\MRefBuilder.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\Help2x.HxC">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\Help2x.HxF">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\Help2x_A.HxK">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\Help2x_B.HxK">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\Help2x_F.HxK">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\Help2x_K.HxK">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\Help2x_S.HxK">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\Help1x.hhp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Web\Collapsed.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Web\Expanded.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Web\FillNode.aspx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Web\Index.aspx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Web\Index.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Web\Item.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Web\Splitter.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Web\SyncTOC.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Web\TOC.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Web\TOC.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PostBuildEvent>IF "$(ConfigurationName)"=="Debug" Goto Exit
+IF "$(ConfigurationName)"=="ReleaseNoDoc" Goto Exit
+
+SET SHFBROOT=$(SolutionDir)SandcastleBuilderGUI\Bin\Release
+
+ECHO Building SHFB help files via MSBuild
+"$(SystemRoot)\Microsoft.NET\Framework\v3.5\MSBuild.exe" /p:CleanIntermediates=True /p:Configuration=Release "$(SolutionDir)Doc\SandcastleBuilder.shfbproj"
+"$(SystemRoot)\Microsoft.NET\Framework\v3.5\MSBuild.exe" /p:CleanIntermediates=True /p:Configuration=Release "$(SolutionDir)Doc\BuildComponents.shfbproj"
+
+:Exit
+</PostBuildEvent>
+  </PropertyGroup>
+</Project>

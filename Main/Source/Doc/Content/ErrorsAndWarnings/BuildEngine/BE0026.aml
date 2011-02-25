@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="e91ccee4-4e65-4e41-9d15-88cc327b370b" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Error BE0026: Unable to determine default topic in
+'<localUri>[tocFile]</localUri>'.  You may need to mark one as the default
+topic manually.</para>
+    </introduction>
+
+    <section>
+      <title>Cause</title>
+      <content>
+        <para>This error occurs when the build process is updating the table of
+contents with entries for additional and conceptual content and it is unable to
+determine the default topic be extracting it from the indicated table of
+contents file.  This usually occurs when building a help file that does not
+contain any API reference content.</para>
+      </content>
+    </section>
+
+    <section>
+      <title>Solution</title>
+      <content>
+        <para>Add a site map file (HTML additional content) or a content layout
+file (conceptual content) to the project and use it to arrange the additional
+content/conceptual content items.  In addition, mark one of the entries as
+the default topic within the editor for the layout file.</para>
+      </content>
+    </section>
+
+    <relatedTopics>
+    <link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

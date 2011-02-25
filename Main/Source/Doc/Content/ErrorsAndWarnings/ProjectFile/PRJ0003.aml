@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="2c0b4d20-b8a3-40ce-b3ac-fff52918b454" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Error PRJ0003: Error reading project from '<localUri>[file]</localUri>':
+<legacyItalic>[reason]</legacyItalic></para>
+    </introduction>
+
+    <section>
+      <title>Cause</title>
+      <content>
+        <para>This is a generic catch-all error that occurs when there is a
+problem attempting to load a help file builder project.  If you have been
+modifying the project file by hand, it could indicate that you have introduced
+an error into the help file properties.</para>
+      </content>
+    </section>
+
+    <section>
+      <title>Solution</title>
+      <content>
+      	<para>Since this is a catch-all error, refer to the reason description
+for information about the cause of the error and how you might be able to
+correct it (i.e. file not found, permission issues, a corrupt file, etc.).</para>
+        <para>If you have been modifying the help file project by hand rather
+than by using the help file builder standalone GUI, back out your changes and
+try to reload the project.  If you have not made any such modifications, open
+a work item in the <token>SHFB</token> project at CodePlex containing the
+details from the error message.  Attach the affected project as an example.</para>
+      </content>
+    </section>
+
+    <relatedTopics>
+    <link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

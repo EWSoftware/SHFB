@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="842594b8-d1ba-4baa-9082-de991e376d4f" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Warning BHT0001: Unable to get executing project:
+<legacyItalic>[reason]</legacyItalic>.  The specified project will be loaded
+but command line property overrides will be ignored.</para>
+    </introduction>
+
+    <section>
+      <title>Cause</title>
+      <content>
+        <para>The <codeInline>BuildHelp</codeInline> build task was unable to
+obtain a reference to the executing project for the reason indicated.</para>
+      </content>
+    </section>
+
+    <section>
+      <title>Solution</title>
+      <content>
+        <para>This most likely indicates an internal error in the build
+process.  Open a work item in the <token>SHFB</token> project at CodePlex
+containing the details from the error message and attach a small example
+project with any related files that can be used to duplicate the problem.</para>
+
+      </content>
+    </section>
+
+    <relatedTopics>
+    <link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

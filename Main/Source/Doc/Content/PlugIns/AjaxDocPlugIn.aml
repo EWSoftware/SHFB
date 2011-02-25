@@ -1,0 +1,139 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="99773472-ff05-4eba-8194-b36a0536280e" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+      <para>This plug-in is used to generate XML comments and reflection
+information for Atlas client script libraries using <externalLink>
+<linkText>AjaxDoc</linkText><linkUri>http://AjaxDoc.codeplex.com</linkUri>
+<linkTarget>_blank</linkTarget></externalLink> that can then be used by the
+Sandcastle Help File Builder to produce a help file.</para>
+
+	<autoOutline />
+    </introduction>
+
+<section address="Config">
+  <title>Configuration Options</title>
+  <content><para>This plug-in will require configuration before it can be used.
+The configuration options are as follows.</para>
+
+<table>
+  <tableHeader>
+    <row>
+      <entry>Configuration Option</entry>
+      <entry>Description</entry>
+    </row>
+  </tableHeader>
+  <row>
+    <entry>AjaxDoc URL</entry>
+    <entry>Enter the URL used to run AjaxDoc to produce the XML comments and
+reflection information file.  This is also the base URL used to download the
+generated files.</entry>
+  </row>
+  <row>
+    <entry>Project Name</entry>
+    <entry>Enter the base name of the project that will produce the XML
+comments file and reflection information file.  Do not include the file
+extension.  This name is used as the project to run and for the names of the
+resulting files that are downloaded.</entry>
+  </row>
+  <row>
+    <entry>Regenerate the output files before downloading them</entry>
+    <entry>If this box is checked, the plug-in will invoke AjaxDoc at the
+supplied URL to generate up to date copies of the output files.  If
+unchecked, it will download the existing copies of the files whether or not
+they are up to date.</entry>
+  </row>
+  <row>
+    <entry>Use default credentials</entry>
+    <entry>If this checkbox is checked, the current user's credentials at
+build time will be used to download the resulting files from the given URL.
+If running this on a build server and/or authentication is required, uncheck
+this box and supply a user name and password.</entry>
+  </row>
+  <row>
+    <entry>User Name and Password</entry>
+    <entry><para>Use these to enter specific credentials for downloading the
+resulting files.</para>
+
+<alert class="security">
+  <para>The password is stored in the project file in plain text.</para>
+</alert>
+</entry>
+  </row>
+  <row>
+    <entry>Use Proxy Server</entry>
+    <entry>If the download of the files fails and you are behind a proxy server,
+you may need to supply proxy server credentials.  Uncheck this box to enter
+the proxy server name and credentials.</entry>
+  </row>
+  <row>
+    <entry>Proxy Server</entry>
+    <entry>Enter the name of the proxy server to use.</entry>
+  </row>
+  <row>
+    <entry>Use default credentials (Proxy server)</entry>
+    <entry>If checked, default credentials for the current user will be passed
+to the proxy server at build time.  If specific credentials are needed, uncheck
+this box and enter a user name and password.</entry>
+  </row>
+  <row>
+    <entry>User Name and Password (Proxy server)</entry>
+    <entry><para>Use these to enter specific credentials for the proxy server.</para>
+
+<alert class="security">
+  <para>The password is stored in the project file in plain text.</para>
+</alert></entry>
+  </row>
+</table>
+
+	<para>When using this plug-in, documentation sources and references can be
+left out as the plug-in will pull the necessary comments file from AjaxDoc.
+However, you can add additional XML comments files as documentation sources so
+that you can add comments for the namespaces in the AjaxDoc content or other
+additional information for the reference topics if you prefer to keep them
+separate from the project.</para>
+
+	<para>Select the <ui>JavaScript</ui> option in the
+<codeInline>SyntaxFilters</codeInline> project property so that the
+declarations in the syntax section of each API topic are rendered in
+JavaScript.</para>
+
+  </content>
+</section>
+
+<section address="ApiFilter">
+  <title>The API Filter</title>
+  <content><para>The AjaxDoc plug-in supports the API filter.  It can be used
+to remove unwanted namespaces, types, and/or members from the help file.  See
+the <link xlink:href="7df16a60-f718-4b8f-bfa2-88c42906070c" /> topic for details
+on how it can be used.  Be aware that since the API filter is generated prior
+to the XML comments file being downloaded, any members with
+<codeInline>&lt;exclude /&gt;</codeInline> tags will not be removed unless you
+have opened the API filter editor and let it create a filter that includes
+them.</para>
+
+  </content>
+</section>
+
+<section address="AjaxDoc11">
+  <title>Note for AjaxDoc 1.1 or Earlier Users</title>
+  <content><para>Be aware that earlier versions of AjaxDoc have a couple of
+bugs that cause the JScript syntax generator to crash and nested namespaces to
+appear at both the root level and below their parent namespaces in the table of
+contents.  Upgrade to the latest version (<externalLink><linkText>AjaxDoc 1.2
+or later</linkText><linkUri>http://ajaxdoc.codeplex.com</linkUri>
+<linkTarget>_blank</linkTarget></externalLink>) which contains the
+necessary fixes for these issues.</para>
+
+  </content>
+</section>
+
+    <relatedTopics>
+    <link xlink:href="e031b14e-42f0-47e1-af4c-9fed2b88cbc7" />
+    </relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="cd68ef02-3493-4af6-96de-1957b0aaf858" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>This plug-in, based on code submitted by Eyal Post, is used to
+filter out unwanted information from the reflection information file using
+XPath queries.  While the project's <codeInline>ApiFilter</codeInline> property
+and the other properties in the
+<link xlink:href="3c489bd6-598c-4684-aafb-fbe9400864d3">Visibility</link>
+category can provide the most efficient way to remove unwanted class members,
+they may not always meet everyone's needs.  This plug-in allows you to add a
+set of XPath queries that will be used to search the reflection information
+file and remove elements that match them.</para>
+    </introduction>
+    
+<section>
+  <content>
+    <para>The list box at the top of the configuration dialog box shows the
+list of expressions to use.  Click the <ui>Add</ui> button to add a new
+expression.  The default expression on new entries is an example that removes
+all constructors.  Use the text box at the bottom of the form to change it to
+an expression for your project.  As you move from one entry to another, the
+expression is displayed in the text box for editing.  Click the <ui>Delete</ui>
+button to delete an expression from the list.</para>
+
+	<para>As an example, suppose you wanted to remove all constructors from the
+help file without having to maintain the API filter each time you added new
+classes to the project.  This could be accomplished by adding the following
+expressions to the plug-in's configuration:</para>
+
+<list class="bullet">
+  <listItem>/reflection/apis/api[contains(@id,"#ctor")]</listItem>
+  <listItem>/reflection/apis/api/elements/element[contains(@api,"#ctor")]</listItem>
+  <listItem>/reflection/apis/api[contains(@id,"#cctor")]</listItem>
+  <listItem>/reflection/apis/api/elements/element[contains(@api,"#cctor")]</listItem>
+</list>
+
+	<para>The first two entries remove the instance constructor entries as well
+as the elements that appear on the member list pages.  The last two remove the
+corresponding static constructor entries.  In the following example, the
+inherited <codeInline>Object</codeInline> methods are removed from all sealed
+classes.</para>
+
+<list class="bullet">
+  <listItem>/reflection/apis/api[apidata/@subgroup="class" and
+typedata/@sealed="true"]/elements/element[@api="M:System.Object.Equals(System.Object)"]</listItem>
+  <listItem>/reflection/apis/api[apidata/@subgroup="class" and
+typedata/@sealed="true"]/elements/element[@api="M:System.Object.GetHashCode"]</listItem>
+  <listItem>/reflection/apis/api[apidata/@subgroup="class" and
+typedata/@sealed="true"]/elements/element[@api="M:System.Object.GetType"]</listItem>
+  <listItem>/reflection/apis/api[apidata/@subgroup="class" and
+typedata/@sealed="true"]/elements/element[@api="M:System.Object.Finalize"]</listItem>
+  <listItem>/reflection/apis/api[apidata/@subgroup="class" and
+typedata/@sealed="true"]/elements/element[@api="M:System.Object.MemberwiseClone"]</listItem>
+  <listItem>/reflection/apis/api[apidata/@subgroup="class" and
+typedata/@sealed="true"]/elements/element[@api="M:System.Object.ToString"]</listItem>
+</list>
+
+<alert class="tip">
+  <para>Set the project's <codeInline>CleanIntermediates</codeInline> property
+to false and perform a build to obtain a copy of the reflection information
+file.  It can be found in the working folder after the build and will help you
+determine how to construct the necessary XPath expressions.</para>
+</alert>
+
+  </content>
+</section>
+
+    <relatedTopics>
+	  <link xlink:href="e031b14e-42f0-47e1-af4c-9fed2b88cbc7" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

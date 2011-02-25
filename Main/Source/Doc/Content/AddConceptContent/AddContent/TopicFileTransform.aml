@@ -1,0 +1,209 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="a31e4dd4-7466-4c12-b734-60bd50fc91af" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+      <para>This topic describes the topic file transformation option.</para>
+
+<alert class="warning">
+	<legacyBold>Deprecated</legacyBold>
+	<para>The additional content model of adding extra content to a help file
+has been deprecated.  While it will continue to be supported and will not be
+removed, it will not receive any more features or updates.  Going forward,
+<link xlink:href="3d4edd2d-7883-4508-b9d2-bd7b4d848b0d">conceptual content</link>
+is the preferred method of adding non-reference content to the help file.  The
+additional content feature can still be used to
+<link xlink:href="77d2d693-db84-4ae3-a84c-e33c71f92e9a">override stock content</link>
+and add supporting files to the help file.</para>
+</alert>
+
+    </introduction>
+
+<section>
+  <title>Topic File Transformation</title>
+  <content><para>When copying additional content files, if a file with a
+<localUri>.topic</localUri> extension is encountered, an attempt is made to
+transform it into a <localUri>.html</localUri> file by running it through an
+XSL transformation.  This allows you to apply a common look and feel to the
+additional content topics that matches the API topics.  The build process tries
+to locate a file item in the project with a <codeInline>BuildAction</codeInline>
+of <codeInline>TopicTransform</codeInline> and will use it if found.  If left
+blank, a default transformation is used that is based on the currently selected
+presentation style.  It transforms the topics to give them the same style of
+header and footer as the API topics.  Support is also included for adding a
+logo to the page header.  Additional features such as the language filter are
+not supported.  If you decide that you need to add additional features or
+replace the transformation, you can do so by creating a file and adding it to
+the project with a <codeInline>BuildAction</codeInline> of
+<codeInline>TopicTransform</codeInline>.</para>
+
+  </content>
+</section>
+
+<section>
+  <title>The Default Transformations</title>
+  <content><para>Three default transformations (<localUri>Hana.xsl</localUri>,
+<localUri>Prototype.xsl</localUri>, and <localUri>VS2005.xsl</localUri>) are
+supplied.  The <localUri>.topic</localUri> files are XML files that contain the
+following elements.</para>
+
+<table>
+  <tableHeader>
+    <row>
+      <entry>Element</entry>
+      <entry>Description</entry>
+    </row>
+  </tableHeader>
+  <row>
+    <entry>topic</entry>
+    <entry>This is the root element and there should only be one in the file.
+All other elements are children of this one.</entry>
+  </row>
+  <row>
+    <entry>title</entry>
+    <entry>This element defines the title for the topic.</entry>
+  </row>
+  <row>
+    <entry>headerTitle</entry>
+    <entry>This is an optional element that defines the text that appears
+above the topic title.  If not defined, the help file's title is used as
+defined by the project's <codeInline>HelpTitle</codeInline> property.</entry>
+  </row>
+  <row>
+    <entry>logoFile</entry>
+    <entry>This element can be used to add an optional logo to the topic.  If
+you do not want a logo, you can omit this element.  The <codeInline>filename</codeInline>
+attribute defines the path to the logo file.  This path is the actual path
+relative to the root of the generated help content.  The file itself should be
+defined as additional content so that it is copied to the appropriate
+location.  For topics in folders, you do not need to add relative path
+indicators (i.e. ../) as a variable is passed to the transform that will set
+the appropriate path to the root automatically (see below).  The
+<codeInline>height</codeInline> and <codeInline>width</codeInline> attributes
+can be used to specify the height and width of the image.  If omitted, the
+image will be displayed using its actual size. By using these attributes, you
+can scale a larger image down or scale a smaller image up to get a better fit.
+The <codeInline>altText</codeInline> attribute lets you specify some alternate
+text that can appear for the image.  The <codeInline>placement</codeInline>
+attribute allows you to specify where the image is placed (to the left, to the
+right, or above the topic title).  When set to <codeInline>above</codeInline>,
+the <codeInline>alignment</codeInline> attribute specifies how the image is
+aligned (left, right, or centered).</entry>
+  </row>
+  <row>
+    <entry>styleSheet</entry>
+    <entry>This element can be used to define an additional stylesheet to
+include in the transformed topic.  This is useful for adding styles for HTML
+tags that are not present in the selected presentation style's default
+stylesheet such as <codeInline>h1</codeInline>, <codeInline>h2</codeInline>,
+etc.  The <codeInline>filename</codeInline> attribute identifies the stylesheet
+and the same comments above regarding the logo file's path and inclusion as
+additional content apply here as well.  If no additional stylesheet is needed,
+you can omit this element.</entry>
+  </row>
+  <row>
+    <entry>xml</entry>
+    <entry>This element is used to add an optional XML data island to the topic
+that defines the MS Help 2 collection attributes.  If omitted, no data
+island will be added to the topic.  The content of this element is
+user-defined. Add any necessary MS Help 2 attributes that you need for
+your help file.</entry>
+  </row>
+  <row>
+    <entry>bodyText</entry>
+    <entry>This element is used to define the body text for the page.  It should
+contain the HTML for the topic's main content.</entry>
+  </row>
+</table>
+
+	<para>If you create your own transformation file, you are free to define
+whatever structure you like for the topic files.  The above is just a
+guideline.  Below is an example of a typical topic file for the three default
+transformations:</para>
+
+<code lang="xml" title="Example Topic File">
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+
+&lt;!DOCTYPE bodyText [ &lt;!ENTITY nbsp "&amp;#160;"&gt; ]&gt;
+
+&lt;topic xmlns:MSHelp="http://msdn.microsoft.com/mshelp"&gt;
+    &lt;!-- The page title --&gt;
+    &lt;title&gt;Welcome to the Sandcastle Help File Builder&lt;/title&gt;
+    &lt;!-- Add a logo --&gt;
+    &lt;logoFile filename="images/Sandcastle.jpg" altText="Test logo"
+        placement="left" alignment="left" /&gt;
+    &lt;!-- Include an additional stylesheet --&gt;
+    &lt;styleSheet filename="Styles/Styles.css" /&gt;
+    &lt;!-- MS Help 2 data island --&gt;
+    &lt;xml xmlns:msxsl="urn:schemas-microsoft-com:xslt"&gt;
+        &lt;MSHelp:Attr Name="AssetID" Value="Test" /&gt;
+        &lt;MSHelp:Keyword Index="K" Term="IndexKeyword1" /&gt;
+        &lt;MSHelp:Keyword Index="K" Term="IndexKeyword2" /&gt;
+        &lt;MSHelp:Attr Name="Locale" Value="en-us"&gt;&lt;/MSHelp:Attr&gt;
+        &lt;MSHelp:Attr Name="Abstract" Value="An abstract for the file" /&gt;
+    &lt;/xml&gt;
+    &lt;!-- The body text for the topic --&gt;
+    &lt;bodyText&gt;
+This is the &lt;b&gt;body text&lt;/b&gt; for the additional content page.
+    &lt;/bodyText&gt;
+&lt;/topic&gt;
+</code>
+
+	<para>The .NET XML parser will not recognize many of the common HTML
+entities such as <codeInline>&amp;nbsp;</codeInline> and will throw an
+exception.  In order to handle them, you can use the numeric form rather than
+the name form (i.e. <codeInline>#&amp;160;</codeInline> for the non-breaking
+space).  The other alternative as shown in the example above is to add a
+<codeInline>DOCTYPE</codeInline> declaration at the start of the file that
+defines the unknown entities and the value to which they should be converted.
+This allows you to use the name form in the body text.  Note that you will need
+to add the <codeInline>DOCTYPE</codeInline> declaration to each topic file that
+contains the unknown entities.</para>
+
+  </content>
+</section>
+
+<section>
+  <title>The pathToRoot Variable</title>
+  <content><para>The XSL transformation will be passed a variable called
+<codeInline>pathToRoot</codeInline> that defines the path to the help file's
+root folder.  This allows you to add script, stylesheet, and image tags that
+prefix the filename in the tag's attributes with the <codeInline>pathToRoot</codeInline>
+variables during the transformation.  For example:</para>
+
+<code lang="xml" title="Example use of pathToRoot">
+&lt;link rel="stylesheet" type="text/css"
+    href="{$pathToRoot}styles/presentation.css" /&gt;
+
+&lt;img&gt;
+    &lt;xsl:attribute name="src"&gt;
+        &lt;xsl:value-of select="$pathToRoot"/&gt;
+        &lt;xsl:value-of select="@filename"/&gt;
+    &lt;/xsl:attribute&gt;
+&lt;/img&gt;
+</code>
+
+  </content>
+</section>
+
+<section>
+  <title>Project Properties and Shared Content</title>
+  <content><para>Both the topic files and the XSL transformation files are
+treated like any other additional content file.  As such, they can contain
+project property replacement tags and shared content item references that will
+be converted to the matching project property value or shared content item
+value at build time.  See the <link xlink:href="8ea650b6-ab50-4288-a930-baf5b58a4cb0" />
+topic for more information.</para>
+
+  </content>
+</section>
+
+    <relatedTopics>
+      <link xlink:href="4fd3b2b6-dfad-4513-983b-5e74d2342ff0" />
+      <link xlink:href="4bf6d6d9-ecc1-4e7c-92ae-e011752431f1" />
+    </relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

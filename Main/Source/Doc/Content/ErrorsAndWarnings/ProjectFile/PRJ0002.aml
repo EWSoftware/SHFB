@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="d813065b-c867-44a8-9315-56fc951c374e" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Error PRJ0002: The selected file is for a more recent version of the
+help file builder.  Please upgrade your copy to load the file.</para>
+    </introduction>
+
+    <section>
+      <title>Cause</title>
+      <content>
+        <para>As indicated, the selected project file is for a more recent
+version of the help file builder.  It contains project options that cannot be
+handled by your current release.</para>
+      </content>
+    </section>
+
+    <section>
+      <title>Solution</title>
+      <content>
+        <para>Upgrade to the latest release of <token>Sandcastle</token> and
+the <token>SHFB</token>.</para>
+      </content>
+    </section>
+
+    <relatedTopics>
+    <link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

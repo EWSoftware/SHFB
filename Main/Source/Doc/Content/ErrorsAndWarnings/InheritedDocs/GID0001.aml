@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="ceaee6cc-6393-40c6-bca4-869b0553f2b3" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Error GID0001: Unexpected error while generating inherited
+documentation: <legacyItalic>[error]</legacyItalic></para>
+    </introduction>
+
+    <section>
+      <title>Cause</title>
+      <content>
+        <para>This is a generic catch-all error that occurs if a problem is
+encountered while generating the inherited documentation comments.</para>
+      </content>
+    </section>
+
+    <section>
+      <title>Solution</title>
+      <content>
+        <para>Since this is a catch-all error, refer to the error description
+for information about the cause of the error and how you might be able to
+correct it (i.e. file not found, permission issues, a corrupt file, etc.).  If
+you are unable to solve the problem based on the reported error, open a work
+item in the <token>SHFB</token> project at CodePlex containing the details from
+the error message.  Attach the affected project as an example.</para>
+      </content>
+    </section>
+
+    <relatedTopics>
+    <link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
+    <link xlink:href="79897974-ffc9-4b84-91a5-e50c66a0221d" />
+    </relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

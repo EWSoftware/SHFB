@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="06ad726a-d35b-419c-bff6-0157f32d659b" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Error BE0004: MRefBuilder has a version of
+'<legacyItalic>[installedVersion]</legacyItalic>' but version
+'<legacyItalic>[expectedVersion]</legacyItalic>' was expected.  You need
+to update your copy of the help file builder.</para>
+    </introduction>
+
+    <section>
+      <title>Cause</title>
+      <content>
+        <para>This error occurs when the version of the Microsoft Sandcastle
+documentation tools found is more recent than the one the help file builder
+was expecting.  Due to dependencies in some of the help file builder components
+on components in the prior Sandcastle release, the build cannot complete successfully.</para>
+      </content>
+    </section>
+
+    <section>
+      <title>Solution</title>
+      <content>
+        <para>The following information can help solve this problem:</para>
+
+<list class="bullet">
+  <listItem>Review the <link xlink:href="8c0c97d0-c968-4c15-9fe9-e8f3a443c50a" />
+carefully and make sure that you have installed all of the required tools and
+have the latest version of each.  Most importantly, check the <token>SHFB</token>
+project site for an updated release of the help file builder that is compatible
+with the most recent release of the Sandcastle tools.</listItem>
+
+  <listItem>Check to be sure that a system copy of the
+<environmentVariable>DXROOT</environmentVariable> environment variable exists
+and that it points to the most recent copy of Sandcastle (usually
+<localUri>C:\Program Files\Sandcastle</localUri>).  In addition, make sure that
+there is no user copy of the <environmentVariable>DXROOT</environmentVariable>
+environment variable.  If one does exist, delete it.</listItem>
+
+  <listItem>If the Sandcastle folder exists in the <environmentVariable>PATH</environmentVariable>
+environment variable, ensure that it is correct.  Preference is given to the
+<environmentVariable>DXROOT</environmentVariable> variable so this is not a
+requirement unless the <environmentVariable>DXROOT</environmentVariable> value
+is wrong.</listItem>
+
+  <listItem>If all else fails, manually specify the location of the Sandcastle
+tools by entering the path in the <codeInline>SandcastlePath</codeInline>
+project property.  This usually needs to be done if performing the build on
+a build server.</listItem>
+</list>
+
+<alert class="note">
+  <para>In all cases above, be sure to specify the path to the Sandcastle tools
+from Microsoft, <legacyBold>NOT</legacyBold> the path to the help file builder.</para>
+</alert>
+
+      </content>
+    </section>
+
+    <relatedTopics>
+    <link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

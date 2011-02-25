@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="a707806a-1173-4a0e-a21d-7b2d5a42f7fe" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Error B2X0002: An HTML help base name must be specified</para>
+    </introduction>
+
+    <section>
+      <title>Cause</title>
+      <content>
+        <para>This error occurs if the <codeInline>HtmlHelpName</codeInline>
+property on the <codeInline>Build2xHelpFile</codeInline> build task has not
+been set or is set to an empty string.</para>
+      </content>
+    </section>
+
+    <section>
+      <title>Solution</title>
+      <content>
+        <para>Specify a valid name for the <codeInline>HtmlHelpName</codeInline>
+property on the <codeInline>Build2xHelpFile</codeInline> build task in the
+project file.</para>
+
+
+<alert class="note">
+  <para>The project file that is to be compiled must also be named using the
+<codeInline>HtmlHelpName</codeInline> value with a <localUri>.HxS</localUri>
+extension.  The project file must exist in the folder specified in the
+<codeInline>WorkingFolder</codeInline> property.</para>
+</alert>
+
+      </content>
+    </section>
+
+    <relatedTopics>
+    <link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
+    </relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

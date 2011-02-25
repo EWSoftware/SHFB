@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="16dc54c2-84bf-4bab-a875-0b1d49c9b1b8" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>This component is a slightly modified version of the standard
+<codeInline>MSHCComponent</codeInline> included with Sandcastle itself.  The main
+difference is that this component supports an optional <codeInline>sortOrder</codeInline>
+attribute on the table of contents file elements that lets you alter the sort order
+for a topic and its subsequent sibling topics.  The Sandcastle Help File Builder uses
+this feature to allow parenting of the API content to a conceptual topic and to ensure
+that all content is properly sorted when parented to an existing help viewer topic.</para>
+    </introduction>
+
+<section>
+  <title>Example Configuration</title>
+  <content><para>The following is the default configuration for the help viewer
+component. It should be inserted into the configuration file before the
+<codeInline>SaveComponent</codeInline> in builds that generate MS Help Viewer
+output.</para>
+
+<code lang="xml" title="Example Configuration">
+&lt;component type="SandcastleBuilder.Components.MSHCComponent"
+  assembly="{@SHFBFolder}SandcastleBuilder.Components.dll"&gt;
+  &lt;data self-branded="{@SelfBranded}" topic-version="{@TopicVersion}" toc-file="toc.xml"
+    toc-parent="{@ApiTocParentId}" toc-parent-version="{@TocParentVersion}" locale="{@Locale}" /&gt;
+&lt;/component&gt;
+</code>
+
+<para>The example given above is taken from the Sandcastle Help File Builder's
+configuration file.  When used with it, the replacement tag
+<codeInline>{@SHFBFolder}</codeInline> is used to insert the help file
+builder's folder in the file path.  This is replaced at build time with the
+appropriate value.  If using the component in your own build scripts, replace
+the tag with a relative or absolute path to the component assembly.  The other
+tags are replaced with project property values.  Replace them with settings
+appropriate for your project.</para>
+
+<para>The following is an example <localUri>toc.xml</localUri> file that contains
+the optional <codeInline>sortOrder</codeInline> attributes to change the sort order
+of the topics.</para>
+
+<code lang="xml" title="Sample toc.xml file">
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;topics&gt;
+  &lt;!-- Sort our content below that of the parent node's existing sub-topics --&gt;
+  &lt;topic id="d4648875-d41a-783b-d5f4-638df39ee413" file="d4648875-d41a-783b-d5f4-638df39ee413" sortOrder="100"&gt;
+    &lt;topic id="57f7aedc-17d3-4547-bdf9-5b468a08a1bc" file="57f7aedc-17d3-4547-bdf9-5b468a08a1bc" /&gt;
+    &lt;topic id="0e6bbd29-775a-8deb-c4f5-5b1e63349ef1" file="0e6bbd29-775a-8deb-c4f5-5b1e63349ef1" /&gt;
+    &lt;topic id="fcdfafc4-7625-f407-d8e9-ec006944e1d7" file="fcdfafc4-7625-f407-d8e9-ec006944e1d7" /&gt;
+    &lt;!-- API content (7 namespaces, merged later) goes here and this topic follows it --&gt;
+    &lt;topic id="ce37cf86-fd95-49fc-b048-ba7d25d68d87" file="ce37cf86-fd95-49fc-b048-ba7d25d68d87" sortOrder="10"&gt;
+  &lt;/topic&gt;
+  .
+  .
+  .
+&lt;/topics&gt;	
+</code>
+
+  </content>
+</section>
+
+    <relatedTopics>
+    <link xlink:href="8dcbb69b-7a1a-4049-8e6b-2bf344efbbc9" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

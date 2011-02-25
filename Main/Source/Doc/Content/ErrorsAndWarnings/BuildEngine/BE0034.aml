@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="3e506dda-8d9e-4e87-a265-cd213b97d815" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Error BE0034: The '<legacyItalic>[propName]</legacyItalic>'
+property resolved to '<legacyItalic>[folder]</legacyItalic>' which is a
+reserved folder name</para>
+    </introduction>
+
+    <section>
+      <title>Cause</title>
+      <content>
+        <para>The indicated property's value resolved to a folder which appears
+to point to the root of a drive or network share, is a well-known folder such
+as <localUri>My Documents</localUri>, is the root project folder, or is a
+parent of a special folder or the project folder.  If used, this would cause
+all files and folders in that location to be erased which is probably not what
+you want.</para>
+      </content>
+    </section>
+
+    <section>
+      <title>Solution</title>
+      <content>
+        <para>Set the property's path to a different location that is safe to
+erase without warning (i.e. a subfolder under the root project folder) or
+reset it to the default value which will result in a safe path.  If your
+project file is stored in one of the folders noted above, move the project
+file and its related files to a safe location such as a sub-folder under
+My Documents or a sub-folder of the Visual Studio project folder to which it
+relates.  See the help topic for the indicated property for more information.</para>
+      </content>
+    </section>
+
+    <relatedTopics>
+    <link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

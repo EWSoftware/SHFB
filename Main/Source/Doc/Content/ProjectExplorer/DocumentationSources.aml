@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="64f0576f-51b3-4dae-aaac-06568c6c2f68" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Documentation sources are how you specify the assemblies, XML
+comments files, and/or solutions and projects that define the reference (API)
+content of the help file.</para>
+    </introduction>
+
+    <section>
+      <title>Adding a Documentation Source</title>
+      <content><para>To add a documentation source, right click on the
+<ui>Documentation Sources</ui> project node and select <ui>Add Documentation
+Source...</ui> or select <ui>File | Project Explorer | Documentation Sources |
+Add Documentation Source...</ui>.  An Open File dialog box appears in which you
+can select one or more DLLs, executables, XML comments files, or Visual
+Studio solutions/projects associated with the items to document.  When adding
+a DLL or an executable, if an XML comments file with the same name is found, it
+is also added to the project automatically.  Likewise, if you select an XML
+comments file, a DLL or executable with a matching name is added to the
+project automatically if it exists.  Files can also be dragged and dropped on
+the node from Windows Explorer.</para>
+
+<alert class="note">
+  <para>If you do not add an associated XML comments file for an assembly, no
+comments will appear on the documented members in the help file topics that
+are built.</para>
+</alert>
+
+<token>SolutionDocSource</token>
+
+<alert class="note">
+  <para>Only add assemblies and projects that you want documented to this
+project node.  Third-party assemblies, interop assemblies, and other dependent
+DLLs should be added to the project's
+<link xlink:href="9309b01b-87bf-4d68-b035-c10ac77d1522" /> node.</para>
+</alert>
+
+	  </content>
+	</section>
+
+    <section>
+      <title>Editing a Documentation Source</title>
+	  <content><para>When selected, each documentation source has the following
+properties that can be edited in the property grid at the bottom of the Project
+Explorer window.  Some of the properties will only apply to certain types of
+documenation source as indicated.</para>
+
+<list class="bullet">
+  <listItem><codeInline>SourceFile</codeInline> - This can be an individual
+file or it can contain wildcards (* or ?) to include multiple files.  If the
+extension is a wildcard (i.e *.* or ProjectName.*), it will include any
+assembly, XML comments file, solution or project that matches the wildcard.</listItem>
+
+  <listItem><codeInline>IncludeSubFolders</codeInline> - If the
+<codeInline>SourceFile</codeInline> property contains a wildcard, this property
+will be used to determine whether all matching files are included from
+subfolders as well (True) or if just the files in the indicated folder are
+included (False).</listItem>
+
+  <listItem><codeInline>Configuration</codeInline> - For Visual Studio solution
+and project documentation sources, this can be used to indicate that a
+specific configuration value should be used when extracting assembly, comments
+file, and reference information.  If not set, the global
+<codeInline>Configuration</codeInline> option setting is used.  The default
+global option value is <codeInline>Debug</codeInline>.</listItem>
+
+  <listItem><codeInline>Platform</codeInline> - For Visual Studio solution
+and project documentation sources, this can be used to indicate that a
+specific platform value should be used when extracting assembly, comments file,
+and reference information.  If not set, the global <codeInline>Platform</codeInline>
+option setting is used.  The default global option value is
+<codeInline>AnyCPU</codeInline>.</listItem>
+
+</list>
+	  </content>
+  	</section>	
+  	
+    <section>
+      <title>Removing a Documentation Source</title>
+	  <content><para>To remove a documentation source, right click on it and
+select the <ui>Remove</ui> option.  This can also be selected from the
+<ui>File | Project Explorer | Documentation Sources</ui> menu.</para>
+
+      </content>
+    </section>
+
+    <relatedTopics>
+	<link xlink:href="e12c2b9f-18c7-4718-850b-ac3c2e293672" />
+	<link xlink:href="e32086c6-de17-4e54-a746-1ac80bf0c45a" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

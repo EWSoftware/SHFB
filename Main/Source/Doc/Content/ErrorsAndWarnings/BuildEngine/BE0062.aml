@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="270ef6fd-7bec-4db0-875c-5d857294e9c6" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Warning BE0062: No XML comments files found.  The help file will
+not contain any member comments.</para>
+    </introduction>
+
+    <section>
+      <title>Cause</title>
+      <content>
+        <para>This warning occurs if no XML comments files are found when
+validating the documentation sources.  If this occurs, the assemblies will
+still be documented but the API topics will not contain any member comments.</para>
+      </content>
+    </section>
+
+    <section>
+      <title>Solution</title>
+      <content>
+        <para>To suppress this warning, specify at least one XML comments file
+as a documentation source.  If you did, verify that you got the name correct
+and that it exists.  If using a solution or project file as the documentation
+source, verify that the XML comments generation option is enabled in each
+project.</para>
+      </content>
+    </section>
+
+    <relatedTopics>
+    <link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

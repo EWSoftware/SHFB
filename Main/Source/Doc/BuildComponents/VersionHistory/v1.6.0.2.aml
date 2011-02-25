@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="8c369407-9e9d-4646-ac29-b0e6e339a19f" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Version 1.6.0.2 was released on November 14th, 2007.</para>
+    </introduction>
+
+<section>
+  <title>Changes in This Release</title>
+  <content>
+
+<list class="bullet">
+    <listItem>Fixed a bug in the Post Transform Component that caused it to fail due
+to a change in the 1.6.0.1 release that altered the output path.</listItem>
+
+    <listItem>Custom build component support has been reworked and enhanced.  Custom
+build component information is now loaded from the <legacyBold>.\BuildComponents</legacyBold>
+folder. A configuration file is used to define the build components and
+specify how they should be merged with the <legacyBold>sandcastle.config</legacyBold> file. This
+allows new components to be added and configured easily from within the help
+file builder without having to modify its template files.  See the
+<link xlink:href="e6d18448-2459-46f1-bbdc-a7db415f2bda" /> topic for more details.</listItem>
+
+    <listItem>Added the <link xlink:href="5d546511-6aec-455a-ba09-9daffb124c6d">IntelliSense
+build component</link>.  This build component is used to extract the XML comments
+into files that can be used for IntelliSense. Only the basic set of tags
+needed for IntelliSense are exported and only for documented API members.</listItem>
+</list>
+
+  </content>
+</section>
+
+    <relatedTopics>
+    <link xlink:href="9916374d-681f-4869-9b10-bb4a31161998" />
+    </relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

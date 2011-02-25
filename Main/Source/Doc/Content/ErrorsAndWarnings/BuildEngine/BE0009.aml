@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="4fc20fd3-6ed3-49ed-ac97-c99b08c72f38" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Warning BE0009: '<legacyItalic>[memberId]</legacyItalic>' is marked
+with <codeInline>&lt;exclude /&gt;</codeInline> but conflicted with the API
+filter setting.  Exclusion ignored.</para>
+    </introduction>
+
+    <section>
+      <title>Cause</title>
+      <content>
+        <para>This warning occurs if the indicated API member has an
+<codeInline>&lt;exclude /&gt;</codeInline> tag in its XML comments but the
+<codeInline>ApiFilter</codeInline> project property explicitly marks it as
+included.  In such cases, the API filter wins and the member is included in
+the help file.</para>
+      </content>
+    </section>
+
+    <section>
+      <title>Solution</title>
+      <content>
+        <para>This situation can occur if the member was previously included
+explicitly in the API filter and the <codeInline>&lt;exclude /&gt;</codeInline>
+tag was added to its comments at a later date.  In order to fix this issue,
+remove the <codeInline>&lt;exclude /&gt;</codeInline> tag from the member's
+comments and, if not wanted, mark it as excluded in the help project's
+<codeInline>ApiFilter</codeInline> property.</para>
+      </content>
+    </section>
+
+    <relatedTopics>
+    <link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

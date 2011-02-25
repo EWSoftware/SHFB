@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="4fd3af24-e11f-409f-9725-59f4bdedab51" revisionNumber="1">
+  <developerErrorMessageDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Error BE0021: The project contains a reference to a custom build
+component '<legacyItalic>[name]</legacyItalic>' that could not be found</para>
+    </introduction>
+
+    <section>
+      <title>Cause</title>
+      <content>
+        <para>This error occurs when a build component is specified in the
+project's <codeInline>ComponentConfigurations</codeInline> property but it
+could not be found in any of the loaded component definitions.</para>
+      </content>
+    </section>
+
+    <section>
+      <title>Solution</title>
+      <content>
+        <para>This can occur if the build component configuration file is
+deleted from the system but the build component is still listed in the project.
+Either remove the component from the <codeInline>ComponentConfigurations</codeInline>
+property settings or restore the custom build component and its configuration
+file to the custom build component folder (see the
+<link xlink:href="a24489fb-45d6-46f4-9eaa-9a9c4e0919b2#BuildComponents" />
+topic).</para>
+      </content>
+    </section>
+
+    <relatedTopics>
+    <link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
+    </relatedTopics>
+  </developerErrorMessageDocument>
+</topic>

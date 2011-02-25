@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="860e4647-cb23-448f-93cb-da45f52c3ec7" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Error CVT0005: Error reading project from
+'<legacyItalic>[file]</legacyItalic>' (last property =
+<legacyItalic>[property]</legacyItalic>): <legacyItalic>[error]</legacyItalic></para>
+    </introduction>
+
+    <section>
+      <title>Cause</title>
+      <content>
+        <para>This is a generic catch-all error that occurs if there is a
+problem converting a project file.</para>
+      </content>
+    </section>
+
+    <section>
+      <title>Solution</title>
+      <content>
+        <para>Since this is a catch-all error, refer to the property name and
+error description for information about the cause of the error and how you
+might be able to correct it (i.e. bad value format, unrecognized value, etc.).
+If you are unable to solve the problem based on the reported error, open a work
+item in the <token>SHFB</token> project at CodePlex containing the details from
+the error message.  Attach the affected source project as an example.</para>
+      </content>
+    </section>
+
+    <relatedTopics>
+    <link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

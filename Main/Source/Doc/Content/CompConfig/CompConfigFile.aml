@@ -1,0 +1,283 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="e6d18448-2459-46f1-bbdc-a7db415f2bda" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+		<autoOutline lead="This topic describes the parts of a custom build component configuration file and how to create one.">1</autoOutline>
+    </introduction>
+
+<section address="ConfigFile">
+  <title>Component Configuration Files</title>
+  <content><para>Custom build components can easily be added to the
+<token>SHFB</token> without having to modify its configuration template files.
+This is accomplished by creating an XML configuration file that describes the
+custom build component along with how and where it should be merged into the
+configuration file template at build time.  The custom build component assembly,
+configuration file, and any supporting files are copied into the
+<localUri>.\Components and Plug-Ins</localUri> folder or a subfolder beneath it
+in the help file builder's <legacyBold>Common Application Data</legacyBold> folder.
+See the <link xlink:href="a24489fb-45d6-46f4-9eaa-9a9c4e0919b2#BuildComponents" />
+topic for more information.  The component configuration files must use the
+extension <localUri>.components</localUri>. A sample configuration is shown
+below:</para>
+
+<code lang="xml" title="Sample Custom Build Component Configuration">
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+
+&lt;!-- CustomComponent.components example -->
+&lt;components&gt;
+  &lt;component id="IntelliSense Component"
+    type="SandcastleBuilder.Components.IntelliSenseComponent"
+    assembly="{@SHFBFolder}SandcastleBuilder.Components.dll"&gt;
+      &lt;description&gt;This build component is used to extract the XML
+comments into files that can be used for IntelliSense.  Only the
+basic set of tags needed for IntelliSense are exported and only for
+documented API members.&lt;/description&gt;
+
+      &lt;dependencies&gt;
+          &lt;component id="Show Missing Documentation Component" /&gt;
+      &lt;/dependencies&gt;
+
+      &lt;insert placement="after"
+        id="Show Missing Documentation Component" /&gt;
+
+      <!-- &lt;insertConceptual /&gt; Not used for this one -->
+
+      &lt;configureMethod name="ConfigureComponent" /&gt;
+
+      &lt;defaultConfiguration&gt;
+          &lt;output includeNamespaces="false"
+            namespacesFile="Namespaces"
+            folder="{@OutputFolder}" /&gt;
+      &lt;/defaultConfiguration&gt;
+  &lt;/component&gt;
+&lt;/components&gt;
+</code>
+
+  </content>
+</section>
+
+<section address="Components">
+  <title>Component Configuration Elements</title>
+  <content><para>The root <codeInline>components</codeInline> node contains
+one or more <codeInline>component</codeInline> nodes that describe the build
+components.  The order of the component definitions is not significant. The
+help file builder uses this information to merge them with the configuration
+file at build time and also to allow users to configure them interactively from
+within the GUI.  The Sandcastle Help File Builder supports several replacement
+tags that can be specified in place of such things as the components folder,
+the project folder, etc. These will be replaced before use with the physical
+path associated with the project.</para>
+
+	<autoOutline lead="The following sections list the elements and their attributes that make up the definition for a component node." />
+
+<para>For a working example of a component configuration file, see the
+<localUri>SandcastleBuilder.components</localUri> file in the
+help file builder installation folder.  It contains a fully commented set of
+configurations for the custom build components supplied with the help file
+builder.</para>
+
+  </content>
+  
+  <sections>
+
+<section address="Component">
+  <title>component</title>
+  <content><para>This element contains all of the other elements.  The element
+itself has three required attributes:</para>
+
+<list class="bullet">
+    <listItem>The <codeInline>id</codeInline> attribute gives the component a
+unique ID.  This is used in the configuration dialog as a friendly name that is
+more easily recognized.  It is also used by the other elements in the
+configuration to identify the build component.</listItem>
+
+    <listItem>The <codeInline>type</codeInline> attribute provides the fully
+qualified type name of the build component.</listItem>
+
+    <listItem>The <codeInline>assembly</codeInline> attribute provides the
+location of the assembly that contains the indicated type.  Normally, you will
+use the <codeInline>{@ComponentsFolder}</codeInline> replacement tag to
+represent the path to the <localUri>.\Components and Plug-Ins</localUri> folder.
+However, the assembly can be located in any other location.  Just be sure that
+the path is correct.</listItem>
+
+</list>
+
+  </content>
+</section>
+
+<section address="Description">
+  <title>description</title>
+  <content><para>This element is used to provide a brief description of the
+build component.  This will appear in the configuration dialog when the build
+component is selected in the list of available build components.</para>
+
+  </content>
+</section>
+
+<section address="Dependencies">
+  <title>dependencies</title>
+  <content><para>This element is used to specify a list of components on which
+the current component depends.  If the indicated components do not exist in the
+project settings or in the configuration file template already, they will be
+added automatically with their default configuration at build time.  This
+element can be omitted if there are no dependencies.  To specify dependencies,
+add a nested <codeInline>component</codeInline> element for each one with a
+single <codeInline>id</codeInline> attribute set to the ID of the required
+component.  Dependent configurations are merged prior to project settings.  As
+such, it is not required that a dependent component appear in the project as
+well.  If it does, the project settings will override the default
+configuration.</para>
+
+  </content>
+</section>
+
+<section address="Insert">
+  <title>insert</title>
+  <content><para>This element is the most important one.  It defines where the
+component configuration is inserted into the reference (API) configuration
+template file at build time (<localUri>sandcastle.config</localUri>).  The
+following attributes can be used to define the placement options.</para>
+
+<list class="bullet">
+    <listItem><para>The <codeInline>placement</codeInline> attribute defines
+where to insert the configuration.  It can have one of the following values:</para>
+
+    <list class="bullet">
+        <listItem><codeInline>start</codeInline> - The configuration is
+inserted at the start of the configuration file ahead of all others.  If
+multiple build components use this option they are all inserted at the start in
+no particular order.  All other attributes are ignored if this option is used.</listItem>
+
+        <listItem><codeInline>end</codeInline> - The configuration is inserted
+at the end of the configuration file after all others.  If multiple build
+components use this option they are all inserted at the end in no particular
+order.  All other attributes are ignored if this option is used.</listItem>
+
+        <listItem><codeInline>before</codeInline> - The configuration is
+inserted before the component indicated by the
+<codeInline>id</codeInline>/<codeInline>type</codeInline> and
+<codeInline>instance</codeInline> attributes.</listItem>
+
+        <listItem><codeInline>after</codeInline> - The configuration is
+inserted after the component indicated by the
+<codeInline>id</codeInline>/<codeInline>type</codeInline> and
+<codeInline>instance</codeInline> attributes.</listItem>
+
+        <listItem><codeInline>replace</codeInline> - The configuration for the
+custom component replaces a different component in the configuration template
+indicated by the <codeInline>id</codeInline>/<codeInline>type</codeInline> and
+<codeInline>instance</codeInline> attributes.</listItem>
+
+    </list>
+
+<alert class="note">
+  <para>If a component already exists in the configuration file with a matching
+<codeInline>id</codeInline> attribute it is assumed to be the same component in
+the correct location and is automatically replaced with the custom
+configuration.</para>
+</alert></listItem>
+
+    <listItem>The <codeInline>id</codeInline> attribute can be used to identify
+another component in the configuration file by ID.</listItem>
+
+    <listItem>The <codeInline>type</codeInline> attribute can be used to
+identify another component in the configuration file by type name.  For
+example, the stock Sandcastle components do not have IDs in the configuration
+file template.  By specifying their type name, you can merge custom components
+before or after them without having to assign an ID to them first.</listItem>
+
+    <listItem>The <codeInline>instance</codeInline> attribute can be used to
+identify a specific instance of a build component in the configuration file.
+For example, the <codeInline>CopyFromIndex</codeInline> component appears
+multiple times in the standard configuration file.  If you need to merge a
+custom build component before or after one of these occurrences, you can use
+this attribute to specify which one. If omitted, the first instance is
+assumed.</listItem>
+
+</list>
+
+<para>If this element is omitted, the build component will not be useable in
+reference builds.</para>
+
+  </content>
+</section>
+
+<section address="InsertConceptual">
+  <title>insertConceptual</title>
+  <content><para>This element is similar to the <codeInline>insert</codeInline>
+element above.  However, it defines where the component configuration is
+inserted into the conceptual content configuration template file at build
+time (<localUri>conceptual.config</localUri>).  It uses the same attributes
+described above to define the placement options.  If omitted, the build
+component will not be useable in a conceptual content build.  If a component
+has both, like the <codeInline>CodeBlockComponent</codeInline>, it can be used
+in both build types.</para>
+
+  </content>
+</section>
+
+<section address="ConfigureMethod">
+  <title>configureMethod</title>
+  <content><para>This element can be used to identify the name of the static
+(shared) method that the help file builder can invoke to configure the
+component interactively from the project manager GUI.  The named method should
+accept a string as a parameter that contains the current component
+configuration as an XML fragment and should return a string containing the
+edited component configuration as an XML fragment.  The configuration passed
+and returned is in the format that is inserted into the configuration file at
+build time.  If the build component does not contain a configure method, this
+element can be omitted and a default editor will be used. Specify a dash ("-")
+for the name if the component contains no editable configuration information.</para>
+
+  </content>
+</section>
+
+<section address="DefaultConfig">
+  <title>defaultConfiguration</title>
+  <content><para>This is used to specify the default configuration for a custom
+build component.  This information is used when the component is added as a
+dependency and when the component is added to the project and the user does
+not modify it.  You can use the various replacement tags as attribute values.
+These will be replaced at build time with the appropriate project values.</para>
+
+  </content>
+</section>
+
+<section address="Hidden">
+  <title>hidden</title>
+  <content><para>This element can be used to hide a component in the help file
+builder's configuration dialog box.  The component will still be merged if it
+is a dependency but it will not show up in the configuration dialog box so that
+the user can add it to the project with a custom configuration.</para>
+
+  </content>
+</section>
+
+  </sections>
+  
+</section>
+
+<section address="StockConfig">
+  <title>Making a Stock Build Component Editable</title>
+  <content><para>By creating a configuration file for one of the stock build
+components such as <codeInline>ResolveReferenceLinksComponent2</codeInline> or
+one of the many other build components that are not included by default, you
+can add the ability to edit their configurations.  Simply create a new
+configuration file with the necessary information.  Since stock build
+components do not have a configuration method, omit the
+<codeInline>configureMethod</codeInline> element and the standard editor will
+be used to allow you to modify the raw XML configuration data.</para>
+
+  </content>
+</section>
+
+    <relatedTopics>
+    <link xlink:href="8dcbb69b-7a1a-4049-8e6b-2bf344efbbc9" />
+    </relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

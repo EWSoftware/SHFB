@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="e95d1fff-4a68-4e78-b854-270993088f66" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Version 1.3.2.0 was released on November 12th, 2006.</para>
+    </introduction>
+
+    <section>
+      <title>Changes in This Release</title>
+      <content>
+<list class="bullet">
+    <listItem>Updated for use with the November 2006 CTP.  A patch file for the
+Sandcastle style and transformation files is supplied separately to fix a
+few issues that still remain with the stock versions supplied with
+Sandcastle.  Extract the patch to your Sandcastle installation folder.  See
+the ReadMe.txt file included with it for details on the fixes that I
+made.</listItem>
+
+    <listItem>Converted the Common Problems and Solutions help file topic into a
+FAQ topic and added several more items to it.  A toolbar button and a
+Help menu option where added to give easy access to it from the help file
+builder.</listItem>
+
+    <listItem>Added the ability to add XML comments files without an associated
+assembly. This is useful for adding shared project summary or namespace
+summary comments to multiple projects without having to store the comments
+in the Sandcastle Help File Builder project.  See the help file for
+details.</listItem>
+
+    <listItem>Paths to non-GAC dependency items can now be edited in the
+Dependency Item Editor dialog box so that you can make them have relative
+paths.</listItem>
+
+    <listItem>Added an <legacyBold>MRefBuilder.config</legacyBold> template that is used to tell
+MRefBuilder which framework comments to use based on the project's
+<codeInline>FrameworkVersion</codeInline> property.  It is now possible to correctly
+document .NET 1.0 and 1.1 assemblies.</listItem>
+
+    <listItem>Added a new <codeInline>NamingMethod</codeInline> property that lets you
+specify how the help topic filenames are created (GUID, member name, or
+hashed member name). The last two make it easy to link to help topics from
+external applications or web pages.  See the help file for more
+information.</listItem>
+
+    <listItem>Changed the build process to release the assembly loader
+immediately after copying dependencies to prevent the lease running out and
+causing an exception when trying to release it when done after a very long
+build.</listItem>
+
+    <listItem>The assembly loader was modified to add dependencies using a full
+path so that it can find them correctly.</listItem>
+
+    <listItem>Changed the <legacyBold>Index.html</legacyBold> template so that forward slashes are
+used in the default topic page's path rather than backslashes.</listItem>
+
+    <listItem>To prevent Out of Memory exceptions on extremely large builds, the
+<codeInline>BuildProcess</codeInline> class now writes messages to the log file for
+itself.  A Verbose Logging option was also added to the Documentation menu
+in the GUI help file builder to prevent the problem as well.  If disabled,
+only build step messages are logged to the output window during the build.
+This is an application user setting, not a project property.</listItem>
+
+    <listItem>Fixed the <codeInline>ShowMissingSummaries</codeInline> option so that if it is
+set to false and <codeInline>AutoDocumentConstructors</codeInline> is set to true, it
+does not add the unwanted "Missing Summary" text on methods, properties,
+etc.</listItem>
+
+    <listItem>Modified the tool searches so that if the "(x86)" version of the
+Program Files folder exists (64-bit Windows), it searches in there instead
+for Sandcastle and the help compilers.  If multiple copies are found in the
+SDK folders, it now tries to return the latest SDK version.</listItem>
+
+    <listItem>Fixed the search for Sandcastle in the PATH environment variable so
+that if the help file builder path is ahead of the Sandcastle path, it
+ignores it.  It will also search the VS2005 SDK folders if not found anywhere
+else.</listItem>
+
+</list>
+
+      </content>
+    </section>
+
+    <relatedTopics>
+    <link xlink:href="6110ac54-04d8-4624-8a2b-2a58af63c20d" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

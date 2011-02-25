@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="f47527c7-67ce-487d-a2a0-91d1cb08e15e" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+      <para>The <codeInline>JavaScriptDeclarationSyntaxGenerator</codeInline>
+is used to add a JavaScript Syntax section to each generated API topic. This
+version differs from the <codeInline>ScriptSharpDeclarationSyntaxGenerator</codeInline>
+in that it looks for a <codeInline>&lt;scriptSharp /&gt;</codeInline> element
+in the <codeInline>&lt;api&gt;</codeInline> node and, if found, only then will
+it apply the casing rules to the member name.  If not present, no casing rules
+are applied to the member names thus it is suitable for use with regular
+JavaScript such as that used in AjaxDoc projects.</para>
+    </introduction>
+
+<section>
+  <content><para>In order to use this script generator, you should modify the
+Sandcastle transformation file <legacyBold>FixScriptSharp.xsl</legacyBold> by
+adding the following template as the second one in the file.  The help file
+builder uses a modified version of the transformation so that you do not need
+to apply the change when using it.</para>
+
+<code lang="xml" title="FixScriptSharp.xsl Patch">
+&lt;!-- Add a "scriptSharp" element to each API node so that the
+     JavaScript syntax generator will apply the casing rules to
+     the member name. --&gt;
+&lt;xsl:template match="api"&gt;
+  &lt;xsl:copy&gt;
+    &lt;xsl:apply-templates select="node() | @*" /&gt;
+    &lt;scriptSharp /&gt;
+  &lt;/xsl:copy&gt;
+&lt;/xsl:template&gt;
+</code>
+
+<para>To use the syntax generator, add it to the <codeInline>SyntaxComponent</codeInline>
+configuration as in the following example:</para>
+
+<code lang="xml" title="Syntax Generator Example">
+&lt;component type="Microsoft.Ddue.Tools.SyntaxComponent"
+  assembly="%DXROOT%\ProductionTools\BuildComponents.dll"&gt;
+  &lt;syntax input="/document/reference" output="/document/syntax" /&gt;
+  &lt;generators&gt;
+    &lt;generator type="SandcastleBuilder.Components.JavaScriptDeclarationSyntaxGenerator"
+        assembly="C:\SandcastleBuilder\SandcastleBuilder.Components.dll" /&gt;
+  &lt;/generators&gt;
+&lt;/component&gt;
+</code>
+
+<para>When using the help file builder, the syntax generator is included
+automatically when you select the <codeInline>JavaScript</codeInline> option in
+the <codeInline>SyntaxFilters</codeInline> property.</para>
+
+  </content>
+</section>
+
+    <relatedTopics>
+    <link xlink:href="8dcbb69b-7a1a-4049-8e6b-2bf344efbbc9" />
+    </relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

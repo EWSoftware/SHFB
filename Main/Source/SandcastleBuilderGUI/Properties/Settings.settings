@@ -1,0 +1,87 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="SandcastleBuilder.Gui.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="AuthorEMailAddress" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Eric@EWoodruff.us</Value>
+    </Setting>
+    <Setting Name="MruList" Type="System.Collections.Specialized.StringCollection" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="SettingsUpgraded" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="EWoodruffURL" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://www.EWoodruff.us</Value>
+    </Setting>
+    <Setting Name="ProjectURL" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://SHFB.CodePlex.com</Value>
+    </Setting>
+    <Setting Name="VerboseLogging" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="HTMLHelp2ViewerPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="ASPNETDevServerPort" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">12345</Value>
+    </Setting>
+    <Setting Name="ContentFileEditors" Type="SandcastleBuilder.Utils.Design.ContentFileEditorCollection" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="WindowPlacement" Type="SandcastleBuilder.Gui.WINDOWPLACEMENT" Scope="User">
+      <Value Profile="(Default)">&lt;WINDOWPLACEMENT xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;length&gt;0&lt;/length&gt;
+  &lt;flags&gt;0&lt;/flags&gt;
+  &lt;showCmd&gt;0&lt;/showCmd&gt;
+  &lt;ptMinPosition_x&gt;0&lt;/ptMinPosition_x&gt;
+  &lt;ptMinPosition_y&gt;0&lt;/ptMinPosition_y&gt;
+  &lt;ptMaxPosition_x&gt;0&lt;/ptMaxPosition_x&gt;
+  &lt;ptMaxPosition_y&gt;0&lt;/ptMaxPosition_y&gt;
+  &lt;rcNormalPosition_left&gt;0&lt;/rcNormalPosition_left&gt;
+  &lt;rcNormalPosition_top&gt;0&lt;/rcNormalPosition_top&gt;
+  &lt;rcNormalPosition_right&gt;0&lt;/rcNormalPosition_right&gt;
+  &lt;rcNormalPosition_bottom&gt;0&lt;/rcNormalPosition_bottom&gt;
+&lt;/WINDOWPLACEMENT&gt;</Value>
+    </Setting>
+    <Setting Name="OpenHelpAfterBuild" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="LastConfig" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Debug</Value>
+    </Setting>
+    <Setting Name="LastPlatform" Type="System.String" Scope="User">
+      <Value Profile="(Default)">AnyCPU</Value>
+    </Setting>
+    <Setting Name="ContentEditorDockState" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="BuildOutputBackground" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">Window</Value>
+    </Setting>
+    <Setting Name="BuildOutputForeground" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">WindowText</Value>
+    </Setting>
+    <Setting Name="BuildOutputFont" Type="System.Drawing.Font" Scope="User">
+      <Value Profile="(Default)">Courier New, 7.8pt</Value>
+    </Setting>
+    <Setting Name="TextEditorFont" Type="System.Drawing.Font" Scope="User">
+      <Value Profile="(Default)">Courier New, 10.2pt</Value>
+    </Setting>
+    <Setting Name="BeforeBuild" Type="SandcastleBuilder.Gui.BeforeBuildAction" Scope="User">
+      <Value Profile="(Default)">SaveOpenDocuments</Value>
+    </Setting>
+    <Setting Name="ShowLineNumbers" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="FilterBuildLog" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="EnterMatching" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="MSHelpViewerPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+  </Settings>
+</SettingsFile>

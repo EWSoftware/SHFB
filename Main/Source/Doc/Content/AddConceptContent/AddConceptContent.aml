@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="5292ce5c-fda1-4a77-9155-a11755ef1730" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+      <para>In versions of the help file builder prior to version 1.7.0.0,
+the additional content properties were used to add files to the project to
+define additional help content that would appear in the table of contents and
+to add other items such as image files and additional stylesheets.  As an
+alternative to basic HTML files, you could also create XML files with a
+<localUri>.topic</localUri> extension that would be ran through an XSL
+transformation to give them the basic look and feel of the presentation style
+that was selected.  However, using the basic transformations, the topics lacked
+several features present in the reference content such as collapsible sections
+and the language filter and they could not take advantage of build components
+to resolve links to reference and online content.</para>
+    </introduction>
+
+<section>
+  <content><para>Starting with version 1.7.0.0, the help file builder supports
+conceptual content.  This is similar in nature to additional content in that it
+allows you to add non-reference content to the help file that will appear in
+the table of contents.  However, instead of HTML files or <localUri>.topic</localUri>
+files that contain HTML, conceptual content uses topic files that contain
+Microsoft Assistance Markup Language (MAML).  This is basically XML conforming
+to a well defined schema that describes the structure of the conceptual content
+much like XML comments describe the structure of the code comments. There is no
+layout or style information within the MAML files. Instead, they are ran
+through a series of XSL transformations using Sandcastle's
+<application>BuildAssembler</application> tool similar to the reference (API)
+content so that they match it in appearance and features.</para>
+
+	<para>MAML is quite different than HTML but it does offer many of the same
+capabilities.  The main difference is that the XSL transformations are
+responsible for applying the style and formatting, not the elements in the
+MAML topics. It does take some getting used to but the end result is well
+worth it.  The look of the conceptual topics is much more consistent with that
+of the reference topics. As such, preference will be given to conceptual
+content when adding features to the help file builder.  While it will continue
+to support the older additional content models, they will not receive any
+further enhancements.</para>
+
+  </content>
+</section>
+
+    <relatedTopics>
+      <link xlink:href="3d4edd2d-7883-4508-b9d2-bd7b4d848b0d" />
+      <link xlink:href="ba42b2c2-985d-46f1-ba4c-3d921edcafe3" />
+      <link xlink:href="4fd3b2b6-dfad-4513-983b-5e74d2342ff0" />
+    </relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

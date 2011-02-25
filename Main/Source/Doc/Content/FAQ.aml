@@ -1,0 +1,1005 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="1aea789d-b226-4b39-b534-4c97c256fac8" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+      <para>The following are some common problems and solutions along with
+some known issues with Sandcastle and help files that you may encounter.</para>
+	  <autoOutline lead="none" />
+    </introduction>
+
+<section address="SecQuestions">
+  <title>All Questions</title>
+  <content>
+
+<list class="bullet">
+    <listItem><legacyBold>Documenting Assemblies</legacyBold>
+        <list class="bullet">
+            <listItem><link xlink:href="#GettingStarted">How do I use
+Sandcastle and the help file builder?</link></listItem>
+			<listItem><link xlink:href="#WhereDidItGo">I have been using
+version 1.7.0.0 or earlier.  Version 1.8.0.0 is a significant change.
+Where did option/feature X go?</link></listItem>
+            <listItem><link xlink:href="#WebProjects">How do I document a web
+application or a website project?</link></listItem>
+            <listItem><link xlink:href="#DepAsm">My project relies on
+third-party assemblies and/or interop assemblies that do not have XML comments
+files. How can I document my assemblies without them?</link></listItem>
+            <listItem><link xlink:href="#DepAsm">My project uses third party
+assemblies but I don't want to include them in my documentation.  How do I
+exclude them?</link></listItem>
+            <listItem><link xlink:href="#Generics">How do I specify a generic
+such as <codeInline>IEnumerable&lt;T&gt;</codeInline> in a
+<codeInline>cref</codeInline> target and/or XML comments?</link></listItem>
+            <listItem><link xlink:href="#HtmlTags">Can I use HTML markup in my
+XML comments?</link></listItem>
+            <listItem><link xlink:href="#EmbedImage">How can I embed an image
+in a namespace, type, or member help topic?</link></listItem>
+            <listItem><link xlink:href="#IntelliSense">How can I create an
+IntelliSense XML comments file that contains information on only the members
+documented in the help file and excludes all of the private member details?</link></listItem>
+            <listItem><link xlink:href="#SharedSettings">How can I share
+project summary and namespace settings between multiple help file builder
+projects?</link></listItem>
+            <listItem><link xlink:href="#CreateComments">I have an assembly
+without code and without an XML comments file for which I'd like to create
+documentation and/or an Intellisense file.  How can I do that?</link></listItem>
+            <listItem><link xlink:href="#CommentsOnly">I want to create a help
+file without an assembly.  I didn't add any files to document or just added some
+"Comments Only" XML files to the list but the build stops and it tells me it
+cannot do that.  Why?</link></listItem>
+        </list>
+    </listItem>
+
+    <listItem><legacyBold>Build Failures</legacyBold>
+        <list class="bullet">
+            <listItem><link xlink:href="#BuildTools">Why does the build fail
+telling me that it cannot find the Sandcastle or HTML help compiler tools?</link></listItem>
+            <listItem><link xlink:href="#BadVersion">Why does the build fail
+telling me that it cannot find the most current version of Sandcastle?</link></listItem>
+            <listItem><link xlink:href="#MissingDLL">Why does my build fail
+with an error saying that it cannot find an assembly?</link></listItem>
+            <listItem><link xlink:href="#UnresolvedAssembly">Why does my build
+fail with an <legacyBold>Unresolved assembly reference</legacyBold> error?</link></listItem>
+            <listItem><link xlink:href="#Compact">Why does my build fail with
+an <legacyBold>Unresolved assembly reference</legacyBold> error when I try to
+document a Compact Framework application?</link></listItem>
+            <listItem><link xlink:href="#AutoResolve">Why can't Sandcastle
+resolve all dependent assembly references automatically?</link></listItem>
+            <listItem><link xlink:href="#NoAPIs">Why does my build fail with an
+error saying "No APIs found to document"?</link></listItem>
+            <listItem><link xlink:href="#OrcasNamer">Why does my build fail in
+<application>MRefBuilder</application> with a <codeInline>NullReferenceException</codeInline>
+related to <codeInline>OrcasNamer.WriteType</codeInline>?</link></listItem>
+            <listItem><link xlink:href="#Proxy">My build fails because I am
+behind a proxy server and it cannot connect to the MSDN web service.  How do
+I fix it?</link></listItem>
+            <listItem><link xlink:href="#BAHang">My builds seem to hang during
+the <application>BuildAssembler</application> step.  Why?</link></listItem>
+            <listItem><link xlink:href="#OutOfMemory">I'm getting an Out of
+Memory exception during a very large build.  How do I prevent it?</link></listItem>
+            <listItem><link xlink:href="#HHC3002">Why is the help compiler
+failing with <codeInline>HHC3002</codeInline> and
+<codeInline>HHC3004</codeInline> errors referencing non-html files such as images?</link></listItem>
+            <listItem><link xlink:href="#HHC6000">Why is the help compiler
+failing with <codeInline>HHC6000</codeInline> and <codeInline>HHC5007</codeInline>
+errors referencing "disk full" and "fatal navigational compilation"
+errors?</link></listItem>
+            <listItem><link xlink:href="#HHC6003">Why is the help compiler
+failing with an <codeInline>HHC6003</codeInline> error stating that
+<localUri>itircl.dll</localUri> has not been registered?</link></listItem>
+        </list>
+    </listItem>
+
+    <listItem><legacyBold>Help File Issues</legacyBold>
+        <list class="bullet">
+            <listItem><link xlink:href="#NotLoading">Why doesn't my compiled
+help file load?</link></listItem>
+            <listItem><link xlink:href="#NotLoading">Why do all of the help
+file topics display a "Page not found" or "This program cannot display the
+webpage" error?</link></listItem>
+            <listItem><link xlink:href="#EmptyHelp">Why doesn't my help file
+contain any/all of the classes from the assembly?</link></listItem>
+            <listItem><link xlink:href="#NoComments">The help file is built
+okay but I don't see my comments on the members.  Why not?</link></listItem>
+            <listItem><link xlink:href="#ShowMissing">My help file contains
+lots of red "missing documentation" messages.  How do I get rid of them?</link></listItem>
+            <listItem><link xlink:href="#CodeSamples">Why are all of my code
+samples colorized as C# code?</link></listItem>
+            <listItem><link xlink:href="#CodeSamples">Why don't my code samples
+show up unless I select the C# code filter?</link></listItem>
+            <listItem><link xlink:href="#DefaultTitle">The language name is
+showing up as the default title on a colorized code block but I don't want it
+to do that.  How do I get rid of it?</link></listItem>
+            <listItem><link xlink:href="#NoTitle">Why does my help file title
+not appear when I use a language selection other than English?</link></listItem>
+            <listItem><link xlink:href="#BadChars">Why does the help file title
+contain garbage characters?</link></listItem>
+            <listItem><link xlink:href="#ViewHelp2">How can I view an HTML
+Help 2 file?</link></listItem>
+            <listItem><link xlink:href="#DeployHelp2">How can I deploy an HTML
+Help 2 file to an end-user's system?</link></listItem>
+            <listItem><link xlink:href="#NamedUrlIndex">How can I add support
+for <codeInline>NamedUrlIndex</codeInline> options such as
+<codeInline>DefaultPage</codeInline>, <codeInline>HomePage</codeInline>,
+<codeInline>AboutPageIcon</codeInline>, etc.?</link></listItem>
+        </list>
+    </listItem>
+
+    <listItem><legacyBold>The API Filter</legacyBold>
+        <list class="bullet">
+            <listItem><link xlink:href="#FilterConflict1">I used the Namespace
+Comments feature to exclude a namespace but it is still showing up in the help
+file. Why?</link></listItem>
+            <listItem><link xlink:href="#FilterConflict1">I used the
+<codeInline>&lt;exclude /&gt;</codeInline> tag feature to exclude a
+namespace/type/member but it is still showing up in the help file.  Why?</link></listItem>
+            <listItem><link xlink:href="#FilterConflict2">I used the
+Namespace Comments feature to exclude a namespace.  I now want it included but
+it is not showing up.  Why?</link></listItem>
+            <listItem><link xlink:href="#FilterConflict2">I used the
+<codeInline>&lt;exclude /&gt;</codeInline> tag to exclude a
+namespace/type/member.  I removed the tag as I now want it included but it is
+not showing up.  Why?</link></listItem>
+        </list>
+    </listItem>
+
+    <listItem><legacyBold>Conceptual Content/Additional Content</legacyBold>
+        <list class="bullet">
+            <listItem><link xlink:href="#Transform">I want my additional
+content pages to look like the selected presentation style used in the API
+topics.  How can I do that?</link></listItem>
+            <listItem><link xlink:href="#DefaultTopic">How do I arrange the
+additional content pages and specify which is the default topic?</link></listItem>
+            <listItem><link xlink:href="#RefLinks">How can I create a link to a
+namespace element's help topic from an additional content page?</link></listItem>
+            <listItem><link xlink:href="#LinkFromComments">How can I create a
+link to an additional content page from a namespace, type, or member help
+topic?</link></listItem>
+            <listItem><link xlink:href="#ColorizeCode">How can I colorize code
+in my additional content files?</link></listItem>
+        </list>
+    </listItem>
+
+    <listItem><legacyBold>Custom Build Components</legacyBold>
+        <list class="bullet">
+            <listItem><link xlink:href="#ConfigComp">How do I configure the
+custom build components with project-specific settings?</link></listItem>
+            <listItem><link xlink:href="#CompInfo">Where can I find more
+information on the custom build components supplied with the help file
+builder?</link></listItem>
+            <listItem><link xlink:href="#CreateComp">How can I create my own
+custom build components?</link></listItem>
+        </list>
+    </listItem>
+
+    <listItem><legacyBold>Build Process Plug-Ins</legacyBold>
+        <list class="bullet">
+            <listItem><link xlink:href="#ConfigPlugIn">How do I configure the
+plug-ins with project-specific settings?</link></listItem>
+            <listItem><link xlink:href="#PlugInInfo">Where can I find more
+information on the plug-ins supplied with the help file builder?</link></listItem>
+            <listItem><link xlink:href="#CreatePlugIn">How can I create my own
+custom plug-ins?</link></listItem>
+        </list>
+    </listItem>
+
+    <listItem><legacyBold>General Help Topic Questions</legacyBold>
+        <list class="bullet">
+            <listItem><link xlink:href="#NamingMethod">How can I create a link
+to a namespace element's help topic from an external source such as application
+code or a page in an external web site?</link></listItem>
+        </list>
+    </listItem>
+
+    <listItem><legacyBold>Other</legacyBold>
+        <list class="bullet">
+            <listItem><link xlink:href="717ca8cf-1a2f-4e63-a8a9-f836825f3509">How
+can I make a donation to help support the Sandcastle Help File Builder project?</link></listItem>
+        </list>
+    </listItem>
+</list>
+
+  </content>
+</section>
+
+<section address="SecDocAsm">
+  <title>Documenting Assemblies</title>
+  <content>
+
+<definitionTable>
+    <definedTerm address="GettingStarted">How do I use Sandcastle and the help file builder?</definedTerm>
+    <definition>Read through the topics in the
+<link xlink:href="b772e00e-1705-4062-adb6-774826ce6700" /> section in the
+table of contents.  These will give you an overview of how to use
+Sandcastle, the help file builder, and how to set up your projects to
+generate XML comments.</definition>
+
+    <definedTerm address="WhereDidItGo">I have been using version 1.7.0.0 or
+earlier.  Version 1.8.0.0 is a significant change. Where did option/feature X
+go?</definedTerm>
+    <definition>Be sure to read through the version history starting at
+<link xlink:href="5a484e94-6940-4c97-940c-3f46fb8736d2" /> since it contains
+all of the information about the change in project format and the user interface.
+The <link xlink:href="5a484e94-6940-4c97-940c-3f46fb8736d2#WhereIsIt">Where Did
+That Feature Go?</link> section in that topic contains information about how to
+find features or equivalent functionality in the new release.</definition>
+
+    <definedTerm address="WebProjects">How do I document a web application or a website project?</definedTerm>
+    <definition>See the  <link xlink:href="94c7f744-9b90-4254-93ab-9b15f47d9f42" />
+topic for details.</definition>
+
+    <definedTerm address="DepAsm">My project relies on third-party assemblies
+and/or interop assemblies that do not have XML comments files. How can I
+document my assemblies without them? / My project uses third party assemblies
+but I don't want to include them in my documentation.  How do I exclude them?</definedTerm>
+    <definition>Third-party assemblies with or without XML comments files and
+Visual Studio generated interop assemblies do not need to be documented.
+They are considered to be dependent or reference assemblies.  As such, add them
+to the <codeInline>References</codeInline> node in the Project Explorer window
+rather than as documentation sources.  See the
+<link xlink:href="9309b01b-87bf-4d68-b035-c10ac77d1522" /> topic for more
+information.</definition>
+
+    <definedTerm address="Generics">How do I specify a generic such as
+IEnumerable&lt;T&gt; in a cref target and/or XML comments?</definedTerm>
+    <definition><para>Use curly braces in <codeInline>cref</codeInline> targets
+and HTML entities (&amp;lt; and &amp;gt;) in the general XML comments.  For
+example:</para>
+
+<code lang="cs" title=" ">
+/// &lt;summary&gt;
+/// See &lt;see cref="IEnumerable{T}"/&gt; for more information.
+/// &lt;p/&gt;Another reference to IEnumerable&amp;lt;T&amp;gt;.
+/// &lt;/summary&gt;
+</code></definition>
+
+    <definedTerm address="HtmlTags">Can I use HTML markup in my XML comments?</definedTerm>
+    <definition>Yes, you can use HTML markup in your XML comments to add additional
+formatting.  You can also use the <codeInline>img</codeInline> tag to embed an image
+in a namespace element's XML comments.  Since the comments are XML, all HTML
+tags must be specified with a closing tag or as self-closing (i.e
+&lt;p&gt;This is a paragraph&lt;/p&gt; or &lt;p/&gt;New paragraph).</definition>
+
+    <definedTerm address="EmbedImage">How can I embed an image in a namespace,
+type, or member's help topic?</definedTerm>
+    <definition><para>Embedding an image in an element's help topic is a two
+step process.  First, you must add the image to the help file builder project
+as a content item (add it using the Project Explorer window and set the
+<codeInline>BuildAction</codeInline> to <codeInline>Content</codeInline>). The
+second step is to edit the member's XML comments (summary, remarks, etc) to add
+the <codeInline>img</codeInline> tag.  To embed an image in the project summary
+or namespace comments, add the image tag to the help file builder's
+<codeInline>ProjectSummary</codeInline> property text or to a namespace's
+comments using the <codeInline>NamespaceSummaries</codeInline> project
+property.</para>
+
+	<para>Below are two examples of embedding an image in the XML comments.
+Note that all namespace help topics reside in an <localUri>.\html</localUri>
+folder so you must use a relative path to go up one level to find the image
+file.  The first example assumes that the image is copied to the root of the
+help project.  As such, no additional path beyond the relative indicator is
+required.  The second example assumes that the image is copied to an
+<localUri>.\Images</localUri> folder.  In that case, you must also specify the
+folder name.  As noted above, the image tag must be self-closing to conform to
+the XML specification.</para>
+
+<code lang="cs" title="Example &lt;img&gt; Tag Usage">
+/// &lt;summary&gt;
+/// A class member.
+/// &lt;/summary&gt;
+/// &lt;remarks&gt;An image: &lt;img src="../Process.gif"/&gt;
+/// &lt;/remarks&gt;
+public void TestMethod()
+{
+    // ... Method implementation ...
+}
+
+/// &lt;summary&gt;
+/// A useful class.
+/// &lt;p/&gt;UML Diagram: &lt;img src="../Images/TestClassUML.gif"
+///     alt="UML Diagram" /&gt;
+/// &lt;/summary&gt;
+public TestClass
+{
+    // ... Class implementation ...
+}
+</code></definition>
+
+    <definedTerm address="IntelliSense">How can I create an IntelliSense XML comments
+file that contains information on only the members documented in the help file and
+excludes all of the private member details?</definedTerm>
+    <definition>Add the <link xlink:href="5d546511-6aec-455a-ba09-9daffb124c6d" />
+to the project using the <codeInline>ComponentConfigurations</codeInline>
+project property.</definition>
+
+    <definedTerm address="SharedSettings">How can I share project summary and
+namespace settings between multiple help file builder
+projects?</definedTerm>
+    <definition>Create a standalone XML comments file and add it to the
+project as a documentation source. See the <link xlink:href="52aa172a-a310-4f75-b20f-7e2c7d870c65" />
+help topic for details.</definition>
+
+    <definedTerm address="CreateComments">I have an assembly without code and
+without an XML comments file for which I'd like to create documentation and/or
+an Intellisense file.  How can I do that?</definedTerm>
+    <definition><para>Create a blank XML comments file like the following and
+name it after the assembly with a <localUri>.xml</localUri> extension:</para>
+
+<code lang="xml" title="Blank XML Comments File">
+&lt;?xml version="1.0"?&gt;
+&lt;doc&gt;
+  &lt;assembly&gt;
+    &lt;name&gt;YourAssemblyNameHere&lt;/name&gt;
+  &lt;/assembly&gt;
+  &lt;members&gt;
+  &lt;/members&gt;
+&lt;/doc&gt;
+</code>
+
+<para>Create a new help file builder project and add just that assembly and
+comments file to it as documentation sources.  Select the
+<codeInline>ComponentConfigurations</codeInline> property and click the "..."
+button to the right of it.  In the Component Configurations dialog, add the
+<link xlink:href="5d546511-6aec-455a-ba09-9daffb124c6d" /> to the project.
+Next, set the project's
+<link xlink:href="5a2ab898-7161-454d-b5d3-959df0de0e36">Show Missing Tags</link>
+properties to your liking.  This will force the build to add "missing" notes
+for all items that you might want to document.  Build the project and you will
+find a new XML comments file named after the assembly in the project's output
+folder.  Edit the <codeInline>&lt;member&gt;</codeInline> elements in the
+XML comments file to add the comments that you want for each member.  For
+example:</para>
+
+<code lang="xml" title="Member Comments Example">
+&lt;member name="M:SandcastleBuilder.Utils.XmlCommentsFileCollection.FindMember(System.String)"&gt;
+    &lt;summary&gt;
+    Search all comments files for the specified member.  If not found,
+    add the blank member to the first file.
+    &lt;/summary&gt;
+    &lt;param name="memberName"&gt;The member name for which to search.&lt;/param&gt;
+    &lt;returns&gt;The XML node of the found or added member&lt;/returns&gt;
+&lt;/member&gt;
+</code>
+
+<para>When you are done, replace your original placeholder file with the one
+generated from the build with your edited comments.</para></definition>
+
+    <definedTerm address="CommentsOnly">I want to create a help file without
+an assembly.  When I try to build the help file, it stops and tells me I need
+at least one documentation source.  Why?</definedTerm>
+    <definition><para>Sandcastle was designed to document code based on a set
+of XML comments and API information found in a reflection information file.
+As such, it requires at least one assembly in order to produce a help file
+containing API documentation.  If you do not include at least one assembly with
+a namespace containing at least one public class, the help file cannot be
+produced.  To produce help files unrelated to assemblies, you can use some
+other tool such as the HTML Help Workshop or one of the commercial
+equivalents.</para>
+
+	<para>You can use the <legacyBold>Additional Content Only</legacyBold>
+plug-in to produce a help file based on conceptual content and/or additional
+content items alone.  To do so, add the plug-in to the project via the
+<codeInline>PlugInConfigurations</codeInline> project option, add conceptual
+and/or additional content to the project, and build the help file.  See the
+<link xlink:href="2d483967-30cb-421c-81ff-fdba705e1e6b" /> help topic for more
+information about it.  See the
+<link xlink:href="5292ce5c-fda1-4a77-9155-a11755ef1730" /> topic for more
+information about how to utilize conceptual and additional content
+files.</para></definition>
+
+</definitionTable>
+
+  </content>
+</section>
+
+<section address="SecBldFail">
+  <title>Build Failures</title>
+  <content>
+
+<definitionTable>
+    <definedTerm address="BuildTools">Why does the build fail telling me that
+it cannot find the Sandcastle or HTML help compiler tools?</definedTerm>
+    <definition>First and foremost, be sure that you have installed the latest
+version of Microsoft's Sandcastle documentation compiler tools and the HTML
+help compiler(s).  <legacyBold>The Sandcastle tools and the help compilers are
+not part of the help file builder and must be downloaded and installed
+separately.</legacyBold>.  The help file builder is written by Eric Woodruff
+and consists of a GUI and a project build system that act as front ends to the
+Sandcastle tools and help compilers produced by Microsoft.  See the
+<link xlink:href="c18d6cb6-e4e4-4944-84ee-f867aa6cfb0d" /> topic for information
+on where to download the required tools.  If you have the tools installed, but
+in a non-standard location, you may need to specify the paths to the tools.
+See the <link xlink:href="e6fcfa33-e7ee-430a-abfe-6b7962e6d068" /> topic for
+more information.</definition>
+
+    <definedTerm address="BadVersion">Why does the build fail telling me that
+it cannot find the most current version of Sandcastle?</definedTerm>
+    <definition><para>First, be sure that you have the most recent version of
+Sandcastle installed.  This can be confirmed by running
+<application>MRefBuilder.exe</application> from the command line and making sure
+that the version number that it reports is the same as the one expected by
+the help file builder.</para>
+
+	<para>Also check the top of the log file to see where it found the copy of
+Sandcastle that it tried to use.  A common cause of finding an outdated
+version of Sandcastle is if you install the Visual Studio 2005 SDK.  It
+contains an outdated version of Sandcastle and it resets the
+<environmentVariable>DXROOT</environmentVariable> environment variable to
+point at its copy.  You can edit the environment variable to point at the
+latest version of Sandcastle or reinstall the latest version so that it sets
+the variable back to the right location.</para>
+
+<alert class="note">
+  <para>There may be two copies of the <environmentVariable>DXROOT</environmentVariable>
+environment variable: one user copy and one system copy.  If this is the case,
+delete the user copy and make sure that the system copy is pointing at the
+latest release of Sandcastle (the one from Microsoft, not the help file
+builder).  You may need to reboot in order for the changes to take effect.</para>
+</alert></definition>
+
+    <definedTerm address="MissingDLL">Why does my build fail with an error
+saying that it cannot find an assembly?</definedTerm>
+    <definition>When you added documentation sources to the project, you may
+have specified the wrong name or perhaps chose the assembly from the wrong
+folder (i.e. <localUri>.\Debug</localUri> instead of <localUri>.\Release</localUri>).
+Check the assembly path and filename and verify that it does exist.  If the
+path is correct, make sure the assembly actually exists.  Rebuild your project
+if necessary to recreate it.</definition>
+
+    <definedTerm address="UnresolvedAssembly">Why does my build fail with an
+<legacyBold>Unresolved assembly reference</legacyBold> error?</definedTerm>
+    <definition>If the build fails in the <legacyBold>Generating reflection
+information</legacyBold> step with an error that starts "<legacyBold>Error:
+Unresolved assembly reference</legacyBold>", you need to add the named
+assembly as a reference.  This is done by adding a reference to it to the
+<codeInline>References</codeInline> node in the Project Explorer window.  See
+the <link xlink:href="9309b01b-87bf-4d68-b035-c10ac77d1522" /> topic for more
+information on adding reference items.  See the next question as well if you
+are documenting a Compact Framework application.</definition>
+
+    <definedTerm address="Compact">Why does my build fail with an
+<legacyBold>Unresolved assembly reference</legacyBold> error when I try to
+document a Compact Framework application?</definedTerm>
+    <definition><para>In order to document Compact Framework applications you
+also need to add a reference item for the Compact Framework assemblies.  These
+are usually located under the Visual Studio 2005 installation folder.  The
+easiest way to reference them is to add a reference item with a path
+similar to the following:</para>
+
+<code lang="none">
+$(VS80COMNTOOLS)\..\..\SmartDevices\SDK\CompactFramework\2.0\v2.0\WindowsCE\*.dll
+</code>
+
+	<para>This will expand the <codeInline>VS80COMNTOOLS</codeInline>
+environment variable in order to find the Visual Studio 2005 installation
+location and append the necessary path to find the Compact Framework assemblies.
+See the <link xlink:href="9309b01b-87bf-4d68-b035-c10ac77d1522" /> topic for
+more information on adding reference items.</para></definition>
+
+    <definedTerm address="AutoResolve">Why can't Sandcastle resolve all
+dependent assembly references automatically?</definedTerm>
+    <definition>Sandcastle, specifically <application>MRefBuilder</application>,
+uses CCI (Common Compiler Infrastructure) for assembly reflection.  CCI
+searches the current directory for dependent assemblies as well as any
+directories specified by the <replaceable>/dep</replaceable> (Dependencies)
+option.  CCI does not attempt to open a dependent assembly until some
+information from that assembly is needed. CCI is used because technically, CCI
+never "loads" any assembly; it just parses the data in the assembly file.  That
+is why CCI can reflect over a foreign <codeInline>mscorlib</codeInline> while
+<codeInline>System.Reflection</codeInline> cannot.  This allows Sandcastle to
+be used for documenting assemblies built with any version of the .NET
+Framework.  CCI is also used by <application>FxCop</application>.</definition>
+
+    <definedTerm address="NoAPIs">Why does my build fail with an error saying
+"No APIs found to document"?</definedTerm>
+    <definition>Classes need to be declared public in your code, you need to
+enable the <codeInline>DocumentPrivates</codeInline> and/or
+<codeInline>DocumentInternals</codeInline> project property so that Sandcastle
+documents the internal/private members, or you need to include at least one
+assembly and at least one namespace to document.  There should be at least one
+assembly, solution, or project file listed in the <ui>Documentation Sources</ui>
+node in the Project Explorer window.  Use the <codeInline>NamespacesSummaries</codeInline>
+or <codeInline>ApiFilter</codeInline> project propery editor to be sure that
+you have at least one valid item that is checked and thus included.  If you are
+using the <codeInline>ApiFilter</codeInline> property, check it to make sure
+you have not accidentally excluded everything.</definition>
+
+    <definedTerm address="OrcasNamer">Why does my build fail in
+<application>MRefBuilder</application> with a <codeInline>NullReferenceException</codeInline>
+related to <codeInline>OrcasNamer.WriteType</codeInline>?</definedTerm>
+    <definition>The most likely cause of this problem is that you have the
+project's <codeInline>FrameworkVersion</codeInline> property set to .NET 1.0 or
+.NET 1.1 but you are trying to document a .NET 2.0 or later assembly.  Check
+the property to make sure that it is set appropriately for your assembly.</definition>
+
+    <definedTerm address="Proxy">My build fails because I am behind a proxy
+server and it cannot connect to the MSDN web service.  How do I fix it?</definedTerm>
+    <definition><para>If the SDK link type project property related to the
+help file format you are building is set to <codeInline>MSDN</codeInline>,
+<application>BuildAssembler</application> will attempt to contact the MSDN web
+service to resolve links to SDK topics. If you are behind a proxy server, this
+will most likely fail and will abort the build process with an error similar
+to "<legacyBold>HTTP status 407: Proxy Authentication Required</legacyBold>".
+The simplest fix is to set the <codeInline>HtmlSdkLinkType</codeInline> and
+<codeInline>WebsiteSdkLinkType</codeInline> properties to <codeInline>None</codeInline>,
+the <codeInline>MsHelp2SdkLinkType</codeInline> property to <codeInline>Index</codeInline>,
+and the <codeInline>MSHelpViewerSdkLinkType</codeInline> property to
+<codeInline>Id</codeInline>. The downside for the HTML Help 1 and website formats
+is that you will not get links to online SDK content.  For the MS Help 2 and
+MS Help Viewer formats, the noted value generates links to the local help
+content when merged with the collection.</para>
+
+	<para>It has been reported that creating a <localUri>BuildAssembler.exe.config</localUri>
+file in the same folder as <application>BuildAssembler.exe</application> (the
+<localUri>.\ProductionTools</localUri> folder under the Sandcastle installation
+folder) and putting one of the following in it may allow it to work with the
+proxy server:</para>
+
+<code lang="xml" title="Method 1 (this works most often so try it first):">
+&lt;configuration&gt;
+    &lt;system.net&gt;
+        &lt;defaultProxy useDefaultCredentials="true"&gt;
+            &lt;proxy usesystemdefault="true"/&gt;
+        &lt;/defaultProxy&gt;
+    &lt;/system.net&gt;
+&lt;/configuration&gt;
+</code>
+
+<code lang="xml" title="Method 2:">
+&lt;configuration&gt;
+    &lt;system.net&gt;
+      &lt;defaultProxy enabled="true" useDefaultCredentials="true"&gt;
+        &lt;proxy bypassonlocal="True"
+            proxyaddress="http://yourproxy:8080" /&gt;
+      &lt;/defaultProxy&gt;
+    &lt;/system.net&gt;
+&lt;/configuration&gt;
+</code>
+
+<code lang="xml" title="Method 3 (use this if your company uses a proxy configuration script):">
+&lt;configuration&gt;
+    &lt;system.net&gt;
+      &lt;defaultProxy useDefaultCredentials="true"&gt;
+        &lt;proxy scriptLocation="http://your.server.com/proxy.pac"
+            usesystemdefault="True" /&gt;
+      &lt;/defaultProxy&gt;
+    &lt;/system.net&gt;
+&lt;/configuration&gt;
+</code></definition>
+
+    <definedTerm address="BAHang">My builds seem to hang during the
+<application>BuildAssembler</application> step.  Why?</definedTerm>
+    <definition>If your builds seem to hang during the <application>BuildAssembler</application>
+step, set the <codeInline>HtmlSdkLinkType</codeInline> and
+<codeInline>WebsiteSdkLinkType</codeInline> properties to <codeInline>None</codeInline>,
+the <codeInline>MsHelp2SdkLinkType</codeInline> property to <codeInline>Index</codeInline>,
+and the <codeInline>MSHelpViewerSdkLinkType</codeInline> property to
+<codeInline>Id</codeInline>.  This will get it to run faster with the side-effect
+that you will not have links to online SDK content for the HTML Help 1 and
+website help formats. The only other alternative is to be patient and wait for
+it to finish.  On a slow connection, it can take a very long time.  If you are
+building an MS Help 2 (HxS) or MS Help Viewer (MSHC) file, you can set the
+related option as noted above so that it generates links to the local help
+content when merged with the collection.</definition>
+
+    <definedTerm address="OutOfMemory">I'm getting an Out of Memory exception
+during a very large build.  How do I prevent it?</definedTerm>
+    <definition>When performing a build that generates an extremely large
+amount of output, you may encounter an <codeInline>OutOfMemoryException</codeInline>
+if verbose logging is enabled in the help file builder GUI.  If this occurs,
+turn off the <ui>Build window verbose logging enabled</ui> option in the
+<ui>File | User Preferences</ui> dialog box.  Full details are still written to
+the log file and can be viewed after the build.</definition>
+
+    <definedTerm address="HHC3002">Why is the help compiler failing with HHC3002
+and HHC3004 errors referencing non-html files such as images?</definedTerm>
+    <definition>See <link xlink:href="e076c319-ff84-40dc-bb00-ff4c72718215" />.</definition>
+
+    <definedTerm address="HHC6000">Why is the help compiler failing with HHC6000
+and HHC5007 errors referencing "disk full" and "fatal navigational compilation"
+errors?</definedTerm>
+    <definition>Check the log file for the <application>MRefBuilder</application>
+output.  It will most likely report that it found and documented zero types.
+This is caused by not having any public types in the documented assemblies or
+not specifying any assemblies at all to document (i.e. the Documentation Sources
+project node is empty or only contains XML comments files).  Sandcastle requires
+at least one assembly and will not document internal and private code by
+default.  Be sure to declare at least one class public.  If all classes really
+are supposed to be private and/or internal, set the <codeInline>DocumentPrivates</codeInline>
+and/or <codeInline>DocumentInternals</codeInline> project properties to true.</definition>
+
+    <definedTerm address="HHC6003">Why is the help compiler failing with
+<legacyBold>HHC6003</legacyBold> error stating that <localUri>itircl.dll</localUri>
+has not been registered?</definedTerm>
+    <definition><para>This error affects a small number of people and is caused
+by one of the help components (<localUri>ITCC.DLL</localUri>) either not getting
+installed or not getting registered correctly.  Search your system for the DLL.
+If not found, you can either locate it on another system that has the Help 2
+components or you can search Google for it.  Once you obtain it, you will need
+to copy it to the failing system and register it.  This can be done by running
+the following command from a command prompt.  Adjust the path to the DLL as
+necessary based on its location on your system.</para>
+
+<code lang="none">
+regsvr32 C:\Windows\System\itcc.dll
+</code></definition>
+
+</definitionTable>
+
+  </content>
+</section>
+
+<section address="SecHelpIssues">
+  <title>Help File Issues</title>
+  <content>
+
+<definitionTable>
+    <definedTerm address="NotLoading">Why doesn't my compiled help file load? /
+Why do all of the help file topics display a "Page not found" or "This program
+cannot display the webpage" error?</definedTerm>
+    <definition><para>For an MS Help 2 file (.HxS), you need a separate viewer
+to load the help file or you need to integrate it into an existing collection.
+See the <link xlink:href="c18d6cb6-e4e4-4944-84ee-f867aa6cfb0d" /> topic for a
+link to a freeware Help 2 viewer and a tool that can help you register your
+help file with a collection.</para>
+
+	<para>For HTML Help 1 files (.CHM), if the path to the help file contains
+"#", the help file may fail to load.  The apparent reason for this is that the
+help viewer considers the "#" to be an unsafe character and it must be encoded
+for it to use it. Rename the folder to remove the "#" to get the file to load.</para>
+
+	<para>Another cause for the pages not displaying is a security patch that
+prevents the help viewer from running from the intranet zone (i.e. a network
+share).  You can fix this problem by saving the following to a file and
+importing it into the registry.</para>
+
+<code lang="none" title="HelpFix.reg">
+Windows Registry Editor Version 5.00
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\HTMLHelp\1.x\ItssRestrictions]
+"MaxAllowedZone"=dword:00000001
+</code>
+
+	<para>It may also be possible to unblock the file so that it can be viewed
+by right-clicking on it, selecting <ui>Properties</ui> and clicking the
+<ui>Unblock</ui> button on the <ui>General</ui> tab if it is there.</para></definition>
+
+    <definedTerm address="EmptyHelp">Why doesn't my help file contain any/all
+of the classes from the assembly?</definedTerm>
+    <definition><para>The most likely cause of an empty help file or one that
+does not contain all of your assembly's classes is that the missing classes are
+not declared public.  By default, when you add a class to a Visual Studio
+project, it does not add the <codeInline>public</codeInline> keyword to it.  As
+such, you must remember to edit the class to make it public if necessary.
+Sandcastle does not document private and internal methods by default either.
+If you really want to see them in the help file, set the
+<codeInline>DocumentPrivates</codeInline> and/or <codeInline>DocumentInternals</codeInline>
+project properties to true.</para>
+
+    <para>You should also check the project to be sure that it does not have an
+<codeInline>ApiFilter</codeInline> defined that is excluding the items in
+question.  An <codeInline>&lt;exclude /&gt;</codeInline> tag in the item's XML
+comments will also cause it to be removed from the documentation.</para>
+
+    <para>Another possible cause of missing classes is compiling a help file
+project using the wrong framework version selection.  For example, if you
+compile a .NET 2.0 help project with the <codeInline>FrameworkVersion</codeInline>
+project property set to a .NET 1.x version number, you may end up with lots
+of missing classes.  As such, check the property to be sure that it is set
+appropriately.</para></definition>
+
+    <definedTerm address="NoComments">The help file is built okay but I don't
+see my comments on the members.  Why not?</definedTerm>
+    <definition><para>You either have not enabled the Visual Studio project
+option to produce an XML comments file for your assembly, it has a name
+different from that of the assembly and the help file builder did not see it
+when you added the assembly to the project, or the XML comments filename is not
+unique.  Check the Documentation Sources node in the Project Explorer window.
+You should see the assembly name and the XML comments filename listed.  If you
+added a solution or project file as a documentation source, check the build log
+to see if it found the correct assembly and XML comments file.  See the
+<link xlink:href="c47d9242-b3a8-4153-aa9e-ae8cb41cefe2" /> topic
+for information on enabling the XML comments file option in Visual Studio.</para>
+
+	<para>Be sure to give each project's XML comments file a unique name as
+they are copied to a common location for the build.  Identically named files
+may overwrite each other and the documentation in the overwritten files will
+not appear in the help file.  If the comments file options are set correctly,
+check to be sure that the XML comments in your source files are preceded by a
+triple slash for C# code (///) or a triple quote for VB.NET (''').</para></definition>
+
+    <definedTerm address="ShowMissing">My help file contains lots of red
+"missing documentation" messages.  How do I get rid of them?</definedTerm>
+    <definition>The project properties in the
+<link xlink:href="5a2ab898-7161-454d-b5d3-959df0de0e36">Show Missing Tags</link>
+category control which types of "missing documentation" messages appear in thehelp
+file.  These can help you locate help topics that need attention to provide
+better documentation.  Adding the missing tags to your code is one way to get
+rid of the message.  You can search the help file for the text "missing
+documentation" or review the build log file to locate the members in question.
+If you do not care to see these messages, simply alter the project properties
+to turn off the ones that you do not want to see.</definition>
+
+    <definedTerm address="CodeSamples">Why are all of my code samples colorized
+as C# code? / Why don't my code samples show up unless I select the C# code
+filter?</definedTerm>
+    <definition><para>The help file builder automatically includes a copy of the
+<link xlink:href="7f03ba39-09f8-4320-bdbd-ed31a3bd885f" /> that adds several
+attributes to the <codeInline>&lt;code&gt;</codeInline> tag.  One of these is
+the <codeInline>lang</codeInline> attribute that lets you specify the language
+rules to use when colorizing the code.  It is also used to indicate the code
+filter to which the sample should be connected.  If omitted, the component will
+assume that the code is C#.  You can change this behavior by adding a
+<codeInline>lang</codeInline> attribute that specifies a different language.
+You can also specify "none" as a value to disable colorization and the code
+filter for it.</para>
+
+	<para>If the majority of your code samples are in a language other than C#,
+you can override the default by using the <codeInline>ComponentConfigurations</codeInline>
+project property to add the <legacyBold>Code Block Component</legacyBold> to
+the project and configure it to use a different default setting.</para></definition>
+
+	<definedTerm address="DefaultTitle">The language name is showing up as the
+default title on a colorized code block but I don't want it to do that.  How do
+I get rid of it?</definedTerm>
+    <definition>Specify the <codeInline>title</codeInline> attribute and set it
+to a title of your choice or to a single space to suppress it
+(<codeInline>title=" "</codeInline>).  To turn it off globally, use the
+<codeInline>ComponentConfigurations</codeInline> project option to add the
+<legacyBold>Code Block Component</legacyBold> to the project and edit its
+configuration to turn off the <ui>Use language name as title</ui> option.</definition>
+
+    <definedTerm address="NoTitle">Why does my help file title not appear when
+I use a language selection other than English?</definedTerm>
+    <definition><para>For non-English HTML Help 1 help files, the help title
+will not appear on the title of the help window unless the system's language
+matches the help file's language exactly.  This is a known issue with the way
+the help viewer compares the language values.</para>
+
+    <para>To resolve encoding issues, add the <link xlink:href="31696f39-8f4e-4c4d-ab08-41a40793df03" />
+to the project.  See the plug-in documentation for information about its
+configuration.</para></definition>
+
+    <definedTerm address="BadChars">Why does the help file title contain
+garbage characters?</definedTerm>
+    <definition><para>The HTML Help 1 compiler does not appear to support
+Unicode encoding of its project and table of contents files.  This may cause
+the help title to display incorrectly if it contains extended characters that
+need encoding.</para>
+
+    <para>To resolve encoding issues, add the <link xlink:href="31696f39-8f4e-4c4d-ab08-41a40793df03" />
+to the project.  See the plug-in documentation for information about its
+configuration.</para></definition>
+
+    <definedTerm address="ViewHelp2">How can I view an MS Help 2 file?</definedTerm>
+    <definition>For proofreading, you can use a standalone help view such as
+<localUri>H2Viewer.exe</localUri>.  See the <link xlink:href="c18d6cb6-e4e4-4944-84ee-f867aa6cfb0d" />
+topic for information on where to get it.  See the next question for information
+on deploying a Help 2 file.</definition>
+
+    <definedTerm address="DeployHelp2">How can I deploy an MS Help 2 file to an
+end-user's system?</definedTerm>
+    <definition>The simplest way to deploy a Help 2 file is to use
+<localUri>H2Reg.exe</localUri>.  The help file builder produces a configuration
+file for it as part of the Help 2 build process.  See the
+<link xlink:href="68a2fa4e-c6de-47ed-a9a6-60cc6ef01df4" /> topic for more
+information.</definition>
+
+    <definedTerm address="NamedUrlIndex">How can I add support for
+<codeInline>NamedUrlIndex</codeInline> options such as <codeInline>DefaultPage</codeInline>,
+<codeInline>HomePage</codeInline>, <codeInline>AboutPageIcon</codeInline>, etc.?</definedTerm>
+    <definition>See the <link xlink:href="74664b00-b83f-450a-833a-25984ba812e3" /> topic
+for details.</definition>
+
+</definitionTable>
+
+  </content>
+</section>
+
+<section address="SecApiFilter">
+  <title>The API Filter</title>
+  <content>
+
+<definitionTable>
+    <definedTerm address="FilterConflict1">I used the <codeInline>NamespaceSummaries</codeInline>
+project option to exclude a namespace but it is still showing up in the help
+file. Why? / I used the &lt;exclude /&gt; tag feature to exclude a
+namespace/type/member but it is still showing up in the help file.  Why?</definedTerm>
+    <definition>Check the build log in the section where it generated the API
+filter.  You will probably see a warning there about the exclusion conflicting
+with the API filter.  The API filter always wins.  To fix the issue, edit the
+<codeInline>ApiFilter</codeInline> project property and exclude the item there.</definition>
+
+    <definedTerm address="FilterConflict2">I used the <codeInline>NamespaceSummaries</codeInline>
+project option to exclude a namespace.  I now want it included but it is not
+showing up.  Why? / I used the &lt;exclude /&gt; tag to exclude a
+namespace/type/member.  I removed the tag as I now want it included but it is
+not showing up.  Why?</definedTerm>
+    <definition>Check the <codeInline>ApiFilter</codeInline> project property
+as it is probably being excluded in there.  This situation does not generate a
+warning in the log so you have to check for it manually.  Simply place a
+checkmark next to the item you want to have included.</definition>
+
+</definitionTable>
+
+  </content>
+</section>
+
+<section address="SecAddContent">
+  <title>Conceptual Content/Additional Content</title>
+  <content>
+
+<definitionTable>
+    <definedTerm address="Transform">I want my additional content pages to look
+like the selected presentation style used in the API topics. How can I do that?</definedTerm>
+    <definition>The preferred method for adding additional content (also known
+as conceptual content) to a project is to use Microsoft Assistance Markup
+Language (MAML).  See the <link xlink:href="5292ce5c-fda1-4a77-9155-a11755ef1730" />
+topics for more information.  An older method (<link xlink:href="a31e4dd4-7466-4c12-b734-60bd50fc91af" />)
+is also supported but that feature has been deprecated in favor of using MAML.</definition>
+
+    <definedTerm address="DefaultTopic">How do I arrange the additional content
+pages and specify which is the default topic?</definedTerm>
+    <definition>If using MAML, the <link xlink:href="54e3dc97-5125-441e-8e84-7f9303e95f26" />
+is used to define the content layout and the default topic.  For HTML files,
+add a site map file to the project and edit it to define the layout.  See the
+<link xlink:href="3dd5fe3b-1bc3-42e5-8900-56165e3f9aed" /> topic for details.</definition>
+
+	<definedTerm address="RefLinks">How can I create a link to a namespace
+element's help topic from an additional content page?</definedTerm>
+    <definition>If editing a MAML topic, use the <link xlink:href="e49eea91-a9ef-4aa5-ad8f-16ebd61b798a" />
+to add a link to the topic.  If editing an HTML file, use a
+<codeInline>&lt;see&gt;</codeInline> tag to reference the namespace element.
+When the additional content page is parsed, the <codeInline>&lt;see&gt;</codeInline>
+tag will be replaced with a link to the namespace element's help topic page.
+See the <link xlink:href="3e3772fb-f8d2-49cf-8199-5f61f2d57ce8" /> help topic
+for details.</definition>
+
+    <definedTerm address="LinkFromComments">How can I create a link to an
+additional content page from a a namespace, type, or member help topic?</definedTerm>
+    <definition><para>Edit the member's XML comments (summary, remarks, etc) to
+add an anchor (<codeInline>&lt;a&gt;</codeInline>) tag that points to the
+additional content page. To add a link in the Project Summary or Namespace
+comments, add the anchor tag to the help file builder's Project Summary notes
+or namespace comments.  Below are two examples of adding a link in the XML
+comments.  Note that all namespace help topics reside in an
+<localUri>.\html</localUri> folder so you must use a relative path to go up one
+level to find the additional content file.  The first example assumes that the
+file is copied to the root of the help project.  As such, no additional path
+beyond the relative indicator is required.  The second example assumes that the
+file is copied to a <localUri>.\Tutorials</localUri> folder.  In that case, you
+must also specify the folder name.</para>
+
+<code lang="cs" title="Linking to Additional Content">
+/// &lt;summary&gt;
+/// A class member.
+/// &lt;/summary&gt;
+/// &lt;remarks&gt;Class usage tutorial:
+/// &lt;a href="../SomeClassTutorial.html"&gt;SomeClass Tutorial&lt;/a&gt;
+/// &lt;/remarks&gt;
+public void TestMethod()
+{
+    // ... Method implementation ...
+}
+
+/// &lt;summary&gt;
+/// A useful class.  For more information see the
+/// &lt;a href="../Tutorials/SomeClass.html"&gt;tutorial&lt;/a&gt;.
+/// &lt;/summary&gt;
+public TestClass
+{
+    // ... Class implementation ...
+}
+</code></definition>
+
+	<definedTerm address="ColorizeCode">How can I colorize code in my
+additional content (HTML) files?</definedTerm>
+    <definition>Use a <codeInline>&lt;pre&gt;</codeInline> tag and specify the
+necessary attributes to colorize it.  When the additional content page is
+parsed, the content will be colorized based on the settings. See the
+<link xlink:href="d80219be-54ba-4c5f-8903-83ef29fbaa00">Syntax
+Highlighting &lt;pre&gt; Tag Content</link> help topic for details.</definition>
+
+</definitionTable>
+
+  </content>
+</section>
+
+<section address="SecBuildComp">
+  <title>Custom Build Components</title>
+  <content>
+
+<definitionTable>
+    <definedTerm address="ConfigComp">How do I configure the custom build
+components with project-specific settings?</definedTerm>
+    <definition>Use the <codeInline>ComponentConfigurations</codeInline> project
+property.  Click the "<ui>...</ui>" button to the right of the property, select
+the component from the list in the dialog that appears, and click the
+<ui>Configure</ui> button.</definition>
+
+    <definedTerm address="CompInfo">Where can I find more information on the
+custom build components supplied with the help file builder?</definedTerm>
+    <definition>See the <link xlink:href="8dcbb69b-7a1a-4049-8e6b-2bf344efbbc9">Custom
+Build Components</link> help topic for more information and links to details
+about each component.</definition>
+
+    <definedTerm address="CreateComp">How can I create my own custom build
+components?</definedTerm>
+    <definition>For information on writing your own custom build components,
+see the Code Project article
+<externalLink>
+  <linkText>Creating Custom Build Components for Sandcastle</linkText>
+  <linkUri>http://www.codeproject.com/KB/cs/SandcastleComponents.aspx</linkUri>
+  <linkTarget>_blank</linkTarget>
+</externalLink>.</definition>
+</definitionTable>
+
+  </content>
+</section>
+
+<section address="SecPlugIns">
+  <title>Build Process Plug-Ins</title>
+  <content>
+
+<definitionTable>
+    <definedTerm address="ConfigPlugIn">How do I configure the plug-ins with
+project-specific settings?</definedTerm>
+    <definition>Use the <codeInline>PlugInConfigurations</codeInline> project
+property.  Click the "<ui>...</ui>" button to the right of the property, select
+the plug-ins from the list in the dialog that appears, and click the
+<ui>Configure</ui> button.</definition>
+
+    <definedTerm address="PlugInInfo">Where can I find more information on the
+plug-ins supplied with the help file builder?</definedTerm>
+    <definition>See the <link xlink:href="e031b14e-42f0-47e1-af4c-9fed2b88cbc7">Build
+Process Plug-Ins</link> help topic for more information and links to details
+about each plug-in.</definition>
+
+    <definedTerm address="CreatePlugIn">How can I create my own custom plug-ins?</definedTerm>
+    <definition>For information on writing your own custom plug-ins, see the
+<link xlink:href="a14e026e-642f-4ce6-9506-341e57cc3d1f" />
+help topic.</definition>
+</definitionTable>
+
+  </content>
+</section>
+
+<section address="SecGenHelp">
+  <title>General Help Topic Questions</title>
+  <content>
+
+<definitionTable>
+    <definedTerm address="NamingMethod">How can I create a link to a namespace
+element's help topic from an external source such as application code or a page
+in an external web site?</definedTerm>
+    <definition><para>Set the project's <codeInline>NamingMethod</codeInline>
+property based on your preference and see the
+<link xlink:href="1b2dff59-92cc-4578-b261-f3849f30c26c#NamingMethod">NamingMethod</link>
+help topic for examples that show how to open specific topics based on the
+selected naming method from application code and how to determine the URL for
+a website link.</para></definition>
+
+</definitionTable>
+
+  </content>
+</section>
+
+<!--
+<section address="SecOther">
+  <title>Other</title>
+  <content>
+
+  </content>
+</section>
+-->
+
+    <relatedTopics>
+    <link xlink:href="8c0c97d0-c968-4c15-9fe9-e8f3a443c50a" />
+    <link xlink:href="c18d6cb6-e4e4-4944-84ee-f867aa6cfb0d" />
+    </relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

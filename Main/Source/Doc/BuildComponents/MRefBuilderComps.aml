@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="4e92303d-66ad-4a5d-9a03-94f316a0dd38" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+	  <para>Custom components can be used to alter the way that the
+Sandcastle <application>MRefBuilder</application> tool generates reflection
+information for documented assemblies.  The following components are supplied
+in this release:</para>
+    </introduction>
+
+<section>
+  <content>
+<list class="bullet">
+    <listItem><link xlink:href="041d7ee8-1698-4256-aa9b-507c1b366cf6" /></listItem>
+</list>    
+  </content>
+</section>
+
+    <relatedTopics>
+      <link xlink:href="90a1d911-0315-4865-a414-58189cca1ecb" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

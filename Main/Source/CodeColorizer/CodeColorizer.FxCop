@@ -1,0 +1,374 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FxCopProject Version="10.0" Name="My FxCop Project">
+ <ProjectOptions>
+  <SharedProject>True</SharedProject>
+  <Stylesheet Apply="False">$(FxCopDir)\Xml\FxCopReport.xsl</Stylesheet>
+  <SaveMessages>
+   <Project Status="Active, Excluded" NewOnly="False" />
+   <Report Status="Active" NewOnly="False" />
+  </SaveMessages>
+  <ProjectFile Compress="True" DefaultTargetCheck="True" DefaultRuleCheck="True" SaveByRuleGroup="" Deterministic="True" />
+  <EnableMultithreadedLoad>True</EnableMultithreadedLoad>
+  <EnableMultithreadedAnalysis>True</EnableMultithreadedAnalysis>
+  <SourceLookup>True</SourceLookup>
+  <AnalysisExceptionsThreshold>10</AnalysisExceptionsThreshold>
+  <RuleExceptionsThreshold>1</RuleExceptionsThreshold>
+  <Spelling Locale="en-US" />
+  <OverrideRuleVisibilities>False</OverrideRuleVisibilities>
+  <CustomDictionaries SearchFxCopDir="True" SearchUserProfile="True" SearchProjectDir="True" />
+  <SearchGlobalAssemblyCache>False</SearchGlobalAssemblyCache>
+  <DeadlockDetectionTimeout>120</DeadlockDetectionTimeout>
+  <IgnoreGeneratedCode>False</IgnoreGeneratedCode>
+  <TargetFrameworkVersion>0.0</TargetFrameworkVersion>
+ </ProjectOptions>
+ <Targets>
+  <Target Name="$(ProjectDir)/ColorizerLibrary/bin/Debug/ColorizerLibrary.dll" Analyze="True" AnalyzeAllChildren="True" />
+ </Targets>
+ <Rules>
+  <RuleFiles>
+   <RuleFile Name="$(FxCopDir)\Rules\DesignRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\GlobalizationRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\InteroperabilityRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\MobilityRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\NamingRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\PerformanceRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\PortabilityRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\SecurityRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\UsageRules.dll" Enabled="True" AllRulesEnabled="True" />
+  </RuleFiles>
+  <Groups />
+  <Settings />
+ </Rules>
+ <FxCopReport Version="10.0">
+  <Namespaces>
+   <Namespace Name="ColorizerLibrary">
+    <Messages>
+     <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Status="Excluded" Created="2008-09-19 22:25:52Z">
+      <Issue>
+       <Item>ColorizerLibrary</Item>
+      </Issue>
+      <Notes>
+       <User Name="EWOODRUFF">
+        <Note Id="6" />
+       </User>
+      </Notes>
+     </Message>
+     <Message Id="Colorizer" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2006-11-19 22:08:30Z">
+      <Issue Name="Namespace">
+       <Item>Colorizer</Item>
+       <Item>ColorizerLibrary</Item>
+      </Issue>
+      <Notes>
+       <User Name="EWOODRUFF">
+        <Note Id="0" />
+       </User>
+      </Notes>
+     </Message>
+    </Messages>
+   </Namespace>
+   <Namespace Name="ColorizerLibrary.Controls">
+    <Messages>
+     <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Status="Excluded" Created="2006-11-19 22:08:30Z">
+      <Issue>
+       <Item>ColorizerLibrary.Controls</Item>
+      </Issue>
+      <Notes>
+       <User Name="EWOODRUFF">
+        <Note Id="2" />
+       </User>
+      </Notes>
+     </Message>
+     <Message Id="Colorizer" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2006-11-19 22:08:30Z">
+      <Issue Name="Namespace">
+       <Item>Colorizer</Item>
+       <Item>ColorizerLibrary.Controls</Item>
+      </Issue>
+      <Notes>
+       <User Name="EWOODRUFF">
+        <Note Id="0" />
+       </User>
+      </Notes>
+     </Message>
+    </Messages>
+   </Namespace>
+  </Namespaces>
+  <Targets>
+   <Target Name="$(ProjectDir)/ColorizerLibrary/bin/Debug/ColorizerLibrary.dll">
+    <Modules>
+     <Module Name="colorizerlibrary.dll">
+      <Messages>
+       <Message Id="Colorizer" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2008-09-19 22:25:52Z">
+        <Issue Name="Assembly">
+         <Item>Colorizer</Item>
+         <Item>'ColorizerLibrary.dll'</Item>
+        </Issue>
+        <Notes>
+         <User Name="EWOODRUFF">
+          <Note Id="5" />
+         </User>
+        </Notes>
+       </Message>
+      </Messages>
+      <Namespaces>
+       <Namespace Name="ColorizerLibrary">
+        <Types>
+         <Type Name="AvgTimer">
+          <Messages>
+           <Message Id="Avg" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2006-11-19 22:08:30Z">
+            <Issue Name="Type">
+             <Item>Avg</Item>
+             <Item>'AvgTimer'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="0" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="BasicTimer">
+          <Members>
+           <Member Name="#QueryPerformanceCounter(System.Int64&amp;)">
+            <Messages>
+             <Message TypeName="MovePInvokesToNativeMethodsClass" Category="Microsoft.Design" CheckId="CA1060" Status="Excluded" Created="2006-11-19 22:08:30Z">
+              <Issue>
+               <Item>'BasicTimer.QueryPerformanceCounter(out long)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="1" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#QueryPerformanceFrequency(System.Int64&amp;)">
+            <Messages>
+             <Message TypeName="MovePInvokesToNativeMethodsClass" Category="Microsoft.Design" CheckId="CA1060" Status="Excluded" Created="2006-11-19 22:08:30Z">
+              <Issue>
+               <Item>'BasicTimer.QueryPerformanceFrequency(out long)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="1" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Stop()">
+            <Messages>
+             <Message Id="Stop" TypeName="IdentifiersShouldNotMatchKeywords" Category="Microsoft.Naming" CheckId="CA1716" Status="Excluded" Created="2008-09-19 22:25:52Z">
+              <Issue Name="Member">
+               <Item>'BasicTimer.Stop()'</Item>
+               <Item>Stop</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="8" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="CodeColorizer">
+          <Messages>
+           <Message Id="Colorizer" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2006-11-19 22:08:30Z">
+            <Issue Name="Type">
+             <Item>Colorizer</Item>
+             <Item>'CodeColorizer'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="0" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+          <Members>
+           <Member Name="#BenchmarkAvgSec">
+            <Messages>
+             <Message Id="Avg" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2006-11-19 22:08:30Z">
+              <Issue Name="Member">
+               <Item>Avg</Item>
+               <Item>'CodeColorizer.BenchmarkAvgSec'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="0" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#CopyImageUrl">
+            <Messages>
+             <Message TypeName="UriPropertiesShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1056" Status="Excluded" Created="2007-05-02 22:40:41Z">
+              <Issue>
+               <Item>'CodeColorizer.CopyImageUrl'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="4" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#LanguageStyleFileName">
+            <Messages>
+             <Message Id="FileName" TypeName="CompoundWordsShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1702" Status="Excluded" Created="2008-09-19 22:25:52Z">
+              <Issue Name="MemberShouldBeDiscreteTerm">
+               <Item>FileName</Item>
+               <Item>'CodeColorizer.LanguageStyleFileName'</Item>
+               <Item>Filename</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="7" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#LanguageSyntaxFileName">
+            <Messages>
+             <Message Id="FileName" TypeName="CompoundWordsShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1702" Status="Excluded" Created="2008-09-19 22:25:52Z">
+              <Issue Name="MemberShouldBeDiscreteTerm">
+               <Item>FileName</Item>
+               <Item>'CodeColorizer.LanguageSyntaxFileName'</Item>
+               <Item>Filename</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="7" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#ReplaceByCode(System.Text.RegularExpressions.Match)">
+            <Messages>
+             <Message TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308" Status="Excluded" Created="2008-09-19 22:25:52Z">
+              <Issue Name="ToUpperInvariant">
+               <Item>'CodeColorizer.ReplaceByCode(Match)'</Item>
+               <Item>'string.ToLower(CultureInfo)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="9" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#StripLeadingWhitespace(System.String,System.Int32)">
+            <Messages>
+             <Message Id="Whitespace" TypeName="CompoundWordsShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1702" Status="Excluded" Created="2006-11-19 22:08:30Z">
+              <Issue Name="ShouldBeCompoundWord">
+               <Item>Whitespace</Item>
+               <Item>method</Item>
+               <Item>StripLeadingWhitespace</Item>
+               <Item>WhiteSpace</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="3" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="CodeColorizer+CollapsibleRegion">
+          <Members>
+           <Member Name="#.ctor(System.Int32,System.Text.RegularExpressions.Match,System.Int32)">
+            <Messages>
+             <Message TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308" Status="Excluded" Created="2008-09-19 22:25:52Z">
+              <Issue Name="ToUpperInvariant">
+               <Item>'CodeColorizer.CollapsibleRegion.CollapsibleRegion(int, Match, int)'</Item>
+               <Item>'string.ToLower(CultureInfo)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="9" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+       <Namespace Name="ColorizerLibrary.Controls">
+        <Types>
+         <Type Name="TextColorizerControl">
+          <Messages>
+           <Message Id="Colorizer" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2006-11-19 22:08:30Z">
+            <Issue Name="Type">
+             <Item>Colorizer</Item>
+             <Item>'TextColorizerControl'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="0" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+        </Types>
+       </Namespace>
+      </Namespaces>
+     </Module>
+    </Modules>
+   </Target>
+  </Targets>
+  <Notes>
+   <User Name="EWOODRUFF">
+    <Note Id="0" Modified="2006-11-19 22:11:57Z">Okay as is</Note>
+    <Note Id="1" Modified="2006-11-19 22:47:47Z">Not worth it</Note>
+    <Note Id="2" Modified="2006-11-19 22:50:20Z">Okay as is</Note>
+    <Note Id="3" Modified="2006-11-19 22:50:29Z">Okay as is</Note>
+    <Note Id="4" Modified="2007-05-02 22:41:03Z">It's fine as it is.</Note>
+    <Note Id="5" Modified="2008-09-19 22:26:14Z">Okay as is</Note>
+    <Note Id="6" Modified="2008-09-19 22:26:24Z">It's a small library</Note>
+    <Note Id="7" Modified="2008-09-19 22:26:54Z">Library is in use</Note>
+    <Note Id="8" Modified="2008-09-19 22:28:55Z">Okay as is</Note>
+    <Note Id="9" Modified="2008-09-19 22:31:03Z">Lowercase is preferred here</Note>
+   </User>
+  </Notes>
+  <Rules>
+   <Rule TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020">
+    <Resolution Name="Default">Consider merging the types defined in '{0}' with another namespace.</Resolution>
+   </Rule>
+   <Rule TypeName="CompoundWordsShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1702">
+    <Resolution Name="MemberShouldBeDiscreteTerm">The compound word '{0}' in member name {1} exists as a discrete term. If your usage is intended to be single word, case it as '{2}' or strip the first token entirely if it represents any sort of Hungarian notation.</Resolution>
+    <Resolution Name="ShouldBeCompoundWord">The discrete term '{0}' in {1} '{2}' should be expressed as a compound term, '{3}'.</Resolution>
+   </Rule>
+   <Rule TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704">
+    <Resolution Name="Assembly">Correct the spelling of '{0}' in assembly name {1}.</Resolution>
+    <Resolution Name="Member">Correct the spelling of '{0}' in member name {1} or remove it entirely if it represents any sort of Hungarian notation.</Resolution>
+    <Resolution Name="Namespace">Correct the spelling of '{0}' in namespace name '{1}'.</Resolution>
+    <Resolution Name="Type">Correct the spelling of '{0}' in type name {1}.</Resolution>
+   </Rule>
+   <Rule TypeName="IdentifiersShouldNotMatchKeywords" Category="Microsoft.Naming" CheckId="CA1716">
+    <Resolution Name="Member">Rename virtual/interface member {0} so that it no longer conflicts with the reserved language keyword '{1}'. Using a reserved keyword as the name of a virtual/interface member makes it harder for consumers in other languages to override/implement the member.</Resolution>
+   </Rule>
+   <Rule TypeName="MovePInvokesToNativeMethodsClass" Category="Microsoft.Design" CheckId="CA1060">
+    <Resolution Name="Default">Because it is a P/Invoke method, {0} should be defined in a class named NativeMethods, SafeNativeMethods, or UnsafeNativeMethods.</Resolution>
+   </Rule>
+   <Rule TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308">
+    <Resolution Name="ToUpperInvariant">In method {0}, replace the call to {1} with String.ToUpperInvariant().</Resolution>
+   </Rule>
+   <Rule TypeName="UriPropertiesShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1056">
+    <Resolution Name="Default">Change the type of property {0} from string to System.Uri.</Resolution>
+   </Rule>
+  </Rules>
+ </FxCopReport>
+</FxCopProject>
