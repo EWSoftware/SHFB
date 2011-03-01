@@ -202,15 +202,15 @@ API help in the code editor and object browser.</para>
 <codeInline>&lt;inheritdoc /&gt;</codeInline> tag.  See the comments within
 each for details about what the examples are showing.</para>
 
-<code source="..\TestDoc\DocumentationInheritance\CustomException.cs"
+<code source="..\TestCaseProject\DocumentationInheritance\CustomException.cs"
     region="Constructor documentation inheritance" outlining="true"
     lang="cs" title="Constructor Documentation Inheritance" />
 
-<code source="..\TestDoc\DocumentationInheritance\ExplicitImplementation.cs"
+<code source="..\TestCaseProject\DocumentationInheritance\ExplicitImplementation.cs"
     region="Interface implementation documentation inheritance" outlining="true"
     lang="cs" title="Interface Implementation Examples" />
 
-<code source="..\TestDoc\DocumentationInheritance\DocumentationInheritance.cs"
+<code source="..\TestCaseProject\DocumentationInheritance\DocumentationInheritance.cs"
     region="Various documentation inheritance examples" outlining="true"
     lang="cs" title="Various Other Examples" />
 

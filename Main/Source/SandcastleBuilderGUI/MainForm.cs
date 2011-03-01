@@ -31,9 +31,11 @@
 //                           Changed the UI to a more Visual Studio-like
 //                           layout better suited to editing the project.
 // 1.9.0.0  07/05/2010  EFW  Added support for MS Help Viewer
+// 1.9.1.0  07/09/2010  EFW  Updated for use with .NET 4.0 and MSBuild 4.0.
 //=============================================================================
 
 using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -47,7 +49,7 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
-using Microsoft.Build.BuildEngine;
+using Microsoft.Build.Exceptions;
 
 using SandcastleBuilder.Gui.ContentEditors;
 using SandcastleBuilder.Gui.Properties;
@@ -216,7 +218,7 @@ namespace SandcastleBuilder.Gui
         /// a new, unnamed project</param>
         private void CreateProject(string projectName, bool mustExist)
         {
-            string[] values;
+            List<string> values;
 
             project = new SandcastleProject(projectName, mustExist);
             project.DocumentationSourcesChanged += new EventHandler(project_Modified);
@@ -230,7 +232,7 @@ namespace SandcastleBuilder.Gui
             this.project_Modified(this, EventArgs.Empty);
 
             // Get the configuration and platform values
-            values = project.MSBuildProject.GetConditionedPropertyValues("Configuration");
+            values = project.MSBuildProject.ConditionedProperties["Configuration"];
 
             tcbConfig.Items.Clear();
 
@@ -243,7 +245,7 @@ namespace SandcastleBuilder.Gui
                 tcbConfig.Items.Add("Release");
             }
 
-            values = project.MSBuildProject.GetConditionedPropertyValues("Platform");
+            values = project.MSBuildProject.ConditionedProperties["Platform"];
 
             tcbPlatform.Items.Clear();
 
@@ -399,6 +401,9 @@ namespace SandcastleBuilder.Gui
 
                 if(entityReferencesWindow != null)
                     entityReferencesWindow.CurrentProject = null;
+
+                if(project != null)
+                    project.Dispose();
 
                 project = projectExplorer.CurrentProject = projectProperties.CurrentProject = null;
                 this.UpdateFilenameInfo();
@@ -1284,18 +1289,18 @@ namespace SandcastleBuilder.Gui
 
                     // Read-only and/or hidden files and folders are ignored as they are assumed to be under
                     // source control.
-                    foreach(string file in Directory.GetFiles(outputFolder))
+                    foreach(string file in Directory.EnumerateFiles(outputFolder))
                         if((File.GetAttributes(file) & (FileAttributes.ReadOnly | FileAttributes.Hidden)) == 0)
                             File.Delete(file);
                         else
                             sb.AppendFormat("Did not delete read-only or hidden file '{0}'\r\n", file);
 
-                    foreach(string folder in Directory.GetDirectories(outputFolder))
+                    foreach(string folder in Directory.EnumerateDirectories(outputFolder))
                         try
                         {
                             // Some source control providers have a mix of read-only/hidden files within a folder
                             // that isn't read-only/hidden (i.e. Subversion).  In such cases, leave the folder alone.
-                            if(Directory.GetFileSystemEntries(folder, "*").Any(f =>
+                            if(Directory.EnumerateFileSystemEntries(folder, "*", SearchOption.AllDirectories).Any(f =>
                               (File.GetAttributes(f) & (FileAttributes.ReadOnly | FileAttributes.Hidden)) != 0))
                                 sb.AppendFormat("Did not delete folder '{0}' as it contains read-only or hidden " +
                                     "folders/files\r\n", folder);
@@ -1480,7 +1485,6 @@ namespace SandcastleBuilder.Gui
         {
             ProcessStartInfo psi;
             FilePath webServerPath = new FilePath(null);
-            string[] files = null;
             string path;
 
             // Make sure we start out in the project's output folder
@@ -1516,7 +1520,7 @@ namespace SandcastleBuilder.Gui
                     // Visual Studio conveniently provides a development web server that doesn't require IIS
                     webServerPath.Path = String.Format(CultureInfo.InvariantCulture, "%SystemRoot%" +
                         @"\Microsoft.NET\Framework\v{0}\WebDev.WebServer.exe",
-                        FrameworkVersionTypeConverter.LatestMatching("2"));
+                        FrameworkVersionTypeConverter.LatestFrameworkMatching(".NET 2"));
 
                     // Visual Studio 2008 and later put it in a different location
                     if(!File.Exists(webServerPath))
@@ -1525,22 +1529,17 @@ namespace SandcastleBuilder.Gui
                             @"Microsoft Shared\DevServer");
 
                         if(Directory.Exists(path))
-                            files = Directory.GetFiles(path, "WebDev.WebServer.exe",
-                                SearchOption.AllDirectories);
+                            webServerPath.Path = Directory.EnumerateFiles(path, "WebDev.WebServer.exe",
+                                SearchOption.AllDirectories).FirstOrDefault();
 
-                        if(files != null && files.Length != 0)
-                            webServerPath.Path = files[0];
-                        else
+                        if(!File.Exists(webServerPath))
                         {
                             path = Environment.ExpandEnvironmentVariables(@"%ProgramFiles(x86)%\" +
                                 @"Common Files\Microsoft Shared\DevServer");
 
                             if(Directory.Exists(path))
-                                files = Directory.GetFiles(path, "WebDev.WebServer.exe",
-                                    SearchOption.AllDirectories);
-
-                            if(files != null && files.Length != 0)
-                                webServerPath.Path = files[0];
+                                webServerPath.Path = Directory.EnumerateFiles(path, "WebDev.WebServer.exe",
+                                    SearchOption.AllDirectories).FirstOrDefault();
                         }
                     }
 

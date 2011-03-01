@@ -23,19 +23,15 @@
  </ProjectOptions>
  <Targets>
   <AssemblyReferenceDirectories>
-   <Directory>$(ProjectDir)/../../../Program Files (x86)/Sandcastle/ProductionTools/</Directory>
-   <Directory>$(ProjectDir)/../../../Program Files/Sandcastle/ProductionTools/</Directory>
-   <Directory>$(ProjectDir)/SandcastleBuilderConsole/bin/Debug/</Directory>
-   <Directory>$(ProjectDir)/SandcastleBuilderGUI/bin/Debug/PlugIns/</Directory>
+   <Directory>$(ProjectDir)/../../../../../Program Files (x86)/Sandcastle/ProductionTools/</Directory>
+   <Directory>$(ProjectDir)/../../../../../Program Files/Sandcastle/ProductionTools/</Directory>
   </AssemblyReferenceDirectories>
   <Target Name="$(ProjectDir)/GenerateInheritedDocs/bin/Debug/GenerateInheritedDocs.exe" Analyze="True" AnalyzeAllChildren="True" />
   <Target Name="$(ProjectDir)/HelpLibraryManagerLauncher/bin/Debug/HelpLibraryManagerLauncher.exe" Analyze="True" AnalyzeAllChildren="True" />
   <Target Name="$(ProjectDir)/SandcastleBuilderGUI/bin/Debug/SandcastleBuilder.Utils.dll" Analyze="True" AnalyzeAllChildren="True" />
   <Target Name="$(ProjectDir)/SandcastleBuilderGUI/bin/Debug/SandcastleBuilderGUI.exe" Analyze="True" AnalyzeAllChildren="True" />
   <Target Name="$(ProjectDir)/SandcastleBuilderPlugIns/bin/Debug/SandcastleBuilder.PlugIns.dll" Analyze="True" AnalyzeAllChildren="True" />
-  <Target Name="$(ProjectDir)/SandcastleComponents/bin/Debug/SandcastleBuilder.Components.dll" Analyze="True" AnalyzeAllChildren="True" />
   <Target Name="$(ProjectDir)/SandcastleHtmlExtract/bin/Debug/SandcastleHtmlExtract.exe" Analyze="True" AnalyzeAllChildren="True" />
-  <Target Name="$(ProjectDir)/SandcastleMRefBuilder/bin/Debug/SandcastleBuilder.MRefBuilder.dll" Analyze="True" AnalyzeAllChildren="True" />
  </Targets>
  <Rules>
   <RuleFiles>
@@ -64,20 +60,6 @@
  </Rules>
  <FxCopReport Version="10.0">
   <Namespaces>
-   <Namespace Name="SandcastleBuilder.Components">
-    <Messages>
-     <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Status="Excluded" Created="2006-12-15 00:33:35Z">
-      <Issue>
-       <Item>SandcastleBuilder.Components</Item>
-      </Issue>
-      <Notes>
-       <User Name="EWOODRUFF">
-        <Note Id="40" />
-       </User>
-      </Notes>
-     </Message>
-    </Messages>
-   </Namespace>
    <Namespace Name="SandcastleBuilder.Utils.Controls">
     <Messages>
      <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Status="Excluded" Created="2006-08-10 20:24:55Z">
@@ -222,48 +204,6 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="#GetRegistryValue(System.String,System.String)">
-            <Messages>
-             <Message Id="SandcastleBuilder.MicrosoftHelpViewer.HelpLibraryManager.RegCloseKey(System.UIntPtr)" TypeName="DoNotIgnoreMethodResults" Category="Microsoft.Usage" CheckId="CA1806" Status="Excluded" Created="2010-07-07 20:02:02Z">
-              <Issue Name="HResultOrErrorCode">
-               <Item>'HelpLibraryManager.GetRegistryValue(string, string)'</Item>
-               <Item>'HelpLibraryManager.RegCloseKey(UIntPtr)'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="126" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#RegCloseKey(System.UIntPtr)">
-            <Messages>
-             <Message TypeName="MovePInvokesToNativeMethodsClass" Category="Microsoft.Design" CheckId="CA1060" Created="2010-07-07 20:02:02Z">
-              <Issue>
-               <Item>'HelpLibraryManager.RegCloseKey(UIntPtr)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#RegOpenKeyEx(System.UIntPtr,System.String,System.UInt32,System.Int32,System.UIntPtr&amp;)">
-            <Messages>
-             <Message TypeName="MovePInvokesToNativeMethodsClass" Category="Microsoft.Design" CheckId="CA1060" Created="2010-07-07 20:02:02Z">
-              <Issue>
-               <Item>'HelpLibraryManager.RegOpenKeyEx(UIntPtr, string, uint, int, out UIntPtr)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#RegQueryValueEx(System.UIntPtr,System.String,System.IntPtr,System.UInt32&amp;,System.Text.StringBuilder,System.UInt32&amp;)">
-            <Messages>
-             <Message TypeName="MovePInvokesToNativeMethodsClass" Category="Microsoft.Design" CheckId="CA1060" Created="2010-07-07 20:02:02Z">
-              <Issue>
-               <Item>'HelpLibraryManager.RegQueryValueEx(UIntPtr, string, IntPtr, out uint, StringBuilder, ref uint)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
           </Members>
          </Type>
          <Type Name="HelpLibraryManagerException">
@@ -288,6 +228,70 @@
             </Notes>
            </Message>
           </Messages>
+         </Type>
+         <Type Name="UnsafeNativeMethods">
+          <Members>
+           <Member Name="#GetRegistryValue(System.String,System.String)">
+            <Messages>
+             <Message Id="SandcastleBuilder.MicrosoftHelpViewer.UnsafeNativeMethods.RegCloseKey(System.UIntPtr)" TypeName="DoNotIgnoreMethodResults" Category="Microsoft.Usage" CheckId="CA1806" Status="Excluded" Created="2011-02-28 01:02:44Z">
+              <Issue Name="HResultOrErrorCode">
+               <Item>'UnsafeNativeMethods.GetRegistryValue(string, string)'</Item>
+               <Item>'UnsafeNativeMethods.RegCloseKey(UIntPtr)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="51" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#RegCloseKey(System.UIntPtr)">
+            <Messages>
+             <Message TypeName="ReviewSuppressUnmanagedCodeSecurityUsage" Category="Microsoft.Security" CheckId="CA2118" Status="Excluded" Created="2011-02-28 01:02:44Z">
+              <Issue Name="PlatformInvokeStack">
+               <Item>'UnsafeNativeMethods.RegCloseKey(UIntPtr)'</Item>
+               <Item>&#xD;&#xA;   -&gt;'UnsafeNativeMethods.RegCloseKey(UIntPtr)'&#xD;&#xA;   -&gt;'UnsafeNativeMethods.GetRegistryValue(string, string)'&#xD;&#xA;   -&gt;'HelpLibraryManager.HelpLibraryManager()'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="71" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#RegOpenKeyEx(System.UIntPtr,System.String,System.UInt32,System.Int32,System.UIntPtr&amp;)">
+            <Messages>
+             <Message TypeName="ReviewSuppressUnmanagedCodeSecurityUsage" Category="Microsoft.Security" CheckId="CA2118" Status="Excluded" Created="2011-02-28 01:02:44Z">
+              <Issue Name="PlatformInvokeStack">
+               <Item>'UnsafeNativeMethods.RegOpenKeyEx(UIntPtr, string, uint, int, out UIntPtr)'</Item>
+               <Item>&#xD;&#xA;   -&gt;'UnsafeNativeMethods.RegOpenKeyEx(UIntPtr, string, uint, int, out UIntPtr)'&#xD;&#xA;   -&gt;'UnsafeNativeMethods.GetRegistryValue(string, string)'&#xD;&#xA;   -&gt;'HelpLibraryManager.HelpLibraryManager()'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="71" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#RegQueryValueEx(System.UIntPtr,System.String,System.IntPtr,System.UInt32&amp;,System.Text.StringBuilder,System.UInt32&amp;)">
+            <Messages>
+             <Message TypeName="ReviewSuppressUnmanagedCodeSecurityUsage" Category="Microsoft.Security" CheckId="CA2118" Status="Excluded" Created="2011-02-28 01:02:44Z">
+              <Issue Name="PlatformInvokeStack">
+               <Item>'UnsafeNativeMethods.RegQueryValueEx(UIntPtr, string, IntPtr, out uint, StringBuilder, ref uint)'</Item>
+               <Item>&#xD;&#xA;   -&gt;'UnsafeNativeMethods.RegQueryValueEx(UIntPtr, string, IntPtr, out uint, StringBuilder, ref uint)'&#xD;&#xA;   -&gt;'UnsafeNativeMethods.GetRegistryValue(string, string)'&#xD;&#xA;   -&gt;'HelpLibraryManager.HelpLibraryManager()'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="71" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
          </Type>
         </Types>
        </Namespace>
@@ -1253,7 +1257,7 @@
            <Message TypeName="TypesThatOwnDisposableFieldsShouldBeDisposable" Category="Microsoft.Design" CheckId="CA1001" Status="Excluded" Created="2008-09-18 23:40:01Z" FixCategory="DependsOnFix">
             <Issue Name="DependsOnFix">
              <Item>'BuildProcess'</Item>
-             <Item>'StreamWriter', 'Process'</Item>
+             <Item>'SandcastleProject', 'StreamWriter', 'Process'</Item>
             </Issue>
             <Notes>
              <User Name="EWOODRUFF">
@@ -2188,17 +2192,6 @@
              </User>
             </Notes>
            </Message>
-           <Message TypeName="TypesThatOwnDisposableFieldsShouldBeDisposable" Category="Microsoft.Design" CheckId="CA1001" Status="Excluded" Created="2008-09-18 23:40:01Z" FixCategory="DependsOnFix">
-            <Issue Name="DependsOnFix">
-             <Item>'ConvertFromShfbFile'</Item>
-             <Item>'XmlTextReader'</Item>
-            </Issue>
-            <Notes>
-             <User Name="EWOODRUFF">
-              <Note Id="27" />
-             </User>
-            </Notes>
-           </Message>
           </Messages>
           <Members>
            <Member Name="#ConvertDependencies()">
@@ -2262,14 +2255,14 @@
           <Members>
            <Member Name="#ApiFilterEditorDlg_FormClosing(System.Object,System.Windows.Forms.FormClosingEventArgs)">
             <Messages>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2011-01-16 03:55:05Z">
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2010-11-06 20:59:35Z">
               <Issue>
                <Item>'ApiFilterEditorDlg.ApiFilterEditorDlg_FormClosing(object, FormClosingEventArgs)'</Item>
                <Item>'object'</Item>
               </Issue>
               <Notes>
                <User Name="EWOODRUFF">
-                <Note Id="130" />
+                <Note Id="16" />
                </User>
               </Notes>
              </Message>
@@ -2691,14 +2684,14 @@
            </Member>
            <Member Name="#NamespacesDlg_FormClosing(System.Object,System.Windows.Forms.FormClosingEventArgs)">
             <Messages>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2011-01-16 03:55:05Z">
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2010-11-06 20:59:35Z">
               <Issue>
                <Item>'NamespaceSummaryItemEditorDlg.NamespacesDlg_FormClosing(object, FormClosingEventArgs)'</Item>
                <Item>'object'</Item>
               </Issue>
               <Notes>
                <User Name="EWOODRUFF">
-                <Note Id="130" />
+                <Note Id="16" />
                </User>
               </Notes>
              </Message>
@@ -2887,13 +2880,13 @@
             <Accessors>
              <Accessor Name="#set_WasModified(System.Boolean)">
               <Messages>
-               <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Status="Excluded" Created="2011-01-16 03:55:05Z">
+               <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Status="Excluded" Created="2011-02-28 00:35:53Z">
                 <Issue>
                  <Item>'UserDefinedPropertyEditorDlg.PropertyItem.WasModified.set(bool)'</Item>
                 </Issue>
                 <Notes>
                  <User Name="EWOODRUFF">
-                  <Note Id="131" />
+                  <Note Id="36" />
                  </User>
                 </Notes>
                </Message>
@@ -3968,14 +3961,14 @@
            </Member>
            <Member Name="#PreviewTopicWindow_FormClosing(System.Object,System.Windows.Forms.FormClosingEventArgs)">
             <Messages>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2011-01-16 03:55:05Z">
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2010-11-06 20:59:35Z">
               <Issue>
                <Item>'PreviewTopicWindow.PreviewTopicWindow_FormClosing(object, FormClosingEventArgs)'</Item>
                <Item>'object'</Item>
               </Issue>
               <Notes>
                <User Name="EWOODRUFF">
-                <Note Id="130" />
+                <Note Id="16" />
                </User>
               </Notes>
              </Message>
@@ -4361,48 +4354,6 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="#GetRegistryValue(System.String,System.String)">
-            <Messages>
-             <Message Id="SandcastleBuilder.MicrosoftHelpViewer.HelpLibraryManager.RegCloseKey(System.UIntPtr)" TypeName="DoNotIgnoreMethodResults" Category="Microsoft.Usage" CheckId="CA1806" Status="Excluded" Created="2010-07-07 20:02:02Z">
-              <Issue Name="HResultOrErrorCode">
-               <Item>'HelpLibraryManager.GetRegistryValue(string, string)'</Item>
-               <Item>'HelpLibraryManager.RegCloseKey(UIntPtr)'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="126" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#RegCloseKey(System.UIntPtr)">
-            <Messages>
-             <Message TypeName="MovePInvokesToNativeMethodsClass" Category="Microsoft.Design" CheckId="CA1060" Created="2010-07-07 20:02:02Z">
-              <Issue>
-               <Item>'HelpLibraryManager.RegCloseKey(UIntPtr)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#RegOpenKeyEx(System.UIntPtr,System.String,System.UInt32,System.Int32,System.UIntPtr&amp;)">
-            <Messages>
-             <Message TypeName="MovePInvokesToNativeMethodsClass" Category="Microsoft.Design" CheckId="CA1060" Created="2010-07-07 20:02:02Z">
-              <Issue>
-               <Item>'HelpLibraryManager.RegOpenKeyEx(UIntPtr, string, uint, int, out UIntPtr)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#RegQueryValueEx(System.UIntPtr,System.String,System.IntPtr,System.UInt32&amp;,System.Text.StringBuilder,System.UInt32&amp;)">
-            <Messages>
-             <Message TypeName="MovePInvokesToNativeMethodsClass" Category="Microsoft.Design" CheckId="CA1060" Created="2010-07-07 20:02:02Z">
-              <Issue>
-               <Item>'HelpLibraryManager.RegQueryValueEx(UIntPtr, string, IntPtr, out uint, StringBuilder, ref uint)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
           </Members>
          </Type>
          <Type Name="HelpLibraryManagerException">
@@ -4427,6 +4378,70 @@
             </Notes>
            </Message>
           </Messages>
+         </Type>
+         <Type Name="UnsafeNativeMethods">
+          <Members>
+           <Member Name="#GetRegistryValue(System.String,System.String)">
+            <Messages>
+             <Message Id="SandcastleBuilder.MicrosoftHelpViewer.UnsafeNativeMethods.RegCloseKey(System.UIntPtr)" TypeName="DoNotIgnoreMethodResults" Category="Microsoft.Usage" CheckId="CA1806" Status="Excluded" Created="2011-02-28 01:02:44Z">
+              <Issue Name="HResultOrErrorCode">
+               <Item>'UnsafeNativeMethods.GetRegistryValue(string, string)'</Item>
+               <Item>'UnsafeNativeMethods.RegCloseKey(UIntPtr)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="51" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#RegCloseKey(System.UIntPtr)">
+            <Messages>
+             <Message TypeName="ReviewSuppressUnmanagedCodeSecurityUsage" Category="Microsoft.Security" CheckId="CA2118" Status="Excluded" Created="2011-02-28 01:02:44Z">
+              <Issue Name="PlatformInvokeStack">
+               <Item>'UnsafeNativeMethods.RegCloseKey(UIntPtr)'</Item>
+               <Item>&#xD;&#xA;   -&gt;'UnsafeNativeMethods.RegCloseKey(UIntPtr)'&#xD;&#xA;   -&gt;'UnsafeNativeMethods.GetRegistryValue(string, string)'&#xD;&#xA;   -&gt;'HelpLibraryManager.HelpLibraryManager()'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="71" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#RegOpenKeyEx(System.UIntPtr,System.String,System.UInt32,System.Int32,System.UIntPtr&amp;)">
+            <Messages>
+             <Message TypeName="ReviewSuppressUnmanagedCodeSecurityUsage" Category="Microsoft.Security" CheckId="CA2118" Status="Excluded" Created="2011-02-28 01:02:44Z">
+              <Issue Name="PlatformInvokeStack">
+               <Item>'UnsafeNativeMethods.RegOpenKeyEx(UIntPtr, string, uint, int, out UIntPtr)'</Item>
+               <Item>&#xD;&#xA;   -&gt;'UnsafeNativeMethods.RegOpenKeyEx(UIntPtr, string, uint, int, out UIntPtr)'&#xD;&#xA;   -&gt;'UnsafeNativeMethods.GetRegistryValue(string, string)'&#xD;&#xA;   -&gt;'HelpLibraryManager.HelpLibraryManager()'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="71" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#RegQueryValueEx(System.UIntPtr,System.String,System.IntPtr,System.UInt32&amp;,System.Text.StringBuilder,System.UInt32&amp;)">
+            <Messages>
+             <Message TypeName="ReviewSuppressUnmanagedCodeSecurityUsage" Category="Microsoft.Security" CheckId="CA2118" Status="Excluded" Created="2011-02-28 01:02:44Z">
+              <Issue Name="PlatformInvokeStack">
+               <Item>'UnsafeNativeMethods.RegQueryValueEx(UIntPtr, string, IntPtr, out uint, StringBuilder, ref uint)'</Item>
+               <Item>&#xD;&#xA;   -&gt;'UnsafeNativeMethods.RegQueryValueEx(UIntPtr, string, IntPtr, out uint, StringBuilder, ref uint)'&#xD;&#xA;   -&gt;'UnsafeNativeMethods.GetRegistryValue(string, string)'&#xD;&#xA;   -&gt;'HelpLibraryManager.HelpLibraryManager()'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="71" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
          </Type>
         </Types>
        </Namespace>
@@ -4982,6 +4997,63 @@
            </Member>
           </Members>
          </Type>
+         <Type Name="WildcardReferencesConfigDlg">
+          <Members>
+           <Member Name="#lnkCodePlexSHFB_LinkClicked(System.Object,System.Windows.Forms.LinkLabelLinkClickedEventArgs)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2011-02-28 00:35:53Z">
+              <Issue>
+               <Item>'WildcardReferencesConfigDlg.lnkCodePlexSHFB_LinkClicked(object, LinkLabelLinkClickedEventArgs)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="40" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="WildcardReferenceSettingsCollection">
+          <Members>
+           <Member Name="#FromXml(SandcastleBuilder.Utils.IBasePathProvider,System.Xml.Linq.XElement)">
+            <Messages>
+             <Message TypeName="ConsiderPassingBaseTypesAsParameters" Category="Microsoft.Design" CheckId="CA1011" Status="Excluded" Created="2011-02-28 00:35:53Z">
+              <Issue>
+               <Item>'root'</Item>
+               <Item>'WildcardReferenceSettingsCollection.FromXml(IBasePathProvider, XElement)'</Item>
+               <Item>'XElement'</Item>
+               <Item>'XContainer'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="50" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#ToXml(System.Xml.Linq.XElement)">
+            <Messages>
+             <Message TypeName="ConsiderPassingBaseTypesAsParameters" Category="Microsoft.Design" CheckId="CA1011" Status="Excluded" Created="2011-02-28 00:35:53Z">
+              <Issue>
+               <Item>'root'</Item>
+               <Item>'WildcardReferenceSettingsCollection.ToXml(XElement)'</Item>
+               <Item>'XElement'</Item>
+               <Item>'XContainer'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="50" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
          <Type Name="XPathReflectionFileFilterConfigDlg">
           <Members>
            <Member Name="#lnkCodePlexSHFB_LinkClicked(System.Object,System.Windows.Forms.LinkLabelLinkClickedEventArgs)">
@@ -5009,541 +5081,6 @@
               <Notes>
                <User Name="EWOODRUFF">
                 <Note Id="26" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-        </Types>
-       </Namespace>
-      </Namespaces>
-     </Module>
-    </Modules>
-   </Target>
-   <Target Name="$(ProjectDir)/SandcastleComponents/bin/Debug/SandcastleBuilder.Components.dll">
-    <Modules>
-     <Module Name="sandcastlebuilder.components.dll">
-      <Namespaces>
-       <Namespace Name="SandcastleBuilder.Components">
-        <Types>
-         <Type Name="CachedCopyFromIndexComponent">
-          <Members>
-           <Member Name="#Dispose()">
-            <Messages>
-             <Message TypeName="CallGCSuppressFinalizeCorrectly" Category="Microsoft.Usage" CheckId="CA1816" Status="Excluded" Created="2009-11-14 00:28:07Z">
-              <Issue Name="NotCalled">
-               <Item>'CachedCopyFromIndexComponent.Dispose()'</Item>
-               <Item>'GC.SuppressFinalize(object)'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="73" />
-               </User>
-              </Notes>
-             </Message>
-             <Message TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063" Status="Excluded" Created="2009-11-14 00:28:07Z">
-              <Issue Name="DisposeImplementation">
-               <Item>'CachedCopyFromIndexComponent.Dispose()'</Item>
-              </Issue>
-              <Issue Name="DisposeSignature">
-               <Item>'CachedCopyFromIndexComponent.Dispose()'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="73" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#LoadCache(System.Xml.XPath.XPathNavigator,System.String,System.Xml.XPath.XPathNavigator)">
-            <Messages>
-             <Message Id="copyComp" TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804" Status="Excluded" Created="2008-09-21 00:04:46Z">
-              <Issue>
-               <Item>'CachedCopyFromIndexComponent.LoadCache(XPathNavigator, string, XPathNavigator)'</Item>
-               <Item>'copyComp'</Item>
-               <Item>'CopyFromIndexComponent'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="94" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="CachedResolveReferenceLinksComponent">
-          <Members>
-           <Member Name="#Dispose()">
-            <Messages>
-             <Message TypeName="CallGCSuppressFinalizeCorrectly" Category="Microsoft.Usage" CheckId="CA1816" Status="Excluded" Created="2009-11-14 00:28:07Z">
-              <Issue Name="NotCalled">
-               <Item>'CachedResolveReferenceLinksComponent.Dispose()'</Item>
-               <Item>'GC.SuppressFinalize(object)'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="73" />
-               </User>
-              </Notes>
-             </Message>
-             <Message TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063" Status="Excluded" Created="2009-11-14 00:28:07Z">
-              <Issue Name="DisposeImplementation">
-               <Item>'CachedResolveReferenceLinksComponent.Dispose()'</Item>
-              </Issue>
-              <Issue Name="DisposeSignature">
-               <Item>'CachedResolveReferenceLinksComponent.Dispose()'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="73" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="CodeBlockComponent">
-          <Members>
-           <Member Name="#Apply(System.Xml.XmlDocument,System.String)">
-            <Messages>
-             <Message TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308" Status="Excluded" Created="2008-09-21 00:04:46Z">
-              <Issue Name="ToUpperInvariant">
-               <Item>'CodeBlockComponent.Apply(XmlDocument, string)'</Item>
-               <Item>'string.ToLower(CultureInfo)'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="81" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="CodeBlockConfigDlg">
-          <Members>
-           <Member Name="#btnOK_Click(System.Object,System.EventArgs)">
-            <Messages>
-             <Message TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308" Status="Excluded" Created="2008-09-21 00:04:46Z">
-              <Issue Name="ToUpperInvariant">
-               <Item>'CodeBlockConfigDlg.btnOK_Click(object, EventArgs)'</Item>
-               <Item>'string.ToLower(CultureInfo)'</Item>
-              </Issue>
-              <Issue Name="ToUpperInvariant">
-               <Item>'CodeBlockConfigDlg.btnOK_Click(object, EventArgs)'</Item>
-               <Item>'string.ToLower(CultureInfo)'</Item>
-              </Issue>
-              <Issue Name="ToUpperInvariant">
-               <Item>'CodeBlockConfigDlg.btnOK_Click(object, EventArgs)'</Item>
-               <Item>'string.ToLower(CultureInfo)'</Item>
-              </Issue>
-              <Issue Name="ToUpperInvariant">
-               <Item>'CodeBlockConfigDlg.btnOK_Click(object, EventArgs)'</Item>
-               <Item>'string.ToLower(CultureInfo)'</Item>
-              </Issue>
-              <Issue Name="ToUpperInvariant">
-               <Item>'CodeBlockConfigDlg.btnOK_Click(object, EventArgs)'</Item>
-               <Item>'string.ToLower(CultureInfo)'</Item>
-              </Issue>
-              <Issue Name="ToUpperInvariant">
-               <Item>'CodeBlockConfigDlg.btnOK_Click(object, EventArgs)'</Item>
-               <Item>'string.ToLower(CultureInfo)'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="81" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#lnkCodePlexSHFB_LinkClicked(System.Object,System.Windows.Forms.LinkLabelLinkClickedEventArgs)">
-            <Messages>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2008-09-21 00:04:46Z">
-              <Issue>
-               <Item>'CodeBlockConfigDlg.lnkCodePlexSHFB_LinkClicked(object, LinkLabelLinkClickedEventArgs)'</Item>
-               <Item>'Exception'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="36" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="IntelliSenseComponent">
-          <Messages>
-           <Message Id="Intelli" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2008-09-21 00:04:46Z">
-            <Issue Name="Type">
-             <Item>Intelli</Item>
-             <Item>'IntelliSenseComponent'</Item>
-            </Issue>
-            <Notes>
-             <User Name="EWOODRUFF">
-              <Note Id="71" />
-             </User>
-            </Notes>
-           </Message>
-          </Messages>
-          <Members>
-           <Member Name="#Dispose()">
-            <Messages>
-             <Message TypeName="CallGCSuppressFinalizeCorrectly" Category="Microsoft.Usage" CheckId="CA1816" Status="Excluded" Created="2009-11-14 00:28:07Z">
-              <Issue Name="NotCalled">
-               <Item>'IntelliSenseComponent.Dispose()'</Item>
-               <Item>'GC.SuppressFinalize(object)'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="73" />
-               </User>
-              </Notes>
-             </Message>
-             <Message TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063" Status="Excluded" Created="2009-11-14 00:28:07Z">
-              <Issue Name="DisposeImplementation">
-               <Item>'IntelliSenseComponent.Dispose()'</Item>
-              </Issue>
-              <Issue Name="DisposeSignature">
-               <Item>'IntelliSenseComponent.Dispose()'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="73" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="IntelliSenseConfigDlg">
-          <Members>
-           <Member Name="#btnOK_Click(System.Object,System.EventArgs)">
-            <Messages>
-             <Message TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308" Status="Excluded" Created="2008-09-21 00:04:46Z">
-              <Issue Name="ToUpperInvariant">
-               <Item>'IntelliSenseConfigDlg.btnOK_Click(object, EventArgs)'</Item>
-               <Item>'string.ToLower(CultureInfo)'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="81" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#lnkCodePlexSHFB_LinkClicked(System.Object,System.Windows.Forms.LinkLabelLinkClickedEventArgs)">
-            <Messages>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2008-09-21 00:04:46Z">
-              <Issue>
-               <Item>'IntelliSenseConfigDlg.lnkCodePlexSHFB_LinkClicked(object, LinkLabelLinkClickedEventArgs)'</Item>
-               <Item>'Exception'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="36" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="JavaScriptDeclarationSyntaxGenerator">
-          <Members>
-           <Member Name="#CreateCamelCaseName(System.String)">
-            <Messages>
-             <Message TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308" Status="Excluded" Created="2009-11-19 21:16:17Z">
-              <Issue Name="ToUpperInvariant">
-               <Item>'JavaScriptDeclarationSyntaxGenerator.CreateCamelCaseName(string)'</Item>
-               <Item>'string.ToLower(CultureInfo)'</Item>
-              </Issue>
-              <Issue Name="ToUpperInvariant">
-               <Item>'JavaScriptDeclarationSyntaxGenerator.CreateCamelCaseName(string)'</Item>
-               <Item>'string.ToLower(CultureInfo)'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="74" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="MSHCComponent">
-          <Messages>
-           <Message Id="MSHC" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Status="Excluded" Created="2010-06-30 15:47:36Z">
-            <Issue Name="Type">
-             <Item>MSHC</Item>
-             <Item>'MSHCComponent'</Item>
-             <Item>Mshc</Item>
-            </Issue>
-            <Notes>
-             <User Name="EWOODRUFF">
-              <Note Id="16" />
-             </User>
-            </Notes>
-           </Message>
-          </Messages>
-          <Members>
-           <Member Name="#Apply(System.Xml.XmlDocument,System.String)">
-            <Messages>
-             <Message TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308" Status="Excluded" Created="2010-06-30 15:52:46Z">
-              <Issue Name="ToUpperInvariant">
-               <Item>'MSHCComponent.Apply(XmlDocument, string)'</Item>
-               <Item>'string.ToLowerInvariant()'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="50" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="MSHelpAttrComponent">
-          <Messages>
-           <Message Id="Attr" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2008-09-21 00:04:46Z">
-            <Issue Name="Type">
-             <Item>Attr</Item>
-             <Item>'MSHelpAttrComponent'</Item>
-            </Issue>
-            <Notes>
-             <User Name="EWOODRUFF">
-              <Note Id="71" />
-             </User>
-            </Notes>
-           </Message>
-          </Messages>
-         </Type>
-         <Type Name="MultiFormatOutputComponent">
-          <Messages>
-           <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2010-06-22 21:04:02Z">
-            <Issue Name="Type">
-             <Item>Multi</Item>
-             <Item>'MultiFormatOutputComponent'</Item>
-            </Issue>
-            <Notes>
-             <User Name="EWOODRUFF">
-              <Note Id="122" />
-             </User>
-            </Notes>
-           </Message>
-          </Messages>
-          <Members>
-           <Member Name="#Dispose()">
-            <Messages>
-             <Message TypeName="CallGCSuppressFinalizeCorrectly" Category="Microsoft.Usage" CheckId="CA1816" Status="Excluded" Created="2010-06-22 21:04:02Z">
-              <Issue Name="NotCalled">
-               <Item>'MultiFormatOutputComponent.Dispose()'</Item>
-               <Item>'GC.SuppressFinalize(object)'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="100" />
-               </User>
-              </Notes>
-             </Message>
-             <Message TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063" Status="Excluded" Created="2010-06-22 21:04:02Z">
-              <Issue Name="DisposeImplementation">
-               <Item>'MultiFormatOutputComponent.Dispose()'</Item>
-              </Issue>
-              <Issue Name="DisposeSignature">
-               <Item>'MultiFormatOutputComponent.Dispose()'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="123" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="PostTransformComponent+LogoAlignment">
-          <Messages>
-           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2008-09-21 00:04:46Z">
-            <Issue>
-             <Item>'PostTransformComponent.LogoAlignment'</Item>
-            </Issue>
-            <Notes>
-             <User Name="EWOODRUFF">
-              <Note Id="79" />
-             </User>
-            </Notes>
-           </Message>
-          </Messages>
-         </Type>
-         <Type Name="PostTransformComponent+LogoPlacement">
-          <Messages>
-           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2008-09-21 00:04:46Z">
-            <Issue>
-             <Item>'PostTransformComponent.LogoPlacement'</Item>
-            </Issue>
-            <Notes>
-             <User Name="EWOODRUFF">
-              <Note Id="79" />
-             </User>
-            </Notes>
-           </Message>
-          </Messages>
-         </Type>
-         <Type Name="PostTransformConfigDlg">
-          <Members>
-           <Member Name="#.ctor(System.String)">
-            <Messages>
-             <Message Id="System.Int32.TryParse(System.String,System.Int32@)" TypeName="DoNotIgnoreMethodResults" Category="Microsoft.Usage" CheckId="CA1806" Status="Excluded" Created="2008-09-21 00:04:46Z">
-              <Issue Name="TryParse">
-               <Item>'PostTransformConfigDlg.PostTransformConfigDlg(string)'</Item>
-               <Item>'int.TryParse(string, out int)'</Item>
-              </Issue>
-              <Issue Name="TryParse">
-               <Item>'PostTransformConfigDlg.PostTransformConfigDlg(string)'</Item>
-               <Item>'int.TryParse(string, out int)'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="51" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#btnOK_Click(System.Object,System.EventArgs)">
-            <Messages>
-             <Message TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308" Status="Excluded" Created="2008-09-21 00:04:46Z">
-              <Issue Name="ToUpperInvariant">
-               <Item>'PostTransformConfigDlg.btnOK_Click(object, EventArgs)'</Item>
-               <Item>'string.ToLower(CultureInfo)'</Item>
-              </Issue>
-              <Issue Name="ToUpperInvariant">
-               <Item>'PostTransformConfigDlg.btnOK_Click(object, EventArgs)'</Item>
-               <Item>'string.ToLower(CultureInfo)'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="81" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#lnkCodePlexSHFB_LinkClicked(System.Object,System.Windows.Forms.LinkLabelLinkClickedEventArgs)">
-            <Messages>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2008-09-21 00:04:46Z">
-              <Issue>
-               <Item>'PostTransformConfigDlg.lnkCodePlexSHFB_LinkClicked(object, LinkLabelLinkClickedEventArgs)'</Item>
-               <Item>'Exception'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="36" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#txtLogoFile_Leave(System.Object,System.EventArgs)">
-            <Messages>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2008-09-21 00:04:46Z">
-              <Issue>
-               <Item>'PostTransformConfigDlg.txtLogoFile_Leave(object, EventArgs)'</Item>
-               <Item>'Exception'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="36" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="ResolveConceptualLinksComponent">
-          <Members>
-           <Member Name="#Apply(System.Xml.XmlDocument,System.String)">
-            <Messages>
-             <Message TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308" Status="Excluded" Created="2008-09-21 00:04:46Z">
-              <Issue Name="ToUpperInvariant">
-               <Item>'ResolveConceptualLinksComponent.Apply(XmlDocument, string)'</Item>
-               <Item>'string.ToLower(CultureInfo)'</Item>
-              </Issue>
-              <Issue Name="ToUpperInvariant">
-               <Item>'ResolveConceptualLinksComponent.Apply(XmlDocument, string)'</Item>
-               <Item>'string.ToLower(CultureInfo)'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="81" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="ShowMissingComponent">
-          <Members>
-           <Member Name="#Apply(System.Xml.XmlDocument,System.String)">
-            <Messages>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2008-09-21 00:04:46Z">
-              <Issue>
-               <Item>'ShowMissingComponent.Apply(XmlDocument, string)'</Item>
-               <Item>'Exception'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="36" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="TargetInfo">
-          <Members>
-           <Member Name="#.ctor(System.String,System.String,SandcastleBuilder.Components.LinkType)">
-            <Messages>
-             <Message Id="0#" TypeName="UriParametersShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1054" Status="Excluded" Created="2008-09-21 00:04:46Z">
-              <Issue>
-               <Item>'targetUrl'</Item>
-               <Item>'TargetInfo.TargetInfo(string, string, LinkType)'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="96" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#Url">
-            <Messages>
-             <Message TypeName="UriPropertiesShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1056" Status="Excluded" Created="2008-09-21 00:04:46Z">
-              <Issue>
-               <Item>'TargetInfo.Url'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="96" />
                </User>
               </Notes>
              </Message>
@@ -5781,7 +5318,7 @@
     <Note Id="13" Modified="2008-09-19 22:55:23Z">Intentionally ignored</Note>
     <Note Id="14" Modified="2008-09-19 22:55:43Z">Intentionally ignored</Note>
     <Note Id="15" Modified="2008-09-19 22:56:10Z">The error is reported</Note>
-    <Note Id="16" Modified="2010-06-30 15:47:55Z">Okay as is</Note>
+    <Note Id="16" Modified="2010-11-06 21:07:23Z">The exception is intentionally ignored.</Note>
     <Note Id="17" Modified="2008-09-19 23:07:36Z">Okay as is</Note>
     <Note Id="18" Modified="2008-02-20 17:02:03Z">The error is reported</Note>
     <Note Id="19" Modified="2008-09-19 23:11:54Z">Okay as is</Note>
@@ -5792,7 +5329,7 @@
     <Note Id="24" Modified="2008-09-19 23:13:11Z">Okay as is</Note>
     <Note Id="25" Modified="2008-09-19 23:21:33Z">Using the given type is appropriate here</Note>
     <Note Id="26" Modified="2008-11-19 16:39:57Z">The error is reported</Note>
-    <Note Id="27" Modified="2008-09-19 23:35:51Z">The processes are disposed of in a try/catch block in the method that uses them.</Note>
+    <Note Id="27" Modified="2011-01-10 02:12:40Z">The indicated members are initialized and disposed of within try/catch/finally blocks as needed so there is no need to implement IDisposable.</Note>
     <Note Id="28" Modified="2006-09-29 21:44:00Z">They are fine as they are</Note>
     <Note Id="29" Modified="2008-09-19 23:52:09Z">These are the MSBuild task interface properties and must remain instance-based.</Note>
     <Note Id="30" Modified="2008-11-19 16:43:29Z">We're only dealing with XML nodes here so it's okay</Note>
@@ -5801,11 +5338,11 @@
     <Note Id="33" Modified="2006-12-04 21:57:14Z">The error is being reported</Note>
     <Note Id="34" Modified="2009-10-27 17:40:46Z">Distinct words: "Dump Log On Failure"</Note>
     <Note Id="35" Modified="2008-03-04 17:43:18Z">The error is reported</Note>
-    <Note Id="36" Modified="2008-09-21 00:06:35Z">The error is reported</Note>
+    <Note Id="36" Modified="2011-02-28 00:37:51Z">Appears to be firing in error as it is used.</Note>
     <Note Id="37" Modified="2008-09-20 02:26:16Z">Okay as is</Note>
     <Note Id="38" Modified="2007-11-24 21:55:16Z">The error is reported</Note>
     <Note Id="39" Modified="2006-12-09 05:43:09Z">Okay as is</Note>
-    <Note Id="40" Modified="2006-12-15 00:35:08Z">These are intended to be separate.</Note>
+    <Note Id="40" Modified="2011-02-28 00:39:50Z">The error is reported</Note>
     <Note Id="41" Modified="2006-12-27 23:40:43Z">Called via Reflection when loading a project</Note>
     <Note Id="42" Modified="2006-12-27 23:40:55Z">Called via Reflection when loading a project</Note>
     <Note Id="43" Modified="2007-10-08 22:01:59Z">They're fine as they are</Note>
@@ -5815,8 +5352,8 @@
     <Note Id="47" Modified="2008-02-29 19:44:36Z">We're only dealing with XML nodes here so it's okay.</Note>
     <Note Id="48" Modified="2008-03-10 02:51:04Z">The error is reported</Note>
     <Note Id="49" Modified="2008-02-29 20:38:41Z">Okay as is</Note>
-    <Note Id="50" Modified="2010-06-30 15:53:54Z">Lowercase is required in this case</Note>
-    <Note Id="51" Modified="2008-09-21 00:08:05Z">Okay as is</Note>
+    <Note Id="50" Modified="2011-02-28 00:42:44Z">This should only receive XElement objects.</Note>
+    <Note Id="51" Modified="2011-02-28 01:05:23Z">Okay as is</Note>
     <Note Id="52" Modified="2007-02-24 05:19:18Z">It's a designer type converter.  If it isn't found here, the build will fail anyway.</Note>
     <Note Id="53" Modified="2008-09-20 02:53:16Z">Lowercase is preferred</Note>
     <Note Id="54" Modified="2008-09-20 02:53:55Z">Lowercase is preferred</Note>
@@ -5836,17 +5373,13 @@
     <Note Id="68" Modified="2008-03-24 05:13:24Z">This is just in the debug build to verify the code for the help file</Note>
     <Note Id="69" Modified="2009-04-21 01:29:52Z">The error is reported</Note>
     <Note Id="70" Modified="2009-11-11 03:38:21Z">Lowercase is preferred</Note>
-    <Note Id="71" Modified="2008-09-21 00:08:18Z">Okay as is</Note>
+    <Note Id="71" Modified="2011-02-28 01:05:49Z">No security issues found</Note>
     <Note Id="72" Modified="2007-11-24 21:57:04Z">We're only dealing with XML nodes here so it's okay.</Note>
-    <Note Id="73" Modified="2009-11-14 00:29:27Z">The base class doesn't implement IDisposable in the Sandcastle May 2008 release and earlier.</Note>
-    <Note Id="74" Modified="2009-11-19 21:18:04Z">The intent here is to make it lowercase</Note>
     <Note Id="75" Modified="2009-12-07 05:23:51Z">The error is reported</Note>
     <Note Id="76" Modified="2008-03-24 05:13:34Z">Okay as is</Note>
     <Note Id="77" Modified="2007-10-08 22:29:52Z">Doesn't appear to be worth it in this case.</Note>
     <Note Id="78" Modified="2007-11-05 22:01:36Z">The error is reported</Note>
-    <Note Id="79" Modified="2008-09-21 00:10:43Z">It's an enumeration and is exempt</Note>
     <Note Id="80" Modified="2007-11-05 22:05:17Z">There's nothing to serialize in this class, let the base class handle it.</Note>
-    <Note Id="81" Modified="2008-09-21 00:11:27Z">Lowercase is preferred</Note>
     <Note Id="82" Modified="2007-11-05 22:06:12Z">There's nothing to serialize in this class, let the base class handle it.</Note>
     <Note Id="83" Modified="2008-03-24 05:13:47Z">Okay as is</Note>
     <Note Id="84" Modified="2008-09-20 03:09:01Z">Lowercase is preferred</Note>
@@ -5859,13 +5392,10 @@
     <Note Id="91" Modified="2007-12-04 23:51:32Z">Okay as is</Note>
     <Note Id="92" Modified="2008-04-01 21:28:11Z">Leave it for now.  It's only compared internally.</Note>
     <Note Id="93" Modified="2008-01-12 21:29:44Z">Okay as is</Note>
-    <Note Id="94" Modified="2008-09-21 00:11:57Z">It's used to build the cache item</Note>
     <Note Id="95" Modified="2008-09-20 03:30:58Z">Lowercase is preferred</Note>
-    <Note Id="96" Modified="2008-09-21 00:12:13Z">Okay as is</Note>
     <Note Id="97" Modified="2008-09-21 00:28:43Z">It's handled another way</Note>
     <Note Id="98" Modified="2008-01-12 21:41:24Z">Okay as is</Note>
     <Note Id="99" Modified="2008-01-12 21:49:18Z">This is an enumerated type</Note>
-    <Note Id="100" Modified="2010-06-22 21:04:36Z">The base class doesn't implement IDisposable in the Sandcastle May 2008 release and earlier.</Note>
     <Note Id="101" Modified="2008-01-12 22:00:04Z">It relates to what it's for so it's okay</Note>
     <Note Id="102" Modified="2010-07-07 20:02:16Z">The error is reported</Note>
     <Note Id="103" Modified="2008-01-12 22:44:21Z">Not used so probably not worth doing</Note>
@@ -5887,16 +5417,11 @@
     <Note Id="119" Modified="2008-05-28 16:21:38Z">Leave it for now.  It's only compared internally.</Note>
     <Note Id="120" Modified="2008-09-27 02:33:01Z">Lowercase is preferred</Note>
     <Note Id="121" Modified="2010-06-22 21:05:58Z">Okay as is</Note>
-    <Note Id="122" Modified="2010-06-22 21:06:11Z">Okay as is</Note>
-    <Note Id="123" Modified="2010-06-22 21:06:44Z">The base class doesn't implement IDisposable in the Sandcastle May 2008 release and earlier.</Note>
     <Note Id="124" Modified="2010-06-22 21:07:24Z">These are the MSBuild task interface properties and must remain instance-based.</Note>
     <Note Id="125" Modified="2010-06-22 21:08:12Z">Lowercase is preferred</Note>
-    <Note Id="126" Modified="2010-07-07 20:02:22Z">Okay as is</Note>
     <Note Id="127" Modified="2010-07-07 20:02:35Z">Okay as is</Note>
     <Note Id="128" Modified="2010-07-07 20:02:52Z">The parameterless constructor servers no purpose in this case.</Note>
     <Note Id="129" Modified="2010-07-07 20:02:59Z">Lowercase is preferred</Note>
-    <Note Id="130" Modified="2011-01-16 03:55:46Z">The exception is intentionally ignored</Note>
-    <Note Id="131" Modified="2011-01-16 04:01:14Z">The property is used.</Note>
    </User>
   </Notes>
   <Rules>
@@ -5905,9 +5430,6 @@
    </Rule>
    <Rule TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811">
     <Resolution Name="Default">{0} appears to have no upstream public or protected callers.</Resolution>
-   </Rule>
-   <Rule TypeName="CallGCSuppressFinalizeCorrectly" Category="Microsoft.Usage" CheckId="CA1816">
-    <Resolution Name="NotCalled">Change {0} to call {1}. This will prevent derived types that introduce a finalizer from needing to re-implement 'IDisposable' to call it.</Resolution>
    </Rule>
    <Rule TypeName="CollectionPropertiesShouldBeReadOnly" Category="Microsoft.Usage" CheckId="CA2227">
     <Resolution Name="Default" />
@@ -5921,6 +5443,9 @@
     <Resolution Name="MemberShouldBeCompoundWord" />
     <Resolution Name="MemberShouldBeDiscreteTerm">The compound word '{0}' in member name {1} exists as a discrete term. If your usage is intended to be single word, case it as '{2}' or strip the first token entirely if it represents any sort of Hungarian notation.</Resolution>
     <Resolution Name="TypeShouldBeDiscreteTerm">The compound word '{0}' in type name {1} exists as a discrete term. If your usage is intended to be single word, case it as '{2}'.</Resolution>
+   </Rule>
+   <Rule TypeName="ConsiderPassingBaseTypesAsParameters" Category="Microsoft.Design" CheckId="CA1011">
+    <Resolution Name="Default">Consider changing the type of parameter {0} in {1} from {2} to its base type {3}. This method appears to only require base class members in its implementation. Suppress this violation if there is a compelling reason to require the more derived type in the method signature.</Resolution>
    </Rule>
    <Rule TypeName="DoNotCallOverridableMethodsInConstructors" Category="Microsoft.Usage" CheckId="CA2214">
     <Resolution Name="Default">{0} contains a call chain that results in a call to a virtual method defined by the class. Review the following call stack for unintended consequences: {1}</Resolution>
@@ -5937,13 +5462,12 @@
    </Rule>
    <Rule TypeName="DoNotIgnoreMethodResults" Category="Microsoft.Usage" CheckId="CA1806">
     <Resolution Name="HResultOrErrorCode">{0} calls {1} but does not use the HRESULT or error code that the method returns. This could lead to unexpected behavior in error conditions or low-resource situations. Use the result in a conditional statement, assign the result to a variable, or pass it as an argument to another method.</Resolution>
-    <Resolution Name="TryParse">{0} calls {1} but does not explicitly check whether the conversion succeeded. Either use the return value in a conditional statement or verify that the call site expects that the out argument will be set to the default value when the conversion fails.</Resolution>
    </Rule>
    <Rule TypeName="DoNotIndirectlyExposeMethodsWithLinkDemands" Category="Microsoft.Security" CheckId="CA2122">
     <Resolution Name="Default">{0} calls into {1} which has a LinkDemand. By making this call, {1} is indirectly exposed to user code. Review the following call stack that might expose a way to circumvent security protection: {2}</Resolution>
    </Rule>
    <Rule TypeName="DoNotNestGenericTypesInMemberSignatures" Category="Microsoft.Design" CheckId="CA1006">
-    <Resolution Name="Default">Consider a design where {0} doesn't nest generic type {1}.</Resolution>
+    <Resolution Name="Default" />
    </Rule>
    <Rule TypeName="DoNotPassTypesByReference" Category="Microsoft.Design" CheckId="CA1045">
     <Resolution Name="Default">Consider a design that does not require that {0} be a reference parameter.</Resolution>
@@ -5968,10 +5492,6 @@
    <Rule TypeName="IdentifiersShouldHaveCorrectSuffix" Category="Microsoft.Naming" CheckId="CA1710">
     <Resolution Name="Default">Rename {0} to end in '{1}'.</Resolution>
    </Rule>
-   <Rule TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063">
-    <Resolution Name="DisposeImplementation">Modify {0} so that it calls Dispose(true), then calls GC.SuppressFinalize on the current object instance ('this' or 'Me' in Visual Basic), and then returns.</Resolution>
-    <Resolution Name="DisposeSignature">Ensure that {0} is declared as public and sealed.</Resolution>
-   </Rule>
    <Rule TypeName="ImplementISerializableCorrectly" Category="Microsoft.Usage" CheckId="CA2240">
     <Resolution Name="Default">Add an implementation of GetObjectData to type {0}.</Resolution>
    </Rule>
@@ -5986,9 +5506,6 @@
    </Rule>
    <Rule TypeName="MembersShouldNotExposeCertainConcreteTypes" Category="Microsoft.Design" CheckId="CA1059">
     <Resolution Name="Xml">Modify member {0} so that it no longer exposes the concrete type {1}. Use IXPathNavigable to represent XML data sources.</Resolution>
-   </Rule>
-   <Rule TypeName="MovePInvokesToNativeMethodsClass" Category="Microsoft.Design" CheckId="CA1060">
-    <Resolution Name="Default">Because it is a P/Invoke method, {0} should be defined in a class named NativeMethods, SafeNativeMethods, or UnsafeNativeMethods.</Resolution>
    </Rule>
    <Rule TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034">
     <Resolution Name="Default">Do not nest type {0}. Alternatively, change its accessibility so that it is not externally visible.</Resolution>
@@ -6015,12 +5532,6 @@
    </Rule>
    <Rule TypeName="TypesThatOwnDisposableFieldsShouldBeDisposable" Category="Microsoft.Design" CheckId="CA1001">
     <Resolution Name="DependsOnFix">Implement IDisposable on {0} because it creates members of the following IDisposable types: {1}. If {0} has previously shipped, adding new members that implement IDisposable to this type is considered a breaking change to existing consumers.</Resolution>
-   </Rule>
-   <Rule TypeName="UriParametersShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1054">
-    <Resolution Name="Default">Change the type of parameter {0} of method {1} from string to System.Uri, or provide an overload of {1}, that allows {0} to be passed as a System.Uri object.</Resolution>
-   </Rule>
-   <Rule TypeName="UriPropertiesShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1056">
-    <Resolution Name="Default">Change the type of property {0} from string to System.Uri.</Resolution>
    </Rule>
    <Rule TypeName="UsePreferredTerms" Category="Microsoft.Naming" CheckId="CA1726">
     <Resolution Name="MemberNoAlternate">Replace the term '{0}' in member name {1} with an appropriate alternate or remove it entirely.</Resolution>

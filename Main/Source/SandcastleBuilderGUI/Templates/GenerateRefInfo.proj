@@ -1,4 +1,4 @@
-﻿<Project DefaultTargets="Generate" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+﻿<Project DefaultTargets="Generate" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <!-- Sandcastle Help File Builder Tasks.  http://SHFB.CodePlex.com -->
   <UsingTask TaskName="SandcastleBuilder.Utils.MSBuild.MRefBuilder"
     AssemblyFile="$(SHFBROOT)\SandcastleBuilder.Utils.dll" />
@@ -7,6 +7,7 @@
 
   <!-- Task properties -->
   <PropertyGroup>
+    <TargetFrameworkIdentifier>{@TargetFrameworkIdentifier}</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v{@FrameworkVersionShort}</TargetFrameworkVersion>
     <DocInternals>{@DocInternals}</DocInternals>
     <SandcastlePath>{@SandcastlePath}</SandcastlePath>
@@ -20,6 +21,15 @@
 
   <!-- Import the common targets -->
   <Import Project="$(MSBuildBinPath)\Microsoft.Common.targets" />
+
+  <!-- Import the Silverlight targets if needed so that the references are
+       resolved properly in Silverlight projects. -->
+  <PropertyGroup>
+    <FrameworkRegistryBase
+        Condition="'$(TargetFrameworkIdentifier)' == 'Silverlight'">Software\Microsoft\Microsoft SDKs\$(TargetFrameworkIdentifier)</FrameworkRegistryBase>
+  </PropertyGroup>
+  <Import Condition="'$(TargetFrameworkIdentifier)' == 'Silverlight'"
+    Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(TargetFrameworkVersion)\Microsoft.Silverlight.Common.targets" />
 
   <!-- This defines the dependencies for the Generate target -->
   <PropertyGroup>

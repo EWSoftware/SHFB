@@ -236,7 +236,6 @@ namespace SandcastleBuilder.PlugIns
         /// <param name="context">The current execution context</param>
         public void Execute(Utils.PlugIn.ExecutionContext context)
         {
-            SandcastleProject project;
             string workingPath;
             bool success;
 
@@ -262,19 +261,21 @@ namespace SandcastleBuilder.PlugIns
                 if(vs.HelpFileProject == null)
                     continue;
 
-                project = new SandcastleProject(vs.HelpFileProject, true);
+                using(SandcastleProject project = new SandcastleProject(vs.HelpFileProject, true))
+                {
+                    // We'll use a working folder below the current project's working folder
+                    workingPath = builder.WorkingFolder + vs.HelpFileProject.GetHashCode().ToString("X",
+                        CultureInfo.InvariantCulture) + "\\";
 
-                // We'll use a working folder below the current project's working folder
-                workingPath = builder.WorkingFolder + vs.HelpFileProject.GetHashCode().ToString("X",
-                    CultureInfo.InvariantCulture) + "\\";
+                    success = this.BuildProject(project, workingPath);
 
-                success = this.BuildProject(project, workingPath);
+                    // Switch back to the original folder for the current project
+                    Directory.SetCurrentDirectory(builder.ProjectFolder);
 
-                // Switch back to the original folder for the current project
-                Directory.SetCurrentDirectory(builder.ProjectFolder);
-
-                if(!success)
-                    throw new BuilderException("VBP0004", "Unable to build prior version project: " + project.Filename);
+                    if(!success)
+                        throw new BuilderException("VBP0004", "Unable to build prior version project: " +
+                            project.Filename);
+                }
 
                 // Save the reflection file location as we need it later
                 vs.ReflectionFilename = workingPath + "reflection.org";

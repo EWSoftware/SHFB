@@ -1,8 +1,9 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A8F115F0-6516-4684-BB0F-C45321F7BA7B}"
 	ProjectSection(SolutionItems) = preProject
+		BuildComponents.FxCop = BuildComponents.FxCop
 		SandcastleBuilder.FxCop = SandcastleBuilder.FxCop
 	EndProjectSection
 	ProjectSection(FolderStartupServices) = postProject
@@ -95,10 +96,10 @@ Global
 		SccNumberOfProjects = 10
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs01
-		SccProjectUniqueName0 = CodeColorizer\\ColorizerLibrary\\ColorizerLibrary.csproj
-		SccProjectName0 = CodeColorizer/ColorizerLibrary
-		SccLocalPath0 = CodeColorizer\\ColorizerLibrary
-		SccLocalPath1 = .
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = CodeColorizer\\ColorizerLibrary\\ColorizerLibrary.csproj
+		SccProjectName1 = CodeColorizer/ColorizerLibrary
+		SccLocalPath1 = CodeColorizer\\ColorizerLibrary
 		SccProjectUniqueName2 = GenerateInheritedDocs\\GenerateInheritedDocs.csproj
 		SccProjectName2 = GenerateInheritedDocs
 		SccLocalPath2 = GenerateInheritedDocs

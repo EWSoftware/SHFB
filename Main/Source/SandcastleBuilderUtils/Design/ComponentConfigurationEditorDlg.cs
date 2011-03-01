@@ -322,16 +322,12 @@ namespace SandcastleBuilder.Utils.Design
             // Is it a Sandcastle component?
             if(asm == null)
             {
-                string[] files = Directory.GetFiles(
-                    BuildComponentManager.SandcastlePath, "*.dll",
-                    SearchOption.AllDirectories);
+                resolveName = Directory.EnumerateFiles(BuildComponentManager.SandcastlePath, "*.dll",
+                    SearchOption.AllDirectories).FirstOrDefault(
+                    f => resolveName == Path.GetFileNameWithoutExtension(f));
 
-                foreach(string file in files)
-                    if(resolveName == Path.GetFileNameWithoutExtension(file))
-                    {
-                        asm = Assembly.LoadFile(file);
-                        break;
-                    }
+                if(resolveName != null)
+                    asm = Assembly.LoadFile(resolveName);
             }
 
             if(asm == null)

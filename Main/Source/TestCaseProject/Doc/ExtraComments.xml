@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<doc>
+  <assembly>
+    <name>ExtraComments</name>
+  </assembly>
+  <members>
+    <member name="R:Project">
+      <summary>
+            <p/>These are project comments from the extra comments file.
+    </member>
+    <member name="N:">
+      <!-- exclude / -->
+      <summary>
+            Global namespace comments from the extra comments file.
+      </summary>
+    </member>
+    <member name="N:TestDoc">
+      <summary>
+            <p/>These are TestDoc namespace comments from the extra comments file.
+      </summary>
+    </member>
+  </members>
+</doc>

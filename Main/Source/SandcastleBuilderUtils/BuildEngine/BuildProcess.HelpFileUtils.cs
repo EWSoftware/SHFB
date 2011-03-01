@@ -363,18 +363,16 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     if(defaultTopic != null)
                     {
                         // Find the file
-                        string[] matches = Directory.GetFiles(workingFolder + "Output", defaultTopic,
-                          SearchOption.AllDirectories);
+                        defaultTopic = Directory.EnumerateFiles(workingFolder + "Output", defaultTopic,
+                          SearchOption.AllDirectories).FirstOrDefault();
 
-                        if(matches.Length != 0)
+                        if(defaultTopic != null)
                         {
-                            defaultTopic = matches[0].Substring(workingFolder.Length + 7);
+                            defaultTopic = defaultTopic.Substring(workingFolder.Length + 7);
 
                             if(defaultTopic.IndexOf('\\') != -1)
                                 defaultTopic = defaultTopic.Substring(defaultTopic.IndexOf('\\') + 1);
                         }
-                        else
-                            defaultTopic = null;
                     }
                 }
 
@@ -454,13 +452,9 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
             int idx = sourcePath.LastIndexOf('\\');
 
-            string dirName = sourcePath.Substring(0, idx),
-                   fileSpec = sourcePath.Substring(idx + 1),
-                   filename;
+            string dirName = sourcePath.Substring(0, idx), fileSpec = sourcePath.Substring(idx + 1), filename;
 
-            string[] files = Directory.GetFiles(dirName, fileSpec);
-
-            foreach(string name in files)
+            foreach(string name in Directory.EnumerateFiles(dirName, fileSpec))
             {
                 filename = destPath + Path.GetFileName(name);
 
@@ -478,15 +472,12 @@ namespace SandcastleBuilder.Utils.BuildEngine
             // For "*.*", copy subfolders too
             if(fileSpec == "*.*")
             {
-                string[] subFolders = Directory.GetDirectories(dirName);
-
                 // Ignore hidden folders as they may be under source control
                 // and are not wanted.
-                foreach(string folder in subFolders)
-                    if((File.GetAttributes(folder) & FileAttributes.Hidden) !=
-                      FileAttributes.Hidden)
-                        this.RecursiveCopy(folder + @"\*.*", destPath +
-                            folder.Substring(dirName.Length + 1) + @"\");
+                foreach(string folder in Directory.EnumerateDirectories(dirName))
+                    if((File.GetAttributes(folder) & FileAttributes.Hidden) != FileAttributes.Hidden)
+                        this.RecursiveCopy(folder + @"\*.*",
+                            destPath + folder.Substring(dirName.Length + 1) + @"\");
             }
         }
         #endregion
@@ -510,13 +501,11 @@ namespace SandcastleBuilder.Utils.BuildEngine
         private string HelpProjectFileList(string folder, HelpFileFormat format)
         {
             StringBuilder sb = new StringBuilder(10240);
-            string itemFormat, filename, checkName;
+            string itemFormat, filename, checkName, sourceFolder = folder;
             bool encode;
 
             if(folder == null)
                 throw new ArgumentNullException("folder");
-
-            string[] files = Directory.GetFiles(folder, "*.*", SearchOption.AllDirectories);
 
             if(folder.Length != 0 && folder[folder.Length - 1] != '\\')
                 folder += @"\";
@@ -524,15 +513,13 @@ namespace SandcastleBuilder.Utils.BuildEngine
             if((format & HelpFileFormat.HtmlHelp1) != 0)
             {
                 if(folder.IndexOf(',') != -1 || folder.IndexOf(".h", StringComparison.OrdinalIgnoreCase) != -1)
-                    this.ReportWarning("BE0060", "The file path '{0}' " +
-                        "contains a comma or '.h' which may cause the Help 1 " +
-                        "compiler to fail.", folder);
+                    this.ReportWarning("BE0060", "The file path '{0}' contains a comma or '.h' which may " +
+                        "cause the Help 1 compiler to fail.", folder);
 
                 if(project.HtmlHelpName.IndexOf(',') != -1 ||
                   project.HtmlHelpName.IndexOf(".h", StringComparison.OrdinalIgnoreCase) != -1)
-                    this.ReportWarning("BE0060", "The HTMLHelpName property " +
-                        "value '{0}' contains a comma or '.h' which may " +
-                        "cause the Help 1 compiler to fail.", project.HtmlHelpName);
+                    this.ReportWarning("BE0060", "The HTMLHelpName property value '{0}' contains a comma " +
+                        "or '.h' which may cause the Help 1 compiler to fail.", project.HtmlHelpName);
 
                 itemFormat = "{0}\r\n";
                 encode = false;
@@ -543,7 +530,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 encode = true;
             }
 
-            foreach(string name in files)
+            foreach(string name in Directory.EnumerateFiles(sourceFolder, "*.*", SearchOption.AllDirectories))
                 if(!encode)
                 {
                     filename = checkName = name.Replace(folder, String.Empty);
@@ -601,7 +588,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
             File.Copy(workingFolder + "WebTOC.xml", outputFolder + "WebTOC.xml");
             File.Copy(workingFolder + "WebKI.xml", outputFolder + "WebKI.xml");
 
-            foreach(string file in Directory.GetFiles(webFolder))
+            foreach(string file in Directory.EnumerateFiles(webFolder))
                 if(file.EndsWith("html", StringComparison.OrdinalIgnoreCase) ||
                   file.EndsWith("aspx", StringComparison.OrdinalIgnoreCase))
                     this.TransformTemplate(Path.GetFileName(file), webFolder, outputFolder);

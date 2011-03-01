@@ -151,25 +151,24 @@ namespace SandcastleBuilder.Utils
         {
             string name;
 
-            if(!refresh && base.ProjectElement.HasMetadata(
-              ProjectElement.Name) && base.ProjectElement.HasMetadata(
-              ProjectElement.ProjectGuid))
+            if(!refresh && base.ProjectElement.HasMetadata(ProjectElement.Name) &&
+              base.ProjectElement.HasMetadata(ProjectElement.ProjectGuid))
                 return;
 
-            MSBuildProject project = new MSBuildProject(projectPath);
-            project.SetConfiguration(SandcastleProject.DefaultConfiguration,
-                SandcastleProject.DefaultPlatform, null);
+            using(MSBuildProject project = new MSBuildProject(projectPath))
+            {
+                project.SetConfiguration(SandcastleProject.DefaultConfiguration,
+                    SandcastleProject.DefaultPlatform, null);
 
-            name = Path.GetFileNameWithoutExtension(project.AssemblyName);
+                name = Path.GetFileNameWithoutExtension(project.AssemblyName);
 
-            if(!String.IsNullOrEmpty(name))
-                base.ProjectElement.SetMetadata(ProjectElement.Name, name);
-            else
-                base.ProjectElement.SetMetadata(ProjectElement.Name,
-                    "(Invalid project type)");
+                if(!String.IsNullOrEmpty(name))
+                    base.ProjectElement.SetMetadata(ProjectElement.Name, name);
+                else
+                    base.ProjectElement.SetMetadata(ProjectElement.Name, "(Invalid project type)");
 
-            base.ProjectElement.SetMetadata(ProjectElement.ProjectGuid,
-                project.ProjectGuid);
+                base.ProjectElement.SetMetadata(ProjectElement.ProjectGuid, project.ProjectGuid);
+            }
         }
         #endregion
 

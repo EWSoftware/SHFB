@@ -547,7 +547,7 @@ commas, or other special characters.
                 fileFolder = fileFolder.Substring(0, fileFolder.Length - 1);
 
             // Process all *.htm and *.html files in the given folder and all of its subfolders.
-            foreach(string file in Directory.GetFiles(fileFolder, "*.*", SearchOption.AllDirectories))
+            foreach(string file in Directory.EnumerateFiles(fileFolder, "*.*", SearchOption.AllDirectories))
             {
                 ext = Path.GetExtension(file).ToLower(CultureInfo.InvariantCulture);
 

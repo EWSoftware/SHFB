@@ -1,0 +1,3 @@
+# Sample text file with tabs
+a	b	c	d
+e	f	g	h

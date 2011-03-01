@@ -19,6 +19,7 @@
 // ============================================================================
 // 1.1.0.0  08/23/2006  EFW  Created the code
 // 1.8.0.0  06/23/2008  EFW  Rewrote to support MSBuild project format
+// 1.9.1.0  07/09/2010  EFW  Updated for use with .NET 4.0 and MSBuild 4.0.
 //=============================================================================
 
 using System;
@@ -30,7 +31,7 @@ using System.IO;
 using System.Text;
 using System.Xml;
 
-using Microsoft.Build.BuildEngine;
+using Microsoft.Build.Evaluation;
 
 using SandcastleBuilder.Utils.Design;
 
@@ -96,7 +97,7 @@ namespace SandcastleBuilder.Utils
         {
             Project project = projectFile.MSBuildProject;
 
-            if(project.TimeOfLastDirty == timeOfLastDirty || (!refresh &&
+            if(project.Xml.TimeLastChanged == timeOfLastDirty || (!refresh &&
               timeOfLastDirty != DateTime.MinValue))
                 return;
 
@@ -104,21 +105,15 @@ namespace SandcastleBuilder.Utils
             {
                 loadingItems = true;
                 this.Clear();
-                timeOfLastDirty = project.TimeOfLastDirty;
+                timeOfLastDirty = project.Xml.TimeLastChanged;
 
-                BuildItemGroup referenceGroup = project.GetEvaluatedItemsByName(ReferenceType);
-
-                foreach(BuildItem item in referenceGroup)
+                foreach(ProjectItem item in project.GetItems(ReferenceType))
                     this.Add(new ReferenceItem(new ProjectElement(projectFile, item)));
 
-                referenceGroup = project.GetEvaluatedItemsByName(ProjectReferenceType);
-
-                foreach(BuildItem item in referenceGroup)
+                foreach(ProjectItem item in project.GetItems(ProjectReferenceType))
                     this.Add(new ProjectReferenceItem(new ProjectElement(projectFile, item)));
 
-                referenceGroup = project.GetEvaluatedItemsByName(COMReferenceType);
-
-                foreach(BuildItem item in referenceGroup)
+                foreach(ProjectItem item in project.GetItems(COMReferenceType))
                     this.Add(new COMReferenceItem(new ProjectElement(projectFile, item)));
             }
             finally

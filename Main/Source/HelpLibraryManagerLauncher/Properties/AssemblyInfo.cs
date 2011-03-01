@@ -2,7 +2,7 @@
 // System  : Help Library Manager Launcher
 // File    : AssemblyInfo.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/03/2010
+// Updated : 07/09/2010
 // Note    : Copyright 2010, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -22,7 +22,6 @@
 using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Security.Permissions;
 
 //
 // General Information about an assembly is controlled through the following
@@ -40,9 +39,6 @@ using System.Security.Permissions;
 [assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(true)]
 [assembly: ComVisible(false)]
-
-// No special permissions are required by this assembly
-[assembly: SecurityPermission(SecurityAction.RequestMinimum, Execution = true)]
 
 //
 // Version information for an assembly consists of the following four values:

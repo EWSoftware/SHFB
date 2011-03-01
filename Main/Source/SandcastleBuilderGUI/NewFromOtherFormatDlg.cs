@@ -18,6 +18,7 @@
 // Version     Date     Who  Comments
 // ============================================================================
 // 1.8.0.0  08/04/2008  EFW  Created the code
+// 1.9.1.0  01/09/2011  EFW  Updated for use with .NET 4.0 and MSBuild 4.0
 //=============================================================================
 
 using System;
@@ -163,7 +164,7 @@ namespace SandcastleBuilder.Gui
         /// <param name="e">The event arguments</param>
         private void btnConvert_Click(object sender, EventArgs e)
         {
-            ConvertToMSBuildFormat converter;
+            ConvertToMSBuildFormat converter = null;
             string project, folder;
             bool isValid = true;
 
@@ -261,6 +262,9 @@ namespace SandcastleBuilder.Gui
             finally
             {
                 this.Cursor = Cursors.Default;
+
+                if(converter != null)
+                    converter.Dispose();
             }
         }
 

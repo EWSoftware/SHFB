@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : ConvertFromShfbFile.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/20/2010
+// Updated : 07/09/2010
 // Note    : Copyright 2008-2010, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -19,6 +19,7 @@
 // ============================================================================
 // 1.8.0.0  07/23/2008  EFW  Created the code
 // 1.9.0.0  06/20/2010  EFW  Removed ProjectLinkType property
+// 1.9.1.0  07/09/2010  EFW  Updated for use with .NET 4.0 and MSBuild 4.0.
 //=============================================================================
 
 using System;
@@ -550,7 +551,7 @@ namespace SandcastleBuilder.Utils.Conversion
             filter = filter.Replace("<filter", "<Filter");
             filter = filter.Replace("</filter", "</Filter");
 
-            base.Project.MSBuildProject.SetProperty("ApiFilter", filter, null);
+            base.Project.MSBuildProject.SetProperty("ApiFilter", filter);
         }
 
         /// <summary>

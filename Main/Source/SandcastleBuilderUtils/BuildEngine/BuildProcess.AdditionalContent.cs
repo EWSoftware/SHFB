@@ -907,8 +907,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
             try
             {
                 readerSettings = new XmlReaderSettings();
-                readerSettings.ProhibitDtd = false;
                 readerSettings.CloseInput = true;
+                readerSettings.DtdProcessing = DtdProcessing.Parse;
 
                 // Create the transform on first use
                 if(xslTransform == null)

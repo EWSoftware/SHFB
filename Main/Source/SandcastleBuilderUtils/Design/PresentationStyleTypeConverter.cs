@@ -117,11 +117,9 @@ namespace SandcastleBuilder.Utils.Design
                 {
                     folder += @"\Presentation";
 
-                    string[] dirs = Directory.GetDirectories(folder);
-
                     // The Shared folder is omitted as it contains files
                     // common to all presentation styles.
-                    foreach(string s in dirs)
+                    foreach(string s in Directory.EnumerateDirectories(folder))
                         if(!s.EndsWith("Shared", StringComparison.Ordinal))
                             styles.Add(s.Substring(s.LastIndexOf('\\') + 1));
                 }

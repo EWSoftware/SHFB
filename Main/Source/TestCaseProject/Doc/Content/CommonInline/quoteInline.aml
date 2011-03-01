@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="c366af27-ac55-44e6-9c62-86cabf3eba77" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>This element is used to describe an inline quotation.</para>
+    </introduction>
+    <section>
+      <title>Usage</title>
+      <content>
+        <para>Enter the element in the topic and specify the quotation as the
+inner text.</para>
+      </content>
+    </section>
+    <section>
+      <title>Example</title>
+      <content>
+        <code lang="xml" title=" ">
+This is an example of an &lt;quoteInline&gt;inline quotation&lt;/quoteInline&gt;.
+</code>
+      </content>
+    </section>
+    <section>
+      <title>Example Output</title>
+      <content>
+        <para>This is an example of an <quoteInline>inline quotation</quoteInline>.</para>
+      </content>
+    </section>
+    <relatedTopics>
+      <link xlink:href="b96d95c0-ec3c-4846-998a-4b43548bfa0e" />
+      <link xlink:href="96efe90a-65d4-49b2-81de-a8f05560cd60" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

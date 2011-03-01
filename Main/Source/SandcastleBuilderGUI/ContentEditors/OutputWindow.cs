@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : OutputWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/30/2009
+// Updated : 07/09/2010
 // Note    : Copyright 2008-2009, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -144,7 +144,6 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
                 // Transform the log into something more readable
                 readerSettings = new XmlReaderSettings();
-                readerSettings.ProhibitDtd = false;
                 readerSettings.CloseInput = true;
 
                 xslTransform = new XslCompiledTransform();

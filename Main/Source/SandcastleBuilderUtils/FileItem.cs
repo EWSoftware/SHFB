@@ -19,6 +19,7 @@
 // ============================================================================
 // 1.8.0.0  07/24/2008  EFW  Created the code
 // 1.8.0.3  12/04/2009  EFW  Added support for resource item files
+// 1.9.1.0  07/09/2010  EFW  Updated for use with .NET 4.0 and MSBuild 4.0.
 //=============================================================================
 
 using System;
@@ -28,7 +29,7 @@ using System.Globalization;
 using System.IO;
 using System.Text.RegularExpressions;
 
-using Microsoft.Build.BuildEngine;
+using Microsoft.Build.Evaluation;
 
 using SandcastleBuilder.Utils.Design;
 
@@ -241,9 +242,9 @@ namespace SandcastleBuilder.Utils
                     path.Length - 1)), value) + "\\";
                 this.Include = new FilePath(newPath, base.ProjectElement.Project);
 
-                foreach(BuildItem item in base.ProjectElement.Project.MSBuildProject.EvaluatedItems)
-                    if(item.Include.StartsWith(path, StringComparison.OrdinalIgnoreCase))
-                        item.Include = newPath + item.Include.Substring(path.Length);
+                foreach(ProjectItem item in base.ProjectElement.Project.MSBuildProject.AllEvaluatedItems)
+                    if(item.EvaluatedInclude.StartsWith(path, StringComparison.OrdinalIgnoreCase))
+                        item.UnevaluatedInclude = newPath + item.UnevaluatedInclude.Substring(path.Length);
             }
         }
 

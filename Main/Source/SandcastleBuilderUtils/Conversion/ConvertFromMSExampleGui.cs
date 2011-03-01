@@ -139,14 +139,11 @@ namespace SandcastleBuilder.Utils.Conversion
                     if(includePath.IndexOfAny(new char[] { '*', '?' }) == -1)
                         project.References.AddReference(Path.GetFileNameWithoutExtension(includePath), includePath);
                     else
-                        foreach(string file in Directory.GetFiles(
-                          Path.GetDirectoryName(includePath),
-                          Path.GetFileName(includePath)))
-                            if(file.EndsWith(".dll", StringComparison.OrdinalIgnoreCase) ||
-                              file.EndsWith(".exe", StringComparison.OrdinalIgnoreCase))
-                                project.References.AddReference(
-                                    Path.GetFileNameWithoutExtension(file),
-                                    file);
+                        foreach(string file in Directory.EnumerateFiles(Path.GetDirectoryName(includePath),
+                          Path.GetFileName(includePath)).Where(f =>
+                          f.EndsWith(".dll", StringComparison.OrdinalIgnoreCase) ||
+                          f.EndsWith(".exe", StringComparison.OrdinalIgnoreCase)))
+                            project.References.AddReference(Path.GetFileNameWithoutExtension(file), file);
                 }
 
                 project.SaveProject(project.Filename);

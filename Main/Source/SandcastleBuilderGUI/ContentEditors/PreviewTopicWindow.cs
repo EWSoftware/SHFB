@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : PreviewTopicWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/23/2010
-// Note    : Copyright 2008-2010, Eric Woodruff, All rights reserved
+// Updated : 01/15/2011
+// Note    : Copyright 2008-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the form used to preview a topic.
@@ -23,6 +23,7 @@
 
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -120,7 +121,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             try
             {
                 // Set up the project using information from the current project
-                tempProject = new SandcastleProject(currentProject, true);
+                tempProject = new SandcastleProject(currentProject);
 
                 // The temporary project resides in the same folder as the current project (by filename
                 // only, it isn't saved) to maintain relative paths.  However, build output is stored
@@ -273,6 +274,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
                     // Eat the exception.  We'll ignore it if the temporary files cannot be deleted.
                 }
 
+                tempProject.Dispose();
+                tempProject = null;
+
                 GC.Collect(2);
                 GC.WaitForPendingFinalizers();
                 GC.Collect(2);
@@ -291,7 +295,6 @@ namespace SandcastleBuilder.Gui.ContentEditors
         {
             TopicFile topicFile;
             string path = null;
-            string[] files;
 
             if(buildThread != null && !buildThread.IsAlive)
             {
@@ -310,22 +313,19 @@ namespace SandcastleBuilder.Gui.ContentEditors
                     else
                     {
                         // If not, try to find it by name
-                        files = Directory.GetFiles(buildProcess.WorkingFolder +
-                            @"Output\Website\", Path.GetFileNameWithoutExtension(
-                            fileItem.Name) + ".htm?", SearchOption.AllDirectories);
+                        path = Directory.EnumerateFiles(buildProcess.WorkingFolder + @"Output\Website\",
+                            Path.GetFileNameWithoutExtension(fileItem.Name) + ".htm?",
+                            SearchOption.AllDirectories).FirstOrDefault();
 
-                        if(files.Length != 0)
-                            path = files[0];
-                        else
+                        if(path == null)
                             path = fileItem.FullPath;
                     }
 
                     if(File.Exists(path))
                         wbPreview.Navigate(path);
                     else
-                        wbPreview.DocumentText = "Unable to locate built " +
-                            "topic file: " + path + "<br/><br/>Does the " +
-                            "project contain a content layout file with a " +
+                        wbPreview.DocumentText = "Unable to locate built topic file: " + path +
+                            "<br/><br/>Does the project contain a content layout file with a " +
                             "<b>BuildAction</b> of <b>ContentLayout</b>?";
                 }
                 else

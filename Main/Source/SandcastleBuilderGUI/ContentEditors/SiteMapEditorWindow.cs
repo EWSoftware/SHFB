@@ -75,32 +75,23 @@ namespace SandcastleBuilder.Gui.ContentEditors
             name = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                 Constants.ItemTemplates);
 
-            if(!Directory.Exists(name))
-                miCustomSibling.Enabled = miCustomChild.Enabled = false;
-            else
-            {
-                string[] files = Directory.GetFiles(name, "*.htm?");
+            if(Directory.Exists(name))
+                foreach(string file in Directory.EnumerateFiles(name, "*.htm?"))
+                {
+                    name = Path.GetFileNameWithoutExtension(file);
 
-                if(files.Length == 0)
-                    miCustomSibling.Enabled = miCustomChild.Enabled = false;
-                else
-                    foreach(string file in files)
-                    {
-                        name = Path.GetFileNameWithoutExtension(file);
+                    miTemplate = new ToolStripMenuItem(name, null, onClick);
+                    miTemplate.Tag = file;
+                    sbStatusBarText.SetStatusBarText(miTemplate, "Add new '" + name + "' topic");
+                    miCustomSibling.DropDownItems.Add(miTemplate);
 
-                        miTemplate = new ToolStripMenuItem(name, null, onClick);
-                        miTemplate.Tag = file;
-                        sbStatusBarText.SetStatusBarText(miTemplate,
-                            "Add new '" + name + "' topic");
-                        miCustomSibling.DropDownItems.Add(miTemplate);
+                    miTemplate = new ToolStripMenuItem(name, null, onClick);
+                    miTemplate.Tag = file;
+                    sbStatusBarText.SetStatusBarText(miTemplate, "Add new '" + name + "' topic");
+                    miCustomChild.DropDownItems.Add(miTemplate);
+                }
 
-                        miTemplate = new ToolStripMenuItem(name, null, onClick);
-                        miTemplate.Tag = file;
-                        sbStatusBarText.SetStatusBarText(miTemplate,
-                            "Add new '" + name + "' topic");
-                        miCustomChild.DropDownItems.Add(miTemplate);
-                    }
-            }
+            miCustomSibling.Enabled = miCustomChild.Enabled = (miCustomSibling.DropDownItems.Count != 0);
 
             topics = new TocEntryCollection(fileItem);
             topics.Load();

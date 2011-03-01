@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : FilePath.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/06/2009
-// Note    : Copyright 2006-2009, Eric Woodruff, All rights reserved
+// Updated : 01/09/2011
+// Note    : Copyright 2006-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class used to represent a file path.  Support is
@@ -29,6 +29,7 @@ using System.ComponentModel;
 using System.Drawing.Design;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 
@@ -225,8 +226,7 @@ namespace SandcastleBuilder.Utils
                         checkPath = checkPath.Substring(0, pos);
                     }
 
-                    string[] files = Directory.GetFiles(checkPath, fileSpec);
-                    return (files.Length != 0);
+                    return (Directory.EnumerateFiles(checkPath, fileSpec).Any());
                 }
                 catch
                 {

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : TocEntryCollection.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/02/2010
-// Note    : Copyright 2006-2010, Eric Woodruff, All rights reserved
+// Updated : 01/09/2011
+// Note    : Copyright 2006-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a collection class used to hold the table of contents
@@ -494,14 +494,13 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         public void AddTopicsFromFolder(string folder, string basePath, SandcastleProject project)
         {
             TocEntry topic, removeTopic;
-            string[] files = Directory.GetFiles(folder, "*.htm?");
             string name, newPath, projectPath = Path.GetDirectoryName(project.Filename);
 
             if(basePath.Length != 0 && basePath[basePath.Length - 1] != '\\')
                 basePath += "\\";
 
             // Add files
-            foreach(string file in files)
+            foreach(string file in Directory.EnumerateFiles(folder, "*.htm?"))
             {
                 // The file must reside under the project path
                 if(Path.GetDirectoryName(file).StartsWith(projectPath, StringComparison.OrdinalIgnoreCase))
@@ -518,9 +517,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
             }
 
             // Add folders recursively
-            files = Directory.GetDirectories(folder);
-
-            foreach(string folderName in files)
+            foreach(string folderName in Directory.EnumerateDirectories(folder))
             {
                 topic = new TocEntry(project);
                 topic.Title = name = Path.GetFileName(folderName);

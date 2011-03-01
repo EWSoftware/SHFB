@@ -18,6 +18,7 @@
 // Version     Date     Who  Comments
 // ============================================================================
 // 1.8.0.0  08/07/2008  EFW  Created the code
+// 1.9.1.0  07/09/2010  EFW  Updated for use with .NET 4.0 and MSBuild 4.0.
 //=============================================================================
 
 using System;
@@ -29,7 +30,7 @@ using System.IO;
 using System.Text;
 using System.Xml;
 
-using Microsoft.Build.BuildEngine;
+using Microsoft.Build.Evaluation;
 
 using SandcastleBuilder.Utils;
 using SandcastleBuilder.Utils.BuildEngine;
@@ -137,8 +138,7 @@ namespace SandcastleBuilder.Utils
         {
             this.Clear();
 
-            foreach(BuildItem item in
-              projectFile.MSBuildProject.GetEvaluatedItemsByName(buildAction.ToString()))
+            foreach(ProjectItem item in projectFile.MSBuildProject.GetItems(buildAction.ToString()))
                 this.Add(new FileItem(new ProjectElement(projectFile, item)));
 
             this.Sort();

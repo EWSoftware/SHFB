@@ -12,19 +12,20 @@ step, both before and after a build step, or instead of a build step.  The
 following build process plug-ins are supplied with the help file builder:</para>
 
 <list class="bullet">
-    <listItem><link xlink:href="2d483967-30cb-421c-81ff-fdba705e1e6b" /></listItem>
-    <listItem><link xlink:href="15b6b7be-3778-4487-b524-d558d02e6460" /></listItem>
-    <listItem><link xlink:href="99773472-ff05-4eba-8194-b36a0536280e" /></listItem>
-    <listItem><link xlink:href="f5051d32-b973-4fe1-9ffe-e30531007691" /></listItem>
-    <listItem><link xlink:href="161537d9-6f89-42ef-9c51-3a15ef94df65" /></listItem>
-    <listItem><link xlink:href="d0ac3f31-bc25-4c5a-b2e6-d64a74fdb67c" /></listItem>
-    <listItem><link xlink:href="31696f39-8f4e-4c4d-ab08-41a40793df03" /></listItem>
-    <listItem><link xlink:href="aa7bcd07-1a86-42dc-9f1d-49bd4afeb5d2" /></listItem>
-    <listItem><link xlink:href="796d6bbe-5130-4c87-8790-5cceb66219c7" /></listItem>
-    <listItem><link xlink:href="93c452fd-71d4-470e-8d27-ec3d979679a4" /></listItem>
-    <listItem><link xlink:href="d0e91b66-135e-446b-9239-c02fcafabd09" /></listItem>
-    <listItem><link xlink:href="6c03afba-18d0-4270-b521-c2015c4d97b3" /></listItem>
-    <listItem><link xlink:href="cd68ef02-3493-4af6-96de-1957b0aaf858" /></listItem>
+    <listItem><para><link xlink:href="2d483967-30cb-421c-81ff-fdba705e1e6b" /></para></listItem>
+    <listItem><para><link xlink:href="15b6b7be-3778-4487-b524-d558d02e6460" /></para></listItem>
+    <listItem><para><link xlink:href="99773472-ff05-4eba-8194-b36a0536280e" /></para></listItem>
+    <listItem><para><link xlink:href="f5051d32-b973-4fe1-9ffe-e30531007691" /></para></listItem>
+    <listItem><para><link xlink:href="161537d9-6f89-42ef-9c51-3a15ef94df65" /></para></listItem>
+    <listItem><para><link xlink:href="d0ac3f31-bc25-4c5a-b2e6-d64a74fdb67c" /></para></listItem>
+    <listItem><para><link xlink:href="31696f39-8f4e-4c4d-ab08-41a40793df03" /></para></listItem>
+    <listItem><para><link xlink:href="aa7bcd07-1a86-42dc-9f1d-49bd4afeb5d2" /></para></listItem>
+    <listItem><para><link xlink:href="796d6bbe-5130-4c87-8790-5cceb66219c7" /></para></listItem>
+    <listItem><para><link xlink:href="93c452fd-71d4-470e-8d27-ec3d979679a4" /></para></listItem>
+    <listItem><para><link xlink:href="d0e91b66-135e-446b-9239-c02fcafabd09" /></para></listItem>
+    <listItem><para><link xlink:href="6c03afba-18d0-4270-b521-c2015c4d97b3" /></para></listItem>
+    <listItem><para><link xlink:href="96557037-c19e-4183-bcf1-f42d7018de9f" /></para></listItem>
+    <listItem><para><link xlink:href="cd68ef02-3493-4af6-96de-1957b0aaf858" /></para></listItem>
 </list>
     </introduction>
 

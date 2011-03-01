@@ -18,7 +18,7 @@ executable used in prior versions of the help file builder has been removed.</pa
 projects from the command line.  It can be found in the
 <localUri>%SystemRoot%\Microsoft.NET\Framework\v[version]</localUri> folder
 where "[version]" is an appropriate version of the .NET Framework
-(currently 3.5).  All of the usual MSBuild command line options can be used.
+(currently 4.0.30319).  All of the usual MSBuild command line options can be used.
 You can use the <system>/property:n=v</system> option (short form:
 <system>/p:n=v</system>) to override project property values where "n" is a
 property name and "v" is the value to use.  Below are some common command line
@@ -96,10 +96,10 @@ All relative paths specified on the command line and those in a response file
 example command lines:</para>
 
 <code lang="none" title="Note: Lines wrapped for display purposes">
-%SystemRoot%\Microsoft.NET\Framework\v3.5\MSBuild.exe
+%SystemRoot%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe
   /p:Configuration=Release HelpFile.shfbproj
 
-%SystemRoot%\Microsoft.NET\Framework\v3.5\MSBuild.exe
+%SystemRoot%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe
 	/p:CopyrightText="Copyright \xa9 2006-2011"
 	/p:FeedbackEMailAdress="Eric@EWoodruff.us"
 	HelpFile.shfbproj
@@ -125,7 +125,7 @@ prefaced with a <codeInline>#</codeInline> symbol.  The <codeInline>@</codeInlin
 switch is used to pass another response file to <localUri>MSBuild.exe</localUri>.</para>
 
 <code language="none" title=" ">
-%SystemRoot%\Microsoft.NET\Framework\v3.5\MSBuild.exe @ResponseFile.rsp
+%SystemRoot%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe @ResponseFile.rsp
 </code>
 
   </content>
@@ -226,7 +226,7 @@ prevents building the help file in debug builds where it may not be needed.</par
 IF "$(ConfigurationName)"=="Debug" Goto Exit
 
 ECHO Building SHFB help file via MSBuild
-"$(SystemRoot)\Microsoft.NET\Framework\v3.5\MSBuild.exe"
+"$(SystemRoot)\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe"
     /p:CleanIntermediates=True /p:Configuration=Release
     "$(SolutionDir)Doc\SandcastleBuilder.shfbproj"
 

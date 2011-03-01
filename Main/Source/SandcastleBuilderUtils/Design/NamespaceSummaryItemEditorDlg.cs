@@ -279,7 +279,7 @@ namespace SandcastleBuilder.Utils.Design
             try
             {
                 // Clone the project for the build and adjust its properties for our needs
-                tempProject = new SandcastleProject(nsColl.Project, true);
+                tempProject = new SandcastleProject(nsColl.Project);
 
                 // The temporary project resides in the same folder as the current project (by filename
                 // only, it isn't saved) to maintain relative paths.  However, build output is stored
@@ -371,6 +371,9 @@ namespace SandcastleBuilder.Utils.Design
                 {
                     // Eat the exception.  We'll ignore it if the temporary files cannot be deleted.
                 }
+
+                tempProject.Dispose();
+                tempProject = null;
             }
 
             GC.Collect(2);

@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="230a8032-011a-4a61-b2a4-2b644018986c" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <autoOutline lead="Version 1.9.2.0 was released on February 28th, 2011." />
+    </introduction>
+
+<section address="BreakingChanges">
+  <title>Breaking Changes</title>
+  <content>
+
+<list class="bullet">
+	<listItem><para>The Sandcastle Help File Builder GUI and build engine are now built with .NET 4.0 and use MSBuild 4.0.
+As such, you will need to update any build scripts that call <application>MSBuild.exe</application> to use the .NET 4.0
+version of MSBuild.  The Sandcastle build components and the code colorizer library still target .NET 3.5 as they are loaded
+and used by the Sandcastle tools which are still built using .NET 2.0.</para>
+
+<alert class="note">
+  <para>Even though it is built with .NET 4.0, the Sandcastle Help File Builder can still build help files for any
+assembly or Visual Studio project that targets any version of .NET from version 1.1 to 4.0.</para>
+</alert></listItem>
+
+</list>
+  </content>
+</section>
+
+<section address="OtherChanges">
+  <title>Other Changes in This Release</title>
+  <content>
+    <list class="bullet">
+    
+		<listItem><para>Fixed a bug in <codeInline>ShowMissingComponent</codeInline> that caused it to miss
+the auto-documented comments on the Member List page when the constructor was overloaded.</para></listItem>
+
+		<listItem><para>Added code to locate the .NET 4.0 Framework and F# core XML comments files.</para></listItem>
+
+		<listItem><para>Updated the <codeInline>FrameworkVersion</codeInline> project property to allow selection
+of any installed .NET Framework version or Silverlight Framework version.  This allows for the proper documentation
+of Silverlight projects using assemblies and XML comments files specific to that framework.</para>
+
+
+<alert class="note">
+  <para>Because Silverlight projects use an entirely different framework, it is not possible to build a help project
+containing assemblies and/or Visual Studio projects that target both the Silverlight framework and the normal .NET
+Framework.  Each must be build in their own separate help project.  You can use the Version Builder plug-in to merge
+the information from both projects into one help file if necessary.</para>
+</alert></listItem>
+
+		<listItem><para>Added the <link xlink:href="96557037-c19e-4183-bcf1-f42d7018de9f" /> that can be used
+to add all assemblies found in a given folder and its sub-folders as references to use when generating reflection
+information with the <application>MRefBuilder</application> tool.</para></listItem>
+
+		<listItem><para>Thanks to euphory for providing additional translations in the Japanese
+shared builder content resource item file.</para></listItem>
+
+
+
+    </list>
+  </content>
+</section>
+
+    <relatedTopics>
+      <link xlink:href="078cc1c7-7995-431e-bf9c-8813becbe8df" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

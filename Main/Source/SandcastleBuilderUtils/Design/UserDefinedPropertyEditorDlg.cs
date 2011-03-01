@@ -17,6 +17,7 @@
 // Version     Date     Who  Comments
 // ============================================================================
 // 1.8.0.1  12/18/2008  EFW  Created the code
+// 1.9.1.0  07/09/2010  EFW  Updated for use with .NET 4.0 and MSBuild 4.0.
 //=============================================================================
 
 using System;
@@ -30,7 +31,7 @@ using System.Reflection;
 using System.Linq;
 using System.Windows.Forms;
 
-using Microsoft.Build.BuildEngine;
+using Microsoft.Build.Evaluation;
 
 namespace SandcastleBuilder.Utils.Design
 {
@@ -53,7 +54,7 @@ namespace SandcastleBuilder.Utils.Design
             #region Private data members
             //=====================================================================
 
-            private BuildProperty buildProp;
+            private ProjectProperty projProp;
             private string name, condition, propValue;
             #endregion
 
@@ -65,6 +66,16 @@ namespace SandcastleBuilder.Utils.Design
             /// </summary>
             [Browsable(false)]
             public UserDefinedPropertyEditorDlg Owner { get; set; }
+
+            /// <summary>
+            /// The underlying project property if any
+            /// </summary>
+            /// <value>This returns null for new properties</value>
+            [Browsable(false)]
+            public ProjectProperty UnderlyingProperty
+            {
+                get { return projProp; }
+            }
 
             /// <summary>
             /// This read-only property indicates whether or not the project
@@ -90,7 +101,7 @@ namespace SandcastleBuilder.Utils.Design
                     if(String.IsNullOrEmpty(value))
                         throw new ArgumentException("Name cannot be null or blank");
 
-                    if(buildProp == null)
+                    if(projProp == null)
                     {
                         if(!this.Owner.Project.IsValidUserDefinedPropertyName(value))
                             throw new ArgumentException("The entered name matches " +
@@ -154,19 +165,19 @@ namespace SandcastleBuilder.Utils.Design
             /// <param name="owner">The owning dialog</param>
             /// <param name="buildProperty">The build property to edit or null
             /// for a new property</param>
-            public PropertyItem(UserDefinedPropertyEditorDlg owner, BuildProperty buildProperty)
+            public PropertyItem(UserDefinedPropertyEditorDlg owner, ProjectProperty buildProperty)
             {
                 string newPropName;
                 int idx = 1;
 
                 this.Owner = owner;
-                buildProp = buildProperty;
+                projProp = buildProperty;
 
-                if(buildProp != null)
+                if(projProp != null)
                 {
-                    name = buildProp.Name;
-                    condition = buildProp.Condition;
-                    propValue = buildProp.Value;
+                    name = projProp.Name;
+                    condition = projProp.Xml.Condition;
+                    propValue = projProp.UnevaluatedValue;
                 }
                 else
                 {
@@ -232,7 +243,7 @@ namespace SandcastleBuilder.Utils.Design
 
             try
             {
-                foreach(BuildProperty prop in this.Project.GetUserDefinedProperties())
+                foreach(ProjectProperty prop in this.Project.GetUserDefinedProperties())
                 {
                     propItem = new PropertyItem(this, prop);
                     this.UserDefinedProperties.Add(propItem);
@@ -283,12 +294,16 @@ namespace SandcastleBuilder.Utils.Design
         /// <param name="e"></param>
         private void UserDefinedPropertyEditorDlg_FormClosing(object sender, FormClosingEventArgs e)
         {
+            ProjectProperty p;
+
             foreach(PropertyItem item in lbProperties.Items)
-				if(item.WasModified)
+                if(item.WasModified)
                 {
-                    this.Project.MSBuildProject.SetProperty(item.Name, item.Value);
-                    this.Project.MSBuildProject.EvaluatedProperties[item.Name].Condition = item.Condition;
+                    p = this.Project.MSBuildProject.SetProperty(item.Name, item.Value);
+                    p.Xml.Condition = item.Condition;
                 }
+
+            this.Project.MSBuildProject.ReevaluateIfNecessary();
         }
 
         /// <summary>
@@ -353,10 +368,26 @@ namespace SandcastleBuilder.Utils.Design
         /// <param name="e">The event arguments</param>
         private void btnRemove_Click(object sender, EventArgs e)
         {
-            // MSBuild 3.5 and earlier do not support property removal
-            MessageBox.Show("MSBuild 3.5 does not provide a means of removing project properties.  You will " +
-                "need to open the project file in a text editor and remove the unwanted property manually.",
-                Constants.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+            int idx = lbProperties.SelectedIndex;
+
+            this.CheckProjectIsEditable();
+
+            PropertyItem p = lbProperties.SelectedItem as PropertyItem;
+
+            if(p != null)
+            {
+                if(p.UnderlyingProperty != null)
+                    this.Project.MSBuildProject.RemoveProperty(p.UnderlyingProperty);
+
+                this.UserDefinedProperties.Remove(p);
+                lbProperties.Items.Remove(p);
+
+                if(idx >= lbProperties.Items.Count)
+                    idx--;
+
+                if(idx >= 0)
+                    lbProperties.SelectedIndex = idx;
+            }
         }
 
         /// <summary>

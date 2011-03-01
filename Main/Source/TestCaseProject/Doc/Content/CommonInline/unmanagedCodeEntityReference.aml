@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="1f20a093-5394-460b-8526-822fb327fc2c" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>This element is used to refer to unmanaged code entity references.
+Unlike managed code entity references, this element does not result in a
+link to the referenced item.</para>
+    </introduction>
+    <section>
+      <title>Usage</title>
+      <content>
+        <para>Enter the element in the topic and specify the entity as the
+inner text.</para>
+      </content>
+    </section>
+    <section>
+      <title>Example</title>
+      <content>
+        <code lang="xml" title=" ">
+You can use PInvoke to call
+&lt;unmanagedCodeEntityReference&gt;SetWindowPlacement&lt;/unmanagedCodeEntityReference&gt;.
+</code>
+      </content>
+    </section>
+    <section>
+      <title>Example Output</title>
+      <content>
+        <para>You can use PInvoke to call
+<unmanagedCodeEntityReference>SetWindowPlacement</unmanagedCodeEntityReference>.</para>
+      </content>
+    </section>
+
+    <relatedTopics>
+      <link xlink:href="b96d95c0-ec3c-4846-998a-4b43548bfa0e" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="3be5c58d-d6af-45a4-ac51-f219a75c4c4d" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>The topics in this section define the link elements that can be used
+in conceptual topics.</para>
+    </introduction>
+    <section>
+      <title>Link Elements</title>
+      <content>
+        <para>Select one of the topics below to learn more about a particular
+link element.</para>
+        <list class="bullet">
+          <listItem>
+            <para><link xlink:href="bc490dbf-7d46-432d-a816-3ae16ab6af54" /></para>
+          </listItem>
+          <listItem>
+            <para><link xlink:href="d0c9ce6d-115b-4c70-891c-69b4af944dea" /></para>
+          </listItem>
+          <listItem>
+            <para><link xlink:href="53a2b7c6-a269-4916-9313-bdc301ee9398" /></para>
+          </listItem>
+        </list>
+      </content>
+    </section>
+    <relatedTopics />
+  </developerConceptualDocument>
+</topic>

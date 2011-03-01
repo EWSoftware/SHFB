@@ -18,6 +18,7 @@
 // Version     Date     Who  Comments
 // ============================================================================
 // 1.8.0.0  07/23/2008  EFW  Created the code
+// 1.9.1.0  07/09/2010  EFW  Updated for use with .NET 4.0 and MSBuild 4.0.
 //=============================================================================
 
 using System;
@@ -27,7 +28,7 @@ using System.IO;
 using System.Reflection;
 using System.Xml;
 
-using Microsoft.Build.BuildEngine;
+using Microsoft.Build.Evaluation;
 
 namespace SandcastleBuilder.Utils.Conversion
 {
@@ -36,7 +37,7 @@ namespace SandcastleBuilder.Utils.Conversion
     /// another format to the new MSBuild format project files used by
     /// SHFB 1.8.0.0 and later.
     /// </summary>
-    public abstract class ConvertToMSBuildFormat
+    public abstract class ConvertToMSBuildFormat : IDisposable
     {
         #region Private data members
         //=====================================================================
@@ -128,6 +129,43 @@ namespace SandcastleBuilder.Utils.Conversion
         }
         #endregion
 
+        #region IDisposable implementation
+        //=====================================================================
+
+        /// <summary>
+        /// This handles garbage collection to ensure proper disposal of the
+        /// Sandcastle project if not done explicity with <see cref="Dispose()"/>.
+        /// </summary>
+        ~ConvertToMSBuildFormat()
+        {
+            this.Dispose(false);
+        }
+
+        /// <summary>
+        /// This implements the Dispose() interface to properly dispose of
+        /// the Sandcastle project object.
+        /// </summary>
+        /// <overloads>There are two overloads for this method.</overloads>
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// This can be overridden by derived classes to add their own
+        /// disposal code if necessary.
+        /// </summary>
+        /// <param name="disposing">Pass true to dispose of the managed
+        /// and unmanaged resources or false to just dispose of the
+        /// unmanaged resources.</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if(project != null)
+                project.Dispose();
+        }
+        #endregion
+
         #region Conversion methods
         //=====================================================================
 
@@ -154,10 +192,10 @@ namespace SandcastleBuilder.Utils.Conversion
             
             buildActions.Remove("Folder");
 
-            foreach(BuildItem item in project.MSBuildProject.EvaluatedItems)
-                if(buildActions.IndexOf(item.Name) != -1)
+            foreach(ProjectItem item in project.MSBuildProject.AllEvaluatedItems)
+                if(buildActions.IndexOf(item.ItemType) != -1)
                 {
-                    name = Path.GetDirectoryName(item.Include);
+                    name = Path.GetDirectoryName(item.EvaluatedInclude);
 
                     if(name.Length > 0 && folderNames.IndexOf(name) == -1)
                         folderNames.Add(name);
@@ -265,7 +303,7 @@ namespace SandcastleBuilder.Utils.Conversion
                 if(wildcard.IndexOfAny(new char[] { '*', '?' }) != -1 && includeSubFolders)
                     searchOpt = SearchOption.AllDirectories;
 
-                foreach(string file in Directory.GetFiles(dirName, Path.GetFileName(wildcard), searchOpt))
+                foreach(string file in Directory.EnumerateFiles(dirName, Path.GetFileName(wildcard), searchOpt))
                     yield return file;
             }
         }

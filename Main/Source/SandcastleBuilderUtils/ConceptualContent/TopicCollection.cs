@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : TopicCollection.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/02/2010
-// Note    : Copyright 2008-2010, Eric Woodruff, All rights reserved
+// Updated : 01/09/2011
+// Note    : Copyright 2008-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a collection class used to hold the conceptual content
@@ -20,6 +20,7 @@
 // 1.6.0.7  04/24/2008  EFW  Created the code
 // 1.8.0.0  08/07/2008  EFW  Modified for use with the new project format
 // 1.9.0.0  06/06/2010  EFW  Added support for multi-format build output
+// 1.9.1.0  07/09/2010  EFW  Updated for use with .NET 4.0 and MSBuild 4.0.
 //=============================================================================
 
 using System;
@@ -30,7 +31,7 @@ using System.IO;
 using System.Text;
 using System.Xml;
 
-using Microsoft.Build.BuildEngine;
+using Microsoft.Build.Evaluation;
 
 using SandcastleBuilder.Utils.BuildEngine;
 
@@ -280,10 +281,10 @@ namespace SandcastleBuilder.Utils.ConceptualContent
             string ext, none = BuildAction.None.ToString(),
                 content = BuildAction.Content.ToString();
 
-            foreach(BuildItem item in project.MSBuildProject.EvaluatedItems)
-                if(item.Name == none || item.Name == content)
+            foreach(ProjectItem item in project.MSBuildProject.AllEvaluatedItems)
+                if(item.ItemType == none || item.ItemType == content)
                 {
-                    ext = Path.GetExtension(item.Include).ToLower(CultureInfo.InvariantCulture);
+                    ext = Path.GetExtension(item.EvaluatedInclude).ToLower(CultureInfo.InvariantCulture);
 
                     if(ext == ".aml" || ext == ".htm" || ext == ".html" || ext == ".topic")
                     {
@@ -499,19 +500,17 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// as the folder exists, it will be associated with the container
         /// node.  If no such file exists, an empty container node is created.
         /// </remarks>
-        public void AddTopicsFromFolder(string folder, string basePath,
-          SandcastleProject project)
+        public void AddTopicsFromFolder(string folder, string basePath, SandcastleProject project)
         {
             FileItem newItem;
             Topic topic, removeTopic;
-            string[] files = Directory.GetFiles(folder, "*.aml");
             string name, newPath, projectPath = Path.GetDirectoryName(project.Filename);
 
             if(basePath.Length !=0 && basePath[basePath.Length - 1] != '\\')
                 basePath += "\\";
 
             // Add files
-            foreach(string file in files)
+            foreach(string file in Directory.EnumerateFiles(folder, "*.aml"))
             {
                 try
                 {
@@ -536,9 +535,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
             }
 
             // Add folders recursively
-            files = Directory.GetDirectories(folder);
-
-            foreach(string folderName in files)
+            foreach(string folderName in Directory.EnumerateDirectories(folder))
             {
                 topic = new Topic();
                 topic.Title = name = Path.GetFileName(folderName);

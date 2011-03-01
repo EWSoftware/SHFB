@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="71cf59a5-a37e-49cb-9e8b-adec66f2de7d" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>This document type is used for technology scenario topics.</para>
+    </introduction>
+    <section>
+      <title>SDK Technology Scenarios File Format</title>
+      <content>
+        <para>Below is an example of an SDK Technology Scenarios topic file.</para>
+        <code lang="xml" title="SDK Technology Scenarios Topic" source="ConceptualTemplates\SDK Technology Scenarios.aml" />
+      </content>
+    </section>
+    <relatedTopics>
+      <link xlink:href="c69a248a-bd94-47b2-90d7-5442e9cb567a" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

@@ -1,0 +1,420 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <!-- The configuration and platform will be used to determine which
+         assemblies to include from solution and project documentation
+         sources -->
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{538d8a1f-3a67-4e72-af21-6c51458543d5}</ProjectGuid>
+    <SHFBSchemaVersion>1.9.2.0</SHFBSchemaVersion>
+    <!-- AssemblyName, Name, and RootNamespace are not used by SHFB but Visual
+         Studio adds them anyway -->
+    <AssemblyName>Documentation</AssemblyName>
+    <RootNamespace>Documentation</RootNamespace>
+    <Name>Documentation</Name>
+    <!-- SHFB properties -->
+    <OutputPath>.\Help\</OutputPath>
+    <HtmlHelpName>TestCaseProject</HtmlHelpName>
+    <ProjectSummary>Test project summary!</ProjectSummary>
+    <MissingTags>Summary, Parameter, Returns, AutoDocumentCtors, Namespace, TypeParameter, IncludeTargets, AutoDocumentDispose</MissingTags>
+    <VisibleItems>Attributes, ExplicitInterfaceImplementations, InheritedMembers, InheritedFrameworkMembers, Protected, SealedProtected</VisibleItems>
+    <HtmlHelp1xCompilerPath>
+    </HtmlHelp1xCompilerPath>
+    <HtmlHelp2xCompilerPath>
+    </HtmlHelp2xCompilerPath>
+    <SandcastlePath>
+    </SandcastlePath>
+    <WorkingPath>
+    </WorkingPath>
+    <CleanIntermediates>False</CleanIntermediates>
+    <BuildLogFile>
+    </BuildLogFile>
+    <FrameworkVersion>.NET 4.0.30319</FrameworkVersion>
+    <IndentHtml>False</IndentHtml>
+    <RootNamespaceContainer>True</RootNamespaceContainer>
+    <RootNamespaceTitle>Test Root Namespace Title</RootNamespaceTitle>
+    <CopyrightHref>http://www.EWoodruff.us</CopyrightHref>
+    <CopyrightText>Copyright \xA9 2006-2011, Eric Woodruff, All rights reserved</CopyrightText>
+    <FeedbackEMailAddress>Eric%40EWoodruff.us</FeedbackEMailAddress>
+    <FeedbackEMailLinkText>Me. %28{%40CustomProperty}%29</FeedbackEMailLinkText>
+    <HeaderText>Date Only: {%40BuildDate:MMM  d, yyyy} Full Date: {%40BuildDate}</HeaderText>
+    <FooterText>Full Date: {%40BuildDate} Date Only: {%40BuildDate:MMM  d, yyyy}</FooterText>
+    <PresentationStyle>vs2005</PresentationStyle>
+    <HelpFileVersion>{%40Major}.{%40Minor}.{%40Build}.{%40Revision}</HelpFileVersion>
+    <ComponentConfigurations>
+      <ComponentConfig id="Code Block Component" enabled="True">
+        <component id="Code Block Component" type="SandcastleBuilder.Components.CodeBlockComponent" assembly="{@SHFBFolder}SandcastleBuilder.Components.dll">
+          <basePath value="{@ProjectFolder}" />
+          <languageFilter value="false" />
+          <allowMissingSource value="true" />
+          <removeRegionMarkers value="true" />
+          <colorizer syntaxFile="{@SHFBFolder}Colorizer\highlight.xml" styleFile="{@SHFBFolder}Colorizer\highlight.xsl" copyImageUrl="../icons/CopyCode.gif" language="cs" tabSize="0" numberLines="true" outlining="true" keepSeeTags="false" defaultTitle="true" />
+        </component>
+      </ComponentConfig>
+      <ComponentConfig id="Post-transform Component" enabled="True">
+        <component type="SandcastleBuilder.Components.PostTransformComponent" assembly="{@SHFBFolder}SandcastleBuilder.Components.dll" id="Post-transform Component">
+          <!-- Code colorizer files (required).
+                 Attributes:
+                    Stylesheet file (required)
+                    Script file (required)
+                    "Copy code" image file (required) -->
+          <colorizer stylesheet="{@SHFBFolder}Colorizer\highlight.css" scriptFile="{@SHFBFolder}Colorizer\highlight.js" copyImage="{@SHFBFolder}Colorizer\CopyCode.gif" />
+          <!-- Output path for the files (required).  This should match the
+                 output path of the HTML files (see SaveComponent below). -->
+          <outputPaths>{@HelpFormatOutputPaths}</outputPaths>
+          <!-- Logo image file (optional).  Filename is required. The height,
+                 width, altText, placement, and alignment attributes are
+                 optional. -->
+          <logoFile filename="C:\CP\TFS01\SHFB\Main\Source\SandcastleBuilderGUI\Images\Sandcastle.jpg" height="0" width="0" altText="Test Logo" placement="left" alignment="center" />
+        </component>
+      </ComponentConfig>
+      <ComponentConfig id="IntelliSense Component" enabled="True">
+        <component id="IntelliSense Component" type="SandcastleBuilder.Components.IntelliSenseComponent" assembly="{@SHFBFolder}SandcastleBuilder.Components.dll">
+          <!-- Output options (optional)
+                 Attributes:
+                    Include Namespaces (false by default)
+                    Namespaces filename ("Namespaces" if not specified or empty)
+                    Directory (current folder if not specified or empty) -->
+          <output includeNamespaces="false" namespacesFile="Namespaces" folder="{@OutputFolder}" />
+        </component>
+      </ComponentConfig>
+      <ComponentConfig id="Cached Framework Comments Index Data" enabled="True">
+        <component id="Cached Framework Comments Index Data" type="SandcastleBuilder.Components.CachedCopyFromIndexComponent" assembly="{@SHFBFolder}SandcastleBuilder.Components.dll">
+          <index name="comments" value="/doc/members/member" key="@name" cache="100">
+{@CachedFrameworkCommentList}
+{@CommentFileList}
+            </index>
+          <copy name="comments" source="*" target="/document/comments" />
+        </component>
+      </ComponentConfig>
+      <ComponentConfig id="Cached MSDN URL References" enabled="True">
+        <component id="Cached MSDN URL References" type="SandcastleBuilder.Components.CachedResolveReferenceLinksComponent" assembly="{@SHFBFolder}SandcastleBuilder.Components.dll" locale="{@Locale}" linkTarget="{@SdkLinkTarget}">
+          <helpOutput format="HtmlHelp1">
+            <cache filename="{@LocalDataFolder}Cache\MsdnUrl.cache" />
+            <targets base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" type="{@HtmlSdkLinkType}" />
+            <targets files="reflection.xml" type="Local" />
+          </helpOutput>
+          <helpOutput format="MSHelp2">
+            <cache filename="{@LocalDataFolder}Cache\MsdnUrl.cache" />
+            <targets base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" type="{@MSHelp2SdkLinkType}" />
+            <targets files="reflection.xml" type="Index" />
+          </helpOutput>
+          <helpOutput format="MSHelpViewer">
+            <cache filename="{@LocalDataFolder}Cache\MsdnUrl.cache" />
+            <targets base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" type="{@MSHelpViewerSdkLinkType}" />
+            <targets files="reflection.xml" type="Id" />
+          </helpOutput>
+          <helpOutput format="Website">
+            <cache filename="{@LocalDataFolder}Cache\MsdnUrl.cache" />
+            <targets base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" type="{@WebsiteSdkLinkType}" />
+            <targets files="reflection.xml" type="Local" />
+          </helpOutput>
+        </component>
+      </ComponentConfig>
+      <ComponentConfig id="Cached Reflection Index Data" enabled="True">
+        <component id="Cached Reflection Index Data" type="SandcastleBuilder.Components.CachedCopyFromIndexComponent" assembly="{@SHFBFolder}SandcastleBuilder.Components.dll">
+          <index name="reflection" value="/reflection/apis/api" key="@id" cache="10">
+            <cache base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" cacheFile="{@LocalDataFolder}Cache\Reflection.cache" />
+            <data files="reflection.xml" />
+          </index>
+          <copy name="reflection" source="*" target="/document/reference" />
+        </component>
+      </ComponentConfig>
+      <ComponentConfig id="API Token Resolution" enabled="True">
+        <component id="API Token Resolution" type="Microsoft.Ddue.Tools.SharedContentComponent" assembly="{@SandcastlePath}ProductionTools\BuildComponents.dll">
+
+        {@TokenFiles}
+        <replace elements="/*//token" item="string(.)" /></component>
+      </ComponentConfig>
+    </ComponentConfigurations>
+    <DocumentationSources>
+      <DocumentationSource sourceFile="%ProgramFiles(x86)%\Sandcastle\Examples\Sandcastle\comments.xml" />
+      <DocumentationSource sourceFile="%ProgramFiles(x86)%\Sandcastle\Examples\Sandcastle\test.dll" />
+      <DocumentationSource sourceFile="..\TestDoc.csproj" />
+    </DocumentationSources>
+    <HelpAttributes>
+      <HelpAttribute name="DocSet" value="{@HtmlHelpName}" xmlns="" />
+      <HelpAttribute name="DocSet" value="NetFramework" xmlns="" />
+      <HelpAttribute name="TargetOS" value="Windows" xmlns="" />
+    </HelpAttributes>
+    <NamespaceSummaries>
+      <NamespaceSummaryItem name="(global)" isDocumented="False" xmlns="" />
+      <NamespaceSummaryItem name="DocumentationInheritance" isDocumented="True" xmlns="" />
+      <NamespaceSummaryItem name="GenericOverloadBug" isDocumented="True" xmlns="" />
+      <NamespaceSummaryItem name="IJM.Library.Threading.Windows" isDocumented="True" xmlns="" />
+      <NamespaceSummaryItem name="IndexTest" isDocumented="True" xmlns="">CHM duplicate index keyword test and &amp;lt;see&amp;gt;/&amp;lt;seealso&amp;gt; inner text tests.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="InteropAttributesBug" isDocumented="True" xmlns="" />
+      <NamespaceSummaryItem name="NestedClassTest" isDocumented="True" xmlns="" />
+      <NamespaceSummaryItem name="OverloadsPageBug" isDocumented="True" xmlns="" />
+      <NamespaceSummaryItem name="SandcastleTest" isDocumented="True" xmlns="">&lt;inheritdoc cref="N:TestDoc"/&gt;
+&lt;p/&gt;Test of the &amp;lt;inheritdoc /&amp;gt; tag in namespace comments.  The stuff from the &lt;b&gt;TestDoc&lt;/b&gt; namespace should be above this paragraph.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SealedOverrideBug" isDocumented="True" xmlns="" />
+      <NamespaceSummaryItem name="TestDoc" isDocumented="True" xmlns="">Test Namespace.  See &lt;see cref="T:TestDoc.TestClass"/&gt; and &lt;see cref="T:TestDoc.TestDerivedClass"&gt;Test Sealed Derived Class&lt;/see&gt; for some additional information.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="XMLTagsDemo" isDocumented="True" xmlns="">XML Tags Demo namespace</NamespaceSummaryItem>
+    </NamespaceSummaries>
+    <PlugInConfigurations>
+      <PlugInConfig id="Additional Content Only" enabled="False">
+        <configuration />
+      </PlugInConfig>
+      <PlugInConfig id="XPath Reflection File Filter" enabled="False">
+        <configuration>
+          <expressions>
+            <expression>/reflection/apis/api[apidata/@subgroup="class" and typedata/@sealed="true"]/elements/element[@api="M:System.Object.Equals(System.Object)"]</expression>
+            <expression>/reflection/apis/api[apidata/@subgroup="class" and typedata/@sealed="true"]/elements/element[@api="M:System.Object.GetHashCode"]</expression>
+            <expression>/reflection/apis/api[apidata/@subgroup="class" and typedata/@sealed="true"]/elements/element[@api="M:System.Object.GetType"]</expression>
+            <expression>/reflection/apis/api[apidata/@subgroup="class" and typedata/@sealed="true"]/elements/element[@api="M:System.Object.Finalize"]</expression>
+            <expression>/reflection/apis/api[apidata/@subgroup="class" and typedata/@sealed="true"]/elements/element[@api="M:System.Object.MemberwiseClone"]</expression>
+            <expression>/reflection/apis/api[apidata/@subgroup="class" and typedata/@sealed="true"]/elements/element[@api="M:System.Object.ToString"]</expression>
+          </expressions>
+        </configuration>
+      </PlugInConfig>
+      <PlugInConfig id="Bibliography Support" enabled="False">
+        <configuration>
+          <bibliography path="{@ProjectFolder}Bibliography.xml" />
+        </configuration>
+      </PlugInConfig>
+      <PlugInConfig id="Completion Notification" enabled="False">
+        <configuration>
+          <smtpServer host="mail.somecompany.org" port="25" />
+          <userCredentials useDefault="true" userName="" password="" />
+          <fromEMail address="SHFB@SomeCompany.org" />
+          <successEMail address="EWoodruff@SomeCompany.org" attachLog="false" />
+          <failureEMail address="EWoodruff@SomeCompany.org" attachLog="true" />
+          <xslTransform filename="{@SHFBFolder}Templates\TransformBuildLog.xsl" />
+        </configuration>
+      </PlugInConfig>
+      <PlugInConfig id="DBCS Fix for CHM Builds" enabled="False">
+        <configuration>
+          <sbAppLocale path="C:\UTILS\SBAppLocale.exe" />
+        </configuration>
+      </PlugInConfig>
+      <PlugInConfig id="Hierarchical Table of Contents" enabled="False">
+        <configuration>
+          <toc minParts="2" insertBelow="False" />
+        </configuration>
+      </PlugInConfig>
+      <PlugInConfig id="Wildcard Assembly References" enabled="False">
+        <configuration>
+          <references>
+            <reference path="..\..\CodeColorizer\ColorizerLibrary\bin\Debug\" wildcard="*.dll" recurse="false" />
+            <reference path="..\..\SandcastleBuilder\" wildcard="*.dll" recurse="true" />
+          </references>
+        </configuration>
+      </PlugInConfig>
+    </PlugInConfigurations>
+    <ApiFilter>
+    </ApiFilter>
+    <HelpFileFormat>HtmlHelp1</HelpFileFormat>
+    <SdkLinkTarget>Blank</SdkLinkTarget>
+    <Version>1.20.34.123</Version>
+    <Major>1</Major>
+    <Minor>20</Minor>
+    <Build>34</Build>
+    <Revision>123</Revision>
+    <CustomProperty Condition="'$(CustomProperty)' == ''">A value from a custom user-defined property</CustomProperty>
+    <HelpTitle>Sandcastle Test Case Library</HelpTitle>
+    <SyntaxFilters>CSharp, VisualBasic, CPlusPlus, FSharp, JavaScript</SyntaxFilters>
+    <KeepLogFile>True</KeepLogFile>
+    <Language>en-US</Language>
+    <ProductTitle>Sandcastle Help File Builder Example Project</ProductTitle>
+    <VendorName>EWSoftware</VendorName>
+    <MSHelp2SdkLinkType>Msdn</MSHelp2SdkLinkType>
+    <SelfBranded>True</SelfBranded>
+    <TocParentVersion>100</TocParentVersion>
+    <TopicVersion>100</TopicVersion>
+    <TocOrder>3</TocOrder>
+    <TocParentId>ba237712-f8c4-4d13-854b-ab4a16afa309</TocParentId>
+    <ContentPlacement>AboveNamespaces</ContentPlacement>
+    <NamingMethod>Guid</NamingMethod>
+  </PropertyGroup>
+  <!-- There are no properties for these groups.  AnyCPU needs to appear in
+       order for Visual Studio to perform the build.  The others are optional
+       common platform types that may appear. -->
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|Win32' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|Win32' ">
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="ConceptualTemplates\" />
+    <Folder Include="ExampleFiles\" />
+    <Folder Include="Content\VersionHistory\" />
+    <Folder Include="Content\FileTypes\TopicFiles\" />
+    <Folder Include="Content\FileTypes\" />
+    <Folder Include="Content\BlockElements\" />
+    <Folder Include="Content\CommonInline\" />
+    <Folder Include="Content\MediaElements\" />
+    <Folder Include="Content\LinkElements\" />
+    <Folder Include="Content\MiscElements\" />
+    <Folder Include="Media\" />
+    <Folder Include="Content\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Media\SmallInformation.png">
+      <ImageId>4cfacbe8-d100-471c-9d69-1dbcce50e316</ImageId>
+      <AlternateText>Information</AlternateText>
+    </Image>
+    <Image Include="Media\SandcastleLogoLarge.jpg">
+      <ImageId>6be7079d-a9d8-4189-9021-0f72d1642beb</ImageId>
+      <AlternateText>Sandcastle</AlternateText>
+    </Image>
+    <Image Include="Media\SandcastleLogoSmall.jpg">
+      <ImageId>98a8a8b7-c374-40c7-902a-91c947bf107c</ImageId>
+      <CopyToMedia>True</CopyToMedia>
+    </Image>
+    <Image Include="Media\SecuritySuccess.png">
+      <ImageId>b5d069f7-5daf-45ae-882c-4596ab2b724a</ImageId>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <CodeSnippets Include="ExampleFiles\CodeSnippets.snippets" />
+  </ItemGroup>
+  <ItemGroup>
+    <Tokens Include="TestCaseProject.tokens" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Bibliography.xml" />
+    <None Include="ExampleFiles\Test.xml" />
+    <None Include="ExampleFiles\Test.xaml" />
+    <None Include="ExampleFiles\Test.sql" />
+    <None Include="ExampleFiles\Example.xml" />
+    <None Include="ExampleFiles\CppClass.cpp" />
+    <None Include="ExampleFiles\Class1.vb" />
+    <None Include="Content\VersionHistory\v1.1.0.1.aml" />
+    <None Include="Content\MSHelpViewerRoot.aml" />
+    <None Include="Content\BlockElements\table.aml" />
+    <None Include="Content\BlockElements\definitionTable.aml" />
+    <None Include="Content\BlockElements\list.aml" />
+    <None Include="Content\VersionHistory\v1.1.0.0.aml" />
+    <None Include="ConceptualTemplates\XML Reference.aml" />
+    <None Include="ConceptualTemplates\Whitepaper.aml" />
+    <None Include="ConceptualTemplates\Walkthrough.aml" />
+    <None Include="ConceptualTemplates\User Interface Reference.aml" />
+    <None Include="ConceptualTemplates\Troubleshooting.aml" />
+    <None Include="ConceptualTemplates\SDK Technology Summary.aml" />
+    <None Include="ConceptualTemplates\SDK Technology Scenarios.aml" />
+    <None Include="ConceptualTemplates\SDK Technology Orientation.aml" />
+    <None Include="ConceptualTemplates\SDK Technology Code Directory.aml" />
+    <None Include="ConceptualTemplates\SDK Technology Architecture.aml" />
+    <None Include="ConceptualTemplates\Sample.aml" />
+    <None Include="ConceptualTemplates\Reference.aml" />
+    <None Include="ConceptualTemplates\Reference Without Syntax.aml" />
+    <None Include="ConceptualTemplates\Reference With Syntax.aml" />
+    <None Include="ConceptualTemplates\Orientation.aml" />
+    <None Include="ConceptualTemplates\How To.aml" />
+    <None Include="ConceptualTemplates\Glossary.aml" />
+    <None Include="ConceptualTemplates\Error Message.aml" />
+    <None Include="ConceptualTemplates\Conceptual.aml" />
+    <None Include="ExampleFiles\MediaContent.xml" />
+    <None Include="ExampleFiles\Tokens.xml" />
+    <None Include="Content\VersionHistory\VersionHistory.aml" />
+    <None Include="Content\VersionHistory\v1.0.0.0.aml" />
+    <None Include="Content\MiscElements\Token.aml" />
+    <None Include="Content\MiscElements\autoOutlineExample.aml" />
+    <None Include="Content\MiscElements\autoOutline.aml" />
+    <None Include="Content\MiscElements\MiscElements.aml" />
+    <None Include="Content\LinkElements\Link.aml" />
+    <None Include="Content\LinkElements\externalLink.aml" />
+    <None Include="Content\LinkElements\codeEntityReference.aml" />
+    <None Include="Content\LinkElements\LinkElements.aml" />
+    <None Include="Content\MediaElements\mediaLinkInline.aml" />
+    <None Include="Content\MediaElements\mediaLink.aml" />
+    <None Include="Content\MediaElements\MediaElements.aml" />
+    <None Include="Content\CommonInline\userInput.aml" />
+    <None Include="Content\CommonInline\unmanagedCodeEntityReference.aml" />
+    <None Include="Content\CommonInline\ui.aml" />
+    <None Include="Content\CommonInline\system.aml" />
+    <None Include="Content\CommonInline\superscript.aml" />
+    <None Include="Content\CommonInline\subscript.aml" />
+    <None Include="Content\CommonInline\replaceable.aml" />
+    <None Include="Content\CommonInline\quoteInline.aml" />
+    <None Include="Content\CommonInline\placeholder.aml" />
+    <None Include="Content\CommonInline\phrase.aml" />
+    <None Include="Content\CommonInline\newTerm.aml" />
+    <None Include="Content\CommonInline\math.aml" />
+    <None Include="Content\CommonInline\markup.aml" />
+    <None Include="Content\CommonInline\localUri.aml" />
+    <None Include="Content\CommonInline\literal.aml" />
+    <None Include="Content\CommonInline\legacyUnderline.aml" />
+    <None Include="Content\CommonInline\legacyItalic.aml" />
+    <None Include="Content\CommonInline\legacyBold.aml" />
+    <None Include="Content\CommonInline\hardware.aml" />
+    <None Include="Content\CommonInline\foreignPhrase.aml" />
+    <None Include="Content\CommonInline\fictiousUri.aml" />
+    <None Include="Content\CommonInline\errorInline.aml" />
+    <None Include="Content\CommonInline\environmentVariable.aml" />
+    <None Include="Content\CommonInline\database.aml" />
+    <None Include="Content\CommonInline\computeOutputInline.aml" />
+    <None Include="Content\CommonInline\command.aml" />
+    <None Include="Content\CommonInline\codeInline.aml" />
+    <None Include="Content\CommonInline\application.aml" />
+    <None Include="Content\CommonInline\CommonInline.aml" />
+    <None Include="Content\BlockElements\title.aml" />
+    <None Include="Content\BlockElements\relatedTopics.aml" />
+    <None Include="Content\BlockElements\quote.aml" />
+    <None Include="Content\BlockElements\para.aml" />
+    <None Include="Content\BlockElements\introduction.aml" />
+    <None Include="Content\BlockElements\codeReference.aml" />
+    <None Include="Content\BlockElements\code.aml" />
+    <None Include="Content\BlockElements\alert.aml" />
+    <None Include="Content\BlockElements\BlockElements.aml" />
+    <None Include="Content\FileTypes\CompanionFile.aml" />
+    <None Include="Content\FileTypes\TopicFiles\XML Reference.aml" />
+    <None Include="Content\FileTypes\TopicFiles\Whitepaper.aml" />
+    <None Include="Content\FileTypes\TopicFiles\Walkthrough.aml" />
+    <None Include="Content\FileTypes\TopicFiles\User Interface Reference.aml" />
+    <None Include="Content\FileTypes\TopicFiles\Troubleshooting.aml" />
+    <None Include="Content\FileTypes\TopicFiles\SDK Technology Summary.aml" />
+    <None Include="Content\FileTypes\TopicFiles\SDK Technology Scenarios.aml" />
+    <None Include="Content\FileTypes\TopicFiles\SDK Technology Orientation.aml" />
+    <None Include="Content\FileTypes\TopicFiles\SDK Technology Code Directory.aml" />
+    <None Include="Content\FileTypes\TopicFiles\SDK Technology Architecture.aml" />
+    <None Include="Content\FileTypes\TopicFiles\Sample.aml" />
+    <None Include="Content\FileTypes\TopicFiles\Reference Without Syntax.aml" />
+    <None Include="Content\FileTypes\TopicFiles\Reference With Syntax.aml" />
+    <None Include="Content\FileTypes\TopicFiles\Reference.aml" />
+    <None Include="Content\FileTypes\TopicFiles\Orientation.aml" />
+    <None Include="Content\FileTypes\TopicFiles\How To.aml" />
+    <None Include="Content\FileTypes\TopicFiles\Glossary.aml" />
+    <None Include="Content\FileTypes\TopicFiles\Error Message.aml" />
+    <None Include="Content\FileTypes\TopicFiles\Conceptual.aml" />
+    <None Include="Content\FileTypes\TopicFiles\TopicFile.aml" />
+    <None Include="Content\FileTypes\TokenFile.aml" />
+    <None Include="Content\FileTypes\MediaContentFile.aml" />
+    <None Include="Content\FileTypes\CodeSnippetsFile.aml" />
+    <None Include="Content\FileTypes\FileTypes.aml" />
+    <None Include="Content\Glossary.aml" />
+    <None Include="Content\Links.aml" />
+    <None Include="Content\KnownIssues.aml" />
+    <None Include="Content\Welcome.aml" />
+    <None Include="Content\IntelliSense.aml" />
+    <None Include="Content\SchemaExtensibility.aml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ContentLayout Include="TestCaseProject.content" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ExampleFiles\TestUTF8.txt" />
+    <Content Include="ExampleFiles\Test.txt" />
+    <None Include="AboutPageIcon.html" />
+    <None Include="AboutPageInfo.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceItems Include="ResourceItems.items" />
+  </ItemGroup>
+  <!-- Import the SHFB build targets -->
+  <Import Project="$(SHFBROOT)\SandcastleHelpFileBuilder.targets" />
+</Project>

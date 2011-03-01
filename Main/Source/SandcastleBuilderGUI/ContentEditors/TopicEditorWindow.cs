@@ -193,9 +193,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
             {
                 dlg.Title = "Save Content File As";
                     dlg.Filter = "Project Files (*.aml, *.htm*, *.css, *.js, " +
-                        "*.content, *.sitemap, *.snippets, *.tokens)|*.aml;" +
+                        "*.content, *.sitemap, *.snippets, *.tokens, *.items)|*.aml;" +
                         "*.htm*;*.css;*.js;*.content;*.sitemap;*.tokens;" +
-                        "*.snippets|Content Files (*.aml, *.htm*)|*.aml;*.htm*|" +
+                        "*.snippets;*.items|Content Files (*.aml, *.htm*)|*.aml;*.htm*|" +
                         "Content Layout Files (*.content, *.sitemap)|" +
                         "*.content;*.sitemap|All Files (*.*)|*.*";
                 dlg.DefaultExt = Path.GetExtension(this.ToolTipText);

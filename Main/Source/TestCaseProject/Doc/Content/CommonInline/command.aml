@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="02e60906-b8d5-4258-9348-aad70f48861f" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>This element describes the name of an executable or other software
+application than can be run.</para>
+    </introduction>
+    <section>
+      <title>Usage</title>
+      <content>
+        <para>Enter the element in the topic and specify the application name as
+the inner text.  The <codeInline>replaceable</codeInline> element can be
+nested within it to represent replaceable parameters.</para>
+      </content>
+    </section>
+    <section>
+      <title>Example</title>
+      <content>
+        <code lang="xml" title=" ">
+&lt;command&gt;COPY &lt;system&gt;/s /e&lt;/system&gt; &lt;replaceable&gt;sourceFileSpec&lt;/replaceable&gt;
+    &lt;replaceable&gt;destFileSpec&lt;/replaceable&gt;&lt;/command&gt;
+</code>
+      </content>
+    </section>
+    <section>
+      <title>Example Output</title>
+      <content>
+        <para>
+          <command>XCOPY <system>/s /e</system><replaceable>sourceFileSpec</replaceable><replaceable>destFileSpec</replaceable></command>
+        </para>
+      </content>
+    </section>
+    <relatedTopics>
+      <link xlink:href="b96d95c0-ec3c-4846-998a-4b43548bfa0e" />
+      <link xlink:href="382fc569-33e4-489a-b0c2-94c11e56ab4a" />
+      <link xlink:href="f1a0543f-d583-47a7-ac92-5b998326913e" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

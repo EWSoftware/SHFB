@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : DocumentationSource.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/05/2010
-// Note    : Copyright 2006-2010, Eric Woodruff, All rights reserved
+// Updated : 01/09/2011
+// Note    : Copyright 2006-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class representing a documentation source such as an
@@ -33,6 +33,7 @@ using System.ComponentModel;
 using System.Drawing.Design;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 using SandcastleBuilder.Utils.Design;
@@ -373,10 +374,11 @@ namespace SandcastleBuilder.Utils
                 if(wildcard.IndexOfAny(new char[] { '*', '?' }) != -1 && includeSubfolders)
                     searchOpt = SearchOption.AllDirectories;
 
-                foreach(string f in Directory.GetFiles(dirName, Path.GetFileName(wildcard), searchOpt))
-                    if(f.EndsWith(".exe", StringComparison.OrdinalIgnoreCase) ||
-                      f.EndsWith(".dll", StringComparison.OrdinalIgnoreCase))
-                        assemblies.Add(f);
+                foreach(string f in Directory.EnumerateFiles(dirName,
+                  Path.GetFileName(wildcard), searchOpt).Where(
+                  f => f.EndsWith(".exe", StringComparison.OrdinalIgnoreCase) ||
+                  f.EndsWith(".dll", StringComparison.OrdinalIgnoreCase)))
+                    assemblies.Add(f);
             }
 
             return assemblies;
@@ -405,9 +407,10 @@ namespace SandcastleBuilder.Utils
                 if(wildcard.IndexOfAny(new char[] { '*', '?' }) != -1 && includeSubfolders)
                     searchOpt = SearchOption.AllDirectories;
 
-                foreach(string f in Directory.GetFiles(dirName, Path.GetFileName(wildcard), searchOpt))
-                    if(f.EndsWith(".xml", StringComparison.OrdinalIgnoreCase))
-                        comments.Add(f);
+                foreach(string f in Directory.EnumerateFiles(dirName,
+                  Path.GetFileName(wildcard), searchOpt).Where(f => f.EndsWith(".xml",
+                  StringComparison.OrdinalIgnoreCase)))
+                    comments.Add(f);
             }
 
             return comments;
@@ -442,7 +445,7 @@ namespace SandcastleBuilder.Utils
                 if(wildcard.IndexOfAny(new char[] { '*', '?' }) != -1 && includeSubfolders)
                     searchOpt = SearchOption.AllDirectories;
 
-                foreach(string f in Directory.GetFiles(dirName, Path.GetFileName(wildcard), searchOpt))
+                foreach(string f in Directory.EnumerateFiles(dirName, Path.GetFileName(wildcard), searchOpt))
                 {
                     if(f.EndsWith(".sln", StringComparison.OrdinalIgnoreCase))
                         solutions.Add(f);

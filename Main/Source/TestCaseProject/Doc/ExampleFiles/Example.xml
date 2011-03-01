@@ -1,0 +1,9 @@
+﻿<?xml version="1.0"?>
+<Test>
+    <Example id="1">
+      <example>
+        <!-- The end tag is wrong intentionally to test ShowMissingComponent 
+        <para>Test</parax> -->
+      </example>
+    </Example>
+</Test>

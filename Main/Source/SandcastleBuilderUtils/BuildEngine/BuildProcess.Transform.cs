@@ -17,6 +17,7 @@
 //
 // Version     Date     Who  Comments
 // ============================================================================
+#region Older history
 // 1.0.0.0  08/07/2006  EFW  Created the code
 // 1.3.3.0  11/24/2006  EFW  Added support for component configurations
 // 1.5.0.2  07/18/2007  EFW  Added support for the MRefBuilder API filter
@@ -34,11 +35,15 @@
 //                           Added support for conceptual build configurations
 // 1.8.0.0  07/14/2008  EFW  Various updates to support new project structure
 // 1.8.0.1  01/16/2009  EFW  Added support for ShowMissingIncludeTargets
+#endregion
 // 1.8.0.3  07/05/2009  EFW  Added support for the F# syntax filter
 // 1.8.0.3  11/10/2009  EFW  Updated to support custom language syntax filters
 // 1.8.0.3  12/06/2009  EFW  Removed support for ShowFeedbackControl.  Added
 //                           support for resource item files.
 // 1.9.0.0  06/06/2010  EFW  Added support for multi-format build output
+// 1.9.1.0  07/09/2010  EFW  Updated for use with .NET 4.0 and MSBuild 4.0.
+// 1.9.2.0  01/16/2011  EFW  Updated to support selection of Silverlight
+//                           Framework versions.
 //=============================================================================
 
 using System;
@@ -52,7 +57,7 @@ using System.Text.RegularExpressions;
 using System.Web;
 using System.Xml;
 
-using Microsoft.Build.BuildEngine;
+using Microsoft.Build.Evaluation;
 
 using SandcastleBuilder.Utils.BuildComponent;
 using SandcastleBuilder.Utils.Design;
@@ -232,7 +237,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// <returns>The string to use as the replacement</returns>
         private string OnFieldMatch(Match match)
         {
-            BuildProperty buildProp;
+            ProjectProperty buildProp;
             FileItemCollection fileItems;
             StringBuilder sb;
             string replaceWith, fieldName;
@@ -552,29 +557,34 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     break;
 
                 case "frameworkversion":
-                    replaceWith = project.FrameworkVersion;
+                    replaceWith = project.FrameworkVersionNumber;
                     break;
 
                 case "frameworkversionshort":
-                    replaceWith = project.FrameworkVersion.Substring(0, 3);
+                    replaceWith = project.FrameworkVersionNumber.Substring(0, 3);
                     break;
 
                 case "mrefframeworkversion":
-                    replaceWith = project.FrameworkVersion;
+                    replaceWith = project.FrameworkVersionNumber;
 
-                    // For .NET 3.0 or higher, Microsoft says to use the .NET 2.0
-                    // framework files.
+                    // For .NET 3.0 or higher, Microsoft says to use the .NET 2.0 framework files
                     if(replaceWith[0] >= '3')
-                        replaceWith = FrameworkVersionTypeConverter.LatestMatching("2.0");
+                        replaceWith = FrameworkVersionTypeConverter.LatestFrameworkNumberMatching(".NET 2.0");
                     break;
 
                 case "mrefframeworkversionshort":
-                    replaceWith = project.FrameworkVersion.Substring(0, 3);
+                    replaceWith = project.FrameworkVersionNumber.Substring(0, 3);
 
-                    // For .NET 3.0 or higher, Microsoft says to use the .NET 2.0
-                    // framework files.
+                    // For .NET 3.0 or higher, Microsoft says to use the .NET 2.0 framework files
                     if(replaceWith[0] >= '3')
                         replaceWith = "2.0";
+                    break;
+
+                case "targetframeworkidentifier":
+                    if(project.FrameworkVersion.StartsWith(".NET", StringComparison.OrdinalIgnoreCase))
+                        replaceWith = ".NETFramework";
+                    else
+                        replaceWith = "Silverlight";
                     break;
 
                 case "help1xprojectfiles":
@@ -881,19 +891,23 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     break;
 
                 default:
-                    // Try for a custom project property
-                    buildProp = project.MSBuildProject.EvaluatedProperties[fieldName];
+                    // Try for a custom project property.  Use the last one since the original may be
+                    // in a parent project file or it may have been overridden from the command line.
+                    buildProp = project.MSBuildProject.AllEvaluatedProperties.LastOrDefault(
+                        p => p.Name.Equals(fieldName, StringComparison.OrdinalIgnoreCase));
 
-                    // If not there, try the global properties
-                    if(buildProp == null)
-                        buildProp = project.MSBuildProject.GlobalProperties[fieldName];
+                    if(buildProp != null)
+                        replaceWith = buildProp.EvaluatedValue;
+                    else
+                    {
+                        // If not there, try the global properties.  If still not found, give up.
+                        string key = project.MSBuildProject.GlobalProperties.Keys.FirstOrDefault(
+                            k => k.Equals(fieldName, StringComparison.OrdinalIgnoreCase));
 
-                    // If not there, give up
-                    if(buildProp == null)
-                        throw new BuilderException("BE0020", String.Format(CultureInfo.CurrentCulture,
-                            "Unknown field tag: '{0}'", match.Groups["Field"].Value));
-
-                    replaceWith = buildProp.FinalValue;
+                        if(key == null || !project.MSBuildProject.GlobalProperties.TryGetValue(key, out replaceWith))
+                            throw new BuilderException("BE0020", String.Format(CultureInfo.CurrentCulture,
+                                "Unknown field tag: '{0}'", match.Groups["Field"].Value));
+                    }
                     break;
             }
 
@@ -918,10 +932,38 @@ namespace SandcastleBuilder.Utils.BuildEngine
         {
             string folder, langFolder;
 
+            // For Silverlight, we need to look in different locations
+            if(version.StartsWith("Silverlight", StringComparison.OrdinalIgnoreCase))
+            {
+                version = FrameworkVersionTypeConverter.LatestFrameworkNumberMatching(version);
+
+                folder = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86) +
+                    @"\Reference Assemblies\Microsoft\Framework\Silverlight\v" + version;
+                frameworkLocations.Add(folder);
+                cacheNames.Add(folder, "Silverlight_" + version);
+
+                folder = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86) +
+                    @"\Microsoft SDKs\Silverlight\v" + version + @"\Libraries\Client";
+                frameworkLocations.Add(folder);
+                cacheNames.Add(folder, "SilverlightSDK_" + version);
+
+                if(version[0] == '4')
+                {
+                    folder = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86) +
+                        @"\Microsoft SDKs\RIA Services\v1.0\Libraries";
+                    frameworkLocations.Add(folder);
+                    cacheNames.Add(folder, "RIA_SDK_V1.0");
+                }
+
+                return;
+            }
+
+            version = FrameworkVersionTypeConverter.LatestFrameworkNumberMatching(version);
+
             switch(version[0])
             {
                 case '1':   // 1.x
-                    version = FrameworkVersionTypeConverter.LatestMatching("1.1");
+                    version = FrameworkVersionTypeConverter.LatestFrameworkNumberMatching(".NET 1.1");
                     folder = Environment.ExpandEnvironmentVariables(@"%SystemRoot%\Microsoft.NET\Framework\v" + version);
                     frameworkLocations.Add(folder);
                     cacheNames.Add(folder, version);
@@ -930,7 +972,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 case '2':   // 2.0, 3.0, and 3.5 are cummulative
                 case '3':
                     folder = Environment.ExpandEnvironmentVariables(@"%SystemRoot%\Microsoft.NET\Framework\v" +
-                        FrameworkVersionTypeConverter.LatestMatching("2") + @"\");
+                        FrameworkVersionTypeConverter.LatestFrameworkNumberMatching(".NET 2") + @"\");
 
                     // Check for a language-specific set of comments
                     if(Directory.Exists(folder + language.Name))
@@ -948,7 +990,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                             langFolder = String.Empty;
 
                     frameworkLocations.Add(folder);
-                    cacheNames.Add(folder, langFolder + FrameworkVersionTypeConverter.LatestMatching("2"));
+                    cacheNames.Add(folder, langFolder + FrameworkVersionTypeConverter.LatestFrameworkNumberMatching(".NET 2"));
 
                     // Check for FSharp comments files
                     if(Environment.GetEnvironmentVariable("ProgramFiles(x86)") != null)
@@ -1065,7 +1107,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     break;
 
                 default:    // Future version, default to 4.0 files until they actual location is determined
-                    GetFrameworkCommentsFiles(frameworkLocations, cacheNames, language, "4.0");
+                    GetFrameworkCommentsFiles(frameworkLocations, cacheNames, language, ".NET 4.0");
                     break;
             }
         }

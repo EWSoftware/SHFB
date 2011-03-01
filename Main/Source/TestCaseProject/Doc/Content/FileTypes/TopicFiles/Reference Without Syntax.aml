@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="6c6f1e3b-2b3c-4157-8cf0-ba5498c8a898" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>This document type is used for reference without syntax topics.</para>
+    </introduction>
+    <section>
+      <title>Reference Without Syntax File Format</title>
+      <content>
+        <para>Below is an example of a Reference Without Syntax topic file.</para>
+        <code lang="xml" title="Reference Without Syntax Topic" source="ConceptualTemplates\Reference Without Syntax.aml" />
+      </content>
+    </section>
+    <relatedTopics>
+      <link xlink:href="c69a248a-bd94-47b2-90d7-5442e9cb567a" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

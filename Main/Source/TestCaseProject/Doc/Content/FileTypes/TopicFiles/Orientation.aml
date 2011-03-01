@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="d97b482f-155a-443c-b33c-7395ea06012b" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>This document type is used for orientation topics.</para>
+    </introduction>
+    <section>
+      <title>Orientation File Format</title>
+      <content>
+        <para>Below is an example of an Orientation topic file.</para>
+        <code lang="xml" title="Orientation Topic" source="ConceptualTemplates\Orientation.aml" />
+      </content>
+    </section>
+    <relatedTopics>
+      <link xlink:href="c69a248a-bd94-47b2-90d7-5442e9cb567a" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

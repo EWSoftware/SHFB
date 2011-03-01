@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="96557037-c19e-4183-bcf1-f42d7018de9f" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>This plug-in is used to add all assemblies found in a given folder and its sub-folders as references
+to use when generating reflection information.</para>
+    </introduction>
+
+<section>
+  <title>Configuration Options</title>
+  <content>
+    <para>The configuration options consist of a list of wildcard reference paths that will be scanned for
+assemblies to pass to the <application>MRefBuilder</application> tool at build time.  Each entry consists
+of a path and a wildcard (<localUri>*.dll</localUri> by default).  The default is to recurse into all
+sub-folders as well.  This can be turned off by setting the <codeInline>Recurse</codeInline> property on
+the entry to False.</para>
+  </content>
+</section>
+
+    <relatedTopics>
+      <link xlink:href="e031b14e-42f0-47e1-af4c-9fed2b88cbc7" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

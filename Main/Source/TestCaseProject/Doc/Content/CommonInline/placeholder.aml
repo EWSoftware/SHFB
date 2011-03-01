@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="d995d093-ce18-4a7e-bd03-82c6c0b4fd72" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>This element is used as a placeholder.  By default, it renders text
+in a style determined by the presentation style.  It may have specific use in
+custom build components.</para>
+    </introduction>
+    <section>
+      <title>Usage</title>
+      <content>
+        <para>Enter the element in the topic.  It's inner text and the end result
+is implementation dependent.</para>
+      </content>
+    </section>
+    <section>
+      <title>Example</title>
+      <content>
+        <code lang="xml" title=" ">
+Something useful could go &lt;placeholder&gt;here&lt;/placeholder&gt; if a
+build component made use of it.
+</code>
+      </content>
+    </section>
+    <section>
+      <title>Example Output</title>
+      <content>
+        <para>Something useful could go <placeholder>here</placeholder> if a
+build component made use of it.</para>
+      </content>
+    </section>
+
+    <relatedTopics>
+      <link xlink:href="b96d95c0-ec3c-4846-998a-4b43548bfa0e" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

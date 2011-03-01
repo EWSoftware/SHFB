@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="9d0dc122-7829-4b22-af2e-6685867116f8" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>The topics in this section define miscellaneous elements not
+fitting one of the other categories that can be used in conceptual
+topics.</para>
+    </introduction>
+    <section>
+      <title>Link Elements</title>
+      <content>
+        <para>Select one of the topics below to learn more about a particular
+miscellaneous element.</para>
+        <list class="bullet">
+          <listItem>
+            <para><link xlink:href="b9a1daac-a2d8-41b7-83b0-b7dc7b28b898" /></para>
+          </listItem>
+          <listItem>
+            <para><link xlink:href="0f1bdf10-7968-4e17-aaf9-849091479df8" /></para>
+          </listItem>
+        </list>
+      </content>
+    </section>
+    <relatedTopics />
+  </developerConceptualDocument>
+</topic>

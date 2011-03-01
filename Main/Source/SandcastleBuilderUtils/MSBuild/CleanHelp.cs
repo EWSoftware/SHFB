@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : CleanHelp.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/07/2010
-// Note    : Copyright 2008-2010, Eric Woodruff, All rights reserved
+// Updated : 01/09/2011
+// Note    : Copyright 2008-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the MSBuild task used to clean (remove) help file output
@@ -108,7 +108,7 @@ namespace SandcastleBuilder.Utils.MSBuild
 
                     // Read-only and/or hidden files and folders are ignored as they are assumed to be
                     // under source control.
-                    foreach(string file in Directory.GetFiles(this.OutputPath))
+                    foreach(string file in Directory.EnumerateFiles(this.OutputPath))
                         if((File.GetAttributes(file) & (FileAttributes.ReadOnly | FileAttributes.Hidden)) == 0)
                             File.Delete(file);
                         else
@@ -116,12 +116,12 @@ namespace SandcastleBuilder.Utils.MSBuild
 
                     Log.LogMessage("Removing build folders...");
 
-                    foreach(string folder in Directory.GetDirectories(this.OutputPath))
+                    foreach(string folder in Directory.EnumerateDirectories(this.OutputPath))
                         try
                         {
                             // Some source control providers have a mix of read-only/hidden files within a folder
                             // that isn't read-only/hidden (i.e. Subversion).  In such cases, leave the folder alone.
-                            if(Directory.GetFileSystemEntries(folder, "*").Any(f =>
+                            if(Directory.EnumerateFileSystemEntries(folder, "*", SearchOption.AllDirectories).Any(f =>
                               (File.GetAttributes(f) & (FileAttributes.ReadOnly | FileAttributes.Hidden)) != 0))
                                 Log.LogMessage("Skipping folder '{0}' as it contains read-only or hidden folders/files", folder);
                             else

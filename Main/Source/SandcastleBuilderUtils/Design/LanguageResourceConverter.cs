@@ -2,7 +2,7 @@
 // System  : EWSoftware Design Time Attributes and Editors
 // File    : LanguageResourceConverter.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/15/2011
+// Updated : 01/16/2011
 // Note    : Copyright 2006-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -21,8 +21,6 @@
 // 1.5.0.2  07/12/2007  EFW  Reworked support for language resource files
 //=============================================================================
 
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
@@ -50,8 +48,11 @@ namespace SandcastleBuilder.Utils.Design
         /// <summary>
         /// This is used to compare two culture info objects by display name
         /// </summary>
-        private sealed class CultureInfoComparer : IComparer
+        private sealed class CultureInfoComparer : IComparer<CultureInfo>
         {
+            #region IComparer<CultureInfo> Members
+            //=================================================================
+
             /// <summary>
             /// Compare two items
             /// </summary>
@@ -59,7 +60,7 @@ namespace SandcastleBuilder.Utils.Design
             /// <param name="y">The second item to compare</param>
             /// <returns>-1 if item 1 is less than item 2, 0 if they are equal,
             /// or 1 if item 1 is greater than item 2.</returns>
-            public int Compare(object x, object y)
+            public int Compare(CultureInfo x, CultureInfo y)
             {
                 if(x == null)
                     return (y == null) ? 0 : -1;
@@ -70,11 +71,24 @@ namespace SandcastleBuilder.Utils.Design
                 return CultureInfo.CurrentCulture.CompareInfo.Compare(((CultureInfo)x).DisplayName,
                     ((CultureInfo)y).DisplayName, CompareOptions.StringSort);
             }
+
+            #endregion
         }
         #endregion
 
         #region Method overrides
         //=====================================================================
+
+        /// <summary>
+        /// This is overridden to return the display name so that the class
+        /// works as it did in prior .NET versions.
+        /// </summary>
+        /// <param name="culture">The culture for which to get the name</param>
+        /// <returns>The culture's display name</returns>
+        protected override string GetCultureName(CultureInfo culture)
+        {
+            return culture.DisplayName;
+        }
 
         /// <summary>
         /// This is overridden to return the values for the type converter's
@@ -84,38 +98,23 @@ namespace SandcastleBuilder.Utils.Design
         /// <returns>Returns the standard values for the type</returns>
         public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
         {
-            string[] files;
-            int idx = 0;
-
             if(!initialized)
             {
-                string name = Path.GetDirectoryName(
-                    Assembly.GetExecutingAssembly().Location) +
-                    @"\SharedContent";
-
-                if(Directory.Exists(name))
-                    files = Directory.GetFiles(name, "SharedBuilderContent_*.xml");
-                else
-                    files = new string[0];
-
-                CultureInfo[] ci = new CultureInfo[files.Length];
-
                 // Find the available language resources
-                foreach(string s in files)
-                {
-                    name = Path.GetFileNameWithoutExtension(s);
-                    name = name.Substring(name.LastIndexOf('_') + 1);
-                    ci[idx++] = new CultureInfo(name);
-                }
+                string name = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\SharedContent";
 
-                Array.Sort(ci, new CultureInfoComparer());
-
-                StandardValuesCollection svc = new StandardValuesCollection(ci);
+                StandardValuesCollection svc = new StandardValuesCollection(
+                    Directory.EnumerateFiles(name, "SharedBuilderContent_*.xml").Select(c =>
+                    {
+                        name = Path.GetFileNameWithoutExtension(c);
+                        name = name.Substring(name.LastIndexOf('_') + 1);
+                        return new CultureInfo(name);
+                    }).OrderBy(c => c, new CultureInfoComparer()).ToArray());
 
                 // Use reflection to set the base class's values field to
                 // our limited array.
-                FieldInfo fi = typeof(CultureInfoConverter).GetField(
-                    "values", BindingFlags.NonPublic | BindingFlags.Instance);
+                FieldInfo fi = typeof(CultureInfoConverter).GetField("values",
+                    BindingFlags.NonPublic | BindingFlags.Instance);
                 fi.SetValue(this, svc);
                 initialized = true;
             }

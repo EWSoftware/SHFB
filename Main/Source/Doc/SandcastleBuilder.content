@@ -522,6 +522,12 @@
         <HelpKeyword index="K" term="VersionBuilderPlugIn, configuration options" />
       </HelpKeywords>
     </Topic>
+    <Topic id="96557037-c19e-4183-bcf1-f42d7018de9f" visible="True" title="Wildcard References Plug-In">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="plug-ins, wildcard references plug-in" />
+        <HelpKeyword index="K" term="WildcardReferencesPlugIn, configuration" />
+      </HelpKeywords>
+    </Topic>
     <Topic id="cd68ef02-3493-4af6-96de-1957b0aaf858" visible="True" title="XPath Reflection File Filter Plug-In">
       <HelpKeywords>
         <HelpKeyword index="K" term="plug-ins, XPath reflection file filter" />
@@ -1287,6 +1293,11 @@
       <HelpKeyword index="K" term="History" />
       <HelpKeyword index="K" term="Version History" />
     </HelpKeywords>
+    <Topic id="230a8032-011a-4a61-b2a4-2b644018986c" visible="True" title="Version 1.9.2.0">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 1.9.2.0" />
+      </HelpKeywords>
+    </Topic>
     <Topic id="ef1dba5d-bb3b-4d27-9ccf-6f1ec8d1e793" visible="True" title="Version 1.9.1.0">
       <HelpKeywords>
         <HelpKeyword index="K" term="versions, 1.9.1.0" />

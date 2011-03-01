@@ -2,7 +2,7 @@
 // System  : Code Colorizer Library
 // File    : AssemblyInfo.cs
 // Author  : Jonathan de Halleux, (c) 2003
-// Updated : 06/19/2010
+// Updated : 07/09/2010
 // Compiler: Microsoft Visual C#
 //
 // Code colorizer attributes.  The original Code Project article by Jonathan
@@ -19,7 +19,6 @@ using System;
 using System.Reflection;
 using System.Resources;
 using System.Runtime.InteropServices;
-using System.Security.Permissions;
 
 // Resources contained within the assembly are English
 [assembly: NeutralResourcesLanguageAttribute("en")]
@@ -39,9 +38,6 @@ using System.Security.Permissions;
 [assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(true)]
 [assembly: ComVisible(false)]
-
-// No special permissions are required by this assembly
-[assembly: SecurityPermission(SecurityAction.RequestMinimum, Execution = true)]
 
 //
 // Version information for an assembly consists of the following four values:

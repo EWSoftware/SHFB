@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : PlugInManager.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/07/2010
-// Note    : Copyright 2007-2010, Eric Woodruff, All rights reserved
+// Updated : 01/09/2011
+// Note    : Copyright 2007-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the class that manages the set of known plug-ins.
@@ -88,18 +88,18 @@ namespace SandcastleBuilder.Utils.PlugIn
             componentPath = Environment.ExpandEnvironmentVariables("%SHFBCOMPONENTROOT%");
 
             if(!String.IsNullOrEmpty(componentPath) && Directory.Exists(componentPath))
-                allFiles.AddRange(Directory.GetFiles(componentPath, "*.plugins",
+                allFiles.AddRange(Directory.EnumerateFiles(componentPath, "*.plugins",
                     SearchOption.AllDirectories));
 
             // Add the standard plug-ins file and any third-party plug-in
             // files in the installation folder too.  This allows for XCOPY
             // deployments of SHFB to build servers.
-            allFiles.AddRange(Directory.GetFiles(shfbFolder, "*.plugins",
+            allFiles.AddRange(Directory.EnumerateFiles(shfbFolder, "*.plugins",
                 SearchOption.AllDirectories));
 
             // Finally, check the common app data build components folder
             if(Directory.Exists(plugInsFolder))
-                allFiles.AddRange(Directory.GetFiles(plugInsFolder, "*.plugins",
+                allFiles.AddRange(Directory.EnumerateFiles(plugInsFolder, "*.plugins",
                     SearchOption.AllDirectories));
 
             foreach(string file in allFiles)

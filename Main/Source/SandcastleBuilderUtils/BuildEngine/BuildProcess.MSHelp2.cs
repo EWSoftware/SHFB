@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.MSHelp2.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/08/2009
-// Note    : Copyright 2008-2009, Eric Woodruff, All rights reserved
+// Updated : 01/09/2011
+// Note    : Copyright 2008-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the code used to modify the MS Help 2 collection files.
@@ -56,8 +56,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
             this.ReportProgress("Cleaning up collection files...");
 
-            foreach(string file in Directory.GetFiles(outputFolder,
-                project.HtmlHelpName + "*.Hx?"))
+            foreach(string file in Directory.EnumerateFiles(outputFolder, project.HtmlHelpName + "*.Hx?"))
             {
                 extension = Path.GetExtension(file).ToLower(
                     CultureInfo.InvariantCulture);

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : FullTextIndex.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/15/2010
-// Note    : Copyright 2007-2010, Eric Woodruff, All rights reserved
+// Updated : 01/09/2011
+// Note    : Copyright 2007-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class used to create a full-text index used to search
@@ -137,10 +137,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
             else
                 rootPathLength = filePath.Length + 1;
 
-            string[] files = Directory.GetFiles(filePath, "*.htm?",
-                SearchOption.AllDirectories);
-
-            foreach(string name in files)
+            foreach(string name in Directory.EnumerateFiles(filePath, "*.htm?", SearchOption.AllDirectories))
             {
                 content = BuildProcess.ReadWithEncoding(name, ref enc);
 

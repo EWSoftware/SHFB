@@ -25,14 +25,15 @@ standalone GUI across those releases.  Any existing projects will need to be
 <link xlink:href="f68822d2-97ba-48da-a98b-46747983b4a0">converted</link> to the
 new project file format before they can be used with the new version.</para>
 </alert>
-	
+
 <list class="bullet">
-  <listItem><link xlink:href="ef1dba5d-bb3b-4d27-9ccf-6f1ec8d1e793" /></listItem>
-  <listItem><link xlink:href="2bba4e09-e9bd-4ef4-9bf4-800af246e97d" /></listItem>
-  <listItem><link xlink:href="9f1a5c32-7c10-47e1-bbea-319ee0866e3d" /></listItem>
-  <listItem><link xlink:href="95c85ec6-9f23-426a-b0ad-6b10a0453eaf" /></listItem>
-  <listItem><link xlink:href="5a484e94-6940-4c97-940c-3f46fb8736d2" /></listItem>
-  <listItem><link xlink:href="6110ac54-04d8-4624-8a2b-2a58af63c20d" /></listItem>
+  <listItem><para><link xlink:href="230a8032-011a-4a61-b2a4-2b644018986c" /></para></listItem>
+  <listItem><para><link xlink:href="ef1dba5d-bb3b-4d27-9ccf-6f1ec8d1e793" /></para></listItem>
+  <listItem><para><link xlink:href="2bba4e09-e9bd-4ef4-9bf4-800af246e97d" /></para></listItem>
+  <listItem><para><link xlink:href="9f1a5c32-7c10-47e1-bbea-319ee0866e3d" /></para></listItem>
+  <listItem><para><link xlink:href="95c85ec6-9f23-426a-b0ad-6b10a0453eaf" /></para></listItem>
+  <listItem><para><link xlink:href="5a484e94-6940-4c97-940c-3f46fb8736d2" /></para></listItem>
+  <listItem><para><link xlink:href="6110ac54-04d8-4624-8a2b-2a58af63c20d" /></para></listItem>
 </list>
 
   </content>

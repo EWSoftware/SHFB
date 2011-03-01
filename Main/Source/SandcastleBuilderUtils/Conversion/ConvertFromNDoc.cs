@@ -124,10 +124,8 @@ namespace SandcastleBuilder.Utils.Conversion
                     else
                         searchOpts = SearchOption.TopDirectoryOnly;
 
-                    foreach(string refFile in Directory.GetFiles(
-                      folderName, "*.dll", searchOpts))
-                        Project.References.AddReference(
-                            Path.GetFileNameWithoutExtension(refFile), refFile);
+                    foreach(string refFile in Directory.EnumerateFiles(folderName, "*.dll", searchOpts))
+                        Project.References.AddReference(Path.GetFileNameWithoutExtension(refFile), refFile);
                 }
 
                 // Add the namespace summaries
@@ -425,7 +423,7 @@ namespace SandcastleBuilder.Utils.Conversion
                             case "SdkDocVersion":
                                 value = child.GetAttribute("value",
                                     String.Empty).Substring(5).Replace('_', '.');
-                                project.FrameworkVersion = FrameworkVersionTypeConverter.LatestMatching(value);
+                                project.FrameworkVersion = FrameworkVersionTypeConverter.LatestFrameworkMatching(value);
                                 break;
 
                             case "SdkLinksOnWeb":

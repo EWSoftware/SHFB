@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="d6c82cde-f889-4ac9-b3a7-7d45fd6fbffc" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>This element describes content that should be displayed as a list.</para>
+    </introduction>
+
+    <section>
+      <title>Usage</title>
+      <content>
+        <para>Enter the element in the topic and specify the type of
+<codeInline>list</codeInline> using the <codeInline>class</codeInline>
+attribute.  The content of the list element is one or more
+<codeInline>listItem</codeInline> elements containing the content of the list
+items.  The list items can themselves contain other MAML elements, nested
+lists, tables, etc.  Text should be contained in a <codeInline>para</codeInline>
+element.  The <codeInline>class</codeInline> attribute can be any
+of the following values:</para>
+
+<list class="bullet">
+  <listItem><para><legacyBold>bullet</legacyBold> - A standard bulleted list of
+items.</para></listItem>
+  <listItem><para><legacyBold>ordered</legacyBold> - A numbered list of items.</para></listItem>
+  <listItem><para><legacyBold>nobullet</legacyBold> - A list of items with no symbol
+preceding the items.</para></listItem>
+</list>
+
+	<alert class="note">
+		<para>The class attribute value is case-sensitive.  Unrecognized values
+will default to the "nobullet" list style.</para>
+	</alert>
+
+	<alert class="tip">
+		<para>If you have applied the latest <token>SandcastleStyles</token>
+patch, the <codeInline>listItem</codeInline> element supports an
+<codeInline>address</codeInline> attribute that can be used to link to a
+specific list item from another location.</para>
+	</alert>
+
+      </content>
+    </section>
+
+    <section>
+      <title>Example</title>
+      <content>
+<code lang="xml" title=" ">
+&lt;para&gt;This link takes you to &lt;link xlink:href=&quot;#SubItem2&quot;&gt;Sub-Item #2&lt;/link&gt;.&lt;/para&gt;
+
+&lt;list class=&quot;bullet&quot;&gt;
+  &lt;listItem&gt;&lt;para&gt;Item 1&lt;/para&gt;&lt;/listItem&gt;
+  &lt;listItem&gt;&lt;para&gt;Item 2&lt;/para&gt;&lt;/listItem&gt;
+  &lt;listItem&gt;&lt;para&gt;Item 3&lt;/para&gt;&lt;/listItem&gt;
+  &lt;listItem&gt;&lt;para&gt;Item 4 - This has an nested
+&lt;codeInline&gt;ordered&lt;/codeInline&gt; list.&lt;/para&gt;
+
+	&lt;list class=&quot;ordered&quot;&gt;
+	  &lt;listItem&gt;&lt;para&gt;Sub-Item 1&lt;/para&gt;&lt;/listItem&gt;
+	  &lt;listItem address=&quot;SubItem2&quot;&gt;&lt;para&gt;Sub-Item 2 - This has an
+&lt;codeInline&gt;address&lt;/codeInline&gt; attribute and can be used as a
+link target.&lt;/para&gt;&lt;/listItem&gt;
+	  &lt;listItem&gt;&lt;para&gt;Sub-Item 3&lt;/para&gt;&lt;/listItem&gt;
+	  &lt;listItem&gt;&lt;para&gt;Sub-Item 4&lt;/para&gt;&lt;/listItem&gt;
+	  &lt;listItem&gt;&lt;para&gt;Sub-Item 5 - This has a nested
+&lt;codeInline&gt;nobullet&lt;/codeInline&gt; list.&lt;/para&gt;
+
+		&lt;list class=&quot;nobullet&quot;&gt;
+		  &lt;listItem&gt;&lt;para&gt;No-bullet item 1&lt;/para&gt;&lt;/listItem&gt;
+		  &lt;listItem&gt;&lt;para&gt;No-bullet item 2&lt;/para&gt;&lt;/listItem&gt;
+		  &lt;listItem&gt;&lt;para&gt;No-bullet item 3&lt;/para&gt;&lt;/listItem&gt;
+		&lt;/list&gt;
+	  &lt;/listItem&gt;
+
+	  &lt;listItem&gt;&lt;para&gt;Sub-Item 6&lt;/para&gt;&lt;/listItem&gt;
+	&lt;/list&gt;
+  &lt;/listItem&gt;
+
+  &lt;listItem&gt;&lt;para&gt;Item 5&lt;/para&gt;&lt;/listItem&gt;
+  &lt;listItem&gt;&lt;para&gt;Item 6&lt;/para&gt;&lt;/listItem&gt;
+  &lt;listItem&gt;&lt;para&gt;Item 7&lt;/para&gt;&lt;/listItem&gt;
+  &lt;listItem&gt;&lt;para&gt;Item 8&lt;/para&gt;&lt;/listItem&gt;
+  &lt;listItem&gt;&lt;para&gt;Item 9&lt;/para&gt;&lt;/listItem&gt;
+  &lt;listItem&gt;&lt;para&gt;Item 10&lt;/para&gt;&lt;/listItem&gt;
+&lt;/list&gt;
+</code>
+      </content>
+    </section>
+
+    <section>
+      <title>Example Output</title>
+      <content>
+<para>This link takes you to <link xlink:href="#SubItem2">Sub-Item #2</link>.</para>
+
+<list class="bullet">
+  <listItem><para>Item 1</para></listItem>
+  <listItem><para>Item 2</para></listItem>
+  <listItem><para>Item 3</para></listItem>
+  <listItem><para>Item 4 - This has an nested
+<codeInline>ordered</codeInline> list.</para>
+
+	<list class="ordered">
+	  <listItem><para>Sub-Item 1</para></listItem>
+	  <listItem address="SubItem2"><para>Sub-Item 2 - This has an
+<codeInline>address</codeInline> attribute and can be used as a
+link target.</para></listItem>
+	  <listItem><para>Sub-Item 3</para></listItem>
+	  <listItem><para>Sub-Item 4</para></listItem>
+	  <listItem><para>Sub-Item 5 - This has a nested
+<codeInline>nobullet</codeInline> list.</para>
+
+		<list class="nobullet">
+		  <listItem><para>No-bullet item 1</para></listItem>
+		  <listItem><para>No-bullet item 2</para></listItem>
+		  <listItem><para>No-bullet item 3</para></listItem>
+		</list>
+	  </listItem>
+
+	  <listItem><para>Sub-Item 6</para></listItem>
+	</list>
+  </listItem>
+
+  <listItem><para>Item 5</para></listItem>
+  <listItem><para>Item 6</para></listItem>
+  <listItem><para>Item 7</para></listItem>
+  <listItem><para>Item 8</para></listItem>
+  <listItem><para>Item 9</para></listItem>
+  <listItem><para>Item 10</para></listItem>
+</list>
+      </content>
+    </section>
+
+    <relatedTopics>
+      <link xlink:href="b32a73b8-fc26-4c98-912c-d595fc1a17c2" />
+      <link xlink:href="cb59e91c-f3cd-4086-a7ea-e2413a626e3d" />
+      <link xlink:href="ec11472a-8a9c-44e7-9d32-45f671526922" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

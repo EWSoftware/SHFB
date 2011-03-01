@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="3698dacb-763b-4a45-a051-f34c09e5f862" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>This element describes the name of a part of a document.</para>
+    </introduction>
+    <section>
+      <title>Usage</title>
+      <content>
+        <para>Enter the element in the topic and specify the text to use as the
+section's title.</para>
+      </content>
+    </section>
+    <section>
+      <title>Example</title>
+      <content>
+        <code lang="xml" title=" ">
+&lt;section&gt;
+  &lt;title&gt;Usage&lt;/title&gt;
+  &lt;content&gt;
+    &lt;para&gt;Enter the element in the topic and specify the text to use as the
+section's title.&lt;/para&gt;
+  &lt;/content&gt;
+&lt;/section&gt;
+</code>
+      </content>
+    </section>
+    <section>
+      <title>Example Output</title>
+      <content>
+        <para>See the <legacyBold>Usage</legacyBold> section above for an
+example of the output.</para>
+      </content>
+    </section>
+
+    <relatedTopics>
+	  <link xlink:href="b32a73b8-fc26-4c98-912c-d595fc1a17c2" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

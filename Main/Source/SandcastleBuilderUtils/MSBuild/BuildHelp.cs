@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : BuildHelp.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/27/2009
-// Note    : Copyright 2008-2009, Eric Woodruff, All rights reserved
+// Updated : 02/27/2011
+// Note    : Copyright 2008-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the MSBuild task used to build help file output using the
@@ -21,6 +21,7 @@
 // 1.8.0.1  12/19/2008  EFW  Updated to work with MSBuild 3.5 and Team Build
 // 1.8.0.2  04/20/2009  EFW  Added DumpLogOnFailure property
 // 1.8.0.3  07/06/2009  EFW  Added support for MS Help Viewer output files
+// 1.9.1.0  07/09/2010  EFW  Updated for use with .NET 4.0 and MSBuild 4.0.
 // ============================================================================
 
 using System;
@@ -31,7 +32,9 @@ using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 
-using Microsoft.Build.BuildEngine;
+using Microsoft.Build.Construction;
+using Microsoft.Build.Evaluation;
+using Microsoft.Build.Execution;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 
@@ -55,8 +58,6 @@ namespace SandcastleBuilder.Utils.MSBuild
         private BuildProcess buildProcess;
         private BuildStep lastBuildStep;
 
-        private string projectFile, configuration, platform, outDir;
-        private bool verbose, alwaysLoadProject, isPriorMSBuildVersion, dumpLogOnFailure;
         #endregion
 
         #region Task input properties
@@ -74,31 +75,19 @@ namespace SandcastleBuilder.Utils.MSBuild
         /// loaded instead.  The downside is that property overrides on the
         /// command line will be ignored.</remarks>
         [Required]
-        public string ProjectFile
-        {
-            get { return projectFile; }
-            set { projectFile = value; }
-        }
+        public string ProjectFile { get; set; }
 
         /// <summary>
         /// This is used to pass in the configuration to use for the build
         /// </summary>
         [Required]
-        public string Configuration
-        {
-            get { return configuration; }
-            set { configuration = value; }
-        }
+        public string Configuration { get; set; }
 
         /// <summary>
         /// This is used to pass in the platform to use for the build
         /// </summary>
         [Required]
-        public string Platform
-        {
-            get { return platform; }
-            set { platform = value; }
-        }
+        public string Platform { get; set; }
 
         /// <summary>
         /// This is used to specify the output directory containing the build
@@ -107,11 +96,7 @@ namespace SandcastleBuilder.Utils.MSBuild
         /// </summary>
         /// <value>This property is optional.  If not specified, the default
         /// output path in project file documentation sources will be used.</value>
-        public string OutDir
-        {
-            get { return outDir; }
-            set { outDir = value; }
-        }
+        public string OutDir { get; set; }
 
         /// <summary>
         /// This is used to set or get the output logging verbosity flag
@@ -119,11 +104,7 @@ namespace SandcastleBuilder.Utils.MSBuild
         /// <value>This property is optional.  If set to false (the default),
         /// only build steps are written to the task log.  If set to true, all
         /// output from the build process is written to the task log.</value>
-        public bool Verbose
-        {
-            get { return verbose; }
-            set { verbose = value; }
-        }
+        public bool Verbose { get; set; }
 
         /// <summary>
         /// This is used to set or get whether the log file is dumped to the
@@ -133,11 +114,7 @@ namespace SandcastleBuilder.Utils.MSBuild
         /// the log is not dumped if the build fails.  If set to true, all
         /// output from the build process is written to the task log if the
         /// build fails.</value>
-        public bool DumpLogOnFailure
-        {
-            get { return dumpLogOnFailure; }
-            set { dumpLogOnFailure = value; }
-        }
+        public bool DumpLogOnFailure { get; set; }
 
         /// <summary>
         /// This is used to specify whether or not to load the specified
@@ -147,11 +124,7 @@ namespace SandcastleBuilder.Utils.MSBuild
         /// the executing project is used as the Sandcastle project to build.
         /// If set to true, the specified <see cref="ProjectFile" /> is loaded.
         /// In such cases, command line property overrides are ignored.</value>
-        public bool AlwaysLoadProject
-        {
-            get { return alwaysLoadProject; }
-            set { alwaysLoadProject = value; }
-        }
+        public bool AlwaysLoadProject { get; set; }
         #endregion
 
         #region Task output properties
@@ -260,95 +233,112 @@ namespace SandcastleBuilder.Utils.MSBuild
         public override bool Execute()
         {
             Project msBuildProject = null;
+            ProjectRootElement projectRoot = null;
+            bool removeProjectWhenDisposed = false;
             string line;
 
             try
             {
-                if(!alwaysLoadProject)
+                if(!this.AlwaysLoadProject)
                 {
-                    // Use the current project if possible.  This is preferable
-                    // as we can make use of command line property overrides
-                    // and any other user-defined properties.
-                    msBuildProject = this.GetCurrentProject();
+                    // Use the current project if possible.  This is preferable as we can make use
+                    // of command line property overrides and any other user-defined properties.
+                    this.ProjectFile = Path.GetFullPath(this.ProjectFile);
 
-                    if(msBuildProject == null)
+                    // This collection is new to the MSBuild 4.0 API.  If you load a project, it appears
+                    // in the collection.  However, if you run MSBuild.exe, it doesn't put the project in
+                    // this collection.  As such, we must still resort to reflection to get the executing
+                    // project.  I'm leaving this here in case that ever changes as this is preferable to
+                    // using Reflection to get at the current project.
+                    var matchingProjects = ProjectCollection.GlobalProjectCollection.GetLoadedProjects(
+                        this.ProjectFile);
+
+                    if(matchingProjects.Count != 0)
                     {
-                        // We can't use a prior MSBuild version
-                        if(isPriorMSBuildVersion)
-                        {
-                            Log.LogError(null, "BHT0004", "BHT0004", "SHFB",
-                                0, 0, 0, 0, "An older MSBuild version is " +
-                                "being used.  Unable to build help project.");
-                            return false;
-                        }
+                        if(matchingProjects.Count != 1)
+                            Log.LogWarning(null, "BHT0004", "BHT0004", "SHFB", 0, 0, 0, 0, "Multiple matching " +
+                                "projects where found.  Only the first one found will be built.");
 
-                        Log.LogWarning(null, "BHT0001", "BHT0001", "SHFB",
-                            0, 0, 0, 0, "Unable to get executing project: " +
-                            "Unable to obtain internal reference.  The " +
-                            "specified project will be loaded but command " +
-                            "line property overrides will be ignored.");
+                        msBuildProject = matchingProjects.First();
                     }
+                    else
+                        projectRoot = this.GetCurrentProjectXml();
                 }
             }
             catch(Exception ex)
             {
                 // Ignore exceptions but issue a warning and fall back to using
                 // the passed project filename instead.
-                Log.LogWarning(null, "BHT0001", "BHT0001", "SHFB", 0, 0, 0, 0,
-                    "Unable to get executing project: {0}.  The specified " +
-                    "project will be loaded but command line property " +
+                Log.LogWarning(null, "BHT0001", "BHT0001", "SHFB", 0, 0, 0, 0, "Unable to get executing " +
+                    "project: {0}.  The specified project will be loaded but command line property " +
                     "overrides will be ignored.", ex.Message);
             }
 
-            if(msBuildProject == null)
-            {
-                // Create the project and set the configuration and platform
-                // options.
-                msBuildProject = new Project(Engine.GlobalEngine);
-                msBuildProject.GlobalProperties.SetProperty(
-                    ProjectElement.Configuration, configuration);
-                msBuildProject.GlobalProperties.SetProperty(
-                    ProjectElement.Platform, platform);
-
-                // Override the OutDir property if defined for Team Build
-                if(!String.IsNullOrEmpty(outDir))
-                    msBuildProject.GlobalProperties.SetProperty(
-                        ProjectElement.OutDir, outDir);
-
-                if(!File.Exists(projectFile))
-                    throw new BuilderException("BHT0003", "The specified " +
-                        "project file does not exist: " + projectFile);
-
-                msBuildProject.Load(projectFile);
-            }
-
-            // Load the MSBuild project and associate it with a SHFB
-            // project instance.
-            sandcastleProject = new SandcastleProject(msBuildProject, true);
-
             try
             {
-                buildProcess = new BuildProcess(sandcastleProject);
-                buildProcess.BuildStepChanged +=
-                    new EventHandler<BuildProgressEventArgs>(
-                        buildProcess_BuildStepChanged);
-                buildProcess.BuildProgress +=
-                    new EventHandler<BuildProgressEventArgs>(
-                        buildProcess_BuildProgress);
+                if(msBuildProject == null)
+                {
+                    removeProjectWhenDisposed = true;
 
-                // Since this is an MSBuild task, we'll run it directly rather
-                // than in a background thread.
-                Log.LogMessage("Building {0}", msBuildProject.FullFileName);
-                buildProcess.Build();
+                    if(projectRoot != null)
+                    {
+                        msBuildProject = new Project(projectRoot);
+                        msBuildProject.FullPath = this.ProjectFile;
+                    }
+                    else
+                    {
+                        if(!File.Exists(this.ProjectFile))
+                            throw new BuilderException("BHT0003", "The specified project file does not exist: " +
+                                this.ProjectFile);
+
+                        Log.LogWarning(null, "BHT0001", "BHT0001", "SHFB", 0, 0, 0, 0, "Unable to get " +
+                            "executing project:  Unable to obtain matching project from the global " +
+                            "collection.  The specified project will be loaded but command line property " +
+                            "overrides will be ignored.");
+
+                        // Create the project and set the configuration and platform options
+                        msBuildProject = new Project(this.ProjectFile);
+                    }
+
+                    msBuildProject.SetGlobalProperty(ProjectElement.Configuration, this.Configuration);
+                    msBuildProject.SetGlobalProperty(ProjectElement.Platform, this.Platform);
+
+                    // Override the OutDir property if defined for Team Build
+                    if(!String.IsNullOrEmpty(this.OutDir))
+                        msBuildProject.SetGlobalProperty(ProjectElement.OutDir, this.OutDir);
+
+                    msBuildProject.ReevaluateIfNecessary();
+                }
+
+                // Associate the MSBuild project with a SHFB project instance and build it
+                using(sandcastleProject = new SandcastleProject(msBuildProject))
+                {
+                    buildProcess = new BuildProcess(sandcastleProject);
+                    buildProcess.BuildStepChanged += buildProcess_BuildStepChanged;
+                    buildProcess.BuildProgress += buildProcess_BuildProgress;
+
+                    // Since this is an MSBuild task, we'll run it directly rather
+                    // than in a background thread.
+                    Log.LogMessage("Building {0}", msBuildProject.FullPath);
+                    buildProcess.Build();
+                }
             }
             catch(Exception ex)
             {
                 Log.LogError(null, "BHT0002", "BHT0002", "SHFB", 0, 0, 0, 0,
-                  "Unable to build project '{0}': {1}",
-                  msBuildProject.FullFileName, ex);
+                    "Unable to build project '{0}': {1}", msBuildProject.FullPath, ex);
+            }
+            finally
+            {
+                // If we loaded it, we must unload it.  If not, it is cached and may cause problems later.
+                if(removeProjectWhenDisposed)
+                {
+                    ProjectCollection.GlobalProjectCollection.UnloadProject(msBuildProject);
+                    ProjectCollection.GlobalProjectCollection.UnloadProject(msBuildProject.Xml);
+                }
             }
 
-            if(dumpLogOnFailure && lastBuildStep == BuildStep.Failed)
+            if(this.DumpLogOnFailure && lastBuildStep == BuildStep.Failed)
                 using(StreamReader sr = new StreamReader(buildProcess.LogFilename))
                 {
                     Log.LogMessage(MessageImportance.High, "Log Content:");
@@ -358,8 +348,7 @@ namespace SandcastleBuilder.Utils.MSBuild
                         line = sr.ReadLine();
 
                         // Don't output the XML elements, just the text
-                        if(line != null && (line.Trim().Length == 0 ||
-                          line.Trim()[0] != '<'))
+                        if(line != null && (line.Trim().Length == 0 || line.Trim()[0] != '<'))
                             Log.LogMessage(MessageImportance.High, line);
 
                     } while(line != null);
@@ -373,110 +362,50 @@ namespace SandcastleBuilder.Utils.MSBuild
         //=====================================================================
 
         /// <summary>
-        /// This is used to obtain a reference to the project that is currently
-        /// being built.
+        /// This is used to obtain project root element for the project that is
+        /// currently being built.
         /// </summary>
-        /// <returns>The current project if possible or null if it could not
-        /// be obtained.</returns>
-        /// <remarks>The build engine provides no way to get a reference to
-        /// the current project.  As such, we have to resort to reflection to
-        /// get it.  This was much easier under .NET 2.0 as the project was a
-        /// project of the BuildEngine object.  The .NET 3.5 build engine hides
-        /// it way down in the object hierarchy.  We could build the project
+        /// <returns>The project root element for the current project if
+        /// possible or null if it could not be obtained.</returns>
+        /// <remarks>When you run MSBuild.exe, it doesn't store the projects
+        /// in the global project collection.  We could build the project
         /// without it but we lose the ability to use command line overrides
-        /// and changes to user-defined properties.</remarks>
-        private Project GetCurrentProject()
+        /// and changes to user-defined properties.  As such we need to resort
+        /// to reflection to get the current project information.  This is
+        /// easier than in past MSBuild versions though.</remarks>
+        private ProjectRootElement GetCurrentProjectXml()
         {
-            Type type;
             FieldInfo fieldInfo;
-            object obj;
+            PropertyInfo propInfo;
+            IEnumerable configCache;
+            ProjectInstance project;
 
-            if(base.BuildEngine == null)
-                return null;
-
-            // From the EngineProxy ...
-            type = base.BuildEngine.GetType();
-            fieldInfo = type.GetField("parentModule",
-                BindingFlags.NonPublic | BindingFlags.Instance);
+            // From the BuildManager...
+            fieldInfo = typeof(BuildManager).GetField("configCache", BindingFlags.NonPublic | BindingFlags.Instance);
 
             if(fieldInfo == null)
+                return null;
+
+            // ... get the build request configuration cache ...
+            configCache = (IEnumerable)fieldInfo.GetValue(BuildManager.DefaultBuildManager);
+
+            if(configCache == null)
+                return null;
+
+            // ... then find our project if it is there.
+            foreach(Object config in configCache)
             {
-                // If null, it's probably running under MSBuild 2.0
-                fieldInfo = type.GetField("project",
-                    BindingFlags.NonPublic | BindingFlags.Instance);
+                propInfo = config.GetType().GetProperty("Project", BindingFlags.Public | BindingFlags.Instance);
 
-                // Unfortunately, we can't cast a copy of the object from
-                // a prior MSBuild version to this version's Project type
-                // so it will fail to build.
-                if(fieldInfo != null)
-                    isPriorMSBuildVersion = true;
+                if(propInfo != null)
+                {
+                    project = (ProjectInstance)propInfo.GetValue(config, null);
 
-                return null;
+                    // If found, return the XML that defines all of the project settings
+                    if(project != null && project.FullPath == this.ProjectFile)
+                        return project.ToProjectRootElement();
+                }
             }
-
-            obj = fieldInfo.GetValue(base.BuildEngine);
-
-            if(obj == null)
-                return null;
-
-            // ... we go to the TaskExecutionModule ...
-            type = obj.GetType();
-            fieldInfo = type.GetField("engineCallback",
-                BindingFlags.NonPublic | BindingFlags.Instance);
-
-            if(fieldInfo == null)
-                return null;
-
-            obj = fieldInfo.GetValue(obj);
-
-            if(obj == null)
-                return null;
-
-            // ... then into the EngineCallBack ...
-            type = obj.GetType();
-            fieldInfo = type.GetField("parentEngine",
-                BindingFlags.NonPublic | BindingFlags.Instance);
-
-            if(fieldInfo == null)
-                return null;
-
-            obj = fieldInfo.GetValue(obj);
-
-            if(obj == null)
-                return null;
-
-            // ... and finally we arrive at the Engine object ...
-            type = obj.GetType();
-            fieldInfo = type.GetField("cacheOfBuildingProjects",
-                BindingFlags.NonPublic | BindingFlags.Instance);
-
-            if(fieldInfo == null)
-                return null;
-
-            obj = fieldInfo.GetValue(obj);
-
-            if(obj == null)
-                return null;
-
-            // ... which has the cache of bulding projects ...
-            type = obj.GetType();
-            fieldInfo = type.GetField("projects",
-                BindingFlags.NonPublic | BindingFlags.Instance);
-
-            if(fieldInfo == null)
-                return null;
-
-            obj = fieldInfo.GetValue(obj);
-
-            if(obj == null)
-                return null;
-
-            // ... which contains the hash table we need containing the
-            // actual project reference.
-            foreach(DictionaryEntry entry in (Hashtable)obj)
-                foreach(Project project in (ArrayList)entry.Value)
-                    if(project.FullFileName == projectFile)
-                        return project;
 
             return null;
         }
@@ -487,12 +416,11 @@ namespace SandcastleBuilder.Utils.MSBuild
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        private void buildProcess_BuildStepChanged(object sender,
-          BuildProgressEventArgs e)
+        private void buildProcess_BuildStepChanged(object sender, BuildProgressEventArgs e)
         {
             string outputPath;
 
-            if(!verbose)
+            if(!this.Verbose)
                 Log.LogMessage(e.BuildStep.ToString());
 
             if(e.HasCompleted)
@@ -500,8 +428,7 @@ namespace SandcastleBuilder.Utils.MSBuild
                 // If successful, report the location of the help file/website
                 if(e.BuildStep == BuildStep.Completed)
                 {
-                    outputPath = buildProcess.OutputFolder +
-                        sandcastleProject.HtmlHelpName;
+                    outputPath = buildProcess.OutputFolder + sandcastleProject.HtmlHelpName;
 
                     switch(sandcastleProject.HelpFileFormat)
                     {
@@ -523,16 +450,13 @@ namespace SandcastleBuilder.Utils.MSBuild
 
                     // Report single file or multi-format output location
                     if(File.Exists(outputPath))
-                        Log.LogMessage("The help file is located at: {0}",
-                            outputPath);
+                        Log.LogMessage("The help file is located at: {0}", outputPath);
                     else
-                        Log.LogMessage("The help output is located at: {0}",
-                            buildProcess.OutputFolder);
+                        Log.LogMessage("The help output is located at: {0}", buildProcess.OutputFolder);
                 }
 
                 if(File.Exists(buildProcess.LogFilename))
-                    Log.LogMessage("Build details can be found in {0}",
-                        buildProcess.LogFilename);
+                    Log.LogMessage("Build details can be found in {0}", buildProcess.LogFilename);
             }
 
             lastBuildStep = e.BuildStep;
@@ -544,30 +468,25 @@ namespace SandcastleBuilder.Utils.MSBuild
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        private void buildProcess_BuildProgress(object sender,
-          BuildProgressEventArgs e)
+        private void buildProcess_BuildProgress(object sender, BuildProgressEventArgs e)
         {
             Match m = reParseMessage.Match(e.Message);
 
             // Always log errors and warnings
             if(m.Success)
             {
-                if(String.Compare(m.Groups[3].Value, "warning",
-                  StringComparison.OrdinalIgnoreCase) == 0)
+                if(String.Compare(m.Groups[3].Value, "warning", StringComparison.OrdinalIgnoreCase) == 0)
                     Log.LogWarning(null, m.Groups[4].Value, m.Groups[4].Value,
-                      m.Groups[1].Value, 0, 0, 0, 0,
-                      m.Groups[5].Value.Trim());
+                        m.Groups[1].Value, 0, 0, 0, 0, m.Groups[5].Value.Trim());
                 else
-                    if(String.Compare(m.Groups[3].Value, "error",
-                      StringComparison.OrdinalIgnoreCase) == 0)
+                    if(String.Compare(m.Groups[3].Value, "error", StringComparison.OrdinalIgnoreCase) == 0)
                         Log.LogError(null, m.Groups[4].Value, m.Groups[4].Value,
-                          m.Groups[1].Value, 0, 0, 0, 0,
-                          m.Groups[5].Value.Trim());
+                            m.Groups[1].Value, 0, 0, 0, 0, m.Groups[5].Value.Trim());
                     else
                         Log.LogMessage(e.Message);
             }
             else
-                if(verbose)
+                if(this.Verbose)
                     Log.LogMessage(e.Message);
         }
         #endregion

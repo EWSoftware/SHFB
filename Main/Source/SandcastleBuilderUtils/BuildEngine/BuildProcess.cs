@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/15/2011
+// Updated : 02/27/2011
 // Note    : Copyright 2006-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -52,6 +52,9 @@
 //                           Added support for multi-format build output. Moved
 //                           GenerateIntermediateTableOfContents so that it
 //                           occurs right after MergeTablesOfContents.
+// 1.9.1.0  07/09/2010  EFW  Updated for use with .NET 4.0 and MSBuild 4.0.
+// 1.9.2.0  01/16/2011  EFW  Updated to support selection of Silverlight
+//                           Framework versions.
 //=============================================================================
 
 using System;
@@ -74,7 +77,7 @@ using SandcastleBuilder.Utils.Design;
 using SandcastleBuilder.Utils.MSBuild;
 using SandcastleBuilder.Utils.PlugIn;
 
-using Microsoft.Build.BuildEngine;
+using Microsoft.Build.Evaluation;
 
 namespace SandcastleBuilder.Utils.BuildEngine
 {
@@ -92,7 +95,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
         // Assembly and reference information
         private Collection<string> assembliesList;
-        private Dictionary<string, BuildItem> referenceDictionary;
+        private Dictionary<string, Tuple<string, string, List<KeyValuePair<string, string>>>> referenceDictionary;
 
         // Conceptual content settings
         private ConceptualContentSettings conceptualContent;
@@ -485,12 +488,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// <overloads>There are two overloads for the constructor.</overloads>
         public BuildProcess(SandcastleProject buildProject)
         {
-            // If the project isn't using final values suitable for the build,
-            // create a new project that is using final values.
-            if(buildProject.UsingFinalValues)
-                project = buildProject;
-            else
-                project = new SandcastleProject(buildProject, true);
+            project = buildProject;
 
             // Save a copy of the project filename.  If using a temporary
             // project, it won't match the passed project's name.
@@ -537,16 +535,25 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// information.</event>
         public void Build()
         {
-            Project msBuildProject;
-            BuildItem buildItem;
+            Project msBuildProject = null;
+            ProjectItem projectItem;
             Version v;
-            string helpFile, languageFile, scriptFile, message = null;
+            string helpFile, languageFile, scriptFile, hintPath, message = null;
+            SandcastleProject originalProject = null;
             int waitCount;
 
             System.Diagnostics.Debug.WriteLine("Build process starting\r\n");
 
             try
             {
+                // If the project isn't using final values suitable for the build, create a copy of the
+                // project that is using final values.
+                if(!project.UsingFinalValues)
+                {
+                    originalProject = project;
+                    project = new SandcastleProject(originalProject);
+                }
+
                 Assembly asm = Assembly.GetExecutingAssembly();
 
                 FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(asm.Location);
@@ -555,8 +562,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 buildStart = stepStart = DateTime.Now;
 
-                msBuildExePath = Path.Combine(Engine.GlobalEngine.Toolsets[
-                    project.MSBuildProject.ToolsVersion].ToolsPath, "MSBuild.exe");
+                msBuildExePath = Path.Combine(ProjectCollection.GlobalProjectCollection.Toolsets.First(
+                    t => t.ToolsVersion == project.MSBuildProject.ToolsVersion).ToolsPath, "MSBuild.exe");
 
                 // Base folder for SHFB
                 shfbFolder = Path.GetDirectoryName(asm.Location) + @"\";
@@ -843,24 +850,56 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     this.TransformTemplate("MRefBuilder.config", templateFolder, workingFolder);
                     scriptFile = this.TransformTemplate("GenerateRefInfo.proj", templateFolder, workingFolder);
 
-                    msBuildProject = new Project(Engine.GlobalEngine);
-                    msBuildProject.Load(scriptFile);
-
-                    // Add the references
-                    foreach(BuildItem item in referenceDictionary.Values)
+                    try
                     {
-                        buildItem = msBuildProject.AddNewItem(item.Name, item.Include);
-                        item.CopyCustomMetadataTo(buildItem);
+                        msBuildProject = new Project(scriptFile);
+
+                        // Add the references
+                        foreach(var r in referenceDictionary.Values)
+                        {
+                            projectItem = msBuildProject.AddItem(r.Item1, r.Item2, r.Item3)[0];
+
+                            // Make sure hint paths are correct by adding the project folder to any relative
+                            // paths.  Skip any containing MSBuild variable references.
+                            if(projectItem.HasMetadata(ProjectElement.HintPath))
+                            {
+                                hintPath = projectItem.GetMetadataValue(ProjectElement.HintPath);
+
+                                if(!Path.IsPathRooted(hintPath) && hintPath.IndexOf("$(",
+                                  StringComparison.Ordinal) == -1)
+                                    projectItem.SetMetadataValue(ProjectElement.HintPath, Path.Combine(
+                                        projectFolder, hintPath));
+                            }
+                        }
+
+                        // Add the assemblies to document
+                        foreach(string assemblyName in assembliesList)
+                            msBuildProject.AddItem("Assembly", assemblyName);
+
+                        msBuildProject.Save(scriptFile);
+                    }
+                    finally
+                    {
+                        // If we loaded it, we must unload it.  If not, it is cached and may cause problems later.
+                        if(msBuildProject != null)
+                        {
+                            ProjectCollection.GlobalProjectCollection.UnloadProject(msBuildProject);
+                            ProjectCollection.GlobalProjectCollection.UnloadProject(msBuildProject.Xml);
+                        }
                     }
 
-                    // Add the assemblies to document
-                    foreach(string assemblyName in assembliesList)
-                        buildItem = msBuildProject.AddNewItem("Assembly", assemblyName);
-
-                    msBuildProject.Save(scriptFile);
-
                     this.ExecutePlugIns(ExecutionBehaviors.Before);
-                    this.RunProcess(msBuildExePath, "/nologo /clp:NoSummary /v:m GenerateRefInfo.proj");
+
+                    // Silverlight 4.0 and earlier are 32-bit only and require the 32-bit version of MSBuild
+                    // in order to load the target file correctly.
+                    if(project.FrameworkVersion.StartsWith("Silverlight", StringComparison.OrdinalIgnoreCase) &&
+                      project.FrameworkVersionNumber[0] <= '4' &&
+                      msBuildExePath.IndexOf("Framework64", StringComparison.OrdinalIgnoreCase) != -1)
+                        this.RunProcess(msBuildExePath.Replace("Framework64", "Framework"),
+                            "/nologo /clp:NoSummary /v:m GenerateRefInfo.proj");
+                    else
+                        this.RunProcess(msBuildExePath, "/nologo /clp:NoSummary /v:m GenerateRefInfo.proj");
+
                     this.ExecutePlugIns(ExecutionBehaviors.After);
                 }
 
@@ -1095,14 +1134,14 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     // same output folder.  However, the website output is built last so that unnecessary
                     // files are not compiled into the CHM and HxS files.  Read-only and/or hidden files
                     // and folders are ignored as they are assumed to be under source control.
-                    foreach(string file in Directory.GetFiles(outputFolder))
+                    foreach(string file in Directory.EnumerateFiles(outputFolder))
                         if(!file.EndsWith(Path.GetFileName(this.LogFilename), StringComparison.Ordinal))
                             if((File.GetAttributes(file) & (FileAttributes.ReadOnly | FileAttributes.Hidden)) == 0)
                                 File.Delete(file);
                             else
                                 this.ReportProgress("    Ignoring read-only/hidden file {0}", file);
 
-                    foreach(string folder in Directory.GetDirectories(outputFolder))
+                    foreach(string folder in Directory.EnumerateDirectories(outputFolder))
                         try
                         {
                             // Ignore the working folder
@@ -1110,7 +1149,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                             {
                                 // Some source control providers have a mix of read-only/hidden files within a folder
                                 // that isn't read-only/hidden (i.e. Subversion).  In such cases, leave the folder alone.
-                                if(Directory.GetFileSystemEntries(folder, "*").Any(f =>
+                                if(Directory.EnumerateFileSystemEntries(folder, "*", SearchOption.AllDirectories).Any(f =>
                                   (File.GetAttributes(f) & (FileAttributes.ReadOnly | FileAttributes.Hidden)) != 0))
                                     this.ReportProgress("    Did not delete folder '{0}' as it contains " +
                                         "read-only or hidden folders/files", folder);
@@ -1225,9 +1264,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     {
                         this.ExecutePlugIns(ExecutionBehaviors.Before);
 
-                        string[] help2xFiles = Directory.GetFiles(templateFolder, "Help2x*.*");
-
-                        foreach(string projectFile in help2xFiles)
+                        foreach(string projectFile in Directory.EnumerateFiles(templateFolder, "Help2x*.*"))
                             this.TransformTemplate(Path.GetFileName(projectFile), templateFolder, workingFolder);
 
                         this.ExecutePlugIns(ExecutionBehaviors.After);
@@ -1479,6 +1516,13 @@ AllDone:
                         swLog.WriteLine("</buildStep>\r\n</shfbBuild>");
                         swLog.Close();
                         swLog = null;
+                    }
+
+                    // If we created a copy of the project, dispose of it and return to the original
+                    if(originalProject != null)
+                    {
+                        project.Dispose();
+                        project = originalProject;
                     }
 
                     if(progressArgs.BuildStep == BuildStep.Completed && !project.KeepLogFile)
@@ -1753,7 +1797,6 @@ AllDone:
         /// </summary>
         private void GatherBuildOutputFilenames()
         {
-            string[] files;
             string[] patterns = new string[4];
 
             switch(currentFormat)
@@ -1784,9 +1827,7 @@ AllDone:
                 if(filePattern == null)
                     continue;
 
-                files = Directory.GetFiles(outputFolder, filePattern, SearchOption.AllDirectories);
-
-                foreach(string file in files)
+                foreach(string file in Directory.EnumerateFiles(outputFolder, filePattern, SearchOption.AllDirectories))
                 {
                     if(file.StartsWith(workingFolder, StringComparison.OrdinalIgnoreCase) ||
                       file == project.LogFileLocation)
@@ -2014,9 +2055,7 @@ AllDone:
         /// Program Files special folder on all fixed drives.</remarks>
         protected internal static string FindSdkExecutable(string exeName)
         {
-            StringBuilder sb = new StringBuilder(Environment.GetFolderPath(
-                Environment.SpecialFolder.ProgramFiles));
-            string[] dirs, files;
+            StringBuilder sb = new StringBuilder(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles));
             string folder;
 
             // Check for 64-bit Windows.  The tools will be in the x86 folder.
@@ -2032,22 +2071,14 @@ AllDone:
                     if(!Directory.Exists(folder))
                         continue;
 
-                    dirs = Directory.GetDirectories(folder, "Visual*");
-
-                    foreach(string dir in dirs)
+                    foreach(string dir in Directory.EnumerateDirectories(folder, "Visual*"))
                     {
-                        files = Directory.GetFiles(dir, exeName,
-                            SearchOption.AllDirectories);
+                        // If more than one, sort them and take the last one as it should be the most recent.
+                        var file = Directory.EnumerateFiles(dir, exeName, SearchOption.AllDirectories).OrderBy(
+                            f => f).LastOrDefault();
 
-                        if(files.Length != 0)
-                        {
-                            // If more than one, sort them and take the
-                            // last one as it should be the most recent.
-                            if(files.Length > 1)
-                                Array.Sort(files);
-
-                            return Path.GetDirectoryName(files[files.Length - 1]);
-                        }
+                        if(file != null)
+                            return Path.GetDirectoryName(file);
                     }
                 }
 
@@ -2070,19 +2101,18 @@ AllDone:
             Dictionary<string, MSBuildProject> projectDictionary = new Dictionary<string, MSBuildProject>();
 
             MSBuildProject projRef;
-            BuildItem buildItem;
             XPathDocument testComments;
             XPathNavigator navComments;
             XmlCommentsFile comments;
             int fileCount;
-            string workingPath, projFramework, hintPath, lastSolution = null,
-                targetFramework = project.FrameworkVersion;
+            string workingPath, projFramework, lastSolution = null, targetFramework = project.FrameworkVersion;
+            bool dotNetSeen = false, silverlightSeen = false;
 
             this.ReportProgress(BuildStep.ValidatingDocumentationSources,
                 "Validating and copying documentation source information");
 
             assembliesList = new Collection<string>();
-            referenceDictionary = new Dictionary<string, BuildItem>();
+            referenceDictionary = new Dictionary<string, Tuple<string, string, List<KeyValuePair<string, string>>>>();
             commentsFiles = new XmlCommentsFileCollection();
 
             if(this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
@@ -2093,194 +2123,203 @@ AllDone:
             this.ExecutePlugIns(ExecutionBehaviors.Before);
 
             if(project.DocumentationSources.Count == 0)
-                throw new BuilderException("BE0039", "The project does " +
-                    "not have any documentation sources defined");
+                throw new BuilderException("BE0039", "The project does not have any documentation sources defined");
 
-            // Clone the project's references
+            // Clone the project's references.  These will be added to a build project later on so we'll
+            // note the necessary information needed to create the reference in the future project.
             foreach(string refType in (new string[] { "Reference", "COMReference" }))
-                foreach(BuildItem reference in project.MSBuildProject.GetEvaluatedItemsByName(refType))
-                {
-                    buildItem = reference.Clone();
-
-                    // Make sure hint paths are correct by adding the project folder to any relative
-                    // paths.  Skip any containing MSBuild variable references.
-                    if(buildItem.HasMetadata(ProjectElement.HintPath))
-                    {
-                        hintPath = buildItem.GetMetadata(ProjectElement.HintPath);
-
-                        if(!Path.IsPathRooted(hintPath) &&
-                          hintPath.IndexOf("$(", StringComparison.Ordinal) == -1)
-                            buildItem.SetMetadata(ProjectElement.HintPath, Path.Combine(projectFolder,
-                                hintPath));
-                    }
-
-                    referenceDictionary.Add(reference.Include, buildItem);
-                }
+                foreach(ProjectItem reference in project.MSBuildProject.GetItems(refType))
+                    referenceDictionary.Add(reference.EvaluatedInclude, Tuple.Create(reference.ItemType,
+                        reference.EvaluatedInclude, reference.Metadata.Select(m =>
+                            new KeyValuePair<string, string>(m.Name, m.EvaluatedValue)).ToList()));
 
             // Convert project references to regular references that point to the output assembly.
             // Project references get built and we may not have enough info for that to happen
             // successfully.  As such, we'll assume the project has already been built and that its
             // target exists.
-            foreach(BuildItem reference in project.MSBuildProject.GetEvaluatedItemsByName("ProjectReference"))
-            {
-                projRef = new MSBuildProject(reference.Include);
-                projRef.SetConfiguration(project.Configuration, project.Platform, project.MSBuildOutDir);
+            foreach(ProjectItem reference in project.MSBuildProject.GetItems("ProjectReference"))
+                using(projRef = new MSBuildProject(reference.EvaluatedInclude))
+                {
+                    projRef.SetConfiguration(project.Configuration, project.Platform, project.MSBuildOutDir);
 
-                buildItem = projRef.ProjectFile.AddNewItem("Reference",
-                    Path.GetFileNameWithoutExtension(projRef.AssemblyName));
-                buildItem.SetMetadata("HintPath", projRef.AssemblyName);
-                referenceDictionary.Add(buildItem.Include, buildItem);
+                    referenceDictionary.Add(projRef.AssemblyName, Tuple.Create("Reference",
+                        Path.GetFileNameWithoutExtension(projRef.AssemblyName),
+                        (new [] { new KeyValuePair<string, string>("HintPath", projRef.AssemblyName) }).ToList()));
+                }
+
+            try
+            {
+                // For each source, make three passes: one for projects, one for assemblies and one
+                // for comments files.  Projects and comments files are optional but when all done,
+                // at least one assembly must have been found.
+                foreach(DocumentationSource ds in project.DocumentationSources)
+                {
+                    fileCount = 0;
+
+                    this.ReportProgress("Source: {0}", ds.SourceFile);
+
+                    foreach(var sourceProject in DocumentationSource.Projects(ds.SourceFile, ds.IncludeSubFolders,
+                      !String.IsNullOrEmpty(ds.Configuration) ? ds.Configuration : project.Configuration,
+                      !String.IsNullOrEmpty(ds.Platform) ? ds.Platform : project.Platform))
+                    {
+                        // NOTE: This code in EntityReferenceWindow.IndexComments should be similar to this!
+
+                        // Solutions are followed by the projects that they contain
+                        if(sourceProject.ProjectFileName.EndsWith(".sln", StringComparison.OrdinalIgnoreCase))
+                        {
+                            lastSolution = sourceProject.ProjectFileName;
+                            continue;
+                        }
+
+                        if(!projectDictionary.ContainsKey(sourceProject.ProjectFileName))
+                        {
+                            // These are handled below
+                            this.ReportProgress("    Found project '{0}'", sourceProject.ProjectFileName);
+
+                            projRef = new MSBuildProject(sourceProject.ProjectFileName);
+
+                            // Use the project file configuration and platform properties if they are set.  If not,
+                            // use the documentation source values.  If they are not set, use the SHFB project settings.
+                            projRef.SetConfiguration(
+                                !String.IsNullOrEmpty(sourceProject.Configuration) ? sourceProject.Configuration :
+                                    !String.IsNullOrEmpty(ds.Configuration) ? ds.Configuration : project.Configuration,
+                                !String.IsNullOrEmpty(sourceProject.Platform) ? sourceProject.Platform :
+                                    !String.IsNullOrEmpty(ds.Platform) ? ds.Platform : project.Platform,
+                                project.MSBuildOutDir);
+
+                            // Add Visual Studio solution macros if necessary
+                            if(lastSolution != null)
+                                projRef.SetSolutionMacros(lastSolution);
+
+                            projectDictionary.Add(sourceProject.ProjectFileName, projRef);
+                        }
+                        else
+                            this.ReportProgress("    Ignoring duplicate project file '{0}'", sourceProject.ProjectFileName);
+
+                        fileCount++;
+                    }
+
+                    foreach(string asmName in DocumentationSource.Assemblies(ds.SourceFile, ds.IncludeSubFolders))
+                    {
+                        if(!assembliesList.Contains(asmName))
+                        {
+                            // Assemblies are parsed in place by MRefBuilder so we
+                            // don't have to do anything with them here.
+                            this.ReportProgress("    Found assembly '{0}'", asmName);
+                            assembliesList.Add(asmName);
+                        }
+                        else
+                            this.ReportProgress("    Ignoring duplicate assembly file '{0}'", asmName);
+
+                        fileCount++;
+                    }
+
+                    foreach(string commentsName in DocumentationSource.CommentsFiles(
+                      ds.SourceFile, ds.IncludeSubFolders))
+                    {
+                        if(!commentsList.Contains(commentsName))
+                        {
+                            // These are handled below
+                            commentsList.Add(commentsName);
+                        }
+                        else
+                            this.ReportProgress("    Ignoring duplicate comments file '{0}'", commentsName);
+
+                        fileCount++;
+                    }
+
+                    if(fileCount == 0)
+                        this.ReportWarning("BE0006", "Unable to locate any documentation sources for '{0}'",
+                            ds.SourceFile);
+                }
+
+                // Parse projects for assembly, comments, and reference info
+                if(projectDictionary.Count != 0)
+                {
+                    this.ReportProgress("\r\nParsing project files");
+
+                    foreach(MSBuildProject msbProject in projectDictionary.Values)
+                    {
+                        workingPath = msbProject.AssemblyName;
+
+                        if(!String.IsNullOrEmpty(workingPath))
+                        {
+                            if(!File.Exists(workingPath))
+                                throw new BuilderException("BE0040", "Project assembly does not exist: " + workingPath);
+
+                            this.ReportProgress("    Found assembly '{0}'", workingPath);
+                            assembliesList.Add(workingPath);
+                        }
+                        else
+                            throw new BuilderException("BE0067", String.Format(CultureInfo.InvariantCulture,
+                                "Unable to obtain assembly name from project file '{0}' using Configuration " +
+                                "'{1}', Platform '{2}'", msbProject.ProjectFile.FullPath,
+                                msbProject.ProjectFile.AllEvaluatedProperties.Last(
+                                    p => p.Name == ProjectElement.Configuration).EvaluatedValue,
+                                msbProject.ProjectFile.AllEvaluatedProperties.Last(
+                                    p => p.Name == ProjectElement.Platform).EvaluatedValue));
+
+                        workingPath = msbProject.XmlCommentsFile;
+
+                        if(!String.IsNullOrEmpty(workingPath))
+                        {
+                            if(!File.Exists(workingPath))
+                                throw new BuilderException("BE0041",
+                                    "Project XML comments file does not exist: " + workingPath);
+
+                            commentsList.Add(workingPath);
+                        }
+
+                        // Note the highest framework version used
+                        projFramework = msbProject.TargetFrameworkVersion;
+
+                        if(!String.IsNullOrEmpty(projFramework))
+                        {
+                            if(projFramework.StartsWith(".NET", StringComparison.OrdinalIgnoreCase))
+                                dotNetSeen = true;
+                            else
+                                if(projFramework.StartsWith("Silverlight", StringComparison.OrdinalIgnoreCase))
+                                    silverlightSeen = true;
+
+                            projFramework = FrameworkVersionTypeConverter.LatestFrameworkMatching(projFramework);
+
+                            if(String.Compare(targetFramework, projFramework, StringComparison.OrdinalIgnoreCase) < 0)
+                                targetFramework = projFramework;
+                        }
+
+                        // Clone the project's reference information
+                        msbProject.CloneReferenceInfo(referenceDictionary);
+                    }
+                }
+            }
+            finally
+            {
+                // Dispose of any MSBuild projects that we loaded
+                foreach(var p in projectDictionary.Values)
+                    p.Dispose();
             }
 
-            // For each source, make three passes: one for projects, one for assemblies and one
-            // for comments files.  Projects and comments files are optional but when all done,
-            // at least one assembly must have been found.
-            foreach(DocumentationSource ds in project.DocumentationSources)
-            {
-                fileCount = 0;
-
-                this.ReportProgress("Source: {0}", ds.SourceFile);
-
-                foreach(var sourceProject in DocumentationSource.Projects(ds.SourceFile, ds.IncludeSubFolders,
-                  !String.IsNullOrEmpty(ds.Configuration) ? ds.Configuration : project.Configuration,
-                  !String.IsNullOrEmpty(ds.Platform) ? ds.Platform : project.Platform))
-                {
-                    // NOTE: This code in EntityReferenceWindow.IndexComments should be similar to this!
-
-                    // Solutions are followed by the projects that they contain
-                    if(sourceProject.ProjectFileName.EndsWith(".sln", StringComparison.OrdinalIgnoreCase))
-                    {
-                        lastSolution = sourceProject.ProjectFileName;
-                        continue;
-                    }
-
-                    if(!projectDictionary.ContainsKey(sourceProject.ProjectFileName))
-                    {
-                        // These are handled below
-                        this.ReportProgress("    Found project '{0}'", sourceProject.ProjectFileName);
-
-                        projRef = new MSBuildProject(sourceProject.ProjectFileName);
-
-                        // Use the project file configuration and platform properties if they are set.  If not,
-                        // use the documentation source values.  If they are not set, use the SHFB project settings.
-                        projRef.SetConfiguration(
-                            !String.IsNullOrEmpty(sourceProject.Configuration) ? sourceProject.Configuration :
-                                !String.IsNullOrEmpty(ds.Configuration) ? ds.Configuration : project.Configuration,
-                            !String.IsNullOrEmpty(sourceProject.Platform) ? sourceProject.Platform :
-                                !String.IsNullOrEmpty(ds.Platform) ? ds.Platform : project.Platform,
-                            project.MSBuildOutDir);
-
-                        // Add Visual Studio solution macros if necessary
-                        if(lastSolution != null)
-                            projRef.SetSolutionMacros(lastSolution);
-
-                        projectDictionary.Add(sourceProject.ProjectFileName, projRef);
-                    }
-                    else
-                        this.ReportProgress("    Ignoring duplicate project file '{0}'", sourceProject.ProjectFileName);
-
-                    fileCount++;
-                }
-
-                foreach(string asmName in DocumentationSource.Assemblies(ds.SourceFile, ds.IncludeSubFolders))
-                {
-                    if(!assembliesList.Contains(asmName))
-                    {
-                        // Assemblies are parsed in place by MRefBuilder so we
-                        // don't have to do anything with them here.
-                        this.ReportProgress("    Found assembly '{0}'", asmName);
-                        assembliesList.Add(asmName);
-                    }
-                    else
-                        this.ReportProgress("    Ignoring duplicate assembly file '{0}'", asmName);
-
-                    fileCount++;
-                }
-
-                foreach(string commentsName in DocumentationSource.CommentsFiles(
-                  ds.SourceFile, ds.IncludeSubFolders))
-                {
-                    if(!commentsList.Contains(commentsName))
-                    {
-                        // These are handled below
-                        commentsList.Add(commentsName);
-                    }
-                    else
-                        this.ReportProgress("    Ignoring duplicate comments file '{0}'", commentsName);
-
-                    fileCount++;
-                }
-
-                if(fileCount == 0)
-                    this.ReportWarning("BE0006", "Unable to location any " +
-                        "documentation sources for '{0}'", ds.SourceFile);
-            }
-
-            // Parse projects for assembly, comments, and reference info
-            if(projectDictionary.Count != 0)
-            {
-                this.ReportProgress("\r\nParsing project files");
-
-                foreach(MSBuildProject msbProject in projectDictionary.Values)
-                {
-                    workingPath = msbProject.AssemblyName;
-
-                    if(!String.IsNullOrEmpty(workingPath))
-                    {
-                        if(!File.Exists(workingPath))
-                            throw new BuilderException("BE0040", "Project assembly does not exist: " + workingPath);
-
-                        this.ReportProgress("    Found assembly '{0}'", workingPath);
-                        assembliesList.Add(workingPath);
-                    }
-                    else
-                        throw new BuilderException("BE0067", String.Format(CultureInfo.InvariantCulture,
-                            "Unable to obtain assembly name from project file '{0}' using Configuration " +
-                            "'{1}', Platform '{2}'", msbProject.ProjectFile.FullFileName,
-                            msbProject.ProjectFile.GetEvaluatedProperty(ProjectElement.Configuration),
-                            msbProject.ProjectFile.GetEvaluatedProperty(ProjectElement.Platform)));
-
-                    workingPath = msbProject.XmlCommentsFile;
-
-                    if(!String.IsNullOrEmpty(workingPath))
-                    {
-                        if(!File.Exists(workingPath))
-                            throw new BuilderException("BE0041",
-                                "Project XML comments file does not exist: " + workingPath);
-
-                        commentsList.Add(workingPath);
-                    }
-
-                    // Note the highest framework version used
-                    projFramework = msbProject.TargetFrameworkVersion;
-
-                    if(!String.IsNullOrEmpty(projFramework))
-                    {
-                        projFramework = FrameworkVersionTypeConverter.LatestMatching(projFramework.Substring(1));
-
-                        if(String.Compare(targetFramework, projFramework, StringComparison.OrdinalIgnoreCase) < 0)
-                            targetFramework = projFramework;
-                    }
-
-                    // Clone the project's references
-                    msbProject.CloneReferences(referenceDictionary);
-                }
-            }
+            // If we saw both .NET and Silverlight projects, stop now.  Due to the different frameworks used,
+            // we can't mix both project types within the same SHFB project.  They will need to be documented
+            // separately and can be merged using the Version Builder plug-in if needed.
+            if(dotNetSeen && silverlightSeen)
+                throw new BuilderException("BE0070", "Both .NET Framework and Silverlight Framework projects " +
+                    "were detected.  Due to the different sets of assemblies used, the two cannot be mixed " +
+                    "within the same documentation project.  See the error number topic in the help file " +
+                    "for details.");
 
             if(project.FrameworkVersion != targetFramework)
             {
-                this.ReportWarning("BE0007", "A project with a higher " +
-                    "framework version was found.  Changing project " +
-                    "FrameworkVersion property from '{0}' to '{1}' for " +
-                    "the build", project.FrameworkVersion, targetFramework);
+                this.ReportWarning("BE0007", "A project with a higher framework version was found.  Changing " +
+                    "project FrameworkVersion property from '{0}' to '{1}' for the build",
+                    project.FrameworkVersion, targetFramework);
 
                 project.FrameworkVersion = targetFramework;
             }
 
             if(assembliesList.Count == 0)
-                throw new BuilderException("BE0042", "You must specify at " +
-                    "least one documentation source in the form of an " +
-                    "assembly or a Visual Studio solution/project file");
+                throw new BuilderException("BE0042", "You must specify at least one documentation source in " +
+                    "the form of an assembly or a Visual Studio solution/project file");
 
             // Log the references found, if any
             if(referenceDictionary.Count != 0)

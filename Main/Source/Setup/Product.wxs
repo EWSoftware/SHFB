@@ -34,10 +34,9 @@
 			NOT NEWERVERSIONDETECTED
 		</Condition>
 
-		<PropertyRef Id="NETFRAMEWORK35"/>
-		<PropertyRef Id="NETFRAMEWORK35_SP_LEVEL"/>
-		<Condition Message="[ProductName] requires .NET Framework 3.5 SP1. You can download it here: http://go.microsoft.com/fwlink/?LinkId=76617">
-			<![CDATA[Installed OR NETFRAMEWORK35 AND NETFRAMEWORK35_SP_LEVEL >= "#1"]]>
+		<PropertyRef Id="NETFRAMEWORK40FULL"/>
+		<Condition Message="[ProductName] requires .NET Framework 4.0. You can download it here: http://www.microsoft.com/downloads/en/details.aspx?FamilyID=9cfb2d51-5ff4-4491-b0e5-b386f32c0992&amp;displaylang=en">
+			<![CDATA[Installed OR NETFRAMEWORK40FULL]]>
 		</Condition>
 
 		<!-- Media -->

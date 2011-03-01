@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="303c996a-2911-4c08-b492-6496c82b3edb" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Welcome to the Sandcastle MAML Guide. This is intended to be a
+reference that you can use to find out all that you need to know about
+Microsoft Assistance Markup Language (MAML) as used with
+<token>Sandcastle</token> to produce help files containing conceptual content.
+Currently, there is very little information about MAML and all of the features
+that it offers.  As such, consider this a work in progress.  If you have any
+information, tips, updates, or corrections that you would like to see added to
+the guide, feel free to submit them to the author using the <legacyBold>Send
+Feedback</legacyBold> link at the top of the page or the e-mail link in the
+page footer.</para>
+    </introduction>
+    <section>
+      <title>What is Conceptual Content?</title>
+      <content>
+        <para>Conceptual content allows you to define non-API documentation that
+is included in the help file for usage notes, walkthroughs, tutorials, etc.
+Instead of HTML, conceptual content topics use Microsoft Assistance Markup
+Language (MAML).  This is basically XML conforming to a well defined schema
+that describes the structure of the conceptual content much like XML comments
+describe the structure of the code comments. There is no layout or style
+information within the MAML files. Instead, they are ran through a series of
+XSL transformations using Sandcastle's <application>BuildAssembler</application>
+tool similar to the reference (API) content so that they match it in appearance
+and features.  This allows you to utilize the various Sandcastle and third-party
+build components to alter and extend the presentation style used in the topics.</para>
+        <para>The term "conceptual content" is actually a catch-all term used to
+refer to the various types of content that may appear in the help file.  MAML
+actually defines several different content types, each used for a specific type
+of document (conceptual, glossary, how-to, reference, etc.).  Each type has a
+specific structure with various required and optional XML elements.  This help
+file will let you get to know the various document and element types.</para>
+      </content>
+    </section>
+    <section>
+      <title>Creating Conceptual Content</title>
+      <content>
+        <para>Creating the actual topic files is just a matter of entering the
+content using a text editor.  Creating a help file from them requires several
+configuration files and the Sandcastle tools.  If you are going to build a
+help file using Sandcastle alone, see the topics in the
+<link xlink:href="86752a38-eba3-4174-bcbf-79ec8428ecf9" /> section.  They cover
+the various file types that are used in the build process.  A build script
+that can be used to create a help file can be found in the
+<localUri>.\Examples</localUri> folder in the main Sandcastle installation
+folder.</para>
+        <para>If you prefer a more visual and automated approach to managing and
+building help files, it is strongly recommended that you use one of the third-party
+tools such as the <token>SHFB</token>.  They contain all of the necessary features
+and tools required to make building help files with Sandcastle a much simpler process.
+This help file was produced using the <token>SHFB</token> and is an example of what
+the VS2005 presentation style looks like.</para>
+      </content>
+    </section>
+    <relatedTopics>
+      <link xlink:href="b00070c7-9c5e-4b49-ad5c-f55fa866f062" />
+      <link xlink:href="dc4fcc96-283e-4202-9ecc-08a65e0c9313" />
+      <link xlink:href="86752a38-eba3-4174-bcbf-79ec8428ecf9" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

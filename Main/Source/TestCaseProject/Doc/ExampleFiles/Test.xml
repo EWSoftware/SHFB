@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<books xmlns:bk='http://www.example.com/books'
+xmlns='http://www.example.com/books' >
+<book>
+<title>Everything that you Need to Know</title>
+<author>I. M. Knowledgable</author>
+<bk:price>15.50</bk:price>
+</book>
+</books>

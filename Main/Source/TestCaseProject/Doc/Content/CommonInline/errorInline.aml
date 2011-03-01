@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="4cf23985-a97b-46d4-8624-a46b77cca86b" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>This element describes an error or error message.</para>
+    </introduction>
+    <section>
+      <title>Usage</title>
+      <content>
+        <para>Enter the element in the topic and specify the error as the inner
+text.</para>
+      </content>
+    </section>
+    <section>
+      <title>Example</title>
+      <content>
+        <code lang="xml" title=" ">
+If a file does not exist, a &lt;errorInline&gt;File Not Found&lt;/errorInline&gt;
+error will occur.
+</code>
+      </content>
+    </section>
+    <section>
+      <title>Example Output</title>
+      <content>
+        <para>If a file does not exist, a <errorInline>File Not Found</errorInline> error
+will occur.</para>
+      </content>
+    </section>
+
+    <relatedTopics>
+      <link xlink:href="b96d95c0-ec3c-4846-998a-4b43548bfa0e" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

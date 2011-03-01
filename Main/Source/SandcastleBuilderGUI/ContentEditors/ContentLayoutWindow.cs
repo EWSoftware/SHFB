@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : ContentLayoutWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/06/2010
-// Note    : Copyright 2008-2010, Eric Woodruff, All rights reserved
+// Updated : 01/15/2011
+// Note    : Copyright 2008-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the form used to edit the conceptual content items.
@@ -73,80 +73,61 @@ namespace SandcastleBuilder.Gui.ContentEditors
             sbStatusBarText.InstanceStatusBar = MainForm.Host.StatusBarTextLabel;
 
             // Add the topic templates to the New Topic context menu
-            string[] files = Directory.GetFiles(Path.Combine(
-                Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                "ConceptualTemplates"), "*.aml");
+            foreach(string file in Directory.EnumerateFiles(Path.Combine(Path.GetDirectoryName(
+              Assembly.GetExecutingAssembly().Location), "ConceptualTemplates"), "*.aml"))
+            {
+                name = Path.GetFileNameWithoutExtension(file);
+                itemImage = null;
 
-            if(files.Length == 0)
-                miStandardSibling.Enabled = miStandardChild.Enabled = false;
-            else
-                foreach(string file in files)
+                // For Conceptual.aml, make it the default action when the toolbar button is clicked
+                if(name == "Conceptual")
                 {
-                    name = Path.GetFileNameWithoutExtension(file);
-                    itemImage = null;
+                    tsbAddSiblingTopic.ButtonClick -= tsbAddTopic_ButtonClick;
+                    tsbAddChildTopic.ButtonClick -= tsbAddTopic_ButtonClick;
+                    tsbAddSiblingTopic.ButtonClick += onClick;
+                    tsbAddChildTopic.ButtonClick += onClick;
+                    tsbAddSiblingTopic.Tag = tsbAddChildTopic.Tag = file;
 
-                    // For Conceptual.aml, make it the default action when the
-                    // toolbar button is clicked.
-                    if(name == "Conceptual")
-                    {
-                        tsbAddSiblingTopic.ButtonClick -= new EventHandler(
-                            tsbAddTopic_ButtonClick);
-                        tsbAddChildTopic.ButtonClick -= new EventHandler(
-                            tsbAddTopic_ButtonClick);
-                        tsbAddSiblingTopic.ButtonClick += new EventHandler(onClick);
-                        tsbAddChildTopic.ButtonClick += new EventHandler(onClick);
-                        tsbAddSiblingTopic.Tag = tsbAddChildTopic.Tag = file;
-
-                        itemImage = miAddEmptySibling.Image;
-                        miAddEmptySibling.Image = miAddEmptyChild.Image = null;
-                    }
-
-                    miTemplate = new ToolStripMenuItem(name, null, onClick);
-                    miTemplate.Image = itemImage;
-                    miTemplate.Tag = file;
-                    sbStatusBarText.SetStatusBarText(miTemplate, "Add new '" +
-                        name + "' topic");
-                    miStandardSibling.DropDownItems.Add(miTemplate);
-
-                    miTemplate = new ToolStripMenuItem(name, null, onClick);
-                    miTemplate.Image = itemImage;
-                    miTemplate.Tag = file;
-                    sbStatusBarText.SetStatusBarText(miTemplate, "Add new '" +
-                        name + "' topic");
-                    miStandardChild.DropDownItems.Add(miTemplate);
+                    itemImage = miAddEmptySibling.Image;
+                    miAddEmptySibling.Image = miAddEmptyChild.Image = null;
                 }
 
+                miTemplate = new ToolStripMenuItem(name, null, onClick);
+                miTemplate.Image = itemImage;
+                miTemplate.Tag = file;
+                sbStatusBarText.SetStatusBarText(miTemplate, "Add new '" + name + "' topic");
+                miStandardSibling.DropDownItems.Add(miTemplate);
+
+                miTemplate = new ToolStripMenuItem(name, null, onClick);
+                miTemplate.Image = itemImage;
+                miTemplate.Tag = file;
+                sbStatusBarText.SetStatusBarText(miTemplate, "Add new '" + name + "' topic");
+                miStandardChild.DropDownItems.Add(miTemplate);
+            }
+
+            miStandardSibling.Enabled = miStandardChild.Enabled = (miStandardChild.DropDownItems.Count != 0);
+
             // Look for custom templates in the local application data folder
-            name = Path.Combine(Environment.GetFolderPath(
-                Environment.SpecialFolder.LocalApplicationData),
+            name = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                 Constants.ConceptualTemplates);
 
-            if(!Directory.Exists(name))
-                miCustomSibling.Enabled = miCustomChild.Enabled = false;
-            else
-            {
-                files = Directory.GetFiles(name, "*.aml");
+            if(Directory.Exists(name))
+                foreach(string file in Directory.EnumerateFiles(name, "*.aml"))
+                {
+                    name = Path.GetFileNameWithoutExtension(file);
 
-                if(files.Length == 0)
-                    miCustomSibling.Enabled = miCustomChild.Enabled = false;
-                else
-                    foreach(string file in files)
-                    {
-                        name = Path.GetFileNameWithoutExtension(file);
+                    miTemplate = new ToolStripMenuItem(name, null, onClick);
+                    miTemplate.Tag = file;
+                    sbStatusBarText.SetStatusBarText(miTemplate, "Add new '" + name + "' topic");
+                    miCustomSibling.DropDownItems.Add(miTemplate);
 
-                        miTemplate = new ToolStripMenuItem(name, null, onClick);
-                        miTemplate.Tag = file;
-                        sbStatusBarText.SetStatusBarText(miTemplate,
-                            "Add new '" + name + "' topic");
-                        miCustomSibling.DropDownItems.Add(miTemplate);
+                    miTemplate = new ToolStripMenuItem(name, null, onClick);
+                    miTemplate.Tag = file;
+                    sbStatusBarText.SetStatusBarText(miTemplate, "Add new '" + name + "' topic");
+                    miCustomChild.DropDownItems.Add(miTemplate);
+                }
 
-                        miTemplate = new ToolStripMenuItem(name, null, onClick);
-                        miTemplate.Tag = file;
-                        sbStatusBarText.SetStatusBarText(miTemplate,
-                            "Add new '" + name + "' topic");
-                        miCustomChild.DropDownItems.Add(miTemplate);
-                    }
-            }
+            miCustomSibling.Enabled = miCustomChild.Enabled = (miCustomChild.DropDownItems.Count != 0);
 
             topics = new TopicCollection(fileItem);
             topics.Load();

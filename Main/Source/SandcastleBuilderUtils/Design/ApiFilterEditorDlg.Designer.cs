@@ -18,6 +18,9 @@ namespace SandcastleBuilder.Utils.Design
                 if(italicFont != null)
                     italicFont.Dispose();
 
+                if(tempProject != null)
+                    tempProject.Dispose();
+
                 if(components != null)
                     components.Dispose();
             }

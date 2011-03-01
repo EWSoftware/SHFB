@@ -1,9 +1,9 @@
 //=============================================================================
 // System  : Sandcastle Help File Builder
-// File    : WindowPlacement.cs
+// File    : UnsafeNativeMethods.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/25/2008
-// Note    : Copyright 2007-2008, Eric Woodruff, All rights reserved
+// Updated : 02/27/2011
+// Note    : Copyright 2007-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains an internal class used to call some Win32 API functions.
@@ -22,7 +22,6 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Security;
-using System.Security.Permissions;
 using System.Windows.Forms;
 
 namespace SandcastleBuilder.Gui

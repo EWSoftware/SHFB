@@ -1,18 +1,18 @@
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DD104C35-AE92-4C7B-9DD8-F8AF997BACE2}"
 	ProjectSection(SolutionItems) = preProject
 		CodeColorizer.FxCop = CodeColorizer.FxCop
 		Doc\ColorizerLibrary.shfbproj = Doc\ColorizerLibrary.shfbproj
 	EndProjectSection
 EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "TextColorizerTest", "TextColorizerTest", "{D7F11A0C-3E65-42D0-8743-82CEA117A003}"
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "TextColorizerTest", "TextColorizerTest\", "{D7F11A0C-3E65-42D0-8743-82CEA117A003}"
 	ProjectSection(WebsiteProperties) = preProject
 		SccProjectName = "SAK"
 		SccAuxPath = "SAK"
 		SccLocalPath = "SAK"
 		SccProvider = "SAK"
-		TargetFramework = "3.5"
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv3.5"
 		ProjectReferences = "{72331A21-C452-4BE4-BFDB-B8029A6BC1C0}|ColorizerLibrary.dll;"
 		Debug.AspNetCompiler.VirtualPath = "/TextColorizerTest"
 		Debug.AspNetCompiler.PhysicalPath = "TextColorizerTest\"

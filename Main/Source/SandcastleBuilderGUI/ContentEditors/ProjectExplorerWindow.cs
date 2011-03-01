@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : ProjectExplorerWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/04/2009
-// Note    : Copyright 2008-2009, Eric Woodruff, All rights reserved
+// Updated : 01/09/2011
+// Note    : Copyright 2008-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the form used to manage the project items and files.
@@ -32,7 +32,7 @@ using System.Windows.Forms;
 using System.Xml;
 using System.Xml.XPath;
 
-using Microsoft.Build.BuildEngine;
+using Microsoft.Build.Evaluation;
 
 using SandcastleBuilder.Utils;
 using SandcastleBuilder.Utils.ConceptualContent;
@@ -232,18 +232,14 @@ namespace SandcastleBuilder.Gui.ContentEditors
             string name;
             int idx = 0;
 
-            string[] files = Directory.GetFiles(Path.Combine(
-                Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                "ItemTemplates"), "*.*");
-
-            foreach(string file in files)
+            foreach(string file in Directory.EnumerateFiles(Path.Combine(Path.GetDirectoryName(
+              Assembly.GetExecutingAssembly().Location), "ItemTemplates"), "*.*"))
             {
                 name = Path.GetFileNameWithoutExtension(file);
 
                 miTemplate = new ToolStripMenuItem(name, null, onClick);
                 miTemplate.Tag = file;
-                sbStatusBarText.SetStatusBarText(miTemplate, "Add new '" +
-                    name + "' item");
+                sbStatusBarText.SetStatusBarText(miTemplate, "Add new '" + name + "' item");
                 miNewItem.DropDownItems.Insert(idx++, miTemplate);
             }
         }
@@ -257,18 +253,14 @@ namespace SandcastleBuilder.Gui.ContentEditors
             ToolStripMenuItem miTemplate;
             string name;
 
-            string[] files = Directory.GetFiles(Path.Combine(
-                Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                "ConceptualTemplates"), "*.aml");
-
-            foreach(string file in files)
+            foreach(string file in Directory.EnumerateFiles(Path.Combine(Path.GetDirectoryName(
+              Assembly.GetExecutingAssembly().Location), "ConceptualTemplates"), "*.aml"))
             {
                 name = Path.GetFileNameWithoutExtension(file);
 
                 miTemplate = new ToolStripMenuItem(name, null, onClick);
                 miTemplate.Tag = file;
-                sbStatusBarText.SetStatusBarText(miTemplate, "Add new '" +
-                    name + "' item");
+                sbStatusBarText.SetStatusBarText(miTemplate, "Add new '" + name + "' item");
                 miConceptualTemplates.DropDownItems.Add(miTemplate);
             }
         }
@@ -280,25 +272,20 @@ namespace SandcastleBuilder.Gui.ContentEditors
         {
             EventHandler onClick = new EventHandler(templateFile_OnClick);
             ToolStripMenuItem miTemplate;
-            string[] files;
             string name;
 
-            name = Path.Combine(Environment.GetFolderPath(
-                Environment.SpecialFolder.LocalApplicationData),
+            name = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                 Constants.ItemTemplates);
 
             if(Directory.Exists(name))
             {
-                files = Directory.GetFiles(name, "*.*");
-
-                foreach(string file in files)
+                foreach(string file in Directory.EnumerateFiles(name, "*.*"))
                 {
                     name = Path.GetFileNameWithoutExtension(file);
 
                     miTemplate = new ToolStripMenuItem(name, null, onClick);
                     miTemplate.Tag = file;
-                    sbStatusBarText.SetStatusBarText(miTemplate, "Add new '" +
-                        name + "' item");
+                    sbStatusBarText.SetStatusBarText(miTemplate, "Add new '" + name + "' item");
                     miCustomTemplates.DropDownItems.Add(miTemplate);
                 }
 
@@ -306,22 +293,18 @@ namespace SandcastleBuilder.Gui.ContentEditors
                     miCustomTemplates.DropDownItems.Add(new ToolStripSeparator());
             }
 
-            name = Path.Combine(Environment.GetFolderPath(
-                Environment.SpecialFolder.LocalApplicationData),
+            name = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                 Constants.ConceptualTemplates);
 
             if(Directory.Exists(name))
             {
-                files = Directory.GetFiles(name, "*.aml");
-
-                foreach(string file in files)
+                foreach(string file in Directory.EnumerateFiles(name, "*.aml"))
                 {
                     name = Path.GetFileNameWithoutExtension(file);
 
                     miTemplate = new ToolStripMenuItem(name, null, onClick);
                     miTemplate.Tag = file;
-                    sbStatusBarText.SetStatusBarText(miTemplate, "Add new '" +
-                        name + "' item");
+                    sbStatusBarText.SetStatusBarText(miTemplate, "Add new '" + name + "' item");
                     miCustomTemplates.DropDownItems.Add(miTemplate);
                 }
             }
@@ -1446,10 +1429,10 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// <param name="items">The file item collection</param>
         private void AddSubFolders(string rootFolder, Collection<FileItem> items)
         {
-            foreach(string file in Directory.GetFiles(rootFolder, "*.*"))
+            foreach(string file in Directory.EnumerateFiles(rootFolder, "*.*"))
                 items.Add(currentProject.AddFileToProject(file, file));
 
-            foreach(string folder in Directory.GetDirectories(rootFolder))
+            foreach(string folder in Directory.EnumerateDirectories(rootFolder))
             {
                 items.Add(currentProject.AddFolderToProject(folder));
                 this.AddSubFolders(folder, items);
@@ -1491,9 +1474,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
                 {
                     dlg.Title = "Select the file(s) to add";
                     dlg.Filter = "Project Files (*.aml, *.htm*, *.css, *.js, " +
-                        "*.content, *.sitemap, *.snippets, *.tokens)|*.aml;" +
+                        "*.content, *.sitemap, *.snippets, *.tokens, *.items)|*.aml;" +
                         "*.htm*;*.css;*.js;*.content;*.sitemap;*.tokens;" +
-                        "*.snippets|Content Files (*.aml, *.htm*)|*.aml;*.htm*|" +
+                        "*.snippets;*.items|Content Files (*.aml, *.htm*)|*.aml;*.htm*|" +
                         "Content Layout Files (*.content, *.sitemap)|" +
                         "*.content;*.sitemap|Image Files (*.bmp, *.gif, " +
                         "*.jpg, *.jpe*, *.png)|*.bmp;*.gif;*.jpg;*.jpe*;" +
@@ -1946,9 +1929,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
                     newPath += "\\";
                     fileItem.Include = new FilePath(newPath, fileItem.ProjectElement.Project);
 
-                    foreach(BuildItem item in fileItem.ProjectElement.Project.MSBuildProject.EvaluatedItems)
-                        if(item.Include.StartsWith(path, StringComparison.OrdinalIgnoreCase))
-                            item.Include = newPath + item.Include.Substring(path.Length);
+                    foreach(ProjectItem item in fileItem.ProjectElement.Project.MSBuildProject.AllEvaluatedItems)
+                        if(item.EvaluatedInclude.StartsWith(path, StringComparison.OrdinalIgnoreCase))
+                            item.UnevaluatedInclude = newPath + item.EvaluatedInclude.Substring(path.Length);
                 }
 
                 this.LoadProject();

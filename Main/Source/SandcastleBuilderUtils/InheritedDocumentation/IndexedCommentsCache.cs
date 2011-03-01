@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder - Generate Inherited Documentation
 // File    : IndexedCommentsCache.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/06/2009
-// Note    : Copyright 2008-2009, Eric Woodruff, All rights reserved
+// Updated : 01/09/2011
+// Note    : Copyright 2008-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class that is used to cache indexed XML comments files
@@ -121,7 +121,7 @@ namespace SandcastleBuilder.Utils.InheritedDocumentation
           bool recurse, Collection<XPathNavigator> commentsFiles)
         {
             XPathDocument xpathDoc;
-            string[] files, folders, keys;
+            string[] keys;
 
             if(String.IsNullOrEmpty(path))
                 path = Environment.CurrentDirectory;
@@ -131,16 +131,13 @@ namespace SandcastleBuilder.Utils.InheritedDocumentation
             if(String.IsNullOrEmpty(wildcard))
                 wildcard = "*.xml";
 
-            files = Directory.GetFiles(path, wildcard);
-
             // Index the file
-            foreach(string filename in files)
+            foreach(string filename in Directory.EnumerateFiles(path, wildcard))
             {
                 if(!filename.EndsWith(".xml", StringComparison.OrdinalIgnoreCase))
                 {
                     this.OnReportWarning(new CommentsCacheEventArgs(
-                        "SHFB: Warning GID0007: Ignoring non-XML comments " +
-                        "file: " + filename));
+                        "SHFB: Warning GID0007: Ignoring non-XML comments file: " + filename));
                     continue;
                 }
 
@@ -156,27 +153,20 @@ namespace SandcastleBuilder.Utils.InheritedDocumentation
                 foreach(string key in keys)
                 {
                     if(index.ContainsKey(key))
-                        this.OnReportWarning(new CommentsCacheEventArgs(
-                            String.Format(CultureInfo.InvariantCulture,
-                            "SHFB: Warning GID0008: Entries for the key " +
-                            "'{0}' occur in both '{1}' and '{2}'.  The " +
-                            "entries in '{2}' will be used.", key, index[key],
-                            filename)));
+                        this.OnReportWarning(new CommentsCacheEventArgs(String.Format(
+                            CultureInfo.InvariantCulture, "SHFB: Warning GID0008: Entries for the key " +
+                            "'{0}' occur in both '{1}' and '{2}'.  The entries in '{2}' will be used.", key,
+                            index[key], filename)));
 
                     index[key] = filename;
                 }
-            }
 
-            filesIndexed += files.Length;
+                filesIndexed++;
+            }
 
             if(recurse)
-            {
-                folders = Directory.GetDirectories(path);
-
-                foreach(string folder in folders)
-                    this.IndexCommentsFiles(folder, wildcard, recurse,
-                        commentsFiles);
-            }
+                foreach(string folder in Directory.EnumerateDirectories(path))
+                    this.IndexCommentsFiles(folder, wildcard, recurse, commentsFiles);
         }
 
         /// <summary>

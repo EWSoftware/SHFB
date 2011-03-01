@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : ImageReferenceCollection.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/06/2010
+// Updated : 07/09/2010
 // Note    : Copyright 2008-2010, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -20,6 +20,7 @@
 // 1.6.0.7  04/24/2008  EFW  Created the code
 // 1.8.0.0  07/25/2008  EFW  Reworked to support new MSBuild project format
 // 1.9.0.0  06/06/2010  EFW  Added support for multi-format build output
+// 1.9.1.0  07/09/2010  EFW  Updated for use with .NET 4.0 and MSBuild 4.0.
 //=============================================================================
 
 using System;
@@ -28,7 +29,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Xml;
 
-using Microsoft.Build.BuildEngine;
+using Microsoft.Build.Evaluation;
 
 using SandcastleBuilder.Utils.BuildEngine;
 
@@ -210,7 +211,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         {
             this.Clear();
 
-            foreach(BuildItem item in projectFile.MSBuildProject.GetEvaluatedItemsByName(BuildAction.Image.ToString()))
+            foreach(ProjectItem item in projectFile.MSBuildProject.GetItems(BuildAction.Image.ToString()))
                 this.Add(new ImageReference(new FileItem(new ProjectElement(projectFile, item))));
 
             this.Sort();
