@@ -930,27 +930,28 @@ namespace SandcastleBuilder.Utils.BuildEngine
         public static void GetFrameworkCommentsFiles(Collection<string> frameworkLocations,
           Dictionary<string, string> cacheNames, CultureInfo language, string version)
         {
-            string folder, langFolder;
+            string folder, langFolder,
+                programFilesFolder = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
+
+            if(String.IsNullOrEmpty(programFilesFolder))
+                programFilesFolder = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
 
             // For Silverlight, we need to look in different locations
             if(version.StartsWith("Silverlight", StringComparison.OrdinalIgnoreCase))
             {
                 version = FrameworkVersionTypeConverter.LatestFrameworkNumberMatching(version);
 
-                folder = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86) +
-                    @"\Reference Assemblies\Microsoft\Framework\Silverlight\v" + version;
+                folder = programFilesFolder + @"\Reference Assemblies\Microsoft\Framework\Silverlight\v" + version;
                 frameworkLocations.Add(folder);
                 cacheNames.Add(folder, "Silverlight_" + version);
 
-                folder = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86) +
-                    @"\Microsoft SDKs\Silverlight\v" + version + @"\Libraries\Client";
+                folder = programFilesFolder + @"\Microsoft SDKs\Silverlight\v" + version + @"\Libraries\Client";
                 frameworkLocations.Add(folder);
                 cacheNames.Add(folder, "SilverlightSDK_" + version);
 
                 if(version[0] == '4')
                 {
-                    folder = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86) +
-                        @"\Microsoft SDKs\RIA Services\v1.0\Libraries";
+                    folder = programFilesFolder + @"\Microsoft SDKs\RIA Services\v1.0\Libraries";
                     frameworkLocations.Add(folder);
                     cacheNames.Add(folder, "RIA_SDK_V1.0");
                 }
@@ -993,27 +994,14 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     cacheNames.Add(folder, langFolder + FrameworkVersionTypeConverter.LatestFrameworkNumberMatching(".NET 2"));
 
                     // Check for FSharp comments files
-                    if(Environment.GetEnvironmentVariable("ProgramFiles(x86)") != null)
-                        folder = Environment.ExpandEnvironmentVariables(@"%ProgramFiles(x86)%\Reference " +
-                            @"Assemblies\Microsoft\FSharp\2.0\Runtime\v2.0\");
-                    else
-                        folder = Environment.ExpandEnvironmentVariables(@"%ProgramFiles%\Reference " +
-                            @"Assemblies\Microsoft\FSharp\2.0\Runtime\v2.0\");
-
+                    folder = programFilesFolder + @"\Reference Assemblies\Microsoft\FSharp\2.0\Runtime\v2.0\";
                     frameworkLocations.Add(folder);
                     cacheNames.Add(folder, "FSharp_2.0");
 
                     // 3.0/3.5
                     if(version[0] == '3')
                     {
-                        // If running on a 64-bit platform, use the x86 folder as that's where the
-                        // comments files will be.
-                        if(Environment.GetEnvironmentVariable("ProgramFiles(x86)") != null)
-                            folder = Environment.ExpandEnvironmentVariables(@"%ProgramFiles(x86)%\Reference " +
-                                @"Assemblies\Microsoft\Framework\v3.0\");
-                        else
-                            folder = Environment.ExpandEnvironmentVariables(@"%ProgramFiles%\Reference Assemblies\" +
-                                @"Microsoft\Framework\v3.0\");
+                        folder = programFilesFolder + @"\Reference Assemblies\Microsoft\Framework\v3.0\";
 
                         // Check for a language-specific set of comments
                         if(Directory.Exists(folder + language.Name))
@@ -1036,14 +1024,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         // 3.5
                         if(version == "3.5")
                         {
-                            // If running on a 64-bit platform, use the x86 folder as that's where the
-                            // comments files will be.
-                            if(Environment.GetEnvironmentVariable("ProgramFiles(x86)") != null)
-                                folder = Environment.ExpandEnvironmentVariables(@"%ProgramFiles(x86)%\Reference " +
-                                    @"Assemblies\Microsoft\Framework\v3.5\");
-                            else
-                                folder = Environment.ExpandEnvironmentVariables(@"%ProgramFiles%\Reference Assemblies\" +
-                                    @"Microsoft\Framework\v3.5\");
+                            folder = programFilesFolder + @"\Reference Assemblies\Microsoft\Framework\v3.5\";
 
                             // Check for a language-specific set of comments
                             if(Directory.Exists(folder + language.Name))
@@ -1067,14 +1048,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     break;
 
                 case '4':   // 4.x
-                    // If running on a 64-bit platform, use the x86 folder as that's where the
-                    // comments files will be.
-                    if(Environment.GetEnvironmentVariable("ProgramFiles(x86)") != null)
-                        folder = Environment.ExpandEnvironmentVariables(@"%ProgramFiles(x86)%\Reference " +
-                            @"Assemblies\Microsoft\Framework\.NETFramework\v4.0\");
-                    else
-                        folder = Environment.ExpandEnvironmentVariables(@"%ProgramFiles%\Reference Assemblies\" +
-                            @"Microsoft\Framework\.NETFramework\v4.0\");
+                    folder = programFilesFolder + @"\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\";
 
                     // Check for a language-specific set of comments
                     if(Directory.Exists(folder + language.Name))
@@ -1095,13 +1069,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     cacheNames.Add(folder, langFolder + version);
 
                     // Check for FSharp comments files
-                    if(Environment.GetEnvironmentVariable("ProgramFiles(x86)") != null)
-                        folder = Environment.ExpandEnvironmentVariables(@"%ProgramFiles(x86)%\Reference " +
-                            @"Assemblies\Microsoft\FSharp\2.0\Runtime\v4.0\");
-                    else
-                        folder = Environment.ExpandEnvironmentVariables(@"%ProgramFiles%\Reference " +
-                            @"Assemblies\Microsoft\FSharp\2.0\Runtime\v4.0\");
-
+                    folder = programFilesFolder + @"\Reference Assemblies\Microsoft\FSharp\2.0\Runtime\v4.0\";
                     frameworkLocations.Add(folder);
                     cacheNames.Add(folder, "FSharp_4.0");
                     break;
@@ -1127,6 +1095,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
             StringBuilder sb = new StringBuilder(1024);
             Dictionary<string, string> cacheName = new Dictionary<string, string>();
             Collection<string> frameworkLocations = new Collection<string>();
+            string recurse;
 
             BuildProcess.GetFrameworkCommentsFiles(frameworkLocations, cacheName, project.Language,
                 project.FrameworkVersion);
@@ -1134,25 +1103,33 @@ namespace SandcastleBuilder.Utils.BuildEngine
             // Build the list based on the type and what actually exists
             foreach(string location in frameworkLocations)
                 if(Directory.Exists(location))
+                {
+                    // HACK: I'll come up with a better way of doing this
+                    if(location.IndexOf("Reference Assemblies", StringComparison.OrdinalIgnoreCase) != -1)
+                        recurse = "false";
+                    else
+                        recurse = "true";
+
                     switch(listType)
                     {
                         case "importframeworkcommentlist":
                             sb.AppendFormat(CultureInfo.InvariantCulture,
-                                "<import path=\"{0}\" recurse=\"true\" />\r\n", location);
+                                "<import path=\"{0}\" recurse=\"{1}\" />\r\n", location, recurse);
                             break;
 
                         case "cachedframeworkcommentlist":
                             // Files are cached by language and version
                             sb.AppendFormat(CultureInfo.InvariantCulture, "<cache base=\"{0}\" files=\"*.xml\" " +
-                                "recurse=\"true\" cacheFile=\"{{@LocalDataFolder}}Cache\\{1}.cache\" />\r\n",
-                                location, cacheName[location]);
+                                "recurse=\"{1}\" cacheFile=\"{{@LocalDataFolder}}Cache\\{2}.cache\" />\r\n",
+                                location, recurse, cacheName[location]);
                             break;
 
                         default:    // "frameworkcommentlist"
                             sb.AppendFormat(CultureInfo.InvariantCulture, "<data base=\"{0}\" files=\"*.xml\" " +
-                                "recurse=\"true\" />\r\n", location);
+                                "recurse=\"{1}\" />\r\n", location, recurse);
                             break;
                     }
+                }
 
             return sb.ToString();
         }

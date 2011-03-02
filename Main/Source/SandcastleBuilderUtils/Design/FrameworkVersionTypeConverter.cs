@@ -2,7 +2,7 @@
 // System  : EWSoftware Design Time Attributes and Editors
 // File    : FrameworkVersionTypeConverter.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/16/2011
+// Updated : 03/01/2011
 // Note    : Copyright 2006-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -55,6 +55,11 @@ namespace SandcastleBuilder.Utils.Design
         /// </summary>
         private static StandardValuesCollection InitializeStandardValues()
         {
+            string programFilesFolder = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
+
+            if(String.IsNullOrEmpty(programFilesFolder))
+                programFilesFolder = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
+
             versions.AddRange(
                 // .NET Framework versions
                 Directory.EnumerateDirectories(Environment.GetFolderPath(Environment.SpecialFolder.System) +
@@ -66,7 +71,7 @@ namespace SandcastleBuilder.Utils.Design
                     }).Select(d => ".NET " + d.Substring(d.LastIndexOf('\\') + 2)).Concat(
                 
                 // Silverlight Framework versions
-                Directory.EnumerateDirectories(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86) +
+                Directory.EnumerateDirectories(programFilesFolder +
                     @"\Reference Assemblies\Microsoft\Framework\Silverlight").Where(d =>
                     {
                         string dir = d.Substring(d.LastIndexOf('\\') + 1);
