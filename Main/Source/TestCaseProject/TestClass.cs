@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace TestDoc
@@ -545,6 +546,16 @@ namespace TestDoc
         /// <note type="inherit">inherit</note>
         /// </remarks>
         public void Increment()
+        {
+        }
+
+        /// <summary>Test see elements with generic references:
+        /// <para><see cref="Predicate{T}"/></para>
+        /// <para><see cref="List{T}"/></para>
+        /// <para><see cref="List{T}.Clear()"/></para>
+        /// <para><see cref="List{T}.RemoveAll(Predicate{T})"/></para>
+        /// </summary>
+        public static void TestSeeWithGenerics()
         {
         }
     }

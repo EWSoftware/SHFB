@@ -24,6 +24,21 @@ create your first project.</para>
   <listItem><link xlink:href="94c7f744-9b90-4254-93ab-9b15f47d9f42" /></listItem>
   <listItem><link xlink:href="8ffc0d37-0215-4609-b6f8-dba53a6c5063" /></listItem>
   <listItem><link xlink:href="ec822059-b179-4add-984d-485580050ffb" /></listItem>
+
+  <listItem><externalLink>
+<linkText>Taming Sandcastle: A .NET Programmer's Guide to Documenting Your Code</linkText>
+<linkAlternateText>Taming Sandcastle</linkAlternateText>
+<linkUri>http://www.simple-talk.com/dotnet/.net-tools/taming-sandcastle-a-.net-programmers-guide-to-documenting-your-code</linkUri>
+<linkTarget>_blank</linkTarget>
+</externalLink></listItem>
+
+	<listItem><externalLink>
+<linkText>Sandcastle Wall Chart</linkText>
+<linkAlternateText>Sandcastle Wall Chart</linkAlternateText>
+<linkUri>http://www.EWoodruff.us/Downloads/SandcastleWallchart.pdf</linkUri>
+<linkTarget>_blank</linkTarget>
+</externalLink></listItem>
+
 </list>
 
       </content>

@@ -195,6 +195,21 @@ the other features available in the help file builder.</para></content>
     <link xlink:href="e12c2b9f-18c7-4718-850b-ac3c2e293672" />
     <link xlink:href="e32086c6-de17-4e54-a746-1ac80bf0c45a" />
     <link xlink:href="1aea789d-b226-4b39-b534-4c97c256fac8" />
+    
+    <externalLink>
+<linkText>Taming Sandcastle: A .NET Programmer's Guide to Documenting Your Code</linkText>
+<linkAlternateText>Taming Sandcastle</linkAlternateText>
+<linkUri>http://www.simple-talk.com/dotnet/.net-tools/taming-sandcastle-a-.net-programmers-guide-to-documenting-your-code</linkUri>
+<linkTarget>_blank</linkTarget>
+</externalLink>
+
+	<externalLink>
+<linkText>Sandcastle Wall Chart</linkText>
+<linkAlternateText>Sandcastle Wall Chart</linkAlternateText>
+<linkUri>http://www.EWoodruff.us/Downloads/SandcastleWallchart.pdf</linkUri>
+<linkTarget>_blank</linkTarget>
+</externalLink>
+
     </relatedTopics>
   </developerWalkthroughDocument>
 </topic>

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Components
 // File    : PostTransformComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/28/2010
-// Note    : Copyright 2006-2010, Eric Woodruff, All rights reserved
+// Updated : 03/05/2011
+// Note    : Copyright 2006-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a build component that is a companion to the
@@ -750,7 +750,13 @@ namespace SandcastleBuilder.Components
                                 }
                             }
 
-                            gradientTable = bottomTable.NextSibling;
+                            if(bottomTable.Attributes["id"].Value == "gradientTable")
+                            {
+                                gradientTable = bottomTable;
+                                bottomTable = null;
+                            }
+                            else
+                                gradientTable = bottomTable.NextSibling;
 
                             divHeader.InnerXml = String.Format(CultureInfo.InvariantCulture,
                                 "<table cellspacing='0' cellpadding='0'><tr>" +
@@ -761,7 +767,8 @@ namespace SandcastleBuilder.Components
                                 filename, div.OuterXml, devLangsMenu.OuterXml,
                                 (memberOptionsMenu == null) ? String.Empty : memberOptionsMenu.OuterXml,
                                 (memberFrameworksMenu == null) ? String.Empty : memberFrameworksMenu.OuterXml,
-                                bottomTable.OuterXml, gradientTable.OuterXml);
+                                (bottomTable == null) ? String.Empty : bottomTable.OuterXml,
+                                gradientTable.OuterXml);
                         }
                         break;
 
@@ -806,7 +813,14 @@ namespace SandcastleBuilder.Components
                                 }
                             }
 
-                            gradientTable = bottomTable.NextSibling;
+                            if(bottomTable.Attributes["id"].Value == "gradientTable")
+                            {
+                                gradientTable = bottomTable;
+                                bottomTable = null;
+                            }
+                            else
+                                gradientTable = bottomTable.NextSibling;
+
 
                             divHeader.InnerXml = String.Format(CultureInfo.InvariantCulture,
                                 "<table cellspacing='0' cellpadding='0'><tr><td>{4}{5}{6}{7}{8}</td>" +
@@ -816,7 +830,8 @@ namespace SandcastleBuilder.Components
                                 imgAltText, imgWidth, imgHeight, filename, div.OuterXml, devLangsMenu.OuterXml,
                                 (memberOptionsMenu == null) ? String.Empty : memberOptionsMenu.OuterXml,
                                 (memberFrameworksMenu == null) ? String.Empty : memberFrameworksMenu.OuterXml,
-                                bottomTable.OuterXml, gradientTable.OuterXml);
+                                (bottomTable == null) ? String.Empty : bottomTable.OuterXml,
+                                gradientTable.OuterXml);
                         }
                         break;
 

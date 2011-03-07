@@ -8,7 +8,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{dea33d54-a820-4458-85eb-8c52ff13508d}</ProjectGuid>
-    <SHFBSchemaVersion>1.9.2.0</SHFBSchemaVersion>
+    <SHFBSchemaVersion>1.9.3.0</SHFBSchemaVersion>
     <!-- AssemblyName, Name, and RootNamespace are not used by SHFB but Visual
          Studio adds them anyway -->
     <AssemblyName>Documentation</AssemblyName>
@@ -36,7 +36,7 @@
     <FeedbackEMailAddress>Eric%40EWoodruff.us</FeedbackEMailAddress>
     <PresentationStyle>vs2005</PresentationStyle>
     <SyntaxFilters>CSharp, VisualBasic</SyntaxFilters>
-    <HelpFileVersion>1.9.2.0</HelpFileVersion>
+    <HelpFileVersion>1.9.3.0</HelpFileVersion>
     <ComponentConfigurations>
       <ComponentConfig id="Post-transform Component" enabled="True">
         <component type="SandcastleBuilder.Components.PostTransformComponent" assembly="{@SHFBFolder}SandcastleBuilder.Components.dll" id="Post-transform Component">
@@ -190,8 +190,9 @@
     <Folder Include="Media\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0070.aml" />
     <None Include="Content\PlugIns\WildcardReferencesPlugIn.aml" />
-    <None Include="Content\VersionHistory\v1.9.2.0.aml" />
+    <None Include="Content\VersionHistory\v1.9.3.0.aml" />
     <None Include="Content\PropertiesWindow\HelpLibraryManagerLauncher.aml" />
     <None Include="Content\CompConfig\MSHCComponent.aml" />
     <None Include="Content\AddConceptContent\ConceptContent\ContentPlacement.aml" />

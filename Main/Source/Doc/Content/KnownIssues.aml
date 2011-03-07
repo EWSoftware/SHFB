@@ -76,13 +76,6 @@ file builder with components that are format aware and only need to be loaded on
       <title>Sandcastle Help File Builder</title>
       <content>
 <list class="bullet">
-	<listItem>Certain Visual Studio 2010 project types may fail to load when
-used as documentation sources because they use MSBuild 4.0 specific attributes
-in their projects files.  The help file builder is currently built to use
-MSBuild 3.5 and cannot interpret the newer attributes.  If this happens, you
-must add the assembly, XML comments file, and references to the help file
-builder project individually.</listItem>
-
 	<listItem>Not all build errors and warnings have been documented yet.
 You will recognize these by a "TODO:" comment where the introduction
 should be or in the topic body.  If you need help for one of these errors or

@@ -38,6 +38,24 @@ Help File Builder in his Italian language book <externalLink>
   <linkUri>http://community.visual-basic.it/alessandro/articles/19644.aspx</linkUri>
   <linkTarget>_blank</linkTarget></externalLink>.</listItem>
 
+
+	<listItem><para>For an article with a more in depth walkthrough of documenting a project with Sandcastle
+and the Sandcastle Help File Builder see the following article on Simple Talk by Michael Sorens:
+<externalLink>
+<linkText>Taming Sandcastle: A .NET Programmer's Guide to Documenting Your Code</linkText>
+<linkAlternateText>Taming Sandcastle</linkAlternateText>
+<linkUri>http://www.simple-talk.com/dotnet/.net-tools/taming-sandcastle-a-.net-programmers-guide-to-documenting-your-code</linkUri>
+<linkTarget>_blank</linkTarget>
+</externalLink></para></listItem>
+
+	<listItem><para>For a wall chart that contains condensed information on the various XML comment elements,
+see this PDF file also by Michael Sorens:
+<externalLink>
+<linkText>Sandcastle Wall Chart</linkText>
+<linkAlternateText>Sandcastle Wall Chart</linkAlternateText>
+<linkUri>http://www.EWoodruff.us/Downloads/SandcastleWallchart.pdf</linkUri>
+<linkTarget>_blank</linkTarget>
+</externalLink></para></listItem>
 </list>
 
   </content>

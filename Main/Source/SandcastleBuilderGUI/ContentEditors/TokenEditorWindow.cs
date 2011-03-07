@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : TokenEditorWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/28/2008
-// Note    : Copyright 2008, Eric Woodruff, All rights reserved
+// Updated : 03/06/2011
+// Note    : Copyright 2008-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the form used to edit the token files.
@@ -136,6 +136,15 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
         #region Method overrides
         //=====================================================================
+
+        /// <summary>
+        /// Return the string used to store the editor state
+        /// </summary>
+        /// <returns>A string containing the type name and filename</returns>
+        protected override string GetPersistString()
+        {
+            return GetType().ToString() + "," + this.ToolTipText;
+        }
 
         /// <inheritdoc />
         public override bool CanClose

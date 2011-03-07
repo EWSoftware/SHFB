@@ -2,25 +2,24 @@
 <topic id="42262e8b-6aa4-4ca0-85cb-a395cabb96c7" revisionNumber="1">
   <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
     <introduction>
-      <para>Error BHT0004: An older MSBuild version is being used.  Unable to
-build help project.</para>
+      <para>Warning BHT0004: Multiple matching projects were found.  Only the first one found will be built.</para>
     </introduction>
 
     <section>
       <title>Cause</title>
       <content>
-        <para>The <codeInline>BuildHelp</codeInline> build task was unable to
-build the project because it is running under an older version of MSBuild.</para>
+        <para>The <codeInline>BuildHelp</codeInline> build task found more than one copy of the project file
+in the MSBuild global project collection.</para>
       </content>
     </section>
 
     <section>
       <title>Solution</title>
       <content>
-        <para>Your build process must be changed to use MSBuild 3.5 or later to
-build the help project.  For example, modify your build script to use the
-MSBuild 3.5 executable or, if using an MSBuild project, use the
-<codeInline>Exec</codeInline> task to execute it.</para>
+        <para>This error is unlikely to occur as <application>MSBuild.exe</application> does not currently appear to
+use the global project collection when invoked from the command line.  If you encounter this error, please open a work
+item in the <token>SHFB</token> project at CodePlex containing the details of the build and attach a small example
+project with any related files that can be used to duplicate the problem.</para>
 
       </content>
     </section>

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : TopicEditorWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/21/2011
+// Updated : 03/06/2011
 // Note    : Copyright 2008-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -113,6 +113,15 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
         #region Method overrides
         //=====================================================================
+
+        /// <summary>
+        /// Return the string used to store the editor state
+        /// </summary>
+        /// <returns>A string containing the type name and filename</returns>
+        protected override string GetPersistString()
+        {
+            return GetType().ToString() + "," + this.ToolTipText;
+        }
 
         /// <inheritdoc />
         public override bool CanClose

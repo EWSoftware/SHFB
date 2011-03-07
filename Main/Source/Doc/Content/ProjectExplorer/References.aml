@@ -42,6 +42,11 @@ creates as file references.</listItem>
 
 <token>SolutionDocSource</token>
 
+<alert class="tip">
+  <para>If you have one or more folders containing reference assemblies that you would like to scan and include at
+build time, you can use the <link xlink:href="96557037-c19e-4183-bcf1-f42d7018de9f" /></para>
+</alert>
+
 	</content>
   </section>
 

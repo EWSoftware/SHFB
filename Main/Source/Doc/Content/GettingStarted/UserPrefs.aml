@@ -35,6 +35,13 @@ web server to view website output using the <localUri>Index.aspx</localUri>
 page.  By default, it is set to port 12345.  You can alter this if it conflicts
 with something on your system.</listItem>
 
+	<listItem><ui>Save window state per project for each user</ui> - This allows you to save the current window layout
+and currently open file editors when a project is closed.  The window state is saved to the same folder as the
+project using the project filename with a "<localUri>_[USERNAME]</localUri>" suffix where
+<codeInline>USERNAME</codeInline> is the user ID of the currently logged in user.  If turned off,
+only the location of the Project Explorer and Project Properties window are saved in the
+general user preferences.</listItem>
+
 	<listItem><ui>Before Building</ui> - This lets you specify whether or not
 the help file builder should save the project and/or modified document windows
 prior to performing a build or previewing a topic.  The options are:

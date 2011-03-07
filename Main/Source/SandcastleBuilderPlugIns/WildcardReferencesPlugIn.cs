@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : WildcardReferencesPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/17/2011
+// Updated : 03/06/2011
 // Note    : Copyright 2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -194,7 +194,6 @@ namespace SandcastleBuilder.PlugIns
         {
             Project msBuildProject = null;
             ProjectItem projectItem;
-            SearchOption searchOpts;
             Dictionary<string, string> assemblies = new Dictionary<string, string>();
 
             string filename, projectFile = builder.WorkingFolder + "GenerateRefInfo.proj";
@@ -210,17 +209,17 @@ namespace SandcastleBuilder.PlugIns
 
             // Find all unique references
             foreach(var r in referencePaths)
-            {
-                searchOpts = (r.Recursive) ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
-
-                foreach(string fullPath in Directory.EnumerateFiles(r.ReferencePath, r.Wildcard, searchOpts))
+                foreach(string fullPath in Directory.EnumerateFiles(r.ReferencePath, r.Wildcard,
+                  (r.Recursive) ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly))
                 {
                     filename = Path.GetFileNameWithoutExtension(fullPath);
 
-                    if(!assemblies.ContainsKey(filename))
+                    // "mscorlib" is ignored as it causes MRefBuilder to reset its target platform information.
+                    // For something like Silverlight, that probably isn't what we want it to do so we'll ignore
+                    // it.  It'll use what is passed in the platform configuration file option.
+                    if(!assemblies.ContainsKey(filename) && !filename.Equals("mscorlib", StringComparison.OrdinalIgnoreCase))
                         assemblies.Add(filename, fullPath);
                 }
-            }
 
             builder.ReportProgress("Adding wildcard references");
 

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : MainForm.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/16/2011
+// Updated : 03/06/2011
 // Note    : Copyright 2006-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -122,6 +122,24 @@ namespace SandcastleBuilder.Gui
         {
             get { return tsslStatusText; }
         }
+
+        /// <summary>
+        /// This returns a suffix to use as the project's window state
+        /// settings file suffix.
+        /// </summary>
+        /// <value>Settings files are saved per user.</value>
+        private static string WindowStateSuffix
+        {
+            get
+            {
+                string userName = Environment.ExpandEnvironmentVariables("%USERNAME%");
+
+                if(String.IsNullOrEmpty(userName))
+                    userName = "DefaultUser";
+
+                return "_" + userName;
+            }
+        }
         #endregion
 
         #region Constructor
@@ -146,8 +164,7 @@ namespace SandcastleBuilder.Gui
                 Settings.Default.ContentFileEditors = new ContentFileEditorCollection();
 
             // Add the editors to the global list
-            ContentFileEditorCollection.GlobalEditors.AddRange(
-                Settings.Default.ContentFileEditors);
+            ContentFileEditorCollection.GlobalEditors.AddRange(Settings.Default.ContentFileEditors);
 
             if(projectToLoad != null)
             {
@@ -198,16 +215,21 @@ namespace SandcastleBuilder.Gui
             if(persistString == typeof(EntityReferenceWindow).FullName)
             {
                 entityReferencesWindow = new EntityReferenceWindow(tsslStatusText);
+                entityReferencesWindow.CurrentProject = project;
                 return entityReferencesWindow;
             }
 
+            // Ignore the preview window
             if(persistString == typeof(PreviewTopicWindow).FullName)
-            {
-                previewWindow = new PreviewTopicWindow();
-                return previewWindow;
-            }
+                return null;
 
-            return null;
+            string[] parsedStrings = persistString.Split(new char[] { ',' });
+
+            if(projectExplorer == null || parsedStrings.Length != 2 || parsedStrings[1].Length == 0)
+                return null;
+
+            // Try for a built-in editor
+            return projectExplorer.CreateFileEditor(parsedStrings[1], null);
         }
 
         /// <summary>
@@ -271,11 +293,38 @@ namespace SandcastleBuilder.Gui
                 miProjectExplorer.Visible = miExplorerSeparator.Visible =
                 tsbBuildProject.Enabled = tsbViewHelpFile.Enabled = true;
 
-            miViewProjectExplorer_Click(this, EventArgs.Empty);
-            miViewProjectProperties_Click(this, EventArgs.Empty);
+            Directory.SetCurrentDirectory(Path.GetDirectoryName(Path.GetFullPath(project.Filename)));
 
-            Directory.SetCurrentDirectory(Path.GetDirectoryName(
-                Path.GetFullPath(project.Filename)));
+            if(Settings.Default.PerUserProjectState && File.Exists(project.Filename + WindowStateSuffix))
+            {
+                try
+                {
+                    Cursor.Current = Cursors.WaitCursor;
+                    dockPanel.SuspendLayout(true);
+                    projectExplorer.DockPanel = projectProperties.DockPanel = null;
+
+                    if(outputWindow != null)
+                        outputWindow.DockPanel = null;
+
+                    if(entityReferencesWindow != null)
+                        entityReferencesWindow.DockPanel = null;
+
+                    if(previewWindow != null)
+                        previewWindow.DockPanel = null;
+
+                    dockPanel.LoadFromXml(project.Filename + WindowStateSuffix, DeserializeState);
+                    dockPanel.ResumeLayout(true, true);
+                }
+                finally
+                {
+                    Cursor.Current = Cursors.Default;
+                }
+            }
+            else
+            {
+                miViewProjectExplorer_Click(this, EventArgs.Empty);
+                miViewProjectProperties_Click(this, EventArgs.Empty);
+            }
         }
 
         /// <summary>
@@ -359,12 +408,47 @@ namespace SandcastleBuilder.Gui
         private bool CloseProject()
         {
             BaseContentEditor content;
-            IDockContent[] contents = new IDockContent[dockPanel.Contents.Count];
-            dockPanel.Contents.CopyTo(contents, 0);
+            IDockContent[] contents;
 
             if(projectExplorer.AskToSaveProject())
             {
+                miClearOutput_Click(this, EventArgs.Empty);
+                this.KillWebServer();
+
+                // Dispose of the preview window to get rid of its temporary project and build files.
+                // It also doesn't make much sense to save its state.
+                if(previewWindow != null)
+                {
+                    previewWindow.Dispose();
+                    previewWindow = null;
+                }
+
+                if(outputWindow != null)
+                {
+                    outputWindow.ResetLogViewer();
+                    outputWindow.LogFile = null;
+                }
+
+                if(entityReferencesWindow != null)
+                    entityReferencesWindow.CurrentProject = null;
+
+                if(projectExplorer.CurrentProject != null && Settings.Default.PerUserProjectState)
+                {
+                    try
+                    {
+                        Cursor.Current = Cursors.WaitCursor;
+                        dockPanel.SaveAsXml(projectExplorer.CurrentProject.Filename + WindowStateSuffix);
+                    }
+                    finally
+                    {
+                        Cursor.Current = Cursors.Default;
+                    }
+                }
+
                 // Close all content editors
+                contents = new IDockContent[dockPanel.Contents.Count];
+                dockPanel.Contents.CopyTo(contents, 0);
+
                 foreach(IDockContent dockContent in contents)
                 {
                     content = dockContent as BaseContentEditor;
@@ -381,26 +465,6 @@ namespace SandcastleBuilder.Gui
                     else
                         dockContent.DockHandler.Close();
                 }
-
-                miClearOutput_Click(this, EventArgs.Empty);
-                this.KillWebServer();
-
-                // Dispose of the preview window to get rid of its temporary
-                // project and build files.
-                if(previewWindow != null)
-                {
-                    previewWindow.Close();
-                    previewWindow = null;
-                }
-
-                if(outputWindow != null)
-                {
-                    outputWindow.ResetLogViewer();
-                    outputWindow.LogFile = null;
-                }
-
-                if(entityReferencesWindow != null)
-                    entityReferencesWindow.CurrentProject = null;
 
                 if(project != null)
                     project.Dispose();
@@ -559,7 +623,7 @@ namespace SandcastleBuilder.Gui
                 }
             }
 
-            // Restore content state if present and shift isn't held down
+            // Restore default content state if present and shift isn't held down
             state = Settings.Default.ContentEditorDockState;
 
             if(!String.IsNullOrEmpty(state) && (Control.ModifierKeys & Keys.Shift) == 0)
@@ -568,8 +632,7 @@ namespace SandcastleBuilder.Gui
 
                 using(MemoryStream ms = new MemoryStream(stateBytes))
                 {
-                    dockPanel.LoadFromXml(ms, new DeserializeDockContent(
-                        DeserializeState));
+                    dockPanel.LoadFromXml(ms, DeserializeState);
                 }
             }
 
@@ -710,16 +773,21 @@ namespace SandcastleBuilder.Gui
                 Settings.Default.WindowPlacement = wp;
 
                 // Save the content state.  If open, hide some of the windows
-                // so that they default to hidden when  re-opened.
+                // so that they default to hidden when re-opened.
                 if(outputWindow != null && outputWindow.Visible)
                     outputWindow.Hide();
 
                 if(entityReferencesWindow != null && entityReferencesWindow.Visible)
                     entityReferencesWindow.Hide();
 
-                if(previewWindow != null && previewWindow.Visible)
-                    previewWindow.Hide();
+                // Dispose of the preview window to get rid of its temporary project and build files
+                if(previewWindow != null)
+                {
+                    previewWindow.Dispose();
+                    previewWindow = null;
+                }
 
+                // Save the default window state
                 using(MemoryStream ms = new MemoryStream())
                 {
                     dockPanel.SaveAsXml(ms, Encoding.UTF8);
@@ -727,16 +795,22 @@ namespace SandcastleBuilder.Gui
                     Settings.Default.ContentEditorDockState = state;
                 }
 
-                // Dispose of the preview window to get rid of its temporary
-                // project and build files.
-                if(previewWindow != null)
-                {
-                    previewWindow.Close();
-                    previewWindow = null;
-                }
-
                 Settings.Default.Save();
                 this.KillWebServer();
+
+                // Save per user project state if wanted
+                if(projectExplorer.CurrentProject != null && Settings.Default.PerUserProjectState)
+                {
+                    try
+                    {
+                        Cursor.Current = Cursors.WaitCursor;
+                        dockPanel.SaveAsXml(projectExplorer.CurrentProject.Filename + WindowStateSuffix);
+                    }
+                    finally
+                    {
+                        Cursor.Current = Cursors.Default;
+                    }
+                }
             }
         }
 

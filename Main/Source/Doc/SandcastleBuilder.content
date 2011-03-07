@@ -167,16 +167,17 @@
     </HelpKeywords>
     <Topic id="da405a33-3eeb-4451-9aa8-a55be5026434" visible="True" title="Build Category Properties">
       <HelpKeywords>
-        <HelpKeyword index="K" term="property categories, Build" />
         <HelpKeyword index="K" term="properties, BuildLogFile" />
         <HelpKeyword index="K" term="properties, CleanIntermediates" />
         <HelpKeyword index="K" term="properties, ComponentConfigurations" />
         <HelpKeyword index="K" term="properties, CppCommentsFixup" />
         <HelpKeyword index="K" term="properties, Dependencies" />
+        <HelpKeyword index="K" term="properties, DisableCodeBlockComponent" />
         <HelpKeyword index="K" term="properties, FrameworkVersion" />
         <HelpKeyword index="K" term="properties, HelpFileFormat" />
         <HelpKeyword index="K" term="properties, KeepLogFile" />
         <HelpKeyword index="K" term="properties, PlugInConfigurations" />
+        <HelpKeyword index="K" term="property categories, Build" />
       </HelpKeywords>
     </Topic>
     <Topic id="eb7e1bc7-21c5-4453-bbaf-dec8c62c15bd" visible="True" title="Comments Category Properties">
@@ -982,6 +983,11 @@
           <HelpKeyword index="K" term="errors, BE0069" />
         </HelpKeywords>
       </Topic>
+      <Topic id="a73e776d-0f62-41ee-aa5f-637916c09553" visible="True" title="BE0070: Both .NET Framework and Silverlight Framework projects were detected">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BE0070" />
+        </HelpKeywords>
+      </Topic>
     </Topic>
     <Topic id="5d721885-2307-4df0-a0d5-1bd332ccfeae" visible="True" noFile="true" title="Generate Inherited Documentation">
       <Topic id="ceaee6cc-6393-40c6-bca4-869b0553f2b3" visible="True" title="GID0001: Unexpected error while generating inherited documentation">
@@ -1093,9 +1099,9 @@
           <HelpKeyword index="K" term="errors, BHT0003" />
         </HelpKeywords>
       </Topic>
-      <Topic id="42262e8b-6aa4-4ca0-85cb-a395cabb96c7" visible="True" title="BHT0004: An older MSBuild version is being used">
+      <Topic id="42262e8b-6aa4-4ca0-85cb-a395cabb96c7" visible="True" title="BHT0004: Multiple matching projects were found">
         <HelpKeywords>
-          <HelpKeyword index="K" term="errors, BHT0004" />
+          <HelpKeyword index="K" term="warnings, BHT0004" />
         </HelpKeywords>
       </Topic>
       <Topic id="13b7b97f-6a6d-442a-aabf-b00a026b54c0" visible="True" title="CT0001: Unable to clean output folder.  Reason: [reason]">
@@ -1293,9 +1299,9 @@
       <HelpKeyword index="K" term="History" />
       <HelpKeyword index="K" term="Version History" />
     </HelpKeywords>
-    <Topic id="230a8032-011a-4a61-b2a4-2b644018986c" visible="True" title="Version 1.9.2.0">
+    <Topic id="230a8032-011a-4a61-b2a4-2b644018986c" visible="True" title="Version 1.9.3.0">
       <HelpKeywords>
-        <HelpKeyword index="K" term="versions, 1.9.2.0" />
+        <HelpKeyword index="K" term="versions, 1.9.3.0" />
       </HelpKeywords>
     </Topic>
     <Topic id="ef1dba5d-bb3b-4d27-9ccf-6f1ec8d1e793" visible="True" title="Version 1.9.1.0">

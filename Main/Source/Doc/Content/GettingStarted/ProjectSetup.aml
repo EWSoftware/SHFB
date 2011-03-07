@@ -207,6 +207,21 @@ help file builder project</link>.</para></content>
 	<link xlink:href="d5dbf017-25f1-48cb-86db-90f76ee8f4d7" />
 	<link xlink:href="8ffc0d37-0215-4609-b6f8-dba53a6c5063" />
 	<link xlink:href="ec822059-b179-4add-984d-485580050ffb" />
+	
+    <externalLink>
+<linkText>Taming Sandcastle: A .NET Programmer's Guide to Documenting Your Code</linkText>
+<linkAlternateText>Taming Sandcastle</linkAlternateText>
+<linkUri>http://www.simple-talk.com/dotnet/.net-tools/taming-sandcastle-a-.net-programmers-guide-to-documenting-your-code</linkUri>
+<linkTarget>_blank</linkTarget>
+</externalLink>
+
+	<externalLink>
+<linkText>Sandcastle Wall Chart</linkText>
+<linkAlternateText>Sandcastle Wall Chart</linkAlternateText>
+<linkUri>http://www.EWoodruff.us/Downloads/SandcastleWallchart.pdf</linkUri>
+<linkTarget>_blank</linkTarget>
+</externalLink>
+	
     </relatedTopics>
   </developerWalkthroughDocument>
 

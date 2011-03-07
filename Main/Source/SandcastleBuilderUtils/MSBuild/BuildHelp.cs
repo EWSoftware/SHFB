@@ -257,7 +257,7 @@ namespace SandcastleBuilder.Utils.MSBuild
                     {
                         if(matchingProjects.Count != 1)
                             Log.LogWarning(null, "BHT0004", "BHT0004", "SHFB", 0, 0, 0, 0, "Multiple matching " +
-                                "projects where found.  Only the first one found will be built.");
+                                "projects were found.  Only the first one found will be built.");
 
                         msBuildProject = matchingProjects.First();
                     }

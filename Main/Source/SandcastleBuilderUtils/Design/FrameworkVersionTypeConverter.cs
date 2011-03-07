@@ -2,7 +2,7 @@
 // System  : EWSoftware Design Time Attributes and Editors
 // File    : FrameworkVersionTypeConverter.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/01/2011
+// Updated : 03/03/2011
 // Note    : Copyright 2006-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -56,9 +56,23 @@ namespace SandcastleBuilder.Utils.Design
         private static StandardValuesCollection InitializeStandardValues()
         {
             string programFilesFolder = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
+            IEnumerable<string> silverlightVersions;
 
             if(String.IsNullOrEmpty(programFilesFolder))
                 programFilesFolder = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
+
+            string silverlightFolder = programFilesFolder + @"\Reference Assemblies\Microsoft\Framework\Silverlight";
+
+            // Add Silverlight Framework versions if present
+            if(!Directory.Exists(silverlightFolder))
+                silverlightVersions = Enumerable.Empty<string>();
+            else
+                silverlightVersions = Directory.EnumerateDirectories(silverlightFolder).Where(d =>
+                    {
+                        string dir = d.Substring(d.LastIndexOf('\\') + 1);
+
+                        return dir.Length > 2 && (dir[0] == 'v' || dir[0] == 'V') && Char.IsDigit(dir[1]);
+                    }).Select(d => "Silverlight " + d.Substring(d.LastIndexOf('\\') + 2));
 
             versions.AddRange(
                 // .NET Framework versions
@@ -69,15 +83,8 @@ namespace SandcastleBuilder.Utils.Design
 
                         return dir.Length > 2 && (dir[0] == 'v' || dir[0] == 'V') && Char.IsDigit(dir[1]);
                     }).Select(d => ".NET " + d.Substring(d.LastIndexOf('\\') + 2)).Concat(
-                
-                // Silverlight Framework versions
-                Directory.EnumerateDirectories(programFilesFolder +
-                    @"\Reference Assemblies\Microsoft\Framework\Silverlight").Where(d =>
-                    {
-                        string dir = d.Substring(d.LastIndexOf('\\') + 1);
-
-                        return dir.Length > 2 && (dir[0] == 'v' || dir[0] == 'V') && Char.IsDigit(dir[1]);
-                    }).Select(d => "Silverlight " + d.Substring(d.LastIndexOf('\\') + 2))).OrderBy(d => d));
+                // Plus Silverlight versions if present
+                silverlightVersions).OrderBy(d => d));
 
             return new StandardValuesCollection(versions);
         }

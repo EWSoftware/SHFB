@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : EntityReferenceWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/05/2009
-// Note    : Copyright 2008-2010, Eric Woodruff, All rights reserved
+// Updated : 03/06/2011
+// Note    : Copyright 2008-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the form used to look up code entity references, code
@@ -24,7 +24,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using System.Globalization;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -137,24 +137,34 @@ namespace SandcastleBuilder.Gui.ContentEditors
         private void IndexComments()
         {
             HashSet<string> projectDictionary = new HashSet<string>();
-            Collection<string> frameworkLocations = new Collection<string>();
-            Dictionary<string, string> cacheName = new Dictionary<string,string>();
+            IEnumerable<FrameworkCommentsFileLocation> locations;
             IndexedCommentsCache cache = new IndexedCommentsCache(100);
+            CultureInfo language = currentProject.Language;
             MSBuildProject projRef;
-            string path, lastSolution = null;
+            string lastSolution = null;
 
             try
             {
-                BuildProcess.GetFrameworkCommentsFiles(frameworkLocations,
-                    cacheName, currentProject.Language,
-                    currentProject.FrameworkVersion);
-                    
+                // For Silverlight, we need to look in different locations
+                if(currentProject.FrameworkVersion.StartsWith("Silverlight", StringComparison.OrdinalIgnoreCase))
+                    locations = BuildProcess.SilverlightFrameworkLocations(currentProject.FrameworkVersion);
+                else
+                    locations = BuildProcess.DotNetFrameworkLocations(currentProject.FrameworkVersion);
+
                 // Index the framework comments
-                foreach(string location in frameworkLocations)
-                {
-                    path = Environment.ExpandEnvironmentVariables(location);
-                    cache.IndexCommentsFiles(path, null, true, null);
-                }
+                foreach(var l in locations)
+                    if(Directory.Exists(l.Folder))
+                    {
+                        // Check for a language-specific set of comments if indicated
+                        if(l.CanHaveLocalizedVersion)
+                            if(Directory.Exists(l.Folder + @"\" + language.Name))
+                                l.Folder += @"\" + language.Name;
+                            else
+                                if(Directory.Exists(l.Folder + @"\" + language.TwoLetterISOLanguageName))
+                                    l.Folder += @"\" + language.TwoLetterISOLanguageName;
+
+                        cache.IndexCommentsFiles(l.Folder, null, l.Recurse, null);
+                    }
 
                 // Index the comments file documentation sources
                 foreach(string file in currentProject.DocumentationSources.CommentsFiles)

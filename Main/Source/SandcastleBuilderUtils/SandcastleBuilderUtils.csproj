@@ -94,6 +94,7 @@
     <Compile Include="BuildComponent\BuildComponentInfo.cs" />
     <Compile Include="BuildComponent\BuildComponentManager.cs" />
     <Compile Include="BuildComponent\ComponentPosition.cs" />
+    <Compile Include="BuildEngine\FrameworkCommentsFileLocation.cs" />
     <Compile Include="BuilderException.cs" />
     <Compile Include="BuildEngine\BuildProcess.HelpFileUtils.cs" />
     <Compile Include="BuildEngine\BuildProcess.MSHelp2.cs" />

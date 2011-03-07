@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : ProjectExplorerWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/09/2011
+// Updated : 03/06/2011
 // Note    : Copyright 2008-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -216,6 +216,118 @@ namespace SandcastleBuilder.Gui.ContentEditors
             {
                 Cursor.Current = Cursors.Default;
             }
+        }
+
+        /// <summary>
+        /// Create an editor for the specified file
+        /// </summary>
+        /// <param name="fullName">The full path to the file</param>
+        /// <param name="fileItem">The project file item or null if the
+        /// method should find it for itself</param>
+        /// <returns></returns>
+        public DockContent CreateFileEditor(string fullName, FileItem fileItem)
+        {
+            DockContent editor = null;
+            string ext = Path.GetExtension(fullName).ToLower(CultureInfo.InvariantCulture);
+
+            if(fileItem == null)
+            {
+                if(this.CurrentProject != null)
+                    fileItem = this.CurrentProject.FindFile(fullName);
+
+                if(fileItem == null)
+                    return null;
+            }
+
+            if(!File.Exists(fullName))
+                return null;
+
+            // Try for a built in editor
+            switch(SandcastleProject.DefaultBuildAction(fullName))
+            {
+                case BuildAction.None:
+                case BuildAction.Content:
+                    switch(ext)
+                    {
+                        case ".aml":
+                        case ".asp":
+                        case ".aspx":
+                        case ".ascx":
+                        case ".cmp":
+                        case ".config":
+                        case ".css":
+                        case ".htm":
+                        case ".html":
+                        case ".items":
+                        case ".js":
+                        case ".log":
+                        case ".snippets":
+                        case ".topic":
+                        case ".tokens":
+                        case ".txt":
+                        case ".xml":
+                            editor = new TopicEditorWindow(fullName);
+                            break;
+
+                        default:
+                            break;
+                    }
+                    break;
+
+                case BuildAction.CodeSnippets:
+                case BuildAction.TopicTransform:
+                    editor = new TopicEditorWindow(fullName);
+                    break;
+
+                case BuildAction.ContentLayout:
+                    editor = new ContentLayoutWindow(fileItem);
+                    break;
+
+                case BuildAction.ResourceItems:
+                    // The content of the resource items could be bad (ill-formed XML) so edit as text if it
+                    // cannot be loaded using the default editor.
+                    try
+                    {
+                        editor = new ResourceItemEditorWindow(fileItem);
+                    }
+                    catch(Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine(ex);
+                        MessageBox.Show("Unable to load file using the resource item editor: " + ex.Message +
+                            "\r\n\r\nThe file will be opened using the standard text editor.",
+                            Constants.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                        editor = new TopicEditorWindow(fullName);
+                    }
+                    break;
+
+                case BuildAction.SiteMap:
+                    editor = new SiteMapEditorWindow(fileItem);
+                    break;
+
+                case BuildAction.Tokens:
+                    // The content of the tokens could be bad (ill-formed XML) so edit as text if it cannot be
+                    // loaded using the default editor.
+                    try
+                    {
+                        editor = new TokenEditorWindow(fileItem);
+                    }
+                    catch(Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine(ex);
+                        MessageBox.Show("Unable to load file using the token editor: " + ex.Message +
+                            "\r\n\r\nThe file will be opened using the standard text editor.",
+                            Constants.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                        editor = new TopicEditorWindow(fullName);
+                    }
+                    break;
+
+                default:    // No association, the caller may try to launch an external editor
+                    break;
+            }
+
+            return editor;
         }
         #endregion
 
@@ -467,7 +579,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         private void EditNodeFile(TreeNode node)
         {
             NodeData nodeData = (NodeData)node.Tag;
-            DockContent editor = null;
+            DockContent editor;
             FileItem fileItem;
             string fullName, ext;
 
@@ -480,8 +592,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
             // If the document is already open, just activate it
             foreach(IDockContent content in this.DockPanel.Contents)
-                if(String.Compare(content.DockHandler.ToolTipText, fullName,
-                  true, CultureInfo.CurrentCulture) == 0)
+                if(String.Compare(content.DockHandler.ToolTipText, fullName, true, CultureInfo.CurrentCulture) == 0)
                 {
                     content.DockHandler.Activate();
                     return;
@@ -489,8 +600,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
             if(!File.Exists(fullName))
             {
-                MessageBox.Show("File does not exist: " + fullName,
-                    Constants.AppName, MessageBoxButtons.OK,
+                MessageBox.Show("File does not exist: " + fullName, Constants.AppName, MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
                 return;
             }
@@ -498,112 +608,20 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // Give preference to the external editors if any are defined
             foreach(ContentFileEditor fileEditor in ContentFileEditorCollection.GlobalEditors)
                 if(fileEditor.IsEditorFor(ext))
-                    if(ContentFileEditorCollection.GlobalEditors.LaunchEditorFor(
-                      fullName, currentProject.Filename))
+                    if(ContentFileEditorCollection.GlobalEditors.LaunchEditorFor(fullName, currentProject.Filename))
                         return;
 
-            // Try for a built in editor
-            switch(SandcastleProject.DefaultBuildAction(fullName))
-            {
-                case BuildAction.None:
-                case BuildAction.Content:
-                    switch(ext)
-                    {
-                        case ".aml":
-                        case ".asp":
-                        case ".aspx":
-                        case ".ascx":
-                        case ".cmp":
-                        case ".config":
-                        case ".css":
-                        case ".htm":
-                        case ".html":
-                        case ".items":
-                        case ".js":
-                        case ".log":
-                        case ".snippets":
-                        case ".topic":
-                        case ".tokens":
-                        case ".txt":
-                        case ".xml":
-                            editor = new TopicEditorWindow(fullName);
-                            break;
-
-                        default:
-                            break;
-                    }
-                    break;
-
-                case BuildAction.CodeSnippets:
-                case BuildAction.TopicTransform:
-                    editor = new TopicEditorWindow(fullName);
-                    break;
-
-                case BuildAction.ContentLayout:
-                    editor = new ContentLayoutWindow(fileItem);
-                    break;
-
-                case BuildAction.ResourceItems:
-                    // The content of the resource items could be bad
-                    // (ill-formed XML) so edit as text if it cannot be
-                    // loaded using the default editor.
-                    try
-                    {
-                        editor = new ResourceItemEditorWindow(fileItem);
-                    }
-                    catch(Exception ex)
-                    {
-                        System.Diagnostics.Debug.WriteLine(ex);
-                        MessageBox.Show("Unable to load file using the " +
-                            "resource item editor: " + ex.Message + "\r\n\r\nThe file " +
-                            "will be opened using the standard text editor",
-                            Constants.AppName, MessageBoxButtons.OK,
-                            MessageBoxIcon.Error);
-
-                        editor = new TopicEditorWindow(fullName);
-                    }
-                    break;
-
-                case BuildAction.SiteMap:
-                    editor = new SiteMapEditorWindow(fileItem);
-                    break;
-
-                case BuildAction.Tokens:
-                    // The content of the tokens could be bad (ill-formed XML)
-                    // so edit as text if it cannot be loaded using the default
-                    // editor.
-                    try
-                    {
-                        editor = new TokenEditorWindow(fileItem);
-                    }
-                    catch(Exception ex)
-                    {
-                        System.Diagnostics.Debug.WriteLine(ex);
-                        MessageBox.Show("Unable to load file using the " +
-                            "token editor: " + ex.Message + "\r\n\r\nThe file " +
-                            "will be opened using the standard text editor",
-                            Constants.AppName, MessageBoxButtons.OK,
-                            MessageBoxIcon.Error);
-
-                        editor = new TopicEditorWindow(fullName);
-                    }
-                    break;
-
-                default:    // Try to launch an external editor
-                    break;
-            }
+            // Try for a built-in editor
+            editor = this.CreateFileEditor(fullName, fileItem);
 
             if(editor != null)
                 editor.Show(this.DockPanel);
             else
-                if(!ContentFileEditorCollection.GlobalEditors.LaunchEditorFor(
-                  fullName, currentProject.Filename))
+                if(!ContentFileEditorCollection.GlobalEditors.LaunchEditorFor(fullName, currentProject.Filename))
                     MessageBox.Show(String.Format(CultureInfo.CurrentCulture,
-                        "Unable to launch '{0}' for editing.  Reason: {1}",
-                        fullName,
+                        "Unable to launch '{0}' for editing.  Reason: {1}", fullName,
                         ContentFileEditorCollection.GlobalEditors.LastError.Message),
-                        Constants.AppName, MessageBoxButtons.OK,
-                        MessageBoxIcon.Error);
+                        Constants.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
         #endregion
 

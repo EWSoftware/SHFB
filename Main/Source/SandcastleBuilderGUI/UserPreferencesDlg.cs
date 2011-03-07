@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : UserPreferencesDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/05/2010
+// Updated : 03/06/2011
 // Note    : Copyright 2007-2010, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -56,6 +56,7 @@ namespace SandcastleBuilder.Gui
             txtHTMLHelp2ViewerPath.Text = Settings.Default.HTMLHelp2ViewerPath;
             txtMSHelpViewerPath.Text = Settings.Default.MSHelpViewerPath;
             udcASPNetDevServerPort.Value = Settings.Default.ASPNETDevServerPort;
+            chkPerUserProjectState.Checked = Settings.Default.PerUserProjectState;
             cboBeforeBuildAction.SelectedIndex = (int)Settings.Default.BeforeBuild;
             chkVerboseLogging.Checked = Settings.Default.VerboseLogging;
             chkOpenHelp.Checked = Settings.Default.OpenHelpAfterBuild;
@@ -136,6 +137,7 @@ namespace SandcastleBuilder.Gui
                 Settings.Default.HTMLHelp2ViewerPath = txtHTMLHelp2ViewerPath.Text;
                 Settings.Default.MSHelpViewerPath = txtMSHelpViewerPath.Text;
                 Settings.Default.ASPNETDevServerPort = (int)udcASPNetDevServerPort.Value;
+                Settings.Default.PerUserProjectState = chkPerUserProjectState.Checked;
                 Settings.Default.BeforeBuild = (BeforeBuildAction)cboBeforeBuildAction.SelectedIndex;
                 Settings.Default.VerboseLogging = chkVerboseLogging.Checked;
                 Settings.Default.OpenHelpAfterBuild = chkOpenHelp.Checked;

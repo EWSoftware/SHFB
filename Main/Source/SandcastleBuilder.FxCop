@@ -19,7 +19,6 @@
   <SearchGlobalAssemblyCache>False</SearchGlobalAssemblyCache>
   <DeadlockDetectionTimeout>120</DeadlockDetectionTimeout>
   <IgnoreGeneratedCode>False</IgnoreGeneratedCode>
-  <TargetFrameworkVersion>0.0</TargetFrameworkVersion>
  </ProjectOptions>
  <Targets>
   <AssemblyReferenceDirectories>
@@ -1345,6 +1344,29 @@
               <Notes>
                <User Name="EWOODRUFF">
                 <Note Id="121" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#FrameworkCommentList(System.String)">
+            <Messages>
+             <Message TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308" Status="Excluded" Created="2011-03-07 01:02:32Z">
+              <Issue Name="ToUpperInvariant">
+               <Item>'BuildProcess.FrameworkCommentList(string)'</Item>
+               <Item>'string.ToLowerInvariant()'</Item>
+              </Issue>
+              <Issue Name="ToUpperInvariant">
+               <Item>'BuildProcess.FrameworkCommentList(string)'</Item>
+               <Item>'string.ToLowerInvariant()'</Item>
+              </Issue>
+              <Issue Name="ToUpperInvariant">
+               <Item>'BuildProcess.FrameworkCommentList(string)'</Item>
+               <Item>'string.ToLowerInvariant()'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="73" />
                </User>
               </Notes>
              </Message>
@@ -3993,6 +4015,36 @@
              </Message>
             </Messages>
            </Member>
+           <Member Name="#CreateFileEditor(System.String,SandcastleBuilder.Utils.FileItem)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2011-03-07 01:02:32Z">
+              <Issue>
+               <Item>'ProjectExplorerWindow.CreateFileEditor(string, FileItem)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Issue>
+               <Item>'ProjectExplorerWindow.CreateFileEditor(string, FileItem)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="74" />
+               </User>
+              </Notes>
+             </Message>
+             <Message TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308" Status="Excluded" Created="2011-03-07 01:02:32Z">
+              <Issue Name="ToUpperInvariant">
+               <Item>'ProjectExplorerWindow.CreateFileEditor(string, FileItem)'</Item>
+               <Item>'string.ToLower(CultureInfo)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="79" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
            <Member Name="#EditNodeFile(System.Windows.Forms.TreeNode)">
             <Messages>
              <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2008-10-17 16:41:11Z">
@@ -5375,10 +5427,13 @@
     <Note Id="70" Modified="2009-11-11 03:38:21Z">Lowercase is preferred</Note>
     <Note Id="71" Modified="2011-02-28 01:05:49Z">No security issues found</Note>
     <Note Id="72" Modified="2007-11-24 21:57:04Z">We're only dealing with XML nodes here so it's okay.</Note>
+    <Note Id="73" Modified="2011-03-07 01:03:02Z">Lowercase is needed here.</Note>
+    <Note Id="74" Modified="2011-03-07 01:03:16Z">The error is reported</Note>
     <Note Id="75" Modified="2009-12-07 05:23:51Z">The error is reported</Note>
     <Note Id="76" Modified="2008-03-24 05:13:34Z">Okay as is</Note>
     <Note Id="77" Modified="2007-10-08 22:29:52Z">Doesn't appear to be worth it in this case.</Note>
     <Note Id="78" Modified="2007-11-05 22:01:36Z">The error is reported</Note>
+    <Note Id="79" Modified="2011-03-07 01:03:42Z">Lowercase is preferred here</Note>
     <Note Id="80" Modified="2007-11-05 22:05:17Z">There's nothing to serialize in this class, let the base class handle it.</Note>
     <Note Id="82" Modified="2007-11-05 22:06:12Z">There's nothing to serialize in this class, let the base class handle it.</Note>
     <Note Id="83" Modified="2008-03-24 05:13:47Z">Okay as is</Note>

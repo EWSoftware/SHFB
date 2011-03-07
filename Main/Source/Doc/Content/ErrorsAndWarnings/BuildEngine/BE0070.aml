@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="a73e776d-0f62-41ee-aa5f-637916c09553" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Error BE0070: Both .NET Framework and Silverlight Framework projects were detected.  Due to the different
+sets of assemblies used, the two cannot be mixed within the same documentation project.</para>
+    </introduction>
+
+    <section>
+      <title>Cause</title>
+      <content>
+        <para>Visual Studio solutions or projects where included as documentation source that contained projects for
+both the standard .NET Framework as well as the Silverlight Framework.  This is not allowed as the two use separate
+framework assemblies that cannot be mixed as it would cause incorrect reflection information to be produced for the
+combined sets of classes.</para>
+      </content>
+    </section>
+
+    <section>
+      <title>Solution</title>
+      <content>
+        <para>Separate the .NET Framework assembly projects into one help file builder project and the Silverlight
+Framework assembly projects into another help file builder project.  The help file projects can then be built separately
+to produce two help files.  If you would prefer to have one help file for both sets of assemblies, use the
+<link xlink:href="6c03afba-18d0-4270-b521-c2015c4d97b3" /> to include one of the help file projects in the other.</para>
+
+      </content>
+    </section>
+
+    <relatedTopics>
+    <link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
+    </relatedTopics>
+
+
+  </developerConceptualDocument>
+</topic>

@@ -8,7 +8,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{538d8a1f-3a67-4e72-af21-6c51458543d5}</ProjectGuid>
-    <SHFBSchemaVersion>1.9.2.0</SHFBSchemaVersion>
+    <SHFBSchemaVersion>1.9.3.0</SHFBSchemaVersion>
     <!-- AssemblyName, Name, and RootNamespace are not used by SHFB but Visual
          Studio adds them anyway -->
     <AssemblyName>Documentation</AssemblyName>
@@ -215,7 +215,7 @@
     <Revision>123</Revision>
     <CustomProperty Condition="'$(CustomProperty)' == ''">A value from a custom user-defined property</CustomProperty>
     <HelpTitle>Sandcastle Test Case Library</HelpTitle>
-    <SyntaxFilters>CSharp, VisualBasic, CPlusPlus, FSharp, JavaScript</SyntaxFilters>
+    <SyntaxFilters>CSharp, VisualBasic, CPlusPlus, FSharp</SyntaxFilters>
     <KeepLogFile>True</KeepLogFile>
     <Language>en-US</Language>
     <ProductTitle>Sandcastle Help File Builder Example Project</ProductTitle>
@@ -228,6 +228,7 @@
     <TocParentId>ba237712-f8c4-4d13-854b-ab4a16afa309</TocParentId>
     <ContentPlacement>AboveNamespaces</ContentPlacement>
     <NamingMethod>Guid</NamingMethod>
+    <DisableCodeBlockComponent>False</DisableCodeBlockComponent>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in
        order for Visual Studio to perform the build.  The others are optional

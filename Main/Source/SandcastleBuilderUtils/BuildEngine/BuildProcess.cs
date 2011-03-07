@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/27/2011
+// Updated : 03/06/2011
 // Note    : Copyright 2006-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -854,23 +854,27 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     {
                         msBuildProject = new Project(scriptFile);
 
-                        // Add the references
+                        // Add the references.  "mscorlib" is ignored as it causes MRefBuilder to reset its
+                        // target platform information.  For something like Silverlight, that probably isn't
+                        // what we want it to do so we'll ignore it.  It'll use what is passed in the platform
+                        // configuration file option.
                         foreach(var r in referenceDictionary.Values)
-                        {
-                            projectItem = msBuildProject.AddItem(r.Item1, r.Item2, r.Item3)[0];
-
-                            // Make sure hint paths are correct by adding the project folder to any relative
-                            // paths.  Skip any containing MSBuild variable references.
-                            if(projectItem.HasMetadata(ProjectElement.HintPath))
+                            if(!Path.GetFileNameWithoutExtension(r.Item2).Equals("mscorlib", StringComparison.OrdinalIgnoreCase))
                             {
-                                hintPath = projectItem.GetMetadataValue(ProjectElement.HintPath);
+                                projectItem = msBuildProject.AddItem(r.Item1, r.Item2, r.Item3)[0];
 
-                                if(!Path.IsPathRooted(hintPath) && hintPath.IndexOf("$(",
-                                  StringComparison.Ordinal) == -1)
-                                    projectItem.SetMetadataValue(ProjectElement.HintPath, Path.Combine(
-                                        projectFolder, hintPath));
+                                // Make sure hint paths are correct by adding the project folder to any relative
+                                // paths.  Skip any containing MSBuild variable references.
+                                if(projectItem.HasMetadata(ProjectElement.HintPath))
+                                {
+                                    hintPath = projectItem.GetMetadataValue(ProjectElement.HintPath);
+
+                                    if(!Path.IsPathRooted(hintPath) && hintPath.IndexOf("$(",
+                                      StringComparison.Ordinal) == -1)
+                                        projectItem.SetMetadataValue(ProjectElement.HintPath, Path.Combine(
+                                            projectFolder, hintPath));
+                                }
                             }
-                        }
 
                         // Add the assemblies to document
                         foreach(string assemblyName in assembliesList)
@@ -2316,6 +2320,25 @@ AllDone:
 
                 project.FrameworkVersion = targetFramework;
             }
+
+            // If we haven't seen a Silverlight project but the framework is Silverlight, automatically add all
+            // Silverlight Framework assemblies as dependencies so that they are automatically resolved as a
+            // convenience to the user.  If a Silverlight project has been seen, we'll already have the
+            // references from it so this isn't necessary.
+            if(!silverlightSeen && project.FrameworkVersion.StartsWith("Silverlight", StringComparison.OrdinalIgnoreCase))
+                foreach(var l in BuildProcess.SilverlightFrameworkLocations(project.FrameworkVersion))
+                    if(Directory.Exists(l.Folder))
+                    {
+                        foreach(string file in Directory.EnumerateFiles(l.Folder, "*.dll",
+                          (l.Recurse) ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly))
+                        {
+                            if(!referenceDictionary.ContainsKey(Path.GetFileNameWithoutExtension(file)))
+                                referenceDictionary.Add(Path.GetFileNameWithoutExtension(file),
+                                    Tuple.Create("Reference", Path.GetFileNameWithoutExtension(file),
+                                        new List<KeyValuePair<string, string>> {
+                                            new KeyValuePair<string, string>("HintPath", file) }));
+                        }
+                    }
 
             if(assembliesList.Count == 0)
                 throw new BuilderException("BE0042", "You must specify at least one documentation source in " +

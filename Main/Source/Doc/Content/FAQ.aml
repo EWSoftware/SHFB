@@ -466,11 +466,12 @@ document a Compact Framework application?</definedTerm>
     <definition><para>In order to document Compact Framework applications you
 also need to add a reference item for the Compact Framework assemblies.  These
 are usually located under the Visual Studio 2005 installation folder.  The
-easiest way to reference them is to add a reference item with a path
-similar to the following:</para>
+easiest way to reference them is to add the <link xlink:href="96557037-c19e-4183-bcf1-f42d7018de9f" />
+to the project's <codeInline>PlugInConfigurations</codeInline> property and add
+an entry to its configuration for a path similar to the following:</para>
 
-<code lang="none">
-$(VS80COMNTOOLS)\..\..\SmartDevices\SDK\CompactFramework\2.0\v2.0\WindowsCE\*.dll
+<code lang="none" title=" ">
+%VS80COMNTOOLS%\..\..\SmartDevices\SDK\CompactFramework\2.0\v2.0\WindowsCE\
 </code>
 
 	<para>This will expand the <codeInline>VS80COMNTOOLS</codeInline>

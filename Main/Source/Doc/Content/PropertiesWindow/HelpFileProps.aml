@@ -127,6 +127,12 @@ in the name, the build will fail.</para>
 debugging aid.  When set to True, the HTML is indented to make it more
 readable.  Leave it set to False to produce more compact HTML.</para>
 
+<alert class="note">
+  <para>Setting this property to true will cause the first line of <codeInline>code</codeInline>
+element content to be indented.  Set the property to false to correct the issue.  This property is
+for testing only and should not be used in production help files.</para>
+</alert>
+
   </content>
 </section>
 

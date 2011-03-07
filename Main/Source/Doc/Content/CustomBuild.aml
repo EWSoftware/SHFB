@@ -319,6 +319,12 @@ help topic and the dropdown in the upper right corner of the topic in the
 Prototype style.</entry>
   </row>
   <row>
+    <entry>{@TargetFrameworkIdentifier}</entry>
+    <entry>This tag expands to target framework identifier based on the current
+<codeInline>FrameworkVersion</codeInline> project property setting.  It will be <codeInline>.NETFramework</codeInline>
+for .NET versions or <codeInline>Silverlight</codeInline> for Silverlight versions.</entry>
+  </row>
+  <row>
     <entry>{@TokenFiles}</entry>
     <entry>This tag expands to a list of the conceptual content token files
 that will be used by the token Shared Content Component in conceptual content

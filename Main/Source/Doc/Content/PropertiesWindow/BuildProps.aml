@@ -59,17 +59,35 @@ attempt to fix them up so that they can be documented.</para>
   </content>
 </section>
 
+<section address="DisableCodeBlock">
+  <title>DisableCodeBlockComponent</title>
+  <content><para>This property allows for the removal of the custom <link xlink:href="7f03ba39-09f8-4320-bdbd-ed31a3bd885f" />
+so that the <codeInline>&lt;code&gt;</codeInline> elements are rendered in their default format by the Sandcastle
+XSL transformations.  This completely disables code colorization and the other extensions provided
+by the component.</para>
+
+  </content>
+</section>
+
 <section address="FrmwkVer">
   <title>FrameworkVersion</title>
-  <content><para>This property allows you to specify against which .NET
-Framework version the documentation assemblies where compiled.  This affects
-how the <application>MRefBuilder</application> tool produces the reflection
-information file.  The default is to use the most recent .NET 2.0 version
-available on the system (currently 2.0.50727).  This will also affect which
-set of .NET Framework comments are included in the build to document all
-inherited members of your classes.  Set this property according to your
-assemblies' framework version requirements to ensure that the correct
-reflection information is generated.</para>
+  <content><para>This property allows you to specify against which .NET Framework version the documentation
+assemblies where compiled.  This affects how the <application>MRefBuilder</application> tool produces the
+reflection information file.  The default is to use the most recent .NET version available on the system
+(currently 4.0.30319).  This will also affect which set of .NET Framework comments are included in the build
+to document all inherited members of your classes.  Set this property according to your assemblies' framework
+version requirements to ensure that the correct reflection information is generated.</para>
+
+	<para>It is also possible to select a Silverlight Framework version for Silverlight projects.  When a
+Silverlight framework version is chosen, the generation of reflection information is altered so that the
+correct reference assemblies are included.</para>
+
+<alert class="note">
+  <para>Because Silverlight projects use an entirely different framework, it is not possible to build a help project
+containing assemblies and/or Visual Studio projects that target both the Silverlight framework and the normal .NET
+Framework.  Each must be built in their own separate help project.  You can use the <link xlink:href="6c03afba-18d0-4270-b521-c2015c4d97b3" />
+to merge the information from both projects into one help file if necessary.</para>
+</alert>
 
   </content>
 </section>
