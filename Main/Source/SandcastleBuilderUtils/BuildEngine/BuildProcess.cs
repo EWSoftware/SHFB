@@ -971,7 +971,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 }
 
                 // Load the transformed file
-                reflectionFile = reflectionFile.Replace(".org", ".xml");
+                reflectionFile = Path.ChangeExtension(reflectionFile, ".xml");
                 reflectionInfo = new XmlDocument();
                 reflectionInfo.Load(reflectionFile);
                 apisNode = reflectionInfo.SelectSingleNode("reflection/apis");

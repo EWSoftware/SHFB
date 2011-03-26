@@ -18,6 +18,9 @@ namespace SandcastleBuilder.Gui
                 if(project != null)
                     project.Dispose();
 
+                if(fsw != null)
+                    fsw.Dispose();
+
                 if(components != null)
                     components.Dispose();
             }
@@ -173,7 +176,7 @@ namespace SandcastleBuilder.Gui
             this.miNewFromOtherFormat.Name = "miNewFromOtherFormat";
             this.miNewFromOtherFormat.Size = new System.Drawing.Size(300, 22);
             this.sbStatusBarText.SetStatusBarText(this.miNewFromOtherFormat, "Create a new Sandcastle Help File Builder project from an existing project that i" +
-                    "s in a different format");
+        "s in a different format");
             this.miNewFromOtherFormat.Text = "Ne&w Project from Other Format...";
             this.miNewFromOtherFormat.Click += new System.EventHandler(this.miNewFromOtherFormat_Click);
             // 
@@ -272,8 +275,8 @@ namespace SandcastleBuilder.Gui
             this.miSaveAll.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.miSaveAll.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.miSaveAll.Name = "miSaveAll";
-            this.miSaveAll.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
-                        | System.Windows.Forms.Keys.S)));
+            this.miSaveAll.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.S)));
             this.miSaveAll.Size = new System.Drawing.Size(300, 22);
             this.sbStatusBarText.SetStatusBarText(this.miSaveAll, "Save all open items and the project");
             this.miSaveAll.Text = "Sa&ve All";
@@ -392,8 +395,8 @@ namespace SandcastleBuilder.Gui
             this.miBuildProject.Image = global::SandcastleBuilder.Gui.Properties.Resources.BuildProject;
             this.miBuildProject.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.miBuildProject.Name = "miBuildProject";
-            this.miBuildProject.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
-                        | System.Windows.Forms.Keys.B)));
+            this.miBuildProject.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.B)));
             this.miBuildProject.Size = new System.Drawing.Size(237, 22);
             this.sbStatusBarText.SetStatusBarText(this.miBuildProject, "Build the current project to produce a help file");
             this.miBuildProject.Text = "&Build Project";
@@ -405,8 +408,8 @@ namespace SandcastleBuilder.Gui
             this.miCancelBuild.Image = global::SandcastleBuilder.Gui.Properties.Resources.CancelBuild;
             this.miCancelBuild.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.miCancelBuild.Name = "miCancelBuild";
-            this.miCancelBuild.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
-                        | System.Windows.Forms.Keys.C)));
+            this.miCancelBuild.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.C)));
             this.miCancelBuild.Size = new System.Drawing.Size(237, 22);
             this.sbStatusBarText.SetStatusBarText(this.miCancelBuild, "Cancel the current build process");
             this.miCancelBuild.Text = "&Cancel Build";
@@ -451,8 +454,8 @@ namespace SandcastleBuilder.Gui
             this.miViewHelpFile.Image = global::SandcastleBuilder.Gui.Properties.Resources.ViewHelpFile;
             this.miViewHelpFile.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.miViewHelpFile.Name = "miViewHelpFile";
-            this.miViewHelpFile.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
-                        | System.Windows.Forms.Keys.V)));
+            this.miViewHelpFile.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.V)));
             this.miViewHelpFile.Size = new System.Drawing.Size(314, 24);
             this.sbStatusBarText.SetStatusBarText(this.miViewHelpFile, "View help file using first available format");
             this.miViewHelpFile.Text = "&View Help File";
@@ -605,8 +608,8 @@ namespace SandcastleBuilder.Gui
             this.miViewProjectExplorer.Image = global::SandcastleBuilder.Gui.Properties.Resources.Explorer;
             this.miViewProjectExplorer.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.miViewProjectExplorer.Name = "miViewProjectExplorer";
-            this.miViewProjectExplorer.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
-                        | System.Windows.Forms.Keys.P)));
+            this.miViewProjectExplorer.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.P)));
             this.miViewProjectExplorer.Size = new System.Drawing.Size(291, 22);
             this.sbStatusBarText.SetStatusBarText(this.miViewProjectExplorer, "View the project explorer");
             this.miViewProjectExplorer.Text = "&Project Explorer";
@@ -654,8 +657,8 @@ namespace SandcastleBuilder.Gui
             this.miViewOutput.Image = global::SandcastleBuilder.Gui.Properties.Resources.ViewLog;
             this.miViewOutput.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.miViewOutput.Name = "miViewOutput";
-            this.miViewOutput.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
-                        | System.Windows.Forms.Keys.W)));
+            this.miViewOutput.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.W)));
             this.miViewOutput.Size = new System.Drawing.Size(291, 22);
             this.sbStatusBarText.SetStatusBarText(this.miViewOutput, "View the last build\'s output");
             this.miViewOutput.Text = "Build &Output";
@@ -672,8 +675,8 @@ namespace SandcastleBuilder.Gui
             // miClearOutput
             // 
             this.miClearOutput.Name = "miClearOutput";
-            this.miClearOutput.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
-                        | System.Windows.Forms.Keys.X)));
+            this.miClearOutput.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.X)));
             this.miClearOutput.Size = new System.Drawing.Size(291, 22);
             this.sbStatusBarText.SetStatusBarText(this.miClearOutput, "Clear the last build information from the output window");
             this.miClearOutput.Text = "&Clear Output Window";
@@ -974,8 +977,10 @@ namespace SandcastleBuilder.Gui
             this.MinimumSize = new System.Drawing.Size(800, 600);
             this.Name = "MainForm";
             this.Text = "Sandcastle Help File Builder";
-            this.Load += new System.EventHandler(this.MainForm_Load);
+            this.Activated += new System.EventHandler(this.MainForm_Activated);
+            this.Deactivate += new System.EventHandler(this.MainForm_Deactivate);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.ctxViewHelpMenu.ResumeLayout(false);
             this.mnuMain.ResumeLayout(false);
             this.mnuMain.PerformLayout();

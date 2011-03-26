@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SandcastleProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/05/2011
+// Updated : 03/18/2011
 // Note    : Copyright 2006-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -115,9 +115,10 @@ namespace SandcastleBuilder.Utils
 
         // Restricted property names that cannot be used for user-defined
         // property names.
-        private static List<string> restrictedProps = new List<string>() {
-            "AssemblyName", "Configuration", "Name", "Platform", "ProjectGuid",
-            "RootNamespace", "SHFBSchemaVersion", "SchemaVersion" };
+        internal static List<string> restrictedProps = new List<string>() {
+            "AssemblyName", "Configuration", "CustomBeforeSHFBTargets", "CustomAfterSHFBTargets",
+            "DumpLogOnFailure", "Name", "Platform", "ProjectGuid", "RootNamespace", "SHFBSchemaVersion",
+            "SchemaVersion", "Verbose", };
         #endregion
 
         #region Private data members
@@ -3244,12 +3245,14 @@ namespace SandcastleBuilder.Utils
                 case ".js":
                 case ".topic":
                 case ".txt":
-                case ".bmp":        // Images unrelated to conceptual content
-                case ".gif":
-                case ".jpg":
+                    return BuildAction.Content;
+
+                case ".bmp":        // Images for conceptual content.  The default used to be Content but
+                case ".gif":        // the additional content model has been deprecated so this is now the
+                case ".jpg":        // more appropriate choice.
                 case ".jpeg":
                 case ".png":
-                    return BuildAction.Content;
+                    return BuildAction.Image;
 
                 case ".content":
                     return BuildAction.ContentLayout;
@@ -3394,7 +3397,13 @@ namespace SandcastleBuilder.Utils
             }
 
             if(newFileItem == null)
+            {
                 newFileItem = new FileItem(new ProjectElement(this, buildAction.ToString(), destFile));
+
+                // For images, assign the build action again so that it sets the default alternate text and ID
+                if(buildAction == BuildAction.Image)
+                    newFileItem.BuildAction = buildAction;
+            }
 
             return newFileItem;
         }

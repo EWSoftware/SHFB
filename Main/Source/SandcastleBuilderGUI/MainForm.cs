@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : MainForm.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/06/2011
+// Updated : 03/26/2011
 // Note    : Copyright 2006-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -81,6 +81,9 @@ namespace SandcastleBuilder.Gui
         private OutputWindow outputWindow;
         private EntityReferenceWindow entityReferencesWindow;
         private PreviewTopicWindow previewWindow;
+        private FileSystemWatcher fsw;
+        private List<string> changedFiles;
+        private bool checkingForChangedFiles;
 
         private static MainForm mainForm;
         #endregion
@@ -159,6 +162,12 @@ namespace SandcastleBuilder.Gui
             // Skip the rest of the initialization in design mode
             if(this.DesignMode)
                 return;
+
+            // We are only going to monitor for file changes.  We won't handle moves, deletes, or renames.
+            changedFiles = new List<string>();
+            fsw = new FileSystemWatcher();
+            fsw.NotifyFilter = NotifyFilters.LastWrite;
+            fsw.Changed += fsw_OnChanged;
 
             if(Settings.Default.ContentFileEditors == null)
                 Settings.Default.ContentFileEditors = new ContentFileEditorCollection();
@@ -1987,6 +1996,108 @@ namespace SandcastleBuilder.Gui
                 // doesn't always become the active pane unless this is called.
                 previewWindow.Show(dockPanel, previewWindow.DockState);
             }
+        }
+        #endregion
+
+        #region File system watcher event handlers
+        //=====================================================================
+
+        /// <summary>
+        /// On deactivation, start watching for changes in the project folder
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event arguments</param>
+        private void MainForm_Deactivate(object sender, EventArgs e)
+        {
+            if(project != null && fsw != null && !checkingForChangedFiles)
+            {
+                fsw.Path = Path.GetDirectoryName(project.Filename);
+                fsw.EnableRaisingEvents = true;
+            }
+        }
+
+        /// <summary>
+        /// On activation ask the user as needed about any changes noticed in
+        /// the project folder.
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event arguments</param>
+        private void MainForm_Activated(object sender, EventArgs e)
+        {
+            DockContent editor;
+            string projectFilename;
+
+            if(fsw != null && fsw.EnableRaisingEvents)
+            {
+                fsw.EnableRaisingEvents = false;
+
+                try
+                {
+                    checkingForChangedFiles = true;
+
+                    // Handle the project file first if it changed.  If so, we'll ignore the other changes and
+                    // just reload the project.  Doing so will close all other open editors.
+                    if(changedFiles.Contains(project.Filename))
+                    {
+                        if(MessageBox.Show("The project file has been changed outside of the Sandcastle Help " +
+                            "File Builder.  Would you like to reload it?", Constants.AppName, MessageBoxButtons.YesNo,
+                            MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                        {
+                            projectFilename = project.Filename;
+                            changedFiles.Remove(projectFilename);
+
+                            // If the project isn't closed, we'll fall through and handle any other files
+                            if(this.CloseProject())
+                            {
+                                this.CreateProject(projectFilename, true);
+                                return;
+                            }
+                        }
+                    }
+
+                    foreach(string filename in changedFiles)
+                        foreach(IDockContent content in dockPanel.Contents.ToArray())
+                            if(content.DockHandler.ToolTipText != null &&
+                                content.DockHandler.ToolTipText.Equals(filename, StringComparison.OrdinalIgnoreCase))
+                            {
+                                content.DockHandler.Activate();
+
+                                if(MessageBox.Show(filename + " was modified outside of the source editor.  " +
+                                    "Would you like to reload it?", Constants.AppName, MessageBoxButtons.YesNo,
+                                    MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                                {
+                                    ((BaseContentEditor)content).IsDirty = false;
+
+                                    content.DockHandler.Close();
+                                    editor = projectExplorer.CreateFileEditor(filename, null);
+
+                                    if(editor != null)
+                                        editor.Show(dockPanel);
+                                }
+                            }
+                }
+                catch(Exception ex)
+                {
+                    System.Diagnostics.Debug.Write(ex);
+                    MessageBox.Show(ex.Message, Constants.AppName, MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                }
+                finally
+                {
+                    changedFiles.Clear();
+                    checkingForChangedFiles = false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Note changes to the file system
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event arguments</param>
+        private void fsw_OnChanged(object sender, FileSystemEventArgs e)
+        {
+            changedFiles.Add(e.FullPath);
         }
         #endregion
     }

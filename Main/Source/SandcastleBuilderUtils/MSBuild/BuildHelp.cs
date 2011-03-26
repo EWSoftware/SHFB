@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : BuildHelp.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/27/2011
+// Updated : 03/18/2011
 // Note    : Copyright 2008-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -233,7 +233,7 @@ namespace SandcastleBuilder.Utils.MSBuild
         public override bool Execute()
         {
             Project msBuildProject = null;
-            ProjectRootElement projectRoot = null;
+            ProjectInstance projectInstance = null;
             bool removeProjectWhenDisposed = false;
             string line;
 
@@ -262,7 +262,7 @@ namespace SandcastleBuilder.Utils.MSBuild
                         msBuildProject = matchingProjects.First();
                     }
                     else
-                        projectRoot = this.GetCurrentProjectXml();
+                        projectInstance = this.GetCurrentProjectInstance();
                 }
             }
             catch(Exception ex)
@@ -280,9 +280,19 @@ namespace SandcastleBuilder.Utils.MSBuild
                 {
                     removeProjectWhenDisposed = true;
 
-                    if(projectRoot != null)
+                    if(projectInstance != null)
                     {
-                        msBuildProject = new Project(projectRoot);
+                        msBuildProject = new Project(projectInstance.ToProjectRootElement());
+
+                        // ToProjectRootElement() will not add properties in the global collection to the
+                        // project.  One problem with this is that command line overrides get missed.  As such,
+                        // we'll add them back to the project as long as they are not reserved names and are not
+                        // there already.
+                        foreach(var p in projectInstance.GlobalProperties)
+                            if(!SandcastleProject.restrictedProps.Contains(p.Key) &&
+                              !msBuildProject.AllEvaluatedProperties.Any(ep => ep.Name == p.Key))
+                                msBuildProject.SetProperty(p.Key, p.Value);
+
                         msBuildProject.FullPath = this.ProjectFile;
                     }
                     else
@@ -362,18 +372,18 @@ namespace SandcastleBuilder.Utils.MSBuild
         //=====================================================================
 
         /// <summary>
-        /// This is used to obtain project root element for the project that is
+        /// This is used to obtain project instance for the project that is
         /// currently being built.
         /// </summary>
-        /// <returns>The project root element for the current project if
-        /// possible or null if it could not be obtained.</returns>
-        /// <remarks>When you run MSBuild.exe, it doesn't store the projects
+        /// <returns>The project instance for the current project if possible
+        /// or null if it could not be obtained.</returns>
+        /// <remarks>When you run MSBuild.exe, it does not store the projects
         /// in the global project collection.  We could build the project
         /// without it but we lose the ability to use command line overrides
         /// and changes to user-defined properties.  As such we need to resort
         /// to reflection to get the current project information.  This is
         /// easier than in past MSBuild versions though.</remarks>
-        private ProjectRootElement GetCurrentProjectXml()
+        private ProjectInstance GetCurrentProjectInstance()
         {
             FieldInfo fieldInfo;
             PropertyInfo propInfo;
@@ -403,7 +413,7 @@ namespace SandcastleBuilder.Utils.MSBuild
 
                     // If found, return the XML that defines all of the project settings
                     if(project != null && project.FullPath == this.ProjectFile)
-                        return project.ToProjectRootElement();
+                        return project;
                 }
             }
 
