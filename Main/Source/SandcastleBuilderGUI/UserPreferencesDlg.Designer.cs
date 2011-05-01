@@ -39,6 +39,7 @@ namespace SandcastleBuilder.Gui
             this.udcASPNetDevServerPort = new System.Windows.Forms.NumericUpDown();
             this.tabPreferences = new System.Windows.Forms.TabControl();
             this.pgGeneral = new System.Windows.Forms.TabPage();
+            this.chkPerUserProjectState = new System.Windows.Forms.CheckBox();
             this.txtMSHelpViewerPath = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.btnSelectMSHCViewer = new System.Windows.Forms.Button();
@@ -67,7 +68,6 @@ namespace SandcastleBuilder.Gui
             this.lbContentEditors = new SandcastleBuilder.Utils.Controls.RefreshableItemListBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.epErrors = new System.Windows.Forms.ErrorProvider(this.components);
-            this.chkPerUserProjectState = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.udcASPNetDevServerPort)).BeginInit();
             this.tabPreferences.SuspendLayout();
             this.pgGeneral.SuspendLayout();
@@ -107,9 +107,9 @@ namespace SandcastleBuilder.Gui
             this.chkVerboseLogging.Name = "chkVerboseLogging";
             this.chkVerboseLogging.Size = new System.Drawing.Size(292, 24);
             this.statusBarTextProvider1.SetStatusBarText(this.chkVerboseLogging, "Verbose Logging: Check this box to display all output messages.  Uncheck to displ" +
-                    "ay summary messages only.");
+        "ay summary messages only.");
             this.chkVerboseLogging.TabIndex = 10;
-            this.chkVerboseLogging.Text = "&Build window verbose logging enabled";
+            this.chkVerboseLogging.Text = "&Build output verbose logging enabled";
             this.chkVerboseLogging.UseVisualStyleBackColor = true;
             // 
             // txtHTMLHelp2ViewerPath
@@ -118,7 +118,7 @@ namespace SandcastleBuilder.Gui
             this.txtHTMLHelp2ViewerPath.Name = "txtHTMLHelp2ViewerPath";
             this.txtHTMLHelp2ViewerPath.Size = new System.Drawing.Size(358, 22);
             this.statusBarTextProvider1.SetStatusBarText(this.txtHTMLHelp2ViewerPath, "MS Help 2 (.HxS) Viewer: Enter the path and filename of the application used to v" +
-                    "iew MS Help 2 files");
+        "iew MS Help 2 files");
             this.txtHTMLHelp2ViewerPath.TabIndex = 1;
             // 
             // btnSelectHxSViewer
@@ -149,7 +149,7 @@ namespace SandcastleBuilder.Gui
             this.udcASPNetDevServerPort.Name = "udcASPNetDevServerPort";
             this.udcASPNetDevServerPort.Size = new System.Drawing.Size(70, 22);
             this.statusBarTextProvider1.SetStatusBarText(this.udcASPNetDevServerPort, "Server Port: Select the port to use when launching the ASP.NET Development Web Se" +
-                    "rver");
+        "rver");
             this.udcASPNetDevServerPort.TabIndex = 7;
             this.udcASPNetDevServerPort.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.udcASPNetDevServerPort.Value = new decimal(new int[] {
@@ -205,13 +205,24 @@ namespace SandcastleBuilder.Gui
             this.pgGeneral.Text = "General Preferences";
             this.pgGeneral.UseVisualStyleBackColor = true;
             // 
+            // chkPerUserProjectState
+            // 
+            this.chkPerUserProjectState.Location = new System.Drawing.Point(262, 128);
+            this.chkPerUserProjectState.Name = "chkPerUserProjectState";
+            this.chkPerUserProjectState.Size = new System.Drawing.Size(320, 24);
+            this.statusBarTextProvider1.SetStatusBarText(this.chkPerUserProjectState, "Save Project State: Check this box to save the window layout for each project per" +
+        " user");
+            this.chkPerUserProjectState.TabIndex = 24;
+            this.chkPerUserProjectState.Text = "&Save window state per project for each user";
+            this.chkPerUserProjectState.UseVisualStyleBackColor = true;
+            // 
             // txtMSHelpViewerPath
             // 
             this.txtMSHelpViewerPath.Location = new System.Drawing.Point(262, 46);
             this.txtMSHelpViewerPath.Name = "txtMSHelpViewerPath";
             this.txtMSHelpViewerPath.Size = new System.Drawing.Size(358, 22);
             this.statusBarTextProvider1.SetStatusBarText(this.txtMSHelpViewerPath, "MS Help Viewer (.mshc) Viewer: Enter the path and filename of the application use" +
-                    "d to view MS Help Viewer files");
+        "d to view MS Help Viewer files");
             this.txtMSHelpViewerPath.TabIndex = 4;
             // 
             // label8
@@ -242,7 +253,7 @@ namespace SandcastleBuilder.Gui
             this.chkEnterMatching.Name = "chkEnterMatching";
             this.chkEnterMatching.Size = new System.Drawing.Size(349, 21);
             this.statusBarTextProvider1.SetStatusBarText(this.chkEnterMatching, "Enter Matching: When checked, matching brackets, parentheses, and quotes will be " +
-                    "entered automatically in the text editor");
+        "entered automatically in the text editor");
             this.chkEnterMatching.TabIndex = 23;
             this.chkEnterMatching.Text = "E&nter matching brackets, parentheses, and quotes";
             this.chkEnterMatching.UseVisualStyleBackColor = true;
@@ -464,8 +475,8 @@ namespace SandcastleBuilder.Gui
             // 
             // pgProps
             // 
-            this.pgProps.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.pgProps.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.pgProps.Location = new System.Drawing.Point(6, 213);
             this.pgProps.Name = "pgProps";
             this.pgProps.PropertyNamePaneWidth = 150;
@@ -476,9 +487,9 @@ namespace SandcastleBuilder.Gui
             // 
             // lbContentEditors
             // 
-            this.lbContentEditors.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.lbContentEditors.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lbContentEditors.FormattingEnabled = true;
             this.lbContentEditors.IntegralHeight = false;
             this.lbContentEditors.ItemHeight = 16;
@@ -492,17 +503,6 @@ namespace SandcastleBuilder.Gui
             // epErrors
             // 
             this.epErrors.ContainerControl = this;
-            // 
-            // chkPerUserProjectState
-            // 
-            this.chkPerUserProjectState.Location = new System.Drawing.Point(262, 128);
-            this.chkPerUserProjectState.Name = "chkPerUserProjectState";
-            this.chkPerUserProjectState.Size = new System.Drawing.Size(320, 24);
-            this.statusBarTextProvider1.SetStatusBarText(this.chkPerUserProjectState, "Save Project State: Check this box to save the window layout for each project per" +
-                    " user");
-            this.chkPerUserProjectState.TabIndex = 24;
-            this.chkPerUserProjectState.Text = "&Save window state per project for each user";
-            this.chkPerUserProjectState.UseVisualStyleBackColor = true;
             // 
             // UserPreferencesDlg
             // 

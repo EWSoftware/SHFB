@@ -1,0 +1,266 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="c997d569-ee8e-4947-a46f-9a0717ce39a0" xmlns="http://schemas.microsoft.com/dsltools/VSPackageDesigner">
+  <commandTable>
+    <rootHasCommandTable Id="811682ce-64b4-4a7a-a298-4eb8093f96ba">
+      <commandTable Id="6eeb911d-cfd6-4b9a-b6a0-950cdabd0b61" packageGuid="c997d569-ee8e-4947-a46f-9a0717ce39a0" commandSetGuid="811682ce-64b4-4a7a-a298-4eb8093f96ba" safeProjectName="SandcastleBuilderPackage" counter="1" imagesGuid="6eeb911d-cfd6-4b9a-b6a0-950cdabd0b61" sampleData="false">
+        <groups>
+          <group Id="b3d9a855-30b3-4e4d-824e-8572fc65ed05" name="DocSourcesGroup" idNumeric="2">
+            <buttons>
+              <groupBaseReferencesButtons Id="0f42a2de-13b8-4462-bba3-6ae0dc5cd990">
+                <buttonMoniker Id="1e8f2a39-5cd9-4b07-b8e6-c05a5abe4de2" />
+              </groupBaseReferencesButtons>
+            </buttons>
+          </group>
+          <group Id="dec4095d-e531-416d-9ffc-5c01046c723a" name="ViewHelpMenuGroup" idNumeric="16" priority="3056">
+            <menuBases2>
+              <groupBaseReferencesMenuBases2 Id="31f3290e-143b-4088-80a2-79e492d54be2">
+                <menuMoniker Id="0f8d2841-3d45-4dd2-af3a-dc158867aebe" />
+              </groupBaseReferencesMenuBases2>
+            </menuBases2>
+          </group>
+          <group Id="c10a89a2-e050-4969-bf60-66461b991a69" name="ChmHelpGroup" idNumeric="17" priority="257">
+            <buttons>
+              <groupBaseReferencesButtons Id="1c1efbe6-20e3-4997-a6d1-f0961ab074ed">
+                <buttonMoniker Id="3f3d0752-2a96-4fc4-9ce4-67b269059e3f" />
+              </groupBaseReferencesButtons>
+            </buttons>
+          </group>
+          <group Id="6272a0c1-533e-496e-af1e-e5ee9942850a" name="HxSHelpGroup" idNumeric="18" priority="258">
+            <buttons>
+              <groupBaseReferencesButtons Id="0ce35d9e-1416-4dfc-ba30-81ce32dc93e1">
+                <buttonMoniker Id="bb63bed0-6325-4ba9-976f-ce287f961b38" />
+              </groupBaseReferencesButtons>
+            </buttons>
+          </group>
+          <group Id="329e49f5-9cb3-485b-af02-2253a00ee78e" name="MshcHelpGroup" idNumeric="19" priority="259">
+            <buttons>
+              <groupBaseReferencesButtons Id="a607b38f-20d2-4d91-99fe-49f7a87a9c16">
+                <buttonMoniker Id="5294cc16-a32f-43b0-84ff-bef84f4d02b3" />
+              </groupBaseReferencesButtons>
+              <groupBaseReferencesButtons Id="c20eb9db-dec7-4397-b57c-8fb853f2ae25">
+                <buttonMoniker Id="0302be7b-1c88-4d2d-8d00-ba670ccdf729" />
+              </groupBaseReferencesButtons>
+            </buttons>
+          </group>
+          <group Id="1a04f23a-e7c8-4e09-b1d4-7ede59d14ef7" name="WebsiteHelpGroup" idNumeric="20" priority="260">
+            <buttons>
+              <groupBaseReferencesButtons Id="9588cc22-1027-4a6f-b9d1-fad63f0e764a">
+                <buttonMoniker Id="5454ee36-1033-41f4-8347-ce624886f8d6" />
+              </groupBaseReferencesButtons>
+              <groupBaseReferencesButtons Id="005fb398-c871-4c39-99ed-6a250df9d9f4">
+                <buttonMoniker Id="31184aa2-c278-4ce6-9b96-a896645f6b61" />
+              </groupBaseReferencesButtons>
+            </buttons>
+          </group>
+          <group Id="1654371d-72c1-4a39-ab5a-1c7f60016a30" name="ViewHelpFileGroup" idNumeric="21">
+            <buttons>
+              <groupBaseReferencesButtons Id="27e8a2c5-6c09-428d-849d-dbca8edb4b4d">
+                <buttonMoniker Id="8b2780c3-46c2-4183-9277-ee5e55c90210" />
+              </groupBaseReferencesButtons>
+            </buttons>
+          </group>
+          <group Id="317b0dac-5cca-4a0f-8265-748937ea1a22" name="ViewHelpToolbarGroup" idNumeric="23">
+            <menuBases2>
+              <groupBaseReferencesMenuBases2 Id="7aed7ec2-206b-4cfe-a8fa-f195a44bf085">
+                <menuMoniker Id="79f9e137-5df2-42dd-b447-cc746765e902" />
+              </groupBaseReferencesMenuBases2>
+            </menuBases2>
+          </group>
+          <group Id="a59e2143-0543-4deb-81fe-94288f8ea244" name="ShfbHelpGroup" idNumeric="27">
+            <buttons>
+              <groupBaseReferencesButtons Id="9a56b3c5-1e00-4b5d-a280-73f74223e58e">
+                <buttonMoniker Id="24e76128-9ea8-4838-9bbe-2cbfc9a1e63c" />
+              </groupBaseReferencesButtons>
+              <groupBaseReferencesButtons Id="ab6652ec-11dd-4256-930e-a8ad1cc0ad3a">
+                <buttonMoniker Id="3e2673f4-1a40-4be2-b397-d6f792d24cd8" />
+              </groupBaseReferencesButtons>
+            </buttons>
+          </group>
+          <group Id="0183785d-2b9d-436c-8fdd-b0d603a1af22" name="ProjectNodeGroup" idNumeric="30" priority="1968">
+            <buttons>
+              <groupBaseReferencesButtons Id="71557053-32d5-44bb-b231-eb526fc51a73">
+                <buttonMoniker Id="6e186d77-c919-4ea7-a514-e4ca01e52ae6" />
+              </groupBaseReferencesButtons>
+              <groupBaseReferencesButtons Id="0e22660d-5a7f-47c6-be11-872d282fb20a">
+                <buttonMoniker Id="c3186d6b-1b25-48f3-9b71-22b980ff148d" />
+              </groupBaseReferencesButtons>
+              <groupBaseReferencesButtons Id="2d49dd8a-1e20-43c7-9023-b9b744821ecb">
+                <buttonMoniker Id="869d455d-931b-4aab-bf64-884bd8ced87e" />
+              </groupBaseReferencesButtons>
+            </buttons>
+          </group>
+          <group Id="51fa6e8a-6f0a-4d8a-bacb-5590dd560c21" name="ViewLogGroup" idNumeric="34" priority="261">
+            <buttons>
+              <groupBaseReferencesButtons Id="49947a42-e43c-4b8b-b91f-5c170664626b">
+                <buttonMoniker Id="869d455d-931b-4aab-bf64-884bd8ced87e" />
+              </groupBaseReferencesButtons>
+            </buttons>
+          </group>
+          <group Id="db8cfbe5-df1c-4a20-8354-9dfae6b196cf" name="BuildLogToolbarGroup" idNumeric="36">
+            <buttons>
+              <groupBaseReferencesButtons Id="45be037b-65df-4f21-ba4a-0aac5b016e3a">
+                <buttonMoniker Id="be0daae8-2453-4c83-8380-20ab8cdcdb83" />
+              </groupBaseReferencesButtons>
+            </buttons>
+          </group>
+        </groups>
+        <buttons>
+          <commandTableHasButtons Id="7e6fddcd-7e27-45c0-8fa4-199338d4700c">
+            <button Id="1e8f2a39-5cd9-4b07-b8e6-c05a5abe4de2" name="AddDocSource" idNumeric="1" buttonText="Add Documentation Source" menuText="Add Documentation Source" commandName="cmdidAddDocSource" toolTipText="Add Documentation Source" mod1="0" mod2="0" visibilityConstraints="0" commandFlags="DefaultInvisible, DynamicVisibility" sampleData="false" />
+          </commandTableHasButtons>
+          <commandTableHasButtons Id="4ec98592-f5cf-40b3-a8a1-62175824b778">
+            <button Id="8b2780c3-46c2-4183-9277-ee5e55c90210" name="ViewHelpFile" idNumeric="6" buttonText="&amp;View Help File" menuText="&amp;View Help File" commandName="cmdidViewHelpFile" toolTipText="&amp;View Help File" mod1="0" mod2="0" visibilityConstraints="0" icon="ViewHelpFile.bmp" commandFlags="DefaultInvisible, DynamicVisibility" sampleData="false" />
+          </commandTableHasButtons>
+          <commandTableHasButtons Id="a75972eb-50d3-4024-ba29-aa67ddf050c5">
+            <button Id="3f3d0752-2a96-4fc4-9ce4-67b269059e3f" name="ViewHtmlHelp" idNumeric="7" buttonText="View &amp;HTML Help 1 (.chm) File" menuText="View &amp;HTML Help 1 (.chm) File" commandName="cmdidViewHtmlHelp" toolTipText="View &amp;HTML Help 1 (.chm) File" mod1="0" mod2="0" visibilityConstraints="0" icon="HtmlHelp.bmp" commandFlags="DefaultInvisible, DynamicVisibility" sampleData="false" />
+          </commandTableHasButtons>
+          <commandTableHasButtons Id="e96c566d-ec93-4261-99db-6178f5a16ef9">
+            <button Id="bb63bed0-6325-4ba9-976f-ce287f961b38" name="ViewHxSHelp" idNumeric="8" buttonText="View &amp;MS Help 2 (.HxS) File" menuText="View &amp;MS Help 2 (.HxS) File" commandName="cmdidViewHxSHelp" toolTipText="View &amp;MS Help 2 (.HxS) File" mod1="0" mod2="0" visibilityConstraints="0" icon="Help2.bmp" commandFlags="DefaultInvisible, DynamicVisibility" sampleData="false" />
+          </commandTableHasButtons>
+          <commandTableHasButtons Id="cf2f384a-c3c3-44bb-a6a0-d68f68ff178e">
+            <button Id="5294cc16-a32f-43b0-84ff-bef84f4d02b3" name="ViewMshcHelp" idNumeric="9" buttonText="View M&amp;S Help Viewer (.mshc) File" menuText="View M&amp;S Help Viewer (.mshc) File" commandName="cmdidViewMshcHelp" toolTipText="View M&amp;S Help Viewer (.mshc) File" mod1="0" mod2="0" visibilityConstraints="0" icon="MSHelpViewer.bmp" commandFlags="DefaultInvisible, DynamicVisibility" sampleData="false" />
+          </commandTableHasButtons>
+          <commandTableHasButtons Id="7ae2a30b-ae43-40a6-9cbb-919eead5d099">
+            <button Id="0302be7b-1c88-4d2d-8d00-ba670ccdf729" name="LaunchHelpLibMgr" idNumeric="10" buttonText="La&amp;unch Help Library Manager" menuText="La&amp;unch Help Library Manager" commandName="cmdidLaunchHelpLibMgr" toolTipText="La&amp;unch Help Library Manager" mod1="0" mod2="0" visibilityConstraints="0" priority="257" icon="HelpLibManager.bmp" commandFlags="DefaultInvisible, DynamicVisibility" sampleData="false" />
+          </commandTableHasButtons>
+          <commandTableHasButtons Id="93031ef0-8b21-4642-b320-442cb32b02b8">
+            <button Id="31184aa2-c278-4ce6-9b96-a896645f6b61" name="ViewAspNetWebsite" idNumeric="11" buttonText="View Website (&amp;ASP.NET)" menuText="View Website (&amp;ASP.NET)" commandName="cmdidViewAspNetWebsite" toolTipText="View Website (&amp;ASP.NET)" mod1="0" mod2="0" visibilityConstraints="0" icon="AspNetWebsite.bmp" commandFlags="DefaultInvisible, DynamicVisibility" sampleData="false" />
+          </commandTableHasButtons>
+          <commandTableHasButtons Id="33a5d62e-96cf-4b7c-ab4c-d6980a85bf9f">
+            <button Id="5454ee36-1033-41f4-8347-ce624886f8d6" name="ViewHtmlWebsite" idNumeric="12" buttonText="View &amp;Website (HTML)" menuText="View &amp;Website (HTML)" commandName="cmdidViewHtmlWebsite" toolTipText="View &amp;Website (HTML)" mod1="0" mod2="0" visibilityConstraints="0" priority="257" icon="HtmlWebsite.bmp" commandFlags="DefaultInvisible, DynamicVisibility" sampleData="false" />
+          </commandTableHasButtons>
+          <commandTableHasButtons Id="eebbf16a-0113-462b-85b3-ae7422b754a7">
+            <button Id="24e76128-9ea8-4838-9bbe-2cbfc9a1e63c" name="ViewFaq" idNumeric="25" buttonText="Frequently Asked Questions" menuText="Frequently Asked Questions" commandName="cmdidViewFaq" toolTipText="Frequently Asked Questions" mod1="0" mod2="0" visibilityConstraints="0" icon="FAQ.bmp" commandFlags="0" sampleData="false" />
+          </commandTableHasButtons>
+          <commandTableHasButtons Id="3f5e232f-b57a-44a3-b5c9-33954369c899">
+            <button Id="3e2673f4-1a40-4be2-b397-d6f792d24cd8" name="ViewShfbHelp" idNumeric="26" buttonText="Help on Sandcastle Help File Builder" menuText="Help on Sandcastle Help File Builder" commandName="cmdidViewShfbHelp" toolTipText="Help on Sandcastle Help File Builder" mod1="0" mod2="0" visibilityConstraints="0" icon="msotcidF1Help" commandFlags="0" sampleData="false" />
+          </commandTableHasButtons>
+          <commandTableHasButtons Id="84f0050a-08c7-42be-8912-c6150ca48b48">
+            <button Id="6e186d77-c919-4ea7-a514-e4ca01e52ae6" name="OpenInStandaloneGUI" idNumeric="28" buttonText="Open Project in Standalone GUI" menuText="Open Project in Standalone GUI" commandName="cmdidOpenInStandaloneGUI" toolTipText="Open Project in Standalone GUI" mod1="0" mod2="0" visibilityConstraints="0" commandFlags="DefaultInvisible, DynamicVisibility" sampleData="false" />
+          </commandTableHasButtons>
+          <commandTableHasButtons Id="2759aded-d62d-4ac3-b026-37b218f9825e">
+            <button Id="c3186d6b-1b25-48f3-9b71-22b980ff148d" name="AboutSHFB" idNumeric="29" buttonText="About Sandcastle Help File Builder" menuText="About Sandcastle Help File Builder" commandName="cmdidAboutSHFB" toolTipText="About Sandcastle Help File Builder" mod1="0" mod2="0" visibilityConstraints="0" priority="258" commandFlags="DefaultInvisible, DynamicVisibility" sampleData="false" />
+          </commandTableHasButtons>
+          <commandTableHasButtons Id="5d05fd6c-a648-4ca9-bfc4-77004fb5bd13">
+            <button Id="869d455d-931b-4aab-bf64-884bd8ced87e" name="ViewBuildLog" idNumeric="32" buttonText="View Build Log Content" menuText="View Build Log Content" commandName="cmdidViewBuildLog" toolTipText="View Build Log Content" mod1="0" mod2="0" visibilityConstraints="0" priority="257" icon="LogFile.bmp" commandFlags="DefaultInvisible, DynamicVisibility" sampleData="false" />
+          </commandTableHasButtons>
+          <commandTableHasButtons Id="d7ed8595-d147-4f18-90eb-e93ab16680e1">
+            <button Id="be0daae8-2453-4c83-8380-20ab8cdcdb83" name="FilterLog" idNumeric="37" buttonText="Filter Log Content" menuText="FilterLog" commandName="cmdidFilterLog" toolTipText="Filter Log Content" mod1="0" mod2="0" visibilityConstraints="0" icon="Filter.bmp" commandFlags="DefaultDisabled" sampleData="false" />
+          </commandTableHasButtons>
+        </buttons>
+        <menuBases>
+          <commandTableHasMenuBases Id="63b62b76-668e-47d3-b456-c8113eca11a0">
+            <externalMenu Id="6f386876-a03c-4815-a683-344b21b49e3f" name="Context Menu | Solution Explorer | References" idNumeric="3" parentData="guidSHLMainMenu,IDM_VS_CTXT_REFERENCE,Menu">
+              <groupBases>
+                <menuBaseReferencesGroupBases Id="88884fe5-4180-405f-b4cc-bff2470afe3e">
+                  <groupMoniker Id="b3d9a855-30b3-4e4d-824e-8572fc65ed05" />
+                </menuBaseReferencesGroupBases>
+              </groupBases>
+            </externalMenu>
+          </commandTableHasMenuBases>
+          <commandTableHasMenuBases Id="2b31bb16-6149-47c2-9503-369b41218bba">
+            <externalMenu Id="47353cdb-a7f8-41f2-a415-b9f1ff208efa" name="View" idNumeric="14" parentData="guidSHLMainMenu,IDM_VS_MENU_VIEW,Menu">
+              <groupBases>
+                <menuBaseReferencesGroupBases Id="1deac397-b520-4c13-99bb-8aa586730f93">
+                  <groupMoniker Id="dec4095d-e531-416d-9ffc-5c01046c723a" />
+                </menuBaseReferencesGroupBases>
+              </groupBases>
+            </externalMenu>
+          </commandTableHasMenuBases>
+          <commandTableHasMenuBases Id="0c158611-1709-4c15-b172-52d3eda05499">
+            <menu Id="0f8d2841-3d45-4dd2-af3a-dc158867aebe" name="ViewHelpMenu" idNumeric="15" buttonText="View Help File" commandName="View Help File" visibilityConstraints="0" commandFlags="0">
+              <groupBases>
+                <menuBaseReferencesGroupBases Id="371eb36b-513d-451d-9e8d-ca5c19e33cf1">
+                  <groupMoniker Id="1654371d-72c1-4a39-ab5a-1c7f60016a30" />
+                </menuBaseReferencesGroupBases>
+                <menuBaseReferencesGroupBases Id="363be4d2-8487-4041-aba0-661180688d33">
+                  <groupMoniker Id="c10a89a2-e050-4969-bf60-66461b991a69" />
+                </menuBaseReferencesGroupBases>
+                <menuBaseReferencesGroupBases Id="1994b8c0-4d64-4d19-a4d7-cf483946509b">
+                  <groupMoniker Id="6272a0c1-533e-496e-af1e-e5ee9942850a" />
+                </menuBaseReferencesGroupBases>
+                <menuBaseReferencesGroupBases Id="a60dfc5a-c4b6-4011-ae52-b9508e34b184">
+                  <groupMoniker Id="329e49f5-9cb3-485b-af02-2253a00ee78e" />
+                </menuBaseReferencesGroupBases>
+                <menuBaseReferencesGroupBases Id="c2c4c050-d0c5-4919-963f-49fd8a23a458">
+                  <groupMoniker Id="1a04f23a-e7c8-4e09-b1d4-7ede59d14ef7" />
+                </menuBaseReferencesGroupBases>
+              </groupBases>
+            </menu>
+          </commandTableHasMenuBases>
+          <commandTableHasMenuBases Id="db2a0a14-77e4-4cee-87ce-641f476d3c90">
+            <menu Id="5df71920-ff7f-44d7-8b8f-a3f5d097b9c3" name="SHFBToolbar" idNumeric="22" type="Toolbar" buttonText="SHFBToolbar" commandName="Sandcastle Help File Builder" visibilityConstraints="0" commandFlags="DefaultDocked">
+              <groupBases>
+                <menuBaseReferencesGroupBases Id="6c80c04a-148a-4c26-9178-82fa440bebe2">
+                  <groupMoniker Id="317b0dac-5cca-4a0f-8265-748937ea1a22" />
+                </menuBaseReferencesGroupBases>
+                <menuBaseReferencesGroupBases Id="30d3e3ee-b190-45e6-80d0-476160c4c3e8">
+                  <groupMoniker Id="a59e2143-0543-4deb-81fe-94288f8ea244" />
+                </menuBaseReferencesGroupBases>
+              </groupBases>
+            </menu>
+          </commandTableHasMenuBases>
+          <commandTableHasMenuBases Id="21246a34-572e-4ae6-984f-c6de9a8d968f">
+            <menu Id="79f9e137-5df2-42dd-b447-cc746765e902" name="ViewHelpMenuController" idNumeric="24" type="MenuController" buttonText="View Help File" commandName="View Help File" visibilityConstraints="0" commandFlags="TextChanges, TextIsAnchorCommand">
+              <groupBases>
+                <menuBaseReferencesGroupBases Id="c247d65a-10ad-4420-9741-076879ef6955">
+                  <groupMoniker Id="1654371d-72c1-4a39-ab5a-1c7f60016a30" />
+                </menuBaseReferencesGroupBases>
+                <menuBaseReferencesGroupBases Id="867b1f50-a8ae-44fa-8e14-e0354e6b7483">
+                  <groupMoniker Id="6272a0c1-533e-496e-af1e-e5ee9942850a" />
+                </menuBaseReferencesGroupBases>
+                <menuBaseReferencesGroupBases Id="702ac197-43d5-4d9c-aa7d-42e096df62ec">
+                  <groupMoniker Id="1a04f23a-e7c8-4e09-b1d4-7ede59d14ef7" />
+                </menuBaseReferencesGroupBases>
+                <menuBaseReferencesGroupBases Id="aa505ca2-1a65-42f9-a344-c77a2f1464b7">
+                  <groupMoniker Id="c10a89a2-e050-4969-bf60-66461b991a69" />
+                </menuBaseReferencesGroupBases>
+                <menuBaseReferencesGroupBases Id="4c250c07-323f-49cd-a914-b712123c020d">
+                  <groupMoniker Id="329e49f5-9cb3-485b-af02-2253a00ee78e" />
+                </menuBaseReferencesGroupBases>
+                <menuBaseReferencesGroupBases Id="0939c932-a7fb-493f-9a0b-4e2ee07c65bc">
+                  <groupMoniker Id="51fa6e8a-6f0a-4d8a-bacb-5590dd560c21" />
+                </menuBaseReferencesGroupBases>
+              </groupBases>
+            </menu>
+          </commandTableHasMenuBases>
+          <commandTableHasMenuBases Id="cace0ed5-d455-4a3c-bc36-ca43779610f8">
+            <externalMenu Id="3b03306d-4388-4291-a947-826cc1eb1e49" name="Context Menu | Solution Explorer | Project" idNumeric="31" parentData="guidSHLMainMenu,IDM_VS_CTXT_PROJNODE,Menu">
+              <groupBases>
+                <menuBaseReferencesGroupBases Id="d9c564aa-983e-414d-8f08-9db68f48cac3">
+                  <groupMoniker Id="0183785d-2b9d-436c-8fdd-b0d603a1af22" />
+                </menuBaseReferencesGroupBases>
+              </groupBases>
+            </externalMenu>
+          </commandTableHasMenuBases>
+          <commandTableHasMenuBases Id="52ffcea6-f388-49dd-8c67-bb38cefb2eaf">
+            <menu Id="f2649ec8-ef2e-4854-bbb6-5e517908f6f9" name="BuildLogToolbar" idNumeric="38" type="ToolWindowToolbar" buttonText="BuildLogToolbar" menuText="BuildLogToolbar" toolTipText="BuildLogToolbar" commandName="BuildLogToolbar" visibilityConstraints="0" commandFlags="0">
+              <groupBases>
+                <menuBaseReferencesGroupBases Id="ba853429-e586-4b3d-b1bc-edde1ecf7326">
+                  <groupMoniker Id="db8cfbe5-df1c-4a20-8354-9dfae6b196cf" />
+                </menuBaseReferencesGroupBases>
+              </groupBases>
+            </menu>
+          </commandTableHasMenuBases>
+        </menuBases>
+      </commandTable>
+    </rootHasCommandTable>
+  </commandTable>
+  <userInterface>
+    <rootHasUserInterface Id="9ac21997-f510-45f2-bed3-9475c09abb0d">
+      <userInterface Id="40050414-e548-4798-a8f5-72a1e86b77ac">
+        <toolWindows>
+          <userInterfaceHasToolWindows Id="9765ad83-a146-4ced-ba97-76c8587c12e7">
+            <toolWindow Id="452f0179-b8f5-41cc-9fa2-95421422c201" name="BuildLog" idNumeric="33" caption="Build Log Content" userCodeGenerated="true" style="none" transient="false" multiInstance="false" visibilityConstraints="0" guid="1ac33b36-3ffe-46b8-a340-090d35ab9ecf">
+              <menus>
+                <toolWindowReferencesMenus Id="1557fd52-5394-4e55-94ae-3ea7daeddac6">
+                  <menuMoniker Id="f2649ec8-ef2e-4854-bbb6-5e517908f6f9" />
+                </toolWindowReferencesMenus>
+              </menus>
+            </toolWindow>
+          </userInterfaceHasToolWindows>
+        </toolWindows>
+      </userInterface>
+    </rootHasUserInterface>
+  </userInterface>
+</root>

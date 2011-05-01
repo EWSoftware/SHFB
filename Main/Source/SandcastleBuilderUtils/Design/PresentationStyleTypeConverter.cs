@@ -2,7 +2,7 @@
 // System  : EWSoftware Design Time Attributes and Editors
 // File    : PresenationStyleTypeConverter.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/16/2011
+// Updated : 04/09/2011
 // Note    : Copyright 2007-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -38,18 +38,29 @@ namespace SandcastleBuilder.Utils.Design
     /// from those currently installed in the <b>.\Presentation</b> folder
     /// found in the main installation folder of Sandcastle.
     /// </summary>
-    internal sealed class PresentationStyleTypeConverter : StringConverter
+    public sealed class PresentationStyleTypeConverter : StringConverter
     {
         #region Private data members
         //=====================================================================
 
         private static List<string> styles = new List<string>();
-        private static StandardValuesCollection standardValues =
-            PresentationStyleTypeConverter.InitializeStandardValues();
+        private static StandardValuesCollection standardValues = InitializeStandardValues();
         #endregion
 
         #region Properties
         //=====================================================================
+
+        #region Properties
+        //=====================================================================
+
+        /// <summary>
+        /// This read-only property returns the values in the collection
+        /// </summary>
+        public static IEnumerable<string> StandardValues
+        {
+            get { return styles; }
+        }
+        #endregion
 
         /// <summary>
         /// This returns the default style

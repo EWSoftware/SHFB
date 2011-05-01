@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : PlugInConfigurationDictionary.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/06/2009
-// Note    : Copyright 2007-2009, Eric Woodruff, All rights reserved
+// Updated : 04/10/2011
+// Note    : Copyright 2007-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a dictionary class used to hold the configurations for
@@ -19,6 +19,8 @@
 // ============================================================================
 // 1.5.2.0  09/10/2007  EFW  Created the code
 // 1.8.0.0  07/01/2008  EFW  Reworked to support MSBuild project format
+// 1.9.3.0  04/07/2011  EFW  Made the from/to XML members public so that it can
+//                           be used from the VSPackage.
 //=============================================================================
 
 using System;
@@ -27,7 +29,6 @@ using System.Collections.Generic;
 using System.Drawing.Design;
 using System.Globalization;
 using System.IO;
-using System.Runtime.Serialization;
 using System.Text;
 using System.Xml;
 
@@ -130,7 +131,7 @@ namespace SandcastleBuilder.Utils.PlugIn
         /// </summary>
         /// <param name="plugIns">The plug-in items</param>
         /// <remarks>The information is stored as an XML fragment</remarks>
-        internal void FromXml(string plugIns)
+        public void FromXml(string plugIns)
         {
             XmlTextReader xr = null;
             string id, config;
@@ -149,14 +150,12 @@ namespace SandcastleBuilder.Utils.PlugIn
                       xr.Name == "PlugInConfig")
                     {
                         id = xr.GetAttribute("id");
-                        enabled = Convert.ToBoolean(xr.GetAttribute(
-                            "enabled"), CultureInfo.InvariantCulture);
+                        enabled = Convert.ToBoolean(xr.GetAttribute("enabled"), CultureInfo.InvariantCulture);
 
                         xr.ReadToDescendant("configuration");
                         config = xr.ReadOuterXml();
 
-                        this.Add(id, new PlugInConfiguration(enabled, config,
-                            projectFile));
+                        this.Add(id, new PlugInConfiguration(enabled, config, projectFile));
                     }
 
                     xr.Read();
@@ -177,7 +176,7 @@ namespace SandcastleBuilder.Utils.PlugIn
         /// </summary>
         /// <returns>The XML fragment containing the plug-in configuration
         /// info.</returns>
-        internal string ToXml()
+        public string ToXml()
         {
             PlugInConfiguration config;
             MemoryStream ms = new MemoryStream(10240);
@@ -194,8 +193,7 @@ namespace SandcastleBuilder.Utils.PlugIn
 
                     xw.WriteStartElement("PlugInConfig");
                     xw.WriteAttributeString("id", key);
-                    xw.WriteAttributeString("enabled",
-                        config.Enabled.ToString());
+                    xw.WriteAttributeString("enabled", config.Enabled.ToString());
                     xw.WriteRaw(config.Configuration);
                     xw.WriteEndElement();
                 }
@@ -228,8 +226,7 @@ namespace SandcastleBuilder.Utils.PlugIn
         /// <remarks>The <see cref="PlugInConfiguration" /> constructor is
         /// internal so that we control creation of the items and can
         /// associate them with the project.</remarks>
-        public PlugInConfiguration Add(string id, bool enabled,
-          string config)
+        public PlugInConfiguration Add(string id, bool enabled, string config)
         {
             PlugInConfiguration item;
 

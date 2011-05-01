@@ -1,3 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -5,7 +6,7 @@
     <ProductVersion>3.0</ProductVersion>
     <ProjectGuid>{f54fd6cb-9f8d-4a86-84d4-ef27ad510c80}</ProjectGuid>
     <SchemaVersion>2.0</SchemaVersion>
-    <OutputName>SandcastleBuilderSetup</OutputName>
+    <OutputName>SandcastleHelpFileBuilder</OutputName>
     <OutputType>Package</OutputType>
     <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' ">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
     <Name>Setup</Name>

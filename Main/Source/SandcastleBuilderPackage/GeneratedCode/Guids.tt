@@ -1,0 +1,22 @@
+﻿<#@ template Debug="True" inherits="Microsoft.VisualStudio.TextTemplating.VSHost.ModelingTextTransformation" #>
+<#@ VSPackageDesigner processor="VSPackageDesignerDirectiveProcessor" requires="fileName='..\SandcastleBuilderPackage.vspackage'" #>
+<#@ output extension=".cs" #>
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+<#
+// EFW - Hard coded the namespace since it didn't match what I wanted to use.
+// Made the class partial to allow for additional project GUIDs in .\Guids.cs
+#>
+namespace SandcastleBuilder.Package
+{
+    static partial class GuidList
+    {
+        public const string guid<#= this.Root.CommandTable.SafeProjectName #>PkgString = "<#= this.Root.CommandTable.PackageGuid.ToString() #>";
+        public const string guidCommandSetString = "<#= this.Root.CommandTable.CommandSetGuid.ToString()#>";
+
+        public static readonly Guid guid<#= this.Root.CommandTable.SafeProjectName #>CmdSet = new Guid(guidCommandSetString);
+    };
+}

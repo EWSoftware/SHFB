@@ -36,7 +36,7 @@
     <FeedbackEMailAddress>Eric%40EWoodruff.us</FeedbackEMailAddress>
     <PresentationStyle>vs2005</PresentationStyle>
     <SyntaxFilters>CSharp, VisualBasic</SyntaxFilters>
-    <HelpFileVersion>1.9.3.0</HelpFileVersion>
+    <HelpFileVersion>1.9.3.1</HelpFileVersion>
     <ComponentConfigurations>
       <ComponentConfig id="Post-transform Component" enabled="True">
         <component type="SandcastleBuilder.Components.PostTransformComponent" assembly="{@SHFBFolder}SandcastleBuilder.Components.dll" id="Post-transform Component">
@@ -106,7 +106,7 @@
       <NamespaceSummaryItem name="(global)" isDocumented="False" />
       <NamespaceSummaryItem name="SandcastleBuilder.Components" isDocumented="True">This namespace contains custom build components used by BuildAssembler and MRefBuilder.  The help file builder uses the BuildAssembler components to add additional features to the help topics such as a logo, code colorization, indicating missing documentation elements, etc.  The MRefBuilder components are used to perform tasks such as assembly binding redirection.</NamespaceSummaryItem>
     </NamespaceSummaries>
-    <CleanIntermediates>False</CleanIntermediates>
+    <CleanIntermediates>True</CleanIntermediates>
     <PlugInConfigurations>
       <PlugInConfig id="Additional Reference Links" enabled="True">
         <configuration>
@@ -119,6 +119,18 @@
     <ProductTitle>Sandcastle Standalone Build Components and Tools</ProductTitle>
     <VendorName>EWSoftware</VendorName>
     <HelpFileFormat>HtmlHelp1</HelpFileFormat>
+    <SccProjectName>SAK</SccProjectName>
+    <SccProvider>SAK</SccProvider>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccLocalPath>SAK</SccLocalPath>
+    <IndentHtml>False</IndentHtml>
+    <KeepLogFile>True</KeepLogFile>
+    <DisableCodeBlockComponent>False</DisableCodeBlockComponent>
+    <CppCommentsFixup>False</CppCommentsFixup>
+    <PlugInNamespaces>ms.vsipcc+, ms.vsexpresscc+</PlugInNamespaces>
+    <CollectionTocStyle>Hierarchical</CollectionTocStyle>
+    <MSHelp2SdkLinkType>Msdn</MSHelp2SdkLinkType>
+    <IncludeStopWordList>True</IncludeStopWordList>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in
        order for Visual Studio to perform the build.  The others are optional

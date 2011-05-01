@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : BuildHelp.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/18/2011
+// Updated : 04/04/2011
 // Note    : Copyright 2008-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -46,7 +46,10 @@ namespace SandcastleBuilder.Utils.MSBuild
     /// This task is used to build help file output using the Sandcastle Help
     /// File Builder.
     /// </summary>
-    public class BuildHelp : Task
+    /// <remarks>All messages from this task are logged with a high priority since it will run for a long time
+    /// and we need to see the progress messages to know it's doing something.  If set to Normal and ran from
+    /// within Visual Studio, it won't show the progress messages when the logging options are set to Minimal.</remarks>
+    public class BuildHelp : Task, ICancelableTask
     {
         #region Private data members
         //=====================================================================
@@ -58,6 +61,7 @@ namespace SandcastleBuilder.Utils.MSBuild
         private BuildProcess buildProcess;
         private BuildStep lastBuildStep;
 
+        private bool buildCancelled;
         #endregion
 
         #region Task input properties
@@ -237,6 +241,10 @@ namespace SandcastleBuilder.Utils.MSBuild
             bool removeProjectWhenDisposed = false;
             string line;
 
+            // If cancelled already, just return
+            if(buildCancelled)
+                return false;
+
             try
             {
                 if(!this.AlwaysLoadProject)
@@ -313,8 +321,8 @@ namespace SandcastleBuilder.Utils.MSBuild
                     msBuildProject.SetGlobalProperty(ProjectElement.Configuration, this.Configuration);
                     msBuildProject.SetGlobalProperty(ProjectElement.Platform, this.Platform);
 
-                    // Override the OutDir property if defined for Team Build
-                    if(!String.IsNullOrEmpty(this.OutDir))
+                    // Override the OutDir property if defined for Team Build.  Ignore ".\" as that's our default.
+                    if(!String.IsNullOrEmpty(this.OutDir) && this.OutDir != @".\")
                         msBuildProject.SetGlobalProperty(ProjectElement.OutDir, this.OutDir);
 
                     msBuildProject.ReevaluateIfNecessary();
@@ -327,9 +335,8 @@ namespace SandcastleBuilder.Utils.MSBuild
                     buildProcess.BuildStepChanged += buildProcess_BuildStepChanged;
                     buildProcess.BuildProgress += buildProcess_BuildProgress;
 
-                    // Since this is an MSBuild task, we'll run it directly rather
-                    // than in a background thread.
-                    Log.LogMessage("Building {0}", msBuildProject.FullPath);
+                    // Since this is an MSBuild task, we'll run it directly rather than in a background thread
+                    Log.LogMessage(MessageImportance.High, "Building {0}", msBuildProject.FullPath);
                     buildProcess.Build();
                 }
             }
@@ -431,7 +438,7 @@ namespace SandcastleBuilder.Utils.MSBuild
             string outputPath;
 
             if(!this.Verbose)
-                Log.LogMessage(e.BuildStep.ToString());
+                Log.LogMessage(MessageImportance.High, e.BuildStep.ToString());
 
             if(e.HasCompleted)
             {
@@ -460,13 +467,13 @@ namespace SandcastleBuilder.Utils.MSBuild
 
                     // Report single file or multi-format output location
                     if(File.Exists(outputPath))
-                        Log.LogMessage("The help file is located at: {0}", outputPath);
+                        Log.LogMessage(MessageImportance.High, "The help file is located at: {0}", outputPath);
                     else
-                        Log.LogMessage("The help output is located at: {0}", buildProcess.OutputFolder);
+                        Log.LogMessage(MessageImportance.High, "The help output is located at: {0}", buildProcess.OutputFolder);
                 }
 
                 if(File.Exists(buildProcess.LogFilename))
-                    Log.LogMessage("Build details can be found in {0}", buildProcess.LogFilename);
+                    Log.LogMessage(MessageImportance.High, "Build details can be found in {0}", buildProcess.LogFilename);
             }
 
             lastBuildStep = e.BuildStep;
@@ -493,11 +500,28 @@ namespace SandcastleBuilder.Utils.MSBuild
                         Log.LogError(null, m.Groups[4].Value, m.Groups[4].Value,
                             m.Groups[1].Value, 0, 0, 0, 0, m.Groups[5].Value.Trim());
                     else
-                        Log.LogMessage(e.Message);
+                        Log.LogMessage(MessageImportance.High, e.Message);
             }
             else
                 if(this.Verbose)
-                    Log.LogMessage(e.Message);
+                    Log.LogMessage(MessageImportance.High, e.Message);
+        }
+        #endregion
+
+        #region ICancelableTask Members
+        //=====================================================================
+
+        /// <summary>
+        /// Cancel the build
+        /// </summary>
+        /// <remarks>The build will be cancelled as soo as the next message
+        /// arrives from the build process.</remarks>
+        public void Cancel()
+        {
+            buildCancelled = true;
+
+            if(buildProcess != null)
+                buildProcess.BuildCanceled = true;
         }
         #endregion
     }

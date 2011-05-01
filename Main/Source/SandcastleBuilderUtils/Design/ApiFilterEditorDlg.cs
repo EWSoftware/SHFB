@@ -2,7 +2,7 @@
 // System  : EWSoftware Design Time Attributes and Editors
 // File    : ApiFilterEditorDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/09/2011
+// Updated : 04/07/2011
 // Note    : Copyright 2007-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -28,7 +28,6 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -44,7 +43,7 @@ namespace SandcastleBuilder.Utils.Design
     /// <summary>
     /// This form is used to edit the API filter collection
     /// </summary>
-    internal partial class ApiFilterEditorDlg : Form
+    public partial class ApiFilterEditorDlg : Form
     {
         #region API visibility enumeration
         //=====================================================================
@@ -480,12 +479,19 @@ namespace SandcastleBuilder.Utils.Design
         {
             if(this.InvokeRequired)
             {
-                // Ignore it if we've already shut down or it hasn't
-                // completed yet.
-                if(!this.IsDisposed)
-                    this.Invoke(new EventHandler<BuildProgressEventArgs>(
-                        buildProcess_BuildStepChanged),
-                        new object[] { sender, e });
+                try
+                {
+                    // Ignore it if we've already shut down or it hasn't
+                    // completed yet.
+                    if(!this.IsDisposed)
+                        this.Invoke(new EventHandler<BuildProgressEventArgs>(buildProcess_BuildStepChanged),
+                            new object[] { sender, e });
+                }
+                catch(Exception)
+                {
+                    // Ignore these as we still get one occasionally due to the object being disposed
+                    // or the handle not being valid even though we do check for it first.
+                }
             }
             else
             {
@@ -532,11 +538,18 @@ namespace SandcastleBuilder.Utils.Design
         {
             if(this.InvokeRequired)
             {
-                // Ignore it if we've already shut down
-                if(!this.IsDisposed)
-                    this.Invoke(new EventHandler<BuildProgressEventArgs>(
-                        buildProcess_BuildProgress),
-                        new object[] { sender, e });
+                try
+                {
+                    // Ignore it if we've already shut down
+                    if(!this.IsDisposed)
+                        this.Invoke(new EventHandler<BuildProgressEventArgs>(buildProcess_BuildProgress),
+                            new object[] { sender, e });
+                }
+                catch(Exception )
+                {
+                    // Ignore these as we still get one occasionally due to the object being
+                    // disposed even though we do check for it first.
+                }
             }
             else
             {
@@ -1477,7 +1490,7 @@ namespace SandcastleBuilder.Utils.Design
         /// Constructor
         /// </summary>
         /// <param name="filter">The item collection to edit</param>
-        internal ApiFilterEditorDlg(ApiFilterCollection filter)
+        public ApiFilterEditorDlg(ApiFilterCollection filter)
         {
             InitializeComponent();
 
@@ -1574,6 +1587,9 @@ namespace SandcastleBuilder.Utils.Design
                     while(buildThread != null && !buildThread.Join(1000))
                         Application.DoEvents();
 
+                    // Give it a short wait.  Sometimes we're still faster shutting down
+                    // than the thread is.
+                    Thread.Sleep(500);
                     System.Diagnostics.Debug.WriteLine("Thread stopped");
                 }
                 finally
@@ -1635,28 +1651,23 @@ namespace SandcastleBuilder.Utils.Design
         /// <param name="e">The event arguments</param>
         private void btnHelp_Click(object sender, EventArgs e)
         {
-            string path = Path.GetDirectoryName(
-                Assembly.GetExecutingAssembly().Location);
+            string path = null;
 
             try
             {
 #if DEBUG
-                path += @"\..\..\..\Doc\Help\SandcastleBuilder.chm";
+                // In debug builds, SHFBROOT points to the .\Debug folder for the SandcastleBuilderGUI project
+                path = Path.Combine(@"C:\Program Files (x86)\EWSoftware\Sandcastle Help File Builder\SandcastleBuilder.chm");
 #else
-                path += @"\SandcastleBuilder.chm";
+                path = Path.Combine(Environment.ExpandEnvironmentVariables("%SHFBROOT%"), "SandcastleBuilder.chm");
 #endif
                 Form form = new Form();
                 form.CreateControl();
-                Help.ShowHelp(form, path, HelpNavigator.Topic,
-                    "html/7df16a60-f718-4b8f-bfa2-88c42906070c.htm");
+                Help.ShowHelp(form, path, HelpNavigator.Topic, "html/7df16a60-f718-4b8f-bfa2-88c42906070c.htm");
             }
             catch(Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
-                MessageBox.Show(String.Format(CultureInfo.CurrentCulture,
-                    "Unable to open help file '{0}'.  Reason: {1}",
-                    path, ex.Message), Constants.AppName,
-                    MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
 

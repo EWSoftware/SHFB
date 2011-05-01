@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : PlugInManager.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/09/2011
+// Updated : 04/02/2011
 // Note    : Copyright 2007-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -27,7 +27,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 
-// All classes go in the SandcastleBuilder.Utils.PlugIn namespace
+using SandcastleBuilder.Utils.BuildComponent;
+
 namespace SandcastleBuilder.Utils.PlugIn
 {
     /// <summary>
@@ -72,15 +73,11 @@ namespace SandcastleBuilder.Utils.PlugIn
             Assembly asm;
             Type[] types;
             PlugInInfo info;
-            string shfbFolder, plugInsFolder, componentPath;
+            string plugInsFolder, componentPath;
 
             plugIns = new Dictionary<string, PlugInInfo>();
-            asm = Assembly.GetExecutingAssembly();
 
-            shfbFolder = asm.Location;
-            shfbFolder = shfbFolder.Substring(0, shfbFolder.LastIndexOf('\\') + 1);
-            plugInsFolder = Path.Combine(Environment.GetFolderPath(
-                Environment.SpecialFolder.CommonApplicationData),
+            plugInsFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
                 Constants.ComponentsAndPlugInsFolder);
 
             // Give precedence to plug-ins in the optional SHFBCOMPONENTROOT
@@ -94,7 +91,7 @@ namespace SandcastleBuilder.Utils.PlugIn
             // Add the standard plug-ins file and any third-party plug-in
             // files in the installation folder too.  This allows for XCOPY
             // deployments of SHFB to build servers.
-            allFiles.AddRange(Directory.EnumerateFiles(shfbFolder, "*.plugins",
+            allFiles.AddRange(Directory.EnumerateFiles(BuildComponentManager.HelpFileBuilderFolder, "*.plugins",
                 SearchOption.AllDirectories));
 
             // Finally, check the common app data build components folder

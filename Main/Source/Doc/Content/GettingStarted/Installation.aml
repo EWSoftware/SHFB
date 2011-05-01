@@ -8,40 +8,66 @@ information.</para>
 	  <autoOutline lead="none" />
     </introduction>
 
+<section address="GuidedInstall">
+  <title>Guided Installation</title>
+	<content>
+		<para>Due to the number of products that need to be installed to get a working build environment, a
+guided installation package has been created to simplify the process.  The guided installer contains most of the
+necessary parts and various optional components.  For those parts that cannot be distributed such as the help
+compilers, it contains instructions on where to get them and how to install them if you need them.</para>
+
+		<para>
+			<externalLink>
+				<linkText>Download the latest Sandcastle Help File Builder Guided Installer</linkText>
+				<linkUri>http://shfb.codeplex.com/releases</linkUri>
+				<linkTarget>_blank</linkTarget>
+			</externalLink>
+		</para>
+
+		<para>When using the guided installation, you can skip the <ui>Requirements</ui> section below as it
+takes care of all of the required steps.  See the <ui>Recommended</ui> and <ui>Optional</ui> sections for
+additional tools not included in the guided installation that you may find useful.</para>
+	</content>
+</section>	
+
 <section address="Requirements">
   <title>Requirements</title>
-  <content><para>The latest version of the Sandcastle Help File Builder can
-always be found at the <token>SHFB</token> CodePlex project site.  In addition,
-you will need the following:</para>
+  <content><para>The latest version of the Sandcastle Help File Builder can always be found at the <token>SHFB</token>
+CodePlex project site.  In addition, you will need the following:</para>
 
 <list class="bullet">
-    <listItem>The <externalLink><linkText>.NET Framework 3.5 SP1</linkText>
-  <linkUri>http://www.microsoft.com/downloads/details.aspx?FamilyID=ab99342f-5d1a-413d-8319-81da479ab0d7&amp;DisplayLang=en</linkUri>
+    <listItem>
+		<para>The <externalLink><linkText>.NET Framework 4.0</linkText>
+  <linkUri>http://www.microsoft.com/downloads/en/details.aspx?FamilyID=9CFB2D51-5FF4-4491-B0E5-B386F32C0992</linkUri>
   <linkTarget>_blank</linkTarget>
-</externalLink>.</listItem>
+</externalLink>.</para>
+	</listItem>
 
-    <listItem>The latest version of Microsoft's <token>Sandcastle</token>
-(currently the <token>SandcastleVersion</token> release as of
-<token>SHFBBuildDate</token>).
+    <listItem>
+		<para>The latest version of Microsoft's <token>Sandcastle</token> (currently the <token>SandcastleVersion</token>
+release as of <token>SHFBBuildDate</token>).</para>
 
 	<alert class="note">
-  	  <para>This is the set of documentation tools created by Microsoft.  The
-help file builder uses them to produce the help file topics.</para>
+  	  <para>This is the set of documentation tools created by Microsoft.  The help file builder uses them to
+produce the help file topics.</para>
 	</alert></listItem>
 </list>
 
-	<para>In order to use the help file builder, the following additional tools
-are required based on the types of help files that you want to produce.  Each
-must be installed prior to building a help file of that particular type:</para>
+	<para>In order to use the help file builder, the following additional tools are required based on the types
+of help files that you want to produce.  Each must be installed prior to building a help file of that particular
+type:</para>
 
 <list class="bullet">
-    <listItem>The <externalLink><linkText>HTML Help Workshop</linkText>
+    <listItem>
+		<para>The <externalLink><linkText>HTML Help Workshop</linkText>
   <linkUri>http://msdn2.microsoft.com/en-us/library/ms669985.aspx</linkUri>
   <linkTarget>_blank</linkTarget>
-</externalLink> for building HTML Help 1 (.chm) help files.</listItem>
+</externalLink> for building HTML Help 1 (.chm) help files.</para>
+	</listItem>
 
-    <listItem>The MS Help 2 compiler for building MS Help 2 (.HxS) help
-files.  This must be downloaded and installed as part of the <externalLink>
+    <listItem>
+		<para>The MS Help 2 compiler for building MS Help 2 (.HxS) help files.  This must be downloaded and
+installed as part of the <externalLink>
   <linkText>Visual Studio 2005 SDK v4.0</linkText>
   <linkUri>http://www.microsoft.com/downloads/details.aspx?familyid=51A5C65B-C020-4E08-8AC0-3EB9C06996F4&amp;displaylang=en</linkUri>
   <linkTarget>_blank</linkTarget>
@@ -50,44 +76,45 @@ files.  This must be downloaded and installed as part of the <externalLink>
   <linkText>Visual Studio 2008 SDK v1.0</linkText>
   <linkUri>http://www.microsoft.com/downloads/en/details.aspx?familyid=30402623-93ca-479a-867c-04dc45164f5b&amp;displaylang=en</linkUri>
   <linkTarget>_blank</linkTarget>
-</externalLink>.  Note that the latest version of the Visual Studio 2008 SDK does not
-contain the Help 2 compiler so you must download the 1.0 version.  The latest release
-can be installed after it if you need it.</listItem>
+</externalLink>.  Note that the latest version of the Visual Studio 2008 SDK does not contain the Help 2 compiler
+so you must download the 1.0 version.  The latest release can be installed after it if you need it.</para>
+	</listItem>
 
-	<listItem>The Help Library Manager and Help Library Agent for installing and
-viewing MS Help Viewer (.mshc) help files.  These are installed as part of Visual Studio 2010.</listItem>
+	<listItem>
+		<para>The Help Library Manager and Help Library Agent for installing and viewing MS Help Viewer (.mshc)
+help files.  These are installed as part of Visual Studio 2010.</para>
+	</listItem>
 </list>
 
-	<para>The tools can be installed in any order.  However, be aware that if
-installing the Visual Studio 2005 or 2008 SDK to obtain the Help 2 compiler
-that both contain outdated versions of Sandcastle.  This can cause the
-<environmentVariable>DXROOT</environmentVariable> environment variable used to
-locate the Sandcastle tools to be incorrect.  After installing either SDK, do
-the following:</para>
+	<para>The tools can be installed in any order.  However, be aware that if installing the Visual Studio 2005
+or 2008 SDK to obtain the Help 2 compiler that both contain outdated versions of Sandcastle.  This can cause the
+<environmentVariable>DXROOT</environmentVariable> environment variable used to locate the Sandcastle tools to be
+incorrect.  After installing either SDK, do the following:</para>
 
 <list class="ordered">
-    <listItem>Check the <legacyUnderline>user</legacyUnderline> environment
-variables.  If you see a copy of the <environmentVariable>DXROOT</environmentVariable>
-environment variable there, delete it.</listItem>
+    <listItem>
+		<para>Check the <legacyUnderline>user</legacyUnderline> environment variables.  If you see a copy of the
+<environmentVariable>DXROOT</environmentVariable> environment variable there, delete it.</para>
+	</listItem>
 
-	<listItem>If there is a <legacyUnderline>user</legacyUnderline> copy of the
-<environmentVariable>PATH</environmentVariable> environment variable, remove
-any path to the SDK version of Sandcastle that it contains.  If that is all it
-contains, it can be deleted.</listItem>
+	<listItem>
+		<para>If there is a <legacyUnderline>user</legacyUnderline> copy of the <environmentVariable>PATH</environmentVariable>
+environment variable, remove any path to the SDK version of Sandcastle that it contains.  If that is all it
+contains, it can be deleted.</para>
+	</listItem>
 
-    <listItem>Check the <legacyUnderline>system</legacyUnderline> environment
-variables to ensure that a <environmentVariable>DXROOT</environmentVariable>
-environment variable does exist and that it points to the correct location of
-the Microsoft Sandcastle tools (<legacyBold>not</legacyBold> the help file
-builder).  Usually this will be <localUri>C:\Program
-Files\Sandcastle</localUri> unless you installed it in an alternate
-location.</listItem>
+    <listItem>
+		<para>Check the <legacyUnderline>system</legacyUnderline> environment variables to ensure that a
+<environmentVariable>DXROOT</environmentVariable> environment variable does exist and that it points to the
+correct location of the Microsoft Sandcastle tools (<legacyBold>not</legacyBold> the help file builder).
+Usually this will be <localUri>C:\Program Files\Sandcastle</localUri> unless you installed it in an alternate
+location.</para>
+	</listItem>
 
 </list>
 
 <alert class="note">
-  <para>You may need to reboot the system in order for any environment variable
-changes to take effect.</para>
+  <para>You may need to reboot the system in order for any environment variable changes to take effect.</para>
 </alert>
 
   </content>
@@ -95,45 +122,50 @@ changes to take effect.</para>
 
 <section address="Recommended">
   <title>Recommended Additions</title>
-  <content><para>The following tools and patches are optional but you will
-find them useful and it is highly recommended that they be installed as well.</para>
+  <content><para>The following tools and patches are optional but you will find them useful and it is highly
+recommended that they be installed as well.</para>
 
 <list class="bullet">
-  <listItem>Download the latest community-maintained patches for the Sandcastle
-presentation styles from the <token>SandcastleStyles</token> CodePlex project
-site.  This is essential if you will be producing conceptual content as it
-fixes a number of bugs and adds many new features that will make your conceptual
-content appear much better.</listItem>
+  <listItem>
+	  <para>Download the latest community-maintained patches for the Sandcastle presentation styles from the
+<token>SandcastleStyles</token> CodePlex project site.  This is essential if you will be producing conceptual
+content as it fixes a number of bugs and adds many new features that will make your conceptual content appear
+much better.</para>
+	</listItem>
 
-    <listItem>To view MS Help 2 files without registering them, you can use
-the <externalLink><linkText>H2 Viewer</linkText>
+    <listItem>
+		<para>To view MS Help 2 files without registering them, you can use the <externalLink><linkText>H2 Viewer</linkText>
   <linkUri>http://www.helpware.net/mshelp2/h2viewer.htm</linkUri>
-  <linkTarget>_blank</linkTarget></externalLink> (free for personal use).  You
-can configure the help file builder to use it for viewing Help 2 output via the
-<link xlink:href="2152ed96-bf69-4b9b-b1a7-4fffc71b3095" /> dialog.</listItem>
+  <linkTarget>_blank</linkTarget></externalLink> (free for personal use).  You can configure the help file
+builder to use it for viewing Help 2 output via the <link xlink:href="2152ed96-bf69-4b9b-b1a7-4fffc71b3095" />
+dialog.</para>
+	</listItem>
 
-    <listItem>To view MS Help Viewer files with a full table of content and index
-support rather than in the default browser, you can use the
-<externalLink><linkText>H3 Viewer</linkText>
+    <listItem>
+		<para>To view MS Help Viewer files with a full table of content and index support rather than in the
+default browser, you can use the <externalLink><linkText>H3 Viewer</linkText>
 <linkUri>http://mshcmigrate.helpmvp.com/viewer</linkUri>
-<linkTarget>_blank</linkTarget></externalLink> (free for personal use).  You
-can configure the help file builder to use it for viewing MS Help Viewer output
-via the <link xlink:href="2152ed96-bf69-4b9b-b1a7-4fffc71b3095" /> dialog.</listItem>
+<linkTarget>_blank</linkTarget></externalLink> (free for personal use).  You can configure the help file builder
+to use it for viewing MS Help Viewer output via the <link xlink:href="2152ed96-bf69-4b9b-b1a7-4fffc71b3095" />
+dialog.</para>
+	</listItem>
 
-    <listItem>To register MS Help 2 files both for testing and as part of your
-product installation, download the shareware tool <externalLink>
+    <listItem>
+		<para>To register MS Help 2 files both for testing and as part of your product installation, download the
+shareware tool <externalLink>
   <linkText>H2Reg.exe</linkText><linkUri>http://www.helpware.net/mshelp2/h2reg.htm</linkUri>
   <linkTarget>_blank</linkTarget>
 </externalLink> from <externalLink><linkText>The Helpware Group</linkText>
-  <linkUri>http://www.helpware.net</linkUri><linkTarget>_blank</linkTarget>
-</externalLink>.</listItem>
+  <linkUri>http://www.helpware.net</linkUri><linkTarget>_blank</linkTarget> </externalLink>.</para>
+	</listItem>
 
-    <listItem>If you are going to document website projects, download the
+    <listItem>
+		<para>If you are going to document website projects, download the
 <externalLink><linkText>Custom Web Code Providers</linkText>
   <linkUri>http://SandcastleStyles.codeplex.com</linkUri>
-  <linkTarget>_blank</linkTarget></externalLink>.  These make it easy to
-document website projects by extracing the XML comments files to a location
-of your choice when the website is deployed.</listItem>
+  <linkTarget>_blank</linkTarget></externalLink>.  These make it easy to document website projects by extracing
+the XML comments files to a location of your choice when the website is deployed.</para>
+	</listItem>
 
 </list>
   </content>
@@ -141,28 +173,34 @@ of your choice when the website is deployed.</listItem>
 
 <section address="Optional">
   <title>Optional Items</title>
-  <content><para>The following items are not required to use Sandcastle or the
-help file builder but you may find them useful.</para>
+  <content><para>The following items are not required to use Sandcastle or the help file builder but you may find
+them useful.</para>
 
 <list class="bullet">
-  <listItem>If you are documenting .NET 1.1 applications and need the Help 2
-compiler tools, you can download the <externalLink>
+  <listItem>
+	  <para>If you are documenting .NET 1.1 applications and need the Help 2 compiler tools, you can download the
+<externalLink>
   <linkText>Visual Studio .NET Help Integration Kit 2003</linkText>
   <linkUri>http://www.microsoft.com/downloads/en/details.aspx?familyid=ce1b26dc-d6af-42a1-a9a4-88c4eb456d87&amp;displaylang=en</linkUri>
   <linkTarget>_blank</linkTarget>
-</externalLink>.</listItem>
+</externalLink>.</para>
+	</listItem>
 
-    <listItem>For a Visual Studio add-in used to create XML comments
-automatically, check out SubMain's <externalLink>
+    <listItem>
+		<para>For a Visual Studio add-in used to create XML comments automatically, check out SubMain's
+<externalLink>
   <linkText>GhostDoc</linkText>
   <linkUri>http://submain.com/products/ghostdoc.aspx</linkUri>
   <linkTarget>_blank</linkTarget>
-</externalLink>.</listItem>
+</externalLink>.</para>
+	</listItem>
 
-	<listItem>If you need to convert HTML additional content topics to MAML,
-you can download the <externalLink><linkText>HTML to MAML Converter</linkText>
+	<listItem>
+		<para>If you need to convert HTML additional content topics to MAML, you can download the
+<externalLink><linkText>HTML to MAML Converter</linkText>
 <linkUri>http://SandcastleStyles.codeplex.com</linkUri>
-<linkTarget>_blank</linkTarget></externalLink> utility.</listItem>
+<linkTarget>_blank</linkTarget></externalLink> utility.</para>
+	</listItem>
 
 </list>
 
@@ -170,10 +208,10 @@ you can download the <externalLink><linkText>HTML to MAML Converter</linkText>
 </section>
 
     <relatedTopics>
-    <link xlink:href="b772e00e-1705-4062-adb6-774826ce6700" />
-	<link xlink:href="c18d6cb6-e4e4-4944-84ee-f867aa6cfb0d" />
-	<link xlink:href="8e3f8757-0ef3-4772-bb2f-5d7ae57e50da" />
-	<link xlink:href="f68822d2-97ba-48da-a98b-46747983b4a0" />
+		<link xlink:href="b772e00e-1705-4062-adb6-774826ce6700" />
+		<link xlink:href="c18d6cb6-e4e4-4944-84ee-f867aa6cfb0d" />
+		<link xlink:href="8e3f8757-0ef3-4772-bb2f-5d7ae57e50da" />
+		<link xlink:href="f68822d2-97ba-48da-a98b-46747983b4a0" />
     </relatedTopics>
   </developerConceptualDocument>
 </topic>

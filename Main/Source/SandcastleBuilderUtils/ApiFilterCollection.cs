@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : ApiFilterCollection.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/03/2008
-// Note    : Copyright 2007-2008, Eric Woodruff, All rights reserved
+// Updated : 04/07/2011
+// Note    : Copyright 2007-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a collection class used to hold the API filter entries
@@ -19,6 +19,8 @@
 // ============================================================================
 // 1.5.0.2  07/16/2007  EFW  Created the code
 // 1.8.0.0  07/03/2008  EFW  Rewrote to support MSBuild project format
+// 1.9.3.0  04/07/2011  EFW  Made the constructor and from/to XML members
+//                           public so that it can be used from the VSPackage.
 //=============================================================================
 
 using System;
@@ -80,12 +82,12 @@ namespace SandcastleBuilder.Utils
         //=====================================================================
 
         /// <summary>
-        /// Internal constructor
+        /// Constructor
         /// </summary>
         /// <param name="project">The project that owns the collection</param>
         /// <remarks>Child collections do not contain a reference to the
         /// project file.</remarks>
-        internal ApiFilterCollection(SandcastleProject project)
+        public ApiFilterCollection(SandcastleProject project)
         {
             projectFile = project;
         }
@@ -121,7 +123,7 @@ namespace SandcastleBuilder.Utils
         /// </summary>
         /// <param name="apiFilter">The API filter items</param>
         /// <remarks>The information is stored as an XML fragment</remarks>
-        internal void FromXml(string apiFilter)
+        public void FromXml(string apiFilter)
         {
             ApiFilter filter;
             XmlTextReader xr = null;
@@ -159,7 +161,7 @@ namespace SandcastleBuilder.Utils
         /// for storing in the project file.
         /// </summary>
         /// <returns>The XML fragment containing the help attribute info</returns>
-        internal string ToXml()
+        public string ToXml()
         {
             MemoryStream ms = new MemoryStream(10240);
             XmlTextWriter xw = null;

@@ -36,7 +36,7 @@
     <FeedbackEMailAddress>Eric%40EWoodruff.us</FeedbackEMailAddress>
     <PresentationStyle>vs2005</PresentationStyle>
     <SyntaxFilters>CSharp, VisualBasic</SyntaxFilters>
-    <HelpFileVersion>1.9.3.0</HelpFileVersion>
+    <HelpFileVersion>1.9.3.1</HelpFileVersion>
     <ComponentConfigurations>
       <ComponentConfig id="Post-transform Component" enabled="True">
         <component type="SandcastleBuilder.Components.PostTransformComponent" assembly="{@SHFBFolder}SandcastleBuilder.Components.dll" id="Post-transform Component">
@@ -123,7 +123,7 @@
       <NamespaceSummaryItem name="SandcastleBuilder.InheritedDocumentation" isDocumented="True">This namespace contains documentation for the console mode application used to generate inherited documentation.  The application supports running as an MSBuild task.</NamespaceSummaryItem>
       <NamespaceSummaryItem name="SandcastleBuilder.MicrosoftHelpViewer" isDocumented="True">This namespace contains classes related to the Microsoft Help Viewer help file format.</NamespaceSummaryItem>
     </NamespaceSummaries>
-    <CleanIntermediates>False</CleanIntermediates>
+    <CleanIntermediates>True</CleanIntermediates>
     <ApiFilter>
       <Filter entryType="Namespace" fullName="ColorizerLibrary" isExposed="False" />
       <Filter entryType="Namespace" fullName="ColorizerLibrary.Controls" isExposed="False" />
@@ -146,6 +146,19 @@
     </HelpAttributes>
     <VendorName>EWSoftware</VendorName>
     <ProductTitle>Sandcastle Help File Builder</ProductTitle>
+    <SccProjectName>SAK</SccProjectName>
+    <SccProvider>SAK</SccProvider>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccLocalPath>SAK</SccLocalPath>
+    <PlugInNamespaces>ms.vsipcc+, ms.vsexpresscc+</PlugInNamespaces>
+    <CollectionTocStyle>Hierarchical</CollectionTocStyle>
+    <MSHelp2SdkLinkType>Msdn</MSHelp2SdkLinkType>
+    <IncludeStopWordList>True</IncludeStopWordList>
+    <HelpFileFormat>HtmlHelp1</HelpFileFormat>
+    <IndentHtml>False</IndentHtml>
+    <KeepLogFile>True</KeepLogFile>
+    <DisableCodeBlockComponent>False</DisableCodeBlockComponent>
+    <CppCommentsFixup>False</CppCommentsFixup>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in
        order for Visual Studio to perform the build.  The others are optional
@@ -167,6 +180,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|Win32' ">
   </PropertyGroup>
   <ItemGroup>
+    <Folder Include="Content\VisualStudio" />
     <Folder Include="Content\VersionHistory\v1.0to1.7\" />
     <Folder Include="Content\GettingStarted\ProjectConverters\" />
     <Folder Include="Content\ErrorsAndWarnings\ProjectFile\" />
@@ -190,6 +204,10 @@
     <Folder Include="Media\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Content\VersionHistory\v1.9.3.1.aml" />
+    <None Include="Content\VisualStudio\ItemFileTemplates.aml" />
+    <None Include="Content\VisualStudio\FeatureComparison.aml" />
+    <None Include="Content\VisualStudio\VisualStudioPackage.aml" />
     <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0070.aml" />
     <None Include="Content\PlugIns\WildcardReferencesPlugIn.aml" />
     <None Include="Content\VersionHistory\v1.9.3.0.aml" />
@@ -495,6 +513,22 @@
     <Image Include="Media\Sandcastle.jpg">
       <ImageId>Sandcastle</ImageId>
       <AlternateText>Sandcastle Help File Builder</AlternateText>
+    </Image>
+    <Image Include="Media\VSAddNewItemDlg.png">
+      <ImageId>VSAddNewItemDlg</ImageId>
+      <AlternateText>Visual Studio Add New Item dialog</AlternateText>
+    </Image>
+    <Image Include="Media\VSCustomTemplates.png">
+      <ImageId>VSCustomTemplates</ImageId>
+      <AlternateText>Custom templates in the Add New Item dialog</AlternateText>
+    </Image>
+    <Image Include="Media\VSNewProjectDlg.png">
+      <ImageId>VSNewProjectDlg</ImageId>
+      <AlternateText>Visual Studio New Project dialog</AlternateText>
+    </Image>
+    <Image Include="Media\VSProjectPropsEditor.png">
+      <ImageId>VSProjectPropsEditor</ImageId>
+      <AlternateText>Visual Studio project properties editor</AlternateText>
     </Image>
   </ItemGroup>
   <ItemGroup>

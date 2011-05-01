@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : LaunchMSHelpViewDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/05/2010
-// Note    : Copyright 2010, Eric Woodruff, All rights reserved
+// Updated : 04/02/2011
+// Note    : Copyright 2010-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This form is used to determine the state of the current MS Help Viewer
@@ -18,26 +18,21 @@
 // Version     Date     Who  Comments
 // ============================================================================
 // 1.9.0.0  07/05/2010  EFW  Created the code
+// 1.9.3.0  04/02/2011  EFW  Made it project independent so that it could be
+//                           used in the VSPackage too.
 //=============================================================================
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
-using System.Drawing;
 using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
-using SandcastleBuilder.Gui.Properties;
-using SandcastleBuilder.MicrosoftHelpViewer;
 using SandcastleBuilder.Utils;
 
-namespace SandcastleBuilder.Gui
+namespace SandcastleBuilder.MicrosoftHelpViewer
 {
     /// <summary>
     /// This form is used determine the state of the current MS Help Viewer
@@ -97,7 +92,8 @@ namespace SandcastleBuilder.Gui
         /// Constructor
         /// </summary>
         /// <param name="currentProject">The current project</param>
-        public LaunchMSHelpViewerDlg(SandcastleProject currentProject)
+        /// <param name="helpViewerPath">The path to the MS Help Viewer</param>
+        public LaunchMSHelpViewerDlg(SandcastleProject currentProject, string helpViewerPath)
         {
             InitializeComponent();
 
@@ -108,7 +104,7 @@ namespace SandcastleBuilder.Gui
             Directory.SetCurrentDirectory(Path.GetDirectoryName(Path.GetFullPath(project.Filename)));
 
             helpFilePath = project.OutputPath;
-            msHelpViewer = Settings.Default.MSHelpViewerPath;
+            msHelpViewer = helpViewerPath;
 
             if(String.IsNullOrEmpty(helpFilePath))
                 helpFilePath = Directory.GetCurrentDirectory();

@@ -2,7 +2,7 @@
 // System  : EWSoftware Design Time Attributes and Editors
 // File    : LanguageResourceConverter.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/16/2011
+// Updated : 04/09/2011
 // Note    : Copyright 2006-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -28,16 +28,20 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
+using SandcastleBuilder.Utils.BuildComponent;
+
 namespace SandcastleBuilder.Utils.Design
 {
     /// <summary>
     /// This type converter allows you to select a culture from a list
     /// representing a set of available language resource folders.
     /// </summary>
-    internal sealed class LanguageResourceConverter : CultureInfoConverter
+    public sealed class LanguageResourceConverter : CultureInfoConverter
     {
         #region Private data members
         //=====================================================================
+
+        private static StandardValuesCollection standardValues = InitializeStandardValues();
 
         private bool initialized;   // Initialized flag
         #endregion
@@ -76,6 +80,42 @@ namespace SandcastleBuilder.Utils.Design
         }
         #endregion
 
+        #region Properties
+        //=====================================================================
+
+        /// <summary>
+        /// This read-only property returns the values in the collection
+        /// </summary>
+        public static IEnumerable<CultureInfo> StandardValues
+        {
+            get { return standardValues.OfType<CultureInfo>().ToList(); }
+        }
+        #endregion
+
+        #region Methods
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to get the standard values by searching for the
+        /// .NET Framework and Silverlight Framework versions installed on the
+        /// current system.
+        /// </summary>
+        private static StandardValuesCollection InitializeStandardValues()
+        {
+            // Find the available language resources
+            string name = Path.Combine(BuildComponentManager.HelpFileBuilderFolder, @"SharedContent");
+
+            return new StandardValuesCollection(
+                Directory.EnumerateFiles(name, "SharedBuilderContent_*.xml").Select(c =>
+                {
+                    name = Path.GetFileNameWithoutExtension(c);
+                    name = name.Substring(name.LastIndexOf('_') + 1);
+                    return new CultureInfo(name);
+                }).OrderBy(c => c, new CultureInfoComparer()).ToArray());
+        }
+        #endregion
+
+
         #region Method overrides
         //=====================================================================
 
@@ -100,22 +140,10 @@ namespace SandcastleBuilder.Utils.Design
         {
             if(!initialized)
             {
-                // Find the available language resources
-                string name = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\SharedContent";
-
-                StandardValuesCollection svc = new StandardValuesCollection(
-                    Directory.EnumerateFiles(name, "SharedBuilderContent_*.xml").Select(c =>
-                    {
-                        name = Path.GetFileNameWithoutExtension(c);
-                        name = name.Substring(name.LastIndexOf('_') + 1);
-                        return new CultureInfo(name);
-                    }).OrderBy(c => c, new CultureInfoComparer()).ToArray());
-
-                // Use reflection to set the base class's values field to
-                // our limited array.
+                // Use reflection to set the base class's values field to our limited array
                 FieldInfo fi = typeof(CultureInfoConverter).GetField("values",
                     BindingFlags.NonPublic | BindingFlags.Instance);
-                fi.SetValue(this, svc);
+                fi.SetValue(this, standardValues);
                 initialized = true;
             }
 

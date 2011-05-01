@@ -1,0 +1,15 @@
+﻿<VSTemplate Version="3.0.0" Type="Project" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005">
+  <TemplateData>
+    <Name Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="113" />
+    <Description Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="114" />
+    <Icon Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="400" />
+    <ProjectType>SandcastleBuilderProject</ProjectType>
+    <CreateNewFolder>true</CreateNewFolder>
+    <DefaultName>Documentation</DefaultName>
+    <SortOrder>10</SortOrder>
+    <ProvideDefaultName>true</ProvideDefaultName>
+  </TemplateData>
+  <TemplateContent>
+    <Project File="SandcastleBuilder.shfbproj" ReplaceParameters="true" />
+  </TemplateContent>
+</VSTemplate>

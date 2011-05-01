@@ -135,6 +135,23 @@
       </HelpKeywords>
     </Topic>
   </Topic>
+  <Topic id="b128ad2a-787e-48c7-b946-f6953080c386" visible="True" title="Visual Studio 2010 Package">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="Visual Studio, package" />
+    </HelpKeywords>
+    <Topic id="78507051-0fc0-479b-9d47-78a10398eaf2" visible="True" title="Feature Comparison and Location">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Visual Studio, feature comparison" />
+        <HelpKeyword index="K" term="Visual Studio, feature location" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="ece3a395-589f-45c3-9f0e-2a25b8b6c537" visible="True" title="Item File Templates">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Visual Studio, custom item file templates" />
+        <HelpKeyword index="K" term="Visual Studio, item file templates" />
+      </HelpKeywords>
+    </Topic>
+  </Topic>
   <Topic id="e12c2b9f-18c7-4718-850b-ac3c2e293672" visible="True" title="Project Explorer Window">
     <HelpKeywords>
       <HelpKeyword index="K" term="Project Explorer, overview" />
@@ -175,27 +192,11 @@
         <HelpKeyword index="K" term="properties, DisableCodeBlockComponent" />
         <HelpKeyword index="K" term="properties, FrameworkVersion" />
         <HelpKeyword index="K" term="properties, HelpFileFormat" />
+        <HelpKeyword index="K" term="properties, IndentHtml" />
         <HelpKeyword index="K" term="properties, KeepLogFile" />
         <HelpKeyword index="K" term="properties, PlugInConfigurations" />
         <HelpKeyword index="K" term="property categories, Build" />
       </HelpKeywords>
-    </Topic>
-    <Topic id="eb7e1bc7-21c5-4453-bbaf-dec8c62c15bd" visible="True" title="Comments Category Properties">
-      <HelpKeywords>
-        <HelpKeyword index="K" term="properties, NamespaceSummaries" />
-        <HelpKeyword index="K" term="properties, ProjectSummary" />
-        <HelpKeyword index="K" term="property categories, Comments" />
-      </HelpKeywords>
-      <Topic id="48f5a893-acde-4e50-8c17-72b83d9c3f9d" visible="True" title="Using NamespaceDoc Classes">
-        <HelpKeywords>
-          <HelpKeyword index="K" term="NamespaceDoc classes" />
-        </HelpKeywords>
-      </Topic>
-      <Topic id="52aa172a-a310-4f75-b20f-7e2c7d870c65" visible="True" title="Sharing Project Summary and Namespace Comments">
-        <HelpKeywords>
-          <HelpKeyword index="K" term="property categories, Shared summaries" />
-        </HelpKeywords>
-      </Topic>
     </Topic>
     <Topic id="1b2dff59-92cc-4578-b261-f3849f30c26c" visible="True" title="Help File Category Properties">
       <HelpKeywords>
@@ -207,7 +208,6 @@
         <HelpKeyword index="K" term="properties, HeaderText" />
         <HelpKeyword index="K" term="properties, HelpTitle" />
         <HelpKeyword index="K" term="properties, HtmlHelpName" />
-        <HelpKeyword index="K" term="properties, IndentHtml" />
         <HelpKeyword index="K" term="properties, Language" />
         <HelpKeyword index="K" term="properties, NamingMethod" />
         <HelpKeyword index="K" term="properties, Preliminary" />
@@ -308,6 +308,23 @@
         <HelpKeyword index="K" term="properties, ShowMissingValues" />
         <HelpKeyword index="K" term="property categories, Show Missing" />
       </HelpKeywords>
+    </Topic>
+    <Topic id="eb7e1bc7-21c5-4453-bbaf-dec8c62c15bd" visible="True" title="Summaries Category Properties">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="properties, NamespaceSummaries" />
+        <HelpKeyword index="K" term="properties, ProjectSummary" />
+        <HelpKeyword index="K" term="property categories, Summaries" />
+      </HelpKeywords>
+      <Topic id="48f5a893-acde-4e50-8c17-72b83d9c3f9d" visible="True" title="Using NamespaceDoc Classes">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="NamespaceDoc classes" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="52aa172a-a310-4f75-b20f-7e2c7d870c65" visible="True" title="Sharing Project Summary and Namespace Comments">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="property categories, Shared summaries" />
+        </HelpKeywords>
+      </Topic>
     </Topic>
     <Topic id="3c489bd6-598c-4684-aafb-fbe9400864d3" visible="True" title="Visibility Category Properties">
       <HelpKeywords>
@@ -1299,6 +1316,11 @@
       <HelpKeyword index="K" term="History" />
       <HelpKeyword index="K" term="Version History" />
     </HelpKeywords>
+    <Topic id="798c4fef-9162-4fe6-98ca-02ee4aa7f6bc" visible="True" title="Version 1.9.3.1">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 1.9.3.1" />
+      </HelpKeywords>
+    </Topic>
     <Topic id="230a8032-011a-4a61-b2a4-2b644018986c" visible="True" title="Version 1.9.3.0">
       <HelpKeywords>
         <HelpKeyword index="K" term="versions, 1.9.3.0" />

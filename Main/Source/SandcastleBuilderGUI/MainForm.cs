@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : MainForm.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/26/2011
+// Updated : 04/26/2011
 // Note    : Copyright 2006-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -167,6 +167,7 @@ namespace SandcastleBuilder.Gui
             changedFiles = new List<string>();
             fsw = new FileSystemWatcher();
             fsw.NotifyFilter = NotifyFilters.LastWrite;
+            fsw.IncludeSubdirectories = true;
             fsw.Changed += fsw_OnChanged;
 
             if(Settings.Default.ContentFileEditors == null)
@@ -1531,7 +1532,7 @@ namespace SandcastleBuilder.Gui
 
             try
             {
-                if(outputPath.EndsWith(".hxs", StringComparison.Ordinal))
+                if(outputPath.EndsWith(".hxs", StringComparison.OrdinalIgnoreCase))
                     System.Diagnostics.Process.Start(help2Viewer, outputPath);
                 else
                     System.Diagnostics.Process.Start(outputPath);
@@ -1545,14 +1546,14 @@ namespace SandcastleBuilder.Gui
         }
 
         /// <summary>
-        /// Launch the H3 Viewer to view a Microsoft Help Viewer file.  This
+        /// Launch the MS Help Viewer to view a Microsoft Help Viewer file.  This
         /// will optionally install it first.
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
         private void miViewMSHelpViewer_Click(object sender, EventArgs e)
         {
-            using(LaunchMSHelpViewerDlg dlg = new LaunchMSHelpViewerDlg(project))
+            using(LaunchMSHelpViewerDlg dlg = new LaunchMSHelpViewerDlg(project, Settings.Default.MSHelpViewerPath))
             {
                 dlg.ShowDialog();
             }
@@ -2097,7 +2098,8 @@ namespace SandcastleBuilder.Gui
         /// <param name="e">The event arguments</param>
         private void fsw_OnChanged(object sender, FileSystemEventArgs e)
         {
-            changedFiles.Add(e.FullPath);
+            if(!changedFiles.Contains(e.FullPath))
+                changedFiles.Add(e.FullPath);
         }
         #endregion
     }

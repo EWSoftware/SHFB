@@ -1,0 +1,686 @@
+﻿<#@ template Debug="True" inherits="Microsoft.VisualStudio.TextTemplating.VSHost.ModelingTextTransformation" #>
+<#@ VSPackageDesigner processor="VSPackageDesignerDirectiveProcessor" requires="fileName='..\SandcastleBuilderPackage.vspackage'" #>
+<#@ Assembly Name="System.Core.dll" #>
+<#@ Assembly Name="System.Web.dll" #>
+<#@ Import Namespace="System.IO" #>
+<#@ Import Namespace="System.Linq" #>
+<#@ output extension=".vsct" #>
+<?xml version="1.0" encoding="utf-8"?>
+<CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <!--  This is the file that defines the actual layout and type of the commands.
+        It is divided in different sections (e.g. command definition, command
+        placement, ...), with each defining a specific set of properties.
+        See the comment before each section for more details about how to
+        use it. -->
+
+  <!--  The VSCT compiler (the tool that translates this file into the binary 
+        format that VisualStudio will consume) has the ability to run a preprocessor 
+        on the vsct file; this preprocessor is (usually) the C++ preprocessor, so 
+        it is possible to define includes and macros with the same syntax used 
+        in C++ files. Using this ability of the compiler here, we include some files 
+        defining some of the constants that we will use inside the file. -->
+
+  <!--This is the file that defines the IDs for all the commands exposed by VisualStudio. -->
+  <Extern href="stdidcmd.h"/>
+
+  <!--This header contains the command ids for the menus provided by the shell. -->
+  <Extern href="vsshlids.h"/>
+
+  <!--Definition of some VSCT specific constants. In this sample we use it for the IDs inside the guidOfficeIcon group. -->
+  <Extern href="msobtnid.h"/>
+
+  <Extern href="VSDbgCmd.h" />
+  <Extern href="VsDebugGuids.h"/>
+
+  <#
+	if (!String.IsNullOrEmpty(this.Root.CommandTable.IncludeFiles))
+	{
+		foreach (var str in this.Root.CommandTable.IncludeFiles.Split('|'))
+		{
+			#>
+			<Extern href="<#= str #>" />
+			<#
+		}
+	}
+  #>
+
+  <!--The Commands section is where we the commands, menus and menu groups are defined.
+      This section uses a Guid to identify the package that provides the command defined inside it. -->
+  <Commands package="guidPackage">
+  
+<#
+
+    if (ShouldWriteGroupsSection())
+    {
+#>
+  <Groups>
+  <#
+    foreach (var group in this.Root.CommandTable.Groups)
+    {
+		if (group is Group)
+		{
+		#>  <Group guid="guid<#= this.Root.CommandTable.SafeProjectName #>CommandSet" id="<#= group.Name #>" priority="0x<#= IntToHex(((Group)group).Priority) #>"/>
+	<#}}
+    #>
+</Groups>
+<#
+	}
+#>
+
+<#
+
+    if (ShouldWriteButtonsSection())
+    {
+#>
+  <Buttons>
+  <#
+    foreach (var button in this.Root.CommandTable.Buttons)
+    {#>  <Button guid="guid<#= this.Root.CommandTable.SafeProjectName #>CommandSet" id="<#= button.Name #>" priority="0x<#= IntToHex(button.Priority) #>">
+			<#
+				if (!String.IsNullOrEmpty(button.Icon) && button.Icon != "(none)")
+				{
+			#>
+	<Icon guid="<#= GetIconGuid(button.Icon) #>" id="<#= GetIconId(button.Icon) #>" />
+			<#
+				}
+			#>
+	<#
+    if ((int)button.CommandFlags > 0)
+    {
+		this.PushIndent("        ");
+		foreach (var str in button.CommandFlags.ToString().Split(','))
+		{
+			this.WriteLine("<CommandFlag>" + str.Trim() + "</CommandFlag>");
+		}
+		this.PopIndent();
+    }
+		 #>
+<Strings>
+<#    WriteStringsSection(button as VisualElement); #>
+		    </Strings>
+	  </Button>
+	<#    }
+    #>
+</Buttons>
+<#
+    }
+#>
+<#
+
+    if (ShouldWriteMenusSection())
+    {
+#>
+
+  <Menus>
+  <#
+    foreach (var menubase in this.Root.CommandTable.MenuBases)
+    {
+    Menu menu = menubase as Menu;
+    if (menu != null)
+    {
+    #>  <Menu guid="guid<#= this.Root.CommandTable.SafeProjectName #>CommandSet" id="<#=    menu.Name #>" type="<#=    menu.Type #>" priority="0x<#= IntToHex(menu.Priority) #>">
+	<#
+    if ((int)menu.CommandFlags > 0)
+    {
+		this.PushIndent("        ");
+		foreach (var str in menu.CommandFlags.ToString().Split(','))
+		{
+			this.WriteLine("<CommandFlag>" + str.Trim() + "</CommandFlag>");
+		}
+		this.PopIndent();
+    }
+		 #>
+		   <Strings>
+	       <#    WriteMenuStringsSection(menu); #>
+		   		</Strings>
+		</Menu> 
+
+    <#    } #>
+	<#
+    }
+	 #>
+  </Menus>
+<#
+    }
+#>
+
+<#
+
+    if (ShouldWriteCombosSection())
+    {
+#>
+  <Combos>
+  <#
+    foreach (var combo in this.Root.CommandTable.Combos)
+    {#>  <Combo guid="guid<#= this.Root.CommandTable.SafeProjectName #>CommandSet" id="<#=    combo.Name #>" idCommandList="<#=    combo.Name + "GetList" #>" defaultWidth="<#=    combo.DefaultWidth.ToString() #>" type="<#= combo.Type #>" priority="0x<#= IntToHex(combo.Priority) #>">
+	<#
+    if ((int)combo.CommandFlags > 0)
+    {
+    this.PushIndent("        ");
+    foreach (var str in combo.CommandFlags.ToString().Split(','))
+    {
+    this.WriteLine("<CommandFlag>" + str.Trim() + "</CommandFlag>");
+    }
+    this.PopIndent();
+    }
+		 #>
+	    <Strings>
+<#    WriteStringsSection(combo as VisualElement); #>
+		  </Strings>
+	  </Combo>
+	<#    }
+    #>
+  </Combos>
+  <#
+    }
+#>
+
+<#
+	if (ShouldWriteBitmapsSection())
+	{
+#>
+  <Bitmaps>
+  <#
+    foreach (var button in this.Root.CommandTable.Buttons)
+    {
+		if (!string.IsNullOrEmpty(button.Icon) && button.Icon != "(none)" && IsCustomIcon(button.Icon))
+		{
+	#>  <Bitmap guid="<#= button.Icon #>Guid" href="<#= GetIconPath(button.Icon) #>" usedList="<#= button.Icon #>Id" />
+  <# 
+		}
+  }
+  #>
+</Bitmaps>
+<#
+	}
+#>
+
+  </Commands>
+
+<#
+
+    if (ShouldWriteCommandPlacementsSection())
+    {
+#>
+  <CommandPlacements>
+<#
+    foreach (var el in this.Root.CommandTable.Buttons)
+    {
+    foreach (var group in el.GroupBases)
+    {#>     <CommandPlacement guid="guid<#= this.Root.CommandTable.SafeProjectName #>CommandSet" id="<#=    el.Name #>" priority="0x<#= IntToHex(el.Priority) #>"> 
+	         <Parent guid="<#=    GetGroupGuid(group) #>" id="<#=    GetGroupId(group) #>" />
+		   </CommandPlacement> 
+	<#    }
+    }
+    #>
+<#
+    foreach (var el in this.Root.CommandTable.Combos)
+    {
+    foreach (var group in el.GroupBases)
+    {#>     <CommandPlacement guid="guid<#= this.Root.CommandTable.SafeProjectName #>CommandSet" id="<#=    el.Name #>" priority="0x<#= IntToHex(el.Priority) #>">
+	         <Parent guid="<#=    GetGroupGuid(group) #>" id="<#=    GetGroupId(group) #>" />
+		   </CommandPlacement> 
+	<#    }
+    }
+    #>
+<#
+	// add <CommandPlacement> for groups
+    foreach (var el in this.Store.ElementDirectory.AllElements.OfType<Group>())
+    {
+    foreach (var menu in el.MenuBases)
+    {#>     <CommandPlacement guid="<#=    GetGroupGuid(el) #>" id="<#=    el.Name #>" priority="0x<#= IntToHex(el.Priority) #>">
+	         <Parent guid="<#=    GetMenuGuid(menu) #>" id="<#=    GetMenuId(menu) #>" />
+		   </CommandPlacement> 
+	<#    }
+    }
+    #>
+	<#
+	// add <CommandPlacement> for menus
+    foreach (var el in this.Store.ElementDirectory.AllElements.OfType<Menu>())
+    {
+    foreach (var group in el.GroupBases2)
+    {#>     <CommandPlacement guid="<#=    GetMenuGuid(el) #>" id="<#=    el.Name #>" priority="0x<#= IntToHex(el.Priority) #>">
+	         <Parent guid="<#=    GetGroupGuid(group) #>" id="<#=    GetGroupId(group) #>" />
+		   </CommandPlacement> 
+	<#    }
+    }
+#>
+</CommandPlacements>
+  <#
+    }    
+#>
+
+<#
+
+    if (ShouldWriteVisibilityConstraintsSection())
+    {
+#>
+  <VisibilityConstraints>
+	<#
+    foreach (VisualElement ve in this.Store.ElementDirectory.AllElements.OfType<VisualElement>())
+    {
+	    if ((int)ve.VisibilityConstraints > 0)
+    {
+    this.PushIndent("        ");
+    foreach (var str in ve.VisibilityConstraints.ToString().Split(','))
+    { #>
+	<VisibilityItem guid="guid<#= this.Root.CommandTable.SafeProjectName #>CommandSet" id="<#= ve.Name #>" context="<#= this.GetVisibilityContraintGuid(str.Trim()) #>" />
+	<#
+    }
+    this.PopIndent();
+    }
+	if (!String.IsNullOrEmpty(ve.CustomVisibility))
+	{
+	foreach(var str in GetCustomVisibilityItems(ve.CustomVisibility))
+	{
+		#>
+	<VisibilityItem guid="guid<#= this.Root.CommandTable.SafeProjectName #>CommandSet" id="<#= ve.Name #>" context="<#= str #>" />
+		<#
+	}
+	}
+	}
+    foreach (Menu menu in this.Store.ElementDirectory.AllElements.OfType<Menu>())
+    {
+	    if ((int)menu.VisibilityConstraints > 0)
+    {
+    this.PushIndent("        ");
+    foreach (var str in menu.VisibilityConstraints.ToString().Split(','))
+    { #>
+	<VisibilityItem guid="guid<#= this.Root.CommandTable.SafeProjectName #>CommandSet" id="<#= menu.Name #>" context="<#= this.GetVisibilityContraintGuid(str.Trim()) #>" />
+	<#
+    }
+    this.PopIndent();
+    }
+	if (!String.IsNullOrEmpty(menu.CustomVisibility))
+	{
+	foreach(var str in GetCustomVisibilityItems(menu.CustomVisibility))
+	{
+		#>
+	<VisibilityItem guid="guid<#= this.Root.CommandTable.SafeProjectName #>CommandSet" id="<#= menu.Name #>" context="<#= str #>" />
+		<#
+	}
+	}
+	}#>
+</VisibilityConstraints>
+<#	
+	}
+#>
+
+<#
+	if (ShouldWriteKeybindingsSection())
+	{
+#>
+<KeyBindings>
+	<#
+		foreach(var ve in this.Root.Store.ElementDirectory.FindElements<VisualElement>())
+		{
+			if (!String.IsNullOrEmpty(ve.Key1))
+			{
+	#>
+		<KeyBinding guid="guid<#= this.Root.CommandTable.SafeProjectName #>CommandSet" id="<#= ve.Name #>" editor="<#= ve.Editor #>" key1="<#= ve.Key1 #>" <#= OutputMod1Element(ve) #> <#= OutputKey2Element(ve) #> <#= OutputMod2Element(ve) #> />
+	<#
+			}
+		}
+	#>
+</KeyBindings>
+
+<#
+	}
+#>
+  <Symbols>
+    <!-- This is the package guid. -->
+    <GuidSymbol name="guidPackage" value="{<#= this.Root.CommandTable.PackageGuid #>}" />
+    
+    <!-- This is the guid used to group the menu commands together -->
+    <GuidSymbol name="guid<#= this.Root.CommandTable.SafeProjectName #>CommandSet" value="{<#= this.Root.CommandTable.CommandSetGuid #>}">
+	<#
+    foreach (var el in this.Root.CommandTable.Groups)
+    {
+    if (el is Group)
+    { #>     <IDSymbol name="<#=    el.Name #>" value="0x<#= IntToHex(el.IdNumeric) #>" />
+<#    }
+    }
+    #>
+<#
+    foreach (var bt in this.Root.CommandTable.Buttons)
+    {#>     <IDSymbol name="<#=    bt.Name #>" value="0x<#= IntToHex(bt.IdNumeric) #>" />
+	<#    }
+    #>
+<#
+    foreach (var el in this.Root.CommandTable.MenuBases)
+    {
+    if (el is Menu)
+    { #>     <IDSymbol name="<#=    el.Name #>" value="0x<#= IntToHex(el.IdNumeric) #>" />
+	<#    }
+    }
+    #>
+<#
+    foreach (var cb in this.Root.CommandTable.Combos)
+    {#>     <IDSymbol name="<#= cb.Name #>" value="0x<#= IntToHex(cb.IdNumeric) #>" />
+			<IDSymbol name="<#= cb.Name+"GetList" #>" value="0x<#= IntToHex(cb.IdCommandList) #>" />
+<#    }
+#>
+  </GuidSymbol>
+	<#
+    foreach (var bt in this.Root.CommandTable.Buttons)
+    {
+		if (!String.IsNullOrEmpty(bt.Icon) && bt.Icon != "(none)" && IsCustomIcon(bt.Icon))
+		{
+	#>     <GuidSymbol name="<#= bt.Icon #>Guid" value="{<#= Guid.NewGuid().ToString() #>}">
+				<IDSymbol name="<#= bt.Icon #>Id" value="1" />
+			</GuidSymbol>
+	<#   }
+	 }
+    #>
+</Symbols>
+
+</CommandTable>
+
+<#+
+    string IntToHex(int id)
+    {
+		return id.ToString("X").PadLeft(4, '0');
+    }
+
+	string GetMenuGuid(MenuBase menu)
+    {
+		ExternalMenu externalMenu = menu as ExternalMenu;
+		if (externalMenu != null)
+		{
+			return externalMenu.ParentData.Guid.ToString();
+		}
+		ExternalToolbar externalToolbar = menu as ExternalToolbar;
+		if (externalToolbar != null)
+		{
+			return externalToolbar.ParentData.Guid.ToString();
+		}
+		{
+			return "guid"+this.Root.CommandTable.SafeProjectName+"CommandSet";
+		}
+    }
+	
+	string GetMenuId(MenuBase menu)
+    {
+		ExternalMenu externalMenu = menu as ExternalMenu;
+		if (externalMenu != null)
+		{
+			return externalMenu.ParentData.Id;
+		}
+		ExternalToolbar externalToolbar = menu as ExternalToolbar;
+		if (externalToolbar != null)
+		{
+			return externalToolbar.ParentData.Id;
+		}
+		else
+		{
+			return menu.Name;
+		}
+    }
+
+    string GetGroupGuid(GroupBase group)
+    {
+		ExternalGroup externalGroup = group as ExternalGroup;
+		if (externalGroup != null)
+		{
+			return externalGroup.ParentData.Guid.ToString();
+		}
+		else
+		{
+			return "guid"+this.Root.CommandTable.SafeProjectName+"CommandSet";
+		}
+    }
+
+	string GetGroupId(GroupBase group)
+    {
+		ExternalGroup externalGroup = group as ExternalGroup;
+		if (externalGroup != null)
+		{
+			return externalGroup.ParentData.Id;
+		}
+		else
+		{
+			return group.Name;
+		}
+    }
+
+   void WriteStringsSection(VisualElement ve)
+   {
+	    this.PushIndent("            ");
+if (!String.IsNullOrEmpty(ve.CommandName))
+    {
+    this.WriteLine(String.Format("<CommandName>{0}</CommandName>", ve.CommandName));
+    }
+    if (!String.IsNullOrEmpty(ve.ButtonText))
+    {
+    this.WriteLine(String.Format("<ButtonText>{0}</ButtonText>", this.EncodeString(ve.ButtonText)));
+    }
+    if (!String.IsNullOrEmpty(ve.CanonicalName))
+    {
+    this.WriteLine(String.Format("<CanonicalName>{0}</CanonicalName>", ve.CanonicalName));
+    }
+    if (!String.IsNullOrEmpty(ve.LocCanonicalName))
+    {
+    this.WriteLine(String.Format("<LocCanonicalName>{0}</LocCanonicalName>", this.EncodeString(ve.LocCanonicalName)));
+    }
+    if (!String.IsNullOrEmpty(ve.MenuText))
+    {
+    this.WriteLine(String.Format("<MenuText>{0}</MenuText>", this.EncodeString(ve.MenuText)));
+    }
+    if (!String.IsNullOrEmpty(ve.ToolTipText))
+    {
+    this.WriteLine(String.Format("<ToolTipText>{0}</ToolTipText>", this.EncodeString(ve.ToolTipText)));
+    }
+    this.PopIndent();
+   }
+
+   void WriteMenuStringsSection(Menu ve)
+   {
+	    this.PushIndent("         ");
+if (!String.IsNullOrEmpty(ve.CommandName))
+    {
+    this.WriteLine(String.Format("<CommandName>{0}</CommandName>", ve.CommandName));
+    }
+    if (!String.IsNullOrEmpty(ve.ButtonText))
+    {
+    this.WriteLine(String.Format("<ButtonText>{0}</ButtonText>", this.EncodeString(ve.ButtonText)));
+    }
+    if (!String.IsNullOrEmpty(ve.CanonicalName))
+    {
+    this.WriteLine(String.Format("<CanonicalName>{0}</CanonicalName>", this.EncodeString(ve.CanonicalName)));
+    }
+    if (!String.IsNullOrEmpty(ve.LocCanonicalName))
+    {
+    this.WriteLine(String.Format("<LocCanonicalName>{0}</LocCanonicalName>", this.EncodeString(ve.LocCanonicalName)));
+    }
+    if (!String.IsNullOrEmpty(ve.MenuText))
+    {
+    this.WriteLine(String.Format("<MenuText>{0}</MenuText>", this.EncodeString(ve.MenuText)));
+    }
+    if (!String.IsNullOrEmpty(ve.ToolTipText))
+    {
+    this.WriteLine(String.Format("<ToolTipText>{0}</ToolTipText>", this.EncodeString(ve.ToolTipText)));
+    }
+    this.PopIndent();
+   }
+
+   bool ShouldWriteCommandPlacementsSection()
+   {
+		return true;
+   }
+
+   bool ShouldWriteMenusSection()
+   {
+	   foreach (MenuBase menuBase in this.Root.CommandTable.MenuBases)
+	   {
+		   if (menuBase is Menu)
+		   {
+			return true;
+		   }
+	   }
+	   return false;
+   }
+   bool ShouldWriteGroupsSection()
+   {
+	   foreach (GroupBase groupBase in this.Root.CommandTable.Groups)
+	   {
+		   if (groupBase is Group)
+		   {
+				return true;
+		   }
+	   }
+	   return false;
+   }
+   bool ShouldWriteCombosSection()
+   {
+		return this.Root.CommandTable.Combos.Count > 0;
+   }
+   bool ShouldWriteButtonsSection()
+   {
+		return this.Root.CommandTable.Buttons.Count > 0;
+   }
+   bool ShouldWriteBitmapsSection()
+   {
+	foreach (var button in this.Root.CommandTable.Buttons)
+	{
+		if(!string.IsNullOrEmpty(button.Icon) && button.Icon != "(none)" && IsCustomIcon(button.Icon))
+		{
+			return true;
+		}
+	}
+	return false;
+   }
+
+   bool ShouldWriteVisibilityConstraintsSection()
+   {
+
+		foreach (VisualElement ve in this.Store.ElementDirectory.AllElements.OfType<VisualElement>())
+		{
+			if (ve.VisibilityConstraints > 0)
+			{
+				return true;
+			}
+			else if (!String.IsNullOrEmpty(ve.CustomVisibility))
+			{
+				return true;
+			}
+		}
+
+		foreach(Menu menu in this.Store.ElementDirectory.AllElements.OfType<Menu>())
+		{
+			if (menu.VisibilityConstraints > 0)
+			{
+				return true;
+			}
+			else if(!String.IsNullOrEmpty(menu.CustomVisibility))
+			{
+				return true;
+			}
+		}
+
+		return false;
+   }
+
+   bool ShouldWriteKeybindingsSection()
+   {
+		foreach (Button el in this.Root.CommandTable.Buttons)
+		{
+			if (!String.IsNullOrEmpty(el.Key1))
+			{
+				return true;
+			}
+		}
+		foreach (Combo el in this.Root.CommandTable.Combos)
+		{
+			if (!String.IsNullOrEmpty(el.Key1))
+			{
+				return true;
+			}
+		}
+
+		return false;
+   }
+
+   string[] GetCustomVisibilityItems(string customVisibilityString)
+   {
+		return customVisibilityString.Split('|');
+   }
+
+   string GetIconId(string icon)
+   {
+		if(IsCustomIcon(icon))
+		{
+			return icon + "Id";
+		}
+		else
+		{
+			return icon;
+		}
+   }
+
+   string GetIconGuid(string icon)
+   {
+		if(IsCustomIcon(icon))
+		{
+			return icon + "Guid";
+		}
+		else
+		{
+			return "guidOfficeIcon";
+		}
+   }
+
+   string GetIconPath(string icon)
+   {
+		return @"..\Button Bitmaps\" + icon;
+   }
+
+   bool IsCustomIcon(string icon)
+   {
+		if(icon.ToString().EndsWith(".bmp"))
+		{
+			return true;
+		}
+
+		return false;
+   }
+
+   string OutputKey2Element(VisualElement ve)
+   {
+		if (!String.IsNullOrEmpty(ve.Key2))
+		{
+			return String.Format(@"key2=""{0}""", ve.Key2);
+		}
+		return "";
+   }
+   string OutputMod1Element(VisualElement ve)
+   {
+		if ((int)ve.Mod1 != 0)
+		{
+			return String.Format(@"mod1=""{0}""", ve.Mod1.ToString().Replace(",",""));
+		}
+		return "";
+   }
+   string OutputMod2Element(VisualElement ve)
+   {
+		if ((int)ve.Mod2 != 0)
+		{
+			return String.Format(@"mod2=""{0}""", ve.Mod2.ToString().Replace(",",""));
+		}
+		return "";
+   }
+
+   string GetVisibilityContraintGuid(string name)
+   {
+		if (name == "TextEditor")
+			return "GUID_TextEditorFactory";
+		else
+			return "UICONTEXT_" + name;
+   }
+
+   string EncodeString(string str)
+   {
+		return System.Web.HttpUtility.HtmlEncode(str);		
+   }
+
+#>

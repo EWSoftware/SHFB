@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : ComponentConfigurationDictionary.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/06/2009
-// Note    : Copyright 2006-2009, Eric Woodruff, All rights reserved
+// Updated : 04/10/2011
+// Note    : Copyright 2006-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a dictionary class used to hold the configurations for
@@ -20,6 +20,8 @@
 // 1.3.3.0  11/24/2006  EFW  Created the code
 // 1.6.0.2  11/01/2007  EFW  Reworked to support better handling of components
 // 1.8.0.0  07/01/2008  EFW  Reworked to support MSBuild project format
+// 1.9.3.0  04/07/2011  EFW  Made the from/to XML members public so that it can
+//                           be used from the VSPackage.
 //=============================================================================
 
 using System;
@@ -40,10 +42,8 @@ namespace SandcastleBuilder.Utils.BuildComponent
     /// configuration properties for a project such as the Code Block Component.
     /// </summary>
     [TypeConverter(typeof(ComponentConfigurationDictionaryTypeConverter)),
-      Editor(typeof(ComponentConfigurationEditor), typeof(UITypeEditor)),
-      Serializable]
-    public class ComponentConfigurationDictionary : Dictionary<string,
-      BuildComponentConfiguration>
+      Editor(typeof(ComponentConfigurationEditor), typeof(UITypeEditor)), Serializable]
+    public class ComponentConfigurationDictionary : Dictionary<string, BuildComponentConfiguration>
     {
         #region Private data members
         //=====================================================================
@@ -123,7 +123,7 @@ namespace SandcastleBuilder.Utils.BuildComponent
         /// </summary>
         /// <param name="components">The component items</param>
         /// <remarks>The information is stored as an XML fragment</remarks>
-        internal void FromXml(string components)
+        public void FromXml(string components)
         {
             XmlTextReader xr = null;
             string id, config;
@@ -138,18 +138,15 @@ namespace SandcastleBuilder.Utils.BuildComponent
 
                 while(!xr.EOF)
                 {
-                    if(xr.NodeType == XmlNodeType.Element &&
-                      xr.Name == "ComponentConfig")
+                    if(xr.NodeType == XmlNodeType.Element && xr.Name == "ComponentConfig")
                     {
                         id = xr.GetAttribute("id");
-                        enabled = Convert.ToBoolean(xr.GetAttribute("enabled"),
-                            CultureInfo.InvariantCulture);
+                        enabled = Convert.ToBoolean(xr.GetAttribute("enabled"), CultureInfo.InvariantCulture);
 
                         xr.ReadToDescendant("component");
                         config = xr.ReadOuterXml();
 
-                        this.Add(id, new BuildComponentConfiguration(enabled,
-                            config, projectFile));
+                        this.Add(id, new BuildComponentConfiguration(enabled, config, projectFile));
                     }
 
                     xr.Read();
@@ -170,7 +167,7 @@ namespace SandcastleBuilder.Utils.BuildComponent
         /// </summary>
         /// <returns>The XML fragment containing the component configuration
         /// info.</returns>
-        internal string ToXml()
+        public string ToXml()
         {
             BuildComponentConfiguration config;
             MemoryStream ms = new MemoryStream(10240);
@@ -187,8 +184,7 @@ namespace SandcastleBuilder.Utils.BuildComponent
 
                     xw.WriteStartElement("ComponentConfig");
                     xw.WriteAttributeString("id", key);
-                    xw.WriteAttributeString("enabled",
-                        config.Enabled.ToString());
+                    xw.WriteAttributeString("enabled", config.Enabled.ToString());
                     xw.WriteRaw(config.Configuration);
                     xw.WriteEndElement();
                 }
@@ -221,15 +217,13 @@ namespace SandcastleBuilder.Utils.BuildComponent
         /// <remarks>The <see cref="BuildComponentConfiguration" /> constructor
         /// is internal so that we control creation of the items and can
         /// associate them with the project.</remarks>
-        public BuildComponentConfiguration Add(string id, bool enabled,
-          string config)
+        public BuildComponentConfiguration Add(string id, bool enabled, string config)
         {
             BuildComponentConfiguration item;
 
             if(!this.TryGetValue(id, out item))
             {
-                item = new BuildComponentConfiguration(enabled, config,
-                    projectFile);
+                item = new BuildComponentConfiguration(enabled, config, projectFile);
                 base.Add(id, item);
             }
 

@@ -4,17 +4,17 @@
 	<?include Product.wxi ?>
 
 	<Product Id="*" UpgradeCode="$(var.UpgradeCode)"
-		Name="$(var.ProductName)" Version="!(bind.fileVersion.SandcastleBuilderGUI.exe)"
+		Name="$(var.ProductName)" Version="!(bind.fileVersion.SHFBProjectLauncher.exe)"
 		Language="1033" Manufacturer="$(var.Manufacturer)">
 
 		<!-- Package Definition -->
-		<Package Id="*" Compressed="yes" Description="$(var.ProductShortName) !(bind.fileVersion.SandcastleBuilderGUI.exe)" InstallerVersion="200"
+		<Package Id="*" Compressed="yes" Description="$(var.ProductShortName) !(bind.fileVersion.SHFBProjectLauncher.exe)" InstallerVersion="200"
 				 ShortNames="no" Manufacturer="$(var.Manufacturer)" Languages="1033" SummaryCodepage="1252" />
 
 		<!-- Major Upgrade Support -->
 		<Upgrade Id="$(var.UpgradeCode)">
-			<UpgradeVersion Minimum="!(bind.fileVersion.SandcastleBuilderGUI.exe)" IncludeMinimum="no" OnlyDetect="yes" Property="NEWERVERSIONDETECTED" />
-			<UpgradeVersion Minimum="0.0.0.0" IncludeMinimum="yes" Maximum="!(bind.fileVersion.SandcastleBuilderGUI.exe)" IncludeMaximum="no" Property="OLDERVERSIONBEINGUPGRADED" />
+			<UpgradeVersion Minimum="!(bind.fileVersion.SHFBProjectLauncher.exe)" IncludeMinimum="no" OnlyDetect="yes" Property="NEWERVERSIONDETECTED" />
+			<UpgradeVersion Minimum="0.0.0.0" IncludeMinimum="yes" Maximum="!(bind.fileVersion.SHFBProjectLauncher.exe)" IncludeMaximum="no" Property="OLDERVERSIONBEINGUPGRADED" />
 		</Upgrade>
 
 		<!-- Properties -->
@@ -45,6 +45,7 @@
 		<!-- Icons -->
 		<Icon Id="Help.ico" SourceFile="$(var.BinFolder)..\..\Images\Help.ico" />
 		<Icon Id="SandcastleBuilder.exe" SourceFile="$(var.BinFolder)..\..\Images\SandcastleBuilder.ico" />
+		<Icon Id="SHFBProjectLauncher.exe" SourceFile="$(var.LauncherFolder)..\..\Images\SHFBProjectLauncher.ico" />
 		<Icon Id="Cmd.ico" SourceFile="Resources\Cmd.ico" />
 		<Icon Id="HtmlDocument.ico" SourceFile="Resources\HtmlDocument.ico" />
 

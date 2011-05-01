@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/06/2011
+// Updated : 04/09/2011
 // Note    : Copyright 2006-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -72,6 +72,7 @@ using System.Web;
 using System.Xml;
 using System.Xml.XPath;
 
+using SandcastleBuilder.Utils.BuildComponent;
 using SandcastleBuilder.Utils.ConceptualContent;
 using SandcastleBuilder.Utils.Design;
 using SandcastleBuilder.Utils.MSBuild;
@@ -154,6 +155,11 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
         #region Properties
         //=====================================================================
+
+        /// <summary>
+        /// This is used to get the cancellation state of the build
+        /// </summary>
+        public bool BuildCanceled { get; set; }
 
         /// <summary>
         /// This returns the path to MSBuild.exe
@@ -557,8 +563,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 Assembly asm = Assembly.GetExecutingAssembly();
 
                 FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(asm.Location);
-                this.ReportProgress(BuildStep.Initializing,
-                    "[{0}, version {1}]", fvi.ProductName, fvi.ProductVersion);
+                this.ReportProgress(BuildStep.Initializing, "[{0}, version {1}]", fvi.ProductName, fvi.ProductVersion);
 
                 buildStart = stepStart = DateTime.Now;
 
@@ -566,7 +571,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     t => t.ToolsVersion == project.MSBuildProject.ToolsVersion).ToolsPath, "MSBuild.exe");
 
                 // Base folder for SHFB
-                shfbFolder = Path.GetDirectoryName(asm.Location) + @"\";
+                shfbFolder = BuildComponentManager.HelpFileBuilderFolder;
 
                 // Get the location of the template files
                 templateFolder = shfbFolder + @"Templates\";
@@ -1429,7 +1434,7 @@ AllDone:
                     currentProcess.Kill();
 
                     foreach(Process p in Process.GetProcesses())
-                        if(reKillProcess.IsMatch(p.ProcessName))
+                        if(reKillProcess.IsMatch(p.ProcessName) && !p.HasExited)
                         {
                             System.Diagnostics.Debug.WriteLine("Killing " + p.ProcessName);
                             p.Kill();
@@ -1651,7 +1656,11 @@ AllDone:
 
             if(stepChanged)
                 OnBuildStepChanged(progressArgs);
+
+            if(this.BuildCanceled && !progressArgs.HasCompleted)
+                throw new BuilderException("BUILD CANCELLED");
         }
+
         #endregion
 
         #region Helper methods
@@ -2520,6 +2529,16 @@ AllDone:
             {
                 System.Diagnostics.Debug.WriteLine(ex);
                 System.Diagnostics.Debug.WriteLine("ReadStdOut thread failed\r\n");
+
+                try
+                {
+                    if(currentProcess != null)
+                        currentProcess.Kill();
+                }
+                catch
+                {
+                    // Ignore exceptions as the process may already have exited
+                }
             }
 
             System.Diagnostics.Debug.WriteLine("ReadStdOut thread stopped\r\n");
@@ -2551,6 +2570,16 @@ AllDone:
             {
                 System.Diagnostics.Debug.WriteLine(ex);
                 System.Diagnostics.Debug.WriteLine("ReadStdErr thread failed\r\n");
+
+                try
+                {
+                    if(currentProcess != null)
+                        currentProcess.Kill();
+                }
+                catch
+                {
+                    // Ignore exceptions as the process may already have exited
+                }
             }
 
             System.Diagnostics.Debug.WriteLine("ReadStdErr thread stopped\r\n");

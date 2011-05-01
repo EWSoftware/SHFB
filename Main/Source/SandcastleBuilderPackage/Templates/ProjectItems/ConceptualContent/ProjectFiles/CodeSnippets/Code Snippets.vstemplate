@@ -1,0 +1,14 @@
+<VSTemplate Version="3.0.0" Type="Item" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005">
+  <TemplateData>
+    <Name Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="131"/>
+    <Description Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="132"/>
+    <Icon Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="411" />
+    <ProjectType>SandcastleBuilderProject</ProjectType>
+    <DefaultName>Code Snippets.snippets</DefaultName>
+    <SortOrder>30</SortOrder>
+    <NumberOfParentCategoriesToRollUp>2</NumberOfParentCategoriesToRollUp>
+  </TemplateData>
+  <TemplateContent>
+    <ProjectItem>Code Snippets.snippets</ProjectItem>
+  </TemplateContent>
+</VSTemplate>

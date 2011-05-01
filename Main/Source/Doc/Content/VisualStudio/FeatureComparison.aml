@@ -1,0 +1,218 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="78507051-0fc0-479b-9d47-78a10398eaf2" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+    	<para>This topic compares the features available in the standalone GUI and the Visual Studio extension
+package.  It provides information on where to find the comparable feature in Visual Studio as well as notes on
+differences between the two.</para>
+
+		<autoOutline lead="none" />
+    </introduction>
+
+<section address="UserPrefs">
+	<title>User Preferences</title>
+	<content>
+		<para>User preferences related to general options that are not tied to any specific project can be found
+in the Visual Studio options dialog box.  Select <ui>Tools</ui> | <ui>Options</ui> from the main menu bar and
+then select the <ui>Sandcastle Help File Builder</ui> category.  The available user preferences differ slightly
+between the standalone GUI and Visual Studio.  For a more detailed description of the available
+preference options, see the <link xlink:href="2152ed96-bf69-4b9b-b1a7-4fffc71b3095" /> topic.</para>
+	</content>
+</section>
+
+<section address="NewProject">
+	<title>Creating a New Project</title>
+	<content>
+		<para>To create a new help file builder project within Visual Studio, do the following:</para>
+
+		<list class="ordered">
+			<listItem>
+				<para>Select <ui>File</ui> | <ui>New</ui> | <ui>Project</ui> from the main menu bar.</para>
+			</listItem>
+
+			<listItem>
+				<para>In the <ui>New Project</ui> dialog, select the <ui>Installed Templates</ui> category and
+then the <ui>Documentation</ui> sub-category in the list on the left side of the dialog box.</para>
+			</listItem>
+
+			<listItem>
+				<para>The help file builder project type is the only one in the list.  Enter a new project name,
+the folder in which to place it, and any other options, and then click the <ui>OK</ui> button to create it.</para>
+			</listItem>
+		</list>
+
+		<mediaLink>
+			<image xlink:href="VSNewProjectDlg" placement="center" />
+		</mediaLink>
+		
+		<alert class="note">
+		  <para>The <ui>.NET Framework</ui> selector combo box at the top of the dialog has no bearing on the
+help file builder project.  As such, you can ignore it.  The framework version used by the project is set
+using the <ui>Build</ui> category <ui>Framework Version</ui> project property.</para>
+		</alert>
+
+	</content>
+</section>
+	  
+	  <section address="ProjectManagement">
+  <title>Project Management</title>
+  <content>
+    <para>The Visual Studio shell takes the place of the standalone GUI for all project management related tasks
+such as creating projects, adding and removing files to them, and building them.  There are many additional
+benefits to using Visual Studio for help file builder projects such as:</para>
+
+	  <list class="bullet">
+		  <listItem>
+			  <para>Help file projects are part of a Visual Studio solution file and can be combined and built
+along with other project types such as the assembly projects that they are documenting.  As such, there is no
+longer a need to build the help file project using the post-build event of another project.  You can also
+combine multiple help file projects into a single solution file.</para>
+		  </listItem>
+
+		  <listItem>
+			  <para>The <ui>Solution Explorer</ui> tool window supports multiple selection and you can perform
+operations on more than one file at once.</para>
+		  </listItem>
+
+		  <listItem>
+			  <para>With the projects hosted in Visual Studio, you gain access to source control and can
+manage help file builder projects under source control much more easily.</para>
+		  </listItem>
+
+		  <listItem>
+			  <para>Visual Studio provides better editors for all of the common file types.  In addition, you gain
+access to extra features when editing files such as IntelliSense.</para>
+
+			  <alert class="tip">
+				  <para>The help file builder guided installer offers an option to enable IntelliSense for MAML
+topics within Visual Studio.  It is highly recommended that you let it install the necessary schemas to enable
+this option.</para>
+			  </alert>
+		  </listItem>
+
+		  <listItem>
+			  <para>Additional add-ins and extensions can be installed to provide new features such as
+spell checking, etc.</para>
+		  </listItem>
+	  </list>
+
+	  <para>The equivalent project management features and commands from the standalone GUI should be quite easy
+to find within Visual Studio.  Opening existing projects, managing files within a project, building a project, and
+cleaning the project output, is done the same way as for any other type of Visual Studio project.  The <ui>Solution
+Explorer</ui> tool window in Visual Studio corresponds to the <ui>Project Explorer</ui> tool window in the standalone
+GUI and provides all of the same options with regard to adding and removing documentation sources, references, and
+other supporting files.  Properties for project items are edited via the <ui>Properties</ui> tool window in Visual
+Studio.  An additional <ui>Project Properties</ui> node appears in the Visual Studio solution explorer that lets you
+open the project property editor window.  You can also get to it by right clicking on the project node and selecting
+the <ui>Properties</ui> context menu option.  The <ui>Open Project in Standalone GUI</ui> option on the project node's
+context menu will allow you to open the selected project in the standalone GUI.  The <ui>View Build Log Content</ui>
+option on the context menu will allow you to open the <ui>Build Log Content</ui> tool window.  It displays the full
+content of the build log from the last time the help file project was built.</para>
+
+  </content>
+</section>
+
+<section address="ProjectProps">
+	<title>Editing a Project's Properties</title>
+	<content>
+	  <para>The project properties editor window in Visual Studio is quite different from the one in the
+standalone GUI but provides access to all of the properties in a much easier to use fashion.  Project properties
+are grouped into tabs.  The group tabs are ordered by frequency of usage rather than alphabetically as they are in
+the standalone GUI.  Each set of properties is edited using standard controls such as text boxes, combo boxes,
+list boxes, etc. with more descriptive labels than the ones found in the standalone GUI.  The component
+configurations, plug-in configurations, and user-defined properties have each been given their own tab.  Since
+there is only one website property, it has been combined with the Help 1 properties on the <ui>Help 1/Website</ui>
+tab.  An information and/or warning tip icon appears after some properties.  Hover the mouse over the icon to
+see additional usage notes or warnings related to the property.</para>
+
+		<mediaLink>
+			<image xlink:href="VSProjectPropsEditor" placement="center" />
+		</mediaLink>
+
+	</content>
+</section>
+
+<section address="SHFBToolbar">
+  <title>Sandcastle Help File Builder Toolbar</title>
+  <content>
+    <para>A toolbar is available for help file builder projects.  On it, you will find the options to open the
+various help file formats, open the MS Help Viewer library manager tool, open the build log content tool window,
+open the FAQ help topic, and open the help file builder's help file.  The help file viewing options are also
+available from the <ui>View</ui> | <ui>View Help File</ui> submenu.  To show or hide the help file builder toolbar,
+either select the <ui>View</ui> | <ui>Toolbars</ui> | <ui>Sandcastle Help File Builder</ui> menu option or right
+click in the toolbar area and select the <ui>Sandcastle Help File Builder</ui> context menu option.</para>
+  </content>
+</section>
+
+<section address="SourceControl">
+  <title>Source Control Tips</title>
+  <content>
+    <para>As noted above, using Visual Studio to manage help file builder projects provides access to the built-in
+source control providers within it.  When making changes to a project or file within Visual Studio, source control
+operations will occur as they normally do for any other project type.  If you edit a help file builder project or
+its related files with both Visual Studio and the standalone GUI keep the following in mind:</para>
+
+	  <list class="bullet">
+		  <listItem>
+			  <para>Files can be added and removed from the project while it is open in both Visual Studio and
+the standalone GUI.  Both will prompt you to reload the project if they detect that it has been modified outside
+of their respective environment.</para>
+		  </listItem>
+		  
+		  <listItem>
+			  <para>The standalone GUI does not support source control.  As such, you must check the files out in
+Visual Studio prior to saving any changes made to them in the standalone GUI.  It is best to check files out prior
+to modifying them in the standalone GUI so that you can ensure that you have a current version of the file if
+necessary.</para>
+		  </listItem>
+
+		  <listItem>
+			  <para>If you need to rename a file, it is recommended that you do it from within Visual Studio
+rather than the standalone GUI so that the source control provider makes a note of the rename operation.  Such
+changes made to a source controlled file in the standalone GUI may cause problems with keeping the file in synch
+with the source control store.</para>
+		  </listItem>
+
+		  <listItem>
+		  <para>Files can be safely added to a source controlled project from the standalone GUI.  However, when
+you load the project or refresh it in Visual Studio, the new files will not automatically be added to source
+control.  To remedy this situation, do the following from within Visual Studio:</para>
+
+			<list class="ordered">
+				<listItem>
+					<para>Make sure the project node or one of its files is selected and use the
+<ui>Project</ui> | <ui>Show All Files</ui> option to show all files within the project folder including those
+that are not part of the project.</para>
+				</listItem>
+
+				<listItem>
+					<para>Select each of the files that was added via the standalone GUI.</para>
+				</listItem>
+
+				<listItem>
+					<para>Right click on one of the selected files and select the <ui>Exclude From Project</ui>
+context menu option.  This will exclude the files from the project.  Because the Show All Files option is enabled,
+they will still appear as items in the solution explorer but with an icon that indicates their excluded state.</para>
+				</listItem>
+
+				<listItem>
+					<para>With the same set of files selected, right click on one of them again and select the
+<ui>Include In Project</ui> context menu option.  The files will be added to the project again and the source
+control provider will automatically add them to the source control store.  Once done, the icons next to the files
+will change to show that they are once again part of the project and that they have been added to source control.
+Note that you may need to adjust the file's properties after adding them back to the project (i.e. files that
+have an <ui>Image</ui> build action).</para>
+				</listItem>
+			  </list>
+
+		  </listItem>
+	  </list>
+
+  </content>
+</section>
+
+    <relatedTopics>
+      <link xlink:href="b128ad2a-787e-48c7-b946-f6953080c386" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

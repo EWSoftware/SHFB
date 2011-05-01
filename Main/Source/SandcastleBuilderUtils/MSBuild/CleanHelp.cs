@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : CleanHelp.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/09/2011
+// Updated : 03/26/2011
 // Note    : Copyright 2008-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -35,6 +35,8 @@ namespace SandcastleBuilder.Utils.MSBuild
     /// This task is used to clean (remove) help file output from the last
     /// build.
     /// </summary>
+    /// <remarks>All messages from this task are logged with a high priority.  If set to Normal and ran from
+    /// within Visual Studio, it won't show the progress messages when the logging options are set to Minimal.</remarks>
     public class CleanHelp : Task
     {
         #region Task input properties
@@ -93,7 +95,7 @@ namespace SandcastleBuilder.Utils.MSBuild
                     if(Directory.Exists(this.WorkingPath))
                     {
                         BuildProcess.VerifySafePath("WorkingPath", this.WorkingPath, projectPath);
-                        Log.LogMessage("Removing working folder...");
+                        Log.LogMessage(MessageImportance.High, "Removing working folder...");
                         Directory.Delete(this.WorkingPath, true);
                     }
                 }
@@ -103,7 +105,7 @@ namespace SandcastleBuilder.Utils.MSBuild
 
                 if(Directory.Exists(this.OutputPath))
                 {
-                    Log.LogMessage("Removing build files...");
+                    Log.LogMessage(MessageImportance.High, "Removing build files...");
                     BuildProcess.VerifySafePath("OutputPath", this.OutputPath, projectPath);
 
                     // Read-only and/or hidden files and folders are ignored as they are assumed to be
@@ -112,9 +114,9 @@ namespace SandcastleBuilder.Utils.MSBuild
                         if((File.GetAttributes(file) & (FileAttributes.ReadOnly | FileAttributes.Hidden)) == 0)
                             File.Delete(file);
                         else
-                            Log.LogMessage("Skipping read-only or hidden file '{0}'", file);
+                            Log.LogMessage(MessageImportance.High, "Skipping read-only or hidden file '{0}'", file);
 
-                    Log.LogMessage("Removing build folders...");
+                    Log.LogMessage(MessageImportance.High, "Removing build folders...");
 
                     foreach(string folder in Directory.EnumerateDirectories(this.OutputPath))
                         try
@@ -123,26 +125,26 @@ namespace SandcastleBuilder.Utils.MSBuild
                             // that isn't read-only/hidden (i.e. Subversion).  In such cases, leave the folder alone.
                             if(Directory.EnumerateFileSystemEntries(folder, "*", SearchOption.AllDirectories).Any(f =>
                               (File.GetAttributes(f) & (FileAttributes.ReadOnly | FileAttributes.Hidden)) != 0))
-                                Log.LogMessage("Skipping folder '{0}' as it contains read-only or hidden folders/files", folder);
+                                Log.LogMessage(MessageImportance.High, "Skipping folder '{0}' as it contains read-only or hidden folders/files", folder);
                             else
                                 if((File.GetAttributes(folder) & (FileAttributes.ReadOnly | FileAttributes.Hidden)) == 0)
                                     Directory.Delete(folder, true);
                                 else
-                                    Log.LogMessage("Skipping folder '{0}' as it is read-only or hidden", folder);
+                                    Log.LogMessage(MessageImportance.High, "Skipping folder '{0}' as it is read-only or hidden", folder);
                         }
                         catch(IOException ioEx)
                         {
-                            Log.LogMessage("Did not delete folder '{0}': {1}", folder, ioEx.Message);
+                            Log.LogMessage(MessageImportance.High, "Did not delete folder '{0}': {1}", folder, ioEx.Message);
                         }
                         catch(UnauthorizedAccessException uaEx)
                         {
-                            Log.LogMessage("Did not delete folder '{0}': {1}", folder, uaEx.Message);
+                            Log.LogMessage(MessageImportance.High, "Did not delete folder '{0}': {1}", folder, uaEx.Message);
                         }
 
                     // Delete the log file too if it exists
                     if(!String.IsNullOrEmpty(this.LogFileLocation) && File.Exists(this.LogFileLocation))
                     {
-                        Log.LogMessage("Removing build log...");
+                        Log.LogMessage(MessageImportance.High, "Removing build log...");
                         File.Delete(this.LogFileLocation);
                     }
                 }

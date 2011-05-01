@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : FileItem.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/09/2010
-// Note    : Copyright 2008-2010, Eric Woodruff, All rights reserved
+// Updated : 04/16/2011
+// Note    : Copyright 2008-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class representing a file that is part of the project
@@ -163,15 +163,14 @@ namespace SandcastleBuilder.Utils
         /// <summary>
         /// This is used to set or get the name of the item
         /// </summary>
-        [Category("File"), Description("The name of the item"),
-          RefreshProperties(RefreshProperties.All)]
+        [Category("File"), Description("The name of the item"), RefreshProperties(RefreshProperties.All)]
         public string Name
         {
             get
             {
                 string path = includePath;
 
-                if(buildAction == BuildAction.Folder)
+                if(buildAction == BuildAction.Folder && path.EndsWith(@"\", StringComparison.Ordinal))
                     return Path.GetFileName(path.Substring(0, path.Length - 1));
 
                 return Path.GetFileName(path);
@@ -185,51 +184,45 @@ namespace SandcastleBuilder.Utils
 
                 if(buildAction != BuildAction.Folder)
                 {
-                    // If it's a link, copy the file to the project folder
-                    // and remove the link metadata.
+                    // If it's a link, copy the file to the project folder and remove the link metadata
                     if(base.ProjectElement.HasMetadata(ProjectElement.LinkPath))
                     {
                         newPath = linkPath;
                         File.Copy(path, newPath, true);
                         File.SetAttributes(newPath, FileAttributes.Normal);
                         path = newPath;
-                        base.ProjectElement.SetMetadata(ProjectElement.LinkPath,
-                            null);
+                        base.ProjectElement.SetMetadata(ProjectElement.LinkPath, null);
                     }
 
-                    newPath = Path.Combine(Path.GetDirectoryName(path),
-                        value);
+                    newPath = Path.Combine(Path.GetDirectoryName(path), value);
 
                     if(path != newPath)
                     {
-                        // If the file exists and it isn't just a case change,
-                        // disallow it.
-                        if(File.Exists(newPath) && String.Compare(path,
-                          newPath, StringComparison.OrdinalIgnoreCase) != 0)
-                            throw new ArgumentException("A file with that " +
-                                "name already exists in the project folder");
+                        // If the file exists and it isn't just a case change, disallow it
+                        if(File.Exists(newPath) && String.Compare(path, newPath,
+                          StringComparison.OrdinalIgnoreCase) != 0)
+                            throw new ArgumentException("A file with that name already exists in the project folder");
 
                         File.Move(path, newPath);
-                        this.Include = new FilePath(newPath,
-                            base.ProjectElement.Project);
+                        this.Include = new FilePath(newPath, base.ProjectElement.Project);
                     }
 
                     return;
                 }
 
                 // Rename the folder and all items starting with the folder name
-                path = path.Substring(0, path.Length - 1);
+                if(path.EndsWith(@"\", StringComparison.Ordinal))
+                    path = path.Substring(0, path.Length - 1);
+
                 newPath = Path.Combine(Path.GetDirectoryName(path), value);
 
-                if(Directory.Exists(newPath) && String.Compare(path,
-                  newPath, StringComparison.OrdinalIgnoreCase) != 0)
-                    throw new ArgumentException("A folder with that " +
-                        "name already exists in the project folder");
+                if(Directory.Exists(newPath) && String.Compare(path, newPath,
+                  StringComparison.OrdinalIgnoreCase) != 0)
+                    throw new ArgumentException("A folder with that name already exists in the project folder");
 
-                // To allow renaming a folder by changing its case, move it
-                // to a temporary name first and then the new name
-                if(String.Compare(path, newPath,
-                  StringComparison.OrdinalIgnoreCase) == 0)
+                // To allow renaming a folder by changing its case, move it to a temporary name first and then
+                // the new name.
+                if(String.Compare(path, newPath, StringComparison.OrdinalIgnoreCase) == 0)
                 {
                     tempPath = Guid.NewGuid().ToString();
                     Directory.Move(path, tempPath);
@@ -238,8 +231,7 @@ namespace SandcastleBuilder.Utils
 
                 Directory.Move(path, newPath);
                 path = base.ProjectElement.Include;
-                newPath = Path.Combine(Path.GetDirectoryName(path.Substring(0,
-                    path.Length - 1)), value) + "\\";
+                newPath = Path.Combine(Path.GetDirectoryName(path.Substring(0, path.Length - 1)), value) + "\\";
                 this.Include = new FilePath(newPath, base.ProjectElement.Project);
 
                 foreach(ProjectItem item in base.ProjectElement.Project.MSBuildProject.AllEvaluatedItems)
@@ -254,8 +246,7 @@ namespace SandcastleBuilder.Utils
         /// <remarks>This is used to indicate that an image file is part of
         /// the conceptual content.  Image items without an ID are not
         /// valid and will be ignored.</remarks>
-        [Category("Metadata"), Description("The ID for a conceptual content " +
-          "image"), DefaultValue(null)]
+        [Category("Metadata"), Description("The ID for a conceptual content image"), DefaultValue(null)]
         public string ImageId
         {
             get { return imageId; }

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : AssemblyInfo.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/06/2010
-// Note    : Copyright 2006-2010, Eric Woodruff, All rights reserved
+// Updated : 04/19/2011
+// Note    : Copyright 2006-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // Sandcastle Help File Builder attributes.
@@ -27,7 +27,6 @@ using System.Reflection;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly: AssemblyProduct("Sandcastle Help File Builder GUI")]
 [assembly: AssemblyTitle("Sandcastle Help File Builder GUI")]
 [assembly: AssemblyDescription("An IDE used to create project files that build " +
     "help documentation in various formats with Microsoft's Sandcastle tools.")]

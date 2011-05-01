@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : AssemblyInfo.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/06/2010
-// Note    : Copyright 2007-2010, Eric Woodruff, All rights reserved
+// Updated : 04/19/2011
+// Note    : Copyright 2007-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // Sandcastle Help File Builder plug-ins assembly attributes.
@@ -27,7 +27,6 @@ using System.Reflection;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly: AssemblyProduct("Sandcastle Help File Builder Plug-Ins")]
 [assembly: AssemblyTitle("Sandcastle Help File Builder Plug-Ins")]
 [assembly: AssemblyDescription("This contains build process plug-ins used " +
     "by the Sandcastle Help File Builder")]

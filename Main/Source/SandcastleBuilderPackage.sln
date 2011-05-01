@@ -1,0 +1,68 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SandcastleBuilderPackage", "SandcastleBuilderPackage\SandcastleBuilderPackage.csproj", "{242129CC-9310-450C-AEE3-4B849ECFB67E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{72331A21-C452-4BE4-BFDB-B8029A6BC1C0} = {72331A21-C452-4BE4-BFDB-B8029A6BC1C0}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.VisualStudio.Project", "MPFProj_VS2010\Microsoft.VisualStudio.Project.csproj", "{CACB60A9-1E76-4F92-8831-B134A658C695}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SandcastleBuilderUtils", "SandcastleBuilderUtils\SandcastleBuilderUtils.csproj", "{330DADF7-3AB1-49A0-B3C6-A69D2C4F06A6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ColorizerLibrary", "CodeColorizer\ColorizerLibrary\ColorizerLibrary.csproj", "{72331A21-C452-4BE4-BFDB-B8029A6BC1C0}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 5
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs01
+		SccProjectUniqueName0 = SandcastleBuilderUtils\\SandcastleBuilderUtils.csproj
+		SccProjectName0 = SandcastleBuilderUtils
+		SccLocalPath0 = SandcastleBuilderUtils
+		SccProjectUniqueName1 = CodeColorizer\\ColorizerLibrary\\ColorizerLibrary.csproj
+		SccProjectName1 = CodeColorizer/ColorizerLibrary
+		SccLocalPath1 = CodeColorizer\\ColorizerLibrary
+		SccLocalPath2 = .
+		SccProjectUniqueName3 = MPFProj_VS2010\\Microsoft.VisualStudio.Project.csproj
+		SccProjectName3 = MPFProj_VS2010
+		SccLocalPath3 = MPFProj_VS2010
+		SccProjectUniqueName4 = SandcastleBuilderPackage\\SandcastleBuilderPackage.csproj
+		SccProjectName4 = SandcastleBuilderPackage
+		SccLocalPath4 = SandcastleBuilderPackage
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+		ReleaseNoDoc|Any CPU = ReleaseNoDoc|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{242129CC-9310-450C-AEE3-4B849ECFB67E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{242129CC-9310-450C-AEE3-4B849ECFB67E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{242129CC-9310-450C-AEE3-4B849ECFB67E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{242129CC-9310-450C-AEE3-4B849ECFB67E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{242129CC-9310-450C-AEE3-4B849ECFB67E}.ReleaseNoDoc|Any CPU.ActiveCfg = Release|Any CPU
+		{242129CC-9310-450C-AEE3-4B849ECFB67E}.ReleaseNoDoc|Any CPU.Build.0 = Release|Any CPU
+		{CACB60A9-1E76-4F92-8831-B134A658C695}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CACB60A9-1E76-4F92-8831-B134A658C695}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CACB60A9-1E76-4F92-8831-B134A658C695}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CACB60A9-1E76-4F92-8831-B134A658C695}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CACB60A9-1E76-4F92-8831-B134A658C695}.ReleaseNoDoc|Any CPU.ActiveCfg = Release|Any CPU
+		{CACB60A9-1E76-4F92-8831-B134A658C695}.ReleaseNoDoc|Any CPU.Build.0 = Release|Any CPU
+		{330DADF7-3AB1-49A0-B3C6-A69D2C4F06A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{330DADF7-3AB1-49A0-B3C6-A69D2C4F06A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{330DADF7-3AB1-49A0-B3C6-A69D2C4F06A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{330DADF7-3AB1-49A0-B3C6-A69D2C4F06A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{330DADF7-3AB1-49A0-B3C6-A69D2C4F06A6}.ReleaseNoDoc|Any CPU.ActiveCfg = ReleaseNoDoc|Any CPU
+		{330DADF7-3AB1-49A0-B3C6-A69D2C4F06A6}.ReleaseNoDoc|Any CPU.Build.0 = ReleaseNoDoc|Any CPU
+		{72331A21-C452-4BE4-BFDB-B8029A6BC1C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72331A21-C452-4BE4-BFDB-B8029A6BC1C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72331A21-C452-4BE4-BFDB-B8029A6BC1C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72331A21-C452-4BE4-BFDB-B8029A6BC1C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72331A21-C452-4BE4-BFDB-B8029A6BC1C0}.ReleaseNoDoc|Any CPU.ActiveCfg = ReleaseNoDoc|Any CPU
+		{72331A21-C452-4BE4-BFDB-B8029A6BC1C0}.ReleaseNoDoc|Any CPU.Build.0 = ReleaseNoDoc|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

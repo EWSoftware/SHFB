@@ -2,7 +2,7 @@
 // System  : EWSoftware Design Time Attributes and Editors
 // File    : UserDefinedPropertyEditorDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/09/2011
+// Updated : 04/16/2011
 // Note    : Copyright 2008-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -27,7 +27,6 @@ using System.ComponentModel.Design;
 using System.Drawing.Design;
 using System.Globalization;
 using System.IO;
-using System.Reflection;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -88,8 +87,7 @@ namespace SandcastleBuilder.Utils.Design
             /// This is used to get or set the property name
             /// </summary>
             /// <remarks>Existing properties cannot be renamed as the MSBuild
-            /// project object doesn't provide a way to do it.  Nor does it
-            /// allow deleting properties.</remarks>
+            /// project object doesn't provide a way to do it.</remarks>
             [Category("Name"), Description("The property name")]
             public string Name
             {
@@ -323,26 +321,23 @@ namespace SandcastleBuilder.Utils.Design
         /// <param name="e">The event arguments</param>
         private void btnHelp_Click(object sender, EventArgs e)
         {
-            string path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            string path = null;
 
             try
             {
 #if DEBUG
-                path += @"\..\..\..\Doc\Help\SandcastleBuilder.chm";
+                // In debug builds, SHFBROOT points to the .\Debug folder for the SandcastleBuilderGUI project
+                path = Path.Combine(@"C:\Program Files (x86)\EWSoftware\Sandcastle Help File Builder\SandcastleBuilder.chm");
 #else
-                path += @"\SandcastleBuilder.chm";
+                path = Path.Combine(Environment.ExpandEnvironmentVariables("%SHFBROOT%"), "SandcastleBuilder.chm");
 #endif
                 Form form = new Form();
                 form.CreateControl();
-                Help.ShowHelp(form, path, HelpNavigator.Topic,
-                    "html/da405a33-3eeb-4451-9aa8-a55be5026434.htm#UserDefProps");
+                Help.ShowHelp(form, path, HelpNavigator.Topic, "html/da405a33-3eeb-4451-9aa8-a55be5026434.htm#UserDefProps");
             }
             catch(Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
-                MessageBox.Show(String.Format(CultureInfo.CurrentCulture,
-                    "Unable to open help file '{0}'.  Reason: {1}", path, ex.Message),
-                    Constants.AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
 
@@ -393,8 +388,8 @@ namespace SandcastleBuilder.Utils.Design
         /// <summary>
         /// Update the property grid with the selected item
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event arguments</param>
         private void lbProperties_SelectedIndexChanged(object sender, EventArgs e)
         {
             if(lbProperties.SelectedItem != null)

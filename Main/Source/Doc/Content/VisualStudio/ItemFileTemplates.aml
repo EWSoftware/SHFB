@@ -1,0 +1,287 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="ece3a395-589f-45c3-9f0e-2a25b8b6c537" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Item file templates are supplied for each of the common file types within a help file builder project.
+This topic covers how to add a file to a project as well as how to create and install your own custom item file
+templates for use from within Visual Studio.</para>
+
+		<autoOutline lead="none" />
+    </introduction>
+
+<section address="AddNewFile">
+  <title>Adding a File to the Project</title>
+  <content>
+    <para>To add a new file to a help file builder project, select the project node or the folder within which
+you want to add the new item and then select the <ui>Add New Item</ui> option from the <ui>Project</ui> main menu
+option or the <ui>Add</ui> | <ui>New Item</ui> option from the selected item's context menu.  To add an existing
+item, use the <ui>Existing Item</ui> option from the project menu or context menu instead.</para>
+
+	  <mediaLink>
+		  <image xlink:href="VSAddNewItemDlg" placement="center" />
+	  </mediaLink>
+
+	<para>The <ui>Add New Item</ui> dialog box, shown above, groups the item templates into various categories.  The
+parent category shows all item templates from its subcategories.  Pick a subcategory to further filter the available
+selections.  The <ui>Sort by</ui> combo box can be used to change the sort order of the items.  The default sort order
+lists the most frequently used file types first followed by the lesser used file types within each subcategory.
+Once you have selected the file template, enter a name for it and click the <ui>Add</ui> button to add it to the
+project.</para>
+
+  </content>
+</section>
+
+
+<section address="CustomTemplates">
+	<title>Creating Custom Item File Templates</title>
+	<content>
+		<para>Like the standalone GUI, Visual Studio supports custom item file templates for help file builder
+projects.  However, they are created differently and are stored in a different location from the templates used
+by the standalone GUI.  Follow these steps to create your own custom item file templates.</para>
+
+		<list class="ordered">
+			<listItem>
+				<para>Create the template file.  Name the file whatever you like and give it an appropriate extension.  The
+content of the template file will be used as the default content for the file when it is added to a project.  An example conceptual
+content template is shown below:</para>
+
+<alert class="tip">
+  <para>For conceptual content item templates, replace the topic's GUID value with the text "<codeInline>$guid1$</codeInline>".
+This will cause Visual Studio to automatically insert a new GUID value in the topic when it is added to a project.</para>
+</alert>
+
+<code language="c#" title="Example Template File: BlankTopic.aml">
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;topic id=&quot;$guid1$&quot; revisionNumber=&quot;1&quot;&gt;
+  &lt;developerConceptualDocument
+    xmlns=&quot;http://ddue.schemas.microsoft.com/authoring/2003/5&quot;
+    xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot;&gt;
+
+    &lt;introduction&gt;
+      &lt;para&gt;Required introduction&lt;/para&gt;
+    &lt;/introduction&gt;
+
+&lt;section address=&quot;Section1&quot;&gt;
+  &lt;title&gt;Optional section title&lt;/title&gt;
+  &lt;content&gt;
+    &lt;para&gt;Add one or more sections with content&lt;/para&gt;
+  &lt;/content&gt;
+&lt;/section&gt;
+
+    &lt;relatedTopics&gt;
+    &lt;!-- Add related topics --&gt;
+    &lt;/relatedTopics&gt;
+  &lt;/developerConceptualDocument&gt;
+&lt;/topic&gt;
+</code>
+			</listItem>
+
+			<listItem>
+				<para>In order for Visual Studio to know how to display and use your template file, you must create a
+VSTemplate file to accompany it.  This is an XML file with a <localUri>.vstemplate</localUri> extension.  The base
+filename should match the base filename of your template file (i.e. <localUri>BlankTopic.vstemplate</localUri> for the
+<localUri>BlankTopic.aml</localUri> template file).  An exampe is shown below:</para>
+
+<code language="xml" title="Example VSTemplate File: BlankTopic.vstemplate">
+&lt;VSTemplate Version=&quot;3.0.0&quot; Type=&quot;Item&quot;
+  xmlns=&quot;http://schemas.microsoft.com/developer/vstemplate/2005&quot;&gt;
+
+  &lt;TemplateData&gt;
+    &lt;!-- This is the name displayed for the template --&gt;
+    &lt;Name&gt;Blank Topic&lt;/Name&gt;
+
+    &lt;!-- This is the description displayed for the template --&gt;
+    &lt;Description&gt;A blank conceptual topic&lt;/Description&gt;
+
+    &lt;!-- This is the icon displayed for the template.  This example uses
+         an icon from the SHFB project package.  If you want to add your
+         own icon, use an Icon element as shown in the commented out example
+         below instead. --&gt;
+    &lt;Icon Package=&quot;{c997d569-ee8e-4947-a46f-9a0717ce39a0}&quot; ID=&quot;407&quot; /&gt;
+
+    &lt;!-- &lt;Icon&gt;MyTemplateIcon.ico&lt;/Icon&gt; --&gt;
+
+    &lt;!-- This associates the template with the SHFB package --&gt;
+    &lt;ProjectType&gt;SandcastleBuilderProject&lt;/ProjectType&gt;
+
+    &lt;!-- The default filename to use --&gt;
+    &lt;DefaultName&gt;BlankTopic.aml&lt;/DefaultName&gt;
+
+    &lt;!-- The sort order of the item.  You can adjust this to have the
+         template appear higher or lower in the list when using the
+         default sort order. --&gt;
+    &lt;SortOrder&gt;10&lt;/SortOrder&gt;
+
+    &lt;!-- Adding this element will cause the template to appear in
+         parent categories if they are used.  Adjust the number up if
+         you have more than two parent categories. --&gt;
+    &lt;NumberOfParentCategoriesToRollUp&gt;2&lt;/NumberOfParentCategoriesToRollUp&gt;
+  &lt;/TemplateData&gt;
+
+  &lt;TemplateContent&gt;
+    &lt;!-- This defines the project item template file.  The name should
+         match the name of the item template you created.  If it contains
+         replaceable parameters such as &quot;$guid1$&quot;, add the
+         ReplaceParameters attribute and set it to &quot;true&quot;. --&gt;
+    &lt;ProjectItem ReplaceParameters=&quot;true&quot;&gt;BlankTopic.aml&lt;/ProjectItem&gt;
+  &lt;/TemplateContent&gt;
+&lt;/VSTemplate&gt;
+</code>
+
+				<para>For the <codeInline>Icon</codeInline> element, you can use the one shown in the
+example above with one of the following ID numbers to use one of the built-in file type icons.  If you
+want to use your own icon, use an element like the commented out example to specify the icon filename.
+The icon file should be placed in the same folder as the template file and the VSTemplate file.</para>
+
+<table>
+	<tableHeader>
+		<row>
+			<entry>
+				<para>ID Number</para>
+			</entry>
+			<entry>
+				<para>Description</para>
+			</entry>
+		</row>
+	</tableHeader>
+	<row>
+		<entry>
+			<para>401</para>
+		</entry>
+		<entry>
+			<para>HTML file</para>
+		</entry>
+	</row>
+	<row>
+		<entry>
+			<para>402</para>
+		</entry>
+		<entry>
+			<para>Image file</para>
+		</entry>
+	</row>
+	<row>
+		<entry>
+			<para>403</para>
+		</entry>
+		<entry>
+			<para>Script file</para>
+		</entry>
+	</row>
+	<row>
+		<entry>
+			<para>404</para>
+		</entry>
+		<entry>
+			<para>Stylesheet</para>
+		</entry>
+	</row>
+	<row>
+		<entry>
+			<para>405</para>
+		</entry>
+		<entry>
+			<para>Text/general file</para>
+		</entry>
+	</row>
+	<row>
+		<entry>
+			<para>406</para>
+		</entry>
+		<entry>
+			<para>XML file</para>
+		</entry>
+	</row>
+	<row>
+		<entry>
+			<para>407</para>
+		</entry>
+		<entry>
+			<para>Conceptual content topic</para>
+		</entry>
+	</row>
+	<row>
+		<entry>
+			<para>408</para>
+		</entry>
+		<entry>
+			<para>Content layout file</para>
+		</entry>
+	</row>
+	<row>
+		<entry>
+			<para>409</para>
+		</entry>
+		<entry>
+			<para>Resource item file</para>
+		</entry>
+	</row>
+	<row>
+		<entry>
+			<para>410</para>
+		</entry>
+		<entry>
+			<para>Token file</para>
+		</entry>
+	</row>
+	<row>
+		<entry>
+			<para>411</para>
+		</entry>
+		<entry>
+			<para>Code snippets file</para>
+		</entry>
+	</row>
+</table>				
+			</listItem>
+
+			<listItem>
+				<para>Create a <localUri>.zip</localUri> archive file containing the template file, the
+VSTemplate XML file, and the icon file if you added your own icon.  Store the files in the archive without
+paths.</para>
+			</listItem>
+
+			<listItem>
+				<para>Create the folder <localUri>[My Documents]\Visual Studio 2010\Templates\ItemTemplates\SandcastleBuilderProject\</localUri>
+where "<localUri>[My Documents]</localUri>" is the location of your personal documents folder.  This is the root folder for your
+custom help file builder item template files.</para>
+			</listItem>
+
+			<listItem>
+				<para>To separate your custom templates from the standard item templates, create a subfolder such
+as <localUri>.\Custom Templates</localUri> beneath the root folder created in the prior step.  This will make it easy
+to filter the list to your custom templates.  Additional subfolders can be used to further subcategorize the files as
+needed.  For example, if you want to categorize your templates as conceptual content or other content, create a
+<localUri>.\Conceptual Content</localUri> and/or <localUri>.\Other Content</localUri> subfolder beneath the
+custom templates folder.</para>
+			</listItem>
+			
+			<listItem>
+				<para>Place the archive file containing your template in the custom templates folder.</para>
+			</listItem>
+
+			<listItem>
+				<para>When you open the <ui>Add New Item</ui> dialog, you should now see your custom
+templates listed in the appropriate location.  An example is shown below:</para>
+
+				<mediaLink>
+					<image xlink:href="VSCustomTemplates" placement="center" />
+				</mediaLink>
+
+			</listItem>
+		</list>
+
+		<para>For more information about template files, see the <externalLink>
+<linkText>Creating Project and Item Templates</linkText>
+<linkAlternateText>VSTemplate information</linkAlternateText>
+<linkUri>http://msdn.microsoft.com/en-us/library/s365byhx(v=VS.100).aspx</linkUri>
+<linkTarget>_blank</linkTarget>
+</externalLink> MSDN topic.</para>
+
+	</content>
+</section>
+    <relatedTopics>
+      <link xlink:href="b128ad2a-787e-48c7-b946-f6953080c386" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

@@ -2,8 +2,8 @@
 // System  : EWSoftware Design Time Attributes and Editors
 // File    : MSHelpKeywordEditorDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/05/2008
-// Note    : Copyright 2008, Eric Woodruff, All rights reserved
+// Updated : 04/02/2011
+// Note    : Copyright 2008-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the form used to edit the help index keywords.
@@ -101,28 +101,23 @@ namespace SandcastleBuilder.Utils.Design
         /// <param name="e">The event arguments</param>
         private void btnHelp_Click(object sender, EventArgs e)
         {
-            string path = Path.GetDirectoryName(
-                Assembly.GetExecutingAssembly().Location);
+            string path = null;
 
             try
             {
 #if DEBUG
-                path += @"\..\..\..\Doc\Help\SandcastleBuilder.chm";
+                // In debug builds, SHFBROOT points to the .\Debug folder for the SandcastleBuilderGUI project
+                path = Path.Combine(@"C:\Program Files (x86)\EWSoftware\Sandcastle Help File Builder\SandcastleBuilder.chm");
 #else
-                path += @"\SandcastleBuilder.chm";
+                path = Path.Combine(Environment.ExpandEnvironmentVariables("%SHFBROOT%"), "SandcastleBuilder.chm");
 #endif
                 Form form = new Form();
                 form.CreateControl();
-                Help.ShowHelp(form, path, HelpNavigator.Topic,
-                    "html/7d28bf8f-923f-44c1-83e1-337a416947a1.htm#HelpAttributes");
+                Help.ShowHelp(form, path, HelpNavigator.Topic, "html/7d28bf8f-923f-44c1-83e1-337a416947a1.htm#HelpAttributes");
             }
             catch(Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
-                MessageBox.Show(String.Format(CultureInfo.CurrentCulture,
-                    "Unable to open help file '{0}'.  Reason: {1}",
-                    path, ex.Message), Constants.AppName,
-                    MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
 

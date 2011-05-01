@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : MSBuildProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/09/2011
+// Updated : 03/27/2011
 // Note    : Copyright 2008-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -73,9 +73,14 @@ namespace SandcastleBuilder.Utils.MSBuild
                 if(properties == null)
                     throw new InvalidOperationException("Configuration has not been set");
 
-                // Give precedence to OutDir if defined
-                if(properties.TryGetValue("OutDir", out prop))
+                // Give precedence to OutDir if defined.  Ignore ".\" as that's our default.
+                if(properties.TryGetValue(ProjectElement.OutDir, out prop))
+                {
                     outputPath = prop.EvaluatedValue;
+
+                    if(outputPath == @".\")
+                        outputPath = null;
+                }
 
                 if(String.IsNullOrEmpty(outputPath) && properties.TryGetValue("OutputPath", out prop))
                     outputPath = prop.EvaluatedValue;
@@ -135,9 +140,14 @@ namespace SandcastleBuilder.Utils.MSBuild
                         // If rooted, take the path as it is
                         if(!Path.IsPathRooted(docFile))
                         {
-                            // Give precedence to OutDir if defined
-                            if(properties.TryGetValue("OutDir", out prop))
+                            // Give precedence to OutDir if defined.  Ignore ".\" as that's our default.
+                            if(properties.TryGetValue(ProjectElement.OutDir, out prop))
+                            {
                                 outputPath = prop.EvaluatedValue;
+
+                                if(outputPath == @".\")
+                                    outputPath = null;
+                            }
 
                             if(!String.IsNullOrEmpty(outputPath))
                             {

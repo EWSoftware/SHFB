@@ -2,8 +2,8 @@
 // System  : EWSoftware Design Time Attributes and Editors
 // File    : BuildActionEnumConverter.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/01/2008
-// Note    : Copyright 2008, Eric Woodruff, All rights reserved
+// Updated : 04/06/2011
+// Note    : Copyright 2008-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a type converter used to limit the available build
@@ -18,9 +18,9 @@
 // Version     Date     Who  Comments
 // ============================================================================
 // 1.8.0.0  08/01/2008  EFW  Created the code
+// 1.9.3.0  04/06/2011  EFW  Made the class public for use in the VSPackage
 //=============================================================================
 
-using System;
 using System.Collections;
 using System.ComponentModel;
 
@@ -30,9 +30,16 @@ namespace SandcastleBuilder.Utils.Design
     /// This is used to limit which values are available to properties using
     /// <see cref="BuildAction" /> as their underlying type.
     /// </summary>
-    internal sealed class BuildActionEnumConverter : EnumConverter
+    public sealed class BuildActionEnumConverter : EnumConverter
     {
+        #region Private data members
+        //=====================================================================
+
         private StandardValuesCollection values;
+        #endregion
+
+        #region Constructor
+        //=====================================================================
 
         /// <summary>
         /// Constructor
@@ -40,12 +47,15 @@ namespace SandcastleBuilder.Utils.Design
         public BuildActionEnumConverter() : base(typeof(BuildAction))
         {
         }
+        #endregion
+
+        #region Method overrides
+        //=====================================================================
 
         /// <inheritdoc />
         /// <remarks>Build actions that serve no purpose for selection
         /// are removed.</remarks>
-        public override StandardValuesCollection GetStandardValues(
-          ITypeDescriptorContext context)
+        public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
         {
             StandardValuesCollection baseValues;
             ArrayList list;
@@ -64,5 +74,6 @@ namespace SandcastleBuilder.Utils.Design
 
             return values;
         }
+        #endregion
     }
 }

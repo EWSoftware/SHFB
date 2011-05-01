@@ -1,0 +1,52 @@
+﻿<#@ template Debug="True" inherits="Microsoft.VisualStudio.TextTemplating.VSHost.ModelingTextTransformation" #>
+<#@ VSPackageDesigner processor="VSPackageDesignerDirectiveProcessor" requires="fileName='..\SandcastleBuilderPackage.vspackage'" #>
+<#@ output extension=".cs" #>
+using System;
+
+<#
+// EFW - Hard coded the namespace since it didn't match what I wanted to use.
+#>
+namespace SandcastleBuilder.Package
+{
+    static class PkgCmdIDList
+    {
+<#
+			foreach(var button in this.Root.CommandTable.Buttons)
+			{ 
+#>
+		public const uint <#= button.Name #> = 0x<#= IntToHex(button.IdNumeric) #>;
+<#			
+			} 
+
+			foreach(var combo in this.Root.CommandTable.Combos)
+			{ 
+#>
+		public const uint <#= combo.Name #> = 0x<#= IntToHex(combo.IdNumeric) #>;
+<#
+				if (combo.Type != ComboType.MRUCombo)
+				{
+#>
+		public const uint <#= combo.Name #>GetList = 0x<#= IntToHex(combo.IdCommandList) #>;
+<#
+				}
+			}	 
+
+			foreach(var menuBase in this.Root.CommandTable.MenuBases)
+			{ 
+				Menu menu = menuBase as Menu;
+                if (menu != null && (menu.Type == MenuType.ToolWindowToolbar || menu.Type == MenuType.Context))
+				{
+#>
+		public const uint <#= menu.Name #> = 0x<#= IntToHex(menu.IdNumeric) #>;
+<#	
+				}
+			}
+#>        
+    };
+}
+<#+
+    string IntToHex(int id)
+    {
+		return id.ToString("X").PadLeft(4, '0');
+    }
+#>

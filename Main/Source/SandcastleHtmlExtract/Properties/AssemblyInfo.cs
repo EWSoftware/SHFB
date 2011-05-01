@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder - HTML Extract
 // File    : AssemblyInfo.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/06/2010
+// Updated : 04/19/2011
 // Note    : Copyright 2008-2010, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -27,7 +27,6 @@ using System.Reflection;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly: AssemblyProduct("Sandcastle Help File Builder HTML Extract")]
 [assembly: AssemblyTitle("Sandcastle Help File Builder HTML Extract")]
 [assembly: AssemblyDescription("A command line tool that parses the HTML files " +
     "to extract table of contents and keyword information for Help 1 (CHM) " +

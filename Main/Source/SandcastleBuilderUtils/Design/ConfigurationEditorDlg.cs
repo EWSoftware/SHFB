@@ -2,8 +2,8 @@
 // System  : EWSoftware Design Time Attributes and Editors
 // File    : ConfigurationEditorDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/07/2007
-// Note    : Copyright 2007, Eric Woodruff, All rights reserved
+// Updated : 04/10/2011
+// Note    : Copyright 2007-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a form used to edit a build component configuration as
@@ -22,7 +22,6 @@
 //=============================================================================
 
 using System;
-using System.ComponentModel;
 using System.Windows.Forms;
 using System.Xml;
 
@@ -32,8 +31,11 @@ namespace SandcastleBuilder.Utils.Design
     /// This form is used to edit a build component configuration as XML text.
     /// This is used for components that have to built-in configuration method.
     /// </summary>
-    internal partial class ConfigurationEditorDlg : Form
+    public partial class ConfigurationEditorDlg : Form
     {
+        #region Properties
+        //=====================================================================
+
         /// <summary>
         /// This is used to set or get the configuration text
         /// </summary>
@@ -42,6 +44,10 @@ namespace SandcastleBuilder.Utils.Design
             get { return txtConfiguration.Text; }
             set { txtConfiguration.Text = value; }
         }
+        #endregion
+
+        #region Constructor
+        //=====================================================================
 
         /// <summary>
         /// Constructor
@@ -50,6 +56,10 @@ namespace SandcastleBuilder.Utils.Design
         {
             InitializeComponent();
         }
+        #endregion
+
+        #region Event handlers
+        //=====================================================================
 
         /// <summary>
         /// Close the form without saving
@@ -80,8 +90,7 @@ namespace SandcastleBuilder.Utils.Design
             }
             catch(XmlException ex)
             {
-                MessageBox.Show("The XML configuration is not valid.  Reason:" +
-                    ex.Message, Constants.AppName,
+                MessageBox.Show("The XML configuration is not valid.  Reason:" + ex.Message, Constants.AppName,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -97,5 +106,6 @@ namespace SandcastleBuilder.Utils.Design
             txtConfiguration.Select(0, 0);
             txtConfiguration.ScrollToCaret();
         }
+        #endregion
     }
 }

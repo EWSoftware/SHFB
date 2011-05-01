@@ -23,6 +23,28 @@
 
 			<!-- Main executables -->
 
+			<Component Id="SHFBProjectLauncher.exe" Guid="{AB9C9223-4C6F-4F60-A442-854F5D5F539B}">
+				<File Id="SHFBProjectLauncher.exe" KeyPath="yes" Source="$(var.LauncherFolder)SHFBProjectLauncher.exe">
+					<Shortcut Id="SHFBProjectLauncher.exe"
+							  Directory="ShfbProgramMenuDir"
+							  Icon="SHFBProjectLauncher.exe"
+							  Name="SHFB Project Launcher"
+							  Description="Choose the application used to load SHFB project files"
+							  Advertise="yes" />
+				</File>
+
+				<ProgId Id="SandcastleBuilder.shfbproj"
+				        Icon="SandcastleBuilder.exe"
+				        Description="Sandcastle Help File Builder Project"
+				        Advertise="yes">
+					<Extension Id="shfbproj" ContentType="text/plain">
+						<Verb Id="open" Argument="&quot;%1&quot;" />
+					</Extension>
+				</ProgId>
+
+				<File Id="SHFBProjectLauncher.exe.config" Source="$(var.LauncherFolder)SHFBProjectLauncher.exe.config" />
+			</Component>
+
 			<Component Id="SandcastleBuilderGUI.exe" Guid="{CD8221A6-320B-4B0A-8AD6-FB9701F369AF}">
 				<File Id="SandcastleBuilderGUI.exe" KeyPath="yes" Source="$(var.BinFolder)SandcastleBuilderGUI.exe">
 					<Shortcut Id="SandcastleBuilderGUI.exe"
@@ -32,15 +54,6 @@
 							  Description="Builds help files using Sandcastle help file builder GUI"
 							  Advertise="yes" />
 				</File>
-
-				<ProgId Id="SandcastleBuilder.shfbproj"
-						Icon="SandcastleBuilder.exe"
-						Description="Sandcastle Help File Builder Project"
-						Advertise="yes">
-					<Extension Id="shfbproj" ContentType="text/plain">
-						<Verb Id="open" Argument="&quot;%1&quot;" />
-					</Extension>
-				</ProgId>
 
 				<File Id="SandcastleBuilderGUI.xml" Source="$(var.BinFolder)SandcastleBuilderGUI.xml" />
 				<File Id="SandcastleBuilderGUI.exe.config" Source="$(var.BinFolder)SandcastleBuilderGUI.exe.config" />
@@ -183,7 +196,8 @@
 			<ComponentRef Id="WriteSHFBEnvironmentPath" />
 
 			<!-- Main executables -->
-			<ComponentRef Id="SandcastleBuilderGUI.exe" />
+      <ComponentRef Id="SHFBProjectLauncher.exe" />
+      <ComponentRef Id="SandcastleBuilderGUI.exe" />
 			<ComponentRef Id="HelpLibraryManagerLauncher.exe" />
 			<ComponentRef Id="SandcastleHtmlExtract.exe" />
 			<ComponentRef Id="GenerateInheritedDocs.exe" />

@@ -2,8 +2,8 @@
 // System  : EWSoftware Design Time Attributes and Editors
 // File    : MSHelpAttrEditorDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/03/2008
-// Note    : Copyright 2008, Eric Woodruff, All rights reserved
+// Updated : 04/11/2011
+// Note    : Copyright 2008-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the form used to edit the help attribute items.
@@ -20,14 +20,8 @@
 //=============================================================================
 
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Globalization;
 using System.IO;
-using System.Reflection;
 using System.Windows.Forms;
-
-using SandcastleBuilder.Utils;
 
 namespace SandcastleBuilder.Utils.Design
 {
@@ -52,8 +46,7 @@ namespace SandcastleBuilder.Utils.Design
         /// <param name="isTopic">If true, the Default button is hidden as
         /// topics don't need to include the default attributes.  They are
         /// added automatically at build time.</param>
-        public MSHelpAttrEditorDlg(MSHelpAttrCollection currentAttributes,
-          bool isTopic)
+        public MSHelpAttrEditorDlg(MSHelpAttrCollection currentAttributes, bool isTopic)
         {
             InitializeComponent();
 
@@ -76,6 +69,7 @@ namespace SandcastleBuilder.Utils.Design
         /// <param name="e">The event arguments</param>
         private void btnClose_Click(object sender, EventArgs e)
         {
+            dgvAttributes.EndEdit();
             attributes.Sort();
             this.Close();
         }
@@ -89,8 +83,7 @@ namespace SandcastleBuilder.Utils.Design
         {
             dgvAttributes.EndEdit();
             attributes.Add("NoName", null);
-            dgvAttributes.CurrentCell = dgvAttributes[0,
-                attributes.Count - 1];
+            dgvAttributes.CurrentCell = dgvAttributes[0, attributes.Count - 1];
             dgvAttributes.Focus();
         }
 
@@ -122,6 +115,7 @@ namespace SandcastleBuilder.Utils.Design
         /// <param name="e">The event arguments</param>
         private void btnDefault_Click(object sender, EventArgs e)
         {
+            dgvAttributes.EndEdit();
             dgvAttributes.DataSource = null;
 
             attributes.Add("DocSet", "NetFramework");
@@ -139,28 +133,23 @@ namespace SandcastleBuilder.Utils.Design
         /// <param name="e">The event arguments</param>
         private void btnHelp_Click(object sender, EventArgs e)
         {
-            string path = Path.GetDirectoryName(
-                Assembly.GetExecutingAssembly().Location);
+            string path = null;
 
             try
             {
 #if DEBUG
-                path += @"\..\..\..\Doc\Help\SandcastleBuilder.chm";
+                // In debug builds, SHFBROOT points to the .\Debug folder for the SandcastleBuilderGUI project
+                path = Path.Combine(@"C:\Program Files (x86)\EWSoftware\Sandcastle Help File Builder\SandcastleBuilder.chm");
 #else
-                path += @"\SandcastleBuilder.chm";
+                path = Path.Combine(Environment.ExpandEnvironmentVariables("%SHFBROOT%"), "SandcastleBuilder.chm");
 #endif
                 Form form = new Form();
                 form.CreateControl();
-                Help.ShowHelp(form, path, HelpNavigator.Topic,
-                    "html/7d28bf8f-923f-44c1-83e1-337a416947a1.htm#HelpAttributes");
+                Help.ShowHelp(form, path, HelpNavigator.Topic, "html/d0c2dabd-3caf-4586-b81d-cbd765dec7cf.htm#HelpAttributes");
             }
             catch(Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
-                MessageBox.Show(String.Format(CultureInfo.CurrentCulture,
-                    "Unable to open help file '{0}'.  Reason: {1}",
-                    path, ex.Message), Constants.AppName,
-                    MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
 
@@ -169,8 +158,7 @@ namespace SandcastleBuilder.Utils.Design
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        private void dgvAttributes_CellValueChanged(object sender,
-          DataGridViewCellEventArgs e)
+        private void dgvAttributes_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
             if(attributes != null)
                 attributes.MarkAsDirty();

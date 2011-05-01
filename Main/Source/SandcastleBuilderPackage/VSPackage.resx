@@ -1,0 +1,369 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="110" xml:space="preserve">
+    <value>Sandcastle Help File Builder</value>
+    <comment>Product name</comment>
+  </data>
+  <data name="111" xml:space="preserve">
+    <value>Visual Studio integration for the Sandcastle Help File Builder.
+Copyright © 2011, Eric Woodruff, All Rights Reserved.
+http://SHFB.CodePlex.com</value>
+    <comment>Product details</comment>
+  </data>
+  <data name="112" xml:space="preserve">
+    <value>Sandcastle Help File Builder Project Files (*.shfbproj);*.shfbproj</value>
+    <comment>The display string for the project file extensions</comment>
+  </data>
+  <data name="113" xml:space="preserve">
+    <value>Sandcastle Help File Builder Project</value>
+    <comment>Project template resources</comment>
+  </data>
+  <data name="114" xml:space="preserve">
+    <value>Create a help file using the Sandcastle Help File Builder</value>
+  </data>
+  <data name="115" xml:space="preserve">
+    <value>HTML Page</value>
+    <comment>Additional content item templates</comment>
+  </data>
+  <data name="116" xml:space="preserve">
+    <value>An HTML page that can include client-side code</value>
+  </data>
+  <data name="117" xml:space="preserve">
+    <value>JavaScript File</value>
+  </data>
+  <data name="118" xml:space="preserve">
+    <value>A script file containing JavaScript code</value>
+  </data>
+  <data name="119" xml:space="preserve">
+    <value>Site Map</value>
+  </data>
+  <data name="120" xml:space="preserve">
+    <value>A file used to create a site map for additional content HTML files in the project</value>
+  </data>
+  <data name="121" xml:space="preserve">
+    <value>Style Sheet</value>
+  </data>
+  <data name="122" xml:space="preserve">
+    <value>A cascading style sheet used for rich HTML style definitions</value>
+  </data>
+  <data name="123" xml:space="preserve">
+    <value>Text File</value>
+  </data>
+  <data name="124" xml:space="preserve">
+    <value>A blank text file</value>
+  </data>
+  <data name="125" xml:space="preserve">
+    <value>Bitmap</value>
+  </data>
+  <data name="126" xml:space="preserve">
+    <value>A Windows bitmap file</value>
+  </data>
+  <data name="127" xml:space="preserve">
+    <value>XML File</value>
+  </data>
+  <data name="128" xml:space="preserve">
+    <value>A blank XML file</value>
+  </data>
+  <data name="129" xml:space="preserve">
+    <value>Content Layout</value>
+    <comment>Conceptual content project file item templates</comment>
+  </data>
+  <data name="130" xml:space="preserve">
+    <value>A file used to define the topics and table of content layout for conceptual content</value>
+  </data>
+  <data name="131" xml:space="preserve">
+    <value>Code Snippets</value>
+  </data>
+  <data name="132" xml:space="preserve">
+    <value>A file used to define code snippets for use in conceptual content files referenced using the codeReference element.</value>
+  </data>
+  <data name="133" xml:space="preserve">
+    <value>Resource Items File</value>
+  </data>
+  <data name="134" xml:space="preserve">
+    <value>A file used to override localized and/or parameterized text that is used in the help file topics</value>
+  </data>
+  <data name="135" xml:space="preserve">
+    <value>Token file</value>
+  </data>
+  <data name="136" xml:space="preserve">
+    <value>A file used to define tokens that represent common content that can be inserted into conceptual topics using the token element</value>
+  </data>
+  <data name="137" xml:space="preserve">
+    <value>Conceptual</value>
+    <comment>Conceptual content topic file item templates</comment>
+  </data>
+  <data name="138" xml:space="preserve">
+    <value>This document type is used for general conceptual topics</value>
+  </data>
+  <data name="139" xml:space="preserve">
+    <value>Error Message</value>
+  </data>
+  <data name="140" xml:space="preserve">
+    <value>This document type is used for error message topics</value>
+  </data>
+  <data name="141" xml:space="preserve">
+    <value>Glossary</value>
+  </data>
+  <data name="142" xml:space="preserve">
+    <value>This document type is used to create a glossary</value>
+  </data>
+  <data name="143" xml:space="preserve">
+    <value>How To</value>
+  </data>
+  <data name="144" xml:space="preserve">
+    <value>This document type is used for "how to" topics</value>
+  </data>
+  <data name="145" xml:space="preserve">
+    <value>Orientation</value>
+  </data>
+  <data name="146" xml:space="preserve">
+    <value>This document type is used for orientation topics</value>
+  </data>
+  <data name="147" xml:space="preserve">
+    <value>Reference</value>
+  </data>
+  <data name="148" xml:space="preserve">
+    <value>This document type is used for reference topics</value>
+  </data>
+  <data name="149" xml:space="preserve">
+    <value>Reference without Syntax</value>
+  </data>
+  <data name="150" xml:space="preserve">
+    <value>This document type is used for reference without syntax topics</value>
+  </data>
+  <data name="151" xml:space="preserve">
+    <value>Reference with Syntax</value>
+  </data>
+  <data name="152" xml:space="preserve">
+    <value>This document type is used for reference with syntax topics</value>
+  </data>
+  <data name="153" xml:space="preserve">
+    <value>Sample</value>
+  </data>
+  <data name="154" xml:space="preserve">
+    <value>This document type is used for sample topics</value>
+  </data>
+  <data name="155" xml:space="preserve">
+    <value>SDK Technology Architecture</value>
+  </data>
+  <data name="156" xml:space="preserve">
+    <value>This document type is used for technology architecture topics</value>
+  </data>
+  <data name="157" xml:space="preserve">
+    <value>SDK Technology Code Directory</value>
+  </data>
+  <data name="158" xml:space="preserve">
+    <value>This document type is used for technology code directory topics</value>
+  </data>
+  <data name="159" xml:space="preserve">
+    <value>SDK Technology Orientation</value>
+  </data>
+  <data name="160" xml:space="preserve">
+    <value>This document type is used for technology orientation topics</value>
+  </data>
+  <data name="161" xml:space="preserve">
+    <value>SDK Technology Scenarios</value>
+  </data>
+  <data name="162" xml:space="preserve">
+    <value>This document type is used for technology scenario topics</value>
+  </data>
+  <data name="163" xml:space="preserve">
+    <value>SDK Technology Summary</value>
+  </data>
+  <data name="164" xml:space="preserve">
+    <value>This document type is used for technology summary topics</value>
+  </data>
+  <data name="165" xml:space="preserve">
+    <value>Troubleshooting</value>
+  </data>
+  <data name="166" xml:space="preserve">
+    <value>This document type is used for troubleshooting topics</value>
+  </data>
+  <data name="167" xml:space="preserve">
+    <value>User Interface Reference</value>
+  </data>
+  <data name="168" xml:space="preserve">
+    <value>This document type is used for user interface reference topics</value>
+  </data>
+  <data name="169" xml:space="preserve">
+    <value>Walkthrough</value>
+  </data>
+  <data name="170" xml:space="preserve">
+    <value>This document type is used for walkthrough topics</value>
+  </data>
+  <data name="171" xml:space="preserve">
+    <value>Whitepaper</value>
+  </data>
+  <data name="172" xml:space="preserve">
+    <value>This document type is used for whitepapers</value>
+  </data>
+  <data name="173" xml:space="preserve">
+    <value>XML Reference</value>
+  </data>
+  <data name="174" xml:space="preserve">
+    <value>This document type is used for XML reference topics</value>
+  </data>
+  <data name="200" xml:space="preserve">
+    <value>General</value>
+    <comment>General options page title</comment>
+  </data>
+  <data name="201" xml:space="preserve">
+    <value>The general options for the Sandcastle Help File Builder</value>
+    <comment>Description for Import/Export Settings</comment>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="400" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\Package.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="401" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\HtmlPage.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="402" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\ImageFile.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="403" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\JScriptFile.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="404" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\StyleSheet.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="405" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\Text.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="406" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\XmlFile.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="407" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\MamlTopic.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="408" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\SiteMap.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="409" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\ResourceItemFile.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="410" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\TokenFile.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="411" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\CodeSnippets.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+</root>

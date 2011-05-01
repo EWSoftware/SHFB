@@ -56,7 +56,7 @@ namespace SandcastleBuilder.Utils.Design
             this.lbAvailablePlugIns.ItemHeight = 16;
             this.lbAvailablePlugIns.Location = new System.Drawing.Point(6, 21);
             this.lbAvailablePlugIns.Name = "lbAvailablePlugIns";
-            this.lbAvailablePlugIns.Size = new System.Drawing.Size(290, 175);
+            this.lbAvailablePlugIns.Size = new System.Drawing.Size(337, 273);
             this.lbAvailablePlugIns.Sorted = true;
             this.statusBarTextProvider1.SetStatusBarText(this.lbAvailablePlugIns, "Select the plug-in to add to the project");
             this.lbAvailablePlugIns.TabIndex = 0;
@@ -67,7 +67,7 @@ namespace SandcastleBuilder.Utils.Design
             // 
             this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnClose.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnClose.Location = new System.Drawing.Point(562, 427);
+            this.btnClose.Location = new System.Drawing.Point(656, 523);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(88, 32);
             this.statusBarTextProvider1.SetStatusBarText(this.btnClose, "Close: Close this form");
@@ -78,32 +78,32 @@ namespace SandcastleBuilder.Utils.Design
             // 
             // txtPlugInDescription
             // 
-            this.txtPlugInDescription.Location = new System.Drawing.Point(6, 296);
+            this.txtPlugInDescription.Location = new System.Drawing.Point(6, 394);
             this.txtPlugInDescription.Multiline = true;
             this.txtPlugInDescription.Name = "txtPlugInDescription";
             this.txtPlugInDescription.ReadOnly = true;
             this.txtPlugInDescription.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtPlugInDescription.Size = new System.Drawing.Size(290, 105);
+            this.txtPlugInDescription.Size = new System.Drawing.Size(337, 105);
             this.statusBarTextProvider1.SetStatusBarText(this.txtPlugInDescription, "A description of the plug-in");
             this.txtPlugInDescription.TabIndex = 3;
             // 
             // txtPlugInCopyright
             // 
-            this.txtPlugInCopyright.Location = new System.Drawing.Point(6, 230);
+            this.txtPlugInCopyright.Location = new System.Drawing.Point(6, 328);
             this.txtPlugInCopyright.Multiline = true;
             this.txtPlugInCopyright.Name = "txtPlugInCopyright";
             this.txtPlugInCopyright.ReadOnly = true;
             this.txtPlugInCopyright.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtPlugInCopyright.Size = new System.Drawing.Size(290, 60);
+            this.txtPlugInCopyright.Size = new System.Drawing.Size(337, 60);
             this.statusBarTextProvider1.SetStatusBarText(this.txtPlugInCopyright, "Plug-in copyright information");
             this.txtPlugInCopyright.TabIndex = 2;
             // 
             // txtPlugInVersion
             // 
-            this.txtPlugInVersion.Location = new System.Drawing.Point(6, 202);
+            this.txtPlugInVersion.Location = new System.Drawing.Point(6, 300);
             this.txtPlugInVersion.Name = "txtPlugInVersion";
             this.txtPlugInVersion.ReadOnly = true;
-            this.txtPlugInVersion.Size = new System.Drawing.Size(290, 22);
+            this.txtPlugInVersion.Size = new System.Drawing.Size(337, 22);
             this.statusBarTextProvider1.SetStatusBarText(this.txtPlugInVersion, "Plug-in version information");
             this.txtPlugInVersion.TabIndex = 1;
             // 
@@ -113,7 +113,7 @@ namespace SandcastleBuilder.Utils.Design
             this.lbProjectPlugIns.IntegralHeight = false;
             this.lbProjectPlugIns.Location = new System.Drawing.Point(6, 21);
             this.lbProjectPlugIns.Name = "lbProjectPlugIns";
-            this.lbProjectPlugIns.Size = new System.Drawing.Size(318, 340);
+            this.lbProjectPlugIns.Size = new System.Drawing.Size(365, 436);
             this.lbProjectPlugIns.Sorted = true;
             this.statusBarTextProvider1.SetStatusBarText(this.lbProjectPlugIns, "Select the plug-in to configure");
             this.lbProjectPlugIns.TabIndex = 0;
@@ -124,7 +124,7 @@ namespace SandcastleBuilder.Utils.Design
             this.btnDelete.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnDelete.ImageIndex = 1;
             this.btnDelete.ImageList = this.ilImages;
-            this.btnDelete.Location = new System.Drawing.Point(224, 367);
+            this.btnDelete.Location = new System.Drawing.Point(271, 463);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
             this.btnDelete.Size = new System.Drawing.Size(100, 32);
@@ -150,7 +150,7 @@ namespace SandcastleBuilder.Utils.Design
             this.btnAddPlugIn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnAddPlugIn.ImageIndex = 0;
             this.btnAddPlugIn.ImageList = this.ilImages;
-            this.btnAddPlugIn.Location = new System.Drawing.Point(6, 367);
+            this.btnAddPlugIn.Location = new System.Drawing.Point(6, 463);
             this.btnAddPlugIn.Name = "btnAddPlugIn";
             this.btnAddPlugIn.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
             this.btnAddPlugIn.Size = new System.Drawing.Size(100, 32);
@@ -165,7 +165,7 @@ namespace SandcastleBuilder.Utils.Design
             this.btnConfigure.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnConfigure.ImageIndex = 4;
             this.btnConfigure.ImageList = this.ilImages;
-            this.btnConfigure.Location = new System.Drawing.Point(112, 367);
+            this.btnConfigure.Location = new System.Drawing.Point(135, 463);
             this.btnConfigure.Name = "btnConfigure";
             this.btnConfigure.Padding = new System.Windows.Forms.Padding(7, 0, 0, 0);
             this.btnConfigure.Size = new System.Drawing.Size(106, 32);
@@ -180,7 +180,7 @@ namespace SandcastleBuilder.Utils.Design
             // btnHelp
             // 
             this.btnHelp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnHelp.Location = new System.Drawing.Point(468, 427);
+            this.btnHelp.Location = new System.Drawing.Point(562, 523);
             this.btnHelp.Name = "btnHelp";
             this.btnHelp.Size = new System.Drawing.Size(88, 32);
             this.statusBarTextProvider1.SetStatusBarText(this.btnHelp, "Help: View help for this form");
@@ -198,7 +198,7 @@ namespace SandcastleBuilder.Utils.Design
             this.gbAvailablePlugIns.Controls.Add(this.lbAvailablePlugIns);
             this.gbAvailablePlugIns.Location = new System.Drawing.Point(12, 12);
             this.gbAvailablePlugIns.Name = "gbAvailablePlugIns";
-            this.gbAvailablePlugIns.Size = new System.Drawing.Size(302, 407);
+            this.gbAvailablePlugIns.Size = new System.Drawing.Size(349, 505);
             this.gbAvailablePlugIns.TabIndex = 0;
             this.gbAvailablePlugIns.TabStop = false;
             this.gbAvailablePlugIns.Text = "Available Plug-Ins";
@@ -209,9 +209,9 @@ namespace SandcastleBuilder.Utils.Design
             this.gbProjectAddIns.Controls.Add(this.btnDelete);
             this.gbProjectAddIns.Controls.Add(this.btnAddPlugIn);
             this.gbProjectAddIns.Controls.Add(this.lbProjectPlugIns);
-            this.gbProjectAddIns.Location = new System.Drawing.Point(320, 12);
+            this.gbProjectAddIns.Location = new System.Drawing.Point(367, 12);
             this.gbProjectAddIns.Name = "gbProjectAddIns";
-            this.gbProjectAddIns.Size = new System.Drawing.Size(330, 407);
+            this.gbProjectAddIns.Size = new System.Drawing.Size(377, 505);
             this.gbProjectAddIns.TabIndex = 1;
             this.gbProjectAddIns.TabStop = false;
             this.gbProjectAddIns.Text = "Plug-Ins in This Project";
@@ -220,7 +220,7 @@ namespace SandcastleBuilder.Utils.Design
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.CancelButton = this.btnClose;
-            this.ClientSize = new System.Drawing.Size(662, 471);
+            this.ClientSize = new System.Drawing.Size(756, 567);
             this.Controls.Add(this.btnHelp);
             this.Controls.Add(this.gbProjectAddIns);
             this.Controls.Add(this.gbAvailablePlugIns);

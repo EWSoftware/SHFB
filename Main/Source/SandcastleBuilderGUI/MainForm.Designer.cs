@@ -19,7 +19,10 @@ namespace SandcastleBuilder.Gui
                     project.Dispose();
 
                 if(fsw != null)
+                {
                     fsw.Dispose();
+                    fsw = null;
+                }
 
                 if(components != null)
                     components.Dispose();

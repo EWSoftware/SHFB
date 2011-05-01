@@ -198,6 +198,7 @@ namespace SandcastleBuilder.Utils
                 itemPath += @"\";
 
             item = project.MSBuildProject.AddItem(itemType, itemPath)[0];
+            projectFile.MSBuildProject.ReevaluateIfNecessary();
             projectFile.MarkAsDirty();
         }
         #endregion

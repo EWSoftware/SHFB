@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder MRefBuilder Components
 // File    : AssemblyInfo.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/06/2010
-// Note    : Copyright 2008-2010, Eric Woodruff, All rights reserved
+// Updated : 04/19/2011
+// Note    : Copyright 2008-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // Sandcastle Help File Builder MRefBuilder components assembly attributes.
@@ -27,7 +27,6 @@ using System.Reflection;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly: AssemblyProduct("Sandcastle Help File Builder MRefBuilder Components")]
 [assembly: AssemblyTitle("Sandcastle Help File Builder MRefBuilder Components")]
 [assembly: AssemblyDescription("A set of components used to extend the features " +
     "of Sandcastle's MRefBuilder tool.")]

@@ -17,7 +17,7 @@
     <!-- SHFB properties -->
     <OutputPath>.\Help\</OutputPath>
     <HtmlHelpName>TestCaseProject</HtmlHelpName>
-    <ProjectSummary>Test project summary!</ProjectSummary>
+    <ProjectSummary>Test project summary! Updated on 04/09/2011 from within Visual Studio.</ProjectSummary>
     <MissingTags>Summary, Parameter, Returns, AutoDocumentCtors, Namespace, TypeParameter, IncludeTargets, AutoDocumentDispose</MissingTags>
     <VisibleItems>Attributes, ExplicitInterfaceImplementations, InheritedMembers, InheritedFrameworkMembers, Protected, SealedProtected</VisibleItems>
     <HtmlHelp1xCompilerPath>
@@ -28,7 +28,7 @@
     </SandcastlePath>
     <WorkingPath>
     </WorkingPath>
-    <CleanIntermediates>False</CleanIntermediates>
+    <CleanIntermediates>True</CleanIntermediates>
     <BuildLogFile>
     </BuildLogFile>
     <FrameworkVersion>.NET 4.0.30319</FrameworkVersion>
@@ -140,19 +140,13 @@
       <HelpAttribute name="TargetOS" value="Windows" xmlns="" />
     </HelpAttributes>
     <NamespaceSummaries>
-      <NamespaceSummaryItem name="(global)" isDocumented="False" xmlns="" />
-      <NamespaceSummaryItem name="DocumentationInheritance" isDocumented="True" xmlns="" />
-      <NamespaceSummaryItem name="GenericOverloadBug" isDocumented="True" xmlns="" />
-      <NamespaceSummaryItem name="IJM.Library.Threading.Windows" isDocumented="True" xmlns="" />
-      <NamespaceSummaryItem name="IndexTest" isDocumented="True" xmlns="">CHM duplicate index keyword test and &amp;lt;see&amp;gt;/&amp;lt;seealso&amp;gt; inner text tests.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="InteropAttributesBug" isDocumented="True" xmlns="" />
-      <NamespaceSummaryItem name="NestedClassTest" isDocumented="True" xmlns="" />
-      <NamespaceSummaryItem name="OverloadsPageBug" isDocumented="True" xmlns="" />
-      <NamespaceSummaryItem name="SandcastleTest" isDocumented="True" xmlns="">&lt;inheritdoc cref="N:TestDoc"/&gt;
+      <NamespaceSummaryItem name="(global)" isDocumented="False" />
+      <NamespaceSummaryItem name="TestDoc" isDocumented="True">Test Namespace.  See &lt;see cref="T:TestDoc.TestClass"/&gt; and &lt;see cref="T:TestDoc.TestDerivedClass"&gt;Test Sealed Derived Class&lt;/see&gt; for some additional information.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="TestDoc.DocumentationInheritance" isDocumented="True">This namespace contains examples of documentation inheritance using the &amp;lt;inheritdoc /&amp;gt; tag.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="TestDoc.Generics" isDocumented="True">&lt;inheritdoc cref="N:TestDoc"/&gt;
 &lt;p/&gt;Test of the &amp;lt;inheritdoc /&amp;gt; tag in namespace comments.  The stuff from the &lt;b&gt;TestDoc&lt;/b&gt; namespace should be above this paragraph.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="SealedOverrideBug" isDocumented="True" xmlns="" />
-      <NamespaceSummaryItem name="TestDoc" isDocumented="True" xmlns="">Test Namespace.  See &lt;see cref="T:TestDoc.TestClass"/&gt; and &lt;see cref="T:TestDoc.TestDerivedClass"&gt;Test Sealed Derived Class&lt;/see&gt; for some additional information.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="XMLTagsDemo" isDocumented="True" xmlns="">XML Tags Demo namespace</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="TestDoc.IndexTocBugs" isDocumented="True">CHM duplicate index keyword test and &amp;lt;see&amp;gt;/&amp;lt;seealso&amp;gt; inner text tests.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="TestNamespace" isDocumented="True">This namespace contains the class from the Sandcastle tools examples.</NamespaceSummaryItem>
     </NamespaceSummaries>
     <PlugInConfigurations>
       <PlugInConfig id="Additional Content Only" enabled="False">
@@ -215,7 +209,7 @@
     <Revision>123</Revision>
     <CustomProperty Condition="'$(CustomProperty)' == ''">A value from a custom user-defined property</CustomProperty>
     <HelpTitle>Sandcastle Test Case Library</HelpTitle>
-    <SyntaxFilters>CSharp, VisualBasic, CPlusPlus, FSharp</SyntaxFilters>
+    <SyntaxFilters>Standard</SyntaxFilters>
     <KeepLogFile>True</KeepLogFile>
     <Language>en-US</Language>
     <ProductTitle>Sandcastle Help File Builder Example Project</ProductTitle>
@@ -229,6 +223,12 @@
     <ContentPlacement>AboveNamespaces</ContentPlacement>
     <NamingMethod>Guid</NamingMethod>
     <DisableCodeBlockComponent>False</DisableCodeBlockComponent>
+    <SccProjectName>SAK</SccProjectName>
+    <SccProvider>SAK</SccProvider>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccLocalPath>SAK</SccLocalPath>
+    <Preliminary>False</Preliminary>
+    <CppCommentsFixup>False</CppCommentsFixup>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in
        order for Visual Studio to perform the build.  The others are optional

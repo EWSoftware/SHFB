@@ -1,4 +1,4 @@
-﻿namespace SandcastleBuilder.Gui
+﻿namespace SandcastleBuilder.MicrosoftHelpViewer
 {
     partial class LaunchMSHelpViewerDlg
     {

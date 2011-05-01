@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : NamespaceSummaryItemCollection.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/27/2008
-// Note    : Copyright 2006-2008, Eric Woodruff, All rights reserved
+// Updated : 04/09/2011
+// Note    : Copyright 2006-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a collection class used to hold the namespace summary
@@ -19,6 +19,8 @@
 // ============================================================================
 // 1.2.0.0  09/04/2006  EFW  Created the code
 // 1.8.0.0  06/30/2008  EFW  Rewrote to support MSBuild project format
+// 1.9.3.0  04/07/2011  EFW  Made the constructor and from/to XML members
+//                           public so that it can be used from the VSPackage.
 //=============================================================================
 
 using System;
@@ -113,10 +115,10 @@ namespace SandcastleBuilder.Utils
         //=====================================================================
 
         /// <summary>
-        /// Internal constructor
+        /// Constructor
         /// </summary>
         /// <param name="project">The project that owns the collection</param>
-        internal NamespaceSummaryItemCollection(SandcastleProject project)
+        public NamespaceSummaryItemCollection(SandcastleProject project)
         {
             projectFile = project;
         }
@@ -147,7 +149,7 @@ namespace SandcastleBuilder.Utils
         /// </summary>
         /// <param name="namespaceSummaries">The namespace summary items</param>
         /// <remarks>The information is stored as an XML fragment</remarks>
-        internal void FromXml(string namespaceSummaries)
+        public void FromXml(string namespaceSummaries)
         {
             XmlTextReader xr = null;
             string name;
@@ -187,7 +189,7 @@ namespace SandcastleBuilder.Utils
         /// fragment ready for storing in the project file.
         /// </summary>
         /// <returns>The XML fragment containing the namespace summary info</returns>
-        internal string ToXml()
+        public string ToXml()
         {
             MemoryStream ms = new MemoryStream(10240);
             XmlTextWriter xw = null;

@@ -2,7 +2,7 @@
 // System  : EWSoftware Design Time Attributes and Editors
 // File    : FrameworkVersionTypeConverter.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/03/2011
+// Updated : 03/28/2011
 // Note    : Copyright 2006-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -24,6 +24,7 @@
 //=============================================================================
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -41,8 +42,19 @@ namespace SandcastleBuilder.Utils.Design
         //=====================================================================
 
         private static List<string> versions = new List<string>();
-        private static StandardValuesCollection standardValues =
-            FrameworkVersionTypeConverter.InitializeStandardValues();
+        private static StandardValuesCollection standardValues = InitializeStandardValues();
+        #endregion
+
+        #region Properties
+        //=====================================================================
+
+        /// <summary>
+        /// This read-only property returns the values in the collection
+        /// </summary>
+        public static IEnumerable<string> StandardValues
+        {
+            get { return versions; }
+        }
         #endregion
 
         #region Methods

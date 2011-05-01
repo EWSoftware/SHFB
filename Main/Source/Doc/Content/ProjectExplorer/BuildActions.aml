@@ -2,8 +2,8 @@
 <topic id="c38461a6-6edd-42cf-9d91-73c4b11cdd70" revisionNumber="1">
   <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
     <introduction>
-      <para>All file project items have a <codeInline>BuildAction</codeInline>
-property that determines how they will be handled at build time.</para>
+      <para>All file project items have a <codeInline>BuildAction</codeInline> property that determines how they
+will be handled at build time.</para>
 
 	<autoOutline lead="none" />
     </introduction>
@@ -11,24 +11,21 @@ property that determines how they will be handled at build time.</para>
     <section address="None">
       <title>None</title>
       <content>
-        <para>This is the default build action for all files without a
-recognized file extension as well as all conceptual content topic files
-(<localUri>.aml</localUri>).  Files with this build action are ignored at
-build time and will not be compiled into the help file.</para>
+        <para>This is the default build action for all files without a recognized file extension as well as all
+conceptual content topic files (<localUri>.aml</localUri>).  Files with this build action are ignored at build
+time and will not be compiled into the help file.</para>
 
 <alert class="note">
-  <para>To include conceptual content topics in a help file, add a content
-layout file to the project and use it to set the order and titles of the
-topics.  For images that appear in conceptual content topics, use the
+  <para>To include conceptual content topics in a help file, add a content layout file to the project and use it
+to set the order and titles of the topics.  For images that appear in conceptual content topics, use the
 <codeInline>Image</codeInline> build action.</para>
 </alert>
 
 <alert class="tip">
-  <para>Setting the build action to <codeInline>None</codeInline> on any file
-type will cause it to be ignored during the build.  This is useful for testing
-a different content layout while retaining the old file or perhaps creating
-different content layouts that can be selected by altering the build action to
-select the one you want for a given build.</para>
+  <para>Setting the build action to <codeInline>None</codeInline> on any file type will cause it to be ignored
+during the build.  This is useful for testing a different content layout while retaining the old file or perhaps
+creating different content layouts that can be selected by altering the build action to select the one you want
+for a given build.</para>
 </alert>
 
       </content>
@@ -37,89 +34,71 @@ select the one you want for a given build.</para>
     <section address="Content">
       <title>Content</title>
       <content>
-        <para>This is the default build action for any file that is considered
-to be HTML-based additional content or a supporting file.  File extensions
-recognized include: <localUri>.asp, .aspx, .ascx, .config, .css, .htm, .html,
-.js, .topic, .txt, .bmp, .gif, .jpg, .jpeg, .png</localUri></para>
+        <para>This is the default build action for any file that is considered to be HTML-based additional
+content or a supporting file.  File extensions recognized include: <localUri>.asp, .aspx, .ascx, .config, .css,
+.htm, .html, .js, .topic, .txt</localUri></para>
 
 <alert class="note">
-  <para>Content files added to the root project folder will be copied to the
-root folder of the compiled help file.  Files in subfolders will be copied to
-like-named subfolders in the compiled help file.</para>
+  <para>Content files added to the root project folder will be copied to the root folder of the compiled help
+file.  Files in subfolders will be copied to like-named subfolders in the compiled help file.</para>
 </alert>
 
-	<para>Content items have an additional <codeInline>ExcludeFromToc</codeInline>
-property.  If the item represents an HTML file that can appear in the table of
-contents, it will be excluded if this property is set to True.  This only has
-an effect if there is no site map file in the project.  Site map files always
-take precedence in defining the layout of HTML-based additional content items
-in the table of contents.</para>
+	<para>Content items have an additional <codeInline>ExcludeFromToc</codeInline> property.  If the item
+represents an HTML file that can appear in the table of contents, it will be excluded if this property is set to
+True.  This only has an effect if there is no site map file in the project.  Site map files always take precedence
+in defining the layout of HTML-based additional content items in the table of contents.</para>
       </content>
     </section>
 
     <section address="Image">
       <title>Image</title>
       <content>
-        <para>Select this build action for images that appear in conceptual
-content topics.  The <codeInline>ImageId</codeInline> property value is used in
-the <codeInline>mediaLink</codeInline> and <codeInline>mediaLinkInline</codeInline>
-MAML elements to reference them.  Changes can be made to the image properties
-such as the file associated with the ID and its <codeInline>AlternateText</codeInline>
-without having to visit each topic in which it is referenced.</para>
+        <para>Select this build action for images that appear in conceptual content topics.  This is the default
+build action for files with the following extensions: <localUri>.bmp, .gif, .jpg, .jpeg, .png</localUri>.  The
+<codeInline>ImageId</codeInline> property value is used in the <codeInline>mediaLink</codeInline> and
+<codeInline>mediaLinkInline</codeInline> MAML elements to reference them.  Changes can be made to the image
+properties such as the file associated with the ID and its <codeInline>AlternateText</codeInline> without having
+to visit each topic in which it is referenced.</para>
 
 <alert class="warning">
-  <para>The value of the ID assigned to an image should not be changed.  If it
-is, you will be required to manually locate and update the old ID in all topics
-that reference it.</para>
+  <para>The value of the ID assigned to an image should not be changed.  If it is, you will be required to
+manually locate and update the old ID in all topics that reference it.</para>
 </alert>
 
-	<para>The <codeInline>CopyToMedia</codeInline> property can be used to
-specify whether or not the image is copied to the <localUri>.\Media</localUri>
-folder even if not referenced in a media link.  The default is False to only
-copy the image if referenced.  Setting it to True is useful if the image is
-used for other purposes such as in an HTML content file, if used by a custom
-build component, or if it is only referenced in an <codeInline>externalLink</codeInline>
-MAML element.</para>
+	<para>The <codeInline>CopyToMedia</codeInline> property can be used to specify whether or not the image is
+copied to the <localUri>.\Media</localUri> folder even if not referenced in a media link.  The default is False
+to only copy the image if referenced.  Setting it to True is useful if the image is used for other purposes such
+as in an HTML content file, if used by a custom build component, or if it is only referenced in an
+<codeInline>externalLink</codeInline> MAML element.</para>
 
 <alert class="note">
-  <para>Image files default to the <codeInline>Content</codeInline> build
-action when first added to the project.  You must select the
-<codeInline>Image</codeInline> build action if you want to use them in
-conceptual content.</para>
-
-	<para>Unlike topics, image files will retain their name when copied to the
-media folder.  As such, if you add two images from different locations that
-have the same name, one will overwrite the other when the help file is built.</para>
+	<para>Unlike topics, image files will retain their name when copied to the media folder.  As such, if you add
+two images from different locations that have the same name, one will overwrite the other when the help file is
+built.</para>
 </alert>
 
-	<para>This build action also causes the file to appear in the <ui>Entity
-References</ui> window when <ui>Images</ui> is selected in it.</para>
+	<para>This build action also causes the file to appear in the <ui>Entity References</ui> window when
+<ui>Images</ui> is selected in it.</para>
       </content>
     </section>
 
     <section address="CodeSnippets">
       <title>CodeSnippets</title>
       <content>
-        <para>Selecting this build action identifies the file as a code
-snippets file.  These allows you to define code samples outside of conceptual
-topic files.  Each snippet has a unique ID that can be referenced in multiple
-topics using a <codeInline>codeReference</codeInline> MAML element so that the
-snippets do not have to be copied into each one.  Files with a
-<localUri>.snippets</localUri> extension are automatically assigned this build
-action.  Multiple snippets files can exist in the project and all will be
-included in the conceptual content build.  This build action also causes the
-file to appear in the <ui>Entity References</ui> window when <ui>Code
-Snippets</ui> is selected in it.</para>
+        <para>Selecting this build action identifies the file as a code snippets file.  These allows you to define
+code samples outside of conceptual topic files.  Each snippet has a unique ID that can be referenced in multiple
+topics using a <codeInline>codeReference</codeInline> MAML element so that the snippets do not have to be copied
+into each one.  Files with a <localUri>.snippets</localUri> extension are automatically assigned this build action.
+Multiple snippets files can exist in the project and all will be included in the conceptual content build.  This
+build action also causes the file to appear in the <ui>Entity References</ui> window when <ui>Code Snippets</ui>
+is selected in it.</para>
 
 <alert class="tip">
-  <para>When using the Sandcastle Help File Builder, the
-<link xlink:href="7f03ba39-09f8-4320-bdbd-ed31a3bd885f" /> offers the same set
-of features and several others for both inline and external code snippets.  In
-addition, it supports many other languages and can import code from working
-source code files which allows you to pull in examples from working projects
-that you can maintain and build without having to update a separate example
-snippets file.  As such, you may prefer to use it rather than manage the code
-snippets in an XML file.</para>
+  <para>When using the Sandcastle Help File Builder, the <link xlink:href="7f03ba39-09f8-4320-bdbd-ed31a3bd885f" />
+offers the same set of features and several others for both inline and external code snippets.  In addition, it
+supports many other languages and can import code from working source code files which allows you to pull in
+examples from working projects that you can maintain and build without having to update a separate example
+snippets file.  As such, you may prefer to use it rather than manage the code snippets in an XML file.</para>
 </alert>
 
       </content>
@@ -128,54 +107,45 @@ snippets in an XML file.</para>
     <section address="Tokens">
       <title>Tokens</title>
       <content>
-        <para>A token is used as a replaceable tag within a conceptual content
-topic and is represented using a <codeInline>token</codeInline> element.  The
-inner text of the element is a token name.  The tokens are defined in a
-separate token file.  They are an easy way to represent common items that you
-use regularly such as a common phrase or external link.  Selecting this build
-action identifies the file as a token file.  Files with a <localUri>.tokens</localUri>
-extension are automatically assigned this build action.  Multiple token files
-can exist in the project and all will be included in the conceptual content
-build.  This build action also causes the file to appear in the <ui>Entity
-References</ui> window when <ui>Tokens</ui> is selected in it.</para>
+        <para>A token is used as a replaceable tag within a conceptual content topic and is represented using a
+<codeInline>token</codeInline> element.  The inner text of the element is a token name.  The tokens are defined
+in a separate token file.  They are an easy way to represent common items that you use regularly such as a common
+phrase or external link.  Selecting this build action identifies the file as a token file.  Files with a
+<localUri>.tokens</localUri> extension are automatically assigned this build action.  Multiple token files can
+exist in the project and all will be included in the conceptual content build.  This build action also causes the
+file to appear in the <ui>Entity References</ui> window when <ui>Tokens</ui> is selected in it.</para>
       </content>
     </section>
 
     <section address="ResourceItems">
       <title>ResourceItems</title>
       <content>
-        <para>Resource items are used by Sandcastle to insert localizable or
-parameterized text into help topics.  The resource items are defined in
-various files that differ based on the selected presentation style.  Adding
-your own file to a project and selecting this build action identifies it as a
-resource item file and allows you to override the values used for the stock
-resource items defined by Sandcastle and/or the help file builder.  Files with
-a <localUri>.items</localUri> extension are automatically assigned this build
-action.  Multiple resource item files can exist in the project and all will be
-included in the build.  If a resource item is defined in multiple files, the
-last definition encountered will be used.</para>
+        <para>Resource items are used by Sandcastle to insert localizable or parameterized text into help topics.
+The resource items are defined in various files that differ based on the selected presentation style.  Adding
+your own file to a project and selecting this build action identifies it as a resource item file and allows you
+to override the values used for the stock resource items defined by Sandcastle and/or the help file builder.
+Files with a <localUri>.items</localUri> extension are automatically assigned this build action.  Multiple
+resource item files can exist in the project and all will be included in the build.  If a resource item is
+defined in multiple files, the last definition encountered will be used.</para>
       </content>
     </section>
 
     <section address="ContentLayout">
       <title>ContentLayout</title>
       <content>
-        <para>This is the default build action for content layout files (those
-with a <localUri>.content</localUri> extension).  These are used to define the
-layout of <link xlink:href="54e3dc97-5125-441e-8e84-7f9303e95f26">conceptual
-content</link> topics in the table of contents and the additional topic
-properties such as their title, help attributes, and index keywords.</para>
+        <para>This is the default build action for content layout files (those with a <localUri>.content</localUri>
+extension).  These are used to define the layout of <link xlink:href="54e3dc97-5125-441e-8e84-7f9303e95f26">conceptual
+content</link> topics in the table of contents and the additional topic properties such as their title, help
+attributes, and index keywords.</para>
 
 <alert class="note">
-  <para>Without at least one content layout file, no conceptual content will
-appear in the compiled help file.</para>
+  <para>Without at least one content layout file, no conceptual content will appear in the compiled help file.</para>
 </alert>
 
-	<para>Multiple content layout files can appear in a project.  Each has a
-<codeInline>SortOrder</codeInline> property that is used to determine how their
-root entries are ordered within the overall table of contents.  Each content
-layout and site map file is sorted based on the sort order and their items
-are then merged into the table of contents in that order.</para>
+	<para>Multiple content layout files can appear in a project.  Each has a <codeInline>SortOrder</codeInline>
+property that is used to determine how their root entries are ordered within the overall table of contents.  Each
+content layout and site map file is sorted based on the sort order and their items are then merged into the table
+of contents in that order.</para>
 
       </content>
     </section>
@@ -183,34 +153,28 @@ are then merged into the table of contents in that order.</para>
     <section address="SiteMap">
       <title>SiteMap</title>
       <content>
-        <para>This is the default build action for site map files (those with a
-<localUri>.sitemap</localUri> extension).  These are used to define the layout
-of HTML-based additional content topics in the table of contents and their
-title.</para>
+        <para>This is the default build action for site map files (those with a <localUri>.sitemap</localUri>
+extension).  These are used to define the layout of HTML-based additional content topics in the table of contents
+and their title.</para>
 
 <alert class="note">
-	<para>Items referenced in a site map file must have a
-<codeInline>Content</codeInline> build action.</para>
+	<para>Items referenced in a site map file must have a <codeInline>Content</codeInline> build action.</para>
 
-  <para>Unlike conceptual content, HTML-based items in a project will be
-compiled into the help file if they have a <codeInline>Content</codeInline>
-build action with or without a site map.  In the absence of a site map, the
-layout of the items in the table of contents is based on the physical folder
-structure of the items.  Files at the root level appear at the root level of
-the help file.  Files in subfolders will appear in like-named subfolders
+  <para>Unlike conceptual content, HTML-based items in a project will be compiled into the help file if they have
+a <codeInline>Content</codeInline> build action with or without a site map.  In the absence of a site map, the
+layout of the items in the table of contents is based on the physical folder structure of the items.  Files at
+the root level appear at the root level of the help file.  Files in subfolders will appear in like-named subfolders
 in the help file.</para>
 
-	<para>This feature has been deprecated and is only supported for backward
-compatibility.  While it will still be supported and will not be removed, it
-will not receive any further enhancements.  Conceptual content is now the
+	<para>This feature has been deprecated and is only supported for backward compatibility.  While it will still
+be supported and will not be removed, it will not receive any further enhancements.  Conceptual content is now the
 preferred method of adding non-API topics to the help file.</para>
 </alert>
 
-	<para>Multiple site map files can appear in a project.  Each has a
-<codeInline>SortOrder</codeInline> property that is used to determine how their
-root entries are ordered within the overall table of contents.  Each content
-layout and site map file is sorted based on the sort order and their items
-are then merged into the table of contents in that order.</para>
+	<para>Multiple site map files can appear in a project.  Each has a <codeInline>SortOrder</codeInline> property
+that is used to determine how their root entries are ordered within the overall table of contents.  Each content
+layout and site map file is sorted based on the sort order and their items are then merged into the table of
+contents in that order.</para>
 
       </content>
     </section>
@@ -218,19 +182,17 @@ are then merged into the table of contents in that order.</para>
     <section address="TopicTransform">
       <title>TopicTransform</title>
       <content>
-        <para>Files with a <localUri>.xsl</localUri> or a <localUri>.xslt</localUri>
-file extension will get a build action of <codeInline>TopicTransform</codeInline>
-by default.  This feature was used in prior versions of the help file builder
-to transform <localUri>.topic</localUri> files to HTML and give them the look
-and feel of the API topics.</para>
+        <para>Files with a <localUri>.xsl</localUri> or a <localUri>.xslt</localUri> file extension will get a
+build action of <codeInline>TopicTransform</codeInline> by default.  This feature was used in prior versions of
+the help file builder to transform <localUri>.topic</localUri> files to HTML and give them the look and feel of
+the API topics.</para>
 
 <alert class="note">
-	<para>Only the first transformation file found at build time will be
-used.  Any others in the project are ignored.</para>
+	<para>Only the first transformation file found at build time will be used.  Any others in the project are
+ignored.</para>
 
-	<para>This feature has been deprecated and is only supported for backward
-compatibility.  While it will still be supported and will not be removed, it
-will not receive any further enhancements.  Conceptual content is now the
+	<para>This feature has been deprecated and is only supported for backward compatibility.  While it will still
+be supported and will not be removed, it will not receive any further enhancements.  Conceptual content is now the
 preferred method of adding non-API topics to the help file.</para>
 </alert>
 
@@ -238,14 +200,14 @@ preferred method of adding non-API topics to the help file.</para>
     </section>
 
     <relatedTopics>
-	<link xlink:href="0a9d6da4-cff6-4664-8b64-b7df04c8a37d" />
-	<link xlink:href="e12c2b9f-18c7-4718-850b-ac3c2e293672" />
-	<link xlink:href="e32086c6-de17-4e54-a746-1ac80bf0c45a" />
-	<link xlink:href="e49eea91-a9ef-4aa5-ad8f-16ebd61b798a" />
-	<link xlink:href="54e3dc97-5125-441e-8e84-7f9303e95f26" />
-	<link xlink:href="4b8ab701-2321-4d24-a287-8848de086f68" />
-	<link xlink:href="ed6870bb-772d-4596-9fc1-5638ae6d621b" />
-	<link xlink:href="fcf8e4ac-5b32-4d5f-9bce-2e85c3468fdc" />
-    </relatedTopics>
+		<link xlink:href="0a9d6da4-cff6-4664-8b64-b7df04c8a37d" />
+		<link xlink:href="e12c2b9f-18c7-4718-850b-ac3c2e293672" />
+		<link xlink:href="e32086c6-de17-4e54-a746-1ac80bf0c45a" />
+		<link xlink:href="e49eea91-a9ef-4aa5-ad8f-16ebd61b798a" />
+		<link xlink:href="54e3dc97-5125-441e-8e84-7f9303e95f26" />
+		<link xlink:href="4b8ab701-2321-4d24-a287-8848de086f68" />
+		<link xlink:href="ed6870bb-772d-4596-9fc1-5638ae6d621b" />
+		<link xlink:href="fcf8e4ac-5b32-4d5f-9bce-2e85c3468fdc" />
+		</relatedTopics>
   </developerConceptualDocument>
 </topic>

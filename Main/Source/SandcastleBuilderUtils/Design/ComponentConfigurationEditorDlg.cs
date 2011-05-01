@@ -2,7 +2,7 @@
 // System  : EWSoftware Design Time Attributes and Editors
 // File    : ComponentConfigurationEditorDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/09/2011
+// Updated : 04/10/2011
 // Note    : Copyright 2007-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -47,20 +47,21 @@ namespace SandcastleBuilder.Utils.Design
     internal partial class ComponentConfigurationEditorDlg : Form
     {
         #region Private data members
+        //=====================================================================
+
         // The current configurations
         private ComponentConfigurationDictionary currentConfigs;
 
         #endregion
 
+        #region Constructor
         //=====================================================================
-        // Methods, etc.
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="configs">The current configurations</param>
-        internal ComponentConfigurationEditorDlg(
-          ComponentConfigurationDictionary configs)
+        internal ComponentConfigurationEditorDlg(ComponentConfigurationDictionary configs)
         {
             int idx;
 
@@ -79,8 +80,7 @@ namespace SandcastleBuilder.Utils.Design
             {
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
 
-                MessageBox.Show("Unexpected error loading build components: " +
-                    ex.Message, Constants.AppName,
+                MessageBox.Show("Unexpected error loading build components: " + ex.Message, Constants.AppName,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
@@ -88,8 +88,7 @@ namespace SandcastleBuilder.Utils.Design
                 lbAvailableComponents.SelectedIndex = 0;
             else
             {
-                MessageBox.Show("No valid build components found",
-                    Constants.AppName, MessageBoxButtons.OK,
+                MessageBox.Show("No valid build components found", Constants.AppName, MessageBoxButtons.OK,
                     MessageBoxIcon.Information);
                 gbAvailableComponents.Enabled = gbProjectAddIns.Enabled = false;
             }
@@ -97,8 +96,7 @@ namespace SandcastleBuilder.Utils.Design
             foreach(string key in currentConfigs.Keys)
             {
                 idx = lbProjectComponents.Items.Add(key);
-                lbProjectComponents.SetItemChecked(idx,
-                    currentConfigs[key].Enabled);
+                lbProjectComponents.SetItemChecked(idx, currentConfigs[key].Enabled);
             }
 
             if(lbProjectComponents.Items.Count != 0)
@@ -106,6 +104,53 @@ namespace SandcastleBuilder.Utils.Design
             else
                 btnConfigure.Enabled = btnDelete.Enabled = false;
         }
+        #endregion
+
+        #region Helper methods
+        //=====================================================================
+
+        /// <summary>
+        /// This is handled to resolve dependent assemblies and load them
+        /// when necessary.
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="args">The event arguments</param>
+        /// <returns>The loaded assembly</returns>
+        private Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            Assembly asm = null;
+
+            string[] nameInfo = args.Name.Split(new char[] { ',' });
+            string resolveName = nameInfo[0];
+
+            // See if it has already been loaded
+            foreach(Assembly a in AppDomain.CurrentDomain.GetAssemblies())
+                if(args.Name == a.FullName)
+                {
+                    asm = a;
+                    break;
+                }
+
+            // Is it a Sandcastle component?
+            if(asm == null)
+            {
+                resolveName = Directory.EnumerateFiles(BuildComponentManager.SandcastlePath, "*.dll",
+                    SearchOption.AllDirectories).FirstOrDefault(
+                    f => resolveName == Path.GetFileNameWithoutExtension(f));
+
+                if(resolveName != null)
+                    asm = Assembly.LoadFile(resolveName);
+            }
+
+            if(asm == null)
+                throw new FileLoadException("Unable to resolve reference to " + args.Name);
+
+            return asm;
+        }
+        #endregion
+
+        #region Event handlers
+        //=====================================================================
 
         /// <summary>
         /// Close this form
@@ -163,23 +208,22 @@ namespace SandcastleBuilder.Utils.Design
 
             // Currently, no duplicates are allowed
             if(idx != -1)
-            {
                 lbProjectComponents.SelectedIndex = idx;
-                return;
-            }
-
-            idx = lbProjectComponents.Items.Add(key);
-
-            if(idx != -1)
+            else
             {
-                currentConfigs.Add(key, true,
-                    BuildComponentManager.BuildComponents[key].DefaultConfiguration);
-                lbProjectComponents.SelectedIndex = idx;
-                lbProjectComponents.SetItemChecked(idx, true);
-                btnConfigure.Enabled = btnDelete.Enabled = true;
+                idx = lbProjectComponents.Items.Add(key);
 
-                currentConfigs.OnDictionaryChanged(new ListChangedEventArgs(
-                    ListChangedType.ItemAdded, -1));
+                if(idx != -1)
+                {
+                    currentConfigs.Add(key, true,
+                        BuildComponentManager.BuildComponents[key].DefaultConfiguration);
+                    lbProjectComponents.SelectedIndex = idx;
+                    lbProjectComponents.SetItemChecked(idx, true);
+                    btnConfigure.Enabled = btnDelete.Enabled = true;
+
+                    currentConfigs.OnDictionaryChanged(new ListChangedEventArgs(
+                        ListChangedType.ItemAdded, -1));
+                }
             }
         }
 
@@ -191,16 +235,14 @@ namespace SandcastleBuilder.Utils.Design
         private void btnConfigure_Click(object sender, EventArgs e)
         {
             BuildComponentConfiguration componentConfig;
-            string newConfig, currentConfig, assembly,
-                key = (string)lbProjectComponents.SelectedItem;
+            string newConfig, currentConfig, assembly, key = (string)lbProjectComponents.SelectedItem;
 
             BuildComponentInfo info = BuildComponentManager.BuildComponents[key];
 
             componentConfig = currentConfigs[key];
             currentConfig = componentConfig.Configuration;
 
-            // If it doesn't have a configuration method, use the default
-            // configuration editor.
+            // If it doesn't have a configuration method, use the default configuration editor
             if(String.IsNullOrEmpty(info.ConfigureMethod))
             {
                 using(ConfigurationEditorDlg dlg = new ConfigurationEditorDlg())
@@ -223,117 +265,62 @@ namespace SandcastleBuilder.Utils.Design
             // Don't allow editing if set to "-"
             if(info.ConfigureMethod == "-")
             {
-                MessageBox.Show("The selected component contains no " +
-                    "editable configuration information",
-                    Constants.AppName, MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
+                MessageBox.Show("The selected component contains no editable configuration information",
+                    Constants.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
             try
             {
-                // Change into the component's folder so that it has a
-                // better chance of finding all of its dependencies.
-                assembly = BuildComponentManager.ResolveComponentPath(
-                    info.AssemblyPath);
-                Directory.SetCurrentDirectory(Path.GetDirectoryName(
-                    Path.GetFullPath(assembly)));
+                // Change into the component's folder so that it has a better chance of finding all of its
+                // dependencies.
+                assembly = BuildComponentManager.ResolveComponentPath(info.AssemblyPath);
+                Directory.SetCurrentDirectory(Path.GetDirectoryName(Path.GetFullPath(assembly)));
 
-                // The exception is BuildAssemblerLibrary.dll which is in
-                // the Sandcastle installation folder.  We'll have to resolve
-                // that one manually.
-                AppDomain.CurrentDomain.AssemblyResolve +=
-                    new ResolveEventHandler(CurrentDomain_AssemblyResolve);
+                // The exception is BuildAssemblerLibrary.dll which is in the Sandcastle installation folder.
+                // We'll have to resolve that one manually.
+                AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
 
-                // Load the type and get a reference to the static
-                // configuration method.
+                // Load the type and get a reference to the static configuration method
                 Assembly asm = Assembly.LoadFrom(assembly);
                 Type component = asm.GetType(info.TypeName);
                 MethodInfo mi = null;
 
                 if(component != null)
-                    mi = component.GetMethod(info.ConfigureMethod,
-                        BindingFlags.Public | BindingFlags.Static);
+                    mi = component.GetMethod(info.ConfigureMethod, BindingFlags.Public | BindingFlags.Static);
 
                 if(component != null && mi != null)
                 {
                     // Invoke the method to let it configure the settings
-                    newConfig = (string)mi.Invoke(null, new object[] {
-                        currentConfig });
+                    newConfig = (string)mi.Invoke(null, new object[] { currentConfig });
 
                     // Only store it if new or if it changed
                     if(currentConfig != newConfig)
                         componentConfig.Configuration = newConfig;
                 }
                 else
-                    MessageBox.Show(String.Format(CultureInfo.InvariantCulture,
-                        "Unable to locate the '{0}' method in component " +
-                        "'{1}' in assembly {2}", info.ConfigureMethod,
-                        info.TypeName, assembly), Constants.AppName,
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(String.Format(CultureInfo.InvariantCulture, "Unable to locate the '{0}' " +
+                        "method in component '{1}' in assembly {2}", info.ConfigureMethod,
+                        info.TypeName, assembly), Constants.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             catch(IOException ioEx)
             {
                 System.Diagnostics.Debug.WriteLine(ioEx.ToString());
-                MessageBox.Show(String.Format(CultureInfo.InvariantCulture,
-                    "A file access error occurred trying to configure the " +
-                    "component '{0}'.  Error: {1}", info.TypeName, ioEx.Message),
-                    Constants.AppName, MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+                MessageBox.Show(String.Format(CultureInfo.InvariantCulture, "A file access error occurred " +
+                    "trying to configure the component '{0}'.  Error: {1}", info.TypeName, ioEx.Message),
+                    Constants.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             catch(Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
-                MessageBox.Show(String.Format(CultureInfo.InvariantCulture,
-                    "An error occurred trying to configure the component " +
-                    "'{0}'.  Error: {1}", info.TypeName, ex.Message),
-                    Constants.AppName, MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+                MessageBox.Show(String.Format(CultureInfo.InvariantCulture, "An error occurred trying to " +
+                    "configure the component '{0}'.  Error: {1}", info.TypeName, ex.Message), Constants.AppName,
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {
-                AppDomain.CurrentDomain.AssemblyResolve -=
-                    new ResolveEventHandler(CurrentDomain_AssemblyResolve);
+                AppDomain.CurrentDomain.AssemblyResolve -= new ResolveEventHandler(CurrentDomain_AssemblyResolve);
             }
-        }
-
-        /// <summary>
-        /// This is handled to resolve dependent assemblies and load them
-        /// when necessary.
-        /// </summary>
-        /// <param name="sender">The sender of the event</param>
-        /// <param name="args">The event arguments</param>
-        /// <returns>The loaded assembly</returns>
-        private Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
-        {
-            Assembly asm = null;
-
-            string[] nameInfo = args.Name.Split(new char[] { ',' });
-            string resolveName = nameInfo[0];
-
-            // See if it has already been loaded
-            foreach(Assembly a in AppDomain.CurrentDomain.GetAssemblies())
-                if(args.Name == a.FullName)
-                {
-                    asm = a;
-                    break;
-                }
-
-            // Is it a Sandcastle component?
-            if(asm == null)
-            {
-                resolveName = Directory.EnumerateFiles(BuildComponentManager.SandcastlePath, "*.dll",
-                    SearchOption.AllDirectories).FirstOrDefault(
-                    f => resolveName == Path.GetFileNameWithoutExtension(f));
-
-                if(resolveName != null)
-                    asm = Assembly.LoadFile(resolveName);
-            }
-
-            if(asm == null)
-                throw new FileLoadException("Unable to resolve reference to " + args.Name);
-
-            return asm;
         }
 
         /// <summary>
@@ -371,29 +358,25 @@ namespace SandcastleBuilder.Utils.Design
         /// <param name="e">The event arguments</param>
         private void btnHelp_Click(object sender, EventArgs e)
         {
-            string path = Path.GetDirectoryName(
-                Assembly.GetExecutingAssembly().Location);
+            string path = null;
 
             try
             {
 #if DEBUG
-                path += @"\..\..\..\Doc\Help\SandcastleBuilder.chm";
+                // In debug builds, SHFBROOT points to the .\Debug folder for the SandcastleBuilderGUI project
+                path = Path.Combine(@"C:\Program Files (x86)\EWSoftware\Sandcastle Help File Builder\SandcastleBuilder.chm");
 #else
-                path += @"\SandcastleBuilder.chm";
+                path = Path.Combine(Environment.ExpandEnvironmentVariables("%SHFBROOT%"), "SandcastleBuilder.chm");
 #endif
                 Form form = new Form();
                 form.CreateControl();
-                Help.ShowHelp(form, path, HelpNavigator.Topic,
-                    "html/8dcbb69b-7a1a-4049-8e6b-2bf344efbbc9.htm");
+                Help.ShowHelp(form, path, HelpNavigator.Topic, "html/8dcbb69b-7a1a-4049-8e6b-2bf344efbbc9.htm");
             }
             catch(Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
-                MessageBox.Show(String.Format(CultureInfo.CurrentCulture,
-                    "Unable to open help file '{0}'.  Reason: {1}",
-                    path, ex.Message), Constants.AppName,
-                    MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
+        #endregion
     }
 }

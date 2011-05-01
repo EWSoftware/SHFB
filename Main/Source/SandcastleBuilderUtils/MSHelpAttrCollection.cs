@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : MSHelpAttrCollection.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/16/2008
-// Note    : Copyright 2008, Eric Woodruff, All rights reserved
+// Updated : 04/11/2011
+// Note    : Copyright 2008-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a collection class used to hold the help attribute
@@ -19,9 +19,10 @@
 // ============================================================================
 // 1.6.0.7  03/25/2008  EFW  Created the code
 // 1.8.0.0  07/03/2008  EFW  Rewrote to support MSBuild project format
+// 1.9.3.0  04/07/2011  EFW  Made the constructor and from/to XML members
+//                           public so that it can be used from the VSPackage.
 //=============================================================================
 
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing.Design;
@@ -98,11 +99,7 @@ namespace SandcastleBuilder.Utils
         /// <remarks>Values are sorted by attribute name and value</remarks>
         public void Sort()
         {
-            ((List<MSHelpAttr>)base.Items).Sort(
-                delegate(MSHelpAttr x, MSHelpAttr y)
-                {
-                    return Comparer<MSHelpAttr>.Default.Compare(x, y);
-                });
+            ((List<MSHelpAttr>)base.Items).Sort((x, y) => Comparer<MSHelpAttr>.Default.Compare(x, y));
         }
         #endregion
 
@@ -115,7 +112,7 @@ namespace SandcastleBuilder.Utils
         /// </summary>
         /// <param name="helpAttrs">The help attribute items</param>
         /// <remarks>The information is stored as an XML fragment</remarks>
-        internal void FromXml(string helpAttrs)
+        public void FromXml(string helpAttrs)
         {
             XmlTextReader xr = null;
 
@@ -144,8 +141,7 @@ namespace SandcastleBuilder.Utils
         {
             while(!xr.EOF && xr.NodeType != XmlNodeType.EndElement)
             {
-                if(xr.NodeType == XmlNodeType.Element &&
-                  xr.Name == "HelpAttribute")
+                if(xr.NodeType == XmlNodeType.Element && xr.Name == "HelpAttribute")
                     this.Add(xr.GetAttribute("name"), xr.GetAttribute("value"));
 
                 xr.Read();
@@ -157,7 +153,7 @@ namespace SandcastleBuilder.Utils
         /// ready for storing in the project file.
         /// </summary>
         /// <returns>The XML fragment containing the help attribute info</returns>
-        internal string ToXml()
+        public string ToXml()
         {
             MemoryStream ms = new MemoryStream(10240);
             XmlTextWriter xw = null;
@@ -186,7 +182,7 @@ namespace SandcastleBuilder.Utils
         /// is written.</param>
         /// <param name="includeContainer">True to write out the containing
         /// <b>HelpAttributes</b> element, false to exclude it.</param>
-        public void WriteXml(XmlWriter xw, bool includeContainer)
+        internal void WriteXml(XmlWriter xw, bool includeContainer)
         {
             if(includeContainer)
                 xw.WriteStartElement("HelpAttributes");
@@ -243,8 +239,7 @@ namespace SandcastleBuilder.Utils
             StringBuilder sb = new StringBuilder("<attributes>\r\n", 1024);
 
             foreach(MSHelpAttr ha in this)
-                sb.AppendFormat("  <attribute name=\"{0}\" value=\"{1}\" />",
-                    ha.AttributeName, ha.AttributeValue);
+                sb.AppendFormat("  <attribute name=\"{0}\" value=\"{1}\" />", ha.AttributeName, ha.AttributeValue);
 
             sb.Append("</attributes>\r\n");
 
@@ -264,8 +259,7 @@ namespace SandcastleBuilder.Utils
             if(projectFile == null)
             {
                 isDirty = true;
-                this.OnListChanged(new ListChangedEventArgs(
-                    ListChangedType.ItemChanged, -1));
+                this.OnListChanged(new ListChangedEventArgs(ListChangedType.ItemChanged, -1));
             }
         }
 

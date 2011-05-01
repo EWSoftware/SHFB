@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Include xmlns="http://schemas.microsoft.com/wix/2006/wi">
 
-	<?define Manufacturer        = "EWSoftware" ?>
-	<?define ProductName         = "Sandcastle Help File Builder" ?>
-	<?define ProductHomePage     = "http://SHFB.CodePlex.com" ?>
-	<?define ProductShortName    = "SHFB" ?>
+  <?define Manufacturer        = "EWSoftware" ?>
+  <?define ProductName         = "Sandcastle Help File Builder" ?>
+  <?define ProductHomePage     = "http://SHFB.CodePlex.com" ?>
+  <?define ProductShortName    = "SHFB" ?>
   <?define ProductCode         = "1D6236D9-6245-41E9-AB37-138D77AE2D37" ?>
-	<?define UpgradeCode         = "8D3EB6EC-9DEB-4BD8-B996-82CD18E48570" ?>
-	<?define BinFolder           = "..\SandcastleBuilderGUI\bin\Release\" ?>
-	<?define HelpFolder          = "..\Doc\Help\" ?>
+  <?define UpgradeCode         = "8D3EB6EC-9DEB-4BD8-B996-82CD18E48570" ?>
+  <?define BinFolder           = "..\SandcastleBuilderGUI\bin\Release\" ?>
+  <?define LauncherFolder      = "..\SHFBProjectLauncher\bin\Release\" ?>
+  <?define HelpFolder          = "..\Doc\Help\" ?>
 </Include>

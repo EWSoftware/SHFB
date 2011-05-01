@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : AssemblyInfoShared.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/05/2011
+// Updated : 04/19/2011
 // Note    : Copyright 2006-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -41,6 +41,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
+[assembly: AssemblyProduct("Sandcastle Help File Builder")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Eric Woodruff")]
 [assembly: AssemblyCopyright("Copyright \xA9 2006-2011, Eric Woodruff, All Rights Reserved")]

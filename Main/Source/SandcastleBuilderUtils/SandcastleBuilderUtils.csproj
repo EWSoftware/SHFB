@@ -127,6 +127,18 @@
     <Compile Include="Controls\DividerGroupBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\FilePathUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\FilePathUserControl.designer.cs">
+      <DependentUpon>FilePathUserControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\FolderPathUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\FolderPathUserControl.designer.cs">
+      <DependentUpon>FolderPathUserControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Conversion\ConvertFromShfbFile.cs" />
     <Compile Include="Design\ApiFilterCollectionTypeConverter.cs" />
     <Compile Include="Design\ApiFilterEditor.cs" />
@@ -268,6 +280,12 @@
     <None Include="SandcastleBuilderUtils.snk" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Controls\FilePathUserControl.resx">
+      <DependentUpon>FilePathUserControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\FolderPathUserControl.resx">
+      <DependentUpon>FolderPathUserControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\StatusBarTextProvider.bmp" />
     <EmbeddedResource Include="Controls\DividerLabel.bmp" />
     <EmbeddedResource Include="Controls\CustomPropertyGrid.bmp" />
@@ -412,6 +430,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Controls\RefreshableItemListBox.bmp" />
+    <EmbeddedResource Include="Controls\FilePathUserControl.bmp" />
+    <EmbeddedResource Include="Controls\FolderPathUserControl.bmp" />
     <Content Include="MSBuild\SandcastleHelpFileBuilder.targets" />
     <None Include="Resources\SpinningWheel.gif" />
     <Compile Include="BuildAction.cs" />

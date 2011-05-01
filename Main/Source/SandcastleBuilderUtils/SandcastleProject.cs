@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SandcastleProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/18/2011
+// Updated : 04/17/2011
 // Note    : Copyright 2006-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -105,8 +105,10 @@ namespace SandcastleBuilder.Utils
         #region Constants
         //=====================================================================
 
-        // The schema version used in the saved project files
-        private static Version SchemaVersion = new Version(1, 9, 3, 0);
+        /// <summary>
+        /// The schema version used in the saved project files
+        /// </summary>
+        public static Version SchemaVersion = new Version(1, 9, 3, 0);
 
         /// <summary>The default configuration</summary>
         public const string DefaultConfiguration = "Debug";
@@ -118,7 +120,7 @@ namespace SandcastleBuilder.Utils
         internal static List<string> restrictedProps = new List<string>() {
             "AssemblyName", "Configuration", "CustomBeforeSHFBTargets", "CustomAfterSHFBTargets",
             "DumpLogOnFailure", "Name", "Platform", "ProjectGuid", "RootNamespace", "SHFBSchemaVersion",
-            "SchemaVersion", "Verbose", };
+            "SchemaVersion", "Verbose", "SccProjectName", "SccProvider", "SccAuxPath", "SccLocalPath" };
         #endregion
 
         #region Private data members
@@ -324,8 +326,10 @@ namespace SandcastleBuilder.Utils
 
                 if(msBuildProject != null)
                 {
-                    if(!msBuildProject.GlobalProperties.TryGetValue(ProjectElement.OutDir, out outDir))
-                        outDir = null;
+                    // Ignore ".\" as that's our default.
+                    if(msBuildProject.GlobalProperties.TryGetValue(ProjectElement.OutDir, out outDir))
+                        if(outDir == @".\")
+                            outDir = null;
                 }
 
                 return outDir;
@@ -483,14 +487,13 @@ namespace SandcastleBuilder.Utils
         }
         #endregion
 
-        #region Comment related properties
+        #region Summary related properties
         //=====================================================================
 
         /// <summary>
         /// Returns the list of namespace summaries
         /// </summary>
-        [Category("Comments"), Description("Namespaces to document and " +
-          "their related summary comments")]
+        [Category("Summaries"), Description("Namespaces to document and their related summary comments")]
         public NamespaceSummaryItemCollection NamespaceSummaries
         {
             get { return namespaceSummaries; }
@@ -501,7 +504,7 @@ namespace SandcastleBuilder.Utils
         /// </summary>
         /// <remarks>These notes will appear in the root namespaces page if
         /// entered.</remarks>
-        [Category("Comments"), Description("Project summary comments"),
+        [Category("Summaries"), Description("Project summary comments"),
           EscapeValue, Editor(typeof(ProjectSummaryEditor), typeof(UITypeEditor))]
         public string ProjectSummary
         {
@@ -526,12 +529,10 @@ namespace SandcastleBuilder.Utils
         /// </summary>
         /// <value>You only need to set this if the builder cannot determine
         /// the path for itself.</value>
-        [Category("Paths"), Description("The path to the HTML Help 1 " +
-          "compiler (HHC.EXE).  This only needs to be set if the builder " +
-          "cannot determine the path for itself."), DefaultValue(null),
+        [Category("Paths"), Description("The path to the HTML Help 1 compiler (HHC.EXE).  This only needs to " +
+          "be set if the builder cannot determine the path for itself."), DefaultValue(null),
           Editor(typeof(FolderPathObjectEditor), typeof(UITypeEditor)),
-          FolderDialog("Select the HTML Help 1 compiler installation location",
-            Environment.SpecialFolder.ProgramFiles)]
+          FolderDialog("Select the HTML Help 1 compiler installation location", Environment.SpecialFolder.ProgramFiles)]
         public FolderPath HtmlHelp1xCompilerPath
         {
             get { return hhcPath; }
@@ -542,10 +543,8 @@ namespace SandcastleBuilder.Utils
 
                 this.SetProjectProperty("HtmlHelp1xCompilerPath", value);
                 hhcPath = value;
-                hhcPath.PersistablePathChanging += new EventHandler(
-                    PathProperty_Changing);
-                hhcPath.PersistablePathChanged += new EventHandler(
-                    PathProperty_Changed);
+                hhcPath.PersistablePathChanging += PathProperty_Changing;
+                hhcPath.PersistablePathChanged += PathProperty_Changed;
             }
         }
 
@@ -555,12 +554,10 @@ namespace SandcastleBuilder.Utils
         /// </summary>
         /// <value>You only need to set this if the builder cannot determine
         /// the path for itself.</value>
-        [Category("Paths"), Description("The path to the MS Help 2 compiler " +
-          "(HXCOMP.EXE).  This only needs to be set if the builder cannot " +
-          "determine the path for itself."), DefaultValue(null),
+        [Category("Paths"), Description("The path to the MS Help 2 compiler (HXCOMP.EXE).  This only needs to " +
+          "be set if the builder cannot determine the path for itself."), DefaultValue(null),
           Editor(typeof(FolderPathObjectEditor), typeof(UITypeEditor)),
-          FolderDialog("Select the MS Help 2 compiler installation location",
-            Environment.SpecialFolder.ProgramFiles)]
+          FolderDialog("Select the MS Help 2 compiler installation location", Environment.SpecialFolder.ProgramFiles)]
         public FolderPath HtmlHelp2xCompilerPath
         {
             get { return hxcompPath; }
@@ -571,10 +568,8 @@ namespace SandcastleBuilder.Utils
 
                 this.SetProjectProperty("HtmlHelp2xCompilerPath", value);
                 hxcompPath = value;
-                hxcompPath.PersistablePathChanging += new EventHandler(
-                    PathProperty_Changing);
-                hxcompPath.PersistablePathChanged += new EventHandler(
-                    PathProperty_Changed);
+                hxcompPath.PersistablePathChanging += PathProperty_Changing;
+                hxcompPath.PersistablePathChanged += PathProperty_Changed;
             }
         }
 
@@ -587,14 +582,12 @@ namespace SandcastleBuilder.Utils
         /// <p/><b>Warning:</b> If building a web site, the output folder's
         /// prior content will be erased without warning prior to copying
         /// the new web site content to it!</remarks>
-        [Category("Paths"), Description("The path to which the help " +
-          "files will be generated.  The default is to save it to " +
-              "the .\\Help folder relative to the project file's folder.  " +
-              "WARNING: When building a web site, the prior content of " +
-              "the output folder will be erased without warning before " +
-              "copying the new content to it!"), DefaultValue(@".\Help\"),
+        [Category("Paths"), Description("The path to which the help files will be generated.  The default is " +
+          "to save it to the .\\Help folder relative to the project file's folder.  WARNING: When building a " +
+          "web site, the prior content of the output folder will be erased without warning before copying the " +
+          "new content to it!"), DefaultValue(@".\Help\"),
           Editor(typeof(FolderPathStringEditor), typeof(UITypeEditor)),
-          FolderDialog("Select the output location for the help file")]
+          FolderDialog("Select the output location for the help file", Environment.SpecialFolder.Personal)]
         public string OutputPath
         {
             get { return outputPath; }
@@ -618,12 +611,10 @@ namespace SandcastleBuilder.Utils
         /// </summary>
         /// <value>You only need to set this if the builder cannot determine
         /// the path for itself.</value>
-        [Category("Paths"), Description("The path to the Sandcastle " +
-          "components.  This only needs to be set if the builder " +
-          "cannot determine the path for itself."), DefaultValue(null),
+        [Category("Paths"), Description("The path to the Sandcastle components.  This only needs to be set " +
+          "if the builder cannot determine the path for itself."), DefaultValue(null),
           Editor(typeof(FolderPathObjectEditor), typeof(UITypeEditor)),
-          FolderDialog("Select the Sandcastle installation location",
-            Environment.SpecialFolder.ProgramFiles)]
+          FolderDialog("Select the Sandcastle installation location", Environment.SpecialFolder.ProgramFiles)]
         public FolderPath SandcastlePath
         {
             get { return sandcastlePath; }
@@ -634,10 +625,8 @@ namespace SandcastleBuilder.Utils
 
                 this.SetProjectProperty("SandcastlePath", value);
                 sandcastlePath = value;
-                sandcastlePath.PersistablePathChanging += new EventHandler(
-                    PathProperty_Changing);
-                sandcastlePath.PersistablePathChanged += new EventHandler(
-                    PathProperty_Changed);
+                sandcastlePath.PersistablePathChanging += PathProperty_Changing;
+                sandcastlePath.PersistablePathChanged += PathProperty_Changed;
             }
         }
 
@@ -659,8 +648,7 @@ namespace SandcastleBuilder.Utils
           "folders in this path will be erased without warning when the " +
           "build starts!"), DefaultValue(null),
           Editor(typeof(FolderPathObjectEditor), typeof(UITypeEditor)),
-          FolderDialog("Select the working files location",
-            Environment.SpecialFolder.ProgramFiles)]
+          FolderDialog("Select the working files location", Environment.SpecialFolder.Personal)]
         public FolderPath WorkingPath
         {
             get { return workingPath; }
@@ -671,10 +659,8 @@ namespace SandcastleBuilder.Utils
 
                 this.SetProjectProperty("WorkingPath", value);
                 workingPath = value;
-                workingPath.PersistablePathChanging += new EventHandler(
-                    PathProperty_Changing);
-                workingPath.PersistablePathChanged += new EventHandler(
-                    PathProperty_Changed);
+                workingPath.PersistablePathChanging += PathProperty_Changing;
+                workingPath.PersistablePathChanged += PathProperty_Changed;
             }
         }
         #endregion
@@ -886,6 +872,26 @@ namespace SandcastleBuilder.Utils
         {
             get { return this; }
         }
+
+        /// <summary>
+        /// This is used to get or set whether or not the HTML rendered by
+        /// <b>BuildAssembler</b> is indented.
+        /// </summary>
+        /// <value>This is mainly a debugging aid.  Leave it set to false,
+        /// the default to produce more compact HTML.</value>
+        [Category("Build"), Description("Debugging aid.  If set to true, " +
+          "the HTML rendered by BuildAssembler is indented to make it " +
+          "more readable.  Leave it set to false to produce more compact HTML."),
+          DefaultValue(false)]
+        public bool IndentHtml
+        {
+            get { return indentHtml; }
+            set
+            {
+                this.SetProjectProperty("IndentHtml", value);
+                indentHtml = value;
+            }
+        }
         #endregion
 
         #region Help file properties
@@ -909,26 +915,6 @@ namespace SandcastleBuilder.Utils
             {
                 this.SetProjectProperty("ContentPlacement", value);
                 contentPlacement = value;
-            }
-        }
-
-        /// <summary>
-        /// This is used to get or set whether or not the HTML rendered by
-        /// <b>BuildAssembler</b> is indented.
-        /// </summary>
-        /// <value>This is mainly a debugging aid.  Leave it set to false,
-        /// the default to produce more compact HTML.</value>
-        [Category("Help File"), Description("Debugging aid.  If set to true, " +
-          "the HTML rendered by BuildAssembler is indented to make it " +
-          "more readable.  Leave it set to false to produce more compact HTML."),
-          DefaultValue(false)]
-        public bool IndentHtml
-        {
-            get { return indentHtml; }
-            set
-            {
-                this.SetProjectProperty("IndentHtml", value);
-                indentHtml = value;
             }
         }
 
@@ -1212,7 +1198,7 @@ namespace SandcastleBuilder.Utils
         /// <value>The default is <b>Blank</b> to open the MSDN topics in a
         /// new window.  This option only has an effect on the
         /// <see cref="HtmlSdkLinkType"/>, <see cref="MSHelp2SdkLinkType"/>,
-        /// <see cref="MSHelpViewerSdkLinkType"/>, and <see cref="WebsiteSdkLinkType"/> 
+        /// <see cref="MSHelpViewerSdkLinkType"/>, and <see cref="WebsiteSdkLinkType"/>
         /// properties if they are set to <b>MSDN</b>.</value>
         [Category("Help File"), Description("Specify where MSDN link targets " +
           "will be opened in the browser"), DefaultValue(SdkLinkTarget.Blank)]
@@ -1420,6 +1406,8 @@ namespace SandcastleBuilder.Utils
             {
                 if(value == null || value.Trim().Length == 0)
                     value = "ms.vsipcc+, ms.vsexpresscc+";
+                else
+                    value = value.Trim();
 
                 this.SetProjectProperty("PlugInNamespaces", value);
                 plugInNamespaces = value;
@@ -1439,8 +1427,10 @@ namespace SandcastleBuilder.Utils
             get { return helpFileVersion; }
             set
             {
-                if(String.IsNullOrEmpty(value))
+                if(value == null || value.Trim().Length == 0)
                     value = "1.0.0.0";
+                else
+                    value = value.Trim();
 
                 this.SetProjectProperty("HelpFileVersion", value);
                 helpFileVersion = value;
@@ -2939,45 +2929,6 @@ namespace SandcastleBuilder.Utils
                     propertyName, oldValue, newValue));
             }
         }
-
-        /// <summary>
-        /// Get a collection containing all user-defined properties
-        /// </summary>
-        /// <returns>A collection containing all properties determined not to
-        /// be help file builder project properties, MSBuild build engine
-        /// related properties, or environment variables.</returns>
-        internal Collection<ProjectProperty> GetUserDefinedProperties()
-        {
-            Collection<ProjectProperty> userProps = new Collection<ProjectProperty>();
-
-            if(msBuildProject != null && propertyCache != null)
-                foreach(ProjectProperty prop in msBuildProject.AllEvaluatedProperties)
-                    if(!prop.IsEnvironmentProperty && !prop.IsGlobalProperty && !prop.IsImported &&
-                      !prop.IsReservedProperty && !propertyCache.ContainsKey(prop.Name) &&
-                      restrictedProps.IndexOf(prop.Name) == -1)
-                        userProps.Add(prop);
-
-            return userProps;
-        }
-
-        /// <summary>
-        /// This is used to determine whether or not the given name can be
-        /// used for a user-defined project property.
-        /// </summary>
-        /// <param name="name">The name to check</param>
-        /// <returns>True if it can be used, false if it cannot be used</returns>
-        internal bool IsValidUserDefinedPropertyName(string name)
-        {
-            ProjectProperty prop;
-
-            if(msBuildProject == null || propertyCache.ContainsKey(name) || restrictedProps.IndexOf(name) != -1)
-                return false;
-
-            if(this.ProjectPropertyCache.TryGetValue(name, out prop))
-                return (!prop.IsImported && !prop.IsReservedProperty);
-
-            return true;
-        }
         #endregion
 
         #region Constructors
@@ -3209,20 +3160,6 @@ namespace SandcastleBuilder.Utils
         //=====================================================================
 
         /// <summary>
-        /// This is used to mark the project as dirty and in need of being
-        /// saved.
-        /// </summary>
-        /// <event cref="DirtyChanged">This event is raised to let interested
-        /// parties know that the project's dirty state has been changed.</event>
-        public void MarkAsDirty()
-        {
-            // We cannot mark the MSBuild project as dirty as the value sticks and never gets cleared.
-            // As such, we track the dirty state for ourselves.
-            isDirty = true;
-            this.OnDirtyChanged(EventArgs.Empty);
-        }
-
-        /// <summary>
         /// This is used to determine the default build action for a file based
         /// on its extension.
         /// </summary>
@@ -3281,6 +3218,59 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
+        /// This is used to mark the project as dirty and in need of being
+        /// saved.
+        /// </summary>
+        /// <event cref="DirtyChanged">This event is raised to let interested
+        /// parties know that the project's dirty state has been changed.</event>
+        public void MarkAsDirty()
+        {
+            // We cannot mark the MSBuild project as dirty as the value sticks and never gets cleared.
+            // As such, we track the dirty state for ourselves.
+            isDirty = true;
+            this.OnDirtyChanged(EventArgs.Empty);
+        }
+
+        /// <summary>
+        /// Get a collection containing all user-defined properties
+        /// </summary>
+        /// <returns>A collection containing all properties determined not to
+        /// be help file builder project properties, MSBuild build engine
+        /// related properties, or environment variables.</returns>
+        public Collection<ProjectProperty> GetUserDefinedProperties()
+        {
+            Collection<ProjectProperty> userProps = new Collection<ProjectProperty>();
+
+            if(msBuildProject != null && propertyCache != null)
+                foreach(ProjectProperty prop in msBuildProject.AllEvaluatedProperties)
+                    if(!prop.IsEnvironmentProperty && !prop.IsGlobalProperty && !prop.IsImported &&
+                      !prop.IsReservedProperty && !propertyCache.ContainsKey(prop.Name) &&
+                      restrictedProps.IndexOf(prop.Name) == -1)
+                        userProps.Add(prop);
+
+            return userProps;
+        }
+
+        /// <summary>
+        /// This is used to determine whether or not the given name can be
+        /// used for a user-defined project property.
+        /// </summary>
+        /// <param name="name">The name to check</param>
+        /// <returns>True if it can be used, false if it cannot be used</returns>
+        public bool IsValidUserDefinedPropertyName(string name)
+        {
+            ProjectProperty prop;
+
+            if(msBuildProject == null || propertyCache.ContainsKey(name) || restrictedProps.IndexOf(name) != -1)
+                return false;
+
+            if(this.ProjectPropertyCache.TryGetValue(name, out prop))
+                return (!prop.IsImported && !prop.IsReservedProperty);
+
+            return true;
+        }
+
+        /// <summary>
         /// Add a new folder build item to the project
         /// </summary>
         /// <param name="folder">The folder name</param>
@@ -3305,17 +3295,16 @@ namespace SandcastleBuilder.Utils
 
             if(String.Compare(folder, 0, rootPath, 0, rootPath.Length,
               StringComparison.OrdinalIgnoreCase) != 0)
-                throw new ArgumentException("The folder must be below the " +
-                    "project's root path", "folder");
+                throw new ArgumentException("The folder must be below the project's root path", "folder");
 
             if(folder.Length == rootPath.Length)
-                throw new ArgumentException("The folder cannot match the " +
-                    "project's root path", "folder");
+                throw new ArgumentException("The folder cannot match the project's root path", "folder");
 
             folderPath = new FolderPath(folder, this);
 
+            // Note that Visual Studio doesn't add the trailing backslash so look for a match with and without it
             foreach(ProjectItem item in msBuildProject.GetItems(folderAction))
-                if(item.EvaluatedInclude == folderPath.PersistablePath)
+                if(item.EvaluatedInclude == folderPath.PersistablePath || item.EvaluatedInclude + @"\" == folderPath.PersistablePath)
                 {
                     newFileItem = new FileItem(new ProjectElement(this, item));
                     break;
@@ -3325,8 +3314,7 @@ namespace SandcastleBuilder.Utils
                 Directory.CreateDirectory(folderPath);
 
             if(newFileItem == null)
-                newFileItem = new FileItem(new ProjectElement(this,
-                    folderAction, folder));
+                newFileItem = new FileItem(new ProjectElement(this, folderAction, folder));
 
             return newFileItem;
         }
@@ -3440,6 +3428,21 @@ namespace SandcastleBuilder.Utils
             }
 
             return fileItem;
+        }
+
+        /// <summary>
+        /// This marks the project as dirty along with the project collections
+        /// for the purpose of upgrading the project.
+        /// </summary>
+        /// <remarks>Most properties are converted when loaded.  This ensures that the all collections
+        /// are saved and the tools version and SHFB schema version are also updated when the project
+        /// is next saved.</remarks>
+        public void UpgradeProjectProperties()
+        {
+            apiFilter.IsDirty = componentConfigs.IsDirty = docSources.IsDirty = helpAttributes.IsDirty =
+                namespaceSummaries.IsDirty = plugInConfigs.IsDirty = true;
+            this.MarkAsDirty();
+            this.EnsureProjectIsCurrent(true);
         }
 
         /// <summary>
@@ -3557,6 +3560,37 @@ namespace SandcastleBuilder.Utils
         public bool HasItems(BuildAction buildAction)
         {
             return (msBuildProject.GetItems(buildAction.ToString()).Count != 0);
+        }
+
+        /// <summary>
+        /// This refreshes the project instance property values by reloading them
+        /// from the underlying MSBuild project.
+        /// </summary>
+        public void RefreshProjectProperties()
+        {
+            this.EnsureProjectIsCurrent(false);
+
+            try
+            {
+                loadingProperties = true;
+                projectPropertyCache = null;
+
+                apiFilter.Clear();
+                componentConfigs.Clear();
+                docSources.Clear();
+                helpAttributes.Clear();
+                namespaceSummaries.Clear();
+                plugInConfigs.Clear();
+
+                apiFilter.IsDirty = componentConfigs.IsDirty = docSources.IsDirty = helpAttributes.IsDirty =
+                    namespaceSummaries.IsDirty = plugInConfigs.IsDirty = false;
+            }
+            finally
+            {
+                loadingProperties = false;
+            }
+
+            this.LoadProperties();
         }
         #endregion
     }

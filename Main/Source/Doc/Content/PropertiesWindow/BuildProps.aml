@@ -167,6 +167,22 @@ when doing a search.</listItem>
   </content>
 </section>
 
+<section address="IndentHtml">
+  <title>IndentHtml</title>
+  <content><para>This is used to indicate whether or not the HTML rendered by
+<application>BuildAssembler</application> is indented.  This is mainly a
+debugging aid.  When set to True, the HTML is indented to make it more
+readable.  Leave it set to False to produce more compact HTML.</para>
+
+<alert class="note">
+  <para>Setting this property to true will cause the first line of <codeInline>code</codeInline>
+element content to be indented.  Set the property to false to correct the issue.  This property is
+for testing only and should not be used in production help files.</para>
+</alert>
+
+  </content>
+</section>
+
 <section address="KeepLogFile">
   <title>KeepLogFile</title>
   <content><para>This property is used to specify whether or not the log file

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildComponentManager.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/15/2011
+// Updated : 04/09/2011
 // Note    : Copyright 2007-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -50,7 +50,7 @@ namespace SandcastleBuilder.Utils.BuildComponent
 
         private static Dictionary<string, BuildComponentInfo> buildComponents;
         private static Dictionary<string, SyntaxFilterInfo> syntaxFilters;
-        private static string sandcastlePath, shfbFolder, buildComponentFolder;
+        private static string sandcastlePath, shfbFolder, buildComponentsFolder;
 
         private static Regex reMatchPath = new Regex(@"[A-Z]:\\.[^;]+\\Sandcastle(?=\\Prod)",
             RegexOptions.IgnoreCase);
@@ -63,7 +63,7 @@ namespace SandcastleBuilder.Utils.BuildComponent
         //=====================================================================
 
         /// <summary>
-        /// This returns the default syntax filter setting
+        /// This read-only property returns the default syntax filter setting
         /// </summary>
         /// <value>This returns "Standard" to add the standard C#, VB.NET and
         /// C++ syntax filter to each API topic.</value>
@@ -73,11 +73,27 @@ namespace SandcastleBuilder.Utils.BuildComponent
         }
 
         /// <summary>
+        /// This read-only property returns the path to the Sandcastle Help File builder assemblies
+        /// </summary>
+        public static string HelpFileBuilderFolder
+        {
+            get
+            {
+                SetPaths();
+                return shfbFolder;
+            }
+        }
+
+        /// <summary>
         /// This read-only property returns the build components folder
         /// </summary>
         public static string BuildComponentsFolder
         {
-            get { return buildComponentFolder; }
+            get
+            {
+                SetPaths();
+                return buildComponentsFolder;
+            }
         }
 
         /// <summary>
@@ -178,14 +194,19 @@ namespace SandcastleBuilder.Utils.BuildComponent
         {
             if(shfbFolder == null)
             {
-                Assembly asm = Assembly.GetExecutingAssembly();
+                shfbFolder = Environment.ExpandEnvironmentVariables("%SHFBROOT%");
+
+                // If SHFBROOT isn't defined, use the executing assembly's folder
+                if(String.IsNullOrEmpty(shfbFolder))
+                    shfbFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+
+                if(!shfbFolder.EndsWith(@"\", StringComparison.Ordinal))
+                    shfbFolder += @"\";
 
                 // Third party build components should be located in a
                 // "EWSoftware\Sandcastle Help File Builder\Components and Plug-Ins"
                 // folder in the common application data folder.
-                shfbFolder = asm.Location;
-                shfbFolder = shfbFolder.Substring(0, shfbFolder.LastIndexOf('\\') + 1);
-                buildComponentFolder = FolderPath.TerminatePath(Path.Combine(
+                buildComponentsFolder = FolderPath.TerminatePath(Path.Combine(
                     Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
                     Constants.ComponentsAndPlugInsFolder));
             }
@@ -218,12 +239,12 @@ namespace SandcastleBuilder.Utils.BuildComponent
             // Add the standard component config file and any third-party
             // component config files in the installation folder.  This
             // allows for XCOPY deployments of SHFB to build servers.
-            allFiles.AddRange(Directory.EnumerateFiles(shfbFolder, "*.components",
+            allFiles.AddRange(Directory.EnumerateFiles(HelpFileBuilderFolder, "*.components",
                 SearchOption.AllDirectories));
 
             // Finally, check the common app data build components folder
-            if(Directory.Exists(buildComponentFolder))
-                allFiles.AddRange(Directory.EnumerateFiles(buildComponentFolder,
+            if(Directory.Exists(BuildComponentsFolder))
+                allFiles.AddRange(Directory.EnumerateFiles(BuildComponentsFolder,
                     "*.components", SearchOption.AllDirectories));
 
             foreach(string file in allFiles)
@@ -258,14 +279,15 @@ namespace SandcastleBuilder.Utils.BuildComponent
 
             syntaxFilters = new Dictionary<string, SyntaxFilterInfo>();
 
-            if(Directory.Exists(buildComponentFolder))
-                allFiles.AddRange(Directory.EnumerateFiles(buildComponentFolder,
+            if(Directory.Exists(BuildComponentsFolder))
+                allFiles.AddRange(Directory.EnumerateFiles(BuildComponentsFolder,
                     "*.filters", SearchOption.AllDirectories));
 
             // Add the standard syntax filter config file and any third-party
             // component config files in the installation folder too.  This
             // allows for XCOPY deployments of SHFB to build servers.
-            allFiles.AddRange(Directory.EnumerateFiles(shfbFolder, "*.filters", SearchOption.AllDirectories));
+            allFiles.AddRange(Directory.EnumerateFiles(HelpFileBuilderFolder, "*.filters",
+                SearchOption.AllDirectories));
 
             foreach(string file in allFiles)
             {
@@ -302,11 +324,11 @@ namespace SandcastleBuilder.Utils.BuildComponent
         /// <returns>The actual absolute path to the assembly</returns>
         public static string ResolveComponentPath(string path)
         {
-            if(String.IsNullOrEmpty(shfbFolder))
+            if(String.IsNullOrEmpty(HelpFileBuilderFolder))
                 LoadBuildComponents();
 
-            path = reMatchShfbFolder.Replace(path, shfbFolder);
-            path = reMatchCompFolder.Replace(path, buildComponentFolder);
+            path = reMatchShfbFolder.Replace(path, HelpFileBuilderFolder);
+            path = reMatchCompFolder.Replace(path, BuildComponentsFolder);
             path = reMatchSandcastleFolder.Replace(path, SandcastlePath);
 
             return Environment.ExpandEnvironmentVariables(path);
@@ -332,6 +354,9 @@ namespace SandcastleBuilder.Utils.BuildComponent
 
             if(syntaxFilters == null || syntaxFilters.Count == 0)
                 LoadSyntaxFilters();
+
+            if(filterIds == null)
+                filterIds = String.Empty;
 
             foreach(string id in filterIds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
             {

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : FileTree.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/06/2010
-// Note    : Copyright 2008-2009, Eric Woodruff, All rights reserved
+// Updated : 04/16/2011
+// Note    : Copyright 2008-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the class used to manage the project's files in the
@@ -209,6 +209,8 @@ namespace SandcastleBuilder.Gui.ContentEditors
                             if(name.Length != 0)
                                 name = FolderPath.TerminatePath(name);
                         }
+                        else
+                            name = FolderPath.TerminatePath(name);
 
                         if(folderNames.IndexOf(name) == -1)
                         {

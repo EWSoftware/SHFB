@@ -5,6 +5,21 @@
   <UsingTask TaskName="SandcastleBuilder.Utils.MSBuild.CleanHelp"
     AssemblyFile="$(SHFBROOT)\SandcastleBuilder.Utils.dll" />
 
+  <!-- Define OutDir if not set already so that it doesn't pick up our project OutputPath setting
+       when the common targets are imported below. -->
+  <PropertyGroup>
+    <OutDir Condition=" '$(OutDir)' == '' ">.\</OutDir>
+  </PropertyGroup>
+
+  <!-- Include common targets to allow use in the VSPackage within Visual Studio -->
+  <Import Project="$(MSBuildBinPath)\Microsoft.Common.Targets" />
+
+  <!-- Override this target to removed it.  Visual Studio tries to run it under certain conditions but
+       we don't contain one of its dependent targets and we don't need this one anyway as far as I
+       can tell. -->
+  <Target Name="AllProjectOutputGroups" />
+
+  <!-- Include custom before target overrides if specified -->
   <Import Project="$(CustomBeforeSHFBTargets)" Condition="Exists('$(CustomBeforeSHFBTargets)')" />
 
   <!-- This defines the dependencies for the Build target -->
@@ -83,6 +98,7 @@
   <Target Name="BeforeRebuildHelp" />
   <Target Name="AfterRebuildHelp" />
 
+  <!-- Include custom after target overrides if specified -->
   <Import Project="$(CustomAfterSHFBTargets)" Condition="Exists('$(CustomAfterSHFBTargets)')" />
 
 </Project>

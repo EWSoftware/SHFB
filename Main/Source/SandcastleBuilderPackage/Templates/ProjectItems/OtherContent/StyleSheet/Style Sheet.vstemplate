@@ -1,0 +1,14 @@
+<VSTemplate Version="3.0.0" Type="Item" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005">
+  <TemplateData>
+    <Name Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="121"/>
+    <Description Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="122"/>
+    <Icon Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="404" />
+    <ProjectType>SandcastleBuilderProject</ProjectType>
+    <DefaultName>Style Sheet.css</DefaultName>
+    <SortOrder>40</SortOrder>
+    <NumberOfParentCategoriesToRollUp>1</NumberOfParentCategoriesToRollUp>
+  </TemplateData>
+  <TemplateContent>
+    <ProjectItem>Style Sheet.css</ProjectItem>
+  </TemplateContent>
+</VSTemplate>

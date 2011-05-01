@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder - Generate Inherited Documentation
 // File    : AssemblyInfo.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/06/2010
-// Note    : Copyright 2008-2010, Eric Woodruff, All rights reserved
+// Updated : 04/19/2011
+// Note    : Copyright 2008-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // Sandcastle Help File Builder Generate Inherited Documentation attributes.
@@ -27,7 +27,6 @@ using System.Reflection;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly: AssemblyProduct("Sandcastle Help File Builder Generate Inherited Documentation")]
 [assembly: AssemblyTitle("Sandcastle Help File Builder Generate Inherited Documentation")]
 [assembly: AssemblyDescription("A command line tool that scans XML comments " +
     "files for <inheritdoc /> tags and produces a new XML comments file " +
