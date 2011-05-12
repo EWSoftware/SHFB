@@ -9,6 +9,6 @@
     <NumberOfParentCategoriesToRollUp>1</NumberOfParentCategoriesToRollUp>
   </TemplateData>
   <TemplateContent>
-    <ProjectItem>Html Page.html</ProjectItem>
+    <ProjectItem>HtmlPage.html</ProjectItem>
   </TemplateContent>
 </VSTemplate>

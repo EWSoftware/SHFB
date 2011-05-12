@@ -302,64 +302,64 @@
     <ZipItem Include="Templates\ProjectItems\OtherContent\Bitmap\Bitmap.vstemplate">
       <OutputSubPath>Other Content</OutputSubPath>
     </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\OtherContent\HtmlPage\Html Page.html">
+    <ZipItem Include="Templates\ProjectItems\OtherContent\HtmlPage\HtmlPage.html">
       <OutputSubPath>Other Content</OutputSubPath>
     </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\OtherContent\HtmlPage\Html Page.vstemplate">
+    <ZipItem Include="Templates\ProjectItems\OtherContent\HtmlPage\HtmlPage.vstemplate">
       <OutputSubPath>Other Content</OutputSubPath>
     </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\OtherContent\ScriptFile\Script File.js">
+    <ZipItem Include="Templates\ProjectItems\OtherContent\ScriptFile\ScriptFile.js">
       <OutputSubPath>Other Content</OutputSubPath>
     </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\OtherContent\ScriptFile\Script File.vstemplate">
+    <ZipItem Include="Templates\ProjectItems\OtherContent\ScriptFile\ScriptFile.vstemplate">
       <OutputSubPath>Other Content</OutputSubPath>
     </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\OtherContent\SiteMap\Site Map.sitemap">
+    <ZipItem Include="Templates\ProjectItems\OtherContent\SiteMap\SiteMap.sitemap">
       <OutputSubPath>Other Content</OutputSubPath>
     </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\OtherContent\SiteMap\Site Map.vstemplate">
+    <ZipItem Include="Templates\ProjectItems\OtherContent\SiteMap\SiteMap.vstemplate">
       <OutputSubPath>Other Content</OutputSubPath>
     </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\OtherContent\StyleSheet\Style Sheet.css">
+    <ZipItem Include="Templates\ProjectItems\OtherContent\StyleSheet\StyleSheet.css">
       <OutputSubPath>Other Content</OutputSubPath>
     </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\OtherContent\StyleSheet\Style Sheet.vstemplate">
+    <ZipItem Include="Templates\ProjectItems\OtherContent\StyleSheet\StyleSheet.vstemplate">
       <OutputSubPath>Other Content</OutputSubPath>
     </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\OtherContent\TextFile\Text File.txt">
+    <ZipItem Include="Templates\ProjectItems\OtherContent\TextFile\TextFile.txt">
       <OutputSubPath>Other Content</OutputSubPath>
     </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\OtherContent\TextFile\Text File.vstemplate">
+    <ZipItem Include="Templates\ProjectItems\OtherContent\TextFile\TextFile.vstemplate">
       <OutputSubPath>Other Content</OutputSubPath>
     </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\OtherContent\XmlFile\XML File.xml">
+    <ZipItem Include="Templates\ProjectItems\OtherContent\XmlFile\XMLFile.xml">
       <OutputSubPath>Other Content</OutputSubPath>
     </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\OtherContent\XmlFile\XML File.vstemplate">
+    <ZipItem Include="Templates\ProjectItems\OtherContent\XmlFile\XMLFile.vstemplate">
       <OutputSubPath>Other Content</OutputSubPath>
     </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\ProjectFiles\CodeSnippets\Code Snippets.vstemplate">
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\ProjectFiles\CodeSnippets\CodeSnippets.vstemplate">
       <OutputSubPath>Conceptual Content\Project Files</OutputSubPath>
     </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\ProjectFiles\CodeSnippets\Code Snippets.snippets">
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\ProjectFiles\CodeSnippets\CodeSnippets.snippets">
       <OutputSubPath>Conceptual Content\Project Files</OutputSubPath>
     </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\ProjectFiles\ContentLayout\Content Layout.content">
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\ProjectFiles\ContentLayout\ContentLayout.content">
       <OutputSubPath>Conceptual Content\Project Files</OutputSubPath>
     </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\ProjectFiles\ContentLayout\Content Layout.vstemplate">
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\ProjectFiles\ContentLayout\ContentLayout.vstemplate">
       <OutputSubPath>Conceptual Content\Project Files</OutputSubPath>
     </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\ProjectFiles\ResourceItems\Resource Items.vstemplate">
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\ProjectFiles\ResourceItems\ResourceItems.vstemplate">
       <OutputSubPath>Conceptual Content\Project Files</OutputSubPath>
     </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\ProjectFiles\ResourceItems\Resource Items.items">
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\ProjectFiles\ResourceItems\ResourceItems.items">
       <OutputSubPath>Conceptual Content\Project Files</OutputSubPath>
     </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\ProjectFiles\TokenFile\Token File.tokens">
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\ProjectFiles\TokenFile\TokenFile.tokens">
       <OutputSubPath>Conceptual Content\Project Files</OutputSubPath>
     </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\ProjectFiles\TokenFile\Token File.vstemplate">
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\ProjectFiles\TokenFile\TokenFile.vstemplate">
       <OutputSubPath>Conceptual Content\Project Files</OutputSubPath>
     </ZipItem>
     <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\Conceptual\Conceptual.vstemplate">
@@ -368,10 +368,10 @@
     <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\Conceptual\Conceptual.aml">
       <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
     </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\ErrorMessage\Error Message.aml">
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\ErrorMessage\ErrorMessage.aml">
       <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
     </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\ErrorMessage\Error Message.vstemplate">
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\ErrorMessage\ErrorMessage.vstemplate">
       <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
     </ZipItem>
     <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\Glossary\Glossary.aml">
@@ -380,10 +380,10 @@
     <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\Glossary\Glossary.vstemplate">
       <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
     </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\How To\How To.aml">
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\HowTo\HowTo.aml">
       <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
     </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\How To\How To.vstemplate">
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\HowTo\HowTo.vstemplate">
       <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
     </ZipItem>
     <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\Orientation\Orientation.aml">
@@ -392,16 +392,16 @@
     <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\Orientation\Orientation.vstemplate">
       <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
     </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\ReferenceWithoutSyntax\Reference without Syntax.aml">
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\RefNoSyntax\RefNoSyntax.aml">
       <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
     </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\ReferenceWithoutSyntax\Reference without Syntax.vstemplate">
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\RefNoSyntax\RefNoSyntax.vstemplate">
       <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
     </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\ReferenceWithSyntax\Reference with Syntax.aml">
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\RefWithSyntax\RefWithSyntax.aml">
       <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
     </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\ReferenceWithSyntax\Reference with Syntax.vstemplate">
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\RefWithSyntax\RefWithSyntax.vstemplate">
       <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
     </ZipItem>
     <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\Reference\Reference.aml">
@@ -416,34 +416,34 @@
     <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\Sample\Sample.vstemplate">
       <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
     </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechnologyArchitecture\SDK Technology Architecture.aml">
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechArch\SDKTechArch.aml">
       <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
     </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechnologyArchitecture\SDK Technology Architecture.vstemplate">
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechArch\SDKTechArch.vstemplate">
       <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
     </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechnologyCodeDirectory\SDK Technology Code Dir.aml">
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechCodeDir\SDKTechnCodeDir.aml">
       <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
     </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechnologyCodeDirectory\SDK Technology Code Dir.vstemplate">
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechCodeDir\SDKTechnCodeDir.vstemplate">
       <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
     </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechnologyOrientation\SDK Technology Orientation.aml">
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechOrient\SDKTechOrient.aml">
       <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
     </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechnologyOrientation\SDK Technology Orientation.vstemplate">
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechOrient\SDKTechOrient.vstemplate">
       <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
     </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechnologyScenarios\SDK Technology Scenarios.aml">
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechScen\SDKTechScen.aml">
       <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
     </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechnologyScenarios\SDK Technology Scenarios.vstemplate">
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechScen\SDKTechScen.vstemplate">
       <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
     </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechnologySummary\SDK Technology Summary.aml">
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechSum\SDKTechSum.aml">
       <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
     </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechnologySummary\SDK Technology Summary.vstemplate">
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\SDKTechSum\SDKTechSum.vstemplate">
       <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
     </ZipItem>
     <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\Troubleshooting\Troubleshooting.aml">
@@ -452,10 +452,10 @@
     <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\Troubleshooting\Troubleshooting.vstemplate">
       <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
     </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\UserInterfaceReference\User Interface Reference.aml">
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\UIReference\UIReference.aml">
       <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
     </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\UserInterfaceReference\User Interface Reference.vstemplate">
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\UIReference\UIReference.vstemplate">
       <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
     </ZipItem>
     <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\Walkthrough\Walkthrough.aml">
@@ -470,10 +470,10 @@
     <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\Whitepaper\Whitepaper.vstemplate">
       <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
     </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\XMLReference\XML Reference.aml">
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\XMLReference\XMLReference.aml">
       <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
     </ZipItem>
-    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\XMLReference\XML Reference.vstemplate">
+    <ZipItem Include="Templates\ProjectItems\ConceptualContent\Topics\XMLReference\XMLReference.vstemplate">
       <OutputSubPath>Conceptual Content\Topics</OutputSubPath>
     </ZipItem>
   </ItemGroup>

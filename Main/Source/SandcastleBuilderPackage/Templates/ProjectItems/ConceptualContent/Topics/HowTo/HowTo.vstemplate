@@ -1,14 +1,14 @@
 <VSTemplate Version="3.0.0" Type="Item" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005">
   <TemplateData>
-    <Name Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="139"/>
-    <Description Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="140"/>
+    <Name Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="143"/>
+    <Description Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="144"/>
     <Icon Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="407" />
     <ProjectType>SandcastleBuilderProject</ProjectType>
-    <DefaultName>Error Message.aml</DefaultName>
-    <SortOrder>300</SortOrder>
+    <DefaultName>How To.aml</DefaultName>
+    <SortOrder>110</SortOrder>
     <NumberOfParentCategoriesToRollUp>2</NumberOfParentCategoriesToRollUp>
   </TemplateData>
   <TemplateContent>
-    <ProjectItem ReplaceParameters="true">Error Message.aml</ProjectItem>
+    <ProjectItem ReplaceParameters="true">HowTo.aml</ProjectItem>
   </TemplateContent>
 </VSTemplate>

@@ -9,6 +9,6 @@
     <NumberOfParentCategoriesToRollUp>2</NumberOfParentCategoriesToRollUp>
   </TemplateData>
   <TemplateContent>
-    <ProjectItem>Code Snippets.snippets</ProjectItem>
+    <ProjectItem>CodeSnippets.snippets</ProjectItem>
   </TemplateContent>
 </VSTemplate>

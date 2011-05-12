@@ -9,6 +9,6 @@
     <NumberOfParentCategoriesToRollUp>1</NumberOfParentCategoriesToRollUp>
   </TemplateData>
   <TemplateContent>
-    <ProjectItem>Script File.js</ProjectItem>
+    <ProjectItem>ScriptFile.js</ProjectItem>
   </TemplateContent>
 </VSTemplate>

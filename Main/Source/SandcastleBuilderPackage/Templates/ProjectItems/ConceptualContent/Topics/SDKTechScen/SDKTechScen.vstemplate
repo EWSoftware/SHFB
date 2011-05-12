@@ -1,14 +1,14 @@
 <VSTemplate Version="3.0.0" Type="Item" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005">
   <TemplateData>
-    <Name Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="167"/>
-    <Description Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="168"/>
+    <Name Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="161"/>
+    <Description Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="162"/>
     <Icon Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="407" />
     <ProjectType>SandcastleBuilderProject</ProjectType>
-    <DefaultName>User Interface Reference.aml</DefaultName>
+    <DefaultName>SDK Technology Scenarios.aml</DefaultName>
     <SortOrder>300</SortOrder>
     <NumberOfParentCategoriesToRollUp>2</NumberOfParentCategoriesToRollUp>
   </TemplateData>
   <TemplateContent>
-    <ProjectItem ReplaceParameters="true">User Interface Reference.aml</ProjectItem>
+    <ProjectItem ReplaceParameters="true">SDKTechScen.aml</ProjectItem>
   </TemplateContent>
 </VSTemplate>

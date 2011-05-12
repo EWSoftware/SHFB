@@ -9,6 +9,6 @@
     <NumberOfParentCategoriesToRollUp>2</NumberOfParentCategoriesToRollUp>
   </TemplateData>
   <TemplateContent>
-    <ProjectItem>Resource Items.items</ProjectItem>
+    <ProjectItem>ResourceItems.items</ProjectItem>
   </TemplateContent>
 </VSTemplate>

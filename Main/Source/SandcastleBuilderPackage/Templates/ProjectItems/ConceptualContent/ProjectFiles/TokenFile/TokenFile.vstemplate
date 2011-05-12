@@ -9,6 +9,6 @@
     <NumberOfParentCategoriesToRollUp>2</NumberOfParentCategoriesToRollUp>
   </TemplateData>
   <TemplateContent>
-    <ProjectItem>Token File.tokens</ProjectItem>
+    <ProjectItem>TokenFile.tokens</ProjectItem>
   </TemplateContent>
 </VSTemplate>

@@ -9,6 +9,6 @@
     <NumberOfParentCategoriesToRollUp>1</NumberOfParentCategoriesToRollUp>
   </TemplateData>
   <TemplateContent>
-    <ProjectItem>XML File.xml</ProjectItem>
+    <ProjectItem>XMLFile.xml</ProjectItem>
   </TemplateContent>
 </VSTemplate>
