@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : BuildHelp.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/04/2011
+// Updated : 06/26/2011
 // Note    : Copyright 2008-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -395,7 +395,7 @@ namespace SandcastleBuilder.Utils.MSBuild
             FieldInfo fieldInfo;
             PropertyInfo propInfo;
             IEnumerable configCache;
-            ProjectInstance project;
+            ProjectInstance project, lastMatchingProject = null;
 
             // From the BuildManager...
             fieldInfo = typeof(BuildManager).GetField("configCache", BindingFlags.NonPublic | BindingFlags.Instance);
@@ -418,13 +418,15 @@ namespace SandcastleBuilder.Utils.MSBuild
                 {
                     project = (ProjectInstance)propInfo.GetValue(config, null);
 
-                    // If found, return the XML that defines all of the project settings
+                    // If found, return the XML that defines all of the project settings.  There may be more
+                    // than one instance.  Use the last one as that seems to be the one to which any command
+                    // line overrides have been applied.
                     if(project != null && project.FullPath == this.ProjectFile)
-                        return project;
+                        lastMatchingProject = project;
                 }
             }
 
-            return null;
+            return lastMatchingProject;
         }
 
         /// <summary>
