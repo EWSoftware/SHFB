@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SandcastleProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/17/2011
+// Updated : 07/26/2011
 // Note    : Copyright 2006-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -2820,8 +2820,14 @@ namespace SandcastleBuilder.Utils
             }
             catch(Exception ex)
             {
-                throw new BuilderException("PRJ0005", "Unable to parse value '" + value +
-                    "' for property '" + name + "'", ex);
+                // Ignore exceptions for the Language property.  A few people have had an environment variable
+                // with that name that gets picked up as a default and the value isn't typically valid for a
+                // culture name.
+                if(!name.Equals("Language", StringComparison.OrdinalIgnoreCase))
+                    throw new BuilderException("PRJ0005", "Unable to parse value '" + value +
+                        "' for property '" + name + "'", ex);
+
+                parsedValue = null;
             }
 
             property.SetValue(this, parsedValue, null);

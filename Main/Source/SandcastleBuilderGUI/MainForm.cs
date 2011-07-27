@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : MainForm.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/26/2011
+// Updated : 07/26/2011
 // Note    : Copyright 2006-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -137,7 +137,7 @@ namespace SandcastleBuilder.Gui
             {
                 string userName = Environment.ExpandEnvironmentVariables("%USERNAME%");
 
-                if(String.IsNullOrEmpty(userName))
+                if(String.IsNullOrEmpty(userName) || userName[0] == '%')
                     userName = "DefaultUser";
 
                 return "_" + userName;

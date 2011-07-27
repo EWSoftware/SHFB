@@ -102,7 +102,7 @@ filename should match the base filename of your template file (i.e. <localUri>Bl
     &lt;!-- &lt;Icon&gt;MyTemplateIcon.ico&lt;/Icon&gt; --&gt;
 
     &lt;!-- This associates the template with the SHFB package --&gt;
-    &lt;ProjectType&gt;SandcastleBuilderProject&lt;/ProjectType&gt;
+    &lt;ProjectType&gt;SHFBProject&lt;/ProjectType&gt;
 
     &lt;!-- The default filename to use --&gt;
     &lt;DefaultName&gt;BlankTopic.aml&lt;/DefaultName&gt;
@@ -242,7 +242,7 @@ paths.</para>
 			</listItem>
 
 			<listItem>
-				<para>Create the folder <localUri>[My Documents]\Visual Studio 2010\Templates\ItemTemplates\SandcastleBuilderProject\</localUri>
+				<para>Create the folder <localUri>[My Documents]\Visual Studio 2010\Templates\ItemTemplates\SHFBProject\</localUri>
 where "<localUri>[My Documents]</localUri>" is the location of your personal documents folder.  This is the root folder for your
 custom help file builder item template files.</para>
 			</listItem>

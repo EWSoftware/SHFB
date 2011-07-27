@@ -3,7 +3,7 @@
     <Name Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="115"/>
     <Description Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="116"/>
     <Icon Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="401" />
-    <ProjectType>SandcastleBuilderProject</ProjectType>
+    <ProjectType>SHFBProject</ProjectType>
     <DefaultName>Html Page.html</DefaultName>
     <SortOrder>10</SortOrder>
     <NumberOfParentCategoriesToRollUp>1</NumberOfParentCategoriesToRollUp>

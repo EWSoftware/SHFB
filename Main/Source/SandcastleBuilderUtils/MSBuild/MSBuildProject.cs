@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : MSBuildProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/27/2011
+// Updated : 07/26/2011
 // Note    : Copyright 2008-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -253,6 +253,9 @@ namespace SandcastleBuilder.Utils.MSBuild
         /// <param name="projectFile">The MSBuild project to load</param>
         public MSBuildProject(string projectFile)
         {
+            if(!Path.IsPathRooted(projectFile))
+                projectFile = Path.GetFullPath(projectFile);
+
             if(!File.Exists(projectFile))
                 throw new BuilderException("BE0051", "The specified project " +
                     "file does not exist: " + projectFile);
@@ -266,10 +269,10 @@ namespace SandcastleBuilder.Utils.MSBuild
             try
             {
                 // If the project is already loaded, we'll use it as-is
-                var matchingProject = ProjectCollection.GlobalProjectCollection.GetLoadedProjects(
+                msBuildProject = ProjectCollection.GlobalProjectCollection.GetLoadedProjects(
                     projectFile).FirstOrDefault();
 
-                if(matchingProject == null)
+                if(msBuildProject == null)
                 {
                     // Not loaded, so we must load it and dispose of it later
                     removeProjectWhenDisposed = true;

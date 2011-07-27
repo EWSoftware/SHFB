@@ -3,7 +3,7 @@
     <Name Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="113" />
     <Description Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="114" />
     <Icon Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="400" />
-    <ProjectType>SandcastleBuilderProject</ProjectType>
+    <ProjectType>SHFBProject</ProjectType>
     <CreateNewFolder>true</CreateNewFolder>
     <DefaultName>Documentation</DefaultName>
     <SortOrder>10</SortOrder>

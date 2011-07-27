@@ -83,10 +83,10 @@ namespace SandcastleBuilder.Package.Nodes
         /// <summary>
         /// This returns a caption for <c>VSHPROPID_TypeName</c>
         /// </summary>
-        /// <returns>Returns "SandcastleBuilderProject"</returns>
+        /// <returns>Returns "SHFBProject"</returns>
         public override string ProjectType
         {
-            get { return "SandcastleBuilderProject"; }
+            get { return "SHFBProject"; }
         }
 
         /// <summary>

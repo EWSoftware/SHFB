@@ -3,7 +3,7 @@
     <Name Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="133"/>
     <Description Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="134"/>
     <Icon Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="409" />
-    <ProjectType>SandcastleBuilderProject</ProjectType>
+    <ProjectType>SHFBProject</ProjectType>
     <DefaultName>Resource Items.items</DefaultName>
     <SortOrder>40</SortOrder>
     <NumberOfParentCategoriesToRollUp>2</NumberOfParentCategoriesToRollUp>

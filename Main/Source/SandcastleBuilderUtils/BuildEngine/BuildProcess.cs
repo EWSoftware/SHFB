@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/09/2011
+// Updated : 07/26/2011
 // Note    : Copyright 2006-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -2242,8 +2242,10 @@ AllDone:
                     }
 
                     if(fileCount == 0)
-                        this.ReportWarning("BE0006", "Unable to locate any documentation sources for '{0}'",
-                            ds.SourceFile);
+                        this.ReportWarning("BE0006", "Unable to locate any documentation sources for '{0}' (Configuration: {1} " +
+                            "Platform: {2})", ds.SourceFile,
+                            !String.IsNullOrEmpty(ds.Configuration) ? ds.Configuration : project.Configuration,
+                            !String.IsNullOrEmpty(ds.Platform) ? ds.Platform : project.Platform);
                 }
 
                 // Parse projects for assembly, comments, and reference info

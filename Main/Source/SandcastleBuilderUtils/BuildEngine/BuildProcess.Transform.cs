@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.Transform.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/06/2011
+// Updated : 07/26/2011
 // Note    : Copyright 2006-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -919,8 +919,17 @@ namespace SandcastleBuilder.Utils.BuildEngine
                             k => k.Equals(fieldName, StringComparison.OrdinalIgnoreCase));
 
                         if(key == null || !project.MSBuildProject.GlobalProperties.TryGetValue(key, out replaceWith))
-                            throw new BuilderException("BE0020", String.Format(CultureInfo.CurrentCulture,
-                                "Unknown field tag: '{0}'", match.Groups["Field"].Value));
+                            switch(fieldName)
+                            {
+                                case "referencepath":       // Ignore these and use an empty string
+                                case "outdir":
+                                    replaceWith = String.Empty;
+                                    break;
+
+                                default:
+                                    throw new BuilderException("BE0020", String.Format(CultureInfo.CurrentCulture,
+                                        "Unknown field tag: '{0}'", match.Groups["Field"].Value));
+                            }
                     }
                     break;
             }

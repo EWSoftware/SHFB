@@ -12,6 +12,7 @@
     <DocInternals>{@DocInternals}</DocInternals>
     <SandcastlePath>{@SandcastlePath}</SandcastlePath>
     <WorkingFolder>{@HtmlEncWorkingFolder}</WorkingFolder>
+	<ReferencePath Condition=" '$(ReferencePath)' == '' ">{@ReferencePath}</ReferencePath>
   </PropertyGroup>
 
   <!-- The common targets require OutputPath to be valid -->

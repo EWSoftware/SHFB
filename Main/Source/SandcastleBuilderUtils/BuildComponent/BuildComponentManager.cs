@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildComponentManager.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/09/2011
+// Updated : 07/26/2011
 // Note    : Copyright 2007-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -197,7 +197,7 @@ namespace SandcastleBuilder.Utils.BuildComponent
                 shfbFolder = Environment.ExpandEnvironmentVariables("%SHFBROOT%");
 
                 // If SHFBROOT isn't defined, use the executing assembly's folder
-                if(String.IsNullOrEmpty(shfbFolder))
+                if(String.IsNullOrEmpty(shfbFolder) || shfbFolder[0] == '%')
                     shfbFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
                 if(!shfbFolder.EndsWith(@"\", StringComparison.Ordinal))

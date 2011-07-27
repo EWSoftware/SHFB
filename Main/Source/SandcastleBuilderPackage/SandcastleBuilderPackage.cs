@@ -71,7 +71,7 @@ namespace SandcastleBuilder.Package
     // set to "Documentation" to provide a more generic category for the Add
     // New Project and Add New Item dialog boxes.
     [ProvideProjectFactory(typeof(SandcastleBuilderProjectFactory), "Documentation", "#112", "shfbproj",
-      "shfbproj", @".\NullPath", LanguageVsTemplate = "SandcastleBuilderProject")]
+      "shfbproj", @".\NullPath", LanguageVsTemplate = "SHFBProject")]
     // This attribute is needed to let the shell know that this package exposes some menus.
     [ProvideMenuResource("Menus.ctmenu", 1)]
     // This registers the general options page
@@ -130,7 +130,7 @@ namespace SandcastleBuilder.Package
         /// the SandcastleBuilderProjectNode.ProjectType property.</remarks>
         public override string ProductUserContext
         {
-            get { return "SandcastleBuilderProject"; }
+            get { return "SHFBProject"; }
         }
 
         /// <summary>

@@ -3,7 +3,7 @@
     <Name Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="143"/>
     <Description Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="144"/>
     <Icon Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="407" />
-    <ProjectType>SandcastleBuilderProject</ProjectType>
+    <ProjectType>SHFBProject</ProjectType>
     <DefaultName>How To.aml</DefaultName>
     <SortOrder>110</SortOrder>
     <NumberOfParentCategoriesToRollUp>2</NumberOfParentCategoriesToRollUp>

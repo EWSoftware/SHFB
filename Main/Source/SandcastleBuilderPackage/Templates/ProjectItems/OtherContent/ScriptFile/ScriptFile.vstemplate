@@ -3,7 +3,7 @@
     <Name Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="117"/>
     <Description Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="118"/>
     <Icon Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="403" />
-    <ProjectType>SandcastleBuilderProject</ProjectType>
+    <ProjectType>SHFBProject</ProjectType>
     <DefaultName>Script File.js</DefaultName>
     <SortOrder>50</SortOrder>
     <NumberOfParentCategoriesToRollUp>1</NumberOfParentCategoriesToRollUp>

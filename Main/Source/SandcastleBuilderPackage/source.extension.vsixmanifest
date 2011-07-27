@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Vsix xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="1.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2010">
   <Identifier Id="c997d569-ee8e-4947-a46f-9a0717ce39a0">
-    <Name>Sandcastle Help File Builder</Name>
+    <Name>SHFB</Name>
     <Author>EWSoftware</Author>
     <Version>1.9.3.1</Version>
     <Description xml:space="preserve">Visual Studio integration for the Sandcastle Help File Builder.

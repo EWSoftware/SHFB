@@ -31,54 +31,88 @@ the <externalLink><linkText>MSBuild Command Line Reference</linkText>
 <table>
   <tableHeader>
     <row>
-      <entry>Option</entry>
-      <entry>Description</entry>
+      <entry>
+        <para>Option</para>
+      </entry>
+      <entry>
+        <para>Description</para>
+      </entry>
     </row>
   </tableHeader>
   <row>
-    <entry>/verbosity:[level] or /v:[level]></entry>
-    <entry>Set the overall verbosity level of the build.  This controls which
+    <entry>
+      <para>/verbosity:[level] or /v:[level]></para>
+    </entry>
+    <entry>
+      <para>Set the overall verbosity level of the build.  This controls which
 messages MSBuild will display.  The default is <codeInline>normal</codeInline>
-which shows informational messages, errors, and warnings.</entry>
+which shows informational messages, errors, and warnings.</para>
+    </entry>
   </row>
   <row>
-    <entry>/p:Verbose=[True|False]</entry>
-    <entry>This property value can be specified to control the output from the
+    <entry>
+      <para>/p:Verbose=[True|False]</para>
+    </entry>
+    <entry>
+      <para>This property value can be specified to control the output from the
 build process.  The default is false to only output build step names as the
 build is performed.  Setting this property value to true will display all
 output from all build steps.  This is equivalent to the information written to
-the log file.</entry>
+the log file.</para>
+    </entry>
   </row>
   <row>
-    <entry>/p:DumpLogOnFailure=[True|False]</entry>
-    <entry>This property value can be specified to control whether or not the
+    <entry>
+      <para>/p:DumpLogOnFailure=[True|False]</para>
+    </entry>
+    <entry>
+      <para>This property value can be specified to control whether or not the
 log file is dumped to the MSBuild log if the project fails to build.  The
 default is false to not dump the log.  Setting this property value to
-true will dump the log content if the build fails.</entry>
+true will dump the log content if the build fails.</para>
+    </entry>
   </row>
   <row>
-    <entry>/p:Configuration=[configName]</entry>
-    <entry>This can be used to specify the <codeInline>Configuration</codeInline>
+    <entry>
+      <para>/p:Configuration=[configName]</para>
+    </entry>
+    <entry>
+      <para>This can be used to specify the <codeInline>Configuration</codeInline>
 value to use for any solution or project file documentation sources.  If not
-set, it defaults to <codeInline>Debug</codeInline>.</entry>
+set, it defaults to <codeInline>Debug</codeInline>.</para>
+    </entry>
   </row>
   <row>
-    <entry>/p:Platform=[configName]</entry>
-    <entry>This can be used to specify the <codeInline>Platform</codeInline>
+    <entry>
+      <para>/p:Platform=[configName]</para>
+    </entry>
+    <entry>
+      <para>This can be used to specify the <codeInline>Platform</codeInline>
 value to use for any solution or project file documentation sources.  If not
-set, it defaults to <codeInline>AnyCPU</codeInline>.</entry>
+set, it defaults to <codeInline>AnyCPU</codeInline>.</para>
+    </entry>
   </row>
   <row>
-    <entry>/p:CustomBeforeSHFBTargets=[projectFile]</entry>
-    <entry>This can be used to specify a custom project file containing
-property or target overrides that should be evaluated prior to the help file
-builder's targets.  Specify the full path to the project file.</entry>
+    <entry>
+      <para>/p:CustomBeforeSHFBTargets=[projectFile]</para>
+    </entry>
+    <entry>
+      <para>This can be used to specify a custom project file containing property or target overrides that
+should be evaluated prior to the help file builder's targets.  Specify the full path to the project file.
+Do not enclose the project filename value in single quotes or it will be ignored.  If necessary, enclose the
+entire command line parameter in double quotes.</para>
+    </entry>
   </row>
   <row>
-    <entry>/p:CustomAfterSHFBTargets=[projectFile]</entry>
-    <entry>This can be used to specify a custom project file containing
-property or target overrides that should be evaluated after the help file
-builder's targets.  Specify the full path to the project file.</entry>
+    <entry>
+      <para>/p:CustomAfterSHFBTargets=[projectFile]</para>
+    </entry>
+    <entry>
+      <para>This can be used to specify a custom project file containing property or target overrides that
+should be evaluated after the help file builder's targets.  Specify the full path to the project file.
+Do not enclose the project filename value in single quotes or it will be ignored.  If necessary, enclose the
+entire command line parameter in double quotes.</para>
+    </entry>
   </row>
 </table>
 
@@ -143,9 +177,9 @@ as you can specify them using normal XML that spans multiple lines.  An example
 override file is shown below:</para>
 
 <alert class="important">
-  <para>The paths to the target override files should be fully qualified as
-relative paths on them are evaluated by MSBuild based on the help file
-builder's target file location.</para>
+  <para>The paths to the target override files should be fully qualified as relative paths on them are evaluated
+by MSBuild based on the help file builder's target file location.  Do not enclose the project filename in single
+quotes or it will be ignored.  If necessary, enclose the entire command line parameter in double quotes.</para>
 </alert>
 
 <code lang="xml" title="Example Override Project File">
@@ -174,33 +208,61 @@ help file builder GUI.  These are only executed when built using MSBuild.</para>
 <table>
   <tableHeader>
     <row>
-      <entry>Target</entry>
-      <entry>Purpose</entry>
+      <entry>
+        <para>Target</para>
+      </entry>
+      <entry>
+        <para>Purpose</para>
+      </entry>
     </row>
   </tableHeader>
   <row>
-    <entry>BeforeBuildHelp</entry>
-    <entry>This target executes before the help file is built.</entry>
+    <entry>
+      <para>BeforeBuildHelp</para>
+    </entry>
+    <entry>
+      <para>This target executes before the help file is built.</para>
+    </entry>
   </row>
   <row>
-    <entry>AfterBuildHelp</entry>
-    <entry>This target executes after the help file is built.</entry>
+    <entry>
+      <para>AfterBuildHelp</para>
+    </entry>
+    <entry>
+      <para>This target executes after the help file is built.</para>
+    </entry>
   </row>
   <row>
-    <entry>BeforeCleanHelp</entry>
-    <entry>This target executes before the prior build's output is cleared.</entry>
+    <entry>
+      <para>BeforeCleanHelp</para>
+    </entry>
+    <entry>
+      <para>This target executes before the prior build's output is cleared.</para>
+    </entry>
   </row>
   <row>
-    <entry>AfterCleanHelp</entry>
-    <entry>This target executes after the prior build's output is cleared.</entry>
+    <entry>
+      <para>AfterCleanHelp</para>
+    </entry>
+    <entry>
+      <para>This target executes after the prior build's output is cleared.</para>
+    </entry>
   </row>
   <row>
-    <entry>BeforeRebuildHelp</entry>
-    <entry>This target executes before the help file is rebuilt.</entry>
+    <entry>
+      <para>BeforeRebuildHelp</para>
+    </entry>
+    <entry>
+      <para>This target executes before the help file is rebuilt.</para>
+    </entry>
   </row>
   <row>
-    <entry>AfterRebuildHelp</entry>
-    <entry>This target executes after the help file is rebuilt.</entry>
+    <entry>
+      <para>AfterRebuildHelp</para>
+    </entry>
+    <entry>
+      <para>This target executes after the help file is rebuilt.</para>
+    </entry>
   </row>
 </table>
 

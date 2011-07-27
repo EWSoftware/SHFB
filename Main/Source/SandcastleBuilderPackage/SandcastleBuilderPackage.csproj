@@ -23,7 +23,7 @@
   <PropertyGroup>
     <!-- These are needed to properly build the project and item templates and include them in the VSIX
          container ready for installation.  Deployment is suppresssed since we are using VSTemplate files. -->
-    <VsTemplateLanguage>SandcastleBuilderProject</VsTemplateLanguage>
+    <VsTemplateLanguage>SHFBProject</VsTemplateLanguage>
     <GetVsixSourceItemsDependsOn>$(GetVsixSourceItemsDependsOn);GetVsixTemplateItems</GetVsixSourceItemsDependsOn>
     <DeployVSTemplates>false</DeployVSTemplates>
   </PropertyGroup>
