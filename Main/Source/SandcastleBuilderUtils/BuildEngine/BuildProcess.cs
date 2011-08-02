@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/26/2011
+// Updated : 08/02/2011
 // Note    : Copyright 2006-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -2262,8 +2262,15 @@ AllDone:
                             if(!File.Exists(workingPath))
                                 throw new BuilderException("BE0040", "Project assembly does not exist: " + workingPath);
 
-                            this.ReportProgress("    Found assembly '{0}'", workingPath);
-                            assembliesList.Add(workingPath);
+                            if(!assembliesList.Contains(workingPath))
+                            {
+                                // Assemblies are parsed in place by MRefBuilder so we
+                                // don't have to do anything with them here.
+                                this.ReportProgress("    Found assembly '{0}'", workingPath);
+                                assembliesList.Add(workingPath);
+                            }
+                            else
+                                this.ReportProgress("    Ignoring duplicate assembly file '{0}'", workingPath);
                         }
                         else
                             throw new BuilderException("BE0067", String.Format(CultureInfo.InvariantCulture,
@@ -2282,7 +2289,13 @@ AllDone:
                                 throw new BuilderException("BE0041",
                                     "Project XML comments file does not exist: " + workingPath);
 
-                            commentsList.Add(workingPath);
+                            if(!commentsList.Contains(workingPath))
+                            {
+                                // These are handled below
+                                commentsList.Add(workingPath);
+                            }
+                            else
+                                this.ReportProgress("    Ignoring duplicate comments file '{0}'", workingPath);
                         }
 
                         // Note the highest framework version used
