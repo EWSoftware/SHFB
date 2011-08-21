@@ -2,7 +2,7 @@
 // System  : EWSoftware Design Time Attributes and Editors
 // File    : LanguageResourceConverter.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/09/2011
+// Updated : 08/20/2011
 // Note    : Copyright 2006-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -97,8 +97,7 @@ namespace SandcastleBuilder.Utils.Design
 
         /// <summary>
         /// This is used to get the standard values by searching for the
-        /// .NET Framework and Silverlight Framework versions installed on the
-        /// current system.
+        /// language-specific help file builder shared content files.
         /// </summary>
         private static StandardValuesCollection InitializeStandardValues()
         {
@@ -114,7 +113,6 @@ namespace SandcastleBuilder.Utils.Design
                 }).OrderBy(c => c, new CultureInfoComparer()).ToArray());
         }
         #endregion
-
 
         #region Method overrides
         //=====================================================================

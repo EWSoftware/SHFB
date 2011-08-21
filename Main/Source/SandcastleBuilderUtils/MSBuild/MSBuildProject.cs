@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : MSBuildProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/26/2011
+// Updated : 08/20/2011
 // Note    : Copyright 2008-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -19,6 +19,7 @@
 // ============================================================================
 // 1.8.0.0  07/11/2008  EFW  Created the code
 // 1.9.1.0  07/09/2010  EFW  Updated for use with .NET 4.0 and MSBuild 4.0.
+// 1.9.3.2  08/20/2011  EFW  Updated to support Portable .NET Framework
 // ============================================================================
 
 using System;
@@ -197,6 +198,22 @@ namespace SandcastleBuilder.Utils.MSBuild
 
                 if(properties == null)
                     throw new InvalidOperationException("Configuration has not been set");
+
+                // Is it a .NET Portable Framework version?
+                if(properties.TryGetValue("TargetFrameworkIdentifier", out prop))
+                {
+                    versionValue = prop.EvaluatedValue;
+
+                    if(versionValue == ".NETPortable" && properties.TryGetValue("TargetFrameworkVersion", out prop))
+                    {
+                        versionValue = prop.EvaluatedValue;
+
+                        if(versionValue[0] == 'v')
+                            versionValue = versionValue.Substring(1);
+
+                        return "Portable " + versionValue;
+                    }
+                }
 
                 // Is it a Silverlight version?
                 if(properties.TryGetValue("SilverlightVersion", out prop))

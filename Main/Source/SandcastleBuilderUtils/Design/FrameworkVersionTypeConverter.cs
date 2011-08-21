@@ -2,7 +2,7 @@
 // System  : EWSoftware Design Time Attributes and Editors
 // File    : FrameworkVersionTypeConverter.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/28/2011
+// Updated : 08/20/2011
 // Note    : Copyright 2006-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -20,6 +20,8 @@
 // ============================================================================
 // 1.0.0.0  08/08/2006  EFW  Created the code
 // 1.9.2.0  01/16/2011  EFW  Updated to support selection of Silverlight
+//                           Framework versions.
+// 1.9.3.2  08/20/2011  EFW  Updated to support selection of .NET Portable
 //                           Framework versions.
 //=============================================================================
 
@@ -61,14 +63,13 @@ namespace SandcastleBuilder.Utils.Design
         //=====================================================================
 
         /// <summary>
-        /// This is used to get the standard values by searching for the
-        /// .NET Framework and Silverlight Framework versions installed on the
-        /// current system.
+        /// This is used to get the standard values by searching for the various
+        /// .NET frameworks installed on the current system.
         /// </summary>
         private static StandardValuesCollection InitializeStandardValues()
         {
             string programFilesFolder = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
-            IEnumerable<string> silverlightVersions;
+            IEnumerable<string> silverlightVersions, portableVersions;
 
             if(String.IsNullOrEmpty(programFilesFolder))
                 programFilesFolder = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
@@ -86,6 +87,19 @@ namespace SandcastleBuilder.Utils.Design
                         return dir.Length > 2 && (dir[0] == 'v' || dir[0] == 'V') && Char.IsDigit(dir[1]);
                     }).Select(d => "Silverlight " + d.Substring(d.LastIndexOf('\\') + 2));
 
+            string portableFrameworkFolder = programFilesFolder + @"\Reference Assemblies\Microsoft\Framework\.NETPortable";
+
+            // Add .NET Portable Framework versions if present
+            if(!Directory.Exists(portableFrameworkFolder))
+                portableVersions = Enumerable.Empty<string>();
+            else
+                portableVersions = Directory.EnumerateDirectories(portableFrameworkFolder).Where(d =>
+                {
+                    string dir = d.Substring(d.LastIndexOf('\\') + 1);
+
+                    return dir.Length > 2 && (dir[0] == 'v' || dir[0] == 'V') && Char.IsDigit(dir[1]);
+                }).Select(d => "Portable " + d.Substring(d.LastIndexOf('\\') + 2));
+
             versions.AddRange(
                 // .NET Framework versions
                 Directory.EnumerateDirectories(Environment.GetFolderPath(Environment.SpecialFolder.System) +
@@ -96,7 +110,9 @@ namespace SandcastleBuilder.Utils.Design
                         return dir.Length > 2 && (dir[0] == 'v' || dir[0] == 'V') && Char.IsDigit(dir[1]);
                     }).Select(d => ".NET " + d.Substring(d.LastIndexOf('\\') + 2)).Concat(
                 // Plus Silverlight versions if present
-                silverlightVersions).OrderBy(d => d));
+                silverlightVersions).Concat(
+                // Plus .NET Portable versions if present
+                portableVersions).OrderBy(d => d));
 
             return new StandardValuesCollection(versions);
         }
@@ -169,8 +185,12 @@ namespace SandcastleBuilder.Utils.Design
                 if(version.StartsWith("Silverlight", StringComparison.OrdinalIgnoreCase))
                     latestVersion = versions.LastOrDefault(v => v.StartsWith("Silverlight",
                         StringComparison.OrdinalIgnoreCase));
+                else
+                    if(version.StartsWith("Portable", StringComparison.OrdinalIgnoreCase))
+                        latestVersion = versions.LastOrDefault(v => v.StartsWith("Portable",
+                            StringComparison.OrdinalIgnoreCase));
 
-                // If Silverlight isn't there, fall back to .NET.  The build will likely fail but
+                // If the other frameworks aren't there, fall back to .NET.  The build will likely fail but
                 // at least the GUI won't crash due to a bad value.
                 if(latestVersion == null)
                     latestVersion = versions.LastOrDefault(v => v.StartsWith(".NET",
@@ -196,7 +216,11 @@ namespace SandcastleBuilder.Utils.Design
             if(latestVersion.StartsWith(".NET ", StringComparison.OrdinalIgnoreCase))
                 return latestVersion.Substring(5);
 
-            return latestVersion.Substring(12);
+            if(latestVersion.StartsWith("Silverlight ", StringComparison.OrdinalIgnoreCase))
+                return latestVersion.Substring(12);
+
+            // Portable
+            return latestVersion.Substring(9);
         }
         #endregion
     }

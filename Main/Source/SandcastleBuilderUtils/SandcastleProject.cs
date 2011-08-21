@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SandcastleProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/26/2011
+// Updated : 08/20/2011
 // Note    : Copyright 2006-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -71,6 +71,8 @@
 //                           type properties.
 // 1.9.1.0  07/09/2010  EFW  Updated for use with .NET 4.0 and MSBuild 4.0.
 // 1.9.2.0  01/16/2011  EFW  Updated to support selection of Silverlight
+//                           Framework versions.
+// 1.9.3.2  08/20/2011  EFW  Updated to support selection of .NET Portable
 //                           Framework versions.
 //=============================================================================
 
@@ -359,6 +361,9 @@ namespace SandcastleBuilder.Utils
 
                 if(frameworkVersion.StartsWith("Silverlight ", StringComparison.OrdinalIgnoreCase))
                     return frameworkVersion.Substring(12);
+
+                if(frameworkVersion.StartsWith("Portable ", StringComparison.OrdinalIgnoreCase))
+                    return frameworkVersion.Substring(9);
 
                 return frameworkVersion;
             }
@@ -805,13 +810,14 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get or set the .NET Framework or Silverlight
-        /// Framework version used to resolve references to system types.
+        /// This is used to get or set the .NET Framework version used to
+        /// resolve references to system types (basic .NET Framework,
+        /// Silverlight, Portable, etc.).
         /// </summary>
         /// <remarks>If not found, it will default to the most recent version
-        /// of the .NET Framework installed.</remarks>
-        [Category("Build"), Description("The .NET Framework or Silverlight Framework version " +
-          "used to resolve references to system types."), TypeConverter(typeof(FrameworkVersionTypeConverter))]
+        /// of the basic .NET Framework installed.</remarks>
+        [Category("Build"), Description("The .NET Framework version used to resolve references to system types."),
+          TypeConverter(typeof(FrameworkVersionTypeConverter))]
         public string FrameworkVersion
         {
             get { return frameworkVersion; }

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : FrameworkCommentsFileLocation.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/05/2011
+// Updated : 08/21/2011
 // Note    : Copyright 2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -29,6 +29,10 @@ namespace SandcastleBuilder.Utils.BuildEngine
     {
         /// <summary>The folder location</summary>
         public string Folder { get; set; }
+
+        /// <summary>The wildcard to use</summary>
+        /// <value>If not specified, "*.xml" is assumed.</value>
+        public string Wildcard { get; set; }
 
         /// <summary>Cache filename for the cached build components</summary>
         public string CacheFilename { get; set; }

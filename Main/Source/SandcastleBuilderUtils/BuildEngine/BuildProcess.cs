@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/02/2011
+// Updated : 08/21/2011
 // Note    : Copyright 2006-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -54,6 +54,8 @@
 //                           occurs right after MergeTablesOfContents.
 // 1.9.1.0  07/09/2010  EFW  Updated for use with .NET 4.0 and MSBuild 4.0.
 // 1.9.2.0  01/16/2011  EFW  Updated to support selection of Silverlight
+//                           Framework versions.
+// 1.9.3.2  08/20/2011  EFW  Updated to support selection of .NET Portable
 //                           Framework versions.
 //=============================================================================
 
@@ -2119,7 +2121,7 @@ AllDone:
             XmlCommentsFile comments;
             int fileCount;
             string workingPath, projFramework, lastSolution = null, targetFramework = project.FrameworkVersion;
-            bool dotNetSeen = false, silverlightSeen = false;
+            bool dotNetSeen = false, silverlightSeen = false, portableSeen = false;
 
             this.ReportProgress(BuildStep.ValidatingDocumentationSources,
                 "Validating and copying documentation source information");
@@ -2308,6 +2310,9 @@ AllDone:
                             else
                                 if(projFramework.StartsWith("Silverlight", StringComparison.OrdinalIgnoreCase))
                                     silverlightSeen = true;
+                                else
+                                    if(projFramework.StartsWith("Portable", StringComparison.OrdinalIgnoreCase))
+                                        portableSeen = true;
 
                             projFramework = FrameworkVersionTypeConverter.LatestFrameworkMatching(projFramework);
 
@@ -2327,14 +2332,14 @@ AllDone:
                     p.Dispose();
             }
 
-            // If we saw both .NET and Silverlight projects, stop now.  Due to the different frameworks used,
-            // we can't mix both project types within the same SHFB project.  They will need to be documented
-            // separately and can be merged using the Version Builder plug-in if needed.
-            if(dotNetSeen && silverlightSeen)
-                throw new BuilderException("BE0070", "Both .NET Framework and Silverlight Framework projects " +
-                    "were detected.  Due to the different sets of assemblies used, the two cannot be mixed " +
-                    "within the same documentation project.  See the error number topic in the help file " +
-                    "for details.");
+            // If we saw multiple framework types in the projects, stop now.  Due to the different assemblies
+            // used, we cannot mix the project types within the same SHFB project.  They will need to be
+            // documented separately and can be merged using the Version Builder plug-in if needed.
+            if((dotNetSeen && (silverlightSeen || portableSeen)) || (silverlightSeen && portableSeen))
+                throw new BuilderException("BE0070", "Differing framework types were detected in the " +
+                    "documentation sources (i.e. .NET, Silverlight, Portable).  Due to the different sets of " +
+                    "assemblies used, the different frameworks cannot be mixed within the same documentation " +
+                    "project.  See the error number topic in the help file for details.");
 
             if(project.FrameworkVersion != targetFramework)
             {
@@ -2351,6 +2356,22 @@ AllDone:
             // references from it so this isn't necessary.
             if(!silverlightSeen && project.FrameworkVersion.StartsWith("Silverlight", StringComparison.OrdinalIgnoreCase))
                 foreach(var l in BuildProcess.SilverlightFrameworkLocations(project.FrameworkVersion))
+                    if(Directory.Exists(l.Folder))
+                    {
+                        foreach(string file in Directory.EnumerateFiles(l.Folder, "*.dll",
+                          (l.Recurse) ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly))
+                        {
+                            if(!referenceDictionary.ContainsKey(Path.GetFileNameWithoutExtension(file)))
+                                referenceDictionary.Add(Path.GetFileNameWithoutExtension(file),
+                                    Tuple.Create("Reference", Path.GetFileNameWithoutExtension(file),
+                                        new List<KeyValuePair<string, string>> {
+                                            new KeyValuePair<string, string>("HintPath", file) }));
+                        }
+                    }
+
+            // Likewise for the .NET Portable Framework
+            if(!portableSeen && project.FrameworkVersion.StartsWith("Portable", StringComparison.OrdinalIgnoreCase))
+                foreach(var l in BuildProcess.PortableFrameworkLocations(project.FrameworkVersion, false))
                     if(Directory.Exists(l.Folder))
                     {
                         foreach(string file in Directory.EnumerateFiles(l.Folder, "*.dll",

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : EntityReferenceWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/06/2011
+// Updated : 08/21/2011
 // Note    : Copyright 2008-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -137,7 +137,6 @@ namespace SandcastleBuilder.Gui.ContentEditors
         private void IndexComments()
         {
             HashSet<string> projectDictionary = new HashSet<string>();
-            IEnumerable<FrameworkCommentsFileLocation> locations;
             IndexedCommentsCache cache = new IndexedCommentsCache(100);
             CultureInfo language = currentProject.Language;
             MSBuildProject projRef;
@@ -145,14 +144,8 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
             try
             {
-                // For Silverlight, we need to look in different locations
-                if(currentProject.FrameworkVersion.StartsWith("Silverlight", StringComparison.OrdinalIgnoreCase))
-                    locations = BuildProcess.SilverlightFrameworkLocations(currentProject.FrameworkVersion);
-                else
-                    locations = BuildProcess.DotNetFrameworkLocations(currentProject.FrameworkVersion);
-
-                // Index the framework comments
-                foreach(var l in locations)
+                // Index the framework comments based on the framework version in the project
+                foreach(var l in BuildProcess.FrameworkCommentsFileLocations(currentProject))
                     if(Directory.Exists(l.Folder))
                     {
                         // Check for a language-specific set of comments if indicated

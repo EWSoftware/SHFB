@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.Transform.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/26/2011
+// Updated : 08/21/2011
 // Note    : Copyright 2006-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -43,6 +43,8 @@
 // 1.9.0.0  06/06/2010  EFW  Added support for multi-format build output
 // 1.9.1.0  07/09/2010  EFW  Updated for use with .NET 4.0 and MSBuild 4.0.
 // 1.9.2.0  01/16/2011  EFW  Updated to support selection of Silverlight
+//                           Framework versions.
+// 1.9.3.2  08/20/2011  EFW  Updated to support selection of .NET Portable
 //                           Framework versions.
 //=============================================================================
 
@@ -573,14 +575,15 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     // .NET 3.0 and 3.5 are based on .NET 2.0 so use it's core folder instead.  The framework
                     // folders for .NET 3.0 and .NET 3.5 only contain the extra assemblies.
 
-                    // MRefBuilder doesn't appear to handle the Silverlight framework at all.  It requires
-                    // manually specifying the reference assemblies.  As such, we'll pass in the core framework
-                    // folder for the normal .NET Framework using the same rules.
+                    // MRefBuilder does not appear to handle the Silverlight and Portable frameworks at all.  It
+                    // requires manually specifying the reference assemblies.  As such, we'll pass in the core
+                    // framework folder for the normal .NET Framework using the same rules.
 
                     if(replaceWith[0] == '3')
                         replaceWith = FrameworkVersionTypeConverter.LatestFrameworkNumberMatching("2.0");
                     else
-                        if(project.FrameworkVersion.StartsWith("Silverlight", StringComparison.OrdinalIgnoreCase))
+                        if(project.FrameworkVersion.StartsWith("Silverlight", StringComparison.OrdinalIgnoreCase) ||
+                          project.FrameworkVersion.StartsWith("Portable", StringComparison.OrdinalIgnoreCase))
                             replaceWith = FrameworkVersionTypeConverter.LatestFrameworkNumberMatching(replaceWith.Substring(1, 1));
                     break;
 
@@ -595,10 +598,13 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     break;
 
                 case "targetframeworkidentifier":
-                    if(project.FrameworkVersion.StartsWith(".NET", StringComparison.OrdinalIgnoreCase))
-                        replaceWith = ".NETFramework";
+                    if(project.FrameworkVersion.StartsWith("Portable", StringComparison.OrdinalIgnoreCase))
+                        replaceWith = ".NETPortable";
                     else
-                        replaceWith = "Silverlight";
+                        if(project.FrameworkVersion.StartsWith("Silverlight", StringComparison.OrdinalIgnoreCase))
+                            replaceWith = "Silverlight";
+                        else
+                            replaceWith = ".NETFramework";
                     break;
 
                 case "help1xprojectfiles":
@@ -938,87 +944,11 @@ namespace SandcastleBuilder.Utils.BuildEngine
         }
 
         /// <summary>
-        /// This is used to get a list of Silverlight Framework assembly locations
-        /// </summary>
-        /// <param name="version">The framework version for which to get
-        /// comments files.</param>
-        public static IEnumerable<FrameworkCommentsFileLocation> SilverlightFrameworkLocations(string version)
-        {
-            string folder, programFilesFolder = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
-
-            if(String.IsNullOrEmpty(programFilesFolder))
-                programFilesFolder = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
-
-            version = FrameworkVersionTypeConverter.LatestFrameworkNumberMatching(version);
-
-            yield return new FrameworkCommentsFileLocation
-            {
-                Folder = programFilesFolder + @"\Reference Assemblies\Microsoft\Framework\Silverlight\v" + version,
-                CacheFilename = "Silverlight_" + version
-            };
-
-            yield return new FrameworkCommentsFileLocation
-            {
-                Folder = programFilesFolder + @"\Microsoft SDKs\Silverlight\v" + version + @"\Libraries",
-                CacheFilename = "SilverlightSDK_" + version,
-                Recurse = true
-            };
-
-            if(version[0] >= '4')
-            {
-                // Add the latest toolkit folder if present
-                folder = programFilesFolder + @"\Microsoft SDKs\Silverlight\v" + version + @"\Toolkit";
-
-                if(Directory.Exists(folder))
-                {
-                    // These are ordered by date
-                    folder = Directory.EnumerateDirectories(folder).OrderBy(f =>
-                    {
-                        DateTime folderDate;
-
-                        // The folder names are in the form MMMYY.  By adding "1" to the front, we
-                        // can parse them as a date/time.  We'll ignore anything that isn't parsable.
-                        if(!DateTime.TryParse("1" + Path.GetFileName(f), out folderDate))
-                            return DateTime.MinValue;
-
-                        return folderDate;
-                    }).LastOrDefault();
-
-                    if(folder != null)
-                        yield return new FrameworkCommentsFileLocation
-                        {
-                            Folder = folder + @"\Bin",
-                            CacheFilename = "SilverlightToolkit_" + Path.GetFileName(folder),
-                            Recurse = true
-                        };
-                }
-
-                // Add the latest RIA services folder if present
-                folder = programFilesFolder + @"\Microsoft SDKs\RIA Services";
-
-                if(Directory.Exists(folder))
-                {
-                    folder = Directory.EnumerateDirectories(folder).Where(f =>
-                    {
-                        string v = Path.GetFileName(f);
-                        return v.Length > 2 && v[0] == 'v' && Char.IsDigit(v[1]);
-                    }).OrderBy(f => f).LastOrDefault();
-
-                    yield return new FrameworkCommentsFileLocation
-                    {
-                        Folder = folder + @"\Libraries",
-                        CacheFilename = "RIA_SDK_" + Path.GetFileName(folder),
-                        Recurse = true
-                    };
-                }
-            }
-        }
-
-        /// <summary>
         /// This is used to get a list of .NET Framework assembly locations
         /// </summary>
         /// <param name="version">The framework version for which to get
         /// comments files.</param>
+        /// <returns>An enumerable list of comments file locations</returns>
         public static IEnumerable<FrameworkCommentsFileLocation> DotNetFrameworkLocations(string version)
         {
             string version20, programFilesFolder = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
@@ -1103,6 +1033,171 @@ namespace SandcastleBuilder.Utils.BuildEngine
         }
 
         /// <summary>
+        /// This is used to get a list of Silverlight Framework assembly locations
+        /// </summary>
+        /// <param name="version">The framework version for which to get
+        /// comments files.</param>
+        /// <returns>An enumerable list of comments file locations</returns>
+        public static IEnumerable<FrameworkCommentsFileLocation> SilverlightFrameworkLocations(string version)
+        {
+            string folder, programFilesFolder = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
+
+            if(String.IsNullOrEmpty(programFilesFolder))
+                programFilesFolder = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
+
+            version = FrameworkVersionTypeConverter.LatestFrameworkNumberMatching(version);
+
+            yield return new FrameworkCommentsFileLocation
+            {
+                Folder = programFilesFolder + @"\Reference Assemblies\Microsoft\Framework\Silverlight\v" + version,
+                CacheFilename = "Silverlight_" + version
+            };
+
+            yield return new FrameworkCommentsFileLocation
+            {
+                Folder = programFilesFolder + @"\Microsoft SDKs\Silverlight\v" + version + @"\Libraries",
+                CacheFilename = "SilverlightSDK_" + version,
+                Recurse = true
+            };
+
+            if(version[0] >= '4')
+            {
+                // Add the latest toolkit folder if present
+                folder = programFilesFolder + @"\Microsoft SDKs\Silverlight\v" + version + @"\Toolkit";
+
+                if(Directory.Exists(folder))
+                {
+                    // These are ordered by date
+                    folder = Directory.EnumerateDirectories(folder).OrderBy(f =>
+                    {
+                        DateTime folderDate;
+
+                        // The folder names are in the form MMMYY.  By adding "1" to the front, we
+                        // can parse them as a date/time.  We'll ignore anything that isn't parsable.
+                        if(!DateTime.TryParse("1" + Path.GetFileName(f), out folderDate))
+                            return DateTime.MinValue;
+
+                        return folderDate;
+                    }).LastOrDefault();
+
+                    if(folder != null)
+                        yield return new FrameworkCommentsFileLocation
+                        {
+                            Folder = folder + @"\Bin",
+                            CacheFilename = "SilverlightToolkit_" + Path.GetFileName(folder),
+                            Recurse = true
+                        };
+                }
+
+                // Add the latest RIA services folder if present
+                folder = programFilesFolder + @"\Microsoft SDKs\RIA Services";
+
+                if(Directory.Exists(folder))
+                {
+                    folder = Directory.EnumerateDirectories(folder).Where(f =>
+                    {
+                        string v = Path.GetFileName(f);
+                        return v.Length > 2 && v[0] == 'v' && Char.IsDigit(v[1]);
+                    }).OrderBy(f => f).LastOrDefault();
+
+                    yield return new FrameworkCommentsFileLocation
+                    {
+                        Folder = folder + @"\Libraries",
+                        CacheFilename = "RIA_SDK_" + Path.GetFileName(folder),
+                        Recurse = true
+                    };
+                }
+            }
+        }
+
+        /// <summary>
+        /// This is used to get a list of .NET Portable Framework assembly locations.
+        /// </summary>
+        /// <param name="version">The framework version for which to get comments files.</param>
+        /// <param name="forCommentsFiles">True to get comments file locations, false to get the
+        /// root folder contaning the assemblies.</param>
+        /// <returns>An enumerable list of assembly/comments file locations</returns>
+        public static IEnumerable<FrameworkCommentsFileLocation> PortableFrameworkLocations(string version,
+          bool forCommentsFiles)
+        {
+            string folder, programFilesFolder = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
+
+            if(String.IsNullOrEmpty(programFilesFolder))
+                programFilesFolder = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
+
+            version = FrameworkVersionTypeConverter.LatestFrameworkNumberMatching(version);
+
+            folder = programFilesFolder + @"\Reference Assemblies\Microsoft\Framework\.NETPortable\v" + version;
+
+            if(Directory.Exists(folder))
+            {
+                // Looking for the assemblies only?
+                if(!forCommentsFiles)
+                {
+                    // All the assemblies exist in the root folder
+                    yield return new FrameworkCommentsFileLocation
+                    {
+                        Folder = folder,
+                        Recurse = false
+                    };
+                }
+                else
+                {
+                    // Comments files are duplicated across all the profile folders.  To minimize the
+                    // duplication, we'll find the folder with the most files and return it followed by
+                    // an entry for each unique file in subsequent folders.
+                    var commentGroups = Directory.EnumerateFiles(folder, "*.xml", SearchOption.AllDirectories).Where(d =>
+                        File.Exists(Path.ChangeExtension(d, ".dll"))).GroupBy(d =>
+                        Path.GetDirectoryName(d)).OrderByDescending(d => d.Count());
+
+                    HashSet<string> commentsFiles = new HashSet<string>(commentGroups.First().Select(
+                        f => Path.GetFileName(f)));
+
+                    yield return new FrameworkCommentsFileLocation
+                    {
+                        Folder = commentGroups.First().Key,
+                        CacheFilename = "Portable_" + version,
+                        Recurse = false
+                    };
+
+                    foreach(var g in commentGroups)
+                    {
+                        var unseenFiles = g.Where(f => !commentsFiles.Contains(Path.GetFileName(f))).ToList();
+
+                        if(unseenFiles.Count != 0)
+                        {
+                            foreach(var f in unseenFiles)
+                                yield return new FrameworkCommentsFileLocation
+                                {
+                                    Folder = g.Key,
+                                    Wildcard = Path.GetFileName(f),
+                                    CacheFilename = "Portable_" + version + "_" + Path.GetFileNameWithoutExtension(f),
+                                    Recurse = false
+                                };
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// This is used to return a set of locations in which to find framework XML comments files
+        /// </summary>
+        /// <param name="project">The project used to determine the source location</param>
+        /// <returns>An </returns>
+        /// <returns>An enumerable list of comments file locations</returns>
+        public static IEnumerable<FrameworkCommentsFileLocation> FrameworkCommentsFileLocations(SandcastleProject project)
+        {
+            if(project.FrameworkVersion.StartsWith("Portable", StringComparison.OrdinalIgnoreCase))
+                return BuildProcess.PortableFrameworkLocations(project.FrameworkVersion, true);
+            
+            if(project.FrameworkVersion.StartsWith("Silverlight", StringComparison.OrdinalIgnoreCase))
+                return BuildProcess.SilverlightFrameworkLocations(project.FrameworkVersion);
+
+            return BuildProcess.DotNetFrameworkLocations(project.FrameworkVersion);
+        }
+
+        /// <summary>
         /// This is used to generate an appropriate list of entries that
         /// represent .NET Framework comments file locations for the various
         /// configuration files.
@@ -1115,16 +1210,9 @@ namespace SandcastleBuilder.Utils.BuildEngine
         private string FrameworkCommentList(string listType)
         {
             StringBuilder sb = new StringBuilder(1024);
-            IEnumerable<FrameworkCommentsFileLocation> locations;
-
-            // For Silverlight, we need to look in different locations
-            if(project.FrameworkVersion.StartsWith("Silverlight", StringComparison.OrdinalIgnoreCase))
-                locations = BuildProcess.SilverlightFrameworkLocations(project.FrameworkVersion);
-            else
-                locations = BuildProcess.DotNetFrameworkLocations(project.FrameworkVersion);
 
             // Build the list based on the type and what actually exists
-            foreach(var l in locations)
+            foreach(var l in BuildProcess.FrameworkCommentsFileLocations(project))
                 if(Directory.Exists(l.Folder))
                 {
                     // Check for a language-specific set of comments if indicated
@@ -1145,20 +1233,22 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     {
                         case "importframeworkcommentlist":
                             sb.AppendFormat(CultureInfo.InvariantCulture,
-                                "<import path=\"{0}\" recurse=\"{1}\" />\r\n", l.Folder,
-                                    l.Recurse.ToString().ToLowerInvariant());
+                                "<import path=\"{0}\" file=\"{1}\" recurse=\"{2}\" />\r\n", l.Folder,
+                                    (l.Wildcard ?? "*.xml"), l.Recurse.ToString().ToLowerInvariant());
                             break;
 
                         case "cachedframeworkcommentlist":
                             // Files are cached by language and version
-                            sb.AppendFormat(CultureInfo.InvariantCulture, "<cache base=\"{0}\" files=\"*.xml\" " +
-                                "recurse=\"{1}\" cacheFile=\"{{@LocalDataFolder}}Cache\\{2}.cache\" />\r\n",
-                                l.Folder, l.Recurse.ToString().ToLowerInvariant(), l.CacheFilename);
+                            sb.AppendFormat(CultureInfo.InvariantCulture, "<cache base=\"{0}\" files=\"{1}\" " +
+                                "recurse=\"{2}\" cacheFile=\"{{@LocalDataFolder}}Cache\\{3}.cache\" />\r\n",
+                                l.Folder, (l.Wildcard ?? "*.xml"), l.Recurse.ToString().ToLowerInvariant(),
+                                l.CacheFilename);
                             break;
 
                         default:    // "frameworkcommentlist"
-                            sb.AppendFormat(CultureInfo.InvariantCulture, "<data base=\"{0}\" files=\"*.xml\" " +
-                                "recurse=\"{1}\" />\r\n", l.Folder, l.Recurse.ToString().ToLowerInvariant());
+                            sb.AppendFormat(CultureInfo.InvariantCulture, "<data base=\"{0}\" files=\"{1}\" " +
+                                "recurse=\"{2}\" />\r\n", l.Folder, (l.Wildcard ?? "*.xml"),
+                                l.Recurse.ToString().ToLowerInvariant());
                             break;
                     }
                 }
