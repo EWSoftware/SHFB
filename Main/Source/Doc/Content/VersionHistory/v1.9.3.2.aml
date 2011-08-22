@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="e6285aea-8caa-4ff3-86d2-d9623dcc8a49" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <autoOutline lead="Version 1.9.3.2 was released on August 28th, 2011." />
+    </introduction>
+
+    <section address="VSPackage">
+      <title>Visual Studio 2010 Extension Package</title>
+      <content>
+        <para>This version contains the alpha release of the Visual Studio 2010 extension package that allows
+you to create, manage, and build help file builder projects completely from within Visual Studio.  No changes
+have been made to it for this release beyond those to fix up installation and build issues.  Future updates
+will include the unimplemented features noted in the first alpha release notes.  See the
+<link xlink:href="b128ad2a-787e-48c7-b946-f6953080c386" /> topic for more information on usage.</para>
+
+      </content>
+    </section>
+
+    <section address="BreakingChanges">
+      <title>Breaking Changes</title>
+      <content>
+            <para>Changed the project language template ID from <codeInline>SandcastleBuilderProject</codeInline> to
+<codeInline>SHFBProject</codeInline> and changed the title of the VS package extension to "SHFB" in order to reduce
+the installed path name so that it does not cause "Path too long" errors on Windows XP.  Note that this will break
+any existing custom templates that you may have created.  They will need to be updated to use the new template ID
+for the project type and the ZIP files will need to be placed in the <localUri>.\SHFBProject</localUri> folder.
+See the <link xlink:href="ece3a395-589f-45c3-9f0e-2a25b8b6c537" /> topic for updated information.</para>
+      </content>
+    </section>
+
+    <section address="OtherChanges">
+      <title>Other Changes in This Release</title>
+      <content>
+
+        <list class="bullet">
+          <listItem>
+            <para>Renamed many of the project template folders and files to shorten their names to prevent "Path too long" errors
+when installing the VS package extension.</para>
+          </listItem>
+
+          <listItem>
+            <para>Fixed a bug in the <codeInline>BuildHelp</codeInline> task that caused it to miss command line overrides
+when the help file builder project was executed with the <codeInline>MSBuild</codeInline> subtask from within a parent project
+file.</para>
+          </listItem>
+
+          <listItem>
+            <para>Fixed a bug in the build process that caused an exception when the documentation project was in the same
+solution as a project referenced as a documentation source and the project was built from within Visual Studio.</para>
+          </listItem>
+
+          <listItem>
+            <para>Fixed a bug in the build process that caused an exception if a project reference had a relative path.</para>
+          </listItem>
+
+          <listItem>
+            <para>Fixed a couple of instances where the code was assuming an empty or null result from
+<codeInline>ExpandEnvironmentVariables()</codeInline> if the variable in question was undefined.</para>
+          </listItem>
+
+          <listItem>
+            <para>When loading or converting a project, invalid <codeInline>Language</codeInline> property values are now
+ignored.  This works around an issue where, when a language wasn't defined in the project but a <codeInline>Language</codeInline>
+environment variable was defined, MSBuild would pick up the environment variable value as the default.  If the value was not
+convertible to a culture info object, the load/convert would fail.</para>
+          </listItem>
+
+          <listItem>
+            <para>If the <codeInline>ReferencePath</codeInline> property is defined, it will be passed to and used by
+<localUri>GenerateRefInfo.proj</localUri> when generating reflection information.  This allows you to specify an alternate
+path in which to find reference assemblies that will override hint paths in the project file.</para>
+          </listItem>
+
+          <listItem>
+            <para>When parsing solution files for assembly and XML comments file names, duplicate names are now ignored.  For
+example, if a utility project is included in two solutions used as documentation sources, it will be included from the first
+solution and will be ignored in the second solution.  This prevents <application>MRefBuilder</application> from throwing an
+exception caused by parsing the same assembly twice.</para>
+          </listItem>
+
+          <listItem>
+            <para>Updated the <codeInline>FrameworkVersion</codeInline> project property to allow selection of any installed .NET
+Portable Framework version.  This allows for the proper documentation of .NET Portable Framework projects using assemblies and
+XML comments files specific to that framework.</para>
+
+            <alert class="note">
+              <para>Because .NET Portable Framework projects use an entirely different framework, it is not possible to build
+a help project containing assemblies and/or Visual Studio projects that target combinations of the normal .NET Framework,
+Silverlight Framework, and/or the .NET Portable Framework.  Each must be built in their own separate help project.  You can
+use the Version Builder plug-in to merge the information from both projects into one help file if necessary.</para>
+            </alert>
+
+          </listItem>
+
+          <listItem>
+            <para>For .NET Portable Framework projects where the assemblies are added directly as documentation sources rather
+than their Visual Studio project, the build engine will automatically include all known .NET Portable Framwork assemblies as
+references.  This frees you from having to manually add the portable framework assemblies as references.  However, a number of
+references will be added, many of which may not be needed.  If you have a choice, using the Visual Studio solution or project
+file as the documentation source is preferred as it will only include the required reference assemblies.</para>
+          </listItem>
+
+        </list>
+      </content>
+    </section>
+
+    <relatedTopics>
+      <link xlink:href="078cc1c7-7995-431e-bf9c-8813becbe8df" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

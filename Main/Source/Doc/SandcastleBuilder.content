@@ -1000,7 +1000,7 @@
           <HelpKeyword index="K" term="errors, BE0069" />
         </HelpKeywords>
       </Topic>
-      <Topic id="a73e776d-0f62-41ee-aa5f-637916c09553" visible="True" title="BE0070: Both .NET Framework and Silverlight Framework projects were detected">
+      <Topic id="a73e776d-0f62-41ee-aa5f-637916c09553" visible="True" title="BE0070: Differing framework types were detected">
         <HelpKeywords>
           <HelpKeyword index="K" term="errors, BE0070" />
         </HelpKeywords>
@@ -1316,7 +1316,12 @@
       <HelpKeyword index="K" term="History" />
       <HelpKeyword index="K" term="Version History" />
     </HelpKeywords>
-    <Topic id="798c4fef-9162-4fe6-98ca-02ee4aa7f6bc" visible="True" title="Version 1.9.3.1">
+    <Topic id="e6285aea-8caa-4ff3-86d2-d9623dcc8a49" visible="True" title="Version 1.9.3.2 (Alpha)">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 1.9.3.2" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="798c4fef-9162-4fe6-98ca-02ee4aa7f6bc" visible="True" title="Version 1.9.3.1 (Alpha)">
       <HelpKeywords>
         <HelpKeyword index="K" term="versions, 1.9.3.1" />
       </HelpKeywords>

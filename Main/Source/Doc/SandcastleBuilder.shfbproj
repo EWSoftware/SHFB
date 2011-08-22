@@ -36,7 +36,7 @@
     <FeedbackEMailAddress>Eric%40EWoodruff.us</FeedbackEMailAddress>
     <PresentationStyle>vs2005</PresentationStyle>
     <SyntaxFilters>CSharp, VisualBasic</SyntaxFilters>
-    <HelpFileVersion>1.9.3.1</HelpFileVersion>
+    <HelpFileVersion>1.9.3.2</HelpFileVersion>
     <ComponentConfigurations>
       <ComponentConfig id="Post-transform Component" enabled="True">
         <component type="SandcastleBuilder.Components.PostTransformComponent" assembly="{@SHFBFolder}SandcastleBuilder.Components.dll" id="Post-transform Component">
@@ -205,6 +205,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Content\VersionHistory\v1.9.3.1.aml" />
+    <None Include="Content\VersionHistory\v1.9.3.2.aml" />
     <None Include="Content\VisualStudio\ItemFileTemplates.aml" />
     <None Include="Content\VisualStudio\FeatureComparison.aml" />
     <None Include="Content\VisualStudio\VisualStudioPackage.aml" />

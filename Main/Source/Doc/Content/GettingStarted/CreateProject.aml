@@ -5,16 +5,24 @@
     xmlns:xlink="http://www.w3.org/1999/xlink">
 
     <introduction>
-      <para>This walkthrough will guide you through creating your first help
-file builder project.</para>
+      <para>This walkthrough will guide you through creating your first help file builder project.</para>
+
+      <alert class="important">
+        <para>This walkthrough assumes that you are using the standalone GUI for the help file builder.  If you
+are using the Visual Studio extension package, the process is similar but the command locations will be different
+in some cases.  For an overview of the Visual Studio extension package and how to find commands in it related to
+the standalone GUI, see the <link xlink:href="b128ad2a-787e-48c7-b946-f6953080c386" /> topic.</para>
+      </alert>
     </introduction>
 
-    <prerequisites><content>Before creating a help file builder project, be
-sure that you have installed all of the
-<link xlink:href="8c0c97d0-c968-4c15-9fe9-e8f3a443c50a">necessary tools</link>
-and that you have
-<link xlink:href="c47d9242-b3a8-4153-aa9e-ae8cb41cefe2">enabled XML comments</link>
-in your project and added some comments to your code.</content></prerequisites>
+    <prerequisites>
+      <content>
+        <para>Before creating a help file builder project, be sure that you have installed all of the
+<link xlink:href="8c0c97d0-c968-4c15-9fe9-e8f3a443c50a">necessary tools</link> and that you have
+<link xlink:href="c47d9242-b3a8-4153-aa9e-ae8cb41cefe2">enabled XML comments</link> in your project and
+added some comments to your code.</para>
+      </content>
+    </prerequisites>
 
     <section address="FirstProject">
       <title>New Projects</title>
@@ -29,116 +37,100 @@ in your project and added some comments to your code.</content></prerequisites>
             </step>
             <step>
               <content>
-                <para>In the <ui>Save As</ui> dialog box, select the folder
-in which to save the new project and enter its name.  Click <ui>Save</ui> to
-create the new project.  Once done, the
-<link xlink:href="e12c2b9f-18c7-4718-850b-ac3c2e293672" />
-and the <link xlink:href="e32086c6-de17-4e54-a746-1ac80bf0c45a" />
+                <para>In the <ui>Save As</ui> dialog box, select the folder in which to save the new project and
+enter its name.  Click <ui>Save</ui> to create the new project.  Once done, the
+<link xlink:href="e12c2b9f-18c7-4718-850b-ac3c2e293672" /> and the <link xlink:href="e32086c6-de17-4e54-a746-1ac80bf0c45a" />
 will be opened for you.</para>
               </content>
             </step>
             <step>
               <content>
-                <para>Ignore the properties window for now and right click on
-the <ui>Documentation Sources</ui> node in the Project Explorer.  In the
-context menu, select <ui>Add Documentation Source</ui>.  A <newTerm>documentation
-source</newTerm> is a file such as an assembly or a Visual Studio solution or
-project from which information will be extracted to produce API documentation.
-For this demo, navigate to the help file builder folder and select the
-<localUri>SandcastleBuilder.Components.dll</localUri> assembly.</para>
+                <para>Ignore the properties window for now and right click on the <ui>Documentation Sources</ui> node
+in the Project Explorer.  In the context menu, select <ui>Add Documentation Source</ui>.  A <newTerm>documentation
+source</newTerm> is a file such as an assembly or a Visual Studio solution or project from which information will be
+extracted to produce API documentation.  For this demo, navigate to the help file builder folder
+(typically <localUri>C:\Program Files (x86)\EWSoftware\Sandcastle Help File Builder</localUri>) and select the
+<localUri>SandcastleBuilder.MRefBuilder.dll</localUri> assembly.</para>
 
-<alert class="tip">
-  <para>When selecting either an assembly or an XML comments file, the help
-file builder will automatically add the partner file for you (i.e. the XML
-comments file for the like-named assembly or the assembly for the like-named
-comments file).  Multiple files can also be selected and added in one go or
-dragged from Windows Explorer and dropped on the Documentation Sources node.</para>
-</alert>
+                <alert class="tip">
+                  <para>When selecting either an assembly or an XML comments file, the help file builder will
+automatically add the partner file for you (i.e. the XML comments file for the like-named assembly or the assembly
+for the like-named comments file).  Multiple files can also be selected and added in one go or dragged from Windows
+Explorer and dropped on the Documentation Sources node.</para>
+                </alert>
               </content>
             </step>
             <step>
               <content>
-                <para>Now we will add a reference assembly to the project.
-<newTerm>References</newTerm> are assemblies that are dependencies of one or
-more of the documentation source assemblies.  They contain information necessary
-to create inherited member information for the documented classes but that are
-themselves not wanted in the API documentation.  Right click on the
-<ui>References</ui> node and select <ui>Add File/Project Reference</ui>.
-For this example, navigate to the help file builder folder and select the
-<localUri>ColorizerLibrary.dll</localUri>.</para>
-				<token>SolutionDocSource</token>
+                <para>Now we will add a reference assembly to the project.  <newTerm>References</newTerm> are
+assemblies that are dependencies of one or more of the documentation source assemblies.  They contain information
+necessary to create inherited member information for the documented classes but that are themselves not wanted in
+the API documentation.  Right click on the <ui>References</ui> node and select <ui>Add File/Project Reference</ui>.
+For this example, navigate to the Sandcastle installation folder (typically
+<localUri>C:\Program Files (x86)\Sandcastle\ProductionTools</localUri>) and select the
+<localUri>CommandLine.dll</localUri> assembly.</para>
+
+                <token>SolutionDocSource</token>
               </content>
             </step>
             <step>
               <content>
-                <para>You are now ready to build a basic help file.  Select
-<ui>Documentation | Build Project</ui> to do so.  The help file builder will
-open the <ui>Output Window</ui> and start displaying the messages from the
-build process.  Depending on the number of documentation sources, the number
-of types and members in them, and some other factors, this can take several
-minutes or, in extremely large projects, several hours.</para>
+                <para>You are now ready to build a basic help file.  Select <ui>Documentation | Build Project</ui>
+to do so.  The help file builder will open the <ui>Output Window</ui> and start displaying the messages from the
+build process.  Depending on the number of documentation sources, the number of types and members in them, and
+some other factors, this can take several minutes or, in extremely large projects, several hours.</para>
 
-			<alert class="tip">
-				<para>All build warnings and errors are reported with a code
-value.  You can look these values up in the <link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
-section of the help file for information about what they mean and possible
-solutions to fix the problem.</para>
-			</alert>
+                <alert class="tip">
+                  <para>All build warnings and errors are reported with a code value.  You can look these values
+up in the <link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" /> section of the help file for information about
+what they mean and possible solutions to fix the problem.</para>
+                </alert>
 
-			<alert class="note">
-			  <para>The build process can consume a lot of memory and, if your
-system has less than 1GB, it may take much more time to complete a build.
-Another factor that can affect the build time are the <codeInline>HtmlSdkLinkType</codeInline>
-<codeInline>MSHelp2SdkLinkType</codeInline>, <codeInline>MSHelpViewerSdkLinkType</codeInline>,
-and <codeInline>WebsiteSdkLinkType</codeInline> project property settings.  By
-default, they are all set to <codeInline>Msdn</codeInline> which causes the
-<application>BuildAssembler</application> tool to contact the MSDN web service
-to resolve links to online content for all .NET Framework types and members.
-If your internet connection is slow, the resulting build will take longer.
-See the documentation for the above noted SDK link type properties for information
-on their possible values and the <link xlink:href="3a1c4bf1-8ecf-4ab3-8010-277bed8d3819">cached
-build components</link> topic for information on how you can reduce the build time.</para>
-			</alert>
+                <alert class="note">
+                  <para>The build process can consume a lot of memory and, if your system has less than 1GB, it
+may take much more time to complete a build.  Another factor that can affect the build time are the
+<codeInline>HtmlSdkLinkType</codeInline>, <codeInline>MSHelp2SdkLinkType</codeInline>,
+<codeInline>MSHelpViewerSdkLinkType</codeInline>, and <codeInline>WebsiteSdkLinkType</codeInline> project property
+settings.  By default, they are all set to <codeInline>Msdn</codeInline> which causes the
+<application>BuildAssembler</application> tool to contact the MSDN web service to resolve links to online content
+for all .NET Framework types and members.  If your internet connection is slow, the resulting build will take longer.
+See the documentation for the above noted SDK link type properties for information on their possible values and the
+<link xlink:href="3a1c4bf1-8ecf-4ab3-8010-277bed8d3819">cached build components</link> topic for information on how
+you can reduce the build time.</para>
+                </alert>
 
-<alert class="note">
-  <para>When the SDK link type properties are set to <codeInline>Msdn</codeInline>,
-the build may fail if you are behind a proxy server.  See the
-<link xlink:href="1aea789d-b226-4b39-b534-4c97c256fac8#Proxy">FAQ</link> for the
-workaround.</para>
-</alert>
+                <alert class="note">
+                  <para>When the SDK link type properties are set to <codeInline>Msdn</codeInline>, the build may
+fail if you are behind a proxy server.  See the <link xlink:href="1aea789d-b226-4b39-b534-4c97c256fac8#Proxy">FAQ</link>
+for the workaround.</para>
+                </alert>
 
               </content>
             </step>
             <step>
               <content>
-                <para>Once the build process finishes, you can select the
-<ui>Documentation | View Help File</ui> menu option to view the help file.
-The default <ui>View Help File</ui> option displays the help format based on
-which type or types where built (Help 1, Help 2, or website).  You can also
-select a specific help format to view if multiple formats were built as
-determined by the <codeInline>HelpFileFormat</codeInline> project property.</para>
+                <para>Once the build process finishes, you can select the <ui>Documentation | View Help File</ui> menu
+option to view the help file.  The default <ui>View Help File</ui> option displays the help format based on which type
+or types where built (Help 1, Help 2, MS Help Viewer, or website).  You can also select a specific help format to view
+if multiple formats were built as determined by the <codeInline>HelpFileFormat</codeInline> project property.</para>
 
-				<alert class="note">
-				  <para>In order to view MS Help 2 files, a separate viewer
-application is required and must be defined in the
-<link xlink:href="2152ed96-bf69-4b9b-b1a7-4fffc71b3095" />.  See the
-<link xlink:href="8c0c97d0-c968-4c15-9fe9-e8f3a443c50a" /> for information on
-how to obtain one.</para>
-				</alert>
-				
-				<alert class="note">
-				  <para>The ASP.NET website is started using the built-in
-development web server supplied with .NET 2.0.  You can alter the settings used
-for it via the <link xlink:href="2152ed96-bf69-4b9b-b1a7-4fffc71b3095" />.</para>
-				</alert>
+                <alert class="note">
+                  <para>In order to view MS Help 2 files, a separate viewer application is required and must be
+defined in the <link xlink:href="2152ed96-bf69-4b9b-b1a7-4fffc71b3095" />.  See the
+<link xlink:href="8c0c97d0-c968-4c15-9fe9-e8f3a443c50a" /> for information on how to obtain one.</para>
+                </alert>
+
+                <alert class="note">
+                  <para>The ASP.NET website is started using the built-in development web server supplied with .NET 2.0
+or later.  You can alter the settings used for it via the <link xlink:href="2152ed96-bf69-4b9b-b1a7-4fffc71b3095" />.</para>
+                </alert>
               </content>
             </step>
           </steps>
         </procedure>
 
-		<para>If you have been using a different documentation tool, you may
-be able to create a Sandcastle Help File Builder project based on the other
-tool's project file.</para>
+        <para>If you have been using a different documentation tool, you may be able to create a Sandcastle Help File
+Builder project based on the other tool's project file.</para>
 
         <procedure>
           <title>Create a New Project From Another Project Format</title>
@@ -150,30 +142,27 @@ tool's project file.</para>
             </step>
             <step>
               <content>
-                <para>Select the
-<link xlink:href="f68822d2-97ba-48da-a98b-46747983b4a0">project format</link>
-from the dropdown</para>
+                <para>Select the <link xlink:href="f68822d2-97ba-48da-a98b-46747983b4a0">project format</link>
+from the dropdown.</para>
               </content>
             </step>
             <step>
               <content>
-                <para>Enter the project name to be converted or click the "..."
-button to the right of the textbox to browse for a project to convert.</para>
+                <para>Enter the project name to be converted or click the "..." button to the right of the textbox
+to browse for a project to convert.</para>
               </content>
             </step>
             <step>
               <content>
-                <para>Enter the folder name in which to place the converted
-project and its related files or click the "..." button to the right of the
-textbox to browse for a location.  This folder must be different from the folder
-containing the source project being converted.  The folder will be created if
-it does not exist.</para>
+                <para>Enter the folder name in which to place the converted project and its related files or click
+the "..." button to the right of the textbox to browse for a location.  This folder must be different from the folder
+containing the source project being converted.  The folder will be created if it does not exist.</para>
               </content>
             </step>
             <step>
               <content>
-                <para>Click the <ui>Convert</ui> button to perform the project
-conversion.  If successful, the converted project is opened ready for use.</para>
+                <para>Click the <ui>Convert</ui> button to perform the project conversion.  If successful, the
+converted project is opened ready for use.</para>
               </content>
             </step>
           </steps>
@@ -183,32 +172,33 @@ conversion.  If successful, the converted project is opened ready for use.</para
     </section>
 
     <nextSteps>
-      <content><para>Now that you have created and built your first project,
-explore the other sections and topics in the help file to learn more about
-the other features available in the help file builder.</para></content>
+      <content>
+        <para>Now that you have created and built your first project, explore the other sections and topics in the
+help file to learn more about the other features available in the help file builder.</para>
+      </content>
     </nextSteps>
 
     <relatedTopics>
-    <link xlink:href="b772e00e-1705-4062-adb6-774826ce6700" />
-    <link xlink:href="c47d9242-b3a8-4153-aa9e-ae8cb41cefe2" />
-    <link xlink:href="f68822d2-97ba-48da-a98b-46747983b4a0" />
-    <link xlink:href="e12c2b9f-18c7-4718-850b-ac3c2e293672" />
-    <link xlink:href="e32086c6-de17-4e54-a746-1ac80bf0c45a" />
-    <link xlink:href="1aea789d-b226-4b39-b534-4c97c256fac8" />
-    
-    <externalLink>
-<linkText>Taming Sandcastle: A .NET Programmer's Guide to Documenting Your Code</linkText>
-<linkAlternateText>Taming Sandcastle</linkAlternateText>
-<linkUri>http://www.simple-talk.com/dotnet/.net-tools/taming-sandcastle-a-.net-programmers-guide-to-documenting-your-code</linkUri>
-<linkTarget>_blank</linkTarget>
-</externalLink>
+      <link xlink:href="b772e00e-1705-4062-adb6-774826ce6700" />
+      <link xlink:href="c47d9242-b3a8-4153-aa9e-ae8cb41cefe2" />
+      <link xlink:href="f68822d2-97ba-48da-a98b-46747983b4a0" />
+      <link xlink:href="e12c2b9f-18c7-4718-850b-ac3c2e293672" />
+      <link xlink:href="e32086c6-de17-4e54-a746-1ac80bf0c45a" />
+      <link xlink:href="1aea789d-b226-4b39-b534-4c97c256fac8" />
 
-	<externalLink>
-<linkText>Sandcastle Wall Chart</linkText>
-<linkAlternateText>Sandcastle Wall Chart</linkAlternateText>
-<linkUri>http://www.EWoodruff.us/Downloads/SandcastleWallchart.pdf</linkUri>
-<linkTarget>_blank</linkTarget>
-</externalLink>
+      <externalLink>
+        <linkText>Taming Sandcastle: A .NET Programmer's Guide to Documenting Your Code</linkText>
+        <linkAlternateText>Taming Sandcastle</linkAlternateText>
+        <linkUri>http://www.simple-talk.com/dotnet/.net-tools/taming-sandcastle-a-.net-programmers-guide-to-documenting-your-code</linkUri>
+        <linkTarget>_blank</linkTarget>
+      </externalLink>
+
+      <externalLink>
+        <linkText>Sandcastle Wall Chart</linkText>
+        <linkAlternateText>Sandcastle Wall Chart</linkAlternateText>
+        <linkUri>http://www.EWoodruff.us/Downloads/SandcastleWallchart.pdf</linkUri>
+        <linkTarget>_blank</linkTarget>
+      </externalLink>
 
     </relatedTopics>
   </developerWalkthroughDocument>
