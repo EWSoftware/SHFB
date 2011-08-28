@@ -38,9 +38,9 @@
     <page type="Sandcastle.Installer.InstallerPages.MamlIntelliSensePage"
       schemaFilename="SCPatch_Jun2010_2_6_10621_1_Rev1.zip" />
     <page assembly="SandcastleInstaller.SHFB.dll" type="Sandcastle.Installer.SHFB.SandcastleHelpFileBuilderPage"
-      frameworkVersion="4.0" shfbVersion="1.9.3.1" installerName="SandcastleHelpFileBuilder_1931.msi"/>
+      frameworkVersion="4.0" shfbVersion="1.9.3.2" installerName="SandcastleHelpFileBuilder_1932.msi"/>
     <page assembly="SandcastleInstaller.SHFB.dll" type="Sandcastle.Installer.SHFB.SHFBVisualStudioPackagePage"
-      frameworkVersion="4.0" packageGuid="c997d569-ee8e-4947-a46f-9a0717ce39a0" installerName="SHFBVS2010Package_1931.vsix"/>
+      frameworkVersion="4.0" packageGuid="c997d569-ee8e-4947-a46f-9a0717ce39a0" installerName="SHFBVS2010Package_1932.vsix"/>
     <page type="Sandcastle.Installer.InstallerPages.CompletionPage" />
   </pages>
 </configuration>

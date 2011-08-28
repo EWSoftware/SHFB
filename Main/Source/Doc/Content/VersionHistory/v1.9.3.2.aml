@@ -22,9 +22,9 @@ will include the unimplemented features noted in the first alpha release notes. 
       <content>
             <para>Changed the project language template ID from <codeInline>SandcastleBuilderProject</codeInline> to
 <codeInline>SHFBProject</codeInline> and changed the title of the VS package extension to "SHFB" in order to reduce
-the installed path name so that it does not cause "Path too long" errors on Windows XP.  Note that this will break
-any existing custom templates that you may have created.  They will need to be updated to use the new template ID
-for the project type and the ZIP files will need to be placed in the <localUri>.\SHFBProject</localUri> folder.
+the installed path name length so that it does not cause "Path too long" errors on Windows XP.  Note that this will
+break any existing custom templates that you may have created.  They will need to be updated to use the new template
+ID for the project type and the ZIP files will need to be placed in the <localUri>.\SHFBProject</localUri> folder.
 See the <link xlink:href="ece3a395-589f-45c3-9f0e-2a25b8b6c537" /> topic for updated information.</para>
       </content>
     </section>
@@ -95,7 +95,7 @@ use the Version Builder plug-in to merge the information from both projects into
 
           <listItem>
             <para>For .NET Portable Framework projects where the assemblies are added directly as documentation sources rather
-than their Visual Studio project, the build engine will automatically include all known .NET Portable Framwork assemblies as
+than their Visual Studio project, the build engine will automatically include all known .NET Portable Framework assemblies as
 references.  This frees you from having to manually add the portable framework assemblies as references.  However, a number of
 references will be added, many of which may not be needed.  If you have a choice, using the Visual Studio solution or project
 file as the documentation source is preferred as it will only include the required reference assemblies.</para>
