@@ -901,10 +901,9 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                     this.ExecutePlugIns(ExecutionBehaviors.Before);
 
-                    // Silverlight 4.0 and earlier are 32-bit only and require the 32-bit version of MSBuild
-                    // in order to load the target file correctly.
+                    // Silverlight build targets are only available for 32-bit builds regardless of the framework
+                    // version and require the 32-bit version of MSBuild in order to load the target file correctly.
                     if(project.FrameworkVersion.StartsWith("Silverlight", StringComparison.OrdinalIgnoreCase) &&
-                      project.FrameworkVersionNumber[0] <= '4' &&
                       msBuildExePath.IndexOf("Framework64", StringComparison.OrdinalIgnoreCase) != -1)
                         this.RunProcess(msBuildExePath.Replace("Framework64", "Framework"),
                             "/nologo /clp:NoSummary /v:m GenerateRefInfo.proj");
