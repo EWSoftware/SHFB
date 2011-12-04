@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SandcastleBuilderProjectReferenceNode.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/04/2011
+// Updated : 11/20/2011
 // Note    : Copyright 2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -34,6 +34,9 @@ namespace SandcastleBuilder.Package.Nodes
     [CLSCompliant(false), ComVisible(true)]
     public sealed class SandcastleBuilderProjectReferenceNode : ProjectReferenceNode
     {
+        #region Constructors
+        //=====================================================================
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -57,6 +60,10 @@ namespace SandcastleBuilder.Package.Nodes
             base(root, referencedProjectName, projectPath, projectReference)
         {
         }
+        #endregion
+
+        #region Method overrides
+        //=====================================================================
 
         /// <summary>
         /// This is overridden to return a GUID for the node
@@ -78,5 +85,16 @@ namespace SandcastleBuilder.Package.Nodes
 
             return base.QueryStatusOnNode(cmdGroup, cmd, pCmdText, ref result);
         }
+
+        /// <summary>
+        /// This is overridden to tell the project that the references node should handle drop
+        /// operations.
+        /// </summary>
+        /// <returns>The documentation sources parent node</returns>
+        protected internal override HierarchyNode GetDragTargetHandlerNode()
+        {
+            return this.Parent;
+        }
+        #endregion
     }
 }

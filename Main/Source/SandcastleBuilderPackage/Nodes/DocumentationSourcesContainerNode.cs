@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Package
 // File    : DocumentationSourcesContainerNode.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/13/2011
+// Updated : 11/20/2011
 // Note    : Copyright 2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -23,6 +23,7 @@
 using System;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
@@ -193,7 +194,7 @@ namespace SandcastleBuilder.Package.Nodes
                     "Visual Studio Solution Files (*.sln)|*.sln|" +
                     "Visual Studio Project Files (*.*proj)|*.*proj|" +
                     "All Files (*.*)|*.*";
-                dlg.InitialDirectory = Directory.GetCurrentDirectory();
+                dlg.InitialDirectory = this.ProjectMgr.ProjectFolder;
                 dlg.DefaultExt = "dll";
                 dlg.Multiselect = true;
 
@@ -245,15 +246,20 @@ namespace SandcastleBuilder.Package.Nodes
         /// Add a new documentation source node
         /// </summary>
         /// <param name="filename">The filename for the documentation source</param>
-        private void AddDocumentationSource(string filename)
+        internal void AddDocumentationSource(string filename)
         {
             // Default to using a relative path based on the project folder
             filename = FolderPath.AbsoluteToRelativePath(
                 Path.GetDirectoryName(this.ProjectMgr.BuildProject.FullPath), filename);
 
             XElement docSource = new XElement("DocumentationSource", new XAttribute("sourceFile", filename));
-            documentationSources.Root.Add(docSource);
-            this.AddChild(new DocumentationSourceNode(this.ProjectMgr, docSource));
+
+            if(!documentationSources.Descendants("DocumentationSource").Any(
+              d => d.Attribute("sourceFile").Value.Equals(filename, StringComparison.OrdinalIgnoreCase)))
+            {
+                documentationSources.Root.Add(docSource);
+                this.AddChild(new DocumentationSourceNode(this.ProjectMgr, docSource));
+            }
         }
         #endregion
 

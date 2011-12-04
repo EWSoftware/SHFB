@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SandcastleBuilderProjectNode.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/22/2011
+// Updated : 11/20/2011
 // Note    : Copyright 2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -18,9 +18,11 @@
 // Version     Date     Who  Comments
 // ============================================================================
 // 1.9.3.0  03/22/2011  EFW  Created the code
+// 1.9.3.3  11/19/2011  EFW  Added support for drag and drop from Explorer
 //=============================================================================
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
@@ -33,6 +35,8 @@ using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Project;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+using IOleDataObject = Microsoft.VisualStudio.OLE.Interop.IDataObject;
+using OleConstants = Microsoft.VisualStudio.OLE.Interop.Constants;
 using VsCommands = Microsoft.VisualStudio.VSConstants.VSStd97CmdID;
 using VsCommands2K = Microsoft.VisualStudio.VSConstants.VSStd2KCmdID;
 using VsMenus = Microsoft.VisualStudio.Project.VsMenus;
@@ -98,25 +102,18 @@ namespace SandcastleBuilder.Package.Nodes
         }
 
         /// <summary>
-        /// This is overridden to prevent dropping on documentation sources
-        /// and project properties nodes
+        /// This is overridden to prevent dropping on project properties nodes.  All other nodes can accept drops
         /// </summary>
         /// <param name="itemId">The drop target node ID</param>
         /// <returns>True if the drop can occur, false if not</returns>
         protected internal override bool CanTargetNodeAcceptDrop(uint itemId)
         {
-            bool result = base.CanTargetNodeAcceptDrop(itemId);
+            HierarchyNode targetNode = NodeFromItemId(itemId);
 
-            if(result)
-            {
-                HierarchyNode targetNode = NodeFromItemId(itemId);
+            if(targetNode is ProjectPropertiesContainerNode)
+                return false;
 
-                if(targetNode is DocumentationSourcesContainerNode || targetNode is DocumentationSourceNode ||
-                  targetNode is ProjectPropertiesContainerNode)
-                    result = false;
-            }
-
-            return result;
+            return true;
         }
 
         /// <summary>
@@ -400,6 +397,138 @@ namespace SandcastleBuilder.Package.Nodes
 
             var windowFrame = (IVsWindowFrame)window.Frame;
             ErrorHandler.ThrowOnFailure(windowFrame.Show());
+        }
+
+        /// <summary>
+        /// Process data object from Drag/Drop/Cut/Copy/Paste operation
+        /// </summary>
+        /// <remarks>The targetNode is set if the method is called from a drop operation, otherwise it
+        /// is null</remarks>
+        private DropDataType HandleSelectionDataObject(IOleDataObject dataObject, HierarchyNode targetNode)
+        {
+            DropDataType dropDataType = DropDataType.None;
+            bool isWindowsFormat = false;
+
+            if(targetNode == null)
+                targetNode = this;
+
+            // Try to get it as a directory based project
+            List<string> filesDropped = DragDropHelper.GetDroppedFiles(DragDropHelper.CF_VSSTGPROJECTITEMS,
+                dataObject, out dropDataType);
+
+            if(filesDropped.Count == 0)
+                filesDropped = DragDropHelper.GetDroppedFiles(DragDropHelper.CF_VSREFPROJECTITEMS, dataObject,
+                    out dropDataType);
+
+            if(filesDropped.Count == 0)
+            {
+                filesDropped = DragDropHelper.GetDroppedFiles(NativeMethods.CF_HDROP, dataObject, out dropDataType);
+                isWindowsFormat = (filesDropped.Count > 0);
+            }
+
+            // Handle documentation sources and references first.  These will be removed from the list before
+            // passing on what's left to add as standard project files.
+            if(isWindowsFormat && filesDropped.Count != 0)
+            {
+                List<string> docSources = filesDropped.Where(f =>
+                        {
+                            string ext = Path.GetExtension(f);
+
+                            return (ext.Equals(".sln", StringComparison.OrdinalIgnoreCase) ||
+                              ext.EndsWith("proj", StringComparison.OrdinalIgnoreCase));
+                        }).ToList(),
+                    refSources = filesDropped.Where(f =>
+                        {
+                            string ext = Path.GetExtension(f);
+
+                            return (ext.Equals(".dll", StringComparison.OrdinalIgnoreCase) ||
+                              ext.Equals(".exe", StringComparison.OrdinalIgnoreCase));
+                        }).ToList(),
+                    xmlDocSources = filesDropped.Where(f =>
+                        {
+                            string file = Path.GetFileNameWithoutExtension(f), ext = Path.GetExtension(f);
+
+                            // We only want XML files with a base name that matches an assembly in the list
+                            return (ext.Equals(".xml", StringComparison.OrdinalIgnoreCase) &&
+                              refSources.Any(r => Path.GetFileNameWithoutExtension(r).Equals(file,
+                                  StringComparison.OrdinalIgnoreCase)));
+                        }).ToList(),
+                    allDocSources = docSources.Concat(refSources).Concat(xmlDocSources).ToList();
+
+                var docSourcesNode = targetNode as DocumentationSourcesContainerNode;
+
+                // If dropped on the Documentation Sources node, add all documentation sources
+                if(docSourcesNode != null)
+                {
+                    foreach(string f in allDocSources)
+                        docSourcesNode.AddDocumentationSource(f);
+                }
+                else
+                {
+                    var refsNode = targetNode as SandcastleBuilderReferenceContainerNode;
+
+                    // If dropped on the references node, add all reference files
+                    if(refsNode != null)
+                        foreach(string f in refSources)
+                        {
+                            var node = refsNode.AddReferenceFromSelectorData(new VSCOMPONENTSELECTORDATA
+                                {
+                                    type = VSCOMPONENTTYPE.VSCOMPONENTTYPE_File,
+                                    bstrFile = f
+                                }, null);
+
+                            // Clear the Name and AseemblyName metadata and set the HintPath metadata so that it
+                            // treats it correctly when the project is reloaded
+                            if(node != null)
+                            {
+                                string hintPath = f;
+
+                                if(Path.IsPathRooted(hintPath))
+                                    hintPath = PackageUtilities.GetPathDistance(this.ProjectMgr.BaseURI.Uri,
+                                        new Uri(hintPath));
+
+                                node.ItemNode.SetMetadata(ProjectFileConstants.Name, null);
+                                node.ItemNode.SetMetadata(ProjectFileConstants.AssemblyName, null);
+                                node.ItemNode.SetMetadata(ProjectFileConstants.HintPath, hintPath);
+                            }
+                        }
+                }
+
+                // Remove the documentation source and reference files from the list
+                filesDropped = filesDropped.Except(allDocSources).ToList();
+            }
+
+            // Handle all other file types
+            if(dropDataType != DropDataType.None && filesDropped.Count > 0)
+            {
+                string[] filesDroppedAsArray = filesDropped.ToArray();
+
+                // For directory based projects the content of the clipboard is a double-NULL terminated list of
+                // Projref strings.
+                if(isWindowsFormat)
+                {
+                    // This is the code path when source is Windows Explorer
+                    VSADDRESULT[] vsaddresults = new VSADDRESULT[1];
+                    vsaddresults[0] = VSADDRESULT.ADDRESULT_Failure;
+
+                    int addResult = this.AddItem(targetNode.ID, VSADDITEMOPERATION.VSADDITEMOP_OPENFILE, null,
+                        (uint)filesDropped.Count, filesDroppedAsArray, IntPtr.Zero, vsaddresults);
+
+                    if(addResult != VSConstants.S_OK && addResult != VSConstants.S_FALSE &&
+                      addResult != (int)OleConstants.OLECMDERR_E_CANCELED &&
+                      vsaddresults[0] != VSADDRESULT.ADDRESULT_Success)
+                        ErrorHandler.ThrowOnFailure(addResult);
+
+                    return dropDataType;
+                }
+                else
+                    if(AddFilesFromProjectReferences(targetNode, filesDroppedAsArray))
+                        return dropDataType;
+            }
+
+            // If we reached this point then the drop data must be set to None.  Otherwise the OnPaste will be
+            // called with a valid DropData and that would actually delete the item.
+            return DropDataType.None;
         }
         #endregion
 
@@ -708,6 +837,93 @@ namespace SandcastleBuilder.Package.Nodes
                 return MSBuildResult.Successful;
 
             return base.Build(vsopts, config, output, target);
+        }
+
+        /// <summary>
+        /// This is overridden to handle file references correctly when added to the project
+        /// </summary>
+        /// <inheritdoc />
+        public override int AddComponent(VSADDCOMPOPERATION dwAddCompOperation, uint cComponents,
+           IntPtr[] rgpcsdComponents, IntPtr hwndDialog, VSADDCOMPRESULT[] pResult)
+        {
+            if(rgpcsdComponents == null || pResult == null)
+                return VSConstants.E_FAIL;
+
+            // Initalize the out parameter
+            pResult[0] = VSADDCOMPRESULT.ADDCOMPRESULT_Success;
+
+            IReferenceContainer references = GetReferenceContainer();
+
+            if(null == references)
+            {
+                // This project does not support references or the reference container was not created.
+                // In both cases this operation is not supported.
+                return VSConstants.E_NOTIMPL;
+            }
+
+            for(int cCount = 0; cCount < cComponents; cCount++)
+            {
+                VSCOMPONENTSELECTORDATA selectorData = new VSCOMPONENTSELECTORDATA();
+                IntPtr ptr = rgpcsdComponents[cCount];
+                selectorData = (VSCOMPONENTSELECTORDATA)Marshal.PtrToStructure(ptr, typeof(VSCOMPONENTSELECTORDATA));
+
+                var node = references.AddReferenceFromSelectorData(selectorData);
+
+                if(node == null)
+                {
+                    //Skip further proccessing since a reference has to be added
+                    pResult[0] = VSADDCOMPRESULT.ADDCOMPRESULT_Failure;
+                    return VSConstants.S_OK;
+                }
+
+                // If it's a file, get rid of the Name and AssemblyName metadata and add the HintPath metadata.
+                // If not, when the project is opened the next time, the reference will appear as missing
+                // if it isn't in the GAC.
+                if(node != null && selectorData.type == VSCOMPONENTTYPE.VSCOMPONENTTYPE_File)
+                {
+                    string hintPath = selectorData.bstrFile;
+
+                    if(Path.IsPathRooted(hintPath))
+                        hintPath = PackageUtilities.GetPathDistance(this.ProjectMgr.BaseURI.Uri, new Uri(hintPath));
+
+                    node.ItemNode.SetMetadata(ProjectFileConstants.Name, null);
+                    node.ItemNode.SetMetadata(ProjectFileConstants.AssemblyName, null);
+                    node.ItemNode.SetMetadata(ProjectFileConstants.HintPath, hintPath);
+                }
+
+            }
+
+            return VSConstants.S_OK;
+        }
+
+        /// <summary>
+        /// This is overridden to handle drop operations correctly in a help file builder project
+        /// </summary>
+        /// <inheritdoc />
+        public override int Drop(IOleDataObject pDataObject, uint grfKeyState, uint itemid, ref uint pdwEffect)
+        {
+            DropDataType dropDataType = DropDataType.None;
+
+            if(pDataObject == null)
+                return VSConstants.E_INVALIDARG;
+
+            pdwEffect = (uint)DropEffect.None;
+
+            // Get the node that is being dragged over and ask it which node should handle this call
+            HierarchyNode targetNode = NodeFromItemId(itemid);
+
+            if(targetNode == null)
+                return VSConstants.S_FALSE;
+
+            targetNode = targetNode.GetDragTargetHandlerNode();
+
+            dropDataType = this.HandleSelectionDataObject(pDataObject, targetNode);
+
+            // Since we can get a mix of files that may not necessarily be moved into the project (i.e.
+            // documentation sources and references), we'll always act as if they were copied.
+            pdwEffect = (uint)DropEffect.Copy;
+
+            return (dropDataType != DropDataType.Shell) ? VSConstants.E_FAIL : VSConstants.S_OK;
         }
         #endregion
     }

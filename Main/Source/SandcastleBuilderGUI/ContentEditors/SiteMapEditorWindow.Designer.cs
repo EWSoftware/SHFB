@@ -65,6 +65,11 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
             this.miEditTopic = new System.Windows.Forms.ToolStripMenuItem();
             this.miSortTopics = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
+            this.miExpandAllTopics = new System.Windows.Forms.ToolStripMenuItem();
+            this.miCollapseAllTopics = new System.Windows.Forms.ToolStripMenuItem();
+            this.miExpandChildTopics = new System.Windows.Forms.ToolStripMenuItem();
+            this.miCollapseChildTopics = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.miHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.tsbAddSiblingTopic = new System.Windows.Forms.ToolStripSplitButton();
@@ -94,6 +99,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.cmsNewSiblingTopic.SuspendLayout();
             this.cmsNewChildTopic.SuspendLayout();
             this.tsTopics.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -113,14 +119,14 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.tvContent.Size = new System.Drawing.Size(383, 313);
             this.sbStatusBarText.SetStatusBarText(this.tvContent, "Content: Drag an item and drop it in the topic");
             this.tvContent.TabIndex = 0;
+            this.tvContent.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.tvContent_ItemDrag);
+            this.tvContent.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvContent_AfterSelect);
             this.tvContent.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvContent_NodeMouseDoubleClick);
             this.tvContent.DragDrop += new System.Windows.Forms.DragEventHandler(this.tvContent_DragDrop);
-            this.tvContent.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvContent_AfterSelect);
-            this.tvContent.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tvContent_MouseDown);
             this.tvContent.DragEnter += new System.Windows.Forms.DragEventHandler(this.tvContent_DragOver);
-            this.tvContent.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tvContent_KeyDown);
-            this.tvContent.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.tvContent_ItemDrag);
             this.tvContent.DragOver += new System.Windows.Forms.DragEventHandler(this.tvContent_DragOver);
+            this.tvContent.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tvContent_KeyDown);
+            this.tvContent.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tvContent_MouseDown);
             // 
             // ilImages
             // 
@@ -169,10 +175,11 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.toolStripSeparator10,
             this.miEditTopic,
             this.miSortTopics,
+            this.toolStripMenuItem3,
             this.toolStripSeparator11,
             this.miHelp});
             this.cmsTopics.Name = "ctxTasks";
-            this.cmsTopics.Size = new System.Drawing.Size(219, 404);
+            this.cmsTopics.Size = new System.Drawing.Size(219, 430);
             // 
             // miDefaultTopic
             // 
@@ -192,8 +199,8 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.miSplitToc.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.miSplitToc.Name = "miSplitToc";
             this.miSplitToc.Size = new System.Drawing.Size(218, 26);
-            this.sbStatusBarText.SetStatusBarText(this.miSplitToc, "Split the table of contents so that API content appears immediately before the sel" +
-                    "ected topic");
+            this.sbStatusBarText.SetStatusBarText(this.miSplitToc, "Split the table of contents so that API content appears immediately before the se" +
+        "lected topic");
             this.miSplitToc.Text = "Split Ta&ble of Content";
             this.miSplitToc.Click += new System.EventHandler(this.tsbSplitTOC_Click);
             // 
@@ -440,6 +447,49 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.miSortTopics.Text = "Sor&t Topics";
             this.miSortTopics.Click += new System.EventHandler(this.miSortTopics_Click);
             // 
+            // toolStripMenuItem3
+            // 
+            this.toolStripMenuItem3.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.miCollapseAllTopics,
+            this.miExpandAllTopics,
+            this.miCollapseChildTopics,
+            this.miExpandChildTopics});
+            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(218, 26);
+            this.toolStripMenuItem3.Text = "E&xpand/Collapse";
+            // 
+            // miExpandAllTopics
+            // 
+            this.miExpandAllTopics.Name = "miExpandAllTopics";
+            this.miExpandAllTopics.Size = new System.Drawing.Size(284, 22);
+            this.sbStatusBarText.SetStatusBarText(this.miExpandAllTopics, "Expand all topics from the root down");
+            this.miExpandAllTopics.Text = "&Expand all topics";
+            this.miExpandAllTopics.Click += new System.EventHandler(this.ExpandCollapseTopics_Click);
+            // 
+            // miCollapseAllTopics
+            // 
+            this.miCollapseAllTopics.Name = "miCollapseAllTopics";
+            this.miCollapseAllTopics.Size = new System.Drawing.Size(284, 22);
+            this.sbStatusBarText.SetStatusBarText(this.miCollapseAllTopics, "Collapse all topics from the root down");
+            this.miCollapseAllTopics.Text = "&Collapse all topics";
+            this.miCollapseAllTopics.Click += new System.EventHandler(this.ExpandCollapseTopics_Click);
+            // 
+            // miExpandChildTopics
+            // 
+            this.miExpandChildTopics.Name = "miExpandChildTopics";
+            this.miExpandChildTopics.Size = new System.Drawing.Size(284, 22);
+            this.sbStatusBarText.SetStatusBarText(this.miExpandChildTopics, "Expand the current topic and all child topics");
+            this.miExpandChildTopics.Text = "Ex&pand topic and all child topics";
+            this.miExpandChildTopics.Click += new System.EventHandler(this.ExpandCollapseTopics_Click);
+            // 
+            // miCollapseChildTopics
+            // 
+            this.miCollapseChildTopics.Name = "miCollapseChildTopics";
+            this.miCollapseChildTopics.Size = new System.Drawing.Size(284, 22);
+            this.sbStatusBarText.SetStatusBarText(this.miCollapseChildTopics, "Collapse the current topic and all child topics");
+            this.miCollapseChildTopics.Text = "C&ollapse topic and all child topics";
+            this.miCollapseChildTopics.Click += new System.EventHandler(this.ExpandCollapseTopics_Click);
+            // 
             // toolStripSeparator11
             // 
             this.toolStripSeparator11.Name = "toolStripSeparator11";
@@ -539,8 +589,8 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.tsbSplitTOC.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbSplitTOC.Name = "tsbSplitTOC";
             this.tsbSplitTOC.Size = new System.Drawing.Size(23, 24);
-            this.sbStatusBarText.SetStatusBarText(this.tsbSplitTOC, "Split the table of contents so that API entries appear immediately before the sele" +
-                    "cted entry");
+            this.sbStatusBarText.SetStatusBarText(this.tsbSplitTOC, "Split the table of contents so that API entries appear immediately before the sel" +
+        "ected entry");
             this.tsbSplitTOC.ToolTipText = "Split the TOC at selected entry";
             this.tsbSplitTOC.Click += new System.EventHandler(this.tsbSplitTOC_Click);
             // 
@@ -682,9 +732,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // 
             // splitContainer1
             // 
-            this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.splitContainer1.Location = new System.Drawing.Point(1, 28);
             this.splitContainer1.Name = "splitContainer1";
             this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
@@ -720,6 +770,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.tsTopics.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -788,5 +839,10 @@ namespace SandcastleBuilder.Gui.ContentEditors
         private System.Windows.Forms.ToolStripMenuItem miHelp;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
         private System.Windows.Forms.ToolStripButton tsbHelp;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem3;
+        private System.Windows.Forms.ToolStripMenuItem miExpandAllTopics;
+        private System.Windows.Forms.ToolStripMenuItem miCollapseAllTopics;
+        private System.Windows.Forms.ToolStripMenuItem miExpandChildTopics;
+        private System.Windows.Forms.ToolStripMenuItem miCollapseChildTopics;
     }
 }

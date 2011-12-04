@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : ProjectExplorerWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/06/2011
+// Updated : 12/04/2011
 // Note    : Copyright 2008-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -890,6 +890,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
             {
                 if(nodeData.BuildAction == BuildAction.Folder)
                     fileTree.RefreshPathsInChildren(e.Node);
+
+                currentProject.MSBuildProject.ReevaluateIfNecessary();
+                currentProject.MarkAsDirty();
 
                 pgProps.Refresh();
             }

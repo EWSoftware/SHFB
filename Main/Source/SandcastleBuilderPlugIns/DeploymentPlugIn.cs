@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : DeploymentPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/27/2009
-// Note    : Copyright 2007-2009, Eric Woodruff, All rights reserved
+// Updated : 12/04/2011
+// Note    : Copyright 2007-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a plug-in that can be used to deploy the resulting help
@@ -293,6 +293,12 @@ namespace SandcastleBuilder.PlugIns
             Uri destUri, target = location.Location;
             string rootPath, destFile, destPath;
             int basePathLength = builder.OutputFolder.Length;
+
+            if(target == null)
+            {
+                builder.ReportProgress("No deployment location defined for this help format");
+                return;
+            }
 
             if(files.Count == 0)
             {

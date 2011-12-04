@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : GeneralOptionsControl.cs
 // Author  : Eric Woodruff
-// Updated : 04/23/2011
+// Updated : 11/19/2011
 // Note    : Copyright 2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -158,7 +158,7 @@ namespace SandcastleBuilder.Package.PropertyPages
                     dlg.Title = "Select the MS Help Viewer (.mshc) viewer application";
 
                 dlg.Filter = "Executable files (*.exe)|*.exe|All Files (*.*)|*.*";
-                dlg.InitialDirectory = Directory.GetCurrentDirectory();
+                dlg.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
                 dlg.DefaultExt = "exe";
 
                 // If one is selected, use that file

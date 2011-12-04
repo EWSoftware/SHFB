@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SandcastleProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/20/2011
+// Updated : 12/04/2011
 // Note    : Copyright 2006-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -3314,9 +3314,12 @@ namespace SandcastleBuilder.Utils
 
             folderPath = new FolderPath(folder, this);
 
-            // Note that Visual Studio doesn't add the trailing backslash so look for a match with and without it
+            // Note that Visual Studio doesn't add the trailing backslash so look for a match with and without it.
+            // Folders don't always have a relative path in the item when first added.  As such, check both the
+            // relative and full paths for a match.
             foreach(ProjectItem item in msBuildProject.GetItems(folderAction))
-                if(item.EvaluatedInclude == folderPath.PersistablePath || item.EvaluatedInclude + @"\" == folderPath.PersistablePath)
+                if(item.EvaluatedInclude == folderPath.PersistablePath || item.EvaluatedInclude + @"\" == folderPath.PersistablePath ||
+                  item.EvaluatedInclude == folderPath.Path || item.EvaluatedInclude + @"\" == folderPath.Path)
                 {
                     newFileItem = new FileItem(new ProjectElement(this, item));
                     break;
@@ -3366,7 +3369,9 @@ namespace SandcastleBuilder.Utils
                 else
                     itemPath = item.EvaluatedInclude;
 
-                if(itemPath == filePath.PersistablePath)
+                // Files don't always have a relative path in the item when first added.  As such, check both
+                // the relative and full paths for a match.
+                if(itemPath == filePath.PersistablePath || itemPath == filePath.Path)
                 {
                     newFileItem = new FileItem(new ProjectElement(this, item));
                     break;
@@ -3432,7 +3437,9 @@ namespace SandcastleBuilder.Utils
                 else
                     itemPath = item.EvaluatedInclude;
 
-                if(itemPath == filePath.PersistablePath)
+                // Files don't always have a relative path in the item when first added.  As such, check both
+                // the relative and full paths for a match.
+                if(itemPath == filePath.PersistablePath || itemPath == filePath.Path)
                 {
                     fileItem = new FileItem(new ProjectElement(this, item));
                     break;

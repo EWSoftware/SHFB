@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Components
 // File    : CachedCopyFromIndexComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/22/2010
+// Updated : 11/19/2011
 // Compiler: Microsoft Visual C#
 //
 // This file contains a build component that is derived from
@@ -21,6 +21,8 @@
 // ============================================================================
 // 1.6.0.3  11/11/2007  EFW  Created the code
 // 1.8.0.3  07/04/2009  EFW  Add parameter to Dispose() to match base class
+// 1.9.3.3  11/19/2011  EFW  Opened cache files for shared read to allow for
+//                           concurrent builds.
 //=============================================================================
 
 using System;
@@ -193,16 +195,26 @@ namespace SandcastleBuilder.Components
                     cachedIndex = (Dictionary<string, string>)field.GetValue(
                         cacheData);
 
-                    // Save the cached data for use in subsequent builds
-                    fs = new FileStream(cacheFile, FileMode.Create);
-                    bf.Serialize(fs, cachedIndex);
+                    try
+                    {
+                        // Save the cached data for use in subsequent builds
+                        fs = new FileStream(cacheFile, FileMode.Create);
+                        bf.Serialize(fs, cachedIndex);
+                    }
+                    catch(IOException ex)
+                    {
+                        // Most likely it couldn't access the file.  We'll issue a warning but will continue with
+                        // the build.
+                        base.WriteMessage(MessageLevel.Warn, "Unable to create cache file.  It will be created " +
+                            "on a subsequent build: " + ex.Message);
+                    }
 
                     BuildComponent.Data.Remove(tempName);
                 }
                 else
                 {
                     // Load the existing cached index
-                    fs = new FileStream(cacheFile, FileMode.Open);
+                    fs = new FileStream(cacheFile, FileMode.Open, FileAccess.Read, FileShare.Read);
                     cachedIndex = (Dictionary<string, string>)bf.Deserialize(fs);
                 }
             }

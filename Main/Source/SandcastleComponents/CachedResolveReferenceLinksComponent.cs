@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Components
 // File    : CachedResolveReferenceLinksComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/22/2010
+// Updated : 11/19/2011
 // Compiler: Microsoft Visual C#
 //
 // This file contains a build component that is derived from
@@ -21,6 +21,8 @@
 // ============================================================================
 // 1.6.0.3  11/11/2007  EFW  Created the code
 // 1.8.0.3  07/04/2009  EFW  Add parameter to Dispose() to match base class
+// 1.9.3.3  11/19/2011  EFW  Opened cache files for shared read to allow for
+//                           concurrent builds.
 //=============================================================================
 
 using System;
@@ -156,7 +158,7 @@ namespace SandcastleBuilder.Components
                 else
                     try
                     {
-                        fs = new FileStream(cacheFile, FileMode.Open);
+                        fs = new FileStream(cacheFile, FileMode.Open, FileAccess.Read, FileShare.Read);
                         cachedUrls = (Dictionary<string, string>)bf.Deserialize(fs);
 
                         // Get the target collection for marking unknown URLs
@@ -213,14 +215,24 @@ namespace SandcastleBuilder.Components
                 base.WriteMessage(MessageLevel.Info, "MSDN URL cache " +
                     "updated.  Saving new information to " + cacheFile);
 
-                using(FileStream fs = new FileStream(cacheFile, FileMode.Create))
+                try
                 {
-                    BinaryFormatter bf = new BinaryFormatter();
-                    bf.Serialize(fs, msdnCache);
+                    using(FileStream fs = new FileStream(cacheFile, FileMode.Create))
+                    {
+                        BinaryFormatter bf = new BinaryFormatter();
+                        bf.Serialize(fs, msdnCache);
 
-                    base.WriteMessage(MessageLevel.Info, String.Format(
-                        CultureInfo.InvariantCulture, "New cache size: {0} " +
-                        "entries", msdnCache.Count));
+                        base.WriteMessage(MessageLevel.Info, String.Format(
+                            CultureInfo.InvariantCulture, "New cache size: {0} " +
+                            "entries", msdnCache.Count));
+                    }
+                }
+                catch(IOException ex)
+                {
+                    // Most likely it couldn't access the file.  We'll issue a warning but will continue with
+                    // the build.
+                    base.WriteMessage(MessageLevel.Warn, "Unable to create cache file.  It will be created " +
+                        "or updated on a subsequent build: " + ex.Message);
                 }
             }
 

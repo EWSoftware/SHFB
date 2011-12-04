@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Project Launcher
 // File    : StartUp.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/19/2011
+// Updated : 11/19/2011
 // Note    : Copyright 2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -18,6 +18,7 @@
 // Version     Date     Who  Comments
 // ============================================================================
 // 1.9.3.1  04/19/2011  EFW  Created the code
+// 1.9.3.3  11/19/2011  EFW  Fixed up parameter passed to Process.Start()
 //=============================================================================
 
 using System;
@@ -102,6 +103,25 @@ namespace SandcastleBuilder.ProjectLauncher
                 return vs2010Path;
             }
         }
+
+        /// <summary>
+        /// This read-only property returns the project name in a format suitable for passing to
+        /// <c>Process.Start</c>.
+        /// </summary>
+        /// <value>If the path contains spaces and is not in quote marks already, it will be
+        /// enclosed in quote marks.</value>
+        private static string ProjectNameParameter
+        {
+            get
+            {
+                string project = ProjectToLoad;
+
+                if(project != null && project.Length > 1 && project.IndexOf(' ') != -1 && project[0] != '\"')
+                    project = "\"" + project + "\"";
+
+                return project;
+            }
+        }
         #endregion
 
         #region Main entry point
@@ -156,13 +176,13 @@ namespace SandcastleBuilder.ProjectLauncher
             try
             {
                 if(!String.IsNullOrEmpty(VS2010Path) && !Settings.Default.UseStandaloneGui)
-                    Process.Start(VS2010Path, ProjectToLoad);
+                    Process.Start(VS2010Path, ProjectNameParameter);
                 else
                 {
                     if(String.IsNullOrEmpty(SHFBPath))
                         throw new InvalidOperationException("Unable to locate the Sandcastle Help File Builder");
 
-                    Process.Start(SHFBPath, ProjectToLoad);
+                    Process.Start(SHFBPath, ProjectNameParameter);
                 }
 
                 success = true;
@@ -194,13 +214,13 @@ namespace SandcastleBuilder.ProjectLauncher
             try
             {
                 if(!String.IsNullOrEmpty(VS2010Path) && !useStandaloneGui)
-                    Process.Start(VS2010Path, ProjectToLoad);
+                    Process.Start(VS2010Path, ProjectNameParameter);
                 else
                 {
                     if(String.IsNullOrEmpty(SHFBPath))
                         throw new InvalidOperationException("Unable to locate the Sandcastle Help File Builder");
 
-                    Process.Start(SHFBPath, ProjectToLoad);
+                    Process.Start(SHFBPath, ProjectNameParameter);
                 }
 
                 success = true;

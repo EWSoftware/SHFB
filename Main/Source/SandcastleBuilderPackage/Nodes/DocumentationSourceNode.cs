@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Package
 // File    : DocumentationSourceNode.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/13/2011
+// Updated : 11/19/2011
 // Note    : Copyright 2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -18,6 +18,7 @@
 // Version     Date     Who  Comments
 // ============================================================================
 // 1.9.3.0  03/30/2011  EFW  Created the code
+// 1.9.3.3  11/19/2011  EFW  Added support for drag and drop from Explorer
 //=============================================================================
 
 using System;
@@ -183,6 +184,16 @@ namespace SandcastleBuilder.Package.Nodes
         protected override bool CanDeleteItem(__VSDELETEITEMOPERATION deleteOperation)
         {
             return (deleteOperation == __VSDELETEITEMOPERATION.DELITEMOP_RemoveFromProject);
+        }
+
+        /// <summary>
+        /// This is overridden to tell the project that the documentation sources node should handle drop
+        /// operations.
+        /// </summary>
+        /// <returns>The documentation sources parent node</returns>
+        protected internal override HierarchyNode GetDragTargetHandlerNode()
+        {
+            return this.Parent;
         }
         #endregion
     }

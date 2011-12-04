@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : SiteMapEditorWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/06/2011
+// Updated : 11/19/2011
 // Note    : Copyright 2008-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -1051,6 +1051,29 @@ namespace SandcastleBuilder.Gui.ContentEditors
                     path, ex.Message), Constants.AppName,
                     MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
+        }
+
+        /// <summary>
+        /// Handle the expand/collapse context menu options
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event arguments</param>
+        private void ExpandCollapseTopics_Click(object sender, EventArgs e)
+        {
+            if(sender == miExpandAllTopics)
+                tvContent.ExpandAll();
+            else
+                if(sender == miCollapseAllTopics)
+                    tvContent.CollapseAll();
+                else
+                    if(sender == miExpandChildTopics && tvContent.SelectedNode != null)
+                        tvContent.SelectedNode.ExpandAll();
+                    else
+                        if(tvContent.SelectedNode != null)
+                            tvContent.SelectedNode.Collapse();
+
+            if(tvContent.SelectedNode != null)
+                tvContent.SelectedNode.EnsureVisible();
         }
         #endregion
 

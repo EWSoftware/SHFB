@@ -2,7 +2,7 @@
 // System  : EWSoftware Design Time Attributes and Editors
 // File    : ApiFilterEditorDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/07/2011
+// Updated : 11/19/2011
 // Note    : Copyright 2007-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -20,6 +20,8 @@
 // 1.6.0.4  01/17/2008  EFW  Made adjustments to support changes and fixes in
 //                           the Sandcastle namespace ripping feature.
 // 1.8.0.0  07/08/2008  EFW  Reworked to support MSBuild project format
+// 1.9.3.3  11/19/2011  EFW  Updated checked state optimization to handle some
+//                           odd edge cases.
 //=============================================================================
 
 using System;
@@ -1277,19 +1279,17 @@ namespace SandcastleBuilder.Utils.Design
                     {
                         child.Checked = checkedState;
 
-                        // And members if it's a type node.  We only go to
-                        // a maximum of two levels so no need for recursion.
+                        // And members if it's a type node.  We only go to a maximum of two levels so no need
+                        // for recursion.
                         foreach(TreeNode memberChild in child.Nodes)
-                            if(memberChild.Tag != null &&
-                              !((NodeInfo)memberChild.Tag).IsProjectExclude)
+                            if(memberChild.Tag != null && !((NodeInfo)memberChild.Tag).IsProjectExclude)
                                 memberChild.Checked = checkedState;
                     }
             }
 
-            // If it's a member or type node, count the number of checked and
-            // unchecked nodes.  Skip nodes that can't be changed though.
-            if(currentNode.Parent.Parent != null &&
-              !((NodeInfo)currentNode.Parent.Tag).IsProjectExclude)
+            // If it's a member or type node, count the number of checked and unchecked nodes.  Skip nodes that
+            // can't be changed though.
+            if(currentNode.Parent.Parent != null && !((NodeInfo)currentNode.Parent.Tag).IsProjectExclude)
             {
                 foreach(TreeNode child in currentNode.Parent.Nodes)
                     if(child.Checked)
@@ -1297,35 +1297,26 @@ namespace SandcastleBuilder.Utils.Design
                     else
                         uncheckedCount++;
 
-/* Fixed by the January 2008 release but hang on to the code just in case.
-                // BUG WORKAROUND: As of the June 07 CTP, a filter whose parent
-                // is false will rip the whole parent, not just the unwanted
-                // nodes.  As such, we have to generate a less efficient
-                // filter for our classes.  This doesn't affect inherited
-                // classes though so they can still use the more efficient
-                // filter.
-                TreeNode root = currentNode.Parent.Parent;
-
-                while(root.Parent != null)
-                    root = root.Parent;
-
-                if(root == tvApiList.Nodes[0])
-                    currentNode.Parent.Checked = (checkedCount != 0);
+                // Optimize the parent node's state based on the number of checked and unchecked items
+                if(checkedCount > 0)
+                    currentNode.Parent.Checked = (checkedCount > uncheckedCount);
                 else
-                {*/
-                    // Optimize the parent node's state based on the number of
-                    // checked and unchecked items.
-                    currentNode.Parent.Checked = (checkedCount >= uncheckedCount);
+                    if(!currentNode.Parent.Checked && checkedCount == 0)
+                    {
+                        // Note that we must always set this to true here to handle some odd edge cases.
+                        // This may check the parent node when it wasn't checked.  In such cases, you will
+                        // need to uncheck it again if you don't want it included.  See work item #31725 on
+                        // CodePlex for more information.
+                        currentNode.Parent.Checked = true;
+                    }
 
-                    // Color mixed nodes so that they stand out.  This is a
-                    // quick way of noting their state without implementing a
-                    // custom tree control that supports tri-state checkboxes
-                    // and reworking the code to support tri-state values.
-                    if(checkedCount != 0 && checkedCount < uncheckedCount)
-                        currentNode.Parent.BackColor = Color.LightBlue;
-                    else
-                        currentNode.Parent.BackColor = SystemColors.Window;
-//                }
+                // Color mixed nodes so that they stand out.  This is a quick way of noting their state without
+                // implementing a custom tree control that supports tri-state checkboxes and reworking the code
+                // to support tri-state values.
+                if(checkedCount != 0 && checkedCount < uncheckedCount)
+                    currentNode.Parent.BackColor = Color.LightBlue;
+                else
+                    currentNode.Parent.BackColor = SystemColors.Window;
 
                 // Do the same for the parent's parent node
                 this.OptimizeCheckedState(currentNode.Parent, false);
