@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Project Launcher
 // File    : AssemblyInfo.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/28/2011
-// Note    : Copyright 2011, Eric Woodruff, All rights reserved
+// Updated : 01/03/2012
+// Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // Sandcastle Help File Builder project launcher attributes.
@@ -59,4 +59,4 @@ using System.Runtime.InteropServices;
 //       number in the installer.  The build engine will be locked at version 1.9.3.0 so that
 //       plug-ins and other components will continue to work with the latest official production
 //       release as well as the development release containing the VSPackage.
-[assembly: AssemblyVersion("1.9.3.2")]
+[assembly: AssemblyVersion("1.9.3.3")]

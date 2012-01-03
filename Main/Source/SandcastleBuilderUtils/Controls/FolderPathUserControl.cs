@@ -2,7 +2,7 @@
 // System  : EWSoftware Folder Path User Control
 // File    : FolderPathUserControl.cs
 // Author  : Eric Woodruff
-// Updated : 04/16/2011
+// Updated : 12/31/2011
 // Note    : Copyright 2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -22,6 +22,7 @@
 using System;
 using System.ComponentModel;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Windows.Forms;
 
@@ -243,7 +244,7 @@ namespace SandcastleBuilder.Utils.Controls
             if(folderPath.Path.Length == 0)
                 lblExpandedPath.Text = "(Not specified)";
             else
-                lblExpandedPath.Text = String.Format("{0} ({1})", folderPath,
+                lblExpandedPath.Text = String.Format(CultureInfo.CurrentCulture, "{0} ({1})", folderPath,
                     folderPath.Exists ? "Exists" : "Does not exist");
 
             this.OnPersistablePathChanged(EventArgs.Empty);

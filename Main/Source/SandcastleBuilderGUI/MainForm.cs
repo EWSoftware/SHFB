@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : MainForm.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/26/2011
+// Updated : 12/15/2011
 // Note    : Copyright 2006-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -224,7 +224,7 @@ namespace SandcastleBuilder.Gui
 
             if(persistString == typeof(EntityReferenceWindow).FullName)
             {
-                entityReferencesWindow = new EntityReferenceWindow(tsslStatusText);
+                entityReferencesWindow = new EntityReferenceWindow();
                 entityReferencesWindow.CurrentProject = project;
                 return entityReferencesWindow;
             }
@@ -854,34 +854,14 @@ namespace SandcastleBuilder.Gui
         /// <param name="e">The event arguments</param>
         private void miHelp_Click(object sender, EventArgs e)
         {
-            string topic, path = Path.GetDirectoryName(
-                Assembly.GetExecutingAssembly().Location);
+            string topic;
 
-            try
-            {
-#if DEBUG
-                path += @"\..\..\..\Doc\Help\SandcastleBuilder.chm";
-#else
-                path += @"\SandcastleBuilder.chm";
-#endif
+            if(sender == miHelp || sender == tsbAbout)
+                topic = "bd1ddb51-1c4f-434f-bb1a-ce2135d3a909";
+            else
+                topic = "1aea789d-b226-4b39-b534-4c97c256fac8";
 
-                if(sender == miHelp || sender == tsbAbout)
-                    topic = "html/bd1ddb51-1c4f-434f-bb1a-ce2135d3a909.htm";
-                else
-                    topic = "html/1aea789d-b226-4b39-b534-4c97c256fac8.htm";
-
-                Form form = new Form();
-                form.CreateControl();
-                Help.ShowHelp(form, path, HelpNavigator.Topic, topic);
-            }
-            catch(Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine(ex.ToString());
-                MessageBox.Show(String.Format(CultureInfo.CurrentCulture,
-                    "Unable to open help file '{0}'.  Reason: {1}",
-                    path, ex.Message), Constants.AppName,
-                    MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            }
+            Utility.ShowHelpTopic(topic);
         }
         #endregion
 
@@ -1440,9 +1420,6 @@ namespace SandcastleBuilder.Gui
                         else
                             if(content is TopicEditorWindow)
                                 ((TopicEditorWindow)content).UpdateFont();
-                            else
-                                if(content is TokenEditorWindow)
-                                    ((TokenEditorWindow)content).UpdateFont();
             }
         }
 
@@ -1931,7 +1908,7 @@ namespace SandcastleBuilder.Gui
         {
             if(entityReferencesWindow == null)
             {
-                entityReferencesWindow = new EntityReferenceWindow(tsslStatusText);
+                entityReferencesWindow = new EntityReferenceWindow();
                 entityReferencesWindow.CurrentProject = project;
                 entityReferencesWindow.Show(dockPanel);
             }

@@ -5,153 +5,228 @@
     xmlns:xlink="http://www.w3.org/1999/xlink">
 
     <introduction>
-      <para>Topic files contain Microsoft Assistance Markup Language (MAML) to
-define non-reference content such as usage notes, walkthroughs, tutorials, etc.
-MAML topic files have a <localUri>.aml</localUri> extension and should have
-their <codeInline>BuildAction</codeInline> set to <codeInline>None</codeInline>
-in the Project Explorer.  A
-<link xlink:href="54e3dc97-5125-441e-8e84-7f9303e95f26">content layout file</link>
-is used to determine which topics are included in the compiled help file and
-sets their layout in the table of contents.</para>
+      <para>Topic files contain Microsoft Assistance Markup Language (MAML) to define non-reference content such
+as usage notes, walkthroughs, tutorials, etc. MAML topic files have a <localUri>.aml</localUri> extension and
+should have their <codeInline>BuildAction</codeInline> set to <codeInline>None</codeInline> in the Project
+Explorer.  A <link xlink:href="54e3dc97-5125-441e-8e84-7f9303e95f26">content layout file</link> is used to
+determine which topics are included in the compiled help file and sets their layout in the table of contents.</para>
 
 	  <autoOutline lead="none" excludeRelatedTopics="true" />
     </introduction>
 
 <section address="LayoutProperties">
   <title>Content Layout Properties</title>
-  <content><para>Each topic is assigned a unique ID that can be referenced in
-topics using a <codeInline>link</codeInline> MAML element. Changes can be made
-to the topic properties such as the file associated with the ID and its title
-text without having to visit each topic in which it is referenced.  When
-creating new topics using the help file builder, templates are used and new
-ID and revision numbers are assigned automatically.</para>
+  <content>
+		<para>Each topic is assigned a unique ID that can be referenced in topics using a
+<codeInline>link</codeInline> MAML element. Changes can be made to the topic properties such as the filename
+associated with the ID and its title text without having to visit each topic in which it is referenced.  When
+creating new topics using the help file builder, templates are used and new ID and revision numbers are assigned
+automatically.  The content layout editor tracks topics by ID rather than by filename.  As such, you can
+rearrange and rename the files in the project without being concerned about updating references to them in the
+content layout files.  As long as the ID remains the same, the same topic will be associated with the entry
+regardless of where it is moved or what it is named.</para>
 
-<alert class="note">
-	<para>The value of the ID assigned to a topic should not be changed.  If it
-is, you will be required to manually locate and update the old ID in all topics
-that reference it.</para>
-</alert>
+		<alert class="note">
+			<para>The value of the ID assigned to a topic should not be changed.  If it is, you will be required to
+manually locate and update the old ID in all topics that reference it.</para>
+		</alert>
+		
+		<para>Within the content layout editor, each topic contains several properties which are described below.</para>
 
-	<para>Within the content layout editor, each topic contains several
-properties which are described below.</para>
+		<definitionTable>
+			<definedTerm>ID, Revision #, and Topic Filename</definedTerm>
+			<definition>
+				<para>These read-only properties display the ID and revision number of the topic and the project file
+related to the ID.  The three buttons to the right of the currently associated topic filename let you do the
+following:</para>
 
-<table>
-  <tableHeader>
-    <row>
-      <entry>Property</entry>
-      <entry>Description</entry>
-    </row>
-  </tableHeader>
-  <row>
-    <entry><codeInline>Id</codeInline>, <codeInline>RevisionNumber</codeInline>,
-and <codeInline>TopicFilename</codeInline></entry>
-    <entry><para>These read-only properties display the ID and revision number
-of the topic and the project file related to the ID.  The content layout editor
-contains options that let you clear the file associated with an entry or
-associate an existing topic with an entry.</para>
+				<list class="bullet">
+					<listItem>
+						<para><legacyBold>Associate Topic</legacyBold> - The layout file tracks topics by their unique ID
+rather than by filename.  This button allows you to associate a different topic file with a content layout file
+entry or add an association to an empty container node.</para>
+					</listItem>
+				
+					<listItem>
+						<para><legacyBold>Clear Topic Association</legacyBold> - This button allows you to clear the topic
+file associated with a content layout file entry converting it into an empty container node.  The node will not
+have a topic associated with it in the compiled help file nor will it display a topic when selected in the table
+of contents.  It simply serves as a container for other topics and must have at least one child topic defined for
+it.</para>
 
-	<para>The content layout editor tracks topics by ID rather than by
-filename.  As such, you can rearrange and rename the files in the project
-without being concerned about updating references to them in the content layout
-files.  As long as the ID remains the same, the same topic will be associated
-with the entry regardless of where it is moved or what it is named.</para>
+						<alert class="note">
+							<para>The MS Help Viewer file format does not support empty container nodes.  All entries must have
+an associated topic.  If one is not specified, an empty topic will be generated at build time so that a valid
+help file is produced.</para>
+						</alert>
+					</listItem>
 
-	<para>If an entry is not associated with a topic file, it will serve as an
-empty container node for its children and will not display a topic when
-selected in the help file's table of contents.</para></entry>
-  </row>
-  <row>
-    <entry><codeInline>Title</codeInline></entry>
-    <entry>This is used as the title for the topic.  In addition, it will be
-used as the table of contents title unless a <codeInline>TocTitle</codeInline>
-value is specified.  It will also be used as the link text unless a
-<codeInline>LinkText</codeInline> value is specified.</entry>
-  </row>
-  <row>
-    <entry><codeInline>TocTitle</codeInline></entry>
-    <entry>This is used to specify an optional table of contents title for a
-topic.  If not set, the <codeInline>Title</codeInline> value will be used. In
-some cases, the title may not be appropriate for the table of contents or is too
-long to be practical. In such cases you can specify shorter or more appropriate
-text for the table of contents via this property.</entry>
-  </row>
-  <row>
-    <entry><codeInline>LinkText</codeInline></entry>
-    <entry>This property can be used to specify an alternate value to use as
-the inner text for links.  If not set, the <codeInline>Title</codeInline> value
-will be used.  In some cases the title may not be appropriate or may be too
-long to be practical for links that refer to the topic.  In such cases you can
-specify shorter or more appropriate text for the link via this property.  This
-saves you from having to specify the shorter inner text on each link that uses
-the topic ID.</entry>
-  </row>
-  <row>
-    <entry><codeInline>Visible</codeInline></entry>
-    <entry>This allows you to specify whether or not a topic will appear in the
-table of contents.  The default is True to show it.  If set to False, the
-topic will be included in the help file but will only be accessible via links
-in other topics.  This is a convenient way of adding content to the help file
-but limiting the amount of information displayed in the table of contents.</entry>
-  </row>
-  <row>
-    <entry><codeInline>HelpAttributes</codeInline></entry>
-    <entry><para>This property allows you to add custom <codeInline>MSHelp:Attr</codeInline>
-attributes to the topic.  Attribute values can contain
-<link xlink:href="69d998a7-1af5-4bf5-889b-59cd00b64000">substitution tags</link>
-which will be converted to their appropriate value at build time.</para>
+					<listItem>
+						<para><legacyBold>Refresh Associations</legacyBold> - If you move one or more files around or rename
+them in the Project Explorer, the currently open content layout file editor will not be aware of these changes.
+Use this button after making such changes so that the content layout editor refreshes the files associated with
+each topic.  This allows you to open them for editing from the layout editor after moving or renaming them
+without closing and reopening the layout editor.  This option refreshes the entire collection of topics, not just
+the one currently being viewed.</para>
+					</listItem>
+				</list>
+			</definition>
 
-<alert class="tip">
-  <para>Project-level help attributes in the project <codeInline>HelpAttributes</codeInline>
-property will be added automatically to each topic at build time and do not
-need to be added here.</para>
-</alert>
+			<definedTerm>Title</definedTerm>
+			<definition>
+				<para>This is used as the title for the topic.  In addition, it will be used as the table of contents
+title unless a <legacyBold>TOC Title</legacyBold> value is specified.  It will also be used as the link text
+unless a <legacyBold>Link Text</legacyBold> value is specified.  If left blank, the topic filename is used as
+a default title.</para>
+			</definition>
 
-<alert class="note">
-  <para>Attributes will only be added to MAML topics, not HTML files.</para>
-</alert></entry>
-  </row>
-  <row>
-    <entry><codeInline>Keywords</codeInline></entry>
-    <entry><para>This property allows you to add <codeInline>MSHelp:Keyword</codeInline>
-attributes to the help topic to define its index keywords.  In the designer
-for this property, select the index and enter the terms for it.  Keyword terms
-can contain <link xlink:href="69d998a7-1af5-4bf5-889b-59cd00b64000">substitution
-tags</link> which will be converted to their appropriate value at build time.</para>
+			<definedTerm>TOC Title</definedTerm>
+			<definition>
+				<para>This is used to specify an optional table of contents title for a topic.  If not set, the
+<legacyBold>Title</legacyBold> value will be used. In some cases, the title may not be appropriate for the table
+of contents or is too long to be practical. In such cases you can specify shorter or more appropriate text for
+the table of contents via this property.</para>
+			</definition>
 
-	<para>The most common index used in the "K" index (keywords).  The terms
-consist of one word or a phrase.  If you separate two terms with a comma, the
-first term becomes a group in the index.  If that same grouping term appears in
-other topics, the term that follows the comma in each of them will appear as a
-child of the grouping term in the help file's index.  If your intent is to add
-two terms to the same index but have them appear as two distinct entries, enter
-them on two separate rows in the designer.</para>
+			<definedTerm>Link Text</definedTerm>
+			<definition>
+				<para>This property can be used to specify an alternate value to use as the inner text for links.  If not
+set, the <legacyBold>Title</legacyBold> value will be used.  In some cases the title may not be appropriate or
+may be too long to be practical for links that refer to the topic.  In such cases you can specify shorter or more
+appropriate text for the link via this property.  This saves you from having to specify the shorter inner text on
+each link that uses the topic ID.</para>
+			</definition>
 
-<alert class="tip">
-  <para>If a topic is marked as the default using the designer, entries for the
-<codeInline>NamedUrlIndex</codeInline> terms <codeInline>DefaultPage</codeInline>
-and <codeInline>HomePage</codeInline> are added to it automatically at build
-time so there is no need to add them via this property.</para>
-</alert>
+			<definedTerm>Show in the table of contents</definedTerm>
+			<definition>
+				<para>This allows you to specify whether or not a topic will appear in the table of contents.  The default
+is checked to show it.  If unchecked, the topic will be included in the help file but will only be accessible via
+links from other topics.  This is a convenient way of adding content to the help file but limiting the amount of
+information displayed in the table of contents.  A hollow bullet point appears next to invisible topics in the
+content layout tree to note their status.  Making a parent topic invisible will also remove its child topics
+from the table of contents.</para>
+			</definition>
+			
+			<definedTerm>Use as the default topic</definedTerm>
+			<definition>
+				<para>This will mark the selected topic as the default topic for the help file.  The default topic option
+acts as a toggle.  Check it on a topic to set it as the default.  If another topic was previously marked as the
+default topic, the option is removed from it.  Unchecking it on the same topic turns it off and no topic will be
+selected as the default topic.  In such cases, the root namespaces page will be the default topic for the help
+file.  When set, a green circle icon with a checkmark appears next to the topic in the content layout tree to
+indicate its status.</para>
+			
+				<alert class="note">
+					<para>This option only has an effect on Help 1, Help 2, and Website output.  MS Help Viewer does not
+support the specification of a default topic.</para>
+				</alert>
+			</definition>
 
-<alert class="note">
-  <para>Keywords will only be added to MAML topics, not HTML files.</para>
-</alert></entry>
-  </row>
-</table>
+			<definedTerm>Use as MS Help Viewer root container</definedTerm>
+			<definition>
+				<para>This option is useful if you are generating multiple help file formats from one project file
+including MS Help Viewer output.  By default, all topics in the MS Help Viewer output are listed as root elements
+in their parent topic.  If you would prefer them to be grouped under a common root container topic, add a topic
+to the content layout file and use this option to mark it as the root container.  The root container must have
+its <legacyBold>Show in the table of contents</legacyBold> option unchecked so that it is not included in the
+table of contents.  This prevents it from appearing in the other help file formats.  It will be added
+automatically to the MS Help Viewer output when that format is built.  If you want a root container to appear in
+all formats, simply add it as a normal topic in the content layout file and manually add all of the other topics
+to it as sub-topics.  This option acts as a toggle.  Check it on a topic to set it as the container.  If another
+topic was previously marked as the container topic, the option is removed from it.  For more information, see the
+<link xlink:href="ba42b2c2-985d-46f1-ba4c-3d921edcafe3" /> topic.  When set, a file tree icon appears next to the
+topic in the content layout tree to indicate its status.</para>
+			</definition>
+
+			<definedTerm>API Content</definedTerm>
+			<definition>
+				<para>This is used to indicate how the API (reference) content for the help file should be inserted
+relative to the selected topic.  The following options are available:</para>
+
+			<list class="bullet">
+				<listItem>
+					<para><legacyBold>None</legacyBold> - This topic will not be used as the API content insertion point.</para>
+				</listItem>
+				<listItem>
+					<para><legacyBold>Insert after this topic</legacyBold> - The API content will be inserted immediately
+after this topic in the table of contents.</para>
+				</listItem>
+				<listItem>
+					<para><legacyBold>Insert before this topic</legacyBold> - The API content will be inserted immediately
+before this topic in the table of contents.</para>
+				</listItem>
+				<listItem>
+					<para><legacyBold>Insert as child of this topic</legacyBold> - The API content topics are added as
+sub-topics of the selected topic.  If the selected topic already contains sub-topics, the API topics will appear
+after them.</para>
+				</listItem>
+			</list>
+
+			<para>This option acts as a toggle.  Select a value other than <legacyBold>None</legacyBold> to make it the
+API content insertion point.  If another topic was previously marked as the API content insertion point, the
+option is removed from it.  An icon will appear next to the topic in the content layout tree to indicate its
+API content insertion point state.  This option can be combined with the default topic option.  If no topic is
+set as the API content insertion point, the API content will be added to the table of contents following the
+standard <link xlink:href="ba42b2c2-985d-46f1-ba4c-3d921edcafe3">content placement rules</link>.</para>
+			</definition>
+
+			<definedTerm>Index Keywords</definedTerm>
+			<definition>
+				<para>This grid allows you to add <codeInline>MSHelp:Keyword</codeInline> attributes to the help topic
+to define its index keywords.  In the grid for this property, select the index and enter the terms for it.
+Keyword terms can contain <link xlink:href="69d998a7-1af5-4bf5-889b-59cd00b64000">substitution tags</link> which
+will be converted to their appropriate value at build time.  To delete a keyword, select it in the grid and hit
+the <ui>Delete</ui> key.</para>
+
+				<para>The most common index used in the "K" index (keywords).  The terms consist of one word or a phrase.
+If you separate two terms with a comma, the first term becomes a group in the index.  If that same grouping term
+appears in other topics, the term that follows the comma in each of them will appear as a child of the grouping
+term in the help file's index.  If your intent is to add two terms to the same index but have them appear as two
+distinct entries, enter them on two separate rows in the grid.</para>
+
+				<alert class="tip">
+					<para>If a topic is marked as the default using the designer, entries for the
+<codeInline>NamedUrlIndex</codeInline> terms <codeInline>DefaultPage</codeInline> and <codeInline>HomePage</codeInline>
+are added to it automatically at build time so there is no need to add them via this property.</para>
+				</alert>
+
+				<alert class="note">
+					<para>Keywords will only be added to MAML topics, not HTML files.</para>
+				</alert>
+			</definition>
+
+			<definedTerm>Help Attributes</definedTerm>
+			<definition>
+				<para>This grid allows you to add custom <codeInline>MSHelp:Attr</codeInline> attributes to the topic.
+In the grid for this property, enter the property name and the value for it.  Attribute values can contain
+<link xlink:href="69d998a7-1af5-4bf5-889b-59cd00b64000">substitution tags</link> which will be converted to their
+appropriate value at build time.  To delete an attribute, select it in the grid and hit the <ui>Delete</ui>
+key.</para>
+
+				<alert class="tip">
+					<para>Project-level help attributes in the project <codeInline>HelpAttributes</codeInline> property
+will be added automatically to each topic at build time and do not need to be added here.</para>
+				</alert>
+
+				<alert class="note">
+					<para>Attributes will only be added to MAML topics, not HTML files.</para>
+				</alert>
+			</definition>
+			
+		</definitionTable>
 
   </content>
 </section>
 
 <section address="Naming">
   <title>Topic Filenames and Locations</title>
-  <content><para>Topic files can be named however you like and can reside in
-any folder within the project.  As such, you can arrange them on disk to match
-the layout in the table of contents and give them meaningful names to aid in
-managing them outside of the project and the designer.  When the help file is
-built, all topic files are copied to the help file's <localUri>.\html</localUri>
-folder and are named using their unique ID with a <localUri>.htm</localUri>
-extension.  You can use that name to link to the topic from other HTML pages
-or the XML comments on API members.  For example:</para>
+  <content>
+		<para>Topic files can be named however you like and can reside in any folder within the project.  As such,
+you can arrange them on disk to match the layout in the table of contents and give them meaningful names to aid
+in managing them outside of the project and the designer.  When the help file is built, all topic files are
+copied to the help file's <localUri>.\html</localUri> folder and are named using their unique ID with a
+<localUri>.htm</localUri> extension.  You can use that name to link to the topic from other HTML pages or the XML
+comments on API members.  For example:</para>
 
 <code lang="xml" title="Link Examples">
 Link to a topic from an HTML file in the .\html folder:

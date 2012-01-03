@@ -148,23 +148,38 @@
 		<keywordlist id="kwcs-keywords">
 			<kw>abstract</kw>
 			<kw>as</kw>
+			<kw>ascending</kw>
+			<kw>async</kw>
+			<kw>await</kw>
 			<kw>base</kw>
 			<kw>byte</kw>
 			<kw>checked</kw>
 			<kw>decimal</kw>
 			<kw>delegate</kw>
+			<kw>descending</kw>
+			<kw>dynamic</kw>
+			<kw>equals</kw>
 			<kw>event</kw>
 			<kw>finally</kw>
 			<kw>fixed</kw>
 			<kw>foreach</kw>
+			<kw>from</kw>
+			<kw>get</kw>
+			<kw>global</kw>
+			<kw>group</kw>
 			<kw>implicit</kw>
 			<kw>in</kw>
 			<kw>interface</kw>
 			<kw>internal</kw>
+			<kw>into</kw>
 			<kw>is</kw>
+			<kw>join</kw>
+			<kw>let</kw>
 			<kw>lock</kw>
 			<kw>null</kw>
 			<kw>object</kw>
+			<kw>on</kw>
+			<kw>orderby</kw>
 			<kw>out</kw>
 			<kw>override</kw>
 			<kw>params</kw>
@@ -173,6 +188,8 @@
 			<kw>ref</kw>
 			<kw>sbyte</kw>
 			<kw>sealed</kw>
+			<kw>select</kw>
+			<kw>set</kw>
 			<kw>stackalloc</kw>
 			<kw>string</kw>
 			<kw>typeof</kw>
@@ -181,6 +198,10 @@
 			<kw>unchecked</kw>
 			<kw>unsafe</kw>
 			<kw>ushort</kw>
+			<kw>value</kw>
+			<kw>var</kw>
+			<kw>where</kw>
+			<kw>yield</kw>
 		</keywordlist>
 		<!-- Common VB-like language keywords (VB.NET, VBScript) -->
 		<keywordlist id="kwvblang-keywords">
@@ -245,6 +266,8 @@
 			<kw>Alias</kw>
 			<kw>AndAlso</kw>
 			<kw>As</kw>
+			<kw>Async</kw>
+			<kw>Await</kw>
 			<kw>Boolean</kw>
 			<kw>ByRef</kw>
 			<kw>ByVal</kw>

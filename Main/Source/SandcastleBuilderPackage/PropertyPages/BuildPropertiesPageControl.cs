@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : BuildPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 04/16/2011
+// Updated : 12/31/2011
 // Note    : Copyright 2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -117,14 +117,14 @@ namespace SandcastleBuilder.Package.PropertyPages
         }
 
         /// <inheritdoc />
-        protected override bool BindControlValue(System.Windows.Forms.Control c)
+        protected override bool BindControlValue(System.Windows.Forms.Control control)
         {
             ProjectProperty projProp;
             HelpFileFormat format;
             int idx;
 
             // Get the selected help file formats
-            if(c.Name == "cblHelpFileFormat")
+            if(control.Name == "cblHelpFileFormat")
             {
                 for(idx = 0; idx < cblHelpFileFormat.Items.Count; idx++)
                     cblHelpFileFormat.SetItemChecked(idx, false);
@@ -152,7 +152,7 @@ namespace SandcastleBuilder.Package.PropertyPages
         }
 
         /// <inheritdoc />
-        protected override bool StoreControlValue(System.Windows.Forms.Control c)
+        protected override bool StoreControlValue(System.Windows.Forms.Control control)
         {
             string formats;
 
@@ -160,7 +160,7 @@ namespace SandcastleBuilder.Package.PropertyPages
                 return false;
 
             // Set the selected help file formats value
-            if(c.Name == "cblHelpFileFormat")
+            if(control.Name == "cblHelpFileFormat")
             {
                 formats = String.Join(", ", cblHelpFileFormat.CheckedItems.Cast<HelpFileFormatItem>().Select(
                     f => f.Format.ToString()).ToArray());

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : MSHelp2PropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 04/11/2011
+// Updated : 12/31/2011
 // Note    : Copyright 2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -114,14 +114,14 @@ namespace SandcastleBuilder.Package.PropertyPages
         }
 
         /// <inheritdoc />
-        protected override bool BindControlValue(System.Windows.Forms.Control c)
+        protected override bool BindControlValue(System.Windows.Forms.Control control)
         {
             ProjectProperty projProp;
 
             if(this.ProjectMgr == null)
                 return false;
 
-            if(c.Name == "dgvHelpAttributes")
+            if(control.Name == "dgvHelpAttributes")
             {
                 attributes = new MSHelpAttrCollection(null);
                 attributesChanged = false;
@@ -139,12 +139,12 @@ namespace SandcastleBuilder.Package.PropertyPages
         }
 
         /// <inheritdoc />
-        protected override bool StoreControlValue(System.Windows.Forms.Control c)
+        protected override bool StoreControlValue(System.Windows.Forms.Control control)
         {
             if(this.ProjectMgr == null)
                 return false;
 
-            if(c.Name == "dgvHelpAttributes")
+            if(control.Name == "dgvHelpAttributes")
             {
                 if(attributesChanged)
                 {

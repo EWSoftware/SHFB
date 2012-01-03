@@ -12,111 +12,109 @@ the table of contents.</para>
     <section address="AutomaticPlacement">
       <title>Automatic Placement Options</title>
       <content>
-        <para>In the absence of any explicit instructions in the content layout file,
-conceptual content topics will be placed according to the <codeInline>ContentPlacement</codeInline>
-project property.  If set to <codeInline>AboveNamespaces</codeInline> (the default), the conceptual
-content topics will appear before the namespace topics.  If set to <codeInline>BelowNamespaces</codeInline>,
-they will appear after the namespace topics.</para>
+        <para>In the absence of any explicit instructions in the content layout file, conceptual content topics
+will be placed according to the <codeInline>ContentPlacement</codeInline> project property.  If set to
+<codeInline>AboveNamespaces</codeInline> (the default), the conceptual content topics will appear before the
+namespace topics.  If set to <codeInline>BelowNamespaces</codeInline>, they will appear after the namespace
+topics.</para>
         
-    <para>In Help 1, Help 2, and Website output, if no conceptual content is present or
-no topic is marked as the default topic, the root namespaces page will be selected as the
-default topic for the help file.</para>
+    <para>In Help 1, Help 2, and Website output, if no conceptual content is present or no topic is marked as
+the default topic, the root namespaces page will be selected as the default topic for the help file.</para>
       </content>
     </section>
 
     <section address="ExplicitPlacement">
       <title>Explicit Placement Options</title>
       <content>
-        <para>For finer control over the placement of the API content and selection of
-the default topic, use the options available in the
-<link xlink:href="54e3dc97-5125-441e-8e84-7f9303e95f26">content layout file editor</link>.</para>
+        <para>For finer control over the placement of the API content and selection of the default topic, use
+the options available in the <link xlink:href="54e3dc97-5125-441e-8e84-7f9303e95f26">content layout file
+editor</link>.</para>
 
-<list class="bullet">
-	<listItem>The <ui>Toggle Default Topic</ui> option can be used to mark a conceptual
-topic as the default topic for Help 1, Help2, and Website output.  This option has no effect
-in MS Help Viewer files as there is no option to specify a default topic.</listItem>
+				<list class="bullet">
+					<listItem>
+						<para>The <ui>Use as the default topic</ui> option can be used to mark a conceptual topic as the
+default topic for Help 1, Help2, and Website output.  This option has no effect in MS Help Viewer files as there
+is no option to specify a default topic.</para>
+					</listItem>
 
-	<listItem>A conceptual topic anywhere within the content layout file can be marked
-as the API content insertion point.  You can choose to insert the API content below the
-selected topic (the default), above the selected topic, or as a child of the selected topic.
-When an insertion point is defined, the <codeInline>ContentPlacement</codeInline> project
-property is ignored.</listItem>
-</list>
+					<listItem>
+						<para>A conceptual topic anywhere within the content layout file can be marked as the API content
+insertion point using the <ui>API Content</ui> option.  You can choose to insert the API content below the
+selected topic, above the selected topic, or as a child of the selected topic.  When an insertion point is
+defined, the <codeInline>ContentPlacement</codeInline> project property is ignored.</para>
+					</listItem>
+				</list>
       </content>
     </section>
 
-    <section address="MSHelpViewer">
+		<section address="MSHelpViewer">
       <title>Microsoft Help Viewer Placement Options</title>
       <content>
-        <para>In addition to the above placement options, you have some additional
-control over how your help file content is parented when using the Microsoft Help
-Viewer output format.  These options take effect after the above options have been
-applied.</para>
+        <para>In addition to the above placement options, you have some additional control over how your help
+file content is parented when using the Microsoft Help Viewer output format.  These options take effect after
+the above options have been applied.</para>
 
-<list class="bullet">
-	<listItem>The <codeInline>TocParentId</codeInline> and <codeInline>TocParentVersion</codeInline>
-properties allow you to specify where your help file content is parented.  If left at their
-default settings, your content will appear in the main table of contents.  If you specify a
-parent ID and version, you can place your content below an existing topic in the help file
-viewer.  You can find the values to use by going to the parent topic in the help viewer,
-viewing the source for the page, and finding the <codeInline>Microsoft.Help.Id</codeInline>
-and <codeInline>Microsoft.Help.TopicVersion</codeInline> metadata items.</listItem>
+				<list class="bullet">
+					<listItem>
+						<para>The <codeInline>TocParentId</codeInline> and <codeInline>TocParentVersion</codeInline>
+properties allow you to specify where your help file content is parented.  If left at their default settings,
+your content will appear in the main table of contents.  If you specify a parent ID and version, you can place
+your content below an existing topic in the help file viewer.  You can find the values to use by going to the
+parent topic in the help viewer, viewing the source for the page, and finding the <codeInline>Microsoft.Help.Id</codeInline>
+and <codeInline>Microsoft.Help.TopicVersion</codeInline> metadata items.</para>
+					</listItem>
 
-	<listItem><para>The <codeInline>TocOrder</codeInline> property allows you to specify
-the sort order for your topics within the parent item.  If left set to the default,
-your topics are given a sort order starting at zero and increment by one for each
-subsequent topic.  If set to a specific value, they will begin numbering from that
-value and increment by one for each subsequent topic.  If parenting your content
-within an existing topic, you can view the page source for its existing sub-topics
-to find the highest <codeInline>Microsoft.Help.TocOrder</codeInline> value.</para>
+					<listItem>
+						<para>The <codeInline>TocOrder</codeInline> property allows you to specify the sort order for your
+topics within the parent item.  If left set to the default, your topics are given a sort order starting at zero
+and increment by one for each subsequent topic.  If set to a specific value, they will begin numbering from that
+value and increment by one for each subsequent topic.  If parenting your content within an existing topic, you
+can view the page source for its existing sub-topics to find the highest <codeInline>Microsoft.Help.TocOrder</codeInline>
+value.</para>
 
-<alert class="note">
-  <para>If a topic order matches an existing topic in the parent's sub-topics,
-the topics with the duplicate value will be sorted alphabetically.</para>
-</alert></listItem>
-
-</list>
-      </content>
-    </section>
+						<alert class="note">
+							<para>If a topic order matches an existing topic in the parent's sub-topics, the topics with the
+duplicate value will be sorted alphabetically.</para>
+						</alert>
+					</listItem>
+				</list>
+			</content>
+		</section>
 
     <section address="RootContentNode">
       <title>Microsoft Help Viewer Root Content Container</title>
       <content>
-        <para>By default, the topics in a help viewer file will be listed
-one after the other at the point they are parented.  Typically, this is not
-appropriate and you will want to group the topics beneath a single root content
-container.  To do so, you can do one of the following things to accomplish this
-task:</para>
+        <para>By default, the topics in a help viewer file will be listed one after the other at the point they
+are parented.  Typically, this is not appropriate and you will want to group the topics beneath a single root
+content container.  To do so, you can do one of the following things to accomplish this task:</para>
 
+				<list class="bullet">
+					<listItem>
+						<para>If you are only generating MS Help Viewer output, you can create a topic to serve as the root
+container node and place all other topics as sub-topics of the first topic in the content layout file.</para>
+					</listItem>
 
-<list class="bullet">
-	<listItem>If you are only generating MS Help Viewer output, you can create
-a topic to serve as the root container node and place all other topics as sub-topics
-of the first topic in the content layout file.</listItem>
+					<listItem>
+						<para>If you are generating multiple help formats from a single help file builder project, the option
+above may not be desirable.  For example, if generating both MS Help Viewer and website output, you may not want
+the website table of content to be grouped beneath a single root content container node.</para>
 
-	<listItem><para>If you are generating multiple help formats from a single help
-file builder project, the option above may not be desirable.  For example, if generating
-both MS Help Viewer and website output, you may not want the website table of
-content to be grouped beneath a single root content container node.</para>
+						<para>To remedy this problem, the content layout file editor will allow you to add a topic and mark
+it as the root content container with the <ui>Use as MS Help Viewer root container</ui> option.  The root
+container topic must have its <codeInline>Show in the table of contents</codeInline> option unchecked so that it
+does not appear in the table of contents for the other output formats.  As such, it cannot have any sub-topics
+that are visible either.</para>
 
-	<para>To remedy this problem, the content layout file editor will allow you to
-add a topic and mark it as the root content container with the <ui>Toggle MS
-Help Viewer Root Container</ui> option available on the context menu when you
-right click on a topic.  The root container topic must have its <codeInline>Visible</codeInline>
-property set to false so that it does not appear in the table of contents for the
-other output formats.  As such, it cannot have any sub-topics that are visible either.</para>
+						<para>When you build MS Help Viewer Output, the help file builder will automatically insert the topic
+as the root content container with all the other content in the project as sub-topics beneath it.  The conceptual
+and reference content ordering options noted above will be applied to the sub-topics.  The help viewer parenting
+properties noted above will be applied to the root container node.  For other help formats produced by the build,
+the root content topic is ignored.</para>
+					</listItem>
 
-	<para>When you build MS Help Viewer Output, the help file builder will automatically
-insert the topic as the root content container with all the other content in the project
-as sub-topics beneath it.  The conceptual and reference content ordering options noted above
-will be applied to the sub-topics.  The help viewer parenting properties noted above will be
-applied to the root container node.  For other help formats produced by the build, the root
-content topic is ignored.</para></listItem>
-
-</list>
+				</list>
       </content>
     </section>
-
 
     <relatedTopics>
       <link xlink:href="5292ce5c-fda1-4a77-9155-a11755ef1730" />

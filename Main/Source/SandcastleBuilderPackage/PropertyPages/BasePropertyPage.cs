@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : BasePropertyPage.cs
 // Author  : Eric Woodruff
-// Updated : 04/17/2011
+// Updated : 12/31/2011
 // Note    : Copyright 2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -25,6 +25,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -36,6 +37,7 @@ using Microsoft.VisualStudio.Project;
 using Microsoft.VisualStudio.Shell.Interop;
 
 using SandcastleBuilder.Utils.Design;
+using SHFBUtility = SandcastleBuilder.Utils.Utility;
 
 namespace SandcastleBuilder.Package.PropertyPages
 {
@@ -273,10 +275,10 @@ namespace SandcastleBuilder.Package.PropertyPages
         /// This can be overridden to bind a control to a property in a manner
         /// other than the default handling supplied by the base class.
         /// </summary>
-        /// <param name="c">The control to bind</param>
+        /// <param name="control">The control to bind</param>
         /// <returns>True if the method bound the control or it should be ignored,
         /// false if the base class should attempt to bind it in the default manner.</returns>
-        protected virtual bool BindControlValue(Control c)
+        protected virtual bool BindControlValue(Control control)
         {
             return false;
         }
@@ -285,10 +287,10 @@ namespace SandcastleBuilder.Package.PropertyPages
         /// This can be overridden to store a control value in a property in a manner
         /// other than the default handling supplied by the base class.
         /// </summary>
-        /// <param name="c">The control from which to store the value</param>
+        /// <param name="control">The control from which to store the value</param>
         /// <returns>True if the method stored the control value or it should be ignored,
         /// false if the base class should attempt to store the value in the default manner.</returns>
-        protected virtual bool StoreControlValue(Control c)
+        protected virtual bool StoreControlValue(Control control)
         {
             return false;
         }
@@ -310,7 +312,7 @@ namespace SandcastleBuilder.Package.PropertyPages
         {
             if(!String.IsNullOrEmpty(this.HelpKeyword))
             {
-                Utility.ShowHelpTopic(this.HelpKeyword);
+                SHFBUtility.ShowHelpTopic(this.HelpKeyword);
                 return true;
             }
 
@@ -468,10 +470,10 @@ namespace SandcastleBuilder.Package.PropertyPages
         /// Bind the control to the property value by setting the property to
         /// the current value from the project.
         /// </summary>
-        /// <param name="c">The control to bind</param>
-        /// <param name="pi">The property information</param>
+        /// <param name="control">The control to bind</param>
+        /// <param name="propertyInfo">The property information</param>
         /// <param name="boundProperty">The project property name</param>
-        private void Bind(Control c, PropertyInfo pi, string boundProperty)
+        private void Bind(Control control, PropertyInfo propertyInfo, string boundProperty)
         {
             string propValue = null;
             object controlValue;
@@ -491,7 +493,7 @@ namespace SandcastleBuilder.Package.PropertyPages
                     propValue = EscapeValueAttribute.Unescape(propValue);
 
                 // Set the value based on the type
-                switch(Type.GetTypeCode(pi.PropertyType))
+                switch(Type.GetTypeCode(propertyInfo.PropertyType))
                 {
                     case TypeCode.Object:
                     case TypeCode.String:
@@ -511,54 +513,54 @@ namespace SandcastleBuilder.Package.PropertyPages
                         break;
 
                     case TypeCode.Decimal:
-                        controlValue = Convert.ToDecimal(propValue);
+                        controlValue = Convert.ToDecimal(propValue, CultureInfo.CurrentCulture);
                         break;
 
                     case TypeCode.Double:
-                        controlValue = Convert.ToDouble(propValue);
+                        controlValue = Convert.ToDouble(propValue, CultureInfo.CurrentCulture);
                         break;
 
                     case TypeCode.Single:
-                        controlValue = Convert.ToSingle(propValue);
+                        controlValue = Convert.ToSingle(propValue, CultureInfo.CurrentCulture);
                         break;
 
                     case TypeCode.Int16:
-                        controlValue = Convert.ToInt16(propValue);
+                        controlValue = Convert.ToInt16(propValue, CultureInfo.CurrentCulture);
                         break;
 
                     case TypeCode.Int32:
-                        controlValue = Convert.ToInt32(propValue);
+                        controlValue = Convert.ToInt32(propValue, CultureInfo.CurrentCulture);
                         break;
 
                     case TypeCode.Int64:
-                        controlValue = Convert.ToInt64(propValue);
+                        controlValue = Convert.ToInt64(propValue, CultureInfo.CurrentCulture);
                         break;
 
                     case TypeCode.UInt16:
-                        controlValue = Convert.ToUInt16(propValue);
+                        controlValue = Convert.ToUInt16(propValue, CultureInfo.CurrentCulture);
                         break;
 
                     case TypeCode.UInt32:
-                        controlValue = Convert.ToUInt32(propValue);
+                        controlValue = Convert.ToUInt32(propValue, CultureInfo.CurrentCulture);
                         break;
 
                     case TypeCode.UInt64:
-                        controlValue = Convert.ToUInt64(propValue);
+                        controlValue = Convert.ToUInt64(propValue, CultureInfo.CurrentCulture);
                         break;
 
                     case TypeCode.Boolean:
-                        controlValue = Convert.ToBoolean(propValue);
+                        controlValue = Convert.ToBoolean(propValue, CultureInfo.CurrentCulture);
                         break;
 
                     case TypeCode.DateTime:
-                        controlValue = Convert.ToDateTime(propValue);
+                        controlValue = Convert.ToDateTime(propValue, CultureInfo.CurrentCulture);
                         break;
 
                     default:        // Ignore unknown types
                         return;
                 }
 
-                pi.SetValue(c, controlValue, null);
+                propertyInfo.SetValue(control, controlValue, null);
             }
         }
 
@@ -881,8 +883,9 @@ namespace SandcastleBuilder.Package.PropertyPages
         {
             MSG msg = pMsg[0];
 
-            // TODO: This never gets called so we process mnemonics and F1 in ProcessDialogKey() instead.
-            // Is there a reason why we have to do it that way?
+            // This never gets called so we process mnemonics and F1 in ProcessDialogKey() instead.  This seems
+            // to be caused by a problem with the way Visual Studio handles keyboard input.  Tool windows suffer
+            // from the same problem.
 
             if((msg.message < NativeMethods.WM_KEYFIRST || msg.message > NativeMethods.WM_KEYLAST) &&
               (msg.message < NativeMethods.WM_MOUSEFIRST || msg.message > NativeMethods.WM_MOUSELAST))

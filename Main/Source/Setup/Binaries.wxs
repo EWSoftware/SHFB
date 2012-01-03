@@ -112,6 +112,11 @@
 				<File Id="SandcastleBuilder.Utils.xml" Source="$(var.BinFolder)SandcastleBuilder.Utils.xml" />
 			</Component>
 
+			<Component Id="SandcastleBuilder.WPF.dll" Guid="{41C0EEE7-7725-450E-ADFF-96F5F251D12C}">
+				<File Id="SandcastleBuilder.WPF.dll" KeyPath="yes" Source="$(var.BinFolder)SandcastleBuilder.WPF.dll" />
+				<File Id="SandcastleBuilder.WPF.xml" Source="$(var.BinFolder)SandcastleBuilder.WPF.xml" />
+			</Component>
+
 			<!-- MSBuild integration -->
 
 			<Component Id="SandcastleHelpFileBuilder.targets" Guid="{9E93457D-FD1F-45A1-B12F-24E906E038F0}">
@@ -209,6 +214,7 @@
 			<ComponentRef Id="SandcastleBuilder.MRefBuilder.dll" />
 			<ComponentRef Id="SandcastleBuilder.PlugIns.plugins" />
 			<ComponentRef Id="SandcastleBuilder.Utils.dll" />
+			<ComponentRef Id="SandcastleBuilder.WPF.dll" />
 
 			<!-- MSBuild integration -->
 			<ComponentRef Id="SandcastleHelpFileBuilder.targets" />

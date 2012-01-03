@@ -75,20 +75,29 @@
       <HintPath>..\ReferenceAssemblies\ICSharpCode.TextEditor.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Build" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
+    <Reference Include="UIAutomationProvider" />
     <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=2.2.3199.27942, Culture=neutral, PublicKeyToken=7c3444e32642107f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\ReferenceAssemblies\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
     </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\HelpLibraryManagerLauncher\HelpLibraryManager.cs">
@@ -170,6 +179,12 @@
     </Compile>
     <Compile Include="ContentEditors\ResourceItemEditorWindow.Designer.cs">
       <DependentUpon>ResourceItemEditorWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ContentEditors\SelectFileTemplateDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ContentEditors\SelectFileTemplateDlg.Designer.cs">
+      <DependentUpon>SelectFileTemplateDlg.cs</DependentUpon>
     </Compile>
     <Compile Include="ContentEditors\SelectGacEntriesDlg.cs">
       <SubType>Form</SubType>
@@ -259,6 +274,9 @@
     <EmbeddedResource Include="ContentEditors\ResourceItemEditorWindow.resx">
       <DependentUpon>ResourceItemEditorWindow.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ContentEditors\SelectFileTemplateDlg.resx">
+      <DependentUpon>SelectFileTemplateDlg.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ContentEditors\SelectGacEntriesDlg.resx">
       <DependentUpon>SelectGacEntriesDlg.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -329,6 +347,10 @@
       <Project>{330DADF7-3AB1-49A0-B3C6-A69D2C4F06A6}</Project>
       <Name>SandcastleBuilderUtils</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SandcastleBuilderWPF\SandcastleBuilderWPF.csproj">
+      <Project>{D3B06405-3435-4329-9233-2DF1BF5028AA}</Project>
+      <Name>SandcastleBuilderWPF</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -345,32 +367,19 @@
     <None Include="Images\ViewHelpFile.bmp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Images\SelectAssembly.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Images\CancelBuild.bmp" />
     <None Include="Images\ViewLog.bmp" />
     <None Include="Images\ViewLog.ico" />
     <None Include="Images\Help.ico" />
     <None Include="Images\FAQ.bmp" />
-    <None Include="Images\SpinningWheel.gif" />
     <None Include="Images\Content.ico" />
-    <None Include="Images\InsertApiBefore.bmp" />
-    <None Include="Images\AddImage.png" />
     <None Include="Images\AddItem.bmp" />
-    <None Include="Images\AddRootItem.bmp" />
-    <None Include="Images\AddToken.png" />
     <None Include="Images\CodeFile.bmp" />
     <None Include="Images\Copy.bmp" />
     <None Include="Images\Cut.bmp" />
-    <None Include="Images\DefaultTopic.bmp" />
     <None Include="Images\Delete.bmp" />
-    <None Include="Images\MoveDown.bmp" />
-    <None Include="Images\MoveUp.bmp" />
-    <None Include="Images\PageEdit.png" />
     <None Include="Images\Paste.bmp" />
     <None Include="Images\SaveAll.bmp" />
-    <None Include="Images\SandcastleSmall.png" />
     <None Include="Images\Table.bmp" />
     <None Include="Images\Bold.bmp" />
     <None Include="Images\ExternalLink.bmp" />
@@ -384,12 +393,7 @@
     <None Include="Images\HtmlEncode.bmp" />
     <None Include="Images\TokenFile.ico" />
     <None Include="Images\ResourceItemFile.ico" />
-    <Content Include="Images\DefaultApiBefore.bmp" />
-    <Content Include="Images\DefaultApiAsChild.bmp" />
-    <Content Include="Images\DefaultApiAfter.bmp" />
-    <Content Include="Images\InsertApiAfter.bmp" />
-    <Content Include="Images\InsertApiAsChild.bmp" />
-    <Content Include="Images\RootContentContainer.bmp" />
+    <None Include="Images\SpinningWheel.gif" />
     <Content Include="ItemTemplates\Site Map.sitemap">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -407,7 +411,6 @@
     </Content>
     <None Include="Resources\Properties.bmp" />
     <None Include="Resources\Print.bmp" />
-    <None Include="Images\AddChildItem.bmp" />
     <None Include="Images\Properties.ico" />
     <None Include="Images\ImageFile.bmp" />
     <None Include="Images\SnippetsFile.bmp" />
@@ -422,8 +425,6 @@
     <None Include="Images\Folder.bmp" />
     <None Include="Images\ReferenceItem.bmp" />
     <None Include="Images\ReferencesFolder.bmp" />
-    <None Include="Resources\Refresh.bmp" />
-    <None Include="Images\NormalTopic.bmp" />
     <Content Include="ItemTemplates\Bitmap.bmp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

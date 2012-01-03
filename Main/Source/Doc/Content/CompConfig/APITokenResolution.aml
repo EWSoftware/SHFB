@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="dcc9f938-0d5e-4010-bbfe-fd64168a443b" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>This build component is used to resolve tokens in XML comments files.  This allows you to insert
+MAML <codeInline>token</codeInline> elements in XML comments and have their content resolved to the token value
+when the help file is built.</para>
+    </introduction>
+
+<section>
+  <content>
+    <para>The following is the default configuration for the API Token Resolution component. It should be
+inserted into the configuration file before the <codeInline>ShowMissingComponent</codeInline>.</para>
+
+<code lang="xml" title="Example Configuration">
+&lt;component type="Microsoft.Ddue.Tools.SharedContentComponent"
+  assembly="{@SandcastlePath}ProductionTools\BuildComponents.dll"&gt;
+
+  &lt;!-- A list of one or more token files from which to resolve tokens --&gt;
+	&lt;content file="TokenFile1.tokens" /&gt;
+	&lt;content file="TokenFile2.tokens" /&gt;
+
+	&lt;!-- The element to replace (in this case, token) --&gt;
+  &lt;replace elements="/*//token" item="string(.)" /&gt;
+&lt;/component&gt;
+</code>
+
+		<para>The example given above is taken from the Sandcastle Help File Builder's configuration file.  When
+used with it, the replacement tag <codeInline>{@SandcastlePath}</codeInline> is used to insert the Sancastle
+tools folder in the file path.  This is replaced at build time with the appropriate value.  If using the
+component in your own build scripts, replace the tag with a relative or absolute path to the component
+assembly.</para>
+
+		<para>The <codeInline>content</codeInline> elements are used to specify the files that contain the tokens
+to be resolved and their values.</para>
+	</content>
+</section>
+
+    <relatedTopics>
+			<link xlink:href="8dcbb69b-7a1a-4049-8e6b-2bf344efbbc9" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

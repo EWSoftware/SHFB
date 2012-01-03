@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Package
 // File    : DocumentationSourcesContainerNode.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/20/2011
+// Updated : 12/31/2011
 // Note    : Copyright 2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -21,7 +21,6 @@
 //=============================================================================
 
 using System;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -148,8 +147,7 @@ namespace SandcastleBuilder.Package.Nodes
         /// <summary>
         /// Adds documentation sources to this container from an MSBuild project
         /// </summary>
-        /// <param name="buildProject">The build project from which to load the information</param>
-        public void LoadDocSourcesFromBuildProject(Project buildProject)
+        public void LoadDocSourcesFromBuildProject()
         {
             ProjectProperty prop;
             string docSources = null;
@@ -207,7 +205,7 @@ namespace SandcastleBuilder.Package.Nodes
                         foreach(string file in dlg.FileNames)
                         {
                             this.AddDocumentationSource(file);
-                            ext = Path.GetExtension(file).ToLower(CultureInfo.InvariantCulture);
+                            ext = Path.GetExtension(file).ToLowerInvariant();
 
                             // If there's a match for a comments file or an assembly, add it too
                             if(ext == ".xml")

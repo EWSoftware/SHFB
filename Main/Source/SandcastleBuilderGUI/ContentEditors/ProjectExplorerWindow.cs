@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : ProjectExplorerWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/04/2011
-// Note    : Copyright 2008-2011, Eric Woodruff, All rights reserved
+// Updated : 01/03/2012
+// Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the form used to manage the project items and files.
@@ -224,7 +224,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// <param name="fullName">The full path to the file</param>
         /// <param name="fileItem">The project file item or null if the
         /// method should find it for itself</param>
-        /// <returns></returns>
+        /// <returns>The editor window created for the file</returns>
         public DockContent CreateFileEditor(string fullName, FileItem fileItem)
         {
             DockContent editor = null;

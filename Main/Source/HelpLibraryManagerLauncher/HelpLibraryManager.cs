@@ -2,8 +2,8 @@
 // System  : Help Library Manager Launcher
 // File    : HelpLibraryManager.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/27/2011
-// Note    : Copyright 2010-2011, Eric Woodruff, All rights reserved
+// Updated : 01/03/2012
+// Note    : Copyright 2010-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class used to interact with the Help Library Manager.
@@ -123,7 +123,7 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
         /// <param name="product">The product for which to get the locale.</param>
         /// <param name="version">The version of the product for which to get the
         /// locale.</param>
-        /// <returns></returns>
+        /// <returns>The locale found for the specified product.  If not found, it returns null.</returns>
         public string FindLocaleFor(string product, string version)
         {
             XmlDocument manifest;

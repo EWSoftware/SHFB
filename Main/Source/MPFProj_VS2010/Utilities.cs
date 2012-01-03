@@ -9,6 +9,20 @@ PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.
 
 ***************************************************************************/
 
+//=============================================================================
+// File    : Utilities.cs
+// Updated : 01/01/2012
+// Modifier: Eric Woodruff  (Eric@EWoodruff.us)
+//
+// This file has been modified to fix a bug in RecursivelyCopyDirectory() that
+// allowed a parent folder to be copied to one of its child sub-folders.
+// Search for "!EFW" to find the changes.
+// 
+//    Date     Who  Comments
+// ============================================================================
+// 01/01/2012  EFW  Fixed bug in RecursivelyCopyDirectory()
+//=============================================================================
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -860,6 +874,23 @@ namespace Microsoft.VisualStudio.Project
         /// <param name="target">Directory to copy to</param>
         public static void RecursivelyCopyDirectory(string source, string target)
         {
+            // !EFW - Make sure we aren't copying a parent folder to one of it's child sub-folder
+            string sourcePath, destPath;
+
+            // Either one may or may not have the trailing backslash so remove it from both if present
+            if(target.EndsWith("\\", StringComparison.Ordinal))
+                sourcePath = Path.GetDirectoryName(source);
+            else
+                sourcePath = source;
+
+            if(target.EndsWith("\\", StringComparison.Ordinal))
+                destPath = Path.GetDirectoryName(target);
+            else
+                destPath = target;
+
+            if(destPath.StartsWith(sourcePath, StringComparison.OrdinalIgnoreCase))
+                throw new InvalidOperationException("Cannot copy a parent folder to one of its child sub-folder");
+
             // Make sure it doesn't already exist
             if(Directory.Exists(target))
                 throw new ArgumentException(String.Format(CultureInfo.CurrentCulture, SR.GetString(SR.FileOrFolderAlreadyExists, CultureInfo.CurrentUICulture), target));

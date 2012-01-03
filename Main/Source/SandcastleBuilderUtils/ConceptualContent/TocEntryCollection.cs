@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : TocEntryCollection.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/09/2011
+// Updated : 12/20/2011
 // Note    : Copyright 2006-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -21,6 +21,7 @@
 // 1.5.0.2  07/03/2007  EFW  Added support for saving as a site map file
 // 1.8.0.0  08/11/2008  EFW  Modified to support the new project format
 // 1.9.0.0  06/15/2010  EFW  Added support for MS Help Viewer TOC format
+// 1.9.3.3  12/20/2011  EFW  Updated for use with the new content layout editor
 //=============================================================================
 
 using System;
@@ -208,7 +209,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         }
         #endregion
 
-        #region Sort the collection
+        #region Sort and find methods
         //=====================================================================
 
         /// <summary>
@@ -221,6 +222,52 @@ namespace SandcastleBuilder.Utils.ConceptualContent
 
             foreach(TocEntry te in this)
                 te.Children.Sort();
+
+            this.OnListChanged(new ListChangedEventArgs(ListChangedType.Reset, -1));
+        }
+
+        /// <summary>
+        /// This is used to enumerate all topics recursively
+        /// </summary>
+        /// <returns>An enumerable list of all topics and sub-topics</returns>
+        public IEnumerable<TocEntry> All()
+        {
+            foreach(var t in this)
+            {
+                yield return t;
+
+                if(t.Children.Count != 0)
+                    foreach(var st in t.Children)
+                        yield return st;
+            }
+        }
+
+        /// <summary>
+        /// This is used to find all topics and sub-topics that match the specified predicate recursively
+        /// </summary>
+        /// <param name="match">The match predicate</param>
+        /// <param name="expandParentIfFound">True to expand the parent if a child node matches or false
+        /// to leave it as is.  Expanding the node ensures it is visible in the bound tree view.</param>
+        /// <returns>An enumerable list of all matches</returns>
+        public IEnumerable<TocEntry> Find(Predicate<TocEntry> match, bool expandParentIfFound)
+        {
+            foreach(var t in this)
+            {
+                if(match(t))
+                    yield return t;
+
+                var matches = t.Children.Find(match, expandParentIfFound);
+
+                if(matches.Count() != 0)
+                {
+                    // If requested, make sure the topic is expanded so that we can move to it in the tree view
+                    if(expandParentIfFound)
+                        t.IsExpanded = true;
+
+                    foreach(var m in matches)
+                        yield return m;
+                }
+            }
         }
         #endregion
 
@@ -466,11 +513,14 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// This is used by contained items to notify the parent that a child
         /// list changed and thus the collection should be marked as dirty.
         /// </summary>
-        /// <param name="changedItem">The item that changed</param>
-        internal void ChildListChanged(TocEntry changedItem)
+        /// <param name="t">The item that changed</param>
+        /// <param name="e">The list change event arguments from the child collection</param>
+        internal void ChildListChanged(TocEntry t, ListChangedEventArgs e)
         {
-            this.OnListChanged(new ListChangedEventArgs(
-                ListChangedType.ItemChanged, this.IndexOf(changedItem)));
+            int idx = this.IndexOf(t);
+
+            if(idx != -1)
+                this.OnListChanged(new ListChangedEventArgs(ListChangedType.ItemChanged, idx, e.PropertyDescriptor));
         }
         #endregion
 
@@ -580,8 +630,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <param name="index">The index of the item to remove</param>
         protected override void RemoveItem(int index)
         {
-            TocEntry item = this[index];
-            item.Parent = null;
+            this[index].Parent = null;
             base.RemoveItem(index);
         }
         #endregion
@@ -603,8 +652,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// </summary>
         /// <param name="toc">The table of contents collection</param>
         /// <param name="pathProvider">The base path provider</param>
-        public void GenerateTableOfContents(TocEntryCollection toc,
-          IBasePathProvider pathProvider)
+        public void GenerateTableOfContents(TocEntryCollection toc, IBasePathProvider pathProvider)
         {
             foreach(TocEntry t in this)
                 toc.Add(t);

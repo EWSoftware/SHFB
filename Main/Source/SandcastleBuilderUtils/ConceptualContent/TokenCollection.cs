@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : TokenCollection.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/07/2008
-// Note    : Copyright 2008, Eric Woodruff, All rights reserved
+// Updated : 12/26/2011
+// Note    : Copyright 2008-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a collection class used to hold the conceptual content
@@ -19,18 +19,13 @@
 // ============================================================================
 // 1.6.0.7  04/24/2008  EFW  Created the code
 // 1.8.0.0  07/25/2008  EFW  Reworked to support new MSBuild project format
+// 1.9.3.3  12/22/2011  EFW  Updated for use with the new token file editor
 //=============================================================================
 
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing.Design;
-using System.Globalization;
-using System.IO;
-using System.Text;
 using System.Xml;
-
-using SandcastleBuilder.Utils;
 
 namespace SandcastleBuilder.Utils.ConceptualContent
 {
@@ -40,43 +35,32 @@ namespace SandcastleBuilder.Utils.ConceptualContent
     /// </summary>
     public class TokenCollection : BindingList<Token>
     {
-        #region Private data members
-        //=====================================================================
-
-        private FileItem fileItem;
-        #endregion
-
-        #region Properties
-        //=====================================================================
-
-        /// <summary>
-        /// This read-only property returns the project file item associated
-        /// with the collection.
-        /// </summary>
-        public FileItem FileItem
-        {
-            get { return fileItem; }
-        }
-        #endregion
-
         #region Constructor
         //=====================================================================
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="file">The token file associated with the collection.</param>
+        /// <param name="filename">The token file associated with the collection.</param>
         /// <remarks>Tokens are not loaded until the <see cref="Load" /> method
         /// is called.</remarks>
-        public TokenCollection(FileItem file)
+        public TokenCollection(string filename)
         {
-            fileItem = file;
+            this.TokenFilePath = filename;
         }
         #endregion
 
-        #region Sort collection
+        #region Properties
         //=====================================================================
-        // Sort the collection
+        
+        /// <summary>
+        /// This is used to get or set the token file path
+        /// </summary>
+        public string TokenFilePath { get; set; }
+        #endregion
+
+        #region Sort and find methods
+        //=====================================================================
 
         /// <summary>
         /// This is used to sort the collection
@@ -98,6 +82,18 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                     return result;
                 });
         }
+
+        /// <summary>
+        /// This is used to find all tokens that match the specified predicate
+        /// </summary>
+        /// <param name="match">The match predicate</param>
+        /// <returns>An enumerable list of all matches</returns>
+        public IEnumerable<Token> Find(Predicate<Token> match)
+        {
+            foreach(var t in this)
+                if(match(t))
+                    yield return t;
+        }
         #endregion
 
         #region Read/write the token file
@@ -118,14 +114,13 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                 this.Clear();
                 settings.CloseInput = true;
 
-                xr = XmlReader.Create(fileItem.FullPath, settings);
+                xr = XmlReader.Create(this.TokenFilePath, settings);
                 xr.MoveToContent();
 
                 while(!xr.EOF)
                 {
                     if(xr.NodeType == XmlNodeType.Element && xr.Name == "item")
-                        this.Add(new Token(xr.GetAttribute("id"),
-                            xr.ReadInnerXml()));
+                        this.Add(new Token(xr.GetAttribute("id"), xr.ReadInnerXml()));
 
                     xr.Read();
                 }
@@ -152,15 +147,14 @@ namespace SandcastleBuilder.Utils.ConceptualContent
             {
                 settings.Indent = true;
                 settings.CloseOutput = true;
-                writer = XmlWriter.Create(fileItem.FullPath, settings);
+                writer = XmlWriter.Create(this.TokenFilePath, settings);
 
                 writer.WriteStartDocument();
                 writer.WriteStartElement("content");
                 writer.WriteAttributeString("xml", "space", null, "preserve");
                 writer.WriteAttributeString("xmlns", "ddue", null,
                     "http://ddue.schemas.microsoft.com/authoring/2003/5");
-                writer.WriteAttributeString("xmlns", "xlink", null,
-                    "http://www.w3.org/1999/xlink");
+                writer.WriteAttributeString("xmlns", "xlink", null, "http://www.w3.org/1999/xlink");
 
                 foreach(Token t in this)
                 {

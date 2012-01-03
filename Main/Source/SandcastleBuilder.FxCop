@@ -28,9 +28,11 @@
   <Target Name="$(ProjectDir)/GenerateInheritedDocs/bin/Debug/GenerateInheritedDocs.exe" Analyze="True" AnalyzeAllChildren="True" />
   <Target Name="$(ProjectDir)/HelpLibraryManagerLauncher/bin/Debug/HelpLibraryManagerLauncher.exe" Analyze="True" AnalyzeAllChildren="True" />
   <Target Name="$(ProjectDir)/SandcastleBuilderGUI/bin/Debug/SandcastleBuilder.Utils.dll" Analyze="True" AnalyzeAllChildren="True" />
+  <Target Name="$(ProjectDir)/SandcastleBuilderGUI/bin/Debug/SandcastleBuilder.WPF.dll" Analyze="True" AnalyzeAllChildren="True" />
   <Target Name="$(ProjectDir)/SandcastleBuilderGUI/bin/Debug/SandcastleBuilderGUI.exe" Analyze="True" AnalyzeAllChildren="True" />
   <Target Name="$(ProjectDir)/SandcastleBuilderPlugIns/bin/Debug/SandcastleBuilder.PlugIns.dll" Analyze="True" AnalyzeAllChildren="True" />
   <Target Name="$(ProjectDir)/SandcastleHtmlExtract/bin/Debug/SandcastleHtmlExtract.exe" Analyze="True" AnalyzeAllChildren="True" />
+  <Target Name="$(ProjectDir)/SHFBProjectLauncher/bin/Debug/SHFBProjectLauncher.exe" Analyze="True" AnalyzeAllChildren="True" />
  </Targets>
  <Rules>
   <RuleFiles>
@@ -115,6 +117,126 @@
      </Message>
     </Messages>
    </Namespace>
+   <Namespace Name="SandcastleBuilder.WPF">
+    <Messages>
+     <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Status="Excluded" Created="2011-12-31 23:40:53Z">
+      <Issue>
+       <Item>SandcastleBuilder.WPF</Item>
+      </Issue>
+      <Notes>
+       <User Name="EWOODRUFF">
+        <Note Id="81" />
+       </User>
+      </Notes>
+     </Message>
+     <Message Id="WPF" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Status="Excluded" Created="2011-12-31 23:40:53Z">
+      <Issue Name="Namespace">
+       <Item>WPF</Item>
+       <Item>SandcastleBuilder.WPF</Item>
+       <Item>Wpf</Item>
+      </Issue>
+      <Notes>
+       <User Name="EWOODRUFF">
+        <Note Id="130" />
+       </User>
+      </Notes>
+     </Message>
+    </Messages>
+   </Namespace>
+   <Namespace Name="SandcastleBuilder.WPF.Behaviors">
+    <Messages>
+     <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Status="Excluded" Created="2011-12-31 23:40:53Z">
+      <Issue>
+       <Item>SandcastleBuilder.WPF.Behaviors</Item>
+      </Issue>
+      <Notes>
+       <User Name="EWOODRUFF">
+        <Note Id="81" />
+       </User>
+      </Notes>
+     </Message>
+     <Message Id="WPF" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Status="Excluded" Created="2011-12-31 23:40:53Z">
+      <Issue Name="Namespace">
+       <Item>WPF</Item>
+       <Item>SandcastleBuilder.WPF.Behaviors</Item>
+       <Item>Wpf</Item>
+      </Issue>
+      <Notes>
+       <User Name="EWOODRUFF">
+        <Note Id="130" />
+       </User>
+      </Notes>
+     </Message>
+    </Messages>
+   </Namespace>
+   <Namespace Name="SandcastleBuilder.WPF.Commands">
+    <Messages>
+     <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Status="Excluded" Created="2011-12-31 23:40:53Z">
+      <Issue>
+       <Item>SandcastleBuilder.WPF.Commands</Item>
+      </Issue>
+      <Notes>
+       <User Name="EWOODRUFF">
+        <Note Id="81" />
+       </User>
+      </Notes>
+     </Message>
+     <Message Id="WPF" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Status="Excluded" Created="2011-12-31 23:40:53Z">
+      <Issue Name="Namespace">
+       <Item>WPF</Item>
+       <Item>SandcastleBuilder.WPF.Commands</Item>
+       <Item>Wpf</Item>
+      </Issue>
+      <Notes>
+       <User Name="EWOODRUFF">
+        <Note Id="130" />
+       </User>
+      </Notes>
+     </Message>
+    </Messages>
+   </Namespace>
+   <Namespace Name="SandcastleBuilder.WPF.Controls">
+    <Messages>
+     <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Status="Excluded" Created="2011-12-31 23:40:53Z">
+      <Issue>
+       <Item>SandcastleBuilder.WPF.Controls</Item>
+      </Issue>
+      <Notes>
+       <User Name="EWOODRUFF">
+        <Note Id="81" />
+       </User>
+      </Notes>
+     </Message>
+     <Message Id="WPF" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Status="Excluded" Created="2011-12-31 23:40:53Z">
+      <Issue Name="Namespace">
+       <Item>WPF</Item>
+       <Item>SandcastleBuilder.WPF.Controls</Item>
+       <Item>Wpf</Item>
+      </Issue>
+      <Notes>
+       <User Name="EWOODRUFF">
+        <Note Id="130" />
+       </User>
+      </Notes>
+     </Message>
+    </Messages>
+   </Namespace>
+   <Namespace Name="SandcastleBuilder.WPF.UserControls">
+    <Messages>
+     <Message Id="WPF" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Status="Excluded" Created="2011-12-31 23:40:53Z">
+      <Issue Name="Namespace">
+       <Item>WPF</Item>
+       <Item>SandcastleBuilder.WPF.UserControls</Item>
+       <Item>Wpf</Item>
+      </Issue>
+      <Notes>
+       <User Name="EWOODRUFF">
+        <Note Id="130" />
+       </User>
+      </Notes>
+     </Message>
+    </Messages>
+   </Namespace>
    <Namespace Name="Test.PlugIns">
     <Messages>
      <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Status="Excluded" Created="2008-03-24 05:12:57Z">
@@ -124,6 +246,20 @@
       <Notes>
        <User Name="EWOODRUFF">
         <Note Id="68" />
+       </User>
+      </Notes>
+     </Message>
+    </Messages>
+   </Namespace>
+   <Namespace Name="XamlGeneratedNamespace">
+    <Messages>
+     <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Status="Excluded" Created="2011-12-31 23:40:53Z">
+      <Issue>
+       <Item>XamlGeneratedNamespace</Item>
+      </Issue>
+      <Notes>
+       <User Name="EWOODRUFF">
+        <Note Id="81" />
        </User>
       </Notes>
      </Message>
@@ -730,6 +866,22 @@
            </Message>
           </Messages>
           <Members>
+           <Member Name="#FromXml(System.String)">
+            <Messages>
+             <Message Id="Attrs" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue Name="MemberParameter">
+               <Item>'MSHelpAttrCollection.FromXml(string)'</Item>
+               <Item>Attrs</Item>
+               <Item>'helpAttrs'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="130" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
            <Member Name="#WriteXml(System.Xml.XmlWriter,System.Boolean)">
             <Messages>
              <Message Id="xw" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2008-09-18 23:40:01Z">
@@ -996,6 +1148,20 @@
              </Message>
             </Messages>
            </Member>
+           <Member Name="#GetUserDefinedProperties()">
+            <Messages>
+             <Message TypeName="UsePropertiesWhereAppropriate" Category="Microsoft.Design" CheckId="CA1024" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue Certainty="50">
+               <Item>'SandcastleProject.GetUserDefinedProperties()'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="131" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
            <Member Name="#HtmlHelp1xCompilerPath">
             <Messages>
              <Message Id="x" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Status="Excluded" Created="2008-01-12 21:28:57Z">
@@ -1109,6 +1275,21 @@
              </Message>
             </Messages>
            </Member>
+           <Member Name="#UserDefinedProperties">
+            <Messages>
+             <Message TypeName="PropertyNamesShouldNotMatchGetMethods" Category="Microsoft.Naming" CheckId="CA1721" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue Name="SameType">
+               <Item>'SandcastleProject.UserDefinedProperties'</Item>
+               <Item>'SandcastleProject.GetUserDefinedProperties()'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="133" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
            <Member Name="#VisibleItems">
             <Accessors>
              <Accessor Name="#set_VisibleItems(SandcastleBuilder.Utils.VisibleItems)">
@@ -1126,6 +1307,25 @@
               </Messages>
              </Accessor>
             </Accessors>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="Utility">
+          <Members>
+           <Member Name="#ShowHelpTopic(System.String)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'Utility.ShowHelpTopic(string)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="122" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
            </Member>
           </Members>
          </Type>
@@ -1533,6 +1733,10 @@
                <Item>'BuildProcess.ReadStdErr()'</Item>
                <Item>'Exception'</Item>
               </Issue>
+              <Issue>
+               <Item>'BuildProcess.ReadStdErr()'</Item>
+               <Item>'object'</Item>
+              </Issue>
               <Notes>
                <User Name="EWOODRUFF">
                 <Note Id="11" />
@@ -1547,6 +1751,10 @@
               <Issue>
                <Item>'BuildProcess.ReadStdOut()'</Item>
                <Item>'Exception'</Item>
+              </Issue>
+              <Issue>
+               <Item>'BuildProcess.ReadStdOut()'</Item>
+               <Item>'object'</Item>
               </Issue>
               <Notes>
                <User Name="EWOODRUFF">
@@ -2366,6 +2574,36 @@
              </Message>
             </Messages>
            </Member>
+           <Member Name="#buildProcess_BuildProgress(System.Object,SandcastleBuilder.Utils.BuildEngine.BuildProgressEventArgs)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'ApiFilterEditorDlg.buildProcess_BuildProgress(object, BuildProgressEventArgs)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="123" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#buildProcess_BuildStepChanged(System.Object,SandcastleBuilder.Utils.BuildEngine.BuildProgressEventArgs)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'ApiFilterEditorDlg.buildProcess_BuildStepChanged(object, BuildProgressEventArgs)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="123" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
           </Members>
          </Type>
          <Type Name="ComponentConfigurationEditorDlg">
@@ -2704,6 +2942,36 @@
              </Message>
             </Messages>
            </Member>
+           <Member Name="#buildProcess_BuildProgress(System.Object,SandcastleBuilder.Utils.BuildEngine.BuildProgressEventArgs)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'NamespaceSummaryItemEditorDlg.buildProcess_BuildProgress(object, BuildProgressEventArgs)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="100" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#buildProcess_BuildStepChanged(System.Object,SandcastleBuilder.Utils.BuildEngine.BuildProgressEventArgs)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'NamespaceSummaryItemEditorDlg.buildProcess_BuildStepChanged(object, BuildProgressEventArgs)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="123" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
            <Member Name="#NamespacesDlg_FormClosing(System.Object,System.Windows.Forms.FormClosingEventArgs)">
             <Messages>
              <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2010-11-06 20:59:35Z">
@@ -2801,6 +3069,27 @@
               <Notes>
                <User Name="EWOODRUFF">
                 <Note Id="52" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="SyntaxFilterTypeConverter">
+          <Members>
+           <Member Name="#ConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object)">
+            <Messages>
+             <Message TypeName="DoNotCastUnnecessarily" Category="Microsoft.Performance" CheckId="CA1800" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue Name="Parameter">
+               <Item>'value'</Item>
+               <Item>'string'</Item>
+               <Item>'SyntaxFilterTypeConverter.ConvertFrom(ITypeDescriptorContext, CultureInfo, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="136" />
                </User>
               </Notes>
              </Message>
@@ -3207,6 +3496,2044 @@
      </Module>
     </Modules>
    </Target>
+   <Target Name="$(ProjectDir)/SandcastleBuilderGUI/bin/Debug/SandcastleBuilder.WPF.dll">
+    <Modules>
+     <Module Name="sandcastlebuilder.wpf.dll">
+      <Messages>
+       <Message Id="WPF" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Status="Excluded" Created="2011-12-31 23:40:53Z">
+        <Issue Name="Assembly">
+         <Item>WPF</Item>
+         <Item>'SandcastleBuilder.WPF.dll'</Item>
+         <Item>Wpf</Item>
+        </Issue>
+        <Notes>
+         <User Name="EWOODRUFF">
+          <Note Id="130" />
+         </User>
+        </Notes>
+       </Message>
+      </Messages>
+      <Namespaces>
+       <Namespace Name="SandcastleBuilder.WPF">
+        <Types>
+         <Type Name="ControlExtensions">
+          <Members>
+           <Member Name="#AutoScrollIfNeeded(System.Windows.Controls.TreeView,System.Windows.Point)">
+            <Messages>
+             <Message TypeName="ConsiderPassingBaseTypesAsParameters" Category="Microsoft.Design" CheckId="CA1011" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'treeView'</Item>
+               <Item>'ControlExtensions.AutoScrollIfNeeded(this TreeView, Point)'</Item>
+               <Item>'TreeView'</Item>
+               <Item>'DependencyObject'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="134" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#ParentElementOfType`1(System.Windows.FrameworkElement)">
+            <Messages>
+             <Message TypeName="DoNotCastUnnecessarily" Category="Microsoft.Performance" CheckId="CA1800" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue Name="Parameter">
+               <Item>'element'</Item>
+               <Item>'T'</Item>
+               <Item>'ControlExtensions.ParentElementOfType&lt;T&gt;(this FrameworkElement)'</Item>
+               <Item>isint</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="140" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="EntityReference">
+          <Members>
+           <Member Name="#IsExpanded">
+            <Accessors>
+             <Accessor Name="#get_IsExpanded()">
+              <Messages>
+               <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Status="Excluded" Created="2011-12-31 23:40:53Z">
+                <Issue>
+                 <Item>'EntityReference.IsExpanded.get()'</Item>
+                </Issue>
+                <Notes>
+                 <User Name="EWOODRUFF">
+                  <Note Id="94" />
+                 </User>
+                </Notes>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+           <Member Name="#ToolTip">
+            <Accessors>
+             <Accessor Name="#get_ToolTip()">
+              <Messages>
+               <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Status="Excluded" Created="2011-12-31 23:40:53Z">
+                <Issue>
+                 <Item>'EntityReference.ToolTip.get()'</Item>
+                </Issue>
+                <Notes>
+                 <User Name="EWOODRUFF">
+                  <Note Id="94" />
+                 </User>
+                </Notes>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+       <Namespace Name="SandcastleBuilder.WPF.Behaviors">
+        <Types>
+         <Type Name="SupportAnimatedGIFBehavior">
+          <Messages>
+           <Message Id="GIF" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Status="Excluded" Created="2011-12-31 23:40:53Z">
+            <Issue Name="Type">
+             <Item>GIF</Item>
+             <Item>'SupportAnimatedGIFBehavior'</Item>
+             <Item>Gif</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="130" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+          <Members>
+           <Member Name="#GetSupportAnimatedGif(System.Windows.Controls.Image)">
+            <Messages>
+             <Message TypeName="ConsiderPassingBaseTypesAsParameters" Category="Microsoft.Design" CheckId="CA1011" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'image'</Item>
+               <Item>'SupportAnimatedGIFBehavior.GetSupportAnimatedGif(Image)'</Item>
+               <Item>'Image'</Item>
+               <Item>'DependencyObject'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="134" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#SetSupportAnimatedGif(System.Windows.Controls.Image,System.Boolean)">
+            <Messages>
+             <Message TypeName="ConsiderPassingBaseTypesAsParameters" Category="Microsoft.Design" CheckId="CA1011" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'image'</Item>
+               <Item>'SupportAnimatedGIFBehavior.SetSupportAnimatedGif(Image, bool)'</Item>
+               <Item>'Image'</Item>
+               <Item>'DependencyObject'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="134" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="TreeViewItemBehavior">
+          <Members>
+           <Member Name="#GetIsBroughtIntoViewWhenSelected(System.Windows.Controls.TreeViewItem)">
+            <Messages>
+             <Message TypeName="ConsiderPassingBaseTypesAsParameters" Category="Microsoft.Design" CheckId="CA1011" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'treeViewItem'</Item>
+               <Item>'TreeViewItemBehavior.GetIsBroughtIntoViewWhenSelected(TreeViewItem)'</Item>
+               <Item>'TreeViewItem'</Item>
+               <Item>'DependencyObject'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="134" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#SetIsBroughtIntoViewWhenSelected(System.Windows.Controls.TreeViewItem,System.Boolean)">
+            <Messages>
+             <Message TypeName="ConsiderPassingBaseTypesAsParameters" Category="Microsoft.Design" CheckId="CA1011" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'treeViewItem'</Item>
+               <Item>'TreeViewItemBehavior.SetIsBroughtIntoViewWhenSelected(TreeViewItem, bool)'</Item>
+               <Item>'TreeViewItem'</Item>
+               <Item>'DependencyObject'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="134" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+       <Namespace Name="SandcastleBuilder.WPF.UserControls">
+        <Types>
+         <Type Name="ContentLayoutEditorControl">
+          <Members>
+           <Member Name="#AddChildTopic_SubmenuOpened(System.Object,System.Windows.RoutedEventArgs)">
+            <Messages>
+             <Message TypeName="DoNotCastUnnecessarily" Category="Microsoft.Performance" CheckId="CA1800" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue Name="Parameter">
+               <Item>'sender'</Item>
+               <Item>'MenuItem'</Item>
+               <Item>'ContentLayoutEditorControl.AddChildTopic_SubmenuOpened(object, RoutedEventArgs)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="138" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#btnAddChildItem">
+            <Messages>
+             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'ContentLayoutEditorControl.btnAddChildItem'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="96" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#btnAddRootItem">
+            <Messages>
+             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'ContentLayoutEditorControl.btnAddRootItem'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="96" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#btnCopy">
+            <Messages>
+             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'ContentLayoutEditorControl.btnCopy'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="96" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#btnCut">
+            <Messages>
+             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'ContentLayoutEditorControl.btnCut'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="96" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#btnDelete">
+            <Messages>
+             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'ContentLayoutEditorControl.btnDelete'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="96" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#btnEditTopic">
+            <Messages>
+             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'ContentLayoutEditorControl.btnEditTopic'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="96" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#btnExpandCollapse">
+            <Messages>
+             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'ContentLayoutEditorControl.btnExpandCollapse'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="96" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#btnHelp">
+            <Messages>
+             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'ContentLayoutEditorControl.btnHelp'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="96" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#btnMoveDown">
+            <Messages>
+             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'ContentLayoutEditorControl.btnMoveDown'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="96" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#btnMoveUp">
+            <Messages>
+             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'ContentLayoutEditorControl.btnMoveUp'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="96" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#btnPaste">
+            <Messages>
+             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'ContentLayoutEditorControl.btnPaste'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="96" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#btnSort">
+            <Messages>
+             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'ContentLayoutEditorControl.btnSort'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="96" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#chkDefaultTopic">
+            <Messages>
+             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'ContentLayoutEditorControl.chkDefaultTopic'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="96" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#chkMSHelpViewRoot">
+            <Messages>
+             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'ContentLayoutEditorControl.chkMSHelpViewRoot'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="96" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#chkVisible">
+            <Messages>
+             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'ContentLayoutEditorControl.chkVisible'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="96" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#dgHelpAttributes">
+            <Messages>
+             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'ContentLayoutEditorControl.dgHelpAttributes'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="96" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#dgIndexKeywords">
+            <Messages>
+             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'ContentLayoutEditorControl.dgIndexKeywords'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="96" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#miAddSiblingTopic">
+            <Messages>
+             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'ContentLayoutEditorControl.miAddSiblingTopic'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="96" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#System.Windows.Markup.IComponentConnector.Connect(System.Int32,System.Object)">
+            <Messages>
+             <Message TypeName="DoNotCastUnnecessarily" Category="Microsoft.Performance" CheckId="CA1800" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'Button'</Item>
+               <Item>'ContentLayoutEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'Button'</Item>
+               <Item>'ContentLayoutEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'Button'</Item>
+               <Item>'ContentLayoutEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'Button'</Item>
+               <Item>'ContentLayoutEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'Button'</Item>
+               <Item>'ContentLayoutEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'Button'</Item>
+               <Item>'ContentLayoutEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'Button'</Item>
+               <Item>'ContentLayoutEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'Button'</Item>
+               <Item>'ContentLayoutEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'Button'</Item>
+               <Item>'ContentLayoutEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'Button'</Item>
+               <Item>'ContentLayoutEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'Button'</Item>
+               <Item>'ContentLayoutEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CheckBox'</Item>
+               <Item>'ContentLayoutEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CheckBox'</Item>
+               <Item>'ContentLayoutEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'ContentLayoutEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'ContentLayoutEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'ContentLayoutEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'ContentLayoutEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'ContentLayoutEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'ContentLayoutEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'ContentLayoutEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'ContentLayoutEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'ContentLayoutEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'ContentLayoutEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'ContentLayoutEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'ContentLayoutEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'ContentLayoutEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'ContentLayoutEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'ContentLayoutEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'ContentLayoutEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'ContentLayoutEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'ContentLayoutEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'ContentLayoutEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'ContentLayoutEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'ContentLayoutEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'ContentLayoutEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'ContentLayoutEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'ContentLayoutEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'ContentLayoutEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'ContentLayoutEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'ContentLayoutEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'ContentLayoutEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'ContentLayoutEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'ContentLayoutEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'ContentLayoutEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'ContentLayoutEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'ContentLayoutEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'DataGrid'</Item>
+               <Item>'ContentLayoutEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'Expander'</Item>
+               <Item>'ContentLayoutEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'Expander'</Item>
+               <Item>'ContentLayoutEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'Expander'</Item>
+               <Item>'ContentLayoutEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'MenuItem'</Item>
+               <Item>'ContentLayoutEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'SplitButton'</Item>
+               <Item>'ContentLayoutEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'SplitButton'</Item>
+               <Item>'ContentLayoutEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'SplitButton'</Item>
+               <Item>'ContentLayoutEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'TextBox'</Item>
+               <Item>'ContentLayoutEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'TextBox'</Item>
+               <Item>'ContentLayoutEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'TextBox'</Item>
+               <Item>'ContentLayoutEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'TextBox'</Item>
+               <Item>'ContentLayoutEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'TextBox'</Item>
+               <Item>'ContentLayoutEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'TextBox'</Item>
+               <Item>'ContentLayoutEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="139" />
+               </User>
+              </Notes>
+             </Message>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'ContentLayoutEditorControl'</Item>
+               <Item>'IComponentConnector.Connect(int, object)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="135" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#System.Windows.Markup.IStyleConnector.Connect(System.Int32,System.Object)">
+            <Messages>
+             <Message TypeName="DoNotCastUnnecessarily" Category="Microsoft.Performance" CheckId="CA1800" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'Style'</Item>
+               <Item>'ContentLayoutEditorControl.IStyleConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="139" />
+               </User>
+              </Notes>
+             </Message>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'ContentLayoutEditorControl'</Item>
+               <Item>'IStyleConnector.Connect(int, object)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="135" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#txtLinkText">
+            <Messages>
+             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'ContentLayoutEditorControl.txtLinkText'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="96" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#txtTitle">
+            <Messages>
+             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'ContentLayoutEditorControl.txtTitle'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="96" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#txtTOCTitle">
+            <Messages>
+             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'ContentLayoutEditorControl.txtTOCTitle'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="96" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="EntityReferencesControl">
+          <Messages>
+           <Message TypeName="TypesThatOwnDisposableFieldsShouldBeDisposable" Category="Microsoft.Design" CheckId="CA1001" Status="Excluded" Created="2011-12-31 23:40:53Z" FixCategory="DependsOnFix">
+            <Issue Name="DependsOnFix">
+             <Item>'EntityReferencesControl'</Item>
+             <Item>'CancellationTokenSource'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="132" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+          <Members>
+           <Member Name="#btnCopy">
+            <Messages>
+             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'EntityReferencesControl.btnCopy'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="96" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#btnHelp">
+            <Messages>
+             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'EntityReferencesControl.btnHelp'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="96" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#btnRefresh">
+            <Messages>
+             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'EntityReferencesControl.btnRefresh'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="96" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#LoadCodeSnippetInfo()">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'EntityReferencesControl.LoadCodeSnippetInfo()'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="126" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#LoadTableOfContentsInfo()">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'EntityReferencesControl.LoadTableOfContentsInfo()'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="126" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#LoadTokenInfo()">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'EntityReferencesControl.LoadTokenInfo()'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="126" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#rbHtmlAnchor">
+            <Messages>
+             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'EntityReferencesControl.rbHtmlAnchor'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="96" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#rbHtmlImageLink">
+            <Messages>
+             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'EntityReferencesControl.rbHtmlImageLink'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="96" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#rbXmlSeeLink">
+            <Messages>
+             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'EntityReferencesControl.rbXmlSeeLink'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="96" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#System.Windows.Markup.IComponentConnector.Connect(System.Int32,System.Object)">
+            <Messages>
+             <Message TypeName="DoNotCastUnnecessarily" Category="Microsoft.Performance" CheckId="CA1800" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'Button'</Item>
+               <Item>'EntityReferencesControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'Button'</Item>
+               <Item>'EntityReferencesControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'Button'</Item>
+               <Item>'EntityReferencesControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'EntityReferencesControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'EntityReferencesControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'EntityReferencesControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'RadioButton'</Item>
+               <Item>'EntityReferencesControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'RadioButton'</Item>
+               <Item>'EntityReferencesControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'RadioButton'</Item>
+               <Item>'EntityReferencesControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'RadioButton'</Item>
+               <Item>'EntityReferencesControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'RadioButton'</Item>
+               <Item>'EntityReferencesControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'RadioButton'</Item>
+               <Item>'EntityReferencesControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'RadioButton'</Item>
+               <Item>'EntityReferencesControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'StackPanel'</Item>
+               <Item>'EntityReferencesControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'StackPanel'</Item>
+               <Item>'EntityReferencesControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'StackPanel'</Item>
+               <Item>'EntityReferencesControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="139" />
+               </User>
+              </Notes>
+             </Message>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'EntityReferencesControl'</Item>
+               <Item>'IComponentConnector.Connect(int, object)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="135" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="ResourceItemEditorControl">
+          <Members>
+           <Member Name="#btnHelp">
+            <Messages>
+             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'ResourceItemEditorControl.btnHelp'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="96" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#btnUndo">
+            <Messages>
+             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'ResourceItemEditorControl.btnUndo'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="96" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#System.Windows.Markup.IComponentConnector.Connect(System.Int32,System.Object)">
+            <Messages>
+             <Message TypeName="DoNotCastUnnecessarily" Category="Microsoft.Performance" CheckId="CA1800" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'Button'</Item>
+               <Item>'ResourceItemEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'Button'</Item>
+               <Item>'ResourceItemEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'ResourceItemEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'ResourceItemEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'TextBox'</Item>
+               <Item>'ResourceItemEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'TextBox'</Item>
+               <Item>'ResourceItemEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'TextBox'</Item>
+               <Item>'ResourceItemEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="139" />
+               </User>
+              </Notes>
+             </Message>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'ResourceItemEditorControl'</Item>
+               <Item>'IComponentConnector.Connect(int, object)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="135" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#txtID">
+            <Messages>
+             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'ResourceItemEditorControl.txtID'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="96" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#txtSourceFile">
+            <Messages>
+             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'ResourceItemEditorControl.txtSourceFile'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="96" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="SiteMapEditorControl">
+          <Members>
+           <Member Name="#AddChildTopic_SubmenuOpened(System.Object,System.Windows.RoutedEventArgs)">
+            <Messages>
+             <Message TypeName="DoNotCastUnnecessarily" Category="Microsoft.Performance" CheckId="CA1800" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue Name="Parameter">
+               <Item>'sender'</Item>
+               <Item>'MenuItem'</Item>
+               <Item>'SiteMapEditorControl.AddChildTopic_SubmenuOpened(object, RoutedEventArgs)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="137" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#btnAddChildItem">
+            <Messages>
+             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'SiteMapEditorControl.btnAddChildItem'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="96" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#btnAddRootItem">
+            <Messages>
+             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'SiteMapEditorControl.btnAddRootItem'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="96" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#btnCopy">
+            <Messages>
+             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'SiteMapEditorControl.btnCopy'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="96" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#btnCut">
+            <Messages>
+             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'SiteMapEditorControl.btnCut'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="96" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#btnDelete">
+            <Messages>
+             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'SiteMapEditorControl.btnDelete'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="96" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#btnEditTopic">
+            <Messages>
+             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'SiteMapEditorControl.btnEditTopic'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="96" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#btnExpandCollapse">
+            <Messages>
+             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'SiteMapEditorControl.btnExpandCollapse'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="96" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#btnHelp">
+            <Messages>
+             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'SiteMapEditorControl.btnHelp'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="96" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#btnMoveDown">
+            <Messages>
+             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'SiteMapEditorControl.btnMoveDown'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="96" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#btnMoveUp">
+            <Messages>
+             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'SiteMapEditorControl.btnMoveUp'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="96" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#btnPaste">
+            <Messages>
+             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'SiteMapEditorControl.btnPaste'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="96" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#btnSort">
+            <Messages>
+             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'SiteMapEditorControl.btnSort'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="96" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#chkDefaultTopic">
+            <Messages>
+             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'SiteMapEditorControl.chkDefaultTopic'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="96" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#miAddSiblingTopic">
+            <Messages>
+             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'SiteMapEditorControl.miAddSiblingTopic'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="96" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#System.Windows.Markup.IComponentConnector.Connect(System.Int32,System.Object)">
+            <Messages>
+             <Message TypeName="DoNotCastUnnecessarily" Category="Microsoft.Performance" CheckId="CA1800" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'Button'</Item>
+               <Item>'SiteMapEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'Button'</Item>
+               <Item>'SiteMapEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'Button'</Item>
+               <Item>'SiteMapEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'Button'</Item>
+               <Item>'SiteMapEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'Button'</Item>
+               <Item>'SiteMapEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'Button'</Item>
+               <Item>'SiteMapEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'Button'</Item>
+               <Item>'SiteMapEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'Button'</Item>
+               <Item>'SiteMapEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'Button'</Item>
+               <Item>'SiteMapEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'Button'</Item>
+               <Item>'SiteMapEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'SiteMapEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'SiteMapEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'SiteMapEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'SiteMapEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'SiteMapEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'SiteMapEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'SiteMapEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'SiteMapEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'SiteMapEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'SiteMapEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'SiteMapEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'SiteMapEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'SiteMapEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'SiteMapEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'SiteMapEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'SiteMapEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'SiteMapEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'SiteMapEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'SiteMapEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'SiteMapEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'SiteMapEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'SiteMapEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'SiteMapEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'SiteMapEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'SiteMapEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'SiteMapEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'SiteMapEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'SiteMapEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'SiteMapEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'SiteMapEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'SiteMapEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'SiteMapEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'SiteMapEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'MenuItem'</Item>
+               <Item>'SiteMapEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'SplitButton'</Item>
+               <Item>'SiteMapEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'SplitButton'</Item>
+               <Item>'SiteMapEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'SplitButton'</Item>
+               <Item>'SiteMapEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'TextBox'</Item>
+               <Item>'SiteMapEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'TextBox'</Item>
+               <Item>'SiteMapEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="139" />
+               </User>
+              </Notes>
+             </Message>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'SiteMapEditorControl'</Item>
+               <Item>'IComponentConnector.Connect(int, object)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="135" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#System.Windows.Markup.IStyleConnector.Connect(System.Int32,System.Object)">
+            <Messages>
+             <Message TypeName="DoNotCastUnnecessarily" Category="Microsoft.Performance" CheckId="CA1800" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'Style'</Item>
+               <Item>'SiteMapEditorControl.IStyleConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="139" />
+               </User>
+              </Notes>
+             </Message>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'SiteMapEditorControl'</Item>
+               <Item>'IStyleConnector.Connect(int, object)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="135" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#txtTitle">
+            <Messages>
+             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'SiteMapEditorControl.txtTitle'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="96" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="TokenEditorControl">
+          <Members>
+           <Member Name="#btnAdd">
+            <Messages>
+             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'TokenEditorControl.btnAdd'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="96" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#btnCopy">
+            <Messages>
+             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'TokenEditorControl.btnCopy'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="96" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#btnDelete">
+            <Messages>
+             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'TokenEditorControl.btnDelete'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="96" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#btnHelp">
+            <Messages>
+             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'TokenEditorControl.btnHelp'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="96" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#System.Windows.Markup.IComponentConnector.Connect(System.Int32,System.Object)">
+            <Messages>
+             <Message TypeName="DoNotCastUnnecessarily" Category="Microsoft.Performance" CheckId="CA1800" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'Button'</Item>
+               <Item>'TokenEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'Button'</Item>
+               <Item>'TokenEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'Button'</Item>
+               <Item>'TokenEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'Button'</Item>
+               <Item>'TokenEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'TokenEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'TokenEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'TokenEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'TokenEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'CommandBinding'</Item>
+               <Item>'TokenEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'TextBox'</Item>
+               <Item>'TokenEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'TextBox'</Item>
+               <Item>'TokenEditorControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="139" />
+               </User>
+              </Notes>
+             </Message>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'TokenEditorControl'</Item>
+               <Item>'IComponentConnector.Connect(int, object)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="135" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+      </Namespaces>
+     </Module>
+    </Modules>
+   </Target>
    <Target Name="$(ProjectDir)/SandcastleBuilderGUI/bin/Debug/SandcastleBuilderGUI.exe">
     <Modules>
      <Module Name="sandcastlebuildergui.exe">
@@ -3261,25 +5588,6 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="LaunchMSHelpViewerDlg">
-          <Members>
-           <Member Name="#LaunchMSHelpViewerDlg_Load(System.Object,System.EventArgs)">
-            <Messages>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2010-07-07 20:02:02Z">
-              <Issue>
-               <Item>'LaunchMSHelpViewerDlg.LaunchMSHelpViewerDlg_Load(object, EventArgs)'</Item>
-               <Item>'Exception'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="102" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
          <Type Name="MainForm">
           <Members>
            <Member Name="#KillWebServer()">
@@ -3292,6 +5600,21 @@
               <Notes>
                <User Name="EWOODRUFF">
                 <Note Id="106" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#MainForm_Activated(System.Object,System.EventArgs)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'MainForm.MainForm_Activated(object, EventArgs)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="126" />
                </User>
               </Notes>
              </Message>
@@ -3431,12 +5754,6 @@
               <Issue Name="Local">
                <Item>'content'</Item>
                <Item>'OutputWindow'</Item>
-               <Item>'MainForm.miUserPreferences_Click(object, EventArgs)'</Item>
-               <Item>castclass</Item>
-              </Issue>
-              <Issue Name="Local">
-               <Item>'content'</Item>
-               <Item>'TokenEditorWindow'</Item>
                <Item>'MainForm.miUserPreferences_Click(object, EventArgs)'</Item>
                <Item>castclass</Item>
               </Issue>
@@ -3789,85 +6106,6 @@
              <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2008-09-27 02:21:01Z">
               <Issue>
                <Item>'ContentLayoutWindow.Save()'</Item>
-               <Item>'Exception'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="106" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#templateFile_OnClick(System.Object,System.EventArgs)">
-            <Messages>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2008-09-27 02:21:01Z">
-              <Issue>
-               <Item>'ContentLayoutWindow.templateFile_OnClick(object, EventArgs)'</Item>
-               <Item>'Exception'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="106" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#tsbHelp_Click(System.Object,System.EventArgs)">
-            <Messages>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2008-09-27 02:21:01Z">
-              <Issue>
-               <Item>'ContentLayoutWindow.tsbHelp_Click(object, EventArgs)'</Item>
-               <Item>'Exception'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="106" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="EntityReferenceWindow">
-          <Members>
-           <Member Name="#IndexComments()">
-            <Messages>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2008-09-27 02:21:01Z">
-              <Issue>
-               <Item>'EntityReferenceWindow.IndexComments()'</Item>
-               <Item>'Exception'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="106" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#LoadCodeSnippetInfo()">
-            <Messages>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2008-09-27 02:21:01Z">
-              <Issue>
-               <Item>'EntityReferenceWindow.LoadCodeSnippetInfo()'</Item>
-               <Item>'Exception'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="106" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#LoadTokenInfo()">
-            <Messages>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2008-09-27 02:21:01Z">
-              <Issue>
-               <Item>'EntityReferenceWindow.LoadTokenInfo()'</Item>
                <Item>'Exception'</Item>
               </Issue>
               <Notes>
@@ -4272,6 +6510,25 @@
            </Member>
           </Members>
          </Type>
+         <Type Name="SelectFileTemplateDlg">
+          <Members>
+           <Member Name="#btnAddTopic_Click(System.Object,System.EventArgs)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'SelectFileTemplateDlg.btnAddTopic_Click(object, EventArgs)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="126" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
          <Type Name="SiteMapEditorWindow">
           <Members>
            <Member Name="#Save()">
@@ -4279,21 +6536,6 @@
              <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2008-09-27 02:21:01Z">
               <Issue>
                <Item>'SiteMapEditorWindow.Save()'</Item>
-               <Item>'Exception'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="106" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#tsbHelp_Click(System.Object,System.EventArgs)">
-            <Messages>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2008-09-27 02:21:01Z">
-              <Issue>
-               <Item>'SiteMapEditorWindow.tsbHelp_Click(object, EventArgs)'</Item>
                <Item>'Exception'</Item>
               </Issue>
               <Notes>
@@ -4430,6 +6672,25 @@
             </Notes>
            </Message>
           </Messages>
+         </Type>
+         <Type Name="LaunchMSHelpViewerDlg">
+          <Members>
+           <Member Name="#LaunchMSHelpViewerDlg_Load(System.Object,System.EventArgs)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2011-12-31 23:40:53Z">
+              <Issue>
+               <Item>'LaunchMSHelpViewerDlg.LaunchMSHelpViewerDlg_Load(object, EventArgs)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="126" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
          </Type>
          <Type Name="UnsafeNativeMethods">
           <Members>
@@ -5351,6 +7612,66 @@
      </Module>
     </Modules>
    </Target>
+   <Target Name="$(ProjectDir)/SHFBProjectLauncher/bin/Debug/SHFBProjectLauncher.exe">
+    <Modules>
+     <Module Name="shfbprojectlauncher.exe">
+      <Messages>
+       <Message Id="SHFB" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Status="Excluded" Created="2012-01-01 02:17:49Z">
+        <Issue Name="Assembly">
+         <Item>SHFB</Item>
+         <Item>'SHFBProjectLauncher.exe'</Item>
+         <Item>Shfb</Item>
+        </Issue>
+        <Notes>
+         <User Name="EWOODRUFF">
+          <Note Id="141" />
+         </User>
+        </Notes>
+       </Message>
+      </Messages>
+      <Namespaces>
+       <Namespace Name="SandcastleBuilder.ProjectLauncher">
+        <Types>
+         <Type Name="StartUp">
+          <Members>
+           <Member Name="#LaunchWithPreferredApplication()">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2012-01-01 02:17:49Z">
+              <Issue>
+               <Item>'StartUp.LaunchWithPreferredApplication()'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="142" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#LaunchWithSelectedApplication(System.Boolean)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2012-01-01 02:17:49Z">
+              <Issue>
+               <Item>'StartUp.LaunchWithSelectedApplication(bool)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="142" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+      </Namespaces>
+     </Module>
+    </Modules>
+   </Target>
   </Targets>
   <Notes>
    <User Name="EWOODRUFF">
@@ -5435,6 +7756,7 @@
     <Note Id="78" Modified="2007-11-05 22:01:36Z">The error is reported</Note>
     <Note Id="79" Modified="2011-03-07 01:03:42Z">Lowercase is preferred here</Note>
     <Note Id="80" Modified="2007-11-05 22:05:17Z">There's nothing to serialize in this class, let the base class handle it.</Note>
+    <Note Id="81" Modified="2011-12-31 23:41:21Z">Okay as is</Note>
     <Note Id="82" Modified="2007-11-05 22:06:12Z">There's nothing to serialize in this class, let the base class handle it.</Note>
     <Note Id="83" Modified="2008-03-24 05:13:47Z">Okay as is</Note>
     <Note Id="84" Modified="2008-09-20 03:09:01Z">Lowercase is preferred</Note>
@@ -5447,10 +7769,13 @@
     <Note Id="91" Modified="2007-12-04 23:51:32Z">Okay as is</Note>
     <Note Id="92" Modified="2008-04-01 21:28:11Z">Leave it for now.  It's only compared internally.</Note>
     <Note Id="93" Modified="2008-01-12 21:29:44Z">Okay as is</Note>
+    <Note Id="94" Modified="2011-12-31 23:41:59Z">These are used via data binding</Note>
     <Note Id="95" Modified="2008-09-20 03:30:58Z">Lowercase is preferred</Note>
+    <Note Id="96" Modified="2011-12-31 23:42:24Z">These are user control fields and are used</Note>
     <Note Id="97" Modified="2008-09-21 00:28:43Z">It's handled another way</Note>
     <Note Id="98" Modified="2008-01-12 21:41:24Z">Okay as is</Note>
     <Note Id="99" Modified="2008-01-12 21:49:18Z">This is an enumerated type</Note>
+    <Note Id="100" Modified="2011-12-31 23:43:23Z">The error is intentionally ignored</Note>
     <Note Id="101" Modified="2008-01-12 22:00:04Z">It relates to what it's for so it's okay</Note>
     <Note Id="102" Modified="2010-07-07 20:02:16Z">The error is reported</Note>
     <Note Id="103" Modified="2008-01-12 22:44:21Z">Not used so probably not worth doing</Note>
@@ -5472,11 +7797,27 @@
     <Note Id="119" Modified="2008-05-28 16:21:38Z">Leave it for now.  It's only compared internally.</Note>
     <Note Id="120" Modified="2008-09-27 02:33:01Z">Lowercase is preferred</Note>
     <Note Id="121" Modified="2010-06-22 21:05:58Z">Okay as is</Note>
+    <Note Id="122" Modified="2011-12-31 23:45:36Z">The error is intentionally ignored</Note>
+    <Note Id="123" Modified="2011-12-31 23:45:56Z">The error is intentionally ignored</Note>
     <Note Id="124" Modified="2010-06-22 21:07:24Z">These are the MSBuild task interface properties and must remain instance-based.</Note>
     <Note Id="125" Modified="2010-06-22 21:08:12Z">Lowercase is preferred</Note>
+    <Note Id="126" Modified="2011-12-31 23:46:28Z">The error is reported</Note>
     <Note Id="127" Modified="2010-07-07 20:02:35Z">Okay as is</Note>
     <Note Id="128" Modified="2010-07-07 20:02:52Z">The parameterless constructor servers no purpose in this case.</Note>
     <Note Id="129" Modified="2010-07-07 20:02:59Z">Lowercase is preferred</Note>
+    <Note Id="130" Modified="2011-12-31 23:46:50Z">Okay as is</Note>
+    <Note Id="131" Modified="2011-12-31 23:47:16Z">This is not intended to be used as a property</Note>
+    <Note Id="132" Modified="2011-12-31 23:48:11Z">WPF controls don't implement IDisposable and doing so poses its own set of problems.  The cancellation token is disposed of when the control's visibility changes which is the most reliable way to handle it.</Note>
+    <Note Id="133" Modified="2011-12-31 23:48:24Z">Okay as is</Note>
+    <Note Id="134" Modified="2011-12-31 23:49:01Z">This is only intended to be used with the given type.</Note>
+    <Note Id="135" Modified="2011-12-31 23:49:45Z">This interface is added by the compiler.</Note>
+    <Note Id="136" Modified="2011-12-31 23:54:18Z">Okay as is</Note>
+    <Note Id="137" Modified="2011-12-31 23:54:36Z">Okay as is</Note>
+    <Note Id="138" Modified="2011-12-31 23:55:03Z">Okay as is</Note>
+    <Note Id="139" Modified="2011-12-31 23:55:29Z">Compiler generated code</Note>
+    <Note Id="140" Modified="2011-12-31 23:55:41Z">Okay as is</Note>
+    <Note Id="141" Modified="2012-01-01 02:18:03Z">Okay as is</Note>
+    <Note Id="142" Modified="2012-01-01 02:18:16Z">The error is reported</Note>
    </User>
   </Notes>
   <Rules>
@@ -5485,6 +7826,9 @@
    </Rule>
    <Rule TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811">
     <Resolution Name="Default">{0} appears to have no upstream public or protected callers.</Resolution>
+   </Rule>
+   <Rule TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823">
+    <Resolution Name="Default">It appears that field {0} is never used or is only ever assigned to. Use this field or remove it.</Resolution>
    </Rule>
    <Rule TypeName="CollectionPropertiesShouldBeReadOnly" Category="Microsoft.Usage" CheckId="CA2227">
     <Resolution Name="Default" />
@@ -5536,6 +7880,7 @@
    <Rule TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709">
     <Resolution Name="Assembly">Correct the casing of '{0}' in assembly name {1} by changing it to '{2}'.</Resolution>
     <Resolution Name="Member">Correct the casing of '{0}' in member name {1} by changing it to '{2}'.</Resolution>
+    <Resolution Name="Namespace">Correct the casing of '{0}' in namespace name '{1}' by changing it to '{2}'.</Resolution>
     <Resolution Name="Type">Correct the casing of '{0}' in type name {1} by changing it to '{2}'.</Resolution>
    </Rule>
    <Rule TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704">
@@ -5555,6 +7900,9 @@
    </Rule>
    <Rule TypeName="ImplementStandardExceptionConstructors" Category="Microsoft.Design" CheckId="CA1032">
     <Resolution Name="MissingConstructor">Add the following constructor to {0}: {1}.</Resolution>
+   </Rule>
+   <Rule TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033">
+    <Resolution Name="Default">Make {0} sealed (a breaking change if this class has previously shipped), implement the method non-explicitly, or implement a new method that exposes the functionality of {1} and is visible to derived classes.</Resolution>
    </Rule>
    <Rule TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822">
     <Resolution Name="Default">The 'this' parameter (or 'Me' in Visual Basic) of {0} is never used. Mark the member as static (or Shared in Visual Basic) or use 'this'/'Me' in the method body or at least one property accessor, if appropriate.</Resolution>
@@ -5579,6 +7927,9 @@
    <Rule TypeName="PassSystemUriObjectsInsteadOfStrings" Category="Microsoft.Usage" CheckId="CA2234">
     <Resolution Name="Default">Modify {0} to call {1} instead of {2}.</Resolution>
    </Rule>
+   <Rule TypeName="PropertyNamesShouldNotMatchGetMethods" Category="Microsoft.Naming" CheckId="CA1721">
+    <Resolution Name="SameType">The property name {0} is confusing given the existence of method {1}. Rename or remove one of these members.</Resolution>
+   </Rule>
    <Rule TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804">
     <Resolution Name="Default">{0} declares a variable, {1}, of type {2}, which is never used or is only assigned to. Use this variable or remove it.</Resolution>
    </Rule>
@@ -5591,6 +7942,9 @@
    <Rule TypeName="UsePreferredTerms" Category="Microsoft.Naming" CheckId="CA1726">
     <Resolution Name="MemberNoAlternate">Replace the term '{0}' in member name {1} with an appropriate alternate or remove it entirely.</Resolution>
     <Resolution Name="TypeNoAlternate">Replace the term '{0}' in type name {1} with an appropriate alternate or remove it entirely.</Resolution>
+   </Rule>
+   <Rule TypeName="UsePropertiesWhereAppropriate" Category="Microsoft.Design" CheckId="CA1024">
+    <Resolution Name="Default">Change {0} to a property if appropriate.</Resolution>
    </Rule>
   </Rules>
  </FxCopReport>

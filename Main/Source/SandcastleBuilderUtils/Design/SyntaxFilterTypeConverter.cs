@@ -2,8 +2,8 @@
 // System  : EWSoftware Design Time Attributes and Editors
 // File    : SyntaxFilterTypeConverter.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/09/2011
-// Note    : Copyright 2009-2011, Eric Woodruff, All rights reserved
+// Updated : 01/03/2012
+// Note    : Copyright 2009-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a type converter that ensures the syntax filter values
@@ -41,7 +41,7 @@ namespace SandcastleBuilder.Utils.Design
         /// This is used to convert the given set of comma-separated syntax
         /// filter IDs to a set of recognized filter IDs.
         /// </summary>
-        /// <param name="filterIds"></param>
+        /// <param name="filterIds">A comma-separated list of filter IDs to convert</param>
         /// <returns>The validated and recognized set of syntax filter IDs.
         /// If possible, the value is condensed to one of a set of combination
         /// values such as None, All, AllButUsage, or Standard.</returns>

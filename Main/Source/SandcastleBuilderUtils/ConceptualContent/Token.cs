@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : Token.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/25/2008
-// Note    : Copyright 2008, Eric Woodruff, All rights reserved
+// Updated : 12/29/2011
+// Note    : Copyright 2008-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class representing a conceptual content token that can
@@ -19,15 +19,13 @@
 // ============================================================================
 // 1.6.0.7  04/24/2008  EFW  Created the code
 // 1.8.0.0  07/25/2008  EFW  Reworked to support new MSBuild project format
+// 1.9.3.3  12/22/2011  EFW  Updated for use with the new token file editor
 //=============================================================================
 
 using System;
 using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Drawing.Design;
-using System.Globalization;
-using System.IO;
-using System.Xml;
 
 namespace SandcastleBuilder.Utils.ConceptualContent
 {
@@ -38,12 +36,13 @@ namespace SandcastleBuilder.Utils.ConceptualContent
     /// <remarks>This class is serializable so that it can be copied to the
     /// clipboard.</remarks>
     [Serializable, DefaultProperty("TokenName")]
-    public class Token
+    public class Token : INotifyPropertyChanged
     {
         #region Private data members
         //=====================================================================
 
         private string tokenName, tokenValue;
+        private bool isSelected;
         #endregion
 
         #region Properties
@@ -52,17 +51,22 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <summary>
         /// This is used to get or set the token name
         /// </summary>
-        [Category("Token"), Description("The name of the token"),
-          DefaultValue(null)]
+        /// <value>If the value null or empty, a new GUID is assigned as the name</value>
+        [Category("Token"), Description("The name of the token"), DefaultValue(null)]
         public string TokenName
         {
             get { return tokenName; }
             set
             {
-                if(value == null || value.Trim().Length == 0)
-                    tokenName = "NoName";
-                else
-                    tokenName = value;
+                if(String.IsNullOrEmpty(value) || value != tokenName)
+                {
+                    if(value == null || value.Trim().Length == 0)
+                        tokenName = Guid.NewGuid().ToString();
+                    else
+                        tokenName = value;
+
+                    this.OnPropertyChanged("TokenName");
+                }
             }
         }
 
@@ -72,13 +76,37 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <value>The value can contain help file builder replacement tags.
         /// These will be replaced at build time with the appropriate project
         /// value.</value>
-        [Category("Token"), Description("The value of the token"),
-          DefaultValue(null),
+        [Category("Token"), Description("The value of the token"), DefaultValue(null),
           Editor(typeof(MultilineStringEditor), typeof(UITypeEditor))]
         public string TokenValue
         {
             get { return tokenValue; }
-            set { tokenValue = value; }
+            set
+            {
+                if(value != tokenValue)
+                {
+                    tokenValue = value;
+                    this.OnPropertyChanged("TokenValue");
+                }
+            }
+        }
+
+        /// <summary>
+        /// This is used to get or set whether or not the entity is selected
+        /// </summary>
+        /// <remarks>Used by the editor for binding in the list box</remarks>
+        [Browsable(false)]
+        public bool IsSelected
+        {
+            get { return isSelected; }
+            set
+            {
+                if(value != isSelected)
+                {
+                    isSelected = value;
+                    this.OnPropertyChanged("IsSelected");
+                }
+            }
         }
         #endregion
 
@@ -103,6 +131,27 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         {
             this.TokenName = name;
             this.TokenValue = value;
+        }
+        #endregion
+
+        #region INotifyPropertyChanged Members
+        //=====================================================================
+
+        /// <summary>
+        /// The property changed event
+        /// </summary>
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <summary>
+        /// This raises the <see cref="PropertyChanged"/> event
+        /// </summary>
+        /// <param name="propertyName">The property name that changed</param>
+        protected void OnPropertyChanged(string propertyName)
+        {
+            var handler = PropertyChanged;
+
+            if(handler != null)
+                handler(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
 

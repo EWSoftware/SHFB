@@ -11,7 +11,7 @@ PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.
 
 //=============================================================================
 // File    : ProjectNode.cs
-// Updated : 04/17/2011
+// Updated : 12/28/2011
 // Modifier: Eric Woodruff  (Eric@EWoodruff.us)
 //
 // This file has been modified to support "Add as Link" and "Show All Files"
@@ -3722,8 +3722,11 @@ namespace Microsoft.VisualStudio.Project
             // Define a set for our build items. The value does not really matter here.
             Dictionary<String, MSBuild.ProjectItem> items = new Dictionary<String, MSBuild.ProjectItem>();
 
+            // !EFW Converted to list.  If a new folder is found and added to the project, it alters
+            // the underlying collection.
+
             // Process Files
-            foreach (MSBuild.ProjectItem item in this.buildProject.Items)
+            foreach (MSBuild.ProjectItem item in this.buildProject.Items.ToList())
             {
                 // Ignore the item if it is a reference or folder
                 if (this.FilterItemTypeToBeAddedToHierarchy(item.ItemType))
@@ -6640,11 +6643,8 @@ namespace Microsoft.VisualStudio.Project
         /// </summary>
         public void RefreshProject()
         {
-            if(this.ShowingAllFiles)
-            {
-                this.ToggleShowAllFiles();
-                this.ToggleShowAllFiles();
-            }
+            this.ToggleShowAllFiles();
+            this.ToggleShowAllFiles();
         }
 
         /// <summary>
@@ -6669,7 +6669,10 @@ namespace Microsoft.VisualStudio.Project
                 }
             }
             else
+            {
+                this.AddMissingProjectMembers();
                 this.AddNonMemberItems();
+            }
 
             return NativeMethods.S_OK;
         }
@@ -6844,6 +6847,62 @@ namespace Microsoft.VisualStudio.Project
                     ErrorHandler.ThrowOnFailure(uiWindow.ExpandItem(this, first.ID, EXPANDFLAGS.EXPF_CollapseFolder));
                 }
             }
+        }
+
+        /// <summary>
+        /// This will scan the project looking for file items that don't exist in the hierarchy.
+        /// If any are found, they are added as proper hierarchy members.
+        /// </summary>
+        /// <remarks>This is similar to <see cref="ProcessFiles"/> but it filters out items
+        /// already in the hierarchy.</remarks>
+        private void AddMissingProjectMembers()
+        {
+            List<String> subitemsKeys = new List<String>();
+            Dictionary<String, MSBuild.ProjectItem> subitems = new Dictionary<String, MSBuild.ProjectItem>();
+            HashSet<string> items = new HashSet<string>();
+            string fullPath;
+
+            foreach(MSBuild.ProjectItem item in this.buildProject.Items.ToList())
+            {
+                // Ignore the item if it is a reference or folder
+                if (this.FilterItemTypeToBeAddedToHierarchy(item.ItemType))
+                    continue;
+
+                // MSBuilds tasks/targets can create items (such as object files), such items are not part
+                // of the project per se, and should not be displayed so ignore those items.
+                if(!this.IsItemTypeFileType(item.ItemType))
+                    continue;
+
+                fullPath = item.EvaluatedInclude;
+
+                if(!Path.IsPathRooted(fullPath))
+                    fullPath = Path.Combine(this.ProjectFolder, fullPath);
+
+                // If the item is already contained do nothing
+                if(items.Contains(item.EvaluatedInclude.ToUpperInvariant()) ||
+                  base.FindChild(fullPath) != null)
+                    continue;
+
+                // Make sure that we do not want to add the item, dependent, or independent twice to
+                // the UI hierarchy.
+                items.Add(item.EvaluatedInclude.ToUpperInvariant());
+
+                string dependentOf = item.GetMetadataValue(ProjectFileConstants.DependentUpon);
+
+                if(!this.CanFileNodesHaveChilds || String.IsNullOrEmpty(dependentOf))
+                    this.AddIndependentFileNode(item);
+                else
+                {
+                    // We will process dependent items later.  Note that we use 2 lists as we want to
+                    // remove elements from the collection as we loop through it.
+                    subitemsKeys.Add(item.EvaluatedInclude);
+                    subitems.Add(item.EvaluatedInclude, item);
+                }
+            }
+
+            // Now process the dependent items
+            if(this.CanFileNodesHaveChilds)
+                this.ProcessDependentFileNodes(subitemsKeys, subitems);
         }
         #endregion
     }

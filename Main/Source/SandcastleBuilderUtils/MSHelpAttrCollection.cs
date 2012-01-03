@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : MSHelpAttrCollection.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/11/2011
+// Updated : 12/18/2011
 // Note    : Copyright 2008-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -259,7 +259,7 @@ namespace SandcastleBuilder.Utils
             if(projectFile == null)
             {
                 isDirty = true;
-                this.OnListChanged(new ListChangedEventArgs(ListChangedType.ItemChanged, -1));
+                this.OnListChanged(new ListChangedEventArgs(ListChangedType.Reset, -1));
             }
         }
 

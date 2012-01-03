@@ -1,0 +1,146 @@
+﻿<UserControl x:Class="SandcastleBuilder.WPF.UserControls.TokenEditorControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:shfbCommands="clr-namespace:SandcastleBuilder.WPF.Commands"
+             xmlns:shfbConceptual="clr-namespace:SandcastleBuilder.Utils.ConceptualContent;assembly=SandcastleBuilder.Utils"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="750" MinWidth="100">
+  <UserControl.BindingGroup>
+    <BindingGroup />
+  </UserControl.BindingGroup>
+  <UserControl.CommandBindings>
+    <CommandBinding Command="shfbCommands:EditorCommands.AddItem" Executed="cmdAddItem_Executed" />
+    <CommandBinding Command="ApplicationCommands.Delete" CanExecute="cmdDelete_CanExecute"
+      Executed="cmdDelete_Executed" />
+    <CommandBinding Command="ApplicationCommands.Help" Executed="cmdHelp_Executed" />
+  </UserControl.CommandBindings>
+  <UserControl.Resources>
+    <BitmapImage x:Key="About" UriSource="../Resources/About.png" />
+    <BitmapImage x:Key="Add" UriSource="../Resources/AddItem.png" />
+    <BitmapImage x:Key="Copy" UriSource="../Resources/Copy.png" />
+    <BitmapImage x:Key="Delete" UriSource="../Resources/Delete.png" />
+
+    <Style TargetType="{x:Type Image}" x:Key="toolbarImageStyle">
+      <Style.Triggers>
+        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type Button}, AncestorLevel=1}, Path=IsEnabled}" Value="False">
+          <Setter Property="Opacity" Value="0.50" />
+        </DataTrigger>
+      </Style.Triggers>
+    </Style>
+  </UserControl.Resources>
+  <UserControl.InputBindings>
+    <KeyBinding Modifiers="Control+Shift" Key="A" Command="shfbCommands:EditorCommands.AddItem" />
+  </UserControl.InputBindings>
+
+  <Grid Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition MinWidth="150" />
+      <ColumnDefinition Width="Auto"/>
+      <ColumnDefinition MinWidth="250" Width="2*"/>
+    </Grid.ColumnDefinitions>
+    <Grid Grid.Column="0">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition />
+      </Grid.RowDefinitions>
+      <ToolBar Grid.Row="0" ToolBarTray.IsLocked="True" Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}"
+        KeyboardNavigation.TabNavigation="Local">
+        <Button Name="btnAdd" ToolTip="Add a new token (Ctrl+Shift+A)" Command="shfbCommands:EditorCommands.AddItem"
+          CommandTarget="{Binding ElementName=lbTokens}">
+          <Image Source="{StaticResource Add}" />
+        </Button>
+        <Separator />
+        <Button Name="btnDelete" ToolTip="Delete the selected token (Delete)"
+          Command="ApplicationCommands.Delete" CommandTarget="{Binding ElementName=lbTokens}">
+          <Image Source="{StaticResource Delete}" Style="{StaticResource toolbarImageStyle}" />
+        </Button>
+        <Separator />
+        <Button Name="btnCopy" ToolTip="Copy as a topic link to the clipboard (Ctrl+C)"
+          Command="ApplicationCommands.Copy" CommandTarget="{Binding ElementName=lbTokens}">
+          <Image Source="{StaticResource Copy}" Style="{StaticResource toolbarImageStyle}" />
+        </Button>
+        <Separator />
+        <Button Name="btnHelp" ToolTip="View help for this editor (F1)" Command="ApplicationCommands.Help"
+          CommandTarget="{Binding ElementName=lbTokens}">
+          <Image Source="{StaticResource About}" />
+        </Button>
+      </ToolBar>
+
+      <Grid Grid.Row="1">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto" />
+          <ColumnDefinition />
+          <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Label Content="_Find" VerticalAlignment="Center" Target="{Binding ElementName=txtFindID}" />
+        <TextBox Grid.Column="1" Name="txtFindID" VerticalAlignment="Center" Margin="3,0"
+          KeyUp="txtFindID_KeyUp" TextChanged="txtFindID_TextChanged" IsReadOnlyCaretVisible="True" />
+        <Button Grid.Column="2" Name="btnGo" Content="_Go" ToolTip="Find the next occurrence" Padding="3"
+          Margin="0,0,3,0" Click="btnGo_Click" />
+      </Grid>
+      <ListBox Grid.Row="2" Name="lbTokens" Margin="3" MouseMove="lbTokens_MouseMove"
+        PreviewMouseLeftButtonDown="lbTokens_PreviewMouseLeftButtonDown">
+        <ListBox.CommandBindings>
+          <CommandBinding Command="ApplicationCommands.Copy" CanExecute="cmdCopy_CanExecute"
+            Executed="cmdCopy_Executed" />
+        </ListBox.CommandBindings>
+        <ListBox.ContextMenu>
+          <ContextMenu>
+            <MenuItem Header="Add New Token" Command="shfbCommands:EditorCommands.AddItem">
+              <MenuItem.Icon>
+                <Image Source="{StaticResource Add}" />
+              </MenuItem.Icon>
+            </MenuItem>
+            <Separator />
+            <MenuItem Header="_Delete" Command="ApplicationCommands.Delete">
+              <MenuItem.Icon>
+                <Image Source="{StaticResource Delete}" />
+              </MenuItem.Icon>
+            </MenuItem>
+            <Separator />
+            <MenuItem Header="C_opy as Token Link" Command="ApplicationCommands.Copy">
+              <MenuItem.Icon>
+                <Image Source="{StaticResource Copy}" />
+              </MenuItem.Icon>
+            </MenuItem>
+          </ContextMenu>
+        </ListBox.ContextMenu>
+        <ListBox.ItemContainerStyle>
+          <Style TargetType="{x:Type ListBoxItem}">
+            <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+          </Style>
+        </ListBox.ItemContainerStyle>
+        <ListBox.Resources>
+          <DataTemplate DataType="{x:Type shfbConceptual:Token}">
+            <TextBlock Text="{Binding TokenName}" />
+          </DataTemplate>
+        </ListBox.Resources>
+      </ListBox>
+    </Grid>
+    <GridSplitter Grid.Column="1" Width="3" VerticalAlignment="Stretch" HorizontalAlignment="Center" ShowsPreview="False" Background="LightGray" />
+    <Grid Grid.Column="2"  Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}"
+      DataContext="{Binding ElementName=lbTokens, Path=SelectedItem}">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition />
+      </Grid.ColumnDefinitions>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition />
+      </Grid.RowDefinitions>
+      <Label Grid.Row="0" Grid.Column="0" Content="_Token ID" HorizontalAlignment="Right"
+        Target="{Binding ElementName=txtTokenName}" />
+      <TextBox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" Name="txtTokenName" Margin="3,3" Width="250"
+        Text="{Binding Path=TokenName, Mode=TwoWay}" />
+      <Label Grid.Row="1" Grid.Column="0" Content="Token _Content" HorizontalAlignment="Left"
+        Target="{Binding ElementName=txtTokenValue}" />
+      <TextBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Name="txtTokenValue" Margin="3,0"
+        Text="{Binding TokenValue, Mode=TwoWay}" AcceptsReturn="True" HorizontalScrollBarVisibility="Visible"
+        VerticalScrollBarVisibility="Visible" />
+    </Grid>
+  </Grid>
+</UserControl>

@@ -5,190 +5,282 @@
     xmlns:xlink="http://www.w3.org/1999/xlink">
 
     <introduction>
-      <para>Adding a site map file to the project and setting its
-<codeInline>BuildAction</codeInline> to <codeInline>SiteMap</codeInline>
-allows you to define the table of contents layout for the additional content
-HTML files. This allows you to specify a layout that is different than the
-physical folder structure of the content files.</para>
+      <para>Adding a site map file to the project and setting its <codeInline>BuildAction</codeInline> to
+<codeInline>SiteMap</codeInline> allows you to define the table of contents layout for the additional content
+HTML files. This allows you to specify a layout that is different than the physical folder structure of the
+content files.</para>
 
-<alert class="warning">
-	<legacyBold>Deprecated</legacyBold>
-	<para>The additional content model of adding extra content to a help file
-has been deprecated.  While it will continue to be supported and will not be
-removed, it will not receive any more features or updates.  Going forward,
-<link xlink:href="3d4edd2d-7883-4508-b9d2-bd7b4d848b0d">conceptual content</link>
-is the preferred method of adding non-reference content to the help file.  The
-additional content feature can still be used to
-<link xlink:href="77d2d693-db84-4ae3-a84c-e33c71f92e9a">override stock content</link>
-and add supporting files to the help file.</para>
-</alert>
+			<alert class="warning">
+				<para><legacyBold>Deprecated</legacyBold></para>
 
-	  <autoOutline lead="none" excludeRelatedTopics="true" />
+				<para>The additional content model of adding extra content to a help file has been deprecated.  While it
+will continue to be supported and will not be removed, it will not receive any more features or updates.  Going
+forward, <link xlink:href="3d4edd2d-7883-4508-b9d2-bd7b4d848b0d">conceptual content</link> is the preferred
+method of adding non-reference content to the help file.  The additional content feature can still be used to
+<link xlink:href="77d2d693-db84-4ae3-a84c-e33c71f92e9a">override stock content</link> and add supporting files
+to the help file.</para>
+			</alert>
+
+			<autoOutline lead="none" excludeRelatedTopics="true" />
     </introduction>
 
 <section address="EditorWindow">
   <title>The Site Map Editor Window</title>
-  <content><para>The structure of the site map file is the same as that used
-for ASP.NET web sites but it only makes use of the <codeInline>title</codeInline>
-and <codeInline>url</codeInline> attributes on the <codeInline>siteMapNode</codeInline>
-elements.  In addition, it adds a custom <codeInline>isDefault</codeInline>
-attribute to the default topic element and a custom <codeInline>splitTOC</codeInline>
-attribute to the topic where the table of contents should be split with API
-topics appearing above it.  For more information on the structure of site map
-files, see the MSDN <externalLink><linkText>ASP.NET Site Maps</linkText>
-<linkUri>http://msdn2.microsoft.com/en-us/library/yy2ykkab.aspx</linkUri>
-<linkTarget>_blank</linkTarget></externalLink> topic.  You can edit the site
-map file from within the help file builder by double-clicking it in the Project
-Explorer window or by selecting the <ui>Open</ui> option from its context menu.
-The site map editor window is shown below.</para>
+  <content>
+		<para>The structure of the site map file is the same as that used for ASP.NET web sites but it only makes use
+of the <codeInline>title</codeInline> and <codeInline>url</codeInline> attributes on the <codeInline>siteMapNode</codeInline>
+elements.  In addition, it adds a custom <codeInline>isDefault</codeInline> attribute to the default topic
+element, a custom <codeInline>splitTOC</codeInline> attribute to the topic where the table of contents should be
+split with API topics appearing below it, and custom <codeInline>isExpanded</codeInline> and
+<codeInline>isSelected</codeInline> attributes to track the expanded/ collapsed and last used topic states for
+the editor.  For more information on the structure of site map files, see the MSDN <externalLink>
+<linkText>ASP.NET Site Maps</linkText><linkUri>http://msdn2.microsoft.com/en-us/library/yy2ykkab.aspx</linkUri>
+<linkTarget>_blank</linkTarget></externalLink> topic.  You can edit the site map file from within the help file
+builder by double-clicking it in the Project Explorer window or by selecting the <ui>Open</ui> option from its
+context menu.  The site map editor window is shown below.</para>
 
-<mediaLink><image xlink:href="SiteMapEditor" placement="center" /></mediaLink>
+		<mediaLink><image xlink:href="SiteMapEditor" placement="center" /></mediaLink>
 
-	<para>The top part of the window shows the table of contents as it is
-currently defined.  Entries can be arranged hierarchically to any number of
-levels.  The bottom part of the form shows the properties for the currently
-selected entry.  You can modify the topic's details at any time.  Changes are
-stored automatically before moving off to another topic in the tree.  Files
-defined in the site map do not have to appear as additional content items in
-the project.  Any files in the site map that are not found in the defined
-additional content items at build time are copied over to the root output
-folder automatically.</para>
+		<para>The left side of the window shows the table of contents as it is currently defined.  Entries can be
+arranged hierarchically to any number of levels.  The right side of the window shows the properties for the
+currently selected entry.  You can modify the topic's details at any time.  Changes are stored automatically
+before moving off to another topic in the tree.  Files defined in the site map do not have to appear as
+additional content items in the project.  Any files in the site map that are not found in the defined additional
+content items at build time are copied over to the root output folder automatically.</para>
 
-	<para>The tree supports drag and drop to re-order the topics.  Simply click
-and hold the left mouse button on a topic and then drag it to its new location.
-When you drop it on a topic, it is inserted immediately after the target item.
-If you hold down the <ui>Shift</ui> key while dropping an item, it will become
-a child of the target item.</para>
+		<para>The <ui>Find</ui> textbox allows you to search for a topic by filename or display name.  Enter some
+text to find and hit Enter or click the <ui>Go</ui> button to start the search.  Hit Enter or click <ui>Go</ui>
+again to find subsequent matches.  Matches are found by doing a case-insensitive search of the topic filename
+and display names.</para>
+		
+		<para>The tree supports drag and drop to re-order the topics.  Simply click and hold the left mouse button
+on a topic and then drag it to its new location.  When you drop it on a topic, it is inserted immediately after
+the target item.  If you hold down the <ui>Shift</ui> key while dropping an item, it will become a child of the
+target item.</para>
 
-<alert class="tip">
-  <para>Dragging a topic from the site map editor and dropping it into an
-editor window containing an HTML file will create a link to the item in the
-topic that is being edited.  When dropped in other file types, the topic's
-title is inserted into the file.</para>
-</alert>
+		<alert class="tip">
+			<para>Dragging a topic from the site map editor and dropping it into an editor window containing an HTML
+file will create a link to the item in the topic that is being edited.</para>
+		</alert>
 
   </content>
 </section>
 
 <section address="Commands">
-  <title>Available Commands</title>
+  <title>Available Options and Commands</title>
   <content>
-	<para>The toolbar above the tree is used to add, delete, and re-order
-the topics.  These options are also available in a context menu accessed by
-right clicking within the tree control.  The commands (from left to right)
-and their associated context menu options perform the following actions:</para>
+		<para>The options that can be modified for a topic appear on the right side of the window and are as follows:</para>
+
+		<definitionTable>
+			<definedTerm>Topic Filename</definedTerm>
+			<definition>
+				<para>This read-only property displays the project file related to the site map entry.  The two buttons
+to the right of the currently associated topic filename let you do the following:</para>
+
+				<list class="bullet">
+					<listItem>
+						<para><legacyBold>Associate Topic</legacyBold> - This button allows you to associate a different
+topic file with a site map file entry or add an association to an empty container node.</para>
+					</listItem>
+				
+					<listItem>
+						<para><legacyBold>Clear Topic Association</legacyBold> - This button allows you to clear the topic
+file associated with a site map file entry converting it into an empty container node.  The node will not
+have a topic associated with it in the compiled help file nor will it display a topic when selected in the table
+of contents.  It simply serves as a container for other topics and must have at least one child topic defined for
+it.</para>
+					</listItem>
+				</list>
+			</definition>
+
+			<definedTerm>Title</definedTerm>
+			<definition>
+				<para>This is used as the title for the topic.  In addition, it will be used as the table of contents
+title.</para>
+			</definition>
+
+			<definedTerm>Use as the default topic</definedTerm>
+			<definition>
+				<para>This will mark the selected topic as the default topic for the help file.  The default topic option
+acts as a toggle.  Check it on a topic to set it as the default.  If another topic was previously marked as the
+default topic, the option is removed from it.  Unchecking it on the same topic turns it off and no topic will be
+selected as the default topic.  In such cases, the root namespaces page will be the default topic for the help
+file.  When set, a green circle icon with a checkmark appears next to the topic in the content layout tree to
+indicate its status.</para>
+			
+				<alert class="note">
+					<para>This option only has an effect on Help 1, Help 2, and Website output.  MS Help Viewer does not
+support site maps or the deprecated additional content model.</para>
+				</alert>
+			</definition>
+
+			<definedTerm>API Content</definedTerm>
+			<definition>
+				<para>This is used to indicate how the API (reference) content for the help file should be inserted
+relative to the selected topic.  The following options are available:</para>
+
+			<list class="bullet">
+				<listItem>
+					<para><legacyBold>None</legacyBold> - This topic will not be used as the API content insertion point.</para>
+				</listItem>
+				<listItem>
+					<para><legacyBold>Insert after this topic</legacyBold> - The API content will be inserted immediately
+after this topic in the table of contents.</para>
+				</listItem>
+			</list>
+
+			<para>This option acts as a toggle.  Select a value other than <legacyBold>None</legacyBold> to make it the
+API content insertion point.  If another topic was previously marked as the API content insertion point, the
+option is removed from it.  An icon will appear next to the topic in the content layout tree to indicate its
+API content insertion point state.  This option can be combined with the default topic option.  If no topic is
+set as the API content insertion point, the API content will be added to the table of contents following the
+standard <link xlink:href="ba42b2c2-985d-46f1-ba4c-3d921edcafe3">content placement rules</link>.</para>
+			</definition>
+			
+		</definitionTable>		
+		
+		<para>The toolbar above the tree is used to perform various actions on the site map file such as adding
+new topics, deleting topics, rearranging them, etc.  These options are also available in a context menu accessed
+by right clicking on a topic in the tree.  The commands (from left to right) and their associated context menu
+options perform the following actions:</para>
 
 <definitionTable>
-  <definedTerm>Mark as Default Topic</definedTerm>
-  <definition>This will mark the selected topic as the default topic for the
-help file.  The default topic option acts as a toggle.  Click it once on a
-topic to set it as the default.  Clicking it again on the same topic turns it
-off and no topic will be selected as the default topic.  In such cases, the
-root namespaces page will be the default topic for the help file.</definition>
+	<definedTerm>Add Sibling Topic</definedTerm>
+	<definition>
+		<para>This will add a new topic at the same level as the currently selected topic.  The sub-options for this
+command allow you to add a new topic file based on a template, add an existing topic file, add all topic files
+from an existing folder, or add an empty container node.</para>
 
-  <definedTerm>Split Table of Contents</definedTerm>
-  <definition>This is used to indicate that the table of contents should be
-split by the API content.  It is only valid on table of contents entries that
-appear at the root level.  All table of contents entries prior to the entry with
-this marker will appear before the API content.  The entry with the marker and
-all entries following it will appear after the API content.</definition>
+		<alert class="note">
+			<para>Adding a topic to the site map file will automatically add its related file to the project if
+it is not already there.  Adding all files from a folder will add all topic files found recursively.  The folder
+structure will be duplicated in the table of contents layout.</para>
 
-  <definedTerm>Move Up</definedTerm>
-  <definition>This will move the selected topic up in the order of topics at
-the same level as the selected topic.  Note that moving a topic will also move
-its sub-topics.  Sub-topics will still remain in their given order below the
-parent topic.</definition>
+			<para>New files added to the project are added in the same location as the currently selected topic.  If
+you want more precise control over file placement, add the new topics via the <ui>Project Explorer</ui> and then
+use the <ui>Add Existing Topic File</ui> option to add them to the site map file.</para>
+		</alert>
+	</definition>
 
-  <definedTerm>Move Down</definedTerm>
-  <definition>This will move the selected topic down in the order of topics at
-the same level as the selected topic.  Note that moving a topic will also move
-its sub-topics.  Sub-topics will still remain in their given order below the
-parent topic.</definition>
+	<definedTerm>Add Child Topic</definedTerm>
+	<definition>
+		<para>This will add a new topic as a child of the currently selected topic.  The sub-options for this command
+allow you to add a new topic file from a template, add an existing topic file, add all topic files from an
+existing folder, or add an empty container node.  The notes from above for sibling topics apply to these commands
+as well.</para>
+	</definition>
 
-  <definedTerm>Add Sibling Topic</definedTerm>
-  <definition><para>This will add a new topic at the same level as the
-currently selected topic.  The sub-options for this command allow you to add a
-new topic file, add an existing topic file, add all topic files from an
-existing folder, or add an empty container node.</para>
+	<definedTerm>Delete</definedTerm>
+	<definition>
+		<para>Delete the selected topic and all of its sub-topics.</para>
 
-<alert class="note">
-  <para>Adding a topic to the site map will automatically add its related file
-to the project if it is not already there.  Adding all files from a folder will
-add all topic files found recursively.  The folder structure will be duplicated
-in the table of contents layout.</para>
-</alert></definition>
+		<alert class="note">
+			<para>Deleting a topic from the site map file will not delete its related file from the project.  Use
+the <ui>Project Explorer</ui> to physically delete the file from the project and the file system.</para>
+		</alert>
+	</definition>
 
-  <definedTerm>Add Child Topic</definedTerm>
-  <definition>This will add a new topic as a child of the currently selected
-topic.  The sub-options for this command allow you to add a new topic file, add
-an existing topic file, add all topic files from an existing folder, or add an
-empty container node.</definition>
+	<definedTerm>Copy as Topic Link</definedTerm>
+	<definition>
+		<para>Copy a link to the topic to the clipboard.  If pasted into an HTML file, an anchor link element is
+inserted that will link to the selected topic.</para>
+	</definition>
 
-  <definedTerm>Delete</definedTerm>
-  <definition><para>Delete the selected topic and all of its sub-topics.</para>
-
-<alert class="note">
-  <para>Deleting a topic from the site map will not delete its related file
-from the project.  Use the <ui>Project Explorer</ui> to physically delete the
-file from the project and the file system.</para>
-</alert></definition>
-
-  <definedTerm>Cut</definedTerm>
-  <definition>Cut the selected topic and its sub-topics to the clipboard.  A
-copy of the topic is made and it is then removed from the tree.</definition>
+	<definedTerm>Cut</definedTerm>
+  <definition>
+		<para>Cut the selected topic and its sub-topics to the clipboard.  A copy of the topic is made and it is then
+removed from the tree.</para>
+	</definition>
 
   <definedTerm>Paste</definedTerm>
-  <definition>If a topic has been cut to the clipboard, you can click the
-<ui>Paste</ui> button to add it to the tree.  If you just click the
-button, the topic is added as a sibling of the currently selected topic
-immediately following it.  If you select the <ui>Paste as Child</ui> sub-option,
-the topic is inserted as a child of the selected topic.</definition>
+  <definition>
+		<para>If a topic has been cut to the clipboard, you can click the <ui>Paste</ui> button to add it to the
+tree.  If you just click the button, the topic is added as a sibling of the currently selected topic immediately
+following it.  If you select the <ui>Paste as Child</ui> sub-option, the topic is inserted as a child of the
+selected topic.</para>
+	</definition>
 
   <definedTerm>Edit File</definedTerm>
-  <definition>Edit the selected content file.  Double-clicking a topic in the
-tree will also open it for editing.</definition>
+  <definition>
+		<para>Edit the selected content file.  Double-clicking a topic in the tree will also open it for editing.</para>
+	</definition>
 
-</definitionTable>
+	<definedTerm>Move Up</definedTerm>
+	<definition>
+		<para>This will move the selected topic up in the order of topics at the same level as the selected topic.
+Note that moving a topic will also move its sub-topics.  Sub-topics will still remain in their given order below
+the parent topic.</para>
+	</definition>
 
-	<para>The context menu for topics also contains the following additional
-options:</para>
+	<definedTerm>Move Down</definedTerm>
+	<definition>
+		<para>This will move the selected topic down in the order of topics at the same level as the selected topic.
+Note that moving a topic will also move its sub-topics.  Sub-topics will still remain in their given order below
+the parent topic.</para>
+	</definition>
 
-<definitionTable>
-  <definedTerm>Copy as Topic Link</definedTerm>
-  <definition>Copy a link to the topic to the clipboard.  If pasted into an
-HTML file, an anchor element is inserted that will link to the selected topic.
-If pasted into any other file type, the topic's title is pasted into the file.</definition>
+	<definedTerm>Sort Topics</definedTerm>
+	<definition>
+		<para>Sort the topics alphabetically by title within the currently selected topic's group.</para>
+	</definition>
 
-  <definedTerm>Sort Topics</definedTerm>
-  <definition>Sort the topics alphabetically by title within the currently
-selected topic's group.</definition>
+	<definedTerm>Expand/Collapse Options</definedTerm>
+	<definition>
+		<para>This command contains a set of options that lets you expand or collapse all topics in the tree or just
+the sub-topics for the selected topic.  When the file is saved, the expanded/collapsed state is saved along with
+the last selected topic making it easy to return to the spot you stopped editing the file when it was last
+opened.  This information is also used by the <ui>Entity References Window</ui> to make it easy to find the
+current topic when using it to insert topic references into other topic files.</para>
+	</definition>
 
-</definitionTable>
+	<definedTerm>Help</definedTerm>
+	<definition>
+		<para>Open this help topic in the help file.</para>
+	</definition>
+</definitionTable>	
   </content>
 </section>
 
 <section address="Shortcuts">
   <title>Keyboard Shortcuts</title>
   <content>
-	<para>The following keyboard shortcuts can also be used in the content list to
-execute the various commands:</para>
+	<para>The following keyboard shortcuts can also be used in the content tree to execute the various commands:</para>
 
-<list class="bullet">
-    <listItem><ui>Context Menu Key</ui> - Display the context menu.</listItem>
-    <listItem><ui>Delete</ui> - Delete the selected topic.</listItem>
-    <listItem><ui>Ctrl+U</ui> - Move the selected topic up within its group.</listItem>
-    <listItem><ui>Ctrl+D</ui> - Move the selected topic down within its group.</listItem>
-    <listItem><ui>Ctrl+X</ui> or <ui>Shift+Delete</ui> - Cut the selected topic
-to the clipboard.</listItem>
-    <listItem><ui>Ctrl+V</ui> or <ui>Shift+Insert</ui> - Paste the topic on the clipboard as a sibling of the
-selected topic.</listItem>
-    <listItem><ui>Ctrl+Alt+V</ui> or <ui>Shift+Alt+Insert</ui> - Paste the
-topic on the clipboard as a child of the selected topic.</listItem>
-    <listItem><ui>Ctrl+C</ui> - Copy a link to the selected topic to the
-clipboard.  Performing a paste operation in a text editor window will insert a
-link to the copied topic.</listItem>
-    <listItem><ui>Ctrl+E</ui> - Edit the selected topic.</listItem>
-</list>
+	<list class="bullet">
+    <listItem>
+			<para><ui>Context Menu Key</ui> - Display the context menu.</para>
+		</listItem>
+    <listItem>
+			<para><ui>Delete</ui> - Delete the selected topic.</para>
+		</listItem>
+    <listItem>
+			<para><ui>Ctrl+Up</ui> - Move the selected topic up within its group.</para>
+		</listItem>
+    <listItem>
+			<para><ui>Ctrl+Down</ui> - Move the selected topic down within its group.</para>
+		</listItem>
+    <listItem>
+			<para><ui>Ctrl+C</ui> - Copy a link to the selected topic to the clipboard.  Performing a paste operation
+in a text editor window will insert an anchor link to the copied topic.</para>
+		</listItem>
+    <listItem>
+			<para><ui>Ctrl+X</ui> or <ui>Shift+Delete</ui> - Cut the selected topic to the clipboard.</para>
+		</listItem>
+    <listItem>
+			<para><ui>Ctrl+V</ui> or <ui>Shift+Insert</ui> - Paste the topic on the clipboard as a sibling of the
+selected topic.</para>
+		</listItem>
+    <listItem>
+			<para><ui>Ctrl+Shift+V</ui> or <ui>Ctrl+Shift+Insert</ui> - Paste the topic on the clipboard as a child of
+the selected topic.</para>
+		</listItem>
+    <listItem>
+			<para><ui>Ctrl+E</ui> - Edit the selected topic.</para>
+		</listItem>
+		<listItem>
+			<para><ui>Ctrl+Shift+T</ui> - Sort the topics at the same level as the selected topic alphabetically.</para>
+		</listItem>
+	</list>
 
   </content>
 </section>

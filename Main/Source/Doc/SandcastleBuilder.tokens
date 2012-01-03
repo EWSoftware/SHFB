@@ -42,7 +42,7 @@ information about the files and how to translate them.  Thanks!</ddue:para>
 </ddue:alert></item>
   <item id="XMLCommentsGuide"><ddue:externalLink xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5">
     <ddue:linkText>XML Documentation Comments Guide</ddue:linkText>
-    <ddue:linkUri>http://www.dynicity.com/Products/XMLDocComments.aspx</ddue:linkUri>
+    <ddue:linkUri>http://www.EWoodruff.us/Downloads/XMLDocsGuide.pdf</ddue:linkUri>
     <ddue:linkTarget>_blank</ddue:linkTarget>
 </ddue:externalLink></item>
 </content>

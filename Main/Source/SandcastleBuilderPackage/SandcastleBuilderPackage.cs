@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SandcastleBuilderPackage.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/30/2011
+// Updated : 12/31/2011
 // Note    : Copyright 2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -18,30 +18,28 @@
 // Version     Date     Who  Comments
 // ============================================================================
 // 1.9.3.0  03/18/2011  EFW  Created the code
+// 1.9.3.3  12/11/2011  EFW  Added support for Entity References tool window
+// 1.9.3.3  12/26/2011  EFW  Added support for the SHFB file editors
 //=============================================================================
 
 using System;
-using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Windows.Forms;
-using ExecProcess = System.Diagnostics.Process;
 
 using EnvDTE;
 
-using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
 
 using SandcastleBuilder.MicrosoftHelpViewer;
 using SandcastleBuilder.Package.Editors;
 using SandcastleBuilder.Package.Nodes;
 using SandcastleBuilder.Package.PropertyPages;
 using SandcastleBuilder.Utils;
-using SandcastleBuilder.Utils.Design;
+using SHFBUtility = SandcastleBuilder.Utils.Utility;
 
 namespace SandcastleBuilder.Package
 {
@@ -94,16 +92,16 @@ namespace SandcastleBuilder.Package
     [ProvideObject(typeof(UserDefinedPropertiesPageControl), RegisterUsing = RegistrationMethod.CodeBase)]
     [ProvideObject(typeof(VisibilityPropertiesPageControl), RegisterUsing = RegistrationMethod.CodeBase)]
     // Provide custom file editors.  As above, a non-existent template path is used.
-    [ProvideEditorExtension(typeof(PlaceHolderEditorFactory), ".sitemap", 50,
-      ProjectGuid = GuidList.guidSandcastleBuilderProjectFactoryString, NameResourceID = 119,
-      TemplateDir = @".\NullPath")]
-    [ProvideEditorExtension(typeof(PlaceHolderEditorFactory), ".content", 50,
+    [ProvideEditorExtension(typeof(ContentLayoutEditorFactory), ".content", 50,
       ProjectGuid = GuidList.guidSandcastleBuilderProjectFactoryString, NameResourceID = 129,
       TemplateDir = @".\NullPath")]
-    [ProvideEditorExtension(typeof(PlaceHolderEditorFactory), ".items", 50,
+    [ProvideEditorExtension(typeof(ResourceItemEditorFactory), ".items", 50,
       ProjectGuid = GuidList.guidSandcastleBuilderProjectFactoryString, NameResourceID = 133,
       TemplateDir = @".\NullPath")]
-    [ProvideEditorExtension(typeof(PlaceHolderEditorFactory), ".tokens", 50,
+    [ProvideEditorExtension(typeof(SiteMapEditorFactory), ".sitemap", 50,
+      ProjectGuid = GuidList.guidSandcastleBuilderProjectFactoryString, NameResourceID = 119,
+      TemplateDir = @".\NullPath")]
+    [ProvideEditorExtension(typeof(TokenEditorFactory), ".tokens", 50,
       ProjectGuid = GuidList.guidSandcastleBuilderProjectFactoryString, NameResourceID = 135,
       TemplateDir = @".\NullPath")]
     public sealed class SandcastleBuilderPackage : PackageBase
@@ -148,7 +146,7 @@ namespace SandcastleBuilder.Package
         /// This returns a <see cref="SandcastleBuilderProjectNode"/> instance for the
         /// current project if it is one or null if not.
         /// </summary>
-        public SandcastleBuilderProjectNode CurrentProjectNode
+        public static SandcastleBuilderProjectNode CurrentProjectNode
         {
             get
             {
@@ -175,11 +173,11 @@ namespace SandcastleBuilder.Package
         /// current project if it is one or null if not
         /// </summary>
         /// <value>The caller should not dispose of the project</value>
-        public SandcastleProject CurrentSandcastleProject
+        public static SandcastleProject CurrentSandcastleProject
         {
             get
             {
-                SandcastleBuilderProjectNode pn = this.CurrentProjectNode;
+                var pn = CurrentProjectNode;
 
                 if(pn != null)
                     return pn.SandcastleProject;
@@ -249,9 +247,11 @@ namespace SandcastleBuilder.Package
             // Register the project factory
             this.RegisterProjectFactory(new SandcastleBuilderProjectFactory(this));
 
-            // Register the place holder editor factory.  This will eventually be replaced by editor factories
-            // for each of the custom file types (.content, .tokens, .items, and .sitemap).
-            base.RegisterEditorFactory(new PlaceHolderEditorFactory());
+            // Register the SHFB file editor factories
+            base.RegisterEditorFactory(new ContentLayoutEditorFactory());
+            base.RegisterEditorFactory(new ResourceItemEditorFactory());
+            base.RegisterEditorFactory(new SiteMapEditorFactory());
+            base.RegisterEditorFactory(new TokenEditorFactory());
 
             // Create the update solution event listener for build completed events
             buildCompletedListener = new BuildCompletedEventListener(this);
@@ -266,8 +266,9 @@ namespace SandcastleBuilder.Package
         /// </summary>
         /// <param name="command">The command object</param>
         /// <param name="format">The help file format</param>
-        private void SetViewHelpCommandState(OleMenuCommand command, HelpFileFormat? format)
+        private static void SetViewHelpCommandState(OleMenuCommand command, HelpFileFormat? format)
         {
+            Array activeProjects = null;
             DTE dte = Utility.GetServiceFromPackage<DTE, DTE>(false);
             bool visible = false, enabled = false;
 
@@ -284,7 +285,15 @@ namespace SandcastleBuilder.Package
                     // Check the active project for the specified help format if visible
                     if(visible)
                     {
-                        Array activeProjects = dte.ActiveSolutionProjects as Array;
+                        try
+                        {
+                            activeProjects = dte.ActiveSolutionProjects as Array;
+                        }
+                        catch
+                        {
+                            // The above can throw an exception while the project is loading which
+                            // we should ignore.
+                        }
 
                         if(activeProjects != null && activeProjects.Length > 0)
                         {
@@ -357,7 +366,7 @@ namespace SandcastleBuilder.Package
 
             if(project == null)
             {
-                project = this.CurrentSandcastleProject;
+                project = CurrentSandcastleProject;
 
                 if(project == null)
                     return;
@@ -433,7 +442,7 @@ namespace SandcastleBuilder.Package
         /// <param name="e">The event arguments</param>
         protected override void ViewHelpFileQueryStatusHandler(object sender, EventArgs e)
         {
-            this.SetViewHelpCommandState((OleMenuCommand)sender, null);
+            SetViewHelpCommandState((OleMenuCommand)sender, null);
         }
 
         /// <summary>
@@ -443,7 +452,7 @@ namespace SandcastleBuilder.Package
         /// <param name="e">The event arguments</param>
         protected override void ViewHelpFileExecuteHandler(object sender, EventArgs e)
         {
-            this.ViewBuiltHelpFile(this.CurrentProjectNode);
+            this.ViewBuiltHelpFile(CurrentProjectNode);
         }
 
         /// <summary>
@@ -453,7 +462,7 @@ namespace SandcastleBuilder.Package
         /// <param name="e">The event arguments</param>
         protected override void ViewHtmlHelpQueryStatusHandler(object sender, EventArgs e)
         {
-            this.SetViewHelpCommandState((OleMenuCommand)sender, HelpFileFormat.HtmlHelp1);
+            SetViewHelpCommandState((OleMenuCommand)sender, HelpFileFormat.HtmlHelp1);
         }
 
         /// <summary>
@@ -473,7 +482,7 @@ namespace SandcastleBuilder.Package
         /// <param name="e">The event arguments</param>
         protected override void ViewHxSHelpQueryStatusHandler(object sender, EventArgs e)
         {
-            this.SetViewHelpCommandState((OleMenuCommand)sender, HelpFileFormat.MSHelp2);
+            SetViewHelpCommandState((OleMenuCommand)sender, HelpFileFormat.MSHelp2);
         }
 
         /// <summary>
@@ -493,7 +502,7 @@ namespace SandcastleBuilder.Package
         /// <param name="e">The event arguments</param>
         protected override void ViewMshcHelpQueryStatusHandler(object sender, EventArgs e)
         {
-            this.SetViewHelpCommandState((OleMenuCommand)sender, HelpFileFormat.MSHelpViewer);
+            SetViewHelpCommandState((OleMenuCommand)sender, HelpFileFormat.MSHelpViewer);
         }
 
         /// <summary>
@@ -504,7 +513,7 @@ namespace SandcastleBuilder.Package
         /// <param name="e">The event arguments</param>
         protected override void ViewMshcHelpExecuteHandler(object sender, EventArgs e)
         {
-            SandcastleProject project = this.CurrentSandcastleProject;
+            SandcastleProject project = CurrentSandcastleProject;
 
             var options = this.GeneralOptions;
 
@@ -522,7 +531,7 @@ namespace SandcastleBuilder.Package
         /// <param name="e">The event arguments</param>
         protected override void LaunchHelpLibMgrQueryStatusHandler(object sender, EventArgs e)
         {
-            this.SetViewHelpCommandState((OleMenuCommand)sender, null);
+            SetViewHelpCommandState((OleMenuCommand)sender, null);
         }
 
         /// <summary>
@@ -535,7 +544,7 @@ namespace SandcastleBuilder.Package
         {
             try
             {
-                SandcastleProject project = this.CurrentSandcastleProject;
+                SandcastleProject project = CurrentSandcastleProject;
 
                 if(project != null)
                 {
@@ -561,7 +570,7 @@ namespace SandcastleBuilder.Package
         /// <param name="e">The event arguments</param>
         protected override void ViewAspNetWebsiteQueryStatusHandler(object sender, EventArgs e)
         {
-            this.SetViewHelpCommandState((OleMenuCommand)sender, HelpFileFormat.Website);
+            SetViewHelpCommandState((OleMenuCommand)sender, HelpFileFormat.Website);
         }
 
         /// <summary>
@@ -571,7 +580,7 @@ namespace SandcastleBuilder.Package
         /// <param name="e">The event arguments</param>
         protected override void ViewAspNetWebsiteExecuteHandler(object sender, EventArgs e)
         {
-            SandcastleBuilderProjectNode pn = this.CurrentProjectNode;
+            var pn = CurrentProjectNode;
 
             if(pn != null)
                 Utility.OpenUrl(pn.StartWebServerInstance());
@@ -584,7 +593,7 @@ namespace SandcastleBuilder.Package
         /// <param name="e">The event arguments</param>
         protected override void ViewHtmlWebsiteQueryStatusHandler(object sender, EventArgs e)
         {
-            this.SetViewHelpCommandState((OleMenuCommand)sender, HelpFileFormat.Website);
+            SetViewHelpCommandState((OleMenuCommand)sender, HelpFileFormat.Website);
         }
 
         /// <summary>
@@ -604,7 +613,7 @@ namespace SandcastleBuilder.Package
         /// <param name="e">The event arguments</param>
         protected override void ViewBuildLogQueryStatusHandler(object sender, EventArgs e)
         {
-            this.SetViewHelpCommandState((OleMenuCommand)sender, null);
+            SetViewHelpCommandState((OleMenuCommand)sender, null);
         }
 
         /// <summary>
@@ -614,8 +623,30 @@ namespace SandcastleBuilder.Package
         /// <param name="e">The event arguments</param>
         protected override void ViewBuildLogExecuteHandler(object sender, EventArgs e)
         {
-            if(this.CurrentProjectNode != null)
-                this.CurrentProjectNode.OpenBuildLogToolWindow();
+            var pn = CurrentProjectNode;
+
+            if(pn != null)
+                pn.OpenBuildLogToolWindow();
+        }
+        #endregion
+
+        #region Tool window event handlers
+        //=====================================================================
+
+        /// <summary>
+        /// Show the Entity References tool window
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event arguments</param>
+        protected override void EntityReferencesWindowExecuteHandler(object sender, EventArgs e)
+        {
+            var window = this.FindToolWindow(typeof(ToolWindows.EntityReferencesToolWindow), 0, true);
+
+            if(window == null || window.Frame == null)
+                throw new NotSupportedException("Unable to create Entity References tool window");
+
+            var windowFrame = (IVsWindowFrame)window.Frame;
+            Microsoft.VisualStudio.ErrorHandler.ThrowOnFailure(windowFrame.Show());
         }
         #endregion
 
@@ -629,7 +660,7 @@ namespace SandcastleBuilder.Package
         /// <param name="e">The event arguments</param>
         protected override void ViewFaqExecuteHandler(object sender, EventArgs e)
         {
-            Utility.ShowHelpTopic("1aea789d-b226-4b39-b534-4c97c256fac8");
+            SHFBUtility.ShowHelpTopic("1aea789d-b226-4b39-b534-4c97c256fac8");
         }
 
         /// <summary>
@@ -639,7 +670,7 @@ namespace SandcastleBuilder.Package
         /// <param name="e">The event arguments</param>
         protected override void ViewShfbHelpExecuteHandler(object sender, EventArgs e)
         {
-            Utility.ShowHelpTopic("bd1ddb51-1c4f-434f-bb1a-ce2135d3a909");
+            SHFBUtility.ShowHelpTopic("bd1ddb51-1c4f-434f-bb1a-ce2135d3a909");
         }
         #endregion
     }

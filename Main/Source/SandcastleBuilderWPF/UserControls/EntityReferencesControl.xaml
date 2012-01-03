@@ -1,0 +1,137 @@
+﻿<UserControl x:Class="SandcastleBuilder.WPF.UserControls.EntityReferencesControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:shfbWPF="clr-namespace:SandcastleBuilder.WPF"
+             xmlns:shfbBehaviors="clr-namespace:SandcastleBuilder.WPF.Behaviors"
+             mc:Ignorable="d" 
+             d:DesignHeight="400" d:DesignWidth="300" FontSize="11" Name="ucEntityReferences"
+             IsVisibleChanged="ucEntityReferences_IsVisibleChanged">
+  <UserControl.CommandBindings>
+    <CommandBinding Command="ApplicationCommands.Help" Executed="cmdHelp_Executed" />
+    <CommandBinding Command="NavigationCommands.Refresh" Executed="cmdRefresh_Executed" />
+  </UserControl.CommandBindings>
+  <UserControl.Resources>
+    <BitmapImage x:Key="Copy" UriSource="../Resources/Copy.png" />
+    <BitmapImage x:Key="Entity" UriSource="../Resources/Entity.png" />
+    <BitmapImage x:Key="Help" UriSource="../Resources/About.png" />
+    <BitmapImage x:Key="ImageFile" UriSource="../Resources/ImageFile.png" />
+    <BitmapImage x:Key="Refresh" UriSource="../Resources/Refresh.png" />
+    <BitmapImage x:Key="SnippetsFile" UriSource="../Resources/SnippetsFile.png" />
+    <BitmapImage x:Key="TokenFile" UriSource="../Resources/TokenFile.png" />
+
+    <Style TargetType="{x:Type Image}" x:Key="toolbarImageStyle">
+      <Style.Triggers>
+        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type Button}, AncestorLevel=1}, Path=IsEnabled}" Value="False">
+          <Setter Property="Opacity" Value="0.50" />
+        </DataTrigger>
+      </Style.Triggers>
+    </Style>
+  </UserControl.Resources>
+  <Grid Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto"  />
+      <RowDefinition Height="Auto"  />
+      <RowDefinition />
+    </Grid.RowDefinitions>
+    <ToolBar Grid.Row="0" Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" ToolBarTray.IsLocked="True"
+      KeyboardNavigation.TabNavigation="Local">
+      <Button Name="btnRefresh" ToolTip="Refresh the entity list (F5)" Command="NavigationCommands.Refresh"
+        CommandTarget="{Binding ElementName=tvEntities}">
+        <Image Source="{StaticResource Refresh}" />
+      </Button>
+      <Button Name="btnCopy" ToolTip="Copy selected item to clipboard as a link (Ctrl+C)"
+        Command="ApplicationCommands.Copy" CommandTarget="{Binding ElementName=tvEntities}">
+        <Image Source="{StaticResource Copy}" Style="{StaticResource toolbarImageStyle}" />
+      </Button>
+      <Separator />
+      <Label Content="_Type" VerticalAlignment="Center" Target="{Binding ElementName=cboEntityType}"
+        ToolBar.OverflowMode="Never"/>
+      <ComboBox Name="cboEntityType" SelectedIndex="0" MinWidth="110" SelectionChanged="cboEntityType_SelectionChanged"
+        ToolBar.OverflowMode="Never">
+        <ComboBoxItem Content="Tokens" />
+        <ComboBoxItem Content="Images" />
+        <ComboBoxItem Content="Table of Contents" />
+        <ComboBoxItem Content="Code Snippets" />
+        <ComboBoxItem Content="Code Entities" />
+      </ComboBox>
+      <Separator />
+      <Button Name="btnHelp" ToolTip="View help for this tool window (F1)" Command="ApplicationCommands.Help"
+        CommandTarget="{Binding ElementName=tvEntities}">
+        <Image Source="{StaticResource Help}" Style="{StaticResource toolbarImageStyle}" />
+      </Button>
+    </ToolBar>
+    <Grid Grid.Row="1">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition />
+        <ColumnDefinition Width="Auto" />
+      </Grid.ColumnDefinitions>
+      <Label Grid.Column="0" Content="_Find" VerticalAlignment="Center" Target="{Binding ElementName=txtFindName}" />
+      <TextBox Grid.Column="1" Name="txtFindName" VerticalAlignment="Center" Margin="3,0"
+        KeyUp="txtFindName_KeyUp" TextChanged="txtFindName_TextChanged" IsReadOnlyCaretVisible="True" />
+      <Button Grid.Column="2" Name="btnGo" Content="_Go" ToolTip="Find the next occurrence" Padding="3" Click="btnGo_Click" Margin="0,0,3,0" />
+    </Grid>
+    <StackPanel Grid.Row="2">
+      <StackPanel Name="spImageFormats" Margin="3">
+        <TextBlock Text="Insert as:" Margin="0,5" />
+        <RadioButton Content="MAML media link" IsChecked="True" Margin="15, 0, 0, 0" Name="rbMediaLink" />
+        <RadioButton Content="MAML inline media link" Margin="15, 0, 0, 0" Name="rbMediaLinkInline" />
+        <RadioButton Content="MAML external link" Margin="15, 0, 0, 0" Name="rbExternalLink" />
+        <RadioButton Content="HTML image link" Margin="15, 0, 0, 0" Name="rbHtmlImageLink" />
+      </StackPanel>
+      <StackPanel Name="spTocFormats" Margin="3">
+        <TextBlock Text="Insert as:" Margin="0,5" />
+        <RadioButton Content="MAML link" IsChecked="True" Margin="15, 0, 0, 0" Name="rbMamlLink" />
+        <RadioButton Content="HTML anchor link" Margin="15, 0, 0, 0" Name="rbHtmlAnchor" />
+      </StackPanel>
+      <StackPanel Name="spCodeEntityRefFormats" Margin="3">
+        <TextBlock Text="Enter search text or a regular expression above to find matching code entities." TextWrapping="Wrap" />
+        <TextBlock Text="Insert as:" Margin="0,5" />
+        <RadioButton Content="MAML code entity reference" IsChecked="True" Margin="15, 0, 0, 0" Name="rbCodeEntityRef" />
+        <RadioButton Content="XML comments see link"  Margin="15, 0, 0, 0" Name="rbXmlSeeLink" />
+      </StackPanel>
+      <StackPanel Orientation="Horizontal" Name="spIndexingPanel" Margin="3" >
+        <Image Name="imgSpinner" Width="16" Source="../Resources/Spinner.gif" Margin="0, 3, 5, 3" />
+        <TextBlock VerticalAlignment="Center" Text="Indexing comments..." />
+      </StackPanel>
+    </StackPanel>
+    <TreeView Grid.Row="3" Margin="3" Name="tvEntities" MouseMove="tvEntities_MouseMove">
+      <TreeView.CommandBindings>
+        <CommandBinding Command="ApplicationCommands.Copy" Executed="cmdCopy_Executed"
+          CanExecute="cmdCopy_CanExecute" />
+      </TreeView.CommandBindings>
+      <TreeView.ItemContainerStyle>
+        <Style TargetType="{x:Type TreeViewItem}">
+          <Setter Property="shfbBehaviors:TreeViewItemBehavior.IsBroughtIntoViewWhenSelected" Value="True" />
+          <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+          <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+        </Style>
+      </TreeView.ItemContainerStyle>
+      <TreeView.Resources>
+        <HierarchicalDataTemplate ItemsSource="{Binding SubEntities}" DataType="{x:Type shfbWPF:EntityReference}">
+          <StackPanel Orientation="Horizontal">
+            <Image Name="imgEntity" Margin="0,0,3,0" Source="{StaticResource Entity}" />
+            <TextBlock Text="{Binding Label}" ToolTip="{Binding ToolTip}" />
+          </StackPanel>
+          <HierarchicalDataTemplate.Triggers>
+            <DataTrigger  Binding="{Binding EntityType}" Value="CodeEntity">
+              <Setter TargetName="imgEntity" Property="Source" Value="{StaticResource SnippetsFile}" />
+            </DataTrigger>
+            <DataTrigger  Binding="{Binding EntityType}" Value="CodeSnippet">
+              <Setter TargetName="imgEntity" Property="Source" Value="{StaticResource SnippetsFile}" />
+            </DataTrigger>
+            <DataTrigger  Binding="{Binding EntityType}" Value="Image">
+              <Setter TargetName="imgEntity" Property="Source" Value="{StaticResource ImageFile}" />
+            </DataTrigger>
+            <DataTrigger  Binding="{Binding EntityType}" Value="Token">
+              <Setter TargetName="imgEntity" Property="Source" Value="{StaticResource TokenFile}" />
+            </DataTrigger>
+          </HierarchicalDataTemplate.Triggers>
+        </HierarchicalDataTemplate>
+      </TreeView.Resources>
+    </TreeView>
+  </Grid>
+</UserControl>

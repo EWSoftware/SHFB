@@ -1,0 +1,374 @@
+﻿<UserControl x:Class="SandcastleBuilder.WPF.UserControls.SiteMapEditorControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:s="clr-namespace:System;assembly=mscorlib"
+             xmlns:c="clr-namespace:System.Collections;assembly=mscorlib"
+             xmlns:shfbBehaviors="clr-namespace:SandcastleBuilder.WPF.Behaviors"
+             xmlns:shfbCommands="clr-namespace:SandcastleBuilder.WPF.Commands"
+             xmlns:shfbConceptual="clr-namespace:SandcastleBuilder.Utils.ConceptualContent;assembly=SandcastleBuilder.Utils"
+             xmlns:shfbControls="clr-namespace:SandcastleBuilder.WPF.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="750" MinWidth="100">
+  <UserControl.BindingGroup>
+    <BindingGroup />
+  </UserControl.BindingGroup>
+  <UserControl.CommandBindings>
+    <CommandBinding Command="ApplicationCommands.Delete" CanExecute="cmdDelete_CanExecute"
+      Executed="cmdDelete_Executed" />
+    <CommandBinding Command="ApplicationCommands.Help" Executed="cmdHelp_Executed" />
+    <CommandBinding Command="shfbCommands:EditorCommands.AddItem" Executed="cmdAddItem_Executed" />
+    <CommandBinding Command="shfbCommands:EditorCommands.CollapseAll" CanExecute="cmdExpandCollapse_CanExecute"
+      Executed="cmdExpandCollapseAll_Executed" />
+    <CommandBinding Command="shfbCommands:EditorCommands.ExpandAll" CanExecute="cmdExpandCollapse_CanExecute"
+      Executed="cmdExpandCollapseAll_Executed" />
+    <CommandBinding Command="shfbCommands:EditorCommands.CollapseCurrent" CanExecute="cmdExpandCollapse_CanExecute"
+      Executed="cmdExpandCollapseCurrent_Executed" />
+    <CommandBinding Command="shfbCommands:EditorCommands.ExpandCurrent" CanExecute="cmdExpandCollapse_CanExecute"
+      Executed="cmdExpandCollapseCurrent_Executed" />
+    <CommandBinding Command="shfbCommands:EditorCommands.MoveDown" CanExecute="cmdMoveDown_CanExecute"
+      Executed="cmdMoveDown_Executed" />
+    <CommandBinding Command="shfbCommands:EditorCommands.MoveUp" CanExecute="cmdMoveUp_CanExecute"
+      Executed="cmdMoveUp_Executed" />
+    <CommandBinding Command="shfbCommands:EditorCommands.Sort" CanExecute="cmdSort_CanExecute"
+      Executed="cmdSort_Executed" />
+  </UserControl.CommandBindings>
+  <UserControl.Resources>
+    <BitmapImage x:Key="About" UriSource="../Resources/About.png" />
+    <BitmapImage x:Key="AddChildItem" UriSource="../Resources/AddChildItem.png" />
+    <BitmapImage x:Key="AddRootItem" UriSource="../Resources/AddRootItem.png" />
+    <BitmapImage x:Key="Copy" UriSource="../Resources/Copy.png" />
+    <BitmapImage x:Key="Cut" UriSource="../Resources/Cut.png" />
+    <BitmapImage x:Key="DefaultTopic" UriSource="../Resources/DefaultTopic.png" />
+    <BitmapImage x:Key="Delete" UriSource="../Resources/Delete.png" />
+    <BitmapImage x:Key="ExpandCollapse" UriSource="../Resources/ExpandCollapse.png" />
+    <BitmapImage x:Key="NormalTopic" UriSource="../Resources/Entity.png" />
+    <BitmapImage x:Key="InsertApiAfter" UriSource="../Resources/InsertApiAfter.png" />
+    <BitmapImage x:Key="MoveDown" UriSource="../Resources/MoveDown.png" />
+    <BitmapImage x:Key="MoveUp" UriSource="../Resources/MoveUp.png" />
+    <BitmapImage x:Key="PageEdit" UriSource="../Resources/PageEdit.png" />
+    <BitmapImage x:Key="Paste" UriSource="../Resources/Paste.png" />
+    <BitmapImage x:Key="RemoveLink" UriSource="../Resources/RemoveLink.png" />
+    <BitmapImage x:Key="Sort" UriSource="../Resources/Sort.png" />
+
+    <c:ArrayList x:Key="AddFileMenuItems" x:Shared="False">
+      <MenuItem Header="Add Topic From a _Template" Command="shfbCommands:ProjectCommands.AddFromTemplate"
+        CommandTarget="{Binding Path=PlacementTarget, RelativeSource={RelativeSource AncestorType=ContextMenu}}">
+        <MenuItem.Icon>
+          <Image Source="{StaticResource AddChildItem}" />
+        </MenuItem.Icon>
+      </MenuItem>
+      <Separator />
+      <MenuItem Header="Add _Existing Topic File" Command="shfbCommands:ProjectCommands.AddExistingFile"
+        CommandTarget="{Binding Path=PlacementTarget, RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
+      <MenuItem Header="Add All Topics in _Folder" Command="shfbCommands:ProjectCommands.AddAllFromFolder"
+        CommandTarget="{Binding Path=PlacementTarget, RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
+      <Separator />
+      <MenuItem Header="Add Empty _Container Topic" Command="shfbCommands:EditorCommands.AddItem"
+        CommandTarget="{Binding Path=PlacementTarget, RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
+    </c:ArrayList>
+
+    <c:ArrayList x:Key="ExpandCollapseMenuItems" x:Shared="False">
+      <MenuItem Header="_Expand All Topics" Command="shfbCommands:EditorCommands.ExpandAll"
+        CommandTarget="{Binding Path=PlacementTarget, RelativeSource={RelativeSource AncestorType=ContextMenu}}">
+        <MenuItem.Icon>
+          <Image Source="{StaticResource ExpandCollapse}" />
+        </MenuItem.Icon>
+      </MenuItem>
+      <MenuItem Header="_Collapse All Topics" Command="shfbCommands:EditorCommands.CollapseAll"
+        CommandTarget="{Binding Path=PlacementTarget, RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
+      <Separator />
+      <MenuItem Header="Expand _Topic and All Sub-topics" Command="shfbCommands:EditorCommands.ExpandCurrent"
+        CommandTarget="{Binding ElementName=tvContent}" />
+      <MenuItem Header="Collapse Topic and All _Sub-topics" Command="shfbCommands:EditorCommands.CollapseCurrent"
+        CommandTarget="{Binding Path=PlacementTarget, RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
+    </c:ArrayList>
+
+    <Style TargetType="{x:Type Image}" x:Key="toolbarImageStyle">
+      <Style.Triggers>
+        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type Button}, AncestorLevel=1}, Path=IsEnabled}" Value="False">
+          <Setter Property="Opacity" Value="0.50" />
+        </DataTrigger>
+      </Style.Triggers>
+    </Style>
+  </UserControl.Resources>
+
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition />
+    </Grid.RowDefinitions>
+    <ToolBar Grid.Row="0" ToolBarTray.IsLocked="True" Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}"
+      KeyboardNavigation.TabNavigation="Local" TabIndex="12">
+      <shfbControls:SplitButton x:Name="btnAddRootItem" ToolTip="Add a new topic as a sibling of the selected topic"
+          Style="{StaticResource ToolBarSplitButtonStyle}"
+          Image="{StaticResource AddRootItem}"
+          MainButtonCommand="shfbCommands:ProjectCommands.AddFromTemplate"
+          MainButtonCommandTarget="{Binding ElementName=tvContent}">
+        <shfbControls:SplitButton.DropDownContextMenu>
+          <ContextMenu ItemsSource="{DynamicResource AddFileMenuItems}" />
+        </shfbControls:SplitButton.DropDownContextMenu>
+      </shfbControls:SplitButton>
+      <shfbControls:SplitButton x:Name="btnAddChildItem" ToolTip="Add a new topic as a child of the selected topic"
+          Style="{StaticResource ToolBarSplitButtonStyle}"
+          Image="{StaticResource AddChildItem}"
+          MainButtonCommand="shfbCommands:ProjectCommands.AddFromTemplate"
+          MainButtonCommandTarget="{Binding ElementName=tvContent}">
+        <shfbControls:SplitButton.MainButtonCommandParameter>
+          <s:Boolean>True</s:Boolean>
+        </shfbControls:SplitButton.MainButtonCommandParameter>
+        <shfbControls:SplitButton.DropDownContextMenu>
+          <ContextMenu ItemsSource="{DynamicResource AddFileMenuItems}" Opened="AddChildTopic_SubmenuOpened"/>
+        </shfbControls:SplitButton.DropDownContextMenu>
+      </shfbControls:SplitButton>
+      <Separator />
+      <Button Name="btnDelete" ToolTip="Delete the selected topic and all of its children (Delete)"
+          Command="ApplicationCommands.Delete" CommandTarget="{Binding ElementName=tvContent}">
+        <Image Source="{StaticResource Delete}" Style="{StaticResource toolbarImageStyle}" />
+      </Button>
+      <Separator />
+      <Button Name="btnCopy" ToolTip="Copy as a topic link to the clipboard (Ctrl+C)"
+          Command="ApplicationCommands.Copy" CommandTarget="{Binding ElementName=tvContent}">
+        <Image Source="{StaticResource Copy}" Style="{StaticResource toolbarImageStyle}" />
+      </Button>
+      <Separator />
+      <Button Name="btnCut" ToolTip="Cut the selected topic and its children to the clipboard (Ctrl+X)"
+          Command="ApplicationCommands.Cut" CommandTarget="{Binding ElementName=tvContent}">
+        <Image Source="{StaticResource Cut}" Style="{StaticResource toolbarImageStyle}" />
+      </Button>
+      <shfbControls:SplitButton x:Name="btnPaste" ToolTip="Paste topic on clipboard"
+          Style="{StaticResource ToolBarSplitButtonStyle}"
+          Image="{StaticResource Paste}"
+          MainButtonCommand="ApplicationCommands.Paste"
+          MainButtonCommandTarget="{Binding ElementName=tvContent}">
+        <shfbControls:SplitButton.DropDownContextMenu>
+          <ContextMenu>
+            <MenuItem Header="Paste as _Sibling" Command="ApplicationCommands.Paste"
+              CommandTarget="{Binding Path=PlacementTarget, RelativeSource={RelativeSource AncestorType=ContextMenu}}">
+              <MenuItem.Icon>
+                <Image Source="{StaticResource Paste}" />
+              </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Header="Paste as _Child" Command="shfbCommands:EditorCommands.PasteAsChild"
+              CommandTarget="{Binding Path=PlacementTarget, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
+          </ContextMenu>
+        </shfbControls:SplitButton.DropDownContextMenu>
+      </shfbControls:SplitButton>
+      <Separator />
+      <Button Name="btnEditTopic" ToolTip="Edit the selected topic (Ctrl+E)"
+          Command="shfbCommands:EditorCommands.Edit" CommandTarget="{Binding ElementName=tvContent}">
+        <Image Source="{StaticResource PageEdit}" Style="{StaticResource toolbarImageStyle}" />
+      </Button>
+      <Separator />
+      <Button Name="btnMoveUp" ToolTip="Move the selected topic up within its group (Ctrl+Up)"
+          Command="shfbCommands:EditorCommands.MoveUp" CommandTarget="{Binding ElementName=tvContent}">
+        <Image Source="{StaticResource MoveUp}" Style="{StaticResource toolbarImageStyle}" />
+      </Button>
+      <Button Name="btnMoveDown" ToolTip="Move the selected topic down within its group (Ctrl+Down)"
+          Command="shfbCommands:EditorCommands.MoveDown" CommandTarget="{Binding ElementName=tvContent}">
+        <Image Source="{StaticResource MoveDown}" Style="{StaticResource toolbarImageStyle}" />
+      </Button>
+      <Button Name="btnSort" ToolTip="Sort topic and siblings by display title (Ctrl+Shift+T)"
+          Command="shfbCommands:EditorCommands.Sort" CommandTarget="{Binding ElementName=tvContent}">
+        <Image Source="{StaticResource Sort}" Style="{StaticResource toolbarImageStyle}" />
+      </Button>
+      <Separator />
+      <shfbControls:SplitButton x:Name="btnExpandCollapse" ToolTip="Expand/collapse topics"
+          Style="{StaticResource ToolBarSplitButtonStyle}"
+          Image="{StaticResource ExpandCollapse}"
+          MainButtonCommand="shfbCommands:EditorCommands.ExpandAll"
+          MainButtonCommandTarget="{Binding ElementName=tvContent}">
+        <shfbControls:SplitButton.DropDownContextMenu>
+          <ContextMenu ItemsSource="{DynamicResource ExpandCollapseMenuItems}" />
+        </shfbControls:SplitButton.DropDownContextMenu>
+      </shfbControls:SplitButton>
+      <Separator />
+      <Button Name="btnHelp" ToolTip="View help for this editor (F1)" Command="ApplicationCommands.Help"
+          CommandTarget="{Binding ElementName=tvContent}">
+        <Image Source="{StaticResource About}" />
+      </Button>
+    </ToolBar>
+
+    <Grid Grid.Row="1" Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition MinWidth="150" />
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition MinWidth="250" Width="2*"/>
+      </Grid.ColumnDefinitions>
+      <Grid Grid.Column="0">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto"/>
+          </Grid.ColumnDefinitions>
+          <Label Content="_Find" VerticalAlignment="Center" Target="{Binding ElementName=txtFindID}" />
+          <TextBox Grid.Column="1" Name="txtFindID" VerticalAlignment="Center" Margin="3,0"
+          KeyUp="txtFindID_KeyUp" TextChanged="txtFindID_TextChanged" IsReadOnlyCaretVisible="True" TabIndex="1" />
+          <Button Grid.Column="2" Name="btnGo" Content="_Go" ToolTip="Find the next occurrence" Padding="3"
+          Margin="0,0,3,0" Click="btnGo_Click" TabIndex="2" />
+        </Grid>
+        <TreeView Grid.Row="1" Name="tvContent" Margin="3" AllowDrop="True" MouseMove="tvContent_MouseMove"
+        DragOver="tvContent_DragOver" Drop="tvContent_Drop" PreviewMouseLeftButtonDown="tvContent_PreviewMouseLeftButtonDown" TabIndex="3">
+          <TreeView.CommandBindings>
+            <CommandBinding Command="ApplicationCommands.Copy" CanExecute="cmdCopyCut_CanExecute"
+            Executed="cmdCopy_Executed" />
+            <CommandBinding Command="ApplicationCommands.Cut" CanExecute="cmdCopyCut_CanExecute"
+            Executed="cmdCut_Executed" />
+            <CommandBinding Command="shfbCommands:EditorCommands.CollapseAll" Executed="cmdExpandCollapseAll_Executed" />
+            <CommandBinding Command="shfbCommands:EditorCommands.ExpandAll" Executed="cmdExpandCollapseAll_Executed" />
+            <CommandBinding Command="shfbCommands:EditorCommands.CollapseCurrent" Executed="cmdExpandCollapseCurrent_Executed" />
+            <CommandBinding Command="shfbCommands:EditorCommands.ExpandCurrent" Executed="cmdExpandCollapseCurrent_Executed" />
+            <CommandBinding Command="shfbCommands:EditorCommands.MoveUp" CanExecute="cmdMoveUp_CanExecute" 
+            Executed="cmdMoveUp_Executed" />
+            <CommandBinding Command="shfbCommands:EditorCommands.MoveDown" CanExecute="cmdMoveDown_CanExecute" 
+            Executed="cmdMoveDown_Executed" />
+            <CommandBinding Command="ApplicationCommands.Paste" CanExecute="cmdPaste_CanExecute"
+            Executed="cmdPaste_Executed" />
+            <CommandBinding Command="shfbCommands:EditorCommands.PasteAsChild" CanExecute="cmdPaste_CanExecute"
+            Executed="cmdPaste_Executed" />
+          </TreeView.CommandBindings>
+          <TreeView.ContextMenu>
+            <ContextMenu>
+              <MenuItem Name="miAddSiblingTopic" Header="Add _Sibling Topic" ItemsSource="{DynamicResource AddFileMenuItems}">
+                <MenuItem.Icon>
+                  <Image Source="{StaticResource AddRootItem}" />
+                </MenuItem.Icon>
+              </MenuItem>
+              <MenuItem Name="miAddChildTopic" Header="Add _Child Topic" ItemsSource="{DynamicResource AddFileMenuItems}"
+              SubmenuOpened="AddChildTopic_SubmenuOpened">
+                <MenuItem.Icon>
+                  <Image Source="{StaticResource AddChildItem}" />
+                </MenuItem.Icon>
+              </MenuItem>
+              <Separator />
+              <MenuItem Header="_Delete" Command="ApplicationCommands.Delete">
+                <MenuItem.Icon>
+                  <Image Source="{StaticResource Delete}" />
+                </MenuItem.Icon>
+              </MenuItem>
+              <Separator />
+              <MenuItem Header="C_opy as Topic Link" Command="ApplicationCommands.Copy">
+                <MenuItem.Icon>
+                  <Image Source="{StaticResource Copy}" />
+                </MenuItem.Icon>
+              </MenuItem>
+              <Separator />
+              <MenuItem Header="C_ut" Command="ApplicationCommands.Cut">
+                <MenuItem.Icon>
+                  <Image Source="{StaticResource Cut}" />
+                </MenuItem.Icon>
+              </MenuItem>
+              <MenuItem Header="_Paste as Sibling" Command="ApplicationCommands.Paste">
+                <MenuItem.Icon>
+                  <Image Source="{StaticResource Paste}" />
+                </MenuItem.Icon>
+              </MenuItem>
+              <MenuItem Header="Paste as Ch_ild" Command="shfbCommands:EditorCommands.PasteAsChild" />
+              <Separator />
+              <MenuItem Header="_Edit Topic" Command="shfbCommands:EditorCommands.Edit">
+                <MenuItem.Icon>
+                  <Image Source="{StaticResource PageEdit}" />
+                </MenuItem.Icon>
+              </MenuItem>
+              <MenuItem Header="So_rt" Command="shfbCommands:EditorCommands.Sort">
+                <MenuItem.Icon>
+                  <Image Source="{StaticResource Sort}" />
+                </MenuItem.Icon>
+              </MenuItem>
+              <Separator />
+              <MenuItem Header="E_xpand/Collapse" ItemsSource="{DynamicResource ExpandCollapseMenuItems}">
+                <MenuItem.Icon>
+                  <Image Source="{StaticResource ExpandCollapse}" />
+                </MenuItem.Icon>
+              </MenuItem>
+            </ContextMenu>
+          </TreeView.ContextMenu>
+          <TreeView.ItemContainerStyle>
+            <Style TargetType="{x:Type TreeViewItem}">
+              <EventSetter Event="MouseDoubleClick" Handler="tvContent_TreeViewItemMouseDoubleClick" />
+              <EventSetter Event="MouseRightButtonDown" Handler="tvContent_MouseRightButtonDown" />
+              <Setter Property="shfbBehaviors:TreeViewItemBehavior.IsBroughtIntoViewWhenSelected" Value="True" />
+              <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+              <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+            </Style>
+          </TreeView.ItemContainerStyle>
+          <TreeView.Resources>
+            <HierarchicalDataTemplate ItemsSource="{Binding Children}" DataType="{x:Type shfbConceptual:TocEntry}">
+              <StackPanel Orientation="Horizontal">
+                <Image Name="imgNormalTopic" Margin="0,0,3,0" Source="{StaticResource NormalTopic}" />
+                <Image Name="imgDefaultTopic" Margin="0,0,3,0" Source="{StaticResource DefaultTopic}" />
+                <Image Name="imgApiInsertAfter" Margin="0,0,3,0" Source="{StaticResource InsertApiAfter}" />
+                <TextBlock Text="{Binding Title}" ToolTip="{Binding ToolTip}" />
+              </StackPanel>
+              <HierarchicalDataTemplate.Triggers>
+                <DataTrigger  Binding="{Binding IsDefaultTopic}" Value="False">
+                  <Setter TargetName="imgDefaultTopic" Property="Visibility" Value="Collapsed" />
+                </DataTrigger>
+                <DataTrigger  Binding="{Binding ApiParentMode}" Value="None">
+                  <Setter TargetName="imgApiInsertAfter" Property="Visibility" Value="Collapsed" />
+                </DataTrigger>
+              </HierarchicalDataTemplate.Triggers>
+            </HierarchicalDataTemplate>
+          </TreeView.Resources>
+        </TreeView>
+      </Grid>
+      <GridSplitter Grid.Column="1" Width="3" VerticalAlignment="Stretch" HorizontalAlignment="Center" ShowsPreview="False" Background="LightGray" TabIndex="4" />
+      <ScrollViewer Grid.Column="2" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" CanContentScroll="False">
+        <StackPanel>
+          <Border BorderThickness="1" CornerRadius="5" BorderBrush="Black" Margin="5,2" Padding="2">
+            <Expander Header="Topic Properties" Name="expTopicProps" IsExpanded="True"
+            Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
+            DataContext="{Binding ElementName=tvContent, Path=SelectedItem}" ExpandDirection="Down"
+            TabIndex="5" KeyboardNavigation.TabNavigation="Local">
+              <Grid Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="Auto" MinWidth="95"/>
+                  <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                  <RowDefinition />
+                  <RowDefinition />
+                  <RowDefinition />
+                  <RowDefinition />
+                </Grid.RowDefinitions>
+                <Label Content="Topic Filename" HorizontalAlignment="Right" VerticalAlignment="Top"
+                Grid.Column="0" Grid.Row="0" />
+                <Grid Grid.Column="1" Grid.Row="0">
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                  </Grid.ColumnDefinitions>
+                  <TextBox Grid.Column="0" VerticalAlignment="Center" Name="txtTopicFilename" Margin="3,0"
+                  IsReadOnly="True" Text="{Binding Path=SourceFile.PersistablePath, Mode=OneWay}" IsReadOnlyCaretVisible="True" Background="LightGray" TabIndex="6" />
+                  <Button Grid.Column="1" Name="btnAssociateTopic" Content="..." Width="23"
+                  ToolTip="Associate a file with this topic" Click="btnAssociateTopic_Click" TabIndex="7" />
+                  <Button Grid.Column="2" Name="btnClearTopic" ToolTip="Clear the file associated with this topic" Click="btnClearTopic_Click" HorizontalAlignment="Right" Width="22" TabIndex="8">
+                    <Image Source="{StaticResource RemoveLink}" />
+                  </Button>
+                </Grid>
+                <Label Content="_Title" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Column="0"
+                Grid.Row="1" Target="{Binding ElementName=txtTitle}" />
+                <TextBox Grid.Row="1" Grid.Column="1" VerticalAlignment="Top" Name="txtTitle" Margin="3,2,3,0"
+                Text="{Binding Title, Mode=TwoWay}" TabIndex="9" />
+                <CheckBox Grid.Row="2" Grid.Column="1" Content="Use as the de_fault topic" VerticalAlignment="Center"
+                Name="chkDefaultTopic" Margin="3,3" IsChecked="{Binding IsDefaultTopic, Mode=TwoWay}" TabIndex="10" />
+                <Label Content="API Content" HorizontalAlignment="Right" VerticalAlignment="Top"
+                Grid.Column="0" Grid.Row="3" />
+                <ComboBox Grid.Column="1" Grid.Row="3" Margin="3,3" Width="180" HorizontalAlignment="Left"
+               Name="cboApiParentMode" SelectedValuePath="Key" DisplayMemberPath="Value"
+               SelectedValue="{Binding ApiParentMode, Mode=TwoWay}" TabIndex="11" />
+              </Grid>
+            </Expander>
+          </Border>
+        </StackPanel>
+      </ScrollViewer>
+    </Grid>
+  </Grid>
+</UserControl>

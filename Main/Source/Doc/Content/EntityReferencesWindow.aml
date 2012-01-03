@@ -2,68 +2,97 @@
 <topic id="e49eea91-a9ef-4aa5-ad8f-16ebd61b798a" revisionNumber="1">
   <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
     <introduction>
-      <para>The <ui>Entity References</ui> window allows you to insert MAML
-elements into conceptual content topics that represent tokens, images, code
-entities (API members), and code snippets.</para>
+      <para>The <ui>Entity References</ui> window allows you to insert MAML elements into conceptual
+content topics that represent tokens, images, code entities (API members), code snippets, and links to
+other conceptual topics.</para>
     </introduction>
 
 <section>
   <content>
 	<mediaLink><image xlink:href="EntityReferences" placement="center" /></mediaLink>
 
-    <para>The dropdown in the toolbar allows you to select which type of
-reference to insert.  The button to the right of the dropdown allows you to
-refresh the selected references if you make changes to the project such as
-adding a new image or token file.  The <ui>Find</ui> textbox allows you to
-search for an item by ID.  Tokens, images, and code snippets perform a
-case-insensitive search for the entered ID and select it if found.  For code
-entities, a regular expression search is performed using all member IDs found
-in the project's XML comments files and the .NET Framework comments files.  To
-insert a reference from the list into a topic, either double-click it or drag
-and drop it into the topic.  The references that can be inserted are as
-follows:</para>
+	<para>The dropdown in the toolbar allows you to select which type of reference to insert.  The first
+toolbar button, <ui>Refresh</ui>, allows you to refresh the selected references if you make changes to the
+project such as adding a new image or token file.  The refresh option will take into account unsaved changes
+made to open token, content layout, and site map files in the environment so that current information is
+always available without having to save your changes frequently.  The second toolbar button, <ui>Copy</ui>,
+will copy the currently selected entity to the clipboard in the selected format ready for pasting into a
+topic file.  The <ui>Help</ui> button at the end of the toolbar will bring up this help topic.</para>
+
+	<para>The <ui>Find</ui> textbox allows you to search for an item by ID or display text.  Tokens, images,
+code snippets, and table of contents types perform a case-insensitive search for the entered text anywhere
+within the entity's ID or display title value.  All items except the table of contents entities show their
+ID in the entity references tool window.  Table of contents items show their display title but the search
+will look at their ID for a match too.  For code entities, a regular expression search is performed using
+the entered text to match all member IDs found in the project's XML comments files and the .NET Framework
+comments files.  Hit Enter or click the <ui>Go</ui> button to start the search.  Hit Enter or click
+<ui>Go</ui> again to find subsequent matches.</para>
+
+	<para>To insert a reference from the list into a topic, either drag and drop it into the topic or use the
+<ui>Copy</ui> option (Ctrl+C) to copy it to the clipboard and then paste it into the topic.  The references
+that can be inserted are as follows:</para>
 
 <definitionTable>
   <definedTerm>Tokens</definedTerm>
-  <definition>When this is selected, a list of all tokens grouped by their
-containing token file is shown.  In order to be listed, the file must have a
-<codeInline>BuildAction</codeInline> of <codeInline>Tokens</codeInline>.  When
-inserted into a topic, the selected ID is wrapped in a <codeInline>token</codeInline>
-element.</definition>
+  <definition>
+		<para>When this is selected, a list of all tokens grouped by their containing token file is shown.
+In order to be listed, the file must have a <codeInline>BuildAction</codeInline> of <codeInline>Tokens</codeInline>.
+When inserted into a topic, the selected ID is wrapped in a MAML <codeInline>token</codeInline> element.</para>
+	</definition>
 
   <definedTerm>Images</definedTerm>
-  <definition>When this is selected, a list of all conceptual content image
-files is shown.  To appear, the file must have a <codeInline>BuildAction</codeInline>
-of <codeInline>Image</codeInline>.  When inserted into an HTML file, the image
-reference will be inserted as an HTML <codeInline>img</codeInline> element.
-When dropped in a MAML topic, a context menu will appear that lets you insert
-the reference as a <codeInline>mediaLink</codeInline>,
-<codeInline>mediaLinkInline</codeInline>, or an <codeInline>externalLink</codeInline>
-element.</definition>
+  <definition>
+		<para>When this is selected, a list of all conceptual content image files is shown.  To appear, the
+file must have a <codeInline>BuildAction</codeInline> of <codeInline>Image</codeInline>.  This entity type
+offers a choice of formats.  For MAML conceptual topics, choose either <ui>MAML media link</ui>,
+<ui>MAML inline medial link</ui>, or <ui>MAML external link</ui> depending on the type of link that you
+want to create.  For HTML topics, choose the <ui>HTML image link</ui> option.  The HTML option is for
+backward compatibility with the older additional content model and should not be used for MAML conceptual
+content topics.</para>
+	</definition>
+
+	<definedTerm>Table of Contents</definedTerm>
+	<definition>
+		<para>When this is selected, all content layout and site map files are merged in the order defined in
+their project settings to produce a table of content list that can be used for inserting links to the
+topics.  For their topics to appear, content layout files must have a <codeInline>BuildAction</codeInline>
+of <codeInline>ContentLayout</codeInline> and site map files must have a <codeInline>BuildAction</codeInline>
+of <codeInline>SiteMap</codeInline>.  The expanded/collapsed and the last selected topic state is stored
+within each file.  As such, the topics will appear in the entity references window in the state you last
+used them and the last selected topic in the file will be selected as the default item in the tool window.
+This is helpful when you have the associated content layout file open for editing in the environment.</para>
+
+		<para>For MAML conceptual topics, choose <ui>MAML link</ui> as the type to create.  For HTML topics,
+choose the <ui>HTML anchor link</ui> option.  The HTML option is for backward compatibility with the older
+additional content model and should not be used for MAML conceptual content topics.</para>
+	</definition>
 
   <definedTerm>Code Snippets</definedTerm>
-  <definition>When this is selected, a list of all code snippets grouped by
-their containing code snippet file is shown.  In order to be listed, the file
-must have a <codeInline>BuildAction</codeInline> of <codeInline>CodeSnippets</codeInline>.
-When inserted into a topic, the selected ID is wrapped in a
-<codeInline>codeReference</codeInline> element.</definition>
+  <definition>
+		<para>When this is selected, a list of all code snippets grouped by their containing code snippet file
+is shown.  In order to be listed, the file must have a <codeInline>BuildAction</codeInline> of
+<codeInline>CodeSnippets</codeInline>.  When inserted into a topic, the selected ID is wrapped in a MAML
+<codeInline>codeReference</codeInline> element.</para>
+	</definition>
 
   <definedTerm>Code Entities</definedTerm>
-  <definition><para>When this is selected, all XML comments files plus the .NET
-Framework comments files are indexed to obtain a list of possible API
-members that can be used as code entity references.  Due to the large number of
-elements, they are not listed.  Instead, enter some text or a regular
-expression in the <ui>Find</ui> textbox and hit Enter to list all members
-that match the search text.</para>
-	<para>When inserted into an HTML file, the entity reference will be
-inserted as an XML comment <codeInline>see</codeInline> element.  Note that
-these will only be resolved to a clickable link if the item references a
-member found in your code.  It will not create links to .NET Framework
-members in HTML files.  When dropped in a MAML topic, the entity reference will
-be inserted as a <codeInline>codeEntityReference</codeInline> element.  When
-the help file is built, these will be resolved to links that will take you to
-the help page for that item (i.e. the API member help page for your classes or
-MSDN Online help pages for .NET Framework members).</para></definition>
+  <definition>
+		<para>When this option is selected for the first time, there is a short delay while all XML comments
+files plus the .NET Framework comments files are indexed to obtain a list of possible API members that can
+be used as code entity references.  Due to the large number of elements, they are not listed.  Instead,
+enter some text or a regular expression in the <ui>Find</ui> textbox and hit Enter or the <ui>Go</ui> button
+to list all members that match the search text.  The match count is limited to the first 1000 entries found
+to prevent exceedingly long lists of results.</para>
+
+	<para>The <ui>MAML code entity reference</ui> format option allows you to insert references to the
+selected element in MAML conceptual topic files as <codeInline>codeEntityReference</codeInline> elements.
+When the help file is built, these will be resolved to links that will take you to the help page for that
+item (i.e. the API member help page for your classes or MSDN Online help pages for .NET Framework members).
+The <ui>XML comments see link</ui> option is for backward compatibility with the older additional content
+model and should not be used for MAML conceptual content topics.  Note that these older style links will
+only be resolved to a clickable link if the item references a member found in your code.  It will not
+create links to .NET Framework members in HTML files.</para>
+	</definition>
 
 </definitionTable>
 

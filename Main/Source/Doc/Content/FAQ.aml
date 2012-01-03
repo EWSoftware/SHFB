@@ -518,56 +518,65 @@ the property to make sure that it is set appropriately for your assembly.</defin
 
     <definedTerm address="Proxy">My build fails because I am behind a proxy
 server and it cannot connect to the MSDN web service.  How do I fix it?</definedTerm>
-    <definition><para>If the SDK link type project property related to the
-help file format you are building is set to <codeInline>MSDN</codeInline>,
-<application>BuildAssembler</application> will attempt to contact the MSDN web
-service to resolve links to SDK topics. If you are behind a proxy server, this
-will most likely fail and will abort the build process with an error similar
-to "<legacyBold>HTTP status 407: Proxy Authentication Required</legacyBold>".
-The simplest fix is to set the <codeInline>HtmlSdkLinkType</codeInline> and
-<codeInline>WebsiteSdkLinkType</codeInline> properties to <codeInline>None</codeInline>,
-the <codeInline>MsHelp2SdkLinkType</codeInline> property to <codeInline>Index</codeInline>,
-and the <codeInline>MSHelpViewerSdkLinkType</codeInline> property to
-<codeInline>Id</codeInline>. The downside for the HTML Help 1 and website formats
-is that you will not get links to online SDK content.  For the MS Help 2 and
-MS Help Viewer formats, the noted value generates links to the local help
-content when merged with the collection.</para>
+    <definition>
+			<para>If the SDK link type project property related to the help file format you are building is set to
+<codeInline>MSDN</codeInline>, <application>BuildAssembler</application> will attempt to contact the MSDN web
+service to resolve links to SDK topics.  If you are behind a proxy server, this will most likely fail and will
+abort the build process with an error similar to "<legacyBold>HTTP status 407: Proxy Authentication
+Required</legacyBold>" or "<legacyBold>HTTP status 417: Expectation Failed</legacyBold>".  The simplest fix is
+to set the <codeInline>HtmlSdkLinkType</codeInline> and <codeInline>WebsiteSdkLinkType</codeInline> properties
+to <codeInline>None</codeInline>, the <codeInline>MsHelp2SdkLinkType</codeInline> property to
+<codeInline>Index</codeInline>, and the <codeInline>MSHelpViewerSdkLinkType</codeInline> property to
+<codeInline>Id</codeInline>. The downside for the HTML Help 1 and website formats is that you will not get links
+to online SDK content.  For the MS Help 2 and MS Help Viewer formats, the noted value generates links to the
+local help content when merged with the collection.</para>
 
-	<para>It has been reported that creating a <localUri>BuildAssembler.exe.config</localUri>
-file in the same folder as <application>BuildAssembler.exe</application> (the
-<localUri>.\ProductionTools</localUri> folder under the Sandcastle installation
-folder) and putting one of the following in it may allow it to work with the
-proxy server:</para>
+			<para>It has been reported that creating a <localUri>BuildAssembler.exe.config</localUri> file in the same
+folder as <application>BuildAssembler.exe</application> (the <localUri>.\ProductionTools</localUri> folder under
+the Sandcastle installation folder) and putting one of the following in it may allow it to work with the proxy
+server:</para>
 
 <code lang="xml" title="Method 1 (this works most often so try it first):">
 &lt;configuration&gt;
-    &lt;system.net&gt;
-        &lt;defaultProxy useDefaultCredentials="true"&gt;
-            &lt;proxy usesystemdefault="true"/&gt;
-        &lt;/defaultProxy&gt;
-    &lt;/system.net&gt;
+	&lt;system.net&gt;
+		&lt;defaultProxy useDefaultCredentials="true"&gt;
+			&lt;proxy usesystemdefault="true"/&gt;
+		&lt;/defaultProxy&gt;
+		&lt;!-- Add this setting if you get an HTTP 417 error. --&gt;
+		&lt;settings&gt;
+			&lt;servicePointManager expect100Continue="false" /&gt;
+		&lt;/settings&gt;
+	&lt;/system.net&gt;
 &lt;/configuration&gt;
 </code>
 
 <code lang="xml" title="Method 2:">
 &lt;configuration&gt;
-    &lt;system.net&gt;
-      &lt;defaultProxy enabled="true" useDefaultCredentials="true"&gt;
-        &lt;proxy bypassonlocal="True"
-            proxyaddress="http://yourproxy:8080" /&gt;
-      &lt;/defaultProxy&gt;
-    &lt;/system.net&gt;
+	&lt;system.net&gt;
+		&lt;defaultProxy enabled="true" useDefaultCredentials="true"&gt;
+			&lt;proxy bypassonlocal="true"
+				proxyaddress="http://yourproxy:8080" /&gt;
+		&lt;/defaultProxy&gt;
+		&lt;!-- Add this setting if you get an HTTP 417 error. --&gt;
+		&lt;settings&gt;
+			&lt;servicePointManager expect100Continue="false" /&gt;
+		&lt;/settings&gt;
+	&lt;/system.net&gt;
 &lt;/configuration&gt;
 </code>
 
 <code lang="xml" title="Method 3 (use this if your company uses a proxy configuration script):">
 &lt;configuration&gt;
-    &lt;system.net&gt;
-      &lt;defaultProxy useDefaultCredentials="true"&gt;
-        &lt;proxy scriptLocation="http://your.server.com/proxy.pac"
-            usesystemdefault="True" /&gt;
-      &lt;/defaultProxy&gt;
-    &lt;/system.net&gt;
+	&lt;system.net&gt;
+		&lt;defaultProxy useDefaultCredentials="true"&gt;
+			&lt;proxy scriptLocation="http://your.server.com/proxy.pac"
+				usesystemdefault="true" /&gt;
+		&lt;/defaultProxy&gt;
+		&lt;!-- Add this setting if you get an HTTP 417 error. --&gt;
+		&lt;settings&gt;
+			&lt;servicePointManager expect100Continue="false" /&gt;
+		&lt;/settings&gt;
+	&lt;/system.net&gt;
 &lt;/configuration&gt;
 </code></definition>
 

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SandcastleProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/04/2011
+// Updated : 12/31/2011
 // Note    : Copyright 2006-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -110,7 +110,7 @@ namespace SandcastleBuilder.Utils
         /// <summary>
         /// The schema version used in the saved project files
         /// </summary>
-        public static Version SchemaVersion = new Version(1, 9, 3, 0);
+        public static readonly Version SchemaVersion = new Version(1, 9, 3, 0);
 
         /// <summary>The default configuration</summary>
         public const string DefaultConfiguration = "Debug";

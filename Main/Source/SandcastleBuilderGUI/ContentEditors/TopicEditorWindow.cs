@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : TopicEditorWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/06/2011
+// Updated : 12/24/2011
 // Note    : Copyright 2008-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -18,6 +18,8 @@
 // ============================================================================
 // 1.6.0.7  05/10/2008  EFW  Created the code
 // 1.8.0.0  07/26/2008  EFW  Reworked for use with the new project format
+// 1.9.3.3  12/11/2011  EFW  Simplified the drag and drop code to work with
+//                           the new Entity References WPF user control.
 //=============================================================================
 
 using System;
@@ -365,12 +367,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// <param name="e">The event arguments</param>
         private void editor_DragEnter(object sender, DragEventArgs e)
         {
-            if(e.Data.GetDataPresent(typeof(ImageReference)) ||
-              e.Data.GetDataPresent(typeof(Token)) ||
-              e.Data.GetDataPresent(typeof(Topic)) ||
-              e.Data.GetDataPresent(typeof(TocEntry)) ||
-              e.Data.GetDataPresent(typeof(CodeReference)) ||
-              e.Data.GetDataPresent(typeof(CodeEntityReference)))
+            if(e.Data.GetDataPresent(DataFormats.Text))
                 e.Effect = DragDropEffects.Copy;
             else
                 e.Effect = DragDropEffects.None;
@@ -385,112 +382,33 @@ namespace SandcastleBuilder.Gui.ContentEditors
         {
             TextArea textArea = editor.ActiveTextAreaControl.TextArea;
             DataObject data = e.Data as DataObject;
-            ImageReference ir;
-            CodeReference cr;
-            CodeEntityReference cer;
-            Token token;
             Topic topic;
             TocEntry tocEntry;
-            string extension = Path.GetExtension(this.ToolTipText).ToLower(
-                CultureInfo.InvariantCulture);
+            string extension = Path.GetExtension(this.ToolTipText).ToLower(CultureInfo.InvariantCulture);
 
             if(data == null)
                 return;
 
-            // Images have multiple link formats so a context menu is used
-            // to let the user pick a format.
-            if(data.GetDataPresent(typeof(ImageReference)))
+            if(data.GetDataPresent(typeof(Topic)))
             {
-                if(extension == ".htm" || extension == ".html")
-                {
-                    ir = data.GetData(typeof(ImageReference)) as ImageReference;
+                topic = data.GetData(typeof(Topic)) as Topic;
 
-                    if(ir != null)
-                        ContentEditorControl.InsertString(textArea,
-                            ir.ToImageLink());
-                }
-                else
-                {
-                    cmsDropImage.Tag = data.GetData(typeof(ImageReference));
-                    cmsDropImage.Show(e.X, e.Y);
-                }
-
-                return;
-            }
-
-            // Everything else is fairly simple.  Topic links will wrap the
-            // selected text if dropped inside it.
-            if(data.GetDataPresent(typeof(Token)))
-            {
-                token = data.GetData(typeof(Token)) as Token;
-
-                if(token != null)
-                    ContentEditorControl.InsertString(textArea, token.ToToken());
+                // Topic links can wrap selected text
+                if(topic != null)
+                    this.InsertTopicLink(extension, topic);
             }
             else
-                if(data.GetDataPresent(typeof(CodeReference)))
+                if(data.GetDataPresent(typeof(TocEntry)))
                 {
-                    cr = data.GetData(typeof(CodeReference)) as CodeReference;
+                    tocEntry = data.GetData(typeof(TocEntry)) as TocEntry;
 
-                    if(cr != null)
-                        ContentEditorControl.InsertString(textArea,
-                            cr.ToCodeReference());
+                    // Topic links can wrap selected text
+                    if(tocEntry != null)
+                        this.InsertTocLink(extension, tocEntry);
                 }
                 else
-                    if(data.GetDataPresent(typeof(CodeEntityReference)))
-                    {
-                        cer = data.GetData(typeof(CodeEntityReference)) as
-                            CodeEntityReference;
-
-                        if(cer != null)
-                            if(extension == ".htm" || extension == ".html")
-                                ContentEditorControl.InsertString(textArea,
-                                    cer.ToSee());
-                            else
-                                ContentEditorControl.InsertString(textArea,
-                                    cer.ToCodeEntityReference());
-                    }
-                    else
-                        if(data.GetDataPresent(typeof(Topic)))
-                        {
-                            topic = data.GetData(typeof(Topic)) as Topic;
-
-                            // Topic links can wrap selected text
-                            if(topic != null)
-                                this.InsertTopicLink(extension, topic);
-                        }
-                        else
-                            if(data.GetDataPresent(typeof(TocEntry)))
-                            {
-                                tocEntry = data.GetData(typeof(TocEntry)) as TocEntry;
-
-                                // Topic links can wrap selected text
-                                if(tocEntry != null)
-                                    this.InsertTocLink(extension, tocEntry);
-                            }
-        }
-
-        /// <summary>
-        /// Insert a media link into the document
-        /// </summary>
-        /// <param name="sender">The sender of the event</param>
-        /// <param name="e">The event arguments</param>
-        private void MediaLinkItem_Click(object sender, EventArgs e)
-        {
-            TextArea textArea = editor.ActiveTextAreaControl.TextArea;
-            ImageReference ir = cmsDropImage.Tag as ImageReference;
-
-            if(ir != null)
-                if(sender == miMediaLink)
-                    ContentEditorControl.InsertString(textArea,
-                        ir.ToMediaLink());
-                else
-                    if(sender == miMediaLinkInline)
-                        ContentEditorControl.InsertString(textArea,
-                            ir.ToMediaLinkInline());
-                    else
-                        ContentEditorControl.InsertString(textArea,
-                            ir.ToExternalLink());
+                    if(data.GetDataPresent(DataFormats.Text))
+                        ContentEditorControl.InsertString(textArea, data.GetText());
         }
         #endregion
 

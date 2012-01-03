@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : TopicCollection.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/09/2011
+// Updated : 12/20/2011
 // Note    : Copyright 2008-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -21,6 +21,7 @@
 // 1.8.0.0  08/07/2008  EFW  Modified for use with the new project format
 // 1.9.0.0  06/06/2010  EFW  Added support for multi-format build output
 // 1.9.1.0  07/09/2010  EFW  Updated for use with .NET 4.0 and MSBuild 4.0.
+// 1.9.3.3  12/15/2011  EFW  Updated for use with the new content layout editor
 //=============================================================================
 
 using System;
@@ -28,6 +29,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Xml;
 
@@ -183,7 +185,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         }
         #endregion
 
-        #region Sort collection
+        #region Sort and find methods
         //=====================================================================
 
         /// <summary>
@@ -198,7 +200,51 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                 return String.Compare(x.DisplayTitle, y.DisplayTitle, StringComparison.CurrentCulture);
             });
 
-            this.OnListChanged(new ListChangedEventArgs(ListChangedType.ItemMoved, -1));
+            this.OnListChanged(new ListChangedEventArgs(ListChangedType.Reset, -1));
+        }
+
+        /// <summary>
+        /// This is used to enumerate all topics recursively
+        /// </summary>
+        /// <returns>An enumerable list of all topics and sub-topics</returns>
+        public IEnumerable<Topic> All()
+        {
+            foreach(var t in this)
+            {
+                yield return t;
+
+                if(t.Subtopics.Count != 0)
+                    foreach(var st in t.Subtopics)
+                        yield return st;
+            }
+        }
+
+        /// <summary>
+        /// This is used to find all topics and sub-topics that match the specified predicate recursively
+        /// </summary>
+        /// <param name="match">The match predicate</param>
+        /// <param name="expandParentIfFound">True to expand the parent if a child node matches or false
+        /// to leave it as is.  Expanding the node ensures it is visible in the bound tree view.</param>
+        /// <returns>An enumerable list of all matches</returns>
+        public IEnumerable<Topic> Find(Predicate<Topic> match, bool expandParentIfFound)
+        {
+            foreach(var t in this)
+            {
+                if(match(t))
+                    yield return t;
+
+                var matches = t.Subtopics.Find(match, expandParentIfFound);
+
+                if(matches.Count() != 0)
+                {
+                    // If requested, make sure the topic is expanded so that we can move to it in the tree view
+                    if(expandParentIfFound)
+                        t.IsExpanded = true;
+
+                    foreach(var m in matches)
+                        yield return m;
+                }
+            }
         }
         #endregion
 
@@ -335,10 +381,14 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// This is used by contained items to notify the parent that a child
         /// list changed and thus the collection should be marked as dirty.
         /// </summary>
-        /// <param name="changedItem">The item that changed</param>
-        internal void ChildListChanged(Topic changedItem)
+        /// <param name="t">The topic that changed</param>
+        /// <param name="e">The list change event arguments from the child collection</param>
+        internal void ChildListChanged(Topic t, ListChangedEventArgs e)
         {
-            this.OnListChanged(new ListChangedEventArgs(ListChangedType.ItemChanged, this.IndexOf(changedItem)));
+            int idx = this.IndexOf(t);
+
+            if(idx != -1)
+                this.OnListChanged(new ListChangedEventArgs(ListChangedType.ItemChanged, idx, e.PropertyDescriptor));
         }
 
         /// <summary>
@@ -640,6 +690,8 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                     entry.Title = t.DisplayTitle;
                     entry.IsDefaultTopic = t.IsDefaultTopic;
                     entry.ApiParentMode = t.ApiParentMode;
+                    entry.IsExpanded = t.IsExpanded;
+                    entry.IsSelected = t.IsSelected;
 
                     if(t.Subtopics.Count != 0)
                         t.Subtopics.GenerateTableOfContents(entry.Children, pathProvider);

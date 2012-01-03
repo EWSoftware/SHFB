@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : NewFromOtherFormatDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/09/2011
+// Updated : 12/15/2011
 // Note    : Copyright 2008-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -275,26 +275,7 @@ namespace SandcastleBuilder.Gui
         /// <param name="e">The event arguments</param>
         private void btnHelp_Click(object sender, EventArgs e)
         {
-            string path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-
-            try
-            {
-#if DEBUG
-                path += @"\..\..\..\Doc\Help\SandcastleBuilder.chm";
-#else
-                path += @"\SandcastleBuilder.chm";
-#endif
-                Form form = new Form();
-                form.CreateControl();
-                Help.ShowHelp(form, path, HelpNavigator.Topic, "html/f68822d2-97ba-48da-a98b-46747983b4a0.htm");
-            }
-            catch(Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine(ex);
-                MessageBox.Show(String.Format(CultureInfo.CurrentCulture,
-                    "Unable to open help file '{0}'.  Reason: {1}", path, ex.Message), Constants.AppName,
-                    MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            }
+            Utility.ShowHelpTopic("f68822d2-97ba-48da-a98b-46747983b4a0");
         }
         #endregion
     }

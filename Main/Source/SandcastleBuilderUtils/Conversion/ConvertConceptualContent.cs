@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : ConvertConceptualContent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/28/2008
-// Note    : Copyright 2008, Eric Woodruff, All rights reserved
+// Updated : 12/26/2011
+// Note    : Copyright 2008-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class used to convert conceptual content settings in
@@ -114,8 +114,7 @@ namespace SandcastleBuilder.Utils.Conversion
             XmlReader xr = converter.Reader;
             StreamWriter sw = null;
             string tokenFile = Path.Combine(converter.ProjectFolder,
-                Path.GetFileNameWithoutExtension(converter.Project.Filename) +
-                ".tokens");
+                Path.GetFileNameWithoutExtension(converter.Project.Filename) + ".tokens");
 
             // Create an empty token file
             try
@@ -129,15 +128,13 @@ namespace SandcastleBuilder.Utils.Conversion
                     sw.Close();
             }
 
-            FileItem fileItem = converter.Project.AddFileToProject(tokenFile,
-                tokenFile);
-            TokenCollection tokens = new TokenCollection(fileItem);
+            FileItem fileItem = converter.Project.AddFileToProject(tokenFile, tokenFile);
+            TokenCollection tokens = new TokenCollection(fileItem.FullPath);
 
             while(!xr.EOF && xr.NodeType != XmlNodeType.EndElement)
             {
                 if(xr.NodeType == XmlNodeType.Element && xr.Name == "token")
-                    tokens.Add(new Token(xr.GetAttribute("name"),
-                        xr.GetAttribute("value")));
+                    tokens.Add(new Token(xr.GetAttribute("name"), xr.GetAttribute("value")));
 
                 xr.Read();
             }

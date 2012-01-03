@@ -2,8 +2,8 @@
 // System  : Help Library Manager Launcher
 // File    : StartUp.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/06/2010
-// Note    : Copyright 2010, Eric Woodruff, All rights reserved
+// Updated : 01/03/2012
+// Note    : Copyright 2010-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the main program entry point.
@@ -46,6 +46,7 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
         /// This is the main program entry point
         /// </summary>
         /// <param name="args">The command line arguments</param>
+        /// <returns>An exit code that indicates the success or failure of the process</returns>
         public static int Main(string[] args)
         {
             List<CommandLineArgument> allArgs = new List<CommandLineArgument>();

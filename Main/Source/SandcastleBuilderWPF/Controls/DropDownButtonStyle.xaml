@@ -1,0 +1,226 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:ctrl="clr-namespace:SandcastleBuilder.WPF.Controls"
+                    xmlns:themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna">
+
+  <!-- Used for Checkmark, Radio button, TreeViewItem, Expander ToggleButton glyphs -->
+  <SolidColorBrush x:Key="GlyphBrush" Color="#444"/>
+
+  <!-- SelectedBackgroundBrush is used for the Selected item in ListBoxItem, ComboBoxItem-->
+  <SolidColorBrush x:Key="SelectedBackgroundBrush" Color="#DDD"/>
+
+  <!-- Disabled Brushes are used for the Disabled look of each control -->
+  <SolidColorBrush x:Key="DisabledForegroundBrush" Color="#888"/>
+
+  <!-- NormalBrush is used as the Background for SimpleButton, SimpleRepeatButton -->
+  <LinearGradientBrush x:Key="NormalBrush" EndPoint="0,1" StartPoint="0,0">
+    <GradientStop Color="#EEE" Offset="0.0"/>
+    <GradientStop Color="#CCC" Offset="1.0"/>
+  </LinearGradientBrush>
+  <LinearGradientBrush x:Key="NormalBorderBrush" EndPoint="0,1" StartPoint="0,0">
+    <GradientStop Color="#CCC" Offset="0.0"/>
+    <GradientStop Color="#444" Offset="1.0"/>
+  </LinearGradientBrush>
+
+  <Style x:Key="ButtonFocusVisual">
+    <Setter Property="Control.Template">
+      <Setter.Value>
+        <ControlTemplate>
+          <Rectangle SnapsToDevicePixels="true" Margin="3" Stroke="Black" StrokeDashArray="1 2" StrokeThickness="1"/>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <LinearGradientBrush x:Key="ButtonNormalBackgroundFill" EndPoint="0.5,1" StartPoint="0.5,0">
+    <GradientStop Color="#FFFFFFFF" Offset="0"/>
+    <GradientStop Color="#FFF0F0EA" Offset="0.9"/>
+  </LinearGradientBrush>
+
+  <SolidColorBrush x:Key="ButtonBorder" Color="#FF003C74"/>
+
+  <Style x:Key="LabelStyle" TargetType="{x:Type Label}" BasedOn="{x:Null}">
+    <Setter Property="HorizontalAlignment" Value="Stretch" />
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type Label}">
+          <Grid>
+            <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" RecognizesAccessKey="True"/>
+          </Grid>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <Style TargetType="{x:Type ctrl:DropDownButton}">
+    <Setter Property="FocusVisualStyle" Value="{StaticResource ButtonFocusVisual}"/>
+    <Setter Property="Background" Value="{StaticResource ButtonNormalBackgroundFill}"/>
+    <Setter Property="BorderBrush" Value="{StaticResource ButtonBorder}"/>
+    <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+    <Setter Property="HorizontalAlignment" Value="Center"/>
+    <Setter Property="VerticalAlignment" Value="Center"/>
+    <Setter Property="MinHeight" Value="22" />
+    <Setter Property="MinWidth" Value="80" />
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type ctrl:DropDownButton}">
+          <themes:ButtonChrome x:Name="Chrome" SnapsToDevicePixels="True" BorderBrush="{TemplateBinding BorderBrush}" Fill="{TemplateBinding Background}" RenderMouseOver="{TemplateBinding IsMouseOver}" RenderPressed="{TemplateBinding IsPressed}" ThemeColor="NormalColor">
+            <Label Style="{StaticResource LabelStyle}">
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="Auto"/>
+                  <ColumnDefinition Width="*"/>
+                  <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Image x:Name="icon" Grid.Column="0" Margin="4,0,2,0" VerticalAlignment="Center" Width="16" Height="16" Source="{TemplateBinding Image}" />
+                <Label Grid.Column="1" Content="{TemplateBinding Text}" Target="{TemplateBinding Target}" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0" Margin="0,0,3,0" Foreground="{TemplateBinding Foreground}"/>
+                <Path Grid.Column="2" Fill="{DynamicResource GlyphBrush}" Data="M 0 0 L 4 4 L 8 0 Z"  Height="5" Margin="3,2,2,0"/>
+              </Grid>
+            </Label>
+          </themes:ButtonChrome>
+          <ControlTemplate.Triggers>
+            <Trigger Property="IsKeyboardFocused" Value="True">
+              <Setter Property="RenderDefaulted" TargetName="Chrome" Value="True"/>
+            </Trigger>
+            <Trigger Property="ToggleButton.IsChecked" Value="True">
+              <Setter Property="RenderPressed" TargetName="Chrome" Value="True"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+              <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <Style x:Key="ToolBarDropDownButtonStyle" TargetType="{x:Type ctrl:DropDownButton}">
+    <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+    <Setter Property="BorderThickness" Value="1,1,1,1"/>
+    <Setter Property="Background" Value="#00FFFFFF"/>
+    <Setter Property="BorderBrush" Value="#00FFFFFF"/>
+    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+    <Setter Property="VerticalAlignment" Value="Stretch"/>
+    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+    <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type ctrl:DropDownButton}">
+          <Border SnapsToDevicePixels="True" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+            <!--<Label>-->
+            <StackPanel Orientation="Horizontal">
+              <Image Margin="2,2,2,2" VerticalAlignment="Center" Width="16" Height="16" Source="{TemplateBinding Image}"/>
+              <Label Content="{TemplateBinding Text}" Target="{TemplateBinding Target}" VerticalAlignment="Center" Padding="0" />
+              <Path Fill="{DynamicResource GlyphBrush}" Data="M 0 0 L 4 4 L 8 0 Z"  Height="5" Margin="5,2,2,0"/>
+            </StackPanel>
+            <!--</Label>-->
+          </Border>
+          <ControlTemplate.Triggers>
+            <Trigger Property="IsChecked" Value="True">
+              <Setter Property="BorderBrush" Value="#FF316AC5"/>
+              <Setter Property="Background" Value="#FFE1E6E8"/>
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="True">
+              <Setter Property="BorderBrush" Value="#FF316AC5"/>
+              <Setter Property="Background" Value="#FFC1D2EE"/>
+            </Trigger>
+            <Trigger Property="IsKeyboardFocused" Value="True">
+              <Setter Property="BorderBrush" Value="#FF316AC5"/>
+              <Setter Property="Background" Value="#FFC1D2EE"/>
+            </Trigger>
+            <MultiTrigger>
+              <MultiTrigger.Conditions>
+                <Condition Property="IsMouseOver" Value="True"/>
+                <Condition Property="IsChecked" Value="True"/>
+              </MultiTrigger.Conditions>
+              <Setter Property="BorderBrush" Value="#FF4B4B6F"/>
+              <Setter Property="Background" Value="#FF98B5E2"/>
+            </MultiTrigger>
+            <MultiTrigger>
+              <MultiTrigger.Conditions>
+                <Condition Property="IsKeyboardFocused" Value="True"/>
+                <Condition Property="IsChecked" Value="True"/>
+              </MultiTrigger.Conditions>
+              <Setter Property="BorderBrush" Value="#FF4B4B6F"/>
+              <Setter Property="Background" Value="#FF98B5E2"/>
+            </MultiTrigger>
+            <Trigger Property="IsPressed" Value="True">
+              <Setter Property="BorderBrush" Value="#FF4B4B6F"/>
+              <Setter Property="Background" Value="#FF98B5E2"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+              <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <DataTemplate x:Key="DropDownMenuIconStyle">
+    <Image Source="{Binding XPath=.}"></Image>
+  </DataTemplate>
+
+  <ControlTemplate x:Key="DropDownMenuItemTemplate" TargetType="MenuItem">
+    <Border Name="Border">
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto" SharedSizeGroup="Icon"/>
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="Auto" SharedSizeGroup="Shortcut"/>
+          <ColumnDefinition Width="13"/>
+        </Grid.ColumnDefinitions>
+        <ContentPresenter x:Name="Icon"
+                          ContentTemplate="{StaticResource DropDownMenuIconStyle}"
+                          Margin="6,0,6,0"
+                          VerticalAlignment="Center"
+                          ContentSource="Icon"
+                          Height="16" Width="16"/>
+        <Border x:Name="Check"
+                Width="13" Height="13"
+                Visibility="Collapsed"
+                Margin="6,0,6,0"
+                Background="{StaticResource NormalBrush}"
+                BorderThickness="1"
+                BorderBrush="{StaticResource NormalBorderBrush}">
+          <Path x:Name="CheckMark"
+                Width="7" Height="7"
+                Visibility="Hidden"
+                SnapsToDevicePixels="False"
+                Stroke="{StaticResource GlyphBrush}"
+                StrokeThickness="2"
+                Data="M 0 0 L 7 7 M 0 7 L 7 0" />
+        </Border>
+        <ContentPresenter x:Name="HeaderHost"
+                          Grid.Column="1"
+                          ContentSource="Header"
+                          RecognizesAccessKey="True"
+                          Margin="5,2,0,2"
+                          VerticalAlignment="Center"/>
+        <TextBlock x:Name="InputGestureText"
+                   Grid.Column="2"
+                   Text="{TemplateBinding InputGestureText}"
+                   Margin="5,2,0,2"
+                   DockPanel.Dock="Right" />
+      </Grid>
+    </Border>
+    <ControlTemplate.Triggers>
+      <Trigger Property="Icon" Value="{x:Null}">
+        <Setter TargetName="Icon" Property="Visibility" Value="Hidden"/>
+      </Trigger>
+      <Trigger Property="IsChecked" Value="true">
+        <Setter TargetName="CheckMark" Property="Visibility" Value="Visible"/>
+      </Trigger>
+      <Trigger Property="IsCheckable" Value="true">
+        <Setter TargetName="Check" Property="Visibility" Value="Visible"/>
+        <Setter TargetName="Icon" Property="Visibility" Value="Hidden"/>
+      </Trigger>
+      <Trigger Property="IsHighlighted" Value="true">
+        <Setter TargetName="Border" Property="Background" Value="{StaticResource SelectedBackgroundBrush}"/>
+      </Trigger>
+      <Trigger Property="IsEnabled" Value="false">
+        <Setter Property="Foreground" Value="{StaticResource DisabledForegroundBrush}"/>
+      </Trigger>
+    </ControlTemplate.Triggers>
+  </ControlTemplate>
+</ResourceDictionary>

@@ -3,34 +3,37 @@
   <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
 
     <introduction>
-      <para>Resource items are used by Sandcastle to insert localizable or
-parameterized text into help topics.  The resource items are defined in
-various files that differ based on the selected presentation style.  Adding
-your own resource item file to a project allows you to override the values
-used for the stock resource items defined by Sandcastle and/or the help file
-builder on a project by project basis.</para>
+      <para>Resource items are used by Sandcastle to insert localizable or parameterized text into help
+topics.  The resource items are defined in various files that differ based on the selected presentation
+style.  Adding your own resource item file to a project allows you to override the values used for the
+stock resource items defined by Sandcastle and/or the help file builder on a project by project basis.</para>
     </introduction>
 
 <section>
-  <content><para>Resource item definitions are stored in an XML file.  In the
-help file builder, these files usually have a <localUri>.items</localUri>
-extension and will be edited using the editor window shown below.  Be sure to
-set the file's <codeInline>BuildAction</codeInline> to <codeInline>ResourceItems</codeInline>
-so that it is included correctly at build time.  If a resource item is defined
-in multiple files, the last definition encountered will be used.</para>
+  <content>
+		<para>Resource item definitions are stored in an XML file.  In the help file builder, these files have a
+<localUri>.items</localUri> extension and will be edited using the editor window shown below.  Be sure to
+set the file's <codeInline>BuildAction</codeInline> to <codeInline>ResourceItems</codeInline> so that it is
+included correctly at build time.  If a resource item is defined in multiple files, the last definition
+encountered will be used.</para>
 
 <mediaLink><image xlink:href="ResourceItemFileEditor" placement="center"/></mediaLink>
 
-	<para>You can only edit the content of resource items.  Items that have a
-custom value from the file you are editing are highlighted in the list on the
-left.  Edit the content of an item by selecting it and using the text editor on
-the right.  The changes to the content are stored automatically as you move
-from item to item in the list on the left.  To revert an item to its default
-value, click the <ui>Revert</ui> button.</para>
+	<para>The <ui>Find</ui> textbox allows you to search for an item by ID or content value.  Enter some text
+to find and hit Enter or click the <ui>Go</ui> button to start the search.  Hit Enter or click <ui>Go</ui>
+again to find subsequent matches.  Matches are found by doing a case-insensitive search of the item ID and
+content values.  To limit the list to just those items containing changes, check the <ui>Limit to
+overridden items</ui> checkbox.  Uncheck it to show the full list of items again.</para>
+		
+	<para>You can only edit the content of resource items.  Items that have a custom value from the file you
+are editing are highlighted in the list on the left.  Edit the content of an item by selecting it and using
+the text editor on the right.  Changes to the content are stored automatically as you move from item to
+item in the list on the left.  To revert an item to its default value, click the <ui>Revert</ui> button
+that appears to the right of the label just above the text editor area or hit Ctrl+Z.</para>
 
-	<para>The resource item value can contain help file builder substitution tag
-references.  See the <link xlink:href="69d998a7-1af5-4bf5-889b-59cd00b64000" />
-topic for a list of the possible replacement tag values.</para>
+	<para>The resource item value can contain help file builder substitution tag references.  See the
+<link xlink:href="69d998a7-1af5-4bf5-889b-59cd00b64000" /> topic for a list of the possible replacement tag
+values.</para>
 
   </content>
 </section>

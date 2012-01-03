@@ -112,29 +112,20 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="LocalLink" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\LocalLink.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Copy" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\Copy.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="AddChildItem" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Images\AddChildItem.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="SaveProject" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\SaveProject.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="SpinningWheel" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Images\SpinningWheel.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="AddRootItem" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Images\AddRootItem.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="CodeFile" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\CodeFile.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -175,9 +166,6 @@
   <data name="Italic" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\Italic.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="PageEdit" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Images\PageEdit.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="List_Bullets" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\List_Bullets.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -186,15 +174,6 @@
   </data>
   <data name="Paste" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\Paste.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="MoveUp" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Images\MoveUp.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="AddImage" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Images\AddImage.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Refresh" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Refresh.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="About" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\About.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -205,14 +184,8 @@
   <data name="NewProject" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\NewProject.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="MoveDown" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Images\MoveDown.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="Sandcastle" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\Sandcastle.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="AddToken" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Images\AddToken.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ViewLog" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\ViewLog.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -226,17 +199,8 @@
   <data name="ViewHelpFile" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\ViewHelpFile.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="AddItem" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Images\AddItem.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="Bold" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\Bold.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="DefaultTopic" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Images\DefaultTopic.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="SandcastleSmall" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Images\SandcastleSmall.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Delete" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\Delete.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -253,16 +217,7 @@
   <data name="Filter" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Filter2.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="InsertApiAfter" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Images\InsertApiAfter.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="InsertApiAsChild" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Images\InsertApiAsChild.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="InsertApiBefore" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Images\InsertApiBefore.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="RootContentContainer" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Images\RootContentContainer.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="SpinningWheel" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\SpinningWheel.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

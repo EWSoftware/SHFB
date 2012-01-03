@@ -154,7 +154,19 @@
     <Compile Include="Automation\OADocumentationSourcesFolderItem.cs" />
     <Compile Include="Automation\OASandcastleBuilderProject.cs" />
     <Compile Include="BuildCompletedEventListener.cs" />
-    <Compile Include="Editors\PlaceHolderEditorFactory.cs" />
+    <Compile Include="Editors\CommandTargetArguments.cs" />
+    <Compile Include="Editors\ContentLayoutEditorFactory.cs" />
+    <Compile Include="Editors\ContentLayoutEditorPane.cs" />
+    <Compile Include="Editors\ICommonCommandSupport.cs" />
+    <Compile Include="Editors\ResourceItemEditorFactory.cs" />
+    <Compile Include="Editors\ResourceItemEditorPane.cs" />
+    <Compile Include="Editors\SimpleEditorFactory.cs" />
+    <Compile Include="Editors\SimpleEditorPane.cs" />
+    <Compile Include="Editors\SiteMapEditorFactory.cs" />
+    <Compile Include="Editors\SiteMapEditorPane.cs" />
+    <Compile Include="Editors\TokenEditorFactory.cs" />
+    <Compile Include="Editors\TokenEditorPane.cs" />
+    <Compile Include="ToolWindows\EntityReferencesToolWindow.cs" />
     <Compile Include="ToolWindows\BuildLogControl.xaml.cs">
       <DependentUpon>BuildLogControl.xaml</DependentUpon>
     </Compile>
@@ -285,6 +297,13 @@
     </Content>
     <Resource Include="Button Bitmaps\LogFile.bmp" />
     <Resource Include="Button Bitmaps\Filter.bmp" />
+    <None Include="Images\MoveDown.bmp" />
+    <None Include="Images\MoveUp.bmp" />
+    <None Include="Images\Properties.bmp" />
+    <None Include="Images\Delete.bmp" />
+    <None Include="Images\PlugInAdd.png" />
+    <None Include="Images\ComponentAdd.png" />
+    <Resource Include="Button Bitmaps\EntityReferences.bmp" />
     <Content Include="VSIXPreview.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
@@ -612,7 +631,7 @@
     <Resource Include="Button Bitmaps\MSHelpViewer.bmp" />
     <Resource Include="Button Bitmaps\FAQ.bmp" />
     <None Include="Images\Information.ico" />
-    <Resource Include="Images\Warning.ico" />
+    <None Include="Images\Warning.ico" />
     <Content Include="VSIXPackage.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
@@ -636,6 +655,10 @@
     <ProjectReference Include="..\SandcastleBuilderUtils\SandcastleBuilderUtils.csproj">
       <Project>{330DADF7-3AB1-49A0-B3C6-A69D2C4F06A6}</Project>
       <Name>SandcastleBuilderUtils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SandcastleBuilderWPF\SandcastleBuilderWPF.csproj">
+      <Project>{D3B06405-3435-4329-9233-2DF1BF5028AA}</Project>
+      <Name>SandcastleBuilderWPF</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

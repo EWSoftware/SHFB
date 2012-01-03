@@ -7,8 +7,8 @@
       <HelpKeyword index="K" term="CodePlex" />
       <HelpKeyword index="K" term="SHFB" />
       <HelpKeyword index="K" term="project location" />
-      <HelpKeyword index="NamedURLIndex" term="HomePage" />
-      <HelpKeyword index="NamedURLIndex" term="DefaultPage" />
+      <HelpKeyword index="K" term="HomePage" />
+      <HelpKeyword index="K" term="DefaultPage" />
     </HelpKeywords>
   </Topic>
   <Topic id="24504fda-d3ef-4dd9-8335-6db8b25d00f2" visible="True" title="License Agreement">
@@ -399,7 +399,7 @@
         </HelpKeywords>
       </Topic>
     </Topic>
-    <Topic id="ba42b2c2-985d-46f1-ba4c-3d921edcafe3" visible="True" tocTitle="Content Placement Options">
+    <Topic id="ba42b2c2-985d-46f1-ba4c-3d921edcafe3" visible="True" title="Content Placement Options">
       <HelpKeywords>
         <HelpKeyword index="K" term="conceptual content, content placement options" />
       </HelpKeywords>
@@ -561,13 +561,14 @@
       </HelpKeywords>
     </Topic>
   </Topic>
-  <Topic id="8dcbb69b-7a1a-4049-8e6b-2bf344efbbc9" visible="True" title="Custom Build Components">
+  <Topic id="8dcbb69b-7a1a-4049-8e6b-2bf344efbbc9" visible="True" isExpanded="true" title="Custom Build Components">
     <HelpKeywords>
       <HelpKeyword index="K" term="build components, configuring" />
       <HelpKeyword index="K" term="build components, overview" />
       <HelpKeyword index="K" term="build components, syntax filter" />
       <HelpKeyword index="K" term="syntax filter generator" />
     </HelpKeywords>
+    <Topic id="dcc9f938-0d5e-4010-bbfe-fd64168a443b" visible="True" isSelected="true" title="API Token Resolution Component" />
     <Topic id="3a1c4bf1-8ecf-4ab3-8010-277bed8d3819" visible="True" title="Cached Build Components">
       <HelpKeywords>
         <HelpKeyword index="K" term="build components, cached build components" />
@@ -1311,17 +1312,22 @@
       <HelpKeyword index="K" term="support, donate" />
     </HelpKeywords>
   </Topic>
-  <Topic id="078cc1c7-7995-431e-bf9c-8813becbe8df" visible="True" title="Version History">
+  <Topic id="078cc1c7-7995-431e-bf9c-8813becbe8df" visible="True" isExpanded="true" title="Version History">
     <HelpKeywords>
       <HelpKeyword index="K" term="History" />
       <HelpKeyword index="K" term="Version History" />
     </HelpKeywords>
-    <Topic id="e6285aea-8caa-4ff3-86d2-d9623dcc8a49" visible="True" title="Version 1.9.3.2 (Alpha)">
+    <Topic id="54250029-bcfa-4c03-8cf0-b230867a8613" visible="True" title="Version 1.9.3.3 (Beta 1)">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 1.9.3.3" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="e6285aea-8caa-4ff3-86d2-d9623dcc8a49" visible="True" title="Version 1.9.3.2 (Alpha 2)">
       <HelpKeywords>
         <HelpKeyword index="K" term="versions, 1.9.3.2" />
       </HelpKeywords>
     </Topic>
-    <Topic id="798c4fef-9162-4fe6-98ca-02ee4aa7f6bc" visible="True" title="Version 1.9.3.1 (Alpha)">
+    <Topic id="798c4fef-9162-4fe6-98ca-02ee4aa7f6bc" visible="True" title="Version 1.9.3.1 (Alpha 1)">
       <HelpKeywords>
         <HelpKeyword index="K" term="versions, 1.9.3.1" />
       </HelpKeywords>

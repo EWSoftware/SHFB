@@ -2,7 +2,7 @@
 // System  : EWSoftware Design Time Attributes and Editors
 // File    : ComponentConfigurationEditorDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/10/2011
+// Updated : 12/15/2011
 // Note    : Copyright 2007-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -358,24 +358,7 @@ namespace SandcastleBuilder.Utils.Design
         /// <param name="e">The event arguments</param>
         private void btnHelp_Click(object sender, EventArgs e)
         {
-            string path = null;
-
-            try
-            {
-#if DEBUG
-                // In debug builds, SHFBROOT points to the .\Debug folder for the SandcastleBuilderGUI project
-                path = Path.Combine(@"C:\Program Files (x86)\EWSoftware\Sandcastle Help File Builder\SandcastleBuilder.chm");
-#else
-                path = Path.Combine(Environment.ExpandEnvironmentVariables("%SHFBROOT%"), "SandcastleBuilder.chm");
-#endif
-                Form form = new Form();
-                form.CreateControl();
-                Help.ShowHelp(form, path, HelpNavigator.Topic, "html/8dcbb69b-7a1a-4049-8e6b-2bf344efbbc9.htm");
-            }
-            catch(Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine(ex.ToString());
-            }
+            Utility.ShowHelpTopic("8dcbb69b-7a1a-4049-8e6b-2bf344efbbc9");
         }
         #endregion
     }

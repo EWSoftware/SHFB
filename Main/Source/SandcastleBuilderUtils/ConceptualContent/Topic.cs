@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : Topic.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/02/2010
-// Note    : Copyright 2008-2010, Eric Woodruff, All rights reserved
+// Updated : 12/29/2011
+// Note    : Copyright 2008-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class representing a conceptual content topic.
@@ -20,6 +20,7 @@
 // 1.8.0.0  08/07/2008  EFW  Modified for use with the new project format
 // 1.9.0.0  06/06/2010  EFW  Added support for MS Help Viewer output
 // 1.9.0.0  07/01/2010  EFW  Added support for API parent mode setting
+// 1.9.3.3  12/15/2011  EFW  Updated for use with the new content layout editor
 //=============================================================================
 
 using System;
@@ -40,7 +41,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
     /// <remarks>This class is serializable so that it can be copied to the
     /// clipboard.</remarks>
     [DefaultProperty("Title")]
-    public class Topic
+    public class Topic : INotifyPropertyChanged
     {
         #region Private data members
         //=====================================================================
@@ -48,7 +49,8 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         private TopicFile topicFile;
         private TopicCollection subtopics;
         private string contentId, title, tocTitle, linkText;
-        private bool noFile;
+        private bool noFile, isSelected, isExpanded, isVisible, isDefaultTopic, isMSHVRoot;
+        private ApiParentMode apiParentMode;
         private MSHelpAttrCollection helpAttributes;
         private MSHelpKeywordCollection keywords;
         #endregion
@@ -89,6 +91,9 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                     noFile = true;
                     contentId = Guid.NewGuid().ToString();
                 }
+
+                // This may affect the display title property
+                this.OnPropertyChanged("DisplayTitle");
             }
         }
 
@@ -186,10 +191,15 @@ namespace SandcastleBuilder.Utils.ConceptualContent
             get { return title; }
             set
             {
-                if(value != null && value.Trim().Length == 0)
-                    value = null;
+                if(value != title)
+                {
+                    if(value != null && value.Trim().Length == 0)
+                        value = null;
 
-                title = value;
+                    title = value;
+                    this.OnPropertyChanged("Title");
+                    this.OnPropertyChanged("DisplayTitle");
+                }
             }
         }
 
@@ -208,10 +218,15 @@ namespace SandcastleBuilder.Utils.ConceptualContent
             get { return tocTitle; }
             set
             {
-                if(value != null && value.Trim().Length == 0)
-                    value = null;
+                if(value != tocTitle)
+                {
+                    if(value != null && value.Trim().Length == 0)
+                        value = null;
 
-                tocTitle = value;
+                    tocTitle = value;
+                    this.OnPropertyChanged("TocTitle");
+                    this.OnPropertyChanged("DisplayTitle");
+                }
             }
         }
 
@@ -229,10 +244,14 @@ namespace SandcastleBuilder.Utils.ConceptualContent
             get { return linkText; }
             set
             {
-                if(value != null && value.Trim().Length == 0)
-                    value = null;
+                if(value != linkText)
+                {
+                    if(value != null && value.Trim().Length == 0)
+                        value = null;
 
-                linkText = value;
+                    linkText = value;
+                    this.OnPropertyChanged("LinkText");
+                }
             }
         }
 
@@ -245,7 +264,29 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// one of the other topics.</value>
         [Category("Topic"), Description("Indicate whether or not the " +
           "topic is visible in the table of contents"), DefaultValue(true)]
-        public bool Visible { get; set; }
+        public bool Visible
+        {
+            get { return isVisible; }
+            set
+            {
+                if(value != isVisible)
+                {
+                    isVisible = value;
+                    this.OnPropertyChanged("Visible");
+                    this.OnPropertyChanged("ToolTip");  // Affects tool tip too
+
+                    // The default topic must be visible.  The MSHV root must not be visible.
+                    // A hidden topic cannot be the API insertion point.
+                    if(!isVisible)
+                    {
+                        this.IsDefaultTopic = false;
+                        this.ApiParentMode = ApiParentMode.None;
+                    }
+                    else
+                        this.IsMSHVRootContentContainer = false;
+                }
+            }
+        }
 
         /// <summary>
         /// This is used to get the additional attributes that will be added
@@ -295,8 +336,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                     return "(No topic file specified)";
 
                 if(topicFile.DocumentType == DocumentType.Invalid)
-                    return "(Invalid document format: " +
-                        topicFile.ErrorMessage + ")";
+                    return "(Invalid document format: " + topicFile.ErrorMessage + ")";
 
                 if(topicFile.DocumentType == DocumentType.NotFound)
                     return "(File not found)";
@@ -322,21 +362,166 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// topic.
         /// </summary>
         [Browsable(false)]
-        public bool IsDefaultTopic { get; set; }
+        public bool IsDefaultTopic
+        {
+            get { return isDefaultTopic; }
+            set
+            {
+                if(value != isDefaultTopic)
+                {
+                    isDefaultTopic = value;
+                    this.OnPropertyChanged("IsDefaultTopic");
+                    this.OnPropertyChanged("ToolTip");  // Affects tool tip too
+
+                    // The default topic must be visible and cannot be the MSHV root container.
+                    if(isDefaultTopic)
+                    {
+                        this.Visible = true;
+                        this.IsMSHVRootContentContainer = false;
+                    }
+                }
+            }
+        }
 
         /// <summary>
         /// This is used to specify how API content is parented to this topic
         /// or the topic's parent
         /// </summary>
         [Browsable(false)]
-        public ApiParentMode ApiParentMode { get; set; }
+        public ApiParentMode ApiParentMode
+        {
+            get { return apiParentMode; }
+            set
+            {
+                if(value != apiParentMode)
+                {
+                    apiParentMode = value;
+                    this.OnPropertyChanged("ApiParentMode");
+                    this.OnPropertyChanged("ToolTip");  // Affects tool tip too
+
+                    // The API parent node must be visible and cannot be the MSHV root container
+                    if(value != ApiParentMode.None)
+                    {
+                        this.Visible = true;
+                        this.IsMSHVRootContentContainer = false;
+                    }
+                }
+            }
+        }
 
         /// <summary>
         /// This is used to get or set whether or not the topic will server as
         /// the root content container in MS Help Viewer output
         /// </summary>
         [Browsable(false)]
-        public bool IsMSHVRootContentContainer { get; set; }
+        public bool IsMSHVRootContentContainer
+        {
+            get { return isMSHVRoot; }
+            set
+            {
+                if(value != isMSHVRoot)
+                {
+                    isMSHVRoot = value;
+                    this.OnPropertyChanged("IsMSHVRootContentContainer");
+                    this.OnPropertyChanged("ToolTip");  // Affects tool tip too
+
+                    // The MSHV root container must not be visible and cannot be the default topic
+                    // or API insertion point.
+                    if(isMSHVRoot)
+                    {
+                        this.Visible = this.IsDefaultTopic = false;
+                        this.ApiParentMode = ApiParentMode.None;
+                    }
+                    else
+                        this.Visible = true;
+                }
+            }
+        }
+
+        /// <summary>
+        /// This is used to get or set whether or not the entity is selected
+        /// </summary>
+        /// <remarks>Used by the editor for binding in the tree view.  The value is serialized when saved
+        /// so that its state is remembered when reloaded.</remarks>
+        [Browsable(false)]
+        public bool IsSelected
+        {
+            get { return isSelected; }
+            set
+            {
+                if(value != isSelected)
+                {
+                    isSelected = value;
+                    this.OnPropertyChanged("IsSelected");
+                }
+            }
+        }
+
+        /// <summary>
+        /// This is used to get or set whether or not the entity is expanded
+        /// </summary>
+        /// <remarks>Used by the editor for binding in the tree view.  The value is serialized when saved
+        /// so that its state is remembered when reloaded.</remarks>
+        [Browsable(false)]
+        public bool IsExpanded
+        {
+            get { return isExpanded && this.Subtopics.Count != 0; }
+            set
+            {
+                if(value != isExpanded)
+                {
+                    isExpanded = value;
+                    this.OnPropertyChanged("IsExpanded");
+                }
+            }
+        }
+        
+        /// <summary>
+        /// This returns a description of the topic that can be used as a tooltip
+        /// </summary>
+        public string ToolTip
+        {
+            get
+            {
+                string description = this.DisplayTitle;
+
+                if(isMSHVRoot)
+                    description += "\nMS Help Viewer root container";
+                else
+                    if(!isVisible)
+                        description += "\nHidden, will not appear in the TOC";
+                    else
+                    {
+                        if(isDefaultTopic)
+                            description += "\nDefault topic";
+
+                        if(apiParentMode != ApiParentMode.None)
+                        {
+                            if(isDefaultTopic)
+                                description += " / ";
+                            else
+                                description += "\n";
+
+                            switch(apiParentMode)
+                            {
+                                case ApiParentMode.InsertAfter:
+                                    description += "Insert API content after topic";
+                                    break;
+
+                                case ApiParentMode.InsertBefore:
+                                    description += "Insert API content before topic";
+                                    break;
+
+                                default:
+                                    description += "Insert API content as child of topic";
+                                    break;
+                            }
+                        }
+                    }
+
+                return description;
+            }
+        }
         #endregion
 
         #region Designer methods
@@ -384,12 +569,30 @@ namespace SandcastleBuilder.Utils.ConceptualContent
             keywords = new MSHelpKeywordCollection();
             this.Visible = true;
 
-            subtopics.ListChanged += new ListChangedEventHandler(
-                childList_ListChanged);
-            helpAttributes.ListChanged += new ListChangedEventHandler(
-                childList_ListChanged);
-            keywords.ListChanged += new ListChangedEventHandler(
-                childList_ListChanged);
+            subtopics.ListChanged += childList_ListChanged;
+            helpAttributes.ListChanged += childList_ListChanged;
+            keywords.ListChanged += childList_ListChanged;
+        }
+        #endregion
+
+        #region INotifyPropertyChanged Members
+        //=====================================================================
+
+        /// <summary>
+        /// The property changed event
+        /// </summary>
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <summary>
+        /// This raises the <see cref="PropertyChanged"/> event
+        /// </summary>
+        /// <param name="propertyName">The property name that changed</param>
+        protected void OnPropertyChanged(string propertyName)
+        {
+            var handler = PropertyChanged;
+
+            if(handler != null)
+                handler(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
 
@@ -405,7 +608,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         private void childList_ListChanged(object sender, ListChangedEventArgs e)
         {
             if(this.Parent != null)
-                this.Parent.ChildListChanged(this);
+                this.Parent.ChildListChanged(this, e);
         }
         #endregion
 
@@ -442,6 +645,12 @@ namespace SandcastleBuilder.Utils.ConceptualContent
 
             if(Boolean.TryParse(xr.GetAttribute("isMSHVRoot"), out attrValue))
                 this.IsMSHVRootContentContainer = attrValue;
+
+            if(Boolean.TryParse(xr.GetAttribute("isExpanded"), out attrValue))
+                this.IsExpanded = attrValue;
+
+            if(Boolean.TryParse(xr.GetAttribute("isSelected"), out attrValue))
+                this.IsSelected = attrValue;
 
             parentMode = xr.GetAttribute("apiParentMode");
 
@@ -502,6 +711,12 @@ namespace SandcastleBuilder.Utils.ConceptualContent
 
             if(this.IsMSHVRootContentContainer)
                 xw.WriteAttributeString("isMSHVRoot", "true");
+
+            if(this.IsExpanded)
+                xw.WriteAttributeString("isExpanded", "true");
+
+            if(this.IsSelected)
+                xw.WriteAttributeString("isSelected", "true");
 
             if(this.ApiParentMode != ApiParentMode.None)
                 xw.WriteAttributeString("apiParentMode", this.ApiParentMode.ToString());

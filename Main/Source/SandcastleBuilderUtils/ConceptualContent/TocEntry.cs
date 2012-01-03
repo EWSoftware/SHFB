@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : TocEntry.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/15/2011
+// Updated : 12/29/2011
 // Note    : Copyright 2006-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -24,6 +24,7 @@
 // 1.6.0.7  04/12/2008  EFW  Added support for a split table of contents
 // 1.8.0.0  08/11/2008  EFW  Modified to support the new project format
 // 1.9.0.0  06/15/2010  EFW  Added support for MS Help Viewer TOC format
+// 1.9.3.3  12/20/2011  EFW  Updated for use with the new content layout editor
 //=============================================================================
 
 using System;
@@ -43,7 +44,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
     /// This represents a table of contents entry.  This is used to build the
     /// table of contents entries for additional content items.
     /// </summary>
-    public class TocEntry : IComparable<TocEntry>, ICloneable
+    public class TocEntry : IComparable<TocEntry>, ICloneable, INotifyPropertyChanged
     {
         #region Private data members
         //=====================================================================
@@ -51,6 +52,9 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         private IBasePathProvider pathProvider;
         private TocEntryCollection children;
         private FilePath sourceFile;
+        private ApiParentMode apiParentMode;
+        private string title;
+        private bool isDefaultTopic, isSelected, isExpanded;
         #endregion
 
         #region Properties
@@ -92,10 +96,9 @@ namespace SandcastleBuilder.Utils.ConceptualContent
           "associated with this entry.  If blank, the entry will not have " +
           "a display page in the help file."), DefaultValue(null),
           Editor(typeof(FilePathObjectEditor), typeof(UITypeEditor)),
-          RefreshProperties(RefreshProperties.All),
-         FileDialog("Select the additional content",
-           "HTML files (*.htm, *.html, *.topic)|*.htm;*.html;*.topic|" +
-           "All Files (*.*)|*.*", FileDialogType.FileOpen)]
+          RefreshProperties(RefreshProperties.All), FileDialog("Select the additional content",
+           "HTML files (*.htm, *.html, *.topic)|*.htm;*.html;*.topic|All Files (*.*)|*.*",
+           FileDialogType.FileOpen)]
         public FilePath SourceFile
         {
             get { return sourceFile; }
@@ -126,7 +129,40 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// contents.
         /// </summary>
         [Category("Content Item"), Description("The table of contents title")]
-        public string Title { get; set; }
+        public string Title
+        {
+            get { return title; }
+            set
+            {
+                if(value != title)
+                {
+                    if(value != null && value.Trim().Length == 0)
+                        value = null;
+
+                    title = value;
+                    this.OnPropertyChanged("Title");
+                }
+            }
+        }
+
+        /// <summary>
+        /// This is used to get or set whether or not the item is the default
+        /// topic for the help file.
+        /// </summary>
+        [Browsable(false)]
+        public bool IsDefaultTopic
+        {
+            get { return isDefaultTopic; }
+            set
+            {
+                if(value != isDefaultTopic)
+                {
+                    isDefaultTopic = value;
+                    this.OnPropertyChanged("IsDefaultTopic");
+                    this.OnPropertyChanged("ToolTip");  // Affects tool tip too
+                }
+            }
+        }
 
         /// <summary>
         /// This is used to get or set whether or not the page will appear in
@@ -138,13 +174,6 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// an effect.</remarks>
         [Browsable(false)]
         public bool IncludePage { get; set; }
-
-        /// <summary>
-        /// This is used to get or set whether or not the item is the default
-        /// topic for the help file.
-        /// </summary>
-        [Browsable(false)]
-        public bool IsDefaultTopic { get; set; }
 
         /// <summary>
         /// This is used to get or set whether or not the topic has links that
@@ -176,6 +205,16 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         public bool HasProjectTags { get; set; }
 
         /// <summary>
+        /// This is used to get or set the sort order for the entry within
+        /// its group.
+        /// </summary>
+        /// <value>Entries with identical sort order values will sort by
+        /// title as well.  Items with no specific sort order will sort
+        /// below those with a defined sort order.</value>
+        [Browsable(false)]
+        public int SortOrder { get; set; }
+
+        /// <summary>
         /// This is used to get or set whether or not the table of contents is
         /// split after this entry.
         /// </summary>
@@ -185,17 +224,105 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// content.  If used, the <c>ContentPlacement</c> project property
         /// will be ignored.</remarks>
         [Browsable(false)]
-        public ApiParentMode ApiParentMode { get; set; }
+        public ApiParentMode ApiParentMode
+        {
+            get { return apiParentMode; }
+            set
+            {
+                if(value != apiParentMode)
+                {
+                    apiParentMode = value;
+                    this.OnPropertyChanged("ApiParentMode");
+                    this.OnPropertyChanged("ToolTip");  // Affects tool tip too
+                }
+            }
+        }
 
         /// <summary>
-        /// This is used to get or set the sort order for the entry within
-        /// its group.
+        /// This is used to get or set whether or not the entity is selected
         /// </summary>
-        /// <value>Entries with identical sort order values will sort by
-        /// title as well.  Items with no specific sort order will sort
-        /// below those with a defined sort order.</value>
+        /// <remarks>Used by the editor for binding in the tree view.  The value is serialized when saved
+        /// so that its state is remembered when reloaded.</remarks>
         [Browsable(false)]
-        public int SortOrder { get; set; }
+        public bool IsSelected
+        {
+            get { return isSelected; }
+            set
+            {
+                if(value != isSelected)
+                {
+                    isSelected = value;
+                    this.OnPropertyChanged("IsSelected");
+                }
+            }
+        }
+
+        /// <summary>
+        /// This is used to get or set whether or not the entity is expanded
+        /// </summary>
+        /// <remarks>Used by the editor for binding in the tree view.  The value is serialized when saved
+        /// so that its state is remembered when reloaded.</remarks>
+        [Browsable(false)]
+        public bool IsExpanded
+        {
+            get { return isExpanded && this.Children.Count != 0; }
+            set
+            {
+                if(value != isExpanded)
+                {
+                    isExpanded = value;
+                    this.OnPropertyChanged("IsExpanded");
+                }
+            }
+        }
+
+        /// <summary>
+        /// This returns a description of the topic that can be used as a tooltip
+        /// </summary>
+        public string ToolTip
+        {
+            get
+            {
+                string description = this.Title;
+
+                if(isDefaultTopic)
+                    description += "\nDefault topic";
+
+                if(apiParentMode != ApiParentMode.None)
+                {
+                    if(isDefaultTopic)
+                        description += " / ";
+                    else
+                        description += "\n";
+
+                    switch(apiParentMode)
+                    {
+                        case ApiParentMode.InsertAfter:
+                            description += "Insert API content after topic";
+                            break;
+
+                        case ApiParentMode.InsertBefore:
+                            description += "Insert API content before topic";
+                            break;
+
+                        default:
+                            description += "Insert API content as child of topic";
+                            break;
+                    }
+                }
+
+                return description;
+            }
+        }
+
+        /// <summary>
+        /// This is used to get or set a unique ID to work around a legacy additional content
+        /// support issue.
+        /// </summary>
+        /// <value>The site map editor assigns each topic its own unique ID to work around
+        /// object equality issues caused by legacy support for file system based additional
+        /// content.</value>
+        public Guid UniqueId { get; set; }
         #endregion
 
         #region IComparable<TocEntry> Members
@@ -254,6 +381,46 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         }
         #endregion
 
+        #region Constructor
+        //=====================================================================
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="basePathProvider">The base path provider</param>
+        public TocEntry(IBasePathProvider basePathProvider)
+        {
+            pathProvider = basePathProvider;
+            this.IncludePage = true;
+            this.SortOrder = Int32.MaxValue;
+            children = new TocEntryCollection();
+            sourceFile = new FilePath(pathProvider);
+
+            children.ListChanged += childList_ListChanged;
+        }
+        #endregion
+
+        #region INotifyPropertyChanged Members
+        //=====================================================================
+
+        /// <summary>
+        /// The property changed event
+        /// </summary>
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <summary>
+        /// This raises the <see cref="PropertyChanged"/> event
+        /// </summary>
+        /// <param name="propertyName">The property name that changed</param>
+        protected void OnPropertyChanged(string propertyName)
+        {
+            var handler = PropertyChanged;
+
+            if(handler != null)
+                handler(this, new PropertyChangedEventArgs(propertyName));
+        }
+        #endregion
+
         #region Helper methods
         //=====================================================================
 
@@ -277,26 +444,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         private void childList_ListChanged(object sender, ListChangedEventArgs e)
         {
             if(this.Parent != null)
-                this.Parent.ChildListChanged(this);
-        }
-        #endregion
-
-        #region Constructor
-        //=====================================================================
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="basePathProvider">The base path provider</param>
-        public TocEntry(IBasePathProvider basePathProvider)
-        {
-            pathProvider = basePathProvider;
-            this.IncludePage = true;
-            this.SortOrder = Int32.MaxValue;
-            children = new TocEntryCollection();
-            sourceFile = new FilePath(pathProvider);
-
-            children.ListChanged += childList_ListChanged;
+                this.Parent.ChildListChanged(this, e);
         }
         #endregion
 
@@ -308,7 +456,11 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         {
             TocEntry other = obj as TocEntry;
 
-            if(obj == null)
+            if(other == null)
+                return false;
+
+            // Work around legacy support equality issue
+            if(this.UniqueId != other.UniqueId)
                 return false;
 
             return (this.SourceFile == other.SourceFile &&
@@ -566,6 +718,12 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                 if(site.Attributes["isDefault"] != null)
                     this.IsDefaultTopic = true;
 
+                if(site.Attributes["isExpanded"] != null)
+                    this.IsExpanded = true;
+
+                if(site.Attributes["isSelected"] != null)
+                    this.IsSelected = true;
+
                 // This is legacy stuff so I'm not updating it to support anything else
                 if(site.Attributes["splitToc"] != null)
                     this.ApiParentMode = ApiParentMode.InsertAfter;
@@ -609,6 +767,20 @@ namespace SandcastleBuilder.Utils.ConceptualContent
             if(this.IsDefaultTopic)
             {
                 attr = root.OwnerDocument.CreateAttribute("isDefault");
+                attr.Value = "true";
+                child.Attributes.Append(attr);
+            }
+
+            if(this.IsExpanded)
+            {
+                attr = root.OwnerDocument.CreateAttribute("isExpanded");
+                attr.Value = "true";
+                child.Attributes.Append(attr);
+            }
+
+            if(this.IsSelected)
+            {
+                attr = root.OwnerDocument.CreateAttribute("isSelected");
                 attr.Value = "true";
                 child.Attributes.Append(attr);
             }

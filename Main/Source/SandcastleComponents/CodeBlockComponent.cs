@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Components
 // File    : CodeBlockComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/19/2010
-// Note    : Copyright 2006-2010, Eric Woodruff, All rights reserved
+// Updated : 12/30/2011
+// Note    : Copyright 2006-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a build component that is used to search for <code> XML
@@ -38,6 +38,8 @@
 //                           unprocessed due to change in code block handling.
 //                           Added support for removeRegionMarkers.
 // 1.9.0.1  06/19/2010  EFW  Added support for MS Help Viewer
+// 1.9.3.3  12/30/2011  EFW  Added support for overriding allowMissingSource
+//                           option on a case by case basis.
 //=============================================================================
 
 using System;
@@ -443,6 +445,7 @@ namespace SandcastleBuilder.Components
             string language, title, codeBlock;
             bool nbrLines, outline, seeTags, filter;
             int tabSize, start, end, blockId = 1, id = 1;
+            MessageLevel msgLevel;
 
             // Clear the dictionary
             colorizedCodeBlocks.Clear();
@@ -450,12 +453,10 @@ namespace SandcastleBuilder.Components
             // Select all code nodes.  The location depends on the build type.
             root = navDoc.SelectSingleNode(referenceRoot);
 
-            // If not null, it's a reference (API) build.  If null, it's
-            // a conceptual build.
+            // If not null, it's a reference (API) build.  If null, it's a conceptual build.
             if(root != null)
             {
-                codeList = BuildComponentUtilities.ConvertNodeIteratorToArray(
-                    root.Select(referenceCode));
+                codeList = BuildComponentUtilities.ConvertNodeIteratorToArray(root.Select(referenceCode));
                 nestedCode = nestedRefCode;
             }
             else
@@ -470,16 +471,14 @@ namespace SandcastleBuilder.Components
                     return;
                 }
 
-                codeList = BuildComponentUtilities.ConvertNodeIteratorToArray(
-                    root.Select(conceptualCode));
+                codeList = BuildComponentUtilities.ConvertNodeIteratorToArray(root.Select(conceptualCode));
             }
 
             foreach(XPathNavigator navCode in codeList)
             {
                 code = ((IHasXmlNode)navCode).GetNode();
 
-                // If the parent is null, it was a nested node and has already
-                // been handled.
+                // If the parent is null, it was a nested node and has already been handled
                 if(code.ParentNode == null)
                     continue;
 
@@ -491,37 +490,42 @@ namespace SandcastleBuilder.Components
                 filter = languageFilter;
                 tabSize = 0;
                 title = String.Empty;
+                msgLevel = messageLevel;
 
-                // If there are nested code blocks, load them.  Source and
-                // region attributes will be ignored on the parent.  All
-                // other attributes will be applied to the combined block of
-                // code.  If there are no nested blocks, source and region
-                // will be used to load the code if found.  Otherwise, the
-                // existing inner XML is used for the code.
+                // Allow the "missing source" option to be overridden locally.  However, if false,
+                // it will inherit the global setting.
+                if(code.Attributes["allowMissingSource"] != null)
+                    msgLevel = Convert.ToBoolean(code.Attributes["allowMissingSource"].Value,
+                        CultureInfo.InvariantCulture) ? MessageLevel.Warn : messageLevel;
+
+                // If there are nested code blocks, load them.  Source and region attributes will be
+                // ignored on the parent.  All other attributes will be applied to the combined block of
+                // code.  If there are no nested blocks, source and region will be used to load the code
+                // if found.  Otherwise, the existing inner XML is used for the code.
                 if(navCode.SelectSingleNode(nestedCode) != null)
-                    codeBlock = this.LoadNestedCodeBlocks(navCode, nestedCode);
+                    codeBlock = this.LoadNestedCodeBlocks(navCode, nestedCode, msgLevel);
                 else
                     if(code.Attributes["source"] != null)
-                        codeBlock = this.LoadCodeBlock(code);
+                        codeBlock = this.LoadCodeBlock(code, msgLevel);
                     else
                         codeBlock = code.InnerXml;
 
                 // Check for option overrides
                 if(code.Attributes["numberLines"] != null)
-                    nbrLines = Convert.ToBoolean(code.Attributes[
-                        "numberLines"].Value, CultureInfo.InvariantCulture);
+                    nbrLines = Convert.ToBoolean(code.Attributes["numberLines"].Value,
+                        CultureInfo.InvariantCulture);
 
                 if(code.Attributes["outlining"] != null)
-                    outline = Convert.ToBoolean(code.Attributes[
-                        "outlining"].Value, CultureInfo.InvariantCulture);
+                    outline = Convert.ToBoolean(code.Attributes["outlining"].Value,
+                        CultureInfo.InvariantCulture);
 
                 if(code.Attributes["keepSeeTags"] != null)
-                    seeTags = Convert.ToBoolean(code.Attributes[
-                        "keepSeeTags"].Value, CultureInfo.InvariantCulture);
+                    seeTags = Convert.ToBoolean(code.Attributes["keepSeeTags"].Value,
+                        CultureInfo.InvariantCulture);
 
                 if(code.Attributes["filter"] != null)
-                    filter = Convert.ToBoolean(code.Attributes[
-                        "filter"].Value, CultureInfo.InvariantCulture);
+                    filter = Convert.ToBoolean(code.Attributes["filter"].Value,
+                        CultureInfo.InvariantCulture);
 
                 if(code.Attributes["tabSize"] != null)
                     tabSize = Convert.ToInt32(code.Attributes["tabSize"].Value,
@@ -644,6 +648,8 @@ namespace SandcastleBuilder.Components
         #endregion
 
         #region Helper methods
+        //=====================================================================
+
         /// <summary>
         /// This is used to load a set of nested code blocks from external
         /// files.
@@ -652,21 +658,22 @@ namespace SandcastleBuilder.Components
         /// code blocks</param>
         /// <param name="nestedCode">The XPath expression used to locate the
         /// nested code blocks.</param>
+        /// <param name="msgLevel">The message level for missing source code</param>
         /// <returns>The HTML encoded blocks extracted from the files as a
         /// single code block.</returns>
         /// <remarks>Only source and region attributes are used.  All other
         /// attributes are obtained from the parent code block.  Text nodes
         /// are created to replace the nested code tags so that any additional
         /// text in the parent code block is also retained.</remarks>
-        private string LoadNestedCodeBlocks(XPathNavigator navCode,
-          XPathExpression nestedCode)
+        private string LoadNestedCodeBlocks(XPathNavigator navCode, XPathExpression nestedCode,
+          MessageLevel msgLevel)
         {
             XPathNavigator[] codeList = BuildComponentUtilities.ConvertNodeIteratorToArray(
                 navCode.Select(nestedCode));
 
             foreach(XPathNavigator codeElement in codeList)
-                codeElement.ReplaceSelf("\r\n" + this.LoadCodeBlock(
-                    ((IHasXmlNode)codeElement).GetNode()));
+                codeElement.ReplaceSelf("\r\n" + this.LoadCodeBlock(((IHasXmlNode)codeElement).GetNode(),
+                    msgLevel));
 
             return navCode.InnerXml;
         }
@@ -675,14 +682,14 @@ namespace SandcastleBuilder.Components
         /// This is used to load a code block from an external file.
         /// </summary>
         /// <param name="code">The node containing the attributes</param>
+        /// <param name="msgLevel">The message level for missing source code</param>
         /// <returns>The HTML encoded block extracted from the file.</returns>
-        private string LoadCodeBlock(XmlNode code)
+        private string LoadCodeBlock(XmlNode code, MessageLevel msgLevel)
         {
             XmlNode srcFile;
             Regex reFindRegion;
             Match find, m;
             bool removeRegions = removeRegionMarkers;
-
             string sourceFile = null, region = null, codeBlock = null;
 
             srcFile = code.Attributes["source"];
@@ -692,9 +699,8 @@ namespace SandcastleBuilder.Components
 
             if(String.IsNullOrEmpty(sourceFile))
             {
-                base.WriteMessage(messageLevel, "A nested <code> tag must " +
-                    "contain a \"source\" attribute that specifies the " +
-                    "source file to import");
+                base.WriteMessage(msgLevel, "A nested <code> tag must contain a \"source\" attribute " +
+                    "that specifies the source file to import");
                 return "!ERROR: See log file!";
             }
 
@@ -712,18 +718,14 @@ namespace SandcastleBuilder.Components
             }
             catch(ArgumentException argEx)
             {
-                base.WriteMessage(messageLevel, String.Format(
-                    CultureInfo.InvariantCulture,
-                    "Possible invalid path '{0}{1}'.  Error: {2}",
-                    basePath, sourceFile, argEx.Message));
+                base.WriteMessage(msgLevel, String.Format(CultureInfo.InvariantCulture,
+                    "Possible invalid path '{0}{1}'.  Error: {2}", basePath, sourceFile, argEx.Message));
                 return "!ERROR: See log file!";
             }
             catch(IOException ioEx)
             {
-                base.WriteMessage(messageLevel, String.Format(
-                    CultureInfo.InvariantCulture,
-                    "Unable to load source file '{0}'.  Error: {1}",
-                    sourceFile, ioEx.Message));
+                base.WriteMessage(msgLevel, String.Format(CultureInfo.InvariantCulture,
+                    "Unable to load source file '{0}'.  Error: {1}", sourceFile, ioEx.Message));
                 return "!ERROR: See log file!";
             }
 
@@ -732,43 +734,34 @@ namespace SandcastleBuilder.Components
             {
                 region = code.Attributes["region"].Value;
 
-                // Find the start of the region.  This gives us an immediate
-                // starting match on the second search and we can look for the
-                // matching #endregion without caring about the region name.
-                // Otherwise, nested regions get in the way and complicate
-                // things.
-                reFindRegion = new Regex("\\#(pragma\\s+)?region\\s+\"?" +
-                    Regex.Escape(region), RegexOptions.IgnoreCase);
+                // Find the start of the region.  This gives us an immediate starting match on the second
+                // search and we can look for the matching #endregion without caring about the region name.
+                // Otherwise, nested regions get in the way and complicate things.
+                reFindRegion = new Regex("\\#(pragma\\s+)?region\\s+\"?" + Regex.Escape(region),
+                    RegexOptions.IgnoreCase);
 
                 find = reFindRegion.Match(codeBlock);
 
                 if(!find.Success)
                 {
-                    base.WriteMessage(messageLevel, String.Format(
-                        CultureInfo.InvariantCulture,
-                        "Unable to locate start of region '{0}' in source " +
-                        "file '{1}'", region, sourceFile));
+                    base.WriteMessage(msgLevel, String.Format(CultureInfo.InvariantCulture,
+                        "Unable to locate start of region '{0}' in source file '{1}'", region, sourceFile));
                     return "!ERROR: See log file!";
                 }
 
-                // Find the end of the region taking into account any
-                // nested regions.
+                // Find the end of the region taking into account any nested regions
                 m = reMatchRegion.Match(codeBlock, find.Index);
 
                 if(!m.Success)
                 {
-                    base.WriteMessage(messageLevel, String.Format(
-                        CultureInfo.InvariantCulture,
-                        "Unable to extract region '{0}' in source file " +
-                        "'{1}{2}' (missing #endregion?)", region, basePath,
-                        sourceFile));
+                    base.WriteMessage(msgLevel, String.Format(CultureInfo.InvariantCulture,
+                        "Unable to extract region '{0}' in source file '{1}{2}' (missing #endregion?)",
+                        region, basePath, sourceFile));
                     return "!ERROR: See log file!";
                 }
 
-                // Extract just the specified region starting after the
-                // description.
-                codeBlock = m.Groups[2].Value.Substring(
-                    m.Groups[2].Value.IndexOf('\n') + 1);
+                // Extract just the specified region starting after the description
+                codeBlock = m.Groups[2].Value.Substring(m.Groups[2].Value.IndexOf('\n') + 1);
 
                 // Strip off the trailing comment characters if present
                 if(codeBlock[codeBlock.Length - 1] == ' ')
@@ -789,10 +782,9 @@ namespace SandcastleBuilder.Components
             }
 
             if(code.Attributes["removeRegionMarkers"] != null &&
-              !Boolean.TryParse(code.Attributes["removeRegionMarkers"].Value,
-              out removeRegions))
-                base.WriteMessage(MessageLevel.Warn, "Invalid " +
-                    "removeRegionMarkers attribute value.  Option ignored.");
+              !Boolean.TryParse(code.Attributes["removeRegionMarkers"].Value, out removeRegions))
+                base.WriteMessage(MessageLevel.Warn, "Invalid removeRegionMarkers attribute value.  " +
+                    "Option ignored.");
 
             if(removeRegions)
             {

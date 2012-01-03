@@ -5,33 +5,39 @@
     xmlns:xlink="http://www.w3.org/1999/xlink">
 
     <introduction>
-      <para>A token is used as a replaceable tag within a conceptual content
-topic and is represented using a <codeInline>token</codeInline> MAML element.
-The inner text of the element is a token name.  When the help file is built,
-the token is replaced with its value.  They are an easy way to represent common
-items that you use regularly such as a common phrase or external link.
-Updating the token's value will cause the new value to be used in all topics
-in which the token appears.</para>
+      <para>A token is used as a replaceable tag within a conceptual content topic and is represented using
+a <codeInline>token</codeInline> MAML element. The inner text of the element is a token name.  When the help
+file is built, the token is replaced with its value.  They are an easy way to represent common items that
+you use regularly such as a common phrase or external link.  Updating the token's value will cause the new
+value to be used in all topics in which the token appears.</para>
     </introduction>
 
 <section>
-  <content><para>Token definitions are stored in an XML file.  In the help file
-builder, these files usually have a <localUri>.tokens</localUri> extension
-and will be edited using the editor window shown below.  Be sure to set the
-file's <codeInline>BuildAction</codeInline> to <codeInline>Tokens</codeInline>
-so that it is included correctly at build time.</para>
+  <content>
+		<para>Token definitions are stored in an XML file.  In the help file builder, these files have a
+<localUri>.tokens</localUri> extension and will be edited using the editor window shown below.  Be sure to
+set the file's <codeInline>BuildAction</codeInline> to <codeInline>Tokens</codeInline> so that it is
+included correctly at build time.</para>
 
 <mediaLink><image xlink:href="TokenFileEditor" placement="center"/></mediaLink>
 
-	<para>To add a new token, click the <ui>Add</ui> button.  Edit the token
-name and its content in the fields on the right.  The changes to the name
-and/or content are stored automatically as you move from token to token in the
-list on the left.  To delete a token, click the <ui>Delete</ui> button.</para>
+	<para>The <ui>Find</ui> textbox allows you to search for a token by ID or content value.  Enter some text
+to find and hit Enter or click the <ui>Go</ui> button to start the search.  Hit Enter or click <ui>Go</ui>
+again to find subsequent matches.  Matches are found by doing a case-insensitive search of the token ID and
+content values.</para>
+		
+	<para>To add a new token, click the <ui>Add</ui> button or press Ctrl+Shift+A.  Edit the token name and
+its content in the fields on the right.  The changes to the name and/or content are stored automatically as
+you move from token to token in the list on the left.  To delete a token, click the <ui>Delete</ui> button
+or press the Delete key.  You can use the <ui>Copy</ui> button or Ctrl+C to copy the selected token to the
+clipboard as a <codeInline>token</codeInline> element ready for pasting into a MAML topic.  Tokens can also
+be dragged from the list and dropped in a MAML topic to create a token reference.  A more convenient way
+of inserting references of various types is to use the
+<link xlink:href="e49eea91-a9ef-4aa5-ad8f-16ebd61b798a" />.</para>
 
-	<para>If you embed MAML elements within a token, you must prefix each
-element name with "<codeInline>ddue:</codeInline>" (without the quotes) as
-shown in the example below.  If not, the elements are inserted using the
-default empty namespace and they will not be processed by the Sandcastle
+	<para>If you embed MAML elements within a token, you must prefix each element name with
+"<codeInline>ddue:</codeInline>" (without the quotes) as shown in the example below.  If not, the elements
+are inserted using the default empty namespace and they will not be processed by the Sandcastle
 transformations.</para>
 
 <code lang="xml" title="Token with MAML Elements">
@@ -41,15 +47,16 @@ transformations.</para>
 &lt;/ddue:externalLink&gt;
 </code>
 
-	<para>The token value can contain help file builder substitution tag
-references.  See the <link xlink:href="69d998a7-1af5-4bf5-889b-59cd00b64000" />
-topic for a list of the possible replacement tag values.</para>
+	<para>The token value can contain help file builder substitution tag references.  See the
+<link xlink:href="69d998a7-1af5-4bf5-889b-59cd00b64000" /> topic for a list of the possible replacement tag
+values.</para>
 
   </content>
 </section>
 
     <relatedTopics>
       <link xlink:href="3d4edd2d-7883-4508-b9d2-bd7b4d848b0d" />
+			<link xlink:href="e49eea91-a9ef-4aa5-ad8f-16ebd61b798a" />
     </relatedTopics>
 
   </developerConceptualDocument>

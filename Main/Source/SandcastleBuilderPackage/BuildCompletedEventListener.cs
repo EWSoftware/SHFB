@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : BuildCompletedEventListener.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/21/2011
+// Updated : 12/31/2011
 // Note    : Copyright 2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -59,14 +59,13 @@ namespace SandcastleBuilder.Package
         {
             SandcastleBuilderProjectNode projectNode;
             SandcastleBuilderOptionsPage options;
+            ProjectConfig cfg = configProject as ProjectConfig;
 
-            if(cancel == 0 && success != 0)
+            if(cfg != null)
             {
-                // Open the help file on a successful build if so requested
-                ProjectConfig cfg = configProject as ProjectConfig;
-
-                if(cfg != null)
+                if(cancel == 0 && success != 0)
                 {
+                    // Open the help file on a successful build if so requested
                     projectNode = cfg.ProjectMgr as SandcastleBuilderProjectNode;
                     options = SandcastleBuilderPackage.Instance.GeneralOptions;
 
@@ -83,15 +82,10 @@ namespace SandcastleBuilder.Package
                                     window.ClearLog();
                             }
                 }
-            }
-            else
-                if(cancel == 0 && success == 0)
-                {
-                    // Open the build log tool window on a failed build if so requested
-                    ProjectConfig cfg = configProject as ProjectConfig;
-
-                    if(cfg != null)
+                else
+                    if(cancel == 0 && success == 0)
                     {
+                        // Open the build log tool window on a failed build if so requested
                         projectNode = cfg.ProjectMgr as SandcastleBuilderProjectNode;
                         options = SandcastleBuilderPackage.Instance.GeneralOptions;
 
@@ -99,7 +93,7 @@ namespace SandcastleBuilder.Package
                             if((action & (uint)VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_BUILD) != 0 && options.OpenLogViewerOnFailedBuild)
                                 projectNode.OpenBuildLogToolWindow();
                     }
-                }
+            }
 
             return VSConstants.S_OK;
         }

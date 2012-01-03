@@ -235,6 +235,7 @@
     <Compile Include="ProjectPropertyChangedEventArgs.cs" />
     <Compile Include="ProjectReferenceItem.cs" />
     <Compile Include="PropertyBasedCollectionItem.cs" />
+    <Compile Include="Utility.cs" />
     <Compile Include="XPath\MatchesRegexFunction.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -337,14 +338,6 @@
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\About.bmp" />
-    <None Include="Resources\AddChildItem.bmp" />
-    <None Include="Resources\AddFolder.bmp" />
-    <None Include="Resources\AddGAC.bmp" />
-    <None Include="Resources\AddImage.png" />
-    <None Include="Resources\AddItem.bmp" />
-    <None Include="Resources\AddRootItem.bmp" />
-    <None Include="Resources\AddToken.png" />
     <None Include="Resources\Api_Documented.bmp" />
     <None Include="Resources\Api_Internal.bmp" />
     <None Include="Resources\Api_Internal_Class.bmp" />
@@ -396,32 +389,15 @@
     <None Include="Resources\Api_Public_Structure.bmp" />
     <None Include="Resources\Api_Undocumented.bmp" />
     <None Include="Resources\Api_Unknown.bmp" />
-    <None Include="Resources\CodeClass.ico" />
-    <None Include="Resources\CodeFile.bmp" />
     <None Include="Resources\Content.ico" />
-    <None Include="Resources\Copy.bmp" />
-    <None Include="Resources\Cut.bmp" />
-    <None Include="Resources\DefaultAndSplit.bmp" />
-    <None Include="Resources\DefaultTopic.bmp" />
-    <None Include="Resources\Delete.bmp" />
     <None Include="Resources\Dependencies.ico" />
-    <None Include="Resources\Filter.ico" />
     <None Include="Resources\HelpAttrs.ico" />
     <None Include="Resources\HelpDoc.ico" />
-    <None Include="Resources\ImageFile.bmp" />
     <None Include="Resources\MoveDown.bmp" />
     <None Include="Resources\MoveUp.bmp" />
-    <None Include="Resources\NormalTopic.bmp" />
-    <None Include="Resources\PageEdit.png" />
-    <None Include="Resources\Paste.bmp" />
     <None Include="Resources\PlugInAdd.png" />
     <None Include="Resources\PreviewTOC.bmp" />
     <None Include="Resources\Properties.bmp" />
-    <None Include="Resources\Save.bmp" />
-    <None Include="Resources\SaveAll.bmp" />
-    <None Include="Resources\SiteMap.png" />
-    <None Include="Resources\SplitTOC.bmp" />
-    <None Include="Resources\Token.bmp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CodeColorizer\ColorizerLibrary\ColorizerLibrary.csproj">

@@ -3,8 +3,8 @@
   <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
     <introduction>
     	<para>This topic compares the features available in the standalone GUI and the Visual Studio extension
-package.  It provides information on where to find the comparable feature in Visual Studio as well as notes on
-differences between the two.</para>
+package.  It provides information on where to find the comparable feature in Visual Studio as well as notes
+on differences between the two.</para>
 
 		<autoOutline lead="none" />
     </introduction>
@@ -14,8 +14,8 @@ differences between the two.</para>
 	<content>
 		<para>User preferences related to general options that are not tied to any specific project can be found
 in the Visual Studio options dialog box.  Select <ui>Tools</ui> | <ui>Options</ui> from the main menu bar and
-then select the <ui>Sandcastle Help File Builder</ui> category.  The available user preferences differ slightly
-between the standalone GUI and Visual Studio.  For a more detailed description of the available
+then select the <ui>Sandcastle Help File Builder</ui> category.  The available user preferences differ
+slightly between the standalone GUI and Visual Studio.  For a more detailed description of the available
 preference options, see the <link xlink:href="2152ed96-bf69-4b9b-b1a7-4fffc71b3095" /> topic.</para>
 	</content>
 </section>
@@ -133,7 +133,7 @@ see additional usage notes or warnings related to the property.</para>
 </section>
 
 <section address="SHFBToolbar">
-  <title>Sandcastle Help File Builder Toolbar</title>
+  <title>Menu Option and Toolbar Locations</title>
   <content>
     <para>A toolbar is available for help file builder projects.  On it, you will find the options to open the
 various help file formats, open the MS Help Viewer library manager tool, open the build log content tool window,
@@ -141,6 +141,21 @@ open the FAQ help topic, and open the help file builder's help file.  The help f
 available from the <ui>View</ui> | <ui>View Help File</ui> submenu.  To show or hide the help file builder toolbar,
 either select the <ui>View</ui> | <ui>Toolbars</ui> | <ui>Sandcastle Help File Builder</ui> menu option or right
 click in the toolbar area and select the <ui>Sandcastle Help File Builder</ui> context menu option.</para>
+
+		<para>The <ui>Entity References</ui> tool window can be opened by selecting <ui>View</ui> |
+<ui>Other Windows</ui> | <ui>Entity References Window</ui> or from the <ui>Other Windows</ui> toolbar button
+dropdown.  The build log tool window can be opened by selecting <ui>Build</ui> | <ui>View Build Log Content</ui>
+or from the help file builder's toolbar dropdown button.</para>
+
+		<alert class="note">
+			<para>Shortcut keys have not been assigned to any of the help file builder menu and toolbar options
+to prevent conflicts with default key assignments or custom key assignments that you might have made.  To
+assign shortcut keys to help file builder options, select <ui>Tools</ui> | <ui>Options</ui>, expand the
+<ui>Environment</ui> category, and select the <ui>Keyboard</ui> sub-category.  From there, you can enter
+part of the name of a help file builder option (i.e. <legacyItalic>entityref</legacyItalic>) to find
+matching commands, select them in the list of matches, and assign new shortcuts keys to them as you see
+fit.</para>
+		</alert>
   </content>
 </section>
 

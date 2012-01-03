@@ -2,7 +2,7 @@
 // System  : EWSoftware Design Time Attributes and Editors
 // File    : UserDefinedPropertyEditorDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/16/2011
+// Updated : 12/15/2011
 // Note    : Copyright 2008-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -321,24 +321,7 @@ namespace SandcastleBuilder.Utils.Design
         /// <param name="e">The event arguments</param>
         private void btnHelp_Click(object sender, EventArgs e)
         {
-            string path = null;
-
-            try
-            {
-#if DEBUG
-                // In debug builds, SHFBROOT points to the .\Debug folder for the SandcastleBuilderGUI project
-                path = Path.Combine(@"C:\Program Files (x86)\EWSoftware\Sandcastle Help File Builder\SandcastleBuilder.chm");
-#else
-                path = Path.Combine(Environment.ExpandEnvironmentVariables("%SHFBROOT%"), "SandcastleBuilder.chm");
-#endif
-                Form form = new Form();
-                form.CreateControl();
-                Help.ShowHelp(form, path, HelpNavigator.Topic, "html/da405a33-3eeb-4451-9aa8-a55be5026434.htm#UserDefProps");
-            }
-            catch(Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine(ex.ToString());
-            }
+            Utility.ShowHelpTopic("da405a33-3eeb-4451-9aa8-a55be5026434#UserDefProps");
         }
 
         /// <summary>

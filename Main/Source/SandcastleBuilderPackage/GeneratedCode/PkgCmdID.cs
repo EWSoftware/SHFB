@@ -18,6 +18,7 @@ namespace SandcastleBuilder.Package
 		public const uint AboutSHFB = 0x001D;
 		public const uint ViewBuildLog = 0x0020;
 		public const uint FilterLog = 0x0025;
+		public const uint EntityReferencesWindow = 0x002A;
 		public const uint BuildLogToolbar = 0x0026;
         
     };

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : PlugInPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 04/10/2011
+// Updated : 12/31/2011
 // Note    : Copyright 2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -93,7 +93,7 @@ namespace SandcastleBuilder.Package.PropertyPages
         //=====================================================================
 
         /// <inheritdoc />
-        protected override bool BindControlValue(Control c)
+        protected override bool BindControlValue(Control control)
         {
             ProjectProperty projProp;
             int idx;
@@ -124,7 +124,7 @@ namespace SandcastleBuilder.Package.PropertyPages
         }
 
         /// <inheritdoc />
-        protected override bool StoreControlValue(Control c)
+        protected override bool StoreControlValue(Control control)
         {
             if(this.ProjectMgr == null)
                 return false;

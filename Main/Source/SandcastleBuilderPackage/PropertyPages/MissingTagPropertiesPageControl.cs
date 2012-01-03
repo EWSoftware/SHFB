@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : MissingTagPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 04/07/2011
+// Updated : 12/31/2011
 // Note    : Copyright 2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -65,7 +65,7 @@ namespace SandcastleBuilder.Package.PropertyPages
         /// <inheritdoc />
         /// <remarks>For this page, we only need to bind one control as all the values are stored
         /// in a single property.</remarks>
-        protected override bool BindControlValue(Control c)
+        protected override bool BindControlValue(Control control)
         {
             MissingTags tags;
 
@@ -95,7 +95,7 @@ namespace SandcastleBuilder.Package.PropertyPages
         /// <inheritdoc />
         /// <remarks>For this page, we only need to bind one control as all the values are stored
         /// in a single property.</remarks>
-        protected override bool StoreControlValue(Control c)
+        protected override bool StoreControlValue(Control control)
         {
             MissingTags tags = MissingTags.None;
 

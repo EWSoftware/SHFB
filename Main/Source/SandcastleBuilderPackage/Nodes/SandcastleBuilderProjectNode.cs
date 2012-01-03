@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SandcastleBuilderProjectNode.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/20/2011
+// Updated : 12/31/2011
 // Note    : Copyright 2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -198,7 +198,7 @@ namespace SandcastleBuilder.Package.Nodes
         /// <param name="cmd">The command for which to query the status</param>
         /// <param name="result">An out parameter specifying the QueryStatusResult of the command.</param>
         /// <returns>Returns true if handled, false if not.</returns>
-        private bool QueryStatusOnCommonCommands(Guid cmdGroup, uint cmd, ref QueryStatusResult result)
+        private static bool QueryStatusOnCommonCommands(Guid cmdGroup, uint cmd, ref QueryStatusResult result)
         {
             if(cmdGroup == VsMenus.guidStandardCommandSet97)
             {
@@ -742,7 +742,7 @@ namespace SandcastleBuilder.Package.Nodes
             }
 
             if(docSources != null)
-			    docSources.LoadDocSourcesFromBuildProject(this.BuildProject);
+			    docSources.LoadDocSourcesFromBuildProject();
 
             base.LoadNonBuildInformation();
         }
@@ -752,7 +752,7 @@ namespace SandcastleBuilder.Package.Nodes
         {
             QueryStatusResult result = QueryStatusResult.NOTSUPPORTED;
 
-            if(this.QueryStatusOnCommonCommands(cmdGroup, cmd, ref result))
+            if(QueryStatusOnCommonCommands(cmdGroup, cmd, ref result))
             {
                 handled = true;
                 return result;
@@ -777,7 +777,7 @@ namespace SandcastleBuilder.Package.Nodes
                 return VSConstants.S_OK;
             }
 
-            if(this.QueryStatusOnCommonCommands(cmdGroup, cmd, ref result))
+            if(QueryStatusOnCommonCommands(cmdGroup, cmd, ref result))
                 return VSConstants.S_OK;
 
             return base.QueryStatusOnNode(cmdGroup, cmd, pCmdText, ref result);
@@ -908,6 +908,10 @@ namespace SandcastleBuilder.Package.Nodes
                 return VSConstants.E_INVALIDARG;
 
             pdwEffect = (uint)DropEffect.None;
+
+            // If the source is within the project, let the base class handle it
+            if(this.SourceDraggedOrCutOrCopied)
+                return base.Drop(pDataObject, grfKeyState, itemid, ref pdwEffect);
 
             // Get the node that is being dragged over and ask it which node should handle this call
             HierarchyNode targetNode = NodeFromItemId(itemid);

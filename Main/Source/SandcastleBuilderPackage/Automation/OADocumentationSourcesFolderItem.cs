@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : OADocumentationSourcesFolderItem.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/30/2011
+// Updated : 12/31/2011
 // Note    : Copyright 2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -65,9 +65,12 @@ namespace SandcastleBuilder.Package.Automation
 
                 // Get a list of the project items in the node
                 for(HierarchyNode child = this.Node.FirstChild; child != null; child = child.NextSibling)
-                    if(child is DocumentationSourceNode)
-                        list.Add(new OADocumentationSourceItem(this.Project,
-                            child as DocumentationSourceNode));
+                {
+                    var dsn = child as DocumentationSourceNode;
+
+                    if(dsn != null)
+                        list.Add(new OADocumentationSourceItem(this.Project, dsn));
+                }
 
                 return new OANavigableProjectItems(this.Project, list, this.Node);
             }

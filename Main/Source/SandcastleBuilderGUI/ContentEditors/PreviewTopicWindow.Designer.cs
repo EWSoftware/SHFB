@@ -63,7 +63,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // pbWait
             // 
             this.pbWait.BackColor = System.Drawing.SystemColors.Window;
-            this.pbWait.Image = ((System.Drawing.Image)(resources.GetObject("pbWait.Image")));
+            this.pbWait.Image = global::SandcastleBuilder.Gui.Properties.Resources.SpinningWheel;
             this.pbWait.Location = new System.Drawing.Point(5, 5);
             this.pbWait.Name = "pbWait";
             this.pbWait.Size = new System.Drawing.Size(32, 32);

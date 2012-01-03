@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Project Launcher
 // File    : StartUp.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/19/2011
+// Updated : 12/31/2011
 // Note    : Copyright 2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -92,7 +92,7 @@ namespace SandcastleBuilder.ProjectLauncher
                         // Check for VSPackage too.  If not present, we can't load the project.
                         string vsPackagePath = Path.Combine(Environment.GetFolderPath(
                             Environment.SpecialFolder.LocalApplicationData),
-                            @"Microsoft\VisualStudio\10.0\Extensions\EWSoftware\Sandcastle Help File Builder");
+                            @"Microsoft\VisualStudio\10.0\Extensions\EWSoftware\SHFB");
 
                         if(!Directory.Exists(vsPackagePath) || !Directory.EnumerateFiles(vsPackagePath,
                           "SandcastleBuilder.Package.dll", SearchOption.AllDirectories).Any())

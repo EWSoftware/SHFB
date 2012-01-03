@@ -1,0 +1,160 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="54250029-bcfa-4c03-8cf0-b230867a8613" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Version 1.9.3.3 was released on January 3rd, 2012.</para>
+
+			<para>The primary purpose of this release is to move the <link xlink:href="b128ad2a-787e-48c7-b946-f6953080c386" />
+into a beta stage so that more people can start using it and to test and get feedback on the new file editors.
+The build engine and the package in general are quite stable and are suitable for general use.  As before, if
+there are issues you can drop back to the last stable release as there have been no changes that would affect the
+project file format.  However, some support for newer features such as Portable Framework and Silverlight 5
+support are not available in the prior stable release.</para>
+
+			<para>For more information on the updated entity references window and file editors, see the following
+topics:</para>
+
+			<list class="bullet">
+				<listItem>
+					<para><link xlink:href="e49eea91-a9ef-4aa5-ad8f-16ebd61b798a" /></para>
+				</listItem>
+				<listItem>
+					<para><link xlink:href="54e3dc97-5125-441e-8e84-7f9303e95f26" /></para>
+				</listItem>
+				<listItem>
+					<para><link xlink:href="ed6870bb-772d-4596-9fc1-5638ae6d621b" /></para>
+				</listItem>
+				<listItem>
+					<para><link xlink:href="fcf8e4ac-5b32-4d5f-9bce-2e85c3468fdc" /></para>
+				</listItem>
+				<listItem>
+					<para><link xlink:href="3dd5fe3b-1bc3-42e5-8900-56165e3f9aed" /></para>
+				</listItem>
+			</list>
+    </introduction>
+
+<section>
+  <title>Changes in This Release</title>
+  <content>
+
+<list class="bullet">
+	<listItem>
+		<para>Removed the condition in the build engine that only ran the 32-bit <localUri>MSBuild.exe</localUri> for
+Silverlight 4.0 or earlier. It now runs it unconditionally for all Silverlight versions including the new 5.0
+release.</para>
+	</listItem>
+
+	<listItem>
+		<para>Fixed the help file builder project launcher tool so that it does not fail to open the project
+when it is opened from a path with a space in one of the folder names.</para>
+	</listItem>
+
+	<listItem>
+		<para>Updated the <codeInline>CachedCopyFromIndexComponent</codeInline> and
+<codeInline>CachedResolveReferenceLinksComponent</codeInline> to open the cache files for shared read access to
+allow for concurrent builds.</para>
+	</listItem>
+
+	<listItem>
+		<para>Fixed the checked state optimization in the API filter dialog to handle a couple of odd edge
+cases.</para>
+	</listItem>
+
+	<listItem>
+		<para>Fixed the output deployment plug-in so that it ignores the help format if no location is defined
+for it.</para>
+	</listItem>
+
+	<listItem>
+		<para>Fixed a bug in the project class that was causing duplicate files and folders to be added to the
+project under certain conditions.</para>
+	</listItem>
+
+	<listItem>
+		<para>Fixed adding of file references in the VSPackage so that the hint path is retained.</para>
+	</listItem>
+
+	<listItem>
+		<para>Added support for dragging and dropping files from Windows Explorer into the Visual Studio
+Solution Explorer.  Dropping files on the <ui>Documentation Sources</ui> node will add the appropriate files
+as documentation sources.  Dropping files on the <ui>References</ui> node will add the appropriate files as
+reference assemblies.  All other file types dropped on the project nodes will be added as normal project
+files.</para>
+	</listItem>
+
+	<listItem>
+		<para>Reworked the standalone GUI's <ui>Entity Reference Window</ui> to use a new WPF entity references
+user control so that it is consistent with the VSPackage in features and functionality.  The new user
+control allows selection of the link type used for drag and drop/copy and paste operations into topic files.
+This replaces the popup menus that used to appear when dropping links in topics.</para>
+
+		<para>In addition, it also supports table of contents entities (the merged results of all content layout and
+site map files in the project).  The link drag and drop feature is a better fit here now as the content layout
+and site map editors have been promoted to full document windows from the tool window style used in earlier
+releases.  The Entity References tool window will take into account all open file editors within the environment
+when refreshed so as to always show the current token and table of contents entity information.</para>
+	</listItem>
+
+	<listItem>
+		<para>Added the <ui>Entity References</ui> tool window to the VSPackage.  The tool window tracks the
+active help file builder project and reloads its content to match when needed.  The <ui>Refresh</ui>
+button can reload the selected entity types as well if necessary to display current values including those
+from unsaved token and content layout files open in the environment.</para>
+	</listItem>
+
+	<listItem>
+		<para>Reworked the standalone GUI's token file editor window to use a new WPF token file editor user
+control so that it is consistent with the VSPackage in features and functionality.  The new user control
+allows searching for tokens.</para>
+	</listItem>
+
+	<listItem>
+		<para>Added the token file editor to the VSPackage.</para>
+	</listItem>
+
+	<listItem>
+		<para>Reworked the standalone GUI's resource item editor window to use a new WPF resource item editor
+user control so that it is consistent with the VSPackage in features and functionality.  The new user
+control allows searching for items and limiting the list to just those items with changes.</para>
+	</listItem>
+
+	<listItem>
+		<para>Added the resource item editor to the VSPackage.</para>
+	</listItem>
+
+	<listItem>
+		<para>Reworked the standalone GUI's content layout editor window to use a new WPF content layout
+editor user control so that it is consistent with the VSPackage in features and functionality.  The new
+user control provides a much more user-friendly editing experience and has an improved search option.</para>
+	</listItem>
+
+	<listItem>
+		<para>Added the content layout file editor to the VSPackage.</para>
+	</listItem>
+
+	<listItem>
+		<para>Reworked the standalone GUI's site map editor window to use a new WPF site map editor user
+control so that it is consistent with the VSPackage in features and functionality.  The new user control
+provides a much more user-friendly editing experience and has an improved search option.</para>
+	</listItem>
+
+	<listItem>
+		<para>Added the site map file editor to the VSPackage.</para>
+	</listItem>
+
+	<listItem>
+		<para>Added support for the <codeInline>allowMissingSource</codeInline> attribute on <codeInline>code</codeInline>
+XML comments elements to allow local overrides of the global "missing source" build component option when
+set to true.  If omitted or set to false, the default, it inherits the global setting's value.</para>
+	</listItem>
+</list>
+
+  </content>
+</section>
+
+	<relatedTopics>
+		<link xlink:href="078cc1c7-7995-431e-bf9c-8813becbe8df" />
+	</relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : HelpFilePropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 04/11/2011
+// Updated : 12/31/2011
 // Note    : Copyright 2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -172,7 +172,7 @@ namespace SandcastleBuilder.Package.PropertyPages
         }
 
         /// <inheritdoc />
-        protected override bool BindControlValue(Control c)
+        protected override bool BindControlValue(Control control)
         {
             ProjectProperty projProp;
             List<string> allFilters;
@@ -182,7 +182,7 @@ namespace SandcastleBuilder.Package.PropertyPages
                 return false;
 
             // Add the project's selected language to the list if it is not there
-            if(c.Name == "cboLanguage")
+            if(control.Name == "cboLanguage")
             {
                 projProp = this.ProjectMgr.BuildProject.GetProperty("Language");
 
@@ -193,7 +193,7 @@ namespace SandcastleBuilder.Package.PropertyPages
             }
 
             // Set the selected syntax filters
-            if(c.Name == "cblSyntaxFilters")
+            if(control.Name == "cblSyntaxFilters")
             {
                 for(idx = 0; idx < cblSyntaxFilters.Items.Count; idx++)
                     cblSyntaxFilters.SetItemChecked(idx, false);
@@ -220,13 +220,13 @@ namespace SandcastleBuilder.Package.PropertyPages
         }
 
         /// <inheritdoc />
-        protected override bool StoreControlValue(Control c)
+        protected override bool StoreControlValue(Control control)
         {
             if(this.ProjectMgr == null)
                 return false;
 
             // Set the selected syntax filters value
-            if(c.Name == "cblSyntaxFilters")
+            if(control.Name == "cblSyntaxFilters")
             {
                 this.ProjectMgr.SetProjectProperty("SyntaxFilters",
                     SyntaxFilterTypeConverter.ToRecognizedFilterIds(String.Join(", ",

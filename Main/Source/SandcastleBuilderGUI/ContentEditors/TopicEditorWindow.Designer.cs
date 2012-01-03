@@ -28,13 +28,8 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TopicEditorWindow));
             this.editor = new SandcastleBuilder.Gui.ContentEditors.ContentEditorControl();
-            this.cmsDropImage = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.miMediaLink = new System.Windows.Forms.ToolStripMenuItem();
-            this.miMediaLinkInline = new System.Windows.Forms.ToolStripMenuItem();
-            this.miExternalLinkMedia = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.tsbLegacyBold = new System.Windows.Forms.ToolStripButton();
             this.tsbLegacyItalic = new System.Windows.Forms.ToolStripButton();
@@ -49,6 +44,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.tsbExternalLink = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbInsertElement = new System.Windows.Forms.ToolStripSplitButton();
+            this.miAlert = new System.Windows.Forms.ToolStripMenuItem();
             this.miCode = new System.Windows.Forms.ToolStripMenuItem();
             this.miDefinitionTable = new System.Windows.Forms.ToolStripMenuItem();
             this.miSection = new System.Windows.Forms.ToolStripMenuItem();
@@ -80,52 +76,19 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbUndo = new System.Windows.Forms.ToolStripButton();
             this.tsbRedo = new System.Windows.Forms.ToolStripButton();
-            this.miAlert = new System.Windows.Forms.ToolStripMenuItem();
-            this.cmsDropImage.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // editor
             // 
-            this.editor.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.editor.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.editor.IsReadOnly = false;
             this.editor.Location = new System.Drawing.Point(0, 25);
             this.editor.Name = "editor";
             this.editor.Size = new System.Drawing.Size(530, 231);
             this.editor.TabIndex = 0;
-            // 
-            // cmsDropImage
-            // 
-            this.cmsDropImage.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.miMediaLink,
-            this.miMediaLinkInline,
-            this.miExternalLinkMedia});
-            this.cmsDropImage.Name = "cmsDropImage";
-            this.cmsDropImage.ShowImageMargin = false;
-            this.cmsDropImage.Size = new System.Drawing.Size(218, 76);
-            // 
-            // miMediaLink
-            // 
-            this.miMediaLink.Name = "miMediaLink";
-            this.miMediaLink.Size = new System.Drawing.Size(217, 24);
-            this.miMediaLink.Text = "&Insert <mediaLink>";
-            this.miMediaLink.Click += new System.EventHandler(this.MediaLinkItem_Click);
-            // 
-            // miMediaLinkInline
-            // 
-            this.miMediaLinkInline.Name = "miMediaLinkInline";
-            this.miMediaLinkInline.Size = new System.Drawing.Size(217, 24);
-            this.miMediaLinkInline.Text = "I&nsert <mediaLinkInline>";
-            this.miMediaLinkInline.Click += new System.EventHandler(this.MediaLinkItem_Click);
-            // 
-            // miExternalLinkMedia
-            // 
-            this.miExternalLinkMedia.Name = "miExternalLinkMedia";
-            this.miExternalLinkMedia.Size = new System.Drawing.Size(217, 24);
-            this.miExternalLinkMedia.Text = "In&sert <externalLink>";
-            this.miExternalLinkMedia.Click += new System.EventHandler(this.MediaLinkItem_Click);
             // 
             // toolStrip1
             // 
@@ -299,6 +262,14 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.tsbInsertElement.Text = "alert";
             this.tsbInsertElement.ToolTipText = "Insert <alert>";
             this.tsbInsertElement.ButtonClick += new System.EventHandler(this.tsbInsertElement_ButtonClick);
+            // 
+            // miAlert
+            // 
+            this.miAlert.Name = "miAlert";
+            this.miAlert.Size = new System.Drawing.Size(216, 24);
+            this.miAlert.Text = "alert";
+            this.miAlert.ToolTipText = "Insert <alert>";
+            this.miAlert.Click += new System.EventHandler(this.miAlert_Click);
             // 
             // miCode
             // 
@@ -548,14 +519,6 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.tsbRedo.ToolTipText = "Redo (Ctrl+Y)";
             this.tsbRedo.Click += new System.EventHandler(this.tsbRedo_Click);
             // 
-            // miAlert
-            // 
-            this.miAlert.Name = "miAlert";
-            this.miAlert.Size = new System.Drawing.Size(216, 24);
-            this.miAlert.Text = "alert";
-            this.miAlert.ToolTipText = "Insert <alert>";
-            this.miAlert.Click += new System.EventHandler(this.miAlert_Click);
-            // 
             // TopicEditorWindow
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
@@ -566,7 +529,6 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.Name = "TopicEditorWindow";
             this.ShowHint = WeifenLuo.WinFormsUI.Docking.DockState.Document;
             this.ShowInTaskbar = false;
-            this.cmsDropImage.ResumeLayout(false);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -577,10 +539,6 @@ namespace SandcastleBuilder.Gui.ContentEditors
         #endregion
 
         private SandcastleBuilder.Gui.ContentEditors.ContentEditorControl editor;
-        private System.Windows.Forms.ContextMenuStrip cmsDropImage;
-        private System.Windows.Forms.ToolStripMenuItem miMediaLinkInline;
-        private System.Windows.Forms.ToolStripMenuItem miMediaLink;
-        private System.Windows.Forms.ToolStripMenuItem miExternalLinkMedia;
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton tsbLegacyBold;
         private System.Windows.Forms.ToolStripButton tsbLegacyItalic;

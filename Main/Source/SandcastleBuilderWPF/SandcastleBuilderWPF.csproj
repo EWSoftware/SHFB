@@ -1,0 +1,200 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D3B06405-3435-4329-9233-2DF1BF5028AA}</ProjectGuid>
+    <OutputType>library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SandcastleBuilder.WPF</RootNamespace>
+    <AssemblyName>SandcastleBuilder.WPF</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\SandcastleBuilder.WPF.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\SandcastleBuilder.WPF.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>SandcastleBuilderWPF.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="PresentationFramework.Luna" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\SandcastleBuilderUtils\Properties\AssemblyInfoShared.cs">
+      <Link>Properties\AssemblyInfoShared.cs</Link>
+    </Compile>
+    <Compile Include="Commands\EditorCommands.cs" />
+    <Compile Include="Commands\ProjectCommands.cs" />
+    <Compile Include="ControlExtensions.cs" />
+    <Compile Include="Controls\DropDownButton.cs" />
+    <Compile Include="Controls\SplitButton.cs" />
+    <Compile Include="EntityReference.cs" />
+    <Compile Include="EntityType.cs" />
+    <Compile Include="SharedResources.cs" />
+    <Compile Include="UserControls\ContentLayoutEditorControl.xaml.cs">
+      <DependentUpon>ContentLayoutEditorControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\EntityReferencesControl.xaml.cs">
+      <DependentUpon>EntityReferencesControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\FileContentNeededEventArgs.cs" />
+    <Compile Include="UserControls\ResourceItemEditorControl.xaml.cs">
+      <DependentUpon>ResourceItemEditorControl.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UserControls\SiteMapEditorControl.xaml.cs">
+      <DependentUpon>SiteMapEditorControl.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UserControls\TokenEditorControl.xaml.cs">
+      <DependentUpon>TokenEditorControl.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Behaviors\SupportAnimatedGIFBehavior.cs" />
+    <Compile Include="Behaviors\TreeViewItemBehavior.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+    <None Include="SandcastleBuilderWPF.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Controls\DropDownButtonStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\SplitButtonStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\ContentLayoutEditorControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\EntityReferencesControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\ResourceItemEditorControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\SiteMapEditorControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\TokenEditorControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SandcastleBuilderUtils\SandcastleBuilderUtils.csproj">
+      <Project>{330DADF7-3AB1-49A0-B3C6-A69D2C4F06A6}</Project>
+      <Name>SandcastleBuilderUtils</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\AddItem.png" />
+    <Resource Include="Resources\Copy.png" />
+    <Resource Include="Resources\Entity.png" />
+    <Resource Include="Resources\ImageFile.png" />
+    <Resource Include="Resources\Refresh.png" />
+    <Resource Include="Resources\SnippetsFile.png" />
+    <Resource Include="Resources\Spinner.gif" />
+    <Resource Include="Resources\TokenFile.png" />
+    <Resource Include="Resources\Undo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\About.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\AddChildItem.png" />
+    <Resource Include="Resources\AddRootItem.png" />
+    <Resource Include="Resources\Cut.png" />
+    <Resource Include="Resources\DefaultTopic.png" />
+    <Resource Include="Resources\Delete.png" />
+    <Resource Include="Resources\ExpandCollapse.png" />
+    <Resource Include="Resources\HiddenTopic.png" />
+    <Resource Include="Resources\InsertApiAfter.png" />
+    <Resource Include="Resources\InsertApiAsChild.png" />
+    <Resource Include="Resources\InsertApiBefore.png" />
+    <Resource Include="Resources\MoveDown.png" />
+    <Resource Include="Resources\MoveUp.png" />
+    <Resource Include="Resources\PageEdit.png" />
+    <Resource Include="Resources\Paste.png" />
+    <Resource Include="Resources\RefreshDocument.png" />
+    <Resource Include="Resources\RemoveLink.png" />
+    <Resource Include="Resources\RootContentContainer.png" />
+    <Resource Include="Resources\Sort.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

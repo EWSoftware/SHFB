@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SummaryPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 04/10/2011
+// Updated : 12/31/2011
 // Note    : Copyright 2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -96,14 +96,14 @@ namespace SandcastleBuilder.Package.PropertyPages
         }
 
         /// <inheritdoc />
-        protected override bool BindControlValue(Control c)
+        protected override bool BindControlValue(Control control)
         {
             ProjectProperty projProp;
 
             if(this.ProjectMgr == null)
                 return false;
 
-            if(c.Name == "lblNamespaceSummaryState")
+            if(control.Name == "lblNamespaceSummaryState")
             {
                 // Pass it the Sandcastle project instance as we use the designer dialog to edit the collection
                 // and it obtains it from the collection to do the required partial build.
@@ -124,12 +124,12 @@ namespace SandcastleBuilder.Package.PropertyPages
         }
 
         /// <inheritdoc />
-        protected override bool StoreControlValue(Control c)
+        protected override bool StoreControlValue(Control control)
         {
             if(this.ProjectMgr == null)
                 return false;
 
-            if(c.Name == "lblNamespaceSummaryState")
+            if(control.Name == "lblNamespaceSummaryState")
             {
                 if(summariesChanged)
                 {

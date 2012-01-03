@@ -1,0 +1,2985 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FxCopProject Version="10.0" Name="My FxCop Project">
+ <ProjectOptions>
+  <SharedProject>True</SharedProject>
+  <Stylesheet Apply="False">$(FxCopDir)\Xml\FxCopReport.xsl</Stylesheet>
+  <SaveMessages>
+   <Project Status="Active, Excluded, Good, Noise" NewOnly="False" />
+   <Report Status="Active, Good, Noise" NewOnly="False" />
+  </SaveMessages>
+  <ProjectFile Compress="True" DefaultTargetCheck="True" DefaultRuleCheck="True" SaveByRuleGroup="" Deterministic="True" />
+  <EnableMultithreadedLoad>True</EnableMultithreadedLoad>
+  <EnableMultithreadedAnalysis>True</EnableMultithreadedAnalysis>
+  <SourceLookup>True</SourceLookup>
+  <AnalysisExceptionsThreshold>10</AnalysisExceptionsThreshold>
+  <RuleExceptionsThreshold>1</RuleExceptionsThreshold>
+  <Spelling Locale="en-US" />
+  <OverrideRuleVisibilities>False</OverrideRuleVisibilities>
+  <CustomDictionaries SearchFxCopDir="True" SearchUserProfile="True" SearchProjectDir="True" />
+  <SearchGlobalAssemblyCache>False</SearchGlobalAssemblyCache>
+  <DeadlockDetectionTimeout>120</DeadlockDetectionTimeout>
+  <IgnoreGeneratedCode>False</IgnoreGeneratedCode>
+  <TargetFrameworkVersion>0.0</TargetFrameworkVersion>
+ </ProjectOptions>
+ <Targets>
+  <AssemblyReferenceDirectories>
+   <Directory>$(ProjectDir)/../../../../../Windows/assembly/GAC/Microsoft.VisualStudio.OLE.Interop/7.1.40304.0__b03f5f7f11d50a3a/</Directory>
+   <Directory>$(ProjectDir)/../../../../../Windows/assembly/GAC/Microsoft.VisualStudio.Shell.Interop/7.1.40304.0__b03f5f7f11d50a3a/</Directory>
+   <Directory>$(ProjectDir)/../../../../../Program Files (x86)/Microsoft Visual Studio 2010 SDK SP1/VisualStudioIntegration/Common/Assemblies/v4.0/</Directory>
+   <Directory>$(ProjectDir)/../../../../../Windows/assembly/GAC/Microsoft.VisualStudio.Shell.Interop.8.0/8.0.0.0__b03f5f7f11d50a3a/</Directory>
+   <Directory>$(ProjectDir)/../../../../../Windows/assembly/GAC/EnvDTE80/8.0.0.0__b03f5f7f11d50a3a/</Directory>
+   <Directory>$(ProjectDir)/../../../../../Windows/assembly/GAC/EnvDTE/8.0.0.0__b03f5f7f11d50a3a/</Directory>
+   <Directory>$(ProjectDir)/../../../../../Windows/assembly/GAC/Microsoft.VisualStudio.Shell.Interop.9.0/9.0.0.0__b03f5f7f11d50a3a/</Directory>
+   <Directory>$(ProjectDir)/../../../../../Windows/assembly/GAC/VSLangProj/7.0.3300.0__b03f5f7f11d50a3a/</Directory>
+   <Directory>$(ProjectDir)/../../../../../Windows/assembly/GAC/Microsoft.VisualStudio.TextManager.Interop/7.1.40304.0__b03f5f7f11d50a3a/</Directory>
+  </AssemblyReferenceDirectories>
+  <Target Name="$(ProjectDir)/SandcastleBuilderPackage/bin/Debug/SandcastleBuilder.Package.dll" Analyze="True" AnalyzeAllChildren="False">
+   <Modules AnalyzeAllChildren="False">
+    <Module Name="sandcastlebuilder.package.dll" Analyze="True" AnalyzeAllChildren="False">
+     <Namespaces AnalyzeAllChildren="False">
+      <Namespace Name="" Analyze="True" AnalyzeAllChildren="True" />
+      <Namespace Name="SandcastleBuilder.MicrosoftHelpViewer" Analyze="True" AnalyzeAllChildren="True" />
+      <Namespace Name="SandcastleBuilder.Package" Analyze="True" AnalyzeAllChildren="True" />
+      <Namespace Name="SandcastleBuilder.Package.Automation" Analyze="True" AnalyzeAllChildren="True" />
+      <Namespace Name="SandcastleBuilder.Package.Editors" Analyze="True" AnalyzeAllChildren="True" />
+      <Namespace Name="SandcastleBuilder.Package.Nodes" Analyze="True" AnalyzeAllChildren="False">
+       <Types AnalyzeAllChildren="False">
+        <Type Name="DocumentationSourceNode" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="DocumentationSourceNodeProperties" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="DocumentationSourcesContainerNode" Analyze="True" AnalyzeAllChildren="False">
+         <Members AnalyzeAllChildren="False">
+          <Member Name="#.ctor(Microsoft.VisualStudio.Project.ProjectNode)" Analyze="True" />
+          <Member Name="#AddDocumentationSource(System.String)" Analyze="True" />
+          <Member Name="#AddDocumentationSources()" Analyze="True" />
+          <Member Name="#CanDeleteItem(Microsoft.VisualStudio.Shell.Interop.__VSDELETEITEMOPERATION)" Analyze="True" />
+          <Member Name="#CanShowDefaultIcon()" Analyze="True" />
+          <Member Name="#Caption" Analyze="True" AnalyzeAllChildren="True" />
+          <Member Name="#DocSourcesNodeVirtualName" Analyze="True" />
+          <Member Name="#documentationSources" Analyze="True" />
+          <Member Name="#ExcludeFromProject()" Analyze="True" />
+          <Member Name="#ExecCommandOnNode(System.Guid,System.UInt32,System.UInt32,System.IntPtr,System.IntPtr)" Analyze="True" />
+          <Member Name="#GetAutomationObject()" Analyze="True" />
+          <Member Name="#GetEditLabel()" Analyze="True" />
+          <Member Name="#GetIconHandle(System.Boolean)" Analyze="True" />
+          <Member Name="#ItemTypeGuid" Analyze="True" AnalyzeAllChildren="True" />
+          <Member Name="#MenuCommandId" Analyze="True" AnalyzeAllChildren="True" />
+          <Member Name="#PrepareSelectedNodesForClipBoard()" Analyze="True" />
+          <Member Name="#QueryStatusOnNode(System.Guid,System.UInt32,System.IntPtr,Microsoft.VisualStudio.Project.QueryStatusResult&amp;)" Analyze="True" />
+          <Member Name="#RemoveChild(Microsoft.VisualStudio.Project.HierarchyNode)" Analyze="True" />
+          <Member Name="#SortPriority" Analyze="True" AnalyzeAllChildren="True" />
+          <Member Name="#StoreDocumentationSources()" Analyze="True" />
+          <Member Name="#Url" Analyze="True" AnalyzeAllChildren="True" />
+         </Members>
+        </Type>
+        <Type Name="DocumentationSourcesContainerNode+&lt;&gt;c__DisplayClass1" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="ProjectImageIndex" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="ProjectPropertiesContainerNode" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="SandcastleBuilderAssemblyReferenceNode" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="SandcastleBuilderComReferenceNode" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="SandcastleBuilderFileNode" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="SandcastleBuilderFileNodeProperties" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="SandcastleBuilderProjectNode" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="SandcastleBuilderProjectNode+&lt;&gt;c__DisplayClass7" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="SandcastleBuilderProjectNode+&lt;&gt;c__DisplayClass7+&lt;&gt;c__DisplayClass9" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="SandcastleBuilderProjectNodeProperties" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="SandcastleBuilderProjectReferenceNode" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="SandcastleBuilderReferenceContainerNode" Analyze="True" AnalyzeAllChildren="True" />
+       </Types>
+      </Namespace>
+      <Namespace Name="SandcastleBuilder.Package.Properties" Analyze="True" AnalyzeAllChildren="True" />
+      <Namespace Name="SandcastleBuilder.Package.PropertyPages" Analyze="True" AnalyzeAllChildren="True" />
+      <Namespace Name="SandcastleBuilder.Package.ToolWindows" Analyze="True" AnalyzeAllChildren="True" />
+      <Namespace Name="SandcastleBuilder.Package.UI" Analyze="True" AnalyzeAllChildren="True" />
+     </Namespaces>
+     <Resources AnalyzeAllChildren="True" />
+    </Module>
+   </Modules>
+  </Target>
+ </Targets>
+ <Rules>
+  <RuleFiles>
+   <RuleFile Name="$(FxCopDir)\Rules\DesignRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\GlobalizationRules.dll" Enabled="True" AllRulesEnabled="False">
+    <Rule Name="AvoidDuplicateAccelerators" Enabled="True" />
+    <Rule Name="DoNotHardcodeLocaleSpecificStrings" Enabled="True" />
+    <Rule Name="NormalizeStringsToUppercase" Enabled="True" />
+    <Rule Name="SetLocaleForDataTypes" Enabled="True" />
+    <Rule Name="SpecifyCultureInfo" Enabled="True" />
+    <Rule Name="SpecifyIFormatProvider" Enabled="True" />
+    <Rule Name="SpecifyMarshalingForPInvokeStringArguments" Enabled="True" />
+    <Rule Name="SpecifyStringComparison" Enabled="True" />
+    <Rule Name="UseOrdinalStringComparison" Enabled="True" />
+   </RuleFile>
+   <RuleFile Name="$(FxCopDir)\Rules\InteroperabilityRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\MobilityRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\NamingRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\PerformanceRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\PortabilityRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\SecurityRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\SecurityTransparencyRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\UsageRules.dll" Enabled="True" AllRulesEnabled="True" />
+  </RuleFiles>
+  <Groups />
+  <Settings />
+ </Rules>
+ <FxCopReport Version="10.0">
+  <Namespaces>
+   <Namespace Name="SandcastleBuilder.MicrosoftHelpViewer">
+    <Messages>
+     <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Status="Excluded" Created="2011-12-29 19:25:41Z">
+      <Issue>
+       <Item>SandcastleBuilder.MicrosoftHelpViewer</Item>
+      </Issue>
+      <Notes>
+       <User Name="EWOODRUFF">
+        <Note Id="0" />
+       </User>
+      </Notes>
+     </Message>
+    </Messages>
+   </Namespace>
+   <Namespace Name="SandcastleBuilder.Package">
+    <Messages>
+     <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Status="Excluded" Created="2011-12-29 19:25:41Z">
+      <Issue>
+       <Item>SandcastleBuilder.Package</Item>
+      </Issue>
+      <Notes>
+       <User Name="EWOODRUFF">
+        <Note Id="0" />
+       </User>
+      </Notes>
+     </Message>
+    </Messages>
+   </Namespace>
+   <Namespace Name="SandcastleBuilder.Package.Automation">
+    <Messages>
+     <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Status="Excluded" Created="2011-12-29 19:25:41Z">
+      <Issue>
+       <Item>SandcastleBuilder.Package.Automation</Item>
+      </Issue>
+      <Notes>
+       <User Name="EWOODRUFF">
+        <Note Id="0" />
+       </User>
+      </Notes>
+     </Message>
+    </Messages>
+   </Namespace>
+   <Namespace Name="SandcastleBuilder.Package.UI">
+    <Messages>
+     <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Status="Excluded" Created="2011-12-29 19:25:41Z">
+      <Issue>
+       <Item>SandcastleBuilder.Package.UI</Item>
+      </Issue>
+      <Notes>
+       <User Name="EWOODRUFF">
+        <Note Id="0" />
+       </User>
+      </Notes>
+     </Message>
+    </Messages>
+   </Namespace>
+  </Namespaces>
+  <Targets>
+   <Target Name="$(ProjectDir)/SandcastleBuilderPackage/bin/Debug/SandcastleBuilder.Package.dll">
+    <Modules>
+     <Module Name="sandcastlebuilder.package.dll">
+      <Namespaces>
+       <Namespace Name="SandcastleBuilder.MicrosoftHelpViewer">
+        <Types>
+         <Type Name="HelpLibraryManager">
+          <Members>
+           <Member Name="#FindLocaleFor(System.String,System.String)">
+            <Messages>
+             <Message TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue Name="ToUpperInvariant">
+               <Item>'HelpLibraryManager.FindLocaleFor(string, string)'</Item>
+               <Item>'string.ToLowerInvariant()'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="7" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="HelpLibraryManagerException">
+          <Messages>
+           <Message TypeName="ImplementStandardExceptionConstructors" Category="Microsoft.Design" CheckId="CA1032" Status="Excluded" Created="2011-12-29 19:25:41Z">
+            <Issue Name="MissingConstructor">
+             <Item>'HelpLibraryManagerException'</Item>
+             <Item>public HelpLibraryManagerException()</Item>
+            </Issue>
+            <Issue Name="MissingConstructor">
+             <Item>'HelpLibraryManagerException'</Item>
+             <Item>public HelpLibraryManagerException(String)</Item>
+            </Issue>
+            <Issue Name="MissingConstructor">
+             <Item>'HelpLibraryManagerException'</Item>
+             <Item>public HelpLibraryManagerException(String, Exception)</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="36" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="LaunchMSHelpViewerDlg">
+          <Members>
+           <Member Name="#LaunchMSHelpViewerDlg_Load(System.Object,System.EventArgs)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'LaunchMSHelpViewerDlg.LaunchMSHelpViewerDlg_Load(object, EventArgs)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="3" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="UnsafeNativeMethods">
+          <Members>
+           <Member Name="#GetRegistryValue(System.String,System.String)">
+            <Messages>
+             <Message Id="SandcastleBuilder.MicrosoftHelpViewer.UnsafeNativeMethods.RegCloseKey(System.UIntPtr)" TypeName="DoNotIgnoreMethodResults" Category="Microsoft.Usage" CheckId="CA1806" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue Name="HResultOrErrorCode">
+               <Item>'UnsafeNativeMethods.GetRegistryValue(string, string)'</Item>
+               <Item>'UnsafeNativeMethods.RegCloseKey(UIntPtr)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="39" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#RegCloseKey(System.UIntPtr)">
+            <Messages>
+             <Message TypeName="ReviewSuppressUnmanagedCodeSecurityUsage" Category="Microsoft.Security" CheckId="CA2118" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue Name="PlatformInvokeStack">
+               <Item>'UnsafeNativeMethods.RegCloseKey(UIntPtr)'</Item>
+               <Item>&#xD;&#xA;   -&gt;'UnsafeNativeMethods.RegCloseKey(UIntPtr)'&#xD;&#xA;   -&gt;'UnsafeNativeMethods.GetRegistryValue(string, string)'&#xD;&#xA;   -&gt;'HelpLibraryManager.HelpLibraryManager()'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="9" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#RegOpenKeyEx(System.UIntPtr,System.String,System.UInt32,System.Int32,System.UIntPtr&amp;)">
+            <Messages>
+             <Message TypeName="ReviewSuppressUnmanagedCodeSecurityUsage" Category="Microsoft.Security" CheckId="CA2118" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue Name="PlatformInvokeStack">
+               <Item>'UnsafeNativeMethods.RegOpenKeyEx(UIntPtr, string, uint, int, out UIntPtr)'</Item>
+               <Item>&#xD;&#xA;   -&gt;'UnsafeNativeMethods.RegOpenKeyEx(UIntPtr, string, uint, int, out UIntPtr)'&#xD;&#xA;   -&gt;'UnsafeNativeMethods.GetRegistryValue(string, string)'&#xD;&#xA;   -&gt;'HelpLibraryManager.HelpLibraryManager()'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="9" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#RegQueryValueEx(System.UIntPtr,System.String,System.IntPtr,System.UInt32&amp;,System.Text.StringBuilder,System.UInt32&amp;)">
+            <Messages>
+             <Message TypeName="ReviewSuppressUnmanagedCodeSecurityUsage" Category="Microsoft.Security" CheckId="CA2118" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue Name="PlatformInvokeStack">
+               <Item>'UnsafeNativeMethods.RegQueryValueEx(UIntPtr, string, IntPtr, out uint, StringBuilder, ref uint)'</Item>
+               <Item>&#xD;&#xA;   -&gt;'UnsafeNativeMethods.RegQueryValueEx(UIntPtr, string, IntPtr, out uint, StringBuilder, ref uint)'&#xD;&#xA;   -&gt;'UnsafeNativeMethods.GetRegistryValue(string, string)'&#xD;&#xA;   -&gt;'HelpLibraryManager.HelpLibraryManager()'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="9" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+       <Namespace Name="SandcastleBuilder.Package">
+        <Types>
+         <Type Name="PackageBase">
+          <Messages>
+           <Message TypeName="AbstractTypesShouldNotHaveConstructors" Category="Microsoft.Design" CheckId="CA1012" Status="Excluded" Created="2012-01-01 00:01:50Z">
+            <Issue>
+             <Item>'PackageBase'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="25" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+          <Members>
+           <Member Name="#.ctor()">
+            <Messages>
+             <Message TypeName="DoNotCallOverridableMethodsInConstructors" Category="Microsoft.Usage" CheckId="CA2214" Status="Excluded" Created="2012-01-01 00:01:50Z">
+              <Issue>
+               <Item>'PackageBase.PackageBase()'</Item>
+               <Item>&#xD;&#xA;&#xD;&#xA;PackageBase..ctor()&#xD;&#xA;Object.ToString():String</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="27" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#AboutSHFBChangeHandler(System.Object,System.EventArgs)">
+            <Messages>
+             <Message Id="SHFB" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Status="Excluded" Created="2012-01-01 00:01:50Z">
+              <Issue Name="Member">
+               <Item>SHFB</Item>
+               <Item>'PackageBase.AboutSHFBChangeHandler(object, EventArgs)'</Item>
+               <Item>Shfb</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="28" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#AboutSHFBExecuteHandler(System.Object,System.EventArgs)">
+            <Messages>
+             <Message Id="SHFB" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Status="Excluded" Created="2012-01-01 00:01:50Z">
+              <Issue Name="Member">
+               <Item>SHFB</Item>
+               <Item>'PackageBase.AboutSHFBExecuteHandler(object, EventArgs)'</Item>
+               <Item>Shfb</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="28" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#AboutSHFBQueryStatusHandler(System.Object,System.EventArgs)">
+            <Messages>
+             <Message Id="SHFB" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Status="Excluded" Created="2012-01-01 00:01:50Z">
+              <Issue Name="Member">
+               <Item>SHFB</Item>
+               <Item>'PackageBase.AboutSHFBQueryStatusHandler(object, EventArgs)'</Item>
+               <Item>Shfb</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="28" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#OpenInStandaloneGUIChangeHandler(System.Object,System.EventArgs)">
+            <Messages>
+             <Message Id="GUI" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Status="Excluded" Created="2012-01-01 00:01:50Z">
+              <Issue Name="Member">
+               <Item>GUI</Item>
+               <Item>'PackageBase.OpenInStandaloneGUIChangeHandler(object, EventArgs)'</Item>
+               <Item>Gui</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="28" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#OpenInStandaloneGUIExecuteHandler(System.Object,System.EventArgs)">
+            <Messages>
+             <Message Id="GUI" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Status="Excluded" Created="2012-01-01 00:01:50Z">
+              <Issue Name="Member">
+               <Item>GUI</Item>
+               <Item>'PackageBase.OpenInStandaloneGUIExecuteHandler(object, EventArgs)'</Item>
+               <Item>Gui</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="28" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#OpenInStandaloneGUIQueryStatusHandler(System.Object,System.EventArgs)">
+            <Messages>
+             <Message Id="GUI" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Status="Excluded" Created="2012-01-01 00:01:50Z">
+              <Issue Name="Member">
+               <Item>GUI</Item>
+               <Item>'PackageBase.OpenInStandaloneGUIQueryStatusHandler(object, EventArgs)'</Item>
+               <Item>Gui</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="28" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#ShowToolWindowBuildLog(System.Object,System.EventArgs)">
+            <Messages>
+             <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Status="Excluded" Created="2012-01-01 00:01:50Z">
+              <Issue>
+               <Item>'PackageBase.ShowToolWindowBuildLog(object, EventArgs)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="26" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="System.String.Format(System.String,System.Object[])" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Status="Excluded" Created="2012-01-01 00:01:50Z">
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'string.Format(string, params object[])'</Item>
+               <Item>'PackageBase.ShowToolWindowBuildLog(object, EventArgs)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+               <Item>'CultureInfo.CurrentCulture'</Item>
+               <Item>'CultureInfo.InvariantCulture'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="29" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#ShowToolWindowEntityReferences(System.Object,System.EventArgs)">
+            <Messages>
+             <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Status="Excluded" Created="2012-01-01 00:01:50Z">
+              <Issue>
+               <Item>'PackageBase.ShowToolWindowEntityReferences(object, EventArgs)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="26" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="System.String.Format(System.String,System.Object[])" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Status="Excluded" Created="2012-01-01 00:01:50Z">
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'string.Format(string, params object[])'</Item>
+               <Item>'PackageBase.ShowToolWindowEntityReferences(object, EventArgs)'</Item>
+               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
+               <Item>'CultureInfo.CurrentCulture'</Item>
+               <Item>'CultureInfo.InvariantCulture'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="29" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#ViewHxSHelpChangeHandler(System.Object,System.EventArgs)">
+            <Messages>
+             <Message Id="Hx" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Status="Excluded" Created="2012-01-01 00:01:50Z">
+              <Issue Name="Member">
+               <Item>Hx</Item>
+               <Item>'PackageBase.ViewHxSHelpChangeHandler(object, EventArgs)'</Item>
+               <Item>HX</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="28" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="Hx" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2012-01-01 00:01:50Z">
+              <Issue Name="Member">
+               <Item>Hx</Item>
+               <Item>'PackageBase.ViewHxSHelpChangeHandler(object, EventArgs)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="28" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#ViewHxSHelpExecuteHandler(System.Object,System.EventArgs)">
+            <Messages>
+             <Message Id="Hx" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Status="Excluded" Created="2012-01-01 00:01:50Z">
+              <Issue Name="Member">
+               <Item>Hx</Item>
+               <Item>'PackageBase.ViewHxSHelpExecuteHandler(object, EventArgs)'</Item>
+               <Item>HX</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="28" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="Hx" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2012-01-01 00:01:50Z">
+              <Issue Name="Member">
+               <Item>Hx</Item>
+               <Item>'PackageBase.ViewHxSHelpExecuteHandler(object, EventArgs)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="28" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#ViewHxSHelpQueryStatusHandler(System.Object,System.EventArgs)">
+            <Messages>
+             <Message Id="Hx" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Status="Excluded" Created="2012-01-01 00:01:50Z">
+              <Issue Name="Member">
+               <Item>Hx</Item>
+               <Item>'PackageBase.ViewHxSHelpQueryStatusHandler(object, EventArgs)'</Item>
+               <Item>HX</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="28" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="Hx" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2012-01-01 00:01:50Z">
+              <Issue Name="Member">
+               <Item>Hx</Item>
+               <Item>'PackageBase.ViewHxSHelpQueryStatusHandler(object, EventArgs)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="28" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#ViewMshcHelpChangeHandler(System.Object,System.EventArgs)">
+            <Messages>
+             <Message Id="Mshc" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2012-01-01 00:01:50Z">
+              <Issue Name="Member">
+               <Item>Mshc</Item>
+               <Item>'PackageBase.ViewMshcHelpChangeHandler(object, EventArgs)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="28" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#ViewMshcHelpExecuteHandler(System.Object,System.EventArgs)">
+            <Messages>
+             <Message Id="Mshc" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2012-01-01 00:01:50Z">
+              <Issue Name="Member">
+               <Item>Mshc</Item>
+               <Item>'PackageBase.ViewMshcHelpExecuteHandler(object, EventArgs)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="28" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#ViewMshcHelpQueryStatusHandler(System.Object,System.EventArgs)">
+            <Messages>
+             <Message Id="Mshc" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2012-01-01 00:01:50Z">
+              <Issue Name="Member">
+               <Item>Mshc</Item>
+               <Item>'PackageBase.ViewMshcHelpQueryStatusHandler(object, EventArgs)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="28" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#ViewShfbHelpChangeHandler(System.Object,System.EventArgs)">
+            <Messages>
+             <Message Id="Shfb" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2012-01-01 00:01:50Z">
+              <Issue Name="Member">
+               <Item>Shfb</Item>
+               <Item>'PackageBase.ViewShfbHelpChangeHandler(object, EventArgs)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="28" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#ViewShfbHelpExecuteHandler(System.Object,System.EventArgs)">
+            <Messages>
+             <Message Id="Shfb" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2012-01-01 00:01:50Z">
+              <Issue Name="Member">
+               <Item>Shfb</Item>
+               <Item>'PackageBase.ViewShfbHelpExecuteHandler(object, EventArgs)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="28" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#ViewShfbHelpQueryStatusHandler(System.Object,System.EventArgs)">
+            <Messages>
+             <Message Id="Shfb" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2012-01-01 00:01:50Z">
+              <Issue Name="Member">
+               <Item>Shfb</Item>
+               <Item>'PackageBase.ViewShfbHelpQueryStatusHandler(object, EventArgs)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="28" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="SandcastleBuilderPackage">
+          <Messages>
+           <Message TypeName="TypesThatOwnDisposableFieldsShouldBeDisposable" Category="Microsoft.Design" CheckId="CA1001" Status="Excluded" Created="2011-12-29 19:25:41Z" FixCategory="DependsOnFix">
+            <Issue Name="DependsOnFix">
+             <Item>'SandcastleBuilderPackage'</Item>
+             <Item>'BuildCompletedEventListener'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="24" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+          <Members>
+           <Member Name="#LaunchHelpLibMgrExecuteHandler(System.Object,System.EventArgs)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'SandcastleBuilderPackage.LaunchHelpLibMgrExecuteHandler(object, EventArgs)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="3" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#SetViewHelpCommandState(Microsoft.VisualStudio.Shell.OleMenuCommand,System.Nullable`1&lt;SandcastleBuilder.Utils.HelpFileFormat&gt;)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'SandcastleBuilderPackage.SetViewHelpCommandState(OleMenuCommand, HelpFileFormat?)'</Item>
+               <Item>'object'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="2" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#ViewBuiltHelpFile(SandcastleBuilder.Utils.SandcastleProject,System.UInt32)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'SandcastleBuilderPackage.ViewBuiltHelpFile(SandcastleProject, uint)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="3" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="SandcastleBuilderProjectFactory">
+          <Members>
+           <Member Name="#UpgradeProject(System.String,System.UInt32,System.String,System.String&amp;,Microsoft.VisualStudio.Shell.Interop.IVsUpgradeLogger,System.Int32&amp;,System.Guid&amp;)">
+            <Messages>
+             <Message Id="Microsoft.VisualStudio.Shell.Interop.IVsUpgradeLogger.LogMessage(System.UInt32,System.String,System.String,System.String)" TypeName="DoNotIgnoreMethodResults" Category="Microsoft.Usage" CheckId="CA1806" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue Name="HResultOrErrorCode">
+               <Item>'SandcastleBuilderProjectFactory.UpgradeProject(string, uint, string, out string, IVsUpgradeLogger, out int, out Guid)'</Item>
+               <Item>'IVsUpgradeLogger.LogMessage(uint, string, string, string)'</Item>
+              </Issue>
+              <Issue Name="HResultOrErrorCode">
+               <Item>'SandcastleBuilderProjectFactory.UpgradeProject(string, uint, string, out string, IVsUpgradeLogger, out int, out Guid)'</Item>
+               <Item>'IVsUpgradeLogger.LogMessage(uint, string, string, string)'</Item>
+              </Issue>
+              <Issue Name="HResultOrErrorCode">
+               <Item>'SandcastleBuilderProjectFactory.UpgradeProject(string, uint, string, out string, IVsUpgradeLogger, out int, out Guid)'</Item>
+               <Item>'IVsUpgradeLogger.LogMessage(uint, string, string, string)'</Item>
+              </Issue>
+              <Issue Name="HResultOrErrorCode">
+               <Item>'SandcastleBuilderProjectFactory.UpgradeProject(string, uint, string, out string, IVsUpgradeLogger, out int, out Guid)'</Item>
+               <Item>'IVsUpgradeLogger.LogMessage(uint, string, string, string)'</Item>
+              </Issue>
+              <Issue Name="HResultOrErrorCode">
+               <Item>'SandcastleBuilderProjectFactory.UpgradeProject(string, uint, string, out string, IVsUpgradeLogger, out int, out Guid)'</Item>
+               <Item>'IVsUpgradeLogger.LogMessage(uint, string, string, string)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="39" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="Utility">
+          <Members>
+           <Member Name="#GetDialogFont()">
+            <Messages>
+             <Message TypeName="UsePropertiesWhereAppropriate" Category="Microsoft.Design" CheckId="CA1024" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue Certainty="50">
+               <Item>'Utility.GetDialogFont()'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="11" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#GetServiceFromPackage`2(System.Boolean)">
+            <Messages>
+             <Message TypeName="GenericMethodsShouldProvideTypeParameter" Category="Microsoft.Design" CheckId="CA1004" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'Utility.GetServiceFromPackage&lt;TInterface, TService&gt;(bool)'</Item>
+               <Item>'TService'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="5" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#OpenUrl(System.String)">
+            <Messages>
+             <Message Id="Microsoft.VisualStudio.Shell.Interop.IVsWindowFrame.Show" TypeName="DoNotIgnoreMethodResults" Category="Microsoft.Usage" CheckId="CA1806" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue Name="HResultOrErrorCode">
+               <Item>'Utility.OpenUrl(string)'</Item>
+               <Item>'IVsWindowFrame.Show()'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="39" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="0#" TypeName="UriParametersShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1054" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'url'</Item>
+               <Item>'Utility.OpenUrl(string)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="30" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+       <Namespace Name="SandcastleBuilder.Package.Automation">
+        <Types>
+         <Type Name="OADocSourcesFolderItem">
+          <Messages>
+           <Message TypeName="ComVisibleTypeBaseTypesShouldBeComVisible" Category="Microsoft.Interoperability" CheckId="CA1405" Status="Excluded" Created="2011-12-29 19:25:41Z">
+            <Issue>
+             <Item>'OADocSourcesFolderItem'</Item>
+             <Item>'OAProjectItem&lt;DocumentationSourcesContainerNode&gt;'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="38" />
+             </User>
+            </Notes>
+           </Message>
+           <Message TypeName="ComVisibleTypesShouldBeCreatable" Category="Microsoft.Interoperability" CheckId="CA1409" Status="Excluded" Created="2011-12-29 19:25:41Z">
+            <Issue>
+             <Item>'OADocSourcesFolderItem'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="37" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="OADocumentationSourceItem">
+          <Messages>
+           <Message TypeName="ComVisibleTypeBaseTypesShouldBeComVisible" Category="Microsoft.Interoperability" CheckId="CA1405" Status="Excluded" Created="2011-12-29 19:25:41Z">
+            <Issue>
+             <Item>'OADocumentationSourceItem'</Item>
+             <Item>'OAProjectItem&lt;DocumentationSourceNode&gt;'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="38" />
+             </User>
+            </Notes>
+           </Message>
+           <Message TypeName="ComVisibleTypesShouldBeCreatable" Category="Microsoft.Interoperability" CheckId="CA1409" Status="Excluded" Created="2011-12-29 19:25:41Z">
+            <Issue>
+             <Item>'OADocumentationSourceItem'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="37" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+          <Members>
+           <Member Name="#Open(System.String)">
+            <Messages>
+             <Message Id="0#" TypeName="ParameterNamesShouldMatchBaseDeclaration" Category="Microsoft.Naming" CheckId="CA1725" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'OADocumentationSourceItem.Open(string)'</Item>
+               <Item>'viewKind'</Item>
+               <Item>'ViewKind'</Item>
+               <Item>'OAProjectItem&lt;DocumentationSourceNode&gt;.Open(string)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="31" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="OASandcastleBuilderProject">
+          <Messages>
+           <Message TypeName="ComVisibleTypesShouldBeCreatable" Category="Microsoft.Interoperability" CheckId="CA1409" Status="Excluded" Created="2011-12-29 19:25:41Z">
+            <Issue>
+             <Item>'OASandcastleBuilderProject'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="37" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+        </Types>
+       </Namespace>
+       <Namespace Name="SandcastleBuilder.Package.Editors">
+        <Types>
+         <Type Name="ContentLayoutEditorPane">
+          <Members>
+           <Member Name="#cmdAddAllFromFolder_Executed(System.Object,System.Windows.Input.ExecutedRoutedEventArgs)">
+            <Messages>
+             <Message Id="Microsoft.VisualStudio.Shell.Interop.IVsUIShell.SetWaitCursor" TypeName="DoNotIgnoreMethodResults" Category="Microsoft.Usage" CheckId="CA1806" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue Name="HResultOrErrorCode">
+               <Item>'ContentLayoutEditorPane.cmdAddAllFromFolder_Executed(object, ExecutedRoutedEventArgs)'</Item>
+               <Item>'IVsUIShell.SetWaitCursor()'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="39" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#SaveFile(System.String)">
+            <Messages>
+             <Message Id="Microsoft.VisualStudio.Shell.Interop.IVsUIShell.SetWaitCursor" TypeName="DoNotIgnoreMethodResults" Category="Microsoft.Usage" CheckId="CA1806" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue Name="HResultOrErrorCode">
+               <Item>'ContentLayoutEditorPane.SaveFile(string)'</Item>
+               <Item>'IVsUIShell.SetWaitCursor()'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="39" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="ExecArgs">
+          <Members>
+           <Member Name="#PvaIn">
+            <Messages>
+             <Message Id="Pva" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue Name="Member">
+               <Item>Pva</Item>
+               <Item>'ExecArgs.PvaIn'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="18" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#PvaOut">
+            <Messages>
+             <Message Id="Pva" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue Name="Member">
+               <Item>Pva</Item>
+               <Item>'ExecArgs.PvaOut'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="18" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="QueryStatusArgs">
+          <Members>
+           <Member Name="#Commands">
+            <Messages>
+             <Message TypeName="PropertiesShouldNotReturnArrays" Category="Microsoft.Performance" CheckId="CA1819" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'QueryStatusArgs.Commands'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="12" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="ResourceItemEditorPane">
+          <Members>
+           <Member Name="#SaveFile(System.String)">
+            <Messages>
+             <Message Id="Microsoft.VisualStudio.Shell.Interop.IVsUIShell.SetWaitCursor" TypeName="DoNotIgnoreMethodResults" Category="Microsoft.Usage" CheckId="CA1806" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue Name="HResultOrErrorCode">
+               <Item>'ResourceItemEditorPane.SaveFile(string)'</Item>
+               <Item>'IVsUIShell.SetWaitCursor()'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="39" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="SimpleEditorFactory`1">
+          <Members>
+           <Member Name="#MapLogicalView(System.Guid&amp;,System.String&amp;)">
+            <Messages>
+             <Message Id="0#" TypeName="ParameterNamesShouldMatchBaseDeclaration" Category="Microsoft.Naming" CheckId="CA1725" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'SimpleEditorFactory&lt;TEditorPane&gt;.MapLogicalView(ref Guid, out string)'</Item>
+               <Item>'logicalView'</Item>
+               <Item>'rguidLogicalView'</Item>
+               <Item>'IVsEditorFactory.MapLogicalView(ref Guid, out string)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="23" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="1#" TypeName="ParameterNamesShouldMatchBaseDeclaration" Category="Microsoft.Naming" CheckId="CA1725" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'SimpleEditorFactory&lt;TEditorPane&gt;.MapLogicalView(ref Guid, out string)'</Item>
+               <Item>'physicalView'</Item>
+               <Item>'pbstrPhysicalView'</Item>
+               <Item>'IVsEditorFactory.MapLogicalView(ref Guid, out string)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="23" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#SetSite(Microsoft.VisualStudio.OLE.Interop.IServiceProvider)">
+            <Messages>
+             <Message Id="0#" TypeName="ParameterNamesShouldMatchBaseDeclaration" Category="Microsoft.Naming" CheckId="CA1725" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'SimpleEditorFactory&lt;TEditorPane&gt;.SetSite(IServiceProvider)'</Item>
+               <Item>'serviceProvider'</Item>
+               <Item>'psp'</Item>
+               <Item>'IVsEditorFactory.SetSite(IServiceProvider)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="23" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="SimpleEditorPane`2">
+          <Members>
+           <Member Name="#.ctor()">
+            <Messages>
+             <Message TypeName="DoNotCallOverridableMethodsInConstructors" Category="Microsoft.Usage" CheckId="CA2214" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'SimpleEditorPane&lt;TFactory, TUIControl&gt;.SimpleEditorPane()'</Item>
+               <Item>&#xD;&#xA;&#xD;&#xA;SimpleEditorPane&lt;TFactory, TUIControl&gt;..ctor()&#xD;&#xA;SimpleEditorPane&lt;TFactory, TUIControl&gt;.GetCommandSetGuid():Guid</Item>
+              </Issue>
+              <Issue>
+               <Item>'SimpleEditorPane&lt;TFactory, TUIControl&gt;.SimpleEditorPane()'</Item>
+               <Item>&#xD;&#xA;&#xD;&#xA;SimpleEditorPane&lt;TFactory, TUIControl&gt;..ctor()&#xD;&#xA;SimpleEditorPane&lt;TFactory, TUIControl&gt;.GetFileExtension():String</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="15" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#GetCommandSetGuid()">
+            <Messages>
+             <Message TypeName="UsePropertiesWhereAppropriate" Category="Microsoft.Design" CheckId="CA1024" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'SimpleEditorPane&lt;TFactory, TUIControl&gt;.GetCommandSetGuid()'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="10" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#GetFileExtension()">
+            <Messages>
+             <Message TypeName="UsePropertiesWhereAppropriate" Category="Microsoft.Design" CheckId="CA1024" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'SimpleEditorPane&lt;TFactory, TUIControl&gt;.GetFileExtension()'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="10" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#LoadFile(System.String)">
+            <Messages>
+             <Message Id="fileName" TypeName="CompoundWordsShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1702" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue Name="MemberParameterShouldBeDiscreteTerm">
+               <Item>'SimpleEditorPane&lt;TFactory, TUIControl&gt;.LoadFile(string)'</Item>
+               <Item>fileName</Item>
+               <Item>'fileName'</Item>
+               <Item>filename</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="14" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Microsoft.VisualStudio.OLE.Interop.IPersist.GetClassID(System.Guid&amp;)">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'SimpleEditorPane&lt;TFactory, TUIControl&gt;'</Item>
+               <Item>'IPersist.GetClassID(out Guid)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="20" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Microsoft.VisualStudio.Shell.Interop.IPersistFileFormat.GetClassID(System.Guid&amp;)">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'SimpleEditorPane&lt;TFactory, TUIControl&gt;'</Item>
+               <Item>'IPersistFileFormat.GetClassID(out Guid)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="20" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Microsoft.VisualStudio.Shell.Interop.IPersistFileFormat.GetCurFile(System.String&amp;,System.UInt32&amp;)">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'SimpleEditorPane&lt;TFactory, TUIControl&gt;'</Item>
+               <Item>'IPersistFileFormat.GetCurFile(out string, out uint)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="20" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Microsoft.VisualStudio.Shell.Interop.IPersistFileFormat.GetFormatList(System.String&amp;)">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'SimpleEditorPane&lt;TFactory, TUIControl&gt;'</Item>
+               <Item>'IPersistFileFormat.GetFormatList(out string)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="20" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Microsoft.VisualStudio.Shell.Interop.IPersistFileFormat.InitNew(System.UInt32)">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'SimpleEditorPane&lt;TFactory, TUIControl&gt;'</Item>
+               <Item>'IPersistFileFormat.InitNew(uint)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="20" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Microsoft.VisualStudio.Shell.Interop.IPersistFileFormat.IsDirty(System.Int32&amp;)">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'SimpleEditorPane&lt;TFactory, TUIControl&gt;'</Item>
+               <Item>'IPersistFileFormat.IsDirty(out int)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="20" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Microsoft.VisualStudio.Shell.Interop.IPersistFileFormat.Load(System.String,System.UInt32,System.Int32)">
+            <Messages>
+             <Message Id="Microsoft.VisualStudio.Shell.Interop.IVsUIShell.SetWaitCursor" TypeName="DoNotIgnoreMethodResults" Category="Microsoft.Usage" CheckId="CA1806" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue Name="HResultOrErrorCode">
+               <Item>'SimpleEditorPane&lt;TFactory, TUIControl&gt;.IPersistFileFormat.Load(string, uint, int)'</Item>
+               <Item>'IVsUIShell.SetWaitCursor()'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="39" />
+               </User>
+              </Notes>
+             </Message>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'SimpleEditorPane&lt;TFactory, TUIControl&gt;'</Item>
+               <Item>'IPersistFileFormat.Load(string, uint, int)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="20" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Microsoft.VisualStudio.Shell.Interop.IPersistFileFormat.Save(System.String,System.Int32,System.UInt32)">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'SimpleEditorPane&lt;TFactory, TUIControl&gt;'</Item>
+               <Item>'IPersistFileFormat.Save(string, int, uint)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="20" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Microsoft.VisualStudio.Shell.Interop.IPersistFileFormat.SaveCompleted(System.String)">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'SimpleEditorPane&lt;TFactory, TUIControl&gt;'</Item>
+               <Item>'IPersistFileFormat.SaveCompleted(string)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="20" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Microsoft.VisualStudio.Shell.Interop.IVsPersistDocData.Close()">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'SimpleEditorPane&lt;TFactory, TUIControl&gt;'</Item>
+               <Item>'IVsPersistDocData.Close()'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="20" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Microsoft.VisualStudio.Shell.Interop.IVsPersistDocData.GetGuidEditorType(System.Guid&amp;)">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'SimpleEditorPane&lt;TFactory, TUIControl&gt;'</Item>
+               <Item>'IVsPersistDocData.GetGuidEditorType(out Guid)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="20" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Microsoft.VisualStudio.Shell.Interop.IVsPersistDocData.IsDocDataDirty(System.Int32&amp;)">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'SimpleEditorPane&lt;TFactory, TUIControl&gt;'</Item>
+               <Item>'IVsPersistDocData.IsDocDataDirty(out int)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="20" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Microsoft.VisualStudio.Shell.Interop.IVsPersistDocData.IsDocDataReloadable(System.Int32&amp;)">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'SimpleEditorPane&lt;TFactory, TUIControl&gt;'</Item>
+               <Item>'IVsPersistDocData.IsDocDataReloadable(out int)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="20" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Microsoft.VisualStudio.Shell.Interop.IVsPersistDocData.LoadDocData(System.String)">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'SimpleEditorPane&lt;TFactory, TUIControl&gt;'</Item>
+               <Item>'IVsPersistDocData.LoadDocData(string)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="20" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Microsoft.VisualStudio.Shell.Interop.IVsPersistDocData.OnRegisterDocData(System.UInt32,Microsoft.VisualStudio.Shell.Interop.IVsHierarchy,System.UInt32)">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'SimpleEditorPane&lt;TFactory, TUIControl&gt;'</Item>
+               <Item>'IVsPersistDocData.OnRegisterDocData(uint, IVsHierarchy, uint)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="20" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Microsoft.VisualStudio.Shell.Interop.IVsPersistDocData.ReloadDocData(System.UInt32)">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'SimpleEditorPane&lt;TFactory, TUIControl&gt;'</Item>
+               <Item>'IVsPersistDocData.ReloadDocData(uint)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="20" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Microsoft.VisualStudio.Shell.Interop.IVsPersistDocData.RenameDocData(System.UInt32,Microsoft.VisualStudio.Shell.Interop.IVsHierarchy,System.UInt32,System.String)">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'SimpleEditorPane&lt;TFactory, TUIControl&gt;'</Item>
+               <Item>'IVsPersistDocData.RenameDocData(uint, IVsHierarchy, uint, string)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="20" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Microsoft.VisualStudio.Shell.Interop.IVsPersistDocData.SaveDocData(Microsoft.VisualStudio.Shell.Interop.VSSAVEFLAGS,System.String&amp;,System.Int32&amp;)">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'SimpleEditorPane&lt;TFactory, TUIControl&gt;'</Item>
+               <Item>'IVsPersistDocData.SaveDocData(VSSAVEFLAGS, out string, out int)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="20" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Microsoft.VisualStudio.Shell.Interop.IVsPersistDocData.SetUntitledDocPath(System.String)">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'SimpleEditorPane&lt;TFactory, TUIControl&gt;'</Item>
+               <Item>'IVsPersistDocData.SetUntitledDocPath(string)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="20" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#OnGetCurFile(System.String&amp;,System.UInt32&amp;)">
+            <Messages>
+             <Message Id="0#" TypeName="AvoidOutParameters" Category="Microsoft.Design" CheckId="CA1021" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'ppszFilename'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="13" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="1#" TypeName="AvoidOutParameters" Category="Microsoft.Design" CheckId="CA1021" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'pnFormatIndex'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="13" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="pn" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue Name="MemberParameter">
+               <Item>'SimpleEditorPane&lt;TFactory, TUIControl&gt;.OnGetCurFile(out string, out uint)'</Item>
+               <Item>pn</Item>
+               <Item>'pnFormatIndex'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="18" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="ppsz" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue Name="MemberParameter">
+               <Item>'SimpleEditorPane&lt;TFactory, TUIControl&gt;.OnGetCurFile(out string, out uint)'</Item>
+               <Item>ppsz</Item>
+               <Item>'ppszFilename'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="18" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#OnGetFormatList(System.String&amp;)">
+            <Messages>
+             <Message Id="0#" TypeName="AvoidOutParameters" Category="Microsoft.Design" CheckId="CA1021" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'ppszFormatList'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="13" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="ppsz" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue Name="MemberParameter">
+               <Item>'SimpleEditorPane&lt;TFactory, TUIControl&gt;.OnGetFormatList(out string)'</Item>
+               <Item>ppsz</Item>
+               <Item>'ppszFormatList'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="18" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#OnInitNew(System.UInt32)">
+            <Messages>
+             <Message Id="n" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue Name="MemberParameter">
+               <Item>'SimpleEditorPane&lt;TFactory, TUIControl&gt;.OnInitNew(uint)'</Item>
+               <Item>n</Item>
+               <Item>'nFormatIndex'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="18" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#OnIsDirty(System.Int32&amp;)">
+            <Messages>
+             <Message Id="0#" TypeName="AvoidOutParameters" Category="Microsoft.Design" CheckId="CA1021" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'pfIsDirty'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="13" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="pf" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue Name="MemberParameter">
+               <Item>'SimpleEditorPane&lt;TFactory, TUIControl&gt;.OnIsDirty(out int)'</Item>
+               <Item>pf</Item>
+               <Item>'pfIsDirty'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="18" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#OnSaveCompleted(System.String)">
+            <Messages>
+             <Message Id="psz" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue Name="MemberParameter">
+               <Item>'SimpleEditorPane&lt;TFactory, TUIControl&gt;.OnSaveCompleted(string)'</Item>
+               <Item>psz</Item>
+               <Item>'pszFilename'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="18" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#SaveFile(System.String)">
+            <Messages>
+             <Message Id="fileName" TypeName="CompoundWordsShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1702" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue Name="MemberParameterShouldBeDiscreteTerm">
+               <Item>'SimpleEditorPane&lt;TFactory, TUIControl&gt;.SaveFile(string)'</Item>
+               <Item>fileName</Item>
+               <Item>'fileName'</Item>
+               <Item>filename</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="14" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#SupportsVSStd97Command(System.UInt32,Microsoft.VisualStudio.OLE.Interop.OLECMDF&amp;)">
+            <Messages>
+             <Message Id="1#" TypeName="DoNotPassTypesByReference" Category="Microsoft.Design" CheckId="CA1045" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue Certainty="50">
+               <Item>'status'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="4" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="ID" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue Name="MemberParameterAbbreviation">
+               <Item>'SimpleEditorPane&lt;TFactory, TUIControl&gt;.SupportsVSStd97Command(uint, ref OLECMDF)'</Item>
+               <Item>ID</Item>
+               <Item>'commandID'</Item>
+               <Item>Id</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="17" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="SiteMapEditorPane">
+          <Members>
+           <Member Name="#cmdAddAllFromFolder_Executed(System.Object,System.Windows.Input.ExecutedRoutedEventArgs)">
+            <Messages>
+             <Message Id="Microsoft.VisualStudio.Shell.Interop.IVsUIShell.SetWaitCursor" TypeName="DoNotIgnoreMethodResults" Category="Microsoft.Usage" CheckId="CA1806" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue Name="HResultOrErrorCode">
+               <Item>'SiteMapEditorPane.cmdAddAllFromFolder_Executed(object, ExecutedRoutedEventArgs)'</Item>
+               <Item>'IVsUIShell.SetWaitCursor()'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="39" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#SaveFile(System.String)">
+            <Messages>
+             <Message Id="Microsoft.VisualStudio.Shell.Interop.IVsUIShell.SetWaitCursor" TypeName="DoNotIgnoreMethodResults" Category="Microsoft.Usage" CheckId="CA1806" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue Name="HResultOrErrorCode">
+               <Item>'SiteMapEditorPane.SaveFile(string)'</Item>
+               <Item>'IVsUIShell.SetWaitCursor()'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="39" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="TokenEditorPane">
+          <Members>
+           <Member Name="#SaveFile(System.String)">
+            <Messages>
+             <Message Id="Microsoft.VisualStudio.Shell.Interop.IVsUIShell.SetWaitCursor" TypeName="DoNotIgnoreMethodResults" Category="Microsoft.Usage" CheckId="CA1806" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue Name="HResultOrErrorCode">
+               <Item>'TokenEditorPane.SaveFile(string)'</Item>
+               <Item>'IVsUIShell.SetWaitCursor()'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="39" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+       <Namespace Name="SandcastleBuilder.Package.Nodes">
+        <Types>
+         <Type Name="DocumentationSourceNodeProperties">
+          <Messages>
+           <Message TypeName="ComVisibleTypesShouldBeCreatable" Category="Microsoft.Interoperability" CheckId="CA1409" Status="Excluded" Created="2011-12-29 19:25:41Z">
+            <Issue>
+             <Item>'DocumentationSourceNodeProperties'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="37" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+          <Members>
+           <Member Name="#IncludeSubFolders">
+            <Messages>
+             <Message Id="SubFolders" TypeName="CompoundWordsShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1702" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue Name="MemberShouldBeDiscreteTerm">
+               <Item>SubFolders</Item>
+               <Item>'DocumentationSourceNodeProperties.IncludeSubFolders'</Item>
+               <Item>Subfolders</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="14" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="DocumentationSourcesContainerNode">
+          <Messages>
+           <Message TypeName="ComVisibleTypesShouldBeCreatable" Category="Microsoft.Interoperability" CheckId="CA1409" Status="Excluded" Created="2011-12-29 19:25:41Z">
+            <Issue>
+             <Item>'DocumentationSourcesContainerNode'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="37" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+          <Members>
+           <Member Name="#AddDocumentationSources()">
+            <Messages>
+             <Message TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue Name="ToUpperInvariant">
+               <Item>'DocumentationSourcesContainerNode.AddDocumentationSources()'</Item>
+               <Item>'string.ToLowerInvariant()'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="35" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="ProjectPropertiesContainerNode">
+          <Messages>
+           <Message TypeName="ComVisibleTypesShouldBeCreatable" Category="Microsoft.Interoperability" CheckId="CA1409" Status="Excluded" Created="2011-12-29 19:25:41Z">
+            <Issue>
+             <Item>'ProjectPropertiesContainerNode'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="37" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+          <Members>
+           <Member Name="#ExecCommandOnNode(System.Guid,System.UInt32,System.UInt32,System.IntPtr,System.IntPtr)">
+            <Messages>
+             <Message Id="Microsoft.VisualStudio.Shell.Interop.IVsProject2.ReopenItem(System.UInt32,System.Guid@,System.String,System.Guid@,System.IntPtr,Microsoft.VisualStudio.Shell.Interop.IVsWindowFrame@)" TypeName="DoNotIgnoreMethodResults" Category="Microsoft.Usage" CheckId="CA1806" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue Name="HResultOrErrorCode">
+               <Item>'ProjectPropertiesContainerNode.ExecCommandOnNode(Guid, uint, uint, IntPtr, IntPtr)'</Item>
+               <Item>'IVsProject2.ReopenItem(uint, ref Guid, string, ref Guid, IntPtr, out IVsWindowFrame)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="39" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="SandcastleBuilderAssemblyReferenceNode">
+          <Messages>
+           <Message TypeName="ComVisibleTypesShouldBeCreatable" Category="Microsoft.Interoperability" CheckId="CA1409" Status="Excluded" Created="2011-12-29 19:25:41Z">
+            <Issue>
+             <Item>'SandcastleBuilderAssemblyReferenceNode'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="37" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="SandcastleBuilderComReferenceNode">
+          <Messages>
+           <Message TypeName="ComVisibleTypesShouldBeCreatable" Category="Microsoft.Interoperability" CheckId="CA1409" Status="Excluded" Created="2011-12-29 19:25:41Z">
+            <Issue>
+             <Item>'SandcastleBuilderComReferenceNode'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="37" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="SandcastleBuilderFileNode">
+          <Members>
+           <Member Name="#GetIconHandle(System.Boolean)">
+            <Messages>
+             <Message TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue Name="ToUpperInvariant">
+               <Item>'SandcastleBuilderFileNode.GetIconHandle(bool)'</Item>
+               <Item>'string.ToLowerInvariant()'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="35" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="SandcastleBuilderFileNodeProperties">
+          <Messages>
+           <Message TypeName="ComVisibleTypesShouldBeCreatable" Category="Microsoft.Interoperability" CheckId="CA1409" Status="Excluded" Created="2011-12-29 19:25:41Z">
+            <Issue>
+             <Item>'SandcastleBuilderFileNodeProperties'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="37" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+          <Members>
+           <Member Name="#URL">
+            <Messages>
+             <Message Id="URL" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue Name="Member">
+               <Item>URL</Item>
+               <Item>'SandcastleBuilderFileNodeProperties.URL'</Item>
+               <Item>Url</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="17" />
+               </User>
+              </Notes>
+             </Message>
+             <Message TypeName="UriPropertiesShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1056" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'SandcastleBuilderFileNodeProperties.URL'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="30" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="SandcastleBuilderProjectNode">
+          <Members>
+           <Member Name="#.ctor(Microsoft.VisualStudio.Project.ProjectPackage)">
+            <Messages>
+             <Message TypeName="DoNotCallOverridableMethodsInConstructors" Category="Microsoft.Usage" CheckId="CA2214" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'SandcastleBuilderProjectNode.SandcastleBuilderProjectNode(ProjectPackage)'</Item>
+               <Item>&#xD;&#xA;&#xD;&#xA;SandcastleBuilderProjectNode..ctor(ProjectPackage)&#xD;&#xA;ProjectNode.set_Package(ProjectPackage):Void&#xD;&#xA;ProjectNode.get_ImageHandler():ImageHandler&#xD;&#xA;ProjectNode.set_CanProjectDeleteItems(Boolean):Void&#xD;&#xA;ProjectNode.set_SupportsProjectDesigner(Boolean):Void</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="15" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Dispose(System.Boolean)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'SandcastleBuilderProjectNode.Dispose(bool)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="1" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#OpenInStandaloneGui()">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'SandcastleBuilderProjectNode.OpenInStandaloneGui()'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="3" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#SetConfiguration(System.String)">
+            <Messages>
+             <Message TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue Name="ToUpperInvariant">
+               <Item>'SandcastleBuilderProjectNode.SetConfiguration(string)'</Item>
+               <Item>'string.ToLowerInvariant()'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="6" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#StartWebServerInstance()">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'SandcastleBuilderProjectNode.StartWebServerInstance()'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="3" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="SandcastleBuilderProjectNodeProperties">
+          <Messages>
+           <Message TypeName="ComVisibleTypesShouldBeCreatable" Category="Microsoft.Interoperability" CheckId="CA1409" Status="Excluded" Created="2011-12-29 19:25:41Z">
+            <Issue>
+             <Item>'SandcastleBuilderProjectNodeProperties'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="37" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="SandcastleBuilderProjectReferenceNode">
+          <Messages>
+           <Message TypeName="ComVisibleTypesShouldBeCreatable" Category="Microsoft.Interoperability" CheckId="CA1409" Status="Excluded" Created="2011-12-29 19:25:41Z">
+            <Issue>
+             <Item>'SandcastleBuilderProjectReferenceNode'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="37" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="SandcastleBuilderReferenceContainerNode">
+          <Messages>
+           <Message TypeName="ComVisibleTypesShouldBeCreatable" Category="Microsoft.Interoperability" CheckId="CA1409" Status="Excluded" Created="2011-12-29 19:25:41Z">
+            <Issue>
+             <Item>'SandcastleBuilderReferenceContainerNode'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="37" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+        </Types>
+       </Namespace>
+       <Namespace Name="SandcastleBuilder.Package.PropertyPages">
+        <Types>
+         <Type Name="BasePropertyPage">
+          <Members>
+           <Member Name="#BindProperties(System.Windows.Forms.Control+ControlCollection)">
+            <Messages>
+             <Message TypeName="DoNotCastUnnecessarily" Category="Microsoft.Performance" CheckId="CA1800" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue Name="Local">
+               <Item>'c'</Item>
+               <Item>'CheckBox'</Item>
+               <Item>'BasePropertyPage.BindProperties(Control.ControlCollection)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Local">
+               <Item>'c'</Item>
+               <Item>'CheckedListBox'</Item>
+               <Item>'BasePropertyPage.BindProperties(Control.ControlCollection)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Local">
+               <Item>'c'</Item>
+               <Item>'ComboBox'</Item>
+               <Item>'BasePropertyPage.BindProperties(Control.ControlCollection)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Local">
+               <Item>'c'</Item>
+               <Item>'DateTimePicker'</Item>
+               <Item>'BasePropertyPage.BindProperties(Control.ControlCollection)'</Item>
+               <Item>isint</Item>
+              </Issue>
+              <Issue Name="Local">
+               <Item>'c'</Item>
+               <Item>'ListBox'</Item>
+               <Item>'BasePropertyPage.BindProperties(Control.ControlCollection)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Local">
+               <Item>'c'</Item>
+               <Item>'TrackBar'</Item>
+               <Item>'BasePropertyPage.BindProperties(Control.ControlCollection)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Local">
+               <Item>'c'</Item>
+               <Item>'UpDownBase'</Item>
+               <Item>'BasePropertyPage.BindProperties(Control.ControlCollection)'</Item>
+               <Item>isint</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="33" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Microsoft.VisualStudio.OLE.Interop.IPropertyPage.Activate(System.IntPtr,Microsoft.VisualStudio.OLE.Interop.RECT[],System.Int32)">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'BasePropertyPage'</Item>
+               <Item>'IPropertyPage.Activate(IntPtr, RECT[], int)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="22" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Microsoft.VisualStudio.OLE.Interop.IPropertyPage.Apply()">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'BasePropertyPage'</Item>
+               <Item>'IPropertyPage.Apply()'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="22" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Microsoft.VisualStudio.OLE.Interop.IPropertyPage.Deactivate()">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'BasePropertyPage'</Item>
+               <Item>'IPropertyPage.Deactivate()'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="22" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Microsoft.VisualStudio.OLE.Interop.IPropertyPage.GetPageInfo(Microsoft.VisualStudio.OLE.Interop.PROPPAGEINFO[])">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'BasePropertyPage'</Item>
+               <Item>'IPropertyPage.GetPageInfo(PROPPAGEINFO[])'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="22" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Microsoft.VisualStudio.OLE.Interop.IPropertyPage.Help(System.String)">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'BasePropertyPage'</Item>
+               <Item>'IPropertyPage.Help(string)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="22" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Microsoft.VisualStudio.OLE.Interop.IPropertyPage.IsPageDirty()">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'BasePropertyPage'</Item>
+               <Item>'IPropertyPage.IsPageDirty()'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="22" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Microsoft.VisualStudio.OLE.Interop.IPropertyPage.Move(Microsoft.VisualStudio.OLE.Interop.RECT[])">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'BasePropertyPage'</Item>
+               <Item>'IPropertyPage.Move(RECT[])'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="22" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Microsoft.VisualStudio.OLE.Interop.IPropertyPage.SetObjects(System.UInt32,System.Object[])">
+            <Messages>
+             <Message Id="Microsoft.VisualStudio.Shell.Interop.IVsCfgProvider.GetCfgs(System.UInt32,Microsoft.VisualStudio.Shell.Interop.IVsCfg[],System.UInt32[],System.UInt32[])" TypeName="DoNotIgnoreMethodResults" Category="Microsoft.Usage" CheckId="CA1806" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue Name="HResultOrErrorCode">
+               <Item>'BasePropertyPage.IPropertyPage.SetObjects(uint, object[])'</Item>
+               <Item>'IVsCfgProvider.GetCfgs(uint, IVsCfg[], uint[], uint[])'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="39" />
+               </User>
+              </Notes>
+             </Message>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'BasePropertyPage'</Item>
+               <Item>'IPropertyPage.SetObjects(uint, object[])'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="22" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Microsoft.VisualStudio.OLE.Interop.IPropertyPage.SetPageSite(Microsoft.VisualStudio.OLE.Interop.IPropertyPageSite)">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'BasePropertyPage'</Item>
+               <Item>'IPropertyPage.SetPageSite(IPropertyPageSite)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="22" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Microsoft.VisualStudio.OLE.Interop.IPropertyPage.TranslateAccelerator(Microsoft.VisualStudio.OLE.Interop.MSG[])">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'BasePropertyPage'</Item>
+               <Item>'IPropertyPage.TranslateAccelerator(MSG[])'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="22" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Microsoft.VisualStudio.OLE.Interop.IPropertyPage2.Activate(System.IntPtr,Microsoft.VisualStudio.OLE.Interop.RECT[],System.Int32)">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'BasePropertyPage'</Item>
+               <Item>'IPropertyPage2.Activate(IntPtr, RECT[], int)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="22" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Microsoft.VisualStudio.OLE.Interop.IPropertyPage2.Apply()">
+            <Messages>
+             <Message Id="Microsoft.VisualStudio.OLE.Interop.IPropertyPage.Apply" TypeName="DoNotIgnoreMethodResults" Category="Microsoft.Usage" CheckId="CA1806" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue Name="HResultOrErrorCode">
+               <Item>'BasePropertyPage.IPropertyPage2.Apply()'</Item>
+               <Item>'IPropertyPage.Apply()'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="39" />
+               </User>
+              </Notes>
+             </Message>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'BasePropertyPage'</Item>
+               <Item>'IPropertyPage2.Apply()'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="22" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Microsoft.VisualStudio.OLE.Interop.IPropertyPage2.Deactivate()">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'BasePropertyPage'</Item>
+               <Item>'IPropertyPage2.Deactivate()'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="22" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Microsoft.VisualStudio.OLE.Interop.IPropertyPage2.EditProperty(System.Int32)">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'BasePropertyPage'</Item>
+               <Item>'IPropertyPage2.EditProperty(int)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="22" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Microsoft.VisualStudio.OLE.Interop.IPropertyPage2.GetPageInfo(Microsoft.VisualStudio.OLE.Interop.PROPPAGEINFO[])">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'BasePropertyPage'</Item>
+               <Item>'IPropertyPage2.GetPageInfo(PROPPAGEINFO[])'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="22" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Microsoft.VisualStudio.OLE.Interop.IPropertyPage2.Help(System.String)">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'BasePropertyPage'</Item>
+               <Item>'IPropertyPage2.Help(string)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="22" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Microsoft.VisualStudio.OLE.Interop.IPropertyPage2.IsPageDirty()">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'BasePropertyPage'</Item>
+               <Item>'IPropertyPage2.IsPageDirty()'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="22" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Microsoft.VisualStudio.OLE.Interop.IPropertyPage2.Move(Microsoft.VisualStudio.OLE.Interop.RECT[])">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'BasePropertyPage'</Item>
+               <Item>'IPropertyPage2.Move(RECT[])'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="22" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Microsoft.VisualStudio.OLE.Interop.IPropertyPage2.SetObjects(System.UInt32,System.Object[])">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'BasePropertyPage'</Item>
+               <Item>'IPropertyPage2.SetObjects(uint, object[])'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="22" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Microsoft.VisualStudio.OLE.Interop.IPropertyPage2.SetPageSite(Microsoft.VisualStudio.OLE.Interop.IPropertyPageSite)">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'BasePropertyPage'</Item>
+               <Item>'IPropertyPage2.SetPageSite(IPropertyPageSite)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="22" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Microsoft.VisualStudio.OLE.Interop.IPropertyPage2.TranslateAccelerator(Microsoft.VisualStudio.OLE.Interop.MSG[])">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'BasePropertyPage'</Item>
+               <Item>'IPropertyPage2.TranslateAccelerator(MSG[])'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="22" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#StoreProperties(System.Windows.Forms.Control+ControlCollection)">
+            <Messages>
+             <Message TypeName="DoNotCastUnnecessarily" Category="Microsoft.Performance" CheckId="CA1800" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue Name="Local">
+               <Item>'c'</Item>
+               <Item>'ComboBox'</Item>
+               <Item>'BasePropertyPage.StoreProperties(Control.ControlCollection)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Local">
+               <Item>'c'</Item>
+               <Item>'ListBox'</Item>
+               <Item>'BasePropertyPage.StoreProperties(Control.ControlCollection)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="34" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="ComponentPropertiesPageControl">
+          <Members>
+           <Member Name="#.ctor()">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'ComponentPropertiesPageControl.ComponentPropertiesPageControl()'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="3" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#btnConfigure_Click(System.Object,System.EventArgs)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'ComponentPropertiesPageControl.btnConfigure_Click(object, EventArgs)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="3" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="PlugInPropertiesPageControl">
+          <Members>
+           <Member Name="#.ctor()">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'PlugInPropertiesPageControl.PlugInPropertiesPageControl()'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="3" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="SandcastleBuilderOptionsPage">
+          <Messages>
+           <Message TypeName="DoNotUseAutoDualClassInterfaceType" Category="Microsoft.Interoperability" CheckId="CA1408" Status="Excluded" Created="2011-12-29 19:25:41Z">
+            <Issue>
+             <Item>'SandcastleBuilderOptionsPage'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="32" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+          <Members>
+           <Member Name="#HxsViewerPath">
+            <Messages>
+             <Message Id="Hxs" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue Name="Member">
+               <Item>Hxs</Item>
+               <Item>'SandcastleBuilderOptionsPage.HxsViewerPath'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="19" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="UserDefinedPropertiesPageControl">
+          <Members>
+           <Member Name="#Initialize()">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'UserDefinedPropertiesPageControl.Initialize()'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="3" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="UserDefinedPropertiesPageControl+PropertyItem">
+          <Members>
+           <Member Name="#Condition">
+            <Accessors>
+             <Accessor Name="#set_Condition(System.String)">
+              <Messages>
+               <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Status="Excluded" Created="2011-12-29 19:25:41Z">
+                <Issue>
+                 <Item>'UserDefinedPropertiesPageControl.PropertyItem.Condition.set(string)'</Item>
+                </Issue>
+                <Notes>
+                 <User Name="EWOODRUFF">
+                  <Note Id="16" />
+                 </User>
+                </Notes>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+           <Member Name="#Name">
+            <Accessors>
+             <Accessor Name="#set_Name(System.String)">
+              <Messages>
+               <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Status="Excluded" Created="2011-12-29 19:25:41Z">
+                <Issue>
+                 <Item>'UserDefinedPropertiesPageControl.PropertyItem.Name.set(string)'</Item>
+                </Issue>
+                <Notes>
+                 <User Name="EWOODRUFF">
+                  <Note Id="16" />
+                 </User>
+                </Notes>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+           <Member Name="#Value">
+            <Accessors>
+             <Accessor Name="#set_Value(System.String)">
+              <Messages>
+               <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Status="Excluded" Created="2011-12-29 19:25:41Z">
+                <Issue>
+                 <Item>'UserDefinedPropertiesPageControl.PropertyItem.Value.set(string)'</Item>
+                </Issue>
+                <Notes>
+                 <User Name="EWOODRUFF">
+                  <Note Id="16" />
+                 </User>
+                </Notes>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+           <Member Name="#WasModified">
+            <Accessors>
+             <Accessor Name="#set_WasModified(System.Boolean)">
+              <Messages>
+               <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Status="Excluded" Created="2011-12-29 19:25:41Z">
+                <Issue>
+                 <Item>'UserDefinedPropertiesPageControl.PropertyItem.WasModified.set(bool)'</Item>
+                </Issue>
+                <Notes>
+                 <User Name="EWOODRUFF">
+                  <Note Id="16" />
+                 </User>
+                </Notes>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+       <Namespace Name="SandcastleBuilder.Package.ToolWindows">
+        <Types>
+         <Type Name="BuildLogControl">
+          <Members>
+           <Member Name="#LoadLogFile()">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'BuildLogControl.LoadLogFile()'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="3" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#System.Windows.Markup.IComponentConnector.Connect(System.Int32,System.Object)">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'BuildLogControl'</Item>
+               <Item>'IComponentConnector.Connect(int, object)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="22" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#TransformLogFile(System.String,System.Boolean)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'BuildLogControl.TransformLogFile(string, bool)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="3" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="EntityReferencesToolWindow">
+          <Members>
+           <Member Name="#Dispose(System.Boolean)">
+            <Messages>
+             <Message Id="Microsoft.VisualStudio.Shell.Interop.IVsMonitorSelection.UnadviseSelectionEvents(System.UInt32)" TypeName="DoNotIgnoreMethodResults" Category="Microsoft.Usage" CheckId="CA1806" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue Name="HResultOrErrorCode">
+               <Item>'EntityReferencesToolWindow.Dispose(bool)'</Item>
+               <Item>'IVsMonitorSelection.UnadviseSelectionEvents(uint)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="39" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Initialize()">
+            <Messages>
+             <Message Id="Microsoft.VisualStudio.Shell.Interop.IVsMonitorSelection.AdviseSelectionEvents(Microsoft.VisualStudio.Shell.Interop.IVsSelectionEvents,System.UInt32@)" TypeName="DoNotIgnoreMethodResults" Category="Microsoft.Usage" CheckId="CA1806" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue Name="HResultOrErrorCode">
+               <Item>'EntityReferencesToolWindow.Initialize()'</Item>
+               <Item>'IVsMonitorSelection.AdviseSelectionEvents(IVsSelectionEvents, out uint)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="39" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="Microsoft.VisualStudio.Shell.Interop.IVsMonitorSelection.GetCurrentSelection(System.IntPtr@,System.UInt32@,Microsoft.VisualStudio.Shell.Interop.IVsMultiItemSelect@,System.IntPtr@)" TypeName="DoNotIgnoreMethodResults" Category="Microsoft.Usage" CheckId="CA1806" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue Name="HResultOrErrorCode">
+               <Item>'EntityReferencesToolWindow.Initialize()'</Item>
+               <Item>'IVsMonitorSelection.GetCurrentSelection(out IntPtr, out uint, out IVsMultiItemSelect, out IntPtr)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="39" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="Microsoft.VisualStudio.Shell.Interop.IVsSelectionEvents.OnSelectionChanged(Microsoft.VisualStudio.Shell.Interop.IVsHierarchy,System.UInt32,Microsoft.VisualStudio.Shell.Interop.IVsMultiItemSelect,Microsoft.VisualStudio.Shell.Interop.ISelectionContainer,Microsoft.VisualStudio.Shell.Interop.IVsHierarchy,System.UInt32,Microsoft.VisualStudio.Shell.Interop.IVsMultiItemSelect,Microsoft.VisualStudio.Shell.Interop.ISelectionContainer)" TypeName="DoNotIgnoreMethodResults" Category="Microsoft.Usage" CheckId="CA1806" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue Name="HResultOrErrorCode">
+               <Item>'EntityReferencesToolWindow.Initialize()'</Item>
+               <Item>'IVsSelectionEvents.OnSelectionChanged(IVsHierarchy, uint, IVsMultiItemSelect, ISelectionContainer, IVsHierarchy, uint, IVsMultiItemSelect, ISelectionContainer)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="39" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Microsoft.VisualStudio.Shell.Interop.IVsSelectionEvents.OnCmdUIContextChanged(System.UInt32,System.Int32)">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'EntityReferencesToolWindow'</Item>
+               <Item>'IVsSelectionEvents.OnCmdUIContextChanged(uint, int)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="21" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Microsoft.VisualStudio.Shell.Interop.IVsSelectionEvents.OnElementValueChanged(System.UInt32,System.Object,System.Object)">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'EntityReferencesToolWindow'</Item>
+               <Item>'IVsSelectionEvents.OnElementValueChanged(uint, object, object)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="21" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Microsoft.VisualStudio.Shell.Interop.IVsSelectionEvents.OnSelectionChanged(Microsoft.VisualStudio.Shell.Interop.IVsHierarchy,System.UInt32,Microsoft.VisualStudio.Shell.Interop.IVsMultiItemSelect,Microsoft.VisualStudio.Shell.Interop.ISelectionContainer,Microsoft.VisualStudio.Shell.Interop.IVsHierarchy,System.UInt32,Microsoft.VisualStudio.Shell.Interop.IVsMultiItemSelect,Microsoft.VisualStudio.Shell.Interop.ISelectionContainer)">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'EntityReferencesToolWindow'</Item>
+               <Item>'IVsSelectionEvents.OnSelectionChanged(IVsHierarchy, uint, IVsMultiItemSelect, ISelectionContainer, IVsHierarchy, uint, IVsMultiItemSelect, ISelectionContainer)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="21" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+       <Namespace Name="SandcastleBuilder.Package.UI">
+        <Types>
+         <Type Name="AboutDlg">
+          <Members>
+           <Member Name="#btnSysInfo_Click(System.Object,System.EventArgs)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'AboutDlg.btnSysInfo_Click(object, EventArgs)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="3" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Link_LinkClicked(System.Object,System.Windows.Forms.LinkLabelLinkClickedEventArgs)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2011-12-29 19:25:41Z">
+              <Issue>
+               <Item>'AboutDlg.Link_LinkClicked(object, LinkLabelLinkClickedEventArgs)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="3" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+      </Namespaces>
+      <Resources>
+       <Resource Name="SandcastleBuilder.Package.Properties.Resources.resources">
+        <Messages>
+         <Message Id="Plex" TypeName="ResourceStringsShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1703" Status="Excluded" Created="2011-12-29 19:25:41Z">
+          <Issue Name="StringResource">
+           <Item>'SandcastleBuilder.Package.Properties.Resources.resx'</Item>
+           <Item>ProjectURL</Item>
+           <Item>Plex</Item>
+           <Item>http://SHFB.CodePlex.com</Item>
+          </Issue>
+          <Notes>
+           <User Name="EWOODRUFF">
+            <Note Id="8" />
+           </User>
+          </Notes>
+         </Message>
+         <Message Id="shfbproj" TypeName="ResourceStringsShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1703" Status="Excluded" Created="2011-12-29 19:25:41Z">
+          <Issue Name="StringResource">
+           <Item>'SandcastleBuilder.Package.Properties.Resources.resx'</Item>
+           <Item>ShfbProjectFileAssemblyFilter</Item>
+           <Item>shfbproj</Item>
+           <Item>Sandcastle Help File Builder Project Files (*.shfbproj){0}*.shfbproj{1}</Item>
+          </Issue>
+          <Issue Name="StringResource">
+           <Item>'SandcastleBuilder.Package.Properties.Resources.resx'</Item>
+           <Item>ShfbProjectFileAssemblyFilter</Item>
+           <Item>shfbproj</Item>
+           <Item>Sandcastle Help File Builder Project Files (*.shfbproj){0}*.shfbproj{1}</Item>
+          </Issue>
+          <Notes>
+           <User Name="EWOODRUFF">
+            <Note Id="8" />
+           </User>
+          </Notes>
+         </Message>
+        </Messages>
+       </Resource>
+       <Resource Name="VSPackage.resources">
+        <Messages>
+         <Message Id="Plex" TypeName="ResourceStringsShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1703" Status="Excluded" Created="2011-12-29 19:25:41Z">
+          <Issue Name="StringResource">
+           <Item>'VSPackage.resx'</Item>
+           <Item>111</Item>
+           <Item>Plex</Item>
+           <Item>Visual Studio integration for the Sandcastle Help File Builder.&#xD;&#xA;Copyright © 2011, Eric Woodruff, All Rights Reserved.&#xD;&#xA;http://SHFB.CodePlex.com</Item>
+          </Issue>
+          <Notes>
+           <User Name="EWOODRUFF">
+            <Note Id="8" />
+           </User>
+          </Notes>
+         </Message>
+         <Message Id="shfbproj" TypeName="ResourceStringsShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1703" Status="Excluded" Created="2011-12-29 19:25:41Z">
+          <Issue Name="StringResource">
+           <Item>'VSPackage.resx'</Item>
+           <Item>112</Item>
+           <Item>shfbproj</Item>
+           <Item>Sandcastle Help File Builder Project Files (*.shfbproj);*.shfbproj</Item>
+          </Issue>
+          <Issue Name="StringResource">
+           <Item>'VSPackage.resx'</Item>
+           <Item>112</Item>
+           <Item>shfbproj</Item>
+           <Item>Sandcastle Help File Builder Project Files (*.shfbproj);*.shfbproj</Item>
+          </Issue>
+          <Notes>
+           <User Name="EWOODRUFF">
+            <Note Id="8" />
+           </User>
+          </Notes>
+         </Message>
+        </Messages>
+       </Resource>
+      </Resources>
+     </Module>
+    </Modules>
+   </Target>
+  </Targets>
+  <Notes>
+   <User Name="EWOODRUFF">
+    <Note Id="0" Modified="2011-12-29 19:34:45Z">Okay as is</Note>
+    <Note Id="1" Modified="2011-12-29 19:41:29Z">The error is intentionally ignored.</Note>
+    <Note Id="2" Modified="2011-12-29 19:42:04Z">The error is intentionally ignored.</Note>
+    <Note Id="3" Modified="2011-12-29 19:42:54Z">The error is reported</Note>
+    <Note Id="4" Modified="2011-12-29 19:44:33Z">Okay as is</Note>
+    <Note Id="5" Modified="2011-12-29 19:44:55Z">Okay as is</Note>
+    <Note Id="6" Modified="2011-12-29 19:46:55Z">Lowercase is required here</Note>
+    <Note Id="7" Modified="2011-12-29 19:47:42Z">Lowercase is required here</Note>
+    <Note Id="8" Modified="2011-12-29 19:48:50Z">Okay as is</Note>
+    <Note Id="9" Modified="2011-12-29 19:49:56Z">No security issues found</Note>
+    <Note Id="10" Modified="2011-12-29 19:50:39Z">Okay as is</Note>
+    <Note Id="11" Modified="2011-12-29 19:50:48Z">Okay as is</Note>
+    <Note Id="12" Modified="2011-12-29 19:52:10Z">Okay as is</Note>
+    <Note Id="13" Modified="2011-12-29 19:53:06Z">Okay as is</Note>
+    <Note Id="14" Modified="2011-12-29 20:04:49Z">Okay as is</Note>
+    <Note Id="15" Modified="2011-12-29 20:08:28Z">No issues found.</Note>
+    <Note Id="16" Modified="2011-12-29 20:10:06Z">These are accessed via the property grid control.</Note>
+    <Note Id="17" Modified="2011-12-29 20:10:56Z">Okay as is</Note>
+    <Note Id="18" Modified="2011-12-29 20:11:19Z">Okay as is</Note>
+    <Note Id="19" Modified="2011-12-29 20:11:35Z">Okay as is</Note>
+    <Note Id="20" Modified="2011-12-29 20:12:16Z">Okay as is</Note>
+    <Note Id="21" Modified="2011-12-29 20:12:35Z">Okay as is</Note>
+    <Note Id="22" Modified="2011-12-29 20:13:41Z">Okay as is</Note>
+    <Note Id="23" Modified="2011-12-29 20:14:30Z">Okay as is</Note>
+    <Note Id="24" Modified="2011-12-29 20:16:50Z">It does dispose of the property in the correct manner.</Note>
+    <Note Id="25" Modified="2012-01-01 00:03:00Z">Template generated code</Note>
+    <Note Id="26" Modified="2012-01-01 00:03:43Z">Template generated code</Note>
+    <Note Id="27" Modified="2012-01-01 00:04:18Z">Template generated code used for debugging.</Note>
+    <Note Id="28" Modified="2012-01-01 00:05:04Z">Okay as is</Note>
+    <Note Id="29" Modified="2012-01-01 00:09:15Z">Template generated code</Note>
+    <Note Id="30" Modified="2012-01-01 00:14:50Z">Okay as is</Note>
+    <Note Id="31" Modified="2012-01-01 00:15:29Z">The casing as given is more appropriate</Note>
+    <Note Id="32" Modified="2012-01-01 00:16:45Z">It's a requirement of how the options page is implemented</Note>
+    <Note Id="33" Modified="2012-01-01 00:23:25Z">Okay as is</Note>
+    <Note Id="34" Modified="2012-01-01 00:31:46Z">Okay as is</Note>
+    <Note Id="35" Modified="2012-01-01 00:42:32Z">Lowercase is preferred</Note>
+    <Note Id="36" Modified="2012-01-01 02:09:00Z">A default constructor would be useless here</Note>
+    <Note Id="37" Modified="2012-01-01 02:12:00Z">Okay as is</Note>
+    <Note Id="38" Modified="2012-01-01 02:13:58Z">The base class is a generic and does have the necessary ComVisible attribute</Note>
+    <Note Id="39" Modified="2012-01-01 02:16:03Z">The result isn't important and should cause no issues</Note>
+   </User>
+  </Notes>
+  <Rules>
+   <Rule TypeName="AbstractTypesShouldNotHaveConstructors" Category="Microsoft.Design" CheckId="CA1012">
+    <Resolution Name="Default">Change the accessibility of all public constructors in {0} to protected.</Resolution>
+   </Rule>
+   <Rule TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020">
+    <Resolution Name="Default">Consider merging the types defined in '{0}' with another namespace.</Resolution>
+   </Rule>
+   <Rule TypeName="AvoidOutParameters" Category="Microsoft.Design" CheckId="CA1021">
+    <Resolution Name="Default">Consider a design that does not require that {0} be an out parameter.</Resolution>
+   </Rule>
+   <Rule TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811">
+    <Resolution Name="Default">{0} appears to have no upstream public or protected callers.</Resolution>
+   </Rule>
+   <Rule TypeName="ComVisibleTypeBaseTypesShouldBeComVisible" Category="Microsoft.Interoperability" CheckId="CA1405">
+    <Resolution Name="Default">{0} is marked ComVisible(true) but has the following ComVisible(false) types in its object hierarchy: {1}</Resolution>
+   </Rule>
+   <Rule TypeName="ComVisibleTypesShouldBeCreatable" Category="Microsoft.Interoperability" CheckId="CA1409">
+    <Resolution Name="Default">Provide a public default constructor for {0} if it should be COM-creatable or mark the type as ComVisible(false).</Resolution>
+   </Rule>
+   <Rule TypeName="CompoundWordsShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1702">
+    <Resolution Name="MemberParameterShouldBeDiscreteTerm">In member {0}, the compound word '{1}' in parameter name {2} exists as a discrete term. If your usage is intended to be single word, case it as '{3}' or strip the first token entirely if it represents any sort of Hungarian notation.</Resolution>
+    <Resolution Name="MemberShouldBeDiscreteTerm">The compound word '{0}' in member name {1} exists as a discrete term. If your usage is intended to be single word, case it as '{2}' or strip the first token entirely if it represents any sort of Hungarian notation.</Resolution>
+   </Rule>
+   <Rule TypeName="DoNotCallOverridableMethodsInConstructors" Category="Microsoft.Usage" CheckId="CA2214">
+    <Resolution Name="Default">{0} contains a call chain that results in a call to a virtual method defined by the class. Review the following call stack for unintended consequences: {1}</Resolution>
+   </Rule>
+   <Rule TypeName="DoNotCastUnnecessarily" Category="Microsoft.Performance" CheckId="CA1800">
+    <Resolution Name="Local">{0}, a variable, is cast to type {1} multiple times in method {2}. Cache the result of the 'as' operator or direct cast in order to eliminate the redundant {3} instruction.</Resolution>
+   </Rule>
+   <Rule TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031">
+    <Resolution Name="Default">Modify {0} to catch a more specific exception than {1} or rethrow the exception.</Resolution>
+   </Rule>
+   <Rule TypeName="DoNotIgnoreMethodResults" Category="Microsoft.Usage" CheckId="CA1806">
+    <Resolution Name="HResultOrErrorCode">{0} calls {1} but does not use the HRESULT or error code that the method returns. This could lead to unexpected behavior in error conditions or low-resource situations. Use the result in a conditional statement, assign the result to a variable, or pass it as an argument to another method.</Resolution>
+   </Rule>
+   <Rule TypeName="DoNotPassTypesByReference" Category="Microsoft.Design" CheckId="CA1045">
+    <Resolution Name="Default">Consider a design that does not require that {0} be a reference parameter.</Resolution>
+   </Rule>
+   <Rule TypeName="DoNotUseAutoDualClassInterfaceType" Category="Microsoft.Interoperability" CheckId="CA1408">
+    <Resolution Name="Default">Type {0} uses ClassInterfaceAttribute(ClassInterfaceType.AutoDual) which might not version properly. Instead, define and implement the interface and mark the class using ClassInterfaceType.None.</Resolution>
+   </Rule>
+   <Rule TypeName="GenericMethodsShouldProvideTypeParameter" Category="Microsoft.Design" CheckId="CA1004">
+    <Resolution Name="Default">Consider a design where {0} doesn't require explicit type parameter {1} in any call to it.</Resolution>
+   </Rule>
+   <Rule TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709">
+    <Resolution Name="Member">Correct the casing of '{0}' in member name {1} by changing it to '{2}'.</Resolution>
+    <Resolution Name="MemberParameterAbbreviation">In member {0}, correct the casing of '{1}' in parameter name {2} by changing it to '{3}'. '{3}' is an abbreviation and therefore is not subject to acronym casing guidelines.</Resolution>
+   </Rule>
+   <Rule TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704">
+    <Resolution Name="Member">Correct the spelling of '{0}' in member name {1} or remove it entirely if it represents any sort of Hungarian notation.</Resolution>
+    <Resolution Name="MemberParameter">In method {0}, correct the spelling of '{1}' in parameter name {2} or remove it entirely if it represents any sort of Hungarian notation.</Resolution>
+   </Rule>
+   <Rule TypeName="ImplementStandardExceptionConstructors" Category="Microsoft.Design" CheckId="CA1032">
+    <Resolution Name="MissingConstructor">Add the following constructor to {0}: {1}.</Resolution>
+   </Rule>
+   <Rule TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033">
+    <Resolution Name="Default">Make {0} sealed (a breaking change if this class has previously shipped), implement the method non-explicitly, or implement a new method that exposes the functionality of {1} and is visible to derived classes.</Resolution>
+   </Rule>
+   <Rule TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308">
+    <Resolution Name="ToUpperInvariant">In method {0}, replace the call to {1} with String.ToUpperInvariant().</Resolution>
+   </Rule>
+   <Rule TypeName="ParameterNamesShouldMatchBaseDeclaration" Category="Microsoft.Naming" CheckId="CA1725">
+    <Resolution Name="Default">In member {0}, change parameter name {1} to {2} in order to match the identifier as it has been declared in {3}.</Resolution>
+   </Rule>
+   <Rule TypeName="PropertiesShouldNotReturnArrays" Category="Microsoft.Performance" CheckId="CA1819">
+    <Resolution Name="Default">Change {0} to return a collection or make it a method.</Resolution>
+   </Rule>
+   <Rule TypeName="ResourceStringsShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1703">
+    <Resolution Name="StringResource">In resource {0}, referenced by name '{1}', correct the spelling of '{2}' in string value '{3}'.</Resolution>
+   </Rule>
+   <Rule TypeName="ReviewSuppressUnmanagedCodeSecurityUsage" Category="Microsoft.Security" CheckId="CA2118">
+    <Resolution Name="PlatformInvokeStack">Review declarative security for {0} and its callers for potential vulnerabilities. The following call stack might expose a way to circumvent security protection: {1}</Resolution>
+   </Rule>
+   <Rule TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305">
+    <Resolution Name="IFormatProviderAlternateString">Because the behavior of {0} could vary based on the current user's locale settings, replace this call in {1} with a call to {2}. If the result of {2} will be displayed to the user, specify {3} as the 'IFormatProvider' parameter. Otherwise, if the result will be stored and accessed by software, such as when it is persisted to disk or to a database, specify {4}.</Resolution>
+   </Rule>
+   <Rule TypeName="TypesThatOwnDisposableFieldsShouldBeDisposable" Category="Microsoft.Design" CheckId="CA1001">
+    <Resolution Name="DependsOnFix">Implement IDisposable on {0} because it creates members of the following IDisposable types: {1}. If {0} has previously shipped, adding new members that implement IDisposable to this type is considered a breaking change to existing consumers.</Resolution>
+   </Rule>
+   <Rule TypeName="UriParametersShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1054">
+    <Resolution Name="Default">Change the type of parameter {0} of method {1} from string to System.Uri, or provide an overload of {1}, that allows {0} to be passed as a System.Uri object.</Resolution>
+   </Rule>
+   <Rule TypeName="UriPropertiesShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1056">
+    <Resolution Name="Default">Change the type of property {0} from string to System.Uri.</Resolution>
+   </Rule>
+   <Rule TypeName="UsePropertiesWhereAppropriate" Category="Microsoft.Design" CheckId="CA1024">
+    <Resolution Name="Default">Change {0} to a property if appropriate.</Resolution>
+   </Rule>
+  </Rules>
+ </FxCopReport>
+</FxCopProject>

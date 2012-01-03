@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : MSHelpKeywordCollection.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/16/2008
-// Note    : Copyright 2008, Eric Woodruff, All rights reserved
+// Updated : 12/18/2011
+// Note    : Copyright 2008-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a collection class used to hold the help index keyword
@@ -24,8 +24,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing.Design;
-using System.IO;
-using System.Text;
 using System.Xml;
 
 using SandcastleBuilder.Utils.Design;
@@ -121,8 +119,7 @@ namespace SandcastleBuilder.Utils
         /// </summary>
         public void MarkAsDirty()
         {
-            this.OnListChanged(new ListChangedEventArgs(
-                ListChangedType.ItemChanged, -1));
+            this.OnListChanged(new ListChangedEventArgs(ListChangedType.Reset, -1));
         }
         #endregion
     }

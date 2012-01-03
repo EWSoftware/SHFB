@@ -11,7 +11,7 @@ PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.
 
 //=============================================================================
 // File    : ProjectNode.CopyPaste.cs
-// Updated : 03/20/2011
+// Updated : 01/01/2012
 // Modifier: Eric Woodruff  (Eric@EWoodruff.us)
 //
 // This file has been modified to fix a bug in DragEnter that prevented drag
@@ -22,6 +22,9 @@ PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.
 // ============================================================================
 // 06/18/2008  EFW  Added support for linked project files
 // 03/20/2011  EFW  Updated to use MPFProj for VS2010
+// 01/01/2012  EFW  Fixed a bug in WalkSourceProjectAndAdd() that caused
+//                  a crash due to incorrectly copying sibling items
+//                  recursively.
 //=============================================================================
 
 using System;
@@ -598,7 +601,10 @@ namespace Microsoft.VisualStudio.Project
 						variant = null;
 						ErrorHandler.ThrowOnFailure(sourceHierarchy.GetProperty(itemId, (int)__VSHPROPID.VSHPROPID_NextVisibleSibling, out variant));
 						currentItemID = (uint)(int)variant;
-						WalkSourceProjectAndAdd(sourceHierarchy, currentItemID, targetNode, true);
+
+                        // !EFW - Do not add siblings, we're doing that here.  Instead get the next sibling from the current ID.
+						WalkSourceProjectAndAdd(sourceHierarchy, currentItemID, targetNode, false);
+                        itemId = currentItemID;
 					}
 				}
 			}

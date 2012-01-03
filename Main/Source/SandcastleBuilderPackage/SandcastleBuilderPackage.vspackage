@@ -103,6 +103,27 @@
               </groupBaseReferencesButtons>
             </buttons>
           </group>
+          <group Id="2a4a4cba-4816-4523-8580-f3d538e9d6c4" name="BuildMenuGroup" idNumeric="40" priority="1280">
+            <buttons>
+              <groupBaseReferencesButtons Id="16274665-66e3-4e38-a8ee-8af6d8b5975f">
+                <buttonMoniker Id="869d455d-931b-4aab-bf64-884bd8ced87e" />
+              </groupBaseReferencesButtons>
+            </buttons>
+          </group>
+          <group Id="86ab9030-1b3b-4165-9816-ec6875752cc4" name="EntityReferencesGroup" idNumeric="43" priority="36864">
+            <buttons>
+              <groupBaseReferencesButtons Id="82345726-7335-4b0f-9892-973018e5b530">
+                <buttonMoniker Id="c2104b20-35cb-421d-a488-b75c8dc1802a" />
+              </groupBaseReferencesButtons>
+            </buttons>
+          </group>
+          <group Id="b90c2061-5c8f-4029-ab9f-3f869c072e01" name="EntityRefOtherWindGroup" idNumeric="46" priority="36864">
+            <buttons>
+              <groupBaseReferencesButtons Id="efb8c8cd-fefa-4cf7-a719-392db2e9aef9">
+                <buttonMoniker Id="c2104b20-35cb-421d-a488-b75c8dc1802a" />
+              </groupBaseReferencesButtons>
+            </buttons>
+          </group>
         </groups>
         <buttons>
           <commandTableHasButtons Id="7e6fddcd-7e27-45c0-8fa4-199338d4700c">
@@ -146,6 +167,9 @@
           </commandTableHasButtons>
           <commandTableHasButtons Id="d7ed8595-d147-4f18-90eb-e93ab16680e1">
             <button Id="be0daae8-2453-4c83-8380-20ab8cdcdb83" name="FilterLog" idNumeric="37" buttonText="Filter Log Content" menuText="FilterLog" commandName="cmdidFilterLog" toolTipText="Filter Log Content" mod1="0" mod2="0" visibilityConstraints="0" icon="Filter.bmp" commandFlags="DefaultDisabled" sampleData="false" />
+          </commandTableHasButtons>
+          <commandTableHasButtons Id="f9f9b061-ed63-491a-8ccc-935e9b2d3287">
+            <button Id="c2104b20-35cb-421d-a488-b75c8dc1802a" name="EntityReferencesWindow" idNumeric="42" buttonText="Entity References Window" menuText="Entity References Window" commandName="cmdidEntityReferencesWindow" toolTipText="Open the Entity References Window" mod1="0" mod2="0" visibilityConstraints="0" icon="EntityReferences.bmp" commandFlags="0" sampleData="false" />
           </commandTableHasButtons>
         </buttons>
         <menuBases>
@@ -242,6 +266,33 @@
               </groupBases>
             </menu>
           </commandTableHasMenuBases>
+          <commandTableHasMenuBases Id="81680223-2c1c-4dd4-bcac-05bac035d0ba">
+            <externalMenu Id="5573f832-b818-423b-8d4a-1c011302d0cb" name="Build" idNumeric="41" parentData="guidSHLMainMenu,IDM_VS_MENU_BUILD,Menu">
+              <groupBases>
+                <menuBaseReferencesGroupBases Id="15caa3ab-aa75-4149-b047-f8d88d904c9b">
+                  <groupMoniker Id="2a4a4cba-4816-4523-8580-f3d538e9d6c4" />
+                </menuBaseReferencesGroupBases>
+              </groupBases>
+            </externalMenu>
+          </commandTableHasMenuBases>
+          <commandTableHasMenuBases Id="5a4db0c7-fc2d-4868-a520-82cc415dc388">
+            <externalMenu Id="649da034-0d07-470e-bf4b-df2c3627ca62" name="Other Windows" idNumeric="44" parentData="guidSHLMainMenu,IDM_VS_CSCD_WINDOWS,Menu">
+              <groupBases>
+                <menuBaseReferencesGroupBases Id="cc3e8d85-f535-4231-980d-b55117048005">
+                  <groupMoniker Id="86ab9030-1b3b-4165-9816-ec6875752cc4" />
+                </menuBaseReferencesGroupBases>
+              </groupBases>
+            </externalMenu>
+          </commandTableHasMenuBases>
+          <commandTableHasMenuBases Id="c85154c9-0fa1-4256-89b4-b946fe4a7f61">
+            <externalMenu Id="bd184499-069f-4851-9ea6-590f6d75949a" name="Other Windows Menu Controller" idNumeric="45" parentData="guidSHLMainMenu,IDM_VS_MNUCTRL_OTRWNDWS,Menu">
+              <groupBases>
+                <menuBaseReferencesGroupBases Id="f3139b1a-a041-4afc-a903-97b81d92aa97">
+                  <groupMoniker Id="b90c2061-5c8f-4029-ab9f-3f869c072e01" />
+                </menuBaseReferencesGroupBases>
+              </groupBases>
+            </externalMenu>
+          </commandTableHasMenuBases>
         </menuBases>
       </commandTable>
     </rootHasCommandTable>
@@ -258,6 +309,9 @@
                 </toolWindowReferencesMenus>
               </menus>
             </toolWindow>
+          </userInterfaceHasToolWindows>
+          <userInterfaceHasToolWindows Id="da53b74b-d22e-44d6-ba84-d84fe37a52b4">
+            <toolWindow Id="b3384555-4da9-4c44-a154-c88eefccb009" name="EntityReferences" idNumeric="39" caption="Entity References" userCodeGenerated="true" transient="false" multiInstance="false" visibilityConstraints="0" guid="581e89c0-e423-4453-bde3-a0403d5f380d" />
           </userInterfaceHasToolWindows>
         </toolWindows>
       </userInterface>
