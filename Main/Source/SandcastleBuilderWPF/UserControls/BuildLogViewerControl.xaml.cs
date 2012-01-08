@@ -1,14 +1,12 @@
 //=============================================================================
-// System  : Sandcastle Help File Builder Visual Studio Package
-// File    : BuildLogControl.cs
+// System  : Sandcastle Help File Builder WPF Controls
+// File    : BuildLogViewerControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/23/2011
-// Note    : Copyright 2011, Eric Woodruff, All rights reserved
+// Updated : 01/07/2012
+// Note    : Copyright 2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains the class used to view the build log content.  This will
-// eventually be replaced by something with more features such as search,
-// item lookup, etc.
+// This file contains the class used to view the build log content.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy
 // of the license should be distributed with the code.  It can also be found
@@ -18,7 +16,7 @@
 //
 // Version     Date     Who  Comments
 // ============================================================================
-// 1.9.3.0  04/22/2011  EFW  Created the code
+// 1.9.3.4  01/05/2012  EFW  Created the code
 //=============================================================================
 
 using System;
@@ -26,25 +24,24 @@ using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Text;
-using System.Windows.Controls;
-using System.Windows.Input;
 using System.Xml;
 using System.Xml.Xsl;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 
-namespace SandcastleBuilder.Package.ToolWindows
+namespace SandcastleBuilder.WPF.UserControls
 {
     /// <summary>
-    /// This is used to view the build log content.
+    /// This control is used to view the help file builder log file content
     /// </summary>
-    /// <remarks>This is a temporary viewer for the log.  It will eventually be
-    /// replaced by something with more features such as search, item lookup, etc.</remarks>
-    public partial class BuildLogControl : UserControl
+    public partial class BuildLogViewerControl : UserControl
     {
         #region Private data members
         //=====================================================================
 
         private string logFilename;
-        private bool delayedLoad, isFiltered;
+        private bool delayedLoad;
         #endregion
 
         #region Properties
@@ -58,26 +55,17 @@ namespace SandcastleBuilder.Package.ToolWindows
             get { return logFilename; }
             set
             {
-                logFilename = value;
-                this.LoadLogFile();
-            }
-        }
+                logFilename = null;
 
-        /// <summary>
-        /// This is used to get whether or not the log is filtered to only show warnings and errors
-        /// </summary>
-        public bool IsFiltered
-        {
-            get { return isFiltered; }
-            set
-            {
-                if(isFiltered != value)
-                {
-                    isFiltered = value;
-                    
-                    if(!String.IsNullOrEmpty(logFilename))
-                        this.LoadLogFile();
-                }
+                // Revert to plain text if reset
+                rbPlain.IsChecked = true;
+
+                logFilename = value;
+
+                if(this.IsLoaded && this.IsVisible)
+                    this.LoadLogFile();
+                else
+                    delayedLoad = true;
             }
         }
         #endregion
@@ -88,7 +76,7 @@ namespace SandcastleBuilder.Package.ToolWindows
         /// <summary>
         /// Constructor
         /// </summary>
-        public BuildLogControl()
+        public BuildLogViewerControl()
         {
             InitializeComponent();
         }
@@ -102,39 +90,32 @@ namespace SandcastleBuilder.Package.ToolWindows
         /// </summary>
         private void LoadLogFile()
         {
-            if(!this.IsLoaded)
-            {
-                delayedLoad = true;
-                return;
-            }
-
             try
             {
-                this.Cursor = Cursors.Wait;
+                Mouse.OverrideCursor = Cursors.Wait;
 
                 wbContent.NavigateToString(" ");    // Must use a space.  It doesn't like String.Empty
 
                 if(!String.IsNullOrEmpty(logFilename) && File.Exists(logFilename))
-                {
-                    using(StreamReader sr = new StreamReader(logFilename, isFiltered))
-                    {
-                        wbContent.NavigateToString(TransformLogFile(logFilename, isFiltered));
-                    }
-                }
+                    wbContent.NavigateToString(TransformLogFile(logFilename, rbFilter.IsChecked.Value,
+                        rbHighlight.IsChecked.Value));
                 else
-                    wbContent.NavigateToString("<pre>There is no log file to view.  Please build the project " +
-                        "first.<br/>You may also need to enable the <b>Keep log file after successful build</b> " +
-                        "property.</pre>");
+                    wbContent.NavigateToString(String.Format("<div style='font-family: Arial; font-size: 9pt'>" +
+                        "Log File: {0}<br /><br />There is no log file to view.  Please build the project " +
+                        "first.  You may also need to enable the <b>Keep log file after successful build " +
+                        "(KeepLogFile)</b> project property.</div>", (logFilename == null) ? "(Build cleaned)" :
+                        logFilename));
             }
             catch(Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
 
-                wbContent.NavigateToString("Unable to load log file: " + ex.Message);
+                wbContent.NavigateToString(String.Format("<div style='font-family: Arial; font-size: 9pt'>" +
+                    "Log File: {0}<br /><br />Unable to load log file: {1}</div>", logFilename, ex.Message));
             }
             finally
             {
-                this.Cursor = null;
+                Mouse.OverrideCursor = null;
             }
         }
 
@@ -143,8 +124,10 @@ namespace SandcastleBuilder.Package.ToolWindows
         /// </summary>
         /// <param name="logFile">The log file to transform</param>
         /// <param name="filtered">True to only show warnings and errors, false to show all messages</param>
+        /// <param name="highlight">True to highlight warnings and errors in the full log text or false to
+        /// just show the plain text.</param>
         /// <returns>The HTML representing the transformed log file</returns>
-        private static string TransformLogFile(string logFile, bool filtered)
+        private static string TransformLogFile(string logFile, bool filtered, bool highlight)
         {
             StringBuilder sb = new StringBuilder(10240);
             string html = null;
@@ -152,9 +135,9 @@ namespace SandcastleBuilder.Package.ToolWindows
             try
             {
                 // Read in the log text.  We'll prefix it it with the error message if the transform fails.
-                using(StreamReader srdr = new StreamReader(logFile))
+                using(StreamReader sr = new StreamReader(logFile))
                 {
-                    html = srdr.ReadToEnd();
+                    html = sr.ReadToEnd();
                 }
 
                 // Transform the log into something more readable
@@ -169,6 +152,7 @@ namespace SandcastleBuilder.Package.ToolWindows
 
                 XsltArgumentList argList = new XsltArgumentList();
                 argList.AddParam("filterOn", String.Empty, filtered ? "true" : "false");
+                argList.AddParam("highlightOn", String.Empty, highlight ? "true" : "false");
 
                 using(StringReader sr = new StringReader(html))
                 {
@@ -204,16 +188,28 @@ namespace SandcastleBuilder.Package.ToolWindows
         //=====================================================================
 
         /// <summary>
-        /// This loads blank content to force a load of the actual file when the control is actually visible
+        /// This loads the log file when the control is first made visible
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        /// <remarks>If the log content is loaded before the control is loaded,
-        /// it disappears on first use.</remarks>
-        private void BuildLog_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        private void ucBuildLogViewerControl_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            if(wbContent.Document == null || delayedLoad)
+            if(this.IsVisible && (delayedLoad || (!String.IsNullOrEmpty(logFilename) && wbContent.Document == null)))
+            {
                 wbContent.NavigateToString(" ");
+                delayedLoad = true;
+            }
+        }
+
+        /// <summary>
+        /// Reload the build log when the filter type changes
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event arguments</param>
+        private void Filter_Checked(object sender, RoutedEventArgs e)
+        {
+            if(this.IsLoaded)
+                this.LoadLogFile();
         }
 
         /// <summary>

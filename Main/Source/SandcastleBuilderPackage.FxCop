@@ -19,7 +19,6 @@
   <SearchGlobalAssemblyCache>False</SearchGlobalAssemblyCache>
   <DeadlockDetectionTimeout>120</DeadlockDetectionTimeout>
   <IgnoreGeneratedCode>False</IgnoreGeneratedCode>
-  <TargetFrameworkVersion>0.0</TargetFrameworkVersion>
  </ProjectOptions>
  <Targets>
   <AssemblyReferenceDirectories>
@@ -161,6 +160,20 @@
       <Notes>
        <User Name="EWOODRUFF">
         <Note Id="0" />
+       </User>
+      </Notes>
+     </Message>
+    </Messages>
+   </Namespace>
+   <Namespace Name="SandcastleBuilder.Package.ToolWindows">
+    <Messages>
+     <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Status="Excluded" Created="2012-01-07 22:06:23Z">
+      <Issue>
+       <Item>SandcastleBuilder.Package.ToolWindows</Item>
+      </Issue>
+      <Notes>
+       <User Name="EWOODRUFF">
+        <Note Id="40" />
        </User>
       </Notes>
      </Message>
@@ -2579,55 +2592,6 @@
        </Namespace>
        <Namespace Name="SandcastleBuilder.Package.ToolWindows">
         <Types>
-         <Type Name="BuildLogControl">
-          <Members>
-           <Member Name="#LoadLogFile()">
-            <Messages>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2011-12-29 19:25:41Z">
-              <Issue>
-               <Item>'BuildLogControl.LoadLogFile()'</Item>
-               <Item>'Exception'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="3" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#System.Windows.Markup.IComponentConnector.Connect(System.Int32,System.Object)">
-            <Messages>
-             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Status="Excluded" Created="2011-12-29 19:25:41Z">
-              <Issue>
-               <Item>'BuildLogControl'</Item>
-               <Item>'IComponentConnector.Connect(int, object)'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="22" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#TransformLogFile(System.String,System.Boolean)">
-            <Messages>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2011-12-29 19:25:41Z">
-              <Issue>
-               <Item>'BuildLogControl.TransformLogFile(string, bool)'</Item>
-               <Item>'Exception'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="3" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
          <Type Name="EntityReferencesToolWindow">
           <Members>
            <Member Name="#Dispose(System.Boolean)">
@@ -2890,6 +2854,7 @@
     <Note Id="37" Modified="2012-01-01 02:12:00Z">Okay as is</Note>
     <Note Id="38" Modified="2012-01-01 02:13:58Z">The base class is a generic and does have the necessary ComVisible attribute</Note>
     <Note Id="39" Modified="2012-01-01 02:16:03Z">The result isn't important and should cause no issues</Note>
+    <Note Id="40" Modified="2012-01-07 22:06:40Z">Okay as is</Note>
    </User>
   </Notes>
   <Rules>

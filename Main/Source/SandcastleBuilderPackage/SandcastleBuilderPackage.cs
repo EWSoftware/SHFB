@@ -626,7 +626,7 @@ namespace SandcastleBuilder.Package
             var pn = CurrentProjectNode;
 
             if(pn != null)
-                pn.OpenBuildLogToolWindow();
+                pn.OpenBuildLogToolWindow(true);
         }
         #endregion
 

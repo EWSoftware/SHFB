@@ -33,14 +33,11 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.tcbViewOutput = new System.Windows.Forms.ToolStripComboBox();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.tslLogFile = new System.Windows.Forms.ToolStripLabel();
             this.statusBarTextProvider1 = new SandcastleBuilder.Utils.Controls.StatusBarTextProvider(this.components);
             this.txtBuildOutput = new System.Windows.Forms.RichTextBox();
-            this.wbLogContent = new System.Windows.Forms.WebBrowser();
-            this.tsSeparator = new System.Windows.Forms.ToolStripSeparator();
-            this.tsbFilter = new System.Windows.Forms.ToolStripButton();
-            this.tsbPrint = new System.Windows.Forms.ToolStripButton();
+            this.ehLogViewer = new System.Windows.Forms.Integration.ElementHost();
+            this.ucBuildLogViewer = new SandcastleBuilder.WPF.UserControls.BuildLogViewerControl();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -50,20 +47,16 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripLabel1,
             this.tcbViewOutput,
-            this.toolStripSeparator1,
-            this.tsbFilter,
-            this.tsSeparator,
-            this.tsbPrint,
             this.tslLogFile});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(473, 26);
+            this.toolStrip1.Size = new System.Drawing.Size(473, 28);
             this.toolStrip1.TabIndex = 0;
             // 
             // toolStripLabel1
             // 
             this.toolStripLabel1.Name = "toolStripLabel1";
-            this.toolStripLabel1.Size = new System.Drawing.Size(125, 23);
+            this.toolStripLabel1.Size = new System.Drawing.Size(129, 25);
             this.toolStripLabel1.Text = "&Show output from";
             // 
             // tcbViewOutput
@@ -73,20 +66,16 @@ namespace SandcastleBuilder.Gui.ContentEditors
             "Build",
             "Log File"});
             this.tcbViewOutput.Name = "tcbViewOutput";
-            this.tcbViewOutput.Size = new System.Drawing.Size(121, 26);
+            this.tcbViewOutput.Size = new System.Drawing.Size(121, 28);
             this.statusBarTextProvider1.SetStatusBarText(this.tcbViewOutput, "Select the output to view");
             this.tcbViewOutput.SelectedIndexChanged += new System.EventHandler(this.tcbViewOutput_SelectedIndexChanged);
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 26);
             // 
             // tslLogFile
             // 
             this.tslLogFile.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.tslLogFile.Name = "tslLogFile";
-            this.tslLogFile.Size = new System.Drawing.Size(0, 23);
+            this.tslLogFile.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.tslLogFile.Size = new System.Drawing.Size(10, 25);
             // 
             // txtBuildOutput
             // 
@@ -95,59 +84,31 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.txtBuildOutput.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtBuildOutput.Font = new System.Drawing.Font("Courier New", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtBuildOutput.HideSelection = false;
-            this.txtBuildOutput.Location = new System.Drawing.Point(0, 26);
+            this.txtBuildOutput.Location = new System.Drawing.Point(0, 28);
             this.txtBuildOutput.Name = "txtBuildOutput";
             this.txtBuildOutput.ReadOnly = true;
-            this.txtBuildOutput.Size = new System.Drawing.Size(473, 257);
+            this.txtBuildOutput.Size = new System.Drawing.Size(473, 255);
             this.statusBarTextProvider1.SetStatusBarText(this.txtBuildOutput, "Build output");
             this.txtBuildOutput.TabIndex = 1;
             this.txtBuildOutput.Text = "";
             this.txtBuildOutput.WordWrap = false;
             // 
-            // wbLogContent
+            // ehLogViewer
             // 
-            this.wbLogContent.AllowWebBrowserDrop = false;
-            this.wbLogContent.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.wbLogContent.Location = new System.Drawing.Point(0, 26);
-            this.wbLogContent.MinimumSize = new System.Drawing.Size(20, 20);
-            this.wbLogContent.Name = "wbLogContent";
-            this.wbLogContent.Size = new System.Drawing.Size(473, 257);
-            this.statusBarTextProvider1.SetStatusBarText(this.wbLogContent, "Log file content");
-            this.wbLogContent.TabIndex = 2;
-            this.wbLogContent.Visible = false;
-            // 
-            // tsSeparator
-            // 
-            this.tsSeparator.Name = "tsSeparator";
-            this.tsSeparator.Size = new System.Drawing.Size(6, 26);
-            // 
-            // tsbFilter
-            // 
-            this.tsbFilter.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbFilter.Image = global::SandcastleBuilder.Gui.Properties.Resources.Filter;
-            this.tsbFilter.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbFilter.Name = "tsbFilter";
-            this.tsbFilter.Size = new System.Drawing.Size(23, 23);
-            this.statusBarTextProvider1.SetStatusBarText(this.tsbFilter, "Filter to show warnings and errors only");
-            this.tsbFilter.ToolTipText = "Filter to show warnings and errors only";
-            this.tsbFilter.Click += new System.EventHandler(this.tsbFilter_Click);
-            // 
-            // tsbPrint
-            // 
-            this.tsbPrint.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbPrint.Image = global::SandcastleBuilder.Gui.Properties.Resources.Print;
-            this.tsbPrint.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbPrint.Name = "tsbPrint";
-            this.tsbPrint.Size = new System.Drawing.Size(23, 23);
-            this.statusBarTextProvider1.SetStatusBarText(this.tsbPrint, "Print log file");
-            this.tsbPrint.ToolTipText = "Print log file";
-            this.tsbPrint.Click += new System.EventHandler(this.tsbPrint_Click);
+            this.ehLogViewer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ehLogViewer.Location = new System.Drawing.Point(0, 28);
+            this.ehLogViewer.Name = "ehLogViewer";
+            this.ehLogViewer.Size = new System.Drawing.Size(473, 255);
+            this.statusBarTextProvider1.SetStatusBarText(this.ehLogViewer, "Build log content");
+            this.ehLogViewer.TabIndex = 2;
+            this.ehLogViewer.Visible = false;
+            this.ehLogViewer.Child = this.ucBuildLogViewer;
             // 
             // OutputWindow
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.ClientSize = new System.Drawing.Size(473, 283);
-            this.Controls.Add(this.wbLogContent);
+            this.Controls.Add(this.ehLogViewer);
             this.Controls.Add(this.txtBuildOutput);
             this.Controls.Add(this.toolStrip1);
             this.HideOnClose = true;
@@ -172,11 +133,8 @@ namespace SandcastleBuilder.Gui.ContentEditors
         private System.Windows.Forms.ToolStripComboBox tcbViewOutput;
         private SandcastleBuilder.Utils.Controls.StatusBarTextProvider statusBarTextProvider1;
         private System.Windows.Forms.RichTextBox txtBuildOutput;
-        private System.Windows.Forms.WebBrowser wbLogContent;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripButton tsbPrint;
         private System.Windows.Forms.ToolStripLabel tslLogFile;
-        private System.Windows.Forms.ToolStripButton tsbFilter;
-        private System.Windows.Forms.ToolStripSeparator tsSeparator;
+        private System.Windows.Forms.Integration.ElementHost ehLogViewer;
+        private WPF.UserControls.BuildLogViewerControl ucBuildLogViewer;
     }
 }

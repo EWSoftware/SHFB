@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SandcastleBuilderProjectNode.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/31/2011
-// Note    : Copyright 2011, Eric Woodruff, All rights reserved
+// Updated : 01/07/2012
+// Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the class that represents a project node in a Sandcastle
@@ -383,7 +383,8 @@ namespace SandcastleBuilder.Package.Nodes
         /// <summary>
         /// This is used to open the build log tool window and load the log file for this project
         /// </summary>
-        internal void OpenBuildLogToolWindow()
+        /// <param name="showWindow">True to show the window, false to just update the log file to show</param>
+        internal void OpenBuildLogToolWindow(bool showWindow)
         {
             var window = this.Package.FindToolWindow(typeof(ToolWindows.BuildLogToolWindow), 0, true);
 
@@ -395,8 +396,11 @@ namespace SandcastleBuilder.Package.Nodes
 
             ((ToolWindows.BuildLogToolWindow)window).LoadLogFile(this.SandcastleProject.LogFileLocation);
 
-            var windowFrame = (IVsWindowFrame)window.Frame;
-            ErrorHandler.ThrowOnFailure(windowFrame.Show());
+            if(showWindow)
+            {
+                var windowFrame = (IVsWindowFrame)window.Frame;
+                ErrorHandler.ThrowOnFailure(windowFrame.Show());
+            }
         }
 
         /// <summary>
@@ -802,7 +806,7 @@ namespace SandcastleBuilder.Package.Nodes
                         return VSConstants.S_OK;
 
                     case PkgCmdIDList.ViewBuildLog:
-                        this.OpenBuildLogToolWindow();
+                        this.OpenBuildLogToolWindow(true);
                         return VSConstants.S_OK;
 
                     default:

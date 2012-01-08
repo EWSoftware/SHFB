@@ -329,8 +329,13 @@ namespace SandcastleBuilder.Gui.ContentEditors
                             "<b>BuildAction</b> of <b>ContentLayout</b>?";
                 }
                 else
-                    wbPreview.DocumentText = OutputWindow.TransformLogFile(
-                        buildProcess.LogFilename, Settings.Default.FilterBuildLog);
+                {
+                    // Show the raw log output for now.  This will be going away once the new previewer is done.
+                    using(StreamReader sr = new StreamReader(buildProcess.LogFilename))
+                    {
+                        wbPreview.DocumentText = "<pre>" + sr.ReadToEnd() + "</pre>";
+                    }
+                }
 
                 pbWait.Visible = lblLoading.Visible = false;
                 buildThread = null;

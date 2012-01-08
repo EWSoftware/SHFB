@@ -167,9 +167,6 @@
     <Compile Include="Editors\TokenEditorFactory.cs" />
     <Compile Include="Editors\TokenEditorPane.cs" />
     <Compile Include="ToolWindows\EntityReferencesToolWindow.cs" />
-    <Compile Include="ToolWindows\BuildLogControl.xaml.cs">
-      <DependentUpon>BuildLogControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ToolWindows\BuildLogToolWindow.cs" />
     <Compile Include="Guids.cs" />
     <Compile Include="Nodes\DocumentationSourceNode.cs" />
@@ -296,7 +293,6 @@
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <Resource Include="Button Bitmaps\LogFile.bmp" />
-    <Resource Include="Button Bitmaps\Filter.bmp" />
     <None Include="Images\MoveDown.bmp" />
     <None Include="Images\MoveUp.bmp" />
     <None Include="Images\Properties.bmp" />
@@ -662,12 +658,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
-  <ItemGroup>
-    <Page Include="ToolWindows\BuildLogControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v10.0\VSSDK\Microsoft.VsSDK.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

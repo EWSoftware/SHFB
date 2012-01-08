@@ -1,0 +1,24 @@
+<UserControl x:Class="SandcastleBuilder.WPF.UserControls.BuildLogViewerControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="600"
+             IsVisibleChanged="ucBuildLogViewerControl_IsVisibleChanged">
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition />
+    </Grid.RowDefinitions>
+    <StackPanel Grid.Row="0" Orientation="Horizontal"
+      Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}">
+      <StackPanel Orientation="Horizontal">
+        <RadioButton Content="Plain" Margin="10, 5, 20, 5" Name="rbPlain" IsChecked="True" Checked="Filter_Checked" />
+        <RadioButton Content="Highlight warnings and errors" Margin="0, 5, 20, 5" Name="rbHighlight" Checked="Filter_Checked"  />
+        <RadioButton Content="Show only warnings and errors" Margin="0, 5, 20, 5" Name="rbFilter" Checked="Filter_Checked" />
+      </StackPanel>
+    </StackPanel>
+    <WebBrowser Grid.Row="1" Name="wbContent" Navigated="wbContent_Navigated" />
+  </Grid>
+</UserControl>

@@ -113,10 +113,6 @@ namespace SandcastleBuilder.Package
                 commandId = new CommandID(GuidList.guidSandcastleBuilderPackageCmdSet, (int)PkgCmdIDList.ViewBuildLog);
                 menuItem = new OleMenuCommand(ViewBuildLogExecuteHandler, ViewBuildLogChangeHandler, ViewBuildLogQueryStatusHandler, commandId);
                 mcs.AddCommand(menuItem);
-				// Create the command for button FilterLog
-                commandId = new CommandID(GuidList.guidSandcastleBuilderPackageCmdSet, (int)PkgCmdIDList.FilterLog);
-                menuItem = new OleMenuCommand(FilterLogExecuteHandler, FilterLogChangeHandler, FilterLogQueryStatusHandler, commandId);
-                mcs.AddCommand(menuItem);
 				// Create the command for button EntityReferencesWindow
                 commandId = new CommandID(GuidList.guidSandcastleBuilderPackageCmdSet, (int)PkgCmdIDList.EntityReferencesWindow);
                 menuItem = new OleMenuCommand(EntityReferencesWindowExecuteHandler, EntityReferencesWindowChangeHandler, EntityReferencesWindowQueryStatusHandler, commandId);
@@ -330,22 +326,6 @@ namespace SandcastleBuilder.Package
 		}
 		
 		protected virtual void ViewBuildLogQueryStatusHandler(object sender, EventArgs e)
-		{
-		}
-
-		#endregion
-
-		#region Handlers for Button: FilterLog
-
-		protected virtual void FilterLogExecuteHandler(object sender, EventArgs e)
-		{
-		}
-		
-		protected virtual void FilterLogChangeHandler(object sender, EventArgs e)
-		{
-		}
-		
-		protected virtual void FilterLogQueryStatusHandler(object sender, EventArgs e)
 		{
 		}
 

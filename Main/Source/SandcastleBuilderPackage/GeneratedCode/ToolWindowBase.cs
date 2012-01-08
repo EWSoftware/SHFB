@@ -30,7 +30,6 @@ namespace SandcastleBuilder.Package.ToolWindows
             : base(null)
         {
 			this.Caption = "Build Log Content";
-this.ToolBar = new CommandID (GuidList.guidSandcastleBuilderPackageCmdSet, (int)PkgCmdIDList.BuildLogToolbar);
         }
     }
 	/// <summary>

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : BuildCompletedEventListener.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/31/2011
-// Note    : Copyright 2011, Eric Woodruff, All rights reserved
+// Updated : 01/07/2012
+// Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the class used to listen for build completed events so
@@ -91,7 +91,17 @@ namespace SandcastleBuilder.Package
 
                         if(projectNode != null && options != null)
                             if((action & (uint)VSSOLNBUILDUPDATEFLAGS.SBF_OPERATION_BUILD) != 0 && options.OpenLogViewerOnFailedBuild)
-                                projectNode.OpenBuildLogToolWindow();
+                                projectNode.OpenBuildLogToolWindow(true);
+                            else
+                            {
+                                // The user doesn't want it opened.  However, if it's already open, refresh the
+                                // log file reference so that it shows the correct file when it is displayed.
+                                var window = cfg.ProjectMgr.Package.FindToolWindow(typeof(ToolWindows.BuildLogToolWindow), 0, false) as
+                                    BuildLogToolWindow;
+
+                                if(window != null && ((IVsWindowFrame)window.Frame).IsVisible() == VSConstants.S_OK)
+                                    projectNode.OpenBuildLogToolWindow(false);
+                            }
                     }
             }
 

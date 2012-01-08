@@ -96,13 +96,6 @@
               </groupBaseReferencesButtons>
             </buttons>
           </group>
-          <group Id="db8cfbe5-df1c-4a20-8354-9dfae6b196cf" name="BuildLogToolbarGroup" idNumeric="36">
-            <buttons>
-              <groupBaseReferencesButtons Id="45be037b-65df-4f21-ba4a-0aac5b016e3a">
-                <buttonMoniker Id="be0daae8-2453-4c83-8380-20ab8cdcdb83" />
-              </groupBaseReferencesButtons>
-            </buttons>
-          </group>
           <group Id="2a4a4cba-4816-4523-8580-f3d538e9d6c4" name="BuildMenuGroup" idNumeric="40" priority="1280">
             <buttons>
               <groupBaseReferencesButtons Id="16274665-66e3-4e38-a8ee-8af6d8b5975f">
@@ -164,9 +157,6 @@
           </commandTableHasButtons>
           <commandTableHasButtons Id="5d05fd6c-a648-4ca9-bfc4-77004fb5bd13">
             <button Id="869d455d-931b-4aab-bf64-884bd8ced87e" name="ViewBuildLog" idNumeric="32" buttonText="View Build Log Content" menuText="View Build Log Content" commandName="cmdidViewBuildLog" toolTipText="View Build Log Content" mod1="0" mod2="0" visibilityConstraints="0" priority="257" icon="LogFile.bmp" commandFlags="DefaultInvisible, DynamicVisibility" sampleData="false" />
-          </commandTableHasButtons>
-          <commandTableHasButtons Id="d7ed8595-d147-4f18-90eb-e93ab16680e1">
-            <button Id="be0daae8-2453-4c83-8380-20ab8cdcdb83" name="FilterLog" idNumeric="37" buttonText="Filter Log Content" menuText="FilterLog" commandName="cmdidFilterLog" toolTipText="Filter Log Content" mod1="0" mod2="0" visibilityConstraints="0" icon="Filter.bmp" commandFlags="DefaultDisabled" sampleData="false" />
           </commandTableHasButtons>
           <commandTableHasButtons Id="f9f9b061-ed63-491a-8ccc-935e9b2d3287">
             <button Id="c2104b20-35cb-421d-a488-b75c8dc1802a" name="EntityReferencesWindow" idNumeric="42" buttonText="Entity References Window" menuText="Entity References Window" commandName="cmdidEntityReferencesWindow" toolTipText="Open the Entity References Window" mod1="0" mod2="0" visibilityConstraints="0" icon="EntityReferences.bmp" commandFlags="0" sampleData="false" />
@@ -257,15 +247,6 @@
               </groupBases>
             </externalMenu>
           </commandTableHasMenuBases>
-          <commandTableHasMenuBases Id="52ffcea6-f388-49dd-8c67-bb38cefb2eaf">
-            <menu Id="f2649ec8-ef2e-4854-bbb6-5e517908f6f9" name="BuildLogToolbar" idNumeric="38" type="ToolWindowToolbar" buttonText="BuildLogToolbar" menuText="BuildLogToolbar" toolTipText="BuildLogToolbar" commandName="BuildLogToolbar" visibilityConstraints="0" commandFlags="0">
-              <groupBases>
-                <menuBaseReferencesGroupBases Id="ba853429-e586-4b3d-b1bc-edde1ecf7326">
-                  <groupMoniker Id="db8cfbe5-df1c-4a20-8354-9dfae6b196cf" />
-                </menuBaseReferencesGroupBases>
-              </groupBases>
-            </menu>
-          </commandTableHasMenuBases>
           <commandTableHasMenuBases Id="81680223-2c1c-4dd4-bcac-05bac035d0ba">
             <externalMenu Id="5573f832-b818-423b-8d4a-1c011302d0cb" name="Build" idNumeric="41" parentData="guidSHLMainMenu,IDM_VS_MENU_BUILD,Menu">
               <groupBases>
@@ -302,13 +283,7 @@
       <userInterface Id="40050414-e548-4798-a8f5-72a1e86b77ac">
         <toolWindows>
           <userInterfaceHasToolWindows Id="9765ad83-a146-4ced-ba97-76c8587c12e7">
-            <toolWindow Id="452f0179-b8f5-41cc-9fa2-95421422c201" name="BuildLog" idNumeric="33" caption="Build Log Content" userCodeGenerated="true" style="none" transient="false" multiInstance="false" visibilityConstraints="0" guid="1ac33b36-3ffe-46b8-a340-090d35ab9ecf">
-              <menus>
-                <toolWindowReferencesMenus Id="1557fd52-5394-4e55-94ae-3ea7daeddac6">
-                  <menuMoniker Id="f2649ec8-ef2e-4854-bbb6-5e517908f6f9" />
-                </toolWindowReferencesMenus>
-              </menus>
-            </toolWindow>
+            <toolWindow Id="452f0179-b8f5-41cc-9fa2-95421422c201" name="BuildLog" idNumeric="33" caption="Build Log Content" userCodeGenerated="true" style="none" transient="false" multiInstance="false" visibilityConstraints="0" guid="1ac33b36-3ffe-46b8-a340-090d35ab9ecf" />
           </userInterfaceHasToolWindows>
           <userInterfaceHasToolWindows Id="da53b74b-d22e-44d6-ba84-d84fe37a52b4">
             <toolWindow Id="b3384555-4da9-4c44-a154-c88eefccb009" name="EntityReferences" idNumeric="39" caption="Entity References" userCodeGenerated="true" transient="false" multiInstance="false" visibilityConstraints="0" guid="581e89c0-e423-4453-bde3-a0403d5f380d" />

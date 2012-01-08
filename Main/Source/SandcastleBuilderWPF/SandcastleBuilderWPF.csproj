@@ -72,6 +72,9 @@
     <Compile Include="EntityReference.cs" />
     <Compile Include="EntityType.cs" />
     <Compile Include="SharedResources.cs" />
+    <Compile Include="UserControls\BuildLogViewerControl.xaml.cs">
+      <DependentUpon>BuildLogViewerControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\ContentLayoutEditorControl.xaml.cs">
       <DependentUpon>ContentLayoutEditorControl.xaml</DependentUpon>
     </Compile>
@@ -125,6 +128,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\SplitButtonStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\BuildLogViewerControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -5,20 +5,52 @@
     xmlns:xlink="http://www.w3.org/1999/xlink">
 
     <introduction>
-      <para>Each build produces a log file.  By default, the log file is
-called <localUri>LastBuild.log</localUri> and can be found in the output
-folder.  You can modify the <codeInline>BuildLogFile</codeInline> project
-property to rename it and/or store it in a different location.  The log will
-always be present unless the project's <codeInline>KeepLogFile</codeInline>
-property is set to false and the build succeeds.  The log file content is in
-XML format.  This allows you to run it through an XSL transformation to make
-it more readable, highlight warnings and errors, etc.  A default
-transformation is supplied and can be found under the main help file builder
+      <para>Each build produces a log file.  By default, the log file is called <localUri>LastBuild.log</localUri>
+and can be found in the output folder.  You can modify the <codeInline>BuildLogFile</codeInline> project property
+to rename it and/or store it in a different location.  The log will always be present unless the project's
+<codeInline>KeepLogFile</codeInline> property is set to false and the build succeeds.  The log file content is in
+XML format.  This allows you to run it through an XSL transformation to make it more readable, highlight warnings
+and errors, etc.  A default transformation is supplied and can be found under the main help file builder
 installation folder (<localUri>.\Templates\TransformBuildLog.xsl</localUri>).
 </para>
 
     </introduction>
 
+	<section>
+		<title>The Build Log Viewer Tool Window</title>
+		<content>
+			<para>The build log viewer tool window loads the build log file and formats it in a more readable format
+with each build step and plug-in section separated with a visible header.  The build step sections are
+collapsible.  A set of radio buttons at the top of the tool window change the build step details as follows:</para>
+
+			<list class="bullet">
+				<listItem>
+					<para><legacyBold>Plain</legacyBold> - This is the default option and loads the fastest.  It simply
+displays the build step output as plain text.</para>
+				</listItem>
+				<listItem>
+					<para><legacyBold>Highlight warnings and errors</legacyBold> - This option will highlight all warning
+and error messages in the build log content.  This lets you see warning and error messages with surrounding
+context which might help you identify the cause or location of the failure.</para>
+				</listItem>
+				<listItem>
+					<para><legacyBold>Show only warnings and errors</legacyBold> - This option filters all build step and
+plug-in output text so that only warning and error messages are shown.  This greatly reduces the amount of
+information that you must look through to see the warnings and errors.</para>
+				</listItem>
+			</list>
+
+			<alert class="note">
+				<para>The highlight and filter options will load much more slowly than the plain text option as it has
+to examine each line of the build step output looking for warning and error marker text.  It can take about ten
+to twenty seconds per megabyte based on the log file size.</para>
+			</alert>
+
+			<para>The formatted log is in HTML and the viewer uses the web browser control to display it.  As such,
+you can use <ui>Ctrl+F</ui> to search the log and access the context menu to print the log content.</para>
+		</content>
+	</section>		
+		
 <section>
   <title>The Log File Elements</title>
   <content><para>The log file content consists of the following XML elements:</para>
@@ -26,58 +58,86 @@ installation folder (<localUri>.\Templates\TransformBuildLog.xsl</localUri>).
 <table>
   <tableHeader>
     <row>
-      <entry>Element</entry>
-      <entry>Description</entry>
+      <entry>
+				<para>Element</para>
+			</entry>
+      <entry>
+				<para>Description</para>
+			</entry>
     </row>
   </tableHeader>
   <row>
-    <entry><codeInline>shfbBuild</codeInline></entry>
-    <entry>This is the root element that contains all of the build step output.
-It has four attributes:
-<list class="bullet">
-    <listItem>The <codeInline>product</codeInline> attribute identifies the
-tool that produced the log (the help file builder utilities assembly).</listItem>
+    <entry>
+			<para><codeInline>shfbBuild</codeInline></para>
+		</entry>
+    <entry>
+			<para>This is the root element that contains all of the build step output.  It has four attributes:</para>
 
-    <listItem>The <codeInline>version</codeInline> attribute identifies the
-build engine version.</listItem>
+				<list class="bullet">
+					<listItem>
+						<para>The <codeInline>product</codeInline> attribute identifies the tool that produced the log (the
+help file builder).</para>
+					</listItem>
 
-    <listItem>The <codeInline>projectFile</codeInline> attribute identifies
-the project file that was built.</listItem>
+					<listItem>
+						<para>The <codeInline>version</codeInline> attribute identifies the build engine version.</para>
+					</listItem>
 
-    <listItem>The <codeInline>started</codeInline> attribute contains the date
-and time that the build was started.</listItem>
+					<listItem>
+						<para>The <codeInline>projectFile</codeInline> attribute identifies the project file that was built.</para>
+					</listItem>
 
-</list></entry>
+					<listItem>
+						<para>The <codeInline>started</codeInline> attribute contains the date and time that the build was
+started.</para>
+					</listItem>
+
+				</list>
+		</entry>
   </row>
   <row>
-    <entry><codeInline>buildStep</codeInline></entry>
-    <entry>This element contains the output for an individual build step.  The
-build step is identified in the <codeInline>step</codeInline> attribute and
-corresponds to an enumeration value from
-<codeEntityReference qualifyHint="true">T:SandcastleBuilder.Utils.BuildEngine.BuildStep</codeEntityReference>.</entry>
-
+    <entry>
+			<para><codeInline>buildStep</codeInline></para>
+		</entry>
+    <entry>
+			<para>This element contains the output for an individual build step.  The build step is identified in the
+<codeInline>step</codeInline> attribute and corresponds to an enumeration value from
+<codeEntityReference qualifyHint="true">T:SandcastleBuilder.Utils.BuildEngine.BuildStep</codeEntityReference>.</para>
+		</entry>
   </row>
   <row>
-    <entry><codeInline>plugIn</codeInline></entry>
-    <entry>This element contains the output from a plug-in that runs inside of
-a build step.  This element will always be nested within a
-<codeInline>buildStep</codeInline> element and there may be more than one
-depending on how many plug-ins ran during the given step.  The plug-in that
-ran is identified by the <codeInline>name</codeInline> attribute.  The
-execution behavior of the plug-in is identified by the
-<codeInline>behavior</codeInline> attribute.</entry>
+    <entry>
+			<para><codeInline>plugIn</codeInline></para>
+		</entry>
+    <entry>
+			<para>This element contains the output from a plug-in that runs inside of a build step.  This element will
+always be nested within a <codeInline>buildStep</codeInline> element and there may be more than one depending on
+how many plug-ins ran during the given step.  This element has three attributes:</para>
 
+			<list class="bullet">
+				<listItem>
+					<para>The <codeInline>name</codeInline> attribute identifies the plug-in that ran.</para>
+				</listItem>
+				<listItem>
+					<para>The <codeInline>behavior</codeInline> attribute specifies the execution behavior of the
+plug-in.</para>
+				</listItem>
+				<listItem>
+					<para>The <codeInline>priority</codeInline> attribute specifies the execution priority of the
+plug-in.</para>
+				</listItem>
+			</list> 
+		</entry>
   </row>
 </table>
-
   </content>
 </section>
 
-    <relatedTopics>
+	<relatedTopics>
     <link xlink:href="b772e00e-1705-4062-adb6-774826ce6700" />
     <link xlink:href="8ffc0d37-0215-4609-b6f8-dba53a6c5063" />
     <link xlink:href="ec822059-b179-4add-984d-485580050ffb" />
-    </relatedTopics>
+	</relatedTopics>
 
   </developerConceptualDocument>
 </topic>

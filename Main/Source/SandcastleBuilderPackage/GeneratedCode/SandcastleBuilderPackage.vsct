@@ -43,7 +43,6 @@
 	  <Group guid="guidSandcastleBuilderPackageCommandSet" id="ShfbHelpGroup" priority="0x0100"/>
 	  <Group guid="guidSandcastleBuilderPackageCommandSet" id="ProjectNodeGroup" priority="0x07B0"/>
 	  <Group guid="guidSandcastleBuilderPackageCommandSet" id="ViewLogGroup" priority="0x0105"/>
-	  <Group guid="guidSandcastleBuilderPackageCommandSet" id="BuildLogToolbarGroup" priority="0x0100"/>
 	  <Group guid="guidSandcastleBuilderPackageCommandSet" id="BuildMenuGroup" priority="0x0500"/>
 	  <Group guid="guidSandcastleBuilderPackageCommandSet" id="EntityReferencesGroup" priority="0x9000"/>
 	  <Group guid="guidSandcastleBuilderPackageCommandSet" id="EntityRefOtherWindGroup" priority="0x9000"/>
@@ -186,16 +185,6 @@
             <ToolTipText>View Build Log Content</ToolTipText>
 		    </Strings>
 	  </Button>
-	  <Button guid="guidSandcastleBuilderPackageCommandSet" id="FilterLog" priority="0x0100">
-				<Icon guid="Filter.bmpGuid" id="Filter.bmpId" />
-				<CommandFlag>DefaultDisabled</CommandFlag>
-<Strings>
-            <CommandName>cmdidFilterLog</CommandName>
-            <ButtonText>Filter Log Content</ButtonText>
-            <MenuText>FilterLog</MenuText>
-            <ToolTipText>Filter Log Content</ToolTipText>
-		    </Strings>
-	  </Button>
 	  <Button guid="guidSandcastleBuilderPackageCommandSet" id="EntityReferencesWindow" priority="0x0100">
 				<Icon guid="EntityReferences.bmpGuid" id="EntityReferences.bmpId" />
 				<Strings>
@@ -232,16 +221,7 @@
 		   		</Strings>
 		</Menu> 
 
-    		  <Menu guid="guidSandcastleBuilderPackageCommandSet" id="BuildLogToolbar" type="ToolWindowToolbar" priority="0x0100">
-			   <Strings>
-	       <CommandName>BuildLogToolbar</CommandName>
-         <ButtonText>BuildLogToolbar</ButtonText>
-         <MenuText>BuildLogToolbar</MenuText>
-         <ToolTipText>BuildLogToolbar</ToolTipText>
-		   		</Strings>
-		</Menu> 
-
-    				  </Menus>
+    					  </Menus>
 
 
   <Bitmaps>
@@ -254,7 +234,6 @@
     <Bitmap guid="HtmlWebsite.bmpGuid" href="..\Button Bitmaps\HtmlWebsite.bmp" usedList="HtmlWebsite.bmpId" />
     <Bitmap guid="FAQ.bmpGuid" href="..\Button Bitmaps\FAQ.bmp" usedList="FAQ.bmpId" />
     <Bitmap guid="LogFile.bmpGuid" href="..\Button Bitmaps\LogFile.bmp" usedList="LogFile.bmpId" />
-    <Bitmap guid="Filter.bmpGuid" href="..\Button Bitmaps\Filter.bmp" usedList="Filter.bmpId" />
     <Bitmap guid="EntityReferences.bmpGuid" href="..\Button Bitmaps\EntityReferences.bmp" usedList="EntityReferences.bmpId" />
   </Bitmaps>
 
@@ -305,9 +284,6 @@
 		   </CommandPlacement> 
 	     <CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="ViewBuildLog" priority="0x0101"> 
 	         <Parent guid="guidSandcastleBuilderPackageCommandSet" id="BuildMenuGroup" />
-		   </CommandPlacement> 
-	     <CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="FilterLog" priority="0x0100"> 
-	         <Parent guid="guidSandcastleBuilderPackageCommandSet" id="BuildLogToolbarGroup" />
 		   </CommandPlacement> 
 	     <CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="EntityReferencesWindow" priority="0x0100"> 
 	         <Parent guid="guidSandcastleBuilderPackageCommandSet" id="EntityReferencesGroup" />
@@ -363,9 +339,6 @@
 	     <CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="ViewLogGroup" priority="0x0105">
 	         <Parent guid="guidSandcastleBuilderPackageCommandSet" id="ViewHelpMenuController" />
 		   </CommandPlacement> 
-	     <CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="BuildLogToolbarGroup" priority="0x0100">
-	         <Parent guid="guidSandcastleBuilderPackageCommandSet" id="BuildLogToolbar" />
-		   </CommandPlacement> 
 	     <CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="BuildMenuGroup" priority="0x0500">
 	         <Parent guid="guidSHLMainMenu" id="IDM_VS_MENU_BUILD" />
 		   </CommandPlacement> 
@@ -401,7 +374,6 @@
      <IDSymbol name="ShfbHelpGroup" value="0x001B" />
      <IDSymbol name="ProjectNodeGroup" value="0x001E" />
      <IDSymbol name="ViewLogGroup" value="0x0022" />
-     <IDSymbol name="BuildLogToolbarGroup" value="0x0024" />
      <IDSymbol name="BuildMenuGroup" value="0x0028" />
      <IDSymbol name="EntityReferencesGroup" value="0x002B" />
      <IDSymbol name="EntityRefOtherWindGroup" value="0x002E" />
@@ -418,44 +390,39 @@
 	     <IDSymbol name="OpenInStandaloneGUI" value="0x001C" />
 	     <IDSymbol name="AboutSHFB" value="0x001D" />
 	     <IDSymbol name="ViewBuildLog" value="0x0020" />
-	     <IDSymbol name="FilterLog" value="0x0025" />
 	     <IDSymbol name="EntityReferencesWindow" value="0x002A" />
 	     <IDSymbol name="ViewHelpMenu" value="0x000F" />
 	     <IDSymbol name="SHFBToolbar" value="0x0016" />
 	     <IDSymbol name="ViewHelpMenuController" value="0x0018" />
-	     <IDSymbol name="BuildLogToolbar" value="0x0026" />
 	  </GuidSymbol>
-	     <GuidSymbol name="ViewHelpFile.bmpGuid" value="{7ab38cc5-d9c6-4fd9-8b8c-9329d727b61d}">
+	     <GuidSymbol name="ViewHelpFile.bmpGuid" value="{bdbc82af-a0ca-46f3-b7a3-41ef98f28bf0}">
 				<IDSymbol name="ViewHelpFile.bmpId" value="1" />
 			</GuidSymbol>
-	     <GuidSymbol name="HtmlHelp.bmpGuid" value="{5eb8ac40-e782-4d73-9a6a-2f4805ccf7b6}">
+	     <GuidSymbol name="HtmlHelp.bmpGuid" value="{363c6c73-48be-4f03-bdb8-890a986fd5b0}">
 				<IDSymbol name="HtmlHelp.bmpId" value="1" />
 			</GuidSymbol>
-	     <GuidSymbol name="Help2.bmpGuid" value="{7cb715f3-25ec-4bc1-bc5f-4ac40fdc9385}">
+	     <GuidSymbol name="Help2.bmpGuid" value="{55d53ce5-e99f-49b6-b319-bdab8a38f587}">
 				<IDSymbol name="Help2.bmpId" value="1" />
 			</GuidSymbol>
-	     <GuidSymbol name="MSHelpViewer.bmpGuid" value="{0ab8bd66-85a4-4bbf-a195-737e670a212a}">
+	     <GuidSymbol name="MSHelpViewer.bmpGuid" value="{fc880ee0-b0a9-4040-9c4d-5fde541ef3af}">
 				<IDSymbol name="MSHelpViewer.bmpId" value="1" />
 			</GuidSymbol>
-	     <GuidSymbol name="HelpLibManager.bmpGuid" value="{dfcabf5e-1dae-44e6-9880-a7113ec496db}">
+	     <GuidSymbol name="HelpLibManager.bmpGuid" value="{a960b49b-26c8-4f59-8d90-20522bfb7cd5}">
 				<IDSymbol name="HelpLibManager.bmpId" value="1" />
 			</GuidSymbol>
-	     <GuidSymbol name="AspNetWebsite.bmpGuid" value="{277eaebb-c88e-4b48-9633-a0d59eae7091}">
+	     <GuidSymbol name="AspNetWebsite.bmpGuid" value="{0d9e2e41-4529-483a-9d34-54f4e0c9c8d5}">
 				<IDSymbol name="AspNetWebsite.bmpId" value="1" />
 			</GuidSymbol>
-	     <GuidSymbol name="HtmlWebsite.bmpGuid" value="{f9f00753-c78d-41f7-999e-d64c89b29af9}">
+	     <GuidSymbol name="HtmlWebsite.bmpGuid" value="{8dcf5167-dfe9-4184-856b-132b0e2984f6}">
 				<IDSymbol name="HtmlWebsite.bmpId" value="1" />
 			</GuidSymbol>
-	     <GuidSymbol name="FAQ.bmpGuid" value="{1ce86aa7-6967-42ce-bc15-7016486bd82b}">
+	     <GuidSymbol name="FAQ.bmpGuid" value="{e59cab01-7a24-4b30-900b-d8b978f52174}">
 				<IDSymbol name="FAQ.bmpId" value="1" />
 			</GuidSymbol>
-	     <GuidSymbol name="LogFile.bmpGuid" value="{98a3e562-27d6-47f5-aafb-ae93bff83c3f}">
+	     <GuidSymbol name="LogFile.bmpGuid" value="{c6574546-1b4e-45ad-8e17-b7deda4ee612}">
 				<IDSymbol name="LogFile.bmpId" value="1" />
 			</GuidSymbol>
-	     <GuidSymbol name="Filter.bmpGuid" value="{e50870ec-9c6c-4785-89b9-17414532077c}">
-				<IDSymbol name="Filter.bmpId" value="1" />
-			</GuidSymbol>
-	     <GuidSymbol name="EntityReferences.bmpGuid" value="{06962040-5cf7-490d-b55f-66018e07cf01}">
+	     <GuidSymbol name="EntityReferences.bmpGuid" value="{f5213b32-c845-4762-a367-0e66cd2b58fd}">
 				<IDSymbol name="EntityReferences.bmpId" value="1" />
 			</GuidSymbol>
 	</Symbols>
