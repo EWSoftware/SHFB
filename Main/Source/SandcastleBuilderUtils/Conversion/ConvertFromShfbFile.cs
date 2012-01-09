@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : ConvertFromShfbFile.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/09/2010
-// Note    : Copyright 2008-2010, Eric Woodruff, All rights reserved
+// Updated : 01/08/2012
+// Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class used to convert version 1.7.0.0 and prior SHFB
@@ -20,6 +20,7 @@
 // 1.8.0.0  07/23/2008  EFW  Created the code
 // 1.9.0.0  06/20/2010  EFW  Removed ProjectLinkType property
 // 1.9.1.0  07/09/2010  EFW  Updated for use with .NET 4.0 and MSBuild 4.0.
+// 1.9.3.4  01/08/2012  EFW  Added constructor to support use from VSPackage
 //=============================================================================
 
 using System;
@@ -55,20 +56,19 @@ namespace SandcastleBuilder.Utils.Conversion
         }
         #endregion
 
-        #region Constructor
+        #region Constructors
         //=====================================================================
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="oldProjectFile">The old project filename</param>
-        /// <param name="folder">The folder in which to place the new project
-        /// and its related files.  This cannot be the same folder as the
-        /// old project file.</param>
-        public ConvertFromShfbFile(string oldProjectFile, string folder) :
-          base(oldProjectFile, folder)
+        /// <inheritdoc />
+        public ConvertFromShfbFile(string oldProjectFile, string folder) : base(oldProjectFile, folder)
         {
             contentConverter = new ConvertConceptualContent(this);
+        }
+
+        /// <inheritdoc />
+        public ConvertFromShfbFile(string oldProjectFile, SandcastleProject newProject) :
+          base(oldProjectFile, newProject)
+        {
         }
         #endregion
 

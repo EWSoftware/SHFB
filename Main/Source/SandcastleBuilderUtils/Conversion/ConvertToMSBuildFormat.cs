@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : ConvertToMSBuildFormat.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/26/2011
-// Note    : Copyright 2008-2011, Eric Woodruff, All rights reserved
+// Updated : 01/08/2012
+// Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a abstract base class used to convert a project in
@@ -19,6 +19,7 @@
 // ============================================================================
 // 1.8.0.0  07/23/2008  EFW  Created the code
 // 1.9.1.0  07/09/2010  EFW  Updated for use with .NET 4.0 and MSBuild 4.0.
+// 1.9.3.4  01/08/2012  EFW  Added constructor to support use from VSPackage
 //=============================================================================
 
 using System;
@@ -91,30 +92,27 @@ namespace SandcastleBuilder.Utils.Conversion
         }
         #endregion
 
-        #region Constructor
+        #region Constructors
         //=====================================================================
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="oldProjectFile">The old project filename</param>
-        /// <param name="folder">The folder in which to place the new project
-        /// and its related files.  This cannot be the same folder as the
-        /// old project file.</param>
+        /// <param name="folder">The folder in which to place the new project and its related files.  This
+        /// cannot be the same folder as the old project file.</param>
+        /// <overloads>There are two overloads for the constructor</overloads>
         protected ConvertToMSBuildFormat(string oldProjectFile, string folder)
         {
             string projectFilename;
 
             oldProject = oldProjectFile;
-            oldFolder = Path.GetDirectoryName(Path.GetFullPath(
-                oldProjectFile));
-
+            oldFolder = FolderPath.TerminatePath(Path.GetDirectoryName(Path.GetFullPath(oldProjectFile)));
             projectFolder = FolderPath.TerminatePath(folder);
-            oldFolder = FolderPath.TerminatePath(oldFolder);
 
             if(folder == oldFolder)
-                throw new ArgumentException("The new project folder cannot " +
-                    "be the same as the old project file's folder", "folder");
+                throw new ArgumentException("The new project folder cannot be the same as the old project " +
+                    "file's folder", "folder");
 
             if(!Directory.Exists(projectFolder))
                 Directory.CreateDirectory(projectFolder);
@@ -126,6 +124,24 @@ namespace SandcastleBuilder.Utils.Conversion
                 File.Delete(projectFilename);
 
             project = new SandcastleProject(projectFilename, false);
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="oldProjectFile">The old project filename</param>
+        /// <param name="newProject">The new project into which the converted elements are inserted</param>
+        protected ConvertToMSBuildFormat(string oldProjectFile, SandcastleProject newProject)
+        {
+            oldProject = oldProjectFile;
+            oldFolder = FolderPath.TerminatePath(Path.GetDirectoryName(Path.GetFullPath(oldProjectFile)));
+            projectFolder = FolderPath.TerminatePath(Path.GetDirectoryName(newProject.Filename));
+
+            if(projectFolder == oldFolder)
+                throw new ArgumentException("The new project folder cannot be the same as the old project " +
+                    "file's folder", "folder");
+
+            project = new SandcastleProject(newProject.MSBuildProject);
         }
         #endregion
 

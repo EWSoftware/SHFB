@@ -321,6 +321,12 @@ http://SHFB.CodePlex.com</value>
   <data name="174" xml:space="preserve">
     <value>This document type is used for XML reference topics</value>
   </data>
+  <data name="175" xml:space="preserve">
+    <value>New Project from Other Format</value>
+  </data>
+  <data name="176" xml:space="preserve">
+    <value>Create a SHFB help file project from another project format</value>
+  </data>
   <data name="200" xml:space="preserve">
     <value>General</value>
     <comment>General options page title</comment>

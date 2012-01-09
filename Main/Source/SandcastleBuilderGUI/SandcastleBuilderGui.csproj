@@ -216,12 +216,6 @@
     <Compile Include="LaunchMSHelpViewerDlg.Designer.cs">
       <DependentUpon>LaunchMSHelpViewerDlg.cs</DependentUpon>
     </Compile>
-    <Compile Include="NewFromOtherFormatDlg.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="NewFromOtherFormatDlg.Designer.cs">
-      <DependentUpon>NewFromOtherFormatDlg.cs</DependentUpon>
-    </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -294,10 +288,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="LaunchMSHelpViewerDlg.resx">
       <DependentUpon>LaunchMSHelpViewerDlg.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="NewFromOtherFormatDlg.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>NewFromOtherFormatDlg.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <SubType>Designer</SubType>

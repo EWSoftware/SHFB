@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SandcastleBuilderPackage.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/31/2011
-// Note    : Copyright 2011, Eric Woodruff, All rights reserved
+// Updated : 01/07/2012
+// Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the class that defines the Sancastle Help File Builder
@@ -104,6 +104,7 @@ namespace SandcastleBuilder.Package
     [ProvideEditorExtension(typeof(TokenEditorFactory), ".tokens", 50,
       ProjectGuid = GuidList.guidSandcastleBuilderProjectFactoryString, NameResourceID = 135,
       TemplateDir = @".\NullPath")]
+    [ProvideBindingPath()]
     public sealed class SandcastleBuilderPackage : PackageBase
     {
         #region Private data members

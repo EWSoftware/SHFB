@@ -140,6 +140,12 @@
       <DependentUpon>FolderPathUserControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Conversion\ConvertFromShfbFile.cs" />
+    <Compile Include="Conversion\NewFromOtherFormatDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Conversion\NewFromOtherFormatDlg.designer.cs">
+      <DependentUpon>NewFromOtherFormatDlg.cs</DependentUpon>
+    </Compile>
     <Compile Include="Design\ApiFilterCollectionTypeConverter.cs" />
     <Compile Include="Design\ApiFilterEditor.cs" />
     <Compile Include="Design\ApiFilterEditorDlg.cs">
@@ -293,6 +299,9 @@
     <EmbeddedResource Include="Controls\DividerGroupBox.bmp" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Conversion\NewFromOtherFormatDlg.resx">
+      <DependentUpon>NewFromOtherFormatDlg.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Design\ApiFilterEditorDlg.resx">
       <DependentUpon>ApiFilterEditorDlg.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -406,6 +415,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\SandcastleLogo.png" />
     <EmbeddedResource Include="Controls\RefreshableItemListBox.bmp" />
     <EmbeddedResource Include="Controls\FilePathUserControl.bmp" />
     <EmbeddedResource Include="Controls\FolderPathUserControl.bmp" />

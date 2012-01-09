@@ -36,8 +36,16 @@ then the <ui>Documentation</ui> sub-category in the list on the left side of the
 			</listItem>
 
 			<listItem>
-				<para>The help file builder project type is the only one in the list.  Enter a new project name,
-the folder in which to place it, and any other options, and then click the <ui>OK</ui> button to create it.</para>
+				<para>The <ui>Sandcastle Help File Builder Project</ui> template will create a new, blank project.  The
+<ui>New Project from Other Format</ui> template will allow you to convert a help file project from one of
+<link xlink:href="f68822d2-97ba-48da-a98b-46747983b4a0">several other formats</link> to a new help file builder
+project.  Enter a new project name, the folder in which to place it, and any other options, and then click the
+<ui>OK</ui> button to create it.</para>
+
+				<para>If you chose the <ui>New Project from Other Format</ui> template, another dialog box will appear
+prompting you for the old project's format and location.  Once entered, click the <ui>Convert</ui> button to
+import the old project's information into the new project.  If successful, a message box will appear telling you
+so.  You will be prompted to reload the new project in order to see the imported information.</para>
 			</listItem>
 		</list>
 
@@ -228,6 +236,7 @@ have an <ui>Image</ui> build action).</para>
 
     <relatedTopics>
       <link xlink:href="b128ad2a-787e-48c7-b946-f6953080c386" />
+			<link xlink:href="f68822d2-97ba-48da-a98b-46747983b4a0" />
     </relatedTopics>
   </developerConceptualDocument>
 </topic>

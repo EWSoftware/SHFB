@@ -2,34 +2,44 @@
 <topic id="f68822d2-97ba-48da-a98b-46747983b4a0" revisionNumber="1">
   <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
     <introduction>
-      <para>A set of project converters is supplied that can convert help
-projects in various other documentation tool formats into the help file builder
-project file format.  To convert a project, select the <ui>File | New Project
-from Other Format</ui> menu option.</para>
+      <para>A set of project converters is supplied that can convert help projects in various other documentation
+tool formats into the help file builder project file format.  To convert a project from the standalone GUI,
+select the <ui>File | New Project from Other Format</ui> menu option.  If using Visual Studio, select <ui>File |
+New | Project</ui> and use the <ui>New Project from Other Format</ui> project template.</para>
     </introduction>
 
     <section>
       <title>Available Project Converters</title>
-	  <content><para>All project converters work in a similar fashion.  Each
-requires the name of a project file and a destination folder in which to place
-the converted project and its related files.  The destination folder must be
-different from the source folder that contains the project file being
-converted.  If it does not exist, it will be created.  Select a topic below to
-learn more about a specific project file converter.</para>
+			<content>
+				<para>All project converters work in a similar fashion.  Each requires the name of a project file and a
+	destination folder in which to place the converted project and its related files.  The destination folder must be
+	different from the source folder that contains the project file being converted.  If it does not exist, it will
+	be created.  Select a topic below to learn more about a specific project file converter.</para>
 	  
-<list class="bullet">
-  <listItem><link xlink:href="5864f501-6433-4bd3-825d-1843b9b27540" /></listItem>
-  <listItem><link xlink:href="0a38fb2a-1166-4a4f-bd76-12390655df5c" /></listItem>
-  <listItem><link xlink:href="6236b6e2-b27f-45d6-a8de-7a7913ff7ce1" /></listItem>
-  <listItem><link xlink:href="b91996c3-4c92-4c99-8958-92ce04bca0f9" /></listItem>
-  <listItem><link xlink:href="14a10de0-b38b-403d-8fc3-4d36a737e3b3" /></listItem>
-</list>
-	  </content>
+				<list class="bullet">
+					<listItem>
+						<para><link xlink:href="5864f501-6433-4bd3-825d-1843b9b27540" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="0a38fb2a-1166-4a4f-bd76-12390655df5c" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="6236b6e2-b27f-45d6-a8de-7a7913ff7ce1" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="b91996c3-4c92-4c99-8958-92ce04bca0f9" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="14a10de0-b38b-403d-8fc3-4d36a737e3b3" /></para>
+					</listItem>
+				</list>
+			</content>
     </section>
 
     <relatedTopics>
-    <link xlink:href="b772e00e-1705-4062-adb6-774826ce6700" />
-	<link xlink:href="8e3f8757-0ef3-4772-bb2f-5d7ae57e50da" />
+			<link xlink:href="b772e00e-1705-4062-adb6-774826ce6700" />
+			<link xlink:href="8e3f8757-0ef3-4772-bb2f-5d7ae57e50da" />
+			<link xlink:href="78507051-0fc0-479b-9d47-78a10398eaf2" />
     </relatedTopics>
   </developerConceptualDocument>
 </topic>

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : NewFromOtherFormatDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/15/2011
-// Note    : Copyright 2008-2011, Eric Woodruff, All rights reserved
+// Updated : 01/08/2012
+// Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the form used to convert a project in a different format
@@ -19,6 +19,8 @@
 // ============================================================================
 // 1.8.0.0  08/04/2008  EFW  Created the code
 // 1.9.1.0  01/09/2011  EFW  Updated for use with .NET 4.0 and MSBuild 4.0
+// 1.9.3.4  01/08/2012  EFW  Moved the form into the SandcastleBuilder.Utils
+//                           library so that it can be used from the VSPackage.
 //=============================================================================
 
 using System;
@@ -28,9 +30,8 @@ using System.Reflection;
 using System.Windows.Forms;
 
 using SandcastleBuilder.Utils;
-using SandcastleBuilder.Utils.Conversion;
 
-namespace SandcastleBuilder.Gui
+namespace SandcastleBuilder.Utils.Conversion
 {
     /// <summary>
     /// This form is used to convert a project in a different format to the new
@@ -41,6 +42,7 @@ namespace SandcastleBuilder.Gui
         #region Private data members
         //=====================================================================
 
+        private SandcastleProject currentProject;
         private string newProjectFilename;
         #endregion
 
@@ -48,8 +50,7 @@ namespace SandcastleBuilder.Gui
         //=====================================================================
 
         /// <summary>
-        /// Upon successful conversion, this will return the name of the
-        /// new project file.
+        /// Upon successful conversion, this will return the name of the new project file
         /// </summary>
         public string NewProjectFilename
         {
@@ -57,16 +58,30 @@ namespace SandcastleBuilder.Gui
         }
         #endregion
 
-        #region Constructor
+        #region Constructors
         //=====================================================================
 
         /// <summary>
         /// Constructor
         /// </summary>
+        /// <overloads>There are two overloads for the constructor</overloads>
         public NewFromOtherFormatDlg()
         {
             InitializeComponent();
             cboProjectFormat.SelectedIndex = 0;
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="project">The project into which the converted elements will be inserted</param>
+        /// <remarks>This constructor is used by the VSPackage to convert an old project after it creates
+        /// a new project instance.</remarks>
+        public NewFromOtherFormatDlg(SandcastleProject project) : this()
+        {
+            currentProject = project;
+            txtNewProjectFolder.Text = project.Filename;
+            txtNewProjectFolder.Enabled = btnSelectNewFolder.Enabled = false;
         }
         #endregion
 
@@ -92,46 +107,40 @@ namespace SandcastleBuilder.Gui
         {
             using(OpenFileDialog dlg = new OpenFileDialog())
             {
+                dlg.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
                 switch(cboProjectFormat.SelectedIndex)
                 {
                     case 1:
                         dlg.Title = "Select the NDoc project to convert";
-                        dlg.Filter = "NDoc Project files (*.ndoc)|*.ndoc|" +
-                            "All files (*.*)|*.*";
+                        dlg.Filter = "NDoc Project files (*.ndoc)|*.ndoc|All files (*.*)|*.*";
                         dlg.DefaultExt = "ndoc";
                         break;
 
                     case 2:
                         dlg.Title = "Select the DocProject project to convert";
-                        dlg.Filter = "DocProject files (*.csproj, *.vbproj)|" +
-                            "*.csproj;*.vbproj|All files (*.*)|*.*";
+                        dlg.Filter = "DocProject files (*.csproj, *.vbproj)|*.csproj;*.vbproj|All files (*.*)|*.*";
                         dlg.DefaultExt = "csproj";
                         break;
 
                     case 3:
                         dlg.Title = "Select the SandcastleGUI project to convert";
-                        dlg.Filter = "SandcastleGUI Project files (*.SandcastleGUI)|" +
-                            "*.SandcastleGUI|All files (*.*)|*.*";
+                        dlg.Filter = "SandcastleGUI Project files (*.SandcastleGUI)|*.SandcastleGUI|All files (*.*)|*.*";
                         dlg.DefaultExt = "SandcastleGUI";
                         break;
 
                     case 4:
-                        dlg.Title = "Select the Microsoft Example GUI " +
-                            "project to convert";
-                        dlg.Filter = "Example GUI Project files (*.scproj)|" +
-                            "*.scproj|All files (*.*)|*.*";
+                        dlg.Title = "Select the Microsoft Example GUI project to convert";
+                        dlg.Filter = "Example GUI Project files (*.scproj)|*.scproj|All files (*.*)|*.*";
                         dlg.DefaultExt = "scproj";
                         break;
 
                     default:
                         dlg.Title = "Select the old SHFB project to convert";
-                        dlg.Filter = "Old SHFB files (*.shfb)|*.shfb|" +
-                            "All Files (*.*)|*.*";
+                        dlg.Filter = "Old SHFB files (*.shfb)|*.shfb|All Files (*.*)|*.*";
                         dlg.DefaultExt = "shfb";
                         break;
                 }
-
-                dlg.InitialDirectory = Directory.GetCurrentDirectory();
 
                 // If selected, set the filename
                 if(dlg.ShowDialog() == DialogResult.OK)
@@ -149,7 +158,7 @@ namespace SandcastleBuilder.Gui
             using(FolderBrowserDialog dlg = new FolderBrowserDialog())
             {
                 dlg.Description = "Select the folder for the new project";
-                dlg.SelectedPath = Directory.GetCurrentDirectory();
+                dlg.SelectedPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
                 // If selected, set the new folder
                 if(dlg.ShowDialog() == DialogResult.OK)
@@ -169,11 +178,15 @@ namespace SandcastleBuilder.Gui
             bool isValid = true;
 
             epErrors.Clear();
-            epErrors.SetIconPadding(txtProjectFile, btnSelectNewFolder.Width + 5);
+            epErrors.SetIconPadding(txtProjectFile, btnSelectProject.Width + 5);
             epErrors.SetIconPadding(txtNewProjectFolder, btnSelectNewFolder.Width + 5);
 
             project = txtProjectFile.Text.Trim();
-            folder = txtNewProjectFolder.Text.Trim();
+
+            if(txtNewProjectFolder.Enabled)
+                folder = txtNewProjectFolder.Text.Trim();
+            else
+                folder = Path.GetDirectoryName(txtNewProjectFolder.Text);
 
             if(project.Length == 0)
             {
@@ -217,30 +230,42 @@ namespace SandcastleBuilder.Gui
                 switch(cboProjectFormat.SelectedIndex)
                 {
                     case 1:
-                        converter = new ConvertFromNDoc(txtProjectFile.Text, txtNewProjectFolder.Text);
+                        if(currentProject == null)
+                            converter = new ConvertFromNDoc(txtProjectFile.Text, txtNewProjectFolder.Text);
+                        else
+                            converter = new ConvertFromNDoc(txtProjectFile.Text, currentProject);
                         break;
 
                     case 2:
-                        converter = new ConvertFromDocProject(txtProjectFile.Text, txtNewProjectFolder.Text);
+                        if(currentProject == null)
+                            converter = new ConvertFromDocProject(txtProjectFile.Text, txtNewProjectFolder.Text);
+                        else
+                            converter = new ConvertFromDocProject(txtProjectFile.Text, currentProject);
                         break;
 
                     case 3:
-                        converter = new ConvertFromSandcastleGui(txtProjectFile.Text, txtNewProjectFolder.Text);
+                        if(currentProject == null)
+                            converter = new ConvertFromSandcastleGui(txtProjectFile.Text, txtNewProjectFolder.Text);
+                        else
+                            converter = new ConvertFromSandcastleGui(txtProjectFile.Text, currentProject);
                         break;
 
                     case 4:
-                        converter = new ConvertFromMSExampleGui(txtProjectFile.Text, txtNewProjectFolder.Text);
+                        if(currentProject == null)
+                            converter = new ConvertFromMSExampleGui(txtProjectFile.Text, txtNewProjectFolder.Text);
+                        else
+                            converter = new ConvertFromMSExampleGui(txtProjectFile.Text, currentProject);
                         break;
 
                     default:
-                        converter = new ConvertFromShfbFile(txtProjectFile.Text, txtNewProjectFolder.Text);
+                        if(currentProject == null)
+                            converter = new ConvertFromShfbFile(txtProjectFile.Text, txtNewProjectFolder.Text);
+                        else
+                            converter = new ConvertFromShfbFile(txtProjectFile.Text, currentProject);
                         break;
                 }
 
                 newProjectFilename = converter.ConvertProject();
-
-                MessageBox.Show("The project has been converted successfully", Constants.AppName,
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 this.DialogResult = DialogResult.OK;
                 this.Close();

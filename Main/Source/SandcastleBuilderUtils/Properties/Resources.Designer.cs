@@ -78,6 +78,13 @@ namespace SandcastleBuilder.Utils.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap SandcastleLogo {
+            get {
+                object obj = ResourceManager.GetObject("SandcastleLogo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap SpinningWheel {
             get {
                 object obj = ResourceManager.GetObject("SpinningWheel", resourceCulture);

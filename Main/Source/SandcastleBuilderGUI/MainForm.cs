@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : MainForm.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/15/2011
-// Note    : Copyright 2006-2011, Eric Woodruff, All rights reserved
+// Updated : 01/08/2012
+// Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the main form for the application.
@@ -32,6 +32,7 @@
 //                           layout better suited to editing the project.
 // 1.9.0.0  07/05/2010  EFW  Added support for MS Help Viewer
 // 1.9.1.0  07/09/2010  EFW  Updated for use with .NET 4.0 and MSBuild 4.0.
+// 1.9.3.4  01/08/2011  EFW  Updated to use shared NewFromOtherFormatDlg
 //=============================================================================
 
 using System;
@@ -57,6 +58,7 @@ using SandcastleBuilder.MicrosoftHelpViewer;
 using SandcastleBuilder.Utils;
 using SandcastleBuilder.Utils.BuildEngine;
 using SandcastleBuilder.Utils.BuildComponent;
+using SandcastleBuilder.Utils.Conversion;
 using SandcastleBuilder.Utils.Controls;
 using SandcastleBuilder.Utils.Design;
 
@@ -1024,12 +1026,15 @@ namespace SandcastleBuilder.Gui
                             this.CreateProject(dlg.NewProjectFilename, true);
                             this.UpdateFilenameInfo();
                             MainForm.UpdateMruList(project.Filename);
+
+                            MessageBox.Show("The project was converted successfully", Constants.AppName,
+                                MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
                         catch(Exception ex)
                         {
                             System.Diagnostics.Debug.Write(ex);
-                            MessageBox.Show(ex.Message, Constants.AppName,
-                                MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            MessageBox.Show(ex.Message, Constants.AppName, MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
                         }
                         finally
                         {
