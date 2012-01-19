@@ -44,7 +44,9 @@ is included, this paragraph can be omitted.</para>
               <title>Sub-sub-section 2</title>
               <content>
                 <para>This is sub-sub-section 2.</para>
-                <link xlink:href="#Intro">Back to the Top</link>
+								<para>
+									<link xlink:href="#Intro">Back to the Top</link>
+								</para>
               </content>
             </section>
           </sections>

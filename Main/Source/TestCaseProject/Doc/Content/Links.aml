@@ -66,22 +66,32 @@ its various features work.</para></listItem>
   <linkUri>http://www.microsoft.com/downloads/details.aspx?FamilyID=0856EACB-4362-4B0D-8EDD-AAB15C5E04F5&amp;displaylang=en</linkUri>
   <linkTarget>_blank</linkTarget>
 </externalLink>.</para></listItem>
+			
       <listItem><para>The <externalLink><linkText>.NET 3.5 Framework</linkText>
   <linkUri>http://www.microsoft.com/downloads/details.aspx?familyid=333325FD-AE52-4E35-B531-508D977D32A6&amp;displaylang=en</linkUri>
   <linkTarget>blank</linkTarget>
 </externalLink>.</para></listItem>
-      <listItem><para>The latest version of Microsoft's <token>Sandcastle</token>
+
+      <listItem><para>The <externalLink><linkText>.NET 4.0 Framework</linkText>
+  <linkUri>http://www.microsoft.com/download/en/details.aspx?id=17851&amp;WT.mc_id=MSCOM_EN_US_DLC_DETAILS_121LSUS007996</linkUri>
+  <linkTarget>blank</linkTarget>
+</externalLink>.</para></listItem>
+
+			<listItem><para>The latest version of Microsoft's <token>Sandcastle</token>
 (currently the <token>SandcastleVersion</token> release as of
 <token>BuildDate</token>).</para></listItem>
+
       <listItem><para>Download the latest community-maintained patches for the Sandcastle
 presentation styles from the <token>SandcastleStyles</token> CodePlex project
 site.  This is essential if you will be producing conceptual content as it
 fixes a number of bugs and adds many new features that will make your conceptual
 content appear much better.</para></listItem>
+
       <listItem><para>The <externalLink><linkText>HTML Help Workshop</linkText>
   <linkUri>http://msdn2.microsoft.com/en-us/library/ms669985.aspx</linkUri>
   <linkTarget>_blank</linkTarget>
 </externalLink> for building HTML Help 1.x (.CHM) help files.</para></listItem>
+
       <listItem><para>The HTML Help 2.x compiler for building HTML Help 2.x (.HxS) help
 files.  This must be downloaded and installed as part of the <externalLink>
   <linkText>Visual Studio 2005 SDK</linkText>
@@ -93,12 +103,14 @@ files.  This must be downloaded and installed as part of the <externalLink>
   <linkUri>http://www.microsoft.com/downloads/en/details.aspx?familyid=30402623-93ca-479a-867c-04dc45164f5b&amp;displaylang=en</linkUri>
   <linkTarget>_blank</linkTarget>
 </externalLink>.</para></listItem>
+
     <listItem><para>If you are documenting .NET 1.1 applications and need the Help 2
 compiler tools, you can download the <externalLink>
   <linkText>Visual Studio 2003 Help Integration Toolkit</linkText>
   <linkUri>http://www.microsoft.com/downloads/details.aspx?familyid=ce1b26dc-d6af-42a1-a9a4-88c4eb456d87&amp;displaylang=en</linkUri>
   <linkTarget>_blank</linkTarget>
 </externalLink>.</para></listItem>
+
       <listItem><para><token>SHFB</token></para></listItem>
     </list>
   </content>

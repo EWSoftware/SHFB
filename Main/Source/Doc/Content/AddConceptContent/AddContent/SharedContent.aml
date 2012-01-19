@@ -1,27 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <topic id="8ea650b6-ab50-4288-a930-baf5b58a4cb0" revisionNumber="1">
   <developerConceptualDocument
-    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
-    xmlns:xlink="http://www.w3.org/1999/xlink">
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
 
     <introduction>
-      <para>The help file builder will resolve references to project properties
-and to items in the <localUri>SharedBuilderContent.xml</localUri> and
-<localUri>shared_content.xml</localUri> files.  To substitute project
-properties in the additional content files, place them in a tag as in the
-following example.</para>
+      <para>The help file builder will resolve references to project properties and to items in the
+<localUri>SharedBuilderContent.xml</localUri> and <localUri>shared_content.xml</localUri> files.  To substitute
+project properties in the additional content files, place them in a tag as in the following example.</para>
 
-<alert class="warning">
-	<legacyBold>Deprecated</legacyBold>
-	<para>The additional content model of adding extra content to a help file
-has been deprecated.  While it will continue to be supported and will not be
-removed, it will not receive any more features or updates.  Going forward,
-<link xlink:href="3d4edd2d-7883-4508-b9d2-bd7b4d848b0d">conceptual content</link>
-is the preferred method of adding non-reference content to the help file.  The
-additional content feature can still be used to
-<link xlink:href="77d2d693-db84-4ae3-a84c-e33c71f92e9a">override stock content</link>
-and add supporting files to the help file.</para>
-</alert>
+			<alert class="warning">
+				<para><legacyBold>Deprecated</legacyBold></para>
+				<para>The additional content model of adding extra content to a help file has been deprecated.  While it
+will continue to be supported and will not be removed, it will not receive any more features or updates.  Going
+forward, <link xlink:href="3d4edd2d-7883-4508-b9d2-bd7b4d848b0d">conceptual content</link> is the preferred
+method of adding non-reference content to the help file.  The additional content feature can still be used to
+<link xlink:href="77d2d693-db84-4ae3-a84c-e33c71f92e9a">override stock content</link> and add supporting files to
+the help file.</para>
+			</alert>
 
     </introduction>
 
@@ -37,22 +32,29 @@ Formatted Build Date: &lt;@BuildDate:MMMM d, yyyy a\t hh:mm tt/&gt;
 
 </code>
 
-<para>In this help file, these are rendered as:</para>
+	<para>In this help file, these are rendered as:</para>
 
-<list class="bullet">
-    <listItem><token>CopyrightInfo</token></listItem>
-    <listItem><token>FeedbackEMailAddress</token></listItem>
-    <listItem>Full Build Date: <token>BuildDate</token></listItem>
-    <listItem>Formatted Build Date: <token>BuildDate_1</token></listItem>
-</list>
+	<list class="bullet">
+		<listItem>
+			<para><token>CopyrightInfo</token></para>
+		</listItem>
+		<listItem>
+			<para><token>FeedbackEMailAddress</token></para>
+		</listItem>
+		<listItem>
+			<para>Full Build Date: <token>BuildDate</token></para>
+		</listItem>
+		<listItem>
+			<para>Formatted Build Date: <token>BuildDate_1</token></para>
+		</listItem>
+	</list>
 
-	<para>Any of the values defined in the <link xlink:href="69d998a7-1af5-4bf5-889b-59cd00b64000" />
-topic can be used.  The only difference is that you must use angle brackets
-rather than curly braces in the additional content files.</para>
+	<para>Any of the values defined in the <link xlink:href="69d998a7-1af5-4bf5-889b-59cd00b64000" /> topic can be
+used.  The only difference is that you must use angle brackets rather than curly braces in the additional content
+files.</para>
 
-	<para>To include shared content items such as the header, preliminary
-message, comments, copyright, or footer, use an include item as in this
-example:</para>
+	<para>To include shared content items such as the header, preliminary message, comments, copyright, or footer,
+use an include item as in this example:</para>
 
 <code lang="xml" title=" ">
 &lt;include item="header"/&gt;
@@ -62,11 +64,9 @@ example:</para>
 &lt;include item="copyright"/&gt;
 </code>
 
-	<para>Note that for some items such as <codeInline>footer</codeInline>, the
-comments and copyright items are nested within it so there is no need to
-specify them separately unless you are customizing the footer area.  Another
-benefit to this feature is that the items will appear in the language selected
-in the project as well.</para>
+	<para>Note that for some items such as <codeInline>footer</codeInline>, the comments and copyright items are
+nested within it so there is no need to specify them separately unless you are customizing the footer area.
+Another benefit to this feature is that the items will appear in the language selected in the project as well.</para>
 
   </content>
 </section>

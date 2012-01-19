@@ -7,9 +7,8 @@
     <section>
       <title>Usage</title>
       <content>
-        <para>Enter the element in the topic and specify the paragraph text as
-the inner text.  Making the element self-closing will insert a line break ahead
-of any text following it.</para>
+        <para>Enter the element in the topic and specify the paragraph text as the inner text.  Making the
+element self-closing or empty will cause the element to be ignored.</para>
       </content>
     </section>
     <section>
@@ -18,8 +17,10 @@ of any text following it.</para>
         <code lang="xml" title=" ">
 &lt;para&gt;Paragraph 1.&lt;/para&gt;
 &lt;para&gt;Paragraph 2.&lt;/para&gt;
-&lt;para/&gt;Insert line break before this text.
-&lt;para&gt;Paragraph 3.&lt;/para&gt;
+&lt;para/&gt;
+&lt;para&gt;&lt;/para&gt;
+&lt;para&gt;Self-closing and empty paragraphs are ignored.&lt;/para&gt;
+&lt;para&gt;Paragraph 4.&lt;/para&gt;
 </code>
       </content>
     </section>
@@ -28,8 +29,10 @@ of any text following it.</para>
       <content>
         <para>Paragraph 1.</para>
         <para>Paragraph 2.</para>
-        <para />Insert a line break before this text.
-	    <para>Paragraph 3.</para></content>
+        <para />
+				<para></para>
+				<para>Self-closing and empty paragraphs are ignored.</para>
+	    <para>Paragraph 4.</para></content>
     </section>
 
     <relatedTopics>

@@ -9,25 +9,25 @@
   <title>Changes in This Release</title>
   <content>
     <list class="bullet">
-    	<listItem>Updated the <codeInline>definitionTable</codeInline>, <codeInline>list</codeInline>,
-and <codeInline>table</codeInline> topics to note that text in the <codeInline>definition</codeInline>,
-<codeInline>listItem</codeInline>, and <codeInline>entry</codeInline> elements should be contained in
-a <codeInline>para</codeInline> element.  The topics in the MAML guide have been updated to reflect
-this schema rule.</listItem>
+    	<listItem>
+				<para>Updated the <codeInline>definitionTable</codeInline>, <codeInline>list</codeInline>, and
+<codeInline>table</codeInline> topics to note that text in the <codeInline>definition</codeInline>,
+<codeInline>listItem</codeInline>, and <codeInline>entry</codeInline> elements should be contained in a
+<codeInline>para</codeInline> element.  The topics in the MAML guide have been updated to reflect this schema
+rule.</para>
+			</listItem>
 
-		<listItem><para>Converted the project to use the new Sandcastle Help File Builder
-1.9.0.0 project format.</para></listItem>
+		<listItem><para>Converted the project to use the new Sandcastle Help File Builder 1.9.0.0 project
+format.</para></listItem>
 
-		<listItem><para>Updated references to the latest release of Sandcastle (June 2010)
-and fixed a few typos.</para></listItem>
+		<listItem><para>Updated references to the latest release of Sandcastle (June 2010) and fixed a few
+typos.</para></listItem>
 
-		<listItem><para>Added a topic on integrating the Sandcastle MAML schema files
-into the Visual Studio global schema cache to provide IntelliSense for MAML topics
-while editing them in Visual Studio.</para></listItem>
+		<listItem><para>Added a topic on integrating the Sandcastle MAML schema files into the Visual Studio global
+schema cache to provide IntelliSense for MAML topics while editing them in Visual Studio.</para></listItem>
 
-		<listItem><para>Added a topic on making the Sandcastle MAML schemas extensible
-for third-party build component elements.  This information was supplied by Immo
-Landwerth.</para></listItem>
+		<listItem><para>Added a topic on making the Sandcastle MAML schemas extensible for third-party build
+component elements.  This information was supplied by Immo Landwerth.</para></listItem>
     </list>
   </content>
 </section>

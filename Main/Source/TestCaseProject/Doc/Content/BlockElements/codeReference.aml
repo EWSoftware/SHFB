@@ -50,14 +50,14 @@ An example of combining snippets with a common example ID
     <section>
       <title>Example Output</title>
       <content>
-        <para>Define a class
-<codeReference>ClassDefinition#Define</codeReference></para>
-        <para>Create a local instance
-<codeReference>CreateInstance#Local</codeReference></para>
-        <para>Create a static (shared) instance
-<codeReference>CreateInstance#Static</codeReference></para>
-        <para>An example of combining snippets with a common example ID
-<codeReference>CreateInstance#Local,Static</codeReference></para>
+        <para>Define a class</para>
+				<codeReference>ClassDefinition#Define</codeReference>
+        <para>Create a local instance</para>
+				<codeReference>CreateInstance#Local</codeReference>
+        <para>Create a static (shared) instance</para>
+				<codeReference>CreateInstance#Static</codeReference>
+        <para>An example of combining snippets with a common example ID</para>
+				<codeReference>CreateInstance#Local,Static</codeReference>
       </content>
     </section>
     <relatedTopics>

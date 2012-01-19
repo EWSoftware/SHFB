@@ -56,7 +56,8 @@ End Sub]]&gt;
     <section>
       <title>Example Output</title>
       <content>
-An encoded example:
+				<para>An encoded example:</para>
+				
 <code language="C#">
 /// &lt;summary&gt;
 /// A sample method
@@ -66,7 +67,7 @@ public void Test()
 }
 </code>
 
-An example that uses CDATA to avoid the need to encode the sample:
+				<para>An example that uses CDATA to avoid the need to encode the sample:</para>
 
 <code language="VB.NET"><![CDATA[
 ''' <summary>
@@ -76,15 +77,17 @@ Public Sub Test()
 
 End Sub]]></code></content>
     </section>
-    
-    <codeExample>
-      <description>This is a test of the <codeInline>&lt;code source="file"
-/&gt;</codeInline> tag. If relative, the path is considered to be relative to
-the project folder. If a <codeInline>region="region name"</codeInline>
-attribute is found, only that region of the file is loaded.  If not specified,
-the whole file is loaded.  The <codeInline>lang</codeInline> attribute must
-also be present to set the language to use for colorizing.  All other code tag
-attributes are optional.</description>
+
+		<section>
+			<title>Source Code Import Test</title>
+			<content>
+		
+				<para>This is a test of the <codeInline>&lt;code source="file" /&gt;</codeInline> tag. If relative, the
+path is considered to be relative to the project folder. If a <codeInline>region="region name"</codeInline>
+attribute is found, only that region of the file is loaded.  If not specified, the whole file is loaded.  The
+<codeInline>lang</codeInline> attribute must also be present to set the language to use for colorizing.  All
+other code tag attributes are optional.</para>
+
       <code lang="none" source="ExampleFiles\Test.txt" title="Tab Size Test" tabSize="5" />
       <code lang="vb.net" source="ExampleFiles\Class1.vb" region="Test Region" title="Test region from class" keepSeeTags="true">
       </code>
@@ -98,22 +101,26 @@ attributes are optional.</description>
 
     ' ... more stuff here ...
 
-<code source="ExampleFiles\Class1.vb" region="Embedded snippet" nested="True" /></code>
+				<code source="ExampleFiles\Class1.vb" region="Embedded snippet" nested="True" />
+			</code>
       <code lang="xaml" source="ExampleFiles\Test.xaml" title="Whole XAML File" />
       <code lang="xaml" source="ExampleFiles\Test.xaml" region="XAML Snippet" title="Test region from XAML file" />
       <code lang="sql" source="ExampleFiles\Test.sql" title="Whole SQL File" />
       <code lang="sql" source="ExampleFiles\Test.sql" region="SQL Snippet" title="Test region from SQL file" />
       <code lang="pshell" source="%DXROOT%\ProductionTools\scbuild.ps1" />
-    <code lang="xml" title="How-to configure the Dummy Service"><![CDATA[
+			<code lang="xml" title="How-to configure the Dummy Service"><![CDATA[
 <configuration>
   <configSections>
  ]]><code source="ExampleFiles\Test.xaml" region="XAML Snippet" /><![CDATA[
   </configSections>
  ]]><code source="ExampleFiles\Test.xaml" region="XAML Snippet" /><![CDATA[
-</configuration>]]></code>
-    </codeExample>
-    
-    <relatedTopics>
+</configuration>]]>
+			</code>
+
+			</content>
+		</section>
+
+		<relatedTopics>
 	  <link xlink:href="b32a73b8-fc26-4c98-912c-d595fc1a17c2" />
       <link xlink:href="915392b7-c701-44fd-8ff4-89c34a10f574" />
       <link xlink:href="bc490dbf-7d46-432d-a816-3ae16ab6af54" />

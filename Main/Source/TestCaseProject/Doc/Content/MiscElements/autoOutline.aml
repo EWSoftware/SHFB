@@ -2,63 +2,58 @@
 <topic id="b9a1daac-a2d8-41b7-83b0-b7dc7b28b898" revisionNumber="1">
   <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
     <introduction>
-      <para>The <codeInline>autoOutline</codeInline> element is a special
-case used by Sandcastle to insert an auto-generated section outline within a
-topic's introduction or sub-sections.</para>
+      <para>The <codeInline>autoOutline</codeInline> element is a special case used by Sandcastle to insert an
+auto-generated section outline within a topic's introduction or sub-sections.</para>
+
       <alert class="note">
-        <para>In order to use this element, you need to apply the
-<token>SandcastleStyles</token> patch.  Without it, you must create a token in
-order to embed the <codeInline>autoOutline</codeInline> element within a topic.
+        <para>In order to use this element, you need to apply the <token>SandcastleStyles</token> patch.  Without
+it, you must create a token in order to embed the <codeInline>autoOutline</codeInline> element within a topic.
 The patch also adds the depth option.</para>
       </alert>
     </introduction>
+
     <section>
       <title>Usage</title>
       <content>
-        <para>Place the element within a topic's
-<codeInline>introduction</codeInline> element to produce an outline
-of the topic's section headings or within a
-<codeInline>section</codeInline>'s <codeInline>content</codeInline>
-element to produce an outline of the section's sub-sections.  In either case,
-the outline will be created at the location of the auto-outline element.  As
-such, you can control the placement of the outline within the text.</para>
-        <para>Each section must have a <codeInline>title</codeInline>
-element as that is the text that will be used for the outline entry.  In
-addition, an <codeInline>address</codeInline> attribute must be added to
-each <codeInline>section</codeInline> element to give it a unique ID
-that can be used as a link.  You can also add an optional
-<codeInline>address</codeInline> attribute to the
-<codeInline>introduction</codeInline> element so that you can link back
-to it from a sub-section.</para>
+        <para>Place the element within a topic's <codeInline>introduction</codeInline> element to produce an
+outline of the topic's section headings or within a <codeInline>section</codeInline>'s <codeInline>content</codeInline>
+element to produce an outline of the section's sub-sections.  In either case, the outline will be created at the
+location of the auto-outline element.  As such, you can control the placement of the outline within the text.</para>
 
-		<para>An optional <codeInline>lead</codeInline> attribute can be
-specified to define the lead-in text displayed before the list of links.  If
-not specified, default lead-in text is used.  If set to the value
+        <para>Each section must have a <codeInline>title</codeInline> element as that is the text that will be
+used for the outline entry.  In addition, an <codeInline>address</codeInline> attribute must be added to each
+<codeInline>section</codeInline> element to give it a unique ID that can be used as a link.  You can also add an
+optional <codeInline>address</codeInline> attribute to the <codeInline>introduction</codeInline> element so that
+you can link back to it from a sub-section.</para>
+
+				<para>An optional <codeInline>lead</codeInline> attribute can be specified to define the lead-in text
+displayed before the list of links.  If not specified, default lead-in text is used.  If set to the value
 <codeInline>none</codeInline>, the lead-in text will be omitted.</para>
 
-		<para>An optional <codeInline>excludeRelatedTopics</codeInline>
-attribute can be specified.  If set to True, the top-level auto-outline will
-exclude the <ui>Related Topics</ui> link.  This can be useful if you simply
-want to list the main sections of the topic with some alternate lead-in text or
-no lead-in text at all.</para>
+				<para>An optional <codeInline>excludeRelatedTopics</codeInline> attribute can be specified.  If set to
+True, the top-level auto-outline will exclude the <ui>Related Topics</ui> link.  This can be useful if you simply
+want to list the main sections of the topic with some alternate lead-in text or no lead-in text at all.</para>
 
-        <para>If a numeric inner text value is specified, the section headings down
-to the indicated depth will be included in the outline.  Zero (0), the
-default, specifies that only top-level section headings should be included in
-the outline.</para>
+        <para>If a numeric inner text value is specified, the section headings down to the indicated depth will
+be included in the outline.  Zero (0), the default, specifies that only top-level section headings should be
+included in the outline.</para>
       </content>
     </section>
+
     <section>
       <title>Example</title>
       <content>
         <code lang="xml" title=" " source="Content\MiscElements\autoOutlineExample.aml" />
       </content>
     </section>
+
     <section>
       <title>Example Output</title>
       <content>
-    See <link xlink:href="1a817894-db7a-4c7f-bd67-cca896affa35" /></content>
+				<para>See <link xlink:href="1a817894-db7a-4c7f-bd67-cca896affa35" /></para>
+			</content>
     </section>
+
     <relatedTopics>
       <link xlink:href="9d0dc122-7829-4b22-af2e-6685867116f8" />
       <link xlink:href="0f1bdf10-7968-4e17-aaf9-849091479df8" />

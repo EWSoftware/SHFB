@@ -58,7 +58,7 @@ With inner text: &lt;link xlink:href="cfd9dabf-22f3-4742-8b54-d84404610db1"&gt;
 companion file&lt;/link&gt;
 In-page link to introduction: &lt;link xlink:href="#intro"&gt;Back to Intro&lt;/link&gt;
 Link to other topic anchor:
-&lt;link xlink:href="dc4fcc96-283e-4202-9ecc-08a65e0c9313#BuildComps" /&gt;
+&lt;link xlink:href="dc4fcc96-283e-4202-9ecc-08a65e0c9313#BuildTools" /&gt;
 </code>
       </content>
     </section>
@@ -70,7 +70,7 @@ Link to other topic anchor:
         <para>With inner text: <link xlink:href="cfd9dabf-22f3-4742-8b54-d84404610db1">
 companion file</link></para>
         <para>In-page link to introduction: <link xlink:href="#intro">Back to Intro</link></para>
-        <para>Link to other topic anchor: <link xlink:href="dc4fcc96-283e-4202-9ecc-08a65e0c9313#BuildComps" /></para>
+        <para>Link to other topic anchor: <link xlink:href="dc4fcc96-283e-4202-9ecc-08a65e0c9313#BuildTools" /></para>
       </content>
     </section>
 

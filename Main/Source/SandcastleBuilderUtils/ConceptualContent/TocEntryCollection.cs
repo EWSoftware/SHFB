@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : TocEntryCollection.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/20/2011
-// Note    : Copyright 2006-2011, Eric Woodruff, All rights reserved
+// Updated : 01/09/2012
+// Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a collection class used to hold the table of contents
@@ -237,7 +237,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                 yield return t;
 
                 if(t.Children.Count != 0)
-                    foreach(var st in t.Children)
+                    foreach(var st in t.Children.All())
                         yield return st;
             }
         }
@@ -258,7 +258,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
 
                 var matches = t.Children.Find(match, expandParentIfFound);
 
-                if(matches.Count() != 0)
+                if(matches.Any())
                 {
                     // If requested, make sure the topic is expanded so that we can move to it in the tree view
                     if(expandParentIfFound)

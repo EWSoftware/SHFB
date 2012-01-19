@@ -2,29 +2,32 @@
 <topic id="b00070c7-9c5e-4b49-ad5c-f55fa866f062" revisionNumber="1">
   <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
     <introduction>
-      <para>This topic covers known issues and bugs with Sandcastle and
-conceptual content.  Currently, the VS2005 presentation style is the best
-choice for conceptual content as it contains no known issues beyond those
-noted in the <legacyBold>General Issues</legacyBold> section.  The list does
-not include issues fixed by the noted patch.</para>
+      <para>This topic covers known issues and bugs with Sandcastle and conceptual content.  Currently, the
+VS2005 presentation style is the best choice for conceptual content as it contains no known issues beyond those
+noted in the <legacyBold>General Issues</legacyBold> section.  The list does not include issues fixed by the
+noted patch.</para>
     </introduction>
 
     <section address="General">
       <title>General Issues</title>
       <content>
-        <para>These are the currently known issues with Sandcastle in general
-when used to produce conceptual content regardless of presentation
-style.</para>
+        <para>These are the currently known issues with Sandcastle in general when used to produce conceptual
+content regardless of presentation style.</para>
         <list class="bullet">
-          <listItem><para>There are a number of issues and bugs in all three presentation
-styles.  Be sure to apply the <token>SandcastleStyles</token> patch to obtain
-the best results and most consistent look and feel between all three styles
-and their related reference topics.  A list of the fixes and changes is
-included with the patch.</para></listItem>
-          <listItem><para>There does not appear to be any formatting for several of the
-<legacyBold>Whitepaper</legacyBold> topic elements.</para></listItem>
-          <listItem><para>Several elements of the <legacyBold>XML Reference</legacyBold>
-topic type do not render correctly if at all.</para></listItem>
+          <listItem><para>There are a number of issues and bugs in all three presentation styles.  Be sure to
+apply the <token>SandcastleStyles</token> patch to obtain the best results and most consistent look and feel
+between all three styles and their related reference topics.  A list of the fixes and changes is included with
+the patch.</para></listItem>
+          <listItem><para>There does not appear to be any formatting for several of the <legacyBold>Whitepaper</legacyBold>
+topic elements.</para></listItem>
+          <listItem><para>Several elements of the <legacyBold>XML Reference</legacyBold> topic type do not render
+correctly if at all.</para></listItem>
+					<listItem>
+						<para>Sandcastle's XSL transformations remove inter-element whitespace.  As such, if you place two
+MAML elements one after the other and require a separating space between them, use a non-breaking space entity
+(<codeInline>&amp;#160;</codeInline>).  See the <link xlink:href="382fc569-33e4-489a-b0c2-94c11e56ab4a" /> topic
+for an example.</para>
+					</listItem>
         </list>
       </content>
     </section>
@@ -32,31 +35,35 @@ topic type do not render correctly if at all.</para></listItem>
     <section address="Hana">
       <title>Hana Presentation Style Issues</title>
       <content>
-        <para>These are the currently known issues with the Hana presentation
-style.</para>
+        <para>These are the currently known issues with the Hana presentation style.</para>
         <list class="bullet">
-          <listItem><para>MS Help Viewer output is not supported as this style has
-been deprecated.</para></listItem>
-          <listItem><para>The language filter is present but only toggles syntax and
-code snippet visibility.  It will not toggle the visiblity on code examples.</para></listItem>
+          <listItem><para>MS Help Viewer output is not supported as this style has been deprecated.</para></listItem>
+          <listItem><para>The language filter is present but only toggles syntax and code snippet visibility.  It
+will not toggle the visiblity on code examples.</para></listItem>
         </list>
+
+				<alert class="note">
+					<para>This presentation style has been deprecated and is no longer supported by Microsoft.</para>
+				</alert>
       </content>
     </section>
 
     <section address="Prototype">
       <title>Prototype Presentation Style Issues</title>
       <content>
-        <para>These are the currently known issues with the Prototype
-presentation style.</para>
+        <para>These are the currently known issues with the Prototype presentation style.</para>
         <list class="bullet">
-          <listItem><para>MS Help Viewer output is not supported as this style has
-been deprecated.</para></listItem>
-          <listItem><para>The language filter is present but only toggles syntax and
-code snippet visibility.  It will not toggle the visiblity on code examples.</para></listItem>
-          <listItem><para>Most section headers are not rendered as collapsible sections
-like they are in the Hana and VS2005 styles.</para></listItem>
+          <listItem><para>MS Help Viewer output is not supported as this style has been deprecated.</para></listItem>
+          <listItem><para>The language filter is present but only toggles syntax and code snippet visibility.  It
+will not toggle the visiblity on code examples.</para></listItem>
+          <listItem><para>Most section headers are not rendered as collapsible sections like they are in the Hana
+and VS2005 styles.</para></listItem>
         </list>
-      </content>
+
+				<alert class="note">
+					<para>This presentation style has been deprecated and is no longer supported by Microsoft.</para>
+				</alert>
+			</content>
     </section>
 
     <relatedTopics>

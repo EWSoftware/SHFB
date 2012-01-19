@@ -459,4 +459,9 @@
       <HelpKeyword index="K" term="Glossary" />
     </HelpKeywords>
   </Topic>
+  <Topic id="02DC54EE-A738-457B-A81B-1A76F8C8C135" visible="True" isSelected="true" title="Glossary with Divisions">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="Glossary with divisions" />
+    </HelpKeywords>
+  </Topic>
 </Topics>

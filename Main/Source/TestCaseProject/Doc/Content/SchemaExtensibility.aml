@@ -2,7 +2,7 @@
 <topic id="53e9f04f-fbc4-480d-9653-1547046526f1" revisionNumber="1">
 	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
 								 xmlns:xlink="http://www.w3.org/1999/xlink"
-								 xmlns:xsd="http://tempuri.org/XMLSchema.xsd">
+								 xmlns:xsd="http://schemas.xsddoc.codeplex.com/schemaDoc/2009/3">
 		<introduction>
 			<para>
 				This topic will explain how you can change the MAML schema so that you can

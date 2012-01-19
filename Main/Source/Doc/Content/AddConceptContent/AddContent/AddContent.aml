@@ -1,41 +1,43 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <topic id="4fd3b2b6-dfad-4513-983b-5e74d2342ff0" revisionNumber="1">
   <developerConceptualDocument
-    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
-    xmlns:xlink="http://www.w3.org/1999/xlink">
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
 
     <introduction>
-      <para>This topics in this section describe the additional content support
-provided by the help file builder.</para>
+      <para>This topics in this section describe the additional content support provided by the help file builder.</para>
     </introduction>
 
 <section>
   <title>Additional Content Support</title>
-  <content><para>Additional content support is similar in nature to the NDoc
-properties <codeInline>AdditionalContentResourceDirectory</codeInline>,
-<codeInline>FilesToInclude</codeInline>, <codeInline>RootPageFileName</codeInline>
-and <codeInline>RootPageTOCName</codeInline>.  However, the help builder's
-implementation provides additional benefits over NDoc:</para>
+  <content>
+		<para>Additional content support is similar in nature to the NDoc properties
+<codeInline>AdditionalContentResourceDirectory</codeInline>, <codeInline>FilesToInclude</codeInline>,
+<codeInline>RootPageFileName</codeInline> and <codeInline>RootPageTOCName</codeInline>.  However, the help
+file builder's implementation provides additional benefits over NDoc:</para>
 
-<list class="bullet">
-    <listItem>Files are added to the project directly.</listItem>
+		<list class="bullet">
+			<listItem>
+				<para>Files are added to the project directly.</para>
+			</listItem>
 
-	<listItem>The folder structure of the files in the project becomes their
-layout in the compiled help file.  Files at the root of the project are copied
-to the root of the compiled help file.  Files in subfolders are copied recursively
-to like-named subfolders in the compiled help file.</listItem>
+			<listItem>
+				<para>The folder structure of the files in the project becomes their layout in the compiled help file.
+Files at the root of the project are copied to the root of the compiled help file.  Files in subfolders are
+copied recursively to like-named subfolders in the compiled help file.</para>
+			</listItem>
 
-	<listItem>By adding a file to the project with a name that matches a stock
-content file in a folder that matches the folder of the stock content file, you
-can replace that stock content file.  For example, by adding a folder called
-<localUri>styles\</localUri> to the project and placing a file in that folder
-called <localUri>Presentation.css</localUri>, you can replace the default
-stylesheet used by the selected presentation style.</listItem>
+			<listItem>
+				<para>By adding a file to the project with a name that matches a stock content file in a folder that
+matches the folder of the stock content file, you can replace that stock content file.  For example, by adding a
+folder called <localUri>styles\</localUri> to the project and placing a file in that folder called
+<localUri>Presentation.css</localUri>, you can replace the default stylesheet used by the selected presentation
+style.</para>
+			</listItem>
 
-</list>
+		</list>
 
-	<para>This implementation provides a great deal of flexibility and finer
-control over the inclusion of additional content items.</para>
+		<para>This implementation provides a great deal of flexibility and finer control over the inclusion of
+additional content items.</para>
 
   </content>
 </section>

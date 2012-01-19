@@ -5,60 +5,55 @@
     xmlns:xlink="http://www.w3.org/1999/xlink">
 
     <introduction>
-      <para>A benefit of the additional content implementation is that it is
-possible to replace the stock content that appears in each help file.  The
-stock content is copied from a presentation style sub-folder which can be
-found under <localUri>C:\Program Files\Sandcastle\Presentation</localUri>.
-There are three presentation styles each in their own folder:
-<localUri>.\VS2005</localUri>, <localUri>.\Prototype</localUri>, and
+      <para>A benefit of the additional content implementation is that it is possible to replace the stock
+content that appears in each help file.  The stock content is copied from a presentation style sub-folder which
+can be found under <localUri>C:\Program Files\Sandcastle\Presentation</localUri>.  There are three presentation
+styles each in their own folder: <localUri>.\VS2005</localUri>, <localUri>.\Prototype</localUri>, and
 <localUri>.\Hana</localUri>.</para>
     </introduction>
 
 <section>
   <content>
-	<para>The folder structure for the content that gets added to each help
-file is the same in each and consists of the following:</para>
+		<para>The folder structure for the content that gets added to each help file is the same in each and consists
+of the following:</para>
 
-<list class="bullet">
-    <listItem>The <localUri>icons\</localUri> folder contains stock help file
-images (i.e. for property icons, method icons, etc).</listItem>
-    <listItem>The <localUri>scripts\</localUri> folder contains stock
-JavaScript files.</listItem>
-    <listItem>The <localUri>styles\</localUri> folder contains stock style
-sheets.
+		<list class="bullet">
+			<listItem>
+				<para>The <localUri>icons\</localUri> folder contains stock help file images (i.e. for property icons,
+method icons, etc).</para>
+			</listItem>
+			<listItem>
+				<para>The <localUri>scripts\</localUri> folder contains stock JavaScript files.</para>
+			</listItem>
+			<listItem>
+				<para>The <localUri>styles\</localUri> folder contains stock style sheets.</para>
 
-<alert class="note">
-  <para>The VS2005 style folder contains an additional <localUri>.\Whidbey</localUri>
-sub-folder that contains an alternate stylesheet for the VS2005 presentation
-style.  It can be ignored unless you want to make use of it.</para>
-</alert></listItem>
-</list>
+				<alert class="note">
+					<para>The VS2005 style folder contains an additional <localUri>.\Whidbey</localUri> sub-folder that
+contains an alternate stylesheet for the VS2005 presentation style.  It can be ignored unless you want to make
+use of it.</para>
+				</alert>
+			</listItem>
+		</list>
 
-	<para>Modifying the Sandcastle copy of the presentation files directly will
-affect all help files that you build with the help file builder.  For example,
-if you want to modify the stylesheet for all projects you create with the help
-file builder, edit the <localUri>Presentation.css</localUri> files in the
-<localUri>.\Styles</localUri> folders.  The files do not need to be added to
-your project in that case.</para>
+		<para>Modifying the Sandcastle copy of the presentation files directly will affect all help files that you
+build with the help file builder.  For example, if you want to modify the stylesheet for all projects you create
+with the help file builder, edit the <localUri>Presentation.css</localUri> files in the <localUri>.\Styles</localUri>
+folders.  The files do not need to be added to your project in that case.</para>
 
-	<para>If you want to modify them on a per project basis,
-that is when you would copy them to your project's folder.  By adding an
-additional content entry to the project that resides in a like-named folder and
-has the same filename, you can replace the default entry of the same name. In
-the example above, you would create a <localUri>.\Styles</localUri> folder in
-the Project Explorer window and place a copy of <localUri>Presentation.css</localUri>
-in it that you can edit for that project.  The location to copy from would be
-the one matching the presentation style selected in your project (i.e.
-<localUri>C:\Program Files\Sandcastle\Presentation\VS2005\Styles\Presentation.css</localUri>).
+		<para>If you want to modify them on a per project basis, that is when you would copy them to your project's
+folder.  By adding an additional content entry to the project that resides in a like-named folder and has the
+same filename, you can replace the default entry of the same name. In the example above, you would create a
+<localUri>.\Styles</localUri> folder in the Project Explorer window and place a copy of <localUri>Presentation.css</localUri>
+in it that you can edit for that project.  The location to copy from would be the one matching the presentation
+style selected in your project (i.e. <localUri>C:\Program Files\Sandcastle\Presentation\VS2005\Styles\Presentation.css</localUri>).
 The presentation styles are all different and their files are not interchangeable.</para>
 
-	<para>In addition, an <localUri>html\</localUri> folder is created when the
-help file is built to contain the help pages generated from the documented
-assemblies and conceptual content.  You can place additional HTML files to add
-to the project in a folder by the same name in your project or you can place
-them in the root of the project.  Be sure to use an appropriate relative path
-on image references or links to other HTML pages based on the folder in which
-you place the content.</para>
+		<para>In addition, an <localUri>html\</localUri> folder is created when the help file is built to contain the
+help pages generated from the documented assemblies and conceptual content.  You can place additional HTML files
+to add to the project in a folder by the same name in your project or you can place them in the root of the
+project.  Be sure to use an appropriate relative path on image references or links to other HTML pages based on
+the folder in which you place the content.</para>
 
   </content>
 </section>

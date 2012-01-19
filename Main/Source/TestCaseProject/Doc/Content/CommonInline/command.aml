@@ -2,23 +2,21 @@
 <topic id="02e60906-b8d5-4258-9348-aad70f48861f" revisionNumber="1">
   <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
     <introduction>
-      <para>This element describes the name of an executable or other software
-application than can be run.</para>
+      <para>This element describes the name of an executable or other software application than can be run.</para>
     </introduction>
     <section>
       <title>Usage</title>
       <content>
-        <para>Enter the element in the topic and specify the application name as
-the inner text.  The <codeInline>replaceable</codeInline> element can be
-nested within it to represent replaceable parameters.</para>
+        <para>Enter the element in the topic and specify the application name as the inner text.  The
+<codeInline>replaceable</codeInline> element can be nested within it to represent replaceable parameters.</para>
       </content>
     </section>
     <section>
       <title>Example</title>
       <content>
         <code lang="xml" title=" ">
-&lt;command&gt;COPY &lt;system&gt;/s /e&lt;/system&gt; &lt;replaceable&gt;sourceFileSpec&lt;/replaceable&gt;
-    &lt;replaceable&gt;destFileSpec&lt;/replaceable&gt;&lt;/command&gt;
+&lt;command&gt;COPY &lt;system&gt;/s /e&lt;/system&gt;&amp;#160;&lt;replaceable&gt;sourceFileSpec&lt;/replaceable&gt;
+&amp;#160;&lt;replaceable&gt;destFileSpec&lt;/replaceable&gt;&lt;/command&gt;
 </code>
       </content>
     </section>
@@ -26,7 +24,8 @@ nested within it to represent replaceable parameters.</para>
       <title>Example Output</title>
       <content>
         <para>
-          <command>XCOPY <system>/s /e</system><replaceable>sourceFileSpec</replaceable><replaceable>destFileSpec</replaceable></command>
+          <command>XCOPY <system>/s /e</system>&#160;<replaceable>sourceFileSpec</replaceable>&#160;
+<replaceable>destFileSpec</replaceable></command>
         </para>
       </content>
     </section>
