@@ -5,28 +5,33 @@
     xmlns:xlink="http://www.w3.org/1999/xlink">
 
     <introduction>
-      <para>The topics in this section describe the various changes made to the
-Sandcastle Help File Builder over the life of the project.</para>
+      <para>The topics in this section describe the various changes made to the Sandcastle Help File Builder over
+the life of the project.</para>
     </introduction>
 
 <section>
   <title>Version History</title>
   <content>
-	<para>Select a version below to see a description of its changes.</para>
+		<para>Select a version below to see a description of its changes.</para>
 
-<alert class="note">
-  <para>If you are coming to the latest version from version 1.7.0.0 or earlier
-be sure to read the <link xlink:href="5a484e94-6940-4c97-940c-3f46fb8736d2" />,
+		<alert class="note">
+			<para>If you are coming to the latest version from version 1.7.0.0 or earlier be sure to read the
+<link xlink:href="5a484e94-6940-4c97-940c-3f46fb8736d2" />,
 <link xlink:href="95c85ec6-9f23-426a-b0ad-6b10a0453eaf" />,
 <link xlink:href="9f1a5c32-7c10-47e1-bbea-319ee0866e3d" />, and
-<link xlink:href="2bba4e09-e9bd-4ef4-9bf4-800af246e97d" /> release notes as a
-significant number of changes occurred to the project file format and the
-standalone GUI across those releases.  Any existing projects will need to be
-<link xlink:href="f68822d2-97ba-48da-a98b-46747983b4a0">converted</link> to the
-new project file format before they can be used with the new version.</para>
-</alert>
+<link xlink:href="2bba4e09-e9bd-4ef4-9bf4-800af246e97d" /> release notes as a significant number of changes
+occurred to the project file format and the standalone GUI across those releases.  Any existing projects will
+need to be <link xlink:href="f68822d2-97ba-48da-a98b-46747983b4a0">converted</link> to the new project file
+format before they can be used with the new version.</para>
+		</alert>
 
+		<alert class="note">
+			<para>For information on the Visual Studio integration package and where to find features in it, see the
+<link xlink:href="b128ad2a-787e-48c7-b946-f6953080c386" /> topic.</para>	
+		</alert>
+		
 <list class="bullet">
+	<listItem><para><link xlink:href="8c11654c-f6f5-4cd3-acd0-86890ecb242d" /></para></listItem>
 	<listItem><para><link xlink:href="54250029-bcfa-4c03-8cf0-b230867a8613" /></para></listItem>
   <listItem><para><link xlink:href="e6285aea-8caa-4ff3-86d2-d9623dcc8a49" /></para></listItem>
   <listItem><para><link xlink:href="798c4fef-9162-4fe6-98ca-02ee4aa7f6bc" /></para></listItem>

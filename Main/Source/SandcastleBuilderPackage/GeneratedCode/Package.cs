@@ -27,6 +27,7 @@ namespace SandcastleBuilder.Package
     /// </summary>
 	[ProvideToolWindow(typeof(BuildLogToolWindow), Orientation=ToolWindowOrientation.Right, Style=VsDockStyle.MDI, MultiInstances = false, Transient = false, PositionX = 100 , PositionY = 100 , Width = 300 , Height = 300 )]
 	[ProvideToolWindow(typeof(EntityReferencesToolWindow), Orientation=ToolWindowOrientation.Right, Style=VsDockStyle.Float, MultiInstances = false, Transient = false, PositionX = 100 , PositionY = 100 , Width = 300 , Height = 300 )]
+	[ProvideToolWindow(typeof(TopicPreviewerToolWindow), Orientation=ToolWindowOrientation.Right, Style=VsDockStyle.Float, MultiInstances = false, Transient = false, PositionX = 100 , PositionY = 100 , Width = 300 , Height = 300 )]
     public abstract class PackageBase : Microsoft.VisualStudio.Project.ProjectPackage
     {
 		/// <summary>
@@ -116,6 +117,10 @@ namespace SandcastleBuilder.Package
 				// Create the command for button EntityReferencesWindow
                 commandId = new CommandID(GuidList.guidSandcastleBuilderPackageCmdSet, (int)PkgCmdIDList.EntityReferencesWindow);
                 menuItem = new OleMenuCommand(EntityReferencesWindowExecuteHandler, EntityReferencesWindowChangeHandler, EntityReferencesWindowQueryStatusHandler, commandId);
+                mcs.AddCommand(menuItem);
+				// Create the command for button TopicPreviewerWindow
+                commandId = new CommandID(GuidList.guidSandcastleBuilderPackageCmdSet, (int)PkgCmdIDList.TopicPreviewerWindow);
+                menuItem = new OleMenuCommand(TopicPreviewerWindowExecuteHandler, TopicPreviewerWindowChangeHandler, TopicPreviewerWindowQueryStatusHandler, commandId);
                 mcs.AddCommand(menuItem);
 
 			}
@@ -347,6 +352,22 @@ namespace SandcastleBuilder.Package
 
 		#endregion
 
+		#region Handlers for Button: TopicPreviewerWindow
+
+		protected virtual void TopicPreviewerWindowExecuteHandler(object sender, EventArgs e)
+		{
+		}
+		
+		protected virtual void TopicPreviewerWindowChangeHandler(object sender, EventArgs e)
+		{
+		}
+		
+		protected virtual void TopicPreviewerWindowQueryStatusHandler(object sender, EventArgs e)
+		{
+		}
+
+		#endregion
+
         /// <summary>
         /// This function is called when the user clicks the menu item that shows the 
         /// tool window. See the Initialize method to see how the menu item is associated to 
@@ -380,6 +401,25 @@ namespace SandcastleBuilder.Package
             if ((null == window) || (null == window.Frame))
             {
                 throw new NotSupportedException(String.Format("Can not create Toolwindow: EntityReferences"));
+            }
+            IVsWindowFrame windowFrame = (IVsWindowFrame)window.Frame;
+            Microsoft.VisualStudio.ErrorHandler.ThrowOnFailure(windowFrame.Show());
+        }
+
+        /// <summary>
+        /// This function is called when the user clicks the menu item that shows the 
+        /// tool window. See the Initialize method to see how the menu item is associated to 
+        /// this function using the OleMenuCommandService service and the MenuCommand class.
+        /// </summary>
+        private void ShowToolWindowTopicPreviewer(object sender, EventArgs e)
+        {
+            // Get the instance number 0 of this tool window. This window is single instance so this instance
+            // is actually the only one.
+            // The last flag is set to true so that if the tool window does not exists it will be created.
+            ToolWindowPane window = this.FindToolWindow(typeof(TopicPreviewerToolWindow), 0, true);
+            if ((null == window) || (null == window.Frame))
+            {
+                throw new NotSupportedException(String.Format("Can not create Toolwindow: TopicPreviewer"));
             }
             IVsWindowFrame windowFrame = (IVsWindowFrame)window.Frame;
             Microsoft.VisualStudio.ErrorHandler.ThrowOnFailure(windowFrame.Show());

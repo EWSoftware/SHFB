@@ -1,0 +1,165 @@
+﻿<UserControl x:Class="SandcastleBuilder.WPF.UserControls.TopicPreviewerControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:s="clr-namespace:System;assembly=mscorlib"
+             xmlns:c="clr-namespace:System.Collections;assembly=mscorlib"
+             xmlns:shfbBehaviors="clr-namespace:SandcastleBuilder.WPF.Behaviors"
+             xmlns:shfbCommands="clr-namespace:SandcastleBuilder.WPF.Commands"
+             xmlns:shfbConceptual="clr-namespace:SandcastleBuilder.Utils.ConceptualContent;assembly=SandcastleBuilder.Utils"
+             xmlns:shfbControls="clr-namespace:SandcastleBuilder.WPF.Controls"
+             xmlns:shfbWPF="clr-namespace:SandcastleBuilder.WPF"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="600"
+             IsVisibleChanged="ucTopicPreviewer_IsVisibleChanged">
+  <UserControl.CommandBindings>
+    <CommandBinding Command="ApplicationCommands.Help" Executed="cmdHelp_Executed" />
+    <CommandBinding Command="NavigationCommands.BrowseBack" CanExecute="cmdBrowseBack_CanExecute"
+      Executed="cmdBrowseBack_Executed" />
+    <CommandBinding Command="NavigationCommands.BrowseForward" CanExecute="cmdBrowseForward_CanExecute"
+      Executed="cmdBrowseForward_Executed" />
+    <CommandBinding Command="NavigationCommands.Refresh" Executed="cmdRefresh_Executed" />
+    <CommandBinding Command="shfbCommands:EditorCommands.CollapseAll" CanExecute="cmdExpandCollapse_CanExecute"
+      Executed="cmdExpandCollapseAll_Executed" />
+    <CommandBinding Command="shfbCommands:EditorCommands.ExpandAll" CanExecute="cmdExpandCollapse_CanExecute"
+      Executed="cmdExpandCollapseAll_Executed" />
+    <CommandBinding Command="shfbCommands:EditorCommands.CollapseCurrent" CanExecute="cmdExpandCollapse_CanExecute"
+      Executed="cmdExpandCollapseCurrent_Executed" />
+    <CommandBinding Command="shfbCommands:EditorCommands.ExpandCurrent" CanExecute="cmdExpandCollapse_CanExecute"
+      Executed="cmdExpandCollapseCurrent_Executed" />
+  </UserControl.CommandBindings>
+  <UserControl.Resources>
+    <BitmapImage x:Key="About" UriSource="../Resources/About.png" />
+    <BitmapImage x:Key="ExpandCollapse" UriSource="../Resources/ExpandCollapse.png" />
+    <BitmapImage x:Key="Entity" UriSource="../Resources/Entity.png" />
+    <BitmapImage x:Key="MoveLeft" UriSource="../Resources/MoveLeft.png" />
+    <BitmapImage x:Key="MoveRight" UriSource="../Resources/MoveRight.png" />
+    <BitmapImage x:Key="PageEdit" UriSource="../Resources/PageEdit.png" />
+    <BitmapImage x:Key="Refresh" UriSource="../Resources/Refresh.png" />
+
+    <c:ArrayList x:Key="ExpandCollapseMenuItems" x:Shared="False">
+      <MenuItem Header="_Expand All Topics" Command="shfbCommands:EditorCommands.ExpandAll"
+        CommandTarget="{Binding Path=PlacementTarget, RelativeSource={RelativeSource AncestorType=ContextMenu}}">
+        <MenuItem.Icon>
+          <Image Source="{StaticResource ExpandCollapse}" />
+        </MenuItem.Icon>
+      </MenuItem>
+      <MenuItem Header="_Collapse All Topics" Command="shfbCommands:EditorCommands.CollapseAll"
+        CommandTarget="{Binding Path=PlacementTarget, RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
+      <Separator />
+      <MenuItem Header="Expand _Topic and All Sub-topics" Command="shfbCommands:EditorCommands.ExpandCurrent"
+        CommandTarget="{Binding Path=PlacementTarget, RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
+      <MenuItem Header="Collapse Topic and All _Sub-topics" Command="shfbCommands:EditorCommands.CollapseCurrent"
+        CommandTarget="{Binding Path=PlacementTarget, RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
+    </c:ArrayList>
+
+    <Style TargetType="{x:Type Image}" x:Key="toolbarImageStyle">
+      <Style.Triggers>
+        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type Button}, AncestorLevel=1}, Path=IsEnabled}" Value="False">
+          <Setter Property="Opacity" Value="0.50" />
+        </DataTrigger>
+      </Style.Triggers>
+    </Style>
+  </UserControl.Resources>
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition />
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition MinWidth="150" />
+      <ColumnDefinition Width="Auto"/>
+      <ColumnDefinition MinWidth="250" Width="3*" />
+    </Grid.ColumnDefinitions>
+    <ToolBar Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" ToolBarTray.IsLocked="True" KeyboardNavigation.TabNavigation="Local"
+      Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" TabIndex="24">
+      <Button Name="btnBrowseBack" ToolTip="Browse back (Alt+Left)"
+          Command="NavigationCommands.BrowseBack" CommandTarget="{Binding ElementName=tvContent}">
+        <Image Source="{StaticResource MoveLeft}" Style="{StaticResource toolbarImageStyle}" />
+      </Button>
+      <Button Name="btnBrowseForward" ToolTip="Browse forward (Alt+Right)"
+          Command="NavigationCommands.BrowseForward" CommandTarget="{Binding ElementName=tvContent}">
+        <Image Source="{StaticResource MoveRight}" Style="{StaticResource toolbarImageStyle}" />
+      </Button>
+      <Separator />
+      <Button Name="btnRefresh" ToolTip="Refresh the previewer content (F5)" Command="NavigationCommands.Refresh"
+        CommandTarget="{Binding ElementName=tvEntities}">
+        <Image Source="{StaticResource Refresh}" />
+      </Button>
+      <Separator />
+      <Button Name="btnEditTopic" ToolTip="Edit the selected topic (Ctrl+E)"
+          Command="shfbCommands:EditorCommands.Edit" CommandTarget="{Binding ElementName=tvContent}">
+        <Image Source="{StaticResource PageEdit}" Style="{StaticResource toolbarImageStyle}" />
+      </Button>
+      <Separator />
+      <shfbControls:SplitButton x:Name="btnExpandCollapse" ToolTip="Expand/collapse topics"
+          Style="{StaticResource ToolBarSplitButtonStyle}"
+          Image="{StaticResource ExpandCollapse}"
+          MainButtonCommand="shfbCommands:EditorCommands.ExpandAll"
+          MainButtonCommandTarget="{Binding ElementName=tvContent}">
+        <shfbControls:SplitButton.DropDownContextMenu>
+          <ContextMenu ItemsSource="{DynamicResource ExpandCollapseMenuItems}" />
+        </shfbControls:SplitButton.DropDownContextMenu>
+      </shfbControls:SplitButton>
+      <Separator />
+      <Button Name="btnHelp" ToolTip="View help for this editor (F1)" Command="ApplicationCommands.Help"
+          CommandTarget="{Binding ElementName=tvContent}">
+        <Image Source="{StaticResource About}" />
+      </Button>
+      <Separator />
+      <TextBlock Margin="5, 0, 5, 0" VerticalAlignment="Center">Current Project:</TextBlock>
+      <TextBlock Margin="0, 0, 5, 0" VerticalAlignment="Center" Name="lblCurrentProject">None - Select a help file builder project in the Solution Explorer</TextBlock>
+    </ToolBar>
+    <TreeView Grid.Column="0" Grid.Row="1" Name="tvContent" SelectedItemChanged="tvContent_SelectedItemChanged">
+      <TreeView.CommandBindings>
+        <CommandBinding Command="shfbCommands:EditorCommands.CollapseAll" Executed="cmdExpandCollapseAll_Executed" />
+        <CommandBinding Command="shfbCommands:EditorCommands.ExpandAll" Executed="cmdExpandCollapseAll_Executed" />
+        <CommandBinding Command="shfbCommands:EditorCommands.CollapseCurrent" Executed="cmdExpandCollapseCurrent_Executed" />
+        <CommandBinding Command="shfbCommands:EditorCommands.ExpandCurrent" Executed="cmdExpandCollapseCurrent_Executed" />
+      </TreeView.CommandBindings>
+      <TreeView.ContextMenu>
+        <ContextMenu>
+          <MenuItem Header="_Edit Topic" Command="shfbCommands:EditorCommands.Edit">
+            <MenuItem.Icon>
+              <Image Source="{StaticResource PageEdit}" />
+            </MenuItem.Icon>
+          </MenuItem>
+          <Separator />
+          <MenuItem Header="E_xpand/Collapse" ItemsSource="{DynamicResource ExpandCollapseMenuItems}">
+            <MenuItem.Icon>
+              <Image Source="{StaticResource ExpandCollapse}" />
+            </MenuItem.Icon>
+          </MenuItem>
+        </ContextMenu>
+      </TreeView.ContextMenu>
+      <TreeView.ItemContainerStyle>
+        <Style TargetType="{x:Type TreeViewItem}">
+          <EventSetter Event="MouseDoubleClick" Handler="tvContent_TreeViewItemMouseDoubleClick" />
+          <EventSetter Event="MouseRightButtonDown" Handler="tvContent_MouseRightButtonDown" />
+          <Setter Property="shfbBehaviors:TreeViewItemBehavior.IsBroughtIntoViewWhenSelected" Value="True" />
+          <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+          <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+        </Style>
+      </TreeView.ItemContainerStyle>
+      <TreeView.Resources>
+        <HierarchicalDataTemplate ItemsSource="{Binding Children}" DataType="{x:Type shfbConceptual:TocEntry}">
+          <StackPanel Orientation="Horizontal">
+            <Image Name="imgEntity" Margin="0,0,3,0" Source="{StaticResource Entity}" />
+            <TextBlock Text="{Binding Title}" ToolTip="{Binding ToolTip}" />
+          </StackPanel>
+        </HierarchicalDataTemplate>
+      </TreeView.Resources>
+    </TreeView>
+    <GridSplitter Grid.Column="1" Grid.Row="1" Width="3" VerticalAlignment="Stretch" HorizontalAlignment="Center"
+      ShowsPreview="False" Background="LightGray" TabIndex="4" />
+    <DockPanel Grid.Column="2" Grid.Row="1" LastChildFill="True">
+      <Border DockPanel.Dock="Top" BorderThickness="0,0,0,0.5" BorderBrush="Black">
+        <TextBlock Name="txtTitle" Margin="10, 3, 10, 3" FontFamily="Verdana" FontSize="16"
+         TextWrapping="Wrap" />
+      </Border>
+      <FlowDocumentScrollViewer Name="fdViewer" Hyperlink.Click="fdViewer_LinkClicked" SizeChanged="fdViewer_SizeChanged">
+      </FlowDocumentScrollViewer>
+    </DockPanel>
+  </Grid>
+</UserControl>

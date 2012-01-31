@@ -36,7 +36,7 @@
     <FeedbackEMailAddress>Eric%40EWoodruff.us</FeedbackEMailAddress>
     <PresentationStyle>vs2005</PresentationStyle>
     <SyntaxFilters>CSharp, VisualBasic</SyntaxFilters>
-    <HelpFileVersion>1.9.3.1</HelpFileVersion>
+    <HelpFileVersion>1.9.3.4</HelpFileVersion>
     <ComponentConfigurations>
       <ComponentConfig id="Post-transform Component" enabled="True">
         <component type="SandcastleBuilder.Components.PostTransformComponent" assembly="{@SHFBFolder}SandcastleBuilder.Components.dll" id="Post-transform Component">
@@ -166,6 +166,7 @@
     <None Include="BuildComponents\ProjectSetup.aml" />
     <None Include="BuildComponents\ShowMissingComponent.aml" />
     <None Include="BuildComponents\Welcome.aml" />
+    <None Include="Content\GettingStarted\AttachedPropsEvents.aml" />
     <None Include="Content\Links.aml" />
     <None Include="Content\GettingStarted\InheritDoc.aml" />
     <None Include="Content\GettingStarted\WebProjects.aml" />

@@ -2,9 +2,9 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : TreeViewItemBehavior.cs
 // Author  : Josh Smith
-// Updated : 12/04/2011
+// Updated : 01/27/2012
 // Source  : http://www.codeproject.com/KB/WPF/AttachedBehaviors.aspx
-// Note    : Copyright 2008-2011, Josh Smith, All rights reserved
+// Note    : Copyright 2008-2012, Josh Smith, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class that exposes attached behaviors that can be
@@ -34,6 +34,20 @@ namespace SandcastleBuilder.WPF.Behaviors
         #region IsBroughtIntoViewWhenSelected
 
         /// <summary>
+        /// This defines the <see cref="P:SandcastleBuilder.WPF.Behaviors.TreeViewItemBehavior.IsBroughtIntoViewWhenSelected"/>
+        /// attached property.
+        /// </summary>
+        /// <AttachedPropertyComments>
+        /// <summary>
+        /// This attached property indicates whether or not a tree view item is brought into view when selected
+        /// </summary>
+        /// <value>The default value is false</value>
+        /// </AttachedPropertyComments>
+        public static readonly DependencyProperty IsBroughtIntoViewWhenSelectedProperty =
+            DependencyProperty.RegisterAttached("IsBroughtIntoViewWhenSelected", typeof(bool),
+                typeof(TreeViewItemBehavior), new UIPropertyMetadata(false, OnIsBroughtIntoViewWhenSelectedChanged));
+
+        /// <summary>
         /// Get the property value
         /// </summary>
         /// <param name="treeViewItem">The tree view item</param>
@@ -55,23 +69,19 @@ namespace SandcastleBuilder.WPF.Behaviors
         }
 
         /// <summary>
-        /// Dependency property
+        /// This attaches and detaches the event handler to the tree view items
         /// </summary>
-        public static readonly DependencyProperty IsBroughtIntoViewWhenSelectedProperty =
-            DependencyProperty.RegisterAttached(
-            "IsBroughtIntoViewWhenSelected",
-            typeof(bool),
-            typeof(TreeViewItemBehavior),
-            new UIPropertyMetadata(false, OnIsBroughtIntoViewWhenSelectedChanged));
-
-        static void OnIsBroughtIntoViewWhenSelectedChanged(
+        /// <param name="depObj">The dependency object</param>
+        /// <param name="e">The event arguments</param>
+        private static void OnIsBroughtIntoViewWhenSelectedChanged(
           DependencyObject depObj, DependencyPropertyChangedEventArgs e)
         {
             TreeViewItem item = depObj as TreeViewItem;
+
             if(item == null)
                 return;
 
-            if(e.NewValue is bool == false)
+            if(!(e.NewValue is bool))
                 return;
 
             if((bool)e.NewValue)
@@ -80,7 +90,12 @@ namespace SandcastleBuilder.WPF.Behaviors
                 item.Selected -= OnTreeViewItemSelected;
         }
 
-        static void OnTreeViewItemSelected(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// This brings the tree view item into view when selected
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event arguments</param>
+        private static void OnTreeViewItemSelected(object sender, RoutedEventArgs e)
         {
             // Only react to the Selected event raised by the TreeViewItem
             // whose IsSelected property was modified. Ignore all ancestors
@@ -89,6 +104,7 @@ namespace SandcastleBuilder.WPF.Behaviors
                 return;
 
             TreeViewItem item = e.OriginalSource as TreeViewItem;
+
             if(item != null)
                 item.BringIntoView();
         }

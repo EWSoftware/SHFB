@@ -71,6 +71,12 @@
     <Compile Include="Controls\SplitButton.cs" />
     <Compile Include="EntityReference.cs" />
     <Compile Include="EntityType.cs" />
+    <Compile Include="Maml\ElementProperties.cs" />
+    <Compile Include="Maml\GlossaryEntry.cs" />
+    <Compile Include="Maml\MamlToFlowDocumentConverter.Core.cs" />
+    <Compile Include="Maml\MamlToFlowDocumentConverter.Handlers.cs" />
+    <Compile Include="Maml\MamlToFlowDocumentConverter.Static.cs" />
+    <Compile Include="Maml\NamedStyle.cs" />
     <Compile Include="SharedResources.cs" />
     <Compile Include="UserControls\BuildLogViewerControl.xaml.cs">
       <DependentUpon>BuildLogViewerControl.xaml</DependentUpon>
@@ -93,6 +99,10 @@
     <Compile Include="UserControls\TokenEditorControl.xaml.cs">
       <DependentUpon>TokenEditorControl.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UserControls\TopicContentNeededEventArgs.cs" />
+    <Compile Include="UserControls\TopicPreviewerControl.xaml.cs">
+      <DependentUpon>TopicPreviewerControl.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -155,6 +165,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UserControls\TopicPreviewerControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SandcastleBuilderUtils\SandcastleBuilderUtils.csproj">
@@ -195,6 +209,15 @@
     <Resource Include="Resources\RemoveLink.png" />
     <Resource Include="Resources\RootContentContainer.png" />
     <Resource Include="Resources\Sort.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\AlertCaution.png" />
+    <Resource Include="Resources\AlertNote.png" />
+    <Resource Include="Resources\AlertSecurity.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\MoveLeft.png" />
+    <Resource Include="Resources\MoveRight.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

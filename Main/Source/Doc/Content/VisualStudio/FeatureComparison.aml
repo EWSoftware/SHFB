@@ -150,10 +150,10 @@ available from the <ui>View</ui> | <ui>View Help File</ui> submenu.  To show or 
 either select the <ui>View</ui> | <ui>Toolbars</ui> | <ui>Sandcastle Help File Builder</ui> menu option or right
 click in the toolbar area and select the <ui>Sandcastle Help File Builder</ui> context menu option.</para>
 
-		<para>The <ui>Entity References</ui> tool window can be opened by selecting <ui>View</ui> |
-<ui>Other Windows</ui> | <ui>Entity References Window</ui> or from the <ui>Other Windows</ui> toolbar button
-dropdown.  The build log tool window can be opened by selecting <ui>Build</ui> | <ui>View Build Log Content</ui>
-or from the help file builder's toolbar dropdown button.</para>
+		<para>The <ui>Entity References</ui> tool window and <ui>Topic Previewer</ui> window can be opened by
+selecting their menu option on the <ui>View</ui> | <ui>Other Windows</ui> menu or from the <ui>Other Windows</ui>
+toolbar button dropdown.  The build log tool window can be opened by selecting <ui>Build</ui> | <ui>View Build
+Log Content</ui> or from the help file builder's toolbar dropdown button.</para>
 
 		<alert class="note">
 			<para>Shortcut keys have not been assigned to any of the help file builder menu and toolbar options

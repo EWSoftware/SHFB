@@ -60,6 +60,8 @@
     <DocumentationFile>bin\Release\TestDoc.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -68,9 +70,12 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DocumentationInheritance\AttachedEventsAndProperties.cs" />
     <Compile Include="DocumentationInheritance\CustomException.cs" />
     <Compile Include="DocumentationInheritance\GenericClass.cs" />
     <Compile Include="Generics\DotNet40Generics.cs" />

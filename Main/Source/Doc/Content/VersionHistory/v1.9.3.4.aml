@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="8c11654c-f6f5-4cd3-acd0-86890ecb242d" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Version 1.9.3.4 was released on January 30th, 2012.</para>
+
+			<para>The primary purpose of this release is to move the <link xlink:href="b128ad2a-787e-48c7-b946-f6953080c386" />
+into a beta stage so that more people can start using it and to test and get feedback on the new file editors and
+the new topic previewer window.  The build engine and the package in general are quite stable and are suitable
+for general use.  As before, if there are issues you can drop back to the last stable release as there have been
+no changes that would affect the project file format.  However, some support for newer features such as Portable
+Framework and Silverlight 5 support are not available in the prior stable release.</para>
+
+			<para>With this release, the Visual Studio package now matches the standalone GUI with regard to features
+and functionality.  Projects can now be managed completely from within Visual Studio without having to open a
+copy of the project in the standalone GUI.  For more information on the new features available in the beta
+release, see the following help topics:</para>
+
+			<list class="bullet">
+				<listItem>
+					<para><link xlink:href="54250029-bcfa-4c03-8cf0-b230867a8613" /></para>
+				</listItem>
+				<listItem>
+					<para><link xlink:href="96956ab6-fd5e-4bc7-a577-a18b0ff258ea" /></para>
+				</listItem>
+				<listItem>
+					<para><link xlink:href="d3c7584d-73c0-4725-87f8-51e4ad956694" /></para>
+				</listItem>
+				<listItem>
+					<para><link xlink:href="67b9bfab-7cf3-4beb-bd88-85bcff4e8ebd" /></para>
+				</listItem>
+			</list>
+			
+    </introduction>
+
+<section>
+  <title>Changes in This Release</title>
+  <content>
+
+		<list class="bullet">
+			<listItem>
+				<para>Updated the build log viewer tool window in the standalone GUI and VSPackage to use the new shared
+build log viewer WPF user control.  The new control uses a default setting of plain text which loads much faster.
+It also provides options to highlight warnings and errors and to filter the log to only show warnings and errors.</para>
+			</listItem>
+
+			<listItem>
+				<para>Removed highlighting of script names from the build log XSL transformation as it wasn't really
+useful anymore since they all refer to <application>MSBuild.exe</application> now.  Also made the warning and
+error regular expressions case sensitive which improves the loading speed a bit when filtering.  The warning and
+error text is typically in a fixed style case-wise so this shouldn't be an issue.</para>
+			</listItem>
+
+			<listItem>
+				<para>Removed the <ui>Filter Log</ui> setting from the standalone GUI settings and the VSPackage tool
+window since it is no longer used.</para>
+			</listItem>
+
+			<listItem>
+				<para>Added the <ui>New Project from Other Format</ui> project template to the VSPackage to allow the
+creation of new projects from other file formats from within Visual Studio.</para>
+			</listItem>
+
+			<listItem>
+				<para>Fixed a bug in the base project converter class caused by the way MSBuild 4.0 adds new file items
+to projects.  The file paths are typically fully qualified rather than relative on newly added items.</para>	
+			</listItem>
+			
+			<listItem>
+				<para>Added a new shared topic previewer WPF user control.  This new version is a complete rewrite of the
+topic previewer from past versions.  Instead of doing a partial build on the conceptual content, it now converts
+topics to flow documents on the fly.  This significantly reduces the time needed to preview a topic and lets you
+view any topic in the project via links in the topic or using the new table of contents tree view that appears in
+the browser.  The control also takes into account unsaved changes in all token, content layout, and topic files
+when presenting them so that current content is displayed regardless of whether or not you have saved changes to
+all of the affected files.</para>
+			</listItem>
+
+			<listItem>
+				<para>Updated the topic previewer window in the standalone GUI to use the new shared topic previewer
+control.</para>
+			</listItem>
+
+			<listItem>
+				<para>Added the topic previewer window feature to the VSPackage.  You will find it on the <ui>View</ui> |
+<ui>Other Windows</ui> menu and in the <ui>Other Windows</ui> toolbar button dropdown.</para>
+			</listItem>
+
+			<listItem>
+				<para>Updated the <application>GenerateInheritedDocs</application> tool as follows:</para>
+
+					<list class="bullet">
+						<listItem>
+							<para>To provide default comments for the compiler-generated WPF attached property and attached
+event class members, it retrieves the comments from the related backing field if comments do not exist for the
+related compiler-generated members already.  This provides default comments for them rather than a "missing
+comments" warning.</para>
+						</listItem>
+
+						<listItem>
+							<para>If comments are found for the attached property or event field and they contain an
+<codeInline>AttachedPropertyComments</codeInline> element (for attached properties) or an
+<codeInline>AttachedEventComments</codeInline> element (for attached events), it will use the nested XML
+comments from those elements instead for the related compiler-generated member.  This allows adding different
+comments for the field and the auto-generated property/event members but keeps them all on the related field
+to make managing the comments much easier.</para>
+						</listItem>
+
+						<listItem>
+							<para>It now skips inherited documentation for members that do not appear in the reflection
+information data file.  This suppresses unnecessary <codeInline>GID0003</codeInline> warnings for the excluded
+members because it cannot find the comments to inherit.</para>
+						</listItem>
+
+					</list>
+				</listItem>
+		</list>
+
+  </content>
+</section>
+
+    <relatedTopics>
+			<link xlink:href="078cc1c7-7995-431e-bf9c-8813becbe8df" />
+    </relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

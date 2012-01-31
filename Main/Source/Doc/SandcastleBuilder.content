@@ -22,7 +22,7 @@
       <HelpKeyword index="K" term="versions, known issues" />
     </HelpKeywords>
   </Topic>
-  <Topic id="b772e00e-1705-4062-adb6-774826ce6700" visible="True" title="Getting Started">
+  <Topic id="b772e00e-1705-4062-adb6-774826ce6700" visible="True" isExpanded="true" title="Getting Started">
     <HelpKeywords>
       <HelpKeyword index="K" term="Getting Started" />
     </HelpKeywords>
@@ -106,11 +106,17 @@
         <HelpKeyword index="K" term="plug-ins, plug-in assembly location" />
       </HelpKeywords>
     </Topic>
-    <Topic id="79897974-ffc9-4b84-91a5-e50c66a0221d" visible="True" title="Using the &lt;inheritdoc /&gt; Tag">
+    <Topic id="79897974-ffc9-4b84-91a5-e50c66a0221d" visible="True" isSelected="true" title="Using the &lt;inheritdoc /&gt; Tag">
       <HelpKeywords>
         <HelpKeyword index="K" term="Getting started, &lt;inheritdoc /&gt;" />
         <HelpKeyword index="K" term="inheritdoc tag" />
         <HelpKeyword index="K" term="XML comment tags, inheritdoc" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="67b9bfab-7cf3-4beb-bd88-85bcff4e8ebd" visible="True" title="Documenting WPF Attached Properties and Events">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Getting Started, attached properties" />
+        <HelpKeyword index="K" term="Getting Started, attached events" />
       </HelpKeywords>
     </Topic>
     <Topic id="94c7f744-9b90-4254-93ab-9b15f47d9f42" visible="True" title="Documenting Web Projects">
@@ -369,6 +375,11 @@
       <HelpKeyword index="K" term="text editor" />
     </HelpKeywords>
   </Topic>
+  <Topic id="d3c7584d-73c0-4725-87f8-51e4ad956694" visible="True" title="Topic Previewer Window">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="Topic Previewer window" />
+    </HelpKeywords>
+  </Topic>
   <Topic id="fcf8e4ac-5b32-4d5f-9bce-2e85c3468fdc" visible="True" title="Resource File Item Editor Window">
     <HelpKeywords>
       <HelpKeyword index="K" term="resource item file editor" />
@@ -561,14 +572,14 @@
       </HelpKeywords>
     </Topic>
   </Topic>
-  <Topic id="8dcbb69b-7a1a-4049-8e6b-2bf344efbbc9" visible="True" isExpanded="true" title="Custom Build Components">
+  <Topic id="8dcbb69b-7a1a-4049-8e6b-2bf344efbbc9" visible="True" title="Custom Build Components">
     <HelpKeywords>
       <HelpKeyword index="K" term="build components, configuring" />
       <HelpKeyword index="K" term="build components, overview" />
       <HelpKeyword index="K" term="build components, syntax filter" />
       <HelpKeyword index="K" term="syntax filter generator" />
     </HelpKeywords>
-    <Topic id="dcc9f938-0d5e-4010-bbfe-fd64168a443b" visible="True" isSelected="true" title="API Token Resolution Component" />
+    <Topic id="dcc9f938-0d5e-4010-bbfe-fd64168a443b" visible="True" title="API Token Resolution Component" />
     <Topic id="3a1c4bf1-8ecf-4ab3-8010-277bed8d3819" visible="True" title="Cached Build Components">
       <HelpKeywords>
         <HelpKeyword index="K" term="build components, cached build components" />
@@ -1317,6 +1328,11 @@
       <HelpKeyword index="K" term="History" />
       <HelpKeyword index="K" term="Version History" />
     </HelpKeywords>
+    <Topic id="8c11654c-f6f5-4cd3-acd0-86890ecb242d" visible="True" title="Version 1.9.3.4 (Beta 2)">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 1.9.3.4" />
+      </HelpKeywords>
+    </Topic>
     <Topic id="54250029-bcfa-4c03-8cf0-b230867a8613" visible="True" title="Version 1.9.3.3 (Beta 1)">
       <HelpKeywords>
         <HelpKeyword index="K" term="versions, 1.9.3.3" />

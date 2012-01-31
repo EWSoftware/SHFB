@@ -2,23 +2,21 @@
 <topic id="a76a88ff-d67f-4eb5-9622-90287c786c1b" revisionNumber="1">
   <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
     <introduction>
-      <para>The general text editor window is used for editing various
-file types such as MAML topics, HTML files, stylesheets, XML files, etc.  It
-provides various features that make editing the files easier such as color
-syntax highlighting, automatic closing tag insertion, matching character
-insertion for quotes and parentheses, and various options to perform common
-actions such as HTML encoding text and inserting common MAML elements.</para>
+			<alert class="note">
+				<para>This topic applies to the text editor in the standalone GUI.  The Visual Studio package utilizes
+the built-in XML file editor.  As such, it provides IntelliSense support for the MAML schema to make creating the
+documents easier provided you have installed them.  It is highly recommended that you do so using the Sandcastle
+Installer.  You can re-run it and skip forward to the step that installs the schemas if necessary.</para>
+			</alert>
 
-<alert class="tip">
-  <para>For most commands that insert MAML elements, both from the toolbar and
-the keyboard shortcuts, if any text is currently highlighted when the command
-is executed, the selected text will be wrapped in the inserted element.  This
-also applies when a topic is dragged and dropped from the content layout editor
-onto selected text to create a link.  The selected text will become the link's
-inner text.</para>
-</alert>
+      <para>The general text editor window is used for editing various file types such as MAML topics, HTML
+files, stylesheets, XML files, etc.  It provides various features that make editing the files easier such as
+color syntax highlighting, automatic closing tag insertion, matching character insertion for quotes and
+parentheses, and various options to perform common actions such as HTML encoding text and inserting common MAML
+elements.</para>
 
-	  <autoOutline lead="none" excludeRelatedTopics="true" />
+			<autoOutline lead="none" excludeRelatedTopics="true" />
+
     </introduction>
 
 <section address="ToolbarOpts">
@@ -29,50 +27,76 @@ most common options.  They are (from left to right):</para>
 
   	<mediaLink><image xlink:href="TextEditorWindow" placement="center"/></mediaLink>
 
-<list class="bullet">
-	<listItem><ui>Bold</ui> - Insert a <codeInline>legacyBold</codeInline>
-element.</listItem>
+		<list class="bullet">
+			<listItem>
+				<para><ui>Bold</ui> - Insert a <codeInline>legacyBold</codeInline> element.</para>
+			</listItem>
 
-	<listItem><ui>Italic</ui> - Insert a <codeInline>legacyItalic</codeInline>
-element.</listItem>
+			<listItem>
+				<para><ui>Italic</ui> - Insert a <codeInline>legacyItalic</codeInline> element.</para>
+			</listItem>
 
-  <listItem><ui>Underline</ui> - Insert a <codeInline>legacyUnderline</codeInline>
-element</listItem>
+			<listItem>
+				<para><ui>Underline</ui> - Insert a <codeInline>legacyUnderline</codeInline> element.</para>
+			</listItem>
 
-	<listItem><ui>Code Inline</ui> - Insert a <codeInline>codeInline</codeInline>
-element.</listItem>
+			<listItem>
+				<para><ui>Code Inline</ui> - Insert a <codeInline>codeInline</codeInline> element.</para>
+			</listItem>
 
-	<listItem><ui>Bulleted List</ui> - Insert a bulleted <codeInline>list</codeInline>
-element with two default <codeInline>listItem</codeInline> elements.</listItem>
+			<listItem>
+				<para><ui>Bulleted List</ui> - Insert a bulleted <codeInline>list</codeInline> element with two default
+<codeInline>listItem</codeInline> elements.</para>
+			</listItem>
 
-	<listItem><ui>Numbered List</ui> - Insert a numbered <codeInline>list</codeInline>
-element with two default <codeInline>listItem</codeInline> elements.</listItem>
+			<listItem>
+				<para><ui>Numbered List</ui> - Insert a numbered <codeInline>list</codeInline> element with two default
+<codeInline>listItem</codeInline> elements.</para>
+			</listItem>
 
-	<listItem><ui>Table</ui> - Insert a <codeInline>table</codeInline> element
-with a default table header and row.</listItem>
+			<listItem>
+				<para><ui>Table</ui> - Insert a <codeInline>table</codeInline> element with a default table header and
+row.</para>
+			</listItem>
 
-	<listItem><ui>In-page link</ui> - Insert a <codeInline>link</codeInline>
-element with an in-page address target (i.e. the value of another element's
-<codeInline>address</codeInline> attribute within the same page).</listItem>
+			<listItem>
+				<para><ui>In-page link</ui> - Insert a <codeInline>link</codeInline> element with an in-page address
+target (i.e. the value of another element's <codeInline>address</codeInline> attribute within the same page).</para>
+			</listItem>
 
-	<listItem><ui>External link</ui> - Insert an <codeInline>externalLink</codeInline>
-element for linking to an outside target such as a website.</listItem>
+			<listItem>
+				<para><ui>External link</ui> - Insert an <codeInline>externalLink</codeInline> element for linking to an
+outside target such as a website.</para>
+			</listItem>
 
-	<listItem><ui>Various elements dropdown</ui> - The dropdown will allow you
-to insert various other common MAML elements.  The ones above the divider are
-block elements.  The rest below it are inline elements.  If the toolbar button
-is clicked, the default action is to insert the last selected element from the
-dropdown.  By default, it inserts an <codeInline>alert</codeInline> element.</listItem>
+			<listItem>
+				<para><ui>Various elements dropdown</ui> - The dropdown will allow you to insert various other common
+MAML elements.  The ones above the divider are block elements.  The rest below it are inline elements.  If the
+toolbar button is clicked, the default action is to insert the last selected element from the dropdown.  By
+default, it inserts an <codeInline>alert</codeInline> element.</para>
+			</listItem>
 
-	<listItem><ui>HTML Encode</ui> - HTML encode the currently selected text.
-This is useful for inline code samples within <codeInline>code</codeInline>
-elements or URLs containing restricted characters such as ampersands.</listItem>
+			<listItem>
+				<para><ui>HTML Encode</ui> - HTML encode the currently selected text.  This is useful for inline code
+samples within <codeInline>code</codeInline> elements or URLs containing restricted characters such as
+ampersands.</para>
+			</listItem>
 	
-	<listItem><ui>Cut, Copy, and Paste</ui> - Standard Windows clipboard cut,
-copy, and paste operations.</listItem>
+			<listItem>
+				<para><ui>Cut, Copy, and Paste</ui> - Standard Windows clipboard cut, copy, and paste operations.</para>
+			</listItem>
 
-	<listItem><ui>Undo and Redo</ui> - Undo and redo edits.</listItem>
-</list>
+			<listItem>
+				<para><ui>Undo and Redo</ui> - Undo and redo edits.</para>
+			</listItem>
+		</list>
+
+		<alert class="tip">
+			<para>For most commands that insert MAML elements in the standalone GUI, both from the toolbar and the
+keyboard shortcuts, if any text is currently highlighted when the command is executed, the selected text will be
+wrapped in the inserted element.  This also applies when a topic is dragged and dropped from the content layout
+editor onto selected text to create a link.  The selected text will become the link's inner text.</para>
+		</alert>
 
   </content>
 </section>
@@ -80,91 +104,69 @@ copy, and paste operations.</listItem>
 <section address="ShortcutKeys">
   <title>Keyboard Shortcuts</title>
   <content>
-    <para>The text editor supports various common keyboard shortcuts such as
-<ui>Ctrl+C</ui> for copy and <ui>Ctrl+V</ui> for paste.  In addition, the
-following keyboard shortcuts can be used:</para>
+    <para>The text editor supports various common keyboard shortcuts such as <ui>Ctrl+C</ui> for copy and
+<ui>Ctrl+V</ui> for paste.  In addition, the following keyboard shortcuts can be used:</para>
 
-<list class="bullet">
-	<listItem><ui>Ctrl+B</ui> - Insert a <codeInline>legacyBold</codeInline>
-element.</listItem>
+		<list class="bullet">
+			<listItem>
+				<para><ui>Ctrl+B</ui> - Insert a <codeInline>legacyBold</codeInline> element.</para>
+			</listItem>
 
-	<listItem><ui>Ctrl+I</ui> - Insert a <codeInline>legacyItalic</codeInline>
-element.</listItem>
+			<listItem>
+				<para><ui>Ctrl+I</ui> - Insert a <codeInline>legacyItalic</codeInline> element.</para>
+			</listItem>
 
-  <listItem><ui>Ctrl+U</ui> - Insert a <codeInline>legacyUnderline</codeInline>
-element</listItem>
+			<listItem>
+				<para><ui>Ctrl+U</ui> - Insert a <codeInline>legacyUnderline</codeInline> element.</para>
+			</listItem>
 
-	<listItem><ui>Ctrl+K</ui> - Insert a <codeInline>codeInline</codeInline>
-element.</listItem>
+			<listItem>
+				<para><ui>Ctrl+K</ui> - Insert a <codeInline>codeInline</codeInline> element.</para>
+			</listItem>
 
-	<listItem><ui>Ctrl+F</ui> - This opens the <ui>Find Text</ui> tool window.
-If already open and search text has been entered, hitting <ui>Ctrl+F</ui> again
-finds the next occurrence of the search text.</listItem>
+			<listItem>
+				<para><ui>Ctrl+F</ui> - This opens the <ui>Find Text</ui> tool window. If already open and search text
+has been entered, hitting <ui>Ctrl+F</ui> again finds the next occurrence of the search text.</para>
+			</listItem>
 
-	<listItem><ui>Ctrl+H</ui> - This opens the <ui>Find and Replace</ui> tool
-window.  If already open and find and replace text has been entered, hitting
-<ui>Ctrl+H</ui> again replaces the last instance found if the cursor is still
-on it and finds the next occurrence of the search text.</listItem>
+			<listItem>
+				<para><ui>Ctrl+H</ui> - This opens the <ui>Find and Replace</ui> tool window.  If already open and find
+and replace text has been entered, hitting <ui>Ctrl+H</ui> again replaces the last instance found if the cursor
+is still on it and finds the next occurrence of the search text.</para>
+			</listItem>
 
-	<listItem><ui>Ctrl+G</ui> - This opens the <ui>Goto Line</ui> tool window.
-Enter a line number and click <ui>OK</ui> to jump to the specified line number
-in the document.</listItem>
+			<listItem>
+				<para><ui>Ctrl+G</ui> - This opens the <ui>Goto Line</ui> tool window.  Enter a line number and click
+<ui>OK</ui> to jump to the specified line number in the document.</para>
+			</listItem>
 
-	<listItem><ui>Tab</ui> - If you are within an XML element's opening tag,
-the closing element will be inserted automatically and the cursor will be
-placed between them ready to enter the inner text.</listItem>
+			<listItem>
+				<para><ui>Tab</ui> - If you are within an XML element's opening tag, the closing element will be inserted
+automatically and the cursor will be placed between them ready to enter the inner text.</para>
+			</listItem>
 
-	<listItem><ui>Matching characters</ui> - When you type a double quote,
-an opening parentheses, an angle bracket ('&lt;'), a square bracket ('['), or
-a curly brace ('{'), the matching closing character is inserted automatically
-and the cursor is placed between them.</listItem>
+			<listItem>
+				<para><ui>Matching characters</ui> - When you type a double quote, an opening parentheses, an angle
+bracket ('&lt;'), a square bracket ('['), or a curly brace ('{'), the matching closing character is inserted
+automatically and the cursor is placed between them.</para>
+			</listItem>
+		</list>
 
-</list>
-
-  </content>
+	</content>
 </section>
 
 <section address="DragAndDrop">
   <title>Drag and Drop</title>
   <content>
-    <para>The text editor window also supports drag and drop operations from
-the <ui>Content Layout Editor</ui> and the <ui>Site Map Editor</ui>  to insert
-links to other topics in the project.  It also supports drag and drop from the
-<ui>Entity References Window</ui> to insert token references, image links, code
-entity reference links, and code snippet references.</para>
+    <para>The text editor window also supports drag and drop operations from the <ui>Content Layout Editor</ui>
+and the <ui>Site Map Editor</ui>  to insert links to other topics in the project.  It also supports drag and
+drop from the <ui>Entity References Window</ui> to insert token references, image links, code entity reference
+links, code snippet references, and table of contents links.</para>
 
-	<para>By default, links to MAML topics are inserted as self-closing link
-elements and will use the topic's title from the content layout file when
-converted to HTML at build-time.  If necessary, you can modify the link element
-to specify inner text which will be used instead of the title text.  Dropping
-the link on some selected text will automatically make the selected text the
-inner text of the link.</para>
-  </content>
-</section>
-
-<section address="PreviewTopic">
-  <title>Preview Topic</title>
-  <content>
-	<para>When editing a conceptual content MAML topic, the help file builder
-allows you to quickly see how your edits will look in the help file by
-previewing the built topic in a separate window.  To do so, select the
-<ui>Preview Topic</ui> option on the <ui>Window</ui> menu, click the related
-main toolbar button, or hit <ui>F5</ui>.  Changes to the active topic and any
-open content layout files are saved automatically and a quick build of just the
-conceptual content is performed.  If successful, the active topic is displayed
-so that you can see the effects of recent changes.  If the build fails, the
-build log is displayed so that you can locate and fix the problem (i.e. an
-ill-formed XML element).  Only one preview pane is created and it will be
-reused if you preview another topic.</para>
-
-    <para>To keep the build time down, reference links are disabled and it only
-displays the selected topic.  As such, you will not see a table of contents and
-code entity reference links will appear as bold text in the rendered topic.
-However, links to other conceptual topics are enabled and you can click on
-them to navigate to the selected topics.  The <ui>Alt+Left</ui> and
-<ui>Alt+Right</ui> keys can be used to navigate backward and forward if you do
-click on any of the links.</para>
-
+		<para>By default, links to MAML topics are inserted as self-closing link elements and will use the topic's
+title from the content layout file when converted to HTML at build-time.  If necessary, you can modify the link
+element to specify inner text which will be used instead of the title text.  Dropping the link on some selected
+text will automatically make the selected text the inner text of the link.</para>
   </content>
 </section>
 
@@ -174,6 +176,7 @@ click on any of the links.</para>
       <link xlink:href="e49eea91-a9ef-4aa5-ad8f-16ebd61b798a" />
       <link xlink:href="54e3dc97-5125-441e-8e84-7f9303e95f26" />
       <link xlink:href="3dd5fe3b-1bc3-42e5-8900-56165e3f9aed" />
-    </relatedTopics>
+			<link xlink:href="d3c7584d-73c0-4725-87f8-51e4ad956694" />
+		</relatedTopics>
   </developerConceptualDocument>
 </topic>

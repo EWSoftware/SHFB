@@ -44,8 +44,8 @@
 	  <Group guid="guidSandcastleBuilderPackageCommandSet" id="ProjectNodeGroup" priority="0x07B0"/>
 	  <Group guid="guidSandcastleBuilderPackageCommandSet" id="ViewLogGroup" priority="0x0105"/>
 	  <Group guid="guidSandcastleBuilderPackageCommandSet" id="BuildMenuGroup" priority="0x0500"/>
-	  <Group guid="guidSandcastleBuilderPackageCommandSet" id="EntityReferencesGroup" priority="0x9000"/>
-	  <Group guid="guidSandcastleBuilderPackageCommandSet" id="EntityRefOtherWindGroup" priority="0x9000"/>
+	  <Group guid="guidSandcastleBuilderPackageCommandSet" id="SHFBWindowsGroup" priority="0x9000"/>
+	  <Group guid="guidSandcastleBuilderPackageCommandSet" id="SHFBOtherWindowsGroup" priority="0x9000"/>
 	</Groups>
 
   <Buttons>
@@ -194,6 +194,15 @@
             <ToolTipText>Open the Entity References Window</ToolTipText>
 		    </Strings>
 	  </Button>
+	  <Button guid="guidSandcastleBuilderPackageCommandSet" id="TopicPreviewerWindow" priority="0x0101">
+				<Icon guid="TopicPreview.bmpGuid" id="TopicPreview.bmpId" />
+				<Strings>
+            <CommandName>cmdidTopicPreviewerWindow</CommandName>
+            <ButtonText>Topic Previewer Window</ButtonText>
+            <MenuText>Topic Previewer Window</MenuText>
+            <ToolTipText>Open the Topic Previewer Window</ToolTipText>
+		    </Strings>
+	  </Button>
 	</Buttons>
 
   <Menus>
@@ -235,6 +244,7 @@
     <Bitmap guid="FAQ.bmpGuid" href="..\Button Bitmaps\FAQ.bmp" usedList="FAQ.bmpId" />
     <Bitmap guid="LogFile.bmpGuid" href="..\Button Bitmaps\LogFile.bmp" usedList="LogFile.bmpId" />
     <Bitmap guid="EntityReferences.bmpGuid" href="..\Button Bitmaps\EntityReferences.bmp" usedList="EntityReferences.bmpId" />
+    <Bitmap guid="TopicPreview.bmpGuid" href="..\Button Bitmaps\TopicPreview.bmp" usedList="TopicPreview.bmpId" />
   </Bitmaps>
 
   </Commands>
@@ -286,10 +296,16 @@
 	         <Parent guid="guidSandcastleBuilderPackageCommandSet" id="BuildMenuGroup" />
 		   </CommandPlacement> 
 	     <CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="EntityReferencesWindow" priority="0x0100"> 
-	         <Parent guid="guidSandcastleBuilderPackageCommandSet" id="EntityReferencesGroup" />
+	         <Parent guid="guidSandcastleBuilderPackageCommandSet" id="SHFBWindowsGroup" />
 		   </CommandPlacement> 
 	     <CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="EntityReferencesWindow" priority="0x0100"> 
-	         <Parent guid="guidSandcastleBuilderPackageCommandSet" id="EntityRefOtherWindGroup" />
+	         <Parent guid="guidSandcastleBuilderPackageCommandSet" id="SHFBOtherWindowsGroup" />
+		   </CommandPlacement> 
+	     <CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="TopicPreviewerWindow" priority="0x0101"> 
+	         <Parent guid="guidSandcastleBuilderPackageCommandSet" id="SHFBWindowsGroup" />
+		   </CommandPlacement> 
+	     <CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="TopicPreviewerWindow" priority="0x0101"> 
+	         <Parent guid="guidSandcastleBuilderPackageCommandSet" id="SHFBOtherWindowsGroup" />
 		   </CommandPlacement> 
 	     <CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="DocSourcesGroup" priority="0x0100">
 	         <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_REFERENCE" />
@@ -342,10 +358,10 @@
 	     <CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="BuildMenuGroup" priority="0x0500">
 	         <Parent guid="guidSHLMainMenu" id="IDM_VS_MENU_BUILD" />
 		   </CommandPlacement> 
-	     <CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="EntityReferencesGroup" priority="0x9000">
+	     <CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="SHFBWindowsGroup" priority="0x9000">
 	         <Parent guid="guidSHLMainMenu" id="IDM_VS_CSCD_WINDOWS" />
 		   </CommandPlacement> 
-	     <CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="EntityRefOtherWindGroup" priority="0x9000">
+	     <CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="SHFBOtherWindowsGroup" priority="0x9000">
 	         <Parent guid="guidSHLMainMenu" id="IDM_VS_MNUCTRL_OTRWNDWS" />
 		   </CommandPlacement> 
 		     <CommandPlacement guid="guidSandcastleBuilderPackageCommandSet" id="ViewHelpMenu" priority="0x0100">
@@ -375,8 +391,8 @@
      <IDSymbol name="ProjectNodeGroup" value="0x001E" />
      <IDSymbol name="ViewLogGroup" value="0x0022" />
      <IDSymbol name="BuildMenuGroup" value="0x0028" />
-     <IDSymbol name="EntityReferencesGroup" value="0x002B" />
-     <IDSymbol name="EntityRefOtherWindGroup" value="0x002E" />
+     <IDSymbol name="SHFBWindowsGroup" value="0x002B" />
+     <IDSymbol name="SHFBOtherWindowsGroup" value="0x002E" />
      <IDSymbol name="AddDocSource" value="0x0001" />
 	     <IDSymbol name="ViewHelpFile" value="0x0006" />
 	     <IDSymbol name="ViewHtmlHelp" value="0x0007" />
@@ -391,39 +407,43 @@
 	     <IDSymbol name="AboutSHFB" value="0x001D" />
 	     <IDSymbol name="ViewBuildLog" value="0x0020" />
 	     <IDSymbol name="EntityReferencesWindow" value="0x002A" />
+	     <IDSymbol name="TopicPreviewerWindow" value="0x0030" />
 	     <IDSymbol name="ViewHelpMenu" value="0x000F" />
 	     <IDSymbol name="SHFBToolbar" value="0x0016" />
 	     <IDSymbol name="ViewHelpMenuController" value="0x0018" />
 	  </GuidSymbol>
-	     <GuidSymbol name="ViewHelpFile.bmpGuid" value="{bdbc82af-a0ca-46f3-b7a3-41ef98f28bf0}">
+	     <GuidSymbol name="ViewHelpFile.bmpGuid" value="{7aaa240b-53a8-4367-b27c-dd244a089d74}">
 				<IDSymbol name="ViewHelpFile.bmpId" value="1" />
 			</GuidSymbol>
-	     <GuidSymbol name="HtmlHelp.bmpGuid" value="{363c6c73-48be-4f03-bdb8-890a986fd5b0}">
+	     <GuidSymbol name="HtmlHelp.bmpGuid" value="{bcd85104-831b-4650-b261-00a6597cd580}">
 				<IDSymbol name="HtmlHelp.bmpId" value="1" />
 			</GuidSymbol>
-	     <GuidSymbol name="Help2.bmpGuid" value="{55d53ce5-e99f-49b6-b319-bdab8a38f587}">
+	     <GuidSymbol name="Help2.bmpGuid" value="{2bb735d3-8855-4a4c-8e2c-0feb74098bf7}">
 				<IDSymbol name="Help2.bmpId" value="1" />
 			</GuidSymbol>
-	     <GuidSymbol name="MSHelpViewer.bmpGuid" value="{fc880ee0-b0a9-4040-9c4d-5fde541ef3af}">
+	     <GuidSymbol name="MSHelpViewer.bmpGuid" value="{fad45445-afda-4a42-bbc0-ac2450739af2}">
 				<IDSymbol name="MSHelpViewer.bmpId" value="1" />
 			</GuidSymbol>
-	     <GuidSymbol name="HelpLibManager.bmpGuid" value="{a960b49b-26c8-4f59-8d90-20522bfb7cd5}">
+	     <GuidSymbol name="HelpLibManager.bmpGuid" value="{caae0a96-b2ff-4c91-a783-b1036ee3dfeb}">
 				<IDSymbol name="HelpLibManager.bmpId" value="1" />
 			</GuidSymbol>
-	     <GuidSymbol name="AspNetWebsite.bmpGuid" value="{0d9e2e41-4529-483a-9d34-54f4e0c9c8d5}">
+	     <GuidSymbol name="AspNetWebsite.bmpGuid" value="{eb34e24e-70fb-4a58-abf4-ebceee6eaa46}">
 				<IDSymbol name="AspNetWebsite.bmpId" value="1" />
 			</GuidSymbol>
-	     <GuidSymbol name="HtmlWebsite.bmpGuid" value="{8dcf5167-dfe9-4184-856b-132b0e2984f6}">
+	     <GuidSymbol name="HtmlWebsite.bmpGuid" value="{f1448de9-b711-4999-864e-9da71e657279}">
 				<IDSymbol name="HtmlWebsite.bmpId" value="1" />
 			</GuidSymbol>
-	     <GuidSymbol name="FAQ.bmpGuid" value="{e59cab01-7a24-4b30-900b-d8b978f52174}">
+	     <GuidSymbol name="FAQ.bmpGuid" value="{bf6074c6-a257-40ee-b0ec-56d5a6df8493}">
 				<IDSymbol name="FAQ.bmpId" value="1" />
 			</GuidSymbol>
-	     <GuidSymbol name="LogFile.bmpGuid" value="{c6574546-1b4e-45ad-8e17-b7deda4ee612}">
+	     <GuidSymbol name="LogFile.bmpGuid" value="{caf17fc3-bdc9-4a08-a28a-447948adb9d2}">
 				<IDSymbol name="LogFile.bmpId" value="1" />
 			</GuidSymbol>
-	     <GuidSymbol name="EntityReferences.bmpGuid" value="{f5213b32-c845-4762-a367-0e66cd2b58fd}">
+	     <GuidSymbol name="EntityReferences.bmpGuid" value="{a31fd255-a17e-47a8-a2b4-644512a781fa}">
 				<IDSymbol name="EntityReferences.bmpId" value="1" />
+			</GuidSymbol>
+	     <GuidSymbol name="TopicPreview.bmpGuid" value="{7b8d6a79-b2ef-4610-8cac-ee38a866a523}">
+				<IDSymbol name="TopicPreview.bmpId" value="1" />
 			</GuidSymbol>
 	</Symbols>
 

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : GenerateInheritedDocs.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/27/2010
-// Note    : Copyright 2008-2010, Eric Woodruff, All rights reserved
+// Updated : 01/25/2012
+// Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the console mode tool that scans XML comments files for
@@ -20,6 +20,12 @@
 // ============================================================================
 // 1.6.0.5  02/27/2008  EFW  Created the code
 // 1.8.0.0  07/14/2008  EFW  Added support for running as an MSBuild task
+// 1.9.3.4  01/23/2012  EFW  Added support for auto-documenting attached
+//                           properties and events.  Also added support for
+//                           utilizing AttachedPropertyComments and
+//                           AttachedEventComments elements to provide comments
+//                           for attached properties and events that differ
+//                           from the comments on the backing fields.
 //=============================================================================
 
 using System;
@@ -111,8 +117,8 @@ namespace SandcastleBuilder.InheritedDocumentation
 
             if(args.Length != 1)
             {
-                Console.WriteLine("Specify the name of the configuration " +
-                    "file as the only command line argument.");
+                Console.WriteLine("Specify the name of the configuration file as the only command line " +
+                    "argument.");
                 return 1;
             }
 
@@ -142,9 +148,8 @@ namespace SandcastleBuilder.InheritedDocumentation
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
                 success = false;
 
-                Console.WriteLine("SHFB: Error GID0001: Unexpected error " +
-                    "while generating inherited documentation:\r\n{0}",
-                    ex.ToString());
+                Console.WriteLine("SHFB: Error GID0001: Unexpected error while generating inherited " +
+                    "documentation:\r\n{0}", ex.ToString());
             }
 
 #if DEBUG
@@ -205,8 +210,8 @@ namespace SandcastleBuilder.InheritedDocumentation
             element = navConfig.SelectSingleNode("configuration/reflectionInfo/@file");
 
             if(element == null || !File.Exists(element.Value))
-                throw new ConfigurationErrorsException("The reflectionFile " +
-                    "element is missing or the specified file does not exist");
+                throw new ConfigurationErrorsException("The reflectionFile element is missing or the " +
+                    "specified file does not exist");
 
             Console.WriteLine("Reflection information will be retrieved from '{0}'", element.Value);
             xpathDoc = new XPathDocument(element.Value);
@@ -217,8 +222,7 @@ namespace SandcastleBuilder.InheritedDocumentation
             element = navConfig.SelectSingleNode("configuration/inheritedDocs/@file");
 
             if(element == null)
-                throw new ConfigurationErrorsException("The inheritedDocs " +
-                    "element does not exist or is not valid");
+                throw new ConfigurationErrorsException("The inheritedDocs element does not exist or is not valid");
 
             inheritedDocsFilename = element.Value;
             Console.WriteLine("Inherited documentation will be written to '{0}'", inheritedDocsFilename);
@@ -284,14 +288,14 @@ namespace SandcastleBuilder.InheritedDocumentation
         /// </summary>
         private static void ScanCommentsFiles()
         {
+            XPathNavigator apiId, apiField, fieldComments, attachedComments;
             XmlNode node;
             Dictionary<string, XPathNavigator> members = new Dictionary<string, XPathNavigator>();
             string name;
 
-            // Get a list of all unique members containing an <inheritdoc />
-            // tag.  This will include entries with occurrences at the root
-            // level as well as those nested within other tags.  Root level
-            // stuff will get handled first followed by any nested tags.
+            // Get a list of all unique members containing an <inheritdoc /> tag.  This will include
+            // entries with occurrences at the root level as well as those nested within other tags.
+            // Root level stuff will get handled first followed by any nested tags.
             foreach(XPathNavigator file in commentsFiles)
                 foreach(XPathNavigator tag in file.Select("//inheritdoc"))
                 {
@@ -300,7 +304,11 @@ namespace SandcastleBuilder.InheritedDocumentation
 
                     name = tag.GetAttribute("name", String.Empty);
 
-                    if(!members.ContainsKey(name))
+                    // Don't bother if it's not going to be documented.  This avoids a lot of GID0003
+                    // warnings for missing comments on undocumented members.
+                    apiId = apisNode.SelectSingleNode("api[@id='" + name + "']");
+
+                    if(apiId != null && !members.ContainsKey(name))
                         members.Add(name, tag);
                 }
 
@@ -312,8 +320,7 @@ namespace SandcastleBuilder.InheritedDocumentation
                 docMemberList.AppendChild(node);
             }
 
-            // Add explicit interface implementations that do not have
-            // member comments already.
+            // Add explicit interface implementations that do not have member comments already
             foreach(XPathNavigator api in apisNode.Select(
               "api[memberdata/@visibility='private' and proceduredata/@virtual='true']/@id"))
                 if(commentsCache.GetComments(api.Value) == null && !members.ContainsKey(api.Value))
@@ -323,6 +330,66 @@ namespace SandcastleBuilder.InheritedDocumentation
                         "<member name=\"{0}\"><inheritdoc /></member>", api.Value);
                     docMemberList.AppendChild(node);
                 }
+
+            // Add attached property and attached event entries that inherit comments from their
+            // related fields that do not have member comments already.
+            foreach(XPathNavigator api in apisNode.Select(
+              "api[apidata/@subsubgroup='attachedEvent' or apidata/@subsubgroup='attachedProperty']"))
+            {
+                apiId = api.SelectSingleNode("@id");
+
+                if(commentsCache.GetComments(apiId.Value) == null && !members.ContainsKey(apiId.Value))
+                {
+                    if(apiId.Value[0] == 'E')
+                        apiField = api.SelectSingleNode("attachedeventdata/field/member/@api");
+                    else
+                        apiField = api.SelectSingleNode("attachedpropertydata/field/member/@api");
+
+                    if(apiField != null)
+                    {
+                        fieldComments = commentsCache.GetComments(apiField.Value);
+
+                        if(fieldComments == null)
+                            attachedComments = null;
+                        else
+                        {
+                            if(apiId.Value[0] == 'E')
+                                attachedComments = fieldComments.SelectSingleNode("AttachedEventComments");
+                            else
+                                attachedComments = fieldComments.SelectSingleNode("AttachedPropertyComments");
+                        }
+
+                        if(fieldComments == null || attachedComments == null)
+                        {
+                            // If no attached property/events comments are defined, inherit the field's
+                            // comments so that we don't get a "missing comments" error.
+                            node = inheritedDocs.CreateDocumentFragment();
+                            node.InnerXml = String.Format(CultureInfo.InvariantCulture,
+                                "<member name=\"{0}\"><inheritdoc cref=\"{1}\" /></member>", apiId.Value,
+                                apiField.Value);
+                            docMemberList.AppendChild(node);
+                        }
+                        else
+                        {
+                            // Create an entry for the field comments without the attached comments
+                            node = inheritedDocs.CreateDocumentFragment();
+                            node.InnerXml = String.Format(CultureInfo.InvariantCulture,
+                                "<member name=\"{0}\">{1}</member>", apiField.Value,
+                                fieldComments.InnerXml);
+                            node.SelectSingleNode("member").RemoveChild(
+                                node.SelectSingleNode("member/" + attachedComments.Name));
+                            docMemberList.AppendChild(node);
+
+                            // Add the comments for the attached member
+                            node = inheritedDocs.CreateDocumentFragment();
+                            node.InnerXml = String.Format(CultureInfo.InvariantCulture,
+                                "<member name=\"{0}\">{1}</member>", apiId.Value,
+                                attachedComments.InnerXml);
+                            docMemberList.AppendChild(node);
+                        }
+                    }
+                }
+            }
 
             Console.WriteLine("Merging inherited documentation...\r\n");
 

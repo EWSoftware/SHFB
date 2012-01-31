@@ -103,17 +103,23 @@
               </groupBaseReferencesButtons>
             </buttons>
           </group>
-          <group Id="86ab9030-1b3b-4165-9816-ec6875752cc4" name="EntityReferencesGroup" idNumeric="43" priority="36864">
+          <group Id="86ab9030-1b3b-4165-9816-ec6875752cc4" name="SHFBWindowsGroup" idNumeric="43" priority="36864">
             <buttons>
               <groupBaseReferencesButtons Id="82345726-7335-4b0f-9892-973018e5b530">
                 <buttonMoniker Id="c2104b20-35cb-421d-a488-b75c8dc1802a" />
               </groupBaseReferencesButtons>
+              <groupBaseReferencesButtons Id="e6d880e6-1c1f-4c3b-b76d-5269a92dfb79">
+                <buttonMoniker Id="e75027c5-f197-4f7e-b50f-7fcdc5d8348b" />
+              </groupBaseReferencesButtons>
             </buttons>
           </group>
-          <group Id="b90c2061-5c8f-4029-ab9f-3f869c072e01" name="EntityRefOtherWindGroup" idNumeric="46" priority="36864">
+          <group Id="b90c2061-5c8f-4029-ab9f-3f869c072e01" name="SHFBOtherWindowsGroup" idNumeric="46" priority="36864">
             <buttons>
               <groupBaseReferencesButtons Id="efb8c8cd-fefa-4cf7-a719-392db2e9aef9">
                 <buttonMoniker Id="c2104b20-35cb-421d-a488-b75c8dc1802a" />
+              </groupBaseReferencesButtons>
+              <groupBaseReferencesButtons Id="62675ee4-9460-4122-9bae-9450e54e0ec2">
+                <buttonMoniker Id="e75027c5-f197-4f7e-b50f-7fcdc5d8348b" />
               </groupBaseReferencesButtons>
             </buttons>
           </group>
@@ -160,6 +166,9 @@
           </commandTableHasButtons>
           <commandTableHasButtons Id="f9f9b061-ed63-491a-8ccc-935e9b2d3287">
             <button Id="c2104b20-35cb-421d-a488-b75c8dc1802a" name="EntityReferencesWindow" idNumeric="42" buttonText="Entity References Window" menuText="Entity References Window" commandName="cmdidEntityReferencesWindow" toolTipText="Open the Entity References Window" mod1="0" mod2="0" visibilityConstraints="0" icon="EntityReferences.bmp" commandFlags="0" sampleData="false" />
+          </commandTableHasButtons>
+          <commandTableHasButtons Id="b72a4bea-393e-4779-bd85-148ed3ef4f39">
+            <button Id="e75027c5-f197-4f7e-b50f-7fcdc5d8348b" name="TopicPreviewerWindow" idNumeric="48" buttonText="Topic Previewer Window" menuText="Topic Previewer Window" commandName="cmdidTopicPreviewerWindow" toolTipText="Open the Topic Previewer Window" mod1="0" mod2="0" visibilityConstraints="0" priority="257" icon="TopicPreview.bmp" commandFlags="0" sampleData="false" />
           </commandTableHasButtons>
         </buttons>
         <menuBases>
@@ -287,6 +296,9 @@
           </userInterfaceHasToolWindows>
           <userInterfaceHasToolWindows Id="da53b74b-d22e-44d6-ba84-d84fe37a52b4">
             <toolWindow Id="b3384555-4da9-4c44-a154-c88eefccb009" name="EntityReferences" idNumeric="39" caption="Entity References" userCodeGenerated="true" transient="false" multiInstance="false" visibilityConstraints="0" guid="581e89c0-e423-4453-bde3-a0403d5f380d" />
+          </userInterfaceHasToolWindows>
+          <userInterfaceHasToolWindows Id="c71a217a-9066-4dcf-b30e-74c9b5c7f733">
+            <toolWindow Id="55f07cee-e9c7-4dea-9fa7-bdf66f77dc26" name="TopicPreviewer" idNumeric="47" caption="Topic Previewer" userCodeGenerated="true" transient="false" multiInstance="false" visibilityConstraints="0" guid="3764ef30-ce37-4240-a79e-a9cb33073846" />
           </userInterfaceHasToolWindows>
         </toolWindows>
       </userInterface>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="67b9bfab-7cf3-4beb-bd88-85bcff4e8ebd" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>This topic describes how you can document the compiler-generated attached property and attached
+event members in WPF classes.</para>
+    </introduction>
+
+<section>
+  <content>
+    <para>Because the attached property and attached event members of WPF classes are compiler-generated, there
+is no way to associate XML comments with them directly without managing a standalone XML comments file.  While
+it is possible to do this, it is less convenient than keeping the comments in the code.  The help file builder
+provides a solution to this through its <application>GenerateInheritedDocs</application> tool.  As part of the
+process of generating inherited documentation, the tool will look for attached property and attached event
+fields.  If it finds them, it will automatically inherit their comments for the related compiler-generated
+members as default comments to prevent a "missing comments" warning.</para>
+
+		<para>In addition, if it finds comments for those field members, it will check for an
+<codeInline>AttachedPropertyComments</codeInline> element (for attached properties) or an
+<codeInline>AttachedEventComments</codeInline> element (for attached events) and, if found, will use the XML
+comments nested within those elements for the related compiler-generated members.  This allows you to provide
+comments for the field member and the related compiler-generated member that are entirely different but are
+managed from within the code.  Below are examples of an attached property and an attached event with the extra
+comments for the compiler-generated members.</para>
+
+		<alert class="note">
+			<para>Because the attached property and event members are compiler-generated, you must fully qualify
+their names if you want to create a link to them with a <codeInline>see</codeInline> element as shown in the
+examples below.</para>
+		</alert>
+
+<code lang="cs" title="Attached Property Comments Example">
+/// &lt;summary&gt;
+/// This defines the &lt;see cref="P:TestDoc.TestClass.IsBroughtIntoViewWhenSelected"/&gt;
+/// attached property.
+/// &lt;/summary&gt;
+///
+/// &lt;AttachedPropertyComments&gt;
+/// &lt;summary&gt;This attached property indicates whether or not a tree view item is
+/// brought into view when selected.
+/// &lt;/summary&gt;
+/// &lt;value&gt;The default value is false&lt;/value&gt;
+/// &lt;/AttachedPropertyComments&gt;
+public static readonly DependencyProperty IsBroughtIntoViewWhenSelectedProperty =
+    DependencyProperty.RegisterAttached("IsBroughtIntoViewWhenSelected",
+    typeof(bool), typeof(TestClass),
+    new UIPropertyMetadata(false, OnIsBroughtIntoViewWhenSelectedChanged));
+</code>
+
+<code lang="cs" title="Attached Event Comments Example">
+/// &lt;summary&gt;
+/// This defines the &lt;see cref="E:TestDoc.TestClass.ItemActivate"/&gt;
+/// attached event.
+/// &lt;/summary&gt;
+///
+/// &lt;AttachedEventComments&gt;
+/// &lt;summary&gt;
+/// This attached event is raised when an item is activated
+/// &lt;/summary&gt;
+/// &lt;remarks&gt;There's a bit more too it to get the event raised but this is just a
+/// documentation example.&lt;/remarks&gt;
+/// &lt;/AttachedEventComments&gt;
+public static readonly RoutedEvent ItemActivateEvent = EventManager.RegisterRoutedEvent(
+    "ItemActivate", RoutingStrategy.Bubble, typeof(RoutedEventHandler),
+    typeof(TestClass));
+</code>
+
+  </content>
+</section>
+
+    <relatedTopics>
+			<link xlink:href="b772e00e-1705-4062-adb6-774826ce6700" />
+			<link xlink:href="79897974-ffc9-4b84-91a5-e50c66a0221d" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

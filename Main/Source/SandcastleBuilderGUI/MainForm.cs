@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : MainForm.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/08/2012
+// Updated : 01/20/2012
 // Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -32,7 +32,8 @@
 //                           layout better suited to editing the project.
 // 1.9.0.0  07/05/2010  EFW  Added support for MS Help Viewer
 // 1.9.1.0  07/09/2010  EFW  Updated for use with .NET 4.0 and MSBuild 4.0.
-// 1.9.3.4  01/08/2011  EFW  Updated to use shared NewFromOtherFormatDlg
+// 1.9.3.4  01/08/2012  EFW  Updated to use shared NewFromOtherFormatDlg
+// 1.9.3.4  01/20/2012  EFW  Updated to use the new topic previewer window
 //=============================================================================
 
 using System;
@@ -299,11 +300,10 @@ namespace SandcastleBuilder.Gui
             else
                 tcbPlatform.SelectedIndex = 0;
 
-            miDocumentation.Visible = miCloseProject.Enabled =
-                miClose.Enabled = miSave.Enabled = miSaveAs.Enabled =
-                tsbSave.Enabled = tsbSaveAll.Enabled = miSaveAll.Enabled =
-                miProjectExplorer.Visible = miExplorerSeparator.Visible =
-                tsbBuildProject.Enabled = tsbViewHelpFile.Enabled = true;
+            miDocumentation.Visible = miCloseProject.Enabled = miClose.Enabled = miSave.Enabled =
+                miSaveAs.Enabled = tsbSave.Enabled = tsbSaveAll.Enabled = miSaveAll.Enabled =
+                miProjectExplorer.Visible = miExplorerSeparator.Visible = tsbBuildProject.Enabled =
+                tsbViewHelpFile.Enabled = miPreviewTopic.Enabled = tsbPreviewTopic.Enabled = true;
 
             Directory.SetCurrentDirectory(Path.GetDirectoryName(Path.GetFullPath(project.Filename)));
 
@@ -484,14 +484,11 @@ namespace SandcastleBuilder.Gui
                 project = projectExplorer.CurrentProject = projectProperties.CurrentProject = null;
                 this.UpdateFilenameInfo();
 
-                miDocumentation.Visible = miCloseProject.Enabled =
-                    miClose.Enabled = miCloseAll.Enabled =
-                    miCloseAllButCurrent.Enabled = miSave.Enabled =
-                    miSaveAs.Enabled = miSaveAll.Enabled = tsbSave.Enabled =
-                    tsbSaveAll.Enabled = miProjectExplorer.Visible =
-                    miExplorerSeparator.Visible = tsbBuildProject.Enabled =
-                    tsbViewHelpFile.Enabled = miPreviewTopic.Enabled =
-                    tsbPreviewTopic.Enabled = false;
+                miDocumentation.Visible = miCloseProject.Enabled = miClose.Enabled = miCloseAll.Enabled =
+                    miCloseAllButCurrent.Enabled = miSave.Enabled = miSaveAs.Enabled = miSaveAll.Enabled =
+                    tsbSave.Enabled = tsbSaveAll.Enabled = miProjectExplorer.Visible =
+                    miExplorerSeparator.Visible = tsbBuildProject.Enabled = tsbViewHelpFile.Enabled =
+                    miPreviewTopic.Enabled = tsbPreviewTopic.Enabled = false;
 
                 return true;
             }
@@ -1696,22 +1693,9 @@ namespace SandcastleBuilder.Gui
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        private void dockPanel_ContentAdded(object sender,
-          DockContentEventArgs e)
+        private void dockPanel_ContentAdded(object sender, DockContentEventArgs e)
         {
-            bool canPreview = false;
-
-            miClose.Enabled = miCloseAll.Enabled =
-                miCloseAllButCurrent.Enabled = true;
-
-            if(e.Content is TopicEditorWindow)
-                canPreview = true;
-            else
-                foreach(IDockContent document in dockPanel.Contents)
-                    if(document is TopicEditorWindow)
-                        canPreview = true;
-
-            miPreviewTopic.Enabled = tsbPreviewTopic.Enabled = canPreview;
+            miClose.Enabled = miCloseAll.Enabled = miCloseAllButCurrent.Enabled = true;
         }
 
         /// <summary>
@@ -1719,19 +1703,9 @@ namespace SandcastleBuilder.Gui
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        private void dockPanel_ContentRemoved(object sender,
-          DockContentEventArgs e)
+        private void dockPanel_ContentRemoved(object sender, DockContentEventArgs e)
         {
-            bool canPreview = false;
-
-            miClose.Enabled = miCloseAll.Enabled = miCloseAllButCurrent.Enabled =
-                (dockPanel.Contents.Count > 0);
-
-            foreach(IDockContent document in dockPanel.Contents)
-                if(document is TopicEditorWindow)
-                    canPreview = true;
-
-            miPreviewTopic.Enabled = tsbPreviewTopic.Enabled = canPreview;
+            miClose.Enabled = miCloseAll.Enabled = miCloseAllButCurrent.Enabled = (dockPanel.Contents.Count > 0);
         }
 
         /// <summary>
@@ -1934,11 +1908,12 @@ namespace SandcastleBuilder.Gui
         private void miPreviewTopic_Click(object sender, EventArgs e)
         {
             TopicEditorWindow editor;
-            FileItem fileItem;
+            FileItem fileItem = null;
 
             dockPanel.CheckFocusedContent();    // HACK
             editor = dockPanel.ActiveDocument as TopicEditorWindow;
 
+            // If we are in a topic editor, show it by default when the previewer opens
             if(editor == null)
             {
                 foreach(IDockContent document in dockPanel.Contents)
@@ -1948,36 +1923,31 @@ namespace SandcastleBuilder.Gui
                     if(editor != null)
                         break;
                 }
-
-                if(editor == null)
-                    return;
             }
 
-            if(!this.SaveBeforeBuild())
-                return;
+            if(editor != null)
+                fileItem = project.FindFile(editor.Filename);
 
-            if(previewWindow == null)
+            try
             {
-                previewWindow = new PreviewTopicWindow();
-                previewWindow.Show(dockPanel);
-            }
+                Cursor.Current = Cursors.WaitCursor;
 
-            fileItem = project.FindFile(editor.Filename);
+                if(previewWindow == null)
+                {
+                    previewWindow = new PreviewTopicWindow();
+                    previewWindow.Show(dockPanel);
+                }
 
-            if(fileItem != null)
-            {
-                // Save the editor to ensure it is current on disk.  This has
-                // to happen regardless of the BeforeBuild preference or the
-                // content won't be current.
-                if(!editor.Save())
-                    return;
-
-                previewWindow.PreviewTopic(project, fileItem);
+                previewWindow.PreviewTopic(project, (fileItem == null) ? null : fileItem.FullPath);
                 previewWindow.Activate();
 
                 // When the state is restored and it's a document pane, it
                 // doesn't always become the active pane unless this is called.
                 previewWindow.Show(dockPanel, previewWindow.DockState);
+            }
+            finally
+            {
+                Cursor.Current = Cursors.Default;
             }
         }
         #endregion

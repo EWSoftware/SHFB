@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Topics>
-  <Topic id="d45c5080-a13f-42a7-bba5-ea6a8193d719" visible="False" isMSHVRoot="true" title="Sancastle Standalone Build Components and Tools">
+  <Topic id="d45c5080-a13f-42a7-bba5-ea6a8193d719" visible="True" title="Sancastle Standalone Build Components and Tools">
     <HelpKeywords>
       <HelpKeyword index="K" term="Sandcastle Build Components" />
     </HelpKeywords>
@@ -9,8 +9,8 @@
     <HelpKeywords>
       <HelpKeyword index="K" term="Welcome" />
       <HelpKeyword index="K" term="Overview" />
-      <HelpKeyword index="NamedURLIndex" term="HomePage" />
-      <HelpKeyword index="NamedURLIndex" term="DefaultPage" />
+      <HelpKeyword index="K" term="HomePage" />
+      <HelpKeyword index="K" term="DefaultPage" />
     </HelpKeywords>
   </Topic>
   <Topic id="24504fda-d3ef-4dd9-8335-6db8b25d00f2" visible="True" title="License Agreement">
@@ -37,6 +37,12 @@
       <HelpKeyword index="K" term="Getting started, &lt;inheritdoc /&gt;" />
       <HelpKeyword index="K" term="inheritdoc tag" />
       <HelpKeyword index="K" term="XML comment tags, inheritdoc" />
+    </HelpKeywords>
+  </Topic>
+  <Topic id="67b9bfab-7cf3-4beb-bd88-85bcff4e8ebd" visible="True" isSelected="true" title="Documenting WPF Attached Properties and Events">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="Getting Started, attached events" />
+      <HelpKeyword index="K" term="Getting Started, attached properties" />
     </HelpKeywords>
   </Topic>
   <Topic id="c77f178b-383e-47dc-99ed-f8538a8057a8" visible="True" title="Generating Inherited Documentation">

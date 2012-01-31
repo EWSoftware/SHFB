@@ -282,6 +282,7 @@
     <Compile Include="PropertyPages\SandcastleBuilderOptionsPage.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="ToolWindows\TopicPreviewerToolWindow.cs" />
     <Compile Include="UI\AboutDlg.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -305,6 +306,7 @@
     <Resource Include="Button Bitmaps\EntityReferences.bmp" />
     <ZipProject Include="Templates\Projects\NewFromOtherFormat\NewFromOtherFormat.shfbproj" />
     <ZipProject Include="Templates\Projects\NewFromOtherFormat\NewFromOtherFormat.vstemplate" />
+    <Resource Include="Button Bitmaps\TopicPreview.bmp" />
     <Content Include="VSIXPreview.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
@@ -662,7 +664,6 @@
       <Name>SandcastleBuilderWPF</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v10.0\VSSDK\Microsoft.VsSDK.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

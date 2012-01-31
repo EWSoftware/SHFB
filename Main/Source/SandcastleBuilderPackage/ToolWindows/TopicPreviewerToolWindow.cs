@@ -1,12 +1,12 @@
 //=============================================================================
 // System  : Sandcastle Help File Builder Visual Studio Package
-// File    : EntityReferencesToolWindow.cs
+// File    : TopicPreviewerToolWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/21/2012
-// Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
+// Updated : 01/22/2012
+// Note    : Copyright 2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains the class used to implement the Entity References tool
+// This file contains the class used to implement the Topic Previewer tool
 // window.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy
@@ -17,34 +17,39 @@
 //
 // Version     Date     Who  Comments
 // ============================================================================
-// 1.9.3.3  12/11/2011  EFW  Created the code
+// 1.9.3.4  01/21/2012  EFW  Created the code
 //=============================================================================
 
 using System;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows.Controls;
 using System.Windows.Input;
 
 using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.TextManager.Interop;
 
 using SandcastleBuilder.Package.Editors;
 using SandcastleBuilder.Package.Nodes;
 using SandcastleBuilder.Utils;
+using SandcastleBuilder.Utils.ConceptualContent;
+using SandcastleBuilder.WPF.Commands;
 using SandcastleBuilder.WPF.UserControls;
 
 namespace SandcastleBuilder.Package.ToolWindows
 {
-	/// <summary>
-    /// This is used to find and insert entity references such as token, image, code snippet, code entity, and
-    /// table of contents links into files.
+    /// <summary>
+    /// This is used to preview conceptual content topics in the project.
     /// </summary>
-    [Guid("581e89c0-e423-4453-bde3-a0403d5f380d")]
-    public class EntityReferencesToolWindow : EntityReferencesToolWindowBase, IVsSelectionEvents
+    [Guid("3764ef30-ce37-4240-a79e-a9cb33073846")]
+    public class TopicPreviewerToolWindow : TopicPreviewerToolWindowBase, IVsSelectionEvents
     {
         #region Private data members
         //=====================================================================
 
+        private TopicPreviewerControl ucTopicPreviewer;
         private object scope;
         private uint selectionMonitorCookie;
         #endregion
@@ -55,13 +60,38 @@ namespace SandcastleBuilder.Package.ToolWindows
         /// <summary>
         /// Constructor
         /// </summary>
-        public EntityReferencesToolWindow()
+        public TopicPreviewerToolWindow()
         {
-            var ucEntityReferences = new EntityReferencesControl { AllowAnimatedGif = true };
+            ucTopicPreviewer = new TopicPreviewerControl();
 
-            base.Content = ucEntityReferences;
+            base.Content = ucTopicPreviewer;
 
-            ucEntityReferences.FileContentNeeded += ucEntityReferences_FileContentNeeded;
+            // Hook up the command bindings and event handlers
+            ucTopicPreviewer.CommandBindings.Add(new CommandBinding(EditorCommands.Edit,
+                cmdEdit_Executed, cmdEdit_CanExecute));
+
+            ucTopicPreviewer.FileContentNeeded += ucTopicPreviewer_FileContentNeeded;
+            ucTopicPreviewer.TopicContentNeeded += ucTopicPreviewer_TopicContentNeeded;
+        }
+        #endregion
+
+        #region Helper methods
+        //=====================================================================
+
+        /// <summary>
+        /// Load the conceptual content information and preview the topics
+        /// </summary>
+        /// <param name="project">The current project</param>
+        /// <param name="previewTopic">The filename of the topic to show as the starting topic or null for the
+        /// first topic.</param>
+        public void PreviewTopic(SandcastleProject project, string previewTopic)
+        {
+            if(project == null || ucTopicPreviewer.CurrentProject == null ||
+              ucTopicPreviewer.CurrentProject.Filename != project.Filename)
+                ucTopicPreviewer.CurrentProject = project;
+
+            ucTopicPreviewer.Refresh();
+            ucTopicPreviewer.FindAndDisplay(previewTopic);
         }
         #endregion
 
@@ -142,7 +172,7 @@ namespace SandcastleBuilder.Package.ToolWindows
 
                 if(keyCode == System.Windows.Forms.Keys.F1)
                 {
-                    ApplicationCommands.Help.Execute(null, (UserControl)base.Content);
+                    ApplicationCommands.Help.Execute(null, ucTopicPreviewer);
                     return true;
                 }
             }
@@ -158,7 +188,7 @@ namespace SandcastleBuilder.Package.ToolWindows
                         // We're just getting the scope to use.
                         AccessKeyPressedEventArgs e = new AccessKeyPressedEventArgs("X");
 
-                        ((UserControl)base.Content).RaiseEvent(e);
+                        ucTopicPreviewer.RaiseEvent(e);
                         scope = e.Scope;
                     }
 
@@ -204,7 +234,7 @@ namespace SandcastleBuilder.Package.ToolWindows
         }
 
         /// <summary>
-        /// Monitor for changes to the active project and notify the entity references user control when a
+        /// Monitor for changes to the active project and notify the topic previewer user control when a
         /// new SHFB project is selected as the active project.
         /// </summary>
         /// <param name="pHierOld">The hierarchy for the previously selected item</param>
@@ -221,14 +251,11 @@ namespace SandcastleBuilder.Package.ToolWindows
           IVsMultiItemSelect pMISNew, ISelectionContainer pSCNew)
         {
             SandcastleProject shfbProject = null;
-            EntityReferencesControl ucEntityReferences;
             object project;
 
             if(pHierOld == null || !pHierOld.Equals(pHierNew))
             {
-                ucEntityReferences = base.Content as EntityReferencesControl;
-
-                if(ucEntityReferences != null)
+                if(ucTopicPreviewer != null)
                 {
                     if(pHierNew != null)
                     {
@@ -247,10 +274,10 @@ namespace SandcastleBuilder.Package.ToolWindows
                         }
                     }
 
-                    if((shfbProject == null && ucEntityReferences.CurrentProject != null) ||
-                      (shfbProject != null && (ucEntityReferences.CurrentProject == null ||
-                      ucEntityReferences.CurrentProject.Filename != shfbProject.Filename)))
-                        ucEntityReferences.CurrentProject = shfbProject;
+                    if((shfbProject == null && ucTopicPreviewer.CurrentProject != null) ||
+                      (shfbProject != null && (ucTopicPreviewer.CurrentProject == null ||
+                      ucTopicPreviewer.CurrentProject.Filename != shfbProject.Filename)))
+                        ucTopicPreviewer.CurrentProject = shfbProject;
                 }
             }
 
@@ -262,12 +289,12 @@ namespace SandcastleBuilder.Package.ToolWindows
         //=====================================================================
 
         /// <summary>
-        /// This is used to get information from token, content layout, and site map files open in editors
-        /// so that current information is displayed for them in the entity references control.
+        /// This is used to get information from token and content layoutfiles open in editors so that current
+        /// information is displayed for them in the topic previewer control.
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        private void ucEntityReferences_FileContentNeeded(object sender, FileContentNeededEventArgs e)
+        private void ucTopicPreviewer_FileContentNeeded(object sender, FileContentNeededEventArgs e)
         {
             IVsUIShell uiShell = Utility.GetServiceFromPackage<IVsUIShell, SVsUIShell>(true);
             IEnumWindowFrames enumFrames;
@@ -275,7 +302,6 @@ namespace SandcastleBuilder.Package.ToolWindows
             object docView;
             uint frameCount;
             ContentLayoutEditorPane contentLayoutPane;
-            SiteMapEditorPane siteMapPane;
             TokenEditorPane tokenFilePane;
 
             if(uiShell.GetDocumentWindowEnum(out enumFrames) == VSConstants.S_OK)
@@ -288,19 +314,140 @@ namespace SandcastleBuilder.Package.ToolWindows
                             e.ContentLayoutFiles.Add(contentLayoutPane.Filename, contentLayoutPane.Topics);
                         else
                         {
-                            siteMapPane = docView as SiteMapEditorPane;
+                            tokenFilePane = docView as TokenEditorPane;
 
-                            if(siteMapPane != null)
-                                e.SiteMapFiles.Add(siteMapPane.Filename, siteMapPane.Topics);
-                            else
+                            if(tokenFilePane != null)
+                                e.TokenFiles.Add(tokenFilePane.Filename, tokenFilePane.Tokens);
+                        }
+                    }
+        }
+
+        /// <summary>
+        /// This is used to get the content of a specific topic file if it is open in an editor so that the
+        /// current content is displayed for it in the topic previewer control.
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event arguments</param>
+        private void ucTopicPreviewer_TopicContentNeeded(object sender, TopicContentNeededEventArgs e)
+        {
+            IVsHierarchy hier;
+            IVsPersistDocData persistDocData;
+            IVsTextStream srpStream;
+            IntPtr docData = IntPtr.Zero;
+            uint itemid, cookie = 0;
+            int hr = VSConstants.E_FAIL;
+
+            IVsRunningDocumentTable rdt = Utility.GetServiceFromPackage<IVsRunningDocumentTable,
+                SVsRunningDocumentTable>(true);
+
+            if(rdt == null)
+                return;
+
+            try
+            {
+                // Getting a read lock on the document.  This must be released later.
+                hr = rdt.FindAndLockDocument((uint)_VSRDTFLAGS.RDT_ReadLock, e.TopicFilename, out hier,
+                    out itemid, out docData, out cookie);
+
+                if(ErrorHandler.Failed(hr) || docData == IntPtr.Zero)
+                    return;
+
+                persistDocData = Marshal.GetObjectForIUnknown(docData) as IVsPersistDocData;
+
+                // Try to get the Text lines
+                IVsTextLines srpTextLines = persistDocData as IVsTextLines;
+
+                if(srpTextLines == null)
+                {
+                    // Try getting a text buffer provider first
+                    IVsTextBufferProvider srpTextBufferProvider = persistDocData as IVsTextBufferProvider;
+
+                    if(srpTextBufferProvider != null)
+                        hr = srpTextBufferProvider.GetTextBuffer(out srpTextLines);
+                }
+
+                if(ErrorHandler.Succeeded(hr))
+                {
+                    srpStream = srpTextLines as IVsTextStream;
+
+                    if(srpStream != null)
+                    {
+                        IVsBatchUpdate srpBatchUpdate = srpStream as IVsBatchUpdate;
+
+                        if(srpBatchUpdate != null)
+                            ErrorHandler.ThrowOnFailure(srpBatchUpdate.FlushPendingUpdates(0));
+
+                        int lBufferSize = 0;
+                        hr = srpStream.GetSize(out lBufferSize);
+
+                        if(ErrorHandler.Succeeded(hr))
+                        {
+                            IntPtr dest = IntPtr.Zero;
+
+                            try
                             {
-                                tokenFilePane = docView as TokenEditorPane;
+                                // GetStream() returns Unicode data so we need to double the buffer size
+                                dest = Marshal.AllocCoTaskMem((lBufferSize + 1) * 2);
+                                ErrorHandler.ThrowOnFailure(srpStream.GetStream(0, lBufferSize, dest));
 
-                                if(tokenFilePane != null)
-                                    e.TokenFiles.Add(tokenFilePane.Filename, tokenFilePane.Tokens);
+                                // Get the contents
+                                e.TopicContent = Marshal.PtrToStringUni(dest);
+                            }
+                            finally
+                            {
+                                if(dest != IntPtr.Zero)
+                                    Marshal.FreeCoTaskMem(dest);
                             }
                         }
                     }
+                }
+            }
+            finally
+            {
+                if(docData != IntPtr.Zero)
+                    Marshal.Release(docData);
+
+                if(cookie != 0)
+                    ErrorHandler.ThrowOnFailure(rdt.UnlockDocument((uint)_VSRDTFLAGS.RDT_ReadLock, cookie));
+            }
+        }
+        #endregion
+
+        #region Command event handlers
+        //=====================================================================
+
+        /// <summary>
+        /// Determine whether or not the command can execute
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event arguments</param>
+        private void cmdEdit_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            TocEntry t = ucTopicPreviewer.CurrentTopic;
+
+            e.CanExecute = (t != null && t.SourceFile.Exists);
+        }
+
+        /// <summary>
+        /// Open the selected file for editing
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event arguments</param>
+        private void cmdEdit_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            TocEntry t = ucTopicPreviewer.CurrentTopic;
+
+            if(t != null && !String.IsNullOrEmpty(t.SourceFile))
+            {
+                string fullName = t.SourceFile;
+
+                if(File.Exists(fullName))
+                    VsShellUtilities.OpenDocument(this, fullName);
+                else
+                    Utility.ShowMessageBox(OLEMSGICON.OLEMSGICON_INFO, "File does not exist: " + fullName);
+            }
+            else
+                Utility.ShowMessageBox(OLEMSGICON.OLEMSGICON_INFO, "No file is associated with this topic");
         }
         #endregion
     }

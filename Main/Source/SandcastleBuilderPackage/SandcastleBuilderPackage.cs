@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SandcastleBuilderPackage.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/07/2012
+// Updated : 01/21/2012
 // Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -20,6 +20,7 @@
 // 1.9.3.0  03/18/2011  EFW  Created the code
 // 1.9.3.3  12/11/2011  EFW  Added support for Entity References tool window
 // 1.9.3.3  12/26/2011  EFW  Added support for the SHFB file editors
+// 1.9.3.4  01/21/2012  EFW  Added support for the Topic Previewer tool window
 //=============================================================================
 
 using System;
@@ -31,6 +32,7 @@ using System.Runtime.InteropServices;
 
 using EnvDTE;
 
+using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
@@ -38,6 +40,7 @@ using SandcastleBuilder.MicrosoftHelpViewer;
 using SandcastleBuilder.Package.Editors;
 using SandcastleBuilder.Package.Nodes;
 using SandcastleBuilder.Package.PropertyPages;
+using SandcastleBuilder.Package.ToolWindows;
 using SandcastleBuilder.Utils;
 using SHFBUtility = SandcastleBuilder.Utils.Utility;
 
@@ -648,6 +651,63 @@ namespace SandcastleBuilder.Package
 
             var windowFrame = (IVsWindowFrame)window.Frame;
             Microsoft.VisualStudio.ErrorHandler.ThrowOnFailure(windowFrame.Show());
+        }
+
+        /// <summary>
+        /// Show the Topic Previewer tool window
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event arguments</param>
+        protected override void TopicPreviewerWindowExecuteHandler(object sender, EventArgs e)
+        {
+            IntPtr ppHier = IntPtr.Zero, ppSC = IntPtr.Zero;
+            uint pitemid;
+            IVsMultiItemSelect ppMIS;
+            string filename = null;
+
+            var window = this.FindToolWindow(typeof(ToolWindows.TopicPreviewerToolWindow), 0, true);
+
+            if(window == null || window.Frame == null)
+                throw new NotSupportedException("Unable to create Topic Previewer tool window");
+
+            var windowFrame = (IVsWindowFrame)window.Frame;
+            Microsoft.VisualStudio.ErrorHandler.ThrowOnFailure(windowFrame.Show());
+
+            TopicPreviewerToolWindow previewer = window as TopicPreviewerToolWindow;
+
+            if(previewer != null)
+            {
+                var ms = Utility.GetServiceFromPackage<IVsMonitorSelection, SVsShellMonitorSelection>(true);
+
+                if(ms != null)
+                {
+                    try
+                    {
+                        // Get the current filename and, if it's a MAML topic, show it by default
+                        ms.GetCurrentSelection(out ppHier, out pitemid, out ppMIS, out ppSC);
+
+                        if(pitemid != VSConstants.VSITEMID_NIL && ppHier != IntPtr.Zero)
+                        {
+                            IVsHierarchy hierarchy = Marshal.GetObjectForIUnknown(ppHier) as IVsHierarchy;
+
+                            hierarchy.GetCanonicalName(pitemid, out filename);
+
+                            if(filename != null && !filename.EndsWith(".aml", StringComparison.OrdinalIgnoreCase))
+                                filename = null;
+                        }
+                    }
+                    finally
+                    {
+                        if(ppHier != IntPtr.Zero)
+                            Marshal.Release(ppHier);
+
+                        if(ppSC != IntPtr.Zero)
+                            Marshal.Release(ppSC);
+                    }
+                }
+
+                previewer.PreviewTopic(CurrentSandcastleProject, filename);
+            }
         }
         #endregion
 

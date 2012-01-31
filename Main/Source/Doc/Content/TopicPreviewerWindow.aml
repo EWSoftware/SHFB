@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="d3c7584d-73c0-4725-87f8-51e4ad956694" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+			<para>When editing a conceptual content MAML topic, the help file builder allows you to quickly see how
+your edits will look in the help file by previewing the topic in a separate window.  To do so in the standalone
+GUI, select the <ui>Topic Previewer Window</ui> option on the <ui>Window</ui> menu, click the related main
+toolbar button, or hit <ui>F5</ui>.  In Visual Studio, select the <ui>Topic Previewer Window</ui> option from
+the <ui>View</ui> | <ui>Other Windows</ui> menu or the <ui>Other Windows</ui> toolbar button dropdown.
+		</para>
+
+			<autoOutline lead="none" excludeRelatedTopics="true" />
+    </introduction>
+
+<section address="PreviewTopic">
+  <title>Topic Previewer Window</title>
+  <content>
+		<para>The topic previewer window consists of a toolbar at the top, a table of contents tree view on the left,
+and the rendered content for the selected topic on the right with the topic title above it.  The toolbar contains
+options that let you navigate backwards and forwards through topics that you have viewed, refresh the content so
+that it reflects any recent changes to the related token, content layout, and topic files, open the selected
+topic in a file editor, expand or collapse the topics in the table of contents tree view, and open this help
+topic.  The currently selected project filename is displayed to the right of the buttons.</para>
+
+		<mediaLink>
+			<image xlink:href="TopicPreviewer" placement="center"/>
+		</mediaLink>
+
+		<para>The tool window tracks the active project and will refresh the contents automatically if it detects
+a change in the selected project (i.e. moving from one project to another in the Solution Explorer).  It will
+also automatically refresh the content and display the active topic if you invoke the command to display the
+previewer window while editing a topic.  In the event that current content is not displayed, click the
+<ui>Refresh</ui> button to force a reload of the current content.  The tool window takes into account all open
+and unsaved token files, content layout files, and MAML topic files so there is no need to save anything before
+opening the topic previewer.</para>
+
+		<para>Use the tree view on the left to navigate through the topics.  If the current topic contains links to
+other MAML topics, you can click on them to immediately navigate to that topic.  Using the <ui>Browse Back</ui>
+(Alt+Left) and <ui>Browse Forward</ui> (Alt+Right) options, you can navigate backwards and forwards through the
+previously viewed topics.  Links to external content such as files and website URLs will be opened using the
+default viewer for the given content (i.e. Internet Explorer for website URLs).</para>
+
+  </content>
+</section>
+
+<section address="Differences">
+	<title>Differences Between Previewed and Built Topics</title>
+	<content>
+		<para>The topic previewer does not perform a build on the project.  Instead, it renders the topics into a
+flow document that resembles the built topic as closely as possible.  This process is extremely fast and lets you
+make changes on the fly without having to save files or wait for a full or partial build of the project.  Since
+it does not perform a build, you will notice some differences between the previewed topics and the built topics
+as summarized below:</para>
+
+		<list class="bullet">
+			<listItem>
+				<para>The topics are rendered in a style similar to the VS2005 presentation style with the
+<token>SandcastleStyles</token> patch applied.  However, except for the topic title, all other page header and
+footer elements will not appear nor will additional elements such as logo images added to the topic using build
+components.</para>
+			</listItem>
+
+			<listItem>
+				<para>The spacing and font size on certain elements is slightly different but the overall appearance
+should be close enough for you to to get a good idea of how the topic will look in the resulting help file with
+the presentation style applied.</para>
+			</listItem>
+			
+			<listItem>
+				<para>Section headers are present but are not collapsible.</para>
+			</listItem>
+
+			<listItem>
+				<para>Flow documents do not size table columns the same way that HTML does.  By default, space is
+distributed evenly across all columns rather than alloting more space to columns containing wider content.
+To rememdy this, the parser uses a simple algorithm to adjust the column widths based on the maximum width of the
+content in each table cell across all rows.  While it does not result in an exact match to the table column
+widths seen in the built topics, it is fairly close and should be fine for almost all cases.  You will see that
+it wraps the text in shorter columns more often than the HTML layout but the column width differences are usually
+minor.</para>
+			</listItem>
+
+			<listItem>
+				<para>Code entity reference links will appear as bold text in the rendered topic rather than links to
+the referenced API member topic.</para>
+			</listItem>
+
+			<listItem>
+				<para>Code blocks will have leading whitespace and tab character spacing normalized but they will not be
+colorized.  If the code block imports code from an external file, the file and region name will be listed as the
+content of the code block but it will not be imported.  These features may be supported in a future release.</para>
+			</listItem>
+
+			<listItem>
+				<para>Token replacement is supported.  However, if the token contains help file builder replacement tags,
+they will be passed through to the topic as-is rather than being replaced with their project property value.</para>
+			</listItem>
+
+			<listItem>
+				<para>Elements that require specialized formatting handled by build components will be ignored.  Default
+handling is supplied for certain elements such as <codeInline>codeReference</codeInline> that display the
+attribute values or the content of the element.  All others are treated like unrecognized elements as described
+below.</para>
+			</listItem>
+
+			<listItem>
+				<para>Unrecognized custom elements with inner text will be ignored but the inner text will be rendered in
+the topic as normal text.  If an unrecognized inline element contains no inner text or child content, the element
+name will be displayed within the content in bold text.  The parser will take a best guess as to whether it is
+block or inline content based on the current context.</para>
+			</listItem>
+
+			<listItem>
+				<para>Any content in <codeInline>markup</codeInline> elements is passed through in its literal form.
+Inline <codeInline>markup</codeInline> element content is rendered inline where it appears with a colored
+background so that it is apparent that it is not standard inline content.  The content of block level
+<codeInline>markup</codeInline> elements are rendered in a style similar to a code block.</para>
+			</listItem>
+
+			<listItem>
+				<para>Sandcastle itself is quite forgiving when it comes to ill-formed topic content such as invalid
+element placement and inline elements appearing where they should not.  The parser used by the previewer is not
+as kind and will point out mistakes related to ill-formed documents with an error message appearing at the top
+of the document in a red border.  If the error is caused by invalid XML such as a missing, misspelled, or
+misplaced end element, the error message will point out the line and column where the error occurred.  For other
+errors such as ill-formed content, the error will most likely refer to a missing or unexpected parent element for
+a block or inline element.  The content that could be parsed will appear below the error to help you locate the
+point at which the problem occurred.  Using Visual Studio with the MAML schemas installed will help identify
+problems as the IntelliSense will point out invalid markup and help you correct it via the information in the
+error tooltip.</para>
+			</listItem>
+		</list>
+	</content>
+</section>
+		
+    <relatedTopics>
+			<link xlink:href="a76a88ff-d67f-4eb5-9622-90287c786c1b" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

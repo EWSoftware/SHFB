@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : ConvertToMSBuildFormat.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/08/2012
+// Updated : 01/26/2012
 // Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -211,7 +211,19 @@ namespace SandcastleBuilder.Utils.Conversion
             foreach(ProjectItem item in project.MSBuildProject.AllEvaluatedItems)
                 if(buildActions.IndexOf(item.ItemType) != -1)
                 {
-                    name = Path.GetDirectoryName(item.EvaluatedInclude);
+                    if(!Path.IsPathRooted(item.EvaluatedInclude))
+                        name = Path.GetDirectoryName(item.EvaluatedInclude);
+                    else
+                    {
+                        // Convert fully qualified paths to relative paths
+                        name = FolderPath.TerminatePath(Path.GetDirectoryName(item.EvaluatedInclude));
+
+                        // Ignore fully qualified paths outside of the project folder
+                        if(!name.StartsWith(projectFolder, StringComparison.OrdinalIgnoreCase))
+                            continue;
+
+                        name = name.Substring(projectFolder.Length);
+                    }
 
                     if(name.Length > 0 && folderNames.IndexOf(name) == -1)
                         folderNames.Add(name);

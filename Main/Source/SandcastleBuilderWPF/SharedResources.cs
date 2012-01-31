@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : SharedResources.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/27/2011
-// Note    : Copyright 2011, Eric Woodruff, All rights reserved
+// Updated : 01/20/2012
+// Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class used to load shared resources at runtime
@@ -21,6 +21,7 @@
 
 using System;
 using System.Windows;
+using System.Windows.Media.Imaging;
 
 using SandcastleBuilder.WPF.Controls;
 
@@ -39,6 +40,7 @@ namespace SandcastleBuilder.WPF
         //=====================================================================
 
         private static ResourceDictionary splitButtonResources;
+        private static BitmapImage cautionIcon, noteIcon, securityIcon;
 
         #endregion
 
@@ -60,6 +62,60 @@ namespace SandcastleBuilder.WPF
                 }
 
                 return splitButtonResources;
+            }
+        }
+
+        /// <summary>
+        /// This read-only property returns the Caution icon for the <see cref="Maml.MamlToFlowDocumentConverter" />.
+        /// </summary>
+        internal static BitmapImage CautionIcon
+        {
+            get
+            {
+                if(cautionIcon == null)
+                {
+                    Uri image = new Uri(
+                        "pack://application:,,,/SandcastleBuilder.WPF;component/Resources/AlertCaution.png");
+                    cautionIcon = new BitmapImage(image);
+                }
+
+                return cautionIcon;
+            }
+        }
+
+        /// <summary>
+        /// This read-only property returns the Note icon for the <see cref="Maml.MamlToFlowDocumentConverter" />.
+        /// </summary>
+        internal static BitmapImage NoteIcon
+        {
+            get
+            {
+                if(noteIcon == null)
+                {
+                    Uri image = new Uri(
+                        "pack://application:,,,/SandcastleBuilder.WPF;component/Resources/AlertNote.png");
+                    noteIcon = new BitmapImage(image);
+                }
+
+                return noteIcon;
+            }
+        }
+
+        /// <summary>
+        /// This read-only property returns the Security icon for the <see cref="Maml.MamlToFlowDocumentConverter" />.
+        /// </summary>
+        internal static BitmapImage SecurityIcon
+        {
+            get
+            {
+                if(securityIcon == null)
+                {
+                    Uri image = new Uri(
+                        "pack://application:,,,/SandcastleBuilder.WPF;component/Resources/AlertSecurity.png");
+                    securityIcon = new BitmapImage(image);
+                }
+
+                return securityIcon;
             }
         }
         #endregion

@@ -2,9 +2,9 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : SupportAnimatedGIFBehavior.cs
 // Author  : Elad Malki
-// Updated : 12/04/2011
+// Updated : 01/27/2012
 // Source  : http://eladm.wordpress.com/2009/04/02/animated-gif-support-behavior/
-// Note    : Copyright 2009-2011, Elad Malki, All rights reserved
+// Note    : Copyright 2009-2012, Elad Malki, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class that exposes an attached behavior that can be
@@ -42,6 +42,21 @@ namespace SandcastleBuilder.WPF.Behaviors
         #region SupportAnimatedGif Attached Property
 
         /// <summary>
+        /// This defines the <see cref="P:SandcastleBuilder.WPF.Behaviors.SupportAnimatedGIFBehavior.IsBroughtIntoViewWhenSelected"/>
+        /// attached property.
+        /// </summary>
+        /// <AttachedPropertyComments>
+        /// <summary>
+        /// This attached property indicates whether or not the image control supports animated GIF images.
+        /// If it does, animation will be enabled in GIF images containing animations.
+        /// </summary>
+        /// <value>The default value is false</value>
+        /// </AttachedPropertyComments>
+        public static readonly DependencyProperty SupportAnimatedGifProperty =
+            DependencyProperty.RegisterAttached("SupportAnimatedGif", typeof(bool),
+                typeof(SupportAnimatedGIFBehavior), new UIPropertyMetadata(false, OnSupportAnimatedGifChanged));
+
+        /// <summary>
         /// Gets the property value
         /// </summary>
         /// <param name="image">The image control</param>
@@ -63,17 +78,7 @@ namespace SandcastleBuilder.WPF.Behaviors
         }
 
         /// <summary>
-        /// An Attached Property for Animated GIF support.
-        /// </summary>
-        public static readonly DependencyProperty SupportAnimatedGifProperty =
-            DependencyProperty.RegisterAttached(
-            "SupportAnimatedGif",
-            typeof(bool),
-            typeof(SupportAnimatedGIFBehavior),
-            new UIPropertyMetadata(false, OnSupportAnimatedGifChanged));
-
-        /// <summary>
-        /// Register \ UnRegister to visibility changes and image source changes.
+        /// Register/unregister to visibility changes and image source changes
         /// </summary>
         /// <param name="depObj">The image object.</param>
         /// <param name="e">The SupportAnimatedGif Property values.</param>

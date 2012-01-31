@@ -1,13 +1,13 @@
 ﻿//=============================================================================
 // System  : Sandcastle Help File Builder Visual Studio Package
-// File    : FileContentNeededEventArgs.cs
+// File    : TopicContentNeededEventArgs.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
 // Updated : 01/20/2012
-// Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
+// Note    : Copyright 2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains the class used for the EntityReferencesControl
-// FileContentNeeded event.
+// This file contains the class used for the TopicPreviewerControl
+// TopicContentNeeded event.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy
 // of the license should be distributed with the code.  It can also be found
@@ -17,7 +17,7 @@
 //
 // Version     Date     Who  Comments
 // ============================================================================
-// 1.9.3.3  12/28/2011  EFW  Created the code
+// 1.9.3.4  01/20/2012  EFW  Created the code
 //=============================================================================
 
 using System.Collections.Generic;
@@ -29,30 +29,24 @@ namespace SandcastleBuilder.WPF.UserControls
 {
     /// <summary>
     /// This is used to contain the event arguments for the
-    /// <see cref="EntityReferencesControl.FileContentNeeded"/> event.
+    /// <see cref="TopicPreviewerControl.TopicContentNeeded"/> event.
     /// </summary>
-    public class FileContentNeededEventArgs : RoutedEventArgs
+    public class TopicContentNeededEventArgs : RoutedEventArgs
     {
         #region Properties
         //=====================================================================
 
         /// <summary>
-        /// This is used to return the topic collections for content layout files
+        /// This read-only property returns the topic filename that the previewer wants
         /// </summary>
-        /// <value>The key is the filename, the value is the topic collection</value>
-        public Dictionary<string, TopicCollection> ContentLayoutFiles { get; private set; }
+        public string TopicFilename { get; private set; }
 
         /// <summary>
-        /// This is used to return the topic collections for site map files
+        /// This is used to get or set the topic file content if it is found
         /// </summary>
-        /// <value>The key is the filename, the value is the topic collection</value>
-        public Dictionary<string, TocEntryCollection> SiteMapFiles { get; private set; }
-
-        /// <summary>
-        /// This is used to return the token collections for token files
-        /// </summary>
-        /// <value>The key is the filename, the value is the token collection</value>
-        public Dictionary<string, TokenCollection> TokenFiles { get; private set; }
+        /// <value>If null upon return from the event, the topic was not found in an open editor and the
+        /// actual file content will be used.</value>
+        public string TopicContent { get; set; }
 
         #endregion
 
@@ -64,11 +58,11 @@ namespace SandcastleBuilder.WPF.UserControls
         /// </summary>
         /// <param name="routedEvent">The routed event</param>
         /// <param name="source">The routed event source</param>
-        public FileContentNeededEventArgs(RoutedEvent routedEvent, object source) : base(routedEvent, source)
+        /// <param name="topicFilename">The topic filename for which to search</param>
+        public TopicContentNeededEventArgs(RoutedEvent routedEvent, object source, string topicFilename) :
+          base(routedEvent, source)
         {
-            this.ContentLayoutFiles = new Dictionary<string, TopicCollection>();
-            this.SiteMapFiles = new Dictionary<string, TocEntryCollection>();
-            this.TokenFiles = new Dictionary<string, TokenCollection>();
+            this.TopicFilename = topicFilename;
         }
         #endregion
     }

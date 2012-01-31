@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : TopicEditorWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/24/2011
-// Note    : Copyright 2008-2011, Eric Woodruff, All rights reserved
+// Updated : 01/20/2012
+// Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the form used to edit the conceptual topic files.
@@ -20,6 +20,7 @@
 // 1.8.0.0  07/26/2008  EFW  Reworked for use with the new project format
 // 1.9.3.3  12/11/2011  EFW  Simplified the drag and drop code to work with
 //                           the new Entity References WPF user control.
+// 1.9.3.4  01/20/2012  EFW  Added property to allow retrieval of the text
 //=============================================================================
 
 using System;
@@ -31,7 +32,6 @@ using System.Windows.Forms;
 using SandcastleBuilder.Gui.Properties;
 using SandcastleBuilder.Utils;
 using SandcastleBuilder.Utils.ConceptualContent;
-using SandcastleBuilder.Utils.Design;
 
 using ICSharpCode.TextEditor;
 using ICSharpCode.TextEditor.Actions;
@@ -54,11 +54,19 @@ namespace SandcastleBuilder.Gui.ContentEditors
         //=====================================================================
 
         /// <summary>
-        /// This returns the filename
+        /// This read-only property returns the filename
         /// </summary>
         public string Filename
         {
             get { return this.ToolTipText; }
+        }
+
+        /// <summary>
+        /// This read-only property returns the current file content
+        /// </summary>
+        public string FileContent
+        {
+            get { return editor.Document.TextContent; }
         }
         #endregion
 
@@ -81,8 +89,8 @@ namespace SandcastleBuilder.Gui.ContentEditors
             area.DragEnter += editor_DragEnter;
             area.DragOver += editor_DragEnter;
             area.DragDrop += editor_DragDrop;
-            editor.PerformFindText += new EventHandler(editor_PerformFindText);
-            editor.PerformReplaceText += new EventHandler(editor_PerformReplaceText);
+            editor.PerformFindText += editor_PerformFindText;
+            editor.PerformReplaceText += editor_PerformReplaceText;
 
             editor.TextEditorProperties.Font = Settings.Default.TextEditorFont;
             editor.TextEditorProperties.ShowLineNumbers = Settings.Default.ShowLineNumbers;
@@ -91,14 +99,12 @@ namespace SandcastleBuilder.Gui.ContentEditors
             {
                 editor.LoadFile(filename);
 
-                ext = Path.GetExtension(filename).ToLower(
-                    CultureInfo.InvariantCulture);
+                ext = Path.GetExtension(filename).ToLower(CultureInfo.InvariantCulture);
 
-                if(ext == ".aml" || ext == ".topic" || ext == ".snippets" ||
-                  ext == ".tokens" || ext == ".content")
+                if(ext == ".aml" || ext == ".topic" || ext == ".snippets" || ext == ".tokens" || ext == ".content")
                     editor.SetHighlighting("XML");
 
-                editor.TextChanged += new EventHandler(editor_TextChanged);
+                editor.TextChanged += editor_TextChanged;
 
                 this.Text = Path.GetFileName(filename);
                 this.ToolTipText = filename;
@@ -106,8 +112,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             catch(Exception ex)
             {
                 this.Text = this.ToolTipText = "N/A";
-                MessageBox.Show("Unable to load file '" + filename +
-                    "'. Reason: " + ex.Message, "Topic Editor",
+                MessageBox.Show("Unable to load file '" + filename + "'. Reason: " + ex.Message, "Topic Editor",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -133,11 +138,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
                 if(!this.IsDirty)
                     return true;
 
-                DialogResult dr = MessageBox.Show("Do you want to save your " +
-                    "changes to '" + this.ToolTipText + "?  Click YES to " +
-                    "to save them, NO to discard them, or CANCEL to stay " +
-                    "here and make further changes.", "Topic Editor",
-                    MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question,
+                DialogResult dr = MessageBox.Show("Do you want to save your changes to '" + this.ToolTipText +
+                    "?  Click YES to to save them, NO to discard them, or CANCEL to stay here and make " +
+                    "further changes.", "Topic Editor", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question,
                     MessageBoxDefaultButton.Button3);
 
                 if(dr == DialogResult.Cancel)
@@ -187,8 +190,8 @@ namespace SandcastleBuilder.Gui.ContentEditors
             }
             catch(Exception ex)
             {
-                MessageBox.Show("Unable to save file.  Reason: " + ex.Message,
-                    "Topic Editor", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Unable to save file.  Reason: " + ex.Message, "Topic Editor",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             finally
@@ -203,12 +206,10 @@ namespace SandcastleBuilder.Gui.ContentEditors
             using(SaveFileDialog dlg = new SaveFileDialog())
             {
                 dlg.Title = "Save Content File As";
-                    dlg.Filter = "Project Files (*.aml, *.htm*, *.css, *.js, " +
-                        "*.content, *.sitemap, *.snippets, *.tokens, *.items)|*.aml;" +
-                        "*.htm*;*.css;*.js;*.content;*.sitemap;*.tokens;" +
-                        "*.snippets;*.items|Content Files (*.aml, *.htm*)|*.aml;*.htm*|" +
-                        "Content Layout Files (*.content, *.sitemap)|" +
-                        "*.content;*.sitemap|All Files (*.*)|*.*";
+                dlg.Filter = "Project Files (*.aml, *.htm*, *.css, *.js, *.content, *.sitemap, " +
+                    "*.snippets, *.tokens, *.items)|*.aml;*.htm*;*.css;*.js;*.content;*.sitemap;*.tokens;" +
+                    "*.snippets;*.items|Content Files (*.aml, *.htm*)|*.aml;*.htm*|Content Layout Files " +
+                    "(*.content, *.sitemap)|*.content;*.sitemap|All Files (*.*)|*.*";
                 dlg.DefaultExt = Path.GetExtension(this.ToolTipText);
                 dlg.InitialDirectory = Directory.GetCurrentDirectory();
 
@@ -415,9 +416,8 @@ namespace SandcastleBuilder.Gui.ContentEditors
         #region Toolbar event handlers
         //=====================================================================
 
-        // NOTE: Each method calls editor.Focus() to refocus the editor
-        // control.  If not done, the cursor occasionally disappears if the
-        // toolbar buttons are clicked or double-clicked in a certain way.
+        // NOTE: Each method calls editor.Focus() to refocus the editor control.  If not done, the cursor
+        // occasionally disappears if the toolbar buttons are clicked or double-clicked in a certain way.
         // Usually it's after using the "para" toolbar dropdown.
 
         /// <summary>
@@ -513,11 +513,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
             else
                 selectedText = "link text";
 
-            ContentEditorControl.InsertString(textArea,
-                "<externalLink>\r\n<linkText>" + selectedText +
-                "</linkText>\r\n<linkAlternateText>Optional alternate text" +
-                "</linkAlternateText>\r\n<linkUri>http://www.url.com" +
-                "</linkUri>\r\n<linkTarget>_blank</linkTarget>\r\n" +
+            ContentEditorControl.InsertString(textArea, "<externalLink>\r\n<linkText>" + selectedText +
+                "</linkText>\r\n<linkAlternateText>Optional alternate text</linkAlternateText>\r\n" +
+                "<linkUri>http://www.url.com</linkUri>\r\n<linkTarget>_blank</linkTarget>\r\n" +
                 "</externalLink>\r\n");
             editor.Focus();
         }
@@ -552,8 +550,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             else
                 selectedText = "Alert text";
 
-            ContentEditorControl.InsertString(textArea,
-                "\r\n<alert class=\"note\">\r\n  <para>" + selectedText +
+            ContentEditorControl.InsertString(textArea, "\r\n<alert class=\"note\">\r\n  <para>" + selectedText +
                 "</para>\r\n</alert>\r\n");
             editor.Focus();
             this.TrackLastInsertedElement(sender as ToolStripMenuItem);
@@ -568,8 +565,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         {
             TextArea textArea = editor.ActiveTextAreaControl.TextArea;
 
-            ContentEditorControl.InsertString(textArea, "\r\n<code " +
-                "language=\"cs\">\r\n/// Code\r\n</code>\r\n");
+            ContentEditorControl.InsertString(textArea, "\r\n<code language=\"cs\">\r\n/// Code\r\n</code>\r\n");
             editor.Focus();
             this.TrackLastInsertedElement(sender as ToolStripMenuItem);
         }
@@ -601,10 +597,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
         {
             TextArea textArea = editor.ActiveTextAreaControl.TextArea;
 
-            ContentEditorControl.InsertString(textArea,
-                "\r\n<section address=\"optionalAddress\">\r\n" +
-                "  <title>Title</title>\r\n  <content>\r\n    <para>Content " +
-                "goes here</para>\r\n  </content>\r\n</section>\r\n");
+            ContentEditorControl.InsertString(textArea, "\r\n<section address=\"optionalAddress\">\r\n" +
+                "  <title>Title</title>\r\n  <content>\r\n    <para>Content goes here</para>\r\n" +
+                "  </content>\r\n</section>\r\n");
             editor.Focus();
             this.TrackLastInsertedElement(sender as ToolStripMenuItem);
         }
@@ -701,11 +696,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
                 if(!findWindow.ShowReplaceControls(false) &&
                   !String.IsNullOrEmpty(findWindow.FindText))
                 {
-                    if(!this.FindText(findWindow.FindText,
-                      findWindow.CaseSensitive))
-                        MessageBox.Show("The specified text was not found",
-                            Constants.AppName, MessageBoxButtons.OK,
-                            MessageBoxIcon.Exclamation);
+                    if(!this.FindText(findWindow.FindText, findWindow.CaseSensitive))
+                        MessageBox.Show("The specified text was not found", Constants.AppName,
+                            MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
                 else
                     findWindow.Activate();
@@ -742,10 +735,8 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
             if(findWindow != null && findWindow.Visible)
             {
-                if(findWindow.ShowReplaceControls(true) &&
-                  !String.IsNullOrEmpty(findWindow.FindText))
-                    this.ReplaceText(findWindow.FindText, findWindow.ReplaceWith,
-                        findWindow.CaseSensitive);
+                if(findWindow.ShowReplaceControls(true) && !String.IsNullOrEmpty(findWindow.FindText))
+                    this.ReplaceText(findWindow.FindText, findWindow.ReplaceWith, findWindow.CaseSensitive);
                 else
                     findWindow.Activate();
             }
@@ -774,8 +765,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         {
             TextLocation start, end;
             TextArea textArea = editor.ActiveTextAreaControl.TextArea;
-            StringComparison comparisonType = (caseSensitive) ?
-                StringComparison.CurrentCulture :
+            StringComparison comparisonType = (caseSensitive) ? StringComparison.CurrentCulture :
                 StringComparison.CurrentCultureIgnoreCase;
             string text = textArea.Document.GetText(0, textArea.Document.TextLength);
             int pos, offset = textArea.Caret.Offset;
@@ -810,12 +800,10 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// <param name="caseSensitive">True to do a case-sensitive search
         /// or false to do a case-insensitive search</param>
         /// <returns>True if the text is found and replaced, false if not</returns>
-        public bool ReplaceText(string textToFind, string replaceWith,
-            bool caseSensitive)
+        public bool ReplaceText(string textToFind, string replaceWith, bool caseSensitive)
         {
             TextArea textArea = editor.ActiveTextAreaControl.TextArea;
-            StringComparison comparisonType = (caseSensitive) ?
-                StringComparison.CurrentCulture :
+            StringComparison comparisonType = (caseSensitive) ? StringComparison.CurrentCulture :
                 StringComparison.CurrentCultureIgnoreCase;
             string text = textArea.Document.GetText(0, textArea.Document.TextLength);
             int offset;
@@ -830,12 +818,10 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // the instance at the cursor.
             offset = textArea.Caret.Offset - textToFind.Length;
 
-            if(offset >= 0 && String.Compare(text, offset, textToFind, 0,
-              textToFind.Length, comparisonType) == 0)
+            if(offset >= 0 && String.Compare(text, offset, textToFind, 0, textToFind.Length, comparisonType) == 0)
             {
                 textArea.Document.Replace(offset, textToFind.Length, replaceWith);
-                textArea.Caret.Position = textArea.Document.OffsetToPosition(
-                    offset + replaceWith.Length);
+                textArea.Caret.Position = textArea.Document.OffsetToPosition(offset + replaceWith.Length);
             }
 
             // Find the next occurence, if any
@@ -851,8 +837,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// <param name="caseSensitive">True to do a case-sensitive search
         /// or false to do a case-insensitive search</param>
         /// <returns>True if replacements were made, false if not</returns>
-        public bool ReplaceAll(string textToFind, string replaceWith,
-            bool caseSensitive)
+        public bool ReplaceAll(string textToFind, string replaceWith, bool caseSensitive)
         {
             TextArea textArea = editor.ActiveTextAreaControl.TextArea;
             bool nextFound;
@@ -867,8 +852,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
             do
             {
-                nextFound = this.ReplaceText(textToFind, replaceWith,
-                    caseSensitive);
+                nextFound = this.ReplaceText(textToFind, replaceWith, caseSensitive);
 
             } while(offset < textArea.Caret.Offset && nextFound);
 
