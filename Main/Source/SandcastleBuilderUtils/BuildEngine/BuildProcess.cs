@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/21/2011
-// Note    : Copyright 2006-2011, Eric Woodruff, All rights reserved
+// Updated : 02/06/2012
+// Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the thread class that handles all aspects of the build
@@ -1826,9 +1826,9 @@ AllDone:
 
                 case HelpFileFormat.MSHelpViewer:
                     patterns[0] = project.HtmlHelpName + "*.msh?";
-                    patterns[1] = project.HtmlHelpName + "Install_*.bat";
-                    patterns[2] = project.HtmlHelpName + "Remove_*.bat";
-                    patterns[3] = project.HtmlHelpName + "HelpLibraryManagerLauncher.exe";
+                    patterns[1] = "Install_" + project.HtmlHelpName + "*.bat";
+                    patterns[2] = "Remove_" + project.HtmlHelpName + "*.bat";
+                    patterns[3] = "HelpLibraryManagerLauncher.exe";
                     break;
 
                 default:    // Website

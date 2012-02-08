@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : TopicPreviewerToolWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/22/2012
+// Updated : 02/05/2012
 // Note    : Copyright 2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -90,7 +90,7 @@ namespace SandcastleBuilder.Package.ToolWindows
               ucTopicPreviewer.CurrentProject.Filename != project.Filename)
                 ucTopicPreviewer.CurrentProject = project;
 
-            ucTopicPreviewer.Refresh();
+            ucTopicPreviewer.Refresh(false);
             ucTopicPreviewer.FindAndDisplay(previewTopic);
         }
         #endregion

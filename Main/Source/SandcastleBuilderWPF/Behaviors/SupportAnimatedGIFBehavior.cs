@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : SupportAnimatedGIFBehavior.cs
 // Author  : Elad Malki
-// Updated : 01/27/2012
+// Updated : 02/05/2012
 // Source  : http://eladm.wordpress.com/2009/04/02/animated-gif-support-behavior/
 // Note    : Copyright 2009-2012, Elad Malki, All rights reserved
 // Compiler: Microsoft Visual C#
@@ -42,7 +42,7 @@ namespace SandcastleBuilder.WPF.Behaviors
         #region SupportAnimatedGif Attached Property
 
         /// <summary>
-        /// This defines the <see cref="P:SandcastleBuilder.WPF.Behaviors.SupportAnimatedGIFBehavior.IsBroughtIntoViewWhenSelected"/>
+        /// This defines the <see cref="P:SandcastleBuilder.WPF.Behaviors.SupportAnimatedGIFBehavior.SupportAnimatedGif"/>
         /// attached property.
         /// </summary>
         /// <AttachedPropertyComments>

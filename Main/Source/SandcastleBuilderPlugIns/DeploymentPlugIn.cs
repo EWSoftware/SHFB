@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : DeploymentPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/04/2011
-// Note    : Copyright 2007-2011, Eric Woodruff, All rights reserved
+// Updated : 02/06/2012
+// Note    : Copyright 2007-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a plug-in that can be used to deploy the resulting help
@@ -49,19 +49,19 @@ namespace SandcastleBuilder.PlugIns
     public class DeploymentPlugIn : IPlugIn
     {
         #region Private data members
+        //=====================================================================
+
         private ExecutionPointCollection executionPoints;
 
         private BuildProcess builder;
 
         // Plug-in configuration options
-        private DeploymentLocation deployHelp1, deployHelp2, deployHelpViewer,
-            deployWebsite;
-        private bool deleteAfterDeploy;
+        private DeploymentLocation deployHelp1, deployHelp2, deployHelpViewer, deployWebsite;
+        private bool deleteAfterDeploy, renameMSHA;
         #endregion
 
         #region IPlugIn implementation
         //=====================================================================
-        // IPlugIn implementation
 
         /// <summary>
         /// This read-only property returns a friendly name for the plug-in
@@ -80,8 +80,7 @@ namespace SandcastleBuilder.PlugIns
             {
                 // Use the assembly version
                 Assembly asm = Assembly.GetExecutingAssembly();
-                FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(
-                    asm.Location);
+                FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(asm.Location);
 
                 return new Version(fvi.ProductVersion);
             }
@@ -98,8 +97,8 @@ namespace SandcastleBuilder.PlugIns
                 // Use the assembly copyright
                 Assembly asm = Assembly.GetExecutingAssembly();
                 AssemblyCopyrightAttribute copyright =
-                    (AssemblyCopyrightAttribute)Attribute.GetCustomAttribute(
-                        asm, typeof(AssemblyCopyrightAttribute));
+                    (AssemblyCopyrightAttribute)Attribute.GetCustomAttribute(asm,
+                        typeof(AssemblyCopyrightAttribute));
 
                 return copyright.Copyright;
             }
@@ -112,9 +111,8 @@ namespace SandcastleBuilder.PlugIns
         {
             get
             {
-                return "This plug-in is used to deploy the resulting help " +
-                    "file output to a location other than the output folder " +
-                    "(i.e. a file share, a web server, an FTP site, etc.).";
+                return "This plug-in is used to deploy the resulting help file output to a location " +
+                    "other than the output folder (i.e. a file share, a web server, an FTP site, etc.).";
             }
         }
 
@@ -142,11 +140,9 @@ namespace SandcastleBuilder.PlugIns
                     // This plug-in has a lower priority as it should execute
                     // after all other plug-ins in case they add other files
                     // to the set.
-                    executionPoints.Add(new ExecutionPoint(
-                        BuildStep.CompilingHelpFile,
+                    executionPoints.Add(new ExecutionPoint(BuildStep.CompilingHelpFile,
                         ExecutionBehaviors.After, 200));
-                    executionPoints.Add(new ExecutionPoint(
-                        BuildStep.CopyingWebsiteFiles,
+                    executionPoints.Add(new ExecutionPoint(BuildStep.CopyingWebsiteFiles,
                         ExecutionBehaviors.After, 200));
                 }
 
@@ -163,11 +159,9 @@ namespace SandcastleBuilder.PlugIns
         /// <returns>A string containing the new configuration XML fragment</returns>
         /// <remarks>The configuration data will be stored in the help file
         /// builder project.</remarks>
-        public string ConfigurePlugIn(SandcastleProject project,
-          string currentConfig)
+        public string ConfigurePlugIn(SandcastleProject project, string currentConfig)
         {
-            using(DeploymentConfigDlg dlg = new DeploymentConfigDlg(
-              currentConfig))
+            using(DeploymentConfigDlg dlg = new DeploymentConfigDlg(currentConfig))
             {
                 if(dlg.ShowDialog() == DialogResult.OK)
                     currentConfig = dlg.Configuration;
@@ -186,65 +180,63 @@ namespace SandcastleBuilder.PlugIns
         /// should use to initialize itself.</param>
         /// <exception cref="BuilderException">This is thrown if the plug-in
         /// configuration is not valid.</exception>
-        public void Initialize(BuildProcess buildProcess,
-          XPathNavigator configuration)
+        public void Initialize(BuildProcess buildProcess, XPathNavigator configuration)
         {
-            XPathNavigator root;
+            XPathNavigator root, msHelpViewer;
             string value;
 
             builder = buildProcess;
 
-            builder.ReportProgress("{0} Version {1}\r\n{2}",
-                this.Name, this.Version, this.Copyright);
+            builder.ReportProgress("{0} Version {1}\r\n{2}", this.Name, this.Version, this.Copyright);
 
             root = configuration.SelectSingleNode("configuration");
             value = root.GetAttribute("deleteAfterDeploy", String.Empty);
 
             if(!String.IsNullOrEmpty(value))
-                deleteAfterDeploy = Convert.ToBoolean(value,
-                    CultureInfo.InvariantCulture);
+                deleteAfterDeploy = Convert.ToBoolean(value, CultureInfo.InvariantCulture);
 
             if(root.IsEmptyElement)
-                throw new BuilderException("ODP0001", "The Output Deployment " +
-                    "plug-in has not been configured yet");
+                throw new BuilderException("ODP0001", "The Output Deployment plug-in has not been " +
+                    "configured yet");
 
             deployHelp1 = DeploymentLocation.FromXPathNavigator(root, "help1x");
             deployHelp2 = DeploymentLocation.FromXPathNavigator(root, "help2x");
             deployHelpViewer = DeploymentLocation.FromXPathNavigator(root, "helpViewer");
             deployWebsite = DeploymentLocation.FromXPathNavigator(root, "website");
 
+            msHelpViewer = root.SelectSingleNode("deploymentLocation[@id='helpViewer']");
+
+            if(msHelpViewer == null || !Boolean.TryParse(
+              msHelpViewer.GetAttribute("renameMSHA", String.Empty).Trim(), out renameMSHA))
+                renameMSHA = false;
+
             // At least one deployment location must be defined
             if(deployHelp1.Location == null && deployHelp2.Location == null &&
               deployHelpViewer.Location == null && deployWebsite.Location == null)
-                throw new BuilderException("ODP0002", "The output deployment " +
-                    "plug-in must have at least one configured deployment " +
-                    "location");
+                throw new BuilderException("ODP0002", "The output deployment plug-in must have at least " +
+                    "one configured deployment location");
 
             // Issue a warning if the deployment location is null and the
             // associated help file format is active.
             if(deployHelp1.Location == null &&
               (builder.CurrentProject.HelpFileFormat & HelpFileFormat.HtmlHelp1) != 0)
-                builder.ReportWarning("ODP0003", "HTML Help 1 will be generated " +
-                    "but not deployed due to missing deployment location " +
-                    "information");
+                builder.ReportWarning("ODP0003", "HTML Help 1 will be generated but not deployed due to " +
+                    "missing deployment location information");
 
             if(deployHelp2.Location == null &&
               (builder.CurrentProject.HelpFileFormat & HelpFileFormat.MSHelp2) != 0)
-                builder.ReportWarning("ODP0003", "MS Help 2 will be generated " +
-                    "but not deployed due to missing deployment location " +
-                    "information");
+                builder.ReportWarning("ODP0003", "MS Help 2 will be generated but not deployed due to " +
+                    "missing deployment location information");
 
             if(deployHelpViewer.Location == null &&
               (builder.CurrentProject.HelpFileFormat & HelpFileFormat.MSHelpViewer) != 0)
-                builder.ReportWarning("ODP0003", "MS Help Viewer will be generated " +
-                    "but not deployed due to missing deployment location " +
-                    "information");
+                builder.ReportWarning("ODP0003", "MS Help Viewer will be generated but not deployed due " +
+                    "to missing deployment location information");
 
             if(deployWebsite.Location == null &&
               (builder.CurrentProject.HelpFileFormat & HelpFileFormat.Website) != 0)
-                builder.ReportWarning("ODP0003", "Website will be generated " +
-                    "but not deployed due to missing deployment location " +
-                    "information");
+                builder.ReportWarning("ODP0003", "Website will be generated but not deployed due to " +
+                    "missing deployment location information");
         }
 
         /// <summary>
@@ -286,8 +278,7 @@ namespace SandcastleBuilder.PlugIns
         /// </summary>
         /// <param name="files">The list of files to deploy</param>
         /// <param name="location">The deployment location</param>
-        private void DeployOutput(Collection<string> files,
-          DeploymentLocation location)
+        private void DeployOutput(Collection<string> files, DeploymentLocation location)
         {
             WebClient webClient = null;
             Uri destUri, target = location.Location;
@@ -326,31 +317,32 @@ namespace SandcastleBuilder.PlugIns
                                 location.UserCredentials.UserName,
                                 location.UserCredentials.Password);
 
-                        webClient.CachePolicy = new RequestCachePolicy(
-                            RequestCacheLevel.NoCacheNoStore);
+                        webClient.CachePolicy = new RequestCachePolicy(RequestCacheLevel.NoCacheNoStore);
 
                         if(location.ProxyCredentials.UseProxyServer)
                         {
-                            webClient.Proxy = new WebProxy(
-                                location.ProxyCredentials.ProxyServer, true);
+                            webClient.Proxy = new WebProxy(location.ProxyCredentials.ProxyServer, true);
 
                             if(!location.ProxyCredentials.Credentials.UseDefaultCredentials)
-                                webClient.Proxy.Credentials =
-                                    new NetworkCredential(
-                                        location.ProxyCredentials.Credentials.UserName,
-                                        location.ProxyCredentials.Credentials.Password);
+                                webClient.Proxy.Credentials = new NetworkCredential(
+                                    location.ProxyCredentials.Credentials.UserName,
+                                    location.ProxyCredentials.Credentials.Password);
                         }
                     }
 
                 foreach(string sourceFile in files)
                 {
-                    destFile = Path.Combine(rootPath,
-                        sourceFile.Substring(basePathLength));
+                    destFile = Path.Combine(rootPath, sourceFile.Substring(basePathLength));
+
+                    // Rename MSHA file?  Note that if renamed and there is more than one, the last one
+                    // copied wins.  This really only applies to MS Help Viewer output but it's the only
+                    // unique option so we'll do it in all cases for now.
+                    if(Path.GetExtension(destFile).Equals(".msha", StringComparison.OrdinalIgnoreCase) && renameMSHA)
+                        destFile = Path.Combine(Path.GetDirectoryName(destFile), "HelpContentSetup.msha");
 
                     if(webClient == null)
                     {
-                        builder.ReportProgress("    Deploying {0} to {1}",
-                            sourceFile, destFile);
+                        builder.ReportProgress("    Deploying {0} to {1}", sourceFile, destFile);
 
                         destPath = Path.GetDirectoryName(destFile);
 
@@ -362,8 +354,7 @@ namespace SandcastleBuilder.PlugIns
                     else
                     {
                         destUri = new Uri(destFile);
-                        builder.ReportProgress("    Deploying {0} to {1}",
-                            sourceFile, destUri);
+                        builder.ReportProgress("    Deploying {0} to {1}", sourceFile, destUri);
 
                         webClient.UploadFile(destUri, sourceFile);
                     }

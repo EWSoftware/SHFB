@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 
 namespace TestDoc
 {
@@ -104,7 +105,7 @@ namespace TestDoc
 
         #region Properties
         /// <summary>
-        /// A public property
+        /// A public property.  The getter and setter have a description attribute.
         /// </summary>
         /// <value>If the value is <see cref="String.Empty"/>, blah blah blah.</value>
         /// <remarks>// Die Fehlermeldung an den ScriptManager übergeben</remarks>
@@ -189,6 +190,25 @@ namespace TestDoc
             get { return false; }
         }
 
+        /// <summary>
+        /// An automatic property with a private setter
+        /// </summary>
+        /// <remarks>The visibility should be indicated in the syntax section</remarks>
+        public string AutoPropertyPrivateSetter
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// An automatic property with a protected getter (bad example but it's just a test)
+        /// </summary>
+        /// <remarks>The visibility should be indicated in the syntax section</remarks>
+        public string AutoPropertyProtectedGetter
+        {
+            protected get;
+            set;
+        }
         #endregion
 
         #region Events
@@ -522,6 +542,47 @@ namespace TestDoc
                 sum += value;
 
             return sum;
+        }
+        #endregion
+
+        #region Optional arguments test
+        //=====================================================================
+
+        /// <summary>
+        /// .NET 4.0 optional arguments test.  The June 2010 and earlier releases of Sandcastle
+        /// do not support optional argument values in the syntax section.
+        /// </summary>
+        public void DoSomethingUseful(int value, string testString = "Hello", bool isUsed = true,
+          float smallAmount = 2.55f, double? amount = null)
+        {
+        }
+        #endregion
+
+        #region Attribute value test
+        //=====================================================================
+
+        /// <summary>
+        /// The June 2010 and earlier releases of Sandcastle do not support numeric attribute values
+        /// in the syntax sections.
+        /// </summary>
+        [DummyAttribute(
+            ObjectValue = null,
+            TypeValue = typeof(TestClass),
+            EnumValue = KnownColor.Blue,
+            StringValue = "Hello World",
+            BoolValue = true,
+            ByteValue = 0x1F,
+            CharValue = 'X',
+            ShortValue = Int16.MaxValue,
+            IntegerValue = Int32.MaxValue,
+            LongValue = Int64.MaxValue,
+            FloatValue = 2.55f,
+            DoubleValue = 1234.56789d,
+            UnsignedIntegerValue = UInt32.MaxValue,
+            IntArrayValue = new[] { 1, 2, 3, 4 }
+            )]
+        public void AttributeValueTest()
+        {
         }
         #endregion
 

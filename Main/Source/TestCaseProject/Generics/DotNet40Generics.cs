@@ -44,7 +44,7 @@ namespace TestDoc.Generics.MissingMembersBug
     /// This is to test the fix related to missing member documentation due
     /// to an incorrect framework path setting being passed to MRefBuilder.
     /// </summary>
-    public static class DelegageMemberIssues
+    public static class DelegateMemberIssues
     {
         /// <summary>
         /// Invokes a handler on each <see cref="Exception"/> contained by this <see cref="AggregateException"/>.

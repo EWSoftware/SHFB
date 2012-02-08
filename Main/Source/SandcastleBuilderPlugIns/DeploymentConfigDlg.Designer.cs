@@ -36,14 +36,15 @@ namespace SandcastleBuilder.PlugIns
             this.epErrors = new System.Windows.Forms.ErrorProvider(this.components);
             this.tabConfig = new System.Windows.Forms.TabControl();
             this.pgHtmlHelp1 = new System.Windows.Forms.TabPage();
-            this.pgMSHelp2 = new System.Windows.Forms.TabPage();
-            this.pgMSHelpViewer = new System.Windows.Forms.TabPage();
-            this.pgWebsite = new System.Windows.Forms.TabPage();
-            this.chkDeleteAfterDeploy = new System.Windows.Forms.CheckBox();
             this.ucHtmlHelp1 = new SandcastleBuilder.PlugIns.DeploymentConfigUserControl();
+            this.pgMSHelp2 = new System.Windows.Forms.TabPage();
             this.ucMSHelp2 = new SandcastleBuilder.PlugIns.DeploymentConfigUserControl();
+            this.pgMSHelpViewer = new System.Windows.Forms.TabPage();
             this.ucMSHelpViewer = new SandcastleBuilder.PlugIns.DeploymentConfigUserControl();
+            this.pgWebsite = new System.Windows.Forms.TabPage();
             this.ucWebsite = new SandcastleBuilder.PlugIns.DeploymentConfigUserControl();
+            this.chkDeleteAfterDeploy = new System.Windows.Forms.CheckBox();
+            this.chkRenameMSHA = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.epErrors)).BeginInit();
             this.tabConfig.SuspendLayout();
             this.pgHtmlHelp1.SuspendLayout();
@@ -55,7 +56,7 @@ namespace SandcastleBuilder.PlugIns
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(538, 357);
+            this.btnCancel.Location = new System.Drawing.Point(538, 379);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(88, 32);
             this.btnCancel.TabIndex = 3;
@@ -66,7 +67,7 @@ namespace SandcastleBuilder.PlugIns
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(12, 357);
+            this.btnOK.Location = new System.Drawing.Point(12, 379);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(88, 32);
             this.btnOK.TabIndex = 2;
@@ -77,7 +78,7 @@ namespace SandcastleBuilder.PlugIns
             // 
             // lnkCodePlexSHFB
             // 
-            this.lnkCodePlexSHFB.Location = new System.Drawing.Point(210, 362);
+            this.lnkCodePlexSHFB.Location = new System.Drawing.Point(210, 384);
             this.lnkCodePlexSHFB.Name = "lnkCodePlexSHFB";
             this.lnkCodePlexSHFB.Size = new System.Drawing.Size(218, 23);
             this.lnkCodePlexSHFB.TabIndex = 4;
@@ -100,7 +101,7 @@ namespace SandcastleBuilder.PlugIns
             this.tabConfig.Location = new System.Drawing.Point(12, 42);
             this.tabConfig.Name = "tabConfig";
             this.tabConfig.SelectedIndex = 0;
-            this.tabConfig.Size = new System.Drawing.Size(614, 310);
+            this.tabConfig.Size = new System.Drawing.Size(614, 331);
             this.tabConfig.TabIndex = 1;
             // 
             // pgHtmlHelp1
@@ -109,10 +110,17 @@ namespace SandcastleBuilder.PlugIns
             this.pgHtmlHelp1.Location = new System.Drawing.Point(4, 25);
             this.pgHtmlHelp1.Name = "pgHtmlHelp1";
             this.pgHtmlHelp1.Padding = new System.Windows.Forms.Padding(3);
-            this.pgHtmlHelp1.Size = new System.Drawing.Size(606, 281);
+            this.pgHtmlHelp1.Size = new System.Drawing.Size(606, 302);
             this.pgHtmlHelp1.TabIndex = 0;
             this.pgHtmlHelp1.Text = "HTML Help 1";
             this.pgHtmlHelp1.UseVisualStyleBackColor = true;
+            // 
+            // ucHtmlHelp1
+            // 
+            this.ucHtmlHelp1.Location = new System.Drawing.Point(5, 12);
+            this.ucHtmlHelp1.Name = "ucHtmlHelp1";
+            this.ucHtmlHelp1.Size = new System.Drawing.Size(596, 257);
+            this.ucHtmlHelp1.TabIndex = 0;
             // 
             // pgMSHelp2
             // 
@@ -120,21 +128,36 @@ namespace SandcastleBuilder.PlugIns
             this.pgMSHelp2.Location = new System.Drawing.Point(4, 25);
             this.pgMSHelp2.Name = "pgMSHelp2";
             this.pgMSHelp2.Padding = new System.Windows.Forms.Padding(3);
-            this.pgMSHelp2.Size = new System.Drawing.Size(606, 281);
+            this.pgMSHelp2.Size = new System.Drawing.Size(606, 302);
             this.pgMSHelp2.TabIndex = 1;
             this.pgMSHelp2.Text = "MS Help 2";
             this.pgMSHelp2.UseVisualStyleBackColor = true;
             // 
+            // ucMSHelp2
+            // 
+            this.ucMSHelp2.Location = new System.Drawing.Point(5, 12);
+            this.ucMSHelp2.Name = "ucMSHelp2";
+            this.ucMSHelp2.Size = new System.Drawing.Size(596, 257);
+            this.ucMSHelp2.TabIndex = 0;
+            // 
             // pgMSHelpViewer
-            //
+            // 
+            this.pgMSHelpViewer.Controls.Add(this.chkRenameMSHA);
             this.pgMSHelpViewer.Controls.Add(this.ucMSHelpViewer);
             this.pgMSHelpViewer.Location = new System.Drawing.Point(4, 25);
             this.pgMSHelpViewer.Name = "pgMSHelpViewer";
             this.pgMSHelpViewer.Padding = new System.Windows.Forms.Padding(3);
-            this.pgMSHelpViewer.Size = new System.Drawing.Size(606, 281);
+            this.pgMSHelpViewer.Size = new System.Drawing.Size(606, 302);
             this.pgMSHelpViewer.TabIndex = 3;
             this.pgMSHelpViewer.Text = "MS Help Viewer";
             this.pgMSHelpViewer.UseVisualStyleBackColor = true;
+            // 
+            // ucMSHelpViewer
+            // 
+            this.ucMSHelpViewer.Location = new System.Drawing.Point(5, 12);
+            this.ucMSHelpViewer.Name = "ucMSHelpViewer";
+            this.ucMSHelpViewer.Size = new System.Drawing.Size(596, 257);
+            this.ucMSHelpViewer.TabIndex = 0;
             // 
             // pgWebsite
             // 
@@ -142,10 +165,17 @@ namespace SandcastleBuilder.PlugIns
             this.pgWebsite.Location = new System.Drawing.Point(4, 25);
             this.pgWebsite.Name = "pgWebsite";
             this.pgWebsite.Padding = new System.Windows.Forms.Padding(3);
-            this.pgWebsite.Size = new System.Drawing.Size(606, 281);
+            this.pgWebsite.Size = new System.Drawing.Size(606, 302);
             this.pgWebsite.TabIndex = 2;
             this.pgWebsite.Text = "Website";
             this.pgWebsite.UseVisualStyleBackColor = true;
+            // 
+            // ucWebsite
+            // 
+            this.ucWebsite.Location = new System.Drawing.Point(5, 12);
+            this.ucWebsite.Name = "ucWebsite";
+            this.ucWebsite.Size = new System.Drawing.Size(596, 257);
+            this.ucWebsite.TabIndex = 0;
             // 
             // chkDeleteAfterDeploy
             // 
@@ -156,40 +186,22 @@ namespace SandcastleBuilder.PlugIns
             this.chkDeleteAfterDeploy.Text = "Delete source files &after deploying them";
             this.chkDeleteAfterDeploy.UseVisualStyleBackColor = true;
             // 
-            // ucHtmlHelp1
+            // chkRenameMSHA
             // 
-            this.ucHtmlHelp1.Location = new System.Drawing.Point(5, 12);
-            this.ucHtmlHelp1.Name = "ucHtmlHelp1";
-            this.ucHtmlHelp1.Size = new System.Drawing.Size(596, 257);
-            this.ucHtmlHelp1.TabIndex = 0;
-            // 
-            // ucMSHelp2
-            // 
-            this.ucMSHelp2.Location = new System.Drawing.Point(5, 12);
-            this.ucMSHelp2.Name = "ucMSHelp2";
-            this.ucMSHelp2.Size = new System.Drawing.Size(596, 257);
-            this.ucMSHelp2.TabIndex = 0;
-            // 
-            // ucMSHelpViewer
-            // 
-            this.ucMSHelpViewer.Location = new System.Drawing.Point(5, 12);
-            this.ucMSHelpViewer.Name = "ucMSHelpViewer";
-            this.ucMSHelpViewer.Size = new System.Drawing.Size(596, 257);
-            this.ucMSHelpViewer.TabIndex = 0;
-            // 
-            // ucWebsite
-            // 
-            this.ucWebsite.Location = new System.Drawing.Point(5, 12);
-            this.ucWebsite.Name = "ucWebsite";
-            this.ucWebsite.Size = new System.Drawing.Size(596, 257);
-            this.ucWebsite.TabIndex = 0;
+            this.chkRenameMSHA.AutoSize = true;
+            this.chkRenameMSHA.Location = new System.Drawing.Point(93, 275);
+            this.chkRenameMSHA.Name = "chkRenameMSHA";
+            this.chkRenameMSHA.Size = new System.Drawing.Size(420, 21);
+            this.chkRenameMSHA.TabIndex = 1;
+            this.chkRenameMSHA.Text = "Rename MSHA file to HelpContentSetup.msha when deployed";
+            this.chkRenameMSHA.UseVisualStyleBackColor = true;
             // 
             // DeploymentConfigDlg
             // 
             this.AcceptButton = this.btnOK;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(638, 401);
+            this.ClientSize = new System.Drawing.Size(638, 423);
             this.Controls.Add(this.chkDeleteAfterDeploy);
             this.Controls.Add(this.tabConfig);
             this.Controls.Add(this.lnkCodePlexSHFB);
@@ -207,6 +219,7 @@ namespace SandcastleBuilder.PlugIns
             this.pgHtmlHelp1.ResumeLayout(false);
             this.pgMSHelp2.ResumeLayout(false);
             this.pgMSHelpViewer.ResumeLayout(false);
+            this.pgMSHelpViewer.PerformLayout();
             this.pgWebsite.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -229,5 +242,6 @@ namespace SandcastleBuilder.PlugIns
         private DeploymentConfigUserControl ucMSHelp2;
         private DeploymentConfigUserControl ucMSHelpViewer;
         private DeploymentConfigUserControl ucWebsite;
+        private System.Windows.Forms.CheckBox chkRenameMSHA;
     }
 }

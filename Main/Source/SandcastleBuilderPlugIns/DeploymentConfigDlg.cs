@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : DeploymentConfigDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/27/2009
-// Note    : Copyright 2007-2009, Eric Woodruff, All rights reserved
+// Updated : 02/06/2012
+// Note    : Copyright 2007-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a form that is used to configure the settings for the
@@ -19,6 +19,7 @@
 // ============================================================================
 // 1.5.2.0  09/24/2007  EFW  Created the code
 // 1.8.0.3  07/05/2009  EFW  Added support for MS Help Viewer deployment
+// 1.9.4.0  02/06/2012  EFW  Added support for renaming MSHA file
 //=============================================================================
 
 using System;
@@ -65,8 +66,9 @@ namespace SandcastleBuilder.PlugIns
         /// XML fragment</param>
         public DeploymentConfigDlg(string currentConfig)
         {
-            XPathNavigator navigator, root;
+            XPathNavigator navigator, root, msHelpViewer;
             string value;
+            bool renameMSHA;
 
             InitializeComponent();
 
@@ -85,24 +87,29 @@ namespace SandcastleBuilder.PlugIns
             value = root.GetAttribute("deleteAfterDeploy", String.Empty);
 
             if(!String.IsNullOrEmpty(value))
-                chkDeleteAfterDeploy.Checked = Convert.ToBoolean(value,
-                    CultureInfo.InvariantCulture);
+                chkDeleteAfterDeploy.Checked = Convert.ToBoolean(value, CultureInfo.InvariantCulture);
 
             // Get HTML Help 1 deployment information
-            ucHtmlHelp1.LoadFromSettings(DeploymentLocation.FromXPathNavigator(
-                root, "help1x"));
+            ucHtmlHelp1.LoadFromSettings(DeploymentLocation.FromXPathNavigator(root, "help1x"));
 
             // Get MS Help 2 deployment information
-            ucMSHelp2.LoadFromSettings(DeploymentLocation.FromXPathNavigator(
-                root, "help2x"));
+            ucMSHelp2.LoadFromSettings(DeploymentLocation.FromXPathNavigator(root, "help2x"));
 
             // Get MS Help Viewer deployment information
-            ucMSHelpViewer.LoadFromSettings(DeploymentLocation.FromXPathNavigator(
-                root, "helpViewer"));
+            msHelpViewer = root.SelectSingleNode("deploymentLocation[@id='helpViewer']");
+
+            if(msHelpViewer != null)
+            {
+                if(!Boolean.TryParse(msHelpViewer.GetAttribute("renameMSHA", String.Empty).Trim(), out renameMSHA))
+                    renameMSHA = false;
+
+                chkRenameMSHA.Checked = renameMSHA;
+            }
+
+            ucMSHelpViewer.LoadFromSettings(DeploymentLocation.FromXPathNavigator(root, "helpViewer"));
 
             // Get website deployment information
-            ucWebsite.LoadFromSettings(DeploymentLocation.FromXPathNavigator(
-                root, "website"));
+            ucWebsite.LoadFromSettings(DeploymentLocation.FromXPathNavigator(root, "website"));
         }
         #endregion
 
@@ -135,8 +142,7 @@ namespace SandcastleBuilder.PlugIns
             catch(Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
-                MessageBox.Show("Unable to launch link target.  " +
-                    "Reason: " + ex.Message, Constants.AppName,
+                MessageBox.Show("Unable to launch link target.  Reason: " + ex.Message, Constants.AppName,
                     MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
@@ -149,7 +155,7 @@ namespace SandcastleBuilder.PlugIns
         private void btnOK_Click(object sender, EventArgs e)
         {
             XmlAttribute attr;
-            XmlNode root;
+            XmlNode root, mshv;
             DeploymentLocation htmlHelp1, msHelp2, msHelpViewer, website;
             bool isValid = true;
 
@@ -184,13 +190,12 @@ namespace SandcastleBuilder.PlugIns
                             isValid = false;
                         }
 
-            if(isValid && htmlHelp1.Location == null &&
-              msHelp2.Location == null && msHelpViewer.Location == null &&
-              website.Location == null)
+            if(isValid && htmlHelp1.Location == null && msHelp2.Location == null &&
+              msHelpViewer.Location == null && website.Location == null)
             {
                 tabConfig.SelectedIndex = 0;
-                epErrors.SetError(chkDeleteAfterDeploy, "At least one help " +
-                    "file format must have a target location specified");
+                epErrors.SetError(chkDeleteAfterDeploy, "At least one help file format must have a " +
+                    "target location specified");
                 isValid = false;
             }
 
@@ -207,13 +212,27 @@ namespace SandcastleBuilder.PlugIns
                 root.Attributes.Append(attr);
             }
 
-            attr.Value = chkDeleteAfterDeploy.Checked.ToString().ToLower(
-                CultureInfo.InvariantCulture);
+            attr.Value = chkDeleteAfterDeploy.Checked.ToString().ToLowerInvariant();
 
             htmlHelp1.ToXml(config, root, "help1x");
             msHelp2.ToXml(config, root, "help2x");
             msHelpViewer.ToXml(config, root, "helpViewer");
             website.ToXml(config, root, "website");
+
+            mshv = root.SelectSingleNode("deploymentLocation[@id='helpViewer']");
+
+            if(mshv != null)
+            {
+                attr = mshv.Attributes["renameMSHA"];
+
+                if(attr == null)
+                {
+                    attr = config.CreateAttribute("renameMSHA");
+                    mshv.Attributes.Append(attr);
+                }
+
+                attr.Value = chkRenameMSHA.Checked.ToString().ToLowerInvariant();
+            }
 
             this.DialogResult = DialogResult.OK;
             this.Close();

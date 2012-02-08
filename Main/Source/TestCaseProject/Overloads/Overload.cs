@@ -28,7 +28,7 @@ namespace TestDoc.Overloads
         }
 
         /// <summary>
-        /// A test of HTML tags in comment text.
+        /// A test of HTML tags in comment text
         /// </summary>
         /// <remarks>Test some common HTML tags:<br/><br/>Two breaks above.
         /// <hr/>Horizontal rules<hr/>

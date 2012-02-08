@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : TopicPreviewerControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/28/2012
+// Updated : 02/05/2012
 // Note    : Copyright 2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -149,7 +149,8 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <summary>
         /// Refresh the table of contents and the current topic to show any changes made to them
         /// </summary>
-        public void Refresh()
+        /// <param name="reloadLastTopic">True to reload the last topic, false to ignore it</param>
+        public void Refresh(bool reloadLastTopic)
         {
             TocEntry t = this.CurrentTopic;
 
@@ -157,8 +158,9 @@ namespace SandcastleBuilder.WPF.UserControls
             {
                 this.LoadTableOfContentsInfo();
 
-                // Go back to the last selected topic if it is still there
-                this.FindAndDisplay(t.SourceFile);
+                // Go back to the last selected topic if it is still there and wanted
+                if(reloadLastTopic)
+                    this.FindAndDisplay(t.SourceFile);
             }
         }
 
@@ -790,7 +792,7 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <param name="e">The event arguments</param>
         private void cmdRefresh_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            this.Refresh();
+            this.Refresh(true);
         }
         #endregion
     }

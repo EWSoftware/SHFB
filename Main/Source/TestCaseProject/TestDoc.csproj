@@ -78,9 +78,15 @@
     <Compile Include="DocumentationInheritance\AttachedEventsAndProperties.cs" />
     <Compile Include="DocumentationInheritance\CustomException.cs" />
     <Compile Include="DocumentationInheritance\GenericClass.cs" />
+    <Compile Include="DummyAttribute.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Generics\DotNet40Generics.cs" />
     <Compile Include="Generics\InterfaceFailure.cs" />
     <Compile Include="InterfaceTests\DerivedInterfaces.cs" />
+    <Compile Include="InteropBug\FixedKeywordBug.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="SealedOverrideBug\DerivedSealed.cs" />
     <Compile Include="DocumentationInheritance\DocumentationInheritance.cs" />
     <Compile Include="DocumentationInheritance\ExplicitImplementation.cs" />

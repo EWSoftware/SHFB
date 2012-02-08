@@ -15,7 +15,7 @@ HelpLibraryManagerLauncher.exe /product "{@CatalogProductId}" /version "{@Catalo
 REM The setup name must be HelpContentSetup.msha so make sure we copy the
 REM setup file to that name.  SHFB names it after the help file so that
 REM multiple files can be deployed to the same output older at build time.
-COPY /Y "{@HtmlHelpName}.msha" HelpContentSetup.msha
+IF EXIST "{@HtmlHelpName}.msha" COPY /Y "{@HtmlHelpName}.msha" HelpContentSetup.msha
 
 REM Install the new content.
 HelpLibraryManagerLauncher.exe /product "{@CatalogProductId}" /version "{@CatalogVersion}" /locale {@Locale} /brandingPackage Dev10.mshc /sourceMedia HelpContentSetup.msha
