@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.PurgeItems.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/06/2012
+// Updated : 02/09/2012
 // Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -274,6 +274,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 "T:System.ObsoleteAttribute",
                 "T:System.Runtime.CompilerServices.ExtensionAttribute",
                 "T:System.Runtime.CompilerServices.FixedBufferAttribute",
+                "T:System.Runtime.InteropServices.OptionalAttribute",
 
                 // AjaxDoc/Script# attributes
                 "T:System.AttachedPropertyAttribute",

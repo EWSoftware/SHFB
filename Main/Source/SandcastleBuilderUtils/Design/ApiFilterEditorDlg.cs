@@ -2,8 +2,8 @@
 // System  : EWSoftware Design Time Attributes and Editors
 // File    : ApiFilterEditorDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/15/2011
-// Note    : Copyright 2007-2011, Eric Woodruff, All rights reserved
+// Updated : 02/09/2012
+// Note    : Copyright 2007-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the form used to edit the API filter items.
@@ -628,25 +628,25 @@ namespace SandcastleBuilder.Utils.Design
                 Application.DoEvents();
                 tvApiList.BeginUpdate();
 
-                // Build a set of nodes to store the necessary information and
-                // sort it.
-                foreach(XmlNode nsNode in apisNode.SelectNodes(
-                    "api[starts-with(@id, 'N:')]"))
+                // Build a set of nodes to store the necessary information and sort it
+                foreach(XmlNode nsNode in apisNode.SelectNodes("api[starts-with(@id, 'N:')]"))
                 {
-                    nodeInfo = new NodeInfo(
-                        nsNode.Attributes["id"].Value.Substring(2),
+                    nodeInfo = new NodeInfo(nsNode.Attributes["id"].Value.Substring(2),
                         nsNode.Attributes["id"].Value.Substring(2));
                     nodeInfo.ApiNode = nsNode;
 
                     nodeList.Add(nodeInfo);
+
+                    // Classes with extension methods can show up in the system types too so we'll
+                    // filter them out below.
+                    existingIds.Add(nodeInfo.NodeText);
                 }
 
-                nodeList.Sort(
-                    delegate(NodeInfo x, NodeInfo y)
-                    {
-                        return String.Compare(x.NodeText, y.NodeText,
-                            StringComparison.CurrentCulture);
-                    });
+                nodeList.Sort((x, y) =>
+                {
+                    return String.Compare(x.NodeText, y.NodeText,
+                        StringComparison.CurrentCulture);
+                });
 
                 // Load the tree view with the namespaces for documented APIs
                 // as children of the first root node.
@@ -656,8 +656,7 @@ namespace SandcastleBuilder.Utils.Design
                     // reference to the node info in the tag.
                     node = new TreeNode(ni.NodeText);
                     node.Tag = ni;
-                    node.ImageIndex = node.SelectedImageIndex =
-                        (int)ApiEntryType.Namespace;
+                    node.ImageIndex = node.SelectedImageIndex = (int)ApiEntryType.Namespace;
 
                     // See if it's in the current filter
                     if(!buildFilterEntries.TryGetValue(ni.Id, out filter))
@@ -674,8 +673,7 @@ namespace SandcastleBuilder.Utils.Design
                             ni.IsProjectExclude = true;
                             node.Checked = false;
                             node.NodeFont = italicFont;
-                            node.ToolTipText = "Excluded via namespace " +
-                                "comments or an <exclude /> tag.";
+                            node.ToolTipText = "Excluded via namespace comments or an <exclude /> tag.";
                         }
                         else
                             node.Checked = filter.IsExposed;
@@ -702,12 +700,11 @@ namespace SandcastleBuilder.Utils.Design
 
                 // Build a set of nodes to store the necessary information and
                 // sort it.
-                foreach(XmlNode nsNode in apisNode.SelectNodes(
-                  "api/elements/element/containers/namespace"))
+                foreach(XmlNode nsNode in apisNode.SelectNodes("api/elements/element/containers/namespace"))
                 {
                     fullName = nsNode.Attributes["api"].Value.Substring(2);
 
-                    // Ignore overloads as noted above
+                    // Ignore existing IDs as noted above
                     if(existingIds.Add(fullName))
                     {
                         nodeInfo = new NodeInfo(fullName, fullName);
@@ -717,12 +714,11 @@ namespace SandcastleBuilder.Utils.Design
                     }
                 }
 
-                nodeList.Sort(
-                    delegate(NodeInfo x, NodeInfo y)
-                    {
-                        return String.Compare(x.NodeText, y.NodeText,
-                            StringComparison.CurrentCulture);
-                    });
+                nodeList.Sort((x, y) =>
+                {
+                    return String.Compare(x.NodeText, y.NodeText,
+                        StringComparison.CurrentCulture);
+                });
 
                 // Load the tree view with the namespaces of inherited APIs as
                 // children of the second root node.
@@ -734,8 +730,7 @@ namespace SandcastleBuilder.Utils.Design
                     node.Tag = ni;
                     node.NodeFont = italicFont;
                     node.ToolTipText = "Namespace contains inherited types";
-                    node.ImageIndex = node.SelectedImageIndex =
-                        (int)ApiEntryType.Namespace;
+                    node.ImageIndex = node.SelectedImageIndex = (int)ApiEntryType.Namespace;
 
                     // See if it's in the current filter
                     if(!buildFilterEntries.TryGetValue(ni.Id, out filter))

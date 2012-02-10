@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.Runtime.InteropServices;
 
 namespace TestDoc
 {
@@ -105,7 +106,7 @@ namespace TestDoc
 
         #region Properties
         /// <summary>
-        /// A public property.  The getter and setter have a description attribute.
+        /// A public property.  The getter and setter have an attribute.
         /// </summary>
         /// <value>If the value is <see cref="String.Empty"/>, blah blah blah.</value>
         /// <remarks>// Die Fehlermeldung an den ScriptManager übergeben</remarks>
@@ -120,9 +121,9 @@ namespace TestDoc
         /// </example>
         public virtual string PublicProperty
         {
-            [Description("Test get attribute")]
+            [Dummy(StringValue = "Test get attribute")]
             get { return publicStringField; }
-            [Description("Test set attribute")]
+            [Dummy(StringValue = "Test set attribute", BoolValue = true)]
             set { publicStringField = value; }
         }
 
@@ -552,8 +553,9 @@ namespace TestDoc
         /// .NET 4.0 optional arguments test.  The June 2010 and earlier releases of Sandcastle
         /// do not support optional argument values in the syntax section.
         /// </summary>
-        public void DoSomethingUseful(int value, string testString = "Hello", bool isUsed = true,
-          float smallAmount = 2.55f, double? amount = null)
+        public void OptionalArgumentTest(int value, [Optional]int optionalByAttr,
+          string testString = "Hello", bool isUsed = true, float smallAmount = 2.55f,
+          double? amount = null)
         {
         }
         #endregion
@@ -577,7 +579,7 @@ namespace TestDoc
             IntegerValue = Int32.MaxValue,
             LongValue = Int64.MaxValue,
             FloatValue = 2.55f,
-            DoubleValue = 1234.56789d,
+            DoubleValue = 1234.56789,
             UnsignedIntegerValue = UInt32.MaxValue,
             IntArrayValue = new[] { 1, 2, 3, 4 }
             )]
