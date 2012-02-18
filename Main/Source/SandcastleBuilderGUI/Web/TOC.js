@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : TOC.js
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/03/2011
-// Note    : Copyright 2006-2011, Eric Woodruff, All rights reserved
+// Updated : 02/18/2012
+// Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
 // Compiler: JavaScript
 //
 // This file contains the methods necessary to implement a simple tree view
@@ -26,6 +26,7 @@
 // 1.6.0.7  04/01/2008  EFW  Merged changes from Ferdinand Prantl to add a
 //                           website keyword index.  Added support for "topic"
 //                           query string option.
+// 1.9.4.0  02/18/2012  EFW  Merged code from tom103 to show direct link
 //=============================================================================
 
 // IE flag
@@ -740,4 +741,21 @@ function ChangeIndexPage(direction)
     PopulateIndex(currentIndexPage + direction);
 
     return false;
+}
+
+// Show a direct link to the currently displayed topic
+function ShowDirectLink()
+{
+    var url = GetCurrentUrl();
+    var base = window.location.href;
+
+    if(base.indexOf("?") > 0)
+        base = base.substr(0, base.indexOf("?") + 1);
+
+    base = base.substr(0, base.lastIndexOf("/") + 1);
+
+    var relative = url.substr(base.length);
+
+    // Using prompt lets the user copy it from the text box
+    prompt("Direct link", base + "?topic=" + relative);
 }

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SandcastleBuilderProjectNode.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/07/2012
+// Updated : 02/18/2012
 // Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -318,27 +318,31 @@ namespace SandcastleBuilder.Package.Nodes
                     outputPath = Path.GetDirectoryName(outputPath);
 
                     // Visual Studio conveniently provides a development web server that doesn't require IIS
-                    webServerPath.Path = String.Format(CultureInfo.InvariantCulture, "%SystemRoot%" +
-                        @"\Microsoft.NET\Framework\v{0}\WebDev.WebServer.exe",
-                        FrameworkVersionTypeConverter.LatestFrameworkMatching(".NET 2"));
+                    path = Environment.ExpandEnvironmentVariables(@"%ProgramFiles%\Common Files\" +
+                        @"Microsoft Shared\DevServer");
 
-                    // Visual Studio 2008 and later put it in a different location
-                    if(!File.Exists(webServerPath))
+                    if(Directory.Exists(path))
                     {
-                        path = Environment.ExpandEnvironmentVariables(@"%ProgramFiles%\Common Files\" +
-                            @"Microsoft Shared\DevServer");
-
-                        if(Directory.Exists(path))
-                            webServerPath.Path = Directory.EnumerateFiles(path, "WebDev.WebServer.exe",
-                                SearchOption.AllDirectories).FirstOrDefault();
+                        webServerPath.Path = Directory.EnumerateFiles(path, "WebDev.WebServer20.exe",
+                            SearchOption.AllDirectories).FirstOrDefault();
 
                         if(!File.Exists(webServerPath))
-                        {
-                            path = Environment.ExpandEnvironmentVariables(@"%ProgramFiles(x86)%\" +
-                                @"Common Files\Microsoft Shared\DevServer");
+                            webServerPath.Path = Directory.EnumerateFiles(path, "WebDev.WebServer40.exe",
+                                SearchOption.AllDirectories).FirstOrDefault();
+                    }
 
-                            if(Directory.Exists(path))
-                                webServerPath.Path = Directory.EnumerateFiles(path, "WebDev.WebServer.exe",
+                    if(!File.Exists(webServerPath))
+                    {
+                        path = Environment.ExpandEnvironmentVariables(@"%ProgramFiles(x86)%\" +
+                            @"Common Files\Microsoft Shared\DevServer");
+
+                        if(Directory.Exists(path))
+                        {
+                            webServerPath.Path = Directory.EnumerateFiles(path, "WebDev.WebServer20.exe",
+                                 SearchOption.AllDirectories).LastOrDefault();
+
+                            if(!File.Exists(webServerPath))
+                                webServerPath.Path = Directory.EnumerateFiles(path, "WebDev.WebServer40.exe",
                                     SearchOption.AllDirectories).FirstOrDefault();
                         }
                     }

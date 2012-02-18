@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : FullTextIndex.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/09/2011
+// Updated : 02/17/2012
 // Note    : Copyright 2007-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -27,16 +27,18 @@
 // Version     Date     Who  Comments
 // ============================================================================
 // 1.5.0.0  06/24/2007  EFW  Created the code
+// 1.9.4.0  02/17/2012  EFW  Switched to JSON serialization to support websites
+//                           that use something other than ASP.NET such as PHP.
 //=============================================================================
 
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
+using System.Web.Script.Serialization;
 
 namespace SandcastleBuilder.Utils.BuildEngine
 {
@@ -53,7 +55,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
     {
         #region Private class members
         //=====================================================================
-        // Private class members
 
         // Parsing regular expressions
         private static Regex rePageTitle = new Regex(
@@ -80,6 +81,9 @@ namespace SandcastleBuilder.Utils.BuildEngine
         private List<string> fileList;
         private Dictionary<string, List<long>> wordDictionary;
         #endregion
+
+        #region Constructor
+        //=====================================================================
 
         /// <summary>
         /// Constructor
@@ -112,6 +116,10 @@ namespace SandcastleBuilder.Utils.BuildEngine
             fileList = new List<string>();
             wordDictionary = new Dictionary<string, List<long>>();
         }
+        #endregion
+
+        #region Methods
+        //=====================================================================
 
         /// <summary>
         /// Create a full-text index from web pages found in the specified
@@ -183,25 +191,22 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 wordCounts.Clear();
 
-                // Get a list of all unique words and the number of time that
-                // they appear in this file.  Exclude words that are less than
-                // three characters in length, start with a digit, or are in
-                // the common words exclusion list.
+                // Get a list of all unique words and the number of time that they appear in this file.
+                // Exclude words that are less than three characters in length, start with a digit, or
+                // are in the common words exclusion list.
                 foreach(string word in words)
                 {
                     if(word.Length < 3 || Char.IsDigit(word[0]) || exclusionWords.Contains(word))
                         continue;
 
-                    // The number of times it occurs helps determine the
-                    // ranking of the search results.
+                    // The number of times it occurs helps determine the ranking of the search results
                     if(wordCounts.ContainsKey(word))
                         wordCounts[word] += 1;
                     else
                         wordCounts.Add(word, 1);
                 }
 
-                // Shouldn't happen but just in case, ignore files with
-                // no useable words.
+                // Shouldn't happen but just in case, ignore files with no useable words
                 if(wordCounts.Keys.Count != 0)
                 {
                     fileList.Add(fileInfo);
@@ -209,18 +214,15 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     // Add the index information to the word dictionary
                     foreach(string word in wordCounts.Keys)
                     {
-                        // For each unique word, we'll track the files in
-                        // which it occurs and the number of times it occurs
-                        // in each file.
+                        // For each unique word, we'll track the files in which it occurs and the number
+                        // of times it occurs in each file.
                         if(!wordDictionary.ContainsKey(word))
                             wordDictionary.Add(word, new List<long>());
 
-                        // Store the file index in the upper part of a 64-bit
-                        // integer and the word count in the lower 16-bits.
-                        // More room is given to the file count as some builds
+                        // Store the file index in the upper part of a 64-bit integer and the word count
+                        // in the lower 16-bits.  More room is given to the file count as some builds
                         // contain a large number of topics.
-                        wordDictionary[word].Add(
-                            ((long)(fileList.Count - 1) << 16) +
+                        wordDictionary[word].Add(((long)(fileList.Count - 1) << 16) +
                             (long)(wordCounts[word] & 0xFFFF));
                     }
                 }
@@ -232,58 +234,44 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// </summary>
         /// <param name="indexPath">The path to which the index files are
         /// saved.</param>
-        /// <remarks>Binary serialization is used to save the index data.</remarks>
+        /// <remarks>JSON serialization is used to save the index data.</remarks>
         public void SaveIndex(string indexPath)
         {
             Dictionary<char, Dictionary<string, List<long>>> letters =
                 new Dictionary<char, Dictionary<string, List<long>>>();
-            FileStream fs = null;
-            BinaryFormatter bf;
+            JavaScriptSerializer jss = new JavaScriptSerializer();
             char firstLetter;
 
             if(!Directory.Exists(indexPath))
                 Directory.CreateDirectory(indexPath);
 
-            try
+            // First, the easy part.  Save the filename index
+            using(StreamWriter sw = new StreamWriter(indexPath + "FTI_Files.json"))
             {
-                // First, the easy part.  Save the filename index
-                fs = new FileStream(indexPath + "FTI_Files.bin",
-                    FileMode.Create);
-                bf = new BinaryFormatter();
-                bf.Serialize(fs, fileList);
-                fs.Close();
-
-                // Now split the word dictionary up into pieces by first
-                // letter.  This will help the search as it only has to load
-                // data related to words in the search and reduces what it
-                // has to look at as well.
-                foreach(string word in wordDictionary.Keys)
-                {
-                    firstLetter = word[0];
-
-                    if(!letters.ContainsKey(firstLetter))
-                        letters.Add(firstLetter, new Dictionary<string,
-                            List<long>>());
-
-                    letters[firstLetter].Add(word, wordDictionary[word]);
-                }
-
-                // Save each part.  The letter is specified as an integer to
-                // allow for Unicode characters.
-                foreach(char letter in letters.Keys)
-                {
-                    fs = new FileStream(String.Format(
-                        CultureInfo.InvariantCulture, "{0}\\FTI_{1}.bin",
-                        indexPath, (int)letter), FileMode.Create);
-                    bf.Serialize(fs, letters[letter]);
-                    fs.Close();
-                }
+                sw.Write(jss.Serialize(fileList));
             }
-            finally
+
+            // Now split the word dictionary up into pieces by first letter.  This will help the search
+            // as it only has to load data related to words in the search and reduces what it has to look
+            // at as well.
+            foreach(string word in wordDictionary.Keys)
             {
-                if(fs != null && fs.CanWrite)
-                    fs.Close();
+                firstLetter = word[0];
+
+                if(!letters.ContainsKey(firstLetter))
+                    letters.Add(firstLetter, new Dictionary<string, List<long>>());
+
+                letters[firstLetter].Add(word, wordDictionary[word]);
             }
+
+            // Save each part.  The letter is specified as an integer to allow for Unicode characters
+            foreach(char letter in letters.Keys)
+                using(StreamWriter sw = new StreamWriter(String.Format(CultureInfo.InvariantCulture,
+                  "{0}\\FTI_{1}.json", indexPath, (int)letter)))
+                {
+                    sw.Write(jss.Serialize(letters[letter]));
+                }
         }
+        #endregion
     }
 }

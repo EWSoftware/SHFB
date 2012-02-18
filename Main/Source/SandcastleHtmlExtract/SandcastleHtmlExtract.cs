@@ -877,8 +877,12 @@ commas, or other special characters.
                         writer.WriteLine(String.Format(CultureInfo.InvariantCulture,
                             "        <param name=\"Local\" value=\"{0}\">", info.File.Substring(baseFolderLength)));
 
-                    writer.WriteLine("      </OBJECT><LI>");
+                    writer.WriteLine("      </OBJECT></LI>");
                 }
+
+                // Close the final element if necessary
+                if(inSubEntry)
+                    writer.WriteLine("    </UL>");
 
                 writer.WriteLine("    </UL>");
                 writer.WriteLine("  </BODY>");
@@ -1026,6 +1030,10 @@ commas, or other special characters.
                             "<HelpKINode Title=\"{0}\" Url=\"{1}\" />", HttpUtility.HtmlEncode(mainEntry),
                             info.File.Substring(baseFolderLength).Replace('\\', '/')));
                 }
+
+                // Close the final element if necessary
+                if(inSubEntry)
+                    WriteContentLine(writer, --indentCount, "</HelpKINode>");
 
                 writer.WriteLine();
                 writer.WriteLine("</HelpKI>");

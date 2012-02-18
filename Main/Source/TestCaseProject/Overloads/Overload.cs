@@ -112,13 +112,15 @@ namespace TestDoc.Overloads
         }
 
         /// <summary>
-        /// Executes an <see cref="SqlCommand" /> with the specified
+        /// Executes a <see cref="SqlCommand" /> with the specified
         /// <paramref name="storedProcName" /> as a stored procedure
         /// initialized for updating the values of the specified
-        /// <paramref name="row" />
+        /// <paramref name="row" />.  Test overloads link (see also tested below):
+        /// <see cref="O:TestDoc.Overloads.OverloadClass.Test"/>
         /// </summary>
         /// <param name="storedProcName">The stored procedure</param>
         /// <param name="row">The row</param>
+        /// <seealso cref="O:TestDoc.Overloads.OverloadClass.Test"/>
         public void CallStoredProcedure(string storedProcName, int row)
         {
         }
