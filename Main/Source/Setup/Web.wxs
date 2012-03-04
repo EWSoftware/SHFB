@@ -27,6 +27,9 @@
 				<Component Id="FillNode.aspx" Guid="{99383062-4E8F-4ECB-AF50-FEB5D13A3341}">
 					<File Id="FillNode.aspx" KeyPath="yes" Source="$(var.BinFolder)Web\FillNode.aspx" />
 				</Component>
+				<Component Id="FillNode.php" Guid="{9B95FF61-0129-4E72-A213-81526AD5B0CA}">
+					<File Id="FillNode.php" KeyPath="yes" Source="$(var.BinFolder)Web\FillNode.php" />
+				</Component>
 				<Component Id="Index.aspx" Guid="{D14C1717-2F97-4CD8-A042-9643FA6D5733}">
 					<File Id="Index.aspx" KeyPath="yes" Source="$(var.BinFolder)Web\Index.aspx" />
 				</Component>
@@ -36,17 +39,29 @@
 				<Component Id="Index.html" Guid="{2F4DD12B-5062-4425-83FB-7D5960E9F100}">
 					<File Id="Index.html" KeyPath="yes" Source="$(var.BinFolder)Web\Index.html" />
 				</Component>
+				<Component Id="index.php" Guid="{2CD6ADC3-167F-4EFF-8308-675888AE1DEF}">
+					<File Id="index.php" KeyPath="yes" Source="$(var.BinFolder)Web\index.php" />
+				</Component>
 				<Component Id="Item.gif" Guid="{F2D9F9CE-EE01-4131-AF68-FE1E1E8EBB92}">
 					<File Id="Item.gif" KeyPath="yes" Source="$(var.BinFolder)Web\Item.gif" />
 				</Component>
 				<Component Id="LoadIndexKeywords.aspx" Guid="{EEE27F3B-8A0E-488A-A64C-AB590B06D831}">
 					<File Id="LoadIndexKeywords.aspx" KeyPath="yes" Source="$(var.BinFolder)Web\LoadIndexKeywords.aspx" />
 				</Component>
+				<Component Id="LoadIndexKeywords.php" Guid="{2995B1A9-BC4D-4273-A328-B05292AC7D95}">
+					<File Id="LoadIndexKeywords.php" KeyPath="yes" Source="$(var.BinFolder)Web\LoadIndexKeywords.php" />
+				</Component>
 				<Component Id="Search.gif" Guid="{E841A1B3-D313-4891-8230-78ABF6ABF1B9}">
 					<File Id="Search.gif" KeyPath="yes" Source="$(var.BinFolder)Web\Search.gif" />
 				</Component>
 				<Component Id="SearchHelp.aspx" Guid="{EA1A9527-FA16-4FE4-996B-CD5F4C3988DA}">
 					<File Id="SearchHelp.aspx" KeyPath="yes" Source="$(var.BinFolder)Web\SearchHelp.aspx" />
+				</Component>
+				<Component Id="SearchHelp.inc.php" Guid="{19F6B41A-5E11-4962-95C2-862AAAE71876}">
+					<File Id="SearchHelp.inc.php" KeyPath="yes" Source="$(var.BinFolder)Web\SearchHelp.inc.php" />
+				</Component>
+				<Component Id="SearchHelp.php" Guid="{4B05B24A-E84D-4A0F-85BB-50CCBFB174A7}">
+					<File Id="SearchHelp.php" KeyPath="yes" Source="$(var.BinFolder)Web\SearchHelp.php" />
 				</Component>
 				<Component Id="Splitter.gif" Guid="{993A5ED4-D736-4A14-A3B5-331003E0D5B3}">
 					<File Id="Splitter.gif" KeyPath="yes" Source="$(var.BinFolder)Web\Splitter.gif" />

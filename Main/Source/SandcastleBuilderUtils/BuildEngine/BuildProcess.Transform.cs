@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.Transform.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/21/2011
-// Note    : Copyright 2006-2011, Eric Woodruff, All rights reserved
+// Updated : 03/02/2012
+// Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the code used to transform and generate the files used
@@ -709,9 +709,13 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         replaceWith = DateTime.Now.ToString(CultureInfo.CurrentCulture);
                     break;
 
+                case "projectnodename":
+                    replaceWith = "R:Project_" + project.HtmlHelpName.Replace(" ", "_");
+                    break;
+
                 case "includeprojectnode":
                     if(project.RootNamespaceContainer)
-                        replaceWith = "project=Project";
+                        replaceWith = "project=Project_" + project.HtmlHelpName.Replace(" ", "_");
                     else
                         replaceWith = String.Empty;
                     break;

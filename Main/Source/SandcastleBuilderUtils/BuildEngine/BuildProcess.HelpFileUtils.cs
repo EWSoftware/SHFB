@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.HelpFileUtils.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/15/2011
-// Note    : Copyright 2006-2011, Eric Woodruff, All rights reserved
+// Updated : 03/02/2012
+// Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the code used to modify the help file project files to
@@ -30,6 +30,7 @@
 // 1.9.0.0  06/06/2010  EFW  Added support for multi-format build output
 // 1.9.0.0  06/30/2010  EFW  Reworked TOC handling to support parenting of
 //                           API content to a conceptual topic for all formats.
+// 1.9.4.0  02/19/2012  EFW  Added support for PHP website files
 //=============================================================================
 
 using System;
@@ -231,7 +232,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 node = tocXml.CreateElement("topic");
 
                 attr = tocXml.CreateAttribute("id");
-                attr.Value = "R:Project";
+                attr.Value = "R:Project_" + project.HtmlHelpName.Replace(" ", "_");
                 node.Attributes.Append(attr);
 
                 attr = tocXml.CreateAttribute("file");
@@ -590,7 +591,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
             foreach(string file in Directory.EnumerateFiles(webFolder))
                 if(file.EndsWith("html", StringComparison.OrdinalIgnoreCase) ||
-                  file.EndsWith("aspx", StringComparison.OrdinalIgnoreCase))
+                  file.EndsWith("aspx", StringComparison.OrdinalIgnoreCase) ||
+                  file.EndsWith("php", StringComparison.OrdinalIgnoreCase))
                     this.TransformTemplate(Path.GetFileName(file), webFolder, outputFolder);
                 else
                 {

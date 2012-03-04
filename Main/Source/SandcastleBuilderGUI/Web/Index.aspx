@@ -10,7 +10,7 @@
 <script type="text/javascript" src="TOC.js"></script>
 </head>
 
-<body onload="javascript: Initialize();" onresize="javascript: ResizeTree();">
+<body onload="javascript: Initialize('.aspx');" onresize="javascript: ResizeTree();">
 <form id="IndexForm" runat="server">
 
 <div id="TOCDiv" class="TOCDiv">

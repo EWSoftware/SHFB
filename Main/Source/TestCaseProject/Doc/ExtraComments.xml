@@ -4,7 +4,7 @@
     <name>ExtraComments</name>
   </assembly>
   <members>
-    <member name="R:Project">
+    <member name="R:Project_TestCaseProject">
       <summary>
             <p/>These are project comments from the extra comments file.
     </member>

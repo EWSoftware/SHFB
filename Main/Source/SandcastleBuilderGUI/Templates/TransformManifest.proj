@@ -45,6 +45,7 @@
       SandcastlePath="$(SandcastlePath)"
       WorkingFolder="$(WorkingFolder)"
       Transformations="ProductionTransforms\ApplyPrototypeDocModel.xsl;ProductionTransforms\AddGuidFilenames.xsl"
+      Arguments="$(ProjectNodeParam)"
       InputFile="reflection.org"
       OutputFile="reflection.xml" />
 

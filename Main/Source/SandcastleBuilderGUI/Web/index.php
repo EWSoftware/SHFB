@@ -8,14 +8,14 @@
 <script type="text/javascript" src="TOC.js"></script>
 </head>
 
-<body onload="javascript: Initialize('.aspx');" onresize="javascript: ResizeTree();">
+<body onload="javascript: Initialize('.php');" onresize="javascript: ResizeTree();">
 <form id="IndexForm" runat="server">
 
 <div id="TOCDiv" class="TOCDiv">
 
 <div id="divSearchOpts" class="SearchOpts" style="height: 100px; display: none;">
 <img class="TOCLink" onclick="javascript: ShowHideSearch(false);"
-    src="CloseSearch.png" height="16" width="16" alt="Hide search" style="float: right;"/>
+    src="CloseSearch.png" height="17" width="17" alt="Hide search" style="float: right;"/>
 Keyword(s) for which to search:
 <input id="txtSearchText" type="text" style="width: 100%;"
   onkeypress="javascript: return OnSearchTextKeyPress(event);" /><br />
@@ -36,6 +36,10 @@ Keyword Index
         src="ExpandAll.bmp" height="16" width="16" alt="Expand all "/>
     <img class="TOCLink" onclick="javascript: ExpandOrCollapseAll(false);"
         src="CollapseAll.bmp" height="16" width="16" alt="Collapse all" />
+    <img class="TOCLink" onclick="javascript: ShowHideIndex(true);"
+        src="Index.gif" height="16" width="16" alt="Index" />
+    <img class="TOCLink" onclick="javascript: ShowHideSearch(true);"
+        src="Search.gif" height="16" width="16" alt="Search" />
     <a href="#" title="Click to obtain a direct link to the displayed topic"
         style="margin-left: 10px; vertical-align: top;"
         onclick="javascript: ShowDirectLink();">Direct Link</a>
@@ -50,7 +54,47 @@ Keyword Index
 </div>
 
 <div class="Tree" id="divTree" onselectstart="javascript: return false;">
-{@HtmlTOC}
+<?
+$toc = new DOMDocument();
+$toc->load('WebTOC.xml');
+$xpath = new DOMXPath($toc);
+$nodes = $xpath->query("/HelpTOC/*");
+foreach($nodes as $node)
+{
+    $id = $node->getAttribute("Id");
+    $url = $node->getAttribute("Url");
+    $title = $node->getAttribute("Title");
+    if (empty($url))
+    {
+        $url = "#";
+        $target = "";
+    }
+    else
+    {
+        $target = " target=\"TopicContent\"";
+    }
+
+    if ($node->hasChildNodes())
+    {
+?>
+        <div class="TreeNode">
+            <img class="TreeNodeImg" onclick="javascript: Toggle(this);" src="Collapsed.gif"/>
+            <a class="UnselectedNode" onclick="javascript: Expand(this);" href="<?= $url ?>"<?= $target ?>><?= $title ?></a>
+            <div id="<?= $id ?>" class="Hidden"></div>
+        </div>
+<?
+    }
+    else
+    {
+?>
+        <div class="TreeItem">
+            <img src="Item.gif"/>
+            <a class="UnselectedNode" onclick="javascript: SelectNode(this);" href="<?= $url ?>"<?= $target ?>><?= $title ?></a>
+        </div>
+<?
+    }
+}
+?>
 </div>
 
 </div>

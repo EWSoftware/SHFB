@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.Namespaces.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/15/2011
-// Note    : Copyright 2006-2011, Eric Woodruff, All rights reserved
+// Updated : 03/02/2012
+// Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the code used to generate the namespace summary file and
@@ -84,8 +84,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
             {
                 nsName = workingFolder + "_ProjNS_.xml";
 
-                using(StreamWriter sw = new StreamWriter(nsName, false,
-                    Encoding.UTF8))
+                using(StreamWriter sw = new StreamWriter(nsName, false, Encoding.UTF8))
                 {
                     sw.Write("<?xml version=\"1.0\"?>\r\n<doc>\r\n" +
                         "<assembly>\r\n<name>_ProjNS_</name>\r\n" +
@@ -105,18 +104,18 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
             this.ExecutePlugIns(ExecutionBehaviors.Before);
 
-            // XML comments do not support summaries on namespace elements
-            // by default.  However, if Sandcastle finds them, it will add
-            // them to the help file.  The same holds true for project
-            // comments on the root namespaces page (R:Project).  We can
-            // accomplish this by adding elements to the first comments
-            // file or by supplying them in an external XML comments file.
+            // XML comments do not support summaries on namespace elements by default.  However, if
+            // Sandcastle finds them, it will add them to the help file.  The same holds true for
+            // project comments on the root namespaces page (R:Project_[HtmlHelpName]).  We can
+            // accomplish this by adding elements to the first comments file or by supplying them
+            // in an external XML comments file.
             try
             {
                 // Add the project comments if specified
                 if(project.ProjectSummary.Length != 0)
                 {
-                    nsName = "R:Project";   // Set name in case it isn't valid
+                    // Set the name in case it isn't valid
+                    nsName = "R:Project_" + project.HtmlHelpName.Replace(" ", "_");
                     member = commentsFiles.FindMember(nsName);
                     this.AddNamespaceComments(member, project.ProjectSummary);
                 }

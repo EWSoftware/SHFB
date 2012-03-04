@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/06/2012
+// Updated : 03/02/2012
 // Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -1056,8 +1056,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 }
 
                 // The June 2007 CTP removed the root namespace container from the TOC so we'll get
-                // the default project page filename from the refelection information file.
-                XmlNode defTopic = apisNode.SelectSingleNode("api[@id='R:Project']/file/@name");
+                // the default project page filename from the reflection information file.
+                XmlNode defTopic = apisNode.SelectSingleNode("api[starts-with(@id, 'R:Project')]/file/@name");
 
                 if(defTopic != null)
                 {

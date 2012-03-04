@@ -327,6 +327,21 @@
       <DependentUpon>UserPreferencesDlg.cs</DependentUpon>
     </Compile>
     <Compile Include="WindowPlacement.cs" />
+    <Content Include="Web\FillNode.php">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Web\index.php">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Web\LoadIndexKeywords.php">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Web\SearchHelp.inc.php">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Web\SearchHelp.php">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <None Include="Images\SandcastleBuilder.ico" />
@@ -836,6 +851,7 @@
     </Content>
     <Content Include="Web\Index.aspx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>ASPXCodeBehind</SubType>
     </Content>
     <Content Include="Web\Index.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
