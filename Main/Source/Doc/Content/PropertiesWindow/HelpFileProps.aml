@@ -10,262 +10,303 @@
 
 <alert class="note">
   <para>The layout of several of these properties can be customized.  See the
-  <link xlink:href="c7378077-fc10-45f9-b52a-c57dda96fe8d" /> topic for
-information on how to change the layout of these items.  Substitution tags such
-as <codeInline>{@BuildDate}</codeInline> can be specified in many of these
-properties and will be expanded at build time to the current project property
-value.  See the <link xlink:href="69d998a7-1af5-4bf5-889b-59cd00b64000" />
-topic for a list of tags that can be used.</para>
+<link xlink:href="c7378077-fc10-45f9-b52a-c57dda96fe8d" /> topic for information on how to change the layout of
+these items.  Substitution tags such as <codeInline>{@BuildDate}</codeInline> can be specified in many of these
+properties and will be expanded at build time to the current project property value.  See the
+<link xlink:href="69d998a7-1af5-4bf5-889b-59cd00b64000" /> topic for a list of tags that can be used.</para>
 </alert>
 
     </introduction>
 
 <section address="ContentPlacement">
   <title>ContentPlacement</title>
-  <content><para>This property allows you to define where the additional
-and/or conceptual content items appear in the table of contents.  By default,
-they will appear above the namespaces.  By setting this property to
-<codeInline>BelowNamespaces</codeInline>, you can make the items appear below
-the namespace entries in the table of contents.</para>
+  <content>
+		<para>This property allows you to define where the additional and/or conceptual content items appear in the
+table of contents.  By default, they will appear above the namespaces.  By setting this property to
+<codeInline>BelowNamespaces</codeInline>, you can make the items appear below the namespace entries in the table
+of contents.</para>
 
-	<para>This property's setting will be ignored if the table of contents is
-split via a <link xlink:href="54de66c4-a57a-4bfc-9eb6-bd9e6fb56589">custom tag</link>
-in one of the additional content files, a
-<link xlink:href="3dd5fe3b-1bc3-42e5-8900-56165e3f9aed">site map</link>
-is defined that specifies a split table of contents, or
-<link xlink:href="54e3dc97-5125-441e-8e84-7f9303e95f26">conceptual content</link>
-is defined with an entry marked as the split location.  In such cases, items
-prior to the entry with the "split" option will appear before the API content.
-The item with the "split" option and all items after it will appear below the
-API content.</para>
+	<para>This property's setting will be ignored if the table of contents is split via a
+<link xlink:href="54de66c4-a57a-4bfc-9eb6-bd9e6fb56589">custom tag</link> in one of the additional content files,
+a <link xlink:href="3dd5fe3b-1bc3-42e5-8900-56165e3f9aed">site map</link> is defined that specifies a split table
+of contents, or <link xlink:href="54e3dc97-5125-441e-8e84-7f9303e95f26">conceptual content</link> is defined with
+an entry marked as the split location.  In such cases, items prior to the entry with the "split" option will
+appear before the API content. The item with the "split" option and all items after it will appear below the API
+content.</para>
   </content>
 </section>
 
 <section address="CopyrightProps">
   <title>CopyrightHref and CopyrightText</title>
-  <content><para>These two properties can be used individually or in
-combination.  If only <codeInline>CopyrightHref</codeInline> is specified, a
-link will appear in the footer of each page for the specified URL.  If only
-the <codeInline>CopyrightText</codeInline> property is specified, that message
-appears in the footer of each page. If both are specified, a link appears in
-the footer of each page using the text from the <codeInline>CopyrightText</codeInline>
-property and the target of the link is set to the URL specified in the
-<codeInline>CopyrightHref</codeInline> property.  The value of the
-<codeInline>CopyrightText</codeInline> property is treated as plain text. It
-will be HTML encoded where necessary to resolve issues related to the ampersand
-character and the XML parser.  In addition, you can encode special characters
-such as the copyright symbol using an escaped hex value (i.e. &#169; = \xA9).</para>
+  <content>
+		<para>These two properties can be used individually or in combination.  If only
+<codeInline>CopyrightHref</codeInline> is specified, a link will appear in the footer of each page for the
+specified URL.  If only the <codeInline>CopyrightText</codeInline> property is specified, that message appears in
+the footer of each page. If both are specified, a link appears in the footer of each page using the text from the
+<codeInline>CopyrightText</codeInline> property and the target of the link is set to the URL specified in the
+<codeInline>CopyrightHref</codeInline> property.  The value of the <codeInline>CopyrightText</codeInline>
+property is treated as plain text. It will be HTML encoded where necessary to resolve issues related to the
+ampersand character and the XML parser.  In addition, you can encode special characters such as the copyright
+symbol using an escaped hex value (i.e. &#169; = \xA9).</para>
 
   </content>
 </section>
 
 <section address="FeedbackEMailAddress">
   <title>FeedbackEMailAddress and FeedbackEMailLinkText</title>
-  <content><para>If an e-mail address is specified in the
-<codeInline>FeedbackEMailAddress</codeInline> property, an extra message is
-included in the footer of each page with a message saying "Send comments on
-this topic to" plus the specified e-mail address or link text.  If a
-<codeInline>FeedbackEMailLinkText</codeInline> value is specified along with a
-feedback e-mail address, that text will be displayed as the link text rather
-than the e-mail address.  If left blank, the e-mail address will be used.  The
-e-mail address is rendered as a clickable <codeInline>mailto:</codeInline> link
-and the subject of the e-mail will be set to the title of the help file plus
-the title of the page in which the link appears.</para>
+  <content>
+		<para>If an e-mail address is specified in the <codeInline>FeedbackEMailAddress</codeInline> property, an
+extra message is included in the footer of each page with a message saying "Send comments on this topic to" plus
+the specified e-mail address or link text.  If a <codeInline>FeedbackEMailLinkText</codeInline> value is
+specified along with a feedback e-mail address, that text will be displayed as the link text rather than the
+e-mail address.  If left blank, the e-mail address will be used.  The e-mail address is rendered as a clickable
+<codeInline>mailto:</codeInline> link and the subject of the e-mail will be set to the title of the help file
+plus the title of the page in which the link appears.</para>
 
   </content>
 </section>
 
 <section address="FooterText">
   <title>FooterText</title>
-  <content><para>This property can be used to insert an extra message in the
-footer of each page.  By default, it is blank.  HTML tags are supported
-within the text.</para>
+  <content>
+		<para>This property can be used to insert an extra message in the footer of each page.  By default, it is
+blank.  HTML tags are supported within the text.</para>
 
   </content>
 </section>
 
 <section address="HeaderText">
   <title>HeaderText</title>
-  <content><para>This property can be used to insert an extra message in the
-header of each page.  By default, it is blank.  HTML tags are supported within
-the text.  See the <codeInline>Preliminary</codeInline> property for a way to
-mark all topics as preliminary.</para>
+  <content>
+		<para>This property can be used to insert an extra message in the header of each page.  By default, it is
+blank.  HTML tags are supported within the text.  See the <codeInline>Preliminary</codeInline> property for a way
+to mark all topics as preliminary.</para>
 
   </content>
 </section>
 
 <section address="HelpTitle">
   <title>HelpTitle</title>
-  <content><para>This property is used to set the title for the help file.
-This text will appear as the title of the help file's window.</para>
+  <content>
+		<para>This property is used to set the title for the help file.  This text will appear as the title of the
+help file's window.</para>
 
   </content>
 </section>
 
 <section address="HtmlHelpName">
   <title>HtmlHelpName</title>
-  <content><para>This property is used to specify the name of the HTML help
-file.  This name is used during the build process for a couple of other files
-so be sure that you do not specify a path or an extension on this value.  It
-should only specify the name part of the file.  The extension will always be
-<localUri>.chm</localUri> (HTML Help 1), <localUri>.HxS</localUri> (MS Help 2),
-or <localUri>.mshc</localUri> (MS Help Viewer) and the path is controlled via
-the <codeInline>OutputPath</codeInline> property.</para>
+  <content>
+		<para>This property is used to specify the name of the HTML help file.  This name is used during the build
+process for a couple of other files so be sure that you do not specify a path or an extension on this value.  It
+should only specify the name part of the file.  The extension will always be <localUri>.chm</localUri> (HTML
+Help 1), <localUri>.HxS</localUri> (MS Help 2), or <localUri>.mshc</localUri> (MS Help Viewer) and the path is
+controlled via the <codeInline>OutputPath</codeInline> property.</para>
 
 <alert class="note">
-  <para>For MS Help 2 builds, this name is used as the collection namespace
-name.  In such cases, spaces in the name are not allowed and, if any are found
-in the name, the build will fail.</para>
+  <para>For MS Help 2 builds, this name is used as the collection namespace name.  In such cases, spaces in the
+name are not allowed and, if any are found in the name, the build will fail.</para>
+
+	<para>This value will also be used as the suffix for the root namespace container page ID
+(<codeInline>R:Project_XXX</codeInline>) with spaces replaced by underscores.  This suffix is required to keep
+the root namespace container page ID unique across all help files so that there  are no duplicate IDs when
+generating MS Help Viewer output.</para>
 </alert>
   </content>
 </section>
 
 <section address="Language">
   <title>Language</title>
-  <content><para>This property allows you to specify the language to use for
-the compiled help file.  The default is to use the English language resource
-files.  A shared content file is supplied that contains various item overrides
-related to the help file builder's project properties. Currently, shared
-content files for the help file builder are available for several languages.
-If you specify a language for which a file does not exist, the help file will
-build but you will see a warning in the build output that the selected language
-resources could not be found and that it is defaulting to the US English
-(en-US) language files.  For more information on creating additional language
-resource files, see the <link xlink:href="e2ed6222-c3ee-4c6e-b0f9-fa3c86bc3e2c" />
-help topic.</para>
+  <content>
+		<para>This property allows you to specify the language to use for the compiled help file.  The default is to
+use the English language resource files.  A shared content file is supplied that contains various item overrides
+related to the help file builder's project properties. Currently, shared content files for the help file builder
+are available for several languages.  If you specify a language for which a file does not exist, the help file
+will build but you will see a warning in the build output that the selected language resources could not be found
+and that it is defaulting to the US English (en-US) language files.  For more information on creating additional
+language resource files, see the <link xlink:href="e2ed6222-c3ee-4c6e-b0f9-fa3c86bc3e2c" /> help topic.</para>
 
   </content>
 </section>
 
 <section address="NamingMethod">
   <title>NamingMethod</title>
-  <content><para>This property allows you to specify how the help topic
-filenames will be generated.  There are three options:</para>
+  <content>
+		<para>This property allows you to specify how the help topic filenames will be generated.  There are three
+options:</para>
 
-<list class="bullet">
-    <listItem><codeInline>Guid</codeInline> will generate an MD5 hash of the
-topic ID and format it as a GUID value.  The topic ID is the member name from
-the XML comments file for the item and includes all parameter values for
-methods.  This is the default value and is suitable for most help files.  While
-this guarantees unique topic filenames, it does make it cumbersome to link to
-help topics from external sources such as application code or web pages that
-are not part of the help file's additional content as the names are rather long
-and non-intuitive.</listItem>
+		<list class="bullet">
+			<listItem>
+				<para><codeInline>Guid</codeInline> will generate an MD5 hash of the topic ID and format it as a GUID
+value.  The topic ID is the member name from the XML comments file for the item and includes all parameter values
+for methods.  This is the default value and is suitable for most help files.  While this guarantees unique topic
+filenames, it does make it cumbersome to link to help topics from external sources such as application code or
+web pages that are not part of the help file's additional content as the names are rather long and
+non-intuitive.</para>
+			</listItem>
 
-    <listItem><codeInline>MemberName</codeInline> will name each help topic
-after the member that it represents.  To avoid problems with invalid filename
-characters, " " (space), ":", ".", "`" (0x60), "#", "*", and "?" characters
-are replaced with an underscore in the member names.  Overloaded methods will
-generate duplicate names.  To avoid this problem, all subsequent duplicate
-names will have a counter added to the end of their name separated by an
-underscore (i.e. <codeInline>M_Type_Method</codeInline>,
-<codeInline>M_Type_Method_1</codeInline>, <codeInline>M_Type_Method_2</codeInline>,
-etc).  When this occurs, a message is recorded in the log file.  Also note
-that this may generate extremely long filenames when the full path is
-included.  This may cause the build to fail. If so, try using the next
-option.</listItem>
+			<listItem>
+				<para><codeInline>MemberName</codeInline> will name each help topic after the member that it represents.
+To avoid problems with invalid filename characters, " " (space), ":", ".", "`" (0x60), "#", "*", and "?"
+characters are replaced with an underscore in the member names.  Overloaded methods will generate duplicate
+names.  To avoid this problem, all subsequent duplicate names will have a counter added to the end of their name
+separated by an underscore (i.e. <codeInline>M_Type_Method</codeInline>, <codeInline>M_Type_Method_1</codeInline>,
+<codeInline>M_Type_Method_2</codeInline>, etc).  When this occurs, a message is recorded in the log file.  Also
+note that this may generate extremely long filenames when the full path is included.  This may cause the build to
+fail. If so, try using the next option.</para>
+			</listItem>
 
-    <listItem><codeInline>HashedMemberName</codeInline> will name each topic
-using the hash value of the member name in hex format.  This results in a much
-shorter filename, even shorter than the GUID names, but it can still be easily
-reproduced by an application or ASP.NET web page in order to link to the help
-topic.  The actual member name is used without any of the character
-replacements noted for the <codeInline>MemberName</codeInline> option.  As with
-the <codeInline>MemberName</codeInline> option, overloaded methods will
-generate duplicate names.  To avoid this problem, all subsequent duplicate
-names will have a counter added to the end of their name separated by an
-underscore (i.e. <codeInline>M:Type.Method</codeInline>,
-<codeInline>M:Type.Method_1</codeInline>, <codeInline>M:Type.Method_2</codeInline>,
-etc.).  When this occurs, a message is recorded in the log file.</listItem>
+			<listItem>
+				<para><codeInline>HashedMemberName</codeInline> will name each topic using the hash value of the member
+name in hex format.  This results in a much shorter filename, even shorter than the GUID names, but it can still
+be easily reproduced by an application or ASP.NET web page in order to link to the help topic.  The actual member
+name is used without any of the character replacements noted for the <codeInline>MemberName</codeInline> option.
+As with the <codeInline>MemberName</codeInline> option, overloaded methods will generate duplicate names.  To
+avoid this problem, all subsequent duplicate names will have a counter added to the end of their name separated
+by an underscore (i.e. <codeInline>M:Type.Method</codeInline>, <codeInline>M:Type.Method_1</codeInline>,
+<codeInline>M:Type.Method_2</codeInline>, etc.).  When this occurs, a message is recorded in the log file.</para>
+			</listItem>
 
-</list>
+		</list>
 
-	<para>Note that each help topic ID will have a prefix denoting what it
-represents:</para>
+		<para>Note that each help topic ID will have a prefix denoting what it represents:</para>
 
-<list class="bullet">
-    <listItem><codeInline>R:</codeInline> represents the root namespace page.
-There will always be a single entry named <codeInline>R:Project</codeInline>.</listItem>
+		<list class="bullet">
+			<listItem>
+				<para><codeInline>R:</codeInline> represents the root namespace page.  There will always be a single
+entry named <codeInline>R:Project_[HtmlHelpName]</codeInline> where "<codeInline>[HtmlHelpName]</codeInline>" is
+the value of your project's <codeInline>HtmlHelpName</codeInline> property with spaces replaced by underscores.
+This suffix is required to keep the root namespace container page ID unique across all help files so that there
+are no duplicate IDs when generating MS Help Viewer output.</para>
+			</listItem>
 
-    <listItem><codeInline>N:</codeInline> represents a namespace help topic
-that lists all of the members of the given namespace.</listItem>
+			<listItem>
+				<para><codeInline>N:</codeInline> represents a namespace help topic that lists all of the members of the
+given namespace.</para>
+			</listItem>
 
-    <listItem><codeInline>T:</codeInline> represents a type help topic that
-lists all of the members of the given type.</listItem>
+			<listItem>
+				<para><codeInline>T:</codeInline> represents a type help topic that lists all of the members of the given
+type.</para>
+			</listItem>
 
-    <listItem><codeInline>Overload:</codeInline> represents a help topic that
-lists all of the overloads for a particular class member.</listItem>
+			<listItem>
+				<para><codeInline>Overload:</codeInline> represents a help topic that lists all of the overloads for a
+particular class member.</para>
+			</listItem>
 
-    <listItem><codeInline>F:</codeInline> represents a field member.</listItem>
+			<listItem>
+				<para><codeInline>F:</codeInline> represents a field member.</para>
+			</listItem>
     
-    <listItem><codeInline>E:</codeInline> represents an event member.</listItem>
+			<listItem>
+				<para><codeInline>E:</codeInline> represents an event member.</para>
+			</listItem>
     
-    <listItem><codeInline>P:</codeInline> represents a property.</listItem>
+			<listItem>
+				<para><codeInline>P:</codeInline> represents a property.</para>
+			</listItem>
     
-    <listItem><codeInline>M:</codeInline> represents a method.</listItem>
-</list>
+			<listItem>
+				<para><codeInline>M:</codeInline> represents a method.</para>
+			</listItem>
+		</list>
 
-	<para>Below are some examples of the member names and their equivalent
-filenames.  The values in the first column would be used for the
-<codeInline>HashedMemberName</codeInline> option to create the hash value.  The
-second column would be used for the <codeInline>MemberName</codeInline> option.
-For GUID filenames, the method names in the first column would include
-parameter information rather than a numeric suffix.</para>
+		<para>Below are some examples of the member names and their equivalent filenames.  The values in the first
+column would be used for the <codeInline>HashedMemberName</codeInline> option to create the hash value.  The
+second column would be used for the <codeInline>MemberName</codeInline> option.  For GUID filenames, the method
+names in the first column would include parameter information rather than a numeric suffix.</para>
 
 <table>
   <tableHeader>
     <row>
-      <entry>HashedMemberName (value to hash)</entry>
-      <entry>MemberName</entry>
+      <entry>
+				<para>HashedMemberName (value to hash)</para>
+			</entry>
+      <entry>
+				<para>MemberName</para>
+			</entry>
     </row>
   </tableHeader>
   <row>
-    <entry>R:Project</entry>
-    <entry>R_Project</entry>
+    <entry>
+			<para>R:Project_HtmlHelpName</para>
+		</entry>
+    <entry>
+			<para>R_Project_HtmlHelpName (where "HtmlHelpName" is the value of your project's
+<codeInline>HtmlHelpName</codeInline> property value with spaced replaced by underscores.</para>
+		</entry>
   </row>
   <row>
-    <entry>N:SandcastleBuilder.Utils</entry>
-    <entry>N_SandcastleBuilder_Utils</entry>
+    <entry>
+			<para>N:SandcastleBuilder.Utils</para>
+		</entry>
+    <entry>
+			<para>N_SandcastleBuilder_Utils</para>
+		</entry>
   </row>
   <row>
-    <entry>T:SandcastleBuilder.Utils.BuildProcess</entry>
-    <entry>T_SandcastleBuilder_Utils_BuildProcess</entry>
+    <entry>
+			<para>T:SandcastleBuilder.Utils.BuildProcess</para>
+		</entry>
+    <entry>
+			<para>T_SandcastleBuilder_Utils_BuildProcess</para>
+		</entry>
   </row>
   <row>
-    <entry>Overload:SandcastleBuilder.Utils.BuilderException.#ctor</entry>
-    <entry>Overload_SandcastleBuilder_Utils_BuilderException__ctor</entry>
+    <entry>
+			<para>Overload:SandcastleBuilder.Utils.BuilderException.#ctor</para>
+		</entry>
+    <entry>
+			<para>Overload_SandcastleBuilder_Utils_BuilderException__ctor</para>
+		</entry>
   </row>
   <row>
-    <entry>F:SandcastleBuilder.Utils.SandcastleProject.DefaultName</entry>
-    <entry>F_SandcastleBuilder_Utils_SandcastleProject_DefaultName</entry>
+    <entry>
+			<para>F:SandcastleBuilder.Utils.SandcastleProject.DefaultName</para>
+		</entry>
+    <entry>
+			<para>F_SandcastleBuilder_Utils_SandcastleProject_DefaultName</para>
+		</entry>
   </row>
   <row>
-    <entry>E:SandcastleBuilder.Utils.BuildProcess.BuildStepChanged</entry>
-    <entry>E_SandcastleBuilder_Utils_BuildProcess_BuildStepChanged</entry>
+    <entry>
+			<para>E:SandcastleBuilder.Utils.BuildProcess.BuildStepChanged</para>
+		</entry>
+    <entry>
+			<para>E_SandcastleBuilder_Utils_BuildProcess_BuildStepChanged</para>
+		</entry>
   </row>
   <row>
-    <entry>P:SandcastleBuilder.Utils.DependencyItem.DependencyPath</entry>
-    <entry>P_SandcastleBuilder_Utils_DependencyItem_DependencyPath</entry>
+    <entry>
+			<para>P:SandcastleBuilder.Utils.DependencyItem.DependencyPath</para>
+		</entry>
+    <entry>
+			<para>P_SandcastleBuilder_Utils_DependencyItem_DependencyPath</para>
+		</entry>
   </row>
   <row>
-    <entry>M:SandcastleBuilder.Utils.BuilderException.#ctor<para/>
-        M:SandcastleBuilder.Utils.BuilderException.#ctor_1 (overload #1)<para/>
-        M:SandcastleBuilder.Utils.BuilderException.#ctor_2 (overload #2)<para/>
-        M:SandcastleBuilder.Utils.BuilderException.#ctor_3 (overload #3)</entry>
-    <entry>M_SandcastleBuilder_Utils_BuilderException__ctor (note the double
-underscore before "ctor" due to the "#")<para/>
-        M_SandcastleBuilder_Utils_BuilderException__ctor_1 (overload #1)<para/>
-        M_SandcastleBuilder_Utils_BuilderException__ctor_2 (overload #2)<para/>
-        M_SandcastleBuilder_Utils_BuilderException__ctor_3 (overload #3)</entry>
+    <entry>
+			<para>M:SandcastleBuilder.Utils.BuilderException.#ctor</para>
+			<para>M:SandcastleBuilder.Utils.BuilderException.#ctor_1 (overload #1)</para>
+			<para>M:SandcastleBuilder.Utils.BuilderException.#ctor_2 (overload #2)</para>
+			<para>M:SandcastleBuilder.Utils.BuilderException.#ctor_3 (overload #3)</para>
+		</entry>
+    <entry>
+			<para>M_SandcastleBuilder_Utils_BuilderException__ctor (note the double underscore before "ctor" due to
+the "#")</para>
+			<para>M_SandcastleBuilder_Utils_BuilderException__ctor_1 (overload #1)</para>
+			<para>M_SandcastleBuilder_Utils_BuilderException__ctor_2 (overload #2)</para>
+			<para>M_SandcastleBuilder_Utils_BuilderException__ctor_3 (overload #3)</para>
+		</entry>
   </row>
 </table>
 
-	<para>To map a member name to its equivalent filename, you can use code
-similar to the following.  As noted in the code, the HTML files will reside
-in an <localUri>html\</localUri> folder and will have a <localUri>.htm</localUri>
+	<para>To map a member name to its equivalent filename, you can use code similar to the following.  As noted in
+the code, the HTML files will reside in an <localUri>html\</localUri> folder and will have a <localUri>.htm</localUri>
 extension so be sure to add them to the resulting topic filename.</para>
 
-<code lang="cs" title="C# - GUID">
+<code language="cs" title="C# - GUID">
 // Compute the MD5 hash of the member name.  Assume
 // memberName contains the member name of the topic
 // to show.
@@ -283,7 +324,7 @@ Help.ShowHelp(parentForm, helpFilePath,
     HelpNavigator.Topic, @"html\" + pageId.ToString() + ".htm");
 </code>
 
-<code lang="vbnet" title="VB.NET - GUID">
+<code language="vbnet" title="VB.NET - GUID">
 ' Compute the MD5 hash of the member name.  Assume
 ' memberName contains the member name of the topic
 ' to show.
@@ -301,7 +342,7 @@ Help.ShowHelp(parentForm, helpFilePath, _
     HelpNavigator.Topic, "html\" &amp; pageId.ToString() &amp; ".htm")
 </code>
 
-<code lang="cs" title="C# - MemberName">
+<code language="cs" title="C# - MemberName">
 Regex reInvalidChars = new Regex("[ :.`#&lt;&gt;*?]");
 
 // Assume memberName contains the member name of the
@@ -315,7 +356,7 @@ Help.ShowHelp(parentForm, helpFilePath,
     HelpNavigator.Topic, @"html\" + pageName + ".htm");
 </code>
 
-<code lang="vbnet" title="VB.NET - MemberName">
+<code language="vbnet" title="VB.NET - MemberName">
 Dim reInvalidChars As New Regex("[ :.`#&lt;&gt;*?]")
 
 ' Assume memberName contains the member name of the
@@ -329,7 +370,7 @@ Help.ShowHelp(parentForm, helpFilePath, _
     HelpNavigator.Topic, "html\" &amp; pageName &amp; ".htm")
 </code>
 
-<code lang="cs" title="C# - HashedMemberName">
+<code language="cs" title="C# - HashedMemberName">
 // Assume memberName contains the member name of the
 // topic to show.
 string pageName = String.Format("{0:X}",
@@ -341,7 +382,7 @@ Help.ShowHelp(parentForm, helpFilePath,
     HelpNavigator.Topic, @"html\" + pageName + ".htm");
 </code>
 
-<code lang="vbnet" title="VB.NET - HashedMemberName">
+<code language="vbnet" title="VB.NET - HashedMemberName">
 ' Assume memberName contains the member name of the
 ' topic to show.
 Dim pageName As String = String.Format("{0:X}", _
@@ -353,26 +394,22 @@ Help.ShowHelp(parentForm, helpFilePath, _
     HelpNavigator.Topic, "html\" &amp; pageName &amp; ".htm")
 </code>
 
-	<para>The naming rules are the same for pages generated for the website
-output.  One way to get the URL to use for a page in the website output is to
-bring up the Index page for the generated website (<localUri>Index.html</localUri>
-or <localUri>Index.aspx</localUri>), you can right click on the links in the
-navigation pane and select <ui>Copy Shortcut</ui>.  Paste that into your web
-page that you want to link to the selected topic and modify the link by
-inserting "<codeInline>Index.html?topic=</codeInline>" or
-"<codeInline>Index.aspx?topic=</codeInline>" immediately in front of the
-"<codeInline>html/</codeInline>" part of the link.  That will bring up the
-index page and show the selected topic as the default page in the right-hand
+		<para>The naming rules are the same for pages generated for the website output.  One way to get the URL to
+use for a page in the website output is to bring up the Index page for the generated website
+(<localUri>Index.html</localUri> or <localUri>Index.aspx</localUri>), you can right click on the links in the
+navigation pane and select <ui>Copy Shortcut</ui>.  Paste that into your web page that you want to link to the
+selected topic and modify the link by inserting "<codeInline>Index.html?topic=</codeInline>" or
+"<codeInline>Index.aspx?topic=</codeInline>" immediately in front of the "<codeInline>html/</codeInline>" part
+of the link.  That will bring up the index page and show the selected topic as the default page in the right-hand
 pane.  For example:</para>
 
-<code lang="none" title=" ">
+<code language="none" title=" ">
 http://www.ewoodruff.us/shfbdocs/Index.aspx?topic=html/1aea789d-b226-4b39-b534-4c97c256fac8.htm
 </code>
 
 <alert class="tip">
-  <para>Conceptual content topic files are always named using their GUID as the
-filename with a ".htm" extension and they are always placed in the
-<localUri>html/</localUri> folder.</para>
+	<para>Conceptual content topic files are always named using their GUID as the filename with a ".htm" extension
+and they are always placed in the <localUri>html/</localUri> folder.</para>
 </alert>
 
   </content>
@@ -380,30 +417,27 @@ filename with a ".htm" extension and they are always placed in the
 
 <section address="Preliminary">
   <title>Preliminary</title>
-  <content><para>When this property is set to True, it will mark all topics in
-the help file with a large, red message "[This is preliminary documentation and
-is subject to change.]".  This is a quick and easy way to mark documentation
-for beta software as preliminary and subject to change.</para>
+  <content>
+		<para>When this property is set to True, it will mark all topics in the help file with a large, red message
+"[This is preliminary documentation and is subject to change.]".  This is a quick and easy way to mark
+documentation for beta software as preliminary and subject to change.</para>
 
   </content>
 </section>
 
 <section address="PresentationStyle">
   <title>PresentationStyle</title>
-  <content><para>This property is used to choose the presentation style that
-determines the layout and appearance of the help topics.  Sandcastle comes with
-three styles: <codeInline>VS2005</codeInline> (the default),
-<codeInline>Prototype</codeInline>, and <codeInline>Hana</codeInline>.  The
-files for each style are located in the <localUri>.\Presentation</localUri>
-folder under the main Sandcastle installation folder.</para>
+  <content>
+		<para>This property is used to choose the presentation style that determines the layout and appearance of
+the help topics.  Sandcastle comes with three styles: <codeInline>VS2005</codeInline> (the default),
+<codeInline>Prototype</codeInline>, and <codeInline>Hana</codeInline>.  The files for each style are located in
+the <localUri>.\Presentation</localUri> folder under the main Sandcastle installation folder.</para>
 
 <alert class="tip">
-  <para>If you create your own styles, place the folders in the same location
-and the help file builder will detect them automatically and let you select
-them in the project.  Be sure to include one of the default style names in
-your folder name as certain build steps are performed differently based on the
-selected style and this will be the hint that the help file builder uses to
-determine what action to take.</para>
+  <para>If you create your own styles, place the folders in the same location and the help file builder will
+detect them automatically and let you select them in the project.  Be sure to include one of the default style
+names in your folder name as certain build steps are performed differently based on the selected style and this
+will be the hint that the help file builder uses to determine what action to take.</para>
 </alert>
 
   </content>
@@ -411,43 +445,40 @@ determine what action to take.</para>
 
 <section address="RootNS">
   <title>RootNamespaceContainer and RootNamespaceTitle</title>
-  <content><para>The <codeInline>RootNamespaceContainer</codeInline> property
-is used to specify whether or not a root namespace entry is added to the table
-of contents to act as a container for the namespaces from the documented
-assemblies.  If set to True, a root <legacyBold>Namespaces</legacyBold> table
-of contents entry will be created as the container of the namespaces in the
-documented assemblies.  If set to False, the default, the namespaces are listed
-in the table of contents as root entries.  To change the name of the root
-container from "Namespaces", enter the new name in the
-<codeInline>RootNamespaceTitle</codeInline> property.</para>
+  <content>
+		<para>The <codeInline>RootNamespaceContainer</codeInline> property is used to specify whether or not a root
+namespace entry is added to the table of contents to act as a container for the namespaces from the documented
+assemblies.  If set to True, a root <legacyBold>Namespaces</legacyBold> table of contents entry will be created
+as the container of the namespaces in the documented assemblies.  If set to False, the default, the namespaces
+are listed in the table of contents as root entries.  To change the name of the root container from "Namespaces",
+enter the new name in the <codeInline>RootNamespaceTitle</codeInline> property.</para>
 
   </content>
 </section>
 
 <section address="SdkLinkTarget">
   <title>SdkLinkTarget</title>
-  <content><para>When an SDK link type property is set to <codeInline>MSDN</codeInline>,
-the <codeInline>SdkLinkTarget</codeInline> property is used to define where the MSDN
-links will open in the browser.  This property has no effect if the SDK link type
-property for a particular help file format is set to any other value.  The default value
-is <codeInline>Blank</codeInline> to open MSDN links in a new window.  It can also be set
-to <codeInline>Self</codeInline>, <codeInline>Parent</codeInline>, or <codeInline>Top</codeInline>
-which have the same effect of replacing the current window's content with the content of
-the MSDN topic. The last two are useful when producing web output as they will cause the
-MSDN links to replace the frameset with the MSDN topic page.</para>
+  <content>
+		<para>When an SDK link type property is set to <codeInline>MSDN</codeInline>, the
+<codeInline>SdkLinkTarget</codeInline> property is used to define where the MSDN links will open in the browser.
+This property has no effect if the SDK link type property for a particular help file format is set to any other
+value.  The default value is <codeInline>Blank</codeInline> to open MSDN links in a new window.  It can also be
+set to <codeInline>Self</codeInline>, <codeInline>Parent</codeInline>, or <codeInline>Top</codeInline> which have
+the same effect of replacing the current window's content with the content of the MSDN topic. The last two are
+useful when producing web output as they will cause the MSDN links to replace the frameset with the MSDN topic
+page.</para>
 
   </content>
 </section>
 
 <section address="SyntaxFilters">
   <title>SyntaxFilters</title>
-  <content><para>This property lets you specify which languages appear in the
-<legacyBold>Syntax</legacyBold> section of the help topics and the languages
-that will appear in the language filter dropdown.  It can be set to one
-language, a combination of languages, <codeInline>All</codeInline> to include
-them all, <codeInline>Standard</codeInline> (the default) for C#, VB.NET, and
-C++ only, or <codeInline>None</codeInline> to remove the <legacyBold>Syntax</legacyBold>
-section entirely.</para>
+  <content>
+		<para>This property lets you specify which languages appear in the <legacyBold>Syntax</legacyBold> section of
+the help topics and the languages that will appear in the language filter dropdown.  It can be set to one
+language, a combination of languages, <codeInline>All</codeInline> to include them all,
+<codeInline>Standard</codeInline> (the default) for C#, VB.NET, and C++ only, or <codeInline>None</codeInline> to
+remove the <legacyBold>Syntax</legacyBold> section entirely.</para>
 
   </content>
 </section>

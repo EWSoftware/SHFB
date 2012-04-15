@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : TopicCollection.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/09/2012
+// Updated : 04/06/2012
 // Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -669,13 +669,15 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// </summary>
         /// <param name="toc">The table of contents collection</param>
         /// <param name="pathProvider">The base path provider</param>
-        public void GenerateTableOfContents(TocEntryCollection toc,
-          IBasePathProvider pathProvider)
+        /// <param name="includeInvisibleItems">True to include items marked invisible (useful for previewing)
+        /// or false to exclude them.</param>
+        public void GenerateTableOfContents(TocEntryCollection toc, IBasePathProvider pathProvider,
+          bool includeInvisibleItems)
         {
             TocEntry entry;
 
             foreach(Topic t in this)
-                if(t.Visible)
+                if(t.Visible || includeInvisibleItems)
                 {
                     entry = new TocEntry(pathProvider);
 
@@ -694,7 +696,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                     entry.IsSelected = t.IsSelected;
 
                     if(t.Subtopics.Count != 0)
-                        t.Subtopics.GenerateTableOfContents(entry.Children, pathProvider);
+                        t.Subtopics.GenerateTableOfContents(entry.Children, pathProvider, includeInvisibleItems);
 
                     toc.Add(entry);
                 }

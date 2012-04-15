@@ -14,7 +14,7 @@ inner text.</para>
     <section>
       <title>Example</title>
       <content>
-        <code lang="xml" title=" ">
+        <code language="xml" title=" ">
 If the property is not used, set it to the string &lt;literal&gt;None&lt;/literal&gt;.
 </code>
       </content>

@@ -2,8 +2,8 @@
 // System  : EWSoftware Design Time Attributes and Editors
 // File    : BindingRedirectResolverConfigDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/14/2008
-// Note    : Copyright 2008, Eric Woodruff, All rights reserved
+// Updated : 03/31/2012
+// Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the form used to edit the assembly binding redirection
@@ -18,14 +18,10 @@
 // Version     Date     Who  Comments
 // ============================================================================
 // 1.8.0.1  11/14/2008  EFW  Created the code
+// 1.9.4.0  03/31/2012  EFW  Added Use GAC option
 //=============================================================================
 
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Globalization;
-using System.IO;
-using System.Reflection;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.XPath;
@@ -35,8 +31,7 @@ using SandcastleBuilder.Utils;
 namespace SandcastleBuilder.PlugIns
 {
     /// <summary>
-    /// This form is used to edit the <see cref="BindingRedirectResolverPlugIn"/>
-    /// configuration.
+    /// This form is used to edit the <see cref="BindingRedirectResolverPlugIn"/> configuration
     /// </summary>
     internal partial class BindingRedirectResolverConfigDlg : Form
     {
@@ -67,12 +62,12 @@ namespace SandcastleBuilder.PlugIns
         /// Constructor
         /// </summary>
         /// <param name="currentProject">The current project</param>
-        /// <param name="currentConfig">The current XML configuration
-        /// XML fragment</param>
-        public BindingRedirectResolverConfigDlg(SandcastleProject currentProject,
-          string currentConfig)
+        /// <param name="currentConfig">The current XML configuration XML fragment</param>
+        public BindingRedirectResolverConfigDlg(SandcastleProject currentProject, string currentConfig)
         {
             XPathNavigator navigator, root;
+            string useGac;
+            bool value;
 
             InitializeComponent();
             project = currentProject;
@@ -88,6 +83,11 @@ namespace SandcastleBuilder.PlugIns
 
             root = navigator.SelectSingleNode("configuration");
 
+            useGac = root.GetAttribute("useGAC", String.Empty);
+
+            if(Boolean.TryParse(useGac, out value))
+                chkUseGAC.Checked = value;
+
             if(!root.IsEmptyElement)
                 items.FromXml(project, root);
 
@@ -95,9 +95,8 @@ namespace SandcastleBuilder.PlugIns
                 pgProps.Enabled = btnDelete.Enabled = false;
             else
             {
-                // Binding the collection to the list box caused some
-                // odd problems with the property grid so we'll add the
-                // items to the list box directly.
+                // Binding the collection to the list box caused some odd problems with the property grid so
+                // we'll add the items to the list box directly.
                 foreach(BindingRedirectSettings brs in items)
                     lbRedirects.Items.Add(brs);
 
@@ -126,8 +125,7 @@ namespace SandcastleBuilder.PlugIns
         /// <param name="e">The event arguments</param>
         private void btnAddFile_Click(object sender, EventArgs e)
         {
-            int idx = lbRedirects.Items.Add(
-                new BindingRedirectSettings(project));
+            int idx = lbRedirects.Items.Add(new BindingRedirectSettings(project));
 
             pgProps.Enabled = btnDelete.Enabled = true;
             lbRedirects.SelectedIndex = idx;
@@ -188,9 +186,20 @@ namespace SandcastleBuilder.PlugIns
         private void btnOK_Click(object sender, EventArgs e)
         {
             XmlNode root;
+            XmlAttribute attr;
 
             // Store the changes
             root = config.SelectSingleNode("configuration");
+
+            attr = root.Attributes["useGAC"];
+
+            if(attr == null)
+            {
+                attr = config.CreateAttribute("useGAC");
+                root.Attributes.Append(attr);
+            }
+
+            attr.Value = chkUseGAC.Checked.ToString().ToLowerInvariant();
 
             items.Clear();
 
@@ -217,8 +226,7 @@ namespace SandcastleBuilder.PlugIns
             catch(Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
-                MessageBox.Show("Unable to launch link target.  " +
-                    "Reason: " + ex.Message, Constants.AppName,
+                MessageBox.Show("Unable to launch link target.  Reason: " + ex.Message, Constants.AppName,
                     MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }

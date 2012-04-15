@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Components
 // File    : MultiFormatOutputComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/05/2010
-// Note    : Copyright 2010, Eric Woodruff, All rights reserved
+// Updated : 03/11/2012
+// Note    : Copyright 2010-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a build component that is used to execute one or more
@@ -148,13 +148,16 @@ namespace SandcastleBuilder.Components
         /// <summary>
         /// Dispose of the nested components
         /// </summary>
-        public override void Dispose()
+        /// <param name="disposing">Pass true to dispose of the managed and unmanaged resources or false to just
+        /// dispose of the unmanaged resources.</param>
+        protected override void Dispose(bool disposing)
         {
-            foreach(IEnumerable<BuildComponent> list in formatComponents.Values)
-                foreach(BuildComponent component in list)
-                    component.Dispose();
+            if(disposing)
+                foreach(IEnumerable<BuildComponent> list in formatComponents.Values)
+                    foreach(BuildComponent component in list)
+                        component.Dispose();
 
-            base.Dispose();
+            base.Dispose(disposing);
         }
         #endregion
     }

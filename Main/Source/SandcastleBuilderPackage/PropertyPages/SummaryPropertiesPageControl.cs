@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SummaryPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 12/31/2011
-// Note    : Copyright 2011, Eric Woodruff, All rights reserved
+// Updated : 04/04/2012
+// Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This user control is used to edit the Summaries category properties.
@@ -163,7 +163,7 @@ namespace SandcastleBuilder.Package.PropertyPages
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        private void button1_Click(object sender, EventArgs e)
+        private void btnEditNamespaces_Click(object sender, EventArgs e)
         {
             string oldSummaries, newSummaries;
 
@@ -183,7 +183,7 @@ namespace SandcastleBuilder.Package.PropertyPages
                 // If it changes, mark the page as dirty and update the summary info
                 if(oldSummaries != newSummaries)
                 {
-                    summariesChanged = true;
+                    this.IsDirty = summariesChanged = true;
                     this.UpdateNamespaceSummaryInfo();
                 }
             }

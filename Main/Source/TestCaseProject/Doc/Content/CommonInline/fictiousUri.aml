@@ -15,7 +15,7 @@ the inner text.</para>
     <section>
       <title>Example</title>
       <content>
-        <code lang="xml" title=" ">
+        <code language="xml" title=" ">
 The e-mail address &lt;fictitiousUri&gt;jdoe@contoso.com&lt;/fictitiousUri&gt; is
 fake as is the URL &lt;fictitiousUri&gt;http://www.contoso.com&lt;/fictitiousUri&gt;.
 </code>

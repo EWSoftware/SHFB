@@ -8,7 +8,7 @@
       <title>Orientation File Format</title>
       <content>
         <para>Below is an example of an Orientation topic file.</para>
-        <code lang="xml" title="Orientation Topic" source="ConceptualTemplates\Orientation.aml" />
+        <code language="xml" title="Orientation Topic" source="ConceptualTemplates\Orientation.aml" />
       </content>
     </section>
     <relatedTopics>

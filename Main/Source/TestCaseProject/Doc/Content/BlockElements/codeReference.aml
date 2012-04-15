@@ -32,7 +32,7 @@ the hash character.</para>
         <para>This example uses the samples from the example file above.  The first
 three are the individual snippets.  The last one combines the "create instance"
 snippets into one example.</para>
-        <code lang="xml" title=" ">
+        <code language="xml" title=" ">
 Define a class
 &lt;codeReference&gt;ClassDefinition#Define&lt;/codeReference&gt;
 

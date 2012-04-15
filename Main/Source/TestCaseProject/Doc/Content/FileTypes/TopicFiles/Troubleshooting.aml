@@ -8,7 +8,7 @@
       <title>Troubleshooting File Format</title>
       <content>
         <para>Below is an example of a Troubleshooting topic file.</para>
-        <code lang="xml" title="Troubleshooting Topic" source="ConceptualTemplates\Troubleshooting.aml" />
+        <code language="xml" title="Troubleshooting Topic" source="ConceptualTemplates\Troubleshooting.aml" />
       </content>
     </section>
     <relatedTopics>

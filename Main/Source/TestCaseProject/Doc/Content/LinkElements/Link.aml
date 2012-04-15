@@ -52,7 +52,7 @@ information.</para>
     <section>
       <title>Example</title>
       <content>
-        <code lang="xml" title=" ">
+        <code language="xml" title=" ">
 Self-closing: &lt;link xlink:href="cfd9dabf-22f3-4742-8b54-d84404610db1" /&gt;
 With inner text: &lt;link xlink:href="cfd9dabf-22f3-4742-8b54-d84404610db1"&gt;
 companion file&lt;/link&gt;

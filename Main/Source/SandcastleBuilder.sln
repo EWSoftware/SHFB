@@ -65,7 +65,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SandcastleBuilderGui", "San
 	ProjectSection(ProjectDependencies) = postProject
 		{49720D17-40AD-4452-B60A-A5DEA226BA06} = {49720D17-40AD-4452-B60A-A5DEA226BA06}
 		{9708B799-DC83-4404-B8C6-FA444C310DCD} = {9708B799-DC83-4404-B8C6-FA444C310DCD}
-		{E89B64AB-F22B-402A-B5C8-3FF19234E822} = {E89B64AB-F22B-402A-B5C8-3FF19234E822}
 		{A96308E6-1F59-4378-9605-9D19DF9F697D} = {A96308E6-1F59-4378-9605-9D19DF9F697D}
 		{8E5E26EC-0352-4597-AD7B-1563C929CE20} = {8E5E26EC-0352-4597-AD7B-1563C929CE20}
 		{318728F4-8A9F-4A33-87F6-6E3A06629C3C} = {318728F4-8A9F-4A33-87F6-6E3A06629C3C}
@@ -87,15 +86,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SandcastleHtmlExtract", "Sa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenerateInheritedDocs", "GenerateInheritedDocs\GenerateInheritedDocs.csproj", "{A96308E6-1F59-4378-9605-9D19DF9F697D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SandcastleMRefBuilder", "SandcastleMRefBuilder\SandcastleMRefBuilder.csproj", "{E89B64AB-F22B-402A-B5C8-3FF19234E822}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelpLibraryManagerLauncher", "HelpLibraryManagerLauncher\HelpLibraryManagerLauncher.csproj", "{318728F4-8A9F-4A33-87F6-6E3A06629C3C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SandcastleBuilderWPF", "SandcastleBuilderWPF\SandcastleBuilderWPF.csproj", "{D3B06405-3435-4329-9233-2DF1BF5028AA}"
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 11
+		SccNumberOfProjects = 10
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs01
 		SccLocalPath0 = .
@@ -123,12 +120,9 @@ Global
 		SccProjectUniqueName8 = SandcastleHtmlExtract\\SandcastleHtmlExtract.csproj
 		SccProjectName8 = SandcastleHtmlExtract
 		SccLocalPath8 = SandcastleHtmlExtract
-		SccProjectUniqueName9 = SandcastleMRefBuilder\\SandcastleMRefBuilder.csproj
-		SccProjectName9 = SandcastleMRefBuilder
-		SccLocalPath9 = SandcastleMRefBuilder
-		SccProjectUniqueName10 = SandcastleBuilderWPF\\SandcastleBuilderWPF.csproj
-		SccProjectName10 = SandcastleBuilderWPF
-		SccLocalPath10 = SandcastleBuilderWPF
+		SccProjectUniqueName9 = SandcastleBuilderWPF\\SandcastleBuilderWPF.csproj
+		SccProjectName9 = SandcastleBuilderWPF
+		SccLocalPath9 = SandcastleBuilderWPF
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -178,12 +172,6 @@ Global
 		{A96308E6-1F59-4378-9605-9D19DF9F697D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A96308E6-1F59-4378-9605-9D19DF9F697D}.ReleaseNoDoc|Any CPU.ActiveCfg = ReleaseNoDoc|Any CPU
 		{A96308E6-1F59-4378-9605-9D19DF9F697D}.ReleaseNoDoc|Any CPU.Build.0 = ReleaseNoDoc|Any CPU
-		{E89B64AB-F22B-402A-B5C8-3FF19234E822}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E89B64AB-F22B-402A-B5C8-3FF19234E822}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E89B64AB-F22B-402A-B5C8-3FF19234E822}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E89B64AB-F22B-402A-B5C8-3FF19234E822}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E89B64AB-F22B-402A-B5C8-3FF19234E822}.ReleaseNoDoc|Any CPU.ActiveCfg = ReleaseNoDoc|Any CPU
-		{E89B64AB-F22B-402A-B5C8-3FF19234E822}.ReleaseNoDoc|Any CPU.Build.0 = ReleaseNoDoc|Any CPU
 		{318728F4-8A9F-4A33-87F6-6E3A06629C3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{318728F4-8A9F-4A33-87F6-6E3A06629C3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{318728F4-8A9F-4A33-87F6-6E3A06629C3C}.Release|Any CPU.ActiveCfg = Release|Any CPU

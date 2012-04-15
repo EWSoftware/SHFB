@@ -16,7 +16,7 @@ can be added to make the introduction accessible via an in-page link.</para>
     <section>
       <title>Example</title>
       <content>
-        <code lang="xml" title=" ">
+        <code language="xml" title=" ">
   &lt;introduction address="intro"&gt;
     &lt;para&gt;This element contains an introduction to some part of the document.
 Most conceptual document types have a required introduction section.&lt;/para&gt;

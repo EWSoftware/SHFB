@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : BindingRedirectResolverPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/19/2008
-// Note    : Copyright 2008, Eric Woodruff, All rights reserved
+// Updated : 03/30/2012
+// Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a plug-in that is used to add assembly binding
@@ -21,9 +21,7 @@
 //=============================================================================
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
 using System.Xml;
@@ -36,21 +34,23 @@ using SandcastleBuilder.Utils.PlugIn;
 namespace SandcastleBuilder.PlugIns
 {
     /// <summary>
-    /// This plug-in class is used to add assembly binding redirection support
-    /// to the MRefBuilder configuration file.
+    /// This plug-in class is used to add assembly binding redirection support to the MRefBuilder
+    /// configuration file.
     /// </summary>
     public class BindingRedirectResolverPlugIn : SandcastleBuilder.Utils.PlugIn.IPlugIn
     {
         #region Private data members
+        //=====================================================================
+
         private ExecutionPointCollection executionPoints;
         private BuildProcess builder;
 
+        private bool useGac;
         private BindingRedirectSettingsCollection redirects;
         #endregion
 
         #region IPlugIn implementation
         //=====================================================================
-        // IPlugIn implementation
 
         /// <summary>
         /// This read-only property returns a friendly name for the plug-in
@@ -69,16 +69,14 @@ namespace SandcastleBuilder.PlugIns
             {
                 // Use the assembly version
                 Assembly asm = Assembly.GetExecutingAssembly();
-                FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(
-                    asm.Location);
+                FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(asm.Location);
 
                 return new Version(fvi.ProductVersion);
             }
         }
 
         /// <summary>
-        /// This read-only property returns the copyright information for the
-        /// plug-in.
+        /// This read-only property returns the copyright information for the plug-in
         /// </summary>
         public string Copyright
         {
@@ -87,8 +85,8 @@ namespace SandcastleBuilder.PlugIns
                 // Use the assembly copyright
                 Assembly asm = Assembly.GetExecutingAssembly();
                 AssemblyCopyrightAttribute copyright =
-                    (AssemblyCopyrightAttribute)Attribute.GetCustomAttribute(
-                        asm, typeof(AssemblyCopyrightAttribute));
+                    (AssemblyCopyrightAttribute)Attribute.GetCustomAttribute(asm,
+                        typeof(AssemblyCopyrightAttribute));
 
                 return copyright.Copyright;
             }
@@ -101,9 +99,8 @@ namespace SandcastleBuilder.PlugIns
         {
             get
             {
-                return "This plug in is used to add assembly binding " +
-                    "redirection support to the MRefBuilder configuration " +
-                    "file.";
+                return "This plug in is used to add assembly binding redirection support to the " +
+                    "MRefBuilder configuration file.";
             }
         }
 
@@ -116,9 +113,8 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This read-only property returns a collection of execution points
-        /// that define when the plug-in should be invoked during the build
-        /// process.
+        /// This read-only property returns a collection of execution points that define when the plug-in
+        /// should be invoked during the build process.
         /// </summary>
         public ExecutionPointCollection ExecutionPoints
         {
@@ -128,8 +124,7 @@ namespace SandcastleBuilder.PlugIns
                 {
                     executionPoints = new ExecutionPointCollection();
 
-                    executionPoints.Add(new ExecutionPoint(
-                        BuildStep.GenerateReflectionInfo,
+                    executionPoints.Add(new ExecutionPoint(BuildStep.GenerateReflectionInfo,
                         ExecutionBehaviors.Before));
                 }
 
@@ -138,19 +133,17 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This method is used by the Sandcastle Help File Builder to let the
-        /// plug-in perform its own configuration.
+        /// This method is used by the Sandcastle Help File Builder to let the plug-in perform its own
+        /// configuration.
         /// </summary>
         /// <param name="project">A reference to the active project</param>
         /// <param name="currentConfig">The current configuration XML fragment</param>
         /// <returns>A string containing the new configuration XML fragment</returns>
-        /// <remarks>The configuration data will be stored in the help file
-        /// builder project.</remarks>
-        public string ConfigurePlugIn(SandcastleProject project,
-          string currentConfig)
+        /// <remarks>The configuration data will be stored in the help file builder project</remarks>
+        public string ConfigurePlugIn(SandcastleProject project, string currentConfig)
         {
-            using(BindingRedirectResolverConfigDlg dlg =
-              new BindingRedirectResolverConfigDlg(project, currentConfig))
+            using(BindingRedirectResolverConfigDlg dlg = new BindingRedirectResolverConfigDlg(
+              project, currentConfig))
             {
                 if(dlg.ShowDialog() == DialogResult.OK)
                     currentConfig = dlg.Configuration;
@@ -160,30 +153,32 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This method is used to initialize the plug-in at the start of the
-        /// build process.
+        /// This method is used to initialize the plug-in at the start of the build process
         /// </summary>
         /// <param name="buildProcess">A reference to the current build
         /// process.</param>
-        /// <param name="configuration">The configuration data that the plug-in
-        /// should use to initialize itself.</param>
-        public void Initialize(BuildProcess buildProcess,
-          XPathNavigator configuration)
+        /// <param name="configuration">The configuration data that the plug-in should use to initialize
+        /// itself.</param>
+        public void Initialize(BuildProcess buildProcess, XPathNavigator configuration)
         {
             XPathNavigator root;
 
             builder = buildProcess;
 
-            builder.ReportProgress("{0} Version {1}\r\n{2}\r\n",
-                this.Name, this.Version, this.Copyright);
+            builder.ReportProgress("{0} Version {1}\r\n{2}\r\n", this.Name, this.Version, this.Copyright);
 
             root = configuration.SelectSingleNode("configuration");
 
             if(root.IsEmptyElement)
-                throw new BuilderException("ABR0001", "The Assembly Binding " +
-                    "Redirection Resolver plug-in has not been configured yet");
+                throw new BuilderException("ABR0001", "The Assembly Binding Redirection Resolver plug-in " +
+                    "has not been configured yet");
 
             // Load the configuration
+            string value = root.GetAttribute("useGAC", String.Empty);
+
+            if(!Boolean.TryParse(value, out useGac))
+                useGac = false;
+
             redirects = new BindingRedirectSettingsCollection();
             redirects.FromXml(builder.CurrentProject, root);
         }
@@ -206,34 +201,30 @@ namespace SandcastleBuilder.PlugIns
                 ddue = config.SelectSingleNode("configuration/dduetools");
 
                 if(ddue == null)
-                    throw new BuilderException("ABR0002", "Unable to locate " +
-                        "configuration/dduetools or its child resolver " +
-                        "element in MRefBuilder.config");
+                    throw new BuilderException("ABR0002", "Unable to locate configuration/dduetools " +
+                        "or its child resolver element in MRefBuilder.config");
 
-                builder.ReportProgress("Default resolver element not found, " +
-                    "adding new element");
+                builder.ReportProgress("Default resolver element not found, adding new element");
                 resolver = config.CreateNode(XmlNodeType.Element, "resolver", null);
                 ddue.AppendChild(resolver);
 
                 attr = config.CreateAttribute("type");
+                attr.Value = "Microsoft.Ddue.Tools.Reflection.AssemblyResolver";
                 resolver.Attributes.Append(attr);
+
                 attr = config.CreateAttribute("assembly");
+                attr.Value = builder.TransformText(@"{@SandcastlePath}ProductionTools\MRefBuilder.exe");
                 resolver.Attributes.Append(attr);
+
                 attr = config.CreateAttribute("use-gac");
                 attr.Value = "false";
                 resolver.Attributes.Append(attr);
             }
 
-            resolver.Attributes["type"].Value =
-                "SandcastleBuilder.Components.BindingRedirectResolver";
-            resolver.Attributes["assembly"].Value = builder.TransformText(
-                "{@SHFBFolder}SandcastleBuilder.MRefBuilder.dll");
+            // Allow turning GAC resolution on
+            resolver.Attributes["use-gac"].Value = useGac.ToString().ToLowerInvariant();
 
-            builder.ReportProgress("Default resolver replaced with '{0}' in '{1}'",
-                resolver.Attributes["type"].Value,
-                resolver.Attributes["assembly"].Value);
-
-            builder.ReportProgress("Adding redirects:");
+            builder.ReportProgress("Adding binding redirections to assembly resolver configuration:");
 
             foreach(BindingRedirectSettings brs in redirects)
                 builder.ReportProgress("    {0}", brs);
@@ -246,11 +237,10 @@ namespace SandcastleBuilder.PlugIns
 
         #region IDisposable implementation
         //=====================================================================
-        // IDisposable implementation
 
         /// <summary>
-        /// This handles garbage collection to ensure proper disposal of the
-        /// plug-in if not done explicity with <see cref="Dispose()"/>.
+        /// This handles garbage collection to ensure proper disposal of the plug-in if not done explicity
+        /// with <see cref="Dispose()"/>.
         /// </summary>
         ~BindingRedirectResolverPlugIn()
         {
@@ -258,8 +248,7 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This implements the Dispose() interface to properly dispose of
-        /// the plug-in object.
+        /// This implements the Dispose() interface to properly dispose of the plug-in object
         /// </summary>
         /// <overloads>There are two overloads for this method.</overloads>
         public void Dispose()
@@ -269,12 +258,10 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This can be overridden by derived classes to add their own
-        /// disposal code if necessary.
+        /// This can be overridden by derived classes to add their own disposal code if necessary
         /// </summary>
-        /// <param name="disposing">Pass true to dispose of the managed
-        /// and unmanaged resources or false to just dispose of the
-        /// unmanaged resources.</param>
+        /// <param name="disposing">Pass true to dispose of the managed and unmanaged resources or false to
+        /// just dispose of the unmanaged resources.</param>
         protected virtual void Dispose(bool disposing)
         {
             // Nothing to dispose of in this one

@@ -553,6 +553,9 @@ namespace TestDoc
         /// .NET 4.0 optional arguments test.  The June 2010 and earlier releases of Sandcastle
         /// do not support optional argument values in the syntax section.
         /// </summary>
+        /// <remarks>Conceptual link tests: <conceptualLink target="303c996a-2911-4c08-b492-6496c82b3edb"/> and
+        /// <conceptualLink target="ba47a67c-4825-4fcd-b806-2b2e02d4373a">Another MAML topic</conceptualLink> and
+        /// <conceptualLink target="dc4fcc96-283e-4202-9ecc-08a65e0c9313#BuildTools" />.</remarks>
         public void OptionalArgumentTest(int value, [Optional]int optionalByAttr,
           string testString = "Hello", bool isUsed = true, float smallAmount = 2.55f,
           double? amount = null)

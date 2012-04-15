@@ -18,7 +18,7 @@ the inner text.</para>
     <section>
       <title>Example</title>
       <content>
-        <code lang="xml" title=" ">
+        <code language="xml" title=" ">
 This text will be rendered with an &lt;legacyUnderline&gt;underline&lt;/legacyUnderline&gt;.
 </code>
       </content>

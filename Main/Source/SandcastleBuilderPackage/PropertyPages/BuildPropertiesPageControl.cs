@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : BuildPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 12/31/2011
-// Note    : Copyright 2011, Eric Woodruff, All rights reserved
+// Updated : 03/31/2012
+// Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This user control is used to edit the Build category properties.
@@ -17,6 +17,7 @@
 // Version     Date     Who  Comments
 // ============================================================================
 // 1.9.3.0  03/27/2011  EFW  Created the code
+// 1.9.4.0  03/31/2012  EFW  Added BuildAssembler Verbosity property
 //=============================================================================
 
 using System;
@@ -86,6 +87,14 @@ namespace SandcastleBuilder.Package.PropertyPages
 
             cboFrameworkVersion.Items.AddRange(FrameworkVersionTypeConverter.StandardValues.ToArray());
             cboFrameworkVersion.SelectedItem = FrameworkVersionTypeConverter.LatestFrameworkMatching(".NET 4");
+
+            cboBuildAssemblerVerbosity.DisplayMember = "Value";
+            cboBuildAssemblerVerbosity.ValueMember = "Key";
+
+            cboBuildAssemblerVerbosity.DataSource = (new Dictionary<string, string> {
+                { BuildAssemblerVerbosity.AllMessages.ToString(), "All Messages" },
+                { BuildAssemblerVerbosity.OnlyWarningsAndErrors.ToString(), "Only warnings and errors" },
+                { BuildAssemblerVerbosity.OnlyErrors.ToString(), "Only Errors" } }).ToList();
         }
         #endregion
 

@@ -15,7 +15,7 @@ inner text.</para>
     <section>
       <title>Example</title>
       <content>
-        <code lang="xml" title=" ">
+        <code language="xml" title=" ">
 The result of running &lt;application&gt;HelloWorld.exe&lt;/application&gt; is:
 &lt;computerOutputInline&gt;Hello World!&lt;/computerOutputInline&gt;
 </code>

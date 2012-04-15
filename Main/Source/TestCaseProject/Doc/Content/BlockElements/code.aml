@@ -27,7 +27,7 @@ formatting and any special characters that would normally require encoding.</par
     <section>
       <title>Example</title>
       <content>
-        <code lang="xml" title=" ">
+        <code language="xml" title=" ">
 An encoded example:
 
 &lt;code language="C#"&gt;
@@ -69,7 +69,7 @@ public void Test()
 
 				<para>An example that uses CDATA to avoid the need to encode the sample:</para>
 
-<code language="VB.NET"><![CDATA[
+<code language="vbnet"><![CDATA[
 ''' <summary>
 ''' A sample method
 ''' <summary>
@@ -88,27 +88,27 @@ attribute is found, only that region of the file is loaded.  If not specified, t
 <codeInline>lang</codeInline> attribute must also be present to set the language to use for colorizing.  All
 other code tag attributes are optional.</para>
 
-      <code lang="none" source="ExampleFiles\Test.txt" title="Tab Size Test" tabSize="5" />
-      <code lang="vb.net" source="ExampleFiles\Class1.vb" region="Test Region" title="Test region from class" keepSeeTags="true">
+      <code language="none" source="ExampleFiles\Test.txt" title="Tab Size Test" tabSize="5" />
+      <code language="vb.net" source="ExampleFiles\Class1.vb" region="Test Region" title="Test region from class" keepSeeTags="true">
       </code>
-      <code lang="vbnet" source="ExampleFiles\Class1.vb" region="Embedded snippet" title="Test region from method" numberLines="true">
+      <code language="vbnet" source="ExampleFiles\Class1.vb" region="Embedded snippet" title="Test region from method" numberLines="true">
       </code>
-      <code lang="CSharp" source="..\TestClass.cs" region="Methods" numberLines="true" outlining="true" keepSeeTags="true" />
-      <code source="..\Generics\GenericClass.cs" lang="cs" keepSeeTags="true" />
-      <code source="ExampleFiles\CppClass.cpp" region="How to xyz" lang="cpp" />
-      <code title="Nested code block example" lang="VB.NET">
+      <code language="csharp" source="..\TestClass.cs" region="Methods" numberLines="true" outlining="true" keepSeeTags="true" />
+      <code source="..\Generics\GenericClass.cs" language="cs" keepSeeTags="true" />
+      <code source="ExampleFiles\CppClass.cpp" region="How to xyz" language="cpp" />
+      <code title="Nested code block example" language="vbnet">
         <code source="ExampleFiles\Class1.vb" region="Test Region" nested="true" keepSeeTags="true" />
 
     ' ... more stuff here ...
 
 				<code source="ExampleFiles\Class1.vb" region="Embedded snippet" nested="True" />
 			</code>
-      <code lang="xaml" source="ExampleFiles\Test.xaml" title="Whole XAML File" />
-      <code lang="xaml" source="ExampleFiles\Test.xaml" region="XAML Snippet" title="Test region from XAML file" />
-      <code lang="sql" source="ExampleFiles\Test.sql" title="Whole SQL File" />
-      <code lang="sql" source="ExampleFiles\Test.sql" region="SQL Snippet" title="Test region from SQL file" />
-      <code lang="pshell" source="%DXROOT%\ProductionTools\scbuild.ps1" />
-			<code lang="xml" title="How-to configure the Dummy Service"><![CDATA[
+      <code language="xaml" source="ExampleFiles\Test.xaml" title="Whole XAML File" />
+      <code language="xaml" source="ExampleFiles\Test.xaml" region="XAML Snippet" title="Test region from XAML file" />
+      <code language="sql" source="ExampleFiles\Test.sql" title="Whole SQL File" />
+      <code language="sql" source="ExampleFiles\Test.sql" region="SQL Snippet" title="Test region from SQL file" />
+      <code language="pshell" source="%DXROOT%\ProductionTools\scbuild.ps1" />
+			<code language="xml" title="How-to configure the Dummy Service"><![CDATA[
 <configuration>
   <configSections>
  ]]><code source="ExampleFiles\Test.xaml" region="XAML Snippet" /><![CDATA[

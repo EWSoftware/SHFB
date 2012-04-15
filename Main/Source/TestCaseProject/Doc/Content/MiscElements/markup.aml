@@ -24,7 +24,7 @@ a block or an inline element.</para>
     <section>
       <title>Example</title>
       <content>
-        <code lang="xml" title=" ">
+        <code language="xml" title=" ">
 Here is a piece of literal HTML markup:
 &lt;markup&gt;
 &lt;br/&gt;&lt;br/&gt;

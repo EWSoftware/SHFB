@@ -21,10 +21,8 @@ MAML elements, nested lists, tables, etc.  Text should be contained in a
 <codeInline>para</codeInline> element.</para>
 
 	<alert class="tip">
-		<para>If you have applied the latest <token>SandcastleStyles</token>
-patch, the <codeInline>definedTerm</codeInline> element supports an
-<codeInline>address</codeInline> attribute that can be used to link to a
-specific defined term from another location.</para>
+		<para>The <codeInline>definedTerm</codeInline> element supports an <codeInline>address</codeInline>
+attribute that can be used to link to a specific defined term from another location.</para>
 	</alert>
 
       </content>
@@ -33,7 +31,7 @@ specific defined term from another location.</para>
     <section>
       <title>Example</title>
       <content>
-<code lang="xml" title=" ">
+<code language="xml" title=" ">
 &lt;para&gt;This link takes you to &lt;link xlink:href=&quot;#Term8&quot;&gt;Term #8&lt;/link&gt;.&lt;/para&gt;
 
 &lt;definitionTable&gt;

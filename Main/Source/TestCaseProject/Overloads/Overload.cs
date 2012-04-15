@@ -27,6 +27,36 @@ namespace TestDoc.Overloads
         {
         }
 
+
+        /// <summary>
+        /// Method specific summary.
+        /// </summary>
+        /// <param name="value">A value</param>
+        /// <overloads>
+        /// <summary>
+        /// Overload page summary.
+        /// </summary>
+        /// <seealso cref="HtmlTagCommentTest" />
+        /// <remarks>
+        /// Overload page remarks.
+        /// </remarks>
+        /// </overloads>
+        /// <seealso cref="HtmlTagCommentTest" />
+        /// <remarks>
+        /// Method specific remarks.
+        /// </remarks>
+        public void OverloadedMethod(int value)
+        {
+        }
+
+        /// <summary>
+        /// Other overload summary
+        /// </summary>
+        /// <param name="value">A value</param>
+        public void OverloadedMethod(string value)
+        {
+        }
+
         /// <summary>
         /// A test of HTML tags in comment text
         /// </summary>

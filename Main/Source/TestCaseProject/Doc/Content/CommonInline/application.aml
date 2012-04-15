@@ -15,7 +15,7 @@ the inner text.</para>
     <section>
       <title>Example</title>
       <content>
-        <code lang="xml" title=" ">
+        <code language="xml" title=" ">
 Use &lt;application&gt;Sandcastle&lt;/application&gt; to create help files.
 </code>
       </content>

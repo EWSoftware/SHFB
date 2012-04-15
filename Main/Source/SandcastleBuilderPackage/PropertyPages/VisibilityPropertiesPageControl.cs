@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : VisibilityPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 12/31/2011
-// Note    : Copyright 2011, Eric Woodruff, All rights reserved
+// Updated : 04/04/2012
+// Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This user control is used to edit the Visibility category properties.
@@ -334,7 +334,7 @@ namespace SandcastleBuilder.Package.PropertyPages
                 if(apiFilter != newFilter)
                 {
                     apiFilter = newFilter;
-                    filterChanged = true;
+                    this.IsDirty = filterChanged = true;
                     this.UpdateApiFilterInfo();
                 }
             }

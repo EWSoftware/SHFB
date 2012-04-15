@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : TopicPreviewerControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/05/2012
+// Updated : 04/06/2012
 // Note    : Copyright 2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -331,9 +331,6 @@ namespace SandcastleBuilder.WPF.UserControls
                         contentLayout.Load();
                     }
 
-                    // For the purpose of adding links, make sure everything is visible
-                    contentLayout.Find(t => !t.Visible, false).ToList().ForEach(t => t.Visible = true);
-
                     tocFiles.Add(contentLayout);
                 }
 
@@ -351,9 +348,10 @@ namespace SandcastleBuilder.WPF.UserControls
                     return String.Compare(fx.Name, fy.Name, StringComparison.OrdinalIgnoreCase);
                 });
 
-                // Create the merged TOC
+                // Create the merged TOC.  For the purpose of adding links, we'll include everything
+                // even topics marked as invisible.
                 foreach(ITableOfContents file in tocFiles)
-                    file.GenerateTableOfContents(tableOfContents, currentProject);
+                    file.GenerateTableOfContents(tableOfContents, currentProject, true);
 
                 // Pass the topic IDs and titles on to the converter for use in hyperlinks
                 foreach(var t in tableOfContents.All())

@@ -48,11 +48,11 @@ files</localUri> so you must locate and retrieve them after each build.</para>
     </list>
 
     <para>To work around the limitations present when documenting website projects, you can use the custom code
-providers available at the <token>SandcastleStyles</token> project website (one for C# and one for VB.NET).
-By using these code providers, you can specify a folder to which the XML comments files should be copied.  This
-saves you from having to locate and copy them manually and solves the issue of the C# compiler not being able to
-output one comments file per assembly.  Below are instructions for documenting each type of web project and
-information about how the code providers work.</para>
+providers available at the <token>Sandcastle</token> project website (one for C# and one for VB.NET).  By using
+these code providers, you can specify a folder to which the XML comments files should be copied.  This saves you
+from having to locate and copy them manually and solves the issue of the C# compiler not being able to output one
+comments file per assembly.  Below are instructions for documenting each type of web project and information
+about how the code providers work.</para>
   </introduction>
 
   <section address="DocWebApps">
@@ -127,7 +127,7 @@ the template dialog box.  In order to create XML comments files, you must add th
 <codeInline>&lt;compiler&gt;</codeInline> element for the language that you are using but it will not hurt
 anything if they are both present.</para>
 
-<code lang="xml" title="Example Code Provider Configurations">
+<code language="xml" title="Example Code Provider Configurations">
 &lt;configuration&gt;
   &lt;system.codedom&gt;
     &lt;compilers&gt;
@@ -169,14 +169,14 @@ folder or you can register it in the Global Assembly Cache (GAC) so that it is a
 so, use the <legacyBold>gacutil</legacyBold> command line tool as follows replacing the path to the assembly to
 match the installed location on your system:</para>
 
-<code lang="none" title=" ">
+<code language="none" title=" ">
 gacutil -i \DotNet\Web\WebCodeProviders\Bin\Release\EWSoftware.CodeDom.dll
 </code>
 
 				<para>To remove the assembly from the Global Assembly Cache, use the <legacyBold>gacutil</legacyBold>
 command line tool as follows:</para>
 
-<code lang="none" title=" ">
+<code language="none" title=" ">
 gacutil -u EWSoftware.CodeDom
 </code>
 
@@ -226,7 +226,7 @@ a website project.  The tool is located in the .NET Framework folder.  For .NET 
 <localUri>C:\Windows\Microsoft.NET\Framework\v2.0.50727</localUri>.  To run it, issue a command similar to the
 following (lines wrapped for display purposes):</para>
 
-<code lang="none" title=" ">
+<code language="none" title=" ">
 C:\Windows\Microsoft.NET\Framework\v2.0.50727\aspnet_compiler
     -f -v /MyWebSite
     -p C:\Path\To\MyWebsite C:\Publish\MyWebSite
@@ -317,7 +317,7 @@ statement to the code that includes the missing namespace that contains the type
 are identical with the exception of their base class and an extra set of compiler options passed by the VB.NET
 version.  The C# version is shown below.</para>
 
-<code lang="cs" title="Example Code Provider">
+<code language="cs" title="Example Code Provider">
 public class CSharpCodeProviderWithDocs : CSharpCodeProvider
 {
     public override CompilerResults CompileAssemblyFromDom(
@@ -350,7 +350,7 @@ calls the <codeInline>CodeProviderHelper.ReplaceDocPathOption</codeInline> metho
 the compiler options to produce a unique XML comments file for the assembly in the specified folder.  It is shown
 below.</para>
 
-<code lang="cs" title="Replace Doc Path Option Method">
+<code language="cs" title="Replace Doc Path Option Method">
 internal static void ReplaceDocPathOption(
   CompilerParameters options,
   string[] additionalOptions)
@@ -469,7 +469,6 @@ comments files for website projects in order to create help files for them.</par
   <relatedTopics>
     <link xlink:href="c47d9242-b3a8-4153-aa9e-ae8cb41cefe2" />
     <token>Sandcastle</token>
-    <token>SandcastleStyles</token>
     <token>SHFB</token>
   </relatedTopics>
 

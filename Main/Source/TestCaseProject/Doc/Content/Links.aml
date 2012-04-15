@@ -10,13 +10,13 @@
   <title>MAML Information and Guides</title>
   <content>
 <list class="bullet">
-    <listItem><para>The most recent version of this guide can be download from
-<externalLink>
-  <linkText>The Sandcastle Styles</linkText>
-  <linkUri>http://www.codeplex.com/SandcastleStyles</linkUri>
-  <linkTarget>_blank</linkTarget>
-</externalLink> project on CodePlex.</para></listItem>
-	<listItem><para>For general background information, see the Wikipedia entry
+    <listItem>
+			<para>The most recent version of this guide can be download from the <token>Sandcastle</token>
+project on CodePlex.</para>
+		</listItem>
+	
+		<listItem>
+			<para>For general background information, see the Wikipedia entry
 	<externalLink>
 <linkText>Microsoft Assistance Markup Language</linkText>
 <linkUri>http://en.wikipedia.org/wiki/Microsoft_Assistance_Markup_Language</linkUri>
@@ -25,11 +25,13 @@
 <linkText>help-info.de</linkText>
 <linkUri>http://www.help-info.de/en/Help_Info_AP_Help/longhorn_maml_example.htm</linkUri>
 <linkTarget>_blank</linkTarget>
-</externalLink>
-	</para></listItem>
-	<listItem><para>If you need a tool to convert HTML files to MAML, download the
-<application>HTML to MAML Converter</application> available from the
-<token>SandcastleStyles</token> project site at CodePlex.</para></listItem>
+</externalLink></para>
+		</listItem>
+	
+		<listItem>
+			<para>If you need a tool to convert HTML files to MAML, the <application>HTML to MAML Converter</application>
+is included with Sandcastle as an extra along with this guide.</para>
+		</listItem>
 </list>
   </content>
 </section>
@@ -62,56 +64,64 @@ its various features work.</para></listItem>
   <title>Build and Project Management Tools</title>
   <content>
     <list class="bullet">
-      <listItem><para>The <externalLink><linkText>.NET 2.0 Framework</linkText>
+      <listItem>
+				<para>The <externalLink><linkText>.NET 2.0 Framework</linkText>
   <linkUri>http://www.microsoft.com/downloads/details.aspx?FamilyID=0856EACB-4362-4B0D-8EDD-AAB15C5E04F5&amp;displaylang=en</linkUri>
   <linkTarget>_blank</linkTarget>
-</externalLink>.</para></listItem>
+</externalLink>.</para>
+			</listItem>
 			
-      <listItem><para>The <externalLink><linkText>.NET 3.5 Framework</linkText>
+      <listItem>
+				<para>The <externalLink><linkText>.NET 3.5 Framework</linkText>
   <linkUri>http://www.microsoft.com/downloads/details.aspx?familyid=333325FD-AE52-4E35-B531-508D977D32A6&amp;displaylang=en</linkUri>
   <linkTarget>blank</linkTarget>
-</externalLink>.</para></listItem>
+</externalLink>.</para>
+			</listItem>
 
-      <listItem><para>The <externalLink><linkText>.NET 4.0 Framework</linkText>
+      <listItem>
+				<para>The <externalLink><linkText>.NET 4.0 Framework</linkText>
   <linkUri>http://www.microsoft.com/download/en/details.aspx?id=17851&amp;WT.mc_id=MSCOM_EN_US_DLC_DETAILS_121LSUS007996</linkUri>
   <linkTarget>blank</linkTarget>
-</externalLink>.</para></listItem>
+</externalLink>.</para>
+			</listItem>
 
-			<listItem><para>The latest version of Microsoft's <token>Sandcastle</token>
+			<listItem>
+				<para>The latest version of Microsoft's <token>Sandcastle</token>
 (currently the <token>SandcastleVersion</token> release as of
-<token>BuildDate</token>).</para></listItem>
+<token>BuildDate</token>).</para>
+			</listItem>
 
-      <listItem><para>Download the latest community-maintained patches for the Sandcastle
-presentation styles from the <token>SandcastleStyles</token> CodePlex project
-site.  This is essential if you will be producing conceptual content as it
-fixes a number of bugs and adds many new features that will make your conceptual
-content appear much better.</para></listItem>
-
-      <listItem><para>The <externalLink><linkText>HTML Help Workshop</linkText>
+      <listItem>
+				<para>The <externalLink><linkText>HTML Help Workshop</linkText>
   <linkUri>http://msdn2.microsoft.com/en-us/library/ms669985.aspx</linkUri>
-  <linkTarget>_blank</linkTarget>
-</externalLink> for building HTML Help 1.x (.CHM) help files.</para></listItem>
+  <linkTarget>_blank</linkTarget></externalLink> for building HTML Help 1.x (.CHM) help files.</para>
+			</listItem>
 
-      <listItem><para>The HTML Help 2.x compiler for building HTML Help 2.x (.HxS) help
-files.  This must be downloaded and installed as part of the <externalLink>
+      <listItem>
+				<para>The HTML Help 2.x compiler for building HTML Help 2.x (.HxS) help files.  This must be
+downloaded and installed as part of the <externalLink>
   <linkText>Visual Studio 2005 SDK</linkText>
   <linkUri>http://www.microsoft.com/downloads/details.aspx?familyid=51A5C65B-C020-4E08-8AC0-3EB9C06996F4&amp;displaylang=en</linkUri>
   <linkTarget>_blank</linkTarget>
-</externalLink> or the
-<externalLink>
+</externalLink> or the <externalLink>
   <linkText>Visual Studio 2008 SDK</linkText>
   <linkUri>http://www.microsoft.com/downloads/en/details.aspx?familyid=30402623-93ca-479a-867c-04dc45164f5b&amp;displaylang=en</linkUri>
   <linkTarget>_blank</linkTarget>
-</externalLink>.</para></listItem>
+</externalLink>.</para>
+			</listItem>
 
-    <listItem><para>If you are documenting .NET 1.1 applications and need the Help 2
-compiler tools, you can download the <externalLink>
+			<listItem>
+				<para>If you are documenting .NET 1.1 applications and need the Help 2 compiler tools, you can
+download the <externalLink>
   <linkText>Visual Studio 2003 Help Integration Toolkit</linkText>
   <linkUri>http://www.microsoft.com/downloads/details.aspx?familyid=ce1b26dc-d6af-42a1-a9a4-88c4eb456d87&amp;displaylang=en</linkUri>
   <linkTarget>_blank</linkTarget>
-</externalLink>.</para></listItem>
+</externalLink>.</para>
+			</listItem>
 
-      <listItem><para><token>SHFB</token></para></listItem>
+      <listItem>
+				<para><token>SHFB</token></para>
+			</listItem>
     </list>
   </content>
 </section>
@@ -120,47 +130,39 @@ compiler tools, you can download the <externalLink>
   <title>Third-Party Build Components</title>
   <content>
 	<list class="bullet">
-      <listItem><para>The Sandcastle Standalone Build Components download available
-at the <token>SHFB</token> contains the following custom build components:</para>
-		<list class="bullet">
-			<listItem><para>The Code Block Component used to colorize code blocks
-and add optional line numbering and collapsible sections.</para></listItem>
-			<listItem><para>The Help Attributes Component used to insert additional
-HTML Help 2 attributes into reference topics.</para></listItem>
-			<listItem><para>The IntelliSense Component used to generate XML comments
-files for use as IntelliSense in Visual Studio.</para></listItem>
-			<listItem><para>The JavaScript Declaration Syntax Generator used to
-output JavaScript syntax for non-Script# projects.</para></listItem>
-			<listItem><para>The Post-Transform Component used as a companion to the
-Code Block and Version Information Components and to add logos to the topic headers.</para></listItem>
-			<listItem><para>The Resolve Conceptual Links Component used to fix some
-bugs and shortcomings of the Sandcastle version of this component.</para></listItem>
-			<listItem><para>The Show Missing Documentation Component used to add
-"missing documentation" notes to reference topics and to auto-document constructors.</para></listItem>
-			<listItem><para>The Version Information Component used to add assembly
-version information to reference topics.</para></listItem>
-			<listItem><para>A set of cached build data components that cache key
-information such as comment, reflection index information, and MSDN URLs
-across builds in order to speed them up.</para></listItem>
-		</list></listItem>
+      <listItem>
+				<para>The Sandcastle Standalone Build Components download available at the <token>SHFB</token>
+project site contains the following custom build components:</para>
 
-<!-- 04/19/2010 - Unfortunately, this appears to be a dead project.  If it
-gets updated, I'll add it back.
-
-    <listItem><para><externalLink><linkText>Drawbridge</linkText>
-  <linkUri>http://www.castleapps.com</linkUri> <linkTarget>_blank</linkTarget>
-</externalLink> - With this build component, Visual Studio class diagrams can
-be incorporated into the documentation generated by Sandcastle.</para>
-
-<alert class="note">
-  <para>The Drawbridge component may not be compatible with the latest
-Sandcastle release.  See this <externalLink>
-<linkText>MSDN Documentation Forum thread</linkText>
-<linkUri>http://social.msdn.microsoft.com/Forums/en-US/devdocs/thread/ade02a77-51a5-4e9c-93ec-e095226adfe0</linkUri>
-<linkTarget>_blank</linkTarget></externalLink> for potential ways to get it to
-work if it has not yet been updated.</para>
-</alert></listItem> -->
-
+				<list class="bullet">
+					<listItem>
+						<para>The Code Block Component used to colorize code blocks and add optional line numbering and
+collapsible sections.</para>
+					</listItem>
+					<listItem>
+						<para>The Help Attributes Component used to insert additional HTML Help 2 attributes into
+reference topics.</para>
+					</listItem>
+					<listItem>
+						<para>The IntelliSense Component used to generate XML comments files for use as IntelliSense in
+Visual Studio.</para>
+					</listItem>
+					<listItem><para>The Post-Transform Component used as a companion to the Code Block and Version
+Information Components and to add logos to the topic headers.</para>
+					</listItem>
+					<listItem>
+						<para>The Show Missing Documentation Component used to add "missing documentation" notes to
+reference topics and to auto-document constructors.</para>
+					</listItem>
+					<listItem>
+						<para>The Version Information Component used to add assembly version information to reference
+topics.</para></listItem>
+					<listItem>
+						<para>A set of cached build data components that cache key information such as comment,
+reflection index information, and MSDN URLs across builds in order to speed them up.</para>
+					</listItem>
+				</list>
+			</listItem>
 	</list>
   </content>
 </section>

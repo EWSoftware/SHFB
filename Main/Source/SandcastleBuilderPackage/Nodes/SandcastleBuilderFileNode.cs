@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SandcastleBuilderFileNode.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/27/2011
-// Note    : Copyright 2011, Eric Woodruff, All rights reserved
+// Updated : 04/08/2012
+// Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the class that represents a file node in a Sandcastle
@@ -18,6 +18,7 @@
 // Version     Date     Who  Comments
 // ============================================================================
 // 1.9.3.0  03/27/2011  EFW  Created the code
+// 1.9.4.0  04/08/2012  EFW  Added support for XAML configuration files
 //=============================================================================
 
 using System;
@@ -106,6 +107,9 @@ namespace SandcastleBuilder.Package.Nodes
                     case ".tokens":
                         index = (int)ProjectImageIndex.Tokens;
                         break;
+
+                    case ".xamlcfg":    // Use the default XML file icon
+                        return this.ProjectMgr.ImageHandler.GetIconHandle((int)ProjectNode.ImageName.XMLFile);
 
                     default:
                         break;

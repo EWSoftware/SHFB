@@ -100,7 +100,6 @@
     </ComponentConfigurations>
     <DocumentationSources>
       <DocumentationSource sourceFile="..\SandcastleComponents\SandcastleComponents.csproj" />
-      <DocumentationSource sourceFile="..\SandcastleMRefBuilder\SandcastleMRefBuilder.csproj" />
     </DocumentationSources>
     <NamespaceSummaries>
       <NamespaceSummaryItem name="(global)" isDocumented="False" />
@@ -171,10 +170,8 @@
     <None Include="Content\GettingStarted\InheritDoc.aml" />
     <None Include="Content\GettingStarted\WebProjects.aml" />
     <None Include="Content\CompConfig\VersionInfoComponent.aml" />
-    <None Include="Content\CompConfig\ResolveConceptual.aml" />
     <None Include="Content\CompConfig\PostTransformComponent.aml" />
     <None Include="Content\CompConfig\MSHelpAttrComponent.aml" />
-    <None Include="Content\CompConfig\JavaScriptDecGen.aml" />
     <None Include="Content\CompConfig\IntelliSenseComponent.aml" />
     <None Include="Content\CompConfig\CompConfigFile.aml" />
     <None Include="Content\CompConfig\CodeBlockComponent.aml" />
@@ -197,14 +194,11 @@
     <None Include="BuildComponents\VersionHistory\v1.8.0.0.aml" />
     <None Include="BuildComponents\Links.aml" />
     <None Include="BuildComponents\VersionHistory\v1.8.0.1.aml" />
-    <None Include="BuildComponents\MRefBuilderComps.aml" />
-    <None Include="BuildComponents\BindingRedirectResolver.aml" />
     <None Include="BuildComponents\VersionHistory\v1.8.0.2.aml" />
     <None Include="BuildComponents\VersionHistory\v1.8.0.3.aml" />
     <None Include="BuildComponents\VersionHistory\v1.9.1.0.aml" />
     <None Include="BuildComponents\MSHelpViewerRoot.aml" />
     <None Include="Content\PropertiesWindow\HelpLibraryManagerLauncher.aml" />
-    <None Include="Content\CompConfig\MSHCComponent.aml" />
     <None Include="Content\CompConfig\MultiFormatOutputComponent.aml" />
     <None Include="Content\CompConfig\SyntaxFilterFileDefinition.aml" />
     <None Include="Media\Sandcastle.jpg">

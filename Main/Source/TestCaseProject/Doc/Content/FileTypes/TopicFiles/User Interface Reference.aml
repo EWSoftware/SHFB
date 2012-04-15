@@ -8,7 +8,7 @@
       <title>User Interface Reference File Format</title>
       <content>
         <para>Below is an example of a User Interface Reference topic file.</para>
-        <code lang="xml" title="User Interface Reference Topic" source="ConceptualTemplates\User Interface Reference.aml" />
+        <code language="xml" title="User Interface Reference Topic" source="ConceptualTemplates\User Interface Reference.aml" />
       </content>
     </section>
     <relatedTopics>

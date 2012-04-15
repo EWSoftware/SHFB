@@ -17,11 +17,12 @@
     <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -52,17 +53,17 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BuildAssemblerLibrary, Version=2.5.10626.0, Culture=neutral, PublicKeyToken=0b1f36dea51a29e2, processorArchitecture=MSIL">
+    <Reference Include="BuildAssemblerLibrary, Version=2.7.0.0, Culture=neutral, PublicKeyToken=c8895f0c125eff20, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>$(DXROOT)\ProductionTools\BuildAssemblerLibrary.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="BuildComponents, Version=2.5.10626.0, Culture=neutral, PublicKeyToken=0b1f36dea51a29e2, processorArchitecture=MSIL">
+    <Reference Include="BuildComponents, Version=2.7.0.0, Culture=neutral, PublicKeyToken=c8895f0c125eff20, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>$(DXROOT)\ProductionTools\BuildComponents.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="SyntaxComponents, Version=2.5.10626.0, Culture=neutral, PublicKeyToken=0b1f36dea51a29e2, processorArchitecture=MSIL">
+    <Reference Include="SyntaxComponents, Version=2.7.0.0, Culture=neutral, PublicKeyToken=c8895f0c125eff20, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>$(DXROOT)\ProductionTools\SyntaxComponents.dll</HintPath>
       <Private>False</Private>
@@ -95,7 +96,6 @@
     <Compile Include="CodeBlockConfigDlg.Designer.cs">
       <DependentUpon>CodeBlockConfigDlg.cs</DependentUpon>
     </Compile>
-    <Compile Include="ConceptualLinkInfo.cs" />
     <Compile Include="IntelliSenseComponent.cs" />
     <Compile Include="IntelliSenseConfigDlg.cs">
       <SubType>Form</SubType>
@@ -103,8 +103,6 @@
     <Compile Include="IntelliSenseConfigDlg.Designer.cs">
       <DependentUpon>IntelliSenseConfigDlg.cs</DependentUpon>
     </Compile>
-    <Compile Include="JavaScriptDeclarationSyntaxGenerator.cs" />
-    <Compile Include="MSHCComponent.cs" />
     <Compile Include="MSHelpAttrComponent.cs" />
     <Compile Include="MultiFormatOutputComponent.cs" />
     <Compile Include="PostTransformComponent.cs" />
@@ -115,11 +113,7 @@
       <DependentUpon>PostTransformConfigDlg.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ResolveConceptualLinksComponent.cs" />
     <Compile Include="ShowMissingComponent.cs" />
-    <Compile Include="TargetDirectory.cs" />
-    <Compile Include="TargetDirectoryCollection.cs" />
-    <Compile Include="TargetInfo.cs" />
     <Compile Include="VersionInfoComponent.cs" />
   </ItemGroup>
   <ItemGroup>

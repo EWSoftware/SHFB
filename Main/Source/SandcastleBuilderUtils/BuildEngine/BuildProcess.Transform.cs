@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.Transform.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/02/2012
+// Updated : 04/08/2012
 // Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -35,22 +35,24 @@
 //                           Added support for conceptual build configurations
 // 1.8.0.0  07/14/2008  EFW  Various updates to support new project structure
 // 1.8.0.1  01/16/2009  EFW  Added support for ShowMissingIncludeTargets
-#endregion
 // 1.8.0.3  07/05/2009  EFW  Added support for the F# syntax filter
 // 1.8.0.3  11/10/2009  EFW  Updated to support custom language syntax filters
 // 1.8.0.3  12/06/2009  EFW  Removed support for ShowFeedbackControl.  Added
 //                           support for resource item files.
 // 1.9.0.0  06/06/2010  EFW  Added support for multi-format build output
+#endregion
 // 1.9.1.0  07/09/2010  EFW  Updated for use with .NET 4.0 and MSBuild 4.0.
 // 1.9.2.0  01/16/2011  EFW  Updated to support selection of Silverlight
 //                           Framework versions.
 // 1.9.3.2  08/20/2011  EFW  Updated to support selection of .NET Portable
 //                           Framework versions.
+// 1.9.4.0  04/08/2012  EFW  Merged changes for VS2010 style from Don Fehr.
+//                           Added BuildAssemblerVerbosity property.  Added
+//                           Support for XAML configuration files.
 //=============================================================================
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -64,6 +66,7 @@ using Microsoft.Build.Evaluation;
 using SandcastleBuilder.Utils.BuildComponent;
 using SandcastleBuilder.Utils.Design;
 using SandcastleBuilder.Utils.PlugIn;
+using SandcastleBuilder.MicrosoftHelpViewer;
 
 namespace SandcastleBuilder.Utils.BuildEngine
 {
@@ -714,7 +717,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     break;
 
                 case "includeprojectnode":
-                    if(project.RootNamespaceContainer)
+                    // The Prototype style always needs the name
+                    if(project.RootNamespaceContainer || presentationParam == "prototype")
                         replaceWith = "project=Project_" + project.HtmlHelpName.Replace(" ", "_");
                     else
                         replaceWith = String.Empty;
@@ -836,6 +840,24 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     replaceWith = sb.ToString();
                     break;
 
+                case "xamlconfigfiles":
+                    sb = new StringBuilder(1024);
+
+                    fileItems = new FileItemCollection(project, BuildAction.XamlConfiguration);
+
+                    foreach(FileItem file in fileItems)
+                        sb.AppendFormat("<filter files=\"{0}\" />\r\n", file.FullPath);
+
+                    replaceWith = sb.ToString();
+                    break;
+
+                case "buildassemblerverbosity":
+                    replaceWith = (project.BuildAssemblerVerbosity == BuildAssemblerVerbosity.AllMessages) ?
+                        "Info" :
+                        (project.BuildAssemblerVerbosity == BuildAssemblerVerbosity.OnlyWarningsAndErrors) ?
+                        "Warn" : "Error";
+                    break;
+
                 case "helpfileformat":
                     replaceWith = project.HelpFileFormat.ToString();
                     break;
@@ -877,6 +899,29 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         HttpUtility.HtmlEncode(project.ProductTitle) : HttpUtility.HtmlEncode(project.HelpTitle);
                     break;
 
+                case "catalogvendorname":
+                case "brandingvendorname":
+                    if(presentationParam == "vs2010" && project.CatalogProductId != "VS")
+                        replaceWith = !String.IsNullOrEmpty(project.VendorName) ? project.VendorName : "Vendor Name";
+                    else
+                        replaceWith = "Microsoft";
+                    break;
+
+                case "brandingpackage":
+                case "brandingpackagename":
+                    var hlm = new HelpLibraryManager();
+
+                    if(presentationParam == "vs2010" && project.CatalogProductId != "VS")
+                    {
+                        if(String.IsNullOrEmpty(project.BrandingPackageName))
+                            replaceWith = project.HtmlHelpName + "Branding";
+                        else
+                            replaceWith = project.BrandingPackageName;
+                    }
+                    else
+                        replaceWith = hlm.DefaultBrandingPackage;
+                    break;
+
                 case "selfbranded":
                     replaceWith = project.SelfBranded.ToString().ToLower(CultureInfo.InvariantCulture);
                     break;
@@ -912,6 +957,14 @@ namespace SandcastleBuilder.Utils.BuildEngine
                             replaceWith = HttpUtility.HtmlEncode(this.RootContentContainerId);
                         else
                             replaceWith = HttpUtility.HtmlEncode(project.TocParentId);
+                    break;
+
+                case "addxamlsyntaxdata":
+                    // If the XAML syntax generator is present, add XAML syntax data to the reflection file
+                    if(BuildComponentManager.SyntaxFiltersFrom(project.SyntaxFilters).Any(s => s.Id == "XamlUsage"))
+                        replaceWith = @";ProductionTransforms\AddXamlSyntaxData.xsl";
+                    else
+                        replaceWith = String.Empty;
                     break;
 
                 default:
@@ -1194,7 +1247,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         {
             if(project.FrameworkVersion.StartsWith("Portable", StringComparison.OrdinalIgnoreCase))
                 return BuildProcess.PortableFrameworkLocations(project.FrameworkVersion, true);
-            
+
             if(project.FrameworkVersion.StartsWith("Silverlight", StringComparison.OrdinalIgnoreCase))
                 return BuildProcess.SilverlightFrameworkLocations(project.FrameworkVersion);
 
@@ -1244,15 +1297,15 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         case "cachedframeworkcommentlist":
                             // Files are cached by language and version
                             sb.AppendFormat(CultureInfo.InvariantCulture, "<cache base=\"{0}\" files=\"{1}\" " +
-                                "recurse=\"{2}\" cacheFile=\"{{@LocalDataFolder}}Cache\\{3}.cache\" />\r\n",
-                                l.Folder, (l.Wildcard ?? "*.xml"), l.Recurse.ToString().ToLowerInvariant(),
-                                l.CacheFilename);
+                                "recurse=\"{2}\" cacheFile=\"{{@LocalDataFolder}}Cache\\{3}.cache\" " +
+                                "duplicateWarning=\"false\" />\r\n", l.Folder, (l.Wildcard ?? "*.xml"),
+                                l.Recurse.ToString().ToLowerInvariant(), l.CacheFilename);
                             break;
 
                         default:    // "frameworkcommentlist"
                             sb.AppendFormat(CultureInfo.InvariantCulture, "<data base=\"{0}\" files=\"{1}\" " +
-                                "recurse=\"{2}\" />\r\n", l.Folder, (l.Wildcard ?? "*.xml"),
-                                l.Recurse.ToString().ToLowerInvariant());
+                                "recurse=\"{2}\" duplicateWarning=\"false\" />\r\n", l.Folder,
+                                (l.Wildcard ?? "*.xml"), l.Recurse.ToString().ToLowerInvariant());
                             break;
                     }
                 }
@@ -1544,24 +1597,26 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 // Adjust instance values on matching components
                 foreach(BuildComponentInfo component in BuildComponentManager.BuildComponents.Values)
-                  if(!isConceptualConfig)
-                  {
-                    if(((!String.IsNullOrEmpty(component.ReferenceBuildPosition.Id) &&
-                      component.ReferenceBuildPosition.Id == replaceId) ||
-                      (String.IsNullOrEmpty(component.ReferenceBuildPosition.Id) &&
-                      component.ReferenceBuildPosition.TypeName == replaceId)) &&
-                      component.ReferenceBuildPosition.AdjustedInstance >
-                      position.AdjustedInstance)
-                        component.ReferenceBuildPosition.AdjustedInstance--;
-                  }
-                  else
-                      if(((!String.IsNullOrEmpty(component.ConceptualBuildPosition.Id) &&
-                        component.ConceptualBuildPosition.Id == replaceId) ||
-                        (String.IsNullOrEmpty(component.ConceptualBuildPosition.Id) &&
-                        component.ConceptualBuildPosition.TypeName == replaceId)) &&
-                        component.ConceptualBuildPosition.AdjustedInstance >
-                        position.AdjustedInstance)
-                          component.ConceptualBuildPosition.AdjustedInstance--;
+                    if(!isConceptualConfig)
+                    {
+                        if(((!String.IsNullOrEmpty(component.ReferenceBuildPosition.Id) &&
+                          component.ReferenceBuildPosition.Id == replaceId) ||
+                          (String.IsNullOrEmpty(component.ReferenceBuildPosition.Id) &&
+                          component.ReferenceBuildPosition.TypeName == replaceId)) &&
+                          component.ReferenceBuildPosition.AdjustedInstance > position.AdjustedInstance)
+                        {
+                            component.ReferenceBuildPosition.AdjustedInstance--;
+                        }
+                    }
+                    else
+                        if(((!String.IsNullOrEmpty(component.ConceptualBuildPosition.Id) &&
+                          component.ConceptualBuildPosition.Id == replaceId) ||
+                          (String.IsNullOrEmpty(component.ConceptualBuildPosition.Id) &&
+                          component.ConceptualBuildPosition.TypeName == replaceId)) &&
+                          component.ConceptualBuildPosition.AdjustedInstance > position.AdjustedInstance)
+                        {
+                            component.ConceptualBuildPosition.AdjustedInstance--;
+                        }
 
                 return;
             }

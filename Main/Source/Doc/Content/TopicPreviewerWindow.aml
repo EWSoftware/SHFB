@@ -54,10 +54,9 @@ as summarized below:</para>
 
 		<list class="bullet">
 			<listItem>
-				<para>The topics are rendered in a style similar to the VS2005 presentation style with the
-<token>SandcastleStyles</token> patch applied.  However, except for the topic title, all other page header and
-footer elements will not appear nor will additional elements such as logo images added to the topic using build
-components.</para>
+				<para>The topics are rendered in a style similar to the VS2005 presentation style.  However, except for
+the topic title, all other page header and footer elements will not appear nor will additional elements such as
+logo images added to the topic using build components.</para>
 			</listItem>
 
 			<listItem>

@@ -15,7 +15,7 @@ inner text.</para>
     <section>
       <title>Example</title>
       <content>
-        <code lang="xml" title=" ">
+        <code language="xml" title=" ">
 If it doesn't work out, &lt;phrase&gt;that's life&lt;/phrase&gt;.
 </code>
       </content>

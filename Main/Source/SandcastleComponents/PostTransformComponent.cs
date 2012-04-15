@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Components
 // File    : PostTransformComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/05/2011
+// Updated : 03/24/2012
 // Note    : Copyright 2006-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -40,6 +40,7 @@
 // 1.9.0.0  06/06/2010  EFW  Replaced outputPath element with an outputPaths
 //                           element that supports multiple help file format
 //                           output locations.
+// 1.9.3.4  02/21/2012  EFW  Merged changes from Don Fehr for VS2010 style
 //=============================================================================
 
 using System;
@@ -148,9 +149,6 @@ namespace SandcastleBuilder.Components
 
         #region Private data members
         //=====================================================================
-
-        // Script modification flag
-//        private static bool scriptsModified;
 
         // Output folder paths
         private List<string> outputPaths;
@@ -472,7 +470,7 @@ namespace SandcastleBuilder.Components
             // CodeBlockComponent code blocks.
             XmlNodeList codeSpans = document.SelectNodes("//span[@class='copyCode']");
 
-            // Handle the Prototype style
+            // Handle the VS2010 and Prototype styles
             if(codeSpans.Count == 0)
                 codeSpans = document.SelectNodes("//div[@class='code']");
 
@@ -499,16 +497,16 @@ namespace SandcastleBuilder.Components
                     if(copyCode.ChildNodes.Count == 0)
                         continue;
 
-                    // Prototype
+                    // VS2010 or Prototype
                     parent = copyCode;
                     codePreTag = copyCode.ChildNodes[0];
 
                     // If it doesn't contain a marker, ignore it
-                    if(!codePreTag.InnerXml.StartsWith("@@_SHFB_", StringComparison.Ordinal))
+                    if(!codePreTag.InnerText.StartsWith("@@_SHFB_", StringComparison.Ordinal))
                         continue;
                 }
 
-                if(CodeBlockComponent.ColorizedCodeBlocks.TryGetValue(codePreTag.InnerXml, out codeBlock))
+                if(CodeBlockComponent.ColorizedCodeBlocks.TryGetValue(codePreTag.InnerText, out codeBlock))
                 {
                     // VS2005 adds an extra span we can get rid of
                     if(parent.Name == "span")
@@ -519,51 +517,56 @@ namespace SandcastleBuilder.Components
                     }
 
                     // Replace the placeholder with the colorized code
-                    codePreTag.ParentNode.ReplaceChild(codeBlock.ChildNodes[1], codePreTag);
+                    if(codePreTag.NodeType == XmlNodeType.Text)
+                    {
+                        // VS2010 
+                        parent.ParentNode.ReplaceChild(codeBlock.ChildNodes[1], parent);
+                    }
+                    else
+                    {
+                        codePreTag.ParentNode.ReplaceChild(codeBlock.ChildNodes[1], codePreTag);
 
-                    // Replace the code div with the colorized code container
-                    parent.ParentNode.ReplaceChild(codeBlock, parent);
+                        // Replace the code div with the colorized code container
+                        parent.ParentNode.ReplaceChild(codeBlock, parent);
 
-                    // Add the code back to it
-                    codeBlock.AppendChild(parent);
+                        // Add the code back to it
+                        codeBlock.AppendChild(parent);
+                    }
                 }
                 else
                     base.WriteMessage(MessageLevel.Warn, "Unable to locate colorized code for place holder: " +
-                        codePreTag.InnerXml);
+                        codePreTag.InnerText);
             }
 
             // Swap the literal "Copy" text with an include item so that it gets localized
             codeSpans = document.SelectNodes("//span[@class='highlight-copycode']");
 
-            foreach(XmlNode span in codeSpans)
+            // VS2010 style - just get rid of Copy code because the branding package has it's own.
+            if(document.SelectSingleNode("//head/meta[@name='BrandingAware']") != null)
             {
-                // Find the "Copy" image element and replace its "src" attribute with an include
-                // item that picks up the correct path.  It is different for MS Help Viewer.
-                var copyImage = span.SelectSingleNode("img");
-
-                if(copyImage != null)
-                {
-                    copyImage.Attributes.Remove(copyImage.Attributes["src"]);
-                    copyImage.InnerXml = String.Format(CultureInfo.InvariantCulture,
-                        "<includeAttribute name='src' item='iconPath'><parameter>{0}</parameter>" +
-                        "</includeAttribute>", Path.GetFileName(CodeBlockComponent.CopyImageLocation));
-                }
-
-                span.InnerXml = span.InnerXml.Replace(" " + CodeBlockComponent.CopyText,
-                    " <include item=\"copyCode\"/>");
+                foreach(XmlNode span in codeSpans)
+                    span.ParentNode.ParentNode.RemoveChild(span.ParentNode);
             }
+            else
+            {
+                foreach(XmlNode span in codeSpans)
+                {
+                    // Find the "Copy" image element and replace its "src" attribute with an include
+                    // item that picks up the correct path.  It is different for MS Help Viewer.
+                    var copyImage = span.SelectSingleNode("img");
 
-/* 1.7.0.0 - Removed - See below.
-            // If there are code blocks associated with the Prototype or
-            // Hana style, connect them to the language filter.
-            codeSpans = document.SelectNodes("//span[starts-with(@id, 'cbc_')]");
+                    if(copyImage != null)
+                    {
+                        copyImage.Attributes.Remove(copyImage.Attributes["src"]);
+                        copyImage.InnerXml = String.Format(CultureInfo.InvariantCulture,
+                            "<includeAttribute name='src' item='iconPath'><parameter>{0}</parameter>" +
+                            "</includeAttribute>", Path.GetFileName(CodeBlockComponent.CopyImageLocation));
+                    }
 
-            if(codeSpans.Count != 0)
-                if(!PostTransformComponent.ConnectLanguageFilter(document,
-                  codeSpans, outputPath))
-                    base.WriteMessage(MessageLevel.Warn, "A required section " +
-                        "was not found and language filtering will not work.");
-*/
+                    span.InnerXml = span.InnerXml.Replace(" " + CodeBlockComponent.CopyText,
+                        " <include item=\"copyCode\"/>");
+                }
+            }
         }
         #endregion
 
@@ -701,7 +704,7 @@ namespace SandcastleBuilder.Components
             }
             else
             {
-                // VS2005/Hana style
+                // VS2010/VS2005/Hana style
                 div = document.SelectSingleNode("//table[@id='topTable']");
 
                 if(div == null)
@@ -711,363 +714,156 @@ namespace SandcastleBuilder.Components
                     return;
                 }
 
-                switch(placement)
+                // VS2010 style?
+                XmlNode runningHeaderNode = div.SelectSingleNode("//td[@id='runningHeaderColumn']");
+
+                if(runningHeaderNode != null)
                 {
-                    case LogoPlacement.Left:
-                        // Hana style?
-                        if(div.ChildNodes.Count != 1)
-                        {
-                            // Insert a new row with a cell spanning all rows
-                            div.InnerXml = String.Format(CultureInfo.InvariantCulture,
-                                "<tr><td rowspan='4' align='center' style='width: 1px; padding: 0px'>" +
-                                "<img {0}{1}{2}><includeAttribute name='src' item='iconPath'>" +
-                                "<parameter>{3}</parameter></includeAttribute></img></td></tr>{4}",
-                                imgAltText, imgWidth, imgHeight, filename, div.InnerXml);
+                    // LogoPlacement is ignored for the VS2010 style because the style itself 
+                    // defines a specific placement for the logo.
 
-                            attr = document.CreateAttribute("colspan");
-                            attr.Value = "2";
-                            div.ChildNodes[4].ChildNodes[0].Attributes.Append(attr);
-                        }
-                        else
-                        {
-                            // VS2005 style.  Wrap the top table, dev lang
-                            // menu and bottom table in a new table with a
-                            // new cell on the left containing the logo.
-                            divHeader = div.ParentNode;
-                            devLangsMenu = div.NextSibling;
-                            bottomTable = devLangsMenu.NextSibling;
-                            memberOptionsMenu = memberFrameworksMenu = null;
-
-                            if(bottomTable.Attributes["id"].Value == "memberOptionsMenu")
-                            {
-                                memberOptionsMenu = bottomTable;
-                                bottomTable = bottomTable.NextSibling;
-
-                                if(bottomTable.Attributes["id"].Value == "memberFrameworksMenu")
-                                {
-                                    memberFrameworksMenu = bottomTable;
-                                    bottomTable = bottomTable.NextSibling;
-                                }
-                            }
-
-                            if(bottomTable.Attributes["id"].Value == "gradientTable")
-                            {
-                                gradientTable = bottomTable;
-                                bottomTable = null;
-                            }
-                            else
-                                gradientTable = bottomTable.NextSibling;
-
-                            divHeader.InnerXml = String.Format(CultureInfo.InvariantCulture,
-                                "<table cellspacing='0' cellpadding='0'><tr>" +
-                                "<td align='center' style='width: 1px; padding: 0px'>" +
-                                "<img {0}{1}{2}><includeAttribute name='src' item='iconPath'>" +
-                                "<parameter>{3}</parameter></includeAttribute></img></td>" +
-                                "<td>{4}{5}{6}{7}{8}</td></tr></table>{9}", imgAltText, imgWidth, imgHeight,
-                                filename, div.OuterXml, devLangsMenu.OuterXml,
-                                (memberOptionsMenu == null) ? String.Empty : memberOptionsMenu.OuterXml,
-                                (memberFrameworksMenu == null) ? String.Empty : memberFrameworksMenu.OuterXml,
-                                (bottomTable == null) ? String.Empty : bottomTable.OuterXml,
-                                gradientTable.OuterXml);
-                        }
-                        break;
-
-                    case LogoPlacement.Right:
-                        // Hana style?
-                        if(div.ChildNodes.Count != 1)
-                        {
-                            // For this, we add a second cell to the first row that spans three rows
-                            div = div.ChildNodes[0];
-                            div.InnerXml += String.Format(CultureInfo.InvariantCulture,
-                                "<td rowspan='3' align='center' style='width: 1px; padding: 0px'>" +
-                                "<img {0}{1}{2}><includeAttribute name='src' item='iconPath'>" +
-                                "<parameter>{3}</parameter></includeAttribute></img></td>",
-                                imgAltText, imgWidth, imgHeight, filename);
-
-                            // For Hana, we need to add a colspan attribute to the last row
-                            div = div.ParentNode;
-
-                            attr = document.CreateAttribute("colspan");
-                            attr.Value = "2";
-                            div.ChildNodes[3].ChildNodes[0].Attributes.Append(attr);
-                        }
-                        else
-                        {
-                            // VS2005 style.  Wrap the top table, dev lang
-                            // menu and bottom table in a new table with a
-                            // new cell on the right containing the logo.
-                            divHeader = div.ParentNode;
-                            devLangsMenu = div.NextSibling;
-                            bottomTable = devLangsMenu.NextSibling;
-                            memberOptionsMenu = memberFrameworksMenu = null;
-
-                            if(bottomTable.Attributes["id"].Value == "memberOptionsMenu")
-                            {
-                                memberOptionsMenu = bottomTable;
-                                bottomTable = bottomTable.NextSibling;
-
-                                if(bottomTable.Attributes["id"].Value == "memberFrameworksMenu")
-                                {
-                                    memberFrameworksMenu = bottomTable;
-                                    bottomTable = bottomTable.NextSibling;
-                                }
-                            }
-
-                            if(bottomTable.Attributes["id"].Value == "gradientTable")
-                            {
-                                gradientTable = bottomTable;
-                                bottomTable = null;
-                            }
-                            else
-                                gradientTable = bottomTable.NextSibling;
-
-
-                            divHeader.InnerXml = String.Format(CultureInfo.InvariantCulture,
-                                "<table cellspacing='0' cellpadding='0'><tr><td>{4}{5}{6}{7}{8}</td>" +
-                                "<td align='center' style='width: 1px; padding: 0px'>" +
-                                "<img {0}{1}{2}><includeAttribute name='src' item='iconPath'>" +
-                                "<parameter>{3}</parameter></includeAttribute></img></td></tr></table>{9}",
-                                imgAltText, imgWidth, imgHeight, filename, div.OuterXml, devLangsMenu.OuterXml,
-                                (memberOptionsMenu == null) ? String.Empty : memberOptionsMenu.OuterXml,
-                                (memberFrameworksMenu == null) ? String.Empty : memberFrameworksMenu.OuterXml,
-                                (bottomTable == null) ? String.Empty : bottomTable.OuterXml,
-                                gradientTable.OuterXml);
-                        }
-                        break;
-
-                    case LogoPlacement.Above:
-                        // Add a new first row
-                        div.InnerXml = String.Format(CultureInfo.InvariantCulture,
-                            "<tr><td align='{0}'><img {1}{2}{3}><includeAttribute name='src' " +
-                            "item='iconPath'><parameter>{4}</parameter></includeAttribute></img></td></tr>{5}",
-                            alignment, imgAltText, imgWidth, imgHeight, filename, div.InnerXml);
-                        break;
+                    runningHeaderNode.InnerXml = String.Format(CultureInfo.InvariantCulture,
+                        "<img align='right' {0}{1}{2}><includeAttribute name='src' item='iconPath'>" +
+                        "<parameter>{3}</parameter></includeAttribute></img>",
+                        imgAltText, imgWidth, imgHeight, filename);
                 }
-            }
-        }
-
-/* 1.7.0.0 - Removed due to changes in the way the Hana and Prototype
- * transformations implement the language filter.  Unfortunately, it is no
- * longer a simple matter of registering IDs and hacking a script.  As such,
- * support has been removed and a work item opened in the Sandcastle Styles
- * project to see about adding support for it at a later date.
- * 
- * http://www.codeplex.com/SandcastleStyles/WorkItem/View.aspx?WorkItemId=5091
- * 
-        /// <summary>
-        /// This is used to connect the code blocks in the Prototype and Hana
-        /// style to the language filter.
-        /// </summary>
-        /// <param name="document">The document</param>
-        /// <param name="codeSpans">The list of spans associated with code
-        /// blocks that need hooking up to the language filter</param>
-        /// <param name="outputPath">The output path where the scripts can
-        /// be found.  The Hana style requires a couple of modifications.</param>
-        /// <returns>Returns true if successful or false on failure</returns>
-        private static bool ConnectLanguageFilter(XmlDocument document,
-          XmlNodeList codeSpans, string outputPath)
-        {
-            StringBuilder sb;
-            List<string> idList;
-            XmlAttribute lang;
-            XmlNode script, body;
-            string setState;
-
-            // Track the IDs.  The Prototype style needs to register them.
-            idList = new List<string>();
-
-            foreach(XmlNode span in codeSpans)
-                idList.Add(span.Attributes["id"].Value);
-
-            script = document.SelectSingleNode("//script[contains(text(), " +
-                "'var sb = ')]");
-
-            // Prototype style?
-            if(script != null)
-            {
-                // Add the JavaScript to register the IDs and refresh the
-                // currently displayed elements.
-                sb = new StringBuilder(1024);
-
-                foreach(string idTitle in idList)
-                    sb.AppendFormat("sb.elements.push(document.getElementById(" +
-                        "'{0}'));\r\n", idTitle);
-
-                // Add the code to update the current filter after adding
-                // all of our elements.
-                string[] lines = script.InnerText.Split('\n');
-
-                for(int idx = lines.Length - 1; idx > 0; idx--)
-                    if(lines[idx].IndexOf("sb.toggleStyle") != -1)
+                else
+                {
+                    switch(placement)
                     {
-                        sb.Append(lines[idx]);
-                        sb.Append('\n');
-                        break;
+                        case LogoPlacement.Left:
+                            // Hana style?
+                            if(div.ChildNodes.Count != 1)
+                            {
+                                // Insert a new row with a cell spanning all rows
+                                div.InnerXml = String.Format(CultureInfo.InvariantCulture,
+                                    "<tr><td rowspan='4' align='center' style='width: 1px; padding: 0px'>" +
+                                    "<img {0}{1}{2}><includeAttribute name='src' item='iconPath'>" +
+                                    "<parameter>{3}</parameter></includeAttribute></img></td></tr>{4}",
+                                    imgAltText, imgWidth, imgHeight, filename, div.InnerXml);
+
+                                attr = document.CreateAttribute("colspan");
+                                attr.Value = "2";
+                                div.ChildNodes[4].ChildNodes[0].Attributes.Append(attr);
+                            }
+                            else
+                            {
+                                // VS2005 style.  Wrap the top table, dev lang
+                                // menu and bottom table in a new table with a
+                                // new cell on the left containing the logo.
+                                divHeader = div.ParentNode;
+                                devLangsMenu = div.NextSibling;
+                                bottomTable = devLangsMenu.NextSibling;
+                                memberOptionsMenu = memberFrameworksMenu = null;
+
+                                if(bottomTable.Attributes["id"].Value == "memberOptionsMenu")
+                                {
+                                    memberOptionsMenu = bottomTable;
+                                    bottomTable = bottomTable.NextSibling;
+
+                                    if(bottomTable.Attributes["id"].Value == "memberFrameworksMenu")
+                                    {
+                                        memberFrameworksMenu = bottomTable;
+                                        bottomTable = bottomTable.NextSibling;
+                                    }
+                                }
+
+                                if(bottomTable.Attributes["id"].Value == "gradientTable")
+                                {
+                                    gradientTable = bottomTable;
+                                    bottomTable = null;
+                                }
+                                else
+                                    gradientTable = bottomTable.NextSibling;
+
+                                divHeader.InnerXml = String.Format(CultureInfo.InvariantCulture,
+                                    "<table cellspacing='0' cellpadding='0'><tr>" +
+                                    "<td align='center' style='width: 1px; padding: 0px'>" +
+                                    "<img {0}{1}{2}><includeAttribute name='src' item='iconPath'>" +
+                                    "<parameter>{3}</parameter></includeAttribute></img></td>" +
+                                    "<td>{4}{5}{6}{7}{8}</td></tr></table>{9}", imgAltText, imgWidth, imgHeight,
+                                    filename, div.OuterXml, devLangsMenu.OuterXml,
+                                    (memberOptionsMenu == null) ? String.Empty : memberOptionsMenu.OuterXml,
+                                    (memberFrameworksMenu == null) ? String.Empty : memberFrameworksMenu.OuterXml,
+                                    (bottomTable == null) ? String.Empty : bottomTable.OuterXml,
+                                    gradientTable.OuterXml);
+                            }
+                            break;
+
+                        case LogoPlacement.Right:
+                            // Hana style?
+                            if(div.ChildNodes.Count != 1)
+                            {
+                                // For this, we add a second cell to the first row that spans three rows
+                                div = div.ChildNodes[0];
+                                div.InnerXml += String.Format(CultureInfo.InvariantCulture,
+                                    "<td rowspan='3' align='center' style='width: 1px; padding: 0px'>" +
+                                    "<img {0}{1}{2}><includeAttribute name='src' item='iconPath'>" +
+                                    "<parameter>{3}</parameter></includeAttribute></img></td>",
+                                    imgAltText, imgWidth, imgHeight, filename);
+
+                                // For Hana, we need to add a colspan attribute to the last row
+                                div = div.ParentNode;
+
+                                attr = document.CreateAttribute("colspan");
+                                attr.Value = "2";
+                                div.ChildNodes[3].ChildNodes[0].Attributes.Append(attr);
+                            }
+                            else
+                            {
+                                // VS2005 style.  Wrap the top table, dev lang
+                                // menu and bottom table in a new table with a
+                                // new cell on the right containing the logo.
+                                divHeader = div.ParentNode;
+                                devLangsMenu = div.NextSibling;
+                                bottomTable = devLangsMenu.NextSibling;
+                                memberOptionsMenu = memberFrameworksMenu = null;
+
+                                if(bottomTable.Attributes["id"].Value == "memberOptionsMenu")
+                                {
+                                    memberOptionsMenu = bottomTable;
+                                    bottomTable = bottomTable.NextSibling;
+
+                                    if(bottomTable.Attributes["id"].Value == "memberFrameworksMenu")
+                                    {
+                                        memberFrameworksMenu = bottomTable;
+                                        bottomTable = bottomTable.NextSibling;
+                                    }
+                                }
+
+                                if(bottomTable.Attributes["id"].Value == "gradientTable")
+                                {
+                                    gradientTable = bottomTable;
+                                    bottomTable = null;
+                                }
+                                else
+                                    gradientTable = bottomTable.NextSibling;
+
+
+                                divHeader.InnerXml = String.Format(CultureInfo.InvariantCulture,
+                                    "<table cellspacing='0' cellpadding='0'><tr><td>{4}{5}{6}{7}{8}</td>" +
+                                    "<td align='center' style='width: 1px; padding: 0px'>" +
+                                    "<img {0}{1}{2}><includeAttribute name='src' item='iconPath'>" +
+                                    "<parameter>{3}</parameter></includeAttribute></img></td></tr></table>{9}",
+                                    imgAltText, imgWidth, imgHeight, filename, div.OuterXml, devLangsMenu.OuterXml,
+                                    (memberOptionsMenu == null) ? String.Empty : memberOptionsMenu.OuterXml,
+                                    (memberFrameworksMenu == null) ? String.Empty : memberFrameworksMenu.OuterXml,
+                                    (bottomTable == null) ? String.Empty : bottomTable.OuterXml,
+                                    gradientTable.OuterXml);
+                            }
+                            break;
+
+                        case LogoPlacement.Above:
+                            // Add a new first row
+                            div.InnerXml = String.Format(CultureInfo.InvariantCulture,
+                                "<tr><td align='{0}'><img {1}{2}{3}><includeAttribute name='src' " +
+                                "item='iconPath'><parameter>{4}</parameter></includeAttribute></img></td></tr>{5}",
+                                alignment, imgAltText, imgWidth, imgHeight, filename, div.InnerXml);
+                            break;
                     }
-
-                script = document.CreateNode(XmlNodeType.Element, "script", null);
-                lang = document.CreateAttribute("type");
-                lang.Value = "text/javascript";
-                script.Attributes.Append(lang);
-                script.InnerText = sb.ToString();
-
-                body = document.SelectSingleNode("html/body");
-
-                if(body == null)
-                    return false;
-
-                body.AppendChild(script);
-            }
-            else
-            {
-                script = document.SelectSingleNode("//script[contains(" +
-                    "text(), 'curvedToggleClass')]");
-
-                // Hana style?  If not, we're done as the VS2005 style takes
-                // care of everything automatically.
-                if(script != null)
-                {
-                    // The script block contains another call to this method
-                    // with the same two first parameters.  We'll borrow them
-                    // to also hook up the example section DIV.
-                    script.InnerText += "languageFilter.registerTabbedArea(" +
-                        "'curvedSyntaxTabs', 'syntaxTabs', " +
-                        "'exampleSection');\r\n";
-
-                    // We need to modify a couple of scripts for this style
-                    if(!scriptsModified &&
-                      !ModifyHanaScripts(outputPath + "scripts\\"))
-                        return false;
-
-                    // Find the default language filter.  We'll use the first
-                    // one in the language filter code.  This may not be C#
-                    // if the user has disabled it.
-                    script = document.SelectSingleNode("//div[contains(" +
-                        "@onclick, 'changeLanguage(')]/@onclick");
-
-                    if(script == null)
-                        return false;
-
-                    setState = script.Value.Replace("changeLanguage",
-                        "selectAndSetLanguage");
-
-                    script = document.SelectSingleNode("//script[contains(" +
-                        "text(), 'languageFilter.select')]");
-
-                    if(script == null)
-                        return false;
-
-                    script.InnerText = script.InnerText.Replace(
-                        "languageFilter.select(data)", setState);
                 }
             }
-
-            return true;
         }
-
-        /// <summary>
-        /// This will modify a couple of the Hana style's scripts and add the
-        /// necessary script to the end of the page to set the initial code
-        /// block state.
-        /// </summary>
-        /// <param name="outputPath">The output path where the scripts can
-        /// be found.</param>
-        /// <returns></returns>
-        private static bool ModifyHanaScripts(string outputPath)
-        {
-            string content, commonUtils = outputPath + "CommonUtilities.js",
-                langFilter = outputPath + "LanguageFilter.js";
-            int pos;
-
-            scriptsModified = true;
-
-            if(!File.Exists(commonUtils) || !File.Exists(langFilter))
-                return false;
-
-            using(StreamReader sr = new StreamReader(commonUtils))
-            {
-                content = sr.ReadToEnd();
-            }
-
-            pos = content.IndexOf("var blockElement");
-
-            if(pos == -1)
-                return false;
-
-            // Insert an if() statement to ignore any text elements
-            // within an example block that appear before a code block.
-            if(content.IndexOf("// SHFB -") == -1)
-            {
-                content = content.Insert(pos, "// SHFB - Code Block " +
-                    "Component adjustment\r\nif(typeof(blockNodes[blockCount]." +
-                    "getAttribute) == \"undefined\") continue;\r\n\r\n");
-
-                // We also need an if() statement to ignore code blocks
-                // not connected to any language filter.
-                pos = content.IndexOf(';', content.IndexOf("var blockElement"));
-
-                if(pos == -1)
-                    return false;
-
-                content = content.Insert(pos + 1, "\r\nif(blockElement == " +
-                    "null) continue;\r\n");
-
-                using(StreamWriter sw = new StreamWriter(commonUtils))
-                {
-                    sw.Write(content);
-                }
-            }
-
-            using(StreamReader sr = new StreamReader(langFilter))
-            {
-                content = sr.ReadToEnd();
-            }
-
-            // Add a new method to select the elements and set the
-            // initial state of the language filter.
-            if(content.IndexOf("// SHFB -") == -1)
-            {
-                content += @"
-// SHFB - Code Block Component fix
-Selector.prototype.selectAndSetLanguage = function(data, name, style)
-{
-    var value = data.get('lang');
-
-    if(value == null)
-    {
-        this.changeLanguage(data, name, style);
-        return;
-    }
-
-    var names = value.split(' ');
-
-    var nodes = getChildNodes(this.id);
-
-    for( var i=0; i<nodes.length; i++)
-    {
-        if(nodes[i].getAttribute('id') == names[0])
-        {
-            styleSheetHandler(this.id, data, value, this.curvedTabCollections,
-                this.tabCollections, this.blockCollections);
-            codeBlockHandler(this.id, data, value, this.curvedTabCollections,
-                this.tabCollections, this.blockCollections);
-            languageHandler(this.id, data, value, this.curvedTabCollections,
-                this.tabCollections, this.blockCollections);
-        }
-    }
-
-    this.changeLanguage(data, names[0], names[1]);
-}";
-
-                using(StreamWriter sw = new StreamWriter(langFilter))
-                {
-                    sw.Write(content);
-                }
-            }
-
-            return true;
-        }
-*/
         #endregion
 
         #region Static configuration method for use with SHFB

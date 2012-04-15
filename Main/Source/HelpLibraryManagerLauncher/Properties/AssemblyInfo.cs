@@ -2,17 +2,17 @@
 // System  : Help Library Manager Launcher
 // File    : AssemblyInfo.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/09/2010
-// Note    : Copyright 2010, Eric Woodruff, All rights reserved
+// Updated : 03/24/2012
+// Note    : Copyright 2010-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // Help Library Manager Launcher attributes.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy
 // of the license should be distributed with the code.  It can also be found
-// at the project website: http://www.CodePlex.com/SandcastleStyles.   This
-// notice, the author's name, and all copyright notices must remain intact in
-// all applications, documentation, and source files.
+// at the project website: http://SHFB.CodePlex.com.   This notice, the
+// author's name, and all copyright notices must remain intact in all
+// applications, documentation, and source files.
 //
 // Version     Date     Who  Comments
 // ============================================================================
@@ -34,7 +34,7 @@ using System.Runtime.InteropServices;
     "installing and removing Microsoft Help Viewer files with the Help Library Manager.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Eric Woodruff")]
-[assembly: AssemblyCopyright("Copyright \xA9 2010, Eric Woodruff, All Rights Reserved")]
+[assembly: AssemblyCopyright("Copyright \xA9 2010-2012, Eric Woodruff, All Rights Reserved")]
 [assembly: AssemblyTrademark("Eric Woodruff, All Rights Reserved")]
 [assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(true)]
@@ -51,4 +51,4 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Revision and Build Numbers
 // by using the '*' as shown below:
 
-[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.0.0.1")]

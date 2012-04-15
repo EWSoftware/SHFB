@@ -18,7 +18,7 @@ inner text.</para>
     <section>
       <title>Example</title>
       <content>
-        <code lang="xml" title=" ">
+        <code language="xml" title=" ">
 This text will be rendered in &lt;legacyBold&gt;bold&lt;/legacyBold&gt;.
 </code>
       </content>

@@ -29,100 +29,9 @@ can repeat the following steps for each version of Visual Studio that you have i
 
 		<step>
 			<content>
-				<para>Copy all of the MAML schemas from the <localUri>%ProgramFiles%\Sandcastle\Schemas\Authoring</localUri>
-folder into the new MAML schemas folder that you created in the previous step.</para>
-			</content>
-		</step>
-
-		<step>
-			<content>
-				<para>Delete <localUri>space.xsd</localUri> and <localUri>xlink.xsd</localUri> from the files that
-you copied.  This is important as they are not compatible with Visual Studio's other XML schema files and can cause
-issues if not removed.  The following changes will update the MAML schemas to use the equivalent Visual Studio
-schema files instead.</para>
-			</content>
-		</step>
-
-		<step>
-			<content>
-				<para>Open the <localUri>base.xsd</localUri> file and change the import for
-<localUri>xlink.xsd</localUri> to <localUri>../xlink.xsd</localUri> instead.</para>
-			</content>
-		</step>
-
-		<step>
-			<content>
-				<para>Open the <localUri>developerStructure.xsd</localUri> file and change the import for
-<localUri>space.xsd</localUri> to <localUri>../xml.xsd</localUri> instead.
-</para>
-			</content>
-		</step>
-
-		<step>
-			<content>
-				<para>Create a <localUri>catalog.xml</localUri> file in the
-<localUri>%ProgramFiles%\Microsoft Visual Studio [x.x]\Xml\Schemas\MAML</localUri> folder that you
-created previously. The contents of the <localUri>catalog.xml</localUri> file are shown below.  Again,
-"<localUri>[x.x]</localUri>" refers to the Visual Studio versions as noted above.</para>
-
-<code language="xml" title="Content of MAML\catalog.xml">
-&lt;SchemaCatalog xmlns=&quot;http://schemas.microsoft.com/xsd/catalog&quot;&gt;
-  &lt;!-- Schemas for MAML --&gt;
-
-  &lt;!-- 1. Place the MAML schemas and this file (catalog.xml) in a subfolder named MAML
-          in Visual Studio's Xml\Schemas folder. --&gt;
-  &lt;!-- 2. Delete the copied space.xsd and xlink.xsd files. --&gt;
-  &lt;!-- 3. Make sure that the reference to xlink.xsd is changed to ../xlink.xsd
-          in the base.xsd file. --&gt;
-  &lt;!-- 4. Make sure that the reference to space.xsd is changed to ../xml.xsd
-          in the developerStructure.xsd file. --&gt;
-  &lt;!-- 5. Update VS's root catalog.xml file by adding
-          &lt;Catalog href=&quot;%InstallRoot%/xml/schemas/MAML/catalog.xml&quot;/&gt;. --&gt;
-
-  &lt;Schema href=&quot;%InstallRoot%/xml/schemas/MAML/base.xsd&quot;
-          targetNamespace=&quot;http://ddue.schemas.microsoft.com/authoring/2003/5&quot;/&gt;
-  &lt;Schema href=&quot;%InstallRoot%/xml/schemas/MAML/baseConditional.xsd&quot;
-          targetNamespace=&quot;http://ddue.schemas.microsoft.com/authoring/2003/5&quot;/&gt;
-  &lt;Schema href=&quot;%InstallRoot%/xml/schemas/MAML/block.xsd&quot;
-          targetNamespace=&quot;http://ddue.schemas.microsoft.com/authoring/2003/5&quot;/&gt;
-  &lt;Schema href=&quot;%InstallRoot%/xml/schemas/MAML/blockCommon.xsd&quot;
-          targetNamespace=&quot;http://ddue.schemas.microsoft.com/authoring/2003/5&quot;/&gt;
-  &lt;Schema href=&quot;%InstallRoot%/xml/schemas/MAML/blockSoftware.xsd&quot;
-          targetNamespace=&quot;http://ddue.schemas.microsoft.com/authoring/2003/5&quot;/&gt;
-  &lt;Schema href=&quot;%InstallRoot%/xml/schemas/MAML/conditionSet.xsd&quot;
-          targetNamespace=&quot;http://ddue.schemas.microsoft.com/authoring/2003/5&quot;/&gt;
-  &lt;Schema href=&quot;%InstallRoot%/xml/schemas/MAML/developer.xsd&quot;
-          targetNamespace=&quot;http://ddue.schemas.microsoft.com/authoring/2003/5&quot;/&gt;
-  &lt;Schema href=&quot;%InstallRoot%/xml/schemas/MAML/developerReference.xsd&quot;
-          targetNamespace=&quot;http://ddue.schemas.microsoft.com/authoring/2003/5&quot;/&gt;
-  &lt;Schema href=&quot;%InstallRoot%/xml/schemas/MAML/developerStructure.xsd&quot;
-          targetNamespace=&quot;http://ddue.schemas.microsoft.com/authoring/2003/5&quot;/&gt;
-  &lt;Schema href=&quot;%InstallRoot%/xml/schemas/MAML/glossary.xsd&quot;
-          targetNamespace=&quot;http://ddue.schemas.microsoft.com/authoring/2003/5&quot;/&gt;
-  &lt;Schema href=&quot;%InstallRoot%/xml/schemas/MAML/hierarchy.xsd&quot;
-          targetNamespace=&quot;http://ddue.schemas.microsoft.com/authoring/2003/5&quot;/&gt;
-  &lt;Schema href=&quot;%InstallRoot%/xml/schemas/MAML/inline.xsd&quot;
-          targetNamespace=&quot;http://ddue.schemas.microsoft.com/authoring/2003/5&quot;/&gt;
-  &lt;Schema href=&quot;%InstallRoot%/xml/schemas/MAML/inlineCommon.xsd&quot;
-          targetNamespace=&quot;http://ddue.schemas.microsoft.com/authoring/2003/5&quot;/&gt;
-  &lt;Schema href=&quot;%InstallRoot%/xml/schemas/MAML/inlineLinking.xsd&quot;
-          targetNamespace=&quot;http://ddue.schemas.microsoft.com/authoring/2003/5&quot;/&gt;
-  &lt;Schema href=&quot;%InstallRoot%/xml/schemas/MAML/inlineSoftware.xsd&quot;
-          targetNamespace=&quot;http://ddue.schemas.microsoft.com/authoring/2003/5&quot;/&gt;
-  &lt;Schema href=&quot;%InstallRoot%/xml/schemas/MAML/inlineUi.xsd&quot;
-          targetNamespace=&quot;http://ddue.schemas.microsoft.com/authoring/2003/5&quot;/&gt;
-  &lt;Schema href=&quot;%InstallRoot%/xml/schemas/MAML/structure.xsd&quot;
-          targetNamespace=&quot;http://ddue.schemas.microsoft.com/authoring/2003/5&quot;/&gt;
-  &lt;Schema href=&quot;%InstallRoot%/xml/schemas/MAML/structureList.xsd&quot;
-          targetNamespace=&quot;http://ddue.schemas.microsoft.com/authoring/2003/5&quot;/&gt;
-  &lt;Schema href=&quot;%InstallRoot%/xml/schemas/MAML/structureMedia.xsd&quot;
-          targetNamespace=&quot;http://ddue.schemas.microsoft.com/authoring/2003/5&quot;/&gt;
-  &lt;Schema href=&quot;%InstallRoot%/xml/schemas/MAML/structureProcedure.xsd&quot;
-          targetNamespace=&quot;http://ddue.schemas.microsoft.com/authoring/2003/5&quot;/&gt;
-  &lt;Schema href=&quot;%InstallRoot%/xml/schemas/MAML/structureTable.xsd&quot;
-          targetNamespace=&quot;http://ddue.schemas.microsoft.com/authoring/2003/5&quot;/&gt;
-&lt;/SchemaCatalog&gt;
-</code>
+				<para>Copy all of the MAML schemas and the catalog file from the
+<localUri>%ProgramFiles%\Sandcastle\Schemas\Authoring</localUri> folder into the new MAML schemas folder
+that you created in the previous step.</para>
 			</content>
 		</step>
 
@@ -140,8 +49,8 @@ file by including the following line:</para>
 		<step>
 			<content>
 				<para>IntelliSense should now work for all MAML topics automatically in Visual Studio.  If you had
-Visual Studio open while making the changes, you may need to restart it in order to see IntelliSense in the MAML
-topic files.</para>
+Visual Studio open while making the changes, you may need to restart it in order to see IntelliSense in the
+MAML topic files.</para>
 			</content>
 		</step>
 

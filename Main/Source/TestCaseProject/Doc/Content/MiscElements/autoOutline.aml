@@ -2,14 +2,8 @@
 <topic id="b9a1daac-a2d8-41b7-83b0-b7dc7b28b898" revisionNumber="1">
   <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
     <introduction>
-      <para>The <codeInline>autoOutline</codeInline> element is a special case used by Sandcastle to insert an
-auto-generated section outline within a topic's introduction or sub-sections.</para>
-
-      <alert class="note">
-        <para>In order to use this element, you need to apply the <token>SandcastleStyles</token> patch.  Without
-it, you must create a token in order to embed the <codeInline>autoOutline</codeInline> element within a topic.
-The patch also adds the depth option.</para>
-      </alert>
+      <para>The <codeInline>autoOutline</codeInline> element is a special case used by Sandcastle to insert
+an auto-generated section outline within a topic's introduction or sub-sections.</para>
     </introduction>
 
     <section>
@@ -43,7 +37,7 @@ included in the outline.</para>
     <section>
       <title>Example</title>
       <content>
-        <code lang="xml" title=" " source="Content\MiscElements\autoOutlineExample.aml" />
+        <code language="xml" title=" " source="Content\MiscElements\autoOutlineExample.aml" />
       </content>
     </section>
 

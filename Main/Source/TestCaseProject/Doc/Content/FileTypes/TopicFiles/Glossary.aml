@@ -8,7 +8,7 @@
       <title>Glossary File Format</title>
       <content>
         <para>Below is an example of a Glossary topic file.</para>
-        <code lang="xml" title="Glossary Topic" source="ConceptualTemplates\Glossary.aml" />
+        <code language="xml" title="Glossary Topic" source="ConceptualTemplates\Glossary.aml" />
       </content>
     </section>
     <relatedTopics>

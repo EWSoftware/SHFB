@@ -16,7 +16,7 @@ text.</para>
     <section>
       <title>Example</title>
       <content>
-        <code lang="xml" title=" ">
+        <code language="xml" title=" ">
 Use a &lt;codeInline&gt;foreach&lt;/codeInline&gt; loop to iterate over the collection.
 </code>
       </content>

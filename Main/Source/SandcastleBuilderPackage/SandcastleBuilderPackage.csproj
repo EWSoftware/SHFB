@@ -134,15 +134,6 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\HelpLibraryManagerLauncher\HelpLibraryManager.cs">
-      <Link>HelpLibraryManager.cs</Link>
-    </Compile>
-    <Compile Include="..\HelpLibraryManagerLauncher\HelpLibraryManagerException.cs">
-      <Link>HelpLibraryManagerException.cs</Link>
-    </Compile>
-    <Compile Include="..\HelpLibraryManagerLauncher\HelpLibraryManagerUnsafeNativeMethods.cs">
-      <Link>HelpLibraryManagerUnsafeNativeMethods.cs</Link>
-    </Compile>
     <Compile Include="..\SandcastleBuilderGUI\LaunchMSHelpViewerDlg.cs">
       <Link>UI\LaunchMSHelpViewerDlg.cs</Link>
       <SubType>Form</SubType>
@@ -358,6 +349,12 @@
       <OutputSubPath>Other Content</OutputSubPath>
     </ZipItem>
     <ZipItem Include="Templates\ProjectItems\OtherContent\XmlFile\XMLFile.vstemplate">
+      <OutputSubPath>Other Content</OutputSubPath>
+    </ZipItem>
+    <ZipItem Include="Templates\ProjectItems\OtherContent\XamlSyntax\XAMLSyntax.xamlcfg">
+      <OutputSubPath>Other Content</OutputSubPath>
+    </ZipItem>
+    <ZipItem Include="Templates\ProjectItems\OtherContent\XamlSyntax\XAMLSyntax.vstemplate">
       <OutputSubPath>Other Content</OutputSubPath>
     </ZipItem>
     <ZipItem Include="Templates\ProjectItems\ConceptualContent\ProjectFiles\CodeSnippets\CodeSnippets.vstemplate">

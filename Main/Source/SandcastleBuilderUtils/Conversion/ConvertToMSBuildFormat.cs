@@ -139,7 +139,7 @@ namespace SandcastleBuilder.Utils.Conversion
 
             if(projectFolder == oldFolder)
                 throw new ArgumentException("The new project folder cannot be the same as the old project " +
-                    "file's folder", "folder");
+                    "file's folder", "newProject");
 
             project = new SandcastleProject(newProject.MSBuildProject);
         }

@@ -14,7 +14,7 @@
     <section>
       <title>Example</title>
       <content>
-        <code lang="xml" title=" ">
+        <code language="xml" title=" ">
 &lt;command&gt;COPY &lt;system&gt;/s /e&lt;/system&gt;&amp;#160;&lt;replaceable&gt;sourceFileSpec&lt;/replaceable&gt;
 &amp;#160;&lt;replaceable&gt;destFileSpec&lt;/replaceable&gt;&lt;/command&gt;
 </code>

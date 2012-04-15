@@ -8,7 +8,7 @@
       <title>Reference With Syntax File Format</title>
       <content>
         <para>Below is an example of a Reference With Syntax topic file.</para>
-        <code lang="xml" title="Reference With Syntax Topic" source="ConceptualTemplates\Reference With Syntax.aml" />
+        <code language="xml" title="Reference With Syntax Topic" source="ConceptualTemplates\Reference With Syntax.aml" />
       </content>
     </section>
     <relatedTopics>

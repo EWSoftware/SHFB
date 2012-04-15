@@ -179,6 +179,23 @@ contents in that order.</para>
       </content>
     </section>
 
+		<section address="XamlConfiguration">
+			<title>XamlConfiguration</title>
+			<content>
+				<para>Files with a <localUri>.xamlcfg</localUri> file extension will get a build action of
+<codeInline>XamlConfiguration</codeInline> by default.  These files are used to pass additional configuration
+information to the <application>BuildAssembler</application> tool's XAML Usage syntax generation component.  The
+settings include classes to exclude from getting XAML usage syntax, the assemblies that contain types that should
+receive XAML usage syntax, and the XAML namespaces to associate with each API namespace.  See the comments in the
+template file for more information.</para>
+
+				<alert class="note">
+					<para>These files will only be included in the build if the <codeInline>XamlUsage</codeInline> syntax
+filter is enabled.</para>
+				</alert>
+			</content>
+		</section>
+		
     <section address="TopicTransform">
       <title>TopicTransform</title>
       <content>

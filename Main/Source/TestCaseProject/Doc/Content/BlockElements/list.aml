@@ -31,10 +31,8 @@ will default to the "nobullet" list style.</para>
 	</alert>
 
 	<alert class="tip">
-		<para>If you have applied the latest <token>SandcastleStyles</token>
-patch, the <codeInline>listItem</codeInline> element supports an
-<codeInline>address</codeInline> attribute that can be used to link to a
-specific list item from another location.</para>
+		<para>The <codeInline>listItem</codeInline> element supports an <codeInline>address</codeInline>
+attribute that can be used to link to a specific list item from another location.</para>
 	</alert>
 
       </content>
@@ -43,7 +41,7 @@ specific list item from another location.</para>
     <section>
       <title>Example</title>
       <content>
-<code lang="xml" title=" ">
+<code language="xml" title=" ">
 &lt;para&gt;This link takes you to &lt;link xlink:href=&quot;#SubItem2&quot;&gt;Sub-Item #2&lt;/link&gt;.&lt;/para&gt;
 
 &lt;list class=&quot;bullet&quot;&gt;

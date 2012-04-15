@@ -14,7 +14,7 @@ text.</para>
     <section>
       <title>Example</title>
       <content>
-        <code lang="xml" title=" ">
+        <code language="xml" title=" ">
 Plug the &lt;hardware&gt;flash drive&lt;/hardware&gt; into the
 &lt;hardware&gt;USB port&lt;/hardware&gt;.
 </code>

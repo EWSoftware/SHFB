@@ -335,6 +335,13 @@ http://SHFB.CodePlex.com</value>
     <value>The general options for the Sandcastle Help File Builder</value>
     <comment>Description for Import/Export Settings</comment>
   </data>
+  <data name="202" xml:space="preserve">
+    <value>XAML syntax configuration file</value>
+    <comment>XAML syntax configuration file</comment>
+  </data>
+  <data name="203" xml:space="preserve">
+    <value>A XAML syntax configuration file for use with the BuildAssembler tool</value>
+  </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="400" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\Package.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

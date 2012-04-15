@@ -5,28 +5,26 @@
     xmlns:xlink="http://www.w3.org/1999/xlink">
 
     <introduction>
-		<para>If you are documenting multiple, related assemblies but wish to
-use a separate help file builder project for each assembly, you may want to
-share project summary and namespace comments between each of the projects and
-specify a common set of namespaces to exclude from the build.  Rather than
-managing this information in each individual project, you can create a
-standalone XML comments file to contain the information.</para>
+			<para>If you are documenting multiple, related assemblies but wish to use a separate help file builder
+project for each assembly, you may want to share project summary and namespace comments between each of the
+projects and specify a common set of namespaces to exclude from the build.  Rather than managing this information
+in each individual project, you can create a standalone XML comments file to contain the information.</para>
 
 	</introduction>
 
 <section>
-  <content><para>Start by creating an XML comments file like the following and
-give it a unique name that will not conflict with any other XML comments file
-in the related projects.</para>
+  <content>
+		<para>Start by creating an XML comments file like the following and give it a unique name that will not
+conflict with any other XML comments file in the related projects.</para>
 
-<code lang="xml" title="Sample Project/Namespace XML Comments File">
+<code language="xml" title="Sample Project/Namespace XML Comments File">
 &lt;?xml version="1.0"?&gt;
 &lt;doc&gt;
   &lt;assembly&gt;
     &lt;name&gt;_SharedItems_&lt;/name&gt;
   &lt;/assembly&gt;
   &lt;members&gt;
-    &lt;member name="R:Project"&gt;
+    &lt;member name="R:Project_CustomControlsHelp"&gt;
       &lt;summary&gt;
         Shared project summary comments go in here.
       &lt;/summary&gt;
@@ -50,46 +48,56 @@ in the related projects.</para>
 &lt;/doc&gt;
 </code>
 
-<para>Next, do one or more of the following:</para>
+		<alert class="important">
+			<para>The project summary comments will be placed in the member with the ID starting with
+"<codeInline>R:Project_</codeInline>".  The ID must be suffixed with the value from your project's
+<codeInline>HtmlHelpName</codeInline> property.  Replace any spaces in the value with underscores.  This is
+required so that the root namespace container has a unique name that will not cause any conflicts when building
+MS Help Viewer output.
+		</para>
+		</alert>
 
-<list class="bullet">
-    <listItem>To specify shared project summary comments, add them to the
-<codeInline>&lt;summary&gt;</codeInline> tag in the <legacyBold>R:Project</legacyBold>
-node.  Any project summary comments in the help file projects will be appended
-to these comments.  If you do not have any shared project summary notes, you
-may remove this node from the file.</listItem>
+		<para>Next, do one or more of the following:</para>
 
-    <listItem>To exclude a namespace from all shared projects, add a
-<codeInline>&lt;member&gt;</codeInline> node, set it's <codeInline>name</codeInline>
-attribute to the namespace name prefixed with "<codeInline>N:</codeInline>",
-and place an <codeInline>&lt;exclude /&gt;</codeInline> tag in it.  Any other
-tags are optional.  The example above would exclude the unnamed global
-namespace and the <codeInline>CustomControls.Internal</codeInline> namespace
-from all projects.</listItem>
+		<list class="bullet">
+			<listItem>
+				<para>To specify shared project summary comments, add them to the <codeInline>&lt;summary&gt;</codeInline>
+tag in the <legacyBold>R:Project_[HtmlHelpName]</legacyBold> node.  As noted above, substitute the value of your
+project's <codeInline>HtmlHelpName</codeInline> property in the ID.  Any project summary comments in the help file
+projects will be appended to these comments.  If you do not have any shared project summary notes, you may remove
+this node from the file.</para>
+			</listItem>
 
-    <listItem>To specify shared namespace summary comments, add a
-<codeInline>&lt;member&gt;</codeInline> node, set it's <codeInline>name</codeInline>
-attribute to the namespace name prefixed with "<codeInline>N:</codeInline>",
-and add the comments to the <codeInline>&lt;summary&gt;</codeInline> tag in the
-node.  Any namespace summary comments in the help file projects will be
-appended to these comments.</listItem>
+			<listItem>
+				<para>To exclude a namespace from all shared projects, add a <codeInline>&lt;member&gt;</codeInline>
+node, set it's <codeInline>name</codeInline> attribute to the namespace name prefixed with "<codeInline>N:</codeInline>",
+and place an <codeInline>&lt;exclude /&gt;</codeInline> tag in it.  Any other tags are optional.  The example
+above would exclude the unnamed global namespace and the <codeInline>CustomControls.Internal</codeInline>
+namespace from all projects.</para>
+			</listItem>
 
-</list>
+			<listItem>
+				<para>To specify shared namespace summary comments, add a <codeInline>&lt;member&gt;</codeInline> node,
+set it's <codeInline>name</codeInline> attribute to the namespace name prefixed with "<codeInline>N:</codeInline>",
+and add the comments to the <codeInline>&lt;summary&gt;</codeInline> tag in the node.  Any namespace summary
+comments in the help file projects will be appended to these comments.</para>
+			</listItem>
 
-	<para>Once you have created the file, open each project that needs to use
-it, right click on the <ui>Documentation Sources</ui> node in the Project
-Explorer window, select the option to add a documentation source, and select
-the shared comments file.  You may now build your project and the shared
-comments will be included in it.</para>
+		</list>
+
+		<para>Once you have created the file, open each project that needs to use it, right click on the
+<ui>Documentation Sources</ui> node in the Project Explorer window, select the option to add a documentation
+source, and select the shared comments file.  You may now build your project and the shared comments will be
+included in it.</para>
 
   </content>
 </section>
 
-    <relatedTopics>
-    <link xlink:href="eb7e1bc7-21c5-4453-bbaf-dec8c62c15bd" />
-    <link xlink:href="48f5a893-acde-4e50-8c17-72b83d9c3f9d" />
-    <link xlink:href="e32086c6-de17-4e54-a746-1ac80bf0c45a" />
-    </relatedTopics>
+		<relatedTopics>
+			<link xlink:href="eb7e1bc7-21c5-4453-bbaf-dec8c62c15bd" />
+			<link xlink:href="48f5a893-acde-4e50-8c17-72b83d9c3f9d" />
+			<link xlink:href="e32086c6-de17-4e54-a746-1ac80bf0c45a" />
+		</relatedTopics>
 
   </developerConceptualDocument>
 </topic>

@@ -14,7 +14,7 @@ element self-closing or empty will cause the element to be ignored.</para>
     <section>
       <title>Example</title>
       <content>
-        <code lang="xml" title=" ">
+        <code language="xml" title=" ">
 &lt;para&gt;Paragraph 1.&lt;/para&gt;
 &lt;para&gt;Paragraph 2.&lt;/para&gt;
 &lt;para/&gt;

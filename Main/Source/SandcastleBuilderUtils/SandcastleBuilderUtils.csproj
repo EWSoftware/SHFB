@@ -87,15 +87,27 @@
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\HelpLibraryManagerLauncher\HelpLibraryManager.cs">
+      <Link>BuildEngine\HelpLibraryManager.cs</Link>
+    </Compile>
+    <Compile Include="..\HelpLibraryManagerLauncher\HelpLibraryManagerException.cs">
+      <Link>BuildEngine\HelpLibraryManagerException.cs</Link>
+    </Compile>
+    <Compile Include="..\HelpLibraryManagerLauncher\HelpLibraryManagerUnsafeNativeMethods.cs">
+      <Link>BuildEngine\HelpLibraryManagerUnsafeNativeMethods.cs</Link>
+    </Compile>
     <Compile Include="ApiEntryType.cs" />
     <Compile Include="BaseBuildItem.cs" />
+    <Compile Include="BuildAssemblerVerbosity.cs" />
     <Compile Include="BuildComponent\BuildComponentConfiguration.cs" />
     <Compile Include="BuildComponent\BuildComponentInfo.cs" />
     <Compile Include="BuildComponent\BuildComponentManager.cs" />
     <Compile Include="BuildComponent\ComponentPosition.cs" />
     <Compile Include="BuildEngine\FrameworkCommentsFileLocation.cs" />
+    <Compile Include="BuildEngine\MSHCPackage.cs" />
     <Compile Include="BuilderException.cs" />
     <Compile Include="BuildEngine\BuildProcess.HelpFileUtils.cs" />
     <Compile Include="BuildEngine\BuildProcess.MSHelp2.cs" />

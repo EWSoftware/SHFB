@@ -8,7 +8,7 @@
       <title>SDK Technology Orientation File Format</title>
       <content>
         <para>Below is an example of an SDK Technology Orientation topic file.</para>
-        <code lang="xml" title="SDK Technology Orientation Topic" source="ConceptualTemplates\SDK Technology Orientation.aml" />
+        <code language="xml" title="SDK Technology Orientation Topic" source="ConceptualTemplates\SDK Technology Orientation.aml" />
       </content>
     </section>
     <relatedTopics>

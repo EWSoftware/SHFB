@@ -28,7 +28,7 @@ rather than the code snippets file.</para>
       <title>Code Snippets File Format</title>
       <content>
         <para>Below is an example of a code snippets file.</para>
-        <code lang="xml" title="Example Code Snippets File" source="ExampleFiles\CodeSnippets.snippets" />
+        <code language="xml" title="Example Code Snippets File" source="ExampleFiles\CodeSnippets.snippets" />
         <para>The file consists of a root <codeInline>examples</codeInline>
 node that contains one or more <codeInline>item</codeInline> nodes.
 The <codeInline>item</codeInline> element has an

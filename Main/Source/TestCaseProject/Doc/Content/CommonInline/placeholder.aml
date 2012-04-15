@@ -16,7 +16,7 @@ is implementation dependent.</para>
     <section>
       <title>Example</title>
       <content>
-        <code lang="xml" title=" ">
+        <code language="xml" title=" ">
 Something useful could go &lt;placeholder&gt;here&lt;/placeholder&gt; if a
 build component made use of it.
 </code>

@@ -1,0 +1,186 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="c7f2f7d3-9386-4e1e-9337-9795f42720c6" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+			<autoOutline lead="Version 1.9.4.0 was released on April 15th, 2012." excludeRelatedTopics="true" />
+    </introduction>
+
+		<section address="PotentialBreaks">
+			<title>Potential Breaking Changes</title>
+			<content>
+
+				<list class="bullet">
+					<listItem><para>The <codeInline>R:Project</codeInline> topic ID is now suffixed with the value of the
+project's <codeInline>HtmlHelpName</codeInline> property value to keep it unique so that MS Help Viewer output
+works correctly with a root namespace container.  Any spaces in the value are replaced with underscores.  This
+may break existing projects if you manage project summary comments in an external file.  You will need to update
+the member ID of the <codeInline>R:Project</codeInline> entry to contain the help name used in the project (i.e.
+<codeInline>R:Project_MyHelpFileName</codeInline>).</para>
+					</listItem>
+				</list>
+
+			</content>
+		</section>
+
+		<section address="Sandcastle2700">
+			<title>Sandcastle 2.7.0.0 Support</title>
+			<content>
+				<para>The following changes were made to support the latest Sandcastle release:</para>
+
+				<list class="bullet">
+					<listItem>
+						<para>Removed <localUri>BuildReflectionData.bat</localUri> as the script is now part of the
+Sandcastle file set.</para>
+					</listItem>
+
+					<listItem>
+						<para>Removed the <localUri>SandcastleMRefBuilder</localUri> project and assembly.  The assembly
+binding redirection code has been moved into Sandcastle's <codeInline>AssemblyResolver</codeInline> class in
+<application>MRefBuilder</application>.  The Assembly Binding Redirection plug-in has been updated to use the
+Sandcastle version now.</para>
+					</listItem>
+
+					<listItem>
+						<para>Removed the <codeInline>JavaScriptDeclarationSyntaxGenerator</codeInline> from the project and
+changed all references to use the new version in the Sandcastle <localUri>SyntaxComponents</localUri> assembly.</para>
+					</listItem>
+
+					<listItem>
+						<para>Removed <codeInline>ResolveConceptualLinksComponent</codeInline> from the project and changed
+all references to use the new version in the Sandcastle <localUri>BuildComponents</localUri> assembly as the
+changes have been merged into it.</para>
+					</listItem>
+
+					<listItem>
+						<para>Removed <localUri>FixScriptSharp.xsl</localUri> from the project templates.  The changes it
+contained have been merged into Sandcastle's copy of that file.</para>
+					</listItem>
+
+					<listItem>
+						<para>A <codeInline>BuildAssemberVerbosity</codeInline> property was added to let you specify what
+messages the <application>BuildAssembler</application> tool will report.  This can help to significantly reduce
+the build log size for large projects.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated the <localUri>CodeColorizerLibrary</localUri> and <localUri>SandcastleComponents</localUri>
+projects to .NET 4.0 as the Sandcastle tools are now built with .NET 4.0.</para>
+					</listItem>
+
+					<listItem>
+						<para>Thanks to Don Fehr for the changes needed to support the new Sandcastle VS2010 presentation
+style.</para>
+					</listItem>
+
+				</list>
+			</content>
+		</section>
+
+		<section address="OtherChanges">
+			<title>Other Changes Made in This Release</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Fixed a bug in the topic previewer that caused it not to navigate to the topic being edited
+when opened.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed a bug in the build engine that caused it to not add the help library manager and install
+scripts to the list of MS Help Viewer files.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed a bug in the HTML extract tool that caused it not to close the final index file element
+if it had children.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed a bug in the conceptual content layout file editor that caused a crash when an empty
+container node was selected while adding a new topic to the file.
+						</para>
+					</listItem>
+
+					<listItem>
+						<para>Reworked how the topic previewer and entity references windows load content layout files so
+that they do not cause open files to look like they have been edited when they contain items marked as invisible
+in the TOC.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added a new <codeInline>XamlConfiguration</codeInline> build action value for use with XAML
+syntax configuration files.  Also added the related XAML syntax item template.  This is used to define XAML
+syntax configuration settings for the <application>BuildAssembler</application> XAML Usage syntax generator.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added support for rendering links in token elements that are within <codeInline>relatedTopics</codeInline>
+elements in the topic previewer.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added the <codeInline>BrandingPackageName</codeInline> property to allow specification of a
+branding package name for MS Help Viewer files.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added an option to the Assembly Binding Redirection plug-in to allow using the GAC to resolve
+unknown assembly references.  This may help in cases where a copy of the reference assembly is not available on
+the file system.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added an option to the output deployment plug-in to rename the MSHA file to
+<localUri>HelpContentSetup.msha</localUri>.</para>
+					</listItem>
+
+					<listItem>
+						<para>The help viewer install and remove scripts produced as part of the MS Help Viewer build format
+have been temporarily modified to provide some support for installing and removing content from Help Viewer 2.0.
+They both call the Help Viewer 2.0 content manager tool directly to install or remove the content if the script
+is passed the command line parameter "<system>H2</system>".  Full support will be built into the Help Library
+Manager Launcher tool in a future release.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added support to the API build configuration files to resolve <codeInline>conceptualLink</codeInline>
+elements within XML comments files.  This allows adding links to conceptual topics within XML comments that will
+work regardless of the help file format.  To use them, add a <codeInline>conceptualLink</codeInline> element with
+a <codeInline>target</codeInline> attribute set to the GUID of the conceptual topic to which it should generate a
+link.  Inner text is also supported.  If omitted, the topic title will be used.</para>
+					</listItem>
+					
+					<listItem>
+						<para>Thanks to Thomas Levesque for the following:</para>
+
+						<list class="bullet">
+							<listItem>
+								<para>Additions to the website files to allow showing a direct link to the topics.</para>
+							</listItem>
+
+							<listItem>
+								<para>The suggestion to use the JavaScript serializer for the full text index files.  The new
+JSON format reduces the size of the full text index files quite a bit compared to the binary format and makes it
+possible to implement other index and keyword search pages using alternate back ends such as PHP.  The use of the
+new serializer does require a minimum framework version of .NET 3.5 for the ASP.NET website pages.</para>
+							</listItem>
+
+							<listItem>
+								<para>The PHP website files.  To view the website via the PHP files, open the
+<localUri>index.php</localUri> page.</para>
+							</listItem>
+						</list>
+
+					</listItem>
+
+				</list>
+
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="078cc1c7-7995-431e-bf9c-8813becbe8df" />
+		</relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

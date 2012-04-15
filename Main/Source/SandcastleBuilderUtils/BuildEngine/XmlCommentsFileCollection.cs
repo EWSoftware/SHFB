@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : XmlCommentsFileCollection.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/08/2009
-// Note    : Copyright 2006-2009, Eric Woodruff, All rights reserved
+// Updated : 03/27/2012
+// Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a collection class used to hold the XML comments files
@@ -30,8 +30,6 @@ using System.IO;
 using System.Text;
 using System.Web;
 using System.Xml;
-
-using SandcastleBuilder.Utils.Design;
 
 namespace SandcastleBuilder.Utils.BuildEngine
 {
@@ -79,8 +77,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
             XmlNode member = null;
             XmlAttribute name;
 
-            string xPathQuery = String.Format(CultureInfo.InvariantCulture,
-                "member[@name='{0}']", memberName);
+            string xPathQuery = String.Format(CultureInfo.InvariantCulture, "member[@name='{0}']",
+                memberName);
 
             foreach(XmlCommentsFile f in this)
             {
@@ -117,10 +115,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
         {
             foreach(XmlCommentsFile f in this)
                 foreach(XmlNode member in f.Members.SelectNodes(
-                  "member[starts-with(@name, 'T:') and contains(@name, " +
-                  "'.NamespaceDoc')]/@name"))
-                    member.Value = "N:" + member.Value.Substring(2,
-                        member.Value.Length - 15);
+                  "member[starts-with(@name, 'T:') and contains(@name, '.NamespaceDoc')]/@name"))
+                    member.Value = "N:" + member.Value.Substring(2, member.Value.Length - 15);
         }
 
         /// <summary>
@@ -131,28 +127,28 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// <param name="forInheritedDocs">True if generating the list for the
         /// inherited documentation tool or false for sandcastle.config.</param>
         /// <returns>The comment file list XML tags</returns>
-        internal string CommentFileList(string workingFolder,
-            bool forInheritedDocs)
+        internal string CommentFileList(string workingFolder, bool forInheritedDocs)
         {
             StringBuilder sb = new StringBuilder(2048);
-            string tagName;
+            string tagName, dupWarning = String.Empty;
 
             if(forInheritedDocs)
                 tagName = "scan file";
             else
+            {
                 tagName = "data files";
+                dupWarning = " duplicateWarning=\"false\" ";
+            }
 
-            // The path is not altered if the file is already in or under
-            // the working folder (i.e. files added by plug-ins).
+            // The path is not altered if the file is already in or under the working folder (i.e.
+            // files added by plug-ins).
             foreach(XmlCommentsFile f in this)
-                if(!f.SourcePath.StartsWith(workingFolder,
-                  StringComparison.OrdinalIgnoreCase))
-                    sb.AppendFormat("            <{0}=\"{1}{2}\" />\r\n",
-                        tagName, HttpUtility.HtmlEncode(workingFolder),
-                        Path.GetFileName(f.SourcePath));
+                if(!f.SourcePath.StartsWith(workingFolder, StringComparison.OrdinalIgnoreCase))
+                    sb.AppendFormat("            <{0}=\"{1}{2}\"{3} />\r\n", tagName,
+                        HttpUtility.HtmlEncode(workingFolder), Path.GetFileName(f.SourcePath), dupWarning);
                 else
-                    sb.AppendFormat("            <{0}=\"{1}\" />\r\n", tagName,
-                        HttpUtility.HtmlEncode(f.SourcePath));
+                    sb.AppendFormat("            <{0}=\"{1}\"{2} />\r\n", tagName,
+                        HttpUtility.HtmlEncode(f.SourcePath), dupWarning);
 
             return sb.ToString();
         }

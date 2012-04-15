@@ -77,7 +77,7 @@ if set to false and it takes you to the method page.</para></entry>
     <section>
       <title>Example</title>
       <content>
-        <code lang="xml" title=" ">
+        <code language="xml" title=" ">
 &lt;codeEntityReference qualifyHint="true"&gt;T:System.IO.FileStream&lt;/codeEntityReference&gt;
 &lt;codeEntityReference qualifyHint="true" autoUpgrade="true"&gt;
   M:System.IO.FileStream.#ctor(System.String,System.IO.FileMode)

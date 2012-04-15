@@ -8,7 +8,7 @@
       <title>Sample File Format</title>
       <content>
         <para>Below is an example of a Sample topic file.</para>
-        <code lang="xml" title="Sample Topic" source="ConceptualTemplates\Sample.aml" />
+        <code language="xml" title="Sample Topic" source="ConceptualTemplates\Sample.aml" />
       </content>
     </section>
     <relatedTopics>

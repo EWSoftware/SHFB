@@ -30,7 +30,8 @@
 // 1.9.0.0  06/06/2010  EFW  Added support for multi-format build output
 // 1.9.0.0  06/30/2010  EFW  Reworked TOC handling to support parenting of
 //                           API content to a conceptual topic for all formats.
-// 1.9.4.0  02/19/2012  EFW  Added support for PHP website files
+// 1.9.4.0  02/19/2012  EFW  Added support for PHP website files.  Merged
+//                           changes for VS2010 style from Don Fehr.
 //=============================================================================
 
 using System;
@@ -45,6 +46,7 @@ using System.Xml;
 using System.Xml.XPath;
 using System.Web;
 
+using SandcastleBuilder.MicrosoftHelpViewer;
 using SandcastleBuilder.Utils.PlugIn;
 using SandcastleBuilder.Utils.ConceptualContent;
 
@@ -56,6 +58,14 @@ namespace SandcastleBuilder.Utils.BuildEngine
         //=====================================================================
 
         private static Regex reInvalidChars = new Regex("[ :.`#<>*?]");
+
+        // Branding manifest property constaants
+        private const string ManifestPropertyHelpOutput = "helpOutput";
+        private const string ManifestPropertyPreBranding = "preBranding";
+        private const string ManifestPropertyNoTransforms = "noTransforms";
+        private const string ManifestPropertyOnlyTransforms = "onlyTransforms";
+        private const string ManifestPropertyOnlyIcons = "onlyIcons";
+
         #endregion
 
         #region Table of content helper methods
@@ -428,11 +438,158 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 if(Directory.Exists(presentationFolder + "media"))
                     this.RecursiveCopy(presentationFolder + @"media\*.*", baseFolder + @"media\");
 
-                this.RecursiveCopy(presentationFolder + @"scripts\*.*", baseFolder + @"scripts\");
-                this.RecursiveCopy(presentationFolder + @"styles\*.*", baseFolder + @"styles\");
+                // This is optional for the VS2010 style
+                if(Directory.Exists(presentationFolder + "scripts"))
+                    this.RecursiveCopy(presentationFolder + @"scripts\*.*", baseFolder + @"scripts\");
+
+                // This is optional for the VS2010 style
+                if(Directory.Exists(presentationFolder + "styles"))
+                    this.RecursiveCopy(presentationFolder + @"styles\*.*", baseFolder + @"styles\");
+
+                // Added the branding folder
+                this.CopyHelpBranding(baseFolder);
             }
 
             this.ExecutePlugIns(ExecutionBehaviors.After);
+        }
+
+        /// <summary>
+        /// For presentation styles designed for MS Help Viewer, the branding files are copied from
+        /// <b>{@PresentationPath}\branding</b> to the working folder.
+        /// </summary>
+        /// <param name="helpFormatOutputFolder">The working folder for the current HelpFormat.</param>
+        /// <remarks>The existence of the <b>{@PresentationPath}\branding</b> folder indicates that the
+        /// presentation style is designed for MS Help Viewer.
+        /// <para>The <b>{@PresentationPath}\branding</b> folder must contain a file named
+        /// <b>branding.manifest</b> that specifies the files to copy (in MSBuild project format).</para>
+        /// <para>The branding files that are copied and their target folder depends on the current contents of
+        /// <b>branding.manifest</b> and the current HelpFormat.</para>
+        /// <para>The <b>branding.manifest</b> can also contain a reference to a <i>.mshc</i> package that is
+        /// used as the basis for the presentation style branding.  If so, its contents are also extracted.</para>
+        /// </remarks>
+        private void CopyHelpBranding(string helpFormatOutputFolder)
+        {
+            MSHCPackage brandingPackage;
+            bool isDefaultBranding, isPreBranding;
+            string brandingSource = Path.GetFullPath(presentationFolder + "branding");
+
+            if(Directory.Exists(brandingSource))
+            {
+                HelpLibraryManager hlm = new HelpLibraryManager();
+
+                string brandingTarget = Path.Combine(helpFormatOutputFolder, "branding"),
+                    brandingTransformsTarget = Path.Combine(WorkingFolder, "branding"),
+                    brandingIconsTarget = Path.Combine(helpFormatOutputFolder, "icons"),
+                    brandingName = CurrentProject.BrandingPackageName,
+                    brandingManifest = Path.Combine(brandingSource, "branding.manifest");
+
+                this.ReportProgress(BuildStep.CopyStandardContent, "Copying help branding...");
+
+                if(!File.Exists(brandingManifest))
+                    throw (new BuilderException(String.Format("Branding manifest \"{0}\" not found.",
+                        brandingManifest)));
+
+                if(String.IsNullOrEmpty(brandingName))
+                    brandingName = hlm.DefaultBrandingPackage;
+
+                isDefaultBranding = hlm.DefaultBrandingPackage.Equals(brandingName, StringComparison.OrdinalIgnoreCase);
+
+                if(helpFormatOutputFolder.Contains(HelpFileFormat.MSHelpViewer.ToString()))
+                {
+                    brandingTarget = Path.Combine(helpFormatOutputFolder, @"..\" +
+                        HelpFileFormat.MSHelpViewer.ToString() + "_Branding");
+                    isPreBranding = isDefaultBranding || CurrentProject.SelfBranded;
+                }
+                else
+                    isPreBranding = isDefaultBranding;
+
+                brandingTarget = Path.GetFullPath(brandingTarget) + @"\";
+
+                foreach(string manifest in Directory.EnumerateFiles(brandingSource, "*.manifest"))
+                {
+                    // Don't use the specified manifest
+                    if(manifest.Equals(brandingManifest, StringComparison.OrdinalIgnoreCase))
+                        continue;
+
+                    brandingPackage = new MSHCPackage(Path.ChangeExtension(manifest, ".mshc"), FileMode.Open);
+
+                    if(brandingPackage.IsOpen)
+                    {
+                        brandingPackage.ManifestProperties.Add(ManifestPropertyHelpOutput,
+                            Path.GetFileNameWithoutExtension(helpFormatOutputFolder));
+                        brandingPackage.ManifestProperties.Add(ManifestPropertyPreBranding, isPreBranding.ToString());
+
+                        if(!helpFormatOutputFolder.Contains(HelpFileFormat.MSHelpViewer.ToString()))
+                            brandingPackage.ManifestProperties.Add(ManifestPropertyNoTransforms, Boolean.TrueString);
+
+                        brandingPackage.LoggingTarget = swLog;
+                        brandingPackage.LoggingPrefix = "  ";
+
+                        this.ReportProgress("{0} -> {1}", brandingPackage.PackagePath, brandingTarget);
+
+                        brandingPackage.GetTheseParts(brandingTarget, manifest, true);
+
+                        if(helpFormatOutputFolder.Contains(HelpFileFormat.MSHelpViewer.ToString()))
+                        {
+                            brandingPackage.ManifestProperties.Add(ManifestPropertyOnlyIcons, Boolean.TrueString);
+
+                            this.ReportProgress("{0} -> {1}", brandingPackage.PackagePath, brandingIconsTarget);
+                            brandingPackage.GetTheseParts(brandingIconsTarget, manifest, true);
+                        }
+                        else
+                        {
+                            brandingPackage.ManifestProperties.Remove(ManifestPropertyNoTransforms);
+                            brandingPackage.ManifestProperties.Add(ManifestPropertyOnlyTransforms, Boolean.TrueString);
+
+                            this.ReportProgress("{0} -> {1}", brandingPackage.PackagePath, brandingTransformsTarget);
+                            brandingPackage.GetTheseParts(brandingTransformsTarget, manifest, true);
+                        }
+                    }
+                }
+
+                brandingPackage = new MSHCPackage(brandingTarget);
+                brandingPackage.ManifestProperties.Add(ManifestPropertyHelpOutput,
+                    Path.GetFileNameWithoutExtension(helpFormatOutputFolder));
+                brandingPackage.ManifestProperties.Add(ManifestPropertyPreBranding, isPreBranding.ToString());
+
+                if(!helpFormatOutputFolder.Contains(HelpFileFormat.MSHelpViewer.ToString()))
+                    brandingPackage.ManifestProperties.Add(ManifestPropertyNoTransforms, Boolean.TrueString);
+
+                brandingPackage.LoggingTarget = swLog;
+                brandingPackage.LoggingPrefix = "  ";
+
+                this.ReportProgress("{0} -> {1}", brandingSource, brandingTarget);
+                brandingPackage.CopyTheseParts(brandingManifest, true);
+
+                if(helpFormatOutputFolder.Contains(HelpFileFormat.MSHelpViewer.ToString()))
+                {
+                    brandingPackage = new MSHCPackage(brandingIconsTarget);
+                    brandingPackage.ManifestProperties.Add(ManifestPropertyHelpOutput,
+                        Path.GetFileNameWithoutExtension(helpFormatOutputFolder));
+                    brandingPackage.ManifestProperties.Add(ManifestPropertyPreBranding, isDefaultBranding.ToString());
+                    brandingPackage.ManifestProperties.Add(ManifestPropertyOnlyIcons, Boolean.TrueString);
+                    brandingPackage.LoggingTarget = swLog;
+                    brandingPackage.LoggingPrefix = "  ";
+
+                    this.ReportProgress("{0} -> {1}", brandingSource, brandingIconsTarget);
+                    brandingPackage.CopyTheseParts(brandingManifest, true);
+                }
+                else
+                {
+                    brandingPackage = new MSHCPackage(brandingTransformsTarget);
+                    brandingPackage.ManifestProperties.Add(ManifestPropertyHelpOutput,
+                        Path.GetFileNameWithoutExtension(helpFormatOutputFolder));
+                    brandingPackage.ManifestProperties.Add(ManifestPropertyPreBranding, isDefaultBranding.ToString());
+                    brandingPackage.ManifestProperties.Add(ManifestPropertyOnlyTransforms, Boolean.TrueString);
+                    brandingPackage.LoggingTarget = swLog;
+                    brandingPackage.LoggingPrefix = "  ";
+
+                    this.ReportProgress("{0} -> {1}", brandingSource, brandingTransformsTarget);
+                    brandingPackage.CopyTheseParts(brandingManifest, true);
+
+                    brandingTarget = brandingTransformsTarget;
+                }
+            }
         }
 
         /// <summary>

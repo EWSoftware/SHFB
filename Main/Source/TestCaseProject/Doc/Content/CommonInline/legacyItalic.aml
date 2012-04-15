@@ -18,7 +18,7 @@ the inner text.</para>
     <section>
       <title>Example</title>
       <content>
-        <code lang="xml" title=" ">
+        <code language="xml" title=" ">
 This text will be rendered as &lt;legacyItalic&gt;italicized&lt;/legacyItalic&gt;.
 </code>
       </content>

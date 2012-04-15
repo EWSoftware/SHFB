@@ -6,9 +6,8 @@
 title and link text for a particular conceptual topic.  There will be one
 companion file for each conceptual content topic.</para>
       <alert class="note">
-        <para>If using a build tool such as the <token>SHFB</token>, the companion
-files are created for you automatically as part of the build process and you do
-not need to maintain them yourself.</para>
+        <para>If using a build tool such as the <token>SHFB</token>, the companion files are created for you
+automatically as part of the build process and you do not need to maintain them yourself.</para>
       </alert>
       <alert class="note">
         <para>The <codeInline>linkText</codeInline> element is supported by
@@ -22,7 +21,7 @@ tools or your own build scripts.</para>
       <title>Companion File Format</title>
       <content>
         <para>Below is an example of a companion file.</para>
-        <code lang="xml" title="Example Companion File">
+        <code language="xml" title="Example Companion File">
 &lt;?xml version="1.0" encoding="utf-8"?&gt;
 <![CDATA[
 <metadata>

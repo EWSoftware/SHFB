@@ -18,7 +18,7 @@ property values on those items.</para>
       <title>Media Content File Format</title>
       <content>
         <para>Below is an example of a media content file.</para>
-        <code lang="xml" title="Example Media Content File" source="ExampleFiles\MediaContent.xml" />
+        <code language="xml" title="Example Media Content File" source="ExampleFiles\MediaContent.xml" />
         <para>The file consists of a root <codeInline>stockSharedContentDefinitions</codeInline>
 node that contains one or more <codeInline>item</codeInline> nodes that
 represent the images.</para>

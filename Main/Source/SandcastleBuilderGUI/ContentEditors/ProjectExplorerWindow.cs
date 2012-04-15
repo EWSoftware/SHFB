@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : ProjectExplorerWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/03/2012
+// Updated : 04/08/2012
 // Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -18,6 +18,7 @@
 // ============================================================================
 // 1.8.0.0  07/26/2008  EFW  Created the code
 // 1.8.0.3  12/04/2009  EFW  Added support for resource item files
+// 1.9.4.0  04/08/2012  EFW  Added support for XAML configuration files
 //=============================================================================
 
 using System;
@@ -276,6 +277,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
                 case BuildAction.CodeSnippets:
                 case BuildAction.TopicTransform:
+                case BuildAction.XamlConfiguration:
                     editor = new TopicEditorWindow(fullName);
                     break;
 

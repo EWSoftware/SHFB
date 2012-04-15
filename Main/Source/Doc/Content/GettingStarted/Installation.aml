@@ -126,13 +126,6 @@ location.</para>
 recommended that they be installed as well.</para>
 
 <list class="bullet">
-  <listItem>
-	  <para>Download the latest community-maintained patches for the Sandcastle presentation styles from the
-<token>SandcastleStyles</token> CodePlex project site.  This is essential if you will be producing conceptual
-content as it fixes a number of bugs and adds many new features that will make your conceptual content appear
-much better.</para>
-	</listItem>
-
     <listItem>
 		<para>To view MS Help 2 files without registering them, you can use the <externalLink><linkText>H2 Viewer</linkText>
   <linkUri>http://www.helpware.net/mshelp2/h2viewer.htm</linkUri>

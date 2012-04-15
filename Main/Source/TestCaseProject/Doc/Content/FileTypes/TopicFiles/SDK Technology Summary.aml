@@ -8,7 +8,7 @@
       <title>SDK Technology Summary File Format</title>
       <content>
         <para>Below is an example of an SDK Technology Summary topic file.</para>
-        <code lang="xml" title="SDK Technology Summary Topic" source="ConceptualTemplates\SDK Technology Summary.aml" />
+        <code language="xml" title="SDK Technology Summary Topic" source="ConceptualTemplates\SDK Technology Summary.aml" />
       </content>
     </section>
     <relatedTopics>

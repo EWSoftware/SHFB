@@ -8,7 +8,7 @@
       <title>Walkthrough File Format</title>
       <content>
         <para>Below is an example of a Walkthrough topic file.</para>
-        <code lang="xml" title="Walkthrough Topic" source="ConceptualTemplates\Walkthrough.aml" />
+        <code language="xml" title="Walkthrough Topic" source="ConceptualTemplates\Walkthrough.aml" />
       </content>
     </section>
     <relatedTopics>

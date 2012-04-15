@@ -50,7 +50,7 @@ vb, VB, VisualBasic, visual basic note, JSharp, j#, J#, visual j# note</para></e
     <section>
       <title>Example</title>
       <content>
-        <code lang="xml" title=" ">
+        <code language="xml" title=" ">
 &lt;alert class="note"&gt;
   &lt;para&gt;This is a note&lt;/para&gt;
 &lt;/alert&gt;

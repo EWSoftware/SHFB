@@ -14,7 +14,7 @@ inner text.</para>
     <section>
       <title>Example</title>
       <content>
-        <code lang="xml" title=" ">
+        <code language="xml" title=" ">
 This is an example of an &lt;quoteInline&gt;inline quotation&lt;/quoteInline&gt;.
 </code>
       </content>

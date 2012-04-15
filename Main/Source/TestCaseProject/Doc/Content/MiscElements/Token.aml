@@ -18,10 +18,10 @@ element anywhere within a topic.</para>
     <section>
       <title>Example</title>
       <content>
-        <para>In this example, "SandcastleStyles" is a token that expands to an external link to a web site.</para>
+        <para>In this example, "Sandcastle" is a token that expands to an external link to a web site.</para>
 
-<code lang="xml" title=" ">
-This link (&lt;token&gt;SandcastleStyles&lt;/token&gt;) is stored in a token.
+<code language="xml" title=" ">
+This link (&lt;token&gt;Sandcastle&lt;/token&gt;) is stored in a token.
 </code>
       </content>
     </section>
@@ -29,7 +29,7 @@ This link (&lt;token&gt;SandcastleStyles&lt;/token&gt;) is stored in a token.
     <section>
       <title>Example Output</title>
       <content>
-				<para>This link (<token>SandcastleStyles</token>) is stored in a token.</para>
+				<para>This link (<token>Sandcastle</token>) is stored in a token.</para>
 			</content>
     </section>
 

@@ -22,7 +22,7 @@
       <HelpKeyword index="K" term="versions, known issues" />
     </HelpKeywords>
   </Topic>
-  <Topic id="b772e00e-1705-4062-adb6-774826ce6700" visible="True" isExpanded="true" title="Getting Started">
+  <Topic id="b772e00e-1705-4062-adb6-774826ce6700" visible="True" title="Getting Started">
     <HelpKeywords>
       <HelpKeyword index="K" term="Getting Started" />
     </HelpKeywords>
@@ -106,7 +106,7 @@
         <HelpKeyword index="K" term="plug-ins, plug-in assembly location" />
       </HelpKeywords>
     </Topic>
-    <Topic id="79897974-ffc9-4b84-91a5-e50c66a0221d" visible="True" isSelected="true" title="Using the &lt;inheritdoc /&gt; Tag">
+    <Topic id="79897974-ffc9-4b84-91a5-e50c66a0221d" visible="True" title="Using the &lt;inheritdoc /&gt; Tag">
       <HelpKeywords>
         <HelpKeyword index="K" term="Getting started, &lt;inheritdoc /&gt;" />
         <HelpKeyword index="K" term="inheritdoc tag" />
@@ -579,7 +579,11 @@
       <HelpKeyword index="K" term="build components, syntax filter" />
       <HelpKeyword index="K" term="syntax filter generator" />
     </HelpKeywords>
-    <Topic id="dcc9f938-0d5e-4010-bbfe-fd64168a443b" visible="True" title="API Token Resolution Component" />
+    <Topic id="dcc9f938-0d5e-4010-bbfe-fd64168a443b" visible="True" title="API Token Resolution Component">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="build components, API token resolution" />
+      </HelpKeywords>
+    </Topic>
     <Topic id="3a1c4bf1-8ecf-4ab3-8010-277bed8d3819" visible="True" title="Cached Build Components">
       <HelpKeywords>
         <HelpKeyword index="K" term="build components, cached build components" />
@@ -605,17 +609,6 @@
         <HelpKeyword index="K" term="IntelliSenseComponent, configuration options" />
       </HelpKeywords>
     </Topic>
-    <Topic id="f47527c7-67ce-487d-a2a0-91d1cb08e15e" visible="True" title="JavaScript Declaration Syntax Generator">
-      <HelpKeywords>
-        <HelpKeyword index="K" term="build components, JavaScript declaration syntax generator" />
-      </HelpKeywords>
-    </Topic>
-    <Topic id="16dc54c2-84bf-4bab-a875-0b1d49c9b1b8" visible="True" title="Microsoft Help Viewer Component">
-      <HelpKeywords>
-        <HelpKeyword index="K" term="build components, Microsoft Help Viewer Component" />
-        <HelpKeyword index="K" term="MSHCComponent, configuration options" />
-      </HelpKeywords>
-    </Topic>
     <Topic id="92a6e678-48fb-4e6c-a7e5-34f264b01212" visible="True" title="Multi-Format Output Component">
       <HelpKeywords>
         <HelpKeyword index="K" term="build components, multi-format output component" />
@@ -626,12 +619,6 @@
       <HelpKeywords>
         <HelpKeyword index="K" term="build components, post-transform component" />
         <HelpKeyword index="K" term="PostTransformComponent, configuration options" />
-      </HelpKeywords>
-    </Topic>
-    <Topic id="da0332e0-a7d3-4f9d-a9e4-5027502ea9ea" visible="True" title="Resolve Conceptual Links Component">
-      <HelpKeywords>
-        <HelpKeyword index="K" term="build components, version information component" />
-        <HelpKeyword index="K" term="VersionInfoComponent, configuration options" />
       </HelpKeywords>
     </Topic>
     <Topic id="7e6e0e96-36cd-4541-9477-2657b98661f5" visible="True" title="Show Missing Documentation Component">
@@ -1323,11 +1310,16 @@
       <HelpKeyword index="K" term="support, donate" />
     </HelpKeywords>
   </Topic>
-  <Topic id="078cc1c7-7995-431e-bf9c-8813becbe8df" visible="True" isExpanded="true" title="Version History">
+  <Topic id="078cc1c7-7995-431e-bf9c-8813becbe8df" visible="True" isExpanded="true" isSelected="true" title="Version History">
     <HelpKeywords>
       <HelpKeyword index="K" term="History" />
       <HelpKeyword index="K" term="Version History" />
     </HelpKeywords>
+    <Topic id="c7f2f7d3-9386-4e1e-9337-9795f42720c6" visible="True" title="Version 1.9.4.0">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 1.9.4.0" />
+      </HelpKeywords>
+    </Topic>
     <Topic id="8c11654c-f6f5-4cd3-acd0-86890ecb242d" visible="True" title="Version 1.9.3.4 (Beta 2)">
       <HelpKeywords>
         <HelpKeyword index="K" term="versions, 1.9.3.4" />

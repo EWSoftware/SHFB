@@ -35,7 +35,6 @@
   <ItemGroup>
     <Content Include="Product.wxi" />
     <Content Include="Resources\Banner.jpg" />
-    <Content Include="Resources\Cmd.ico" />
     <Content Include="Resources\Dialog.jpg" />
     <Content Include="Resources\HtmlDocument.ico" />
   </ItemGroup>

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Components
 // File    : IntelliSenseComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/22/2010
-// Note    : Copyright 2007-2010, Eric Woodruff, All rights reserved
+// Updated : 03/11/2012
+// Note    : Copyright 2007-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a build component that is used to extract the XML
@@ -308,15 +308,18 @@ namespace SandcastleBuilder.Components
         /// <summary>
         /// Write out closing tags and close all open XML writers when disposed.
         /// </summary>
-        public override void Dispose()
+        /// <param name="disposing">Pass true to dispose of the managed and unmanaged resources or false to just
+        /// dispose of the unmanaged resources.</param>
+        protected override void Dispose(bool disposing)
         {
-            foreach(XmlWriter writer in writers.Values)
-            {
-                writer.WriteEndDocument();
-                writer.Close();
-            }
+            if(disposing)
+                foreach(XmlWriter writer in writers.Values)
+                {
+                    writer.WriteEndDocument();
+                    writer.Close();
+                }
 
-            base.Dispose();
+            base.Dispose(disposing);
         }
         #endregion
 

@@ -16,33 +16,24 @@
       Sandcastle is a popular download<cite>sandcastle activity</cite>.
     </para>
     <para>
-      Sandcastle Styles<cite>sandcastle styles</cite> adds even more value.
-    </para>
-    <para>
       I expect Sandcastle's popularity<cite>sandcastle activity</cite> to increase
-      as more community members become aware of its usefulness, with the help of
-      projects like Sandcastle Styles<cite>sandcastle styles</cite>.
+      as more community members become aware of its usefulness.
     </para>
   </remarks>
 
-  Then add the following reference elements to this file to describe those citations.
+  Then add the following reference element along with any others to this file to
+  describe those citations.
 
   <reference name="sandcastle activity">
     <title>Sandcastle Activity Statistics</title>
     <author>Microsoft</author>
     <publisher>CodePlex.com</publisher>
-    <link>http://www.codeplex.com/Sandcastle/stats/view</link>
-  </reference>
-  <reference name="sandcastle styles">
-    <title>Sandcastle Styles</title>
-    <author>Eric Woodruff, Dave Sexton</author>
-    <publisher>CodePlex.com</publisher>
-    <link>http://www.codeplex.com/SandcastleStyles</link>
+    <link>http://sandcastle.codeplex.com/stats/view</link>
   </reference>
 
   Building documentation now will produce your auto-generated reference topic with a
   bibliography section near the bottom.  Each <cite>name</cite> is replaced in-line
-  with a hyperlink such as [1], [2], [3], [n]..., linking to the corresponding 
+  with a hyperlink such as [1], [2], [3], [n]..., linking to the corresponding
   entries in the bibliography section.
 
   - The title element is required.
@@ -51,22 +42,16 @@
   - The link element is optional.
   - Reference names are case-sensitive.
   - If a matching reference is not found, the cite element is processed as regular
-    markup.  Currently, the transformations will remove the outer <cite> element but 
+    markup.  Currently, the transformations will remove the outer <cite> element but
     inner text and content may pass through to the topic.
   -->
 <bibliography>
-  <!-- Add <reference> elements here -->
-  <reference name="sandcastle activity">
-    <title>Sandcastle Activity Statistics</title>
-    <author>Microsoft</author>
-    <publisher>CodePlex.com</publisher>
-    <link>http://www.codeplex.com/Sandcastle/stats/view</link>
-  </reference>
-  <reference name="sandcastle styles">
-    <title>Sandcastle Styles</title>
-    <author>Eric Woodruff, Dave Sexton</author>
-    <publisher>CodePlex.com</publisher>
-    <link>http://www.codeplex.com/SandcastleStyles</link>
-  </reference>
+	<!-- Add <reference> elements here -->
+	<reference name="sandcastle activity">
+		<title>Sandcastle Activity Statistics</title>
+		<author>Microsoft</author>
+		<publisher>CodePlex.com</publisher>
+		<link>http://www.codeplex.com/Sandcastle/stats/view</link>
+	</reference>
 
 </bibliography>

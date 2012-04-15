@@ -36,7 +36,7 @@
     <FeedbackEMailAddress>Eric%40EWoodruff.us</FeedbackEMailAddress>
     <PresentationStyle>vs2005</PresentationStyle>
     <SyntaxFilters>CSharp, VisualBasic</SyntaxFilters>
-    <HelpFileVersion>1.9.3.4</HelpFileVersion>
+    <HelpFileVersion>1.9.4.0</HelpFileVersion>
     <ComponentConfigurations>
       <ComponentConfig id="Post-transform Component" enabled="True">
         <component type="SandcastleBuilder.Components.PostTransformComponent" assembly="{@SHFBFolder}SandcastleBuilder.Components.dll" id="Post-transform Component">
@@ -222,6 +222,7 @@
     <None Include="Content\VersionHistory\v1.9.3.2.aml" />
     <None Include="Content\VersionHistory\v1.9.3.3.aml" />
     <None Include="Content\VersionHistory\v1.9.3.4.aml" />
+    <None Include="Content\VersionHistory\v1.9.4.0.aml" />
     <None Include="Content\VisualStudio\ItemFileTemplates.aml" />
     <None Include="Content\VisualStudio\FeatureComparison.aml" />
     <None Include="Content\VisualStudio\VisualStudioPackage.aml" />
@@ -229,7 +230,6 @@
     <None Include="Content\PlugIns\WildcardReferencesPlugIn.aml" />
     <None Include="Content\VersionHistory\v1.9.3.0.aml" />
     <None Include="Content\PropertiesWindow\HelpLibraryManagerLauncher.aml" />
-    <None Include="Content\CompConfig\MSHCComponent.aml" />
     <None Include="Content\AddConceptContent\ConceptContent\ContentPlacement.aml" />
     <None Include="Content\AddConceptContent\AddContent\DeprecatedFeatures.aml" />
     <None Include="Content\CompConfig\MultiFormatOutputComponent.aml" />
@@ -385,10 +385,8 @@
     <None Include="Content\CompConfig\CompConfig.aml" />
     <None Include="Content\CompConfig\CompConfigFile.aml" />
     <None Include="Content\CompConfig\IntelliSenseComponent.aml" />
-    <None Include="Content\CompConfig\JavaScriptDecGen.aml" />
     <None Include="Content\CompConfig\MSHelpAttrComponent.aml" />
     <None Include="Content\CompConfig\PostTransformComponent.aml" />
-    <None Include="Content\CompConfig\ResolveConceptual.aml" />
     <None Include="Content\CompConfig\ShowMissingComponent.aml" />
     <None Include="Content\CompConfig\VersionInfoComponent.aml" />
     <None Include="Content\GettingStarted\CreateProject.aml" />

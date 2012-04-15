@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BindingRedirectSettings.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/19/2008
-// Note    : Copyright 2008, Eric Woodruff, All rights reserved
+// Updated : 03/30/2012
+// Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class representing binding redirection settings for the
@@ -24,7 +24,6 @@ using System;
 using System.ComponentModel;
 using System.Drawing.Design;
 using System.Globalization;
-using System.IO;
 using System.Xml;
 using System.Xml.XPath;
 
@@ -34,15 +33,13 @@ using SandcastleBuilder.Utils.Design;
 namespace SandcastleBuilder.PlugIns
 {
     /// <summary>
-    /// This represents binding redirection settings for the
-    /// <see cref="BindingRedirectResolverPlugIn"/>.
+    /// This represents binding redirection settings for the <see cref="BindingRedirectResolverPlugIn"/>.
     /// </summary>
     [DefaultProperty("AssemblyName")]
     public class BindingRedirectSettings
     {
         #region Private data members
         //=====================================================================
-        // Private data members
 
         private string assemblyName, publicKeyToken, culture;
         private Version oldVersionFrom, oldVersionTo, newVersion;
@@ -51,13 +48,11 @@ namespace SandcastleBuilder.PlugIns
 
         #region Properties
         //=====================================================================
-        // Properties
 
         /// <summary>
         /// This is used to get or set the assembly name (no extension)
         /// </summary>
-        [Category("Binding Redirect"), Description("The assembly name " +
-            "(no path or extension)")]
+        [Category("Binding Redirect"), Description("The assembly name (no path or extension)")]
         public string AssemblyName
         {
             get { return assemblyName; }
@@ -74,8 +69,8 @@ namespace SandcastleBuilder.PlugIns
         /// This is used to get or set the public key token for the assembly
         /// </summary>
         /// <value>If omitted, "null" is assumed</value>
-        [Category("Binding Redirect"), Description("The public key token " +
-            "of the assembly.  If omitted, \"null\" is assumed.")]
+        [Category("Binding Redirect"), Description("The public key token of the assembly.  If omitted, " +
+          "\"null\" is assumed.")]
         public string PublicKeyToken
         {
             get { return publicKeyToken; }
@@ -86,8 +81,8 @@ namespace SandcastleBuilder.PlugIns
         /// This is used to get or set the culture for the assembly
         /// </summary>
         /// <value>If omitted, "neutral" is assumed</value>
-        [Category("Binding Redirect"), Description("The culture of the " +
-            "assembly.  If omitted, \"neutral\" is assumed.")]
+        [Category("Binding Redirect"), Description("The culture of the assembly.  If omitted, " +
+          "\"neutral\" is assumed.")]
         public string Culture
         {
             get { return culture; }
@@ -95,12 +90,10 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This is used to get or set the old version number to redirect to
-        /// the new version number.
+        /// This is used to get or set the old version number to redirect to the new version number
         /// </summary>
-        [Category("Binding Redirect"), Description("The old version number " +
-          "to redirect to the new version number."),
-          TypeConverter(typeof(VersionTypeConverter))]
+        [Category("Binding Redirect"), Description("The old version number to redirect to the new " +
+          "version number."), TypeConverter(typeof(VersionTypeConverter))]
         public Version OldVersion
         {
             get { return oldVersionFrom; }
@@ -114,14 +107,13 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This is used to get or set the ending old version number range to
-        /// redirect to the new version number.
+        /// This is used to get or set the ending old version number range to redirect to the new version
+        /// number.
         /// </summary>
-        /// <value>If not set, only <see cref="OldVersion" /> will be used to
-        /// redirect a single version.</value>
-        [Category("Binding Redirect"), Description("The ending old version " +
-          "number range to redirect to the new version number.  If not set, " +
-          "only OldVersion will be used to redirect a single version."),
+        /// <value>If not set, only <see cref="OldVersion" /> will be used to redirect a single
+        /// version.</value>
+        [Category("Binding Redirect"), Description("The ending old version number range to redirect to " +
+          "the new version number.  If not set, only OldVersion will be used to redirect a single version."),
           TypeConverter(typeof(VersionTypeConverter))]
         public Version OldVersionTo
         {
@@ -130,12 +122,10 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This is used to get or set the new version number to which the old
-        /// versions are redirected.
+        /// This is used to get or set the new version number to which the old versions are redirected
         /// </summary>
-        [Category("Binding Redirect"), Description("The new version number " +
-            "to which the old versions are redirected."),
-          TypeConverter(typeof(VersionTypeConverter))]
+        [Category("Binding Redirect"), Description("The new version number to which the old versions " +
+          "are redirected."), TypeConverter(typeof(VersionTypeConverter))]
         public Version NewVersion
         {
             get { return newVersion; }
@@ -149,19 +139,16 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This is used to get or set the path to the configuration file from
-        /// which the settings should be imported.
+        /// This is used to get or set the path to the configuration file from which the settings should be
+        /// imported.
         /// </summary>
-        /// <value>If specified, the properties in the Binding Redirect
-        /// category are ignored.</value>
-        [Category("Import"), Description("The path to configuration file from " +
-          "which to import settings.  If specified, all properties in the " +
-          "Binding Redirect category are ignored"),
+        /// <value>If specified, the properties in the Binding Redirect category are ignored.</value>
+        [Category("Import"), Description("The path to configuration file from which to import settings.  " +
+          "If specified, all properties in the Binding Redirect category are ignored"),
           Editor(typeof(FilePathObjectEditor), typeof(UITypeEditor)),
           RefreshProperties(RefreshProperties.All),
           FileDialog("Select the configuration file to use",
-            "Configuration Files (*.config)|*.config|All Files (*.*)|*.*",
-            FileDialogType.FileOpen)]
+            "Configuration Files (*.config)|*.config|All Files (*.*)|*.*", FileDialogType.FileOpen)]
         public FilePath ConfigurationFile
         {
             get { return configFile; }
@@ -177,7 +164,6 @@ namespace SandcastleBuilder.PlugIns
 
         #region Constructor
         //=====================================================================
-        // Methods, etc.
 
         /// <summary>
         /// Constructor
@@ -209,14 +195,12 @@ namespace SandcastleBuilder.PlugIns
             if(oldVersionTo == null)
                 range = oldVersionFrom.ToString();
             else
-                range = String.Format(CultureInfo.InvariantCulture, "{0}-{1}",
-                    oldVersionFrom, oldVersionTo);
+                range = String.Format(CultureInfo.InvariantCulture, "{0}-{1}", oldVersionFrom, oldVersionTo);
 
-            return String.Format(CultureInfo.InvariantCulture, "{0}, Culture=" +
-                "{1}, PublicKeyToken={2}, Version(s) {3} redirect to Version {4}",
-                assemblyName, String.IsNullOrEmpty(culture) ? "neutral" : culture,
-                String.IsNullOrEmpty(publicKeyToken) ? "null" : publicKeyToken,
-                range, newVersion);
+            return String.Format(CultureInfo.InvariantCulture, "{0}, Culture={1}, PublicKeyToken={2}, " +
+                "Version(s) {3} redirect to Version {4}", assemblyName,
+                String.IsNullOrEmpty(culture) ? "neutral" : culture,
+                String.IsNullOrEmpty(publicKeyToken) ? "null" : publicKeyToken, range, newVersion);
         }
         #endregion
 
@@ -224,19 +208,17 @@ namespace SandcastleBuilder.PlugIns
         //=====================================================================
 
         /// <summary>
-        /// Create a binding redirect settings instance from an XPath navigator
-        /// containing the settings.
+        /// Create a binding redirect settings instance from an XPath navigator containing the settings
         /// </summary>
         /// <param name="pathProvider">The base path provider object</param>
-        /// <param name="navigator">The XPath navigator from which to
-        /// obtain the settings.</param>
-        /// <returns>A <see cref="BindingRedirectSettings"/> object containing
-        /// the settings from the XPath navigator.</returns>
-        /// <remarks>It should contain an element called <c>dependentAssembly</c>
-        /// with a configFile attribute or a nested <c>assemblyIdentity</c> and
-        /// <c>bindingRedirect</c> element that define the settings.</remarks>
-        public static BindingRedirectSettings FromXPathNavigator(
-          IBasePathProvider pathProvider, XPathNavigator navigator)
+        /// <param name="navigator">The XPath navigator from which to obtain the settings</param>
+        /// <returns>A <see cref="BindingRedirectSettings"/> object containing the settings from the XPath
+        /// navigator.</returns>
+        /// <remarks>It should contain an element called <c>dependentAssembly</c> with a <c>configFile</c>
+        /// attribute or a nested <c>assemblyIdentity</c> and <c>bindingRedirect</c> element that define
+        /// the settings.</remarks>
+        public static BindingRedirectSettings FromXPathNavigator(IBasePathProvider pathProvider,
+          XPathNavigator navigator)
         {
             BindingRedirectSettings brs = new BindingRedirectSettings(pathProvider);
             XPathNavigator nav;
@@ -256,12 +238,9 @@ namespace SandcastleBuilder.PlugIns
 
                     if(nav != null)
                     {
-                        brs.AssemblyName = nav.GetAttribute("name",
-                            String.Empty).Trim();
-                        brs.PublicKeyToken = nav.GetAttribute("publicKeyToken",
-                            String.Empty).Trim();
-                        brs.Culture = nav.GetAttribute("culture",
-                            String.Empty).Trim();
+                        brs.AssemblyName = nav.GetAttribute("name", String.Empty).Trim();
+                        brs.PublicKeyToken = nav.GetAttribute("publicKeyToken", String.Empty).Trim();
+                        brs.Culture = nav.GetAttribute("culture", String.Empty).Trim();
                     }
 
                     nav = navigator.SelectSingleNode("bindingRedirect");
@@ -301,14 +280,12 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// Store the binding redirect settings as a node in the given XML
-        /// document.
+        /// Store the binding redirect settings as a node in the given XML document
         /// </summary>
         /// <param name="config">The XML document</param>
         /// <param name="root">The node in which to store the element</param>
         /// <returns>Returns the node that was added.</returns>
-        /// <remarks>The settings are stored in an element called
-        /// <c>dependentAssembly</c>.</remarks>
+        /// <remarks>The settings are stored in an element called <c>dependentAssembly</c>.</remarks>
         public XmlNode ToXml(XmlDocument config, XmlNode root)
         {
             XmlNode node, child;
@@ -370,8 +347,8 @@ namespace SandcastleBuilder.PlugIns
                     oldVersionTo = tempVersion;
                 }
 
-                attr.Value = String.Format(CultureInfo.InvariantCulture,
-                    "{0}-{1}", oldVersionFrom, oldVersionTo);
+                attr.Value = String.Format(CultureInfo.InvariantCulture, "{0}-{1}", oldVersionFrom,
+                    oldVersionTo);
                 child.Attributes.Append(attr);
             }
 

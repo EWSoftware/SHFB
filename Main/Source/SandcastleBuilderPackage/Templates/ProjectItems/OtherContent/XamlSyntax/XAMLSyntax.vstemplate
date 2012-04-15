@@ -1,0 +1,14 @@
+<VSTemplate Version="3.0.0" Type="Item" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005">
+  <TemplateData>
+    <Name Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="202"/>
+    <Description Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="203"/>
+    <Icon Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="406" />
+    <ProjectType>SHFBProject</ProjectType>
+    <DefaultName>XAML Syntax.xamlcfg</DefaultName>
+    <SortOrder>5</SortOrder>
+    <NumberOfParentCategoriesToRollUp>1</NumberOfParentCategoriesToRollUp>
+  </TemplateData>
+  <TemplateContent>
+    <ProjectItem>XAMLSyntax.xamlcfg</ProjectItem>
+  </TemplateContent>
+</VSTemplate>

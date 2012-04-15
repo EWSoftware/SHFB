@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : FileTree.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/16/2011
-// Note    : Copyright 2008-2011, Eric Woodruff, All rights reserved
+// Updated : 04/08/2012
+// Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the class used to manage the project's files in the
@@ -19,6 +19,7 @@
 // ============================================================================
 // 1.8.0.0  07/28/2008  EFW  Created the code
 // 1.8.0.3  12/04/2009  EFW  Added support for resource item files
+// 1.9.4.0  04/08/2012  EFW  Added support for XAML configuration files
 //=============================================================================
 
 using System;
@@ -90,6 +91,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
                     return NodeIcon.Content;
 
                 case ".xml":
+                case ".xamlcfg":
                     return NodeIcon.XmlFile;
 
                 case ".bmp":

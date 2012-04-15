@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : XmlCommentsFile.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/15/2008
-// Note    : Copyright 2006-2008, Eric Woodruff, All rights reserved
+// Updated : 03/30/2012
+// Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class representing an XML comment file and is used
@@ -20,17 +20,14 @@
 // 1.3.1.0  09/26/2006  EFW  Created the code
 // 1.3.3.1  12/07/2006  EFW  Added C++ comments fixup
 // 1.6.0.1  10/25/2007  EFW  Made the first fix-up more generic, added another
+// 1.9.4.0  03/30/2012  EFW  Added interior_ptr<T> fixup
 //=============================================================================
 
 using System;
-using System.ComponentModel;
-using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
-
-using SandcastleBuilder.Utils.Design;
 
 namespace SandcastleBuilder.Utils.BuildEngine
 {
@@ -42,15 +39,15 @@ namespace SandcastleBuilder.Utils.BuildEngine
     {
         #region Private data members
         //=====================================================================
-        // Private data members
 
         private static Regex reFixupComments1 = new Regex("`[0-9]+(\\{)");
 
         private static Regex reFixupComments2 = new Regex(
             "(member name=\".*?System\\.Collections\\.Generic.*?)(\\^)");
 
-        private static Regex reFixupComments3 = new Regex(
-            "cref=\"!:([EFMNPT]|Overload):");
+        private static Regex reFixupComments3 = new Regex("cref=\"!:([EFMNPT]|Overload):");
+
+        private static Regex reInteriorPtrFixup = new Regex(@"cli\.interior_ptr{([^}]+?)}");
 
         private string sourcePath;
         private Encoding enc;
@@ -61,7 +58,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
         #region Properties
         //=====================================================================
-        // Properties
 
         /// <summary>
         /// This read-only property is used to get the source path of the file
@@ -83,16 +79,14 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 if(comments == null)
                 {
-                    // Although Visual Studio doesn't add an encoding
-                    // attribute, the files are UTF-8 encoded.
+                    // Although Visual Studio doesn't add an encoding, the files are UTF-8 encoded.
                     enc = Encoding.UTF8;
                     comments = new XmlDocument();
 
                     do
                     {
                         // Read it with the appropriate encoding
-                        content = BuildProcess.ReadWithEncoding(sourcePath,
-                            ref enc);
+                        content = BuildProcess.ReadWithEncoding(sourcePath, ref enc);
                         comments.LoadXml(content);
 
                         // If redirected, load the specified file
@@ -100,36 +94,30 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                         if(node != null)
                         {
-                            sourcePath = Environment.ExpandEnvironmentVariables(
-                                node.Value);
+                            sourcePath = Environment.ExpandEnvironmentVariables(node.Value);
 
-                            // Some may contain %CORSYSDIR% which may not be
-                            // defined.  If so, use an appropriate default.
-                            if(sourcePath.IndexOf("%CORSYSDIR%",
-                              StringComparison.Ordinal) != -1)
+                            // Some may contain %CORSYSDIR% which may not be defined.  If so, use an
+                            // appropriate default.
+                            if(sourcePath.IndexOf("%CORSYSDIR%", StringComparison.Ordinal) != -1)
                             {
                                 sourcePath = sourcePath.Replace("%CORSYSDIR%",
                                     @"%SystemRoot%\Microsoft.NET\Framework\v2.0.50727\");
-                                sourcePath = Environment.ExpandEnvironmentVariables(
-                                    sourcePath);
+                                sourcePath = Environment.ExpandEnvironmentVariables(sourcePath);
                             }
                         }
 
                     } while(node != null);
 
-                    // If redirected, point back to the temporary copy and
-                    // make sure it gets saved to keep the comments for the
-                    // builds.
+                    // If redirected, point back to the temporary copy and make sure it gets saved to keep
+                    // the comments for the builds.
                     if(sourcePath != origPath)
                     {
                         sourcePath = origPath;
                         wasModified = true;
                     }
 
-                    comments.NodeChanged += new XmlNodeChangedEventHandler(
-                        comments_NodeChanged);
-                    comments.NodeInserted += new XmlNodeChangedEventHandler(
-                        comments_NodeChanged);
+                    comments.NodeChanged += comments_NodeChanged;
+                    comments.NodeInserted += comments_NodeChanged;
                 }
 
                 return comments;
@@ -167,31 +155,33 @@ namespace SandcastleBuilder.Utils.BuildEngine
         }
         #endregion
 
+        #region Constructor
         //=====================================================================
-        // Methods, etc.
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="filename">The XML comments filename</param>
-        /// <exception cref="ArgumentNullException">This is thrown if the
-        /// filename is null or an empty string.</exception>
+        /// <exception cref="ArgumentNullException">This is thrown if the filename is null or an
+        /// empty string.</exception>
         public XmlCommentsFile(string filename)
         {
             if(String.IsNullOrEmpty(filename))
-                throw new ArgumentException("filename cannot be null",
-                    "filename");
+                throw new ArgumentException("filename cannot be null", "filename");
 
             sourcePath = filename;
         }
+        #endregion
+
+        #region Methods
+        //=====================================================================
 
         /// <summary>
         /// Save the comments file if it was modified
         /// </summary>
         public void Save()
         {
-            // Write the file back out with the appropriate encoding if it
-            // was modified
+            // Write the file back out with the appropriate encoding if it was modified
             if(wasModified)
             {
                 using(StreamWriter sw = new StreamWriter(sourcePath, false, enc))
@@ -204,18 +194,16 @@ namespace SandcastleBuilder.Utils.BuildEngine
         }
 
         /// <summary>
-        /// This is called to fixup the comments for C++ compiler generated
-        /// XML comments files.
+        /// This is called to fixup the comments for C++ compiler generated XML comments files.
         /// </summary>
-        /// <remarks>The C++ compiler generates method signatures that differ
-        /// from the other .NET compilers for methods that take generics as
-        /// parameters.  These methods fail to get documented as they do not
-        /// match the output of <b>MRefBuilder</b>.  The C# and VB.NET
-        /// compilers generate names that do match it and this option is not
-        /// needed for comments files generated by them.  The C++ compiler
-        /// also has problems resolving references to some members if it
-        /// hasn't seen them yet.  These are prefixed with "!:" which is
-        /// removed by the fix-up code.</remarks>
+        /// <remarks>The C++ compiler generates method signatures that differ from the other .NET compilers
+        /// for methods that take generics as parameters.  These methods fail to get documented as they do
+        /// not match the output of <b>MRefBuilder</b>.  The C# and VB.NET compilers generate names that do
+        /// match it and this option is not needed for comments files generated by them.  The C++ compiler
+        /// also has problems resolving references to some members if it hasn't seen them yet.  These are
+        /// prefixed with "!:" which is removed by the fix-up code.  Parameters that use
+        /// interior_ptr&lt;T&gt; also do not match the reflection output and need to be converted to
+        /// the explicit dereference syntax.</remarks>
         public void FixupComments()
         {
             this.Save();
@@ -226,15 +214,16 @@ namespace SandcastleBuilder.Utils.BuildEngine
             // Read it from the XML document as it handles redirection
             string content = this.Comments.OuterXml;
 
-            // Strip out "`" followed by digits and "^" in member names and
-            // fix-up cref attributes that the compiler couldn't figure out.
+            // Strip out "`" followed by digits and "^" in member names and fix-up cref attributes that
+            // the compiler couldn't figure out.  Also convert interior_ptr<T> to explicit dereferences.
             content = reFixupComments1.Replace(content, "$1");
             content = reFixupComments2.Replace(content, "$1");
             content = reFixupComments3.Replace(content, "cref=\"$1:");
+            content = reInteriorPtrFixup.Replace(content,
+                "$1@!System.Runtime.CompilerServices.IsExplicitlyDereferenced");
 
             // Write the file back out using its original encoding
-            using(StreamWriter sw = new StreamWriter(sourcePath,
-                false, enc))
+            using(StreamWriter sw = new StreamWriter(sourcePath, false, enc))
             {
                 sw.Write(content);
                 comments = null;
@@ -242,5 +231,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 wasModified = false;
             }
         }
+        #endregion
     }
 }

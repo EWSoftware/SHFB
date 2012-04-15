@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : ITableOfContents.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/16/2008
-// Note    : Copyright 2008, Eric Woodruff, All rights reserved
+// Updated : 04/06/2012
+// Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains an interface used to interact with project files that
@@ -42,7 +42,9 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// </summary>
         /// <param name="toc">The table of contents collection</param>
         /// <param name="pathProvider">The base path provider</param>
-        void GenerateTableOfContents(TocEntryCollection toc,
-          IBasePathProvider pathProvider);
+        /// <param name="includeInvisibleItems">True to include items marked invisible (useful for previewing)
+        /// or false to exclude them.</param>
+        void GenerateTableOfContents(TocEntryCollection toc, IBasePathProvider pathProvider,
+            bool includeInvisibleItems);
     }
 }

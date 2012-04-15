@@ -20,7 +20,7 @@ optional XML elements.  When building conceptual content, each topic requires a 
 globally unique identifier (GUID) and a revision number.  These are specified in a containing <codeInline>topic</codeInline>
 element in the content file as shown in this example.</para>
 
-        <code lang="xml" title="Topic Example"><![CDATA[
+        <code language="xml" title="Topic Example"><![CDATA[
 <!-- The topic element contains the unique ID and revision number -->
 <topic id="303c996a-2911-4c08-b492-6496c82b3edb" revisionNumber="1">
   <!-- This element name will change based on the document type -->

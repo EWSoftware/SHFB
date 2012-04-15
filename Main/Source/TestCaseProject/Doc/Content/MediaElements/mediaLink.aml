@@ -2,42 +2,34 @@
 <topic id="34c8823f-8395-4d64-9941-8d156083709c" revisionNumber="1">
   <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
     <introduction>
-      <para>This element is used to insert an image within the text of a
-conceptual topic.  The image appears by itself out of line.</para>
+      <para>This element is used to insert an image within a conceptual topic.  This is a block element and
+the image appears by itself out of line.</para>
     </introduction>
+
     <section>
       <title>Usage</title>
       <content>
-        <para>To use a media link, insert the element within the text of the
-topic at the location that the image should appear.</para>
-        <para>The nested <codeInline>image</codeInline> element is used to
-define the image link.  The <codeInline>xlink:href</codeInline> attribute
-should refer to the unique ID of an image in the project's media content
-file.</para>
-        <alert class="note">
-          <para>If the <token>SandcastleStyles</token> patch has been applied, the
-<codeInline>image</codeInline> element supports an optional
-<codeInline>placement</codeInline> attribute that can be used to specify the
-placement of the image (<codeInline>near</codeInline> (the default),
-<codeInline>center</codeInline>, or <codeInline>far</codeInline>).</para>
-        </alert>
-        <para>The <codeInline>caption</codeInline> element is optional.  If
-specified, a caption will appear with the image.</para>
-        <alert class="note">
-          <para>If the <token>SandcastleStyles</token> patch has been applied, the
-<codeInline>caption</codeInline> element supports an optional
-<codeInline>placement</codeInline> attribute that can be used to specify the
-placement of the caption (<codeInline>before</codeInline> (the default)
-or <codeInline>after</codeInline>).</para>
-          <para>In addition, a <codeInline>lead</codeInline> attribute can be
-specified to define lead-in text that will prefix the caption (i.e. "Figure 1").</para>
-        </alert>
+        <para>To use a media link, insert the element within the topic at the location that the image should
+appear.</para>
+
+        <para>The nested <codeInline>image</codeInline> element is used to define the image link.  The
+<codeInline>xlink:href</codeInline> attribute should refer to the unique ID of an image in the project's
+media content file.  An optional <codeInline>placement</codeInline> attribute can be used to specify the
+placement of the image (<codeInline>near</codeInline> (the default), <codeInline>center</codeInline>, or
+<codeInline>far</codeInline>).</para>
+
+        <para>The nested <codeInline>caption</codeInline> element is optional.  If specified, a caption will
+appear with the image.  An optional <codeInline>placement</codeInline> attribute can be used to specify the
+placement of the caption (<codeInline>before</codeInline> (the default) or <codeInline>after</codeInline>).
+In addition, an optional <codeInline>lead</codeInline> attribute can be specified to define lead-in text
+that will prefix the caption (i.e. "Figure 1").</para>
+
       </content>
     </section>
     <section>
       <title>Example</title>
       <content>
-        <code lang="xml" title=" "><![CDATA[
+        <code language="xml" title=" "><![CDATA[
 <!-- No caption, default image placement -->
 <mediaLink>
 <image xlink:href="6be7079d-a9d8-4189-9021-0f72d1642beb"/>

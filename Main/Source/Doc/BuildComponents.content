@@ -39,7 +39,7 @@
       <HelpKeyword index="K" term="XML comment tags, inheritdoc" />
     </HelpKeywords>
   </Topic>
-  <Topic id="67b9bfab-7cf3-4beb-bd88-85bcff4e8ebd" visible="True" isSelected="true" title="Documenting WPF Attached Properties and Events">
+  <Topic id="67b9bfab-7cf3-4beb-bd88-85bcff4e8ebd" visible="True" title="Documenting WPF Attached Properties and Events">
     <HelpKeywords>
       <HelpKeyword index="K" term="Getting Started, attached events" />
       <HelpKeyword index="K" term="Getting Started, attached properties" />
@@ -55,7 +55,7 @@
       <HelpKeyword index="K" term="Help Library Manager Launcher" />
     </HelpKeywords>
   </Topic>
-  <Topic id="8dcbb69b-7a1a-4049-8e6b-2bf344efbbc9" visible="True" title="BuildAssembler Components">
+  <Topic id="8dcbb69b-7a1a-4049-8e6b-2bf344efbbc9" visible="True" isExpanded="true" isSelected="true" title="BuildAssembler Components">
     <HelpKeywords>
       <HelpKeyword index="K" term="BuildAssembler components, configuring" />
       <HelpKeyword index="K" term="BuildAssembler components, overview" />
@@ -87,17 +87,6 @@
         <HelpKeyword index="K" term="IntelliSenseComponent, configuration options" />
       </HelpKeywords>
     </Topic>
-    <Topic id="f47527c7-67ce-487d-a2a0-91d1cb08e15e" visible="True" title="JavaScript Declaration Syntax Generator">
-      <HelpKeywords>
-        <HelpKeyword index="K" term="BuildAssembler components, JavaScript declaration syntax generator" />
-      </HelpKeywords>
-    </Topic>
-    <Topic id="16dc54c2-84bf-4bab-a875-0b1d49c9b1b8" visible="True" title="Microsoft Help Viewer Component">
-      <HelpKeywords>
-        <HelpKeyword index="K" term="build components, Microsoft Help Viewer component" />
-        <HelpKeyword index="K" term="MSHCComponent, configuration settings" />
-      </HelpKeywords>
-    </Topic>
     <Topic id="92a6e678-48fb-4e6c-a7e5-34f264b01212" visible="True" title="Multi-Format Output Component">
       <HelpKeywords>
         <HelpKeyword index="K" term="BuildAssembler components, multi-format output component" />
@@ -108,12 +97,6 @@
       <HelpKeywords>
         <HelpKeyword index="K" term="BuildAssembler components, post-transform component" />
         <HelpKeyword index="K" term="PostTransformComponent, configuration options" />
-      </HelpKeywords>
-    </Topic>
-    <Topic id="da0332e0-a7d3-4f9d-a9e4-5027502ea9ea" visible="True" title="Resolve Conceptual Links Component">
-      <HelpKeywords>
-        <HelpKeyword index="K" term="BuildAssembler components, resolve conceptual links component" />
-        <HelpKeyword index="K" term="ResolveConceptualLinksComponent, configuration options" />
       </HelpKeywords>
     </Topic>
     <Topic id="3baa826b-d8df-44d9-bb3f-144af2d191ef" visible="True" title="Show Missing Documentation Component">
@@ -138,18 +121,6 @@
       <HelpKeywords>
         <HelpKeyword index="K" term="build components, add third-party syntax filter generator" />
         <HelpKeyword index="K" term="build components, syntax filter generator" />
-      </HelpKeywords>
-    </Topic>
-  </Topic>
-  <Topic id="4e92303d-66ad-4a5d-9a03-94f316a0dd38" visible="True" title="MRefBuilder Components">
-    <HelpKeywords>
-      <HelpKeyword index="K" term="MRefBuilder components, configuring" />
-      <HelpKeyword index="K" term="MRefBuilder components, overview" />
-    </HelpKeywords>
-    <Topic id="041d7ee8-1698-4256-aa9b-507c1b366cf6" visible="True" title="Assembly Binding Redirection Resolver">
-      <HelpKeywords>
-        <HelpKeyword index="K" term="BindingRedirectResolver, configuration options" />
-        <HelpKeyword index="K" term="MRefBuilder components, assembly binding redirection resolver" />
       </HelpKeywords>
     </Topic>
   </Topic>

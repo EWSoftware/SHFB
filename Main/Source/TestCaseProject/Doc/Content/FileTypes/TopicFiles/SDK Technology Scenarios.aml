@@ -8,7 +8,7 @@
       <title>SDK Technology Scenarios File Format</title>
       <content>
         <para>Below is an example of an SDK Technology Scenarios topic file.</para>
-        <code lang="xml" title="SDK Technology Scenarios Topic" source="ConceptualTemplates\SDK Technology Scenarios.aml" />
+        <code language="xml" title="SDK Technology Scenarios Topic" source="ConceptualTemplates\SDK Technology Scenarios.aml" />
       </content>
     </section>
     <relatedTopics>

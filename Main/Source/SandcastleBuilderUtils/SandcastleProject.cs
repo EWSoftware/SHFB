@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SandcastleProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/31/2011
-// Note    : Copyright 2006-2011, Eric Woodruff, All rights reserved
+// Updated : 04/15/2012
+// Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the project class.
@@ -74,6 +74,9 @@
 //                           Framework versions.
 // 1.9.3.2  08/20/2011  EFW  Updated to support selection of .NET Portable
 //                           Framework versions.
+// 1.9.4.0  04/08/2012  EFW  Merged changes for VS2010 style from Don Fehr.
+//                           Added BuildAssemblerVerbosity property.  Added
+//                           Support for XAML configuration files.
 //=============================================================================
 
 using System;
@@ -164,6 +167,7 @@ namespace SandcastleBuilder.Utils
         private string outputPath, frameworkVersion;
         private bool cleanIntermediates, keepLogFile, cppCommentsFixup, disableCodeBlockComponent;
         private HelpFileFormat helpFileFormat;
+        private BuildAssemblerVerbosity buildAssemblerVerbosity;
 
         // Help file properties
         private ContentPlacement contentPlacement;
@@ -172,7 +176,7 @@ namespace SandcastleBuilder.Utils
         private string helpTitle, htmlHelpName, copyrightHref, copyrightText, feedbackEMailAddress,
             feedbackEMailLinkText, headerText, footerText, projectSummary, rootNSTitle, presentationStyle,
             plugInNamespaces, helpFileVersion, syntaxFilters, vendorName, productTitle, topicVersion,
-            tocParentId, tocParentVersion, catalogProductId, catalogVersion;
+            tocParentId, tocParentVersion, catalogProductId, catalogVersion, brandingPackageName;
         private CultureInfo language;
         private HtmlSdkLinkType htmlSdkLinkType, websiteSdkLinkType;
         private MSHelp2SdkLinkType help2SdkLinkType;
@@ -674,12 +678,30 @@ namespace SandcastleBuilder.Utils
         //=====================================================================
 
         /// <summary>
-        /// This is used to get or set whether intermediate files are
-        /// deleted after a successful build.
+        /// This is used to get or set the build assembler tool verbosity level
+        /// </summary>
+        /// <value>The default is <c>AllMessages</c> to report all messages.</value>
+        /// <remarks>Setting this property to <c>OnlyWarningsAndErrors</c> or <c>OnlyErrors</c> can
+        /// significantly reduce the size of the build log for large projects.</remarks>
+        [Category("Build"), Description("This sets the verbosity level of the BuildAssembler tool.  Setting it " +
+          "to OnlyWarningsAndErrors or OnlyErrors can significantly reduce the size of the build log for " +
+          "large projects."), DefaultValue(BuildAssemblerVerbosity.AllMessages)]
+        public BuildAssemblerVerbosity BuildAssemblerVerbosity
+        {
+            get { return buildAssemblerVerbosity; }
+            set
+            {
+                this.SetProjectProperty("BuildAssemblerVerbosity", value);
+                buildAssemblerVerbosity = value;
+            }
+        }
+
+        /// <summary>
+        /// This is used to get or set whether intermediate files are deleted after a successful build
         /// </summary>
         /// <value>The default value is true.</value>
-        [Category("Build"), Description("If set to true, intermediate files " +
-          "are deleted after a successful build"), DefaultValue(true)]
+        [Category("Build"), Description("If set to true, intermediate files are deleted after a successful build"),
+          DefaultValue(true)]
         public bool CleanIntermediates
         {
             get { return cleanIntermediates; }
@@ -691,13 +713,11 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get or set whether or not the log file is retained
-        /// after a successful build.
+        /// This is used to get or set whether or not the log file is retained after a successful build
         /// </summary>
         /// <value>The default value is true.</value>
-        [Category("Build"), Description("If set to true, the log file is " +
-          "retained after a successful build.  If false, it is deleted."),
-          DefaultValue(true)]
+        [Category("Build"), Description("If set to true, the log file is retained after a successful build.  " +
+          "If false, it is deleted."), DefaultValue(true)]
         public bool KeepLogFile
         {
             get { return keepLogFile; }
@@ -709,18 +729,15 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get or set the path and filename of the build
-        /// log file.
+        /// This is used to get or set the path and filename of the build log file
         /// </summary>
-        /// <value>If not specified, a default name of <b>LastBuild.log</b>
-        /// is used and the file is saved in the path identified in the
-        /// <see cref="OutputPath" /> property.</value>
-        [Category("Build"), Description("The build log filename.  If not " +
-          "specified, a file called LastBuild.log is created in the folder " +
-          "identified by the OutputPath property."), DefaultValue(null),
+        /// <value>If not specified, a default name of <b>LastBuild.log</b> is used and the file is saved in the
+        /// path identified in the <see cref="OutputPath" /> property.</value>
+        [Category("Build"), Description("The build log filename.  If not specified, a file called " +
+          "LastBuild.log is created in the folder identified by the OutputPath property."), DefaultValue(null),
           Editor(typeof(FilePathObjectEditor), typeof(UITypeEditor)),
-          FileDialog("Select the log file location", "Log files (*.log)|" +
-            "*.log|All Files (*.*)|*.*", FileDialogType.FileSave)]
+          FileDialog("Select the log file location", "Log files (*.log)|*.log|All Files (*.*)|*.*",
+          FileDialogType.FileSave)]
         public FilePath BuildLogFile
         {
             get { return buildLogFile; }
@@ -731,27 +748,21 @@ namespace SandcastleBuilder.Utils
 
                 this.SetProjectProperty("BuildLogFile", value);
                 buildLogFile = value;
-                buildLogFile.PersistablePathChanging += new EventHandler(
-                    PathProperty_Changing);
-                buildLogFile.PersistablePathChanged += new EventHandler(
-                    PathProperty_Changed);
+                buildLogFile.PersistablePathChanging += PathProperty_Changing;
+                buildLogFile.PersistablePathChanged += PathProperty_Changed;
             }
         }
 
         /// <summary>
-        /// This is used to get or set the help file format generated by the
-        /// build process.
+        /// This is used to get or set the help file format generated by the build process
         /// </summary>
-        /// <value>The default is to produce an HTML Help 1 format file
-        /// built using HHC.exe.</value>
-        /// <remarks>If building a web site, the output folder will be cleared
-        /// before the new content is copied to it.</remarks>
-        [Category("Build"), Description("Specify the type of help produced " +
-          "(HTML Help 1 built with HHC.EXE, MS Help 2 built with HXCOMP.EXE, " +
-          "MS Help Viewer which is a compressed container file, and/or a web site.  " +
-          "WARNING: When building a web site, the prior content of the output " +
-          "folder will be erased without warning before copying the new " +
-          "content to it!"), DefaultValue(HelpFileFormat.HtmlHelp1),
+        /// <value>The default is to produce an HTML Help 1 format file built using HHC.exe.</value>
+        /// <remarks>If building a web site, the output folder will be cleared before the new content is copied
+        /// to it.</remarks>
+        [Category("Build"), Description("Specify the type of help produced (HTML Help 1 built with HHC.EXE, " +
+          "MS Help 2 built with HXCOMP.EXE, MS Help Viewer which is a compressed container file, and/or a web " +
+          "site.  WARNING: When building a web site, the prior content of the output folder will be erased " +
+          "without warning before copying the new content to it!"), DefaultValue(HelpFileFormat.HtmlHelp1),
           Editor(typeof(FlagsEnumEditor), typeof(UITypeEditor))]
         public HelpFileFormat HelpFileFormat
         {
@@ -764,12 +775,10 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to disable the custom Code Block Component so that
-        /// <c>&lt;code&gt;</c> elements are rendered in their standard format
-        /// by the Sandcastle XSL transformations.
+        /// This is used to disable the custom Code Block Component so that <c>&lt;code&gt;</c> elements are
+        /// rendered in their standard format by the Sandcastle XSL transformations.
         /// </summary>
-        /// <value>The default is false so that the Code Block Component is
-        /// used by default.</value>
+        /// <value>The default is false so that the Code Block Component is used by default.</value>
         [Category("Build"), Description("Set this to true to disable the custom Code Block Component and " +
           "render all <code> elements in their default format using the Sandcastle XSL transformations"),
           DefaultValue(false)]
@@ -784,21 +793,18 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get or set whether to fix-up the XML comments files
-        /// to work around an issue with those generated by the C++ compiler.
+        /// This is used to get or set whether to fix-up the XML comments files to work around an issue with
+        /// those generated by the C++ compiler.
         /// </summary>
         /// <value>The default value is false.</value>
-        /// <remarks>The C++ compiler generates method signatures that differ
-        /// from the other .NET compilers for methods that take generics as
-        /// parameters.  These methods fail to get documented as they do not
-        /// match the output of <b>MRefBuilder</b>.  The C# and VB.NET
-        /// compilers generate names that do match it and this option is not
-        /// needed for comments files generated by them.  Set this to true if
-        /// the project contains C++ compiler generated XML comments files and
-        /// your project contains methods that take generic types for
-        /// parameters.</remarks>
-        [Category("Build"), Description("Set this to true to work around a " +
-          "C++ compiler generated XML comments file issue."), DefaultValue(false)]
+        /// <remarks>The C++ compiler generates method signatures that differ from the other .NET compilers for
+        /// methods that take generics as parameters.  These methods fail to get documented as they do not match
+        /// the output of <b>MRefBuilder</b>.  The C# and VB.NET compilers generate names that do match it and
+        /// this option is not needed for comments files generated by them.  Set this to true if the project
+        /// contains C++ compiler generated XML comments files and your project contains methods that take
+        /// generic types for parameters.</remarks>
+        [Category("Build"), Description("Set this to true to work around a C++ compiler generated XML " +
+          "comments file issue."), DefaultValue(false)]
         public bool CppCommentsFixup
         {
             get { return cppCommentsFixup; }
@@ -810,12 +816,11 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get or set the .NET Framework version used to
-        /// resolve references to system types (basic .NET Framework,
-        /// Silverlight, Portable, etc.).
+        /// This is used to get or set the .NET Framework version used to resolve references to system types
+        /// (basic .NET Framework, Silverlight, Portable, etc.).
         /// </summary>
-        /// <remarks>If not found, it will default to the most recent version
-        /// of the basic .NET Framework installed.</remarks>
+        /// <remarks>If not found, it will default to the most recent version of the basic .NET Framework
+        /// installed.</remarks>
         [Category("Build"), Description("The .NET Framework version used to resolve references to system types."),
           TypeConverter(typeof(FrameworkVersionTypeConverter))]
         public string FrameworkVersion
@@ -842,36 +847,34 @@ namespace SandcastleBuilder.Utils
         /// <summary>
         /// This is used to get a dictionary of build component configurations.
         /// </summary>
-        /// <remarks>This allows you to configure the settings for third
-        /// party build components if they support it.</remarks>
-        [Category("Build"), Description("Configuration options for third " +
-          "party build components such as the Code Block Colorizer")]
+        /// <remarks>This allows you to configure the settings for third party build components if they
+        /// support it.</remarks>
+        [Category("Build"), Description("Configuration options for third party build components such as the " +
+          "Code Block Colorizer")]
         public ComponentConfigurationDictionary ComponentConfigurations
         {
             get { return componentConfigs; }
         }
 
         /// <summary>
-        /// This is used to get a dictionary of build process plug-in
-        /// configurations.
+        /// This is used to get a dictionary of build process plug-in configurations
         /// </summary>
-        /// <remarks>This allows you to select and configure the settings for
-        /// third party build process plug-ins.</remarks>
-        [Category("Build"), Description("Configuration options for third " +
-          "party build process plug-ins such as the AjaxDoc plug-in")]
+        /// <remarks>This allows you to select and configure the settings for third party build process
+        /// plug-ins.</remarks>
+        [Category("Build"), Description("Configuration options for third party build process plug-ins such " +
+          "as the AjaxDoc plug-in")]
         public PlugInConfigurationDictionary PlugInConfigurations
         {
             get { return plugInConfigs; }
         }
 
         /// <summary>
-        /// This is used to present a design-time property that is used for
-        /// editing user-defined project file properties.
+        /// This is used to present a design-time property that is used for editing user-defined project file
+        /// properties.
         /// </summary>
-        /// <remarks>The designer attached to the property handles updating
-        /// the user-defined project properties.</remarks>
-        [Category("Build"),
-          Editor(typeof(UserDefinedPropertyEditor), typeof(UITypeEditor)),
+        /// <remarks>The designer attached to the property handles updating the user-defined project
+        /// properties.</remarks>
+        [Category("Build"), Editor(typeof(UserDefinedPropertyEditor), typeof(UITypeEditor)),
           TypeConverter(typeof(UserDefinedPropertyTypeConverter)),
           Description("Add, edit, or delete user-defined project properties")]
         public SandcastleProject UserDefinedProperties
@@ -880,14 +883,12 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get or set whether or not the HTML rendered by
-        /// <b>BuildAssembler</b> is indented.
+        /// This is used to get or set whether or not the HTML rendered by <b>BuildAssembler</b> is indented.
         /// </summary>
-        /// <value>This is mainly a debugging aid.  Leave it set to false,
-        /// the default to produce more compact HTML.</value>
-        [Category("Build"), Description("Debugging aid.  If set to true, " +
-          "the HTML rendered by BuildAssembler is indented to make it " +
-          "more readable.  Leave it set to false to produce more compact HTML."),
+        /// <value>This is mainly a debugging aid.  Leave it set to false, the default to produce more compact
+        /// HTML.</value>
+        [Category("Build"), Description("Debugging aid.  If set to true, the HTML rendered by BuildAssembler " +
+          "is indented to make it more readable.  Leave it set to false to produce more compact HTML."),
           DefaultValue(false)]
         public bool IndentHtml
         {
@@ -1042,9 +1043,14 @@ namespace SandcastleBuilder.Utils
         /// <value>If a matching set of presentation resources cannot be
         /// found for the specified language, the US English set will be
         /// used.</value>
-        [Category("Help File"), Description("The language for the help file"),
-            DefaultValue(typeof(CultureInfo), "en-US"),
-            TypeConverter(typeof(LanguageResourceConverter))]
+        /// <remarks>The MS Help Viewer Catalog ID is composed of the <see cref="CatalogProductId"/>, the
+        /// <see cref="CatalogVersion"/>, and the <c>Language</c> code. For example, the English Visual Studio 10
+        /// catalog is <c>VS_100_EN-US</c>.</remarks>
+        /// <seealso cref="SelfBranded"/>
+        /// <seealso cref="BrandingPackageName"/>
+        [Category("Help File"), Description("The help file language.  For MS Help Viewer, this is the Locale " +
+          "portion of the Catalog ID."), DefaultValue(typeof(CultureInfo), "en-US"),
+          TypeConverter(typeof(LanguageResourceConverter))]
         public CultureInfo Language
         {
             get { return language; }
@@ -1223,9 +1229,9 @@ namespace SandcastleBuilder.Utils
         /// topic pages.
         /// </summary>
         /// <value>The default is to use the VS2005 style.</value>
-        [Category("Help File"), Description("Select which presentation " +
-          "style to use for the generated help topic pages"),
-          TypeConverter(typeof(PresentationStyleTypeConverter)), EscapeValue]
+        [Category("Help File"), Description("Select which presentation style to use for the generated " +
+          "help topic pages"), TypeConverter(typeof(PresentationStyleTypeConverter)), EscapeValue,
+          RefreshProperties(RefreshProperties.Repaint)]
         public string PresentationStyle
         {
             get { return presentationStyle; }
@@ -1236,6 +1242,11 @@ namespace SandcastleBuilder.Utils
 
                 this.SetProjectProperty("PresentationStyle", value);
                 presentationStyle = value;
+
+                // If set to VS2010 and the catalog product ID is "VS", default SelfBranded to false otherwise the
+                // content won't show up.
+                this.SelfBranded = (presentationStyle.IndexOf("vs2010",
+                  StringComparison.OrdinalIgnoreCase) == -1 || catalogProductId != "VS");
             }
         }
 
@@ -1461,15 +1472,13 @@ namespace SandcastleBuilder.Utils
         //=====================================================================
 
         /// <summary>
-        /// This is used to get or set the type of links used to reference
-        /// other help topics referring to framework (SDK) help topics in
-        /// MS Help Viewer help files.
+        /// This is used to get or set the type of links used to reference other help topics referring to
+        /// framework (SDK) help topics in MS Help Viewer help files.
         /// </summary>
         /// <value>The default is to produce links to online MSDN content.</value>
-        [Category("MS Help Viewer"), Description("Specify which type of links to " +
-          "create when referencing other help topics related to framework " +
-          "(SDK) topics.  None = No links, Id = Local Id links, MSDN = Online links to MSDN help topics."),
-          DefaultValue(MSHelpViewerSdkLinkType.Msdn)]
+        [Category("MS Help Viewer"), Description("Specify which type of links to create when referencing other " +
+          "help topics related to framework (SDK) topics.  None = No links, Id = Local Id links, " +
+          "MSDN = Online links to MSDN help topics."), DefaultValue(MSHelpViewerSdkLinkType.Msdn)]
         public MSHelpViewerSdkLinkType MSHelpViewerSdkLinkType
         {
             get { return helpViewerSdkLinkType; }
@@ -1481,12 +1490,18 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get or set the catalog product ID to use for the
-        /// installation script.
+        /// This is used to get or set the Product ID portion of the MS Help Viewer Catalog ID.
         /// </summary>
-        /// <remarks>The default if not specified will be "VS"</remarks>
-        [Category("MS Help Viewer"), Description("Specify the catalog product ID to use for the installation " +
-            "script.  If not set, it defaults to \"VS\"."), DefaultValue("VS"), EscapeValue]
+        /// <remarks>If not specified, the default is "VS".
+        /// <para>The MS Help Viewer Catalog ID is composed of the <c>CatalogProductId</c> the
+        /// <see cref="CatalogVersion"/>, and the <see cref="Language"/> code. For example, the English Visual
+        /// Studio 10 catalog is <c>VS_100_EN-US</c>.</para>
+        /// <note type="note">For styles other than VS2010, you should used the default value.</note>
+        /// </remarks>
+        /// <seealso cref="SelfBranded"/>
+        /// <seealso cref="BrandingPackageName"/>
+        [Category("MS Help Viewer"), Description("Specify the Product ID portion of the MS Help Viewer Catalog ID.  " +
+          "If not set, the default is \"VS\" (for \"Visual Studio\")."), DefaultValue("VS"), EscapeValue]
         public string CatalogProductId
         {
             get { return catalogProductId; }
@@ -1495,7 +1510,7 @@ namespace SandcastleBuilder.Utils
                 if(value == null || value.Trim().Length == 0)
                     value = "VS";
                 else
-                    value = value.Trim();
+                    value = Uri.EscapeDataString(Uri.UnescapeDataString(value.Trim()));
 
                 this.SetProjectProperty("CatalogProductId", value);
                 catalogProductId = value;
@@ -1503,12 +1518,18 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get or set the catalog version number to use for the
-        /// installation script.
+        /// This is used to get or set the Version portion of the MS Help Viewer Catalog ID.
         /// </summary>
-        /// <remarks>The default if not specified will be "100"</remarks>
-        [Category("MS Help Viewer"), Description("Specify the catalog version number to use for the installation " +
-            "script.  If not set, it defaults to \"100\"."), DefaultValue("100"), EscapeValue]
+        /// <remarks>If not specified, the default is "100".
+        /// <para>The MS Help Viewer Catalog ID is composed of the <see cref="CatalogProductId"/>, the
+        /// <c>CatalogVersion</c>, and the <see cref="Language"/> code. For example, the English Visual Studio 10
+        /// catalog is <c>VS_100_EN-US</c>.</para>
+        /// <note type="note">For styles other than VS2010, you should used the default value.</note>
+        /// </remarks>
+        /// <seealso cref="SelfBranded"/>
+        /// <seealso cref="BrandingPackageName"/>
+        [Category("MS Help Viewer"), Description("Specify the Version portion of the MS Help Viewer Catalog ID.  " +
+            "If not set, the default is \"100\" (meaning \"10.0\")."), DefaultValue("100"), EscapeValue]
         public string CatalogVersion
         {
             get { return catalogVersion; }
@@ -1527,7 +1548,8 @@ namespace SandcastleBuilder.Utils
         /// <summary>
         /// This is used to get or set the vendor name for the help viewer file
         /// </summary>
-        /// <remarks>The default if not specified will be "Vendor Name"</remarks>
+        /// <remarks>The default if not specified will be "Vendor Name".  The value must not contain the ':',
+        /// '\', '/', '.', or '#' characters.</remarks>
         [Category("MS Help Viewer"), Description("Specify the vendor name for the help file.  If not set, " +
           "'Vendor Name' will be used at build time."), DefaultValue(""), EscapeValue]
         public string VendorName
@@ -1538,7 +1560,8 @@ namespace SandcastleBuilder.Utils
                 if(value == null || value.Trim().Length == 0)
                     value = String.Empty;
                 else
-                    value = value.Trim();
+                    value = Uri.EscapeDataString(Uri.UnescapeDataString(
+                        value.Trim().Replace('.', '_'))).Replace("%20", " ");
 
                 this.SetProjectProperty("VendorName", value);
                 vendorName = value;
@@ -1548,8 +1571,8 @@ namespace SandcastleBuilder.Utils
         /// <summary>
         /// This is used to get or set the product title for the help viewer file
         /// </summary>
-        /// <remarks>The default if not specified will be the value of the
-        /// <see cref="HelpTitle" /> property.</remarks>
+        /// <remarks>The default if not specified will be the value of the <see cref="HelpTitle" />
+        /// property.</remarks>
         [Category("MS Help Viewer"), Description("Specify the product title for the help file.  If not set, " +
           "the value of the HelpTitle property will be used at build time."), DefaultValue(""), EscapeValue]
         public string ProductTitle
@@ -1568,11 +1591,80 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get or set whether or not the help file is self-branded
+        /// This is used to get or set whether or not the MS Help Viewer (MSHC) content is self-branded.  The MS
+        /// Help Viewer shows self-branded content with minimal reformatting. It shows branded content after
+        /// extensive reformatting by the branding package.
         /// </summary>
-        /// <remarks>Typically, this should be set to true.</remarks>
-        [Category("MS Help Viewer"), Description("Indicate whether or not the help file is self-branded.  " +
-          "Typically, this will be set to True."), DefaultValue(true)]
+        /// <remarks>This property is typically set to true for all styles and help file formats.
+        /// <list type="bullet">
+        ///	    <item>For the VS2010 style and the MS Help Viewer format, this value determines how the branding
+        ///	package will be applied by the Sandcastle branding component and the MS Help Viewer.
+        ///         <list type="bullet">
+        ///	            <item>If <c>SelfBranded</c> is true and the default catalog (VS_100) and branding package
+        ///	(Dev10) are used:
+        ///	                <list type="bullet">
+        ///					    <item>The Sandcastle branding component applies pre-branding to the help contents.
+        ///	Pre-branding applies most of the formatting that the default branding package applies to branded
+        ///	content.</item>
+        ///						<item>The MS Help Viewer then shows the content with the minimal self-branded
+        /// reformatting. Since the content has been pre-branded, its final formatting matches the default
+        /// formatting.</item>
+        ///					</list>
+        ///				</item>
+        ///				<item>If <c>SelfBranded</c> is false and the default catalog (VS_100) and branding
+        ///	package (Dev10) are used:
+        ///					<list type="bullet">
+        ///						<item>The Sandcastle branding component does only minimal reformatting to ensure
+        /// that the content conforms to the MTPS conventions expected by the MS Help Viewer.</item>
+        ///						<item>The MS Help Viewer then shows the content after fully reformatting it with
+        ///	the default branding package.
+        ///							<note type="note">The default branding package (Dev10) assumes that the
+        ///	content was authored by the <i>MSDN/TechNet Publishing System</i> (MTPS) and formats it accordingly
+        ///	with Microsoft logos, copyrights, and feedback links.</note>
+        ///						</item>
+        ///					</list>
+        ///				</item>
+        ///				<item>If <c>SelfBranded</c> is true and a custom catalog and branding package are used:
+        ///					<list type="bullet">
+        ///						<item>The Sandcastle branding component applies pre-branding to the help contents.
+        ///	Pre-branding applies most of the formatting that the custom branding package applies to help content
+        ///	(which is essentially the same formatting as the default branding package).</item>
+        ///						<item>The MS Help Viewer then shows the content with the minimal self-branded
+        ///	reformatting. Since the content has been pre-branded, its final formatting matches the custom
+        ///	formatting.</item>
+        ///						<item>The final result is essentially the same as if <c>SelfBranded</c> were
+        ///	false (see below).  However, if the custom branding package changes in the future, those changes will
+        ///	not be applied.</item>
+        ///					</list>
+        ///				</item>
+        ///				<item>If <c>SelfBranded</c> is false and a custom catalog and branding package are used:
+        ///					<list type="bullet">
+        ///						<item>The Sandcastle branding component only does minimal reformatting to ensure
+        ///	that the content conforms to the MTPS conventions expected by the MS Help Viewer.</item>
+        ///						<item>The MS Help Viewer then shows the content after fully reformatting it with
+        ///	the custom branding package.</item>
+        ///					</list>
+        ///				</item>
+        ///			</list>
+        ///		</item>
+        ///		<item>For the VS2010 style and the Help1 or Web formats, this value must be <see langword="true"/>.
+        ///			<list type="bullet">
+        ///				<item>The Sandcastle branding component applies all of branding formatting so the content
+        ///	is shown in the default MS Help Viewer format.</item>
+        ///			</list>
+        ///		</item>
+        ///		<item>For other styles, this value is only relevant for the MSHelpViewer format and must be true.
+        ///			<list type="bullet">
+        ///				<item>The Sandcastle transformation component applies the presentation style formatting
+        ///	and the MS Help Viewer shows the content with minimal reformatting.</item>
+        ///			</list>
+        ///		</item>
+        /// </list>
+        /// </remarks>
+        /// <seealso cref="BrandingPackageName"/>
+        [Category("MS Help Viewer"), Description("Indicate whether or not the help content is self-branded.  " +
+          "For the VS2010 style, typically false if the \"VS\" catalog is used and true otherwise.  " +
+          "It must be set to true for other styles."), DefaultValue(true)]
         public bool SelfBranded
         {
             get { return selfBranded; }
@@ -1584,11 +1676,41 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
+        /// This is used to get or set the name of the MS Help Viewer branding package.
+        /// </summary>
+        /// <remarks>Typically, this should be left blank to use the default package name.
+        /// <para>A custom branding package can only be used if the help content is <b>not</b> installed in the
+        /// default MS Help Viewer catalog.  See <see cref="CatalogProductId"/>, <see cref="CatalogVersion"/>,
+        /// and <see cref="Language"/>.</para>
+        /// <note type="note">
+        /// The branding package is associated with a MS Help Viewer catalog when the catalog is created (i.e.
+        /// the first time any content is installed in the catalog).  The branding package associated with a
+        /// catalog can only be changed by manually editing the MS Help Viewer configuration.</note>
+        /// </remarks>
+        /// <seealso cref="SelfBranded"/>
+        [Category("MS Help Viewer"), Description("Specify the name of the branding package.  Typically, this " +
+          "will left blank to use the default package name."), DefaultValue(""), EscapeValue]
+        public String BrandingPackageName
+        {
+            get { return brandingPackageName; }
+            set
+            {
+                if(value == null || value.Trim().Length == 0)
+                    value = String.Empty;
+                else
+                    value = value.Trim();
+
+                this.SetProjectProperty("BrandingPackageName", value);
+                brandingPackageName = value;
+            }
+        }
+
+        /// <summary>
         /// This is used to get or set the topic version for each topic in the help file
         /// </summary>
-        /// <remarks>The default is "100".</remarks>
-        [Category("MS Help Viewer"), Description("Specify the topic version for each topic in the help file."),
-          DefaultValue("100"), EscapeValue]
+        /// <remarks>The default is "100" (meaning 10.0).</remarks>
+        [Category("MS Help Viewer"), Description("Specify the topic version for each topic in the help file.  " +
+          "If not set, the default is '100' (meaning 10.0)"), DefaultValue("100"), EscapeValue]
         public string TopicVersion
         {
             get { return topicVersion; }
@@ -1608,11 +1730,11 @@ namespace SandcastleBuilder.Utils
         /// This is used to get or set the table of contents parent for each root
         /// topic in the help file.
         /// </summary>
-        /// <remarks>The default is "-1" to show the root topics in the root of
-        /// the main table of content.</remarks>
+        /// <remarks>The default is "-1" to show the root topics in the root of the main table of
+        /// content.</remarks>
         [Category("MS Help Viewer"), Description("Specify the table of content parent topic ID.  " +
-          "Use -1 to place root elements in the root of the main table of content."),
-          DefaultValue("-1"), EscapeValue]
+          "Use -1 to place root elements in the root of the main table of content."), DefaultValue("-1"),
+          EscapeValue]
         public string TocParentId
         {
             get { return tocParentId; }
@@ -1632,8 +1754,8 @@ namespace SandcastleBuilder.Utils
         /// This is used to get or set the topic version of the <see cref="TocParentId" /> topic
         /// </summary>
         /// <remarks>The default is "100".</remarks>
-        [Category("MS Help Viewer"), Description("Specify the topic version of the TOC parent topic."),
-          DefaultValue("100"), EscapeValue]
+        [Category("MS Help Viewer"), Description("Specify the topic version of the TOC parent topic.  " +
+          "If not set, the default is '100' (meaning 10.0)"), DefaultValue("100"), EscapeValue]
         public string TocParentVersion
         {
             get { return tocParentVersion; }
@@ -1650,11 +1772,11 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get or set the sort order for conceptual content so
-        /// that it appears within its parent in the correct position.
+        /// This is used to get or set the sort order for conceptual content so that it appears within its
+        /// parent in the correct position.
         /// </summary>
-        /// <remarks>The default is -1 to let the build engine determine the best
-        /// value to use based on the other project properties.</remarks>
+        /// <remarks>The default is -1 to let the build engine determine the best value to use based on the
+        /// other project properties.</remarks>
         [Category("MS Help Viewer"), Description("Specify the sort order to use when adding conceptual " +
           "topics to the table of contents.  Leave this set to -1 to let the build engine determine " +
           "the sort order based on the other project settings."), DefaultValue(-1)]
@@ -2993,6 +3115,7 @@ namespace SandcastleBuilder.Utils
                 visibleItems = VisibleItems.InheritedFrameworkMembers | VisibleItems.InheritedMembers |
                     VisibleItems.Protected | VisibleItems.SealedProtected;
 
+                buildAssemblerVerbosity = BuildAssemblerVerbosity.AllMessages;
                 helpFileFormat = HelpFileFormat.HtmlHelp1;
                 htmlSdkLinkType = websiteSdkLinkType = HtmlSdkLinkType.Msdn;
                 help2SdkLinkType = MSHelp2SdkLinkType.Msdn;
@@ -3013,7 +3136,8 @@ namespace SandcastleBuilder.Utils
                     this.FeedbackEMailAddress = this.FeedbackEMailLinkText = this.HeaderText =
                     this.FooterText = this.ProjectSummary = this.RootNamespaceTitle =
                     this.PlugInNamespaces = this.TopicVersion = this.TocParentId =
-                    this.TocParentVersion = this.CatalogProductId = this.CatalogVersion = null;
+                    this.TocParentVersion = this.CatalogProductId = this.CatalogVersion =
+                    this.BrandingPackageName = null;
 
                 language = new CultureInfo("en-US");
                 frameworkVersion = FrameworkVersionTypeConverter.LatestFrameworkMatching(".NET");
@@ -3217,6 +3341,9 @@ namespace SandcastleBuilder.Utils
 
                 case ".tokens":
                     return BuildAction.Tokens;
+
+                case ".xamlcfg":
+                    return BuildAction.XamlConfiguration;
 
                 case ".xsl":
                 case ".xslt":

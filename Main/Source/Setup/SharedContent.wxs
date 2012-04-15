@@ -171,6 +171,39 @@
 				<Component Id="VS2005BuilderContent_zh_CN.xml" Guid="{6DD00762-4177-46EE-93AA-31B16850F10A}">
 					<File Id="VS2005BuilderContent_zh_CN.xml" KeyPath="yes" Source="$(var.BinFolder)SharedContent\VS2005BuilderContent_zh-CN.xml" />
 				</Component>
+				<Component Id="VS2010BuilderContent_de_DE.xml" Guid="{FE552B1B-D62B-4073-B1C3-DB0952365961}">
+					<File Id="VS2010BuilderContent_de_DE.xml" KeyPath="yes" Source="$(var.BinFolder)SharedContent\VS2010BuilderContent_de-DE.xml" />
+				</Component>
+				<Component Id="VS2010BuilderContent_en_US.xml" Guid="{8943DCA7-5E18-49AC-BA64-44EBB87D6E06}">
+					<File Id="VS2010BuilderContent_en_US.xml" KeyPath="yes" Source="$(var.BinFolder)SharedContent\VS2010BuilderContent_en-US.xml" />
+				</Component>
+				<Component Id="VS2010BuilderContent_es_ES.xml" Guid="{FC32F1C5-61C0-4478-BF5B-9F9A183DE5F4}">
+					<File Id="VS2010BuilderContent_es_ES.xml" KeyPath="yes" Source="$(var.BinFolder)SharedContent\VS2010BuilderContent_es-ES.xml" />
+				</Component>
+				<Component Id="VS2010BuilderContent_fr_FR.xml" Guid="{D827F3D5-9D60-44DA-97DD-CC540FF31F41}">
+					<File Id="VS2010BuilderContent_fr_FR.xml" KeyPath="yes" Source="$(var.BinFolder)SharedContent\VS2010BuilderContent_fr-FR.xml" />
+				</Component>
+				<Component Id="VS2010BuilderContent_it_IT.xml" Guid="{CB8835D0-862D-43CF-8DB7-AB549C535E99}">
+					<File Id="VS2010BuilderContent_it_IT.xml" KeyPath="yes" Source="$(var.BinFolder)SharedContent\VS2010BuilderContent_it-IT.xml" />
+				</Component>
+				<Component Id="VS2010BuilderContent_ja_JP.xml" Guid="{70B419A5-381B-4EE4-894A-2E9CA78326E7}">
+					<File Id="VS2010BuilderContent_ja_JP.xml" KeyPath="yes" Source="$(var.BinFolder)SharedContent\VS2010BuilderContent_ja-JP.xml" />
+				</Component>
+				<Component Id="VS2010BuilderContent_ko_KR.xml" Guid="{98E44F7F-157E-418C-90C3-2B3C9E2B32B1}">
+					<File Id="VS2010BuilderContent_ko_KR.xml" KeyPath="yes" Source="$(var.BinFolder)SharedContent\VS2010BuilderContent_ko-KR.xml" />
+				</Component>
+				<Component Id="VS2010BuilderContent_pt_BR.xml" Guid="{397D3025-0D3A-457E-9C92-BC0FC1DD638D}">
+					<File Id="VS2010BuilderContent_pt_BR.xml" KeyPath="yes" Source="$(var.BinFolder)SharedContent\VS2010BuilderContent_pt-BR.xml" />
+				</Component>
+				<Component Id="VS2010BuilderContent_ru_RU.xml" Guid="{0A8E970C-4CCC-4ADE-A0B1-76344B7210BC}">
+					<File Id="VS2010BuilderContent_ru_RU.xml" KeyPath="yes" Source="$(var.BinFolder)SharedContent\VS2010BuilderContent_ru-RU.xml" />
+				</Component>
+				<Component Id="VS2010BuilderContent_zh_CHS.xml" Guid="{E4F9D721-B9D8-469B-B429-FE02D59089F0}">
+					<File Id="VS2010BuilderContent_zh_CHS.xml" KeyPath="yes" Source="$(var.BinFolder)SharedContent\VS2105BuilderContent_zh-CHS.xml" />
+				</Component>
+				<Component Id="VS2010BuilderContent_zh_CN.xml" Guid="{E6E063D8-D4F4-44B9-9EC6-D0DE4ED8A912}">
+					<File Id="VS2010BuilderContent_zh_CN.xml" KeyPath="yes" Source="$(var.BinFolder)SharedContent\VS2010BuilderContent_zh-CN.xml" />
+				</Component>
 			</Directory>
 		</DirectoryRef>
 
@@ -230,6 +263,17 @@
 			<ComponentRef Id="VS2005BuilderContent_ru_RU.xml" />
 			<ComponentRef Id="VS2005BuilderContent_zh_CHS.xml" />
 			<ComponentRef Id="VS2005BuilderContent_zh_CN.xml" />
+			<ComponentRef Id="VS2010BuilderContent_de_DE.xml" />
+			<ComponentRef Id="VS2010BuilderContent_en_US.xml" />
+			<ComponentRef Id="VS2010BuilderContent_es_ES.xml" />
+			<ComponentRef Id="VS2010BuilderContent_fr_FR.xml" />
+			<ComponentRef Id="VS2010BuilderContent_it_IT.xml" />
+			<ComponentRef Id="VS2010BuilderContent_ja_JP.xml" />
+			<ComponentRef Id="VS2010BuilderContent_ko_KR.xml" />
+			<ComponentRef Id="VS2010BuilderContent_pt_BR.xml" />
+			<ComponentRef Id="VS2010BuilderContent_ru_RU.xml" />
+			<ComponentRef Id="VS2010BuilderContent_zh_CHS.xml" />
+			<ComponentRef Id="VS2010BuilderContent_zh_CN.xml" />
 		</ComponentGroup>
 	</Fragment>
 </Wix>

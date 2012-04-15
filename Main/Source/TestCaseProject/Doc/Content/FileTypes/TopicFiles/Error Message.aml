@@ -8,7 +8,7 @@
       <title>Error Message File Format</title>
       <content>
         <para>Below is an example of an Error Message topic file.</para>
-        <code lang="xml" title="Error Message Topic" source="ConceptualTemplates\Error Message.aml" />
+        <code language="xml" title="Error Message Topic" source="ConceptualTemplates\Error Message.aml" />
       </content>
     </section>
     <relatedTopics>

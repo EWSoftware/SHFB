@@ -35,8 +35,8 @@ application that can be used to view MS Help 2 (.HxS) files.  If you need one, s
 		<para><ui>Alternate MS Help Viewer (.mshc) Viewer Path</ui> - This allows you to specify the path to an
 external application that can be used to view MS Help Viewer (.mshc) files.  If you need one, see the
 <link xlink:href="8c0c97d0-c968-4c15-9fe9-e8f3a443c50a" /> for the download location of the
-<application>H3 Viewer</application>.  If not specified, the default browser will be used to open MS Help Viewer
-content.</para>
+<application>H3 Viewer</application>.  If you want to use the default MS Help Viewer, you should leave this value
+blank.  The help content will be opened using the <localUri>ms-xhelp:///</localUri> protocol.</para>
 	</listItem>
 
     <listItem>

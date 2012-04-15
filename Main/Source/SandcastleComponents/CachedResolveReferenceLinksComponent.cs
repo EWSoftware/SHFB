@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Components
 // File    : CachedResolveReferenceLinksComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/19/2011
+// Updated : 03/11/2012
 // Compiler: Microsoft Visual C#
 //
 // This file contains a build component that is derived from
@@ -32,10 +32,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
-using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Windows.Forms;
-using System.Xml;
 using System.Xml.XPath;
 
 using Microsoft.Ddue.Tools;
@@ -208,12 +205,14 @@ namespace SandcastleBuilder.Components
         /// <summary>
         /// This is overriden to save the updated cache when disposed
         /// </summary>
-        public override void Dispose()
+        /// <param name="disposing">Pass true to dispose of the managed and unmanaged resources or false to just
+        /// dispose of the unmanaged resources.</param>
+        protected override void Dispose(bool disposing)
         {
-            if(msdnCache != null && msdnCache.Count != originalCacheCount)
+            if(disposing && msdnCache != null && msdnCache.Count != originalCacheCount)
             {
-                base.WriteMessage(MessageLevel.Info, "MSDN URL cache " +
-                    "updated.  Saving new information to " + cacheFile);
+                base.WriteMessage(MessageLevel.Info, "MSDN URL cache updated.  Saving new information to " +
+                    cacheFile);
 
                 try
                 {
@@ -222,9 +221,8 @@ namespace SandcastleBuilder.Components
                         BinaryFormatter bf = new BinaryFormatter();
                         bf.Serialize(fs, msdnCache);
 
-                        base.WriteMessage(MessageLevel.Info, String.Format(
-                            CultureInfo.InvariantCulture, "New cache size: {0} " +
-                            "entries", msdnCache.Count));
+                        base.WriteMessage(MessageLevel.Info, String.Format(CultureInfo.InvariantCulture,
+                            "New cache size: {0} entries", msdnCache.Count));
                     }
                 }
                 catch(IOException ex)
@@ -236,7 +234,7 @@ namespace SandcastleBuilder.Components
                 }
             }
 
-            base.Dispose();
+            base.Dispose(disposing);
         }
         #endregion
     }

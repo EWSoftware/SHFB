@@ -2,7 +2,7 @@
 // System  : Code Colorizer Library
 // File    : AssemblyInfo.cs
 // Author  : Jonathan de Halleux, (c) 2003
-// Updated : 07/09/2010
+// Updated : 04/15/2012
 // Compiler: Microsoft Visual C#
 //
 // Code colorizer attributes.  The original Code Project article by Jonathan
@@ -50,4 +50,4 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Revision and Build Numbers
 // by using the '*' as shown below:
 
-[assembly: AssemblyVersion("2.1.0.13")]
+[assembly: AssemblyVersion("2.1.0.14")]

@@ -12,9 +12,7 @@
 			</para>
 			<alert class="tip">
 				<para>
-					If you have already installed the Sandcastle Styles patch, you do not need to
-					make the changes described in this topic. The patch already contains the necessary
-					changes.
+					The Sandcastle version of the MAML schema files already contain the necessary changes.
 				</para>				
 			</alert>
 		</introduction>

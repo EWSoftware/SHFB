@@ -23,10 +23,10 @@ you become familiar with XML comments, conceptual content, and Sandcastle.</para
 usage you can download the <token>XMLCommentsGuide</token>.</para></listItem>
 
     <listItem>
-			<para>For a comprehensive list of MAML documentation tags used in conceptual content and a
-description of their attributes and usage you can download the <externalLink>
-	<linkText>Sandcastle MAML Guide</linkText>
-  <linkUri>http://SandcastleStyles.codeplex.com</linkUri>
+			<para>For a comprehensive list of MAML documentation tags used in conceptual content and a description of
+their attributes and usage see the <legacyBold>Sandcastle MAML Guide</legacyBold> included with <externalLink>
+	<linkText>Sandcastle</linkText>
+  <linkUri>http://Sandcastle.codeplex.com</linkUri>
   <linkTarget>_blank</linkTarget>
 </externalLink>.</para></listItem>
 

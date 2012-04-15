@@ -2,9 +2,7 @@
 <topic id="161537d9-6f89-42ef-9c51-3a15ef94df65" revisionNumber="1">
   <developerHowToDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
 	<introduction>
-    <para>This plug-in adds support for the auto-generated bibliography feature that was added to Sandcastle by
-the <token>SandcastleStyles</token> patch.  The patch must have been applied to Sandcastle in order for this
-plug-in to work correctly.</para>
+    <para>This plug-in adds support for the auto-generated bibliography feature in Sandcastle.</para>
 
   </introduction>
   
@@ -51,11 +49,11 @@ suggested name is <localUri>bibliography.xml</localUri> but you can name it what
     <publisher>CodePlex.com</publisher>
     <link>http://Sandcastle.codeplex.com/stats/view</link>
   </reference>
-  <reference name="sandcastle styles">
-    <title>Sandcastle Styles</title>
-    <author>Paul Selormey, Eric Woodruff, Dave Sexton</author>
+  <reference name="shfb">
+    <title>Sandcastle Help File Builder</title>
+    <author>Eric Woodruff</author>
     <publisher>CodePlex.com</publisher>
-    <link>http://SandcastleStyles.codeplex.com</link>
+    <link>http://SHFB.codeplex.com</link>
   </reference>
 </bibliography>]]>
 </code>
@@ -150,11 +148,11 @@ section is generated automatically near the bottom of the topic.</para>
       <content>
         <para>Sandcastle is a popular download<cite>sandcastle activity</cite>.</para>
 
-        <para>Sandcastle Styles<cite>sandcastle styles</cite> adds even more value.</para>
+        <para>The Sandcastle Help File Builder<cite>shfb</cite> adds even more value.</para>
 
         <para>I expect Sandcastle's popularity<cite>sandcastle activity</cite>
 to increase as more community members become aware of its usefulness, with the
-help of projects like Sandcastle Styles<cite>sandcastle styles</cite>.</para>
+help of projects like the Sandcastle Help File Builder<cite>shfb</cite>.</para>
       </content>
     </section>
 
@@ -168,7 +166,6 @@ help of projects like Sandcastle Styles<cite>sandcastle styles</cite>.</para>
 
   <relatedTopics>
     <link xlink:href="e031b14e-42f0-47e1-af4c-9fed2b88cbc7" />
-    <token>SandcastleStyles</token>
   </relatedTopics>
 
   </developerHowToDocument>

@@ -8,7 +8,7 @@
       <title>SDK Technology Architecture File Format</title>
       <content>
         <para>Below is an example of an SDK Technology Architecture topic file.</para>
-        <code lang="xml" title="SDK Technology Architecture Topic" source="ConceptualTemplates\SDK Technology Architecture.aml" />
+        <code language="xml" title="SDK Technology Architecture Topic" source="ConceptualTemplates\SDK Technology Architecture.aml" />
       </content>
     </section>
     <relatedTopics>

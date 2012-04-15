@@ -14,7 +14,7 @@ inner text.</para>
     <section>
       <title>Example</title>
       <content>
-        <code lang="xml" title=" ">
+        <code language="xml" title=" ">
 &lt;para&gt;To quote the schema:&lt;/para&gt;
 &lt;quote&gt;The quote element describes a quotation.&lt;/quote&gt;
 </code>

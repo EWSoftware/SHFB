@@ -8,7 +8,7 @@
       <title>Reference File Format</title>
       <content>
         <para>Below is an example of a Reference topic file.</para>
-        <code lang="xml" title="Reference Topic" source="ConceptualTemplates\Reference.aml" />
+        <code language="xml" title="Reference Topic" source="ConceptualTemplates\Reference.aml" />
       </content>
     </section>
     <relatedTopics>

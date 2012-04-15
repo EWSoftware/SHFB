@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Components
 // File    : CachedCopyFromIndexComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/19/2011
+// Updated : 03/11/2012
 // Compiler: Microsoft Visual C#
 //
 // This file contains a build component that is derived from
@@ -32,10 +32,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
-using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Windows.Forms;
-using System.Xml;
 using System.Xml.XPath;
 
 using Microsoft.Ddue.Tools;
@@ -102,17 +99,15 @@ namespace SandcastleBuilder.Components
         /// <param name="configuration">The configuration information</param>
         /// <exception cref="ConfigurationErrorsException">This is thrown if
         /// an error is detected in the configuration.</exception>
-        public CachedCopyFromIndexComponent(BuildAssembler assembler,
-          XPathNavigator configuration) : base(assembler, configuration)
+        public CachedCopyFromIndexComponent(BuildAssembler assembler, XPathNavigator configuration) :
+          base(assembler, configuration)
         {
             Assembly asm = Assembly.GetExecutingAssembly();
             FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(asm.Location);
 
-            base.WriteMessage(MessageLevel.Info, String.Format(
-                CultureInfo.InvariantCulture,
-                "\r\n    [{0}, version {1}]\r\n    Cached Copy From Index " +
-                " Component.  {2}\r\n    http://SHFB.CodePlex.com",
-                fvi.ProductName, fvi.ProductVersion, fvi.LegalCopyright));
+            base.WriteMessage(MessageLevel.Info, String.Format(CultureInfo.InvariantCulture,
+                "\r\n    [{0}, version {1}]\r\n    Cached Copy From Index  Component.  {2}\r\n" +
+                "    http://SHFB.CodePlex.com", fvi.ProductName, fvi.ProductVersion, fvi.LegalCopyright));
 
             // For each index, search for cached entries to load
             foreach(XPathNavigator index in configuration.Select("index"))
@@ -134,8 +129,7 @@ namespace SandcastleBuilder.Components
         /// <param name="index">The parent index node</param>
         /// <param name="name">The name of the index</param>
         /// <param name="cache">The cache settings</param>
-        private void LoadCache(XPathNavigator index, string name,
-          XPathNavigator cache)
+        private void LoadCache(XPathNavigator index, string name, XPathNavigator cache)
         {
             XPathDocument xdoc;
             XPathNavigator nav;
@@ -151,12 +145,10 @@ namespace SandcastleBuilder.Components
             cacheFile = cache.GetAttribute("cacheFile", String.Empty);
 
             if(String.IsNullOrEmpty(cacheFile))
-                throw new ConfigurationErrorsException("You must specify " +
-                    "a cacheFile value on the cache element.");
+                throw new ConfigurationErrorsException("You must specify a cacheFile value on the cache element.");
 
             // Create the folder if it doesn't exist
-            cacheFile = Path.GetFullPath(Environment.ExpandEnvironmentVariables(
-                cacheFile));
+            cacheFile = Path.GetFullPath(Environment.ExpandEnvironmentVariables(cacheFile));
             path = Path.GetDirectoryName(cacheFile);
 
             if(!Directory.Exists(path))
@@ -167,33 +159,28 @@ namespace SandcastleBuilder.Components
                 // If it doesn't exist, create it on first use
                 if(!File.Exists(cacheFile))
                 {
-                    base.WriteMessage(MessageLevel.Warn, cacheFile +
-                        " does not exist and is being created");
+                    base.WriteMessage(MessageLevel.Warn, cacheFile + " does not exist and is being created");
 
                     parent = index.OuterXml;
                     config = cache.OuterXml.Replace("<cache ", "<data ");
                     tempName = "@" + name;
 
-                    parent = parent.Substring(0, parent.IndexOf('>') + 1).Replace(
-                        "\"" + name + "\"", "\"" + tempName + "\"");
+                    parent = parent.Substring(0, parent.IndexOf('>') + 1).Replace("\"" + name + "\"", "\"" +
+                        tempName + "\"");
                     config = String.Format(CultureInfo.InvariantCulture,
-                        "<component>\r\n{0}\r\n{1}\r\n</index>\r\n</component>",
-                        parent, config);
+                        "<component>\r\n{0}\r\n{1}\r\n</index>\r\n</component>", parent, config);
 
                     // Create a second CopyFromIndex component and pass it
                     // just enough information to create the index.
                     xdoc = new XPathDocument(new StringReader(config));
                     nav = xdoc.CreateNavigator().SelectSingleNode("component");
-                    copyComp = new CopyFromIndexComponent(this.BuildAssembler,
-                        nav);
+                    copyComp = new CopyFromIndexComponent(this.BuildAssembler, nav);
 
                     // Get the data from the temporary index
                     cacheData = BuildComponent.Data[tempName];
                     type = cacheData.GetType();
-                    field = type.GetField("index", BindingFlags.NonPublic |
-                        BindingFlags.Instance);
-                    cachedIndex = (Dictionary<string, string>)field.GetValue(
-                        cacheData);
+                    field = type.GetField("index", BindingFlags.NonPublic | BindingFlags.Instance);
+                    cachedIndex = (Dictionary<string, string>)field.GetValue(cacheData);
 
                     try
                     {
@@ -230,28 +217,24 @@ namespace SandcastleBuilder.Components
             // Get the dictionary containing the user's index info
             cacheData = BuildComponent.Data[name];
             type = cacheData.GetType();
-            field = type.GetField("index", BindingFlags.NonPublic |
-                BindingFlags.Instance);
+            field = type.GetField("index", BindingFlags.NonPublic | BindingFlags.Instance);
             actualIndex = (Dictionary<string, string>)field.GetValue(cacheData);
 
-            // Add the cached info from the framework files.  If there's a
-            // duplicate, the later copy will take precedence.
+            // Add the cached info from the framework files.  If there's a duplicate, the later copy will take
+            // precedence.
             foreach(string key in cachedIndex.Keys)
                 if(!actualIndex.ContainsKey(key))
                     actualIndex.Add(key, cachedIndex[key]);
                 else
                 {
-                    base.WriteMessage(MessageLevel.Warn, String.Format(
-                        CultureInfo.InvariantCulture, "Key '{0}' in " +
-                        "this framework cache matches an item from a prior " +
-                        "cache with the same key.  The item from this cache " +
-                        "will take precedence.", key));
+                    base.WriteMessage(MessageLevel.Warn, String.Format(CultureInfo.InvariantCulture,
+                        "Key '{0}' in this framework cache matches an item from a prior cache with the same " +
+                        "key.  The item from this cache will take precedence.", key));
                     actualIndex[key] = cachedIndex[key];
                 }
 
-            base.WriteMessage(MessageLevel.Info, String.Format(
-                CultureInfo.InvariantCulture, "Loaded {0} items from the " +
-                "cache file '{1}'", cachedIndex.Count, cacheFile));
+            base.WriteMessage(MessageLevel.Info, String.Format(CultureInfo.InvariantCulture,
+                "Loaded {0} items from the cache file '{1}'", cachedIndex.Count, cacheFile));
         }
         #endregion
 
@@ -262,27 +245,29 @@ namespace SandcastleBuilder.Components
         /// This is used in the debug build to get an idea of how many files
         /// were kept loaded in the cache.
         /// </summary>
-        public override void Dispose()
+        /// <param name="disposing">Pass true to dispose of the managed and unmanaged resources or false to just
+        /// dispose of the unmanaged resources.</param>
+        protected override void Dispose(bool disposing)
         {
-            Object cacheData, cache;
-            Type type;
-            FieldInfo field;
+            if(disposing)
+            {
+                Object cacheData, cache;
+                Type type;
+                FieldInfo field;
 
-            cacheData = BuildComponent.Data[cacheId];
-            type = cacheData.GetType();
-            field = type.GetField("cache", BindingFlags.NonPublic |
-                BindingFlags.Instance);
-            cache = field.GetValue(cacheData);
+                cacheData = BuildComponent.Data[cacheId];
+                type = cacheData.GetType();
+                field = type.GetField("cache", BindingFlags.NonPublic | BindingFlags.Instance);
+                cache = field.GetValue(cacheData);
 
-            type = cache.GetType();
-            field = type.GetField("count", BindingFlags.NonPublic |
-                BindingFlags.Instance);
+                type = cache.GetType();
+                field = type.GetField("count", BindingFlags.NonPublic | BindingFlags.Instance);
 
-            this.WriteMessage(MessageLevel.Info, String.Format(
-                CultureInfo.InvariantCulture, "Used \"{0}\" cache entries: {1}",
-                cacheId, field.GetValue(cache).ToString()));
+                this.WriteMessage(MessageLevel.Info, String.Format(CultureInfo.InvariantCulture,
+                    "Used \"{0}\" cache entries: {1}", cacheId, field.GetValue(cache).ToString()));
+            }
 
-            base.Dispose();
+            base.Dispose(disposing);
         }
         #endregion
     }

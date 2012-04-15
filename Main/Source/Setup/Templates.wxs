@@ -95,6 +95,9 @@
 				<Component Id="Token_File.tokens" Guid="{F8FEB835-43B0-4D62-AC56-E4B309AF98AE}">
 					<File Id="Token_File.tokens" KeyPath="yes" Source="$(var.BinFolder)ItemTemplates\Token File.tokens" />
 				</Component>
+				<Component Id="XAML_Syntax.xamlcfg" Guid="{129BB327-F718-406C-826F-6C31EE74DC7A}">
+					<File Id="XAML_Syntax.xamlcfg" KeyPath="yes" Source="$(var.BinFolder)ItemTemplates\XAML Syntax.xamlcfg" />
+				</Component>
 				<Component Id="XML_File.xml" Guid="{7E266B66-39CA-4B51-A80D-8473E72F217C}">
 					<File Id="XML_File.xml" KeyPath="yes" Source="$(var.BinFolder)ItemTemplates\XML File.xml" />
 				</Component>
@@ -123,9 +126,6 @@
 				</Component>
 				<Component Id="ExtractHtmlInfo.proj" Guid="{D6229E38-1098-44B3-8539-DD3FFDD70033}">
 					<File Id="ExtractHtmlInfo.proj" KeyPath="yes" Source="$(var.BinFolder)Templates\ExtractHtmlInfo.proj" />
-				</Component>
-				<Component Id="FixScriptSharp.xsl" Guid="{69EBC898-EDDB-4152-B587-106D77AC4B53}">
-					<File Id="FixScriptSharp.xsl" KeyPath="yes" Source="$(var.BinFolder)Templates\FixScriptSharp.xsl" />
 				</Component>
 				<Component Id="Generate2xTOC.proj" Guid="{D76B2966-12BA-462E-8B6D-4610C0DA1B78}">
 					<File Id="Generate2xTOC.proj" KeyPath="yes" Source="$(var.BinFolder)Templates\Generate2xTOC.proj" />
@@ -214,6 +214,9 @@
 				<Component Id="VS2005.xsl" Guid="{BC0C330E-AFD1-4129-B377-F001B4A73CCF}">
 					<File Id="VS2005.xsl" KeyPath="yes" Source="$(var.BinFolder)Templates\VS2005.xsl" />
 				</Component>
+				<Component Id="VS2010.config" Guid="{53F22E1A-B6EE-4789-B719-31FEA81F8E2F}">
+					<File Id="VS2010.config" KeyPath="yes" Source="$(var.BinFolder)Templates\VS2010.config" />
+				</Component>
 			</Directory>
 		</DirectoryRef>
 
@@ -262,7 +265,6 @@
 			<ComponentRef Id="BuildReferenceTopics.proj" />
 			<ComponentRef Id="conceptual.config" />
 			<ComponentRef Id="ExtractHtmlInfo.proj" />
-			<ComponentRef Id="FixScriptSharp.xsl" />
 			<ComponentRef Id="Generate2xTOC.proj" />
 			<ComponentRef Id="GenerateInheritedDocs.config" />
 			<ComponentRef Id="GenerateInheritedDocs.proj" />
@@ -292,6 +294,7 @@
 			<ComponentRef Id="TransformManifest.proj" />
 			<ComponentRef Id="VS2005.config" />
 			<ComponentRef Id="VS2005.xsl" />
+			<ComponentRef Id="VS2010.config" />
 		</ComponentGroup>
 
 		<ComponentGroup Id="Templates">

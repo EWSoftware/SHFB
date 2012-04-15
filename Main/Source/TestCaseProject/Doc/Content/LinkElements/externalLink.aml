@@ -45,31 +45,27 @@ as the topic thus replacing it.</para></entry>
 XML entities such as the ampersand (&amp;), you must encode them or a build
 error will occur.  See the example below.</para>
         </alert>
-        <alert class="note">
-          <para>The <codeInline>linkTarget</codeInline> element is an extension
-added by the <token>SandcastleStyles</token> patch.</para>
-        </alert>
       </content>
     </section>
     <section>
       <title>Example</title>
       <content>
-        <code lang="xml" title=" ">
+        <code language="xml" title=" ">
 Only link text and URI: &lt;externalLink&gt;
-    &lt;linkText&gt;Sandcastle Styles&lt;/linkText&gt;
-    &lt;linkUri&gt;http://www.codeplex.com/SandcastleStyles&lt;/linkUri&gt;
+    &lt;linkText&gt;Sandcastle&lt;/linkText&gt;
+    &lt;linkUri&gt;http://Sandcastle.CodePlex.com&lt;/linkUri&gt;
 &lt;/externalLink&gt;
 
 Added alternate text: &lt;externalLink&gt;
-    &lt;linkText&gt;Sandcastle Styles&lt;/linkText&gt;
-    &lt;linkAlternateText&gt;Visit Sandcastle Styles&lt;/linkAlternateText&gt;
-    &lt;linkUri&gt;http://www.codeplex.com/SandcastleStyles&lt;/linkUri&gt;
+    &lt;linkText&gt;Sandcastle&lt;/linkText&gt;
+    &lt;linkAlternateText&gt;Visit Sandcastle on CodePlex&lt;/linkAlternateText&gt;
+    &lt;linkUri&gt;http://Sandcastle.CodePlex.com&lt;/linkUri&gt;
 &lt;/externalLink&gt;
 
 Added link target: &lt;externalLink&gt;
-    &lt;linkText&gt;Sandcastle Styles&lt;/linkText&gt;
-    &lt;linkAlternateText&gt;Visit Sandcastle Styles&lt;/linkAlternateText&gt;
-    &lt;linkUri&gt;http://www.codeplex.com/SandcastleStyles&lt;/linkUri&gt;
+    &lt;linkText&gt;Sandcastle&lt;/linkText&gt;
+    &lt;linkAlternateText&gt;Visit Sandcastle on CodePlex&lt;/linkAlternateText&gt;
+    &lt;linkUri&gt;http://Sandcastle.CodePlex.com&lt;/linkUri&gt;
     &lt;linkTarget&gt;_self&lt;/linkTarget&gt;
 &lt;/externalLink&gt;
 
@@ -84,13 +80,23 @@ If the link contains XML entities, they must be encoded (i.e. the ampersand):
     <section>
       <title>Example Output</title>
       <content>
-        <para>Only link text and URI: <externalLink><linkText>Sandcastle Styles</linkText><linkUri>http://www.codeplex.com/SandcastleStyles</linkUri></externalLink></para>
-        <para>Added alternate text: <externalLink><linkText>Sandcastle Styles</linkText><linkAlternateText>Visit Sandcastle Styles</linkAlternateText><linkUri>http://www.codeplex.com/SandcastleStyles</linkUri></externalLink></para>
-        <para>Added link target: <externalLink><linkText>Sandcastle Styles</linkText><linkAlternateText>Visit Sandcastle Styles</linkAlternateText><linkUri>http://www.codeplex.com/SandcastleStyles</linkUri><linkTarget>_self</linkTarget></externalLink></para>
+        <para>Only link text and URI: <externalLink><linkText>Sandcastle</linkText>
+<linkUri>http://Sandcastle.CodePlex.com</linkUri></externalLink></para>
+
+        <para>Added alternate text: <externalLink><linkText>Sandcastle</linkText>
+<linkAlternateText>Visit Sandcastle on CodePlex</linkAlternateText>
+<linkUri>http://Sandcastle.CodePlex.com</linkUri></externalLink></para>
+
+        <para>Added link target: <externalLink><linkText>Sandcastle</linkText>
+<linkAlternateText>Visit Sandcastle on CodePlex</linkAlternateText>
+<linkUri>http://Sandcastle.CodePlex.com</linkUri><linkTarget>_self</linkTarget></externalLink></para>
+
         <para>If the link contains XML entities, they must be encoded
-(i.e. the ampersand): <externalLink><linkText>MSDN Documentation Forum</linkText><linkUri>http://forums.microsoft.com/MSDN/ShowForum.aspx?ForumID=66&amp;SiteID=1</linkUri></externalLink></para>
+(i.e. the ampersand): <externalLink><linkText>MSDN Documentation Forum</linkText>
+<linkUri>http://forums.microsoft.com/MSDN/ShowForum.aspx?ForumID=66&amp;SiteID=1</linkUri></externalLink></para>
       </content>
     </section>
+
     <relatedTopics>
       <link xlink:href="3be5c58d-d6af-45a4-ac51-f219a75c4c4d" />
       <link xlink:href="53a2b7c6-a269-4916-9313-bdc301ee9398" />

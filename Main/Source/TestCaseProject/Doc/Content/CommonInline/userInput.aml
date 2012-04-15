@@ -14,7 +14,7 @@ inner text.</para>
     <section>
       <title>Example</title>
       <content>
-        <code lang="xml" title=" ">
+        <code language="xml" title=" ">
 Enter &lt;userInput&gt;Yes&lt;/userInput&gt; or &lt;userInput&gt;No&lt;/userInput&gt;.
 </code>
       </content>

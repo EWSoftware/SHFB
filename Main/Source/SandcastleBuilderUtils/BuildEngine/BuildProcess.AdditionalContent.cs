@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.AdditionalContent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/03/2011
-// Note    : Copyright 2006-2011, Eric Woodruff, All rights reserved
+// Updated : 04/06/2012
+// Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the code used to merge the additional content into the
@@ -345,11 +345,11 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 return String.Compare(fx.Name, fy.Name, StringComparison.OrdinalIgnoreCase);
             });
 
-            // Create the merged TOC
+            // Create the merged TOC.  Invisible items are excluded.
             mergedToc = new TocEntryCollection();
 
             foreach(ITableOfContents file in tocFiles)
-                file.GenerateTableOfContents(mergedToc, project);
+                file.GenerateTableOfContents(mergedToc, project, false);
 
             // If there were no site maps, add items copied from the project.
             // Empty container nodes are ignored.

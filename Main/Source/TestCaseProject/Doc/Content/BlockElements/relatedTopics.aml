@@ -144,7 +144,7 @@ follows:</para>
     <section>
       <title>Example</title>
       <content>
-        <code lang="xml" title=" "><![CDATA[
+        <code language="xml" title=" "><![CDATA[
 <relatedTopics>
   <link topicType_id="1FE70836-AA7D-4515-B54B-E10C4B516E50"
     xlink:href="b32a73b8-fc26-4c98-912c-d595fc1a17c2" />
@@ -156,8 +156,8 @@ follows:</para>
     xlink:href="53a2b7c6-a269-4916-9313-bdc301ee9398" />
 
   <externalLink>
-    <linkText>Sandcastle Styles</linkText>
-    <linkUri>http://www.codeplex.com/SandcastleStyles</linkUri>
+    <linkText>Sandcastle</linkText>
+    <linkUri>http://Sandcastle.CodePlex.com</linkUri>
     <linkTarget>_blank</linkTarget>
   </externalLink>
 
@@ -194,8 +194,8 @@ follows:</para>
         xlink:href="53a2b7c6-a269-4916-9313-bdc301ee9398" />
 
       <externalLink>
-        <linkText>Sandcastle Styles</linkText>
-        <linkUri>http://www.codeplex.com/SandcastleStyles</linkUri>
+        <linkText>Sandcastle</linkText>
+        <linkUri>http://Sancastle.CodePlex.com</linkUri>
         <linkTarget>_blank</linkTarget>
       </externalLink>
 

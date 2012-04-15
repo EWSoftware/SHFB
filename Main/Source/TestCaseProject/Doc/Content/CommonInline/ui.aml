@@ -14,7 +14,7 @@ as the inner text.</para>
     <section>
       <title>Example</title>
       <content>
-        <code lang="xml" title=" ">
+        <code language="xml" title=" ">
 Click the &lt;ui&gt;OK&lt;/ui&gt; button to close the dialog box.
 </code>
       </content>

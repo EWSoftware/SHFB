@@ -14,7 +14,7 @@ section's title.</para>
     <section>
       <title>Example</title>
       <content>
-        <code lang="xml" title=" ">
+        <code language="xml" title=" ">
 &lt;section&gt;
   &lt;title&gt;Usage&lt;/title&gt;
   &lt;content&gt;

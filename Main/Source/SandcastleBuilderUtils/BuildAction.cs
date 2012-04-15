@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildAction.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/04/2009
-// Note    : Copyright 2008-2009, Eric Woodruff, All rights reserved
+// Updated : 04/08/2012
+// Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the enumerated type that defines the build action
@@ -19,6 +19,7 @@
 // ============================================================================
 // 1.8.0.0  07/24/2008  EFW  Created the code
 // 1.8.0.3  12/04/2009  EFW  Added support for resource item files
+// 1.9.4.0  04/08/2012  EFW  Added support for XAML configuration files
 //=============================================================================
 
 using System;
@@ -50,6 +51,8 @@ namespace SandcastleBuilder.Utils
         Content,
         /// <summary>Resource items file</summary>
         ResourceItems,
+        /// <summary>XAML configuration file (for BuildAssembler)</summary>
+        XamlConfiguration,
 
         // Items below this point are specific to the project explorer and
         // are not actual build actions.

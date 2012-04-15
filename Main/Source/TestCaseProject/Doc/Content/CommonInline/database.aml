@@ -14,7 +14,7 @@ inner text.</para>
     <section>
       <title>Example</title>
       <content>
-        <code lang="xml" title=" ">
+        <code language="xml" title=" ">
 The information is stored in the &lt;database&gt;Content&lt;/database&gt; database.
 </code>
       </content>

@@ -46,7 +46,6 @@
 		<Icon Id="Help.ico" SourceFile="$(var.BinFolder)..\..\Images\Help.ico" />
 		<Icon Id="SandcastleBuilder.exe" SourceFile="$(var.BinFolder)..\..\Images\SandcastleBuilder.ico" />
 		<Icon Id="SHFBProjectLauncher.exe" SourceFile="$(var.LauncherFolder)..\..\Images\SHFBProjectLauncher.ico" />
-		<Icon Id="Cmd.ico" SourceFile="Resources\Cmd.ico" />
 		<Icon Id="HtmlDocument.ico" SourceFile="Resources\HtmlDocument.ico" />
 
 		<!-- Files and Directories -->

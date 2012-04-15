@@ -12,7 +12,7 @@ regularly such as a common phrase or external link.</para>
       <title>Token File Format</title>
       <content>
         <para>Below is an example of a token file.</para>
-        <code lang="xml" title="Example Token File" source="ExampleFiles\Tokens.xml" />
+        <code language="xml" title="Example Token File" source="ExampleFiles\Tokens.xml" />
         <para>The file consists of a root <codeInline>content</codeInline>
 node that contains one or more <codeInline>item</codeInline> nodes.
 Be sure to add the <codeInline>xml:space</codeInline> attribute to preserve
@@ -41,20 +41,23 @@ shown in the example above.  If not, the elements are inserted using the
 default empty namespace and they will not be processed by the Sandcastle
 transformations.</para>
         </alert>
+
         <para>The <codeInline>autoOutline</codeInline> token is a special
-case used by Sandcastle to insert an auto-generated section outline within a
-topic's introduction or sub-sections.  See the
+case used by earlier versions of Sandcastle to insert an auto-generated section
+outline within a topic's introduction or sub-sections.  See the
 <link xlink:href="b9a1daac-a2d8-41b7-83b0-b7dc7b28b898" /> topic for more
 information.</para>
+
         <alert class="tip">
           <para>The <token>SHFB</token> adds the <codeInline>autoOutline</codeInline>
 token as part of the build automatically.  As such, you do not need to define
 it in the project yourself.</para>
         </alert>
+
         <alert class="tip">
-          <para>If you have applied the <token>SandcastleStyles</token> patch, the
-<codeInline>autoOutline</codeInline> element can be added directly
-to the topic without the need for embedding it in a token.</para>
+          <para>Sandcastle contains an extension to the MAML schema and the
+<codeInline>autoOutline</codeInline> element can be added directly in the topic
+without the need for embedding it in a token.</para>
         </alert>
       </content>
     </section>

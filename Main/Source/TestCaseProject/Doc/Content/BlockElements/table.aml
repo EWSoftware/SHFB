@@ -38,15 +38,12 @@ The entry items can themselves contain other MAML elements, nested lists,
 tables, etc.  Text should be contained in a <codeInline>para</codeInline> element.</para>
 
 	<alert class="tip">
-		<para>If you have applied the latest <token>SandcastleStyles</token>
-patch, the <codeInline>entry</codeInline> element supports an
-<codeInline>address</codeInline> attribute that can be used to link to a
-specific entry from another location.</para>
+		<para>The <codeInline>entry</codeInline> element supports an <codeInline>address</codeInline> attribute
+that can be used to link to a specific entry from another location.</para>
 	</alert>
 
 <alert class="tip">
-  <para>To render an empty cell, use a non-breaking space entity
-(<codeInline>&amp;#160;</codeInline>).</para>
+  <para>To render an empty cell, use a non-breaking space entity (<codeInline>&amp;#160;</codeInline>).</para>
 </alert>
 
 	</definition>
@@ -66,7 +63,7 @@ which can be used to achieve a similar effect.</para>
     <section>
       <title>Example</title>
       <content>
-<code lang="xml" title=" ">
+<code language="xml" title=" ">
 &lt;para&gt;This link takes you to &lt;link xlink:href=&quot;#Row3Cell1&quot;&gt;Row 3, Cell 1&lt;/link&gt;
 in the first table.&lt;/para&gt;
       

@@ -16,7 +16,7 @@ inner text.</para>
     <section>
       <title>Example</title>
       <content>
-        <code lang="xml" title=" ">
+        <code language="xml" title=" ">
 You can use PInvoke to call
 &lt;unmanagedCodeEntityReference&gt;SetWindowPlacement&lt;/unmanagedCodeEntityReference&gt;.
 </code>

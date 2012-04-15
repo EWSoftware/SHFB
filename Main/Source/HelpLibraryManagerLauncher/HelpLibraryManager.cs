@@ -2,7 +2,7 @@
 // System  : Help Library Manager Launcher
 // File    : HelpLibraryManager.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/03/2012
+// Updated : 03/24/2012
 // Note    : Copyright 2010-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -10,13 +10,14 @@
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy
 // of the license should be distributed with the code.  It can also be found
-// at the project website: http://www.CodePlex.com/SandcastleStyles.   This
-// notice, the author's name, and all copyright notices must remain intact in
-// all applications, documentation, and source files.
+// at the project website: http://SHFB.CodePlex.com.   This notice, the
+// author's name, and all copyright notices must remain intact in all
+// applications, documentation, and source files.
 //
 // Version     Date     Who  Comments
 // ============================================================================
 // 1.0.0.0  07/03/2010  EFW  Created the code
+// 1.0.0.1  03/24/2012  EFW  Merged changes submitted by Don Fehr
 //=============================================================================
 
 using System;
@@ -53,9 +54,9 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
             /// <summary>
             /// Constructor
             /// </summary>
-            /// <param name="product"></param>
-            /// <param name="version"></param>
-            /// <param name="locale"></param>
+            /// <param name="product">The product</param>
+            /// <param name="version">The version</param>
+            /// <param name="locale">The locale</param>
             public Catalog(string product, string version, string locale)
             {
                 this.Product = product;
@@ -74,30 +75,60 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
         public string LocalStorePath { get; private set; }
 
         /// <summary>
-        /// This read-only property returns the path to the Help Library Manager
-        /// executable.
+        /// This read-only property returns the path to the MS Help Viewer installation folder
+        /// </summary>
+        public string HelpViewerInstallPath { get; private set; }
+
+        /// <summary>
+        /// This read-only property returns the path to the Help Library Manager executable
         /// </summary>
         public string HelpLibraryManagerPath { get; private set; }
 
         /// <summary>
-        /// This read-only property is used to see if the local store has been
-        /// initialized.
+        /// This read-only property returns the path to the MS Help Viewer application
+        /// </summary>
+        public string HelpViewerPath { get; private set; }
+
+        /// <summary>
+        /// This read-only property is used to see if the local store has been initialized
         /// </summary>
         public bool LocalStoreInitialized
         {
             get { return (!String.IsNullOrEmpty(this.LocalStorePath) && Directory.Exists(this.LocalStorePath)); }
+        }
+
+        // TODO: Longer term, these may return different values from MS Help Viewer 2.0 (VS 2011)
+
+        /// <summary>
+        /// This read-only property returns The default MS Help Viewer product version
+        /// </summary>
+        public string DefaultCatalogProductVersion
+        {
+            get { return "100"; }
+        }
+
+        /// <summary>
+        /// This read-only property returns the name of the default branding package used by MS Help Viewer
+        /// </summary>
+        public string DefaultBrandingPackage
+        {
+            get { return "Dev10"; }
         }
         #endregion
 
         #region Constructor
         //=====================================================================
 
+        // TODO: To support Help Viewer 2.0, this will most likely require a parameter that specifies which
+        // version of the help viewer to use (1.0 or 2.0).  This will determine the registry key to use as well
+        // as the property values returned above.
+
         /// <summary>
         /// Constructor
         /// </summary>
         public HelpLibraryManager()
         {
-            string appRoot;
+            string appRoot, appName;
 
             this.LocalStorePath = UnsafeNativeMethods.GetRegistryValue(@"SOFTWARE\Microsoft\Help\v1.0", "LocalStore");
 
@@ -105,10 +136,18 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
 
             if(appRoot != null)
             {
-                appRoot = Path.Combine(appRoot, "HelpLibManager.exe");
+                if(Directory.Exists(appRoot))
+                    this.HelpViewerInstallPath = appRoot;
 
-                if(File.Exists(appRoot))
-                    this.HelpLibraryManagerPath = appRoot;
+                appName = Path.Combine(appRoot, "HelpLibManager.exe");
+
+                if(File.Exists(appName))
+                    this.HelpLibraryManagerPath = appName;
+
+                appName = Path.Combine(appRoot, "HlpViewer.exe");
+
+                if(File.Exists(appName))
+                    this.HelpViewerPath = appName;
             }
         }
         #endregion

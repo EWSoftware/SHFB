@@ -8,7 +8,7 @@
       <title>XML Reference File Format</title>
       <content>
         <para>Below is an example of an XML Reference topic file.</para>
-        <code lang="xml" title="XML Reference Topic" source="ConceptualTemplates\XML Reference.aml" />
+        <code language="xml" title="XML Reference Topic" source="ConceptualTemplates\XML Reference.aml" />
       </content>
     </section>
     <relatedTopics>

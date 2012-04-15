@@ -14,7 +14,7 @@ expression as the inner text.</para>
     <section>
       <title>Example</title>
       <content>
-        <code lang="xml" title=" ">
+        <code language="xml" title=" ">
 A simple math expression: &lt;math&gt;1 + 1 = 2&lt;/math&gt;.
 </code>
       </content>

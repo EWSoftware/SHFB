@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Package
 // File    : SandcastleBuilderFileNodeProperties.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/13/2011
-// Note    : Copyright 2011, Eric Woodruff, All rights reserved
+// Updated : 04/08/2012
+// Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the class that exposes the properties for the
@@ -18,6 +18,7 @@
 // Version     Date     Who  Comments
 // ============================================================================
 // 1.9.3.0  03/27/2011  EFW  Created the code
+// 1.9.4.0  04/08/2012  EFW  Added support for XAML configuration files
 //=============================================================================
 
 using System;
@@ -267,6 +268,7 @@ namespace SandcastleBuilder.Package.Nodes
                 case SandcastleBuildAction.ResourceItems:
                 case SandcastleBuildAction.Tokens:
                 case SandcastleBuildAction.TopicTransform:
+                case SandcastleBuildAction.XamlConfiguration:
                     removeProps.AddRange(new string[] { "ImageId", "AlternateText", "CopyToMedia",
                         "SortOrder", "ExcludeFromToc" });
                     break;

@@ -9,77 +9,80 @@
   <title>Breaking Changes</title>
   <content>
 <list class="bullet">
-	<listItem>In the <codeInline>HelpFileFormat</codeInline> property, the
-<codeInline>HtmlHelp1x</codeInline> and <codeInline>HtmlHelp2x</codeInline>
-member values were renamed to <codeInline>HtmlHelp1</codeInline> and
-<codeInline>MSHelp2</codeInline> to match the common naming conventions.  The
-combination values were removed since they were not used and were rather
-unwieldy.  Existing projects using the old values will be updated to use the
-new values when opened and re-saved.</listItem>
+	<listItem>
+		<para>In the <codeInline>HelpFileFormat</codeInline> property, the <codeInline>HtmlHelp1x</codeInline> and
+<codeInline>HtmlHelp2x</codeInline> member values were renamed to <codeInline>HtmlHelp1</codeInline> and
+<codeInline>MSHelp2</codeInline> to match the common naming conventions.  The combination values were removed
+since they were not used and were rather unwieldy.  Existing projects using the old values will be updated to
+use the new values when opened and re-saved.</para>
+	</listItem>
 
 	<listItem><para>Build component and plug-in changes:</para>
 
   <list class="bullet">
-	<listItem>Component configuration filenames are now required to have a
-<localUri>.components</localUri> extension.</listItem>
+		<listItem>
+			<para>Component configuration filenames are now required to have a <localUri>.components</localUri>
+extension.</para>
+		</listItem>
 
-	<listItem>Plug-in assembly filenames are now required to have a
-<localUri>.plugins</localUri> extension.</listItem>
+		<listItem>
+			<para>Plug-in assembly filenames are now required to have a <localUri>.plugins</localUri> extension.</para>
+		</listItem>
 
-	<listItem><para>The separate <localUri>Build Components</localUri> and
-<localUri>Plug-Ins</localUri> folders have been combined into one common
-<localUri>Components and Plug-Ins</localUri> folder under the
-<localUri>Application Data folder</localUri>.</para>
+		<listItem>
+			<para>The separate <localUri>Build Components</localUri> and <localUri>Plug-Ins</localUri> folders have been
+combined into one common <localUri>Components and Plug-Ins</localUri> folder under the <localUri>Application Data
+folder</localUri>.</para>
+		</listItem>
+	</list>
+
+	<para>These changes allow plug-ins and build components that share dependencies to reside in the same folder.
+It also prevents the help file builder from scanning assemblies and configuration files that are not related to
+plug-ins and build components.  The help file builder will scan its own installation folder for component
+configuration files and plug-in assemblies.  You may also place them there to support non-standard installations
+of the help file builder (i.e. XCOPY deployments to build servers).  See the
+<link xlink:href="a24489fb-45d6-46f4-9eaa-9a9c4e0919b2" /> topic for more information.</para>
 	</listItem>
-  </list>
 
-	<para>These changes allow plug-ins and build components that share
-dependencies to reside in the same folder.  It also prevents the help
-file builder from scanning assemblies and configuration files that are
-not related to plug-ins and build components.  The help file builder will scan
-its own installation folder for component configuration files and plug-in
-assemblies.  You may also place them there to support non-standard
-installations of the help file builder (i.e. XCOPY deployments to build
-servers).  See the <link xlink:href="a24489fb-45d6-46f4-9eaa-9a9c4e0919b2" />
-topic for more information.</para></listItem>
-
-    <listItem><para>The type of the <codeInline>SyntaxFilters</codeInline>
-project property has been changed from an enumerated type to a string.  This
-was done to allow custom syntax filter generators (see below).  The value is a
-comma separated list of syntax generator IDs.  The designer still uses a
-dropdown control that lets you pick multiple values from the available
-generator IDs. In addition, the following special values can be entered in the
+	<listItem>
+		<para>The type of the <codeInline>SyntaxFilters</codeInline> project property has been changed from an
+enumerated type to a string.  This was done to allow custom syntax filter generators (see below).  The value is a
+comma separated list of syntax generator IDs.  The designer still uses a dropdown control that lets you pick
+multiple values from the available generator IDs. In addition, the following special values can be entered in the
 designer:</para>
 
-    <list class="bullet">
-        <listItem><codeInline>None</codeInline> - No syntax filters will be
-included.</listItem>
-        <listItem><codeInline>Standard</codeInline> - The standard syntax
-filters will be included (C#, VB.NET, and C++).</listItem>
-        <listItem><codeInline>All</codeInline> - All syntax filters will be
-included.</listItem>
-        <listItem><codeInline>AllButUsage</codeInline> - All syntax filters
-will be included except those with "Usage" in their ID (i.e.
-<codeInline>VisualBasicUsage</codeInline> and <codeInline>XamlUsage</codeInline>).</listItem>
-    </list>
+		<list class="bullet">
+			<listItem>
+				<para><codeInline>None</codeInline> - No syntax filters will be included.</para>
+			</listItem>
+			<listItem>
+				<para><codeInline>Standard</codeInline> - The standard syntax filters will be included (C#, VB.NET, and
+C++).</para>
+			</listItem>
+			<listItem>
+				<para><codeInline>All</codeInline> - All syntax filters will be included.</para>
+			</listItem>
+			<listItem>
+				<para><codeInline>AllButUsage</codeInline> - All syntax filters will be included except those with
+"Usage" in their ID (i.e. <codeInline>VisualBasicUsage</codeInline> and <codeInline>XamlUsage</codeInline>).</para>
+			</listItem>
+		</list>
 
-<para>Entering or selecting a set of filters that match one of the above
-special values will result in that value appearing as the property's value. In
-addition, entering various alternate language names in the designer property
-editor will automatically translate them to the appropriate syntax filters.
-For example, entering "cs, vb" will get translated to "CSharp,
-VisualBasic".  Unknown ID values will be ignored.</para></listItem>
+		<para>Entering or selecting a set of filters that match one of the above special values will result in that
+value appearing as the property's value. In addition, entering various alternate language names in the designer
+property editor will automatically translate them to the appropriate syntax filters.  For example, entering "cs,
+vb" will get translated to "CSharp, VisualBasic".  Unknown ID values will be ignored.</para>
+	</listItem>
 
-    <listItem>Syntax filter generators are now defined using an
-<link xlink:href="5e80d139-811c-48ed-9b52-dcd8a3f5aef3">external XML file</link>
-which allows you to add custom syntax filter generators to the help file
-builder without having to modify its code and template files.  Filter
-definition files should have a <localUri>.filters</localUri> extension and
-should be located in the custom build components and plug-ins folder.  They can
-also be located in the help file builder's installation folder if you need
-XCOPY deployment for a build server.  See the default filters file in the help
-file builder installation folder for an example
-(<localUri>SandcastleBuilder.filters</localUri>).</listItem>
+	<listItem>
+		<para>Syntax filter generators are now defined using an
+<link xlink:href="5e80d139-811c-48ed-9b52-dcd8a3f5aef3">external XML file</link> which allows you to add custom
+syntax filter generators to the help file builder without having to modify its code and template files.  Filter
+definition files should have a <localUri>.filters</localUri> extension and should be located in the custom build
+components and plug-ins folder.  They can also be located in the help file builder's installation folder if you
+need XCOPY deployment for a build server.  See the default filters file in the help file builder installation
+folder for an example (<localUri>SandcastleBuilder.filters</localUri>).</para>
+	</listItem>
 
 </list>
 
@@ -89,51 +92,48 @@ file builder installation folder for an example
 <section address="SCJuly2009">
   <title>Sandcastle July 2009 Source Code Download Support</title>
   <content>
-	<para>An unofficial release of Sandcastle was made available in July 2009
-as a source code only download.  Support for it in this release of the help file
-builder only includes using the XSL transformations and the related resource
-files from it.  The executables from the last official Sandcastle release
-(<token>SandcastleVersion</token>) should be used with them rather than the ones
-built from the source code.  Fully supporting the July 2009 executables requires
-some modifications to the help file builder source code itself which would break
-compatibility with the existing official release.  The help file builder source
-code is available if you want to rebuild it for use with the July 2009
-executables.  However, this is not necessary.</para>
+		<para>An unofficial release of Sandcastle was made available in July 2009 as a source code only download.
+Support for it in this release of the help file builder only includes using the XSL transformations and the
+related resource files from it.  The executables from the last official Sandcastle release (May 2008) should be
+used with them rather than the ones built from the source code.  Fully supporting the July 2009 executables
+requires some modifications to the help file builder source code itself which would break compatibility with the
+existing official release.  The help file builder source code is available if you want to rebuild it for use with
+the July 2009 executables.  However, this is not necessary.</para>
 
-  <para>The current release of the <token>SandcastleStyles</token> patch includes
-all changes from the July 2009 release in addition to all of the other bug
-fixes and updates ready for use with the May 2008 executables.  You only need
-the updates from the July 2009 release if you want to include the F# syntax
-filter or if you want to create MS Help Viewer files.  If not, you can continue
-using the May 2008 release with or without the <token>SandcastleStyles</token>
-patch.</para>
+		<para>The current release of the <token>SandcastleStyles</token> patch includes all changes from the July
+2009 release in addition to all of the other bug fixes and updates ready for use with the May 2008 executables.
+You only need the updates from the July 2009 release if you want to include the F# syntax filter or if you want
+to create MS Help Viewer files.  If not, you can continue using the May 2008 release with or without the
+<token>SandcastleStyles</token> patch.</para>
   </content>
 </section>
-
 
 <section address="OtherChanges">
   <title>Other Changes in This Release</title>
   <content>
 
-<list class="bullet">
-    <listItem>Added support for .NET 4.0.</listItem>
+	<list class="bullet">
+		<listItem>
+			<para>Added support for .NET 4.0.</para>
+		</listItem>
 
-    <listItem>F# projects created by Visual Studio 2010 can now be used as
-documentation sources.  However, they will most likely fail to load because they
-use MSBuild 4.0 specific attributes in their projects files.  The help file builder
-is currently built to use MSBuild 3.5 and cannot interpret the newer attributes.
-If this happens, you must add the assembly, XML comments file, and references to
-the help file builder project individually.</listItem>
+    <listItem>
+			<para>F# projects created by Visual Studio 2010 can now be used as documentation sources.  However, they
+will most likely fail to load because they use MSBuild 4.0 specific attributes in their projects files.  The help
+file builder is currently built to use MSBuild 3.5 and cannot interpret the newer attributes.  If this happens,
+you must add the assembly, XML comments file, and references to the help file builder project individually.</para>
+		</listItem>
 
-	<listItem>Added F# syntax rules to the code colorizer.  Use
-<codeInline>fs</codeInline>, <codeInline>F#</codeInline>, <codeInline>FSharp</codeInline>,
-or <codeInline>FSScript</codeInline> as the language identifier on
-<codeInline>code</codeInline> XML comment elements.</listItem>
+		<listItem>
+			<para>Added F# syntax rules to the code colorizer.  Use <codeInline>fs</codeInline>, <codeInline>F#</codeInline>,
+<codeInline>FSharp</codeInline>, or <codeInline>FSScript</codeInline> as the language identifier on
+<codeInline>code</codeInline> XML comment elements.</para>
+		</listItem>
 
-    <listItem><para>Added <codeInline>x86</codeInline>, <codeInline>x64</codeInline>,
-and <codeInline>Win32</codeInline> as standard platform types in new help file
-builder projects.  These can be added manually to existing projects if needed.
-Open the project file in a text editor and do the following:</para>
+		<listItem>
+			<para>Added <codeInline>x86</codeInline>, <codeInline>x64</codeInline>, and <codeInline>Win32</codeInline>
+as standard platform types in new help file builder projects.  These can be added manually to existing projects
+if needed.  Open the project file in a text editor and do the following:</para>
 
 <code language="xml" title=" ">
   &lt;!-- Find these two property group definitions --&gt;
@@ -157,95 +157,107 @@ Open the project file in a text editor and do the following:</para>
   &lt;/PropertyGroup&gt;
 </code></listItem>
 
-    <listItem>Fixed a bug in <localUri>TOC.js</localUri> that caused the
-content pane to disappear at certain zoom levels in Internet Explorer 8.</listItem>
+    <listItem>
+			<para>Fixed a bug in <localUri>TOC.js</localUri> that caused the content pane to disappear at certain zoom
+levels in Internet Explorer 8.</para>
+		</listItem>
 
-	<listItem>Fixed a bug in the code colorizer that caused it to truncate
-the title if a single quote appeared within it.</listItem>
+		<listItem>
+			<para>Fixed a bug in the code colorizer that caused it to truncate the title if a single quote appeared
+within it.</para>
+		</listItem>
 
-    <listItem>Fixed a bug in the API filter that caused excluded nested classes
-to appear in the help file if their parent class was included.</listItem>
+    <listItem>
+			<para>Fixed a bug in the API filter that caused excluded nested classes to appear in the help file if their
+parent class was included.</para>
+		</listItem>
 
-    <listItem>Members of the API filter in which a majority but not all of the
-child elements are excluded now use a different background color to make them
-stand out and better indicate their mixed state.</listItem>
+    <listItem>
+			<para>Members of the API filter in which a majority but not all of the child elements are excluded now use
+a different background color to make them stand out and better indicate their mixed state.</para>
+		</listItem>
 
-	<listItem>Added the <codeInline>ExtensionMethodAddIn</codeInline> add-in to
-the <application>MRefBuilder</application> configuration file template to
-generate the additional extension method reflection information used by
-the Sandcastle XSL transformations.</listItem>
+		<listItem>
+			<para>Added the <codeInline>ExtensionMethodAddIn</codeInline> add-in to the <application>MRefBuilder</application>
+configuration file template to generate the additional extension method reflection information used by the
+Sandcastle XSL transformations.</para>
+		</listItem>
 
-	<listItem>Added an <codeInline>AutoDocumentDisposeMethods</codeInline>
-option to the <codeInline>ShowMissingComponent</codeInline> and a corresponding
-project property in the <ui>Show Missing Tags</ui> category.  This is used to
-indicate whether or not dispose methods are automatically documented if they
-are missing the <codeInline>&lt;summary&gt;</codeInline> tag and for classes
-with compiler generated dispose methods.  It will be False in existing projects
-but defaults to True in new projects.</listItem>
+		<listItem>
+			<para>Added an <codeInline>AutoDocumentDisposeMethods</codeInline> option to the
+<codeInline>ShowMissingComponent</codeInline> and a corresponding project property in the <ui>Show Missing Tags</ui>
+category.  This is used to indicate whether or not dispose methods are automatically documented if they are
+missing the <codeInline>&lt;summary&gt;</codeInline> tag and for classes with compiler generated dispose methods.
+It will be False in existing projects but defaults to True in new projects.</para>
+		</listItem>
 
-    <listItem>Added a new <codeInline>ResourceItems</codeInline> build action.
-A file with a <localUri>.items</localUri> extension will automatically receive
-this build action when added to a project.  It is an XML file that contains
-resource item overrides that are used by the Sandcastle XSL transformations.
-The editor for resource item files will load all known resource items and let
-you edit their values.  Changed items are saved to the project's resource item
-file.</listItem>
+    <listItem>
+			<para>Added a new <codeInline>ResourceItems</codeInline> build action.  A file with a <localUri>.items</localUri>
+extension will automatically receive this build action when added to a project.  It is an XML file that contains
+resource item overrides that are used by the Sandcastle XSL transformations.  The editor for resource item files
+will load all known resource items and let you edit their values.  Changed items are saved to the project's
+resource item file.</para>
+		</listItem>
 
-    <listItem>The <codeInline>ShowFeedbackControl</codeInline> project property
-has been removed.  The new resource item file editor can be used to edit the
-related feedback control resource items to add it to a project if it is
-wanted.</listItem>
+    <listItem>
+			<para>The <codeInline>ShowFeedbackControl</codeInline> project property has been removed.  The new resource
+item file editor can be used to edit the related feedback control resource items to add it to a project if it is
+wanted.</para>
+		</listItem>
 
-    <listItem>If a project file documentation source imports another project
-into itself that contains reference items, the reference items in the imported
-project are now ignored so that they do not prevent the documentation source
-project file from being parsed. If they are needed by MRefBuilder, the
-imported reference items can be added as reference items in the help file
-builder project.</listItem>
+    <listItem>
+			<para>If a project file documentation source imports another project into itself that contains reference
+items, the reference items in the imported project are now ignored so that they do not prevent the documentation
+source project file from being parsed. If they are needed by MRefBuilder, the imported reference items can be
+added as reference items in the help file builder project.</para>
+		</listItem>
 
-	<listItem>When viewing the log file in the <ui>Build Output</ui> window,
-the content can be filtered to show only warnings and errors in each build step.
-The filter setting is persisted across sessions.  It is also used when viewing
-output from a failed preview topic build.</listItem>
+		<listItem>
+			<para>When viewing the log file in the <ui>Build Output</ui> window, the content can be filtered to show
+only warnings and errors in each build step.  The filter setting is persisted across sessions.  It is also used
+when viewing output from a failed preview topic build.</para>
+		</listItem>
 
-	<listItem>Added ASP.NET as an option to the <codeInline>SyntaxFilters</codeInline>
-property (<codeInline>AspNet</codeInline>).</listItem>
+		<listItem>
+			<para>Added ASP.NET as an option to the <codeInline>SyntaxFilters</codeInline> property
+(<codeInline>AspNet</codeInline>).</para>
+		</listItem>
 
-	<listItem>Added F# as an option to the <codeInline>SyntaxFilters</codeInline>
-property (<codeInline>FSharp</codeInline>).
+	<listItem>
+		<para>Added F# as an option to the <codeInline>SyntaxFilters</codeInline> property
+(<codeInline>FSharp</codeInline>).</para>
 
-<alert class="note">
-  <para>This requires the XSL transformations and resource files from the July
-2009 Sandcastle source code release.  These changes are available for use with
-the May 2008 release by downloading and applying the <token>SandcastleStyles</token>
-patch.  A copy of the F# syntax declaration generator component is included with
+		<alert class="note">
+			<para>This requires the XSL transformations and resource files from the July 2009 Sandcastle source code
+release.  These changes are available for use with the May 2008 release by downloading and applying the
+<token>SandcastleStyles</token> patch.  A copy of the F# syntax declaration generator component is included with
 the help file builder that is compatible with the May 2008 Sandcastle release.</para>
-</alert></listItem>
+		</alert>
+	</listItem>
 
-	<listItem><para>Added the <codeInline>MSHelpViewer</codeInline> value to the
-<codeInline>HelpFileFormat</codeInline> property options.  Preliminary support
-for building Microsoft Help Viewer files has been added.</para>
+	<listItem>
+		<para>Added the <codeInline>MSHelpViewer</codeInline> value to the <codeInline>HelpFileFormat</codeInline>
+property options.  Preliminary support for building Microsoft Help Viewer files has been added.</para>
 
-<alert class="note">
-  <para>This requires the XSL transformations and resource files from the July
-2009 Sandcastle source code release.    These changes are available for use with
-the May 2008 release by downloading and applying the <token>SandcastleStyles</token>
-patch.  However, full MS Help Viewer support is not yet implemented since
-Sandcastle does not appear to add the necessary table of contents metadata to
-the topics yet. This will be fully implemented as the tools become available
-and changes are made in Sandcastle to support it.</para>
-</alert></listItem>
+		<alert class="note">
+			<para>This requires the XSL transformations and resource files from the July 2009 Sandcastle source code
+release.  These changes are available for use with the May 2008 release by downloading and applying the
+<token>SandcastleStyles</token> patch.  However, full MS Help Viewer support is not yet implemented since
+Sandcastle does not appear to add the necessary table of contents metadata to the topics yet. This will be fully
+implemented as the tools become available and changes are made in Sandcastle to support it.</para>
+		</alert>
+	</listItem>
 
 </list>
 
   </content>
 </section>
 
-    <relatedTopics>
-    	<link xlink:href="9f1a5c32-7c10-47e1-bbea-319ee0866e3d" />
-    	<link xlink:href="95c85ec6-9f23-426a-b0ad-6b10a0453eaf" />
-    	<link xlink:href="5a484e94-6940-4c97-940c-3f46fb8736d2" />
-		<link xlink:href="078cc1c7-7995-431e-bf9c-8813becbe8df" />
-    </relatedTopics>
+		<relatedTopics>
+			<link xlink:href="9f1a5c32-7c10-47e1-bbea-319ee0866e3d" />
+			<link xlink:href="95c85ec6-9f23-426a-b0ad-6b10a0453eaf" />
+			<link xlink:href="5a484e94-6940-4c97-940c-3f46fb8736d2" />
+			<link xlink:href="078cc1c7-7995-431e-bf9c-8813becbe8df" />
+		</relatedTopics>
   </developerConceptualDocument>
 </topic>

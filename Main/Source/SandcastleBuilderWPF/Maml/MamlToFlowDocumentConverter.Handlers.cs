@@ -387,7 +387,9 @@ namespace SandcastleBuilder.WPF.Maml
         private static void RelatedTopicsElement(ElementProperties props)
         {
             List<XElement> tasks = new List<XElement>(), reference = new List<XElement>(),
-                concepts = new List<XElement>(), otherResources = new List<XElement>();
+                concepts = new List<XElement>(), otherResources = new List<XElement>(),
+                tokenContent = new List<XElement>();
+            XElement token;
             XAttribute attribute;
             Guid topicId, href;
             string linkType;
@@ -410,8 +412,13 @@ namespace SandcastleBuilder.WPF.Maml
             s.Blocks.Add(p);
             p.SetResourceReference(Paragraph.StyleProperty, NamedStyle.Title);
 
+            // Expand tokens first
+            foreach(var link in props.Element.Nodes().OfType<XElement>().Where(n => n.Name.LocalName == "token"))
+                if(props.Converter.Tokens.TryGetValue(props.Element.Value.Trim(), out token))
+                    tokenContent.AddRange(token.Nodes().OfType<XElement>());
+
             // Group the elements by type or topic ID
-            foreach(var link in props.Element.Nodes().OfType<XElement>())
+            foreach(var link in props.Element.Nodes().OfType<XElement>().Concat(tokenContent))
             {
                 linkType = link.Name.LocalName;
                 attribute = link.Attribute("topicType_id");

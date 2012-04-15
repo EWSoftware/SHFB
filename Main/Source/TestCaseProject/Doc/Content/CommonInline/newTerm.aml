@@ -14,7 +14,7 @@ inner text.</para>
     <section>
       <title>Example</title>
       <content>
-        <code lang="xml" title=" ">
+        <code language="xml" title=" ">
 Topics to cover include &lt;newTerm&gt;LINQ&lt;/newTerm&gt;, &lt;newTerm&gt;WPF&lt;/newTerm&gt;, and
 &lt;newTerm&gt;WCF&lt;/newTerm&gt;.
 </code>

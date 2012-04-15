@@ -1,46 +1,45 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <configuration>
-  <!-- This indicates the release date and version of Sandcastle with which
-       this installer is associated.-->
-  <sandcastle date="June 2010" version="v2.6.10621.1" />
+	<!-- This indicates the release date and version of Sandcastle with which this installer is associated.-->
+	<sandcastle date="April 2012" version="v2.7.0.0" />
 
-  <!-- Define the installer pages.  Third-party build tool and component
-       providers can add new pages that they have created to install their
-       own products as well. -->
-  <pages>
-    <!-- These are the pages used by the installer.  Their order here will
-         determine their order in the installation form.  If set, the
-         assembly attribute is the assembly containing the given type.  If
-         not set, the given installer page type is assumed to be in the same
-         assembly as the currently executing installer. -->
-    <page type="Sandcastle.Installer.InstallerPages.WelcomePage" />
-    <page type="Sandcastle.Installer.InstallerPages.RequiredFrameworkPage" />
-    <page type="Sandcastle.Installer.InstallerPages.HelpFileFormatsPage">
-      <page type="Sandcastle.Installer.InstallerPages.Help1CompilerPage" />
-      <page type="Sandcastle.Installer.InstallerPages.Help2CompilerPage" />
-    </page>
-    <page type="Sandcastle.Installer.InstallerPages.SandcastlePage"
-      frameworkVersion="3.5" sandcastleVersion="2.6.10621.1" installerName="Sandcastle_Jun_2010.msi"/>
-    <page type="Sandcastle.Installer.InstallerPages.SandcastleStylesPage">
-      <page type="Sandcastle.Installer.InstallerPages.SandcastlePatchPage"
-        patchRevision="Revision 1" patchFilename="SCPatch_Jun2010_2_6_10621_1_Rev1.zip"/>
-      <page type="Sandcastle.Installer.InstallerPages.SandcastleLanguagePackPage"
-        packFilename="SandcastleLanguagePack_Jun2010.zip">
-        <language name="German (de-DE) contributed by Sebastian Spreng" />
-      </page>
-      <page type="Sandcastle.Installer.InstallerPages.MamlGuidePage"
-        guideFilename="SandcastleMAMLGuide_1101.zip" />
-      <page type="Sandcastle.Installer.InstallerPages.WebCodeProvidersPage"
-        providersFilename="WebCodeProviders_1100.zip" />
-      <page type="Sandcastle.Installer.InstallerPages.HtmlToMamlConverterPage"
-        converterFilename="HtmlToMamlConverter_1001.zip" />
-    </page>
-    <page type="Sandcastle.Installer.InstallerPages.MamlIntelliSensePage"
-      schemaFilename="SCPatch_Jun2010_2_6_10621_1_Rev1.zip" />
-    <page assembly="SandcastleInstaller.SHFB.dll" type="Sandcastle.Installer.SHFB.SandcastleHelpFileBuilderPage"
-      frameworkVersion="4.0" shfbVersion="1.9.3.4" installerName="SandcastleHelpFileBuilder_1934.msi"/>
-    <page assembly="SandcastleInstaller.SHFB.dll" type="Sandcastle.Installer.SHFB.SHFBVisualStudioPackagePage"
-      frameworkVersion="4.0" packageGuid="c997d569-ee8e-4947-a46f-9a0717ce39a0" installerName="SHFBVS2010Package_1934.vsix"/>
-    <page type="Sandcastle.Installer.InstallerPages.CompletionPage" />
-  </pages>
+	<!-- Define the installer pages.  Third-party build tool and component providers can add new pages that
+			 they have created to install their own products as well. -->
+	<pages>
+		<!-- These are the pages used by the installer.  Their order here will determine their order in the
+				 installation form.  If set, the assembly attribute is the assembly containing the given type.  If
+				 not set, the given installer page type is assumed to be in the same assembly as the currently
+				 executing installer. -->
+		<page type="Sandcastle.Installer.InstallerPages.WelcomePage" />
+		<page type="Sandcastle.Installer.InstallerPages.RequiredFrameworkPage" />
+		<page type="Sandcastle.Installer.InstallerPages.HelpFileFormatsPage">
+			<page type="Sandcastle.Installer.InstallerPages.Help1CompilerPage" />
+			<page type="Sandcastle.Installer.InstallerPages.Help2CompilerPage" />
+		</page>
+		<page type="Sandcastle.Installer.InstallerPages.SandcastlePage"
+			frameworkVersion="4.0" sandcastleVersion="2.7.0.0" installerName="Sandcastle_2700.msi">
+			<page type="Sandcastle.Installer.InstallerPages.BrandingPackagePage" />
+		</page>
+		<page type="Sandcastle.Installer.InstallerPages.MamlIntelliSensePage">
+			<!-- These paths can be adjusted if you installed Visual Studio in a non-standard location -->
+			<visualStudio version="Visual Studio 2008" location="%VS90COMNTOOLS%\..\..\Xml\Schemas" />
+			<visualStudio version="Visual Studio 2010" location="%VS100COMNTOOLS%\..\..\Xml\Schemas" />
+			<visualStudio version="Visual Studio 2011 Beta" location="%VS110COMNTOOLS%\..\..\Xml\Schemas" />
+		</page>
+
+		<!-- Sandcastle Help File Builder installer pages -->
+		<page assembly="SHFB.Installer.dll" type="Sandcastle.Installer.SHFB.SandcastleHelpFileBuilderPage"
+			frameworkVersion="4.0" shfbVersion="1.9.4.0" installerName="SandcastleHelpFileBuilder_1940.msi"/>
+		<page assembly="SHFB.Installer.dll" type="Sandcastle.Installer.SHFB.SHFBVisualStudioPackagePage"
+			frameworkVersion="4.0" packageGuid="c997d569-ee8e-4947-a46f-9a0717ce39a0"
+			installerName="SHFBVisualStudioPackage_1940.vsix">
+			<!-- These paths can be adjusted if you installed Visual Studio in a non-standard location -->
+			<visualStudio version="10.0" name="Visual Studio 2010 Professional/Premium/Ultimate"
+				location="%VS100COMNTOOLS%\..\IDE" />
+			<visualStudio version="11.0" name="Visual Studio 2011 Professional/Premium/Ultimate"
+				location="%VS110COMNTOOLS%\..\IDE" />
+		</page>
+
+		<page type="Sandcastle.Installer.InstallerPages.CompletionPage" />
+	</pages>
 </configuration>

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : TopicEditorWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/20/2012
+// Updated : 04/08/2012
 // Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -99,9 +99,10 @@ namespace SandcastleBuilder.Gui.ContentEditors
             {
                 editor.LoadFile(filename);
 
-                ext = Path.GetExtension(filename).ToLower(CultureInfo.InvariantCulture);
+                ext = Path.GetExtension(filename).ToLowerInvariant();
 
-                if(ext == ".aml" || ext == ".topic" || ext == ".snippets" || ext == ".tokens" || ext == ".content")
+                if(ext == ".aml" || ext == ".topic" || ext == ".snippets" || ext == ".tokens" ||
+                  ext == ".content" || ext == ".xamlcfg")
                     editor.SetHighlighting("XML");
 
                 editor.TextChanged += editor_TextChanged;

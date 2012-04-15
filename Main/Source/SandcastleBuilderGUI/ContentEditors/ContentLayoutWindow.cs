@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : ContentLayoutWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/03/2012
+// Updated : 03/25/2012
 // Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -433,7 +433,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         {
             string newFilePath = Path.GetDirectoryName(contentLayoutFile.FullPath);
 
-            if(ucContentLayoutEditor.CurrentTopic != null)
+            if(ucContentLayoutEditor.CurrentTopic != null && ucContentLayoutEditor.CurrentTopic.TopicFile != null)
                 newFilePath = Path.GetDirectoryName(ucContentLayoutEditor.CurrentTopic.TopicFile.FullPath);
 
             using(SelectFileTemplateDlg dlg = new SelectFileTemplateDlg(true, newFilePath))
@@ -465,7 +465,8 @@ namespace SandcastleBuilder.Gui.ContentEditors
                 dlg.Title = "Select the conceptual topic file(s)";
                 dlg.Filter = "Conceptual Topics (*.aml)|*.aml|All files (*.*)|*.*";
                 dlg.DefaultExt = "aml";
-                dlg.InitialDirectory = (t != null) ? Path.GetDirectoryName(t.TopicFile.FullPath) : projectPath;
+                dlg.InitialDirectory = (t != null && t.TopicFile != null) ?
+                    Path.GetDirectoryName(t.TopicFile.FullPath) : projectPath;
                 dlg.Multiselect = true;
 
                 // If selected, add the new file(s).  Filenames that are
@@ -500,7 +501,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             using(FolderBrowserDialog dlg = new FolderBrowserDialog())
             {
                 dlg.Description = "Select a folder to add all of its content";
-                dlg.SelectedPath = (selectedTopic != null) ?
+                dlg.SelectedPath = (selectedTopic != null && selectedTopic.TopicFile != null) ?
                     Path.GetDirectoryName(selectedTopic.TopicFile.FullPath) : projectPath;
 
                 if(dlg.ShowDialog() == DialogResult.OK)

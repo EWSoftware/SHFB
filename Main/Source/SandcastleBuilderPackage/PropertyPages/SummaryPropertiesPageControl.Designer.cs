@@ -33,7 +33,7 @@
             this.dividerLabel1 = new SandcastleBuilder.Utils.Controls.DividerLabel();
             this.dividerLabel2 = new SandcastleBuilder.Utils.Controls.DividerLabel();
             this.lblNamespaceSummaryState = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnEditNamespaces = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // txtProjectSummary
@@ -91,20 +91,20 @@
             this.lblNamespaceSummaryState.Tag = "NamespaceSummaries";
             this.lblNamespaceSummaryState.Text = "No summaries are defined in the project";
             // 
-            // button1
+            // btnEditNamespaces
             // 
-            this.button1.Location = new System.Drawing.Point(343, 307);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(217, 32);
-            this.button1.TabIndex = 5;
-            this.button1.Text = "Edit &Namespace Summaries";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btnEditNamespaces.Location = new System.Drawing.Point(343, 307);
+            this.btnEditNamespaces.Name = "btnEditNamespaces";
+            this.btnEditNamespaces.Size = new System.Drawing.Size(217, 32);
+            this.btnEditNamespaces.TabIndex = 5;
+            this.btnEditNamespaces.Text = "Edit &Namespace Summaries";
+            this.btnEditNamespaces.UseVisualStyleBackColor = true;
+            this.btnEditNamespaces.Click += new System.EventHandler(this.btnEditNamespaces_Click);
             // 
             // SummaryPropertiesPageControl
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btnEditNamespaces);
             this.Controls.Add(this.lblNamespaceSummaryState);
             this.Controls.Add(this.dividerLabel2);
             this.Controls.Add(this.dividerLabel1);
@@ -125,7 +125,7 @@
         private Utils.Controls.DividerLabel dividerLabel1;
         private Utils.Controls.DividerLabel dividerLabel2;
         private System.Windows.Forms.Label lblNamespaceSummaryState;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnEditNamespaces;
 
 
     }

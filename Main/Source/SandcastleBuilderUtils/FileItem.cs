@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : FileItem.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/16/2011
-// Note    : Copyright 2008-2011, Eric Woodruff, All rights reserved
+// Updated : 04/08/2012
+// Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class representing a file that is part of the project
@@ -20,6 +20,7 @@
 // 1.8.0.0  07/24/2008  EFW  Created the code
 // 1.8.0.3  12/04/2009  EFW  Added support for resource item files
 // 1.9.1.0  07/09/2010  EFW  Updated for use with .NET 4.0 and MSBuild 4.0.
+// 1.9.4.0  04/08/2012  EFW  Added support for XAML configuration files
 //=============================================================================
 
 using System;
@@ -524,8 +525,7 @@ namespace SandcastleBuilder.Utils
         /// </summary>
         /// <param name="pdc">The property descriptor collection to filter</param>
         /// <returns>The filtered property descriptor collection</returns>
-        private PropertyDescriptorCollection FilterProperties(
-          PropertyDescriptorCollection pdc)
+        private PropertyDescriptorCollection FilterProperties(PropertyDescriptorCollection pdc)
         {
             List<string> removeProps = new List<string>();
 
@@ -536,31 +536,28 @@ namespace SandcastleBuilder.Utils
                 case BuildAction.ResourceItems:
                 case BuildAction.Tokens:
                 case BuildAction.TopicTransform:
-                    removeProps.AddRange(new string[] { "ImageId",
-                        "AlternateText", "CopyToMedia", "SortOrder",
+                case BuildAction.XamlConfiguration:
+                    removeProps.AddRange(new string[] { "ImageId", "AlternateText", "CopyToMedia", "SortOrder",
                         "ExcludeFromToc" });
                     break;
 
                 case BuildAction.Content:
-                    removeProps.AddRange(new string[] { "ImageId",
-                        "AlternateText", "CopyToMedia", "SortOrder" });
+                    removeProps.AddRange(new string[] { "ImageId", "AlternateText", "CopyToMedia", "SortOrder" });
                     break;
 
                 case BuildAction.Folder:
-                    removeProps.AddRange(new string[] { "BuildAction",
-                        "ImageId", "AlternateText", "CopyToMedia",
+                    removeProps.AddRange(new string[] { "BuildAction", "ImageId", "AlternateText", "CopyToMedia",
                         "SortOrder", "ExcludeFromToc" });
                     break;
 
                 case BuildAction.Image:
-                    removeProps.AddRange(new string[] { "SortOrder",
-                        "ExcludeFromToc" });
+                    removeProps.AddRange(new string[] { "SortOrder", "ExcludeFromToc" });
                     break;
 
                 case BuildAction.ContentLayout:
                 case BuildAction.SiteMap:
-                    removeProps.AddRange(new string[] { "ImageId",
-                        "AlternateText", "CopyToMedia", "ExcludeFromToc" });
+                    removeProps.AddRange(new string[] { "ImageId", "AlternateText", "CopyToMedia",
+                        "ExcludeFromToc" });
                     break;
 
                 default:    // Leave them all in

@@ -11,9 +11,21 @@
       <content>
 				<list class="bullet">
 					<listItem>
+						<para>The <application>Help Library Manager</application> tool included with the Sandcastle Help File
+Builder along with the install and remove scripts produced by the build for MS Help Viewer output will currently
+only work with MS Help Viewer 1.0 that comes with Visual Studio 2010.  They are not compatible and will not work
+with the new management tools that come with MS Help Viewer 2.0 in Visual Studio 2011.  This will be addressed in
+a future release.  The help files produced by the build can be installed manually and will work with the new
+version though.  The install and remove scripts produced as part of the build contain a temporary workaround that
+calls the Help Viewer 2.0 content manager tool directly to install or remove the content if the script is passed
+the command line parameter "<system>H2</system>".</para>
+					</listItem>
+
+					<listItem>
 						<para>Full Microsoft Help Viewer support has been implemented within the Sandcastle Help File Builder.
-However, please note that only the <legacyBold>VS2005</legacyBold> presentation style contains the necessary
-resources and XSL transformations to output the necessary metadata.  This was Microsoft's decision:</para>
+However, please note that only the <legacyBold>VS2010</legacyBold> and <legacyBold>VS2005</legacyBold>
+presentation styles contain the necessary resources and XSL transformations to output the necessary metadata.
+This was Microsoft's decision:</para>
 
 						<quote>The <legacyBold>Hana</legacyBold> presentation is not supported because its support was
 already dropped in the latest Sandcastle code before our changes.  The <legacyBold>Prototype</legacyBold>
@@ -23,7 +35,8 @@ the earlier Sandcastle version.</quote>
 						<para>Support for the <legacyBold>Hana</legacyBold> and <legacyBold>Prototype</legacyBold> styles is
 present in the help file builder but the Sandcastle transformations and resource files will need updating in
 order to support the generation of Microsoft Help Viewer files with them.  There are no plans to do this and it
-is recommended that you switch to the <legacyBold>VS2005</legacyBold> presentation style.</para>
+is recommended that you switch to the <legacyBold>VS2010</legacyBold> or <legacyBold>VS2005</legacyBold>
+presentation style.</para>
 					</listItem>
 
 					<listItem>
@@ -40,18 +53,19 @@ other output formats in which you want to use the plug-in, build them separately
 contents generation is not supported for help viewer output.  All additional topics must be in the form of MAML
 <link xlink:href="3d4edd2d-7883-4508-b9d2-bd7b4d848b0d">conceptual content</link> and must be defined in a
 content layout file.  There are too many requirements of the format to support raw HTML files and the deprecated
-additional content options.  See the <token>SandcastleStyles</token> project on CodePlex if you need an HTML to
-MAML converter utility.</para>
+additional content options.  See the <token>Sandcastle</token> project on CodePlex if you need an HTML to MAML
+converter utility.</para>
 					</listItem>
 
 					<listItem>
 						<para>Microsoft's Help Viewer Power Tool introduces some changes that are incompatible with content
-that uses the <codeInline>SelfBranded=True</codeInline> attribute as Sandcastle will emit.</para>
+that uses the <codeInline>SelfBranded=True</codeInline> attribute that Sandcastle will emit in the
+<legacyBold>VS2005</legacyBold> presentation style.</para>
 					</listItem>
 
 					<listItem>
-						<para>Microsoft Help Viewer content generated with the <token>SandcastleVersion</token> release of
-Sandcastle will produce content that in some contexts produces two vertical scrollbars.</para>
+						<para>Microsoft Help Viewer content generated with the <legacyBold>VS2005</legacyBold> presentation
+style will produce content that in some contexts produces two vertical scrollbars.</para>
 					</listItem>
 
 				</list>
@@ -62,6 +76,12 @@ Sandcastle will produce content that in some contexts produces two vertical scro
       <title>Sandcastle</title>
       <content>
 				<list class="bullet">
+					<listItem>
+						<para>The <legacyBold>VS2010</legacyBold> presentation style is new as of the Sandcastle 2.7.0.0
+release.  As it is a brand new style, it has not been fully tested so expect to see some issues.  These will
+be resolved as they are found.</para>
+					</listItem>
+
 					<listItem>
 						<para>Due to the help formats each loading their own copies of several of the build components and
 outputing a separate copy of the HTML output file, there can be a significant increase in the amount of memory

@@ -8,7 +8,7 @@
       <title>SDK Technology Code Directory File Format</title>
       <content>
         <para>Below is an example of an SDK Technology Code Directory topic file.</para>
-        <code lang="xml" title="SDK Technology Code Directory Topic" source="ConceptualTemplates\SDK Technology Code Directory.aml" />
+        <code language="xml" title="SDK Technology Code Directory Topic" source="ConceptualTemplates\SDK Technology Code Directory.aml" />
       </content>
     </section>
     <relatedTopics>

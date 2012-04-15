@@ -72,17 +72,6 @@
 				<File Id="GenerateInheritedDocs.exe" KeyPath="yes" Source="$(var.BinFolder)GenerateInheritedDocs.exe" />
 			</Component>
 
-			<Component Id="BuildReflectionData.bat" Guid="{1009D03D-3D9D-4E99-BBF4-A533DACFEFAA}">
-				<File Id="BuildReflectionData.bat" KeyPath="yes" Source="$(var.SolutionDir)BuildReflectionData.bat">
-					<Shortcut Id="_BuildReflectionData.bat"
-							  Directory="ShfbProgramMenuDir"
-							  Icon="Cmd.ico"
-							  Name="Rebuild Reflection Data"
-							  Description="Rebuild reflection data if needed"
-							  Advertise="yes" />
-				</File>
-			</Component>
-
 			<!-- Main libraries -->
 
 			<Component Id="ColorizerLibrary.dll" Guid="{784CA880-9843-4436-9EA4-48DB87AC0625}">
@@ -96,11 +85,6 @@
 				<File Id="SandcastleBuilder.components" Source="$(var.BinFolder)SandcastleBuilder.components" />
         <File Id="SandcastleBuilder.filters" Source="$(var.BinFolder)SandcastleBuilder.filters" />
       </Component>
-
-			<Component Id="SandcastleBuilder.MRefBuilder.dll" Guid="{9FAFFE93-87D0-4663-A605-BC8DFCAEC239}">
-				<File Id="SandcastleBuilder.MRefBuilder.dll" KeyPath="yes" Source="$(var.BinFolder)SandcastleBuilder.MRefBuilder.dll" />
-				<File Id="SandcastleBuilder.MRefBuilder.xml" Source="$(var.BinFolder)SandcastleBuilder.MRefBuilder.xml" />
-			</Component>
 
 			<Component Id="SandcastleBuilder.PlugIns.plugins" Guid="{FD01471A-A05E-4289-858C-5E981E6EE9A5}">
 				<File Id="SandcastleBuilder.PlugIns.plugins" KeyPath="yes" Source="$(var.BinFolder)SandcastleBuilder.PlugIns.plugins" />
@@ -206,12 +190,10 @@
 			<ComponentRef Id="HelpLibraryManagerLauncher.exe" />
 			<ComponentRef Id="SandcastleHtmlExtract.exe" />
 			<ComponentRef Id="GenerateInheritedDocs.exe" />
-			<ComponentRef Id="BuildReflectionData.bat" />
 
 			<!-- Main libraries -->
 			<ComponentRef Id="ColorizerLibrary.dll" />
 			<ComponentRef Id="SandcastleBuilder.Components.dll" />
-			<ComponentRef Id="SandcastleBuilder.MRefBuilder.dll" />
 			<ComponentRef Id="SandcastleBuilder.PlugIns.plugins" />
 			<ComponentRef Id="SandcastleBuilder.Utils.dll" />
 			<ComponentRef Id="SandcastleBuilder.WPF.dll" />

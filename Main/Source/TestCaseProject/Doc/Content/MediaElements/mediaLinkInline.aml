@@ -18,7 +18,7 @@ an image in the project's media content file.</para>
     <section>
       <title>Example</title>
       <content>
-        <code lang="xml" title=" ">
+        <code language="xml" title=" ">
 The information icon &lt;mediaLinkInline&gt;
 &lt;image xlink:href="4cfacbe8-d100-471c-9d69-1dbcce50e316"/&gt;&lt;/mediaLinkInline&gt;
 appears next to an Information message.

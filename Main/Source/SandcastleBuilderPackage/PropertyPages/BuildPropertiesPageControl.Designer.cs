@@ -42,12 +42,14 @@
             this.txtBuildLogFile = new SandcastleBuilder.Utils.Controls.FilePathUserControl();
             this.label3 = new System.Windows.Forms.Label();
             this.cblHelpFileFormat = new System.Windows.Forms.CheckedListBox();
+            this.cboBuildAssemblerVerbosity = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.epNotes)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
             // 
-            this.label1.Location = new System.Drawing.Point(235, 48);
+            this.label1.Location = new System.Drawing.Point(279, 48);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(145, 23);
             this.label1.TabIndex = 4;
@@ -59,7 +61,7 @@
             this.chkCleanIntermediates.AutoSize = true;
             this.chkCleanIntermediates.Checked = true;
             this.chkCleanIntermediates.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkCleanIntermediates.Location = new System.Drawing.Point(272, 121);
+            this.chkCleanIntermediates.Location = new System.Drawing.Point(292, 115);
             this.chkCleanIntermediates.Name = "chkCleanIntermediates";
             this.chkCleanIntermediates.Size = new System.Drawing.Size(342, 24);
             this.chkCleanIntermediates.TabIndex = 6;
@@ -70,7 +72,7 @@
             // chkCppCommentsFixup
             // 
             this.chkCppCommentsFixup.AutoSize = true;
-            this.chkCppCommentsFixup.Location = new System.Drawing.Point(272, 211);
+            this.chkCppCommentsFixup.Location = new System.Drawing.Point(292, 205);
             this.chkCppCommentsFixup.Name = "chkCppCommentsFixup";
             this.chkCppCommentsFixup.Size = new System.Drawing.Size(419, 24);
             this.chkCppCommentsFixup.TabIndex = 9;
@@ -82,7 +84,7 @@
             // 
             this.chkDisableCodeBlockComponent.AutoSize = true;
             this.epNotes.SetError(this.chkDisableCodeBlockComponent, "If checked, code colorization and the other related features will be disabled");
-            this.chkDisableCodeBlockComponent.Location = new System.Drawing.Point(272, 181);
+            this.chkDisableCodeBlockComponent.Location = new System.Drawing.Point(292, 175);
             this.chkDisableCodeBlockComponent.Name = "chkDisableCodeBlockComponent";
             this.chkDisableCodeBlockComponent.Size = new System.Drawing.Size(315, 24);
             this.chkDisableCodeBlockComponent.TabIndex = 8;
@@ -95,7 +97,7 @@
             this.chkKeepLogFile.AutoSize = true;
             this.chkKeepLogFile.Checked = true;
             this.chkKeepLogFile.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkKeepLogFile.Location = new System.Drawing.Point(272, 151);
+            this.chkKeepLogFile.Location = new System.Drawing.Point(292, 145);
             this.chkKeepLogFile.Name = "chkKeepLogFile";
             this.chkKeepLogFile.Size = new System.Drawing.Size(295, 24);
             this.chkKeepLogFile.TabIndex = 7;
@@ -105,7 +107,7 @@
             // 
             // label2
             // 
-            this.label2.Location = new System.Drawing.Point(234, 14);
+            this.label2.Location = new System.Drawing.Point(279, 14);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(146, 23);
             this.label2.TabIndex = 2;
@@ -116,7 +118,7 @@
             // 
             this.cboFrameworkVersion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboFrameworkVersion.FormattingEnabled = true;
-            this.cboFrameworkVersion.Location = new System.Drawing.Point(386, 12);
+            this.cboFrameworkVersion.Location = new System.Drawing.Point(431, 12);
             this.cboFrameworkVersion.MaxDropDownItems = 16;
             this.cboFrameworkVersion.Name = "cboFrameworkVersion";
             this.cboFrameworkVersion.Size = new System.Drawing.Size(183, 28);
@@ -134,7 +136,7 @@
             this.chkIndentHtml.AutoSize = true;
             this.epNotes.SetError(this.chkIndentHtml, "Build component debugging aid.  Leave this unchecked for normal builds\nto produce" +
         " more compact HTML");
-            this.chkIndentHtml.Location = new System.Drawing.Point(272, 241);
+            this.chkIndentHtml.Location = new System.Drawing.Point(292, 235);
             this.chkIndentHtml.Name = "chkIndentHtml";
             this.chkIndentHtml.Size = new System.Drawing.Size(180, 24);
             this.chkIndentHtml.TabIndex = 10;
@@ -150,9 +152,9 @@
         " by the Output Path property.");
             this.txtBuildLogFile.Filter = "Log files (*.log)|*.log|All Files (*.*)|*.*";
             this.epNotes.SetIconPadding(this.txtBuildLogFile, 5);
-            this.txtBuildLogFile.Location = new System.Drawing.Point(386, 46);
+            this.txtBuildLogFile.Location = new System.Drawing.Point(431, 46);
             this.txtBuildLogFile.Name = "txtBuildLogFile";
-            this.txtBuildLogFile.Size = new System.Drawing.Size(335, 59);
+            this.txtBuildLogFile.Size = new System.Drawing.Size(330, 59);
             this.txtBuildLogFile.TabIndex = 5;
             this.txtBuildLogFile.Tag = "BuildLogFile";
             this.txtBuildLogFile.Title = "Select the log file location";
@@ -172,13 +174,35 @@
             this.cblHelpFileFormat.FormattingEnabled = true;
             this.cblHelpFileFormat.Location = new System.Drawing.Point(7, 41);
             this.cblHelpFileFormat.Name = "cblHelpFileFormat";
-            this.cblHelpFileFormat.Size = new System.Drawing.Size(221, 224);
+            this.cblHelpFileFormat.Size = new System.Drawing.Size(221, 246);
             this.cblHelpFileFormat.TabIndex = 1;
             this.cblHelpFileFormat.Tag = "HelpFileFormat";
+            // 
+            // cboBuildAssemblerVerbosity
+            // 
+            this.cboBuildAssemblerVerbosity.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboBuildAssemblerVerbosity.FormattingEnabled = true;
+            this.cboBuildAssemblerVerbosity.Location = new System.Drawing.Point(431, 273);
+            this.cboBuildAssemblerVerbosity.MaxDropDownItems = 16;
+            this.cboBuildAssemblerVerbosity.Name = "cboBuildAssemblerVerbosity";
+            this.cboBuildAssemblerVerbosity.Size = new System.Drawing.Size(239, 28);
+            this.cboBuildAssemblerVerbosity.TabIndex = 12;
+            this.cboBuildAssemblerVerbosity.Tag = "BuildAssemblerVerbosity";
+            // 
+            // label4
+            // 
+            this.label4.Location = new System.Drawing.Point(233, 275);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(192, 23);
+            this.label4.TabIndex = 11;
+            this.label4.Text = "BuildAssembler &Verbosity";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // BuildPropertiesPageControl
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
+            this.Controls.Add(this.cboBuildAssemblerVerbosity);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.txtBuildLogFile);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.cblHelpFileFormat);
@@ -192,7 +216,7 @@
             this.Controls.Add(this.label1);
             this.MinimumSize = new System.Drawing.Size(745, 285);
             this.Name = "BuildPropertiesPageControl";
-            this.Size = new System.Drawing.Size(745, 285);
+            this.Size = new System.Drawing.Size(785, 310);
             ((System.ComponentModel.ISupportInitialize)(this.epNotes)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -213,5 +237,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.CheckedListBox cblHelpFileFormat;
         private Utils.Controls.FilePathUserControl txtBuildLogFile;
+        private System.Windows.Forms.ComboBox cboBuildAssemblerVerbosity;
+        private System.Windows.Forms.Label label4;
     }
 }

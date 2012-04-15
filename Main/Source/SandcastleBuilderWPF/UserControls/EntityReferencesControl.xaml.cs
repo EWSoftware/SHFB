@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : EntityReferencesControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/29/2011
-// Note    : Copyright 2011, Eric Woodruff, All rights reserved
+// Updated : 04/06/2012
+// Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the WPF user control used to look up code entity
@@ -317,9 +317,6 @@ namespace SandcastleBuilder.WPF.UserControls
                         contentLayout.Load();
                     }
 
-                    // For the purpose of adding links, make sure everything is visible
-                    contentLayout.Find(t => !t.Visible, false).ToList().ForEach(t => t.Visible = true);
-
                     tocFiles.Add(contentLayout);
                 }
 
@@ -350,11 +347,12 @@ namespace SandcastleBuilder.WPF.UserControls
                     return String.Compare(fx.Name, fy.Name, StringComparison.OrdinalIgnoreCase);
                 });
 
-                // Create the merged TOC
+                // Create the merged TOC.  For the purpose of adding links, we'll include everything
+                // even topics marked as invisible.
                 mergedToc = new TocEntryCollection();
 
                 foreach(ITableOfContents file in tocFiles)
-                    file.GenerateTableOfContents(mergedToc, currentProject);
+                    file.GenerateTableOfContents(mergedToc, currentProject, true);
 
                 // Convert the TOC info to entity references
                 foreach(var t in mergedToc)

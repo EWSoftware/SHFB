@@ -15,7 +15,7 @@ as the inner text.</para>
     <section>
       <title>Example</title>
       <content>
-        <code lang="xml" title=" ">
+        <code language="xml" title=" ">
 The Sandcastle tools find their installed location using the
 &lt;environmentVariable&gt;DXROOT&lt;/environmentVariable&gt; environment variable.
 </code>

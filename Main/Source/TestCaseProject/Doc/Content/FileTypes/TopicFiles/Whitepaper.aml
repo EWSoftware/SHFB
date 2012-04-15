@@ -8,7 +8,7 @@
       <title>Whitepaper File Format</title>
       <content>
         <para>Below is an example of a Whitepaper topic file.</para>
-        <code lang="xml" title="Whitepaper Topic" source="ConceptualTemplates\Whitepaper.aml" />
+        <code language="xml" title="Whitepaper Topic" source="ConceptualTemplates\Whitepaper.aml" />
       </content>
     </section>
     <relatedTopics>

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : ContentLayoutFileEditorPane.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/03/2012
+// Updated : 03/25/2012
 // Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -311,7 +311,7 @@ namespace SandcastleBuilder.Package.Editors
             {
                 // If we have a topic, use it's parent as the parent for the new topic.  If not, we'll use the
                 // parent of the content layout file.
-                if(base.UIControl.CurrentTopic != null)
+                if(base.UIControl.CurrentTopic != null && base.UIControl.CurrentTopic.TopicFile != null)
                     topicNode = thisNode.ProjectMgr.FindChild(base.UIControl.CurrentTopic.TopicFile.FullPath) as FileNode;
 
                 project = (IVsProject3)thisNode.ProjectMgr;
@@ -355,7 +355,8 @@ namespace SandcastleBuilder.Package.Editors
                 dlg.Title = "Select the conceptual topic file(s)";
                 dlg.Filter = "Conceptual Topics (*.aml)|*.aml|All files (*.*)|*.*";
                 dlg.DefaultExt = "aml";
-                dlg.InitialDirectory = (t != null) ? Path.GetDirectoryName(t.TopicFile.FullPath) : projectPath;
+                dlg.InitialDirectory = (t != null && t.TopicFile != null) ?
+                    Path.GetDirectoryName(t.TopicFile.FullPath) : projectPath;
                 dlg.Multiselect = true;
 
                 // If selected, add the new file(s).  Filenames that are
@@ -392,7 +393,7 @@ namespace SandcastleBuilder.Package.Editors
             using(WinFormsFolderBrowserDialog dlg = new WinFormsFolderBrowserDialog())
             {
                 dlg.Description = "Select a folder to add all of its content";
-                dlg.SelectedPath = (selectedTopic != null) ?
+                dlg.SelectedPath = (selectedTopic != null && selectedTopic.TopicFile != null) ?
                     Path.GetDirectoryName(selectedTopic.TopicFile.FullPath) : projectPath;
 
                 if(dlg.ShowDialog() == WinFormsDialogResult.OK)

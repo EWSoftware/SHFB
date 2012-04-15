@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : SiteMapEditorWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/03/2012
+// Updated : 03/25/2012
 // Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -435,7 +435,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         {
             string newFilePath = Path.GetDirectoryName(siteMapFile.FullPath);
 
-            if(ucSiteMapEditor.CurrentTopic != null)
+            if(ucSiteMapEditor.CurrentTopic != null && ucSiteMapEditor.CurrentTopic.SourceFile.Path.Length != 0)
                 newFilePath = Path.GetDirectoryName(ucSiteMapEditor.CurrentTopic.SourceFile);
 
             using(SelectFileTemplateDlg dlg = new SelectFileTemplateDlg(false, newFilePath))
@@ -467,7 +467,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
                 dlg.Title = "Select the conceptual topic file(s)";
                 dlg.Filter = "HTML Files (*.htm, *.html)|*.htm;*.html|All files (*.*)|*.*";
                 dlg.DefaultExt = "html";
-                dlg.InitialDirectory = (t != null && !String.IsNullOrEmpty(t.SourceFile)) ?
+                dlg.InitialDirectory = (t != null && t.SourceFile.Path.Length != 0) ?
                     Path.GetDirectoryName(t.SourceFile) : projectPath;
                 dlg.Multiselect = true;
 
@@ -502,7 +502,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             using(FolderBrowserDialog dlg = new FolderBrowserDialog())
             {
                 dlg.Description = "Select a folder to add all of its content";
-                dlg.SelectedPath = (selectedTopic != null && !String.IsNullOrEmpty(selectedTopic.SourceFile)) ?
+                dlg.SelectedPath = (selectedTopic != null && selectedTopic.SourceFile.Path.Length != 0) ?
                     Path.GetDirectoryName(selectedTopic.SourceFile) : projectPath;
 
                 if(dlg.ShowDialog() == DialogResult.OK)
