@@ -199,7 +199,7 @@
 					<File Id="VS2010BuilderContent_ru_RU.xml" KeyPath="yes" Source="$(var.BinFolder)SharedContent\VS2010BuilderContent_ru-RU.xml" />
 				</Component>
 				<Component Id="VS2010BuilderContent_zh_CHS.xml" Guid="{E4F9D721-B9D8-469B-B429-FE02D59089F0}">
-					<File Id="VS2010BuilderContent_zh_CHS.xml" KeyPath="yes" Source="$(var.BinFolder)SharedContent\VS2105BuilderContent_zh-CHS.xml" />
+					<File Id="VS2010BuilderContent_zh_CHS.xml" KeyPath="yes" Source="$(var.BinFolder)SharedContent\VS2010BuilderContent_zh-CHS.xml" />
 				</Component>
 				<Component Id="VS2010BuilderContent_zh_CN.xml" Guid="{E6E063D8-D4F4-44B9-9EC6-D0DE4ED8A912}">
 					<File Id="VS2010BuilderContent_zh_CN.xml" KeyPath="yes" Source="$(var.BinFolder)SharedContent\VS2010BuilderContent_zh-CN.xml" />

@@ -684,7 +684,7 @@
   <PropertyGroup>
     <PostBuildEvent>IF "$(ConfigurationName)"=="Debug" Goto Exit
 
-Copy "$(TargetDir)$(TargetName).vsix" "\CP\TFS01\SHFB\Deployment\InstallResources\SHFBVS2010Package.vsix"
+Copy "$(TargetDir)$(TargetName).vsix" "\CP\TFS01\SHFB\Deployment\InstallResources\SHFBVisualStudioPackage.vsix"
 
 :Exit
 </PostBuildEvent>

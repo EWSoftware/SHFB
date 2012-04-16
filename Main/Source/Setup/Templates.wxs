@@ -253,6 +253,7 @@
 			<ComponentRef Id="Style_Sheet.css" />
 			<ComponentRef Id="Text_File.txt" />
 			<ComponentRef Id="Token_File.tokens" />
+			<ComponentRef Id="XAML_Syntax.xamlcfg" />
 			<ComponentRef Id="XML_File.xml" />
 			<ComponentRef Id="XSLT_File.xslt" />
 		</ComponentGroup>
