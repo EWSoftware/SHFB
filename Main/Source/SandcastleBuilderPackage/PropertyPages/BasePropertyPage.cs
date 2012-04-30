@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : BasePropertyPage.cs
 // Author  : Eric Woodruff
-// Updated : 12/31/2011
-// Note    : Copyright 2011, Eric Woodruff, All rights reserved
+// Updated : 04/27/2012
+// Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This user control is used as the base class for package property pages
@@ -60,11 +60,27 @@ namespace SandcastleBuilder.Package.PropertyPages
         // This is used to define custom controls and their value property
         private static Dictionary<string, string> customControls = new Dictionary<string, string>();
 
+        // This is used to track active property pages
+        private static List<BasePropertyPage> propertyPages = new List<BasePropertyPage>();
+
         private bool isDirty, isBinding;
         #endregion
 
         #region Properties
         //=====================================================================
+
+        /// <summary>
+        /// This is used to get a list of all active property pages
+        /// </summary>
+        /// <remarks>The <see cref="BuildCompletedEventListener"/> uses this to flush pending changes to
+        /// property pages prior to a build occuring.  Typically, this happens automatically but it does
+        /// not if the build is invoked using the context menu on the project node.  The build event
+        /// listner is used to workaround this issue and ensure the project is current before the build
+        /// takes place.</remarks>
+        internal static List<BasePropertyPage> AllPropertyPages
+        {
+            get { return propertyPages; }
+        }
 
         /// <summary>
         /// This read-only property can be overridden to provide custom validation
@@ -667,6 +683,9 @@ namespace SandcastleBuilder.Package.PropertyPages
             this.CreateControl();
             this.Initialize();
 
+            // Add the property page to the tracking list
+            propertyPages.Add(this);
+
             NativeMethods.SetParent(this.Handle, hWndParent);
             ((IPropertyPage)this).Move(pRect);
 
@@ -706,6 +725,9 @@ namespace SandcastleBuilder.Package.PropertyPages
         /// </summary>
         void IPropertyPage.Deactivate()
         {
+            // Remove the property page from the tracking list
+            propertyPages.Remove(this);
+
             this.Dispose();
         }
 

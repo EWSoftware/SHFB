@@ -5,7 +5,7 @@
 // System  : Sandcastle Help File Builder
 // File    : SearchHelp.aspx
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/17/2012
+// Updated : 04/27/2012
 // Note    : Copyright 2007-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft C#
 //
@@ -48,6 +48,8 @@ protected override void Render(HtmlTextWriter writer)
     string searchText, ftiFile;
     char letter;
     bool sortByTitle = false;
+
+    jss.MaxJsonLength = Int32.MaxValue;
 
     // The keywords for which to search should be passed in the query string
     searchText = this.Request.QueryString["Keywords"];

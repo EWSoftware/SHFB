@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : FullTextIndex.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/17/2012
+// Updated : 04/27/2012
 // Note    : Copyright 2007-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -239,7 +239,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         {
             Dictionary<char, Dictionary<string, List<long>>> letters =
                 new Dictionary<char, Dictionary<string, List<long>>>();
-            JavaScriptSerializer jss = new JavaScriptSerializer();
+            JavaScriptSerializer jss = new JavaScriptSerializer { MaxJsonLength = Int32.MaxValue };
             char firstLetter;
 
             if(!Directory.Exists(indexPath))

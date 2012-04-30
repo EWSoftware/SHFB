@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SandcastleProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/15/2012
+// Updated : 04/27/2012
 // Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -1242,11 +1242,6 @@ namespace SandcastleBuilder.Utils
 
                 this.SetProjectProperty("PresentationStyle", value);
                 presentationStyle = value;
-
-                // If set to VS2010 and the catalog product ID is "VS", default SelfBranded to false otherwise the
-                // content won't show up.
-                this.SelfBranded = (presentationStyle.IndexOf("vs2010",
-                  StringComparison.OrdinalIgnoreCase) == -1 || catalogProductId != "VS");
             }
         }
 
@@ -1647,7 +1642,8 @@ namespace SandcastleBuilder.Utils
         ///				</item>
         ///			</list>
         ///		</item>
-        ///		<item>For the VS2010 style and the Help1 or Web formats, this value must be <see langword="true"/>.
+        ///		<item>For the VS2010 style and the Help1 or Website formats, self-branding must be used and
+        /// this property value is ignored and true is always.
         ///			<list type="bullet">
         ///				<item>The Sandcastle branding component applies all of branding formatting so the content
         ///	is shown in the default MS Help Viewer format.</item>
@@ -1663,8 +1659,9 @@ namespace SandcastleBuilder.Utils
         /// </remarks>
         /// <seealso cref="BrandingPackageName"/>
         [Category("MS Help Viewer"), Description("Indicate whether or not the help content is self-branded.  " +
-          "For the VS2010 style, typically false if the \"VS\" catalog is used and true otherwise.  " +
-          "It must be set to true for other styles."), DefaultValue(true)]
+          "This property is typically true in almost all cases.  See the help property topic for details " +
+          "about when it can be set to false and the resulting branding behavior.  It must be set to " +
+          "true for all styles other than VS2010."), DefaultValue(true)]
         public bool SelfBranded
         {
             get { return selfBranded; }

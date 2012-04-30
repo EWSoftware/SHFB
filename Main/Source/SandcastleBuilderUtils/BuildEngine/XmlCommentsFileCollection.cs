@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : XmlCommentsFileCollection.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/27/2012
+// Updated : 04/27/2012
 // Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -34,22 +34,22 @@ using System.Xml;
 namespace SandcastleBuilder.Utils.BuildEngine
 {
     /// <summary>
-    /// This collection class is used to hold the XML comments files
-    /// during the build process.
+    /// This collection class is used to hold the XML comments files during the build process
     /// </summary>
     public class XmlCommentsFileCollection : BindingList<XmlCommentsFile>
     {
         /// <summary>
-        /// This read-only property returns true if any of the comments files
-        /// contain an &lt;inheritdoc /&gt; tag indicating that the Inherited
-        /// Documentation tool will need to be ran.
+        /// This read-only property returns true if any of the comments files contain an
+        /// <c>inheritdoc</c>, <c>AttachedPropertyComments</c>, or <c>AttachedEventComments</c> tag
+        /// indicating that the Inherited Documentation tool will need to be ran.
         /// </summary>
         public bool ContainsInheritedDocumentation
         {
             get
             {
                 foreach(XmlCommentsFile f in this)
-                    if(f.Members.SelectSingleNode("//inheritdoc") != null)
+                    if(f.Members.SelectSingleNode(
+                      "//inheritdoc|//AttachedPropertyComments|//AttachedEventComments") != null)
                         return true;
 
                 return false;

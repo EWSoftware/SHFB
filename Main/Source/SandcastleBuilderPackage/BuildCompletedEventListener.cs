@@ -2,12 +2,13 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : BuildCompletedEventListener.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/07/2012
+// Updated : 04/27/2012
 // Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains the class used to listen for build completed events so
-// that we can open the help file after a successful build if requested.
+// This file contains the class used to listen for build started events to
+// flush pending property page changes and for build completed events so that
+// we can open the help file after successful builds if so requested.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy
 // of the license should be distributed with the code.  It can also be found
@@ -33,8 +34,8 @@ using SandcastleBuilder.Package.ToolWindows;
 namespace SandcastleBuilder.Package
 {
     /// <summary>
-    /// This is used to listen for build completed events so that we can open the help file
-    /// after successful builds if so requested.
+    /// This is used to listen for build started events to flush pending property page changes and for
+    /// build completed events so that we can open the help file after successful builds if so requested.
     /// </summary>
     internal class BuildCompletedEventListener : UpdateSolutionEventsListener
     {
@@ -42,14 +43,31 @@ namespace SandcastleBuilder.Package
         /// Constructor
         /// </summary>
         /// <param name="serviceProvider">The service provider</param>
-        public BuildCompletedEventListener(IServiceProvider serviceProvider) :
-          base(serviceProvider)
+        public BuildCompletedEventListener(IServiceProvider serviceProvider) : base(serviceProvider)
 		{
 		}
 
         /// <summary>
-        /// This is overridden to open the help file after a successful build or the log viewer tool window after
-        /// a failed build if so indicated by the Sandcastle Help File Builder options.
+        /// This is overridden to flush pending changes to project property pages
+        /// </summary>
+        /// <param name="cancelUpdate">Not used</param>
+        /// <returns>Always returns S_OK</returns>
+        /// <remarks>This is needed so that pending property page changes are flushed to the project prior
+        /// to the build occurring.  Typically, this happens automatically.  However, if a build is
+        /// invoked using the context menu on the project node, it does not.  This works around that
+        /// issue.</remarks>
+        public override int UpdateSolution_StartUpdate(ref int cancelUpdate)
+        {
+            foreach(var p in BasePropertyPage.AllPropertyPages)
+                if(!p.IsDisposed)
+                    ((Microsoft.VisualStudio.OLE.Interop.IPropertyPage)p).Apply();
+
+            return VSConstants.S_OK;
+        }
+
+        /// <summary>
+        /// This is overridden to open the help file after a successful build or the log viewer tool window
+        /// after a failed build if so indicated by the Sandcastle Help File Builder options.
         /// </summary>
         /// <inheritdoc />
         /// <remarks>Note that the base method documentation is wrong.  The action parameter is actually a
