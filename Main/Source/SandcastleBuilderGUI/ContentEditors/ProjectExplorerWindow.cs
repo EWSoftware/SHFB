@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : ProjectExplorerWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/08/2012
+// Updated : 07/08/2012
 // Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -2247,17 +2247,16 @@ namespace SandcastleBuilder.Gui.ContentEditors
                     else
                     {
                         while(File.Exists(newPath))
+                        {
                             if(uniqueId == 0)
-                                newPath = String.Format(
-                                    CultureInfo.InvariantCulture,
-                                    "{0}\\Copy of {1}", Path.GetDirectoryName(
-                                    newPath), Path.GetFileName(file));
+                                newPath = String.Format(CultureInfo.InvariantCulture, "{0}\\Copy of {1}",
+                                    Path.GetDirectoryName(newPath), Path.GetFileName(file));
                             else
-                                newPath = String.Format(
-                                    CultureInfo.InvariantCulture,
-                                    "{0}\\Copy ({1}) of {2}",
-                                    Path.GetDirectoryName(newPath), uniqueId,
-                                    Path.GetFileName(file));
+                                newPath = String.Format(CultureInfo.InvariantCulture, "{0}\\Copy ({1}) of {2}",
+                                    Path.GetDirectoryName(newPath), uniqueId, Path.GetFileName(file));
+
+                            uniqueId++;
+                        }
 
                         currentProject.AddFileToProject(file, newPath);
                     }
