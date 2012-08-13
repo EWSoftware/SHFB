@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : TocEntry.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/29/2011
-// Note    : Copyright 2006-2011, Eric Woodruff, All rights reserved
+// Updated : 08/03/2012
+// Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class representing a table of contents entry.  This is
@@ -123,6 +123,18 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// </summary>
         [Browsable(false)]
         public string Id { get; set; }
+
+        /// <summary>
+        /// The display title for the topic previewer
+        /// </summary>
+        [Browsable(false)]
+        public string PreviewerTitle { get; set; }
+
+        /// <summary>
+        /// The link text for the topic previewer
+        /// </summary>
+        [Browsable(false)]
+        public string LinkText { get; set; }
 
         /// <summary>
         /// This is used to get or set the entry's title in the table of

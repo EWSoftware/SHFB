@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : GenerateInheritedDocs.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/25/2012
+// Updated : 08/03/2012
 // Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -35,6 +35,7 @@ using System.Configuration;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Xml;
@@ -326,8 +327,12 @@ namespace SandcastleBuilder.InheritedDocumentation
                 if(commentsCache.GetComments(api.Value) == null && !members.ContainsKey(api.Value))
                 {
                     node = inheritedDocs.CreateDocumentFragment();
+
+                    // The C++ compiler can generate invalid IDs.  If found, the invalid characters are encoded.
                     node.InnerXml = String.Format(CultureInfo.InvariantCulture,
-                        "<member name=\"{0}\"><inheritdoc /></member>", api.Value);
+                        "<member name=\"{0}\"><inheritdoc /></member>",
+                        (api.Value.IndexOf('<') != -1) ? WebUtility.HtmlEncode(api.Value) : api.Value);
+
                     docMemberList.AppendChild(node);
                 }
 
@@ -640,12 +645,12 @@ namespace SandcastleBuilder.InheritedDocumentation
         //=====================================================================
 
         /// <summary>
-        /// This is used to generate the inherited documentation for the
-        /// given member.  Only tags at the root level are processed here.
+        /// This is used to generate the inherited documentation for the given member.  Only tags at the root
+        /// level are processed here.
         /// </summary>
         /// <param name="member">The member for which to inherit documentation</param>
-        /// <remarks>This will recursively expand documentation if a base
-        /// member's comments are present in the generation list.</remarks>
+        /// <remarks>This will recursively expand documentation if a base member's comments are present in the
+        /// generation list.</remarks>
         private static void InheritNestedDocumentation(XmlNode member)
         {
             StringBuilder sb = new StringBuilder(256);
@@ -680,10 +685,9 @@ namespace SandcastleBuilder.InheritedDocumentation
                         sb.AppendFormat("/{0}", filter.Value);
                     else
                     {
-                        // If the filter is rooted, ignore the parent tags
-                        // and use it as is.  This allows nesting inheritdoc
-                        // within other tags that you don't want automatically
-                        // included in the filter.
+                        // If the filter is rooted, ignore the parent tags and use it as is.  This allows
+                        // nesting inheritdoc within other tags that you don't want automatically included in
+                        // the filter.
                         sb.Remove(0, sb.Length);
                         sb.Append(filter.Value.Substring(1));
                     }
@@ -693,7 +697,7 @@ namespace SandcastleBuilder.InheritedDocumentation
 
                 baseMember = LocateBaseDocumentation(name, (cref != null) ? cref.Value : null);
 
-                if(baseMember != null)
+                if(baseMember != null && sb.Length != 0)
                 {
                     content = inheritedDocs.CreateDocumentFragment();
 

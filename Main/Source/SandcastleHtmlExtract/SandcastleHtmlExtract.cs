@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder - HTML Extract
 // File    : SandcastleHtmlExtract.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/09/2011
-// Note    : Copyright 2008-2011, Eric Woodruff, All rights reserved
+// Updated : 07/26/2012
+// Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the console mode application used to extract title and
@@ -26,6 +26,7 @@
 // 1.7.0.0  06/14/2008  EFW  Fixed bug in handling of TOC nodes without a file
 // 1.8.0.0  07/14/2008  EFW  Added support for running as an MSBuild task
 // 1.9.0.0  06/12/2010  EFW  Added support for multi-format build output
+// 1.9.5.0  07/26/2012  EFW  Added code to remove Help 2 constructs
 //=============================================================================
 
 using System;
@@ -224,7 +225,7 @@ namespace SandcastleBuilder.HtmlExtract
         private static List<KeywordInfo> keywords;
         private static Dictionary<string, TitleInfo> titles;
 
-        // Regular expressions used for title and keyword extraction
+        // Regular expressions used for title and keyword extraction and element removal
         private static Regex reTitle = new Regex(@"<title>(.*)</title>", RegexOptions.IgnoreCase);
         private static Regex reTocTitle = new Regex("<mshelp:toctitle\\s+title=\"([^\"]+)\"[^>]+>",
             RegexOptions.IgnoreCase);
@@ -232,6 +233,9 @@ namespace SandcastleBuilder.HtmlExtract
             RegexOptions.IgnoreCase);
         private static Regex reSubEntry = new Regex(@",([^\)\>]+|([^\<\>]*" +
             @"\<[^\<\>]*\>[^\<\>]*)?|([^\(\)]*\([^\(\)]*\)[^\(\)]*)?)$");
+        private static Regex reXmlIsland = new Regex("<xml>.*?</xml>", RegexOptions.Singleline);
+        private static Regex reHxLinkCss = new Regex("<link\\s+rel=\"stylesheet\"\\s+type=\"text/css\"\\s+" +
+            "href=\"ms-help://Hx/HxRuntime/HxLink.css\"\\s+/>", RegexOptions.IgnoreCase);
 
         // Localization support members
         private static Dictionary<Regex, string> patterns;
@@ -612,7 +616,8 @@ commas, or other special characters.
         }
 
         /// <summary>
-        /// Parse each file looking for the title and index keywords
+        /// Parse each file looking for the title and index keywords and remove the unnecessary Help 2 constructs
+        /// that cause issues in Internet Explorer 10.
         /// </summary>
         /// <param name="basePath">The base folder path</param>
         /// <param name="sourceFile">The file to parse</param>
@@ -684,8 +689,12 @@ commas, or other special characters.
                 }
             }
 
-            // If localizing, perform the substitutions, convert the encoding, and save the
-            // file to the localized folder.
+            // Remove the XML data island and the MS Help CSS link
+            content = reXmlIsland.Replace(content, String.Empty);
+            content = reHxLinkCss.Replace(content, String.Empty);
+
+            // If localizing, perform the substitutions, convert the encoding, and save the file to the
+            // localized folder.
             if(localizedOutputFolder != null)
             {
                 foreach(KeyValuePair<Regex, string> pair in patterns)
@@ -704,6 +713,12 @@ commas, or other special characters.
                 {
                     writer.Write(destEncoding.GetString(convertedBytes));
                 }
+            }
+
+            // Save the file to its original location without the Help 2 elements
+            using(StreamWriter writer = new StreamWriter(sourceFile, false, currentEncoding))
+            {
+                writer.Write(content);
             }
         }
         #endregion

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : TopicCollection.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/06/2012
+// Updated : 08/03/2012
 // Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -689,6 +689,9 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                     }
 
                     entry.Id = t.Id;
+                    entry.PreviewerTitle = String.IsNullOrEmpty(t.Title) ?
+                        Path.GetFileNameWithoutExtension(t.TopicFilename) : t.Title;
+                    entry.LinkText = String.IsNullOrEmpty(t.LinkText) ? t.DisplayTitle : t.LinkText;
                     entry.Title = t.DisplayTitle;
                     entry.IsDefaultTopic = t.IsDefaultTopic;
                     entry.ApiParentMode = t.ApiParentMode;

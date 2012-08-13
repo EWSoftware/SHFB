@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : TopicPreviewerControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/06/2012
+// Updated : 08/03/2012
 // Note    : Copyright 2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -356,7 +356,7 @@ namespace SandcastleBuilder.WPF.UserControls
                 // Pass the topic IDs and titles on to the converter for use in hyperlinks
                 foreach(var t in tableOfContents.All())
                     if(!String.IsNullOrEmpty(t.Id))
-                        converter.TopicTitles[t.Id] = t.Title;
+                        converter.TopicTitles[t.Id] = t.LinkText;
             }
             catch(Exception ex)
             {
@@ -539,7 +539,7 @@ namespace SandcastleBuilder.WPF.UserControls
                     if(!String.IsNullOrEmpty(t.SourceFile))
                         base.RaiseEvent(args);
 
-                    txtTitle.Text = t.Title;
+                    txtTitle.Text = t.PreviewerTitle;
                     fdViewer.Document = converter.ToFlowDocument(t.SourceFile, args.TopicContent);
 
                     this.AdjustPageWidth();
