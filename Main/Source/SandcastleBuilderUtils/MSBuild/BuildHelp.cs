@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : BuildHelp.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/26/2011
-// Note    : Copyright 2008-2011, Eric Woodruff, All rights reserved
+// Updated : 08/26/2012
+// Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the MSBuild task used to build help file output using the
@@ -32,7 +32,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 
-using Microsoft.Build.Construction;
 using Microsoft.Build.Evaluation;
 using Microsoft.Build.Execution;
 using Microsoft.Build.Framework;
@@ -43,8 +42,7 @@ using SandcastleBuilder.Utils.BuildEngine;
 namespace SandcastleBuilder.Utils.MSBuild
 {
     /// <summary>
-    /// This task is used to build help file output using the Sandcastle Help
-    /// File Builder.
+    /// This task is used to build help file output using the Sandcastle Help File Builder.
     /// </summary>
     /// <remarks>All messages from this task are logged with a high priority since it will run for a long time
     /// and we need to see the progress messages to know it's doing something.  If set to Normal and ran from
@@ -129,6 +127,12 @@ namespace SandcastleBuilder.Utils.MSBuild
         /// If set to true, the specified <see cref="ProjectFile" /> is loaded.
         /// In such cases, command line property overrides are ignored.</value>
         public bool AlwaysLoadProject { get; set; }
+
+        /// <summary>
+        /// This is used to specify a path that will override the <c>SHFBCOMPONENTROOT</c> location when the
+        /// build engine searches for custom build components and plug-ins.
+        /// </summary>
+        public string ComponentRoot { get; set; }
         #endregion
 
         #region Task output properties
@@ -244,6 +248,11 @@ namespace SandcastleBuilder.Utils.MSBuild
             // If cancelled already, just return
             if(buildCancelled)
                 return false;
+
+            // If the component root path is overridden, set it now
+            if(!String.IsNullOrEmpty(this.ComponentRoot))
+                BuildComponent.BuildComponentManager.ComponentRoot = PlugIn.PlugInManager.ComponentRoot =
+                    this.ComponentRoot;
 
             try
             {

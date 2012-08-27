@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildComponentManager.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/26/2011
-// Note    : Copyright 2007-2011, Eric Woodruff, All rights reserved
+// Updated : 08/26/2012
+// Note    : Copyright 2007-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the class that manages the set of third party build
@@ -61,6 +61,12 @@ namespace SandcastleBuilder.Utils.BuildComponent
 
         #region Properties
         //=====================================================================
+
+        /// <summary>
+        /// This is used to set a path that overrides the location specified in the <c>SHFBCOMPONENTROOT</c>
+        /// environment variable during the search for component locations.
+        /// </summary>
+        public static string ComponentRoot { get; set; }
 
         /// <summary>
         /// This read-only property returns the default syntax filter setting
@@ -228,24 +234,26 @@ namespace SandcastleBuilder.Utils.BuildComponent
 
             buildComponents = new Dictionary<string, BuildComponentInfo>();
 
-            // Give precedence to components in the optional SHFBCOMPONENTROOT
-            // environment variable folder.
+            // Give precedence to components in the optional SHFBCOMPONENTROOT environment variable folder.
+            // However, if specified, the ComponentRoot property value will override it.
             componentPath = Environment.ExpandEnvironmentVariables("%SHFBCOMPONENTROOT%");
+
+            if(!String.IsNullOrEmpty(ComponentRoot))
+                componentPath = ComponentRoot;
 
             if(!String.IsNullOrEmpty(componentPath) && Directory.Exists(componentPath))
                 allFiles.AddRange(Directory.EnumerateFiles(componentPath, "*.components",
                     SearchOption.AllDirectories));
 
-            // Add the standard component config file and any third-party
-            // component config files in the installation folder.  This
-            // allows for XCOPY deployments of SHFB to build servers.
+            // Add the standard component config file and any third-party component config files in the
+            // installation folder.  This allows for XCOPY deployments of SHFB to build servers.
             allFiles.AddRange(Directory.EnumerateFiles(HelpFileBuilderFolder, "*.components",
                 SearchOption.AllDirectories));
 
             // Finally, check the common app data build components folder
             if(Directory.Exists(BuildComponentsFolder))
-                allFiles.AddRange(Directory.EnumerateFiles(BuildComponentsFolder,
-                    "*.components", SearchOption.AllDirectories));
+                allFiles.AddRange(Directory.EnumerateFiles(BuildComponentsFolder, "*.components",
+                    SearchOption.AllDirectories));
 
             foreach(string file in allFiles)
             {
@@ -280,12 +288,11 @@ namespace SandcastleBuilder.Utils.BuildComponent
             syntaxFilters = new Dictionary<string, SyntaxFilterInfo>();
 
             if(Directory.Exists(BuildComponentsFolder))
-                allFiles.AddRange(Directory.EnumerateFiles(BuildComponentsFolder,
-                    "*.filters", SearchOption.AllDirectories));
+                allFiles.AddRange(Directory.EnumerateFiles(BuildComponentsFolder, "*.filters",
+                    SearchOption.AllDirectories));
 
-            // Add the standard syntax filter config file and any third-party
-            // component config files in the installation folder too.  This
-            // allows for XCOPY deployments of SHFB to build servers.
+            // Add the standard syntax filter config file and any third-party component config files in the
+            // installation folder too.  This allows for XCOPY deployments of SHFB to build servers.
             allFiles.AddRange(Directory.EnumerateFiles(HelpFileBuilderFolder, "*.filters",
                 SearchOption.AllDirectories));
 
@@ -294,14 +301,12 @@ namespace SandcastleBuilder.Utils.BuildComponent
                 configFile = new XPathDocument(file);
                 navConfig = configFile.CreateNavigator();
 
-                foreach(XPathNavigator filter in navConfig.Select(
-                  "syntaxFilters/filter"))
+                foreach(XPathNavigator filter in navConfig.Select("syntaxFilters/filter"))
                 {
                     info = new SyntaxFilterInfo(filter);
 
-                    // The dictionary stores the keys in lowercase so as to
-                    // match keys without regard to the case entered in the
-                    // project property.
+                    // The dictionary stores the keys in lowercase so as to match keys without regard to the case
+                    // entered in the project property.
                     id = info.Id.ToLowerInvariant();
 
                     // Ignore components with duplicate IDs

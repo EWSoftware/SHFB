@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : PlugInManager.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/02/2011
-// Note    : Copyright 2007-2011, Eric Woodruff, All rights reserved
+// Updated : 08/26/2012
+// Note    : Copyright 2007-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the class that manages the set of known plug-ins.
@@ -38,14 +38,18 @@ namespace SandcastleBuilder.Utils.PlugIn
     {
         #region Private data members
         //=====================================================================
-        // Private data members
 
         private static Dictionary<string, PlugInInfo> plugIns;
         #endregion
 
         #region Properties
         //=====================================================================
-        // Properties
+
+        /// <summary>
+        /// This is used to set a path that overrides the location specified in the <c>SHFBCOMPONENTROOT</c>
+        /// environment variable during the search for component locations.
+        /// </summary>
+        public static string ComponentRoot { get; set; }
 
         /// <summary>
         /// This returns a dictionary containing the loaded plug-ins.
@@ -62,6 +66,9 @@ namespace SandcastleBuilder.Utils.PlugIn
             }
         }
         #endregion
+
+        #region Methods
+        //=====================================================================
 
         /// <summary>
         /// Load the build plug-ins found in the Components and Plug-Ins
@@ -80,9 +87,12 @@ namespace SandcastleBuilder.Utils.PlugIn
             plugInsFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
                 Constants.ComponentsAndPlugInsFolder);
 
-            // Give precedence to plug-ins in the optional SHFBCOMPONENTROOT
-            // environment variable folder.
+            // Give precedence to plug-ins in the optional SHFBCOMPONENTROOT environment variable folder.
+            // However, if specified, the ComponentRoot property value will override it.
             componentPath = Environment.ExpandEnvironmentVariables("%SHFBCOMPONENTROOT%");
+
+            if(!String.IsNullOrEmpty(ComponentRoot))
+                componentPath = ComponentRoot;
 
             if(!String.IsNullOrEmpty(componentPath) && Directory.Exists(componentPath))
                 allFiles.AddRange(Directory.EnumerateFiles(componentPath, "*.plugins",
@@ -133,5 +143,6 @@ namespace SandcastleBuilder.Utils.PlugIn
 
             return true;
         }
+        #endregion
     }
 }

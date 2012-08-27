@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : AdditionalReferenceLinksPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/23/2010
-// Note    : Copyright 2008-2010, Eric Woodruff, All rights reserved
+// Updated : 08/26/2012
+// Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a plug-in designed to add additional reference link
@@ -445,18 +445,23 @@ namespace SandcastleBuilder.PlugIns
                 project.WorkingPath = new FolderPath(workingPath, true, project);
                 project.OutputPath = new FolderPath(workingPath + @"..\PartialBuildLog\", true, project);
 
+                // If the current project has defined OutDir, pass it on to the sub-project.
+                string outDir = builder.CurrentProject.MSBuildProject.GetProperty("OutDir").EvaluatedValue;
+
+                if(!String.IsNullOrEmpty(outDir) && outDir != @".\")
+                    project.MSBuildOutDir = outDir;
+
                 buildProcess = new BuildProcess(project, true);
 
                 buildProcess.BuildStepChanged += buildProcess_BuildStepChanged;
 
-                // Since this is a plug-in, we'll run it directly rather
-                // than in a background thread.
+                // Since this is a plug-in, we'll run it directly rather than in a background thread
                 buildProcess.Build();
 
-                // Add the list of the comments files in the other project to
-                // this build.
-                foreach(XmlCommentsFile comments in buildProcess.CommentsFiles)
-                    builder.CommentsFiles.Insert(0, comments);
+                // Add the list of the comments files in the other project to this build
+                if(lastBuildStep == BuildStep.Completed)
+                    foreach(XmlCommentsFile comments in buildProcess.CommentsFiles)
+                        builder.CommentsFiles.Insert(0, comments);
             }
             catch(Exception ex)
             {

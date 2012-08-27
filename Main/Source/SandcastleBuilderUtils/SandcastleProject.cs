@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SandcastleProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/27/2012
+// Updated : 08/26/2012
 // Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -3240,6 +3240,10 @@ namespace SandcastleBuilder.Utils
 
             this.Configuration = cloneProject.Configuration;
             this.Platform = cloneProject.Platform;
+
+            if(!String.IsNullOrEmpty(cloneProject.MSBuildOutDir))
+                this.MSBuildOutDir = cloneProject.MSBuildOutDir;
+
             this.LoadProperties();
         }
         #endregion
