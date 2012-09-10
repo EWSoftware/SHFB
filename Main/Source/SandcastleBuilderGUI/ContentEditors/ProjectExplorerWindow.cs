@@ -1,8 +1,8 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder
 // File    : ProjectExplorerWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/08/2012
+// Updated : 09/08/2012
 // Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -15,11 +15,12 @@
 // applications, documentation, and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+//===============================================================================================================
 // 1.8.0.0  07/26/2008  EFW  Created the code
 // 1.8.0.3  12/04/2009  EFW  Added support for resource item files
 // 1.9.4.0  04/08/2012  EFW  Added support for XAML configuration files
-//=============================================================================
+// 1.9.5.0  09/08/2012  EFW  Updated to support Windows Store App projects
+//===============================================================================================================
 
 using System;
 using System.Collections.Generic;
@@ -1057,8 +1058,8 @@ namespace SandcastleBuilder.Gui.ContentEditors
                 {
                     dlg.Title = "Select the reference file(s)";
                     dlg.Filter = "Library, Executable, and Project Files " +
-                        "(*.dll, *.exe, *.*proj)|*.dll;*.exe;*.*proj|" +
-                        "Library Files (*.dll)|*.dll|" +
+                        "(*.dll, *.exe, *.winmd, *.*proj)|*.dll;*.exe;*.winmd;*.*proj|" +
+                        "Library Files (*.dll, *.winmd)|*.dll;*.winmd|" +
                         "Executable Files (*.exe)|*.exe|" +
                         "Visual Studio Project Files (*.*proj)|*.*proj|" +
                         "All Files (*.*)|*.*";
@@ -1077,12 +1078,10 @@ namespace SandcastleBuilder.Gui.ContentEditors
                                 extension = Path.GetExtension(file).ToLower(
                                     CultureInfo.InvariantCulture);
 
-                                if(extension == ".exe" || extension == ".dll")
-                                    references.AddReference(
-                                        Path.GetFileNameWithoutExtension(file), file);
+                                if(extension == ".exe" || extension == ".dll" || extension == ".winmd")
+                                    references.AddReference(Path.GetFileNameWithoutExtension(file), file);
                                 else
-                                    if(extension.EndsWith("proj",
-                                      StringComparison.Ordinal))
+                                    if(extension.EndsWith("proj", StringComparison.Ordinal))
                                         references.AddProjectReference(file);
                             }
 
@@ -1099,8 +1098,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             catch(Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex);
-                MessageBox.Show(ex.Message, Constants.AppName,
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, Constants.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

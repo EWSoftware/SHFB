@@ -1,26 +1,26 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : MSBuildProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/20/2011
-// Note    : Copyright 2008-2011, Eric Woodruff, All rights reserved
+// Updated : 09/08/2012
+// Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains an MSBuild project wrapper used by the Sandcastle Help
-// File builder during the build process.
+// This file contains an MSBuild project wrapper used by the Sandcastle Help File builder during the build
+// process.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+//===============================================================================================================
 // 1.8.0.0  07/11/2008  EFW  Created the code
 // 1.9.1.0  07/09/2010  EFW  Updated for use with .NET 4.0 and MSBuild 4.0.
 // 1.9.3.2  08/20/2011  EFW  Updated to support Portable .NET Framework
-// ============================================================================
+// 1.9.5.0  09/08/2012  EFW  Updated to support Windows Store App projects
+//===============================================================================================================
 
 using System;
 using System.Collections.Generic;
@@ -102,7 +102,8 @@ namespace SandcastleBuilder.Utils.MSBuild
                         assemblyName += ".dll";
                     else
                         if(String.Compare(outputType, "Exe", StringComparison.OrdinalIgnoreCase) == 0 ||
-                          String.Compare(outputType, "WinExe", StringComparison.OrdinalIgnoreCase) == 0)
+                          String.Compare(outputType, "WinExe", StringComparison.OrdinalIgnoreCase) == 0 ||
+                          String.Compare(outputType, "AppContainerExe", StringComparison.OrdinalIgnoreCase) == 0)
                             assemblyName += ".exe";
                         else
                             assemblyName = null;
