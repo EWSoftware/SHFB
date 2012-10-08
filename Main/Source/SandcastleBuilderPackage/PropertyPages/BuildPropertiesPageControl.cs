@@ -1,24 +1,23 @@
-﻿//=============================================================================
+﻿//===============================================================================================================
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : BuildPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 03/31/2012
+// Updated : 09/17/2012
 // Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This user control is used to edit the Build category properties.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.  This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.9.3.0  03/27/2011  EFW  Created the code
 // 1.9.4.0  03/31/2012  EFW  Added BuildAssembler Verbosity property
-//=============================================================================
+//===============================================================================================================
 
 using System;
 using System.Collections.Generic;
@@ -85,8 +84,12 @@ namespace SandcastleBuilder.Package.PropertyPages
                 new HelpFileFormatItem { Format = HelpFileFormat.Website, Description = "Website (HTML/ASP.NET)" }
             });
 
-            cboFrameworkVersion.Items.AddRange(FrameworkVersionTypeConverter.StandardValues.ToArray());
-            cboFrameworkVersion.SelectedItem = FrameworkVersionTypeConverter.LatestFrameworkMatching(".NET 4");
+            // If the frameworks file failed to load, skip this.  We'll get a more descriptive exception later on.
+            if(FrameworkVersionTypeConverter.AllFrameworks != null)
+            {
+                cboFrameworkVersion.Items.AddRange(FrameworkVersionTypeConverter.AllFrameworks.Keys.ToArray());
+                cboFrameworkVersion.SelectedItem = FrameworkVersionTypeConverter.DefaultFramework;
+            }
 
             cboBuildAssemblerVerbosity.DisplayMember = "Value";
             cboBuildAssemblerVerbosity.ValueMember = "Key";

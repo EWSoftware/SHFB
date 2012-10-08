@@ -1,24 +1,24 @@
-﻿//=============================================================================
+﻿//===============================================================================================================
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : MSHelpViewerPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 03/31/2012
+// Updated : 10/05/2012
 // Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This user control is used to edit the MS Help Viewer category properties.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.  This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.9.3.0  03/27/2011  EFW  Created the code
 // 1.9.4.0  03/31/2012  EFW  Added Branding Package Name property
-//=============================================================================
+// 1.9.5.0  10/05/2012  EFW  Added Catalong Name property
+//===============================================================================================================
 
 using System;
 using System.Collections.Generic;
@@ -68,6 +68,7 @@ namespace SandcastleBuilder.Package.PropertyPages
             {
                 txtCatalogProductId.Text = txtCatalogProductId.Text.Trim();
                 txtCatalogVersion.Text = txtCatalogVersion.Text.Trim();
+                txtCatalogName.Text = txtCatalogName.Text.Trim();
                 txtProductTitle.Text = txtProductTitle.Text.Trim();
                 txtVendorName.Text = txtVendorName.Text.Trim();
                 txtTocParentId.Text = txtTocParentId.Text.Trim();
@@ -79,6 +80,9 @@ namespace SandcastleBuilder.Package.PropertyPages
 
                 if(txtCatalogVersion.Text.Length == 0)
                     txtCatalogVersion.Text = "100";
+
+                if(txtCatalogName.Text.Length == 0)
+                    txtCatalogName.Text = "VisualStudio11";
 
                 if(txtTocParentId.Text.Length == 0)
                     txtTocParentId.Text = "-1";
@@ -103,6 +107,7 @@ namespace SandcastleBuilder.Package.PropertyPages
             {
                 case "CatalogProductId":
                 case "CatalogVersion":
+                case "CatalogName":
                 case "ProductTitle":
                 case "TocParentId":
                 case "TocParentVersion":

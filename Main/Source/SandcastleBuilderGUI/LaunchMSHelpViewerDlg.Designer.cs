@@ -44,6 +44,8 @@
             this.rbInstall = new System.Windows.Forms.RadioButton();
             this.lblAction = new System.Windows.Forms.Label();
             this.pbWait = new System.Windows.Forms.PictureBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.cboHelpViewerVersion = new System.Windows.Forms.ComboBox();
             this.grpOptions.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbWait)).BeginInit();
             this.SuspendLayout();
@@ -58,17 +60,17 @@
             this.txtInfo.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.txtInfo.Size = new System.Drawing.Size(662, 166);
             this.statusBarTextProvider1.SetStatusBarText(this.txtInfo, "Information about the help content\'s state");
-            this.txtInfo.TabIndex = 3;
+            this.txtInfo.TabIndex = 5;
             // 
             // btnCancel
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(586, 314);
+            this.btnCancel.Location = new System.Drawing.Point(586, 350);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(88, 32);
             this.statusBarTextProvider1.SetStatusBarText(this.btnCancel, "Cancel: Close without opening the help file");
-            this.btnCancel.TabIndex = 2;
+            this.btnCancel.TabIndex = 4;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
@@ -76,12 +78,11 @@
             // btnOK
             // 
             this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnOK.Enabled = false;
-            this.btnOK.Location = new System.Drawing.Point(12, 314);
+            this.btnOK.Location = new System.Drawing.Point(12, 350);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(88, 32);
             this.statusBarTextProvider1.SetStatusBarText(this.btnOK, "OK: Execute the selected action");
-            this.btnOK.TabIndex = 1;
+            this.btnOK.TabIndex = 3;
             this.btnOK.Text = "OK";
             this.btnOK.UseVisualStyleBackColor = true;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
@@ -89,14 +90,14 @@
             // rbOpenCurrent
             // 
             this.rbOpenCurrent.AutoSize = true;
-            this.rbOpenCurrent.Location = new System.Drawing.Point(40, 34);
+            this.rbOpenCurrent.Location = new System.Drawing.Point(40, 29);
             this.rbOpenCurrent.Name = "rbOpenCurrent";
             this.rbOpenCurrent.Size = new System.Drawing.Size(497, 21);
             this.statusBarTextProvider1.SetStatusBarText(this.rbOpenCurrent, "Open the currently installed help content even if it is out of date");
             this.rbOpenCurrent.TabIndex = 0;
             this.rbOpenCurrent.TabStop = true;
             this.rbOpenCurrent.Text = "&Open currently installed help file content for viewing even if it is out of date" +
-                "";
+    "";
             this.rbOpenCurrent.UseVisualStyleBackColor = true;
             // 
             // grpOptions
@@ -105,17 +106,17 @@
             this.grpOptions.Controls.Add(this.rbInstall);
             this.grpOptions.Controls.Add(this.rbOpenCurrent);
             this.grpOptions.Enabled = false;
-            this.grpOptions.Location = new System.Drawing.Point(12, 184);
+            this.grpOptions.Location = new System.Drawing.Point(12, 227);
             this.grpOptions.Name = "grpOptions";
-            this.grpOptions.Size = new System.Drawing.Size(662, 124);
-            this.grpOptions.TabIndex = 0;
+            this.grpOptions.Size = new System.Drawing.Size(662, 117);
+            this.grpOptions.TabIndex = 2;
             this.grpOptions.TabStop = false;
             this.grpOptions.Text = "Options";
             // 
             // rbRemove
             // 
             this.rbRemove.AutoSize = true;
-            this.rbRemove.Location = new System.Drawing.Point(40, 88);
+            this.rbRemove.Location = new System.Drawing.Point(40, 83);
             this.rbRemove.Name = "rbRemove";
             this.rbRemove.Size = new System.Drawing.Size(212, 21);
             this.rbRemove.TabIndex = 2;
@@ -126,13 +127,13 @@
             // rbInstall
             // 
             this.rbInstall.AutoSize = true;
-            this.rbInstall.Location = new System.Drawing.Point(40, 61);
+            this.rbInstall.Location = new System.Drawing.Point(40, 56);
             this.rbInstall.Name = "rbInstall";
             this.rbInstall.Size = new System.Drawing.Size(592, 21);
             this.rbInstall.TabIndex = 1;
             this.rbInstall.TabStop = true;
             this.rbInstall.Text = "&Install content from last build, replacing any existing installed copy, and open" +
-                " it for viewing";
+    " it for viewing";
             this.rbInstall.UseVisualStyleBackColor = true;
             // 
             // lblAction
@@ -142,7 +143,7 @@
             this.lblAction.Location = new System.Drawing.Point(292, 86);
             this.lblAction.Name = "lblAction";
             this.lblAction.Size = new System.Drawing.Size(105, 17);
-            this.lblAction.TabIndex = 10;
+            this.lblAction.TabIndex = 6;
             this.lblAction.Text = "Taking action...";
             this.lblAction.Visible = false;
             // 
@@ -158,12 +159,36 @@
             this.pbWait.TabStop = false;
             this.pbWait.Visible = false;
             // 
+            // label1
+            // 
+            this.label1.Location = new System.Drawing.Point(225, 194);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(171, 23);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "&Use Help Viewer Version";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // cboHelpViewerVersion
+            // 
+            this.cboHelpViewerVersion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboHelpViewerVersion.FormattingEnabled = true;
+            this.cboHelpViewerVersion.Items.AddRange(new object[] {
+            "1.0",
+            "2.0"});
+            this.cboHelpViewerVersion.Location = new System.Drawing.Point(402, 194);
+            this.cboHelpViewerVersion.Name = "cboHelpViewerVersion";
+            this.cboHelpViewerVersion.Size = new System.Drawing.Size(59, 24);
+            this.cboHelpViewerVersion.TabIndex = 1;
+            this.cboHelpViewerVersion.SelectedIndexChanged += new System.EventHandler(this.cboHelpViewerVersion_SelectedIndexChanged);
+            // 
             // LaunchMSHelpViewerDlg
             // 
             this.AcceptButton = this.btnOK;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(686, 358);
+            this.ClientSize = new System.Drawing.Size(686, 394);
+            this.Controls.Add(this.cboHelpViewerVersion);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.lblAction);
             this.Controls.Add(this.pbWait);
             this.Controls.Add(this.btnCancel);
@@ -177,7 +202,6 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Open Microsoft Help Viewer Content";
-            this.Load += new System.EventHandler(this.LaunchMSHelpViewerDlg_Load);
             this.grpOptions.ResumeLayout(false);
             this.grpOptions.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbWait)).EndInit();
@@ -198,5 +222,7 @@
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.Label lblAction;
         private System.Windows.Forms.PictureBox pbWait;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ComboBox cboHelpViewerVersion;
     }
 }

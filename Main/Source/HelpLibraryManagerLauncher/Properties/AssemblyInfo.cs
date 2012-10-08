@@ -1,23 +1,23 @@
-﻿//=============================================================================
+﻿//===============================================================================================================
 // System  : Help Library Manager Launcher
 // File    : AssemblyInfo.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/24/2012
+// Updated : 10/05/2012
 // Note    : Copyright 2010-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // Help Library Manager Launcher attributes.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.0.0.0  07/03/2010  EFW  Created the code
-//=============================================================================
+// 1.0.0.2  10/05/2012  EFW  Added support for Help Viewer 2.0
+//===============================================================================================================
 
 using System;
 using System.Reflection;
@@ -51,4 +51,4 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Revision and Build Numbers
 // by using the '*' as shown below:
 
-[assembly: AssemblyVersion("1.0.0.1")]
+[assembly: AssemblyVersion("1.0.0.2")]

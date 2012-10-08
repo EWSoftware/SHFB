@@ -1,49 +1,44 @@
-//=============================================================================
+//===============================================================================================================
 // System  : EWSoftware Design Time Attributes and Editors
 // File    : FrameworkVersionTypeConverter.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/20/2011
-// Note    : Copyright 2006-2011, Eric Woodruff, All rights reserved
+// Updated : 09/17/2012
+// Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains a type converter that allows you to select a .NET
-// Framework or Silverlight Framework version from those currently installed
-// on the system.
+// This file contains a type converter that allows you to select a .NET Framework version to use in the project
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.   This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.0.0.0  08/08/2006  EFW  Created the code
-// 1.9.2.0  01/16/2011  EFW  Updated to support selection of Silverlight
-//                           Framework versions.
-// 1.9.3.2  08/20/2011  EFW  Updated to support selection of .NET Portable
-//                           Framework versions.
-//=============================================================================
+// 1.9.2.0  01/16/2011  EFW  Updated to support selection of Silverlight Framework versions
+// 1.9.3.2  08/20/2011  EFW  Updated to support selection of .NET Portable Framework versions
+// 1.9.5.0  09/10/2012  EFW  Rewrote the class to use the .NET Framework definition file
+//===============================================================================================================
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
+using System.Globalization;
 using System.Linq;
+
+using SandcastleBuilder.Utils.Frameworks;
 
 namespace SandcastleBuilder.Utils.Design
 {
     /// <summary>
-    /// This type converter allows you to select a .NET Framework or Silverlight
-    /// Framework version from those currently installed on the system.
+    /// This type converter allows you to select a .NET Framework version to use in the project
     /// </summary>
     public class FrameworkVersionTypeConverter : StringConverter
     {
         #region Private data members
         //=====================================================================
 
-        private static List<string> versions = new List<string>();
+        private static FrameworkDictionary frameworks;
         private static StandardValuesCollection standardValues = InitializeStandardValues();
         #endregion
 
@@ -53,9 +48,32 @@ namespace SandcastleBuilder.Utils.Design
         /// <summary>
         /// This read-only property returns the values in the collection
         /// </summary>
-        public static IEnumerable<string> StandardValues
+        public static FrameworkDictionary AllFrameworks
         {
-            get { return versions; }
+            get { return frameworks; }
+        }
+
+        /// <summary>
+        /// This is used to get the default framework version to use
+        /// </summary>
+        /// <remarks>The default is the .NET Framework 4.0</remarks>
+        public static string DefaultFramework
+        {
+            get
+            {
+                FrameworkSettings fs = null;
+
+                // If the framework file didn't exist or wasn't valid, the collection will be null here
+                if(frameworks == null)
+                    throw new InvalidOperationException(String.Format(CultureInfo.CurrentCulture,
+                        "The framework definitions were not loaded.  Does a valid definition file exist ({0})?",
+                        FrameworkDictionary.FrameworkFilePath));
+
+                if(!frameworks.TryGetValue(".NET Framework 4.0", out fs))
+                    fs = frameworks.Values.First();
+
+                return fs.Title;
+            }
         }
         #endregion
 
@@ -63,63 +81,27 @@ namespace SandcastleBuilder.Utils.Design
         //=====================================================================
 
         /// <summary>
-        /// This is used to get the standard values by searching for the various
-        /// .NET frameworks installed on the current system.
+        /// This is used to get the standard values by loading the standard framework definition file used by
+        /// the Sandcastle tools.
         /// </summary>
         private static StandardValuesCollection InitializeStandardValues()
         {
-            string programFilesFolder = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
-            IEnumerable<string> silverlightVersions, portableVersions;
+            try
+            {
+                frameworks = FrameworkDictionary.LoadSandcastleFrameworkDictionary();
+            }
+            catch
+            {
+                // Not much we can do, so just return a dummy set of values.  The DefaultFramework property will
+                // fail and throw a better exception than we get if we let this method fail.
+                return new StandardValuesCollection(new[] { ".NET Framework 4.0" });
+            }
 
-            if(String.IsNullOrEmpty(programFilesFolder))
-                programFilesFolder = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
-
-            string silverlightFolder = programFilesFolder + @"\Reference Assemblies\Microsoft\Framework\Silverlight";
-
-            // Add Silverlight Framework versions if present
-            if(!Directory.Exists(silverlightFolder))
-                silverlightVersions = Enumerable.Empty<string>();
-            else
-                silverlightVersions = Directory.EnumerateDirectories(silverlightFolder).Where(d =>
-                    {
-                        string dir = d.Substring(d.LastIndexOf('\\') + 1);
-
-                        return dir.Length > 2 && (dir[0] == 'v' || dir[0] == 'V') && Char.IsDigit(dir[1]);
-                    }).Select(d => "Silverlight " + d.Substring(d.LastIndexOf('\\') + 2));
-
-            string portableFrameworkFolder = programFilesFolder + @"\Reference Assemblies\Microsoft\Framework\.NETPortable";
-
-            // Add .NET Portable Framework versions if present
-            if(!Directory.Exists(portableFrameworkFolder))
-                portableVersions = Enumerable.Empty<string>();
-            else
-                portableVersions = Directory.EnumerateDirectories(portableFrameworkFolder).Where(d =>
-                {
-                    string dir = d.Substring(d.LastIndexOf('\\') + 1);
-
-                    return dir.Length > 2 && (dir[0] == 'v' || dir[0] == 'V') && Char.IsDigit(dir[1]);
-                }).Select(d => "Portable " + d.Substring(d.LastIndexOf('\\') + 2));
-
-            versions.AddRange(
-                // .NET Framework versions
-                Directory.EnumerateDirectories(Environment.GetFolderPath(Environment.SpecialFolder.System) +
-                    @"\..\Microsoft.NET\Framework").Where(d =>
-                    {
-                        string dir = d.Substring(d.LastIndexOf('\\') + 1);
-
-                        return dir.Length > 2 && (dir[0] == 'v' || dir[0] == 'V') && Char.IsDigit(dir[1]);
-                    }).Select(d => ".NET " + d.Substring(d.LastIndexOf('\\') + 2)).Concat(
-                // Plus Silverlight versions if present
-                silverlightVersions).Concat(
-                // Plus .NET Portable versions if present
-                portableVersions).OrderBy(d => d));
-
-            return new StandardValuesCollection(versions);
+            return new StandardValuesCollection(frameworks.Keys);
         }
 
         /// <summary>
-        /// This is overridden to return the values for the type converter's
-        /// dropdown list.
+        /// This is overridden to return the values for the type converter's dropdown list
         /// </summary>
         /// <param name="context">The format context object</param>
         /// <returns>Returns the standard values for the type</returns>
@@ -129,8 +111,8 @@ namespace SandcastleBuilder.Utils.Design
         }
 
         /// <summary>
-        /// This is overridden to indicate that the values are exclusive
-        /// and values outside the list cannot be entered.
+        /// This is overridden to indicate that the values are exclusive and values outside the list cannot be
+        /// entered.
         /// </summary>
         /// <param name="context">The format context object</param>
         /// <returns>Always returns true</returns>
@@ -140,8 +122,7 @@ namespace SandcastleBuilder.Utils.Design
         }
 
         /// <summary>
-        /// This is overridden to indicate that standard values are supported
-        /// and can be chosen from a list.
+        /// This is overridden to indicate that standard values are supported and can be chosen from a list
         /// </summary>
         /// <param name="context">The format context object</param>
         /// <returns>Always returns true</returns>
@@ -151,76 +132,48 @@ namespace SandcastleBuilder.Utils.Design
         }
 
         /// <summary>
-        /// This is used to find out if the specified version of the .NET
-        /// Framework is present on the system.
+        /// This is used to convert old SHFB project framework version values to the new framework version values
         /// </summary>
-        /// <param name="version">The version for which to look</param>
-        /// <returns>True if present, false if not found</returns>
-        public static bool IsPresent(string version)
+        /// <param name="oldValue">The old value to convert</param>
+        /// <returns>The equivalent new value</returns>
+        internal static string ConvertFromOldValue(string oldValue)
         {
-            return versions.Contains(version);
-        }
+            FrameworkSettings fs = null;
 
-        /// <summary>
-        /// This is used to get the latest framework version that starts with
-        /// the given value.
-        /// </summary>
-        /// <param name="version">The version for which to look.  The value
-        /// can be prefixed with ".NET" or "Silverlight".  If not specified,
-        /// ".NET" is assumed.</param>
-        /// <returns>The latest framework version starting with the specified
-        /// value or the most recent version if not found.</returns>
-        public static string LatestFrameworkMatching(string version)
-        {
-            string latestVersion;
+            if(String.IsNullOrWhiteSpace(oldValue))
+                return DefaultFramework;
 
-            // If a framework type is missing, assume .NET
-            if(Char.IsNumber(version[0]))
-                version = ".NET " + version;
+            oldValue = oldValue.Trim();
 
-            latestVersion = versions.LastOrDefault(v => v.StartsWith(version, StringComparison.OrdinalIgnoreCase));
-
-            if(latestVersion == null)
+            if(oldValue.IndexOf(".NET ", StringComparison.OrdinalIgnoreCase) != -1 || Char.IsDigit(oldValue[0]))
             {
-                if(version.StartsWith("Silverlight", StringComparison.OrdinalIgnoreCase))
-                    latestVersion = versions.LastOrDefault(v => v.StartsWith("Silverlight",
-                        StringComparison.OrdinalIgnoreCase));
+                oldValue = oldValue.ToUpperInvariant().Replace(".NET ", String.Empty).Trim();
+
+                if(oldValue.Length == 0)
+                    oldValue = "4.0";
                 else
-                    if(version.StartsWith("Portable", StringComparison.OrdinalIgnoreCase))
-                        latestVersion = versions.LastOrDefault(v => v.StartsWith("Portable",
-                            StringComparison.OrdinalIgnoreCase));
+                    if(oldValue.Length > 3)
+                        oldValue = oldValue.Substring(0, 3);
 
-                // If the other frameworks aren't there, fall back to .NET.  The build will likely fail but
-                // at least the GUI won't crash due to a bad value.
-                if(latestVersion == null)
-                    latestVersion = versions.LastOrDefault(v => v.StartsWith(".NET",
-                        StringComparison.OrdinalIgnoreCase));
+                oldValue = ".NET Framework " + oldValue;
             }
+            else
+                if(oldValue.IndexOf("Silverlight ", StringComparison.OrdinalIgnoreCase) != -1)
+                {
+                    oldValue = oldValue.ToUpperInvariant().Trim();
 
-            return latestVersion;
-        }
+                    if(oldValue.EndsWith(".0", StringComparison.Ordinal))
+                        oldValue = oldValue.Substring(0, oldValue.Length - 2);
+                }
+                else
+                    if(oldValue.IndexOf("Portable ", StringComparison.OrdinalIgnoreCase) != -1)
+                        oldValue = ".NET Portable Library 4.0 (Legacy)";
 
-        /// <summary>
-        /// This is used to get the latest framework version number that starts
-        /// with the given value.
-        /// </summary>
-        /// <param name="version">The version for which to look.  The value
-        /// can be prefixed with ".NET" or "Silverlight".  If not specified,
-        /// ".NET" is assumed.</param>
-        /// <returns>The latest framework version number starting with the
-        /// specified value or the most recent version if not found.</returns>
-        public static string LatestFrameworkNumberMatching(string version)
-        {
-            string latestVersion = LatestFrameworkMatching(version);
+            // If not found, default to .NET 4.0
+            if(!frameworks.TryGetValue(oldValue, out fs))
+                return DefaultFramework;
 
-            if(latestVersion.StartsWith(".NET ", StringComparison.OrdinalIgnoreCase))
-                return latestVersion.Substring(5);
-
-            if(latestVersion.StartsWith("Silverlight ", StringComparison.OrdinalIgnoreCase))
-                return latestVersion.Substring(12);
-
-            // Portable
-            return latestVersion.Substring(9);
+            return fs.Title;
         }
         #endregion
     }

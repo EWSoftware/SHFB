@@ -56,9 +56,7 @@
 				</Directory>
 			</Directory>
 			<Directory Id="ProgramMenuFolder">
-				<Directory Id="ShfbProgramMenuDir" Name="Sandcastle Help File Builder">
-					<Directory Id="CodePlexProjectsDir" Name="CodePlex Projects" />
-				</Directory>
+				<Directory Id="ShfbProgramMenuDir" Name="Sandcastle Help File Builder" />
 			</Directory>
 		</Directory>
 

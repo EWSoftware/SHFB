@@ -10,89 +10,107 @@
   <content>
 
 <list class="bullet">
-	<listItem>Due to changes in the Sandcastle reflection data files, you must delete
-any cache files used by the cached build components if you have added them to your
-project's <codeInline>ComponentConfigurations</codeInline> property.  See the
-<link xlink:href="a24489fb-45d6-46f4-9eaa-9a9c4e0919b2#BuildSettings" /> topic for
-how to find and remove them.  They will be recreated when you build your project.</listItem>
+	<listItem>
+		<para>Due to changes in the Sandcastle reflection data files, you must delete any cache files used by the
+cached build components if you have added them to your project's <codeInline>ComponentConfigurations</codeInline>
+property.  See the <link xlink:href="a24489fb-45d6-46f4-9eaa-9a9c4e0919b2#BuildSettings" /> topic for how to find
+and remove them.  They will be recreated when you build your project.</para>
+	</listItem>
 
-    <listItem>A configuration change has been made to the <legacyBold>Cached MSDN URL
-References</legacyBold> component.  It must be deleted and re-added to the
-<codeInline>ComponentConfigurations</codeInline> property in order to get the latest
-settings.</listItem>
+	<listItem>
+		<para>A configuration change has been made to the <legacyBold>Cached MSDN URL References</legacyBold>
+component.  It must be deleted and re-added to the <codeInline>ComponentConfigurations</codeInline> property in
+order to get the latest settings.</para>
+	</listItem>
 
-	<listItem>If you have added the <legacyBold>Post Transform Component</legacyBold>
-to your project's <codeInline>ComponentConfigurations</codeInline> property, you
-will need to open its configuration and click <ui>OK</ui> to save it and refresh the
-configuration settings.  This is required due to a change in the configuration
-options needed to support multiple output formats in a single build.</listItem>
+	<listItem>
+		<para>If you have added the <legacyBold>Post Transform Component</legacyBold> to your project's
+<codeInline>ComponentConfigurations</codeInline> property, you will need to open its configuration and click
+<ui>OK</ui> to save it and refresh the configuration settings.  This is required due to a change in the
+configuration options needed to support multiple output formats in a single build.</para>
+	</listItem>
 
-	<listItem>The <legacyBold>Post Transform Component</legacyBold>'s <codeInline>outputPath</codeInline>
-element has been replaced with an <codeInline>outputPaths</codeInline> element containing
-one or more path elements that define the output paths to which the code colorizer stylesheet,
-script, and image files should be copied.  The configuration dialog will auto-correct the
-configuration the next time it is saved (see the item above).</listItem>
+	<listItem>
+		<para>The <legacyBold>Post Transform Component</legacyBold>'s <codeInline>outputPath</codeInline> element has
+been replaced with an <codeInline>outputPaths</codeInline> element containing one or more path elements that
+define the output paths to which the code colorizer stylesheet, script, and image files should be copied.  The
+configuration dialog will auto-correct the configuration the next time it is saved (see the item above).</para>
+	</listItem>
 
-    <listItem>A configuration change has been made to the
-<legacyBold>Additional Reference Links</legacyBold> plug-in to support
-multiple build output formats.  If you have added it to your project's
-<codeInline>PlugInConfigurations</codeInline> property, you must open its
-configuration, make any necessary adjustments to its new settings and save it
-again.</listItem>
+	<listItem>
+		<para>A configuration change has been made to the <legacyBold>Additional Reference Links</legacyBold>
+plug-in to support multiple build output formats.  If you have added it to your project's
+<codeInline>PlugInConfigurations</codeInline> property, you must open its configuration, make any necessary
+adjustments to its new settings and save it again.</para>
+	</listItem>
 
-	<listItem>The <codeInline>ProjectLinkType</codeInline> property is now obsolete and
-has been removed.  Project link types are now set automatically based on the selected help file
-output format.</listItem>
+	<listItem>
+		<para>The <codeInline>ProjectLinkType</codeInline> property is now obsolete and has been removed.  Project
+			link types are now set automatically based on the selected help file output format.
+		</para>
+	</listItem>
 
-	<listItem><para>The <codeInline>SdkLinkType</codeInline> property is now obsolete and
-has been removed.  SDK link types are now defined using the following help file format specific
-SDK link type properties:</para>
+	<listItem>
+		<para>The <codeInline>SdkLinkType</codeInline> property is now obsolete and has been removed.  SDK link types
+are now defined using the following help file format specific SDK link type properties:</para>
 
 <list class="bullet">
-  <listItem><codeInline>HtmlSdkLinkType</codeInline> - HTML Help 1 SDK link type</listItem>
-  <listItem><codeInline>MSHelp2SdkLinkType</codeInline> - MS Help 2 SDK link type</listItem>
-  <listItem><codeInline>MSHelpViewerSdkLinkType</codeInline> - MS Help Viewer SDK link type</listItem>
-  <listItem><codeInline>WebsiteSdkLinkType</codeInline> - Website SDK link type</listItem>
+  <listItem>
+		<para><codeInline>HtmlSdkLinkType</codeInline> - HTML Help 1 SDK link type</para>
+	</listItem>
+  <listItem>
+		<para><codeInline>MSHelp2SdkLinkType</codeInline> - MS Help 2 SDK link type</para>
+	</listItem>
+  <listItem>
+		<para><codeInline>MSHelpViewerSdkLinkType</codeInline> - MS Help Viewer SDK link type</para>
+	</listItem>
+  <listItem>
+		<para><codeInline>WebsiteSdkLinkType</codeInline> - Website SDK link type</para>
+	</listItem>
 </list>
 
-	<para>By default, the above properties will all default to <codeInline>Msdn</codeInline> to
-generate links to online MSDN content.  Review your project settings and adjust them if
-necessary.</para></listItem>
+	<para>By default, the above properties will all default to <codeInline>Msdn</codeInline> to generate links to
+online MSDN content.  Review your project settings and adjust them if necessary.</para></listItem>
 
-	<listItem><para>Due to requirements of the MS Help Viewer output format, the
-build process has been modified to support multiple build output formats in a single
-build each with their own related set of properties (i.e. SDK link types).  If you
-have written custom build components or plug-ins, you will need to review them to
-ensure that they work correctly when used with multiple output formats in a single build.</para>
+	<listItem>
+		<para>Due to requirements of the MS Help Viewer output format, the build process has been modified to support
+multiple build output formats in a single build each with their own related set of properties (i.e. SDK link
+types).  If you have written custom build components or plug-ins, you will need to review them to ensure that
+they work correctly when used with multiple output formats in a single build.</para>
 
 <alert class="note">
-  <para>Due to the help formats each loading their own copies of several of the
-build components and outputing a separate copy of the HTML output file, there
-can be a significant increase in the amount of memory and disk space usage during
-a build that generates more than one output format.  If this is an issue, you
-may need to build each help format separately.  This issue may be addressed in a
-future release.</para>
-</alert></listItem>
+  <para>Due to the help formats each loading their own copies of several of the build components and outputing a
+separate copy of the HTML output file, there can be a significant increase in the amount of memory and disk space
+usage during a build that generates more than one output format.  If this is an issue, you may need to build each
+help format separately.  This issue may be addressed in a future release.</para>
+</alert>
+	</listItem>
 
-	<listItem><para>The following <codeInline>BuildStep</codeInline> enumeration changes have
-been made.  If you have written custom plug-ins, check them to be sure that they still behave
-as expected with the following build step changes:</para>
+	<listItem>
+		<para>The following <codeInline>BuildStep</codeInline> enumeration changes have been made.  If you have
+written custom plug-ins, check them to be sure that they still behave as expected with the following build step
+changes:</para>
 
 <list class="bullet">
-    <listItem>The <codeInline>GenerateIntermediateTableOfContents</codeInline>
-step has been moved so that it occurs before the <codeInline>BuildConceptualTopics</codeInline>
-step.  This is required due to an MS Help Viewer build component dependency on
-the <localUri>toc.xml</localUri> file generated by this step.</listItem>
+	<listItem>
+		<para>The <codeInline>GenerateIntermediateTableOfContents</codeInline> step has been moved so that it
+occurs before the <codeInline>BuildConceptualTopics</codeInline> step.  This is required due to an MS Help Viewer
+build component dependency on the <localUri>toc.xml</localUri> file generated by this step.</para>
+	</listItem>
 
-	<listItem>Added a new <codeInline>CombiningIntermediateTocFiles</codeInline> step in
-which the conceptual and API tables of contents files are combined into a single file ready
-for transformation into the help format-specific table of contents files.  This step
-occurs immediately after the <codeInline>BuildReferenceTopics</codeInline> step.</listItem>
+	<listItem>
+		<para>Added a new <codeInline>CombiningIntermediateTocFiles</codeInline> step in which the conceptual and API
+tables of contents files are combined into a single file ready for transformation into the help format-specific
+table of contents files.  This step occurs immediately after the <codeInline>BuildReferenceTopics</codeInline>
+step.</para>
+	</listItem>
 
-	<listItem>The <codeInline>UpdateTableOfContents</codeInline> build step has been removed
-as it is obsolete.</listItem>
+	<listItem>
+		<para>The <codeInline>UpdateTableOfContents</codeInline> build step has been removed as it is obsolete.</para>
+	</listItem>
 
-</list></listItem>
+</list>
+	</listItem>
 
 </list>
   </content>
@@ -102,124 +120,173 @@ as it is obsolete.</listItem>
   <title>Other Changes in This Release</title>
   <content>
     <list class="bullet">
-		<listItem>Added support for the June 2010 release of Sandcastle.</listItem>
+			<listItem>
+				<para>Added support for the June 2010 release of Sandcastle.</para>
+			</listItem>
 
-		<listItem>Added full support for MS Help Viewer output.  Please see the
-<link xlink:href="21c2a363-6c94-440b-8985-6b224d275463" /> topic for known
-limitations with the Microsoft Help Viewer help format.</listItem>
+			<listItem>
+				<para>Added full support for MS Help Viewer output.  Please see the <link xlink:href="21c2a363-6c94-440b-8985-6b224d275463" />
+topic for known limitations with the Microsoft Help Viewer help format.</para>
+			</listItem>
 
-		<listItem>Support was added for installing, viewing, and removing MS Help
-Viewer files from within the GUI.</listItem>
+			<listItem>
+				<para>Support was added for installing, viewing, and removing MS Help Viewer files from within the GUI.</para>
+			</listItem>
 
-		<listItem>MS Help Viewer output includes a Help Library Manager launcher
-utility and sample script files that you can use to install and remove the help file.
-The launcher is freely distributable and may be used in your product installers to
-install your help viewer content.  See the <link xlink:href="534c4ff1-3bba-4431-a3a6-76dcb2d374f8" />
-topic for more information.</listItem>
+			<listItem>
+				<para>MS Help Viewer output includes a Help Library Manager launcher utility and sample script files that
+you can use to install and remove the help file.  The launcher is freely distributable and may be used in your
+product installers to install your help viewer content.  See the <link xlink:href="534c4ff1-3bba-4431-a3a6-76dcb2d374f8" />
+topic for more information.</para>
+			</listItem>
 
-		<listItem><para>The following <link xlink:href="5f743a6e-3239-409a-a8c1-0bff4b5375f4">MS
-Help Viewer</link> category project properties have been added:</para>
+			<listItem>
+				<para>The following <link xlink:href="5f743a6e-3239-409a-a8c1-0bff4b5375f4">MS Help Viewer</link> category
+project properties have been added:</para>
 
 <list class="bullet">
-	<listItem><codeInline>CatalogProductId</codeInline></listItem>
-	<listItem><codeInline>CatalogProductVersion</codeInline></listItem>
-	<listItem><codeInline>ProductTitle</codeInline></listItem>
-	<listItem><codeInline>SelfBranded</codeInline></listItem>
-	<listItem><codeInline>TocOrder</codeInline></listItem>
-	<listItem><codeInline>TocParentId</codeInline></listItem>
-	<listItem><codeInline>TocParentVersion</codeInline></listItem>
-	<listItem><codeInline>TopicVersion</codeInline></listItem>
-	<listItem><codeInline>VendorName</codeInline></listItem>
-</list></listItem>
+	<listItem>
+		<para><codeInline>CatalogProductId</codeInline></para>
+	</listItem>
+	<listItem>
+		<para><codeInline>CatalogProductVersion</codeInline></para>
+	</listItem>
+	<listItem>
+		<para><codeInline>ProductTitle</codeInline></para>
+	</listItem>
+	<listItem>
+		<para><codeInline>SelfBranded</codeInline></para>
+	</listItem>
+	<listItem>
+		<para><codeInline>TocOrder</codeInline></para>
+	</listItem>
+	<listItem>
+		<para><codeInline>TocParentId</codeInline></para>
+	</listItem>
+	<listItem>
+		<para><codeInline>TocParentVersion</codeInline></para>
+	</listItem>
+	<listItem>
+		<para><codeInline>TopicVersion</codeInline></para></listItem>
+	<listItem>
+		<para><codeInline>VendorName</codeInline></para>
+	</listItem>
+</list>
+		</listItem>
 
-		<listItem>As a result of the changes to support MS Help Viewer, the API
-content can now be parented to any conceptual topic in the content layout file, not
-just those at the root level.  API content can now be inserted before, after, or as
-a child of any topic.  See <link xlink:href="ba42b2c2-985d-46f1-ba4c-3d921edcafe3" />
-for more details.</listItem>
+		<listItem>
+			<para>As a result of the changes to support MS Help Viewer, the API content can now be parented to any
+conceptual topic in the content layout file, not just those at the root level.  API content can now be inserted
+before, after, or as a child of any topic.  See <link xlink:href="ba42b2c2-985d-46f1-ba4c-3d921edcafe3" /> for
+more details.</para>
+		</listItem>
 
-		<listItem>An option was added to the conceptual content layout file editor that
-allows specification of a topic that will only appear in MS Help Viewer output to serve
-as the root content container node for all topics generated for an MS Help Viewer file.
-This allows a single root node to appear in the parent table of contents location rather
-than all topics from the help file which is the default behavior.</listItem>
+		<listItem>
+			<para>An option was added to the conceptual content layout file editor that allows specification of a topic
+that will only appear in MS Help Viewer output to serve as the root content container node for all topics
+generated for an MS Help Viewer file.  This allows a single root node to appear in the parent table of contents
+location rather than all topics from the help file which is the default behavior.</para>
+		</listItem>
 
-		<listItem>Fixed a bug in the designer for the <codeInline>SyntaxFilters</codeInline>
-property that kept changing values containing one of the standard filters to
-<codeInline>Standard</codeInline>.</listItem>
+		<listItem>
+			<para>Fixed a bug in the designer for the <codeInline>SyntaxFilters</codeInline> property that kept
+changing values containing one of the standard filters to <codeInline>Standard</codeInline>.</para>
+		</listItem>
 
-		<listItem>Fixed a bug in the SHFB 1.7.0.0 file converter caused by the
-removed <codeInline>ShowFeedbackControl</codeInline> property.</listItem>
+		<listItem>
+			<para>Fixed a bug in the SHFB 1.7.0.0 file converter caused by the removed <codeInline>ShowFeedbackControl</codeInline>
+property.</para>
+		</listItem>
 
-		<listItem>Fixed a bug in the <legacyBold>Version Builder Plug-In</legacyBold>
-that caused the inheritance hierarchy information on base classes to be
-incorrect.  You will now see version numbers listed in descending order which
-is a requirement of the version builder tool.</listItem>
+		<listItem>
+			<para>Fixed a bug in the <legacyBold>Version Builder Plug-In</legacyBold> that caused the inheritance
+hierarchy information on base classes to be incorrect.  You will now see version numbers listed in descending
+order which is a requirement of the version builder tool.</para>
+		</listItem>
 
-		<listItem>Fixed a bug that caused the <legacyBold>Completion Notification</legacyBold>
-plug-in to fail.</listItem>
+		<listItem>
+			<para>Fixed a bug that caused the <legacyBold>Completion Notification</legacyBold> plug-in to fail.</para>
+		</listItem>
 
-		<listItem>Support for an optional <environmentVariable>SHFBCOMPONENTROOT</environmentVariable>
-environment variable has been added when loading plug-ins and build components.  The
-search order for loading plug-ins and build components is now to search the folder defined
-by <environmentVariable>SHFBCOMPONENTROOT</environmentVariable> if defined, then the SHFB
-installation folder, and finally the program data components and plug-ins folder.  This makes
-XCOPY deployments, custom installations on build servers, and building and testing your own
-custom components and plug-ins easier.</listItem>
+		<listItem>
+			<para>Support for an optional <environmentVariable>SHFBCOMPONENTROOT</environmentVariable> environment
+variable has been added when loading plug-ins and build components.  The search order for loading plug-ins and
+build components is now to search the folder defined by <environmentVariable>SHFBCOMPONENTROOT</environmentVariable>
+if defined, then the SHFB installation folder, and finally the program data components and plug-ins folder.  This
+makes XCOPY deployments, custom installations on build servers, and building and testing your own custom
+components and plug-ins easier.</para>
+		</listItem>
 
-		<listItem>The website output now includes a default Favorites icon.  To
-override it, add an icon file called <localUri>favicon.ico</localUri> to the
-root of your project.</listItem>
+		<listItem>
+			<para>The website output now includes a default Favorites icon.  To override it, add an icon file called
+<localUri>favicon.ico</localUri> to the root of your project.</para>
+		</listItem>
 
-		<listItem>In solution file documenation sources, the defined configuration
-and platform values (either on the documentation source or the SHFB project) are
-now used to determine which projects to include from it.  If a project is excluded
-from the build in the solution file based on the defined configuration and platform,
-it is now ignored and will not be included in the documenation.  In addition, when
-a project is loaded as part of a solution file, the configuration and platform settings
-defined in the solution file for the project now take precedence.</listItem>
+		<listItem>
+			<para>In solution file documenation sources, the defined configuration and platform values (either on the
+documentation source or the SHFB project) are now used to determine which projects to include from it.  If a
+project is excluded from the build in the solution file based on the defined configuration and platform, it is
+now ignored and will not be included in the documenation.  In addition, when a project is loaded as part of a
+solution file, the configuration and platform settings defined in the solution file for the project now take
+precedence.</para>
+		</listItem>
 
-		<listItem>All build tasks in help file builder template project files and
-the help file builder targets file now use fully qualified names to avoid conflicts
-with similarly named community tasks that may be imported indirectly through MSBuild
-common targets file references.</listItem>
+		<listItem>
+			<para>All build tasks in help file builder template project files and the help file builder targets file
+now use fully qualified names to avoid conflicts with similarly named community tasks that may be imported
+indirectly through MSBuild common targets file references.</para>
+		</listItem>
 
-		<listItem>The <legacyBold>Code Block Component</legacyBold> will now expand
-environment variable references in source attribute values.</listItem>
+		<listItem>
+			<para>The <legacyBold>Code Block Component</legacyBold> will now expand environment variable references in
+source attribute values.</para>
+		</listItem>
 
-		<listItem>Added the <link xlink:href="92a6e678-48fb-4e6c-a7e5-34f264b01212" />
-which can be used to define a set of build components that will be executed based
-on a specified set of help file formats.  This makes it possible to generate multiple
-help file output formats in one build each with differing configuration settings.</listItem>
+		<listItem>
+			<para>Added the <link xlink:href="92a6e678-48fb-4e6c-a7e5-34f264b01212" /> which can be used to define a
+set of build components that will be executed based on a specified set of help file formats.  This makes it
+possible to generate multiple help file output formats in one build each with differing configuration settings.</para>
+		</listItem>
 
-		<listItem>Added the <link xlink:href="16dc54c2-84bf-4bab-a875-0b1d49c9b1b8" />
-which is a slightly modifed version of the standard Sandcastle component of the same name.
-This version supports a <codeInline>sortOrder</codeInline> attribute on the table of contents
-topic items that lets you specify the sort order for the topics.  The help file builder
-uses this to arrange the table of contents based on the project settings.</listItem>
+		<listItem>
+			<para>Added the <legacyBold>MSHCComponent</legacyBold> which is a slightly modifed version of the standard
+Sandcastle component of the same name.  This version supports a <codeInline>sortOrder</codeInline> attribute on
+the table of contents topic items that lets you specify the sort order for the topics.  The help file builder
+uses this to arrange the table of contents based on the project settings.</para>
+		</listItem>
 
-		<listItem>The <legacyBold>Version Builder Plug-In</legacyBold> has been updated
-to support the new option to remove APIs no longer present in the latest versions.  The
-default is to keep the old APIs so that the plug-in behaves as it did in prior releases.
-It can be changed by editing the plug-in's configuration.</listItem>
+		<listItem>
+			<para>The <legacyBold>Version Builder Plug-In</legacyBold> has been updated to support the new option to
+remove APIs no longer present in the latest versions.  The default is to keep the old APIs so that the plug-in
+behaves as it did in prior releases.  It can be changed by editing the plug-in's configuration.</para>
+		</listItem>
 
-		<listItem>When cleaning build output and clearing prior web output, access
-denied errors are now ignored when removing folders rather than aborting the operation.
-A message is logged noting the issue and the file that caused it.</listItem>
+		<listItem>
+			<para>When cleaning build output and clearing prior web output, access denied errors are now ignored when
+removing folders rather than aborting the operation. A message is logged noting the issue and the file that
+caused it.</para>
+		</listItem>
 
-		<listItem>Automatic entry of closing brackets, parentheses, and quotes
-in the text editor can be disabled in the <ui>User Preferences</ui> options.  A
-path to an external MS Help Viewer executable can also be specified.  If not set,
-the browser will be used to open MS Help Viewer content.</listItem>
+		<listItem>
+			<para>Automatic entry of closing brackets, parentheses, and quotes in the text editor can be disabled in
+the <ui>User Preferences</ui> options.  A path to an external MS Help Viewer executable can also be specified.
+If not set, the browser will be used to open MS Help Viewer content.</para>
+		</listItem>
 
-		<listItem>Added an option to launch the Help Library Manager for interactive
-use on the <ui>Documentation | View Help File</ui> menu.</listItem>
+		<listItem>
+			<para>Added an option to launch the Help Library Manager for interactive use on the <ui>Documentation |
+View Help File</ui> menu.</para>
+		</listItem>
 
-		<listItem>A separate distribution file for SharpDevelop is no longer supplied.
-Version 3.2 and later now make use of the standard help file builder installation.</listItem>
+		<listItem>
+			<para>A separate distribution file for SharpDevelop is no longer supplied.  Version 3.2 and later now make
+use of the standard help file builder installation.</para>
+		</listItem>
 
-		<listItem>Thanks to Immo Landwerth for supplying the WiX setup project
-that is now used to create the installer for the help file builder.</listItem>
+		<listItem>
+			<para>Thanks to Immo Landwerth for supplying the WiX setup project that is now used to create the installer
+for the help file builder.</para>
+		</listItem>
 
     </list>
   </content>

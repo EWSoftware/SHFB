@@ -1,25 +1,24 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder Utilities
 // File    : ConvertFromNDoc.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/08/2012
+// Updated : 09/10/2012
 // Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains a class used to convert NDoc 1.x project files to the
-// MSBuild format project files used by SHFB.
+// This file contains a class used to convert NDoc 1.x project files to the MSBuild format project files used by
+// SHFB.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.   This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+//===============================================================================================================
 // 1.8.0.0  07/23/2008  EFW  Created the code
 // 1.9.3.4  01/08/2012  EFW  Added constructor to support use from VSPackage
-//=============================================================================
+//===============================================================================================================
 
 using System;
 using System.Collections.Generic;
@@ -28,14 +27,13 @@ using System.IO;
 using System.Xml;
 using System.Xml.XPath;
 
-using SandcastleBuilder.Utils;
 using SandcastleBuilder.Utils.Design;
 
 namespace SandcastleBuilder.Utils.Conversion
 {
     /// <summary>
-    /// This class is used to convert NDoc 1.x project files to the MSBuild
-    /// format project files used by the help file builder.
+    /// This class is used to convert NDoc 1.x project files to the MSBuild format project files used by the help
+    /// file builder.
     /// </summary>
     public class ConvertFromNDoc : ConvertToMSBuildFormat
     {
@@ -422,9 +420,8 @@ namespace SandcastleBuilder.Utils.Conversion
                                 break;
 
                             case "SdkDocVersion":
-                                value = child.GetAttribute("value",
-                                    String.Empty).Substring(5).Replace('_', '.');
-                                project.FrameworkVersion = FrameworkVersionTypeConverter.LatestFrameworkMatching(value);
+                                value = child.GetAttribute("value", String.Empty).Substring(5).Replace('_', '.');
+                                project.FrameworkVersion = FrameworkVersionTypeConverter.ConvertFromOldValue(value);
                                 break;
 
                             case "SdkLinksOnWeb":

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : AssemblyInfoShared.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/15/2012
+// Updated : 09/30/2012
 // Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -28,6 +28,7 @@
 // 1.9.0.0  06/06/2010  EFW  Added support for generating MS Help Viewer files
 // 1.9.1.0  07/09/2010  EFW  Updated for use with .NET 4.0 and MSBuild 4.0.
 // 1.9.4.0  04/15/2012  EFW  Updated for use with Sandcastle 2.7.0.0
+// 1.9.5.0  09/30/2012  EFW  Updated for use with Sandcastle 2.7.1.0
 //=============================================================================
 
 using System.Reflection;
@@ -65,6 +66,6 @@ using System.Runtime.InteropServices;
 // and plug-in developers to use the same major, minor, and build numbers
 // as the Sandcastle Help File Builder to indicate with which version their
 // components are compatible.
-[assembly: AssemblyVersion("1.9.4.0")]
+[assembly: AssemblyVersion("1.9.5.0")]
 
 // See AssemblyInfo.cs for project-specific assembly attributes

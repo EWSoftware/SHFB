@@ -1,64 +1,55 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/25/2012
+// Updated : 09/13/2012
 // Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains the thread class that handles all aspects of the build
-// process.
+// This file contains the thread class that handles all aspects of the build process.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.   This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+//===============================================================================================================
 #region Older history
 // 1.0.0.0  08/04/2006  EFW  Created the code
 // 1.3.0.0  09/09/2006  EFW  Added support for website output
 // 1.3.1.0  09/29/2006  EFW  Added support for the ShowMissing* properties
-// 1.3.1.0  10/02/2006  EFW  Added support for the September CTP and the
-//                           the Document* properties.
+// 1.3.1.0  10/02/2006  EFW  Added support for the September CTP and the the Document* properties
 // 1.3.2.0  11/10/2006  EFW  Added support for DocumentAssembly.CommentsOnly
 // 1.3.4.0  12/24/2006  EFW  Various additions and updates
 // 1.4.0.0  03/07/2007  EFW  Added support for the March 2007 CTP
 // 1.5.0.0  06/19/2007  EFW  Various additions and updates for the June CTP
-// 1.5.0.2  07/03/2007  EFW  Added support for a content site map file and
-//                           reworked support for language resources.  Also
-//                           added support for namespace ripping.
+// 1.5.0.2  07/03/2007  EFW  Added support for a content site map file and reworked support for language
+//                           resources.  Also added support for namespace ripping.
 // 1.5.1.0  07/20/2007  EFW  Added support for the API filter property
-// 1.5.2.0  09/10/2007  EFW  Exposed some members for use by plug-ins and
-//                           added support for calling the plug-ins.
+// 1.5.2.0  09/10/2007  EFW  Exposed some members for use by plug-ins and added support for calling the
+//                           plug-ins.
 // 1.6.0.0  10/04/2007  EFW  Added support for the September 2007 CTP
 // 1.6.0.1  10/29/2007  EFW  Added support for the October 2007 CTP
 // 1.6.0.4  01/16/2008  EFW  Added support for the January 2008 release
-// 1.6.0.5  02/04/2008  EFW  Added support for the new Extract HTML Info tool
-//                           and the <inheritdoc /> tag.
+// 1.6.0.5  02/04/2008  EFW  Added support for the new Extract HTML Info tool and the <inheritdoc /> tag
 // 1.6.0.6  03/09/2008  EFW  Wrapped the log and build steps in XML tags
-// 1.6.0.7  04/17/2008  EFW  Added support for wildcards in assembly names.
-//                           Added support for conceptual content.
+// 1.6.0.7  04/17/2008  EFW  Added support for wildcards in assembly names.  Added support for conceptual
+//                           content.
 // 1.8.0.0  07/26/2008  EFW  Modified to support the new project format
 // 1.8.0.1  12/14/2008  EFW  Updated to use .NET 3.5 and MSBuild 3.5
-// 1.8.0.3  07/04/2009  EFW  Added support for the July 2009 release and
-//                           building MS Help Viewer files.
-// 1.9.0.0  05/22/2010  EFW  Added support for the June 2010 release.  Reworked
-//                           solution file handling to honor solution-level
-//                           per-project configuration and platform settings.
-//                           Added support for multi-format build output. Moved
-//                           GenerateIntermediateTableOfContents so that it
-//                           occurs right after MergeTablesOfContents.
+// 1.8.0.3  07/04/2009  EFW  Added support for the July 2009 release and building MS Help Viewer files
+// 1.9.0.0  05/22/2010  EFW  Added support for the June 2010 release.  Reworked solution file handling to
+//                           honor solution-level per-project configuration and platform settings.  Added
+//                           support for multi-format build output. Moved GenerateIntermediateTableOfContents
+//                           so that it occurs right after MergeTablesOfContents.
 #endregion
 // 1.9.1.0  07/09/2010  EFW  Updated for use with .NET 4.0 and MSBuild 4.0.
-// 1.9.2.0  01/16/2011  EFW  Updated to support selection of Silverlight
-//                           Framework versions.
-// 1.9.3.2  08/20/2011  EFW  Updated to support selection of .NET Portable
-//                           Framework versions.
+// 1.9.2.0  01/16/2011  EFW  Updated to support selection of Silverlight Framework versions
+// 1.9.3.2  08/20/2011  EFW  Updated to support selection of .NET Portable Framework versions
 // 1.9.4.0  03/25/2012  EFW  Merged changes for VS2010 style from Don Fehr
-//=============================================================================
+// 1.9.5.0  09/10/2012  EFW  Updated to use the new framework definition file for the .NET Framework versions
+//===============================================================================================================
 
 using System;
 using System.Collections.Generic;
@@ -78,6 +69,7 @@ using System.Xml.XPath;
 using SandcastleBuilder.Utils.BuildComponent;
 using SandcastleBuilder.Utils.ConceptualContent;
 using SandcastleBuilder.Utils.Design;
+using SandcastleBuilder.Utils.Frameworks;
 using SandcastleBuilder.Utils.MSBuild;
 using SandcastleBuilder.Utils.PlugIn;
 
@@ -97,7 +89,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
         private SandcastleProject project;      // The project to build
         private string originalProjectName;
 
-        // Assembly and reference information
+        // Framework, assembly, and reference information
+        private FrameworkSettings frameworkSettings;
         private Collection<string> assembliesList;
         private Dictionary<string, Tuple<string, string, List<KeyValuePair<string, string>>>> referenceDictionary;
 
@@ -113,18 +106,16 @@ namespace SandcastleBuilder.Utils.BuildEngine
         private bool isPartialBuild, suppressApiFilter;
 
         // Build output file lists
-        private Collection<string> help1Files, help2Files, helpViewerFiles,
-            websiteFiles;
+        private Collection<string> help1Files, help2Files, helpViewerFiles, websiteFiles;
 
         // Progress event arguments
         private BuildProgressEventArgs progressArgs;
         private DateTime buildStart, stepStart;
 
         // Various paths and other strings
-        private string shfbFolder, templateFolder, projectFolder, outputFolder,
-            workingFolder, sandcastleFolder, hhcFolder, hxcompFolder,
-            languageFolder, webFolder, presentationFolder, defaultTopic,
-            namespacesTopic, reflectionFile, presentationParam, msBuildExePath;
+        private string shfbFolder, templateFolder, projectFolder, outputFolder, workingFolder,
+            sandcastleFolder, hhcFolder, hxcompFolder, languageFolder, webFolder, presentationFolder,
+            defaultTopic, namespacesTopic, reflectionFile, presentationParam, msBuildExePath;
 
         private Collection<string> helpFormatOutputFolders;
 
@@ -282,6 +273,14 @@ namespace SandcastleBuilder.Utils.BuildEngine
         public string ReflectionInfoFilename
         {
             get { return reflectionFile; }
+        }
+
+        /// <summary>
+        /// This read-only property returns the framework settings used by the build
+        /// </summary>
+        public FrameworkSettings FrameworkSettings
+        {
+            get { return frameworkSettings; }
         }
 
         /// <summary>
@@ -499,8 +498,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
         {
             project = buildProject;
 
-            // Save a copy of the project filename.  If using a temporary
-            // project, it won't match the passed project's name.
+            // Save a copy of the project filename.  If using a temporary project, it won't match the passed
+            // project's name.
             originalProjectName = buildProject.Filename;
 
             apiTocOrder = -1;
@@ -519,6 +518,9 @@ namespace SandcastleBuilder.Utils.BuildEngine
             helpViewerFiles = new Collection<string>();
             websiteFiles = new Collection<string>();
             helpFormatOutputFolders = new Collection<string>();
+
+            frameworkSettings = FrameworkVersionTypeConverter.AllFrameworks.GetFrameworkWithRedirect(
+                buildProject.FrameworkVersion);
         }
 
         /// <summary>
@@ -658,6 +660,22 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     Environment.SetEnvironmentVariable("SHFBROOT", shfbFolder);
                 }
 
+                // Get the framework settings to use for the build
+                frameworkSettings = FrameworkVersionTypeConverter.AllFrameworks.GetFrameworkWithRedirect(
+                    project.FrameworkVersion);
+
+                if(frameworkSettings == null)
+                    throw new BuilderException("BE0071", String.Format(CultureInfo.CurrentCulture,
+                        "Unable to locate information for the project framework version '{0}' or a suitable " +
+                        "redirected version on this system", project.FrameworkVersion));
+
+                // Warn if a different framework is being used for the build
+                if(frameworkSettings.Title != project.FrameworkVersion)
+                    this.ReportWarning("BE0072", "Project framework version '{0}' not found.  It has been " +
+                        "redirected and will use '{1}' instead.", project.FrameworkVersion,
+                        frameworkSettings.Title);
+
+                // Load the plug-ins
                 if(project.PlugInConfigurations.Count != 0)
                     this.LoadPlugIns();
 
@@ -814,13 +832,12 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     languageFolder = language.Name + @"\";
                 else
                 {
-                    // Warn the user about the default being used.  The
-                    // language will still be used for the help file though.
+                    // Warn the user about the default being used.  The language will still be used for the help
+                    // file though.
                     if(language.Name != "en-US")
-                        this.ReportWarning("BE0003", "Sandcastle shared " +
-                            "content for the '{0}, {1}' language could not " +
-                            "be found.  Using 'en-US, English (US)' " +
-                            "defaults.", language.Name, language.DisplayName);
+                        this.ReportWarning("BE0003", "Sandcastle shared content for the '{0}, {1}' language " +
+                            "could not be found.  Using 'en-US, English (US)' defaults.", language.Name,
+                            language.DisplayName);
 
                     languageFolder = String.Empty;
                 }
@@ -841,7 +858,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     // Copy the stop word list
                     languageFile = Path.ChangeExtension(languageFile.Replace(presentationParam +
                         "BuilderContent", "StopWordList"), ".txt");
-                    File.Copy(templateFolder + @"..\SharedContent\" + languageFile, workingFolder + "StopWordList.txt");
+                    File.Copy(templateFolder + @"..\SharedContent\" + languageFile, workingFolder +
+                        "StopWordList.txt");
                     File.SetAttributes(workingFolder + "StopWordList.txt", FileAttributes.Normal);
 
                     this.ExecutePlugIns(ExecutionBehaviors.After);
@@ -864,27 +882,23 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     {
                         msBuildProject = new Project(scriptFile);
 
-                        // Add the references.  "mscorlib" is ignored as it causes MRefBuilder to reset its
-                        // target platform information.  For something like Silverlight, that probably isn't
-                        // what we want it to do so we'll ignore it.  It'll use what is passed in the platform
-                        // configuration file option.
+                        // Add the references
                         foreach(var r in referenceDictionary.Values)
-                            if(!Path.GetFileNameWithoutExtension(r.Item2).Equals("mscorlib", StringComparison.OrdinalIgnoreCase))
+                        {
+                            projectItem = msBuildProject.AddItem(r.Item1, r.Item2, r.Item3)[0];
+
+                            // Make sure hint paths are correct by adding the project folder to any relative
+                            // paths.  Skip any containing MSBuild variable references.
+                            if(projectItem.HasMetadata(ProjectElement.HintPath))
                             {
-                                projectItem = msBuildProject.AddItem(r.Item1, r.Item2, r.Item3)[0];
+                                hintPath = projectItem.GetMetadataValue(ProjectElement.HintPath);
 
-                                // Make sure hint paths are correct by adding the project folder to any relative
-                                // paths.  Skip any containing MSBuild variable references.
-                                if(projectItem.HasMetadata(ProjectElement.HintPath))
-                                {
-                                    hintPath = projectItem.GetMetadataValue(ProjectElement.HintPath);
-
-                                    if(!Path.IsPathRooted(hintPath) && hintPath.IndexOf("$(",
-                                      StringComparison.Ordinal) == -1)
-                                        projectItem.SetMetadataValue(ProjectElement.HintPath, Path.Combine(
-                                            projectFolder, hintPath));
-                                }
+                                if(!Path.IsPathRooted(hintPath) && hintPath.IndexOf("$(",
+                                  StringComparison.Ordinal) == -1)
+                                    projectItem.SetMetadataValue(ProjectElement.HintPath, Path.Combine(
+                                        projectFolder, hintPath));
                             }
+                        }
 
                         // Add the assemblies to document
                         foreach(string assemblyName in assembliesList)
@@ -1955,7 +1969,7 @@ AllDone:
             Version fileVersion = new Version(fvi.FileMajorPart, fvi.FileMinorPart,
                 fvi.FileBuildPart, fvi.FilePrivatePart);
 
-            Version expectedVersion = new Version("2.7.0.0");
+            Version expectedVersion = new Version("2.7.1.0");
 
             if(fileVersion < expectedVersion)
                 throw new BuilderException("BE0036", String.Format(CultureInfo.InvariantCulture,
@@ -2115,23 +2129,22 @@ AllDone:
         //=====================================================================
 
         /// <summary>
-        /// Validate the documentation source information and copy the files to
-        /// the working folder.
+        /// Validate the documentation source information and copy the files to the working folder
         /// </summary>
-        /// <exception cref="BuilderException">This is thrown if any of
-        /// the information is invalid.</exception>
+        /// <exception cref="BuilderException">This is thrown if any of the information is invalid</exception>
         private void ValidateDocumentationSources()
         {
             List<string> commentsList = new List<string>();
             Dictionary<string, MSBuildProject> projectDictionary = new Dictionary<string, MSBuildProject>();
+            HashSet<string> targetFrameworksSeen = new HashSet<string>(),
+                targetFrameworkVersionsSeen = new HashSet<string>();
 
             MSBuildProject projRef;
             XPathDocument testComments;
             XPathNavigator navComments;
             XmlCommentsFile comments;
             int fileCount;
-            string workingPath, projFramework, lastSolution = null, targetFramework = project.FrameworkVersion;
-            bool dotNetSeen = false, silverlightSeen = false, portableSeen = false;
+            string workingPath, lastSolution = null;
 
             this.ReportProgress(BuildStep.ValidatingDocumentationSources,
                 "Validating and copying documentation source information");
@@ -2143,25 +2156,24 @@ AllDone:
             if(this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
                 return;
 
-            // It's possible a plug-in might want to add or remove assemblies
-            // so we'll run them before checking to see if the project has any.
+            // It's possible a plug-in might want to add or remove assemblies so we'll run them before checking
+            // to see if the project has any.
             this.ExecutePlugIns(ExecutionBehaviors.Before);
 
             if(project.DocumentationSources.Count == 0)
                 throw new BuilderException("BE0039", "The project does not have any documentation sources defined");
 
-            // Clone the project's references.  These will be added to a build project later on so we'll
-            // note the necessary information needed to create the reference in the future project.
+            // Clone the project's references.  These will be added to a build project later on so we'll note the
+            // necessary information needed to create the reference in the future project.
             foreach(string refType in (new string[] { "Reference", "COMReference" }))
                 foreach(ProjectItem reference in project.MSBuildProject.GetItems(refType))
                     referenceDictionary.Add(reference.EvaluatedInclude, Tuple.Create(reference.ItemType,
                         reference.EvaluatedInclude, reference.Metadata.Select(m =>
                             new KeyValuePair<string, string>(m.Name, m.EvaluatedValue)).ToList()));
 
-            // Convert project references to regular references that point to the output assembly.
-            // Project references get built and we may not have enough info for that to happen
-            // successfully.  As such, we'll assume the project has already been built and that its
-            // target exists.
+            // Convert project references to regular references that point to the output assembly.  Project
+            // references get built and we may not have enough info for that to happen successfully.  As such,
+            // we'll assume the project has already been built and that its target exists.
             foreach(ProjectItem reference in project.MSBuildProject.GetItems("ProjectReference"))
                 using(projRef = new MSBuildProject(reference.EvaluatedInclude))
                 {
@@ -2174,9 +2186,9 @@ AllDone:
 
             try
             {
-                // For each source, make three passes: one for projects, one for assemblies and one
-                // for comments files.  Projects and comments files are optional but when all done,
-                // at least one assembly must have been found.
+                // For each source, make three passes: one for projects, one for assemblies and one for comments
+                // files.  Projects and comments files are optional but when all done, at least one assembly must
+                // have been found.
                 foreach(DocumentationSource ds in project.DocumentationSources)
                 {
                     fileCount = 0;
@@ -2228,8 +2240,8 @@ AllDone:
                     {
                         if(!assembliesList.Contains(asmName))
                         {
-                            // Assemblies are parsed in place by MRefBuilder so we
-                            // don't have to do anything with them here.
+                            // Assemblies are parsed in place by MRefBuilder so we don't have to do anything with
+                            // them here.
                             this.ReportProgress("    Found assembly '{0}'", asmName);
                             assembliesList.Add(asmName);
                         }
@@ -2239,8 +2251,8 @@ AllDone:
                         fileCount++;
                     }
 
-                    foreach(string commentsName in DocumentationSource.CommentsFiles(
-                      ds.SourceFile, ds.IncludeSubFolders))
+                    foreach(string commentsName in DocumentationSource.CommentsFiles(ds.SourceFile,
+                      ds.IncludeSubFolders))
                     {
                         if(!commentsList.Contains(commentsName))
                         {
@@ -2254,8 +2266,8 @@ AllDone:
                     }
 
                     if(fileCount == 0)
-                        this.ReportWarning("BE0006", "Unable to locate any documentation sources for '{0}' (Configuration: {1} " +
-                            "Platform: {2})", ds.SourceFile,
+                        this.ReportWarning("BE0006", "Unable to locate any documentation sources for '{0}' " +
+                            "(Configuration: {1} Platform: {2})", ds.SourceFile,
                             !String.IsNullOrEmpty(ds.Configuration) ? ds.Configuration : project.Configuration,
                             !String.IsNullOrEmpty(ds.Platform) ? ds.Platform : project.Platform);
                 }
@@ -2276,8 +2288,8 @@ AllDone:
 
                             if(!assembliesList.Contains(workingPath))
                             {
-                                // Assemblies are parsed in place by MRefBuilder so we
-                                // don't have to do anything with them here.
+                                // Assemblies are parsed in place by MRefBuilder so we don't have to do anything
+                                // with them here.
                                 this.ReportProgress("    Found assembly '{0}'", workingPath);
                                 assembliesList.Add(workingPath);
                             }
@@ -2310,28 +2322,44 @@ AllDone:
                                 this.ReportProgress("    Ignoring duplicate comments file '{0}'", workingPath);
                         }
 
-                        // Note the highest framework version used
-                        projFramework = msbProject.TargetFrameworkVersion;
-
-                        if(!String.IsNullOrEmpty(projFramework))
-                        {
-                            if(projFramework.StartsWith(".NET", StringComparison.OrdinalIgnoreCase))
-                                dotNetSeen = true;
-                            else
-                                if(projFramework.StartsWith("Silverlight", StringComparison.OrdinalIgnoreCase))
-                                    silverlightSeen = true;
-                                else
-                                    if(projFramework.StartsWith("Portable", StringComparison.OrdinalIgnoreCase))
-                                        portableSeen = true;
-
-                            projFramework = FrameworkVersionTypeConverter.LatestFrameworkMatching(projFramework);
-
-                            if(String.Compare(targetFramework, projFramework, StringComparison.OrdinalIgnoreCase) < 0)
-                                targetFramework = projFramework;
-                        }
+                        // Note the platforms seen and the highest framework version used
+                        targetFrameworksSeen.Add(msbProject.TargetFrameworkIdentifier);
+                        targetFrameworkVersionsSeen.Add(msbProject.TargetFrameworkVersion);
 
                         // Clone the project's reference information
                         msbProject.CloneReferenceInfo(referenceDictionary);
+                    }
+
+                    // If we saw multiple framework types in the projects, stop now.  Due to the different
+                    // assemblies used, we cannot mix the project types within the same SHFB project.  They will
+                    // need to be documented separately and can be merged using the Version Builder plug-in if
+                    // needed.
+                    if(targetFrameworksSeen.Count > 1)
+                        throw new BuilderException("BE0070", "Differing framework types were detected in the " +
+                            "documentation sources (i.e. .NET, Silverlight, Portable).  Due to the different " +
+                            "sets of assemblies used, the different frameworks cannot be mixed within the same " +
+                            "documentation project.  See the error number topic in the help file for details.");
+
+                    // If a project with a higher framework version was found, switch to that version now
+                    var projectFramework = FrameworkVersionTypeConverter.AllFrameworks.FrameworkMatching(
+                        targetFrameworksSeen.First(), new Version(targetFrameworkVersionsSeen.Max(f => f)), true);
+
+                    if(frameworkSettings != projectFramework)
+                    {
+                        // If redirected and no suitable version was found, we can't go any further
+                        if(projectFramework == null)
+                            throw new BuilderException("BE0073", String.Format(CultureInfo.CurrentCulture,
+                                "A project with a different or higher framework version was found but that " +
+                                "version ({0} {1}) or a suitable redirected version was not found on this " +
+                                "system.  The build cannot continue.", targetFrameworksSeen.First(),
+                                targetFrameworkVersionsSeen.Max(f => f)));
+
+                        this.ReportWarning("BE0007", "A project with a different or higher framework version " +
+                            "was found.  Changing project FrameworkVersion property from '{0}' to '{1}' for " +
+                            "the build.", project.FrameworkVersion, projectFramework.Title);
+
+                        project.FrameworkVersion = projectFramework.Title;
+                        frameworkSettings = projectFramework;
                     }
                 }
             }
@@ -2342,59 +2370,6 @@ AllDone:
                     p.Dispose();
             }
 
-            // If we saw multiple framework types in the projects, stop now.  Due to the different assemblies
-            // used, we cannot mix the project types within the same SHFB project.  They will need to be
-            // documented separately and can be merged using the Version Builder plug-in if needed.
-            if((dotNetSeen && (silverlightSeen || portableSeen)) || (silverlightSeen && portableSeen))
-                throw new BuilderException("BE0070", "Differing framework types were detected in the " +
-                    "documentation sources (i.e. .NET, Silverlight, Portable).  Due to the different sets of " +
-                    "assemblies used, the different frameworks cannot be mixed within the same documentation " +
-                    "project.  See the error number topic in the help file for details.");
-
-            if(project.FrameworkVersion != targetFramework)
-            {
-                this.ReportWarning("BE0007", "A project with a higher framework version was found.  Changing " +
-                    "project FrameworkVersion property from '{0}' to '{1}' for the build",
-                    project.FrameworkVersion, targetFramework);
-
-                project.FrameworkVersion = targetFramework;
-            }
-
-            // If we haven't seen a Silverlight project but the framework is Silverlight, automatically add all
-            // Silverlight Framework assemblies as dependencies so that they are automatically resolved as a
-            // convenience to the user.  If a Silverlight project has been seen, we'll already have the
-            // references from it so this isn't necessary.
-            if(!silverlightSeen && project.FrameworkVersion.StartsWith("Silverlight", StringComparison.OrdinalIgnoreCase))
-                foreach(var l in BuildProcess.SilverlightFrameworkLocations(project.FrameworkVersion))
-                    if(Directory.Exists(l.Folder))
-                    {
-                        foreach(string file in Directory.EnumerateFiles(l.Folder, "*.dll",
-                          (l.Recurse) ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly))
-                        {
-                            if(!referenceDictionary.ContainsKey(Path.GetFileNameWithoutExtension(file)))
-                                referenceDictionary.Add(Path.GetFileNameWithoutExtension(file),
-                                    Tuple.Create("Reference", Path.GetFileNameWithoutExtension(file),
-                                        new List<KeyValuePair<string, string>> {
-                                            new KeyValuePair<string, string>("HintPath", file) }));
-                        }
-                    }
-
-            // Likewise for the .NET Portable Framework
-            if(!portableSeen && project.FrameworkVersion.StartsWith("Portable", StringComparison.OrdinalIgnoreCase))
-                foreach(var l in BuildProcess.PortableFrameworkLocations(project.FrameworkVersion, false))
-                    if(Directory.Exists(l.Folder))
-                    {
-                        foreach(string file in Directory.EnumerateFiles(l.Folder, "*.dll",
-                          (l.Recurse) ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly))
-                        {
-                            if(!referenceDictionary.ContainsKey(Path.GetFileNameWithoutExtension(file)))
-                                referenceDictionary.Add(Path.GetFileNameWithoutExtension(file),
-                                    Tuple.Create("Reference", Path.GetFileNameWithoutExtension(file),
-                                        new List<KeyValuePair<string, string>> {
-                                            new KeyValuePair<string, string>("HintPath", file) }));
-                        }
-                    }
-
             if(assembliesList.Count == 0)
                 throw new BuilderException("BE0042", "You must specify at least one documentation source in " +
                     "the form of an assembly or a Visual Studio solution/project file");
@@ -2402,58 +2377,60 @@ AllDone:
             // Log the references found, if any
             if(referenceDictionary.Count != 0)
             {
-                this.ReportProgress("\r\nReferences to use:");
+                this.ReportProgress("\r\nReferences to include (excluding framework assemblies):");
 
                 string[] keys = new string[referenceDictionary.Keys.Count];
                 referenceDictionary.Keys.CopyTo(keys, 0);
                 Array.Sort(keys);
 
+                // Filter out references related to the framework.  MRefBuilder will resolve these
+                // automatically.
                 foreach(string key in keys)
-                    this.ReportProgress("    {0}", key);
+                    if(frameworkSettings.ContainsAssembly(key))
+                        referenceDictionary.Remove(key);
+                    else
+                        this.ReportProgress("    {0}", key);
+
+                if(referenceDictionary.Count == 0)
+                    this.ReportProgress("    None");
             }
 
             if(commentsList.Count != 0)
                 this.ReportProgress("\r\nCopying XML comments files");
 
-            // XML comments files are copied to the working folder in case they
-            // need to be fixed up.
+            // XML comments files are copied to the working folder in case they need to be fixed up
             foreach(string commentsName in commentsList)
             {
                 workingPath = workingFolder + Path.GetFileName(commentsName);
 
-                // Warn if there is a duplicate and copy the comments file
-                // to a unique name to preserve its content.
+                // Warn if there is a duplicate and copy the comments file to a unique name to preserve its
+                // content.
                 if(File.Exists(workingPath))
                 {
                     workingPath = workingFolder + Guid.NewGuid().ToString("B");
 
-                    this.ReportWarning("BE0063", "'{0}' matches a " +
-                        "previously copied comments filename.  The " +
-                        "duplicate will be copied to a unique name to " +
-                        "preserve the comments it contains.", commentsName);
+                    this.ReportWarning("BE0063", "'{0}' matches a previously copied comments filename.  The " +
+                        "duplicate will be copied to a unique name to preserve the comments it contains.",
+                        commentsName);
                 }
 
                 try
                 {
-                    // Not all XML files found may be comments files.  Ignore
-                    // those that are not.
+                    // Not all XML files found may be comments files.  Ignore those that are not.
                     testComments = new XPathDocument(commentsName);
                     navComments = testComments.CreateNavigator();
 
                     if(navComments.SelectSingleNode("doc/members") == null)
                     {
-                        this.ReportWarning("BE0005", "File '{0}' does not " +
-                            "contain a 'doc/members' node and will not be " +
-                            "used as an XML comments file.",
-                            commentsName);
+                        this.ReportWarning("BE0005", "File '{0}' does not contain a 'doc/members' node and " +
+                            "will not be used as an XML comments file.", commentsName);
                         continue;
                     }
                 }
                 catch(Exception ex)
                 {
-                    this.ReportWarning("BE0061", "File '{0}' could not be " +
-                        "loaded and will not be used as an XML comments file." +
-                        "  Error: {1}", commentsName, ex.Message);
+                    this.ReportWarning("BE0061", "File '{0}' could not be loaded and will not be used as an " +
+                        "XML comments file.  Error: {1}", commentsName, ex.Message);
                     continue;
                 }
 
@@ -2469,13 +2446,12 @@ AllDone:
 
                 commentsFiles.Add(comments);
 
-                this.ReportProgress("    {0} -> {1}", commentsName,
-                    workingPath);
+                this.ReportProgress("    {0} -> {1}", commentsName, workingPath);
             }
 
             if(commentsFiles.Count == 0)
-                this.ReportWarning("BE0062", "No XML comments files found.  " +
-                    "The help file will not contain any member comments.");
+                this.ReportWarning("BE0062", "No XML comments files found.  The help file will not contain " +
+                    "any member comments.");
 
             this.ExecutePlugIns(ExecutionBehaviors.After);
         }

@@ -46,7 +46,7 @@
             // pictureBox1
             // 
             this.pictureBox1.Image = global::SandcastleBuilder.ProjectLauncher.Properties.Resources.SandcastleLogo;
-            this.pictureBox1.Location = new System.Drawing.Point(57, 69);
+            this.pictureBox1.Location = new System.Drawing.Point(42, 69);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(36, 42);
@@ -58,7 +58,7 @@
             // 
             this.pictureBox2.Enabled = false;
             this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
-            this.pictureBox2.Location = new System.Drawing.Point(57, 141);
+            this.pictureBox2.Location = new System.Drawing.Point(42, 141);
             this.pictureBox2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(36, 42);
@@ -69,7 +69,7 @@
             // rbSHFB
             // 
             this.rbSHFB.AutoSize = true;
-            this.rbSHFB.Location = new System.Drawing.Point(114, 80);
+            this.rbSHFB.Location = new System.Drawing.Point(99, 80);
             this.rbSHFB.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.rbSHFB.Name = "rbSHFB";
             this.rbSHFB.Size = new System.Drawing.Size(234, 22);
@@ -90,19 +90,19 @@
             // rbVisualStudio
             // 
             this.rbVisualStudio.AutoSize = true;
-            this.rbVisualStudio.Location = new System.Drawing.Point(114, 151);
+            this.rbVisualStudio.Location = new System.Drawing.Point(99, 151);
             this.rbVisualStudio.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.rbVisualStudio.Name = "rbVisualStudio";
-            this.rbVisualStudio.Size = new System.Drawing.Size(146, 22);
+            this.rbVisualStudio.Size = new System.Drawing.Size(352, 22);
             this.rbVisualStudio.TabIndex = 2;
             this.rbVisualStudio.TabStop = true;
-            this.rbVisualStudio.Text = "&Visual Studio 2010";
+            this.rbVisualStudio.Text = "Latest version of &Visual Studio with SHFB Package";
             this.rbVisualStudio.UseVisualStyleBackColor = true;
             // 
             // chkAlwaysUseSelection
             // 
             this.chkAlwaysUseSelection.AutoSize = true;
-            this.chkAlwaysUseSelection.Location = new System.Drawing.Point(57, 216);
+            this.chkAlwaysUseSelection.Location = new System.Drawing.Point(42, 216);
             this.chkAlwaysUseSelection.Name = "chkAlwaysUseSelection";
             this.chkAlwaysUseSelection.Size = new System.Drawing.Size(387, 22);
             this.chkAlwaysUseSelection.TabIndex = 4;
@@ -132,7 +132,7 @@
             // 
             // label2
             // 
-            this.label2.Location = new System.Drawing.Point(75, 241);
+            this.label2.Location = new System.Drawing.Point(60, 241);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(396, 66);
             this.label2.TabIndex = 5;
@@ -142,7 +142,7 @@
             // lblNotInstalled
             // 
             this.lblNotInstalled.AutoSize = true;
-            this.lblNotInstalled.Location = new System.Drawing.Point(133, 177);
+            this.lblNotInstalled.Location = new System.Drawing.Point(118, 177);
             this.lblNotInstalled.Name = "lblNotInstalled";
             this.lblNotInstalled.Size = new System.Drawing.Size(222, 18);
             this.lblNotInstalled.TabIndex = 3;

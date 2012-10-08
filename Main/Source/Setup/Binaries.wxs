@@ -11,7 +11,6 @@
 			<Component Id="StartMenuEntries" Guid="{5053DDFA-5A63-40e5-8DBA-76F1F8FFBEB5}">
 				<CreateFolder Directory="INSTALLDIR" />
 				<RemoveFolder Id="RemoveShfbStartMenu" Directory="ShfbProgramMenuDir" On="uninstall" />
-				<RemoveFolder Id="RemoveCodePlexStartMenu" Directory="CodePlexProjectsDir" On="uninstall" />
 			</Component>
 
 			<!-- Environment variable SHFBROOT -->
@@ -131,32 +130,10 @@
 			<Component Id="SHFB.url" Guid="{037C04FF-D961-4F5A-BB88-9AC5B7E2F5B7}">
 				<File Id="SHFB.url" KeyPath="yes" Source="$(var.SolutionDir)SHFB.url">
 					<Shortcut Id="SHFB.url"
-							  Directory="CodePlexProjectsDir"
+							  Directory="ShfbProgramMenuDir"
 							  Icon="HtmlDocument.ico"
 							  Name="Sandcastle Help File Builder"
 							  Description="SHFB project site"
-							  Advertise="yes" />
-				</File>
-			</Component>
-
-			<Component Id="Sandcastle.url" Guid="{D8FD511F-32B7-4552-8C04-08B89A11E17B}">
-				<File Id="Sandcastle.url" KeyPath="yes" Source="$(var.SolutionDir)Sandcastle.url">
-					<Shortcut Id="_Sandcastle.url"
-							  Directory="CodePlexProjectsDir"
-							  Icon="HtmlDocument.ico"
-							  Name="Sandcastle"
-							  Description="Microsoft Sandcastle project site"
-							  Advertise="yes" />
-				</File>
-			</Component>
-
-			<Component Id="SandcastleStyles.url" Guid="{F77585FB-6F95-4D28-8541-99D819D3AB32}">
-				<File Id="SandcastleStyles.url" KeyPath="yes" Source="$(var.SolutionDir)SandcastleStyles.url">
-					<Shortcut Id="SandcastleStyles.url"
-							  Directory="CodePlexProjectsDir"
-							  Icon="HtmlDocument.ico"
-							  Name="Sandcastle Styles on CodePlex"
-							  Description="Patch files, web code providers, and MAML guide"
 							  Advertise="yes" />
 				</File>
 			</Component>
@@ -209,8 +186,6 @@
 
 			<!-- Web links -->
 			<ComponentRef Id="SHFB.url" />
-			<ComponentRef Id="Sandcastle.url" />
-			<ComponentRef Id="SandcastleStyles.url" />
 
 			<!-- 3rd party libraries -->
 			<ComponentRef Id="ICSharpCode.TextEditor.dll" />

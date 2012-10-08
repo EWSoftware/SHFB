@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <configuration>
 	<!-- This indicates the release date and version of Sandcastle with which this installer is associated.-->
-	<sandcastle date="April 2012" version="v2.7.0.0" />
+	<sandcastle date="October 2012" version="v2.7.1.0" />
 
 	<!-- Define the installer pages.  Third-party build tool and component providers can add new pages that
 			 they have created to install their own products as well. -->
@@ -17,26 +17,25 @@
 			<page type="Sandcastle.Installer.InstallerPages.Help2CompilerPage" />
 		</page>
 		<page type="Sandcastle.Installer.InstallerPages.SandcastlePage"
-			frameworkVersion="4.0" sandcastleVersion="2.7.0.0" installerName="Sandcastle_2700.msi">
-			<page type="Sandcastle.Installer.InstallerPages.BrandingPackagePage" />
-		</page>
+			frameworkVersion="4.0" sandcastleVersion="2.7.1.0" installerName="Sandcastle_2710.msi" />
 		<page type="Sandcastle.Installer.InstallerPages.MamlIntelliSensePage">
 			<!-- These paths can be adjusted if you installed Visual Studio in a non-standard location -->
 			<visualStudio version="Visual Studio 2008" location="%VS90COMNTOOLS%\..\..\Xml\Schemas" />
 			<visualStudio version="Visual Studio 2010" location="%VS100COMNTOOLS%\..\..\Xml\Schemas" />
-			<visualStudio version="Visual Studio 2011 Beta" location="%VS110COMNTOOLS%\..\..\Xml\Schemas" />
+			<visualStudio version="Visual Studio 2012" location="%VS110COMNTOOLS%\..\..\Xml\Schemas" />
 		</page>
 
 		<!-- Sandcastle Help File Builder installer pages -->
-		<page assembly="SHFB.Installer.dll" type="Sandcastle.Installer.SHFB.SandcastleHelpFileBuilderPage"
-			frameworkVersion="4.0" shfbVersion="1.9.4.0" installerName="SandcastleHelpFileBuilder_1940.msi"/>
-		<page assembly="SHFB.Installer.dll" type="Sandcastle.Installer.SHFB.SHFBVisualStudioPackagePage"
+		<page type="Sandcastle.Installer.InstallerPages.SandcastleHelpFileBuilderPage"
+			frameworkVersion="4.0" shfbVersion="1.9.5.0" installerName="SandcastleHelpFileBuilder_1950.msi"/>
+		<page type="Sandcastle.Installer.InstallerPages.SHFBVisualStudioPackagePage"
 			frameworkVersion="4.0" packageGuid="c997d569-ee8e-4947-a46f-9a0717ce39a0"
-			installerName="SHFBVisualStudioPackage_1940.vsix">
-			<!-- These paths can be adjusted if you installed Visual Studio in a non-standard location -->
+			installerName="SHFBVisualStudioPackage_1950.vsix">
+			<!-- These paths can be adjusted if you installed Visual Studio in a non-standard location.  They must
+					 be in version order from earliest to most recent. -->
 			<visualStudio version="10.0" name="Visual Studio 2010 Professional/Premium/Ultimate"
 				location="%VS100COMNTOOLS%\..\IDE" />
-			<visualStudio version="11.0" name="Visual Studio 2011 Professional/Premium/Ultimate"
+			<visualStudio version="11.0" name="Visual Studio 2012 Professional/Premium/Ultimate"
 				location="%VS110COMNTOOLS%\..\IDE" />
 		</page>
 

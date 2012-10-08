@@ -1,83 +1,68 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder Utilities
 // File    : SandcastleProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/26/2012
+// Updated : 10/05/2012
 // Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the project class.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.   This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 #region Older History
 // 1.0.0.0  08/03/2006  EFW  Created the code
 // 1.1.0.0  08/28/2006  EFW  Added various new options for the August CTP
-// 1.2.0.0  09/04/2006  EFW  Added new properties to support namespace
-//                           summaries and project summary comments.
-// 1.3.1.0  09/26/2006  EFW  Added the ShowMissing* properties.
-// 1.3.1.0  10/02/2006  EFW  Added support for the September CTP and the
-//                           the Document* properties.
+// 1.2.0.0  09/04/2006  EFW  Added new properties to support namespace summaries and project summary comments
+// 1.3.1.0  09/26/2006  EFW  Added the ShowMissing* properties
+// 1.3.1.0  10/02/2006  EFW  Added support for the September CTP and the the Document* properties
 // 1.3.2.0  11/03/2006  EFW  Added the NamingMethod property
-// 1.3.3.1  11/24/2006  EFW  Added the SyntaxFilters property, support for
-//                           build component confurations, and other stuff.
-// 1.3.4.0  12/24/2006  EFW  Added WorkingPath project property.  Reworked the
-//                           load and save code to use reflection for most
-//                           properties to simplify the code and support
-//                           setting them via the command line from the
-//                           console mode builder.  Converted folder properties
-//                           to FolderPath objects.
-// 1.4.0.0  02/02/2007  EFW  Converted PresentationStyle to a string with a
-//                           type converter listing the presentation folders.
-//                           Added FooterText property.
+// 1.3.3.1  11/24/2006  EFW  Added the SyntaxFilters property, support for build component confurations, and
+//                           other stuff.
+// 1.3.4.0  12/24/2006  EFW  Added WorkingPath project property.  Reworked the load and save code to use
+//                           reflection for most properties to simplify the code and support setting them via the
+//                           command line from the console mode builder.  Converted folder properties to
+//                           FolderPath objects.
+// 1.4.0.0  02/02/2007  EFW  Converted PresentationStyle to a string with a type converter listing the
+//                           presentation folders.  Added FooterText property.
 // 1.4.0.2  05/11/2007  EFW  Missing namespace messages are now optional
 // 1.5.0.2  07/03/2007  EFW  Added support to additional content site map
 // 1.5.1.0  07/20/2007  EFW  Added ApiFilter and KeepLogFile project properties
-// 1.5.1.0  08/24/2007  EFW  Added support for the inherited private/internal
-//                           framework member flags.
+// 1.5.1.0  08/24/2007  EFW  Added support for the inherited private/internal framework member flags
 // 1.5.2.0  09/10/2007  EFW  Added support for plug-in configurations
 // 1.6.0.0  09/30/2007  EFW  Added support for transforming *.topic files
-// 1.6.0.1  10/14/2007  EFW  Added support for ShowFeedbackControl and
-//                           SdkLinkTarget.
+// 1.6.0.1  10/14/2007  EFW  Added support for ShowFeedbackControl and SdkLinkTarget
 // 1.6.0.2  11/01/2007  EFW  Reworked to support better handling of components
 // 1.6.0.5  02/20/2008  EFW  Added the FeedbackEMailLinkText property
-// 1.6.0.7  03/21/2008  EFW  Added Help 2 and ShowMissingTypeParam properties.
-//                           Removed the PurgeDuplicateTopics option.  Added
-//                           the BuildLogFile property.  Started laying the
-//                           foundations for conceptual content support.
-//                           ContentSiteMap and TopicFileTransform were made
-//                           sub-properties of the additional content
-//                           collection to connect them with it and to prevent
-//                           associating them with conceptual content.
+// 1.6.0.7  03/21/2008  EFW  Added Help 2 and ShowMissingTypeParam properties.  Removed the PurgeDuplicateTopics
+//                           option.  Added the BuildLogFile property.  Started laying the foundations for
+//                           conceptual content support.  ContentSiteMap and TopicFileTransform were made
+//                           sub-properties of the additional content collection to connect them with it and to
+//                           prevent associating them with conceptual content.
 // 1.8.0.0  06/20/2008  EFW  Converted the project to use an MSBuild file.
-// 1.8.0.1  12/14/2008  EFW  Updated for use with .NET 3.5 and MSBuild 3.5.
-//                           Added support for user-defined project properties.
-//                           Added support for ShowMissingIncludeTargets
-#endregion
+// 1.8.0.1  12/14/2008  EFW  Updated for use with .NET 3.5 and MSBuild 3.5.  Added support for user-defined
+//                           project properties.  Added support for ShowMissingIncludeTargets.
 // 1.8.0.3  07/05/2009  EFW  Added support for MS Help Viewer format
-// 1.8.0.3  11/10/2009  EFW  Changed SyntaxFilters property to a string to
-//                           support custom syntax filter build components.
+// 1.8.0.3  11/10/2009  EFW  Changed SyntaxFilters property to a string to support custom syntax filter build
+//                           components.
 // 1.8.0.3  11/19/2009  EFW  Added support for AutoDocumentDisposeMethods
 // 1.8.0.3  12/06/2009  EFW  Removed support for ShowFeedbackControl
-// 1.9.0.0  06/19/2010  EFW  Added properties to support MS Help Viewer.
-//                           Removed ProjectLinkType property.  Replaced
-//                           SdkLinkType with help format specific SDK link
-//                           type properties.
-// 1.9.1.0  07/09/2010  EFW  Updated for use with .NET 4.0 and MSBuild 4.0.
-// 1.9.2.0  01/16/2011  EFW  Updated to support selection of Silverlight
-//                           Framework versions.
-// 1.9.3.2  08/20/2011  EFW  Updated to support selection of .NET Portable
-//                           Framework versions.
-// 1.9.4.0  04/08/2012  EFW  Merged changes for VS2010 style from Don Fehr.
-//                           Added BuildAssemblerVerbosity property.  Added
-//                           Support for XAML configuration files.
-//=============================================================================
+// 1.9.0.0  06/19/2010  EFW  Added properties to support MS Help Viewer.  Removed ProjectLinkType property.
+//                           Replaced SdkLinkType with help format specific SDK link type properties.
+#endregion
+// 1.9.1.0  07/09/2010  EFW  Updated for use with .NET 4.0 and MSBuild 4.0
+// 1.9.2.0  01/16/2011  EFW  Updated to support selection of Silverlight Framework versions
+// 1.9.3.2  08/20/2011  EFW  Updated to support selection of .NET Portable Framework versions
+// 1.9.4.0  04/08/2012  EFW  Merged changes for VS2010 style from Don Fehr.  Added BuildAssemblerVerbosity
+//                           property.  Added Support for XAML configuration files.
+// 1.9.5.0  09/10/2012  EFW  Updated to use the new framework definition file for the .NET Framework versions.
+//                           Added the CatalogName property for Help Viewer 2.0 support.
+//===============================================================================================================
 
 using System;
 using System.Collections.Generic;
@@ -113,7 +98,7 @@ namespace SandcastleBuilder.Utils
         /// <summary>
         /// The schema version used in the saved project files
         /// </summary>
-        public static readonly Version SchemaVersion = new Version(1, 9, 3, 0);
+        public static readonly Version SchemaVersion = new Version(1, 9, 5, 0);
 
         /// <summary>The default configuration</summary>
         public const string DefaultConfiguration = "Debug";
@@ -176,7 +161,7 @@ namespace SandcastleBuilder.Utils
         private string helpTitle, htmlHelpName, copyrightHref, copyrightText, feedbackEMailAddress,
             feedbackEMailLinkText, headerText, footerText, projectSummary, rootNSTitle, presentationStyle,
             plugInNamespaces, helpFileVersion, syntaxFilters, vendorName, productTitle, topicVersion,
-            tocParentId, tocParentVersion, catalogProductId, catalogVersion, brandingPackageName;
+            tocParentId, tocParentVersion, catalogProductId, catalogVersion, catalogName, brandingPackageName;
         private CultureInfo language;
         private HtmlSdkLinkType htmlSdkLinkType, websiteSdkLinkType;
         private MSHelp2SdkLinkType help2SdkLinkType;
@@ -347,29 +332,6 @@ namespace SandcastleBuilder.Utils
 
                 msBuildProject.SetGlobalProperty(ProjectElement.OutDir, value);
                 msBuildProject.ReevaluateIfNecessary();
-            }
-        }
-
-        /// <summary>
-        /// This read-only helper property returns the framework version number
-        /// from the <see cref="FrameworkVersion"/> property without the
-        /// framework type prefix.
-        /// </summary>
-        [Browsable(false), XmlIgnore]
-        public string FrameworkVersionNumber
-        {
-            get
-            {
-                if(frameworkVersion.StartsWith(".NET ", StringComparison.OrdinalIgnoreCase))
-                    return frameworkVersion.Substring(5);
-
-                if(frameworkVersion.StartsWith("Silverlight ", StringComparison.OrdinalIgnoreCase))
-                    return frameworkVersion.Substring(12);
-
-                if(frameworkVersion.StartsWith("Portable ", StringComparison.OrdinalIgnoreCase))
-                    return frameworkVersion.Substring(9);
-
-                return frameworkVersion;
             }
         }
 
@@ -828,16 +790,8 @@ namespace SandcastleBuilder.Utils
             get { return frameworkVersion; }
             set
             {
-                if(value == null || !FrameworkVersionTypeConverter.IsPresent(value))
-                {
-                    if(value == null)
-                        value = ".NET";
-                    else
-                        if(value.Length > 3)
-                            value = value.Substring(0, 3);
-
-                    value = FrameworkVersionTypeConverter.LatestFrameworkMatching(value);
-                }
+                if(value == null || !FrameworkVersionTypeConverter.AllFrameworks.ContainsKey(value))
+                    value = FrameworkVersionTypeConverter.DefaultFramework;
 
                 this.SetProjectProperty("FrameworkVersion", value);
                 frameworkVersion = value;
@@ -1037,19 +991,19 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get or set the language option for the help file
-        /// and to determine which set of presentation resource files to use.
+        /// This is used to get or set the language option for the help file and to determine which set of
+        /// presentation resource files to use.
         /// </summary>
         /// <value>If a matching set of presentation resources cannot be
         /// found for the specified language, the US English set will be
         /// used.</value>
-        /// <remarks>The MS Help Viewer Catalog ID is composed of the <see cref="CatalogProductId"/>, the
+        /// <remarks>The MS Help Viewer 1.0 Catalog ID is composed of the <see cref="CatalogProductId"/>, the
         /// <see cref="CatalogVersion"/>, and the <c>Language</c> code. For example, the English Visual Studio 10
         /// catalog is <c>VS_100_EN-US</c>.</remarks>
         /// <seealso cref="SelfBranded"/>
         /// <seealso cref="BrandingPackageName"/>
-        [Category("Help File"), Description("The help file language.  For MS Help Viewer, this is the Locale " +
-          "portion of the Catalog ID."), DefaultValue(typeof(CultureInfo), "en-US"),
+        [Category("Help File"), Description("The help file language.  For MS Help Viewer 1.0, this is the " +
+          "Locale portion of the Catalog ID."), DefaultValue(typeof(CultureInfo), "en-US"),
           TypeConverter(typeof(LanguageResourceConverter))]
         public CultureInfo Language
         {
@@ -1485,18 +1439,19 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get or set the Product ID portion of the MS Help Viewer Catalog ID.
+        /// This is used to get or set the Product ID portion of the MS Help Viewer 1.0 Catalog ID.
         /// </summary>
         /// <remarks>If not specified, the default is "VS".
-        /// <para>The MS Help Viewer Catalog ID is composed of the <c>CatalogProductId</c> the
+        /// <para>The MS Help Viewer Catalog 1.0 ID is composed of the <c>CatalogProductId</c> the
         /// <see cref="CatalogVersion"/>, and the <see cref="Language"/> code. For example, the English Visual
         /// Studio 10 catalog is <c>VS_100_EN-US</c>.</para>
         /// <note type="note">For styles other than VS2010, you should used the default value.</note>
         /// </remarks>
         /// <seealso cref="SelfBranded"/>
         /// <seealso cref="BrandingPackageName"/>
-        [Category("MS Help Viewer"), Description("Specify the Product ID portion of the MS Help Viewer Catalog ID.  " +
-          "If not set, the default is \"VS\" (for \"Visual Studio\")."), DefaultValue("VS"), EscapeValue]
+        [Category("MS Help Viewer"), Description("Specify the Product ID portion of the MS Help Viewer 1.0 " +
+          "Catalog ID.  If not set, the default is \"VS\" (for \"Visual Studio\")."), DefaultValue("VS"),
+          EscapeValue]
         public string CatalogProductId
         {
             get { return catalogProductId; }
@@ -1513,18 +1468,19 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get or set the Version portion of the MS Help Viewer Catalog ID.
+        /// This is used to get or set the Version portion of the MS Help Viewer 1.0 Catalog ID.
         /// </summary>
         /// <remarks>If not specified, the default is "100".
-        /// <para>The MS Help Viewer Catalog ID is composed of the <see cref="CatalogProductId"/>, the
+        /// <para>The MS Help Viewer 1.0 Catalog ID is composed of the <see cref="CatalogProductId"/>, the
         /// <c>CatalogVersion</c>, and the <see cref="Language"/> code. For example, the English Visual Studio 10
         /// catalog is <c>VS_100_EN-US</c>.</para>
         /// <note type="note">For styles other than VS2010, you should used the default value.</note>
         /// </remarks>
         /// <seealso cref="SelfBranded"/>
         /// <seealso cref="BrandingPackageName"/>
-        [Category("MS Help Viewer"), Description("Specify the Version portion of the MS Help Viewer Catalog ID.  " +
-            "If not set, the default is \"100\" (meaning \"10.0\")."), DefaultValue("100"), EscapeValue]
+        [Category("MS Help Viewer"), Description("Specify the Version portion of the MS Help Viewer 1.0 " +
+          "Catalog ID.  If not set, the default is \"100\" (meaning \"10.0\")."), DefaultValue("100"),
+          EscapeValue]
         public string CatalogVersion
         {
             get { return catalogVersion; }
@@ -1537,6 +1493,29 @@ namespace SandcastleBuilder.Utils
 
                 this.SetProjectProperty("CatalogVersion", value);
                 catalogVersion = value;
+            }
+        }
+
+        /// <summary>
+        /// This is used to get or set the MS Help Viewer 2.0 content catalog name.
+        /// </summary>
+        /// <remarks>If not specified, the default is "VisualStudio11".  This should typically be left set to
+        /// the default value.</remarks>
+        [Category("MS Help Viewer"), Description("Specify the MS Help Viewer 2.0 content catalong name.  This " +
+          "should typically be left set to the default value \"VisualStudio11\"."), DefaultValue("VisualStudio11"),
+          EscapeValue]
+        public string CatalogName
+        {
+            get { return catalogName; }
+            set
+            {
+                if(value == null || value.Trim().Length == 0)
+                    value = "VisualStudio11";
+                else
+                    value = Uri.EscapeDataString(Uri.UnescapeDataString(value.Trim()));
+
+                this.SetProjectProperty("CatalogName", value);
+                catalogName = value;
             }
         }
 
@@ -1677,10 +1656,10 @@ namespace SandcastleBuilder.Utils
         /// </summary>
         /// <remarks>Typically, this should be left blank to use the default package name.
         /// <para>A custom branding package can only be used if the help content is <b>not</b> installed in the
-        /// default MS Help Viewer catalog.  See <see cref="CatalogProductId"/>, <see cref="CatalogVersion"/>,
+        /// default MS Help Viewer 1.0 catalog.  See <see cref="CatalogProductId"/>, <see cref="CatalogVersion"/>,
         /// and <see cref="Language"/>.</para>
         /// <note type="note">
-        /// The branding package is associated with a MS Help Viewer catalog when the catalog is created (i.e.
+        /// The branding package is associated with a MS Help Viewer 1.0 catalog when the catalog is created (i.e.
         /// the first time any content is installed in the catalog).  The branding package associated with a
         /// catalog can only be changed by manually editing the MS Help Viewer configuration.</note>
         /// </remarks>
@@ -2490,8 +2469,7 @@ namespace SandcastleBuilder.Utils
         /// and should not be serialized.</returns>
         private bool ShouldSerializeFrameworkVersion()
         {
-            return (this.FrameworkVersion !=
-                FrameworkVersionTypeConverter.LatestFrameworkMatching(".NET"));
+            return (this.FrameworkVersion != FrameworkVersionTypeConverter.DefaultFramework);
         }
 
         /// <summary>
@@ -2500,7 +2478,7 @@ namespace SandcastleBuilder.Utils
         /// </summary>
         private void ResetFrameworkVersion()
         {
-            this.FrameworkVersion = FrameworkVersionTypeConverter.LatestFrameworkMatching(".NET");
+            this.FrameworkVersion = FrameworkVersionTypeConverter.DefaultFramework;
         }
 
         /// <summary>
@@ -2821,12 +2799,13 @@ namespace SandcastleBuilder.Utils
                             break;
 
                         case "FRAMEWORKVERSION":
-                            // The values changed in v1.9.2.0 to include the framework type
+                            // The values changed in v1.9.2.0 to include the framework type.  They changed in
+                            // v1.9.5.0 to use the titles from the Sandcastle framework definition file.
                             if(schemaVersion.Major == 1 && (schemaVersion.Minor < 9 ||
-                              (schemaVersion.Minor == 9 && schemaVersion.Build < 2)))
+                              (schemaVersion.Minor == 9 && schemaVersion.Build < 5)))
                             {
                                 this.SetLocalProperty(prop.Name,
-                                    FrameworkVersionTypeConverter.LatestFrameworkMatching(prop.UnevaluatedValue));
+                                    FrameworkVersionTypeConverter.ConvertFromOldValue(prop.UnevaluatedValue));
                                 msBuildProject.SetProperty("FrameworkVersion", this.FrameworkVersion);
                             }
                             else
@@ -3134,10 +3113,10 @@ namespace SandcastleBuilder.Utils
                     this.FooterText = this.ProjectSummary = this.RootNamespaceTitle =
                     this.PlugInNamespaces = this.TopicVersion = this.TocParentId =
                     this.TocParentVersion = this.CatalogProductId = this.CatalogVersion =
-                    this.BrandingPackageName = null;
+                    this.CatalogName = this.BrandingPackageName = null;
 
                 language = new CultureInfo("en-US");
-                frameworkVersion = FrameworkVersionTypeConverter.LatestFrameworkMatching(".NET");
+                frameworkVersion = FrameworkVersionTypeConverter.DefaultFramework;
             }
             finally
             {

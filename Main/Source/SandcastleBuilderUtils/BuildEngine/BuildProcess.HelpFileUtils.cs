@@ -1,8 +1,8 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.HelpFileUtils.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/02/2012
+// Updated : 10/05/2012
 // Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -16,7 +16,7 @@
 // applications, documentation, and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.0.0.0  08/07/2006  EFW  Created the code
 // 1.2.0.0  09/06/2006  EFW  Added support for TOC content placement
 // 1.3.0.0  09/09/2006  EFW  Added support for website output
@@ -24,22 +24,19 @@
 // 1.3.2.0  11/04/2006  EFW  Added support for the NamingMethod property
 // 1.5.0.0  06/19/2007  EFW  Various additions and updates for the June CTP
 // 1.5.2.0  09/13/2007  EFW  Added support for calling plug-ins
-// 1.6.0.5  02/04/2008  EFW  Adjusted loading of Help 1 TOC to use an encoding
-//                           based on the chosen language.
+// 1.6.0.5  02/04/2008  EFW  Adjusted loading of Help 1 TOC to use an encoding based on the chosen language
 // 1.6.0.7  04/12/2007  EFW  Added support for a split table of contents
 // 1.9.0.0  06/06/2010  EFW  Added support for multi-format build output
-// 1.9.0.0  06/30/2010  EFW  Reworked TOC handling to support parenting of
-//                           API content to a conceptual topic for all formats.
-// 1.9.4.0  02/19/2012  EFW  Added support for PHP website files.  Merged
-//                           changes for VS2010 style from Don Fehr.
-//=============================================================================
+// 1.9.0.0  06/30/2010  EFW  Reworked TOC handling to support parenting of API content to a conceptual topic for
+//                           all formats.
+// 1.9.4.0  02/19/2012  EFW  Added support for PHP website files.  Merged changes for VS2010 style from Don Fehr.
+//===============================================================================================================
 
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
@@ -475,8 +472,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
             if(Directory.Exists(brandingSource))
             {
-                HelpLibraryManager hlm = new HelpLibraryManager();
-
                 string brandingTarget = Path.Combine(helpFormatOutputFolder, "branding"),
                     brandingTransformsTarget = Path.Combine(WorkingFolder, "branding"),
                     brandingIconsTarget = Path.Combine(helpFormatOutputFolder, "icons"),
@@ -490,9 +485,9 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         brandingManifest)));
 
                 if(String.IsNullOrEmpty(brandingName))
-                    brandingName = hlm.DefaultBrandingPackage;
+                    brandingName = "Dev10";
 
-                isDefaultBranding = hlm.DefaultBrandingPackage.Equals(brandingName, StringComparison.OrdinalIgnoreCase);
+                isDefaultBranding = brandingName.Equals("Dev10", StringComparison.OrdinalIgnoreCase);
 
                 if(helpFormatOutputFolder.Contains(HelpFileFormat.MSHelpViewer.ToString()))
                 {
@@ -586,8 +581,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                     this.ReportProgress("{0} -> {1}", brandingSource, brandingTransformsTarget);
                     brandingPackage.CopyTheseParts(brandingManifest, true);
-
-                    brandingTarget = brandingTransformsTarget;
                 }
             }
         }

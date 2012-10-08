@@ -2,7 +2,7 @@
 // System  : Code Colorizer Library
 // File    : AssemblyInfo.cs
 // Author  : Jonathan de Halleux, (c) 2003
-// Updated : 04/15/2012
+// Updated : 09/21/2012
 // Compiler: Microsoft Visual C#
 //
 // Code colorizer attributes.  The original Code Project article by Jonathan
@@ -33,7 +33,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("This is used to colorize blocks of code for output as HTML.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Jonathan de Halleux")]
-[assembly: AssemblyCopyright("Copyright \xA9 2003-2010, Jonathan de Halleux, All Rights Reserved")]
+[assembly: AssemblyCopyright("Copyright \xA9 2003-2012, Jonathan de Halleux, All Rights Reserved")]
 [assembly: AssemblyTrademark("Jonathan de Halleux, All Rights Reserved")]
 [assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(true)]
@@ -50,4 +50,4 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Revision and Build Numbers
 // by using the '*' as shown below:
 
-[assembly: AssemblyVersion("2.1.0.14")]
+[assembly: AssemblyVersion("2.1.0.15")]

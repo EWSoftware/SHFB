@@ -1,4 +1,24 @@
-﻿using System;
+﻿//===============================================================================================================
+// System  : Sandcastle Help File Builder Utilities
+// File    : MSHCPackage.cs
+// Author  : Don Fehr
+// Updated : 04/15/2012
+// Compiler: Microsoft Visual C#
+//
+// This file contains a class that implements an MSHC package (which is a type of ZIP file)
+//
+// This code is published under the Microsoft Public License (Ms-PL).  A copy
+// of the license should be distributed with the code.  It can also be found
+// at the project website: http://SHFB.CodePlex.com.   This notice, the
+// author's name, and all copyright notices must remain intact in all
+// applications, documentation, and source files.
+//
+// Version     Date     Who  Comments
+// ==============================================================================================================
+// 1.9.4.0  04/15/2012  DF   Created the code
+//===============================================================================================================
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -115,7 +135,10 @@ namespace SandcastleBuilder.Utils.BuildEngine
         #region IDisposable implementation
         //=====================================================================
 
-        /// <inheritDoc/>
+        /// <summary>
+        /// This handles garbage collection to ensure proper disposal of the instance if not done explicity with
+        /// <see cref="Dispose()"/>.
+        /// </summary>
         ~MSHCPackage()
         {
             this.Dispose(false);

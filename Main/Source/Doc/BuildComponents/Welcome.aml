@@ -23,11 +23,6 @@ standalone versions.</para>
 			</listItem>
 
 			<listItem>
-				<para>For information on the <application>MRefBuilder</application> components, see the
-<link xlink:href="4e92303d-66ad-4a5d-9a03-94f316a0dd38" /> topic.</para>
-			</listItem>
-
-			<listItem>
 				<para>For information on the <codeInline>&lt;inheritdoc /&gt;</codeInline> tag, see the
 <link xlink:href="79897974-ffc9-4b84-91a5-e50c66a0221d" /> topic.</para>
 			</listItem>

@@ -1,24 +1,23 @@
-﻿//=============================================================================
+﻿//===============================================================================================================
 // System  : Help Library Manager Launcher
 // File    : HelpLibraryManagerException.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/07/2010
-// Note    : Copyright 2010, Eric Woodruff, All rights reserved
+// Updated : 10/06/2012
+// Note    : Copyright 2010-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains an exception class used to report problems with the
-// Help Library Manager operation.
+// This file contains an exception class used to report problems with the Help Library Manager operation.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.0.0.0  07/03/2010  EFW  Created the code
-//=============================================================================
+// 1.0.0.2  10/05/2012  EFW  Added support for Help Viewer 2.0
+//===============================================================================================================
 
 using System;
 using System.Globalization;
@@ -28,8 +27,7 @@ using System.Security.Permissions;
 namespace SandcastleBuilder.MicrosoftHelpViewer
 {
     /// <summary>
-    /// This exception class is thrown to report problems with the Help Library
-    /// Manager operation.
+    /// This exception class is thrown to report problems with the Help Library Manager operation
     /// </summary>
     [Serializable]
     public class HelpLibraryManagerException : Exception
@@ -60,7 +58,7 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
         /// <summary>An unknown error occurred in the Help Library Manager launcher.</summary>
         public const int UnknownError = 6;
 
-        // Help Library Manager error codes
+        // Help Library Manager 1.0 error codes
 
         /// <summary>One or more command line arguments was missing or invalid.</summary>
         public const int InvalidCmdArgs = 100;
@@ -101,6 +99,60 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
         /// <summary>A non-admin user is trying to initialize the store using the /silent switch.</summary>
         public const int NonAdminSetsLocalStoreOnSilentMode = 402;
 
+        // Help Content Manager 2.0 error codes
+
+        /// <summary>Failed to elevate with administrative privileges.</summary>
+        public const int FailureToElevate = 100;
+
+        /// <summary>One or more command line arguments was missing or invalid.</summary>
+        public const int HV2InvalidCmdArgs = 101;
+
+        /// <summary>Failed while fetching online content.</summary>
+        public const int FailOnFetchingOnlineContent = 110;
+
+        /// <summary>Failed while fetching content from disk.</summary>
+        public const int FailOnFetchingContentFromDisk = 120;
+
+        /// <summary>Failed while fetching installed books.</summary>
+        public const int FailOnFetchingInstalledBooks = 130;
+
+        /// <summary>The arguments passed to HLM did not result in content being removed.  This can occur when
+        /// the content has already been removed.</summary>
+        public const int NoBooksToUninstall = 200;
+
+        /// <summary>The arguments passed to HLM did not result in content being installed.  This can occur when
+        /// the content is already installed.</summary>
+        public const int HV2NoBooksToInstall = 300;
+
+        /// <summary>Failed on uninstall operation.</summary>
+        public const int FailOnUninstall = 400;
+
+        /// <summary>Failed on install operation.</summary>
+        public const int FailOnInstall = 500;
+
+        /// <summary>Failed on move operation.</summary>
+        public const int FailOnMove = 600;
+
+        /// <summary>Failed on update operation.</summary>
+        public const int FailOnUpdate = 700;
+
+        /// <summary>Failed on refresh operation.</summary>
+        public const int FailOnRefresh = 800;
+
+        /// <summary>The operation was canceled.</summary>
+        public const int Canceled = 900;
+
+        /// <summary>Content management has been disabled.</summary>
+        public const int ContentManagementDisabled = 1200;
+
+        /// <summary>Online help preference has been disabled.</summary>
+        public const int OnlineHelpPreferenceDisabled = 1201;
+
+        /// <summary>Another update is already running.</summary>
+        public const int UpdateAlreadyRunning = 1300;
+
+        // Help Library Manager error codes (any version)
+
         /// <summary>An unknown error occurred.</summary>
         public const int Others = 999;
 
@@ -108,6 +160,11 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
 
         #region Properties
         //=====================================================================
+
+        /// <summary>
+        /// This read-only property returns the help viewer version to which the error code applies
+        /// </summary>
+        public Version Version { get; private set; }
 
         /// <summary>
         /// This read-only property returns the error code
@@ -121,29 +178,35 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
         /// <summary>
         /// Constructor
         /// </summary>
+        /// <param name="version">The help viewer version to which the error applies</param>
         /// <param name="errorCode">The error code associated with the exception</param>
         /// <overloads>There are three overloads for the constructor</overloads>
-        public HelpLibraryManagerException(int errorCode) : base(ErrorMessageForCode(errorCode))
+        public HelpLibraryManagerException(Version version, int errorCode) : this(version, errorCode, null)
         {
-            this.ErrorCode = errorCode;
         }
 
         /// <summary>
         /// Constructor
         /// </summary>
+        /// <param name="version">The help viewer version to which the error applies</param>
         /// <param name="errorCode">The error code associated with the exception</param>
         /// <param name="additionalInfo">Additional information for the error message</param>
-        public HelpLibraryManagerException(int errorCode, string additionalInfo) :
-          base(ErrorMessageForCode(errorCode) + additionalInfo)
+        public HelpLibraryManagerException(Version version, int errorCode, string additionalInfo) :
+          base(ErrorMessageForCode(version, errorCode) + additionalInfo)
         {
+            this.Version = version;
             this.ErrorCode = errorCode;
         }
 
         /// <inheritdoc />
-        protected HelpLibraryManagerException(SerializationInfo info, StreamingContext context) : base(info, context)
+        protected HelpLibraryManagerException(SerializationInfo info, StreamingContext context) :
+          base(info, context)
         {
             if(info != null)
+            {
+                this.Version = (Version)info.GetValue("Version", typeof(Version));
                 this.ErrorCode = info.GetInt32("ErrorCode");
+            }
         }
         #endregion
 
@@ -153,13 +216,15 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
         /// <summary>
         /// Return a descriptive error message for the specified error code
         /// </summary>
+        /// <param name="version">The help viewer version to which the error code applies</param>
         /// <param name="code">The error code</param>
         /// <returns>A descriptive error message for the error code</returns>
-        private static string ErrorMessageForCode(int code)
+        private static string ErrorMessageForCode(Version version, int code)
         {
             string hlmErrorMsg = String.Format(CultureInfo.InvariantCulture,
                 "The Help Library Manager returned the exit code {0}: ", code);
 
+            // Launcher/general error codes
             switch(code)
             {
                 case Success:
@@ -170,7 +235,7 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
 
                 case HelpLibraryManagerAlreadyRunning:
                     return "The Help Library Manager is already running.  In order to install or uninstall your " +
-                        "help file, you must first close the running instance.";
+                        "help file, you must first close the running instance or let it complete and exit.";
 
                 case LocalStoreNotInitialized:
                     return "The local help library store has not been initialized.  You need to install some help " +
@@ -183,48 +248,113 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
                     return "The specified help catalog is not installed  The new catalog could not be created " +
                         "because no /locale argument was supplied.  ";
 
-                case InvalidCmdArgs:
+                case Others:
+                    return hlmErrorMsg + "An unknown error occurred in the Help Library Manager.";
+
+                default:
+                    break;
+            }
+
+            // Help Library Manager 1.0 error codes
+            if(version.Major == 1)
+                switch(code)
+                {
+                    case InvalidCmdArgs:
+                        return hlmErrorMsg + "One or more command line arguments was missing or invalid.";
+
+                    case MissingOrInvalidAppConfig:
+                        return hlmErrorMsg + "The application configuration file for the Help Library Manager was " +
+                            "missing or invalid.";
+
+                    case FailOnMachineLock:
+                        return hlmErrorMsg + "The help content store could not be locked for update.  This error " +
+                            "typically occurs when the content is locked for update by another process.";
+
+                    case MissingCatalogInfo:
+                        return hlmErrorMsg + "Files required to install content for a new product were not found.";
+
+                    case InvalidCatalogInfo:
+                        return hlmErrorMsg + "Files required to install content for a new product were invalid.";
+
+                    case FailOnSettingLocalStore:
+                        return hlmErrorMsg + "The path specified for the /content switch is invalid.";
+
+                    case InvalidHelpLocation:
+                        return hlmErrorMsg + "The local content store is in an invalid state.  This error occurs when the " +
+                            "directory permissions do not allow writing, or a required file is missing from the directory.";
+
+                    case NoBooksToInstall:
+                        return hlmErrorMsg + "The arguments passed to the Help Library Manager did not result in content " +
+                            "being installed or removed.  This can occur when the content is already installed or has " +
+                            "already been removed.";
+
+                    case FailOnSilentUninstall:
+                        return hlmErrorMsg + "The removal of content failed.  Detailed information can be found in the " +
+                            "event log and in the installation log.";
+
+                    case FailOnSilentInstall:
+                        return hlmErrorMsg + "The installation of content failed.  Detailed information can be found in the " +
+                            "event log and in the installation log.";
+
+                    case NonAdminSetsLocalStoreOnSilentMode:
+                        return hlmErrorMsg + "A non-admin user is trying to initialize the store using the /silent switch.";
+
+                    default:
+                        return "An unknown error occurred in the Help Library Manager launcher process.  ";
+                }
+
+            // Help Content Manager 2.0 error codes
+            switch(code)
+            {
+                case FailureToElevate:
+                    return hlmErrorMsg + "Failed to elevate with administrative privileges.";
+
+                case HV2InvalidCmdArgs:
                     return hlmErrorMsg + "One or more command line arguments was missing or invalid.";
 
-                case MissingOrInvalidAppConfig:
-                    return hlmErrorMsg + "The application configuration file for the Help Library Manager was " +
-                        "missing or invalid.";
+                case FailOnFetchingOnlineContent:
+                    return hlmErrorMsg + "Failed while fetching online content.";
 
-                case FailOnMachineLock:
-                    return hlmErrorMsg + "The help content store could not be locked for update.  This error " +
-                        "typically occurs when the content is locked for update by another process.";
+                case FailOnFetchingContentFromDisk:
+                    return hlmErrorMsg + "Failed while fetching content from disk.";
 
-                case MissingCatalogInfo:
-                    return hlmErrorMsg + "Files required to install content for a new product were not found.";
+                case FailOnFetchingInstalledBooks:
+                    return hlmErrorMsg + "Failed while fetching installed books.";
 
-                case InvalidCatalogInfo:
-                    return hlmErrorMsg + "Files required to install content for a new product were invalid.";
+                case NoBooksToUninstall:
+                    return hlmErrorMsg + "The arguments passed to HLM did not result in content being " +
+                        "removed.  This can occur when the content has already been removed.";
 
-                case FailOnSettingLocalStore:
-                    return hlmErrorMsg + "The path specified for the /content switch is invalid.";
+                case HV2NoBooksToInstall:
+                    return hlmErrorMsg + "The arguments passed to HLM did not result in content being " +
+                        "installed.  This can occur when the content is already installed.";
 
-                case InvalidHelpLocation:
-                    return hlmErrorMsg + "The local content store is in an invalid state.  This error occurs when the " +
-                        "directory permissions do not allow writing, or a required file is missing from the directory.";
+                case FailOnUninstall:
+                    return hlmErrorMsg + "Failed on uninstall operation.";
 
-                case NoBooksToInstall:
-                    return hlmErrorMsg + "The arguments passed to the Help Library Manager did not result in content " +
-                        "being installed or removed.  This can occur when the content is already installed or has " +
-                        "already been removed.";
+                case FailOnInstall:
+                    return hlmErrorMsg + "Failed on install operation.";
 
-                case FailOnSilentUninstall:
-                    return hlmErrorMsg + "The removal of content failed.  Detailed information can be found in the " +
-                        "event log and in the installation log.";
+                case FailOnMove:
+                    return hlmErrorMsg + "Failed on move operation.";
 
-                case FailOnSilentInstall:
-                    return hlmErrorMsg + "The installation of content failed.  Detailed information can be found in the " +
-                        "event log and in the installation log.";
+                case FailOnUpdate:
+                    return hlmErrorMsg + "Failed on update operation.";
 
-                case NonAdminSetsLocalStoreOnSilentMode:
-                    return hlmErrorMsg + "A non-admin user is trying to initialize the store using the /silent switch.";
+                case FailOnRefresh:
+                    return hlmErrorMsg + "Failed on refresh operation.";
 
-                case Others:
-                    return hlmErrorMsg + "An nknown error occurred in the Help Library Manager.";
+                case Canceled:
+                    return hlmErrorMsg + "The operation was canceled.";
+
+                case ContentManagementDisabled:
+                    return hlmErrorMsg + "Content management has been disabled.";
+
+                case OnlineHelpPreferenceDisabled:
+                    return hlmErrorMsg + "Online help preference has been disabled.";
+
+                case UpdateAlreadyRunning:
+                    return hlmErrorMsg + "Another update is already running.";
 
                 default:
                     return "An unknown error occurred in the Help Library Manager launcher process.  ";
@@ -242,7 +372,10 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
             base.GetObjectData(info, context);
 
             if(info != null)
+            {
+                info.AddValue("Version", this.Version);
                 info.AddValue("ErrorCode", this.ErrorCode);
+            }
         }
         #endregion
     }

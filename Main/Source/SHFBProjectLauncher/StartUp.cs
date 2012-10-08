@@ -1,25 +1,25 @@
-﻿//=============================================================================
+﻿//===============================================================================================================
 // System  : Sandcastle Help File Builder Project Launcher
 // File    : StartUp.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/31/2011
-// Note    : Copyright 2011, Eric Woodruff, All rights reserved
+// Updated : 09/22/2012
+// Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This application provides a way for the user to choose which application is
-// used to load help file builder project files (.shfbproj).
+// This application provides a way for the user to choose which application is used to load help file builder
+// project files (.shfbproj).
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.9.3.1  04/19/2011  EFW  Created the code
 // 1.9.3.3  11/19/2011  EFW  Fixed up parameter passed to Process.Start()
-//=============================================================================
+// 1.9.5.0  09/22/2012  EFW  Updated to launch latest Visual Studio version with the VS Package installed
+//===============================================================================================================
 
 using System;
 using System.Diagnostics;
@@ -69,38 +69,21 @@ namespace SandcastleBuilder.ProjectLauncher
         }
 
         /// <summary>
-        /// This read-only property returns the path to Visual Studio 2010 if
-        /// it is installed.
+        /// This read-only property returns the path to the latest version of Visual Studio if it is installed
+        /// and the SHFB VS Package has been installed for it.
         /// </summary>
-        /// <value>Returns the path to Visual Studio 2010 or null if it or the VSPackage
-        /// is not found.</value>
-        public static string VS2010Path
+        /// <value>Returns the path to Visual Studio or null if it or the VSPackage is not found in any of the
+        /// installed versions.</value>
+        public static string VisualStudioPath
         {
             get
             {
-                string vs2010Path = Environment.GetEnvironmentVariable("VS100COMNTOOLS",
-                    EnvironmentVariableTarget.Machine);
+                string vsPath = FindVisualStudioPath("VS110COMNTOOLS", "11.0");
 
-                if(!String.IsNullOrEmpty(vs2010Path))
-                {
-                    vs2010Path = Path.Combine(vs2010Path, @"..\IDE\devenv.exe");
+                if(vsPath == null)
+                    vsPath = FindVisualStudioPath("VS100COMNTOOLS", "10.0");
 
-                    if(!File.Exists(vs2010Path))
-                        vs2010Path = null;
-                    else
-                    {
-                        // Check for VSPackage too.  If not present, we can't load the project.
-                        string vsPackagePath = Path.Combine(Environment.GetFolderPath(
-                            Environment.SpecialFolder.LocalApplicationData),
-                            @"Microsoft\VisualStudio\10.0\Extensions\EWSoftware\SHFB");
-
-                        if(!Directory.Exists(vsPackagePath) || !Directory.EnumerateFiles(vsPackagePath,
-                          "SandcastleBuilder.Package.dll", SearchOption.AllDirectories).Any())
-                            vs2010Path = null;
-                    }
-                }
-
-                return vs2010Path;
+                return vsPath;
             }
         }
 
@@ -169,14 +152,14 @@ namespace SandcastleBuilder.ProjectLauncher
             // If no project or VS 2010 is present but no preference has been specified,
             // ask the user what to use.
             if(String.IsNullOrEmpty(ProjectToLoad) ||
-              (!Settings.Default.AlwaysUseSelection && !String.IsNullOrEmpty(VS2010Path)) ||
-              (String.IsNullOrEmpty(VS2010Path) && !Settings.Default.UseStandaloneGui))
+              (!Settings.Default.AlwaysUseSelection && !String.IsNullOrEmpty(VisualStudioPath)) ||
+              (String.IsNullOrEmpty(VisualStudioPath) && !Settings.Default.UseStandaloneGui))
                 return success;
 
             try
             {
-                if(!String.IsNullOrEmpty(VS2010Path) && !Settings.Default.UseStandaloneGui)
-                    Process.Start(VS2010Path, ProjectNameParameter);
+                if(!String.IsNullOrEmpty(VisualStudioPath) && !Settings.Default.UseStandaloneGui)
+                    Process.Start(VisualStudioPath, ProjectNameParameter);
                 else
                 {
                     if(String.IsNullOrEmpty(SHFBPath))
@@ -213,8 +196,8 @@ namespace SandcastleBuilder.ProjectLauncher
 
             try
             {
-                if(!String.IsNullOrEmpty(VS2010Path) && !useStandaloneGui)
-                    Process.Start(VS2010Path, ProjectNameParameter);
+                if(!String.IsNullOrEmpty(VisualStudioPath) && !useStandaloneGui)
+                    Process.Start(VisualStudioPath, ProjectNameParameter);
                 else
                 {
                     if(String.IsNullOrEmpty(SHFBPath))
@@ -234,6 +217,39 @@ namespace SandcastleBuilder.ProjectLauncher
             }
 
             return success;
+        }
+
+        /// <summary>
+        /// This is used to find the Visual Studio path using the given tools environment variable and version
+        /// </summary>
+        /// <param name="toolsVar">The tools environment variable</param>
+        /// <param name="version">The version</param>
+        /// <returns>The path to the given Visual Studio version or null if not found or the SHFB VS Package is
+        /// not installed for it.</returns>
+        private static string FindVisualStudioPath(string toolsVar, string version)
+        {
+            string vsPath = Environment.GetEnvironmentVariable(toolsVar, EnvironmentVariableTarget.Machine);
+
+            if(!String.IsNullOrEmpty(vsPath))
+            {
+                vsPath = Path.Combine(vsPath, @"..\IDE\devenv.exe");
+
+                if(!File.Exists(vsPath))
+                    vsPath = null;
+                else
+                {
+                    // Check for VSPackage too.  If not present, we can't load the project.
+                    string vsPackagePath = Path.Combine(Environment.GetFolderPath(
+                        Environment.SpecialFolder.LocalApplicationData),
+                        @"Microsoft\VisualStudio\" + version + @"\Extensions");
+
+                    if(!Directory.Exists(vsPackagePath) || !Directory.EnumerateFiles(vsPackagePath,
+                      "SandcastleBuilder.Package.dll", SearchOption.AllDirectories).Any())
+                        vsPath = null;
+                }
+            }
+
+            return vsPath;
         }
         #endregion
     }

@@ -1,19 +1,17 @@
-﻿//=============================================================================
+﻿//===============================================================================================================
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SandcastleBuilderPackage.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/21/2012
+// Updated : 10/06/2012
 // Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains the class that defines the Sancastle Help File Builder
-// Visual Studio package.
+// This file contains the class that defines the Sancastle Help File Builder Visual Studio package
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.  This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
 // ============================================================================
@@ -21,7 +19,8 @@
 // 1.9.3.3  12/11/2011  EFW  Added support for Entity References tool window
 // 1.9.3.3  12/26/2011  EFW  Added support for the SHFB file editors
 // 1.9.3.4  01/21/2012  EFW  Added support for the Topic Previewer tool window
-//=============================================================================
+// 1.9.5.0  10/06/2012  EFW  Added support for Help Viewer 2.0
+//===============================================================================================================
 
 using System;
 using System.Diagnostics;
@@ -529,7 +528,7 @@ namespace SandcastleBuilder.Package
         }
 
         /// <summary>
-        /// Set the state of the Launch Help Library Manager command
+        /// Set the state of the Launch Help Library 1.0 Manager command
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
@@ -539,8 +538,7 @@ namespace SandcastleBuilder.Package
         }
 
         /// <summary>
-        /// Launch the Help Library Manager for interactive use based on the
-        /// current project's settings.
+        /// Launch the Help Library Manager 1.0 for interactive use based on the current project's settings
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
@@ -555,8 +553,8 @@ namespace SandcastleBuilder.Package
                     HelpLibraryManager hlm = new HelpLibraryManager();
 
                     hlm.LaunchInteractive(String.Format(CultureInfo.InvariantCulture,
-                        "/product \"{0}\" /version \"{1}\" /locale {2} /brandingPackage Dev10.mshc",
-                        project.CatalogProductId, project.CatalogVersion, project.Language.Name));
+                        "/product \"{0}\" /version \"{1}\" /locale {2}", project.CatalogProductId,
+                        project.CatalogVersion, project.Language.Name));
                 }
             }
             catch(Exception ex)
@@ -564,6 +562,43 @@ namespace SandcastleBuilder.Package
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
                 Utility.ShowMessageBox(OLEMSGICON.OLEMSGICON_CRITICAL,
                     "Unable to launch Help Library Manager.  Reason:\r\n{0}", ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Set the state of the Launch Help Viewer 2.0 Content Manager command
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event arguments</param>
+        protected override void LaunchContentMgrQueryStatusHandler(object sender, EventArgs e)
+        {
+            SetViewHelpCommandState((OleMenuCommand)sender, null);
+        }
+
+        /// <summary>
+        /// Launch the Help Library Manager 1.0 for interactive use based on the current project's settings
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event arguments</param>
+        protected override void LaunchContentMgrExecuteHandler(object sender, EventArgs e)
+        {
+            try
+            {
+                SandcastleProject project = CurrentSandcastleProject;
+
+                if(project != null)
+                {
+                    HelpLibraryManager hlm = new HelpLibraryManager(new Version(2, 0));
+
+                    hlm.LaunchInteractive(String.Format(CultureInfo.InvariantCulture,
+                        "/catalogName \"{0}\" /locale {1} /manage", project.CatalogName, project.Language.Name));
+                }
+            }
+            catch(Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.ToString());
+                Utility.ShowMessageBox(OLEMSGICON.OLEMSGICON_CRITICAL,
+                    "Unable to launch Help Viewer 2.0 Content Manager.  Reason:\r\n{0}", ex.Message);
             }
         }
 

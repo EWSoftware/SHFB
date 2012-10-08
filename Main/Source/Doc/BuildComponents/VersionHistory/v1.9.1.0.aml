@@ -12,15 +12,17 @@
   <content>
 
 <list class="bullet">
-	<listItem>Due to changes in the Sandcastle reflection data files, you must delete
-any cache files used by the cached build components.  See the
-<link xlink:href="3a1c4bf1-8ecf-4ab3-8010-277bed8d3819" /> topic for how to find and
-remove them.  They will be recreated when you build your projects.</listItem>
+	<listItem>
+		<para>Due to changes in the Sandcastle reflection data files, you must delete any cache files used by the
+cached build components.  See the <link xlink:href="3a1c4bf1-8ecf-4ab3-8010-277bed8d3819" /> topic for how to
+find and remove them.  They will be recreated when you build your projects.</para>
+	</listItem>
 
-	<listItem>The <legacyBold>Post Transform Component</legacyBold>'s <codeInline>outputPath</codeInline>
-element has been replaced with an <codeInline>outputPaths</codeInline> element containing
-one or more path elements that define the output paths to which the code colorizer stylesheet,
-script, and image files should be copied.</listItem>
+	<listItem>
+		<para>The <legacyBold>Post Transform Component</legacyBold>'s <codeInline>outputPath</codeInline> element has
+been replaced with an <codeInline>outputPaths</codeInline> element containing one or more path elements that
+define the output paths to which the code colorizer stylesheet, script, and image files should be copied.</para>
+	</listItem>
 
 </list>
   </content>
@@ -30,25 +32,32 @@ script, and image files should be copied.</listItem>
   <title>Other Changes in This Release</title>
   <content>
     <list class="bullet">
-		<listItem>Added support for the June 2010 release of Sandcastle.</listItem>
+		<listItem>
+			<para>Added support for the June 2010 release of Sandcastle.</para>
+		</listItem>
 
-		<listItem>Added the <link xlink:href="534c4ff1-3bba-4431-a3a6-76dcb2d374f8" />
-as part of the toolset.  A copy of this help file in MS Help Viewer format and
-the sample scripts to install and remove it are also included along with the
-utility.</listItem>
+		<listItem>
+			<para>Added the <link xlink:href="534c4ff1-3bba-4431-a3a6-76dcb2d374f8" /> as part of the toolset.  A copy
+of this help file in MS Help Viewer format and the sample scripts to install and remove it are also included
+along with the utility.</para>
+		</listItem>
 
-		<listItem>The <legacyBold>Code Block Component</legacyBold> will now expand
-environment variable references in source attribute values.</listItem>
+		<listItem>
+			<para>The <legacyBold>Code Block Component</legacyBold> will now expand environment variable references in
+source attribute values.</para>
+		</listItem>
 
-		<listItem>Added the <link xlink:href="92a6e678-48fb-4e6c-a7e5-34f264b01212" />
-which can be used to define a set of build components that will be executed based
-on a specified set of help file formats.  This makes it possible to generate multiple
-help file output formats in one build each with differing configuration settings.</listItem>
+		<listItem>
+			<para>Added the <link xlink:href="92a6e678-48fb-4e6c-a7e5-34f264b01212" /> which can be used to define a
+set of build components that will be executed based on a specified set of help file formats.  This makes it
+possible to generate multiple help file output formats in one build each with differing configuration settings.</para>
+		</listItem>
 
-		<listItem>Added the <link xlink:href="16dc54c2-84bf-4bab-a875-0b1d49c9b1b8" />
-which is a slightly modifed version of the standard Sandcastle component of the same name.
-This version supports a <codeInline>sortOrder</codeInline> attribute on the table of contents
-topic items that lets you specify the sort order for the topics.</listItem>
+		<listItem>
+			<para>Added the <legacyBold>MSHCComponent</legacyBold> which is a slightly modifed version of the standard
+Sandcastle component of the same name.  This version supports a <codeInline>sortOrder</codeInline> attribute on
+the table of contents topic items that lets you specify the sort order for the topics.</para>
+		</listItem>
 
     </list>
   </content>

@@ -41,7 +41,7 @@ namespace SandcastleBuilder.ProjectLauncher
         {
             InitializeComponent();
 
-            if(Settings.Default.UseStandaloneGui || String.IsNullOrEmpty(StartUp.VS2010Path))
+            if(Settings.Default.UseStandaloneGui || String.IsNullOrEmpty(StartUp.VisualStudioPath))
                 rbSHFB.Checked = true;
             else
                 rbVisualStudio.Checked = true;
@@ -49,7 +49,7 @@ namespace SandcastleBuilder.ProjectLauncher
             chkAlwaysUseSelection.Checked = Settings.Default.AlwaysUseSelection;
             btnLaunch.Enabled = !String.IsNullOrEmpty(StartUp.ProjectToLoad);
 
-            if(String.IsNullOrEmpty(StartUp.VS2010Path))
+            if(String.IsNullOrEmpty(StartUp.VisualStudioPath))
             {
                 rbVisualStudio.Enabled = false;
                 lblNotInstalled.Visible = true;

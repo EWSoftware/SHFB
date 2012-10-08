@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : MSBuildProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/08/2012
+// Updated : 09/12/2012
 // Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -30,6 +30,8 @@ using System.Text.RegularExpressions;
 
 using Microsoft.Build.Evaluation;
 using Microsoft.Build.Exceptions;
+
+using SandcastleBuilder.Utils.Frameworks;
 
 namespace SandcastleBuilder.Utils.MSBuild
 {
@@ -188,6 +190,26 @@ namespace SandcastleBuilder.Utils.MSBuild
         }
 
         /// <summary>
+        /// This is used to get the target framework identifier
+        /// </summary>
+        public string TargetFrameworkIdentifier
+        {
+            get
+            {
+                ProjectProperty prop;
+
+                if(properties == null)
+                    throw new InvalidOperationException("Configuration has not been set");
+
+                if(properties.TryGetValue("TargetFrameworkIdentifier", out prop))
+                    return prop.EvaluatedValue;
+
+                // If not found, assume it is a normal .NET Framework project
+                return PlatformType.DotNetFramework;
+            }
+        }
+
+        /// <summary>
         /// This is used to get the target framework type and version
         /// </summary>
         public string TargetFrameworkVersion
@@ -195,50 +217,31 @@ namespace SandcastleBuilder.Utils.MSBuild
             get
             {
                 ProjectProperty prop;
-                string versionValue;
+                string versionValue = null;
 
                 if(properties == null)
                     throw new InvalidOperationException("Configuration has not been set");
 
-                // Is it a .NET Portable Framework version?
-                if(properties.TryGetValue("TargetFrameworkIdentifier", out prop))
+                switch(this.TargetFrameworkIdentifier)
                 {
-                    versionValue = prop.EvaluatedValue;
+                    case PlatformType.Silverlight:
+                        if(properties.TryGetValue("SilverlightVersion", out prop))
+                            versionValue = prop.EvaluatedValue;
+                        break;
 
-                    if(versionValue == ".NETPortable" && properties.TryGetValue("TargetFrameworkVersion", out prop))
-                    {
-                        versionValue = prop.EvaluatedValue;
-
-                        if(versionValue[0] == 'v')
-                            versionValue = versionValue.Substring(1);
-
-                        return "Portable " + versionValue;
-                    }
+                    default:
+                        if(properties.TryGetValue("TargetFrameworkVersion", out prop))
+                            versionValue = prop.EvaluatedValue;
+                        break;
                 }
 
-                // Is it a Silverlight version?
-                if(properties.TryGetValue("SilverlightVersion", out prop))
-                {
-                    versionValue = prop.EvaluatedValue;
+                if(versionValue == null)
+                    throw new InvalidOperationException("Unable to determine target framework version for project");
 
-                    if(versionValue[0] == 'v')
-                        versionValue = versionValue.Substring(1);
+                if(versionValue[0] == 'v')
+                    versionValue = versionValue.Substring(1);
 
-                    return "Silverlight " + versionValue;
-                }
-
-                // Try for a regular .NET version
-                if(properties.TryGetValue("TargetFrameworkVersion", out prop))
-                {
-                    versionValue = prop.EvaluatedValue;
-
-                    if(versionValue[0] == 'v')
-                        versionValue = versionValue.Substring(1);
-
-                    return ".NET " + versionValue;
-                }
-
-                return null;
+                return versionValue;
             }
         }
 

@@ -1,24 +1,24 @@
-﻿//=============================================================================
+﻿//===============================================================================================================
 // System  : Help Library Manager Launcher
 // File    : HelpLibraryManager.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/24/2012
+// Updated : 10/06/2012
 // Note    : Copyright 2010-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class used to interact with the Help Library Manager.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+//===============================================================================================================
 // 1.0.0.0  07/03/2010  EFW  Created the code
 // 1.0.0.1  03/24/2012  EFW  Merged changes submitted by Don Fehr
-//=============================================================================
+// 1.0.0.2  10/05/2012  EFW  Added support for Help Viewer 2.0
+//===============================================================================================================
 
 using System;
 using System.Collections.Generic;
@@ -29,8 +29,8 @@ using System.Xml;
 namespace SandcastleBuilder.MicrosoftHelpViewer
 {
     /// <summary>
-    /// This class is used to interact with the Help Library Manager to install
-    /// and uninstall Microsoft Help Viewer files.
+    /// This class is used to interact with the Help Library Manager to install and uninstall Microsoft Help
+    /// Viewer files.
     /// </summary>
     public class HelpLibraryManager
     {
@@ -66,6 +66,12 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
         }
         #endregion
 
+        #region Private data members
+        //=====================================================================
+
+        private Version viewerVersion;
+        #endregion
+
         #region Properties
         //=====================================================================
 
@@ -96,50 +102,46 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
         {
             get { return (!String.IsNullOrEmpty(this.LocalStorePath) && Directory.Exists(this.LocalStorePath)); }
         }
-
-        // TODO: Longer term, these may return different values from MS Help Viewer 2.0 (VS 2011)
-
-        /// <summary>
-        /// This read-only property returns The default MS Help Viewer product version
-        /// </summary>
-        public string DefaultCatalogProductVersion
-        {
-            get { return "100"; }
-        }
-
-        /// <summary>
-        /// This read-only property returns the name of the default branding package used by MS Help Viewer
-        /// </summary>
-        public string DefaultBrandingPackage
-        {
-            get { return "Dev10"; }
-        }
         #endregion
 
-        #region Constructor
+        #region Constructors
         //=====================================================================
 
-        // TODO: To support Help Viewer 2.0, this will most likely require a parameter that specifies which
-        // version of the help viewer to use (1.0 or 2.0).  This will determine the registry key to use as well
-        // as the property values returned above.
+        /// <summary>
+        /// Default constructor
+        /// </summary>
+        /// <remarks>Help Viewer 1.0 will be used</remarks>
+        public HelpLibraryManager() : this(new Version(1, 0))
+        {
+        }
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public HelpLibraryManager()
+        /// <param name="version">The help viewer version to use for all operations</param>
+        public HelpLibraryManager(Version version)
         {
-            string appRoot, appName;
+            string appRoot, appName, registryPath = @"SOFTWARE\Microsoft\Help\v" + version.ToString();
 
-            this.LocalStorePath = UnsafeNativeMethods.GetRegistryValue(@"SOFTWARE\Microsoft\Help\v1.0", "LocalStore");
+            viewerVersion = version;
 
-            appRoot = UnsafeNativeMethods.GetRegistryValue(@"SOFTWARE\Microsoft\Help\v1.0", "AppRoot");
+            if(viewerVersion.Major == 1)
+                this.LocalStorePath = UnsafeNativeMethods.GetRegistryValue(registryPath, "LocalStore");
+            else
+                this.LocalStorePath = UnsafeNativeMethods.GetRegistryValue(registryPath + @"\Catalogs",
+                    "ContentStore");
+
+            appRoot = UnsafeNativeMethods.GetRegistryValue(registryPath, "AppRoot");
 
             if(appRoot != null)
             {
                 if(Directory.Exists(appRoot))
                     this.HelpViewerInstallPath = appRoot;
 
-                appName = Path.Combine(appRoot, "HelpLibManager.exe");
+                if(version.Major == 1)
+                    appName = Path.Combine(appRoot, "HelpLibManager.exe");
+                else
+                    appName = Path.Combine(appRoot, "HlpCtntMgr.exe");
 
                 if(File.Exists(appName))
                     this.HelpLibraryManagerPath = appName;
@@ -156,12 +158,10 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
         //=====================================================================
 
         /// <summary>
-        /// This is used to find the installed locale of the specified product
-        /// version.
+        /// This is used to find the installed locale of the specified product version for Help Viewer 1.0.
         /// </summary>
         /// <param name="product">The product for which to get the locale.</param>
-        /// <param name="version">The version of the product for which to get the
-        /// locale.</param>
+        /// <param name="version">The version of the product for which to get the locale.</param>
         /// <returns>The locale found for the specified product.  If not found, it returns null.</returns>
         public string FindLocaleFor(string product, string version)
         {
@@ -208,30 +208,48 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
             if(String.IsNullOrEmpty(this.LocalStorePath))
                 return false;
 
-            // Periods in the filename aren't allowed.  SHFB replaces them with an
-            // underscore for the name in the setup file.
+            // Periods in the filename aren't allowed.  SHFB replaces them with an underscore for the name in
+            // the setup file.
             if(filename.IndexOf('.') != -1)
                 filename = filename.Replace(".", "_");
 
-            filename += Path.GetExtension(contentFilename);
-
-            // I suppose it's possible there may be more than one so we'll look at all of them
-            foreach(string file in Directory.EnumerateFiles(Path.Combine(this.LocalStorePath, "manifest"),
-              "queryManifest.*.xml"))
+            if(viewerVersion.Major == 1)
             {
-                manifest = new XmlDocument();
-                manifest.Load(file);
+                filename += Path.GetExtension(contentFilename);
 
-                if(manifest.SelectNodes("/queryManifest/catalogs/catalog/catalogSources//catalogSource/sourceFiles/" +
-                  "sourceFile/contentFiles/contentFile[@fileName='" + filename + "']").Count != 0)
-                    return true;
+                // I suppose it's possible there may be more than one so we'll look at all of them
+                foreach(string file in Directory.EnumerateFiles(Path.Combine(this.LocalStorePath, "manifest"),
+                  "queryManifest.*.xml"))
+                {
+                    manifest = new XmlDocument();
+                    manifest.Load(file);
+
+                    if(manifest.SelectNodes("/queryManifest/catalogs/catalog/catalogSources//catalogSource/sourceFiles/" +
+                      "sourceFile/contentFiles/contentFile[@fileName='" + filename + "']").Count != 0)
+                        return true;
+                }
+            }
+            else
+            {
+                // I suppose it's possible there may be more than one so we'll look at all of them
+                foreach(string file in Directory.EnumerateFiles(this.LocalStorePath, "installedBooks.*.xml",
+                  SearchOption.AllDirectories))
+                {
+                    manifest = new XmlDocument();
+                    manifest.Load(file);
+
+                    foreach(XmlNode r in manifest.SelectNodes("/installed-books/locale-membership/locale" +
+                      "/book-membership/book/package/@ref"))
+                        if(r.Value.Equals(filename, StringComparison.OrdinalIgnoreCase))
+                            return true;
+                }
             }
 
             return false;
         }
 
         /// <summary>
-        /// Run the Help Library Manager as a normal user
+        /// Run the Help Library Content Manager as a normal user
         /// </summary>
         /// <param name="arguments">The command line arguments to pass to it</param>
         /// <param name="windowStyle">The window style to use</param>
@@ -258,7 +276,7 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
         }
 
         /// <summary>
-        /// Run the Help Library Manager as an administrator
+        /// Run the Help Library Content Manager as an administrator
         /// </summary>
         /// <param name="arguments">The command line arguments to pass to it</param>
         /// <param name="windowStyle">The window style to use</param>
@@ -289,7 +307,7 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
         }
 
         /// <summary>
-        /// Launch the help file viewer for interactive use
+        /// Launch the help content manager for interactive use
         /// </summary>
         /// <param name="arguments">The command line arguments to pass to it</param>
         /// <remarks>This always runs it as an administrator on Vista and above.</remarks>
@@ -300,7 +318,7 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
                 StartInfo =
                 {
                     UseShellExecute = true,
-                    FileName = this.HelpLibraryManagerPath,
+                    FileName = (viewerVersion.Major == 1) ? this.HelpLibraryManagerPath : this.HelpViewerPath,
                     Arguments = arguments,
                     WindowStyle = ProcessWindowStyle.Normal
                 }

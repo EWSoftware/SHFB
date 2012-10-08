@@ -1,25 +1,23 @@
-﻿//=============================================================================
+﻿//==========================================================================================================
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : EntityReferencesControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/06/2012
+// Updated : 09/10/2012
 // Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains the WPF user control used to look up code entity
-// references, code snippets, tokens, images, and table of content entries and
-// allows them to be dragged and dropped into a topic editor window.
+// This file contains the WPF user control used to look up code entity references, code snippets, tokens,
+// images, and table of content entries and allows them to be dragged and dropped into a topic editor window.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.   This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// =========================================================================================================
 // 1.9.3.3  12/04/2011  EFW  Created the code
-//=============================================================================
+//==========================================================================================================
 
 using System;
 using System.Collections.Generic;
@@ -37,6 +35,8 @@ using System.Xml.XPath;
 using SandcastleBuilder.Utils;
 using SandcastleBuilder.Utils.BuildEngine;
 using SandcastleBuilder.Utils.ConceptualContent;
+using SandcastleBuilder.Utils.Design;
+using SandcastleBuilder.Utils.Frameworks;
 using SandcastleBuilder.Utils.InheritedDocumentation;
 using SandcastleBuilder.Utils.MSBuild;
 
@@ -597,36 +597,34 @@ namespace SandcastleBuilder.WPF.UserControls
         {
             HashSet<string> projectDictionary = new HashSet<string>();
             IndexedCommentsCache cache = new IndexedCommentsCache(100);
-            CultureInfo language = currentProject.Language;
             MSBuildProject projRef;
             string lastSolution = null;
 
             currentProject.EnsureProjectIsCurrent(false);
 
             // Index the framework comments based on the framework version in the project
-            foreach(var l in BuildProcess.FrameworkCommentsFileLocations(currentProject))
-                if(Directory.Exists(l.Folder))
-                {
-                    // Check for a language-specific set of comments if indicated
-                    if(l.CanHaveLocalizedVersion)
-                        if(Directory.Exists(l.Folder + @"\" + language.Name))
-                            l.Folder += @"\" + language.Name;
-                        else
-                            if(Directory.Exists(l.Folder + @"\" + language.TwoLetterISOLanguageName))
-                                l.Folder += @"\" + language.TwoLetterISOLanguageName;
+            FrameworkSettings frameworkSettings = FrameworkVersionTypeConverter.AllFrameworks.GetFrameworkWithRedirect(
+                currentProject.FrameworkVersion);
 
-                    indexTokenSource.Token.ThrowIfCancellationRequested();
+            if(frameworkSettings == null)
+                throw new InvalidOperationException(String.Format(CultureInfo.CurrentCulture,
+                    "Unable to locate information for a framework version or its redirect: {0}",
+                    currentProject.FrameworkVersion));
 
-                    cache.IndexCommentsFiles(l.Folder, null, l.Recurse, null);
-                }
+            foreach(var location in frameworkSettings.CommentsFileLocations(currentProject.Language))
+            {
+                indexTokenSource.Token.ThrowIfCancellationRequested();
+
+                cache.IndexCommentsFiles(Path.GetDirectoryName(location), Path.GetFileName(location),
+                    false, null);
+            }
 
             // Index the comments file documentation sources
             foreach(string file in currentProject.DocumentationSources.CommentsFiles)
             {
-                cache.IndexCommentsFiles(Path.GetDirectoryName(file),
-                    Path.GetFileName(file), false, null);
-
                 indexTokenSource.Token.ThrowIfCancellationRequested();
+
+                cache.IndexCommentsFiles(Path.GetDirectoryName(file), Path.GetFileName(file), false, null);
             }
 
             // Also, index the comments files in project documentation sources

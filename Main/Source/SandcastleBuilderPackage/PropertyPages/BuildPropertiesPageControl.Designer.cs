@@ -121,7 +121,7 @@
             this.cboFrameworkVersion.Location = new System.Drawing.Point(431, 12);
             this.cboFrameworkVersion.MaxDropDownItems = 16;
             this.cboFrameworkVersion.Name = "cboFrameworkVersion";
-            this.cboFrameworkVersion.Size = new System.Drawing.Size(183, 28);
+            this.cboFrameworkVersion.Size = new System.Drawing.Size(280, 28);
             this.cboFrameworkVersion.TabIndex = 3;
             this.cboFrameworkVersion.Tag = "FrameworkVersion";
             // 
@@ -185,7 +185,7 @@
             this.cboBuildAssemblerVerbosity.Location = new System.Drawing.Point(431, 273);
             this.cboBuildAssemblerVerbosity.MaxDropDownItems = 16;
             this.cboBuildAssemblerVerbosity.Name = "cboBuildAssemblerVerbosity";
-            this.cboBuildAssemblerVerbosity.Size = new System.Drawing.Size(239, 28);
+            this.cboBuildAssemblerVerbosity.Size = new System.Drawing.Size(214, 28);
             this.cboBuildAssemblerVerbosity.TabIndex = 12;
             this.cboBuildAssemblerVerbosity.Tag = "BuildAssemblerVerbosity";
             // 

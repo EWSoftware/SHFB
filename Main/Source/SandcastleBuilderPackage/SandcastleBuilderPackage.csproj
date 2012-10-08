@@ -298,6 +298,7 @@
     <ZipProject Include="Templates\Projects\NewFromOtherFormat\NewFromOtherFormat.shfbproj" />
     <ZipProject Include="Templates\Projects\NewFromOtherFormat\NewFromOtherFormat.vstemplate" />
     <Resource Include="Button Bitmaps\TopicPreview.bmp" />
+    <Resource Include="Button Bitmaps\HelpContentManager.bmp" />
     <Content Include="VSIXPreview.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>

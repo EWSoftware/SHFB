@@ -87,6 +87,7 @@
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
@@ -219,6 +220,11 @@
     <Compile Include="FilePath.cs" />
     <Compile Include="FolderPath.cs" />
     <Compile Include="BuildEngine\FullTextIndex.cs" />
+    <Compile Include="Frameworks\AssemblyDetails.cs" />
+    <Compile Include="Frameworks\AssemblyLocation.cs" />
+    <Compile Include="Frameworks\FrameworkDictionary.cs" />
+    <Compile Include="Frameworks\FrameworkSettings.cs" />
+    <Compile Include="Frameworks\PlatformType.cs" />
     <Compile Include="Gac\GacApi.cs" />
     <Compile Include="Gac\GacEnumerator.cs" />
     <Compile Include="IBasePathProvider.cs" />
@@ -501,6 +507,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -40,6 +40,9 @@
               <groupBaseReferencesButtons Id="c20eb9db-dec7-4397-b57c-8fb853f2ae25">
                 <buttonMoniker Id="0302be7b-1c88-4d2d-8d00-ba670ccdf729" />
               </groupBaseReferencesButtons>
+              <groupBaseReferencesButtons Id="d03aaf0d-996f-44ba-a010-a95257f3683f">
+                <buttonMoniker Id="98ef1de5-0d65-4901-a7d5-b2f4daa6563e" />
+              </groupBaseReferencesButtons>
             </buttons>
           </group>
           <group Id="1a04f23a-e7c8-4e09-b1d4-7ede59d14ef7" name="WebsiteHelpGroup" idNumeric="20" priority="260">
@@ -141,7 +144,7 @@
             <button Id="5294cc16-a32f-43b0-84ff-bef84f4d02b3" name="ViewMshcHelp" idNumeric="9" buttonText="View M&amp;S Help Viewer (.mshc) File" menuText="View M&amp;S Help Viewer (.mshc) File" commandName="cmdidViewMshcHelp" toolTipText="View M&amp;S Help Viewer (.mshc) File" mod1="0" mod2="0" visibilityConstraints="0" icon="MSHelpViewer.bmp" commandFlags="DefaultInvisible, DynamicVisibility" sampleData="false" />
           </commandTableHasButtons>
           <commandTableHasButtons Id="7ae2a30b-ae43-40a6-9cbb-919eead5d099">
-            <button Id="0302be7b-1c88-4d2d-8d00-ba670ccdf729" name="LaunchHelpLibMgr" idNumeric="10" buttonText="La&amp;unch Help Library Manager" menuText="La&amp;unch Help Library Manager" commandName="cmdidLaunchHelpLibMgr" toolTipText="La&amp;unch Help Library Manager" mod1="0" mod2="0" visibilityConstraints="0" priority="257" icon="HelpLibManager.bmp" commandFlags="DefaultInvisible, DynamicVisibility" sampleData="false" />
+            <button Id="0302be7b-1c88-4d2d-8d00-ba670ccdf729" name="LaunchHelpLibMgr" idNumeric="10" buttonText="La&amp;unch Help Library Manager 1.0" menuText="La&amp;unch Help Library Manager 1.0" commandName="cmdidLaunchHelpLibMgr" toolTipText="La&amp;unch Help Library Manager 1.0" mod1="0" mod2="0" visibilityConstraints="0" priority="257" icon="HelpLibManager.bmp" commandFlags="DefaultInvisible, DynamicVisibility" sampleData="false" />
           </commandTableHasButtons>
           <commandTableHasButtons Id="93031ef0-8b21-4642-b320-442cb32b02b8">
             <button Id="31184aa2-c278-4ce6-9b96-a896645f6b61" name="ViewAspNetWebsite" idNumeric="11" buttonText="View Website (&amp;ASP.NET)" menuText="View Website (&amp;ASP.NET)" commandName="cmdidViewAspNetWebsite" toolTipText="View Website (&amp;ASP.NET)" mod1="0" mod2="0" visibilityConstraints="0" icon="AspNetWebsite.bmp" commandFlags="DefaultInvisible, DynamicVisibility" sampleData="false" />
@@ -169,6 +172,9 @@
           </commandTableHasButtons>
           <commandTableHasButtons Id="b72a4bea-393e-4779-bd85-148ed3ef4f39">
             <button Id="e75027c5-f197-4f7e-b50f-7fcdc5d8348b" name="TopicPreviewerWindow" idNumeric="48" buttonText="Topic Previewer Window" menuText="Topic Previewer Window" commandName="cmdidTopicPreviewerWindow" toolTipText="Open the Topic Previewer Window" mod1="0" mod2="0" visibilityConstraints="0" priority="257" icon="TopicPreview.bmp" commandFlags="0" sampleData="false" />
+          </commandTableHasButtons>
+          <commandTableHasButtons Id="ce8b783b-6735-401e-b58f-c28a31b5062a">
+            <button Id="98ef1de5-0d65-4901-a7d5-b2f4daa6563e" name="LaunchContentMgr" idNumeric="49" buttonText="Lau&amp;nch Help Viewer 2.0 Content Manager" menuText="Lau&amp;nch Help Viewer 2.0 Content Manager" commandName="cmdidLaunchContentMgr" toolTipText="Lau&amp;nch Help Viewer 2.0 Content Manager" mod1="0" mod2="0" visibilityConstraints="0" priority="258" icon="HelpContentManager.bmp" commandFlags="DefaultInvisible, DynamicVisibility" sampleData="false" />
           </commandTableHasButtons>
         </buttons>
         <menuBases>

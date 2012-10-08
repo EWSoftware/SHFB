@@ -8,7 +8,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{dea33d54-a820-4458-85eb-8c52ff13508d}</ProjectGuid>
-    <SHFBSchemaVersion>1.9.3.0</SHFBSchemaVersion>
+    <SHFBSchemaVersion>1.9.5.0</SHFBSchemaVersion>
     <!-- AssemblyName, Name, and RootNamespace are not used by SHFB but Visual
          Studio adds them anyway -->
     <AssemblyName>Documentation</AssemblyName>
@@ -29,14 +29,14 @@
     <WorkingPath>
     </WorkingPath>
     <BuildLogFile>Help\SandcastleBuilder.log</BuildLogFile>
-    <FrameworkVersion>.NET 4.0.30319</FrameworkVersion>
+    <FrameworkVersion>.NET Framework 4.0</FrameworkVersion>
     <HelpTitle>Sandcastle Help File Builder Documentation</HelpTitle>
     <CopyrightHref>http://www.EWoodruff.us</CopyrightHref>
     <CopyrightText>[v{%40HelpFileVersion}] Copyright \xA9 2006-2012, Eric Woodruff, All rights reserved</CopyrightText>
     <FeedbackEMailAddress>Eric%40EWoodruff.us</FeedbackEMailAddress>
     <PresentationStyle>vs2005</PresentationStyle>
     <SyntaxFilters>CSharp, VisualBasic</SyntaxFilters>
-    <HelpFileVersion>1.9.4.0</HelpFileVersion>
+    <HelpFileVersion>1.9.5.0</HelpFileVersion>
     <ComponentConfigurations>
       <ComponentConfig id="Post-transform Component" enabled="True">
         <component type="SandcastleBuilder.Components.PostTransformComponent" assembly="{@SHFBFolder}SandcastleBuilder.Components.dll" id="Post-transform Component">
@@ -128,6 +128,8 @@
       <NamespaceSummaryItem name="SandcastleBuilder.WPF.Controls" isDocumented="True">This namespace contains WPF custom controls.</NamespaceSummaryItem>
       <NamespaceSummaryItem name="SandcastleBuilder.WPF.UserControls" isDocumented="True">This namespace contains a set of WPF user controls used by both the standalone GUI and the Visual Studio package to provide a consistent set of features and functionality to the file editors and tool windows used in both.</NamespaceSummaryItem>
       <NamespaceSummaryItem name="XamlGeneratedNamespace" isDocumented="False" />
+      <NamespaceSummaryItem name="SandcastleBuilder.Utils.Frameworks" isDocumented="True">This namespace contains classes used to load and work with the Sandcastle &lt;i&gt;Frameworks.xml&lt;/i&gt; file that defines assembly information for the various .NET Frameworks.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SandcastleBuilder.WPF.Maml" isDocumented="True">This namespace contains various classes used to convert MAML topics to WPF flow documents for previewing.</NamespaceSummaryItem>
     </NamespaceSummaries>
     <CleanIntermediates>True</CleanIntermediates>
     <ApiFilter>
@@ -146,9 +148,9 @@
     </PlugInConfigurations>
     <Preliminary>False</Preliminary>
     <HelpAttributes>
-      <HelpAttribute name="DocSet" value="{@HtmlHelpName}" xmlns="" />
-      <HelpAttribute name="DocSet" value="NetFramework" xmlns="" />
-      <HelpAttribute name="TargetOS" value="Windows" xmlns="" />
+      <HelpAttribute name="DocSet" value="{@HtmlHelpName}" />
+      <HelpAttribute name="DocSet" value="NetFramework" />
+      <HelpAttribute name="TargetOS" value="Windows" />
     </HelpAttributes>
     <VendorName>EWSoftware</VendorName>
     <ProductTitle>Sandcastle Help File Builder</ProductTitle>
@@ -170,6 +172,7 @@
     <NamingMethod>Guid</NamingMethod>
     <Language>en-US</Language>
     <ContentPlacement>AboveNamespaces</ContentPlacement>
+    <BuildAssemblerVerbosity>OnlyWarningsAndErrors</BuildAssemblerVerbosity>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in
        order for Visual Studio to perform the build.  The others are optional
@@ -223,6 +226,7 @@
     <None Include="Content\VersionHistory\v1.9.3.3.aml" />
     <None Include="Content\VersionHistory\v1.9.3.4.aml" />
     <None Include="Content\VersionHistory\v1.9.4.0.aml" />
+    <None Include="Content\VersionHistory\v1.9.5.0.aml" />
     <None Include="Content\VisualStudio\ItemFileTemplates.aml" />
     <None Include="Content\VisualStudio\FeatureComparison.aml" />
     <None Include="Content\VisualStudio\VisualStudioPackage.aml" />

@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="9fee3feb-46b6-4935-aac2-01c0045d3e19" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>Version 1.9.5.0 was released on October 2nd, 2012.</para>
+		</introduction>
+
+<section>
+	<title>Changes in This Release</title>
+	<content>
+
+		<list class="bullet">
+			<listItem>
+				<para>Updated for use with Sandcastle v2.7.1.0.</para>
+			</listItem>
+
+			<listItem>
+				<para>Fixed a bug in the standalone GUI's project explorer window that caused an endless loop when
+pasting the same file into a folder more than once.</para>
+			</listItem>
+
+			<listItem>
+				<para>Fixed the <application>GenerateInheritedDocs</application> tool to prevent crashes related to
+ill-formed nested <codeInline>inheritdoc</codeInline> instances and invalid member IDs produced by the C++
+compiler.</para>
+			</listItem>
+
+			<listItem>
+				<para>Made changes to <localUri>TOC.js</localUri> for website output so that it works correctly under
+Internet Explorer 10.</para>
+			</listItem>
+
+			<listItem>
+				<para>Updated the <application>SandcastleHtmlExtract</application> tool to remove the Help 2 XML data
+island and the related stylesheet link from all topics which were causing security issues in Internet Explorer
+10 and when using HTTPS.</para>
+			</listItem>
+
+			<listItem>
+				<para>Fixed the topic previewer so that it correctly utilizes the title, TOC title, and link text values
+from the content layout files.</para>
+			</listItem>
+
+			<listItem>
+				<para>Modified the behavior of the VSPackage so that it doesn't prevent opening site map files from other
+project types.</para>
+			</listItem>
+
+			<listItem>
+				<para>Added support for .NET 4.5 and .NET for Windows Store Apps.  This change required modifying the
+<codeInline>FrameworkVersion</codeInline> property values.  Projects will update themselves automatically when
+opened in the latest release.</para>
+			</listItem>
+
+			<listItem>
+				<para>The default configuration for <application>MRefBuilder</application> has been updated to ignore the
+Crystal Reports licensing assembly (<codeInline>BusinessObjects.Licensing.KeycodeDecoder</codeInline>) if it
+fails to get resolved.  This assembly does not appear to be available and ignoring it prevents projects that
+include Crystal Reports assemblies from failing and being unbuildable.</para>
+			</listItem>
+
+			<listItem>
+				<para>The <codeInline>DisableCodeBlockComponent</codeInline> property now only disables code colorization
+and the custom title.  All other features it provides such as importing code from external files and leading
+whitespace normalization are now still available.</para>
+			</listItem>
+
+			<listItem>
+				<para>The <application>SHFB Project Launcher</application> tool has been updated to start the project
+with the latest version of Visual Studio that has the SHFB VSPackage installed.</para>
+			</listItem>
+
+			<listItem>
+				<para>Thanks to Thomas Levesque for the additional French translations in the SHFB shared content files.</para>
+			</listItem>
+
+		</list>
+
+	</content>
+</section>
+
+		<relatedTopics>
+			<link xlink:href="078cc1c7-7995-431e-bf9c-8813becbe8df" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

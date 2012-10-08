@@ -153,7 +153,7 @@
     </TreeView>
     <GridSplitter Grid.Column="1" Grid.Row="1" Width="3" VerticalAlignment="Stretch" HorizontalAlignment="Center"
       ShowsPreview="False" Background="LightGray" TabIndex="4" />
-    <DockPanel Grid.Column="2" Grid.Row="1" LastChildFill="True">
+    <DockPanel Grid.Column="2" Grid.Row="1" LastChildFill="True" Background="White">
       <Border DockPanel.Dock="Top" BorderThickness="0,0,0,0.5" BorderBrush="Black">
         <TextBlock Name="txtTitle" Margin="10, 3, 10, 3" FontFamily="Verdana" FontSize="16"
          TextWrapping="Wrap" />

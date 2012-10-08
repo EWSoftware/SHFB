@@ -1,27 +1,26 @@
-﻿//=============================================================================
+﻿//===============================================================================================================
 // System  : Sandcastle Help File Builder
 // File    : LaunchMSHelpViewDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/24/2012
+// Updated : 10/06/2012
 // Note    : Copyright 2010-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This form is used to determine the state of the current MS Help Viewer
-// content and offer options to install, launch, or remove it.
+// This form is used to determine the state of the current MS Help Viewer content and offer options to install,
+// launch, or remove it.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.9.0.0  07/05/2010  EFW  Created the code
-// 1.9.3.0  04/02/2011  EFW  Made it project independent so that it could be
-//                           used in the VSPackage too.
+// 1.9.3.0  04/02/2011  EFW  Made it project independent so that it could be used in the VSPackage too
 // 1.9.3.4  03/24/2012  EFW  Merged changes from Don Fehr
-//=============================================================================
+// 1.9.5.0  10/05/2012  EFW  Added support for Help Viewer 2.0
+//===============================================================================================================
 
 using System;
 using System.ComponentModel;
@@ -84,6 +83,7 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
         private string helpFilePath, setupFile, msHelpViewer;
         private BackgroundWorker actionThread;
         private Thread runningThread;
+        private Version viewerVersion;
         #endregion
 
         #region Constructor
@@ -115,16 +115,17 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
             helpFilePath += project.HtmlHelpName + ".mshc";
             setupFile = Path.ChangeExtension(helpFilePath, ".msha");
 
-            // If an external viewer is not defined, we'll launch it via the ms-xhelp protocol
-            if(msHelpViewer.Length == 0 || !File.Exists(msHelpViewer))
-                msHelpViewer = String.Format("ms-xhelp:///?method=page&id=-1&topicversion={0}&product={1}&" +
-                    "productversion={2}&locale={3}", project.TopicVersion, project.CatalogProductId,
-                    project.CatalogVersion, project.Language.Name);
+            // If an external viewer is not defined, we'll launch it via the standard help viewer or the
+            // ms-xhelp protocol.
+            if(String.IsNullOrWhiteSpace(msHelpViewer) || !File.Exists(msHelpViewer))
+                msHelpViewer = null;
 
             actionThread = new BackgroundWorker { WorkerReportsProgress = true };
             actionThread.DoWork += actionThread_DoWork;
             actionThread.ProgressChanged += actionThread_ProgressChanged;
             actionThread.RunWorkerCompleted += actionThread_RunWorkerCompleted;
+
+            cboHelpViewerVersion.SelectedIndex = 0;
         }
         #endregion
 
@@ -146,7 +147,7 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
 
             try
             {
-                HelpLibraryManager hlm = new HelpLibraryManager();
+                HelpLibraryManager hlm = new HelpLibraryManager(viewerVersion);
 
                 // Remove old content.  We'll remove it if installing to be sure that
                 // the latest copy is installed.
@@ -157,11 +158,18 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
                     else
                         actionThread.ReportProgress(0, (int)ThreadState.RemovingContent);
 
-                    arguments = String.Format(CultureInfo.InvariantCulture,
-                        "/product \"{0}\" /version \"{1}\" /locale {2} /uninstall /silent /vendor " +
-                        "\"{3}\" /mediaBookList \"{4}\" /productName \"{5}\"",
-                        project.CatalogProductId, project.CatalogVersion, project.Language.Name,
-                        project.VendorName, project.HelpTitle, project.ProductTitle);
+                    if(viewerVersion.Major == 1)
+                        arguments = String.Format(CultureInfo.InvariantCulture,
+                            "/product \"{0}\" /version \"{1}\" /locale {2} /uninstall /silent /vendor " +
+                            "\"{3}\" /productName \"{4}\" /mediaBookList \"{5}\"",
+                            project.CatalogProductId, project.CatalogVersion, project.Language.Name,
+                            project.VendorName, project.ProductTitle, project.HelpTitle);
+                    else
+                        arguments = String.Format(CultureInfo.InvariantCulture,
+                            "/catalogName \"{0}\" /locale {1} /wait 0 /operation uninstall /vendor \"{2}\" " +
+                            "/productName \"{3}\" /bookList \"{4}\" ",
+                            project.CatalogName, project.Language.Name, project.VendorName, project.ProductTitle,
+                            project.HelpTitle);
 
                     // This doesn't have to run as an administrator
                     errorCode = hlm.RunAsNormalUser(arguments, ProcessWindowStyle.Minimized);
@@ -169,7 +177,7 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
                     // Ignore it if not found and we are installing
                     if(errorCode != HelpLibraryManagerException.Success &&
                       (errorCode != HelpLibraryManagerException.NoBooksToInstall || action == ThreadAction.Remove))
-                        throw new HelpLibraryManagerException(errorCode);
+                        throw new HelpLibraryManagerException(viewerVersion, errorCode);
                 }
 
                 if(action == ThreadAction.Install)
@@ -181,18 +189,21 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
                     contentSetupFile = Path.Combine(Path.GetDirectoryName(setupFile), "HelpContentSetup.msha");
                     File.Copy(setupFile, contentSetupFile, true);
 
-                    arguments = String.Format(CultureInfo.InvariantCulture, "/product \"{0}\" /version \"{1}\" " +
-                        "/locale {2} /brandingPackage {3}.mshc /sourceMedia \"{4}\"", project.CatalogProductId,
-                        project.CatalogVersion, project.Language.Name,
-                        String.IsNullOrEmpty(project.BrandingPackageName) ? hlm.DefaultBrandingPackage :
-                        project.BrandingPackageName, contentSetupFile);
+                    if(viewerVersion.Major == 1)
+                        arguments = String.Format(CultureInfo.InvariantCulture, "/product \"{0}\" " +
+                            "/version \"{1}\" /locale {2} /sourceMedia \"{3}\"", project.CatalogProductId,
+                            project.CatalogVersion, project.Language.Name, contentSetupFile);
+                    else
+                        arguments = String.Format(CultureInfo.InvariantCulture, "/catalogName \"{0}\" " +
+                            "/locale {1} /wait 0 /operation install /sourceUri \"{2}\"", project.CatalogName,
+                            project.Language.Name, contentSetupFile);
 
-                    // Always interactive and must run as administrator.  We can't run
-                    // silently as we don't have a signed cabinet file.
+                    // Always interactive and must run as administrator.  We can't run silently as we don't have
+                    // a signed cabinet file.
                     errorCode = hlm.RunAsAdministrator(arguments, ProcessWindowStyle.Normal);
 
                     if(errorCode != HelpLibraryManagerException.Success)
-                        throw new HelpLibraryManagerException(errorCode);
+                        throw new HelpLibraryManagerException(viewerVersion, errorCode);
 
                     // Open it if installed successfully
                     action = ThreadAction.OpenCurrent;
@@ -200,8 +211,21 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
 
                 if(action == ThreadAction.OpenCurrent)
                 {
+                    arguments = null;
+
+                    if(msHelpViewer == null)
+                    {
+                        msHelpViewer = hlm.HelpViewerPath;
+
+                        if(msHelpViewer == null)
+                            msHelpViewer = "ms-xhelp:///?method=page&id=-1";
+                        else
+                            if(viewerVersion.Major == 2)
+                                arguments = "/catalogname \"" + project.CatalogName + "\"";
+                    }
+
                     actionThread.ReportProgress(0, (int)ThreadState.OpeningContent);
-                    System.Diagnostics.Process.Start(msHelpViewer);
+                    System.Diagnostics.Process.Start(msHelpViewer, arguments);
                 }
             }
             catch(ThreadAbortException)
@@ -290,13 +314,15 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
         }
 
         /// <summary>
-        /// This is used to determine the state of the help content and set
-        /// the form options.
+        /// This is used to determine the state of the help content and set the form options when a help viewer
+        /// version is selected.
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        private void LaunchMSHelpViewerDlg_Load(object sender, EventArgs e)
+        private void cboHelpViewerVersion_SelectedIndexChanged(object sender, EventArgs e)
         {
+            txtInfo.Text = null;
+
             if(!File.Exists(helpFilePath) || !File.Exists(setupFile))
             {
                 txtInfo.AppendText("A copy of the help file does not appear to exist yet.  It may need to be built.\r\n");
@@ -305,32 +331,47 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
 
             try
             {
-                HelpLibraryManager hlm = new HelpLibraryManager();
+                viewerVersion = new Version((string)cboHelpViewerVersion.SelectedItem);
+
+                HelpLibraryManager hlm = new HelpLibraryManager(viewerVersion);
 
                 // Can't do anything if the Help Library Manager is not installed
                 if(hlm.HelpLibraryManagerPath == null)
-                    throw new HelpLibraryManagerException(HelpLibraryManagerException.HelpLibraryManagerNotFound);
+                    throw new HelpLibraryManagerException(viewerVersion,
+                        HelpLibraryManagerException.HelpLibraryManagerNotFound);
 
                 // Can't do anything if the Help Library Manager is already running
                 if(Process.GetProcessesByName(Path.GetFileNameWithoutExtension(hlm.HelpLibraryManagerPath)).Length > 0)
-                    throw new HelpLibraryManagerException(HelpLibraryManagerException.HelpLibraryManagerAlreadyRunning);
+                    throw new HelpLibraryManagerException(viewerVersion,
+                        HelpLibraryManagerException.HelpLibraryManagerAlreadyRunning);
 
                 // Can't do anything if the local store is not initialized
                 if(!hlm.LocalStoreInitialized)
-                    throw new HelpLibraryManagerException(HelpLibraryManagerException.LocalStoreNotInitialized);
+                    throw new HelpLibraryManagerException(viewerVersion,
+                        HelpLibraryManagerException.LocalStoreNotInitialized);
 
-                if(!hlm.HelpContentFileInstalled(helpFilePath))
+                if(hlm.HelpContentFileInstalled(helpFilePath))
+                    rbOpenCurrent.Enabled = rbRemove.Enabled = true;
+                else
                 {
                     txtInfo.AppendText("The help file does not appear to be installed yet.\r\n");
                     rbOpenCurrent.Enabled = rbRemove.Enabled = false;
                 }
 
                 grpOptions.Enabled = true;
+
+                if(rbOpenCurrent.Enabled)
+                    rbOpenCurrent.Checked = true;
+                else
+                    if(rbInstall.Enabled)
+                        rbInstall.Checked = true;
+
                 btnOK.Enabled = (rbOpenCurrent.Enabled || rbInstall.Enabled || rbRemove.Enabled);
             }
             catch(Exception ex)
             {
                 txtInfo.AppendText("Problem: " + ex.Message + "\r\n");
+                btnOK.Enabled = false;
             }
 
             if(!btnOK.Enabled)
@@ -345,6 +386,23 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
         private void btnOK_Click(object sender, EventArgs e)
         {
             ThreadAction action;
+
+            txtInfo.Text = null;
+
+            try
+            {
+                HelpLibraryManager hlm = new HelpLibraryManager(viewerVersion);
+
+                // Can't do anything if the Help Library Manager is already running
+                if(Process.GetProcessesByName(Path.GetFileNameWithoutExtension(hlm.HelpLibraryManagerPath)).Length > 0)
+                    throw new HelpLibraryManagerException(viewerVersion,
+                        HelpLibraryManagerException.HelpLibraryManagerAlreadyRunning);
+            }
+            catch(Exception ex)
+            {
+                txtInfo.AppendText("Problem: " + ex.Message + "\r\n");
+                return;
+            }
 
             grpOptions.Enabled = btnOK.Enabled = false;
 

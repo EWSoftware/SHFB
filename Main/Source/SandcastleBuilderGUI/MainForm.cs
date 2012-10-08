@@ -1,40 +1,36 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder
 // File    : MainForm.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/18/2012
+// Updated : 10/06/2012
 // Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the main form for the application.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.0.0.0  08/02/2006  EFW  Created the code
-// 1.3.1.2  10/18/2006  EFW  Moved file logging to the BuildProcess class.
-//                           Added a Verbose Logging user setting.
-// 1.5.0.0  06/23/2007  EFW  Added user preferences dialog box and help file
-//                           viewer options.
-// 1.5.0.2  07/03/2007  EFW  Added support for content file editor definitions
-//                           and a content site map file.
+// 1.3.1.2  10/18/2006  EFW  Moved file logging to the BuildProcess class.  Added a Verbose Logging user setting.
+// 1.5.0.0  06/23/2007  EFW  Added user preferences dialog box and help file viewer options.
+// 1.5.0.2  07/03/2007  EFW  Added support for content file editor definitions and a content site map file.
 // 1.6.0.2  11/02/2007  EFW  Reworked support for custom build components
 // 1.6.0.3  11/16/2007  EFW  Added "Open After Build" option
 // 1.6.0.4  01/22/2008  EFW  Added support for drag and drop from Explorer
 // 1.6.0.7  04/24/2008  EFW  Added support for conceptual content
-// 1.8.0.0  06/20/2008  EFW  Converted the project to use an MSBuild file.
-//                           Changed the UI to a more Visual Studio-like
-//                           layout better suited to editing the project.
+// 1.8.0.0  06/20/2008  EFW  Converted the project to use an MSBuild file.  Changed the UI to a more Visual
+//                           Studio-like layout better suited to editing the project.
 // 1.9.0.0  07/05/2010  EFW  Added support for MS Help Viewer
 // 1.9.1.0  07/09/2010  EFW  Updated for use with .NET 4.0 and MSBuild 4.0.
 // 1.9.3.4  01/08/2012  EFW  Updated to use shared NewFromOtherFormatDlg
 // 1.9.3.4  01/20/2012  EFW  Updated to use the new topic previewer window
-//=============================================================================
+// 1.9.5.0  10/05/2012  EFW  Added support for Help Viewer 2.0
+//===============================================================================================================
 
 using System;
 using System.Collections.Generic;
@@ -1652,8 +1648,8 @@ namespace SandcastleBuilder.Gui
         }
 
         /// <summary>
-        /// Launch the Help Library Manager for interactive use based on the
-        /// current project's settings.
+        /// Launch Help Library Manager 1.0 or Help Viewer 2.0 content manager for interactive use based on the
+        /// current project's settings
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
@@ -1661,18 +1657,23 @@ namespace SandcastleBuilder.Gui
         {
             try
             {
-                HelpLibraryManager hlm = new HelpLibraryManager();
+                HelpLibraryManager hlm = new HelpLibraryManager(sender == miLaunchHlm ? new Version(1, 0) :
+                    new Version(2, 0));
 
-                hlm.LaunchInteractive(String.Format(CultureInfo.InvariantCulture,
-                    "/product \"{0}\" /version \"{1}\" /locale {2} /brandingPackage Dev10.mshc",
-                    project.CatalogProductId, project.CatalogVersion, project.Language.Name));
+                if(sender == miLaunchHlm)
+                    hlm.LaunchInteractive(String.Format(CultureInfo.InvariantCulture,
+                        "/product \"{0}\" /version \"{1}\" /locale {2}", project.CatalogProductId,
+                        project.CatalogVersion, project.Language.Name));
+                else
+                    hlm.LaunchInteractive(String.Format(CultureInfo.InvariantCulture,
+                        "/catalogName \"{0}\" /locale {1} /manage", project.CatalogName, project.Language.Name));
             }
             catch(Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
 
                 MessageBox.Show(String.Format(CultureInfo.CurrentCulture,
-                    "Unable to launch Help Library Manager.  Reason:\r\n{0}",
+                    "Unable to launch help library content manager.  Reason:\r\n{0}",
                     ex.Message), Constants.AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }

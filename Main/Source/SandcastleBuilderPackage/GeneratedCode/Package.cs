@@ -122,6 +122,10 @@ namespace SandcastleBuilder.Package
                 commandId = new CommandID(GuidList.guidSandcastleBuilderPackageCmdSet, (int)PkgCmdIDList.TopicPreviewerWindow);
                 menuItem = new OleMenuCommand(TopicPreviewerWindowExecuteHandler, TopicPreviewerWindowChangeHandler, TopicPreviewerWindowQueryStatusHandler, commandId);
                 mcs.AddCommand(menuItem);
+				// Create the command for button LaunchContentMgr
+                commandId = new CommandID(GuidList.guidSandcastleBuilderPackageCmdSet, (int)PkgCmdIDList.LaunchContentMgr);
+                menuItem = new OleMenuCommand(LaunchContentMgrExecuteHandler, LaunchContentMgrChangeHandler, LaunchContentMgrQueryStatusHandler, commandId);
+                mcs.AddCommand(menuItem);
 
 			}
 		}
@@ -363,6 +367,22 @@ namespace SandcastleBuilder.Package
 		}
 		
 		protected virtual void TopicPreviewerWindowQueryStatusHandler(object sender, EventArgs e)
+		{
+		}
+
+		#endregion
+
+		#region Handlers for Button: LaunchContentMgr
+
+		protected virtual void LaunchContentMgrExecuteHandler(object sender, EventArgs e)
+		{
+		}
+		
+		protected virtual void LaunchContentMgrChangeHandler(object sender, EventArgs e)
+		{
+		}
+		
+		protected virtual void LaunchContentMgrQueryStatusHandler(object sender, EventArgs e)
 		{
 		}
 
