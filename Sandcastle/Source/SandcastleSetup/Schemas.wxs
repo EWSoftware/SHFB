@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+	<?include Sandcastle.wxi ?>
+
+	<!-- MAML and reflection file XML schemas -->
+	<Fragment>
+    <DirectoryRef Id="INSTALLDIR">
+      <Directory Id="dir33C06C8F4A552EB90B140EB45368D302" Name="Schemas">
+        <Component Id="cmp4FAA0D15D7BA2C4DBD3C08006C5B817D" Guid="{A9AC72C5-E416-4D67-BEE5-BE829BFF5A86}">
+          <File Id="fil13A04EB78DB835A82469F87E8BC6F35E" KeyPath="yes" Source="$(var.RootFolder)\Schemas\xlink.xsd" />
+        </Component>
+        <Component Id="cmp88110B638A7EE386D123140B431960A5" Guid="{294CCE43-2E52-4A56-8FA0-E3B9EECFB911}">
+          <File Id="fil51614E62806E0DA45D6059F397C0523B" KeyPath="yes" Source="$(var.RootFolder)\Schemas\xml.xsd" />
+        </Component>
+        <Directory Id="dir231BF2CC24E5C034CF4EA6243271F9DF" Name="Authoring">
+          <Component Id="cmpEB9EB5B54F342AEED626B830CD060483" Guid="{0D812341-CD75-4F51-BBCF-CC904F7CA75B}">
+            <File Id="fil0C92498A44D8259D8F2745D634BF2D03" KeyPath="yes" Source="$(var.RootFolder)\Schemas\Authoring\base.xsd" />
+          </Component>
+          <Component Id="cmp3CE0D209C45354C40BD1F84984747C28" Guid="{7AF79400-A903-4012-9FCA-A4D272E27F0B}">
+            <File Id="fil1BF50B05E675F78850CA95A3E2D2AA77" KeyPath="yes" Source="$(var.RootFolder)\Schemas\Authoring\baseConditional.xsd" />
+          </Component>
+          <Component Id="cmpB77CF8F1B4896EFB28CA5DD746DD40CF" Guid="{10FF8993-0EE9-4272-9D01-BB719F5F35F7}">
+            <File Id="fil26AED8105D7A8C8B8386A706B19EAC21" KeyPath="yes" Source="$(var.RootFolder)\Schemas\Authoring\block.xsd" />
+          </Component>
+          <Component Id="cmp9203CB82821A3B494C86F8A08FDE6D35" Guid="{D5A61C20-2E7C-41AE-82AE-98870B0C3B45}">
+            <File Id="filCF2A9D3671290E31075B1EF02855C10F" KeyPath="yes" Source="$(var.RootFolder)\Schemas\Authoring\blockCommon.xsd" />
+          </Component>
+          <Component Id="cmp816FDEC9530A6BC8C1B77D53696EE9EC" Guid="{192891E3-86DF-48C8-BA34-379D25F146A6}">
+            <File Id="fil42013CD54326C4038F94C3E4D1C7D2C8" KeyPath="yes" Source="$(var.RootFolder)\Schemas\Authoring\blockSoftware.xsd" />
+          </Component>
+          <Component Id="cmpF7CA25EEE8500C221251690AFD8C0EB2" Guid="{8E4C6DAD-9213-4CAF-A4AC-A46CBEEDF392}">
+            <File Id="fil612B58160371B7EB73CA5ADC520CCC92" KeyPath="yes" Source="$(var.RootFolder)\Schemas\Authoring\catalog.xml" />
+          </Component>
+          <Component Id="cmp644641413C046033CF713A80D652C776" Guid="{8A33E838-6ACC-4124-9400-A8A78046A1E0}">
+            <File Id="fil8C1BC5CA66BD2F74D9D669250ABB4984" KeyPath="yes" Source="$(var.RootFolder)\Schemas\Authoring\conditionSet.xsd" />
+          </Component>
+          <Component Id="cmp233E5AC9D970E4BC31F15E74B88B978B" Guid="{D74103B1-94B6-4019-8ACD-2E4C0BFE6D72}">
+            <File Id="fil575435AFF95D14EBC42DDA6C3B809D9A" KeyPath="yes" Source="$(var.RootFolder)\Schemas\Authoring\developer.xsd" />
+          </Component>
+          <Component Id="cmp4DD276685205AE88A42AD8D885AA5634" Guid="{E41FE365-BB85-49DC-807F-212546F285DE}">
+            <File Id="fil3FDCAE9FA4AEE650DA271219818DE512" KeyPath="yes" Source="$(var.RootFolder)\Schemas\Authoring\developerReference.xsd" />
+          </Component>
+          <Component Id="cmp5BC6B571590E87C2F487E762A65DDA2E" Guid="{CE26249E-1ED9-404B-A822-C36ECD3E4551}">
+            <File Id="fil1828C78FE9A8499E36180CE34987A11F" KeyPath="yes" Source="$(var.RootFolder)\Schemas\Authoring\developerStructure.xsd" />
+          </Component>
+          <Component Id="cmpE71975B72C8CB2DDE7BB1315324BC070" Guid="{A003D775-89AF-498E-95F7-057A0F53309D}">
+            <File Id="fil265E0B33E5CCB3DB7DEC29134112BEE8" KeyPath="yes" Source="$(var.RootFolder)\Schemas\Authoring\glossary.xsd" />
+          </Component>
+          <Component Id="cmp522103DC11BBA5044BD740F27EEC71FC" Guid="{978E87E5-65CF-44EF-9967-55AEE1200EC3}">
+            <File Id="fil53BD31CBC150B40BBC5E55BA678DBA2E" KeyPath="yes" Source="$(var.RootFolder)\Schemas\Authoring\hierarchy.xsd" />
+          </Component>
+          <Component Id="cmp77DB7852B340EB445C7BFEBD423640F8" Guid="{B1EFE543-D067-476F-9E3A-7EDAFD982FA4}">
+            <File Id="fil78CA69F2B731D65D2C71E0B3E6FDFE50" KeyPath="yes" Source="$(var.RootFolder)\Schemas\Authoring\inline.xsd" />
+          </Component>
+          <Component Id="cmp1D40CAB30230FDA7F0EC53E043F38CE5" Guid="{918D37B8-4392-420A-8BB7-8613FB814B85}">
+            <File Id="fil9937F14DD87D2E4ED532D7E798684939" KeyPath="yes" Source="$(var.RootFolder)\Schemas\Authoring\inlineCommon.xsd" />
+          </Component>
+          <Component Id="cmp8890FF77F6A884B78D335E35EEF5C929" Guid="{E775F550-7F68-4ECA-BC67-6A63043312F7}">
+            <File Id="filBE99D96F7035A63287AB9249B6806986" KeyPath="yes" Source="$(var.RootFolder)\Schemas\Authoring\inlineLinking.xsd" />
+          </Component>
+          <Component Id="cmp1CE6DB2C8C4EF314C0F7C4B2D4BA46B6" Guid="{25F3AC52-3340-4095-87E5-4FDDCF90A049}">
+            <File Id="filCE56F32B779A386678E5B104E12F8EB9" KeyPath="yes" Source="$(var.RootFolder)\Schemas\Authoring\inlineSoftware.xsd" />
+          </Component>
+          <Component Id="cmp77A81CBC47E3DC89CE13F37389CE6DDB" Guid="{1B5244F5-4C44-4392-8587-3C1B3590297D}">
+            <File Id="filE2DB72457217C6B660C8257F30E3B910" KeyPath="yes" Source="$(var.RootFolder)\Schemas\Authoring\inlineUi.xsd" />
+          </Component>
+          <Component Id="cmpFB5F7BE13C5EF494CCB762E069F65767" Guid="{8243DA5E-D42B-42A2-B0B5-B60E05E82943}">
+            <File Id="fil7FDEE9D76B7607DB6CA77A6C9885DC2F" KeyPath="yes" Source="$(var.RootFolder)\Schemas\Authoring\standardCodes.xsd" />
+          </Component>
+          <Component Id="cmpD98C182ECFCD6C014060159A7947C3AC" Guid="{E42FB7F7-7768-443B-A823-8BA0C426B218}">
+            <File Id="fil5EB876B399D72115D4B88BD42E73E046" KeyPath="yes" Source="$(var.RootFolder)\Schemas\Authoring\structure.xsd" />
+          </Component>
+          <Component Id="cmp8C1609F3152484E51D1B3D809364FF0C" Guid="{DC49BBA5-B688-4B81-AC1B-ACEFFAE69D1B}">
+            <File Id="fil62065A631F9F55ADD4DFA72192D260D8" KeyPath="yes" Source="$(var.RootFolder)\Schemas\Authoring\structureList.xsd" />
+          </Component>
+          <Component Id="cmp7D88F535A9FD907213D73848709E70E0" Guid="{85B659DC-B3DF-460D-9CCE-582B5E0FDB78}">
+            <File Id="fil03C8D17722C483FB9BFD856DD8B53BC7" KeyPath="yes" Source="$(var.RootFolder)\Schemas\Authoring\structureMedia.xsd" />
+          </Component>
+          <Component Id="cmpC80646F650637857F9D7C854F27385ED" Guid="{B022680C-76D2-4726-8D84-90E4CB0C2B63}">
+            <File Id="fil5A1C9B1CBD232508A2BDFD4E0AD4EFD5" KeyPath="yes" Source="$(var.RootFolder)\Schemas\Authoring\structureProcedure.xsd" />
+          </Component>
+          <Component Id="cmp3E74FC4D8A12814D85D0D481ACBED3BB" Guid="{5FFB89A8-A1AE-4DE9-A59A-82EE79C80329}">
+            <File Id="fil30C612D7F525A367C5516721A99BF41E" KeyPath="yes" Source="$(var.RootFolder)\Schemas\Authoring\structureTable.xsd" />
+          </Component>
+          <Component Id="cmpF756ED249AF248A76231B43F057F237A" Guid="{14EAB71F-24EC-4658-832F-AAC972ED15DF}">
+            <File Id="fil80C2853B4E9920845014F41014978A66" KeyPath="yes" Source="$(var.RootFolder)\Schemas\Authoring\__internal.xsd" />
+          </Component>
+        </Directory>
+        <Directory Id="dirA13FECF0EEE8369EEC786E8BF6CAD1D2" Name="Reflection">
+          <Component Id="cmp18D6A3289FCE3054E31B33D4C7889391" Guid="{1B867560-99A9-40AD-8B78-05F63802F951}">
+            <File Id="fil1EB340841501BD065BB10FABABC60FDD" KeyPath="yes" Source="$(var.RootFolder)\Schemas\Reflection\reflection.xsd" />
+          </Component>
+        </Directory>
+      </Directory>
+    </DirectoryRef>
+  </Fragment>
+  <Fragment>
+    <ComponentGroup Id="Schemas">
+      <ComponentRef Id="cmp4FAA0D15D7BA2C4DBD3C08006C5B817D" />
+      <ComponentRef Id="cmp88110B638A7EE386D123140B431960A5" />
+      <ComponentRef Id="cmpEB9EB5B54F342AEED626B830CD060483" />
+      <ComponentRef Id="cmp3CE0D209C45354C40BD1F84984747C28" />
+      <ComponentRef Id="cmpB77CF8F1B4896EFB28CA5DD746DD40CF" />
+      <ComponentRef Id="cmp9203CB82821A3B494C86F8A08FDE6D35" />
+      <ComponentRef Id="cmp816FDEC9530A6BC8C1B77D53696EE9EC" />
+      <ComponentRef Id="cmpF7CA25EEE8500C221251690AFD8C0EB2" />
+      <ComponentRef Id="cmp644641413C046033CF713A80D652C776" />
+      <ComponentRef Id="cmp233E5AC9D970E4BC31F15E74B88B978B" />
+      <ComponentRef Id="cmp4DD276685205AE88A42AD8D885AA5634" />
+      <ComponentRef Id="cmp5BC6B571590E87C2F487E762A65DDA2E" />
+      <ComponentRef Id="cmpE71975B72C8CB2DDE7BB1315324BC070" />
+      <ComponentRef Id="cmp522103DC11BBA5044BD740F27EEC71FC" />
+      <ComponentRef Id="cmp77DB7852B340EB445C7BFEBD423640F8" />
+      <ComponentRef Id="cmp1D40CAB30230FDA7F0EC53E043F38CE5" />
+      <ComponentRef Id="cmp8890FF77F6A884B78D335E35EEF5C929" />
+      <ComponentRef Id="cmp1CE6DB2C8C4EF314C0F7C4B2D4BA46B6" />
+      <ComponentRef Id="cmp77A81CBC47E3DC89CE13F37389CE6DDB" />
+      <ComponentRef Id="cmpFB5F7BE13C5EF494CCB762E069F65767" />
+      <ComponentRef Id="cmpD98C182ECFCD6C014060159A7947C3AC" />
+      <ComponentRef Id="cmp8C1609F3152484E51D1B3D809364FF0C" />
+      <ComponentRef Id="cmp7D88F535A9FD907213D73848709E70E0" />
+      <ComponentRef Id="cmpC80646F650637857F9D7C854F27385ED" />
+      <ComponentRef Id="cmp3E74FC4D8A12814D85D0D481ACBED3BB" />
+      <ComponentRef Id="cmpF756ED249AF248A76231B43F057F237A" />
+      <ComponentRef Id="cmp18D6A3289FCE3054E31B33D4C7889391" />
+    </ComponentGroup>
+  </Fragment>
+</Wix>

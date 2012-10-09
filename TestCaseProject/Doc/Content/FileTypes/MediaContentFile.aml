@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="3913b321-c875-4bb9-88de-4c65f6363270" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>The media (images) used by conceptual content in a help file project
+are defined in a separate media content file.  Each is assigned a unique ID
+that is used to refer to the image in conceptual topic links.  When a help file
+is built, all images referenced by an image link are copied to the help file's
+<localUri>.\Media</localUri> folder.  Any unused images are omitted.</para>
+      <alert class="note">
+        <para>The <token>SHFB</token> does not use a media content file
+directly.  Instead, images are managed as project file items and the media
+content file is created for you automatically at build time based on the
+property values on those items.</para>
+      </alert>
+    </introduction>
+    <section>
+      <title>Media Content File Format</title>
+      <content>
+        <para>Below is an example of a media content file.</para>
+        <code language="xml" title="Example Media Content File" source="ExampleFiles\MediaContent.xml" />
+        <para>The file consists of a root <codeInline>stockSharedContentDefinitions</codeInline>
+node that contains one or more <codeInline>item</codeInline> nodes that
+represent the images.</para>
+        <para>The <codeInline>item</codeInline> element has an
+<codeInline>id</codeInline> attribute that gives each one a unique identifier.
+This is used as the target of the media link elements in the topics.  Within
+the item element is a required <codeInline>image</codeInline> element used to
+define the image.  The <codeInline>file</codeInline> attribute should point to
+the location of the image file.  A relative or absolute path can be used as long
+as it can be located at build time.  If you would like to display alternate
+text when the mouse hovers over the image, nest an <codeInline>altText</codeInline>
+element within the image element as shown in the first item in the example
+above.  The inner text for it defines the alterntate text to display.</para>
+        <alert class="note">
+          <para>The unique ID is not case-sensitive.  The example above uses GUID
+values for the ID but you are free to use any unique value that you like.</para>
+        </alert>
+        <alert class="warning">
+          <para>Unlike topics, image files will retain their name when copied
+to the media folder.  As such, if you add two images from different locations
+that have the same name, one will overwrite the other when the help file is
+built.</para>
+        </alert>
+      </content>
+    </section>
+    <relatedTopics>
+      <link xlink:href="86752a38-eba3-4174-bcbf-79ec8428ecf9" />
+      <link xlink:href="34c8823f-8395-4d64-9941-8d156083709c" />
+      <link xlink:href="48314339-e0fe-4d1a-96b0-eba5eca70b66" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

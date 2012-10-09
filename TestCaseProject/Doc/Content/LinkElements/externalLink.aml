@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="d0c9ce6d-115b-4c70-891c-69b4af944dea" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>This is used to insert a link to an external URL of some sort such as
+a website.</para>
+    </introduction>
+    <section>
+      <title>Usage</title>
+      <content>
+        <para>An external link consists of the following nested elements.</para>
+        <table>
+          <tableHeader>
+            <row>
+              <entry><para>Name</para></entry>
+              <entry><para>Description</para></entry>
+            </row>
+          </tableHeader>
+          <row>
+            <entry><para>linkText</para></entry>
+            <entry><para>This is a required element and is used to specify the text to
+use for the inner text of the link.</para></entry>
+          </row>
+          <row>
+            <entry><para>linkAlternateText</para></entry>
+            <entry><para>This is an optional element.  It is used to specify alternate
+text for the link that will be displayed when the mouse hovers over it.</para></entry>
+          </row>
+          <row>
+            <entry><para>linkUri</para></entry>
+            <entry><para>This is a required element and is used to specify the URL to
+which the link refers.  This can be any sort of link (http, ftp, mail, etc).</para></entry>
+          </row>
+          <row>
+            <entry><para>linkTarget</para></entry>
+            <entry><para>This is an optional element.  It is used to specify the target
+window to use when the link is clicked.  If omitted <legacyBold>_blank</legacyBold>
+is used to open the external link in a new window.  The value
+<legacyBold>_self</legacyBold> can be used to open the link in the same window
+as the topic thus replacing it.</para></entry>
+          </row>
+        </table>
+        <alert class="note">
+          <para>If the URL in the <codeInline>linkUri</codeInline> element contains
+XML entities such as the ampersand (&amp;), you must encode them or a build
+error will occur.  See the example below.</para>
+        </alert>
+      </content>
+    </section>
+    <section>
+      <title>Example</title>
+      <content>
+        <code language="xml" title=" ">
+Only link text and URI: &lt;externalLink&gt;
+    &lt;linkText&gt;Sandcastle&lt;/linkText&gt;
+    &lt;linkUri&gt;http://Sandcastle.CodePlex.com&lt;/linkUri&gt;
+&lt;/externalLink&gt;
+
+Added alternate text: &lt;externalLink&gt;
+    &lt;linkText&gt;Sandcastle&lt;/linkText&gt;
+    &lt;linkAlternateText&gt;Visit Sandcastle on CodePlex&lt;/linkAlternateText&gt;
+    &lt;linkUri&gt;http://Sandcastle.CodePlex.com&lt;/linkUri&gt;
+&lt;/externalLink&gt;
+
+Added link target: &lt;externalLink&gt;
+    &lt;linkText&gt;Sandcastle&lt;/linkText&gt;
+    &lt;linkAlternateText&gt;Visit Sandcastle on CodePlex&lt;/linkAlternateText&gt;
+    &lt;linkUri&gt;http://Sandcastle.CodePlex.com&lt;/linkUri&gt;
+    &lt;linkTarget&gt;_self&lt;/linkTarget&gt;
+&lt;/externalLink&gt;
+
+If the link contains XML entities, they must be encoded (i.e. the ampersand):
+&lt;externalLink&gt;
+    &lt;linkText&gt;MSDN Documentation Forum&lt;/linkText&gt;
+    &lt;linkUri&gt;http://forums.microsoft.com/MSDN/ShowForum.aspx?ForumID=66&amp;amp;SiteID=1&lt;/linkUri&gt;
+&lt;/externalLink&gt;
+</code>
+      </content>
+    </section>
+    <section>
+      <title>Example Output</title>
+      <content>
+        <para>Only link text and URI: <externalLink><linkText>Sandcastle</linkText>
+<linkUri>http://Sandcastle.CodePlex.com</linkUri></externalLink></para>
+
+        <para>Added alternate text: <externalLink><linkText>Sandcastle</linkText>
+<linkAlternateText>Visit Sandcastle on CodePlex</linkAlternateText>
+<linkUri>http://Sandcastle.CodePlex.com</linkUri></externalLink></para>
+
+        <para>Added link target: <externalLink><linkText>Sandcastle</linkText>
+<linkAlternateText>Visit Sandcastle on CodePlex</linkAlternateText>
+<linkUri>http://Sandcastle.CodePlex.com</linkUri><linkTarget>_self</linkTarget></externalLink></para>
+
+        <para>If the link contains XML entities, they must be encoded
+(i.e. the ampersand): <externalLink><linkText>MSDN Documentation Forum</linkText>
+<linkUri>http://forums.microsoft.com/MSDN/ShowForum.aspx?ForumID=66&amp;SiteID=1</linkUri></externalLink></para>
+      </content>
+    </section>
+
+    <relatedTopics>
+      <link xlink:href="3be5c58d-d6af-45a4-ac51-f219a75c4c4d" />
+      <link xlink:href="53a2b7c6-a269-4916-9313-bdc301ee9398" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

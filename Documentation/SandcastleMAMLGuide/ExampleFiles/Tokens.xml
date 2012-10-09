@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- This is an example tokens file -->
+<content xml:space="preserve"
+  xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5"
+  xmlns:xlink="http://www.w3.org/1999/xlink">
+
+  <item id="DocProject"><ddue:externalLink>
+    <ddue:linkText>DocProject</ddue:linkText>
+    <ddue:linkUri>http://www.codeplex.com/DocProject</ddue:linkUri>
+</ddue:externalLink></item>
+  <item id="Sandcastle"><ddue:externalLink>
+    <ddue:linkText>Sandcastle</ddue:linkText>
+    <ddue:linkUri>http://www.codeplex.com/Sandcastle</ddue:linkUri>
+</ddue:externalLink></item>
+  <item id="SHFB"><ddue:externalLink>
+    <ddue:linkText>Sandcastle Help File Builder</ddue:linkText>
+    <ddue:linkUri>http://www.codeplex.com/SHFB</ddue:linkUri>
+</ddue:externalLink></item>
+  <item id="autoOutline"><autoOutline /></item>
+</content>

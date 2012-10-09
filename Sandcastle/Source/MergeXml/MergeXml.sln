@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MergeXml", "MergeXml.csproj", "{1CEE1BB8-10BF-483E-A54A-F97B308ABA0A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommandLine", "..\CommandLine\CommandLine.csproj", "{6CF7CA42-3706-4F6B-A2B4-10EF3F511888}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0BD1AE2F-5CD8-4883-9D7C-0D40DD2D19DF}"
+	ProjectSection(SolutionItems) = preProject
+		MergeXml.FxCop = MergeXml.FxCop
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1CEE1BB8-10BF-483E-A54A-F97B308ABA0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1CEE1BB8-10BF-483E-A54A-F97B308ABA0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1CEE1BB8-10BF-483E-A54A-F97B308ABA0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1CEE1BB8-10BF-483E-A54A-F97B308ABA0A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6CF7CA42-3706-4F6B-A2B4-10EF3F511888}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CF7CA42-3706-4F6B-A2B4-10EF3F511888}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6CF7CA42-3706-4F6B-A2B4-10EF3F511888}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6CF7CA42-3706-4F6B-A2B4-10EF3F511888}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

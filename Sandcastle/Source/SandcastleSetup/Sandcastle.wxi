@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Include>
+	<?define Manufacturer        = "Microsoft" ?>
+	<?define ProductName         = "Sandcastle Documentation Compiler Tools" ?>
+	<?define ProductHomePage     = "http://SHFB.CodePlex.com" ?>
+	<?define ProductShortName    = "Sandcastle" ?>
+	<?define UpgradeCode         = "7E2F0177-8D9F-4BF5-9FEB-BA54DB6D51F2" ?>
+	<?define RootFolder          = "..\..\Main" ?>
+	<?define ExtrasFolder        = ".." ?>
+</Include>

@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="2ac532de-69cc-45c7-9f78-5d668fcb4339" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>Version 1.1.0.2 was released on April 7th, 2012.</para>
+		</introduction>
+
+		<section>
+			<title>Changes in This Release</title>
+			<content>
+
+				<list class="bullet">
+					<listItem>
+						<para>Added a solution file for use in editing the project within Visual Studio with the Sandcastle
+Help File Builder and updated the project to the latest release format.</para>
+					</listItem>
+					<listItem>
+						<para>Added non-breaking spaces to the examples for the <codeInline>command</codeInline>,
+<codeInline>replaceable</codeInline>, and <codeInline>system</codeInline> element topics to fix their layout.
+Added a note about this to the <legacyBold>Known Issues</legacyBold> topic.</para>
+					</listItem>
+					<listItem>
+						<para>Moved the <codeInline>markup</codeInline> element to the <legacyBold>Miscellaneous</legacyBold>
+group since it can serve as either an inline or block element.</para>
+					</listItem>
+					<listItem>
+						<para>Fixed the description of the <codeInline>para</codeInline> element to note that self-closing
+and empty paragraphs are ignored rather than creating a line break.  The prior implied usage was incorrect and
+did not conform to the schema.</para>
+					</listItem>
+					<listItem>
+						<para>Fixed the <codeInline>code</codeInline> and <codeInline>codeReference</codeInline> examples to
+include <codeInline>para</codeInline> elements in the proper places to conform to the schema.</para>
+					</listItem>
+					<listItem>
+						<para>Fixed up several other topics so that they conformed to the MAML schema.</para>
+					</listItem>
+					<listItem>
+						<para>Replaced all <codeInline>code</codeInline>&#160;<codeInline>lang</codeInline> attributes with
+<codeInline>language</codeInline> attributes to conform to the MAML schema.</para>
+					</listItem>
+					<listItem>
+						<para>Removed all references to the Sandcastle Styles project.  The changes that it contained have
+been merged into the latest release of Sandcastle itself along with this project.</para>
+					</listItem>
+				</list>
+
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="ba47a67c-4825-4fcd-b806-2b2e02d4373a" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

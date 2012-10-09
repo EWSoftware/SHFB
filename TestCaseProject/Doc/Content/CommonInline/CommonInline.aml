@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="b96d95c0-ec3c-4846-998a-4b43548bfa0e" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>The topics in this section define the common inline elements that can be used in conceptual topics.</para>
+    </introduction>
+    <section>
+      <title>Common Inline Elements</title>
+      <content>
+        <para>Select one of the topics below to learn more about a particular
+inline element.</para>
+        <list class="bullet">
+          <listItem>
+            <para><link xlink:href="bf552a94-f8b9-460d-bf76-a869430a077e" /></para>
+          </listItem>
+          <listItem>
+            <para><link xlink:href="915392b7-c701-44fd-8ff4-89c34a10f574" /></para>
+          </listItem>
+          <listItem>
+            <para><link xlink:href="02e60906-b8d5-4258-9348-aad70f48861f" /></para>
+          </listItem>
+          <listItem>
+            <para><link xlink:href="b433ede9-8813-4020-b5dd-74b3204ebe0c" /></para>
+          </listItem>
+          <listItem>
+            <para><link xlink:href="28f99529-1e07-4a5e-978f-d2a27c3c7fb1" /></para>
+          </listItem>
+          <listItem>
+            <para><link xlink:href="a0424e7f-823c-449c-a2e4-012c1f556674" /></para>
+          </listItem>
+          <listItem>
+            <para><link xlink:href="4cf23985-a97b-46d4-8624-a46b77cca86b" /></para>
+          </listItem>
+          <listItem>
+            <para><link xlink:href="3fad0c13-9dcb-471e-890b-228acf54b574" /></para>
+          </listItem>
+          <listItem>
+            <para><link xlink:href="5389dce5-e592-4ae2-9b35-071627542f07" /></para>
+          </listItem>
+          <listItem>
+            <para><link xlink:href="47e7184b-4213-44b2-9602-a0271d93747b" /></para>
+          </listItem>
+          <listItem>
+            <para><link xlink:href="ca1eccd2-dfa4-4daa-a69b-3bad7e0c4946" /></para>
+          </listItem>
+          <listItem>
+            <para><link xlink:href="02096c70-c178-44f9-ac9f-f3d479a2b77a" /></para>
+          </listItem>
+          <listItem>
+            <para><link xlink:href="e90091a9-3959-4718-b109-ea8e75837e62" /></para>
+          </listItem>
+          <listItem>
+            <para><link xlink:href="d50f98be-cddf-4756-994d-c05431f013a8" /></para>
+          </listItem>
+          <listItem>
+            <para><link xlink:href="ecd8ab10-57b5-4094-b195-4c8c5a1ba3d0" /></para>
+          </listItem>
+          <listItem>
+            <para><link xlink:href="5bab8ccb-0ff0-496e-aa15-ae803c210a22" /></para>
+          </listItem>
+          <listItem>
+            <para><link xlink:href="195da602-cc1a-4545-b6f1-1c2e2cfc59ac" /></para>
+          </listItem>
+          <listItem>
+            <para><link xlink:href="fead6b84-f844-4669-abd2-26667cd7be6e" /></para>
+          </listItem>
+          <listItem>
+            <para><link xlink:href="d995d093-ce18-4a7e-bd03-82c6c0b4fd72" /></para>
+          </listItem>
+          <listItem>
+            <para><link xlink:href="c366af27-ac55-44e6-9c62-86cabf3eba77" /></para>
+          </listItem>
+          <listItem>
+            <para><link xlink:href="382fc569-33e4-489a-b0c2-94c11e56ab4a" /></para>
+          </listItem>
+          <listItem>
+            <para><link xlink:href="27f10273-2112-47fd-baf4-5ee90e79fba4" /></para>
+          </listItem>
+          <listItem>
+            <para><link xlink:href="6a9e1e0c-4e15-43e0-af9f-8ac9c1ab3b0c" /></para>
+          </listItem>
+          <listItem>
+            <para><link xlink:href="f1a0543f-d583-47a7-ac92-5b998326913e" /></para>
+          </listItem>
+          <listItem>
+            <para><link xlink:href="8b05e77d-04d1-4b60-9d9f-4de4817aa3a9" /></para>
+          </listItem>
+          <listItem>
+            <para><link xlink:href="1f20a093-5394-460b-8526-822fb327fc2c" /></para>
+          </listItem>
+          <listItem>
+            <para><link xlink:href="e9ecadad-9cc3-4089-9a91-ef93b3f9400e" /></para>
+          </listItem>
+        </list>
+      </content>
+    </section>
+    <relatedTopics />
+  </developerConceptualDocument>
+</topic>

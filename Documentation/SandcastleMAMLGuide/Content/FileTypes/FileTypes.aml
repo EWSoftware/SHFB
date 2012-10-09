@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="86752a38-eba3-4174-bcbf-79ec8428ecf9" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>The topics in this section define the various file types used to
+produce conceptual content help files.  If you are using a tool such as
+the <token>SHFB</token> or <token>DocProject</token>, only the topic file
+information will be of interest to you.  The other file types are used
+by the build process and may only be of interest if you want to see how
+everything fits together and is used to build the help topics.</para>
+    </introduction>
+    <section>
+      <title>Conceptual Content File Types</title>
+      <content>
+        <para>Select one of the topics below to learn more about a particular
+file type.</para>
+        <list class="bullet">
+          <listItem><para><link xlink:href="9bef5420-7560-47d9-98ce-0b5d5f46567a" /></para></listItem>
+          <listItem><para><link xlink:href="3913b321-c875-4bb9-88de-4c65f6363270" /></para></listItem>
+          <listItem><para><link xlink:href="a7e182e0-8881-41d1-a450-31d439250203" /></para></listItem>
+          <listItem><para><link xlink:href="c69a248a-bd94-47b2-90d7-5442e9cb567a" /></para></listItem>
+          <listItem><para><link xlink:href="cfd9dabf-22f3-4742-8b54-d84404610db1" /></para></listItem>
+        </list>
+      </content>
+    </section>
+    <relatedTopics />
+  </developerConceptualDocument>
+</topic>

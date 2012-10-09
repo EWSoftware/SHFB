@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="ResMimeType">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="Version">
+    <value>1.0.0.0</value>
+  </resheader>
+  <resheader name="Reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="Writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BadBlobHeapIndex">
+    <value>Bad blob heap index.</value>
+  </data>
+  <data name="BadTargetPlatformLocation">
+    <value>Assembly {0} at platform assembly location {1} has version {2} which does not match the target platform version {3}.</value>
+  </data>
+  <data name="UnknownVirtualAddress">
+    <value>Unknown virtual address {0}.</value>
+  </data>
+  <data name="UnknownConstantType">
+    <value>Unknown constant type.</value>
+  </data>
+  <data name="BadGuidHeapIndex">
+    <value>Bad guid heap index.</value>
+  </data>
+  <data name="BadStringHeapIndex">
+    <value>Bad string heap index.</value>
+  </data>
+  <data name="BadUserStringHeapIndex">
+    <value>Bad user string heap index.</value>
+  </data>
+  <data name="NoMetadataStream">
+    <value>No metadata stream.</value>
+  </data>
+  <data name="ENCLogTableEncountered">
+    <value>ENCLog Table encountered.</value>
+  </data>
+  <data name="ENCMapTableEncountered">
+    <value>ENCMap Table encountered.</value>
+  </data>
+  <data name="UnsupportedTableEncountered">
+    <value>Unsupported table encountered.</value>
+  </data>
+  <data name="BadCLIHeader">
+    <value>Bad CLI header.</value>
+  </data>
+  <data name="BadMagicNumber">
+    <value>Bad magic number.</value>
+  </data>
+  <data name="BadMetadataHeaderSignature">
+    <value>Bad metadata header signature.</value>
+  </data>
+  <data name="BadCOFFHeaderSignature">
+    <value>Bad COFF header signature.</value>
+  </data>
+  <data name="BadPEHeaderMagicNumber">
+    <value>Bad PE header magic number.</value>
+  </data>
+  <data name="FileTooBig">
+    <value>File too big.</value>
+  </data>
+  <data name="CreateFileMappingReturnedErrorCode">
+    <value>CreateFileMapping returned error code {0}.</value>
+  </data>
+  <data name="MapViewOfFileReturnedErrorCode">
+    <value>MapViewOfFile returned error code {0}.</value>
+  </data>
+  <data name="PdbAssociatedWithFileIsOutOfDate">
+    <value>The pdb associated with {0} is out of date.</value>
+  </data>
+  <data name="GetReaderForFileReturnedUnexpectedHResult">
+    <value>GetReaderForFile returned an unexpected HResult: 0x{0}.</value>
+  </data>
+  <data name="InvalidModuleTable">
+    <value>Invalid module table.</value>
+  </data>
+  <data name="ModuleOrAssemblyDependsOnMoreRecentVersionOfCoreLibrary">
+    <value>Module or assembly depends on a version of core library that is newer than the one the Reader uses to resolve system types.</value>
+  </data>
+  <data name="BadTypeDefOrRef">
+    <value>Bad TypeDefOrRef.</value>
+  </data>
+  <data name="AssemblyReferenceNotResolved">
+    <value>Assembly reference not resolved: {0}.</value>
+  </data>
+  <data name="MalformedSignature">
+    <value>Malformed signature.</value>
+  </data>
+  <data name="BadSecurityPermissionSetBlob">
+    <value>Bad security permission set blob.</value>
+  </data>
+  <data name="CouldNotResolveType">
+    <value>Could not resolve type: {0}.</value>
+  </data>
+  <data name="SecurityAttributeTypeDoesNotHaveADefaultConstructor">
+    <value>Security attribute type does not have a default constructor: {0}.</value>
+  </data>
+  <data name="UnexpectedTypeInCustomAttribute">
+    <value>Unexpected type in custom attribute.</value>
+  </data>
+  <data name="BadSerializedTypeName">
+    <value>Bad serialized type name.</value>
+  </data>
+  <data name="BadConstantParentIndex">
+    <value>Bad constant parent index.</value>
+  </data>
+  <data name="InvalidLocalSignature">
+    <value>Invalid local signature.</value>
+  </data>
+  <data name="BadCustomAttributeTypeEncodedToken">
+    <value>Bad CustomAttributeType encoded token.</value>
+  </data>
+  <data name="BadMemberToken">
+    <value>Bad member token.</value>
+  </data>
+  <data name="CouldNotResolveMemberReference">
+    <value>Could not resolve member reference: {0}.</value>
+  </data>
+  <data name="InvalidBaseClass">
+    <value>Invalid base class.</value>
+  </data>
+  <data name="CannotLoadTypeExtension">
+    <value>Can't load type extension for {0}. Assembly {1} not found.</value>
+  </data>
+  <data name="CollectionIsReadOnlye">
+    <value>Collection is read-only.</value>
+  </data>
+  <data name="CouldNotResolveTypeReference">
+    <value>Could not resolve type reference: {0}.</value>
+  </data>
+  <data name="CouldNotFindReferencedModule">
+    <value>Could not find referenced module: {0}.</value>
+  </data>
+  <data name="CouldNotFindExportedTypeInModule">
+    <value>Could not find exported type: {0} in module {1}.</value>
+  </data>
+  <data name="BadMetadataInExportTypeTableNoSuchAssemblyReference">
+    <value>Bad metadata in export type table: no such assembly reference.</value>
+  </data>
+  <data name="CouldNotFindExportedTypeInAssembly">
+    <value>Could not find exported type: {0} in assembly.</value>
+  </data>
+  <data name="BadMetadataInExportTypeTableNoSuchParentType">
+    <value>Bad metadata in export type table: no such parent type.</value>
+  </data>
+  <data name="CouldNotFindExportedNestedTypeInType">
+    <value>Could not find exported nested type: {0} in type {1}.</value>
+  </data>
+  <data name="InvalidTypeTableIndex">
+    <value>Invalid type table index.</value>
+  </data>
+  <data name="BadTypeParameterInPositionForType">
+    <value>Bad type parameter in position {0} for type</value>
+  </data>
+  <data name="BadMethodTypeParameterInPosition">
+    <value>Bad method type parameter in position {0}.</value>
+  </data>
+  <data name="InvalidFatMethodHeader">
+    <value>Invalid fat method header.</value>
+  </data>
+  <data name="BadMethodHeaderSection">
+    <value>Bad method header section.</value>
+  </data>
+  <data name="TooManyMethodHeaderSections">
+    <value>Too many method header sections.</value>
+  </data>
+  <data name="BadExceptionHandlerType">
+    <value>Bad exception handler type.</value>
+  </data>
+  <data name="BaddCalliSignature">
+    <value>Bad calli signature.</value>
+  </data>
+  <data name="UnknownOpCode">
+    <value>Unknown opcode.</value>
+  </data>
+  <data name="UnknownOpCodeEncountered">
+    <value>Unknown opCode encountered: {0}.</value>
+  </data>
+  <data name="InternalCompilerError">
+    <value>Internal compiler error.</value>
+  </data>
+  <data name="UnresolvedAssemblyReferenceNotAllowed">
+    <value>Unresolved assembly reference not allowed: {0}.</value>
+  </data>
+  <data name="UnresolvedModuleReferenceNotAllowed">
+    <value>Unresolved module reference not allowed.</value>
+  </data>
+  <data name="InvalidAssemblyStrongName">
+    <value>Invalid assembly strong name: {0}.</value>
+  </data>
+  <data name="KeyNeedsToBeGreaterThanZero">
+    <value>Key needs to be greater than 0.</value>
+  </data>
+  <data name="ModuleError">
+    <value>The following error was encountered while reading module '{0}': {1}</value>
+  </data>
+</root>

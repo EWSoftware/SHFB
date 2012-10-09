@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+	<?include Sandcastle.wxi ?>
+
+	<!-- Root folder files, start menu shortcuts, and environment variables -->
+	<Fragment>
+		<DirectoryRef Id="INSTALLDIR">
+
+			<!-- Root folder files -->
+			<Component Id="LicenseTxt" Guid="{034E7620-23C7-4A95-8CA6-D93B8C9C3EE8}">
+				<File Id="LicenseTxt" KeyPath="yes" Source="$(var.RootFolder)\License.txt" />
+			</Component>
+
+			<!-- Start menu -->
+			<Component Id="StartMenuEntries" Guid="{2E87A9A9-BC94-4794-B409-1DBA6429F0E2}">
+				<CreateFolder Directory="INSTALLDIR" />
+				<RemoveFolder Id="RemoveSandcastleStartMenu" Directory="SandcastleProgramMenuDir" On="uninstall" />
+			</Component>
+
+			<!-- Environment variable DXROOT -->
+			<Component Id="WriteDXRootEnvironmentPath" Guid="{71CA0CAB-14D7-42CA-B53C-BC462573238C}">
+				<Environment Id="SetDXRoot" Name="DXROOT" Value="[INSTALLDIR]" Action="set" System="yes" />
+				<CreateFolder Directory="INSTALLDIR" />
+			</Component>
+
+			<Component Id="SHFBUrl" Guid="{1331EDCA-27D4-472D-8141-14A9F8BFDA14}">
+				<File Id="SHFBUrl" KeyPath="yes" Source="SHFB.url">
+					<Shortcut Id="SHFBUrl" Directory="SandcastleProgramMenuDir" Icon="HtmlDocument.ico"
+						Name="Sandcastle Help File Builder on CodePlex" Description="SHFB project site" Advertise="yes" />
+				</File>
+			</Component>
+
+		</DirectoryRef>
+	</Fragment>
+
+	<Fragment>
+		<ComponentGroup Id="Root">
+			<ComponentRef Id="LicenseTxt" />
+			<ComponentRef Id="StartMenuEntries" />
+			<ComponentRef Id="WriteDXRootEnvironmentPath" />
+			<ComponentRef Id="SHFBUrl" />
+		</ComponentGroup>
+	</Fragment>
+</Wix>

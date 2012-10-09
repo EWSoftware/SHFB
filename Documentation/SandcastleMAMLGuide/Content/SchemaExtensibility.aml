@@ -1,0 +1,242 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="53e9f04f-fbc4-480d-9653-1547046526f1" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+								 xmlns:xlink="http://www.w3.org/1999/xlink"
+								 xmlns:xsd="http://schemas.xsddoc.codeplex.com/schemaDoc/2009/3">
+		<introduction>
+			<para>
+				This topic will explain how you can change the MAML schema so that you can
+				use elements from other namespaces as well. This is useful when extending
+				<token>Sandcastle</token> with build components that provide new elements
+				because it still allows you to validate your topic files.
+			</para>
+			<alert class="tip">
+				<para>
+					The Sandcastle version of the MAML schema files already contain the necessary changes.
+				</para>				
+			</alert>
+		</introduction>
+
+		<section>
+			<title>XML Schema Extensibility</title>
+			<content>
+				<para>
+					In general, XML schema provides the <codeInline>any</codeInline> element
+					for declaring extensibility points in your schema. The
+					<codeInline>any</codeInline> element has two attributes that control the
+					extensibility contract.
+				</para>
+				<para>
+					The <codeInline>namespace</codeInline> attribute allows you to either
+					explicitly specify a closed set of namespaces that are allowed or to specify
+					one of these pseudo-URIs:
+				</para>
+				<definitionTable>
+					<definedTerm>##local</definedTerm>
+					<definition>
+						<para>
+							This allows only to use elements that do not reside in any namespace.
+							This is not what we want to use because it forces build component
+							authors to declare all elements in the empty namespace. This could
+							easily lead to name clashes between different build components.
+						</para>
+					</definition>
+					<definedTerm>##targetNamespace</definedTerm>
+					<definition>
+						<para>
+							This only allows elements from the target namespace of the declaring
+							schema. For our purposes this is useless because it would only allow
+							elements from the MAML namespace
+							(<xsd:xmlEntityReference>http://ddue.schemas.microsoft.com/authoring/2003/5</xsd:xmlEntityReference>).
+						</para>
+					</definition>
+					<definedTerm>##any</definedTerm>
+					<definition>
+						<para>
+							This allows any namespace, including the target namespace of the
+							declaring schema. We do not want to use this because it would also
+							allow to use any element from the
+							MAML namespace
+							(<xsd:xmlEntityReference>http://ddue.schemas.microsoft.com/authoring/2003/5</xsd:xmlEntityReference>)
+							itself and hence undermine the schema validation for MAML.
+						</para>
+					</definition>
+					<definedTerm>##other</definedTerm>
+					<definition>
+						<para>
+							This allows any namespaces except the target namespace of the declaring
+							schema. For our purposes this is ideal because it allows only to use
+							elements from any namespace except the MAML namespace
+							(<xsd:xmlEntityReference>http://ddue.schemas.microsoft.com/authoring/2003/5</xsd:xmlEntityReference>).
+						</para>
+					</definition>
+				</definitionTable>
+				<para>
+					The <codeInline>processContents</codeInline> attribute allows you to control
+					the validation requirements. It can have one of following values:
+				</para>
+				<definitionTable>
+					<definedTerm>skip</definedTerm>
+					<definition>
+						<para>
+							This is the least restrictive value. It specifies that the schema processor
+							should not try to validate the contents of the new element, even if it is
+							able to find a schema for it.
+						</para>
+					</definition>
+					<definedTerm>strict</definedTerm>
+					<definition>
+						<para>
+							This is the most restrictive setting. It requires the schema processor to
+							always validate the contents of the new element. If it is not able to
+							find such a schema an error is reported during validation.
+						</para>
+					</definition>
+					<definedTerm>lax</definedTerm>
+					<definition>
+						<para>
+							This is a compromise between the settings <codeInline>skip</codeInline> and
+							<codeInline>strict</codeInline>. The schema processor will validate the schema
+							if it is able to find a schema for the new element and will skip it if cannot
+							find such a schema. For our purposes this is ideal because it allows build component
+							authors to provide a schema for validation but does not force them to do so.
+						</para>
+					</definition>
+				</definitionTable>
+				<para>
+					Therefore, our extensibility points will all look like this:
+				</para>
+				<code language="xml" xml:space="preserve">&lt;any namespace="##other" processContents="lax" /></code>
+			</content>
+		</section>
+
+		<section>
+			<title>Extending Inline Text</title>
+			<content>
+				<para>
+					Build components might add elements that you can use inside a
+					<xsd:xmlEntityReference>http://ddue.schemas.microsoft.com/authoring/2003/5#E/para</xsd:xmlEntityReference>
+					element. Examples for such elements are:
+				</para>
+				<definitionTable>
+					<definedTerm>Linking</definedTerm>
+					<definition>
+						<para>
+							These are elements that allow you to link to other topics. MAML itself already provides
+							several elements for this purpose, such as the
+							<xsd:xmlEntityReference>http://ddue.schemas.microsoft.com/authoring/2003/5#E/link</xsd:xmlEntityReference>
+							element to link to conceptual topics, the
+							<xsd:xmlEntityReference>http://ddue.schemas.microsoft.com/authoring/2003/5#E/codeEntityReference</xsd:xmlEntityReference>
+							element to link to managed code APIs, and the
+							<xsd:xmlEntityReference>http://ddue.schemas.microsoft.com/authoring/2003/5#E/externalLink</xsd:xmlEntityReference>
+							element to link to some location in the internet.
+						</para>
+					</definition>
+					<definedTerm>Semantics</definedTerm>
+					<definition>
+						<para>
+							This category includes elements that are used to associate pieces of text with semantics.
+							In many cases these semantics are made visible through a consistent formatting, such as italics
+							or bold text. Amongst others MAML itself provides the
+							<xsd:xmlEntityReference>http://ddue.schemas.microsoft.com/authoring/2003/5#E/localUri</xsd:xmlEntityReference>
+							element for marking text as representing local paths and the
+							<xsd:xmlEntityReference>http://ddue.schemas.microsoft.com/authoring/2003/5#E/ui</xsd:xmlEntityReference>
+							element for marking text as representing elements in your user interface.
+						</para>
+					</definition>
+				</definitionTable>
+				<para>
+					To extend the
+					<xsd:xmlEntityReference>http://ddue.schemas.microsoft.com/authoring/2003/5#E/para</xsd:xmlEntityReference>
+					element we will extend the underlying type
+					<xsd:xmlEntityReference>http://ddue.schemas.microsoft.com/authoring/2003/5#T/inlineType</xsd:xmlEntityReference>.
+				</para>
+				<para>
+					Open the file <localUri>inline.xsd</localUri>, goto line 60, and add the <codeInline>any</codeInline>
+					element to the type:
+				</para>
+				<code language="xml" xml:space="preserve">&lt;complexType name="inlineType" mixed="true">
+	&lt;annotation>
+		&lt;documentation>
+			The inlineType complexType describes a simple inline-only
+			content model. It provides both text and elements with
+			similarly simple content models.
+		&lt;/documentation>
+	&lt;/annotation>
+	&lt;choice minOccurs="0" maxOccurs="unbounded">
+		&lt;group ref="maml:inlineGroup"/>
+		&lt;element ref="maml:sharedContent"/>
+		&lt;element name="conditionalSection">
+			&lt;complexType>
+				&lt;sequence>
+					&lt;element ref="maml:conditions"/>
+					&lt;element name="conditionalContent" type="maml:inlineType"/>
+				&lt;/sequence>
+			&lt;/complexType>
+		&lt;/element>
+		&lt;!-- PATCH HERE -->
+		&lt;any namespace="##other" processContents="lax" />
+	&lt;/choice>
+	&lt;attributeGroup ref="maml:contentIdentificationSharingAndConditionGroup"/>
+&lt;/complexType></code>
+			</content>
+		</section>
+
+		<section>
+			<title>Extending Related Topics</title>
+			<content>
+				<para>
+					For build components that provide elements for linking we also want to be able to
+					use them inside the
+					<xsd:xmlEntityReference>http://ddue.schemas.microsoft.com/authoring/2003/5#E/relatedTopics</xsd:xmlEntityReference>
+					element. To do this, we will extend the type
+					<xsd:xmlEntityReference>http://ddue.schemas.microsoft.com/authoring/2003/5#T/relatedTopicsType</xsd:xmlEntityReference>.
+				</para>
+				<para>
+					Open the file <localUri>hierarchy.xsd</localUri>, goto line 123 and add the <codeInline>any</codeInline>
+					element to the type:
+				</para>
+				<code language="xml" xml:space="preserve">&lt;complexType name="relatedTopicsType" mixed="false">
+	&lt;choice minOccurs="0" maxOccurs="unbounded">
+		&lt;group   ref="maml:relatedTopicLinkGroup"/>
+		&lt;!-- PATCH HERE -->
+		&lt;any namespace="##other" processContents="lax" />
+	&lt;/choice>
+	&lt;attributeGroup ref="maml:contentIdentificationSharingAndConditionGroup"/>
+&lt;/complexType></code>
+			</content>
+		</section>
+
+		<section>
+			<title>Extending Section Structure</title>
+			<content>
+				<para>
+					Last but not least build components might also provide elements that allow you to build a
+					structure. For this purpose MAML itself already provides the
+					<xsd:xmlEntityReference>http://ddue.schemas.microsoft.com/authoring/2003/5#E/table</xsd:xmlEntityReference>,
+					<xsd:xmlEntityReference>http://ddue.schemas.microsoft.com/authoring/2003/5#E/code</xsd:xmlEntityReference> and
+					<xsd:xmlEntityReference>http://ddue.schemas.microsoft.com/authoring/2003/5#E/para</xsd:xmlEntityReference> elements.
+					To allow new structural elements we have to extend the type
+					<xsd:xmlEntityReference>http://ddue.schemas.microsoft.com/authoring/2003/5#T/sectionContentType</xsd:xmlEntityReference>.
+				</para>
+				<para>
+					Open the file <localUri>structure.xsd</localUri>, goto line 67 and add the <codeInline>any</codeInline>
+					element to the type:
+				</para>
+				<code language="xml" xml:space="preserve">&lt;complexType name="sectionContentType" mixed="false">
+	&lt;choice minOccurs="0" maxOccurs="unbounded">
+		&lt;group ref="maml:structureGroup"/>
+		&lt;element name="conditionalSection" type="maml:conditionalSectionType"/>
+		&lt;!-- PATCH HERE -->
+		&lt;any namespace="##other" processContents="lax" />
+	&lt;/choice>
+	&lt;attributeGroup ref="maml:contentIdentificationSharingAndConditionGroup"/>
+&lt;/complexType></code>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="746fc19e-2670-440b-8277-a1ef7dc074d5" />
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

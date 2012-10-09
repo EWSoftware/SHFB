@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+	<?include Sandcastle.wxi ?>
+
+	<!-- Production tools files -->
+	<Fragment>
+    <DirectoryRef Id="INSTALLDIR">
+      <Directory Id="dir44F17896E66DC6820541483F22084C8C" Name="ProductionTools">
+        <Component Id="cmp596919F29F0A4F6E4FAFEF3BFCC1E428" Guid="{782977B5-C460-4479-94CF-D4C324FA4651}">
+          <File Id="filD8ABEDFAFAF919929FE827761A9185E0" KeyPath="yes" Source="$(var.RootFolder)\ProductionTools\AggregateByNamespace.exe" />
+        </Component>
+        <Component Id="cmpE835AF42D25B78EAE04BEBF0AA7152D3" Guid="{639DBAB9-F135-4E90-AC2E-406C976771D3}">
+          <File Id="fil231CB4ADB7C3C66A5E045EDA16872B0A" KeyPath="yes" Source="$(var.RootFolder)\ProductionTools\BuildAssembler.exe" />
+        </Component>
+        <Component Id="cmp5DACB168BA1A0FE69AEE1C6BED89B1F9" Guid="{662FC1AD-D9D1-4FCA-A895-F1690BC6ECC8}">
+          <File Id="fil8912144677AD77F7DD21CC89B4C6633C" KeyPath="yes" Source="$(var.RootFolder)\ProductionTools\BuildAssembler.exe.config" />
+        </Component>
+        <Component Id="cmpE8ED341C64626D16D900A5A538740137" Guid="{1C88D8BA-09A1-459E-A2F1-85DE4723E20D}">
+          <File Id="fil7F4F392D23BF7A36DBC0BE8F39E022D0" KeyPath="yes" Source="$(var.RootFolder)\ProductionTools\BuildAssemblerLibrary.dll" />
+        </Component>
+        <Component Id="cmpAEF376A4939D621115ADE8A951A94292" Guid="{BBDFBB7C-9C77-47EC-876F-1A865AE5DA71}">
+          <File Id="filB31BF8E6EE9DB00F505B51451A2B37DB" KeyPath="yes" Source="$(var.RootFolder)\ProductionTools\BuildComponents.dll" />
+        </Component>
+        <Component Id="cmp4924071CDE57A8CFA28454954F9B9609" Guid="{C97587C2-8D2C-4CE8-B237-41E5607017FF}">
+          <File Id="fil03710525E0A3CE95DF0FFAD50E1938DF" KeyPath="yes" Source="$(var.RootFolder)\ProductionTools\ChmBuilder.config" />
+        </Component>
+        <Component Id="cmpD5BD0E08E959EF03965F4AFA738432EB" Guid="{79682CBA-6BE0-487F-80E0-9A6D4F81DE84}">
+          <File Id="fil8952794D90A5E149FD3D1C742167D792" KeyPath="yes" Source="$(var.RootFolder)\ProductionTools\ChmBuilder.exe" />
+        </Component>
+        <Component Id="cmp2A774B8E025A601C2AE23864B2FA1C14" Guid="{473B8228-C34C-4FFE-9057-420AC3C81874}">
+          <File Id="fil5AB3B6D415D4AB919241CA5CC33B9201" KeyPath="yes" Source="$(var.RootFolder)\ProductionTools\CommandLine.dll" />
+        </Component>
+        <Component Id="cmpA18505DF688171BC76C59B6AED26C28C" Guid="{38EE3F11-D33B-47B9-B248-B0C768D6E3BD}">
+          <File Id="fil55158EC7ED6FEB476C588CCAEF91B9ED" KeyPath="yes" Source="$(var.RootFolder)\ProductionTools\CopyComponents.dll" />
+        </Component>
+        <Component Id="cmp6284C8C0806802F5C9B3EEFE24BA89C2" Guid="{61823B25-D6FB-4031-90E9-F7294941B321}">
+          <File Id="filDCDF1FBC73FD3CC01ECE520CA663DF17" KeyPath="yes" Source="$(var.RootFolder)\ProductionTools\DBCSFix.exe" />
+        </Component>
+        <Component Id="cmp77F1A845EEE5344E2E7FB60FF310694A" Guid="{5D113455-4FF9-48ED-923D-2FEBCBD0BC2F}">
+          <File Id="filC1147A9B1843011DAA7CF8372A3B3AB3" KeyPath="yes" Source="$(var.RootFolder)\ProductionTools\DBCSFix.exe.config" />
+        </Component>
+        <Component Id="cmp28F78F4E33982D887E20567D72F4FCA1" Guid="{4678B5BD-4ECE-4560-8815-1BD105158906}">
+          <File Id="filCFCE791BB42816FEAA3332B996C6608D" KeyPath="yes" Source="$(var.RootFolder)\ProductionTools\Frameworks.xml" />
+        </Component>
+        <Component Id="cmp782592D0FBDB0854657AB22B70B74495" Guid="{1AF356F4-0F98-4F32-91E6-41CB98DF5E33}">
+          <File Id="filE5365E37FFC7C06ED14AF2ACAEA76C8E" KeyPath="yes" Source="$(var.RootFolder)\ProductionTools\MergeXml.exe" />
+        </Component>
+        <Component Id="cmp1F27856B7D61ED9166008AECC087B531" Guid="{AC80216B-480F-435F-9615-0A35FE9ECE0F}">
+          <File Id="filC0EFC5D77A4AAE0A7AC08A49A72C2436" KeyPath="yes" Source="$(var.RootFolder)\ProductionTools\MRefBuilder.config" />
+        </Component>
+        <Component Id="MRefBuilderExe" Guid="{4973A749-4822-4CBF-AC2C-BE04F05CCB40}">
+          <File Id="MRefBuilderExe" KeyPath="yes" Source="$(var.RootFolder)\ProductionTools\MRefBuilder.exe" />
+        </Component>
+        <Component Id="cmp7B0CD08BAC3D5EC91BC04BCDF962E6C7" Guid="{EDD289B0-6525-4BD9-99D5-0F9E59CF128F}">
+          <File Id="fil9D24FA0D532635B0DD3F5A332E73AB5C" KeyPath="yes" Source="$(var.RootFolder)\ProductionTools\MRefBuilder.exe.config" />
+        </Component>
+        <Component Id="cmp51FB43F0FB9E13328EA2F953A9B547A8" Guid="{F1E35EAB-8765-4C19-9391-65C3FE72B33F}">
+          <File Id="fil52C7B6E8C45CF169C15C14BDB7183DE8" KeyPath="yes" Source="$(var.RootFolder)\ProductionTools\MSHCPackager.exe" />
+        </Component>
+        <Component Id="cmp4AB38859C2E07C3F6AACF41C3CC256E7" Guid="{69C0A5E0-7F87-4EB8-9016-B3EDBD09A9FE}">
+          <File Id="fil669E156A94EEBE1B153331DCF411EEB1" KeyPath="yes" Source="$(var.RootFolder)\ProductionTools\scbuild.ps1" />
+        </Component>
+        <Component Id="cmp1D10775019BA0ADB9A849F60893F2354" Guid="{16FE5EC1-0788-49E5-86DE-88CD099A4E6E}">
+          <File Id="fil8D9B4D6374E9CBC701433DDBE824EB9A" KeyPath="yes" Source="$(var.RootFolder)\ProductionTools\SegregateByAssembly.exe" />
+        </Component>
+        <Component Id="cmpEAC30DF634544C410ECBC9204F5C8E35" Guid="{E2494C6A-2A23-4099-B662-1D8E310D6FBA}">
+          <File Id="fil7A6BB84647C43C2E1798B2D40A281712" KeyPath="yes" Source="$(var.RootFolder)\ProductionTools\SegregateByNamespace.exe" />
+        </Component>
+        <Component Id="cmp794DA045EFD56EF570974D5E8B70B232" Guid="{23250DAB-38B7-425A-A6F9-B24BC795B564}">
+          <File Id="fil2AAE22426B9239B861B28239178750AE" KeyPath="yes" Source="$(var.RootFolder)\ProductionTools\SyntaxComponents.dll" />
+        </Component>
+        <Component Id="cmpE9191460AAF5B91944F69E2A18741840" Guid="{450ACC0D-E004-41C5-B9A3-2713448158BD}">
+          <File Id="fil728BBFCDC555DDEB8BC565C24B92F2CC" KeyPath="yes" Source="$(var.RootFolder)\ProductionTools\VersionBuilder.exe" />
+        </Component>
+        <Component Id="cmp295D100D3501849EF0F9CA3500292C32" Guid="{C05984AB-4667-48AE-8ACF-3CEA652C6194}">
+          <File Id="filA95DD98A9AB58E5891A2CF8C573A81F1" KeyPath="yes" Source="$(var.RootFolder)\ProductionTools\XslTransform.exe" />
+        </Component>
+      </Directory>
+    </DirectoryRef>
+  </Fragment>
+  <Fragment>
+    <ComponentGroup Id="ProductionTools">
+      <ComponentRef Id="cmp596919F29F0A4F6E4FAFEF3BFCC1E428" />
+      <ComponentRef Id="cmpE835AF42D25B78EAE04BEBF0AA7152D3" />
+      <ComponentRef Id="cmp5DACB168BA1A0FE69AEE1C6BED89B1F9" />
+      <ComponentRef Id="cmpE8ED341C64626D16D900A5A538740137" />
+      <ComponentRef Id="cmpAEF376A4939D621115ADE8A951A94292" />
+      <ComponentRef Id="cmp4924071CDE57A8CFA28454954F9B9609" />
+      <ComponentRef Id="cmpD5BD0E08E959EF03965F4AFA738432EB" />
+      <ComponentRef Id="cmp2A774B8E025A601C2AE23864B2FA1C14" />
+      <ComponentRef Id="cmpA18505DF688171BC76C59B6AED26C28C" />
+      <ComponentRef Id="cmp6284C8C0806802F5C9B3EEFE24BA89C2" />
+      <ComponentRef Id="cmp77F1A845EEE5344E2E7FB60FF310694A" />
+      <ComponentRef Id="cmp28F78F4E33982D887E20567D72F4FCA1" />
+      <ComponentRef Id="cmp782592D0FBDB0854657AB22B70B74495" />
+      <ComponentRef Id="cmp1F27856B7D61ED9166008AECC087B531" />
+      <ComponentRef Id="MRefBuilderExe" />
+      <ComponentRef Id="cmp7B0CD08BAC3D5EC91BC04BCDF962E6C7" />
+      <ComponentRef Id="cmp51FB43F0FB9E13328EA2F953A9B547A8" />
+      <ComponentRef Id="cmp4AB38859C2E07C3F6AACF41C3CC256E7" />
+      <ComponentRef Id="cmp1D10775019BA0ADB9A849F60893F2354" />
+      <ComponentRef Id="cmpEAC30DF634544C410ECBC9204F5C8E35" />
+      <ComponentRef Id="cmp794DA045EFD56EF570974D5E8B70B232" />
+      <ComponentRef Id="cmpE9191460AAF5B91944F69E2A18741840" />
+      <ComponentRef Id="cmp295D100D3501849EF0F9CA3500292C32" />
+    </ComponentGroup>
+  </Fragment>
+</Wix>

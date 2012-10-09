@@ -1,0 +1,215 @@
+Entity
+	Name : string
+	Visiblity :
+	
+Namespace : Entity
+	Types : Type[]
+
+Type : Entity
+	Namespace : Namespace
+	Interfaces : Interface[]
+	Members	: Member[]
+	TemplateArguments : Type[]
+	CustomAttributes : Attribute[]
+	SecurityAttributes :
+	ContainingType : Type
+	Assembly
+
+Class : Type
+	BaseClass : Class
+	DerivedClasses : Class[]
+	IsAbstract : bool
+	IsSealed : bool
+
+Structure : Type
+
+Interface : Type
+
+Delegate : Type
+	Parameters : Parameter[]
+	ReturnType : Type
+
+Enumeration : Type
+	UnderlyingType : Type
+
+TemplateParameter : Type
+	IsValueType : bool
+
+TypeArray : Type
+	Rank : int
+	UnderlyingType : Type
+
+TypePointer : Type
+	UnderlyingType : Type
+
+TypeReference : Type
+	UnderlyingType : Type
+
+Member : Entity
+	IsStatic : bool
+	IsSpecialName : bool
+	DeclaringType : Type
+	Overrides : Member
+	Attributes : Attribute[]
+
+Field : Member
+	Type : Type
+	IsLiteral : bool
+	IsInitOnly : bool
+	IsVolitile : bool
+
+Method : Member
+	Parameters : Parameter[]
+	ReturnType : Type
+	IsAbstract : bool
+	IsVirtual : bool
+	IsFinal : bool
+	IsExtern : bool
+	Implements : Member[]
+
+Constructor : Member
+	Parameters : Parameter[]
+
+Property : Member
+	Parameters : Parameter[]
+	Type : Type
+	IsAbstract : bool
+	IsVirtual : bool
+	IsFinal : bool
+	Implements : Property[]
+	Getter : Method
+	Setter : Method
+
+Event : Member
+	Handler : Delegate
+	IsAbstract : bool
+	IsVirtual : bool
+	IsFinal : bool
+	Implements : Event[]
+	Adder: Method
+	Remover : Method
+	Raiser : Method
+
+Parameter
+	Name : string
+	Type : Type
+	CustomAttributes : Attribute[]
+
+Attribute
+	Type : Type
+	Constructor : Constructor
+	Arguments : Object[]
+
+
+Namespace:
+	<apidata name="System.Web" group="namespace" />
+	<elements />
+
+Type:
+	<apidata name="System.String" group="type" subgroup="class" />
+	<typedata visibility="public" abstract="false" sealed="false" serializable="true" />
+	<containers namespace="N:System" assembly="mscorlib" />
+	<implements />
+	<elements />
+	<attributes />
+
+Class:
+	<classdata parent="T:System.Object" />
+
+Delegate:
+	<parameters />
+	<value />
+
+Enumeration:
+	<enumdata base />
+
+Member:
+	<apidata name="System.String.Length" group="member" subgroup="property" />
+	<memberdata visibility="public" static="false" special="false" />
+	<proceduredata abstract="false" virtual="false" final="false" />
+	<propertydata getter="M:System.String.get_Length" getter-visibility setter setter-visibility />
+	<containers namespace="N:System" type="T:System.String" assembly="mscorlib" />
+
+Field:
+	<fielddata literal initonly volative serialized />
+	<value />
+
+Method:
+	<templates />
+	<parameters />
+	<value />
+
+Event:
+	<eventdata handler adder remover args />
+
+
+
+Namespace:
+<entityProperties name="System.Web" group="namespace" />
+
+Class:
+<entityProperties name="Console" visibility="public" group="type" subgroup="class" />
+<typeProperties namespace="N:System" abstract="true" sealed="true" />
+
+Method:
+<entityProperties name="AsReadOnly" visiblity="public" group="member" subgroup="method" />
+<memberProperties type="T:System.Array" static="true" special="false" abstract="false" virtual="false" final="true" />
+
+
+entityProperties
+	name
+	group
+	subgroup
+	subsubgroup
+
+typeProperties
+	namespace
+	assembly
+	abstract
+	sealed
+	parent
+	container
+
+memberProperties
+	type
+	static
+	special
+	literal
+	initonly
+	volitile
+	abstract
+	virtual
+	final
+	extern
+
+
+<entityInfo name="Boo" visiblity="protected" group="type" />
+<typeInfo namespace="N:Foo" container="T:Foo.Barrel" assembly="mscorlib.dll" subgroup="class" />
+<classInfo base="T:System.Object" abstract="false" sealed="false" />
+<templates>
+	<template name="TKey" />
+	<template name="TValue" />
+</templates>
+<interfaces>
+	<interface type="T:Foo.IBoo" />
+</interfaces>
+<attributes>
+	<attribute type="T:Foo.MyAttribute" constructor="T:Foo.MyAttribute.#ctor(System.Boolean)" />
+		<parameter name="visible" type="T:System.Boolean" value="true" />
+	</attribute>
+</attributes>
+<members>
+	<member member="M:Foo.Boo.#ctor" />
+	<member member="P:Foo.Boo.Value" />
+</members>
+
+<entity name="Moo" visibility="protected" group="method" />
+<memberInfo type="T:Foo.Boo" static="false" special="false" subgroup="method" />
+<methodnfo abstract="false" virtual="true" />
+<parameters>
+	<parameter name="x" type="T:`0" />
+<parameters>
+<value type="T:System.Int32" />
+<implements>
+	<implement type="T:Foo.IBoo" member="M:Foo.IBoo.Choo" />
+</implements>

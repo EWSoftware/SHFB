@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="97724282-5470-48ca-89c6-541737fafd1f" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction address="intro">
+      <para>This element contains an introduction to some part of the document.
+Most conceptual document types have a required introduction section.</para>
+    </introduction>
+    <section>
+      <title>Usage</title>
+      <content>
+        <para>Enter the element in the topic and specify the text to use as the
+document's introduction.  An optional <codeInline>address</codeInline> attribute
+can be added to make the introduction accessible via an in-page link.</para>
+      </content>
+    </section>
+    <section>
+      <title>Example</title>
+      <content>
+        <code language="xml" title=" ">
+  &lt;introduction address="intro"&gt;
+    &lt;para&gt;This element contains an introduction to some part of the document.
+Most conceptual document types have a required introduction section.&lt;/para&gt;
+  &lt;/introduction&gt;
+
+  &lt;section&gt;
+    &lt;title&gt;Example Output&lt;/title&gt;
+    &lt;content&gt;
+	  &lt;para&gt;See the &lt;link xlink:href="#intro"&gt;Introduction&lt;/link&gt;
+section above.&lt;/para&gt;
+    &lt;/content&gt;
+  &lt;/section&gt;
+</code>
+      </content>
+    </section>
+    <section>
+      <title>Example Output</title>
+      <content>
+        <para>See the <link xlink:href="#intro">Introduction</link>
+section above for an example of the output.</para>
+      </content>
+    </section>
+    <relatedTopics>
+	  <link xlink:href="b32a73b8-fc26-4c98-912c-d595fc1a17c2" />
+      <link xlink:href="53a2b7c6-a269-4916-9313-bdc301ee9398" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChmBuilder", "ChmBuilder.csproj", "{D17FA1CB-06EF-43A6-B11E-2B8E2661AA6D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommandLine", "..\CommandLine\CommandLine.csproj", "{6CF7CA42-3706-4F6B-A2B4-10EF3F511888}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{104BEE13-2B7F-41A2-B169-606962961FC1}"
+	ProjectSection(SolutionItems) = preProject
+		ChmBuilder.FxCop = ChmBuilder.FxCop
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D17FA1CB-06EF-43A6-B11E-2B8E2661AA6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D17FA1CB-06EF-43A6-B11E-2B8E2661AA6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D17FA1CB-06EF-43A6-B11E-2B8E2661AA6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D17FA1CB-06EF-43A6-B11E-2B8E2661AA6D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6CF7CA42-3706-4F6B-A2B4-10EF3F511888}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CF7CA42-3706-4F6B-A2B4-10EF3F511888}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6CF7CA42-3706-4F6B-A2B4-10EF3F511888}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6CF7CA42-3706-4F6B-A2B4-10EF3F511888}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

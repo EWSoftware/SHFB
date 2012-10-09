@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XslTransform", "XslTransform.csproj", "{88A4B9E2-AE05-4817-879C-15461DA29761}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommandLine", "..\CommandLine\CommandLine.csproj", "{6CF7CA42-3706-4F6B-A2B4-10EF3F511888}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C5990610-FC0C-480C-BE1B-73B49D52712F}"
+	ProjectSection(SolutionItems) = preProject
+		XslTransform.FxCop = XslTransform.FxCop
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{88A4B9E2-AE05-4817-879C-15461DA29761}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88A4B9E2-AE05-4817-879C-15461DA29761}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88A4B9E2-AE05-4817-879C-15461DA29761}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88A4B9E2-AE05-4817-879C-15461DA29761}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6CF7CA42-3706-4F6B-A2B4-10EF3F511888}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CF7CA42-3706-4F6B-A2B4-10EF3F511888}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6CF7CA42-3706-4F6B-A2B4-10EF3F511888}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6CF7CA42-3706-4F6B-A2B4-10EF3F511888}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

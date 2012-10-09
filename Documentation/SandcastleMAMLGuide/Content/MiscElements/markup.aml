@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="aaaff238-1ab4-4c9e-95d8-60ca4d8d4f8e" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>This element can be used to pass a literal piece of HTML markup through to the rendered topic.  In
+general, this element is only used by custom build components to pass HTML through after modifying the conceptual
+topic in some manner (i.e. to colorize code).  Other non-component uses might be to include a video or other such
+items in the topic that is currently not handled by MAML.</para>
+
+      <alert class="note">
+        <para>It is recommended that you avoid using this element unless there is no MAML equivalent for what you
+are trying to do.  Usage should be restricted to the output of custom build components when needed.</para>
+      </alert>
+    </introduction>
+
+    <section>
+      <title>Usage</title>
+      <content>
+        <para>Enter the element in the topic and specify the HTML markup as the inner text.  It can be used as
+a block or an inline element.</para>
+      </content>
+    </section>
+
+    <section>
+      <title>Example</title>
+      <content>
+        <code language="xml" title=" ">
+Here is a piece of literal HTML markup:
+&lt;markup&gt;
+&lt;br/&gt;&lt;br/&gt;
+It is &lt;b&gt;NOT&lt;/b&gt; recommended that you use the &lt;em&gt;markup&lt;/em&gt; element for
+normal conceptual content when an equivalent &lt;u&gt;MAML element&lt;/u&gt; already exists.
+Its use should be restricted to custom build components.
+&lt;/markup&gt;
+</code>
+      </content>
+    </section>
+
+		<section>
+      <title>Example Output</title>
+      <content>
+				<para>Here is a piece of literal HTML markup:
+<markup><br /><br />
+It is <b>NOT</b> recommended that you use the <em>markup</em> element for normal conceptual content when an
+equivalent <u>MAML element</u> already exists.  Its use should be restricted to custom build components.
+</markup></para>
+			</content>
+    </section>
+
+    <relatedTopics>
+			<link xlink:href="9d0dc122-7829-4b22-af2e-6685867116f8" />
+		</relatedTopics>
+  </developerConceptualDocument>
+</topic>

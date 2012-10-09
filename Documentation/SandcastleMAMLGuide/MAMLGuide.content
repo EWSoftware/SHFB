@@ -1,0 +1,467 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Topics>
+  <Topic id="80949828-3d04-4572-9340-d6ad3f30f8fa" visible="False" isMSHVRoot="true" title="Sandcastle MAML Guide">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="Sandcastle MAML Guide" />
+    </HelpKeywords>
+  </Topic>
+  <Topic id="303c996a-2911-4c08-b492-6496c82b3edb" visible="True" isDefault="true">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="Welcome" />
+    </HelpKeywords>
+  </Topic>
+  <Topic id="b00070c7-9c5e-4b49-ad5c-f55fa866f062" visible="True" title="Known Issues and Bugs">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="Bugs" />
+      <HelpKeyword index="K" term="Issues" />
+    </HelpKeywords>
+  </Topic>
+  <Topic id="86752a38-eba3-4174-bcbf-79ec8428ecf9" visible="True" title="Conceptual Content File Types">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="File Types" />
+    </HelpKeywords>
+    <Topic id="9bef5420-7560-47d9-98ce-0b5d5f46567a" visible="True" title="Code Snippets File">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="File Types, code snippets" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="3913b321-c875-4bb9-88de-4c65f6363270" visible="True" title="Media Content File">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="File Types, media content" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="a7e182e0-8881-41d1-a450-31d439250203" visible="True" title="Token File">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="File Types, tokens" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="c69a248a-bd94-47b2-90d7-5442e9cb567a" visible="True" title="Topic File">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="File Types, topic files" />
+      </HelpKeywords>
+      <Topic id="30797814-3a36-4844-b348-9c97b61c74f2" visible="True">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="topic files, Conceptual" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="8bf3513b-adb9-4f98-ad0f-1de21042488d" visible="True">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="topic files, Error Message" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="b5d4c819-b4cc-443e-916e-cb8e5a655d0e" visible="True">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="topic files, Glossary" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="9b994e89-b582-4224-bad9-2cddfafbec68" visible="True" title="How-To">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="topic files, How-To" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="d97b482f-155a-443c-b33c-7395ea06012b" visible="True">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="topic files, Orientation" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="525076e5-f27d-4df7-9447-a68558a740df" visible="True">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="topic files, Reference" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="1a3f0cb3-4ea0-467a-8f53-32daffe3336b" visible="True">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="topic files, Reference With Syntax" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="6c6f1e3b-2b3c-4157-8cf0-ba5498c8a898" visible="True">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="topic files, Reference Without Syntax" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="ad896389-cb62-4a98-bb27-4047e201ab02" visible="True">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="topic files, Sample" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="a55e614a-dc90-440b-aae1-b3f5b2b0104f" visible="True">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="topic files, SDK Technology Architecture" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="7a5600cb-9a9f-416e-b575-446c1b5a432c" visible="True">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="topic files, SDK Technology Code Directory" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="03a1ba01-868a-432b-afe7-0a9753ae08d1" visible="True">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="topic files, SDK Technology Orientation" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="71cf59a5-a37e-49cb-9e8b-adec66f2de7d" visible="True">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="topic files, SDK Technology Scenarios" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="c221bd00-b9c7-4e49-b7f5-b4f8934f3208" visible="True">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="topic files, SDK Technology Summary" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="e87ebaad-7085-410b-a445-09c456e94c07" visible="True">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="topic files, Troubleshooting" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="d8c4bffb-c6b8-4357-9aa3-7d14320d7848" visible="True">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="topic files, User Interface Reference" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="18be60b7-88fe-4860-84bf-9a541f1e13c0" visible="True">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="topic files, Walkthrough" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="e5d750b6-6bd9-4263-98f2-a3d5d5c268d8" visible="True">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="topic files, Whitepaper" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="e411f3f8-e3ec-4617-8ecd-0046e2e9df85" visible="True">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="topic files, XML Reference" />
+        </HelpKeywords>
+      </Topic>
+    </Topic>
+    <Topic id="cfd9dabf-22f3-4742-8b54-d84404610db1" visible="True" title="Companion File">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="File Types, companion file" />
+      </HelpKeywords>
+    </Topic>
+  </Topic>
+  <Topic id="b32a73b8-fc26-4c98-912c-d595fc1a17c2" visible="True" title="Block Elements">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="Block Elements" />
+    </HelpKeywords>
+    <Topic id="a8792cd2-e8a1-4e37-bd16-eea84ac463b1" visible="True" title="alert">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Block Elements, alert" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="65e7e30a-ba03-4e10-b1f2-763a613b6e27" visible="True" title="code">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Block Elements, code" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="91a45341-e368-463e-a9ed-9e05286d2c25" visible="True" title="codeReference">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Miscellaneous Elements, codeReference" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="cb59e91c-f3cd-4086-a7ea-e2413a626e3d" visible="True" title="definitionTable, definedTerm, definition">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Block Elements, definedTerm" />
+        <HelpKeyword index="K" term="Block Elements, definition" />
+        <HelpKeyword index="K" term="Block Elements, definitionTable" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="97724282-5470-48ca-89c6-541737fafd1f" visible="True" title="introduction">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Block Elements, introduction" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="d6c82cde-f889-4ac9-b3a7-7d45fd6fbffc" visible="True" title="list, listItem">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Block Elements, list" />
+        <HelpKeyword index="K" term="Block Elements, listItem" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="77a994ec-637c-43c5-8bea-981eb5fd23af" visible="True" title="para">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Block Elements, para" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="96efe90a-65d4-49b2-81de-a8f05560cd60" visible="True" title="quote">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Block Elements, quote" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="bfdd5115-f594-480d-9e79-af906e599337" visible="True" title="relatedTopics">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Block Elements, relatedTopics" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="ec11472a-8a9c-44e7-9d32-45f671526922" visible="True" title="table, tableHeader, row, entry">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Block Elements, entry" />
+        <HelpKeyword index="K" term="Block Elements, row" />
+        <HelpKeyword index="K" term="Block Elements, table" />
+        <HelpKeyword index="K" term="Block Elements, tableHeader" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="3698dacb-763b-4a45-a051-f34c09e5f862" visible="True" title="title">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Block Elements, title" />
+      </HelpKeywords>
+    </Topic>
+  </Topic>
+  <Topic id="b96d95c0-ec3c-4846-998a-4b43548bfa0e" visible="True" title="Common Inline Elements">
+    <HelpAttributes>
+      <HelpAttribute name="NoName" value="Common Inline Elements" />
+      <HelpAttribute name="NoName" value="Inline Elements" />
+    </HelpAttributes>
+    <HelpKeywords>
+      <HelpKeyword index="K" term="Common Inline Elements" />
+    </HelpKeywords>
+    <Topic id="bf552a94-f8b9-460d-bf76-a869430a077e" visible="True" title="application">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Common Inline Elements, application" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="915392b7-c701-44fd-8ff4-89c34a10f574" visible="True" title="codeInline">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Common Inline Elements, codeInline" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="02e60906-b8d5-4258-9348-aad70f48861f" visible="True" title="command">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Common Inline Elements, command" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="b433ede9-8813-4020-b5dd-74b3204ebe0c" visible="True" title="computerOutputInline">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Common Inline Elements, computerOutputInline" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="28f99529-1e07-4a5e-978f-d2a27c3c7fb1" visible="True" title="database">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Common Inline Elements, database" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="a0424e7f-823c-449c-a2e4-012c1f556674" visible="True" title="environmentVariable">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Common Inline Elements, environmentVariable" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="4cf23985-a97b-46d4-8624-a46b77cca86b" visible="True" title="errorInline">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Common Inline Elements, errorInline" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="3fad0c13-9dcb-471e-890b-228acf54b574" visible="True" title="fictitiousUri">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Common Inline Elements, fictitiousUri" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="5389dce5-e592-4ae2-9b35-071627542f07" visible="True" title="foreignPhrase">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Common Inline Elements, foreignPhrase" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="47e7184b-4213-44b2-9602-a0271d93747b" visible="True" title="hardware">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Common Inline Elements, hardware" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="ca1eccd2-dfa4-4daa-a69b-3bad7e0c4946" visible="True" title="legacyBold">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Common Inline Elements, legacyBold" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="02096c70-c178-44f9-ac9f-f3d479a2b77a" visible="True" title="legacyItalic">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Common Inline Elements, legacyItalic" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="e90091a9-3959-4718-b109-ea8e75837e62" visible="True" title="legacyUnderline">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Common Inline Elements, legacyUnderline" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="d50f98be-cddf-4756-994d-c05431f013a8" visible="True" title="literal">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Common Inline Elements, literal" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="ecd8ab10-57b5-4094-b195-4c8c5a1ba3d0" visible="True" title="localUri">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Common Inline Elements, localUri" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="5bab8ccb-0ff0-496e-aa15-ae803c210a22" visible="True" title="math">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Common Inline Elements, math" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="195da602-cc1a-4545-b6f1-1c2e2cfc59ac" visible="True" title="newTerm">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Common Inline Elements, newTerm" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="fead6b84-f844-4669-abd2-26667cd7be6e" visible="True" title="phrase">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Common Inline Elements, phrase" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="d995d093-ce18-4a7e-bd03-82c6c0b4fd72" visible="True" title="placeholder">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Common Inline Elements, placeholder" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="c366af27-ac55-44e6-9c62-86cabf3eba77" visible="True" title="quoteInline">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Common Inline Elements, quoteInline" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="382fc569-33e4-489a-b0c2-94c11e56ab4a" visible="True" title="replaceable">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Common Inline Elements, replaceable" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="27f10273-2112-47fd-baf4-5ee90e79fba4" visible="True" title="subscript">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Common Inline Elements, subscript" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="6a9e1e0c-4e15-43e0-af9f-8ac9c1ab3b0c" visible="True" title="superscript">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Common Inline Elements, superscript" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="f1a0543f-d583-47a7-ac92-5b998326913e" visible="True" title="system">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Common Inline Elements, system" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="8b05e77d-04d1-4b60-9d9f-4de4817aa3a9" visible="True" title="ui">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Common Inline Elements, ui" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="1f20a093-5394-460b-8526-822fb327fc2c" visible="True" title="unmanagedCodeEntityReference">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Common Inline Elements, unmanagedCodeEntityReference" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="e9ecadad-9cc3-4089-9a91-ef93b3f9400e" visible="True" title="userInput">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Common Inline Elements, userInput" />
+      </HelpKeywords>
+    </Topic>
+  </Topic>
+  <Topic id="ba6a58eb-3301-4397-8ac5-d174d6dff755" visible="True" title="Media Elements">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="Media Elements" />
+    </HelpKeywords>
+    <Topic id="34c8823f-8395-4d64-9941-8d156083709c" visible="True" title="mediaLink">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Media Elements, mediaLink" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="48314339-e0fe-4d1a-96b0-eba5eca70b66" visible="True" title="medialLinkInline">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Media Elements, mediaLinkInline" />
+      </HelpKeywords>
+    </Topic>
+  </Topic>
+  <Topic id="3be5c58d-d6af-45a4-ac51-f219a75c4c4d" visible="True" title="Link Elements">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="Link Elements" />
+    </HelpKeywords>
+    <Topic id="bc490dbf-7d46-432d-a816-3ae16ab6af54" visible="True" title="codeEntityReference">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Link Elements, codeEntityReference" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="d0c9ce6d-115b-4c70-891c-69b4af944dea" visible="True" title="externalLink">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Link Elements, externalLink" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="53a2b7c6-a269-4916-9313-bdc301ee9398" visible="True" title="link">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Link Elements, link" />
+      </HelpKeywords>
+    </Topic>
+  </Topic>
+  <Topic id="9d0dc122-7829-4b22-af2e-6685867116f8" visible="True" title="Miscellaneous Elements">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="Miscellaneous Elements" />
+    </HelpKeywords>
+    <Topic id="b9a1daac-a2d8-41b7-83b0-b7dc7b28b898" visible="True" title="autoOutline">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Miscellaneous Elements, autoOutline" />
+      </HelpKeywords>
+      <Topic id="1a817894-db7a-4c7f-bd67-cca896affa35" visible="True" title="autoOutline Rendered Example">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="auto-outline example" />
+        </HelpKeywords>
+      </Topic>
+    </Topic>
+    <Topic id="aaaff238-1ab4-4c9e-95d8-60ca4d8d4f8e" visible="True" title="markup">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Common Inline Elements, markup" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="0f1bdf10-7968-4e17-aaf9-849091479df8" visible="True" title="token">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Miscellaneous Elements, token" />
+      </HelpKeywords>
+    </Topic>
+  </Topic>
+  <Topic id="746fc19e-2670-440b-8277-a1ef7dc074d5" visible="True" title="Visual Studio IntelliSense">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="IntelliSense" />
+      <HelpKeyword index="K" term="Visual Studio" />
+    </HelpKeywords>
+  </Topic>
+  <Topic id="53e9f04f-fbc4-480d-9653-1547046526f1" visible="True" title="Schema Extensibility">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="extensibility" />
+    </HelpKeywords>
+  </Topic>
+  <Topic id="dc4fcc96-283e-4202-9ecc-08a65e0c9313" visible="True" title="Links to Resources">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="build components, article on creating components" />
+      <HelpKeyword index="K" term="build components, links to third-party components" />
+      <HelpKeyword index="K" term="resources" />
+      <HelpKeyword index="K" term="support, articles" />
+      <HelpKeyword index="K" term="support, links to resources" />
+      <HelpKeyword index="K" term="support, third-party build components" />
+      <HelpKeyword index="K" term="support, tools" />
+    </HelpKeywords>
+  </Topic>
+  <Topic id="ba47a67c-4825-4fcd-b806-2b2e02d4373a" visible="True" isExpanded="true" title="Version History">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="History" />
+      <HelpKeyword index="K" term="Version history" />
+    </HelpKeywords>
+    <Topic id="2ac532de-69cc-45c7-9f78-5d668fcb4339" visible="True" isSelected="true" title="Version 1.1.0.2">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 1.1.0.2" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="0ff85a0b-3fed-48dc-87a7-c73d8711ea92" visible="True" title="Version 1.1.0.1">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 1.1.0.1" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="e5f49add-f931-4a46-9958-f50eda227479" visible="True" title="Version 1.1.0.0">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 1.1.0.0" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="075a7b21-73d8-4fe2-a0c1-2289a575fbe7" visible="True" title="Version 1.0.0.0">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 1.0.0.0" />
+      </HelpKeywords>
+    </Topic>
+  </Topic>
+  <Topic id="66bf98c7-7179-4940-8767-7085052f2f53" visible="True">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="Glossary" />
+    </HelpKeywords>
+  </Topic>
+</Topics>

@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="65e7e30a-ba03-4e10-b1f2-763a613b6e27" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>This element can be used to display a code fragment in a conceptual
+topic.  For single lines or keywords, you can use the
+<codeInline>codeInline</codeInline> element.</para>
+      <alert class="note">
+        <para>The <token>SHFB</token> comes with a custom build component (the
+<legacyBold>Code Block Component</legacyBold>) that can colorize the code,
+add line numbering, collapsible sections, supports many other languages, and
+has several other features.  It is also available in a standalone download for
+use in other third-party build tools or your own custom scripts.  Refer to its
+help file for more information.  The examples below were rendered using it.</para>
+      </alert>
+    </introduction>
+    <section>
+      <title>Usage</title>
+      <content>
+        <para>Enter the element in the topic and specify a language using the
+<codeInline>language</codeInline> attribute.  Place the code within the
+element.  Because it is XML, the code must either be HTML encoded or must
+be enclosed within a <codeInline>CDATA</codeInline> element to preserve the
+formatting and any special characters that would normally require encoding.</para>
+      </content>
+    </section>
+    <section>
+      <title>Example</title>
+      <content>
+        <code language="xml" title=" ">
+An encoded example:
+
+&lt;code language="C#"&gt;
+/// &amp;lt;summary&amp;gt;
+/// A sample method
+/// &amp;lt;/summary&amp;gt;
+public void Test()
+{
+}
+&lt;/code&gt;
+
+An example that uses CDATA to avoid the need to encode the sample:
+
+&lt;code language="VB.NET"&gt;
+&lt;![CDATA[
+''' &lt;summary&gt;
+''' A sample method
+''' &lt;summary&gt;
+Public Sub Test()
+
+End Sub]]&gt;
+&lt;/code&gt;
+</code>
+      </content>
+    </section>
+    <section>
+      <title>Example Output</title>
+      <content>
+				<para>An encoded example:</para>
+				
+<code language="C#">
+/// &lt;summary&gt;
+/// A sample method
+/// &lt;/summary&gt;
+public void Test()
+{
+}
+</code>
+
+				<para>An example that uses CDATA to avoid the need to encode the sample:</para>
+
+<code language="VB.NET"><![CDATA[
+''' <summary>
+''' A sample method
+''' <summary>
+Public Sub Test()
+
+End Sub]]></code></content>
+    </section>
+    <relatedTopics>
+	  <link xlink:href="b32a73b8-fc26-4c98-912c-d595fc1a17c2" />
+      <link xlink:href="915392b7-c701-44fd-8ff4-89c34a10f574" />
+      <link xlink:href="bc490dbf-7d46-432d-a816-3ae16ab6af54" />
+      <link xlink:href="91a45341-e368-463e-a9ed-9e05286d2c25" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

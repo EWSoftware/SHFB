@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="c69a248a-bd94-47b2-90d7-5442e9cb567a" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>The topic file is used to contain a single conceptual topic.  Instead of HTML, conceptual content
+topics use Microsoft Assistance Markup Language (MAML).  This is basically XML conforming to a well defined
+schema that describes the structure of the conceptual content much like XML comments describe the structure of
+the code comments. There is no layout or style information within the MAML files. Instead, they are ran through
+a series of XSL transformations using Sandcastle's <application>BuildAssembler</application> tool similar to the
+reference (API) content so that they match it in appearance and features.  This allows you to utilize the various
+build components to alter and extend the presentation style of the topics.
+</para>
+    </introduction>
+    <section>
+      <title>Topic File Structure</title>
+      <content>
+        <para>MAML defines several different content types, each used for a specific type of document
+(conceptual, glossary, how-to, reference, etc.).  Each type has a specific structure with various required and
+optional XML elements.  When building conceptual content, each topic requires a unique ID in the form of a
+globally unique identifier (GUID) and a revision number.  These are specified in a containing <codeInline>topic</codeInline>
+element in the content file as shown in this example.</para>
+
+        <code language="xml" title="Topic Example"><![CDATA[
+<!-- The topic element contains the unique ID and revision number -->
+<topic id="303c996a-2911-4c08-b492-6496c82b3edb" revisionNumber="1">
+  <!-- This element name will change based on the document type -->
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+  <!-- The content goes here -->
+  
+  </developerConceptualDocument>
+</topic>]]></code>
+
+        <alert class="note">
+          <para>The <codeInline>topic</codeInline> element is not part of the MAML schema but is required in
+order to build the help file.  The example topics below include a <codeInline>topic</codeInline> element with
+placeholder <codeInline>ID</codeInline> and <codeInline>RevisionNumber</codeInline> values.  If you copy these
+files, be sure to replace the ID in each topic with a unique value of your own for each file that you create.</para>
+        </alert>
+      </content>
+    </section>
+
+    <section>
+      <title>Document Types</title>
+      <content>
+        <para>Select one of the topics below to learn more about a particular document type.</para>
+        <list class="bullet">
+          <listItem>
+						<para><link xlink:href="30797814-3a36-4844-b348-9c97b61c74f2" /></para>
+          </listItem>
+          <listItem>
+						<para><link xlink:href="8bf3513b-adb9-4f98-ad0f-1de21042488d" /></para>
+          </listItem>
+          <listItem>
+						<para><link xlink:href="b5d4c819-b4cc-443e-916e-cb8e5a655d0e" /></para>
+          </listItem>
+          <listItem>
+						<para><link xlink:href="9b994e89-b582-4224-bad9-2cddfafbec68" /></para>
+          </listItem>
+          <listItem>
+						<para><link xlink:href="d97b482f-155a-443c-b33c-7395ea06012b" /></para>
+          </listItem>
+          <listItem>
+						<para><link xlink:href="525076e5-f27d-4df7-9447-a68558a740df" /></para>
+          </listItem>
+          <listItem>
+						<para><link xlink:href="1a3f0cb3-4ea0-467a-8f53-32daffe3336b" /></para>
+          </listItem>
+          <listItem>
+						<para><link xlink:href="6c6f1e3b-2b3c-4157-8cf0-ba5498c8a898" /></para>
+          </listItem>
+          <listItem>
+						<para><link xlink:href="ad896389-cb62-4a98-bb27-4047e201ab02" /></para>
+          </listItem>
+          <listItem>
+						<para><link xlink:href="a55e614a-dc90-440b-aae1-b3f5b2b0104f" /></para>
+          </listItem>
+          <listItem>
+						<para><link xlink:href="7a5600cb-9a9f-416e-b575-446c1b5a432c" /></para>
+          </listItem>
+          <listItem>
+						<para><link xlink:href="03a1ba01-868a-432b-afe7-0a9753ae08d1" /></para>
+          </listItem>
+          <listItem>
+						<para><link xlink:href="71cf59a5-a37e-49cb-9e8b-adec66f2de7d" /></para>
+          </listItem>
+          <listItem>
+						<para><link xlink:href="c221bd00-b9c7-4e49-b7f5-b4f8934f3208" /></para>
+          </listItem>
+          <listItem>
+						<para><link xlink:href="e87ebaad-7085-410b-a445-09c456e94c07" /></para>
+          </listItem>
+          <listItem>
+						<para><link xlink:href="d8c4bffb-c6b8-4357-9aa3-7d14320d7848" /></para>
+          </listItem>
+          <listItem>
+						<para><link xlink:href="18be60b7-88fe-4860-84bf-9a541f1e13c0" /></para>
+          </listItem>
+          <listItem>
+						<para><link xlink:href="e5d750b6-6bd9-4263-98f2-a3d5d5c268d8" /></para>
+          </listItem>
+          <listItem>
+						<para><link xlink:href="e411f3f8-e3ec-4617-8ecd-0046e2e9df85" /></para>
+          </listItem>
+        </list>
+      </content>
+    </section>
+
+    <relatedTopics>
+      <link xlink:href="86752a38-eba3-4174-bcbf-79ec8428ecf9" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="d50f98be-cddf-4756-994d-c05431f013a8" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>This element describes a literal value.</para>
+    </introduction>
+    <section>
+      <title>Usage</title>
+      <content>
+        <para>Enter the element in the topic and specify the literal value as the
+inner text.</para>
+      </content>
+    </section>
+    <section>
+      <title>Example</title>
+      <content>
+        <code language="xml" title=" ">
+If the property is not used, set it to the string &lt;literal&gt;None&lt;/literal&gt;.
+</code>
+      </content>
+    </section>
+    <section>
+      <title>Example Output</title>
+      <content>
+        <para>If the property is not used, set it to the string <literal>None</literal>.</para>
+      </content>
+    </section>
+
+    <relatedTopics>
+      <link xlink:href="b96d95c0-ec3c-4846-998a-4b43548bfa0e" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

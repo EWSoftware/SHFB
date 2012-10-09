@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="a8792cd2-e8a1-4e37-bd16-eea84ac463b1" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>This element can be used to create a note-like section within a
+conceptual topic to draw attention to some important information.</para>
+    </introduction>
+    <section>
+      <title>Usage</title>
+      <content>
+        <para>Enter the element in the topic and specify the type of alert
+using the <codeInline>class</codeInline> attribute.  The content of the alert
+element is usually one or more paragraphs of text describing the important
+information.</para>
+        <alert class="note">
+          <para>The class attribute value is case-sensitive.  Unrecognized values will
+default to the "note" alert style.</para>
+        </alert>
+        <para>The <codeInline>class</codeInline> attribute can be any of the
+following values which fall into a couple of different groups that use
+different icons to the left of the alert title.  The title will generally be
+the alert class name or an expanded form of it.</para>
+        <table>
+          <tableHeader>
+            <row>
+              <entry><para>Type</para></entry>
+              <entry><para>Class Value</para></entry>
+            </row>
+          </tableHeader>
+          <row>
+            <entry><para>General note</para></entry>
+            <entry><para>note, tip, implement, caller, inherit</para></entry>
+          </row>
+          <row>
+            <entry><para>Cautionary</para></entry>
+            <entry><para>caution, warning, important</para></entry>
+          </row>
+          <row>
+            <entry><para>Security</para></entry>
+            <entry><para>security, security note</para></entry>
+          </row>
+          <row>
+            <entry><para>Language note</para></entry>
+            <entry><para>cs, CSharp, c#, C#, visual c# note, cpp, CPP, c++, C++, visual c++ note,
+vb, VB, VisualBasic, visual basic note, JSharp, j#, J#, visual j# note</para></entry>
+          </row>
+        </table>
+      </content>
+    </section>
+    <section>
+      <title>Example</title>
+      <content>
+        <code language="xml" title=" ">
+&lt;alert class="note"&gt;
+  &lt;para&gt;This is a note&lt;/para&gt;
+&lt;/alert&gt;
+
+&lt;alert class="caution"&gt;
+  &lt;para&gt;The class attribute value is case-sensitive.&lt;/para&gt;
+&lt;/alert&gt;
+
+&lt;alert class="security"&gt;
+  &lt;para&gt;Do not tape your password to the underside of your keyboard.&lt;/para&gt;
+&lt;/alert&gt;
+
+&lt;alert class="cs"&gt;
+  &lt;para&gt;This could contain C#-specific usage notes.&lt;/para&gt;
+&lt;/alert&gt;
+</code>
+      </content>
+    </section>
+    <section>
+      <title>Example Output</title>
+      <content>
+        <alert class="note">
+          <para>This is a note</para>
+        </alert>
+
+        <alert class="caution">
+          <para>The class attribute value is case-sensitive.</para>
+        </alert>
+
+        <alert class="security">
+          <para>Do not tape your password to the underside of your keyboard.</para>
+        </alert>
+
+        <alert class="cs">
+          <para>This could contain C#-specific usage notes.</para>
+        </alert>
+      </content>
+    </section>
+
+    <relatedTopics>
+	  <link xlink:href="b32a73b8-fc26-4c98-912c-d595fc1a17c2" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

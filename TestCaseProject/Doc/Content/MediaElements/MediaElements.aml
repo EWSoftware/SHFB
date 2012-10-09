@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="ba6a58eb-3301-4397-8ac5-d174d6dff755" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>The topics in this section define the media (image) elements that can
+be used in conceptual topics.</para>
+    </introduction>
+    <section>
+      <title>Media Elements</title>
+      <content>
+        <para>Select one of the topics below to learn more about a particular
+media element.</para>
+        <list class="bullet">
+          <listItem>
+            <para><link xlink:href="34c8823f-8395-4d64-9941-8d156083709c" /></para>
+          </listItem>
+          <listItem>
+            <para><link xlink:href="48314339-e0fe-4d1a-96b0-eba5eca70b66" /></para>
+          </listItem>
+        </list>
+      </content>
+    </section>
+    <relatedTopics />
+  </developerConceptualDocument>
+</topic>

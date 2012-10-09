@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="a7e182e0-8881-41d1-a450-31d439250203" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>A token is used as a replaceable tag within a topic and is
+represented using a <codeInline>token</codeInline> element.  The inner
+text of the element is a token name.  The tokens are defined in a separate
+token file.  They are an easy way to represent common items that you use
+regularly such as a common phrase or external link.</para>
+    </introduction>
+    <section>
+      <title>Token File Format</title>
+      <content>
+        <para>Below is an example of a token file.</para>
+        <code language="xml" title="Example Token File" source="ExampleFiles\Tokens.xml" />
+        <para>The file consists of a root <codeInline>content</codeInline>
+node that contains one or more <codeInline>item</codeInline> nodes.
+Be sure to add the <codeInline>xml:space</codeInline> attribute to preserve
+whitespace and the two namespace attributes on the
+<codeInline>content</codeInline> element.</para>
+        <para>The <codeInline>item</codeInline> element has an
+<codeInline>id</codeInline> attribute that gives each one a unique identifier.
+This is used as the inner text of the <codeInline>token</codeInline>
+element in a topic to represent the token.  The inner XML of the item will
+be used to replace the token at build-time.</para>
+        <alert class="note">
+          <para>The token ID is not case-sensitive.</para>
+        </alert>
+      </content>
+    </section>
+    <section>
+      <title>Token Content</title>
+      <content>
+        <para>The content of a token item can be anything you like and may
+include other MAML elements.  In the example above, the first four elements
+are used to define common external links used by this project.</para>
+        <alert class="note">
+          <para>If you embed MAML elements within a token,  you must prefix each
+element name with "<codeInline>ddue:</codeInline>" (without the quotes) as
+shown in the example above.  If not, the elements are inserted using the
+default empty namespace and they will not be processed by the Sandcastle
+transformations.</para>
+        </alert>
+
+        <para>The <codeInline>autoOutline</codeInline> token is a special
+case used by earlier versions of Sandcastle to insert an auto-generated section
+outline within a topic's introduction or sub-sections.  See the
+<link xlink:href="b9a1daac-a2d8-41b7-83b0-b7dc7b28b898" /> topic for more
+information.</para>
+
+        <alert class="tip">
+          <para>The <token>SHFB</token> adds the <codeInline>autoOutline</codeInline>
+token as part of the build automatically.  As such, you do not need to define
+it in the project yourself.</para>
+        </alert>
+
+        <alert class="tip">
+          <para>Sandcastle contains an extension to the MAML schema and the
+<codeInline>autoOutline</codeInline> element can be added directly in the topic
+without the need for embedding it in a token.</para>
+        </alert>
+      </content>
+    </section>
+    <relatedTopics>
+      <link xlink:href="86752a38-eba3-4174-bcbf-79ec8428ecf9" />
+      <link xlink:href="b9a1daac-a2d8-41b7-83b0-b7dc7b28b898" />
+      <link xlink:href="0f1bdf10-7968-4e17-aaf9-849091479df8" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>
