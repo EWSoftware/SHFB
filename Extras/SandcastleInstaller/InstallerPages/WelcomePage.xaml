@@ -1,0 +1,34 @@
+﻿<sci:BasePage x:Class="Sandcastle.Installer.InstallerPages.WelcomePage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:sci="clr-namespace:Sandcastle.Installer.InstallerPages"
+             mc:Ignorable="d" 
+             d:DesignHeight="325" d:DesignWidth="500">
+  <FlowDocumentScrollViewer>
+    <FlowDocument Name="fdDocument" FontFamily="Verdana" FontSize="11" PagePadding="10,15" TextAlignment="Left">
+      <Paragraph><Bold FontSize="16">Welcome to the Sandcastle Guided Installation</Bold></Paragraph>
+      <Paragraph>Sandcastle, created by Microsoft, is a set of tools used to create MSDN-style
+documentation from .NET assemblies and their associated XML comments files.  Depending on the type of
+help file that you want to produce, one or more additional tools may be required.  In addition, there are
+community patches and third-party build tools and components that you may find useful.</Paragraph>
+
+      <Paragraph>This application will guide you through the process needed to create a working
+installation so that you can start producing help files with Sandcastle.  Some of the additional tools,
+such as the help compilers, are not open source and thus are not included with this guided installation
+package.  This application will search for the required tools and give you instructions on how to download
+and install them if they are not found.</Paragraph>
+
+      <Paragraph>This installer comes with the version of
+<Hyperlink NavigateUri="http://SHFB.CodePlex.com">Sandcastle</Hyperlink> displayed in the main title
+above.</Paragraph>
+
+      <Paragraph>Third-party build tool and component providers may also use this installer with their
+product.  In such cases, their tools and components will be installed after Sandcastle and the related tools
+noted above.</Paragraph>
+
+      <Paragraph>Click the <Bold>Next</Bold> button to continue.</Paragraph>
+    </FlowDocument>
+  </FlowDocumentScrollViewer>
+</sci:BasePage>

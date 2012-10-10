@@ -97,7 +97,7 @@
 				<xsl:text>VB</xsl:text>
 			</xsl:when>
 			<xsl:when test="$v_codeLangUnique = 'CSharp'" >
-				<xsl:text>C#</xsl:text>
+				<xsl:text>CSharp</xsl:text>
 			</xsl:when>
 			<xsl:when test="$v_codeLangUnique = 'visualbasicANDcsharp'" >
 				<xsl:text>VB and C#</xsl:text>
@@ -109,7 +109,7 @@
 				<xsl:text>VJ#</xsl:text>
 			</xsl:when>
 			<xsl:when test="$v_codeLangUnique = 'FSharp'" >
-				<xsl:text>F#</xsl:text>
+				<xsl:text>FSharp</xsl:text>
 			</xsl:when>
 			<xsl:when test="$v_codeLangUnique = 'JScript'">
 				<xsl:text>JScript</xsl:text>

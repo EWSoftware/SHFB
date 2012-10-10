@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="c18d6cb6-e4e4-4944-84ee-f867aa6cfb0d" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+      <para>This topics contains links to various resources that you may find useful.</para>
+    </introduction>
+
+<section>
+  <title>Links to Resources</title>
+  <content>
+<list class="bullet">
+	<listItem>
+		<para>The <externalLink><linkText>.NET Framework 4.0</linkText>
+<linkUri>http://www.microsoft.com/downloads/en/details.aspx?FamilyID=9cfb2d51-5ff4-4491-b0e5-b386f32c0992&amp;displaylang=en</linkUri>
+<linkTarget>_blank</linkTarget></externalLink>.</para>
+	</listItem>
+	<listItem>
+		<para>The latest version of Microsoft's <token>Sandcastle</token> (currently the
+<token>SandcastleVersion</token> release as of <token>BuildDate</token>).</para>
+	</listItem>
+	<listItem>
+		<para>To discuss the Sandcastle tools and extras, suggest new features, report bugs, and request help
+using them, visit the <token>Sandcastle</token> CodePlex project.</para>
+	</listItem>
+	<listItem>
+		<para>For discussion and questions about help systems in general, visit the <externalLink>
+<linkText>Microsoft Developer Documentation and Help System forum</linkText>
+<linkUri>http://social.msdn.microsoft.com/forums/en-US/devdocs/threads/</linkUri>
+<linkTarget>_blank</linkTarget></externalLink>.</para>
+	</listItem>
+	<listItem>
+		<para><externalLink><linkText>The Sandcastle Blog</linkText>
+<linkUri>http://blogs.msdn.com/sandcastle/default.aspx</linkUri><linkTarget>_blank</linkTarget>
+</externalLink> provides news about Sandcastle and blog entries describing how its various features work.</para>
+	</listItem>
+</list>
+
+  </content>
+</section>
+
+<section>
+  <title>MAML Information and Guides</title>
+  <content>
+<list class="bullet">
+	<listItem>
+		<para>For a comprehensive list of MAML documentation tags and a description of their attributes and
+usage see the <legacyBold>The Sandcastle MAML Guide</legacyBold> also included with Sandcastle extras.</para>
+	</listItem>
+	<listItem>
+		<para>For general background information, see the Wikipedia entry <externalLink>
+<linkText>Microsoft Assistance Markup Language</linkText>
+<linkUri>http://en.wikipedia.org/wiki/Microsoft_Assistance_Markup_Language</linkUri>
+<linkTarget>_blank</linkTarget>
+</externalLink> or, for schema information, see the MAML information at	<externalLink>
+<linkText>help-info.de</linkText>
+<linkUri>http://www.help-info.de/en/Help_Info_AP_Help/longhorn_maml_example.htm</linkUri>
+<linkTarget>_blank</linkTarget>
+</externalLink></para>
+	</listItem>
+</list>
+  </content>
+</section>
+
+<section address="BuildTools">
+  <title>Build and Project Management Tools</title>
+  <content>
+  	<list class="bullet">
+      <listItem>
+				<para><token>SHFB</token></para>
+      </listItem>
+      <listItem>
+				<para><token>DocProject</token></para>
+      </listItem>
+    </list>
+  </content>
+</section>
+
+    <relatedTopics/>
+
+  </developerConceptualDocument>
+</topic>

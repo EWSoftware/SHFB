@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="dcded896-51a7-4af4-b1dc-9a41193210cc" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+		<para>Unlike MAML topics which must be well-formed XML, HTML files are not necessarily as strict in
+their conformance to such rules.  End tags are not always present, the "/" in self-closing tags is not
+always present, entities are not always encoded correctly if at all, etc.  As such, the HTML to MAML
+converter extracts key parts of the HTML files and uses a series of regular expressions paired with match
+evaluators to alter the HTML elements by replacing them with their MAML equivalents or removing them
+altogether.</para>
+	<para>While this will not guarantee a valid MAML topic, it will guarantee that no information is lost
+during the conversion.  Building the converted topics reveals any missing end tags, unencoded entities,
+etc. which are easily fixed by editing the topics.</para>
+	<para>The conversion rules are stored in an XML configuration file.  This file must reside in the same
+location as the converter's executable.</para>
+    </introduction>
+
+    <section>
+      <title>The Conversion Process</title>
+      <content>
+      	<para>Conversion of a topic follows this general procedure using the rule definitions found in the
+configuration file:</para>
+
+<list class="ordered">
+  <listItem>
+		<para>Extract the <link xlink:href="76834da6-a4c8-4c65-a6b4-c09024100b64">key parts</link> of the topic
+(metadata such as the title, attributes, and index keywords, and the
+<link xlink:href="5DDF5E27-152A-4fbf-A0DE-B4444A7102F0">body text</link>).</para>
+	</listItem>
+  <listItem>
+		<para>Replace <link xlink:href="6DFF3A5E-765C-44eb-8E90-E3C6EFEBEC06">named entities</link> with their
+numeric equivalent.</para>
+	</listItem>
+  <listItem>
+		<para>Replace <link xlink:href="15DDCEEF-EB8C-4eed-8EE3-830ECFDBCD82">markup wrapper</link> HTML
+elements with a placeholder in the text so as not to alter their content in later processing.</para>
+	</listItem>
+  <listItem>
+		<para><link xlink:href="5C35957F-DADF-4965-9FB9-18AF0C6A77E7">Remove</link> all HTML elements with no
+MAML equivalent.</para>
+	</listItem>
+  <listItem>
+		<para><link xlink:href="46dfad32-5ae6-48aa-877f-d2c4443258f3">Replace</link> all HTML elements that do
+have MAML equivalents.</para>
+	</listItem>
+  <listItem>
+		<para>The following HTML elements are processed based on the
+<link xlink:href="f6e7385f-0647-4897-9145-3c297f4f6c69">context</link> in which they are used:</para>
+
+	<list class="bullet">
+	  <listItem>
+			<para><codeInline>a</codeInline> - Links to topics and external URLs</para>
+		</listItem>
+	  <listItem>
+			<para><codeInline>code</codeInline> - Inline code and code blocks</para>
+		</listItem>
+	  <listItem>
+			<para>
+				<codeInline>h1-h6</codeInline> - Section headings</para>
+		</listItem>
+	  <listItem>
+			<para><codeInline>img</codeInline> - Image links</para>
+		</listItem>
+	  <listItem>
+			<para><codeInline>see</codeInline> - See Also references</para>
+		</listItem>
+	</list>
+
+	<para>These elements should not appear in any of the other rules.</para>
+</listItem>
+  <listItem>
+		<para>Once done, the <link xlink:href="15DDCEEF-EB8C-4eed-8EE3-830ECFDBCD82">markup wrapper</link>
+placeholders are replaced with their actual markup enclosed in a MAML <codeInline>markup</codeInline>
+element.</para>
+	</listItem>
+  <listItem>
+		<para>The converted topic is saved to the destination folder along with some
+<link xlink:href="b7e46af5-0901-41e8-afb9-a79a837aff9e">supporting files</link>.</para>
+	</listItem>
+</list>
+
+      </content>
+    </section>
+
+    <relatedTopics>
+			<link xlink:href="88706943-3ecb-4435-9107-ee96821ef856" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

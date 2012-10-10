@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="6DFF3A5E-765C-44eb-8E90-E3C6EFEBEC06" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+    	<para>This section defines named entities that must be converted to
+their numeric equivalent in the MAML topic files.</para>
+    </introduction>
+
+<section>
+  <title>Rule Processing</title>
+  <content>
+		<para>The .NET XML parser only recognizes the common ASCII named
+entities (<codeInline>&amp;amp;</codeInline>, <codeInline>&amp;lt;</codeInline>,
+<codeInline>&amp;gt;</codeInline>, <codeInline>&amp;quot;</codeInline>, and
+<codeInline>&amp;apos;</codeInline>).  Once converted to MAML, the topics are
+processed as XML files and, as such, any other named entities in the topic will
+cause the build process to fail.  This section defines all other named entities
+commonly found in HTML files and their replacement numeric equivalent.  During
+conversion, any named entities from this section found in a topic are replaced
+with their numeric form (i.e. <codeInline>&amp;copy;</codeInline> would become
+<codeInline>&amp;#169;</codeInline>).</para>
+	<para>The entries consist of <codeInline>Entity</codeInline> elements with a
+<codeInline>name</codeInline> attribute that defines the named entity and a
+<codeInline>value</codeInline> attribute that defines the numeric value to use
+as its replacement.</para>
+
+<alert class="note">
+  <para>Unlike the other rules, entity name values are matched case-sensitively
+as the numeric values for uppercase and lowercase name values differ as shown
+in the example below.</para>
+</alert>
+
+<code language="xml" title="Example Entities Entries">
+&lt;Entities&gt;
+  &lt;Entity name=&quot;Aacute&quot; value=&quot;193&quot; /&gt;
+  &lt;Entity name=&quot;aacute&quot; value=&quot;225&quot; /&gt;
+  &lt;Entity name=&quot;Acirc&quot; value=&quot;194&quot; /&gt;
+  &lt;Entity name=&quot;acirc&quot; value=&quot;226&quot; /&gt;
+&lt;/Entities&gt;
+</code>
+  </content>
+</section>
+
+    <relatedTopics>
+	<link xlink:href="dcded896-51a7-4af4-b1dc-9a41193210cc" />
+	<link xlink:href="1BA74307-2C62-40a9-AA25-3B25DFB1C1C6" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

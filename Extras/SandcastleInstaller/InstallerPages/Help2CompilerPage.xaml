@@ -1,0 +1,39 @@
+﻿<sci:BasePage x:Class="Sandcastle.Installer.InstallerPages.Help2CompilerPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:sci="clr-namespace:Sandcastle.Installer.InstallerPages"
+             xmlns:scBehaviors="clr-namespace:Sandcastle.Installer.Behaviors"
+             mc:Ignorable="d" 
+             d:DesignHeight="325" d:DesignWidth="500">
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+    <FlowDocumentScrollViewer Grid.Row="0">
+      <FlowDocument Name="fdDocument" FontFamily="Verdana" FontSize="11" PagePadding="10,15" TextAlignment="Left">
+        <Paragraph><Bold FontSize="16">Microsoft Help 2 Compiler</Bold></Paragraph>
+
+        <Paragraph>The Microsoft Help 2 format produces help files with a <Italic>.HxS</Italic> extension.
+These are not standalone files.  In order to view them, they must be integrated into a help collection.
+These are typically used to provide help for control libraries and tools and are integrated into the help
+collections used by Microsoft Visual Studio 2008 and earlier.</Paragraph>
+
+        <Section Name="secResults">
+
+        </Section>
+      </FlowDocument>
+    </FlowDocumentScrollViewer>
+    <StackPanel Grid.Row="1" Name="pnlControls" Orientation="Horizontal"
+      Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}">
+      <Button Name="btnSearchAgain" Content="_Search Again" Padding="10,3" Margin="10"
+        ToolTip="Search for the HTML Help 1 compiler again" Click="btnSearchAgain_Click" />
+      <Image Name="imgSpinner" Source="../Resources/Spinner.gif" Height="20"
+        scBehaviors:SupportAnimatedGIFBehavior.SupportAnimatedGif="True" />
+      <Label Name="lblPleaseWait" Content="Searching for Help 2 compiler.  Please wait..."
+        VerticalAlignment="Center" />
+    </StackPanel>
+  </Grid>
+</sci:BasePage>

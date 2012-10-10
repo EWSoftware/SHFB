@@ -8,7 +8,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{538d8a1f-3a67-4e72-af21-6c51458543d5}</ProjectGuid>
-    <SHFBSchemaVersion>1.9.3.0</SHFBSchemaVersion>
+    <SHFBSchemaVersion>1.9.5.0</SHFBSchemaVersion>
     <!-- AssemblyName, Name, and RootNamespace are not used by SHFB but Visual
          Studio adds them anyway -->
     <AssemblyName>Documentation</AssemblyName>
@@ -28,11 +28,11 @@
     </SandcastlePath>
     <WorkingPath>
     </WorkingPath>
-    <CleanIntermediates>True</CleanIntermediates>
+    <CleanIntermediates>False</CleanIntermediates>
     <BuildLogFile>
     </BuildLogFile>
-    <FrameworkVersion>.NET 4.0.30319</FrameworkVersion>
-    <IndentHtml>False</IndentHtml>
+    <FrameworkVersion>.NET Framework 4.0</FrameworkVersion>
+    <IndentHtml>True</IndentHtml>
     <RootNamespaceContainer>True</RootNamespaceContainer>
     <RootNamespaceTitle>Test Root Namespace Title</RootNamespaceTitle>
     <CopyrightHref>http://www.EWoodruff.us</CopyrightHref>
@@ -41,7 +41,7 @@
     <FeedbackEMailLinkText>Me. %28{%40CustomProperty}%29</FeedbackEMailLinkText>
     <HeaderText>Date Only: {%40BuildDate:MMM  d, yyyy} Full Date: {%40BuildDate}</HeaderText>
     <FooterText>Full Date: {%40BuildDate} Date Only: {%40BuildDate:MMM  d, yyyy}</FooterText>
-    <PresentationStyle>vs2005</PresentationStyle>
+    <PresentationStyle>vs2010</PresentationStyle>
     <HelpFileVersion>{%40Major}.{%40Minor}.{%40Build}.{%40Revision}</HelpFileVersion>
     <ComponentConfigurations>
       <ComponentConfig id="Code Block Component" enabled="True">
@@ -67,7 +67,7 @@
           <!-- Logo image file (optional).  Filename is required. The height,
                  width, altText, placement, and alignment attributes are
                  optional. -->
-          <logoFile filename="C:\CP\TFS01\SHFB\Main\Source\SandcastleBuilderGUI\Images\Sandcastle.jpg" height="0" width="0" altText="Test Logo" placement="left" alignment="center" />
+          <logoFile filename="C:\CP\TFS01\SHFB\SHFB\Source\SandcastleBuilderGUI\Images\Sandcastle.jpg" height="0" width="0" altText="Test Logo" placement="left" alignment="center" />
         </component>
       </ComponentConfig>
       <ComponentConfig id="IntelliSense Component" enabled="True">
@@ -135,9 +135,9 @@
       <DocumentationSource sourceFile="..\TestDoc.csproj" />
     </DocumentationSources>
     <HelpAttributes>
-      <HelpAttribute name="DocSet" value="{@HtmlHelpName}" xmlns="" />
-      <HelpAttribute name="DocSet" value="NetFramework" xmlns="" />
-      <HelpAttribute name="TargetOS" value="Windows" xmlns="" />
+      <HelpAttribute name="DocSet" value="{@HtmlHelpName}" />
+      <HelpAttribute name="DocSet" value="NetFramework" />
+      <HelpAttribute name="TargetOS" value="Windows" />
     </HelpAttributes>
     <NamespaceSummaries>
       <NamespaceSummaryItem name="(global)" isDocumented="False" />
@@ -200,7 +200,7 @@
     </PlugInConfigurations>
     <ApiFilter>
     </ApiFilter>
-    <HelpFileFormat>HtmlHelp1</HelpFileFormat>
+    <HelpFileFormat>MSHelpViewer</HelpFileFormat>
     <SdkLinkTarget>Blank</SdkLinkTarget>
     <Version>1.20.34.123</Version>
     <Major>1</Major>
@@ -219,7 +219,7 @@
     <TocParentVersion>100</TocParentVersion>
     <TopicVersion>100</TopicVersion>
     <TocOrder>3</TocOrder>
-    <TocParentId>ba237712-f8c4-4d13-854b-ab4a16afa309</TocParentId>
+    <TocParentId>-1</TocParentId>
     <ContentPlacement>AboveNamespaces</ContentPlacement>
     <NamingMethod>Guid</NamingMethod>
     <DisableCodeBlockComponent>False</DisableCodeBlockComponent>
@@ -229,6 +229,10 @@
     <SccLocalPath>SAK</SccLocalPath>
     <Preliminary>False</Preliminary>
     <CppCommentsFixup>False</CppCommentsFixup>
+    <CatalogProductId>VS</CatalogProductId>
+    <MSHelpViewerSdkLinkType>Msdn</MSHelpViewerSdkLinkType>
+    <CatalogVersion>100</CatalogVersion>
+    <BuildAssemblerVerbosity>AllMessages</BuildAssemblerVerbosity>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in
        order for Visual Studio to perform the build.  The others are optional

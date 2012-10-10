@@ -1,0 +1,19 @@
+﻿<sci:BasePage x:Class="Sandcastle.Installer.InstallerPages.RequiredFrameworkPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:sci="clr-namespace:Sandcastle.Installer.InstallerPages"
+             mc:Ignorable="d" 
+             d:DesignHeight="325" d:DesignWidth="500">
+  <FlowDocumentScrollViewer>
+    <FlowDocument Name="fdDocument" FontFamily="Verdana" FontSize="11" PagePadding="10,15" TextAlignment="Left">
+      <Paragraph><Bold FontSize="16">Microsoft .NET Framework</Bold></Paragraph>
+      <Paragraph> The Sandcastle tools are written using the .NET Framework.  As such, it is required that
+the proper version be present in order to run all of the necessary tools installed by this package.  This
+application and most of the existing tools and components will run on .NET 4.0.  Some third-party build
+tools may require a more recent version of the .NET Framework.</Paragraph>
+
+    </FlowDocument>
+  </FlowDocumentScrollViewer>
+</sci:BasePage>

@@ -274,7 +274,7 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
 
             if(!this.IsDisposed)
             {
-                grpOptions.Enabled = btnOK.Enabled = true;
+                cboHelpViewerVersion.Enabled = grpOptions.Enabled = btnOK.Enabled = true;
 
                 if(e.Error != null)
                     txtInfo.AppendText("ERROR: " + e.Error.Message);
@@ -404,7 +404,7 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
                 return;
             }
 
-            grpOptions.Enabled = btnOK.Enabled = false;
+            cboHelpViewerVersion.Enabled = grpOptions.Enabled = btnOK.Enabled = false;
 
             if(rbOpenCurrent.Checked)
                 action = ThreadAction.OpenCurrent;

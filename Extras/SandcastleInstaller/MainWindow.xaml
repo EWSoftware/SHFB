@@ -1,0 +1,55 @@
+﻿<Window x:Class="Sandcastle.Installer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Sandcastle Guided Installation" Height="600" Width="800" MinHeight="300" MinWidth="400"
+        WindowStartupLocation="CenterScreen" Icon="/SandcastleInstaller;component/Resources/HelpDoc.ico"
+        Closing="Window_Closing" Activated="Window_Activated">
+  <Grid Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition />
+      <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
+    <Grid Grid.Row="0" Margin="5" Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="6*" />
+        <ColumnDefinition />
+      </Grid.ColumnDefinitions>
+      <Label Name="lblTitle" Grid.Column="0" Content="Sandcastle Guided Installation ({0} {1})"
+        FontWeight="Bold" FontSize="16" VerticalAlignment="Center" Width="Auto" />
+      <Image Grid.Column="1" Source="Resources/SandcastleLogo.jpg" Height="45" Width="45" HorizontalAlignment="Right" />
+    </Grid>
+    <Grid Row="1">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition MinWidth="150" />
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition MinWidth="250" Width="2*" />
+      </Grid.ColumnDefinitions>
+      <TreeView Grid.Column="0" Name="tvPages" Margin="3" Focusable="False" PreviewMouseDown="tvPages_PreviewMouseDown" />
+      <GridSplitter Grid.Column="1" Width="3" VerticalAlignment="Stretch" HorizontalAlignment="Center"
+        ShowsPreview="False" Background="LightGray" TabIndex="4" />
+      <Border Grid.Column="2" Margin="3" BorderThickness="0.5" BorderBrush="Black">
+        <DockPanel Name="pnlPages" LastChildFill="True" Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}">
+
+        </DockPanel>
+      </Border>
+    </Grid>
+    <Grid Row="2" Margin="5">
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition />
+          <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0" Orientation="Horizontal">
+          <Button Name="btnPrevious" Content="_Previous" Padding="10,3" Margin="3"
+            ToolTip="Go to the previous step" Click="btnPrevious_Click" />
+          <Button Name="btnNext" Content="_Next" Padding="10,3" Margin="3" ToolTip="Go to the next step" Click="btnNext_Click" />
+        </StackPanel>
+        <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+          <Button Name="btnClose" Content="Cancel" Padding="10,3" Margin="3"
+            ToolTip="Cancel the guided installation" Click="btnClose_Click" />
+        </StackPanel>
+      </Grid>
+    </Grid>
+  </Grid>
+</Window>

@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="750f2c27-4a66-417a-b95a-187410797844" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Version 1.1.0.0 was released on February 3rd, 2009.</para>
+    </introduction>
+
+<section>
+  <title>Changes in This Release</title>
+  <content>
+    <list class="bullet">
+      <listItem>
+				<para>Added constructors to support <codeInline>providerOption</codeInline> elements in the
+configuration.  These are required for .NET 3.5 support.</para>
+
+				<alert class="important">
+					<para>Be sure to update the version number to 1.1.0.0 in the <codeInline>compiler</codeInline>
+element in any <localUri>Web.config</localUri> files that use the custom code providers.</para>
+				</alert>
+			</listItem>
+
+    </list>
+  </content>
+</section>
+
+    <relatedTopics>
+      <link xlink:href="6deb9296-45e0-4200-8330-43fdeae88130" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

@@ -1,0 +1,47 @@
+﻿<sci:BasePage x:Class="Sandcastle.Installer.InstallerPages.SHFBVisualStudioPackagePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:sci="clr-namespace:Sandcastle.Installer.InstallerPages"
+      xmlns:scBehaviors="clr-namespace:Sandcastle.Installer.Behaviors"
+      mc:Ignorable="d" 
+      d:DesignHeight="325" d:DesignWidth="500">
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+    <FlowDocumentScrollViewer Grid.Row="0">
+      <FlowDocument FontFamily="Verdana" FontSize="11" PagePadding="10,15" TextAlignment="Left">
+        <Paragraph><Bold FontSize="16">Sandcastle Help File Builder Visual Studio Package</Bold></Paragraph>
+
+        <Paragraph>This is a companion to the Sandcastle Help File Builder (SHFB) that will allow you to create,
+manage, and build help file projects from within Visual Studio.  The core build engine that was installed in the
+previous step is required for it to work correctly.  The following Visual Studio versions are supported:</Paragraph>
+        
+        <List Name="lstVersions" />
+
+        <Paragraph Margin="20" Padding="10" Background="#FFFFCC" BorderThickness="1" BorderBrush="Black">
+See the topics in the <Bold>Getting Started</Bold> section of the Sandcastle Help File Builder help file for
+information on additional tools that you may find useful and how to create your first project.
+        <LineBreak />
+        <LineBreak />A separate <Bold>Visual Studio Extension Package</Bold> section in the help file covers the
+differences between the standalone GUI and the Visual Studio extension package as well as where to find the
+corresponding options from the standalone GUI within Visual Studio.</Paragraph>
+
+        <Section Name="secResults" />
+
+      </FlowDocument>
+    </FlowDocumentScrollViewer>
+    <StackPanel Grid.Row="1" Name="pnlControls" Orientation="Horizontal"
+      Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}">
+      <Button Name="btnInstallPackage" Content="_Install Package" Padding="10,3" Margin="10"
+        ToolTip="Install the SHFB Visual Studio package" Click="btnInstallPackage_Click" />
+      <Image Name="imgSpinner" Source="../Resources/Spinner.gif" Height="20"
+        scBehaviors:SupportAnimatedGIFBehavior.SupportAnimatedGif="True" />
+      <Label Name="lblPleaseWait" Content="Installing.  Please wait..."
+        VerticalAlignment="Center" />
+    </StackPanel>
+  </Grid>
+</sci:BasePage>

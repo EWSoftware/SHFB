@@ -52,6 +52,9 @@
     </WixExtension>
   </ItemGroup>
   <Import Project="$(WixTargetsPath)" />
+  <PropertyGroup>
+    <PostBuildEvent>Copy "$(TargetPath)" "$(SolutionDir)..\..\Deployment\InstallResources"</PostBuildEvent>
+  </PropertyGroup>
   <!--
 	To modify your build process, add your task inside one of the targets below and uncomment it.
 	Other similar extension points exist, see Wix.targets.
@@ -60,7 +63,4 @@
 	<Target Name="AfterBuild">
 	</Target>
 	-->
-  <PropertyGroup>
-    <PostBuildEvent>Copy "$(TargetPath)" "\CP\TFS01\SHFB\Deployment\InstallResources"</PostBuildEvent>
-  </PropertyGroup>
 </Project>

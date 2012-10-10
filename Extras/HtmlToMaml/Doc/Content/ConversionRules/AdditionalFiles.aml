@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="b7e46af5-0901-41e8-afb9-a79a837aff9e" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>The following files are created in addition to the converted topic files and can be found in the
+destination folder after the conversion has completed.</para>
+    </introduction>
+    
+    <section>
+      <content>
+<definitionTable>
+  <definedTerm>_Conversion.log</definedTerm>
+  <definition>
+		<para>This file contains the output from the conversion process.  Refer to it to find any warnings and
+notes on To Do items that need attention.</para>
+	</definition>
+
+  <definedTerm>_ContentTokens.tokens</definedTerm>
+  <definition>
+		<para>The <token>SHFB</token> allows custom tags to appear in the additional content files that are
+resolved at build time into project property values.  Since it is not allowable to place them directly in
+MAML topics, they are extracted and replaced with a token.  The tags in the token file will be replaced at
+build time with their project values and <application>BuildAssembler</application> will replace the tokens
+in the topics with the resulting token value.  If no replacement tags are found, the token file will not be
+created.</para>
+	</definition>
+
+  <definedTerm>_ContentLayout.content</definedTerm>
+  <definition>
+		<para>This file contains the content layout based on the converted topics.  This can be added to a help
+file builder project (version 1.8.0.0 or later) along with the converted files and folders and edited to set
+the layout of the topics in the compiled help file.  If using some other documentation tool, you will need
+to import the topics and define their layout using whatever tools that it may provide.</para>
+	</definition>
+
+  <definedTerm>The Media Folder</definedTerm>
+  <definition>
+		<para>This folder will contain the media files (images) found during the conversion process.  These
+files can be added to the help project.</para>
+	</definition>
+
+  <definedTerm>Media\_MediaFiles.xml</definedTerm>
+  <definition>
+		<para>This file is the media content file that contains the image IDs and alternate text values for
+images referenced in <codeInline>mediaLink</codeInline> elements in the converted topics.  It can be added
+to the help project or imported depending on how your documentation tool makes use of such files.</para>
+	</definition>
+</definitionTable>
+        
+      </content>
+    </section>
+
+		<relatedTopics>
+			<link xlink:href="dcded896-51a7-4af4-b1dc-9a41193210cc" />
+			<link xlink:href="a5f36b5f-5551-43c4-a938-c1451571b97f" />
+		</relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

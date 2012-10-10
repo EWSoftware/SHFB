@@ -1,0 +1,158 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="46dfad32-5ae6-48aa-877f-d2c4443258f3" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+    	<para>This section defines HTML elements that can be replaced with a MAML equivalent.</para>
+    </introduction>
+
+<section>
+  <title>Rule Processing</title>
+  <content>
+	<para>The rules in this section make an attempt at replacing HTML elements with the closest MAML
+equivalent.  The entries consist of <codeInline>Tag</codeInline> elements with various attribute
+combinations that define the HTML element and its replacement.  Nested <codeInline>Match</codeInline>
+elements can be used to further refine how the replacement occurs.</para>
+
+	<para>The <codeInline>Tag</codeInline> element can contain the following
+attributes:</para>
+
+<table>
+  <tableHeader>
+    <row>
+      <entry>
+				<para>Attribute</para>
+			</entry>
+      <entry>
+				<para>Purpose</para>
+			</entry>
+    </row>
+  </tableHeader>
+  <row>
+    <entry>
+			<para>
+				<codeInline>name</codeInline>
+			</para>
+		</entry>
+    <entry>
+			<para>The HTML element to replace.  This attribute is required.</para>
+		</entry>
+  </row>
+  <row>
+  	<entry>
+			<para>
+				<codeInline>startTag</codeInline>
+			</para>
+		</entry>
+  	<entry>
+			<para>The value to use as the replacement opening tag.  If omitted and no nested match rules are met,
+the element will be removed.  If the replacement value contains "&lt;" or "&gt;", the value is used as a
+verbatim replacement.  If not present, the replacement is wrapped in "&lt;" and "&gt;".  Any attributes and
+the self-closing "/" are included if necessary.</para>
+		</entry>
+  </row>
+  <row>
+  	<entry>
+			<para>
+				<codeInline>endTag</codeInline>
+			</para>
+		</entry>
+  	<entry>
+			<para>The value to use as the replacement closing tag.  Normally, this is omitted and the
+<codeInline>startTag</codeInline> value is used for the closing tag as well.  However, if it differs, this
+can be used to specify the value for it.  As with <codeInline>startTag</codeInline>, if the replacement
+value contains "&lt;" or "&gt;", the value is used as a verbatim replacement.  If not present, the
+replacement is wrapped in "&lt;/" and "&gt;".</para>
+		</entry>
+  </row>
+  <row>
+  	<entry>
+			<para>
+				<codeInline>attributes</codeInline>
+			</para>
+		</entry>
+  	<entry>
+			<para>This can be used to define a replacement set of attributes that will appear on the MAML element.
+If omitted, all attributes from the HTML element are removed and the MAML element will not have any
+attributes.  If set to the value "<codeInline>@Preserve</codeInline>", the HTML attributes will be preserved
+and will be added as attributes on the replacement MAML element as-is.  For any other value, the specified
+text replaces the HTML attributes.  If <codeInline>startTag</codeInline> contains "&lt;" or "&gt;",
+this attribute is ignored.</para>
+		</entry>
+  </row>
+</table>
+
+<alert class="note">
+  <para>All name and regular expression values are matched case-insensitively.</para>
+</alert>
+
+  </content>
+
+  <sections>
+	<section>
+	  <title>Defining Additional Match Rules</title>
+	  <content>
+	    <para>In certain cases, it may be necessary to define additional match conditions to define the
+replacement MAML element.  To do this, add one or more <codeInline>Match</codeInline> elements as children
+of the related <codeInline>Tag</codeInline> element.</para>
+
+		<para>The <codeInline>Match</codeInline> element can contain the same attributes as the
+<codeInline>Tag</codeInline> element in any needed combination.  In addition, it has a required
+<codeInline>expression</codeInline> attribute that defines the regular expression used to match the specific
+instance of an HTML element.  If a match is made, the other attributes on the <codeInline>Match</codeInline>
+element are used instead of the attributes on the parent <codeInline>Tag</codeInline> element.  If none of
+the expressions result in a match, the attributes on the parent <codeInline>Tag</codeInline> element are
+evaluated as usual.</para>
+
+	  </content>
+	</section>
+  </sections>
+</section>
+
+<section>
+  <title>Example Replacement Rules</title>
+  <content>
+<alert class="note">
+  <para>Since they resides in an XML file, any special characters in the expressions such as
+<codeInline>&lt;</codeInline>, <codeInline>&gt;</codeInline>, <codeInline>&amp;</codeInline>,
+<codeInline>&quot;</codeInline>, and <codeInline>&apos;</codeInline> must be encode as shown in the example
+below.</para>
+</alert>
+  
+<code language="xml" title="Example Replace Entries">
+&lt;Replace&gt;
+  &lt;Tag name=&quot;abbr&quot; startTag=&quot;phrase&quot; /&gt;
+  &lt;Tag name=&quot;b&quot; startTag=&quot;legacyBold&quot; /&gt;
+  &lt;Tag name=&quot;br&quot; startTag=&quot;&amp;lt;para/&amp;gt;&quot; /&gt;
+  &lt;Tag name=&quot;comment&quot; startTag=&quot;&amp;lt;--&quot; endTag=&quot;--&amp;gt;&quot; /&gt;
+
+  &lt;Tag name=&quot;div&quot;&gt;
+    &lt;!-- If a match for 'class=&quot;deprecated&quot;' is found, replace it with
+         an alert.  If not matched, the element is removed. --&gt;
+    &lt;Match expression=&quot;class=&amp;quot;deprecated&amp;quot;&quot; startTag=&quot;alert&quot;
+      attributes=&quot;class=&amp;quot;warning&amp;quot;&quot; /&gt;
+  &lt;/Tag&gt;
+
+  &lt;!-- Replace pre tags with a code element with no language or title. --&gt;
+  &lt;Tag name=&quot;pre&quot; startTag=&quot;code&quot; attributes=&quot;language=&amp;quot;none&amp;quot; title=&amp;quot; &amp;quot;&quot;&gt;
+    &lt;!-- However, if a lang/language attribute is defined, preserve
+         the HTML attributes. --&gt;
+    &lt;Match expression=&quot;lang(uage)?=&quot; startTag=&quot;code&quot; attributes=&quot;@Preserve&quot; /&gt;
+  &lt;/Tag&gt;
+
+  &lt;!-- Like div, replace span if possible based on class or remove it --&gt;
+  &lt;Tag name=&quot;span&quot;&gt;
+    &lt;Match expression=&quot;class=&amp;quot;code&amp;quot;&quot; startTag=&quot;codeInline&quot; /&gt;
+    &lt;Match expression=&quot;class=&amp;quot;command&amp;quot;&quot; startTag=&quot;command&quot; /&gt;
+    &lt;Match expression=&quot;class=&amp;quot;foreignPhrase&amp;quot;&quot; startTag=&quot;foreignPhrase&quot; /&gt;
+  &lt;/Tag&gt;
+&lt;/Replace&gt;
+</code>
+  </content>
+</section>
+
+		<relatedTopics>
+			<link xlink:href="dcded896-51a7-4af4-b1dc-9a41193210cc" />
+			<link xlink:href="1BA74307-2C62-40a9-AA25-3B25DFB1C1C6" />
+		</relatedTopics>
+  </developerConceptualDocument>
+</topic>

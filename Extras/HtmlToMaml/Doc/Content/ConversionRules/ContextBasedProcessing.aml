@@ -1,0 +1,175 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="f6e7385f-0647-4897-9145-3c297f4f6c69" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>The following HTML elements must be converted based on their context within the topic.  Since
+the context is hard to translate into an easily defined rule in the rules file, the elements described in
+this topic are handled by the application itself.  As such, these elements should not appear in any of the
+previously defined rules.</para>
+
+<autoOutline lead="none" excludeRelatedTopics="true" />
+
+<alert class="note">
+  <para>All element names are matched case-insensitively.</para>
+</alert>
+	
+    </introduction>
+
+<section address="Anchor">
+  <title>Anchor Elements</title>
+  <content>
+	<para>HTML anchor elements (<codeInline>a</codeInline>) are replaced as follows:</para>
+
+<list class="bullet">
+  <listItem>
+		<para>Anchors with a <codeInline>name</codeInline> attribute are assumed to be in-page link targets.
+The MAML equivalent of such a link target is an <codeInline>address</codeInline> attribute on an element
+such as <codeInline>section</codeInline>, <codeInline>definedTerm</codeInline>,
+<codeInline>listItem</codeInline>, etc.  Trying to place an address attribute on the appropriate element is
+almost impossible so these anchor types are replaced with a "<codeInline>&lt;!-- TODO: --&gt;</codeInline>"
+comment for later review.  A warning is also written to the log file.</para>
+
+		<para>An exception is targets inside of heading HTML elements.  If properly formatted, these will be
+converted to <codeInline>address</codeInline> elements on the related <codeInline>section</codeInline>
+element when the heading elements are processed (<link xlink:href="#Heading">see below</link>).</para>
+	</listItem>
+  <listItem>
+		<para>If the link's URL contains "://", starts with "mailto:", or the link specifies a
+<codeInline>target</codeInline> attribute it is converted to an <codeInline>externalLink</codeInline>.</para>
+	</listItem>
+  <listItem>
+		<para>All other links are converted to <codeInline>link</codeInline> elements.  If the topic ID cannot
+be resolved using the filename from the HTML <codeInline>href</codeInline> attribute, it is replaced with a
+"<codeInline>&lt;!-- TODO: --&gt;</codeInline>" comment for later review and a warning is written to the log
+file.</para>
+	</listItem>
+</list>
+
+		<alert class="note">
+			<para>Link inner text will be retained if it differs from the target topic's title.  In addition, an
+in-page link suffix will be retained (i.e. <localUri>SomePage.htm#InPageLink</localUri>).</para>
+		</alert>
+  </content>
+</section>
+
+<section address="Code">
+  <title>Code Elements</title>
+  <content>
+		<para>The normal <codeInline>code</codeInline> HTML element is equivalent to the MAML
+<codeInline>codeInline</codeInline> element.  However, to support conversion of the <token>SHFB</token>
+option of including code blocks from external files, this element is replaced based on the following
+contexts:</para>
+
+<list class="bullet">
+  <listItem>
+		<para>If no attributes are present on the element and no carriage return/line feeds are present in the
+element's inner text, it is replaced with a MAML <codeInline>codeInline</codeInline> element.</para>
+	</listItem>
+  <listItem>
+		<para>If any attributes are present on the HTML element or if its inner text contains multiple carriage
+return/line feeds, it is replaced with a MAML <codeInline>code</codeInline> element and any attributes are
+preserved.</para>
+	</listItem>
+  <listItem>
+		<para>In the event that no attributes are present and only a single carriage return/line feed pair are
+present in the inner text, it is assumed that the value simply spans a line break and it is replaced with a
+<codeInline>codeInline</codeInline> element instead.</para>
+	</listItem>
+</list>
+  </content>
+</section>
+
+<section address="Heading">
+  <title>Heading Elements</title>
+  <content>
+		<para>HTML heading elements (<codeInline>h1</codeInline> through <codeInline>h6</codeInline>) are
+replaced with a <codeInline>section</codeInline> element.  The content of the heading element becomes the
+section title and is placed in the section's <codeInline>title</codeInline> element.  The text following the
+heading becomes the content of the section.  When a new heading element is encountered, closing section
+elements are inserted as needed.  Closing section elements are also added to the end of the body text if at
+least one heading was encountered to close off the final section.</para>
+
+		<para>Anchor elements are processed before heading elements.  As such, if a named anchor is replaced
+with a To Do comment and it appears within the heading tag, it will be converted to an <codeInline>address</codeInline>
+attribute on the section automatically as shown in the example below.  This saves you from having to do it
+manually but you should still review the update to make sure that it is appropriate.</para>
+
+<code language="html" title="Original HTML">
+See the &lt;a href=&quot;#BuildLogFile&quot;&gt;BuildLogFile&lt;/a&gt; property
+
+.
+.
+.
+
+&lt;h3&gt;&lt;a class=&quot;Reference&quot; name=&quot;BuildLogFile&quot;&gt;The BuildLogFile Property&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;Section content&lt;/p&gt;
+</code>
+
+<code language="html" title="Converted MAML">
+See the &lt;link xlink:href=&quot;#BuildLogFile&quot;&gt;BuildLogFile&lt;/link&gt; property
+
+.
+.
+.
+
+&lt;section address=&quot;BuildLogFile&quot;&gt;&lt;!--h3--&gt;
+  &lt;title&gt;The BuildLogFile Property&lt;/title&gt;
+  &lt;content&gt;
+&lt;para&gt;Section content&lt;/para&gt;
+  &lt;/content&gt;
+&lt;/section&gt;
+</code>
+
+		<para>MAML sections can be nested within one another.  However, attempting to do this during conversion
+would be very difficult and would most likely result in changes that were not intended or are not
+appropriate.  As such, no attempt is made to nest sections with a higher heading number into prior ones with
+a lower heading number (i.e nesting <codeInline>h2</codeInline> sections within an <codeInline>h1</codeInline>
+section).  The heading element that caused the section to be created is added in a comment following the
+<codeInline>section</codeInline> element.  You can review the topic after conversion to decide whether to
+leave the topic as it is or rework the content to nest sections within one another.</para>
+
+  </content>
+</section>
+
+<section address="Image">
+  <title>Image Elements</title>
+  <content>
+		<para>HTML image elements (<codeInline>img</codeInline>) are replaced with an <codeInline>externalLink</codeInline>
+if the <codeInline>src</codeInline> attribute contains "://".  If not, the image is assumed to be local to
+the project and is converted to a <codeInline>mediaLink</codeInline>.  Note that it is not possible to
+determine whether or not to use a <codeInline>mediaLinkInline</codeInline> element instead.  As such, you
+will need to update the link during the review after conversion.  For <codeInline>mediaLink</codeInline>
+elements, you may need to add a <codeInline>caption</codeInline> element if needed and other attributes to
+properly set the image alignment as well.</para>
+
+		<para>When a new image is encountered, it is added to the media content file created by the conversion
+process and the image file is copied to the <localUri>Media\</localUri> folder under the destination folder.
+The source image location is determined by combining the source conversion folder with the path from the
+<codeInline>src</codeInline> attribute.  If the image file cannot be found, the replacement element is
+prefixed with a "<codeInline>&lt;!-- TODO: --&gt;</codeInline>" comment noting the missing file and a
+warning is written to the log file.</para>
+  </content>
+</section>
+
+<section address="SeeAlso">
+  <title>See Elements</title>
+  <content>
+		<para>The <token>SHFB</token> supports <codeInline>see</codeInline> elements within additional content
+HTML files.  When encountered, these are converted to links to the matching API member topics.  To match
+this behavior, if a <codeInline>see</codeInline> element is encountered during conversion, it is converted
+to an appropriate <codeInline>codeEntityReference</codeInline> element.</para>
+
+		<para>The help file builder has the ability to resolve a reference based on a partial name.  However,
+MAML requires that the name be fully qualified.  As such, if a partial name is encountered, it will still be
+converted but a warning will be written to the log file.  These will need to be fixed during the review to
+replace them with their fully qualified names.</para>
+
+  </content>
+</section>
+
+		<relatedTopics>
+			<link xlink:href="dcded896-51a7-4af4-b1dc-9a41193210cc" />
+			<link xlink:href="1BA74307-2C62-40a9-AA25-3B25DFB1C1C6" />
+		</relatedTopics>
+  </developerConceptualDocument>
+</topic>

@@ -5,6 +5,7 @@
 	<?define ProductHomePage     = "http://SHFB.CodePlex.com" ?>
 	<?define ProductShortName    = "Sandcastle" ?>
 	<?define UpgradeCode         = "7E2F0177-8D9F-4BF5-9FEB-BA54DB6D51F2" ?>
-	<?define RootFolder          = "..\..\Main" ?>
-	<?define ExtrasFolder        = ".." ?>
+	<?define RootFolder          = "..\.." ?>
+	<?define DocsFolder          = "..\..\..\Documentation" ?>
+	<?define ExtrasFolder        = "..\..\..\Extras" ?>
 </Include>

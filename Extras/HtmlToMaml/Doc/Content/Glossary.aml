@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="0da4eb05-808e-4323-9a62-28ba912125ff" revisionNumber="1">
+  <developerGlossaryDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <glossary>
+  
+    <glossaryEntry>
+      <terms>
+        <term termId="ConceptualBuild">conceptual build</term>
+      </terms>
+
+      <definition>
+        <para>A build that uses Sandcastle to produce help file topics using
+information extracted from conceptual content topics and their related files.</para>
+      </definition>
+
+      <relatedEntry termId="ReferenceBuild" />
+      <relatedEntry termId="Sandcastle" />
+    </glossaryEntry>
+
+    <glossaryEntry>
+      <terms>
+        <term>conceptual content</term>
+      </terms>
+
+      <definition>
+        <para>A topic file that contains conceptual content.  These can be used
+to add usage notes, walkthroughs, tutorials, etc. to a help file.</para>
+      </definition>
+    </glossaryEntry>
+
+    <glossaryEntry>
+      <terms>
+        <term>Globally Unique Identifier</term>
+        <term>GUID</term>
+      </terms>
+
+      <definition>
+        <para>A unique value that is associated with each conceptual topic
+and image in a project.  When inserting links to topics or images, the ID is
+used to refer to them.  This allows you to alter the names or locations of the
+topic files without having to change the name or location in each topic that
+references them.</para>
+      </definition>
+    </glossaryEntry>
+
+    <glossaryEntry>
+      <terms>
+        <term>MAML</term>
+      </terms>
+
+      <definition>
+        <para>An acronym that stands for Microsoft Assistance Markup
+Language.  Conceptual content topics are composed of MAML elements.</para>
+      </definition>
+    </glossaryEntry>
+
+    <glossaryEntry>
+      <terms>
+        <term>media content file</term>
+      </terms>
+
+      <definition>
+        <para>This file contains information about the images referenced in
+<codeInline>mediaLink</codeInline> and <codeInline>mediaLinkInline</codeInline>
+elements in conceptual content.</para>
+      </definition>
+    </glossaryEntry>
+
+    <glossaryEntry>
+      <terms>
+        <term termId="ReferenceBuild">reference build</term>
+      </terms>
+
+      <definition>
+        <para>A build that uses Sandcastle to produce help file topics using
+information extracted from managed assemblies and their associated XML comments
+files.</para>
+      </definition>
+
+      <relatedEntry termId="ConceptualBuild" />
+      <relatedEntry termId="Sandcastle" />
+    </glossaryEntry>
+
+    <glossaryEntry>
+      <terms>
+        <term termId="Sandcastle">Sandcastle</term>
+      </terms>
+
+      <definition>
+        <para><token>Sandcastle</token> is a set of tools produced by
+Microsoft that can be used to build help files for .NET managed libraries,
+conceptual content, or a mix of both.</para>
+      </definition>
+
+      <relatedEntry termId="SHFB" />
+    </glossaryEntry>
+
+    <glossaryEntry>
+      <terms>
+        <term termId="SHFB">Sandcastle Help File Builder</term>
+        <term>SHFB</term>
+      </terms>
+
+      <definition>
+          <para>The <token>SHFB</token> is a standalone tool used to automate
+Sandcastle.  It consists of a GUI front end that helps you manage and build
+help file projects.  It uses a standard MSBuild format project file which can
+also by built from the command line using MSBuild or integrated into Visual
+Studio builds or other build scripts to produce a help file when your
+application projects are built.  In addition, it provides a set of additional
+features beyond those supplied with Sandcastle that can improve your help file
+and make it easier to deploy.</para>
+      </definition>
+
+      <relatedEntry termId="Sandcastle" />
+    </glossaryEntry>
+
+    <glossaryEntry>
+      <terms>
+        <term>token</term>
+        <term>token file</term>
+      </terms>
+
+      <definition>
+        <para>A token is used as a replaceable tag within a topic and is
+represented using a <codeInline>token</codeInline> element.  The inner
+text of the element is a token name.  The tokens are defined in a separate
+token file.  They are an easy way to represent common items that you use
+regularly such as a common phrase or external link.</para>
+      </definition>
+
+    </glossaryEntry>
+  </glossary>
+
+  </developerGlossaryDocument>
+</topic>

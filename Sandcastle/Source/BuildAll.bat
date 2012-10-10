@@ -2,7 +2,7 @@
 CLS
 
 SETLOCAL
-SET OUTDIR=C:\CP\TFS05\Sandcastle\Main\ProductionTools\
+SET OUTDIR=%CD%\..\ProductionTools\
 
 DEL /Q %OUTDIR%
 

@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="5C35957F-DADF-4965-9FB9-18AF0C6A77E7" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+    	<para>This section defines HTML elements that must be removed from the
+converted topics because they lack a MAML equivalent.</para>
+    </introduction>
+
+<section>
+  <title>Rule Processing</title>
+  <content>
+	<para>Certain HTML elements have no MAML equivalent and serve no purpose
+if they appear outside of an element handled by the
+<link xlink:href="15DDCEEF-EB8C-4eed-8EE3-830ECFDBCD82">markup wrapper</link>
+rules.  In such cases, these elements are simply removed.  Any text within
+the elements will appear in the topic as normal text.</para>
+	<para>The entries consist of <codeInline>Tag</codeInline> elements with a
+<codeInline>name</codeInline> attribute that defines the HTML element to be
+removed.</para>
+
+<alert class="note">
+  <para>All name values are matched case-insensitively.</para>
+</alert>
+
+<code language="xml" title="Remove Entries">
+&lt;Remove&gt;
+  &lt;Tag name=&quot;area&quot; /&gt;
+  &lt;Tag name=&quot;base&quot; /&gt;
+  &lt;Tag name=&quot;basefont&quot; /&gt;
+  &lt;Tag name=&quot;bdo&quot; /&gt;
+  &lt;Tag name=&quot;blink&quot; /&gt;
+  &lt;Tag name=&quot;center&quot; /&gt;
+  &lt;Tag name=&quot;col&quot; /&gt;
+  &lt;Tag name=&quot;colgroup&quot; /&gt;
+  &lt;Tag name=&quot;del&quot; /&gt;
+  &lt;Tag name=&quot;font&quot; /&gt;
+  &lt;Tag name=&quot;frame&quot; /&gt;
+  &lt;Tag name=&quot;include&quot; /&gt;
+  &lt;Tag name=&quot;ins&quot; /&gt;
+  &lt;Tag name=&quot;isindex&quot; /&gt;
+  &lt;Tag name=&quot;keygen&quot; /&gt;
+  &lt;Tag name=&quot;legend&quot; /&gt;
+  &lt;Tag name=&quot;link&quot; /&gt;
+  &lt;Tag name=&quot;marquee&quot; /&gt;
+  &lt;Tag name=&quot;meta&quot; /&gt;
+  &lt;Tag name=&quot;multicol&quot; /&gt;
+  &lt;Tag name=&quot;nextid&quot; /&gt;
+  &lt;Tag name=&quot;nobr&quot; /&gt;
+  &lt;Tag name=&quot;noframes&quot; /&gt;
+  &lt;Tag name=&quot;optgroup&quot; /&gt;
+  &lt;Tag name=&quot;option&quot; /&gt;
+  &lt;Tag name=&quot;param&quot; /&gt;
+  &lt;Tag name=&quot;plaintext&quot; /&gt;
+  &lt;Tag name=&quot;rt&quot; /&gt;
+  &lt;Tag name=&quot;ruby&quot; /&gt;
+  &lt;Tag name=&quot;s&quot; /&gt;
+  &lt;Tag name=&quot;spacer&quot; /&gt;
+  &lt;Tag name=&quot;strike&quot; /&gt;
+  &lt;Tag name=&quot;style&quot; /&gt;
+  &lt;Tag name=&quot;tbody&quot; /&gt;
+  &lt;Tag name=&quot;tfoot&quot; /&gt;
+  &lt;Tag name=&quot;wbr&quot; /&gt;
+&lt;/Remove&gt;
+</code>
+  </content>
+</section>
+
+    <relatedTopics>
+	<link xlink:href="dcded896-51a7-4af4-b1dc-9a41193210cc" />
+	<link xlink:href="1BA74307-2C62-40a9-AA25-3B25DFB1C1C6" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

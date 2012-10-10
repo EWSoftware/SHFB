@@ -426,6 +426,7 @@
 	</xsl:template>
 
 	<!-- ============================================================================================
+	F1 (F index) keywords
 	============================================================================================= -->
 
 	<xsl:template name="t_helpMetadata">
@@ -433,42 +434,31 @@
 		<xsl:choose>
 			<!-- namespace pages get the namespace keyword, if it exists -->
 			<xsl:when test="$g_apiTopicGroup='namespace'">
-				<xsl:variable name="v_namespace"
-											select="/document/reference/apidata/@name" />
+				<xsl:variable name="v_namespace" select="/document/reference/apidata/@name" />
 				<xsl:if test="string($v_namespace) != ''">
-					<MSHelp:Keyword Index="F"
-													Term="{$v_namespace}" />
+					<MSHelp:Keyword Index="F" Term="{$v_namespace}" />
 				</xsl:if>
 			</xsl:when>
 			<!-- Type overview page gets type and namespace.type keywords. -->
 			<xsl:when test="$g_apiTopicGroup='type'">
-				<xsl:variable name="v_namespace"
-											select="/document/reference/containers/namespace/apidata/@name" />
+				<xsl:variable name="v_namespace" select="/document/reference/containers/namespace/apidata/@name" />
 				<xsl:variable name="v_type">
 					<xsl:for-each select="/document/reference[1]">
 						<xsl:call-template name="typeNameWithTicks" />
 					</xsl:for-each>
 				</xsl:variable>
-				<xsl:choose>
-					<xsl:when test="string($v_namespace) != ''">
-						<MSHelp:Keyword Index="F"
-														Term="{concat($v_namespace,'.',$v_type)}" />
-					</xsl:when>
-					<xsl:otherwise>
-						<MSHelp:Keyword Index="F"
-														Term="{$v_type}" />
-					</xsl:otherwise>
-				</xsl:choose>
+				<xsl:if test="string($v_namespace) != ''">
+					<MSHelp:Keyword Index="F" Term="{concat($v_namespace,'.',$v_type)}" />
+				</xsl:if>
+				<MSHelp:Keyword Index="F" Term="{$v_type}" />
 				<xsl:if test="$g_apiTopicSubGroup = 'enumeration'">
 					<xsl:for-each select="/document/reference/elements/element">
 						<xsl:choose>
 							<xsl:when test="string($v_namespace) != ''">
-								<MSHelp:Keyword Index="F"
-																Term="{concat($v_namespace,'.',$v_type, '.', apidata/@name)}" />
+								<MSHelp:Keyword Index="F" Term="{concat($v_namespace,'.',$v_type, '.', apidata/@name)}" />
 							</xsl:when>
 							<xsl:otherwise>
-								<MSHelp:Keyword Index="F"
-																Term="{concat($v_type, '.', apidata/@name)}" />
+								<MSHelp:Keyword Index="F" Term="{concat($v_type, '.', apidata/@name)}" />
 							</xsl:otherwise>
 						</xsl:choose>
 					</xsl:for-each>
@@ -481,8 +471,7 @@
 
 			<!-- overload list pages get member, type.member, and namepsace.type.member keywords -->
 			<xsl:when test="$g_apiTopicGroup='list' and $g_apiTopicSubGroup='overload'">
-				<xsl:variable name="v_namespace"
-											select="/document/reference/containers/namespace/apidata/@name" />
+				<xsl:variable name="v_namespace" select="/document/reference/containers/namespace/apidata/@name" />
 				<xsl:variable name="v_type">
 					<xsl:for-each select="/document/reference/containers/type[1]">
 						<xsl:call-template name="typeNameWithTicks" />
@@ -500,16 +489,11 @@
 					</xsl:choose>
 				</xsl:variable>
 
-				<xsl:choose>
-					<xsl:when test="string($v_namespace) != ''">
-						<MSHelp:Keyword Index="F"
-														Term="{concat($v_namespace,'.',$v_type, '.', $v_member)}" />
-					</xsl:when>
-					<xsl:otherwise>
-						<MSHelp:Keyword Index="F"
-														Term="{concat($v_type, '.', $v_member)}" />
-					</xsl:otherwise>
-				</xsl:choose>
+				<xsl:if test="string($v_namespace) != ''">
+					<MSHelp:Keyword Index="F" Term="{concat($v_namespace,'.',$v_type, '.', $v_member)}" />
+				</xsl:if>
+				<MSHelp:Keyword Index="F" Term="{concat($v_type, '.', $v_member)}" />
+				<MSHelp:Keyword Index="F" Term="{$v_member}" />
 			</xsl:when>
 
 			<!-- no F1 help entries for overload signature topics -->
@@ -517,8 +501,7 @@
 
 			<!-- member pages get member, type.member, and namepsace.type.member keywords -->
 			<xsl:when test="$g_apiTopicGroup='member'">
-				<xsl:variable name="v_namespace"
-											select="/document/reference/containers/namespace/apidata/@name" />
+				<xsl:variable name="v_namespace" select="/document/reference/containers/namespace/apidata/@name" />
 				<xsl:variable name="v_type">
 					<xsl:for-each select="/document/reference/containers/type[1]">
 						<xsl:call-template name="typeNameWithTicks" />
@@ -541,35 +524,12 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</xsl:variable>
-				<!--
-        <xsl:choose>
-          -->
-				<!--
-          <xsl:when test="$g_apiTopicSubGroup='constructor'">
-            <MSHelp:Keyword Index="F" Term="{$v_type}" />
-            <MSHelp:Keyword Index="F" Term="{concat($v_type, '.', $v_type)}" />
-            <xsl:if test="boolean($v_namespace)">
-              <MSHelp:Keyword Index="F" Term="{concat($v_namespace, '.', $v_type, '.', $v_type)}" />
-            </xsl:if>
-          </xsl:when>
-          <xsl:otherwise>
-            -->
 
-				<xsl:choose>
-					<xsl:when test="string($v_namespace) != ''">
-						<MSHelp:Keyword Index="F"
-														Term="{concat($v_namespace,'.',$v_type, '.', $v_member)}" />
-					</xsl:when>
-					<xsl:otherwise>
-						<MSHelp:Keyword Index="F"
-														Term="{concat($v_type, '.', $v_member)}" />
-					</xsl:otherwise>
-				</xsl:choose>
-
-				<!--
-          </xsl:otherwise>
-        </xsl:choose>
-        -->
+				<xsl:if test="string($v_namespace) != ''">
+					<MSHelp:Keyword Index="F" Term="{concat($v_namespace,'.',$v_type, '.', $v_member)}" />
+				</xsl:if>
+				<MSHelp:Keyword Index="F" Term="{concat($v_type, '.', $v_member)}" />
+				<MSHelp:Keyword Index="F" Term="{$v_member}" />
 			</xsl:when>
 		</xsl:choose>
 	</xsl:template>

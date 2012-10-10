@@ -9,5 +9,5 @@
   <?define UpgradeCode         = "8D3EB6EC-9DEB-4BD8-B996-82CD18E48570" ?>
   <?define BinFolder           = "..\SandcastleBuilderGUI\bin\Release\" ?>
   <?define LauncherFolder      = "..\SHFBProjectLauncher\bin\Release\" ?>
-  <?define HelpFolder          = "..\Doc\Help\" ?>
+  <?define HelpFolder          = "..\..\..\Documentation\SandcastleBuilder\Help\" ?>
 </Include>

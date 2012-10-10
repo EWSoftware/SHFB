@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="76834da6-a4c8-4c65-a6b4-c09024100b64" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Certain topic elements not represented in the rules file are
+searched for in order to extract common metadata that will be associated with
+the converted topic files:</para>
+
+<autoOutline lead="none" excludeRelatedTopics="true" />
+
+<alert class="note">
+  <para>All element names are matched case-insensitively.</para>
+</alert>
+    </introduction>
+    
+  <section address="TitleElement">
+      <title>The Title Element</title>
+      <content>
+      	<para>The HTML file should contain a standard
+<codeInline>title</codeInline> element that defines the page title.  If not
+found, it will be left blank in any of the supporting content files.</para>
+      </content>
+  </section>
+  
+  <section address="IndexKeywords">
+      <title>Index Keyword Elements</title>
+      <content>
+      	<para>If the parser finds any <codeInline>MSHelp:Keyword</codeInline>
+elements, it will extract the index name and the term and will save them to
+the supporting content files.</para>
+      </content>
+  </section>
+  
+  <section address="HelpAttributes">
+      <title>Help Attribute Elements</title>
+      <content>
+      	<para>If the parser finds any <codeInline>MSHelp:Attr</codeInline>
+elements, it will extract the attribute name and value and will save them to
+the supporting content files.  If the name of the attribute is "Abstract",
+the content of the attribute is written out to the topic file in the
+<codeInline>summary</codeInline> element.  This element becomes the abstract
+when the topic is compiled for the help file.</para>
+      </content>
+  </section>
+  
+  <section address="SHFBTags">
+      <title>Sandcastle Help File Builder Special Comment Tags</title>
+      <content>
+      	<para>If the file parser finds any of the special comment tags
+used by the <token>SHFB</token> such as <codeInline>@TOCExclude</codeInline>,
+<codeInline>@SplitTOC</codeInline>, <codeInline>@DefaultTopic</codeInline>,
+and <codeInline>@SortOrder</codeInline> it will extract them and use them when
+generating the supporting content files to maintain the existing layout of the
+topics.</para>
+      </content>
+  </section>
+
+  <relatedTopics>
+  <link xlink:href="dcded896-51a7-4af4-b1dc-9a41193210cc" />
+  </relatedTopics>
+  </developerConceptualDocument>
+</topic>

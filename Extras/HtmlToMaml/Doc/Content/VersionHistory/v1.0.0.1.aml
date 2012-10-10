@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="8f51f888-0bb0-4a22-8058-50eaac7a6c2d" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Version 1.0.0.1 was released on July 26th, 2010.</para>
+    </introduction>
+
+<section>
+  <title>Changes in This Release</title>
+  <content>
+    <list class="bullet">
+      <listItem>
+				<para>Fixed a bug that caused a crash when a JavaScript reference was encountered in an anchor tag's
+<codeInline>HREF</codeInline> attribute.  Such references are now ignored and a warning is written to the
+topic and the log file instead.</para>
+			</listItem>
+    </list>
+  </content>
+</section>
+
+    <relatedTopics>
+      <link xlink:href="5ed6a1fd-7d8e-4da6-baa6-60c663218106" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

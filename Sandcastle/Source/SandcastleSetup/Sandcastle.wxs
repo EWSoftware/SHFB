@@ -85,11 +85,6 @@
 				<ComponentGroupRef Id="WebCodeProviders" />
 			</Feature>
 
-			<Feature Id="LanguagePack" Title="Sandcastle Language Pack" Absent="allow" AllowAdvertise="no"
-				Level="100" Description="Sets of resource item files for Sandcastle translated into various languages.">
-				<ComponentGroupRef Id="LanguagePack" />
-			</Feature>
-
 			<Feature Id="HtmlToMaml" Title="HTML to MAML Converter" Absent="allow" AllowAdvertise="no"
 				Level="100" Description="A utility that can convert HTML files into MAML conceptual topic files.">
 				<ComponentGroupRef Id="HtmlToMaml" />

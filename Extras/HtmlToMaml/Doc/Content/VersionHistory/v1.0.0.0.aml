@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="1eeb0cd4-e175-4df5-b7c7-45c45069a27b" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Version 1.0.0.0 was released on October 25th, 2008.</para>
+    </introduction>
+
+<section>
+  <title>Changes in This Release</title>
+  <content>
+  
+	<list class="bullet">
+		<listItem>
+			<para>Initial release.</para>
+		</listItem>
+	</list>
+
+  </content>
+</section>
+
+    <relatedTopics>
+    <link xlink:href="5ed6a1fd-7d8e-4da6-baa6-60c663218106" />
+    </relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

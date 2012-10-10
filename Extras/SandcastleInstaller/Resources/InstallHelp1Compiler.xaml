@@ -1,0 +1,30 @@
+﻿<FlowDocument xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+  <Paragraph>The HTML Help 1 compiler could not be found on this system.  If you will be creating Help 1
+files, you will need to follow the instructions below to download and install it.  If you will not, you can
+safely skip this step.  You can run this application again to install it later if needed.</Paragraph>
+
+  <Paragraph Margin="20" Padding="10" Background="#FFFFCC" BorderThickness="1" BorderBrush="Black">
+When installing the HTML Help Workshop, you may be warned that a newer version of HTML Help is already
+present. This is normal and the warning can be safely ignored.  The installation will complete
+successfully.</Paragraph>
+
+  <Paragraph>The Help 1 compiler is installed as part of the Microsoft HTML Help Workshop.</Paragraph>
+
+  <List>
+    <ListItem>
+      <Paragraph>Click this link to go to the download page:
+<Hyperlink NavigateUri="http://msdn.microsoft.com/en-us/library/ms669985.aspx">HTML Help Workshop</Hyperlink></Paragraph>
+    </ListItem>
+    <ListItem>
+      <Paragraph>Once the page opens, click the <Bold>Download HtmlHelp.exe</Bold> link.</Paragraph>
+    </ListItem>
+    <ListItem>
+        <Paragraph>When prompted, click the <Bold>Run</Bold> button to download and immediately run the
+installer.</Paragraph>
+    </ListItem>
+    <ListItem>
+        <Paragraph>When it has finished, come back to this application and click the <Bold>Search Again</Bold>
+button below to ensure that it can be found.</Paragraph>
+    </ListItem>
+  </List>
+</FlowDocument>

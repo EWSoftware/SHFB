@@ -1,8 +1,8 @@
 @ECHO OFF
 SETLOCAL
 
-REM Comment this out to use the installed version of the tools
-REM SET DXROOT=C:\CP\TFS05\Sandcastle\Main\
+REM Comment this out to use the current environment variable value
+SET DXROOT=%CD%\..\
 
 ECHO *
 ECHO * Building .NET Framework reflection data files using tools in %DXROOT%

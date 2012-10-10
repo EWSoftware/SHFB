@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="165a7a7e-b9f0-4fa0-bf96-105f1fdf1163" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+      <autoOutline />
+    </introduction>
+
+<section address="LicenseAgreement">
+  <title>Microsoft Public License (Ms-PL)</title>
+  <content><para>This license governs use of the accompanying software. If you use the software, you accept this
+license. If you do not accept the license, do not use the software.</para>
+
+<list class="ordered">
+  <listItem><para>Definitions</para>
+	<list class="nobullet">
+	  <listItem>
+			<para>The terms "reproduce," "reproduction," "derivative works," and "distribution" have the same meaning
+here as under U.S. copyright law.</para>
+		</listItem>
+	  <listItem>
+			<para>A "contribution" is the original software, or any additions or changes to the software.</para>
+		</listItem>
+	  <listItem>
+			<para>A "contributor" is any person that distributes its contribution under this license.</para>
+		</listItem>
+	  <listItem>
+			<para>"Licensed patents" are a contributor's patent claims that read directly on its contribution.</para>
+		</listItem>
+	</list>
+  </listItem>
+
+  <listItem><para>Grant of Rights</para>
+	<list class="nobullet">
+	  <listItem>
+			<para>(A) Copyright Grant - Subject to the terms of this license, including the license conditions and
+limitations in section 3, each contributor grants you a non-exclusive, worldwide, royalty-free copyright license
+to reproduce its contribution, prepare derivative works of its contribution, and distribute its contribution or
+any derivative works that you create.</para>
+		</listItem>
+	  <listItem>
+			<para>(B) Patent Grant - Subject to the terms of this license, including the license conditions and
+limitations in section 3, each contributor grants you a non-exclusive, worldwide, royalty-free license under its
+licensed patents to make, have made, use, sell, offer for sale, import, and/or otherwise dispose of its
+contribution in the software or derivative works of the contribution in the software.</para>
+		</listItem>
+	</list>
+  </listItem>
+
+  <listItem><para>Conditions and Limitations</para>
+	<list class="nobullet">
+	  <listItem>
+			<para>(A) No Trademark License - This license does not grant you rights to use any contributors' name,
+logo, or trademarks.</para>
+		</listItem>
+	  <listItem>
+			<para>(B) If you bring a patent claim against any contributor over patents that you claim are infringed by
+the software, your patent license from such contributor to the software ends automatically.</para>
+		</listItem>
+	  <listItem>
+			<para>(C) If you distribute any portion of the software, you must retain all copyright, patent, trademark,
+and attribution notices that are present in the software.</para>
+		</listItem>
+	  <listItem>
+			<para>(D) If you distribute any portion of the software in source code form, you may do so only under this
+license by including a complete copy of this license with your distribution. If you distribute any portion of the
+software in compiled or object code form, you may only do so under a license that complies with this license.</para>
+		</listItem>
+	  <listItem>
+			<para>(E) The software is licensed "as-is." You bear the risk of using it. The contributors give no express
+warranties, guarantees or conditions. You may have additional consumer rights under your local laws which this
+license cannot change. To the extent permitted under your local laws, the contributors exclude the implied
+warranties of merchantability, fitness for a particular purpose and non-infringement.</para>
+		</listItem>
+	</list>
+
+  </listItem>
+</list>
+
+  </content>
+</section>
+
+<section address="Copyrights">
+  <title>Copyright Notices</title>
+  <content>
+	<para>All code is Copyright &#169; 2006-2008, <externalLink> <linkText>Eric Woodruff</linkText>
+<linkUri>http://www.ewoodruff.us</linkUri><linkTarget>_blank</linkTarget></externalLink>, All Rights
+Reserved.</para>
+
+  </content>
+</section>
+
+    <relatedTopics />
+
+  </developerConceptualDocument>
+</topic>

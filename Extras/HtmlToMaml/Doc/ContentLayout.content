@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Topics>
+  <Topic id="83b3d408-4e02-42d2-beed-0b13294f23f2" visible="True" isDefault="true">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="Welcome" />
+    </HelpKeywords>
+  </Topic>
+  <Topic id="165a7a7e-b9f0-4fa0-bf96-105f1fdf1163" visible="True">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="License agreement" />
+    </HelpKeywords>
+  </Topic>
+  <Topic id="88706943-3ecb-4435-9107-ee96821ef856" visible="True" title="Using the Converter">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="usage" />
+    </HelpKeywords>
+  </Topic>
+  <Topic id="dcded896-51a7-4af4-b1dc-9a41193210cc" visible="True" title="The Conversion Process">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="conversion rules" />
+      <HelpKeyword index="K" term="rules file" />
+    </HelpKeywords>
+    <Topic id="76834da6-a4c8-4c65-a6b4-c09024100b64" visible="True" title="Metadata Topic Elements">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="metadata, attributes" />
+        <HelpKeyword index="K" term="metadata, custom tags" />
+        <HelpKeyword index="K" term="metadata, index" />
+        <HelpKeyword index="K" term="metadata, title" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="1BA74307-2C62-40a9-AA25-3B25DFB1C1C6" visible="True" title="Conversion Rule Elements">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="conversion rules" />
+      </HelpKeywords>
+      <Topic id="5DDF5E27-152A-4fbf-A0DE-B4444A7102F0" visible="True" title="The BodyExtract Element">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="conversion rules, BodyExtract" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="6DFF3A5E-765C-44eb-8E90-E3C6EFEBEC06" visible="True" title="Entities Rules">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="conversion rules, Entities" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="15DDCEEF-EB8C-4eed-8EE3-830ECFDBCD82" visible="True" title="Markup Wrapper Rules">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="conversion rules, MarkupWrapper" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="5C35957F-DADF-4965-9FB9-18AF0C6A77E7" visible="True" title="Remove Rules">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="conversion rules, Remove" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="46dfad32-5ae6-48aa-877f-d2c4443258f3" visible="True" title="Replace Rules">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="conversion rules, Replace" />
+        </HelpKeywords>
+      </Topic>
+    </Topic>
+    <Topic id="f6e7385f-0647-4897-9145-3c297f4f6c69" visible="True" title="Context-based Conversions">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="context-based conversion, anchor" />
+        <HelpKeyword index="K" term="context-based conversion, code" />
+        <HelpKeyword index="K" term="context-based conversion, heading" />
+        <HelpKeyword index="K" term="context-based conversion, image" />
+        <HelpKeyword index="K" term="context-based conversion, see also" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="b7e46af5-0901-41e8-afb9-a79a837aff9e" visible="True" title="Additional Output Files">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="additional output files" />
+        <HelpKeyword index="K" term="output files" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="a5f36b5f-5551-43c4-a938-c1451571b97f" visible="True" title="Warnings and To Do Items">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="to-do items" />
+        <HelpKeyword index="K" term="warnings" />
+      </HelpKeywords>
+    </Topic>
+  </Topic>
+  <Topic id="40a012a8-5172-4805-a7b0-57a80e99ec5f" visible="True" title="Common Issues and Solutions">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="common issues" />
+    </HelpKeywords>
+  </Topic>
+  <Topic id="c18d6cb6-e4e4-4944-84ee-f867aa6cfb0d" visible="True" title="Links to Resources">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="links to resources" />
+      <HelpKeyword index="K" term="resources" />
+    </HelpKeywords>
+  </Topic>
+  <Topic id="0da4eb05-808e-4323-9a62-28ba912125ff" visible="True">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="glossary" />
+    </HelpKeywords>
+  </Topic>
+  <Topic id="5ed6a1fd-7d8e-4da6-baa6-60c663218106" visible="True" title="Version History">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="history" />
+      <HelpKeyword index="K" term="version history" />
+    </HelpKeywords>
+    <Topic id="8f51f888-0bb0-4a22-8058-50eaac7a6c2d" visible="True" title="Version 1.0.0.1">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 1.0.0.1" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="1eeb0cd4-e175-4df5-b7c7-45c45069a27b" visible="True" title="Version 1.0.0.0">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 1.0.0.0" />
+      </HelpKeywords>
+    </Topic>
+  </Topic>
+</Topics>

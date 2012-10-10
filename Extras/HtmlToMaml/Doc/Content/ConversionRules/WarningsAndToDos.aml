@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="a5f36b5f-5551-43c4-a938-c1451571b97f" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>This topic describes the various warnings and To Do items you will
+see in the conversion log file and the converted topics.</para>
+    </introduction>
+    
+    <section>
+      <title>Warnings</title>
+      <content><para>The following warnings may appear in the log file.</para>
+
+<definitionTable>
+  <definedTerm>Warning: Found unknown tag [tag] which will be removed</definedTerm>
+  <definition>
+		<para>This warning appears if an HTML element is encountered that is not covered by one of the rules
+defined in the configuration file.  In such cases, the unknown tag will be removed.</para>
+	</definition>
+
+  <definedTerm>Warning: Image file '[file]' not found</definedTerm>
+  <definition>
+		<para>This warning appears when an HTML image link is converted to a <codeInline>mediaLink</codeInline>
+and the source file could not be found.  While the link will still be created and an entry made in the media
+content file, the corresponding source file will not be found in the media folder after conversion.  You
+will need to manually locate the file and add it to the project.</para>
+	</definition>
+
+  <definedTerm>Warning: Named anchor [id] needs review</definedTerm>
+  <definition>
+		<para>This warning appears when an HTML anchor element with a <codeInline>name</codeInline> attribute is
+encountered.  This is a reminder that you will need to edit the topic and apply an <codeInline>address</codeInline>
+attribute with the specified ID to the appropriate MAML element.  Refer to the <legacyBold>Sandcastle MAML
+Guide</legacyBold> for information on which elements support an <codeInline>address</codeInline> attribute.</para>
+	</definition>
+
+  <definedTerm>Warning: Reference to code entity [id] is not fully qualified</definedTerm>
+  <definition>
+		<para>This warning appears if a <codeInline>codeEntityReference</codeInline> is added and the target
+specified in the source HTML file is not a fully qualified name.  You will need to update these to specify
+the fully qualified name.  If not, the reference will not be rendered as a link when the topic is built.</para>
+	</definition>
+
+  <definedTerm>Warning: Unable to resolve topic link to '[file]'</definedTerm>
+  <definition>
+		<para>This warning appears when the target file of an HTML anchor could not be found in any of the
+converted topics.  In such cases, a To Do entry in the topic replaces the link and you will need to locate
+the file and add the link when reviewing the topic.</para>
+	</definition>
+
+  <definedTerm>Warning: Unknown entity encountered: [entity]</definedTerm>
+  <definition>
+		<para>This warning appears if a named entity is encountered that is not defined in the entity conversion
+rules.  In such cases, the entity is passed through to the converted topic as-is.  When you build the topic,
+it will most likely fail because the .NET XML parser will not recognize it.  The entity will need to be
+corrected or removed.</para>
+	</definition>
+
+</definitionTable>
+
+      </content>
+    </section>
+
+<section>
+  <title>To Do Items</title>
+  <content>
+    <para>While reviewing topics after conversion, you will see various "<codeInline>&lt;!-- TODO: --&gt;</codeInline>"
+comments.  The following items describe what each of them means.</para>
+
+<definitionTable>
+  <definedTerm>TODO: Add named anchor: [id]</definedTerm>
+  <definition>
+		<para>This comment appears in the place of a named HTML anchor.  This is a reminder that you will need
+to apply the indicated ID as an <codeInline>address</codeInline> attribute on the appropriate MAML element
+located near the comment.  Refer to the <legacyBold>Sandcastle MAML Guide</legacyBold> for information on
+which elements support an <codeInline>address</codeInline> attribute.</para>
+	</definition>
+
+  <definedTerm>TODO: Missing source image: [file]</definedTerm>
+  <definition>
+		<para>This comment appears when an HTML image link is converted to a <codeInline>mediaLink</codeInline>
+and the source file could not be found.  While the link will still be created and an entry made in the media
+content file, the corresponding source file will not be found in the media folder after conversion.  You
+will need to manually locate the file and add it to the project.</para>
+	</definition>
+
+  <definedTerm>TODO: Move introduction text here</definedTerm>
+  <definition>
+		<para>This To Do item will be seen in the required <codeInline>introduction</codeInline> section that is
+added to every topic.  Since the conversion process cannot guess what text you might want to appear there,
+it leaves it for you to handle during the review.</para>
+	</definition>
+
+  <definedTerm>TODO: Reference not fully qualified</definedTerm>
+  <definition>
+		<para>This comment appears next to a <codeInline>codeEntityReference</codeInline> in which the target is
+not a fully qualified name.  You will need to update the reference to specify the fully qualified name.  If
+not, the reference will not be rendered as a link when the topic is built.</para>
+	</definition>
+
+  <definedTerm>TODO: Review markup</definedTerm>
+  <definition>
+		<para>This comment precedes any HTML elements wrapped in the MAML <codeInline>markup</codeInline>
+element.  The content of the element should be reviewed to see if it should be retained, removed, or edited
+to use other appropriate MAML elements.</para>
+	</definition>
+
+  <definedTerm>TODO: Unknown topic link: [file]</definedTerm>
+  <definition>
+		<para>This comment appears in place of an HTML anchor when the indicated target file/ID could not be
+found in any of the converted topics.  In such cases, you will need to locate the file and add the link when
+reviewing the topic.</para>
+	</definition>
+
+</definitionTable>
+
+  </content>
+</section>
+
+		<relatedTopics>
+			<link xlink:href="dcded896-51a7-4af4-b1dc-9a41193210cc" />
+			<link xlink:href="b7e46af5-0901-41e8-afb9-a79a837aff9e" />
+		</relatedTopics>
+  </developerConceptualDocument>
+</topic>

@@ -1,0 +1,99 @@
+﻿<FlowDocument xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+  <Paragraph>The Microsoft Help 2 compiler could not be found on this system.  If you will be creating
+Help 2 files, you will need to follow the instructions below to download and install it using one of the
+listed SDKs.  If you will not, you can safely skip this step.  You can run this application again to install
+it later if needed.</Paragraph>
+
+  <Paragraph>Because the Help 2 compiler is not available separately, it must be installed as part of the
+Visual Studio SDK.  This may require that you have the associated version of Microsoft Visual Studio
+installed as well.  It is only available in SDKs for Visual Studio 2008 and earlier.</Paragraph>
+
+  <Paragraph Margin="20" Padding="10" Background="#FFFFCC" BorderThickness="1" BorderBrush="Black">
+You only need to install one of the following SDKs to obtain the Help 2 compiler components.</Paragraph>
+
+  <Paragraph Margin="20" Padding="10" Background="#FFFFCC" BorderThickness="1" BorderBrush="Black">
+The SDKs for Visual Studio 2005 and 2008 both contain an outdated version of Sandcastle.  This can cause
+problems after installing Sandcastle as the environment variable that it uses to find its components may
+point to the wrong location causing build errors.  If you install one of the SDKs, it is highly recommended
+that you reboot before continuing with the Sandcastle tools installation so that the issue can be detected
+and fixed.</Paragraph>
+
+  <Paragraph><Bold FontSize="13">If you have Visual Studio 2010 or later</Bold></Paragraph>
+  <Paragraph>Help 2 files are not used by Visual Studio 2010 or later and their related SDKs do not contain
+the Help 2 compiler.</Paragraph>
+
+  <Paragraph><Bold FontSize="13">If you have Visual Studio 2008</Bold></Paragraph>
+  <Paragraph><Bold>NOTE:</Bold> You must install version 1.0 of the Visual Studio 2008 SDK.  Version 1.1
+does not contain the Help 2 compiler components.</Paragraph>
+
+  <List>
+    <ListItem>
+      <Paragraph>Click this link to go to the download page:
+<Hyperlink NavigateUri="http://www.microsoft.com/downloads/en/details.aspx?familyid=30402623-93ca-479a-867c-04dc45164f5b&amp;displaylang=en">
+Visual Studio 2008 SDK Version 1.0</Hyperlink></Paragraph>
+    </ListItem>
+    <ListItem>
+      <Paragraph>Once the page opens, click the <Bold>Download</Bold> button.</Paragraph>
+    </ListItem>
+    <ListItem>
+      <Paragraph>When prompted, click the <Bold>Run</Bold> button to download and immediately run the
+installer.</Paragraph>
+    </ListItem>
+    <ListItem>
+      <Paragraph>When it has finished, come back to this application and click the <Bold>Search Again</Bold>
+button below to ensure that the Help 2 compiler can be found.</Paragraph>
+    </ListItem>
+    <ListItem>
+      <Paragraph>It is highly recommended that you reboot before installing the remainder of the Sandcastle
+tools so that a potential issue with the SDK can be detected and fixed prior to installing Sandcastle.  See
+the note above for more information.</Paragraph>
+    </ListItem>
+  </List>
+
+  <Paragraph><Bold FontSize="13">If you have Visual Studio 2005</Bold></Paragraph>
+
+  <List>
+    <ListItem>
+      <Paragraph>Click this link to go to the download page:
+<Hyperlink NavigateUri="http://www.microsoft.com/downloads/details.aspx?familyid=51A5C65B-C020-4E08-8AC0-3EB9C06996F4&amp;displaylang=en">
+Visual Studio 2005 SDK Version 4.0</Hyperlink></Paragraph>
+    </ListItem>
+    <ListItem>
+      <Paragraph>Once the page opens, click the <Bold>Download</Bold> button.</Paragraph>
+    </ListItem>
+    <ListItem>
+      <Paragraph>When prompted, click the <Bold>Run</Bold> button to download and immediately run the
+installer.</Paragraph>
+    </ListItem>
+    <ListItem>
+      <Paragraph>When it has finished, come back to this application and click the <Bold>Search Again</Bold>
+button below to ensure that the Help 2 compiler can be found.</Paragraph>
+    </ListItem>
+    <ListItem>
+      <Paragraph>It is highly recommended that you reboot before installing the remainder of the Sandcastle
+tools so that a potential issue with the SDK can be detected and fixed prior to installing Sandcastle.  See
+the note above for more information.</Paragraph>
+    </ListItem>
+  </List>
+
+  <Paragraph><Bold FontSize="13">If you have Visual Studio 2003</Bold></Paragraph>
+  
+  <List>
+    <ListItem>
+      <Paragraph>Click this link to go to the download page:
+<Hyperlink NavigateUri="http://www.microsoft.com/downloads/en/details.aspx?familyid=ce1b26dc-d6af-42a1-a9a4-88c4eb456d87&amp;displaylang=en">
+Visual Studio .NET Help Integration Kit 2003</Hyperlink></Paragraph>
+    </ListItem>
+    <ListItem>
+      <Paragraph>Once the page opens, click the <Bold>Download</Bold> button.</Paragraph>
+    </ListItem>
+    <ListItem>
+      <Paragraph>When prompted, click the <Bold>Run</Bold> button to download and immediately run the
+installer.</Paragraph>
+    </ListItem>
+    <ListItem>
+      <Paragraph>When it has finished, come back to this application and click the <Bold>Search Again</Bold>
+button below to ensure that the Help 2 compiler can be found.</Paragraph>
+    </ListItem>
+  </List>
+</FlowDocument>

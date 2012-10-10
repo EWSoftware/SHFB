@@ -18,7 +18,7 @@
 //=============================================================================
 
 // For debugging:
-// /out:reflection.org C:\CP\TFS05\Sandcastle\Main\Source\MRefBuilder\TestCase\bin\Debug\TestCase.dll
+// /out:reflection.org C:\CP\TFS01\SHFB\Sandcastle\Source\MRefBuilder\TestCase\bin\Debug\TestCase.dll
 
 using System;
 

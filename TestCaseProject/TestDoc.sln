@@ -3,14 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestDoc", "TestDoc.csproj", "{E69FEF3D-FB49-4FB6-9EBD-651D2BD11E3E}"
 EndProject
+Project("{7CF6DF6D-3B04-46F8-A40B-537D21BCA0B4}") = "TestCaseProject", "Doc\TestCaseProject.shfbproj", "{538D8A1F-3A67-4E72-AF21-6C51458543D5}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 2
+		SccNumberOfProjects = 3
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs01
 		SccLocalPath0 = .
 		SccProjectUniqueName1 = TestDoc.csproj
 		SccLocalPath1 = .
+		SccProjectUniqueName2 = Doc\\TestCaseProject.shfbproj
+		SccProjectName2 = Doc
+		SccLocalPath2 = Doc
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +26,8 @@ Global
 		{E69FEF3D-FB49-4FB6-9EBD-651D2BD11E3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E69FEF3D-FB49-4FB6-9EBD-651D2BD11E3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E69FEF3D-FB49-4FB6-9EBD-651D2BD11E3E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{538D8A1F-3A67-4E72-AF21-6C51458543D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{538D8A1F-3A67-4E72-AF21-6C51458543D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

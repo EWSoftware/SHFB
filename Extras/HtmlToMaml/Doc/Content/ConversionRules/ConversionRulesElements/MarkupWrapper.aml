@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="15DDCEEF-EB8C-4eed-8EE3-830ECFDBCD82" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+    	<para>This section defines HTML elements that themselves or whose
+content must be retained as HTML in the converted topics.</para>
+    </introduction>
+
+<section>
+  <title>Rule Processing</title>
+  <content>
+	<para>Certain HTML elements may need special handling in order to replace
+them in a MAML topic or they may need to be left as-is.  This section lets you
+define such elements.  When converted, the affected element is wrapped in
+a MAML <codeInline>markup</codeInline> element preceded by a
+"<codeInline>&lt;!-- TODO: --&gt;</codeInline>" comment.  During the review
+process, you can decide whether to keep the element or remove it in favor or
+some alternate content.</para>
+	<para>The entries consist of <codeInline>Tag</codeInline> elements with a
+<codeInline>name</codeInline> attribute that defines the HTML element to be
+wrapped.</para>
+
+<alert class="note">
+  <para>All name values are matched case-insensitively.</para>
+</alert>
+
+<alert class="warning">
+  <para>It is not recommended that any other elements be added to the
+currently defined list.  While it is possible to pass through HTML using
+the <codeInline>markup</codeInline> MAML element, it should not be abused
+nor should it be used where MAML equivalents do exist.</para>
+</alert>
+
+<code language="xml" title="Markup Entries">
+&lt;MarkupWrapper&gt;
+  &lt;Tag name=&quot;applet&quot; /&gt;
+  &lt;Tag name=&quot;bgsound&quot; /&gt;
+  &lt;Tag name=&quot;button&quot; /&gt;
+  &lt;Tag name=&quot;embed&quot; /&gt;
+  &lt;Tag name=&quot;fieldset&quot; /&gt;
+  &lt;Tag name=&quot;form&quot; /&gt;
+  &lt;Tag name=&quot;frameset&quot; /&gt;
+  &lt;Tag name=&quot;iframe&quot; /&gt;
+  &lt;Tag name=&quot;ilayer&quot; /&gt;
+  &lt;Tag name=&quot;input&quot; /&gt;
+  &lt;Tag name=&quot;label&quot; /&gt;
+  &lt;Tag name=&quot;layer&quot; /&gt;
+  &lt;Tag name=&quot;map&quot; /&gt;
+  &lt;Tag name=&quot;noembed&quot; /&gt;
+  &lt;Tag name=&quot;nolayer&quot; /&gt;
+  &lt;Tag name=&quot;noscript&quot; /&gt;
+  &lt;Tag name=&quot;object&quot; /&gt;
+  &lt;Tag name=&quot;script&quot; /&gt;
+  &lt;Tag name=&quot;select&quot; /&gt;
+  &lt;Tag name=&quot;sound&quot; /&gt;
+  &lt;Tag name=&quot;textarea&quot; /&gt;
+  &lt;Tag name=&quot;xml&quot; /&gt;
+&lt;/MarkupWrapper&gt;
+</code>
+  </content>
+</section>
+
+    <relatedTopics>
+	<link xlink:href="dcded896-51a7-4af4-b1dc-9a41193210cc" />
+	<link xlink:href="1BA74307-2C62-40a9-AA25-3B25DFB1C1C6" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

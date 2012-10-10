@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="83b3d408-4e02-42d2-beed-0b13294f23f2" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Welcome to the HTML to MAML Converter.  This utility is used to convert HTML files to Microsoft
+Assistance Markup Language (MAML) topic files so that they can be compiled into help files using
+<token>Sandcastle</token> with the selected presentation style's look and feel.  The utility is located in
+the <localUri>.\Extras\HtmlToMaml</localUri> folder under the main Sandcastle installation folder (typically
+<localUri>C:\Program Files (x86)\Sandcastle</localUri>).</para>
+    </introduction>
+    
+  <section>
+    <title>What is Conceptual Content?</title>
+    <content>
+      <para>Conceptual content allows you to define non-API documentation that is included in the help file
+for usage notes, walkthroughs, tutorials, etc. Instead of HTML, conceptual content topics use Microsoft
+Assistance Markup Language (MAML).  This is basically XML conforming to a well defined schema that describes
+the structure of the conceptual content much like XML comments describe the structure of the code comments.
+There is no layout or style information within the MAML files. Instead, they are ran through a series of XSL
+transformations using Sandcastle's <application>BuildAssembler</application> tool similar to the reference
+(API) content so that they match it in appearance and features.  This allows you to utilize the various
+Sandcastle and third-party build components to alter and extend the presentation style used in the
+topics.</para>
+
+	<para>The term "conceptual content" is actually a catch-all term used to refer to the various types of
+content that may appear in the help file.  MAML actually defines several different content types, each used
+for a specific type of document (conceptual, glossary, how-to, reference, etc.).  Each type has a specific
+structure with various required and optional XML elements.  For more information on MAML, the various topic
+types, and the various elements that you can use within them, see the <legacyBold>Sandcastle MAML
+Guide</legacyBold>.</para>
+    </content>
+  </section>
+
+    <section>
+      <title>The Converter Utility</title>
+      <content>
+        <para>The purpose of this utility is to quickly convert a batch of HTML files (or
+<localUri>.topic</localUri> files used by the <token>SHFB</token>) into MAML topics to save you from
+having to do it manually.  Since the conversion to MAML is not perfect, you will still need to review the
+topics afterwards to clean up any unresolved issues and To Do items noted in the conversion log.  The
+converter will transform the HTML topics into the generic <legacyBold>Conceptual</legacyBold> topic format.
+If you require that a topic conform to one of the other MAML topic formats such as
+<legacyBold>Walkthrough</legacyBold>, <legacyBold>How To</legacyBold>, <legacyBold>Glossary</legacyBold>,
+etc. you will need to make the necessary adjustments afterwards.</para>
+      </content>
+    </section>
+
+    <relatedTopics>
+    <link xlink:href="88706943-3ecb-4435-9107-ee96821ef856" />
+    <link xlink:href="5ed6a1fd-7d8e-4da6-baa6-60c663218106" />
+    <link xlink:href="c18d6cb6-e4e4-4944-84ee-f867aa6cfb0d" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

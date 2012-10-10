@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="88706943-3ecb-4435-9107-ee96821ef856" revisionNumber="1">
+  <developerWalkthroughDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>This topic will walk you through using the converter to convert a batch of HTML files to MAML
+topics.</para>
+    </introduction>
+
+    <procedure>
+      <title>Using the Converter</title>
+      <steps class="ordered">
+        <step>
+          <content>
+            <para>The converter is a console mode application.  As such, open a command prompt in order to
+run it.  The utility is located in the <localUri>.\Extras\HtmlToMaml</localUri> folder under the main
+Sandcastle installation folder (typically <localUri>C:\Program Files (x86)\Sandcastle</localUri>).</para>
+
+<alert class="note">
+  <para>The converter uses an XML file that contains the
+<link xlink:href="dcded896-51a7-4af4-b1dc-9a41193210cc">conversion rules</link>.  This file must reside in
+the same folder as the converter's executable.</para>
+</alert>
+          </content>
+        </step>
+        <step>
+          <content>
+            <para>The converter takes a folder name containing the files to convert as the first parameter
+and the name of a new folder in which to place the converted topics and supporting files as the second
+parameter.  The folder names must be different but the new folder does not have to exist and will be created
+if necessary. Below is an example command line:</para>
+
+<code language="none" title="Example Command Line">
+ConvertHtmlToMaml.exe C:\MyLibrary\Doc C:\MyLibrary\Content
+</code>
+
+			<para>An optional parameter, <system>/companion</system>, can also be specified to create companion
+files for the converted topics.  This is useful if your documentation tool, such as <token>DocProject</token>,
+makes use of them to store the topic title, help attributes, and index keywords.</para>
+
+<code language="none" title="Create Optional Companion Files">
+ConvertHtmlToMaml.exe C:\MyLibrary\Doc C:\MyLibrary\Content /companion
+</code>
+
+			<para>An optional parameter, <system>/moveIntro</system>, can also be specified to indicate that the
+converter should move any topic text preceding the first section element created into the introduction
+element.  This option may produce better results in cases where your HTML topics contain leading text before
+the first header element, such as an <codeInline>H1</codeInline> element, that should appear in the MAML
+topic's <codeInline>introduction</codeInline> element.  If your topics lack an HTML header element, this
+option will typically move the entire topic text into the introduction element which is probably not wanted
+and the option should be omitted.  In that case, a default introduction element is inserted into each topic
+and you can move text into it during the clean-up phase.</para>
+
+<code language="none" title="Move Leading Text to Introduction">
+ConvertHtmlToMaml.exe C:\MyLibrary\Doc C:\MyLibrary\Content /moveIntro
+</code>
+
+<alert class="note">
+  <para>While the destination folder will be created if it does not already exist, it will not be cleared of
+any existing content.  As such, you can convert multiple batches of files into one folder.  However, you
+should rename the conversion log and the supporting files between runs if you want to keep them.</para>
+</alert>
+          </content>
+        </step>
+        <step>
+          <content>
+            <para>As the converter runs, it writes information to the console as it goes.  This information
+is also saved to a <link xlink:href="b7e46af5-0901-41e8-afb9-a79a837aff9e">log file</link> in the
+destination folder.</para>
+          </content>
+        </step>
+        <step>
+          <content>
+            <para>Once finished, the <link xlink:href="40a012a8-5172-4805-a7b0-57a80e99ec5f">review process</link>
+can begin to clean up any issues and To Do items in the converted topics.  The log file can help you locate
+items that need attention.</para>
+          </content>
+        </step>
+      </steps>
+    </procedure>
+
+    <relatedTopics>
+    <link xlink:href="dcded896-51a7-4af4-b1dc-9a41193210cc" />
+    <link xlink:href="b7e46af5-0901-41e8-afb9-a79a837aff9e" />
+    <link xlink:href="a5f36b5f-5551-43c4-a938-c1451571b97f" />
+    <link xlink:href="40a012a8-5172-4805-a7b0-57a80e99ec5f" />
+    </relatedTopics>
+  </developerWalkthroughDocument>
+</topic>

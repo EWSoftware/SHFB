@@ -1,0 +1,51 @@
+﻿<sci:BasePage x:Class="Sandcastle.Installer.InstallerPages.HelpFileFormatsPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:sci="clr-namespace:Sandcastle.Installer.InstallerPages"
+             mc:Ignorable="d" 
+             d:DesignHeight="325" d:DesignWidth="500">
+  <FlowDocumentScrollViewer>
+    <FlowDocument FontFamily="Verdana" FontSize="11" PagePadding="10,15" TextAlignment="Left">
+      <Paragraph><Bold FontSize="16">Help File Formats</Bold></Paragraph>
+
+      <Paragraph>Sandcastle will produce output that can be used to create help files in various formats.
+However, it cannot create the actual file that is the end result.  For that, help compilers or third-party
+build tools are required.  Below is a summary of the help file formats and the tools needed to produce
+them.</Paragraph>
+
+      <Paragraph><Bold>HTML Help 1</Bold></Paragraph>
+      <Paragraph Margin="30,0,0,0">HTML Help 1 files are standalone help files with a <Italic>.chm</Italic>
+extension.  This is the oldest help file format and these files can be viewed on any system without any
+special viewers.  The Help 1 compiler is installed as part of the Microsoft HTML Help Workshop.</Paragraph>
+
+      <Paragraph><Bold>Microsoft Help 2</Bold></Paragraph>
+      <Paragraph Margin="30,0,0,0">The Microsoft Help 2 format produces help files with a
+        <Italic>.HxS</Italic> extension.
+These are not standalone files.  In order to view them, they must be integrated into a help collection.
+These are typically used to provide help for control libraries and tools and are integrated into the help
+collections used by Microsoft Visual Studio 2008 and earlier.  The Help 2 compiler does not appear to be
+available separately and must be installed as part of one of the SDKs for Visual Studio 2008 or earlier.</Paragraph>
+
+      <Paragraph><Bold>Microsoft Help Viewer</Bold></Paragraph>
+      <Paragraph Margin="30,0,0,0">This is the latest help file format and produces help files with a
+<Italic>.mshc</Italic> extension.  These help files are typically used to provide help for control libraries
+and tools used with Visual Studio 2010 and later.  They are similar to Help 2 files in that they must be
+installed into a collection to be viewed but they do not require a compiler.  Instead, the help content is
+compressed into a ZIP-format archive file.  Third-party build tools for Sandcastle will provide the support
+necessary to create the help archive and its related configuration file.</Paragraph>
+
+      <Paragraph><Bold>Websites</Bold></Paragraph>
+      <Paragraph Margin="30,0,0,0">The topic files produces by Sandcastle are HTML files and can be used to
+create help content that is uploaded to a web server.  However, Sandcastle itself does not provide any
+support for creating a web-based table of content, index, or search functionality.  These features are left
+to the third-party build tools.</Paragraph>
+
+      <Paragraph>The following steps will check for the Help 1 and Help 2 compilers and give you
+instructions on downloading and installing them if necessary.</Paragraph>
+
+      <Paragraph>Click the <Bold>Next</Bold> button to continue.</Paragraph>
+    </FlowDocument>
+  </FlowDocumentScrollViewer>
+</sci:BasePage>

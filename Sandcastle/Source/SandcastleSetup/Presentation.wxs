@@ -709,6 +709,16 @@
             <Component Id="cmp5E7D0400E3BC2D7AB49E8A2D6B8928FD" Guid="{73CA0E0F-8679-46F5-9569-F297FB83B657}">
               <File Id="filECCBD7E67EFD967A1F7CC709B8BE6D13" KeyPath="yes" Source="$(var.RootFolder)\Presentation\Shared\content\syntax_content.xml" />
             </Component>
+            <Directory Id="dir79CF51A2A2910DF34CFF5FA27E223721" Name="de-DE">
+              <Component Id="cmp1EF3D73F832D2C9C5E63E301C039D51C" Guid="{8EC735A5-4BE0-4B87-8E08-46070CE0A8A6}">
+                <File Id="fil86EB29490F5FA70CF4931B6332664D3A" KeyPath="yes" Source="$(var.RootFolder)\Presentation\Shared\content\de-DE\syntax_content.xml" />
+              </Component>
+            </Directory>
+            <Directory Id="dirF116B43B6725CE6177CFA50FE0B93B45" Name="ru-RU">
+              <Component Id="cmp4607CF8D029523CA6CC2805147643D5B" Guid="{ED90EDBC-D64E-4D3C-90D6-8B3BDAB60535}">
+                <File Id="fil3C0D7815C27E569AFCC0E46426C9D422" KeyPath="yes" Source="$(var.RootFolder)\Presentation\Shared\content\ru-RU\syntax_content.xml" />
+              </Component>
+            </Directory>
           </Directory>
           <Directory Id="dirC860A35229840947D33F8F55639608FA" Name="HxsTemplate">
             <Component Id="cmp1A9F0264F2713975FCCC7BD090DC9280" Guid="{9DB27BDA-BA8A-416B-8B0C-FAB211F93268}">
@@ -814,6 +824,52 @@
             <Component Id="cmpD796538BC64C9488D10DA1C2AB0281EF" Guid="{4D01B936-CB08-4739-BFC6-AD7A3EA001FF}">
               <File Id="fil8CD458CB58A4C420D2769D77AC778EDB" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2005\Content\web_content.xml" />
             </Component>
+            <Directory Id="dirC775EA8770E28150F2094CB284DD07AC" Name="de-DE">
+              <Component Id="cmpA732A1D7CF4EC65DA3E86DC330A255E9" Guid="{73A4DAFE-D003-4692-9A12-2772FCDF3188}">
+                <File Id="filB26E04DBE2D05130176BEDF91A1A987E" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2005\Content\de-DE\conceptual_content.xml" />
+              </Component>
+              <Component Id="cmp951BBB5F0CB671FAE163F43A27AAF70A" Guid="{9702A7FD-9681-4891-A02F-6EC93F8707B0}">
+                <File Id="filC76C290C5F23362A7560C3580D8E3966" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2005\Content\de-DE\feedBack_content.xml" />
+              </Component>
+              <Component Id="cmpD0E7512181E7171651C3928EBDF227AA" Guid="{3139CC72-3A40-4107-9188-0198CA5D12CB}">
+                <File Id="fil30AF63F9D2C1AB917B68CD0DD99E5C43" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2005\Content\de-DE\reference_content.xml" />
+              </Component>
+              <Component Id="cmp1E6E1D725492B71377B0176051FCF99A" Guid="{352AA07C-5F52-4F00-BC18-663193B04DB6}">
+                <File Id="filECCED3294C075689D2B5848306666814" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2005\Content\de-DE\shared_content.xml" />
+              </Component>
+              <Component Id="cmp966A1687D84BF48579A41649D6CF28D7" Guid="{96582DF9-6006-4386-A399-ECAC230EA5EA}">
+                <File Id="filC0C7043A84D9C9AB1FFD33AEDE83B5E8" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2005\Content\de-DE\shared_content_mshc.xml" />
+              </Component>
+              <Component Id="cmpC1390CA9E513C51B8010994FB5D5AE68" Guid="{86FB687A-3BA1-43D0-A589-06131AC12D5C}">
+                <File Id="fil2C940B8FA06E9BE020F0C94FDE5A911F" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2005\Content\de-DE\token_content.xml" />
+              </Component>
+              <Component Id="cmp31D470C67D2DFDE65F3D1913C60CAA2B" Guid="{853065EA-3298-4356-98FB-35766826AA9C}">
+                <File Id="fil458FA4077B100C5A4A0E732C3FFC5E12" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2005\Content\de-DE\web_content.xml" />
+              </Component>
+            </Directory>
+            <Directory Id="dir138D4A4FA24B95316B2355420D50EBDB" Name="ru-RU">
+              <Component Id="cmp8E58C8E4BD7B5F179F39E024E7C084B7" Guid="{AD8FFCF1-B25F-481F-B066-346EA185041D}">
+                <File Id="filE3468DBD8E245609B6F1754378B96D94" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2005\Content\ru-RU\conceptual_content.xml" />
+              </Component>
+              <Component Id="cmp08A38C86ED4CFF8692B4DB0EDCBE4B82" Guid="{B8611B44-1720-426D-B23D-60D5FB33D55B}">
+                <File Id="filBFD591090AF4A8C0B790D2F147B3DF34" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2005\Content\ru-RU\feedBack_content.xml" />
+              </Component>
+              <Component Id="cmpF9C0B89B1DE0EFC1E93E6698E907BA17" Guid="{92FE09F1-77F2-4321-A2A5-02A1B8D6ADB0}">
+                <File Id="fil7E87434D4DDDBF56D325D357E1448889" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2005\Content\ru-RU\reference_content.xml" />
+              </Component>
+              <Component Id="cmpF8E3DC273DE303721835BFE88C0FA1EF" Guid="{B7BD18B2-1E84-434D-8BB2-341C9F8475D2}">
+                <File Id="fil952C52928DA643A88216F9CE12545A1A" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2005\Content\ru-RU\shared_content.xml" />
+              </Component>
+              <Component Id="cmpAC8713B6EEC3CAD390E1403E1C494EDE" Guid="{4D2A3AEB-6813-43BD-89A4-E9051D713186}">
+                <File Id="fil3F215FCA3C14FFDB17A34BE7BC386DD1" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2005\Content\ru-RU\shared_content_mshc.xml" />
+              </Component>
+              <Component Id="cmp2B05FF010BC91F52A5B4D2D636EB6E2F" Guid="{6E5749A6-7D41-4C9B-9DF1-CF0BEACD4CF7}">
+                <File Id="filAA002D8AC70D8BE063B2AE0A45BE58D3" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2005\Content\ru-RU\token_content.xml" />
+              </Component>
+              <Component Id="cmp193AEC7DD45597C007DBEC2D2AB70C0D" Guid="{A6F9B39F-3722-4B00-A489-FCBE641DC7D0}">
+                <File Id="fil0FA2FB9EF5B9BA394C10144CC5CB173C" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2005\Content\ru-RU\web_content.xml" />
+              </Component>
+            </Directory>
           </Directory>
           <Directory Id="dir5531332B90BE720F8950338663C248F3" Name="Data">
             <Component Id="cmpA3D78D50F13A7A2C417BD70B588E1B33" Guid="{4677CC2F-1F02-463A-B904-3B8A5727CF38}">
@@ -1361,6 +1417,26 @@
             <Component Id="cmp90F1890F0BB2D446A95C7B636F66E200" Guid="{BAB83B4C-D5B6-4872-8CB8-C61CFB2A7079}">
               <File Id="filD3769B0FB755729606E75D26C052E46A" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2010\Content\web_content.xml" />
             </Component>
+            <Directory Id="dir327DF2E5529A690A4952019D84802718" Name="ru-RU">
+              <Component Id="cmpF51DF394ACE323BA7F04ECF24000B2C4" Guid="{84D13984-C3B5-4063-B102-87E1F437FBB8}">
+                <File Id="fil9FFECBE751E40D32DD4E355FB4AB1D42" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2010\Content\ru-RU\conceptual_content.xml" />
+              </Component>
+              <Component Id="cmp11C0F39A5AB8684DA11418474C91BB46" Guid="{EDAF97C9-9919-4E31-B3F4-31ED2AD178BC}">
+                <File Id="fil97E7ED08587A68CA18D76F979B0532BD" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2010\Content\ru-RU\feedBack_content.xml" />
+              </Component>
+              <Component Id="cmp803F2EDFDF93B00FB1569FB1D7A09B78" Guid="{4E4F0C34-EE80-4BC2-B8A5-B4997E5CF947}">
+                <File Id="fil7C2CBB81B96CC59D69751E1B6BE3CC83" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2010\Content\ru-RU\reference_content.xml" />
+              </Component>
+              <Component Id="cmp9761CFB614E35DED553C72A8DF1B191F" Guid="{909FAAE5-64D4-4A8D-819C-01734FB1695C}">
+                <File Id="filBC233D8593D9E57ACB22C34F6B656E45" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2010\Content\ru-RU\shared_content.xml" />
+              </Component>
+              <Component Id="cmpF209D5D9C4C1C2F575720B66A514B40C" Guid="{C9BA52D9-97A3-4D3E-A9D6-137F05534230}">
+                <File Id="filFD8D8FEA9865B6EF518F3EB777FCCB37" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2010\Content\ru-RU\shared_content_mshc.xml" />
+              </Component>
+              <Component Id="cmpFD2C5F6B2237209EA1C5D3FA1BE4619A" Guid="{3F81C00C-FF71-4A6B-95ED-EFBCF3BEDBE1}">
+                <File Id="filFBCF425152E2BDCF28D6B2F0FD24C094" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2010\Content\ru-RU\web_content.xml" />
+              </Component>
+            </Directory>
           </Directory>
           <Directory Id="dir39C24329EF6380F0F5D8B85FD6848D28" Name="Data">
             <Component Id="cmpDE82CA3D11B05AFC1B8ECCC109935E2D" Guid="{FCAD8055-25A1-4EF8-8171-987A9CB1EB86}">
@@ -1890,6 +1966,8 @@
       <ComponentRef Id="cmp9780DE0BE329EF39358A175C98EC80E7" />
       <ComponentRef Id="cmp278B3899EFFD522167BF92A7A9C27195" />
       <ComponentRef Id="cmp5E7D0400E3BC2D7AB49E8A2D6B8928FD" />
+      <ComponentRef Id="cmp1EF3D73F832D2C9C5E63E301C039D51C" />
+      <ComponentRef Id="cmp4607CF8D029523CA6CC2805147643D5B" />
       <ComponentRef Id="cmp1A9F0264F2713975FCCC7BD090DC9280" />
       <ComponentRef Id="cmpB6538DA04C571DE46159F3C4C0BFA7DC" />
       <ComponentRef Id="cmpA624666FCAAC2D3E8F57A60D827CACF8" />
@@ -1921,6 +1999,20 @@
       <ComponentRef Id="cmpB271B32C5DC3DA120F949F51E40AFDBC" />
       <ComponentRef Id="cmp41B36A5CBDA8337DA646332FE843C09C" />
       <ComponentRef Id="cmpD796538BC64C9488D10DA1C2AB0281EF" />
+      <ComponentRef Id="cmpA732A1D7CF4EC65DA3E86DC330A255E9" />
+      <ComponentRef Id="cmp951BBB5F0CB671FAE163F43A27AAF70A" />
+      <ComponentRef Id="cmpD0E7512181E7171651C3928EBDF227AA" />
+      <ComponentRef Id="cmp1E6E1D725492B71377B0176051FCF99A" />
+      <ComponentRef Id="cmp966A1687D84BF48579A41649D6CF28D7" />
+      <ComponentRef Id="cmpC1390CA9E513C51B8010994FB5D5AE68" />
+      <ComponentRef Id="cmp31D470C67D2DFDE65F3D1913C60CAA2B" />
+      <ComponentRef Id="cmp8E58C8E4BD7B5F179F39E024E7C084B7" />
+      <ComponentRef Id="cmp08A38C86ED4CFF8692B4DB0EDCBE4B82" />
+      <ComponentRef Id="cmpF9C0B89B1DE0EFC1E93E6698E907BA17" />
+      <ComponentRef Id="cmpF8E3DC273DE303721835BFE88C0FA1EF" />
+      <ComponentRef Id="cmpAC8713B6EEC3CAD390E1403E1C494EDE" />
+      <ComponentRef Id="cmp2B05FF010BC91F52A5B4D2D636EB6E2F" />
+      <ComponentRef Id="cmp193AEC7DD45597C007DBEC2D2AB70C0D" />
       <ComponentRef Id="cmpA3D78D50F13A7A2C417BD70B588E1B33" />
       <ComponentRef Id="cmp7BF73CA2BCF6E6C40D58BAA3BA2BC678" />
       <ComponentRef Id="cmpB9A8558A081A23F95003864DB80BA369" />
@@ -2096,6 +2188,12 @@
       <ComponentRef Id="cmp06EB96DB7BD4BF18C8384939881AD06D" />
       <ComponentRef Id="cmp6B321628F3F619EB8EA0FCB6873090D4" />
       <ComponentRef Id="cmp90F1890F0BB2D446A95C7B636F66E200" />
+      <ComponentRef Id="cmpF51DF394ACE323BA7F04ECF24000B2C4" />
+      <ComponentRef Id="cmp11C0F39A5AB8684DA11418474C91BB46" />
+      <ComponentRef Id="cmp803F2EDFDF93B00FB1569FB1D7A09B78" />
+      <ComponentRef Id="cmp9761CFB614E35DED553C72A8DF1B191F" />
+      <ComponentRef Id="cmpF209D5D9C4C1C2F575720B66A514B40C" />
+      <ComponentRef Id="cmpFD2C5F6B2237209EA1C5D3FA1BE4619A" />
       <ComponentRef Id="cmpDE82CA3D11B05AFC1B8ECCC109935E2D" />
       <ComponentRef Id="cmpD190190225BC8092BE78013421765DC0" />
       <ComponentRef Id="cmp09D1BFF0305BF013B13031FA88EC843F" />

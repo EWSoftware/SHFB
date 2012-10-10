@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="40a012a8-5172-4805-a7b0-57a80e99ec5f" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>This topic covers some common issues that you will encounter when reviewing topics after
+conversion along with tips on solving them.</para>
+    </introduction>
+
+    <section>
+      <content>
+
+<definitionTable>
+  <definedTerm>Missing end elements</definedTerm>
+  <definition>
+		<para>These can be found by performing a build with your preferred documentation tool.  The error
+message will list the failing topic along with the element name(s) and the line number and column where the
+starting and ending elements did not match up.  To fix the issue, edit the topic and add the missing end
+element in the correct location.</para>
+	</definition>
+
+  <definedTerm>Ill-formed or unencoded entities</definedTerm>
+  <definition>
+		<para>HTML is quite forgiving when it comes to ill-formed or unencoded entities but XML is not.
+Examples include missing the ending semi-colon (<codeInline>&amp;lt</codeInline> rather than
+<codeInline>&amp;lt;</codeInline>) or not encoding it at all (using <codeInline>&amp;&amp;</codeInline> in
+example code rather than <codeInline>&amp;amp;&amp;amp;</codeInline>).  These can also be found by doing
+a build and locating the offending entity via the information provided in the error message.</para>
+	</definition>
+
+  <definedTerm>Table header formatting is lost</definedTerm>
+  <definition>
+		<para>When an HTML table is converted to MAML, any <codeInline>th</codeInline> elements are converted
+to the equivalent <codeInline>entry</codeInline> MAML element.  This results in the header cell being
+rendered as a normal cell in the table.  In order to render the cells using the table heading style, wrap
+the containing <codeInline>row</codeInline> element to a <codeInline>tableHeader</codeInline> element.
+For example:</para>
+
+	<code language="xml" title=" ">
+&lt;table&gt;
+  &lt;tableHeader&gt;
+    &lt;row&gt;
+      &lt;entry&gt;&lt;para&gt;Column 1&lt;/para&gt;&lt;/entry&gt;
+      &lt;entry&gt;&lt;para&gt;Column 2&lt;/para&gt;&lt;/entry&gt;
+    &lt;/row&gt;
+  &lt;/tableHeader&gt;
+  &lt;row&gt;
+    &lt;entry&gt;&lt;para&gt;Value 1&lt;/para&gt;&lt;/entry&gt;
+    &lt;entry&gt;&lt;para&gt;Value 2&lt;/para&gt;&lt;/entry&gt;
+  &lt;/row&gt;
+  &lt;row&gt;
+    &lt;entry&gt;&lt;para&gt;Value A&lt;/para&gt;&lt;/entry&gt;
+    &lt;entry&gt;&lt;para&gt;Value B&lt;/para&gt;&lt;/entry&gt;
+  &lt;/row&gt;
+&lt;/table&gt;
+</code>
+	</definition>
+
+	<definedTerm>Image link type and alignment</definedTerm>
+  <definition>
+		<para>As noted in the <link xlink:href="f6e7385f-0647-4897-9145-3c297f4f6c69" /> topic, you may need to
+change <codeInline>mediaLink</codeInline> elements to <codeInline>mediaLinkInline</codeInline> elements
+where appropriate.  In addition, you may need to add captions and/or set the alignment attributes based on
+your preferences.</para>
+	</definition>
+
+  <definedTerm>Paragraph spacing is inconsistent</definedTerm>
+  <definition>
+		<para>Omitting <codeInline>para</codeInline> elements around paragraphs or using self-closing
+<codeInline>para</codeInline> elements can cause some inconsistent spacing between paragraphs.  To make it
+consistent, wrap all paragraphs in opening and closing <codeInline>para</codeInline> elements.</para>
+	</definition>
+
+</definitionTable>
+
+      </content>
+    </section>
+
+    <relatedTopics>
+	<link xlink:href="88706943-3ecb-4435-9107-ee96821ef856" />
+	<link xlink:href="dcded896-51a7-4af4-b1dc-9a41193210cc" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

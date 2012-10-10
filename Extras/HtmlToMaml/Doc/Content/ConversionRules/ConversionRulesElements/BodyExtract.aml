@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="5DDF5E27-152A-4fbf-A0DE-B4444A7102F0" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+    <para>This element defines the regular expression used to extract the body
+of the HTML document.</para>
+    </introduction>
+
+<section>
+  <title>Rule Processing</title>
+  <content>
+	<para>By default it extracts the <codeInline>&lt;body&gt;</codeInline>
+(.html files) or <codeInline>&lt;bodyText&gt;</codeInline> (.topic files)
+element content. The "body" part of the regular expression must be a named
+group called <legacyBold>Body</legacyBold>.</para>
+	<para>One example where you might want to modify this is if your document
+bodies contain several sections contained within <codeInline>div</codeInline>
+elements.  You can alter the expression to extract the specific
+<codeInline>div</codeInline> that contains just the body text thus excluding
+the other unwanted parts of the document.</para>
+
+<alert class="note">
+  <para>Since it resides in an XML file, any special characters in the
+expression such as <codeInline>&lt;</codeInline>, <codeInline>&gt;</codeInline>,
+<codeInline>&amp;</codeInline>, <codeInline>&quot;</codeInline>, and
+<codeInline>&apos;</codeInline> must be encode as shown in the example below.
+The regular expression is matched case-insensitively.</para>
+</alert>
+
+<code language="xml" title="Example div Extract">
+&lt;!-- Note: Lines wrapped for display purposes --&gt;
+&lt;BodyExtract expression=&quot;&amp;lt;\s*div\s*class=&amp;quot;Main&amp;quot;[^&amp;gt;]*?&amp;gt;
+(?&amp;lt;Body&amp;gt;.*?)&amp;lt;\s*/\s*div?\s*&amp;gt;&quot; /&gt;
+</code>
+  </content>
+</section>
+
+    <relatedTopics>
+	<link xlink:href="dcded896-51a7-4af4-b1dc-9a41193210cc" />
+	<link xlink:href="1BA74307-2C62-40a9-AA25-3B25DFB1C1C6" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>
