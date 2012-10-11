@@ -7,44 +7,39 @@
 
 <section address="SyntaxDefFile">
   <title>Syntax Filter Generator Definition Files</title>
-  <content><para>Syntax filter generators are used to add syntax sections to
-each API topic for a programming language.  Several default language syntax
-generators are supplied with Sandcastle by default.  Custom syntax filter
-generators can easily be added to the help file builder without having to
-modify its configuration template files.  This is accomplished by creating an
-XML configuration file that describes the syntax filter generators.  The custom
-syntax generator assembly, configuration file, and any supporting files are
-copied into the <localUri>.\Components and Plug-Ins</localUri> folder or a
-subfolder beneath it in the help file builder's <legacyBold>Common Application
-Data</legacyBold> folder.  See the
-<link xlink:href="a24489fb-45d6-46f4-9eaa-9a9c4e0919b2#BuildComponents" />
-topic for more information.  The syntax filter definition files must use the
-extension <localUri>.filters</localUri>.  The default syntax filters file is
-shown below:</para>
+  <content>
+		<para>Syntax filter generators are used to add syntax sections to each API topic for a programming language.
+Several default language syntax generators are supplied with Sandcastle by default.  Custom syntax filter
+generators can easily be added to the help file builder without having to modify its configuration template
+files.  This is accomplished by creating an XML configuration file that describes the syntax filter generators.
+The custom syntax generator assembly, configuration file, and any supporting files are copied into the
+<localUri>.\Components and Plug-Ins</localUri> folder or a subfolder beneath it in the help file builder's
+<legacyBold>Common Application Data</legacyBold> folder.  See the
+<link xlink:href="a24489fb-45d6-46f4-9eaa-9a9c4e0919b2#BuildComponents" /> topic for more information.  The
+syntax filter definition files must use the extension <localUri>.filters</localUri>.  The default syntax filters
+file is shown below:</para>
 
-<code lang="xml" title="Default Syntax Filters Definition File"
-  source="..\SandcastleComponents\SandcastleBuilder.filters" />
+<code language="xml" title="Default Syntax Filters Definition File"
+  source="..\..\SHFB\Source\SandcastleComponents\SandcastleBuilder.filters" />
 
   </content>
 </section>
 
 <section address="Filters">
   <title>Syntax Filter Generator Elements</title>
-  <content><para>The root <codeInline>syntaxFilters</codeInline> node contains
-one or more <codeInline>filter</codeInline> nodes that describe the syntax
-generator filter components.  The order of the component definitions is not
-significant. The help file builder uses this information to merge them with the
-configuration file at build time.  The Sandcastle Help File Builder supports
-several replacement tags that can be specified in place of such things as the
-components folder, the project folder, etc. These will be replaced before use
-with the physical path associated with the project.</para>
+  <content>
+		<para>The root <codeInline>syntaxFilters</codeInline> node contains one or more <codeInline>filter</codeInline>
+nodes that describe the syntax generator filter components.  The order of the component definitions is not
+significant. The help file builder uses this information to merge them with the configuration file at build time.
+The Sandcastle Help File Builder supports several replacement tags that can be specified in place of such things
+as the components folder, the project folder, etc. These will be replaced before use with the physical path
+associated with the project.</para>
 
 	<autoOutline lead="The following sections list the elements and their attributes that make up the definition for a filter node." />
 
-<para>For a working example of a component configuration file, see the
-<localUri>SandcastleBuilder.filters</localUri> file in the help file builder
-installation folder.  It contains a fully commented set of configurations for
-the standard set of syntax filter generators.</para>
+	<para>For a working example of a component configuration file, see the <localUri>SandcastleBuilder.filters</localUri>
+file in the help file builder installation folder.  It contains a fully commented set of configurations for the
+standard set of syntax filter generators.</para>
 
   </content>
   
@@ -52,24 +47,27 @@ the standard set of syntax filter generators.</para>
 
 <section address="Filter">
   <title>filter</title>
-  <content><para>This element contains all of the other elements and defines the
-basic properties of the filter.  The element itself has one required attribute
-and two optional attribute:</para>
+  <content><para>This element contains all of the other elements and defines the basic properties of the filter.
+The element itself has one required attribute and two optional attribute:</para>
 
 <list class="bullet">
-    <listItem>The <codeInline>id</codeInline> attribute is used to give each
-one a unique ID used by the designer and will appear in the project's
-<codeInline>SyntaxFilters</codeInline> property if selected.</listItem>
+    <listItem>
+			<para>The <codeInline>id</codeInline> attribute is used to give each one a unique ID used by the designer
+and will appear in the project's <codeInline>SyntaxFilters</codeInline> property if selected.</para>
+		</listItem>
 
-    <listItem>The optional <codeInline>sortOrder</codeInline> attribute is used
-to define the order in which they are added to the BuildAssembler configuration
-file.  This affects the order in which they appear in the rendered API topics.
-Filters without a sort order will appear after all other elements with a sort
-order sorted alphabetically.</listItem>
+    <listItem>
+			<para>The optional <codeInline>sortOrder</codeInline> attribute is used to define the order in which they
+are added to the BuildAssembler configuration file.  This affects the order in which they appear in the rendered
+API topics.  Filters without a sort order will appear after all other elements with a sort order sorted
+alphabetically.</para>
+		</listItem>
 
-    <listItem>The optional <codeInline>alternateNames</codeInline> attribute
-can be used to provide a comma-separated list of alternate language names that
-will be translated by the designer to the associated syntax filter ID.</listItem>
+    <listItem>
+			<para>The optional <codeInline>alternateNames</codeInline> attribute can be used to provide a
+comma-separated list of alternate language names that will be translated by the designer to the associated syntax
+filter ID.</para>
+		</listItem>
 
 </list>
 
@@ -78,44 +76,46 @@ will be translated by the designer to the associated syntax filter ID.</listItem
 
 <section address="Generator">
   <title>generator</title>
-  <content><para>This element defines the syntax generator class and has two
-required attributes:</para>
+  <content>
+		<para>This element defines the syntax generator class and has two required attributes:</para>
 
 <list class="bullet">
-  <listItem>The <codeInline>type</codeInline> attribute provides the fully
-qualified type name of the syntax filter generator component.</listItem>
+  <listItem>
+		<para>The <codeInline>type</codeInline> attribute provides the fully qualified type name of the syntax filter
+generator component.</para>
+	</listItem>
   
-  <listItem>The <codeInline>assembly</codeInline> attribute provides the
-location of the assembly that contains the indicated type.  Normally, you will
-use the <codeInline>{@ComponentsFolder}</codeInline> replacement tag to
-represent the path to the <localUri>.\Components and Plug-Ins</localUri> folder.
-However, the assembly can be located in any other location.  Just be sure that
-the path is correct.</listItem>
+  <listItem>
+		<para>The <codeInline>assembly</codeInline> attribute provides the location of the assembly that contains the
+indicated type.  Normally, you will use the <codeInline>{@ComponentsFolder}</codeInline> replacement tag to
+represent the path to the <localUri>.\Components and Plug-Ins</localUri> folder.  However, the assembly can be
+located in any other location.  Just be sure that the path is correct.</para>
+	</listItem>
 </list>
 
-	<para>The <codeInline>generator</codeInline> element will be copied into
-the BuildAssembler configuration file along with any nested child elements that
-it contains.</para>
+	<para>The <codeInline>generator</codeInline> element will be copied into the BuildAssembler configuration file
+along with any nested child elements that it contains.</para>
   </content>
 </section>
 
 <section address="Language">
   <title>language</title>
-  <content><para>This element defines the properties used by the script in the
-API topic filter dropdown used to show and hide the syntax sections and has
-three required attributes:</para>
+  <content>
+		<para>This element defines the properties used by the script in the API topic filter dropdown used to show
+and hide the syntax sections and has three required attributes:</para>
 
 <list class="bullet">
-  <listItem>The <codeInline>label</codeInline> and <codeInline>name</codeInline>
-attributes are used as prefixes for resource items used during transformation.
-Typically, each is set to the same value.</listItem>
+  <listItem>
+		<para>The <codeInline>label</codeInline> and <codeInline>name</codeInline> attributes are used as prefixes
+for resource items used during transformation.  Typically, each is set to the same value.</para>
+	</listItem>
   
-  <listItem>The <codeInline>style</codeInline> attribute is used as a parameter
-in the script in each API topic and defines the language style to show in the
-content for such things as member link text and language keywords when the
-associated language is show by itself.  It should be set to one of the following
-values: <codeInline>cs</codeInline>, <codeInline>cpp</codeInline>, or
-<codeInline>vb</codeInline>.</listItem>
+  <listItem>
+		<para>The <codeInline>style</codeInline> attribute is used as a parameter in the script in each API topic and
+defines the language style to show in the content for such things as member link text and language keywords when
+the associated language is show by itself.  It should be set to one of the following values:
+<codeInline>cs</codeInline>, <codeInline>cpp</codeInline>, or <codeInline>vb</codeInline>.</para>
+	</listItem>
 </list>
 
   </content>
@@ -125,8 +125,8 @@ values: <codeInline>cs</codeInline>, <codeInline>cpp</codeInline>, or
   
 </section>
 
-    <relatedTopics>
-    <link xlink:href="8dcbb69b-7a1a-4049-8e6b-2bf344efbbc9" />
-    </relatedTopics>
+		<relatedTopics>
+			<link xlink:href="8dcbb69b-7a1a-4049-8e6b-2bf344efbbc9" />
+		</relatedTopics>
   </developerConceptualDocument>
 </topic>

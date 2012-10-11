@@ -2,11 +2,11 @@
 <topic id="b128ad2a-787e-48c7-b946-f6953080c386" revisionNumber="1">
   <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
     <introduction>
-      <para>An extension package is available that adds project management support to Visual Studio 2010 so that
-you can create, manage, and build help file builder projects from within Visual Studio just as you do for all
-other project types.  When used, Visual Studio takes the place of the standalone GUI and provides all of the
-same features as well as the extra ones available within it such as source control, IntelliSense within the
-file editors, etc.</para>
+      <para>An extension package is available that adds project management support to Visual Studio 2010 and
+later so that you can create, manage, and build help file builder projects from within Visual Studio just as you
+do for all other project types.  When used, Visual Studio takes the place of the standalone GUI and provides all
+of the same features as well as the extra ones available within it such as source control, IntelliSense within
+the file editors, etc.</para>
     </introduction>
 
     <section>

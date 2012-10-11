@@ -64,6 +64,10 @@ walkthroughs, tutorials, etc. to a help file.</para>
           <para>
             <token>DocProject</token> is a Visual Studio 2005/2008 add-in that can be used to automate
 Sandcastle.</para>
+					<alert class="note">
+						<para>Support for DocProject appears to have been discontinued and it will only work with the older
+Sandcastle May 2008 release.</para>
+					</alert> 
         </definition>
         <relatedEntry termId="Sandcastle" />
         <relatedEntry termId="SHFB" />
@@ -119,9 +123,10 @@ assemblies and their associated XML comments files.</para>
           <term termId="Sandcastle">Sandcastle</term>
         </terms>
         <definition>
-          <para>
-            <token>Sandcastle</token> is a set of tools produced by Microsoft that can be used to build help
-files for .NET managed libraries, conceptual content, or a mix of both.</para>
+					<para>Sandcastle is a set of tools produced by Microsoft that can be used to build help files for .NET
+managed libraries, conceptual content, or a mix of both.  Microsoft officially discontinued development in
+October 2012.  The Sandcastle tools have been merged with the <token>SHFB</token> project and are developed and
+supported there now as part of that project.</para>
         </definition>
         <relatedEntry termId="SHFB" />
         <relatedEntry termId="DocProject" />
@@ -137,8 +142,8 @@ front end that helps you manage and build help file projects.  It uses a standar
 which can also be built from the command line using MSBuild or integrated into Visual Studio builds or other
 build scripts to produce a help file when your application projects are built.  In addition, it provides a set of
 additional features beyond those supplied with Sandcastle that can improve your help file and make it easier to
-deploy.  A Visual Studio 2010/2011 package is also available for it that integrates the project management
-and build features into Visual Studio.</para>
+deploy.  A Visual Studio integration package is also available for it that integrates the project management
+and build features into Visual Studio 2010 or later.</para>
         </definition>
         <relatedEntry termId="DocProject" />
         <relatedEntry termId="Sandcastle" />

@@ -2,33 +2,31 @@
 <topic id="bf552a94-f8b9-460d-bf76-a869430a077e" revisionNumber="1">
   <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
     <introduction>
-      <para>This element is used to describe the name of an application such as
-Microsoft Windows or Notepad.</para>
+      <para>This element is used to describe the name of an application such as Microsoft Windows or Notepad.</para>
     </introduction>
     <section>
       <title>Usage</title>
       <content>
-        <para>Enter the element in the topic and specify the application name as
-the inner text.</para>
+        <para>Enter the element in the topic and specify the application name as the inner text.</para>
       </content>
     </section>
     <section>
       <title>Example</title>
       <content>
         <code language="xml" title=" ">
-Use &lt;application&gt;Sandcastle&lt;/application&gt; to create help files.
+Use the &lt;application&gt;Sandcastle Help File Builder&lt;/application&gt; to create help files.
 </code>
       </content>
     </section>
     <section>
       <title>Example Output</title>
       <content>
-        <para>Use <application>Sandcastle</application> to create help files.</para>
+        <para>Use the <application>Sandcastle Help File Builder</application> to create help files.</para>
       </content>
     </section>
 
-    <relatedTopics>
-	  <link xlink:href="b96d95c0-ec3c-4846-998a-4b43548bfa0e" />
-    </relatedTopics>
+		<relatedTopics>
+			<link xlink:href="b96d95c0-ec3c-4846-998a-4b43548bfa0e" />
+		</relatedTopics>
   </developerConceptualDocument>
 </topic>

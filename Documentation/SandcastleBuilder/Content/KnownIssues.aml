@@ -53,8 +53,8 @@ other output formats in which you want to use the plug-in, build them separately
 contents generation is not supported for help viewer output.  All additional topics must be in the form of MAML
 <link xlink:href="3d4edd2d-7883-4508-b9d2-bd7b4d848b0d">conceptual content</link> and must be defined in a
 content layout file.  There are too many requirements of the format to support raw HTML files and the deprecated
-additional content options.  See the <token>Sandcastle</token> project on CodePlex if you need an HTML to MAML
-converter utility.</para>
+additional content options.  The installer for the Sandcastle tools contains an HTML to MAML converter utility
+if you need one.</para>
 					</listItem>
 
 					<listItem>

@@ -11,8 +11,8 @@
   <content>
 <list class="bullet">
     <listItem>
-			<para>The most recent version of this guide can be download from the <token>Sandcastle</token>
-project on CodePlex.</para>
+			<para>The most recent version of this guide can be download from the <token>SHFB</token> project on
+CodePlex.</para>
 		</listItem>
 	
 		<listItem>
@@ -86,9 +86,8 @@ its various features work.</para></listItem>
 			</listItem>
 
 			<listItem>
-				<para>The latest version of Microsoft's <token>Sandcastle</token>
-(currently the <token>SandcastleVersion</token> release as of
-<token>BuildDate</token>).</para>
+				<para>The latest version of the Sandcastle tools (currently the <token>SandcastleVersion</token> release
+as of <token>BuildDate</token>).  These are distributed along with the <token>SHFB</token>.</para>
 			</listItem>
 
       <listItem>

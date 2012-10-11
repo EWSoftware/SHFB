@@ -24,11 +24,8 @@ usage you can download the <token>XMLCommentsGuide</token>.</para></listItem>
 
     <listItem>
 			<para>For a comprehensive list of MAML documentation tags used in conceptual content and a description of
-their attributes and usage see the <legacyBold>Sandcastle MAML Guide</legacyBold> included with <externalLink>
-	<linkText>Sandcastle</linkText>
-  <linkUri>http://Sandcastle.codeplex.com</linkUri>
-  <linkTarget>_blank</linkTarget>
-</externalLink>.</para></listItem>
+their attributes and usage see the <legacyBold>Sandcastle MAML Guide</legacyBold> included with Sandcastle tools
+installer.</para></listItem>
 
 	<listItem>
 		<para>Special thanks to <externalLink>
@@ -161,7 +158,7 @@ using it, visit the <token>SHFB</token> CodePlex project.</para>
 	</listItem>
 	<listItem>
 		<para>To discuss Microsoft's Sandcastle, suggest new features, report bugs in it, and request help
-using it, visit the <token>Sandcastle</token> CodePlex project.</para>
+using it, visit the <token>SHFB</token> CodePlex project.</para>
 	</listItem>
 	<listItem>
 		<para>For discussion and questions about help systems in general, visit the <externalLink>

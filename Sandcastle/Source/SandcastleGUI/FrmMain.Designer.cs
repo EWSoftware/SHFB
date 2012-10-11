@@ -480,7 +480,7 @@ namespace SandcastleGui
             this.lnkProjectSite.Size = new System.Drawing.Size(266, 23);
             this.lnkProjectSite.TabIndex = 4;
             this.lnkProjectSite.TabStop = true;
-            this.lnkProjectSite.Text = "http://Sandcastle.CodePlex.com";
+            this.lnkProjectSite.Text = "http://SHFB.CodePlex.com";
             this.lnkProjectSite.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lnkProjectSite.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkProjectSite_LinkClicked);
             // 

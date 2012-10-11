@@ -40,14 +40,14 @@ suggested name is <localUri>bibliography.xml</localUri> but you can name it what
 						<content>
 							<para>Add content similar to the following to the bibliography XML file.</para>
 
-<code lang="xml" title="Sample Bibliography.xml File">
+<code language="xml" title="Sample Bibliography.xml File">
 <![CDATA[<?xml version="1.0" encoding="utf-8"?>
 <bibliography>
   <reference name="sandcastle activity">
-    <title>Sandcastle Activity Statistics</title>
-    <author>Microsoft</author>
+    <title>Sandcastle Help File Builder Activity Statistics</title>
+    <author>Eric Woodruff</author>
     <publisher>CodePlex.com</publisher>
-    <link>http://Sandcastle.codeplex.com/stats/view</link>
+    <link>http://SHFB.codeplex.com/stats/view</link>
   </reference>
   <reference name="shfb">
     <title>Sandcastle Help File Builder</title>
@@ -132,7 +132,7 @@ section is generated automatically near the bottom of the topic.</para>
       </content>
     </description>
     
-<code lang="xml" title="Sample Topic with Bibliography">
+<code language="xml" title="Sample Topic with Bibliography">
 <![CDATA[<?xml version="1.0" encoding="utf-8"?>
 <topic id="00000000-0000-0000-0000-000000000000" revisionNumber="1">
   <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"

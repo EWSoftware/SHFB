@@ -10,18 +10,16 @@
 
 <section address="DefineConfig">
   <title>Defining the Plug-In Configuration</title>
-  <content><para>The first step is to determine what items will appear in the
-plug-in configuration.  The configuration is stored as an XML fragment in the
-help file builder project file.  The root node is always
-<codeInline>configuration</codeInline>.  Define your own elements to contain
-the plug-in configuration that will be nested within the root element.  When
-first added to a project, the configuration will be empty.  Your plug-in should
-use appropriate default values as needed.  It is possible that a plug-in will
-have no configurable elements.  In that case, there is nothing to add to the
-default configuration.  Below is an example of a configuration that is passed
-to a plug-in.</para>
+  <content>
+		<para>The first step is to determine what items will appear in the plug-in configuration.  The configuration
+is stored as an XML fragment in the help file builder project file.  The root node is always
+<codeInline>configuration</codeInline>.  Define your own elements to contain the plug-in configuration that will
+be nested within the root element.  When first added to a project, the configuration will be empty.  Your plug-in
+should use appropriate default values as needed.  It is possible that a plug-in will have no configurable
+elements.  In that case, there is nothing to add to the default configuration.  Below is an example of a
+configuration that is passed to a plug-in.</para>
 
-<code lang="xml" title="Example Plug-In Configuration">
+<code language="xml" title="Example Plug-In Configuration">
 &lt;configuration&gt;
     &lt;ajaxDoc url=&quot;http://localhost:/AjaxDoc/&quot; project=&quot;MicrosoftAjax&quot; regenerate=&quot;true&quot; /&gt;
     &lt;userCredentials useDefault=&quot;true&quot; userName=&quot;&quot; password=&quot;&quot; /&gt;
@@ -36,72 +34,65 @@ to a plug-in.</para>
 
 <section address="CreateProject">
   <title>Creating the Project</title>
-  <content><para>This section describes how to create and configure the build
-process plug-in project.  It will describe the process for a C# project but the
-steps should be fairly similar for a VB.NET project with a few differences in
-the configuration option titles.</para>
+  <content>
+		<para>This section describes how to create and configure the build process plug-in project.  It will describe
+the process for a C# project but the steps should be fairly similar for a VB.NET project with a few differences
+in the configuration option titles.</para>
 
     <procedure>
       <title>Create the Plug-In Project</title>
       <steps class="ordered">
         <step>
           <content>
-            <para>In Visual Studio, create a new <legacyBold>Class
-Library</legacyBold> project.  Once it has been created, right click on the
-project and select Properties.</para>
+            <para>In Visual Studio, create a new <legacyBold>Class Library</legacyBold> project.  Once it has
+been created, right click on the project and select Properties.</para>
           </content>
         </step>
         <step>
           <content>
-            <para>In the <ui>Application</ui> tab, set the assembly name and
-default namespace as you see fit.</para>
+            <para>In the <ui>Application</ui> tab, set the assembly name and default namespace as you see fit.</para>
           </content>
         </step>
         <step>
           <content>
-            <para>In the <ui>Build Events</ui> tab, set the <ui>Post-build
-event command line</ui> to the following command based on your operating system
-which will copy the plug-in to the shared application data
-<localUri>.\Components and Plug-Ins</localUri>
-folder ready for testing (lines wrapped for display purposes):</para>
+            <para>In the <ui>Build Events</ui> tab, set the <ui>Post-build event command line</ui> to the
+following command based on your operating system which will copy the plug-in to the shared application data
+<localUri>.\Components and Plug-Ins</localUri> folder ready for testing (lines wrapped for display purposes):</para>
 
-<code lang="none" title="Windows Vista/Windows 7">
+<code language="none" title="Windows Vista/Windows 7">
 Copy /y "$(TargetPath)" "%ProgramData%\EWSoftware\Sandcastle Help File
 Builder\Components and Plug-Ins\$(TargetName).plugins"
 </code>
 
-<code lang="none" title="Windows XP">
+<code language="none" title="Windows XP">
 Copy /y "$(TargetPath)" "%ALLUSERSPROFILE%\Application Data\
 EWSoftware\Sandcastle Help File Builder\Components and Plug-Ins\
 $(TargetName).plugins"
 </code>
 
 <alert class="note">
-  <para>The plug-in assembly must use the extension <localUri>.plugins</localUri>
-for it to be found by the help file builder.</para>
+  <para>The plug-in assembly must use the extension <localUri>.plugins</localUri> for it to be found by the help
+file builder.</para>
 </alert>
 
-            <para>Add additional commands to copy any dependency assemblies
-and related configuration files as needed.</para>
+            <para>Add additional commands to copy any dependency assemblies and related configuration files as
+needed.</para>
           </content>
         </step>
         <step>
           <content>
-            <para>On the <ui>Debug</ui> tab, set the <ui>Start Action</ui> to
-"Start external program" and enter the path to the
-<localUri>SandcastleBuilderGUI.exe</localUri> program. If you installed the
-help file builder in the default location, this will be <localUri>C:\Program
-Files\EWSoftware\Sandcastle Help File Builder\</localUri>.  If not, substitute
-your path as appropriate.</para>
+            <para>On the <ui>Debug</ui> tab, set the <ui>Start Action</ui> to "Start external program" and enter
+the path to the <localUri>SandcastleBuilderGUI.exe</localUri> program. If you installed the help file builder in
+the default location, this will be <localUri>C:\Program Files\EWSoftware\Sandcastle Help File Builder\</localUri>.
+If not, substitute your path as appropriate.</para>
           </content>
         </step>
         <step>
           <content>
-            <para>Select the <ui>Signing</ui> tab and check the "Sign the
-assembly" checkbox.   Select "&lt;New...&gt;" from the "Choose a strong name
-key file" dropdown, enter a filename, and click OK to create the key file.  You
-can protect the key file with a password if you like or uncheck the option to
-create one without a password.</para>
+            <para>Select the <ui>Signing</ui> tab and check the "Sign the assembly" checkbox.   Select
+"&lt;New...&gt;" from the "Choose a strong name key file" dropdown, enter a filename, and click OK to create the
+key file.  You can protect the key file with a password if you like or uncheck the option to create one without a
+password.</para>
           </content>
         </step>
       </steps>
@@ -114,153 +105,142 @@ create one without a password.</para>
       <steps class="ordered">
         <step>
           <content>
-            <para>Right click on the <ui>References</ui> folder in the project
-and select "Add Reference...".</para>
+            <para>Right click on the <ui>References</ui> folder in the project and select "Add Reference...".</para>
           </content>
         </step>
         <step>
           <content>
-            <para>Select the <ui>Browse</ui> tab.  Navigate to your Sandcastle
-Help File Builder installation folder (usually <localUri>C:\Program
-Files\EWSoftware\Sandcastle Help File Builder\</localUri>).  Select
-<localUri>SandcastleBuilder.Utils.dll</localUri> and click OK to add it to the
-references. This contains the base class for the plug-in and some supporting
-definitions.  Once added, view its properties and set the <ui>Copy Local</ui>
-option to <codeInline>False</codeInline>.  This file is loaded from the help
-file builder installation folder and should not be copied locally or
-distributed with the plug-ins.</para>
+            <para>Select the <ui>Browse</ui> tab.  Navigate to your Sandcastle Help File Builder installation
+folder (usually <localUri>C:\Program Files\EWSoftware\Sandcastle Help File Builder\</localUri>).  Select
+<localUri>SandcastleBuilder.Utils.dll</localUri> and click OK to add it to the references. This contains the base
+class for the plug-in and some supporting definitions.  Once added, view its properties and set the <ui>Copy
+Local</ui> option to <codeInline>False</codeInline>.  This file is loaded from the help file builder installation
+folder and should not be copied locally or distributed with the plug-ins.</para>
           </content>
         </step>
         <step>
           <content>
-            <para>If you would like to make your plug-ins interactively
-configurable from the Sandcastle Help File Builder, open the Add Reference
-dialog and add a reference to <localUri>System.Windows.Forms</localUri> from
+            <para>If you would like to make your plug-ins interactively configurable from the Sandcastle Help
+File Builder, open the Add Reference dialog and add a reference to <localUri>System.Windows.Forms</localUri> from
 the <ui>.NET</ui> tab. More information about this will be supplied later.</para>
           </content>
         </step>
       </steps>
     </procedure>
 
-	<para>You can add other necessary references to the project as you develop
-your plug-in.</para>
+	<para>You can add other necessary references to the project as you develop your plug-in.</para>
 
   </content>
 </section>
 
 <section address="Skeleton">
   <title>The Plug-In Skeleton Class</title>
-  <content><para>You are now ready to create the plug-in class itself.  Note
-that multiple plug-ins can reside within the same assembly.  Repeat this
-process for as many plug-ins as you need to create giving each one a unique
-name.  Add a new class to the project and insert the following skeleton code
-into it. Here again, this will only show C# code.  For VB.NET, the structure
-will be similar but you will have to convert it to the VB.NET syntax.  Each
-part will be covered in detail below.</para>
+  <content><para>You are now ready to create the plug-in class itself.  Note that multiple plug-ins can reside
+within the same assembly.  Repeat this process for as many plug-ins as you need to create giving each one a
+unique name.  Add a new class to the project and insert the following skeleton code into it. Here again, this
+will only show C# code.  For VB.NET, the structure will be similar but you will have to convert it to the VB.NET
+syntax.  Each part will be covered in detail below.</para>
 
-<code lang="cs" title="Plug-In Skeleton" outlining="true"
-    source="..\SandcastleBuilderPlugIns\TestPlugIn.cs"
+<code language="cs" title="Plug-In Skeleton" outlining="true"
+    source="..\..\SHFB\Source\SandcastleBuilderPlugIns\TestPlugIn.cs"
     region="Help File Plug-in Example"></code>
 
 <para>The plug-in is derived from the <codeEntityReference qualifyHint="true">T:SandcastleBuilder.Utils.PlugIn.IPlugIn</codeEntityReference>
-interface and consists of several properties and methods that you must
-implement.  These are described below.  Review the code above for
-"<legacyBold>TODO:</legacyBold>" comments to find sections that need attention
-such as changing the namespace, class name, etc.  If you followed the steps in
-the <legacyBold>Creating the Project</legacyBold> section, you can run the
-project and debug it by setting breakpoints in the plug-in's code.</para>
+interface and consists of several properties and methods that you must implement.  These are described below.
+Review the code above for "<legacyBold>TODO:</legacyBold>" comments to find sections that need attention such as
+changing the namespace, class name, etc.  If you followed the steps in the <legacyBold>Creating the
+Project</legacyBold> section, you can run the project and debug it by setting breakpoints in the plug-in's
+code.</para>
 
   </content>
 </section>
 
 <section address="Interface">
   <title>The SandcastleBuilder.Utils.PlugIn.IPlugIn Interface</title>
-  <content><para>The interface consists of a set of descriptive properties
+  <content>
+		<para>The interface consists of a set of descriptive properties
 (<codeEntityReference qualifyHint="false">P:SandcastleBuilder.Utils.PlugIn.IPlugIn.Name</codeEntityReference>,
 <codeEntityReference qualifyHint="false">P:SandcastleBuilder.Utils.PlugIn.IPlugIn.Version</codeEntityReference>,
 <codeEntityReference qualifyHint="false">P:SandcastleBuilder.Utils.PlugIn.IPlugIn.Copyright</codeEntityReference>, and
 <codeEntityReference qualifyHint="false">P:SandcastleBuilder.Utils.PlugIn.IPlugIn.Description</codeEntityReference>)
-that provide basic information about the plug-in.  The following properties and
-methods are used to configure the plug-in and execute it during a build.</para>
+that provide basic information about the plug-in.  The following properties and methods are used to configure the
+plug-in and execute it during a build.</para>
   </content>
 
 	<sections>
 <section address="RunsInPartialBuild">
   <title>RunsInPartialBuild</title>
-  <content><para>The <codeEntityReference qualifyHint="false">P:SandcastleBuilder.Utils.PlugIn.IPlugIn.RunsInPartialBuild</codeEntityReference>
-property determines whether or not the plug-in runs during a partial build.
-Partial builds occur when generating the table of contents for the preview
-dialog and the API Filter editor dialog.  In such cases, the plug-in may not be
-needed.  If this property returns false, the plug-in is omitted which can speed
-up the partial build.</para>
+  <content>
+		<para>The <codeEntityReference qualifyHint="false">P:SandcastleBuilder.Utils.PlugIn.IPlugIn.RunsInPartialBuild</codeEntityReference>
+property determines whether or not the plug-in runs during a partial build.  Partial builds occur when generating
+the table of contents for the preview dialog and the API Filter editor dialog.  In such cases, the plug-in may
+not be needed.  If this property returns false, the plug-in is omitted which can speed up the partial build.</para>
 
   </content>
 </section>
 
 <section address="ExecutionPoints">
   <title>ExecutionPoints</title>
-  <content><para>The <codeEntityReference qualifyHint="false">P:SandcastleBuilder.Utils.PlugIn.IPlugIn.ExecutionPoints</codeEntityReference>
-property is probably the most important member of the interface.  It returns a
-collection of <codeEntityReference qualifyHint="false">T:SandcastleBuilder.Utils.PlugIn.ExecutionPoint</codeEntityReference>
-objects that define at which steps in the build process the plug-in should be
-ran. Execution points can be set to run before and/or after a build step to
-supplement the default processing or they can be set to run instead of the
-build step to completely supress or replace the default processing.  See the
+  <content>
+		<para>The <codeEntityReference qualifyHint="false">P:SandcastleBuilder.Utils.PlugIn.IPlugIn.ExecutionPoints</codeEntityReference>
+property is probably the most important member of the interface.  It returns a collection of
+<codeEntityReference qualifyHint="false">T:SandcastleBuilder.Utils.PlugIn.ExecutionPoint</codeEntityReference>
+objects that define at which steps in the build process the plug-in should be ran. Execution points can be set to
+run before and/or after a build step to supplement the default processing or they can be set to run instead of
+the build step to completely supress or replace the default processing.  See the
 <codeEntityReference qualifyHint="false">T:SandcastleBuilder.Utils.BuildEngine.BuildStep</codeEntityReference>
 enumeration for a list of the defined build steps.</para>
 
-  <para>Each execution point can be assigned a priority.  The execution
-priority is used to determine the order in which the plug-ins will be executed.
-Those with a higher priority value will be executed before those with a lower
-value.  Those with an identical priority may be executed in any order within
-their group.  If not specified, a default priority of 1,000 is used.</para>
+  <para>Each execution point can be assigned a priority.  The execution priority is used to determine the order
+in which the plug-ins will be executed.  Those with a higher priority value will be executed before those with a
+lower value.  Those with an identical priority may be executed in any order within their group.  If not
+specified, a default priority of 1,000 is used.</para>
 
   </content>
 </section>
 
 <section address="ConfigurePlugIn">
   <title>ConfigurePlugIn</title>
-  <content><para>The <codeEntityReference qualifyHint="false" autoUpgrade="true">M:SandcastleBuilder.Utils.PlugIn.IPlugIn.ConfigurePlugIn(SandcastleBuilder.Utils.SandcastleProject,System.String)</codeEntityReference>
-method is used to configure the plug-in interactively from within the help file
-builder.  The method is passed a string containing the XML fragment that defines
-the current configuration. It should return a copy of the edited configuration.</para>
+  <content>
+		<para>The <codeEntityReference qualifyHint="false" autoUpgrade="true">M:SandcastleBuilder.Utils.PlugIn.IPlugIn.ConfigurePlugIn(SandcastleBuilder.Utils.SandcastleProject,System.String)</codeEntityReference>
+method is used to configure the plug-in interactively from within the help file builder.  The method is passed a
+string containing the XML fragment that defines the current configuration. It should return a copy of the edited
+configuration.</para>
 
   </content>
 </section>
 
 <section address="Initialize">
   <title>Initialize</title>
-  <content><para>The <codeEntityReference qualifyHint="false" autoUpgrade="true">M:SandcastleBuilder.Utils.PlugIn.IPlugIn.Initialize(SandcastleBuilder.Utils.BuildEngine.BuildProcess,System.Xml.XPath.XPathNavigator)</codeEntityReference>
-method is used to initialize the plug-in at the start of the build process.  It
-is passed a reference to the current
-<codeEntityReference qualifyHint="false">T:SandcastleBuilder.Utils.BuildEngine.BuildProcess</codeEntityReference>
-and an XPath navigator containing the plug-in configuration.  You should cache
-a copy of the build process reference for use during execution as it contains
-many properties and methods that you will find useful.</para>
+  <content>
+		<para>The <codeEntityReference qualifyHint="false" autoUpgrade="true">M:SandcastleBuilder.Utils.PlugIn.IPlugIn.Initialize(SandcastleBuilder.Utils.BuildEngine.BuildProcess,System.Xml.XPath.XPathNavigator)</codeEntityReference>
+method is used to initialize the plug-in at the start of the build process.  It is passed a reference to the
+current <codeEntityReference qualifyHint="false">T:SandcastleBuilder.Utils.BuildEngine.BuildProcess</codeEntityReference>
+and an XPath navigator containing the plug-in configuration.  You should cache a copy of the build process
+reference for use during execution as it contains many properties and methods that you will find useful.</para>
 
   </content>
 </section>
 
 <section address="Execute">
   <title>Execute</title>
-  <content><para>The <codeEntityReference qualifyHint="false" autoUpgrade="true">M:SandcastleBuilder.Utils.PlugIn.IPlugIn.Execute(SandcastleBuilder.Utils.PlugIn.ExecutionContext)</codeEntityReference>
-method is called to perform the plug-in processing during the relevant build
-steps.  It is passed an <codeEntityReference qualifyHint="true">T:SandcastleBuilder.Utils.PlugIn.ExecutionContext</codeEntityReference>
-object that defines the current execution context.  If your plug-in determines
-that it does not need to run, it should set the
-<codeEntityReference qualifyHint="true">P:SandcastleBuilder.Utils.PlugIn.ExecutionContext.Executed</codeEntityReference>
-property to false.  This is especially important for plug-ins with the
-<codeInline>InsteadOf</codeInline> behavior. If none run, the default
-processing will occur.</para>
+  <content>
+		<para>The <codeEntityReference qualifyHint="false" autoUpgrade="true">M:SandcastleBuilder.Utils.PlugIn.IPlugIn.Execute(SandcastleBuilder.Utils.PlugIn.ExecutionContext)</codeEntityReference>
+method is called to perform the plug-in processing during the relevant build steps.  It is passed an
+<codeEntityReference qualifyHint="true">T:SandcastleBuilder.Utils.PlugIn.ExecutionContext</codeEntityReference>
+object that defines the current execution context.  If your plug-in determines that it does not need to run, it
+should set the <codeEntityReference qualifyHint="true">P:SandcastleBuilder.Utils.PlugIn.ExecutionContext.Executed</codeEntityReference>
+property to false.  This is especially important for plug-ins with the <codeInline>InsteadOf</codeInline>
+behavior. If none run, the default processing will occur.</para>
 
   </content>
 </section>
 
 <section address="Dispose">
   <title>Dispose</title>
-  <content><para>The <codeInline>Dispose</codeInline> method can be used to
-dispose of any resources used during the build process.  If you do not have any
-resources that need to be disposed of, this method can be left blank.</para>
+  <content>
+		<para>The <codeInline>Dispose</codeInline> method can be used to dispose of any resources used during the
+build process.  If you do not have any resources that need to be disposed of, this method can be left blank.</para>
 
   </content>
 </section>
@@ -271,57 +251,68 @@ resources that need to be disposed of, this method can be left blank.</para>
 
 <section address="ExecNotes">
   <title>Execution Notes</title>
-  <content><para>There are certain conditions to be aware of when choosing and
-coding the execution behavior for your plug-in.</para>
+  <content><para>There are certain conditions to be aware of when choosing and coding the execution behavior for
+your plug-in.</para>
 
 <list class="bullet">
-    <listItem>The earliest execution point for a plug-in is the <codeInline>After</codeInline>
-behavior with the <codeInline>Initializing</codeInline> step.</listItem>
+    <listItem>
+			<para>The earliest execution point for a plug-in is the <codeInline>After</codeInline> behavior with the
+<codeInline>Initializing</codeInline> step.</para>
+		</listItem>
 
-    <listItem>The <codeInline>Before</codeInline> and <codeInline>InsteadOf</codeInline>
-behaviors cannot be used with the <codeInline>Initializing</codeInline>,
-<codeInline>Canceled</codeInline>, or <codeInline>Failed</codeInline> steps.</listItem>
+    <listItem>
+			<para>The <codeInline>Before</codeInline> and <codeInline>InsteadOf</codeInline> behaviors cannot be used
+with the <codeInline>Initializing</codeInline>, <codeInline>Canceled</codeInline>, or <codeInline>Failed</codeInline>
+steps.</para>
+		</listItem>
 
-    <listItem>The <codeInline>InsteadOf</codeInline> behavior cannot be used
-with the <codeInline>FindingTools</codeInline> or <codeInline>Completed</codeInline>
-steps.</listItem>
+    <listItem>
+			<para>The <codeInline>InsteadOf</codeInline> behavior cannot be used with the <codeInline>FindingTools</codeInline>
+or <codeInline>Completed</codeInline> steps.</para>
+		</listItem>
 
-    <listItem>The <codeInline>InsteadOf</codeInline> behavior always takes
-precedence.  The build process will not call any plug-ins with <codeInline>Before</codeInline>
-or <codeInline>After</codeInline> behavior for the step if an <codeInline>InsteadOf</codeInline>
-plug-in runs.  As such, it is up to the plug-in with the <codeInline>InsteadOf</codeInline>
-behavior to call the <codeEntityReference qualifyHint="false" autoUpgrade="true">M:SandcastleBuilder.Utils.BuildEngine.BuildProcess.ExecuteBeforeStepPlugIns</codeEntityReference>
+    <listItem>
+			<para>The <codeInline>InsteadOf</codeInline> behavior always takes precedence.  The build process will not
+call any plug-ins with <codeInline>Before</codeInline> or <codeInline>After</codeInline> behavior for the step if
+an <codeInline>InsteadOf</codeInline> plug-in runs.  As such, it is up to the plug-in with the
+<codeInline>InsteadOf</codeInline> behavior to call the
+<codeEntityReference qualifyHint="false" autoUpgrade="true">M:SandcastleBuilder.Utils.BuildEngine.BuildProcess.ExecuteBeforeStepPlugIns</codeEntityReference>
 and <codeEntityReference qualifyHint="false" autoUpgrade="true">M:SandcastleBuilder.Utils.BuildEngine.BuildProcess.ExecuteAfterStepPlugIns</codeEntityReference>
-methods to run them if needed.</listItem>
+methods to run them if needed.</para>
+		</listItem>
 
-    <listItem>If the build step involves creating, modifying, or deleting a
-non-script file or folder, the <codeInline>Before</codeInline> behavior is
-always executed prior to creating/modifying/deleting the file or folder.
-Use the <codeInline>After</codeInline> behavior if you need to guarantee that
-the file or folder exists or you do not want your version overwritten.  The
-exceptions to this rule are MSBuild project files (<localUri>*.proj</localUri>)
-and <localUri>MRefBuilder.config</localUri> which are always created prior to
-running the <codeInline>Before</codeInline> behavior plug-ins.  This allows you
-to modify the script files prior to them being ran.</listItem>
+    <listItem>
+			<para>If the build step involves creating, modifying, or deleting a non-script file or folder, the
+<codeInline>Before</codeInline> behavior is always executed prior to creating/modifying/deleting the file or
+folder.  Use the <codeInline>After</codeInline> behavior if you need to guarantee that the file or folder exists
+or you do not want your version overwritten.  The exceptions to this rule are MSBuild project files
+(<localUri>*.proj</localUri>) and <localUri>MRefBuilder.config</localUri> which are always created prior to
+running the <codeInline>Before</codeInline> behavior plug-ins.  This allows you to modify the script files prior
+to them being ran.</para>
+		</listItem>
 
-    <listItem>If the build step involves creating, modifying, or deleting a
-script file or folder and the <codeInline>InsteadOf</codeInline> behavior is
-used, the plug-in is responsible for creating the script file/folder.  All
-normal processing involving the file/folder including its creation is skipped.</listItem>
+    <listItem>
+			<para>If the build step involves creating, modifying, or deleting a script file or folder and the
+<codeInline>InsteadOf</codeInline> behavior is used, the plug-in is responsible for creating the script
+file/folder.  All normal processing involving the file/folder including its creation is skipped.</para>
+		</listItem>
 
-    <listItem>The <codeInline>GenerateHelpFormatTableOfContents</codeInline>,
+    <listItem>
+			<para>The <codeInline>GenerateHelpFormatTableOfContents</codeInline>,
 <codeInline>GenerateHelpFileIndex</codeInline>, <codeInline>GenerateHelpProject</codeInline>,
-<codeInline>UpdateTableOfContents</codeInline>, and <codeInline>CompilingHelpFile</codeInline>
-steps will run once for each help file format selected.  You can use the
+<codeInline>UpdateTableOfContents</codeInline>, and <codeInline>CompilingHelpFile</codeInline> steps will run
+once for each help file format selected.  You can use the
 <codeEntityReference qualifyHint="false">P:SandcastleBuilder.Utils.BuildEngine.BuildProcess.CurrentFormat</codeEntityReference>
-property to determine the current help file format being built in order to skip
-or alter the plug-in's processing based on the help file format.</listItem>
+property to determine the current help file format being built in order to skip or alter the plug-in's processing
+based on the help file format.</para>
+		</listItem>
 
-    <listItem>Be aware that the HTML Help 1 index and table of contents files
-and the website table of contents file are actually generated as part of the
-<codeInline>ExtractHtmlInfo</codeInline> step.  However, the before and after
-plug-in behaviors for the index and table of contents steps in each of those
-formats will still be executed.</listItem>
+    <listItem>
+			<para>Be aware that the HTML Help 1 index and table of contents files and the website table of contents
+file are actually generated as part of the <codeInline>ExtractHtmlInfo</codeInline> step.  However, the before
+and after plug-in behaviors for the index and table of contents steps in each of those formats will still be
+executed.</para>
+		</listItem>
 
 </list>
 

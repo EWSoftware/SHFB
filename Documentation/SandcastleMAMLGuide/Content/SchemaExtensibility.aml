@@ -5,10 +5,9 @@
 								 xmlns:xsd="http://schemas.xsddoc.codeplex.com/schemaDoc/2009/3">
 		<introduction>
 			<para>
-				This topic will explain how you can change the MAML schema so that you can
-				use elements from other namespaces as well. This is useful when extending
-				<token>Sandcastle</token> with build components that provide new elements
-				because it still allows you to validate your topic files.
+				This topic will explain how you can change the MAML schema so that you can use elements from other
+				namespaces as well. This is useful when extending Sandcastle with build components that provide new
+				elements because it still allows you to validate your topic files.
 			</para>
 			<alert class="tip">
 				<para>

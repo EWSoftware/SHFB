@@ -4,16 +4,6 @@
   <item id="BuildDate_1">{@BuildDate:MMMM d, yyyy a\t hh:mm tt}</item>
   <item id="CopyrightInfo">{@CopyrightInfo}</item>
   <item id="FeedbackEMailAddress">{@FeedbackEMailAddress}</item>
-  <item id="Sandcastle"><ddue:externalLink xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5">
-    <ddue:linkText>Sandcastle</ddue:linkText>
-    <ddue:linkUri>http://Sandcastle.CodePlex.com</ddue:linkUri>
-    <ddue:linkTarget>_blank</ddue:linkTarget>
-</ddue:externalLink></item>
-  <item id="SandcastleStyles"><ddue:externalLink xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5">
-    <ddue:linkText>Sandcastle Styles</ddue:linkText>
-    <ddue:linkUri>http://SandcastleStyles.CodePlex.com</ddue:linkUri>
-    <ddue:linkTarget>_blank</ddue:linkTarget>
-</ddue:externalLink></item>
   <item id="SandcastleVersion">October 2012 v2.7.1.0</item>
   <item id="SHFB"><ddue:externalLink xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5">
     <ddue:linkText>Sandcastle Help File Builder</ddue:linkText>

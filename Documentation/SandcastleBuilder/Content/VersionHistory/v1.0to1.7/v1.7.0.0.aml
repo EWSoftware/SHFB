@@ -519,12 +519,7 @@ license used by Sandcastle itself.</listItem>
 simplifies obtaining XML comments files for C# and VB.NET website projects.  In
 combination with the new wildcard support in the help file builder's Assemblies
 to Document list, producing a help file for websites is now a much simpler
-task. Download the custom code providers from the <externalLink>
-  <linkText>Sandcastle Styles</linkText>
-  <linkUri>http://SandcastleStyles.codeplex.com</linkUri>
-  <linkTarget>_blank</linkTarget></externalLink> Releases page.  Click on the <legacyBold>Documenting Web
-Projects</legacyBold> link in the <legacyBold>Releases</legacyBold> box on the
-right side of the Release page to access it.</para>
+task. Use the custom code providers available as part of the Sandcastle tools installer.</para>
   </content>
 </section>
 

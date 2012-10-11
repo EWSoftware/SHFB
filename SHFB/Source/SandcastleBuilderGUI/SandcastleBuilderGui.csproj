@@ -938,16 +938,7 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>IF "$(ConfigurationName)"=="Debug" Goto Exit
-IF "$(ConfigurationName)"=="ReleaseNoDoc" Goto Exit
-
-SET SHFBROOT=$(SolutionDir)SandcastleBuilderGUI\Bin\Release
-
-ECHO Building SHFB help files via MSBuild
-"$(SystemRoot)\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" /p:CleanIntermediates=True /p:Configuration=Release "$(SolutionDir)Doc\SandcastleBuilder.shfbproj"
-"$(SystemRoot)\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" /p:CleanIntermediates=True /p:Configuration=Release "$(SolutionDir)Doc\BuildComponents.shfbproj"
-
-:Exit
-</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
 </Project>

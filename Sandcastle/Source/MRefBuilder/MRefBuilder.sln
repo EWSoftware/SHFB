@@ -16,6 +16,20 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	EndProjectSection
 EndProject
 Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 4
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs01
+		SccProjectUniqueName0 = ..\\CommandLine\\CommandLine.csproj
+		SccProjectName0 = ../CommandLine
+		SccLocalPath0 = ..\\CommandLine
+		SccLocalPath1 = .
+		SccProjectUniqueName2 = MRefBuilder.csproj
+		SccLocalPath2 = .
+		SccProjectUniqueName3 = TestCase\\TestCase.csproj
+		SccProjectName3 = TestCase
+		SccLocalPath3 = TestCase
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU

@@ -3,32 +3,28 @@
   <developerGlossaryDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
     <glossary>
 
-	<glossaryEntry>
-		<terms>
-          <term termId="AdditionalContent">additional content</term>
+			<glossaryEntry>
+				<terms>
+					<term termId="AdditionalContent">additional content</term>
         </terms>
         <definition>
-          <para>An extra file included in the help file used to define extra
-content or used as a supporting file.  This can be an HTML topic, an image,
-script, stylesheet, etc.  In earlier releases of the help file builder, this
-was the way non-API content was included in the help file.  The preferred
-method of including such content now is to use conceptual content.  Although
-still supported, the additional content features of the help file builder
-are now considered deprecated.</para>
+          <para>An extra file included in the help file used to define extra content or used as a supporting
+file.  This can be an HTML topic, an image, script, stylesheet, etc.  In earlier releases of the help file
+builder, this was the way non-API content was included in the help file.  The preferred method of including such
+content now is to use conceptual content.  Although still supported, the additional content features of the help
+file builder are now considered deprecated.</para>
         </definition>
         <relatedEntry termId="ConceptualContent" />
       </glossaryEntry>
-
 
       <glossaryEntry>
         <terms>
           <term>BuildAssembler.exe</term>
         </terms>
         <definition>
-          <para>This is a tool supplied with Sandcastle that is used to build the
-help topics for conceptual and reference builds.  It is passed a configuration
-file containing a list of build components to use in transforming the topics
-into HTML and a manifest file that lists the topics to build.</para>
+          <para>This is a tool supplied with Sandcastle that is used to build the help topics for conceptual and
+reference builds.  It is passed a configuration file containing a list of build components to use in transforming
+the topics into HTML and a manifest file that lists the topics to build.</para>
         </definition>
         <relatedEntry termId="Sandcastle" />
       </glossaryEntry>
@@ -38,12 +34,10 @@ into HTML and a manifest file that lists the topics to build.</para>
           <term termId="CodeBlockComponent">Code Block Component</term>
         </terms>
         <definition>
-          <para>A custom build component that can be used to colorize code,
-add line numbering and/or collapsible section, and import code from working
-source code files.  It can be used in both conceptual and reference builds.
-The component is integrated with the <token>SHFB</token> and is also available
-as a standalone component from the same project site for use in other tools
-or your own build scripts.</para>
+          <para>A custom build component that can be used to colorize code, add line numbering and/or collapsible
+section, and import code from working source code files.  It can be used in both conceptual and reference builds.
+The component is integrated with the <token>SHFB</token> and is also available as a standalone component from the
+same project site for use in other tools or your own build scripts.</para>
         </definition>
         <relatedEntry termId="Sandcastle" />
         <relatedEntry termId="SHFB" />
@@ -55,9 +49,8 @@ or your own build scripts.</para>
           <term>code snippets file</term>
         </terms>
         <definition>
-          <para>A file used to store commonly used code snippets.  The snippets
-can be inserted into a conceptual topic using the <codeInline>CodeEntityReference</codeInline>
-element.</para>
+          <para>A file used to store commonly used code snippets.  The snippets can be inserted into a conceptual
+topic using the <codeInline>CodeEntityReference</codeInline> element.</para>
         </definition>
       </glossaryEntry>
 
@@ -66,8 +59,8 @@ element.</para>
           <term termId="ConceptualBuild">conceptual build</term>
         </terms>
         <definition>
-          <para>A build that uses Sandcastle to produce help file topics using
-information extracted from conceptual content topics and their related files.</para>
+          <para>A build that uses Sandcastle to produce help file topics using information extracted from
+conceptual content topics and their related files.</para>
         </definition>
         <relatedEntry termId="ReferenceBuild" />
         <relatedEntry termId="Sandcastle" />
@@ -78,9 +71,9 @@ information extracted from conceptual content topics and their related files.</p
           <term termId="ConceptualContent">conceptual content</term>
         </terms>
         <definition>
-          <para>A topic file that contains conceptual content.  These can be used
-to add usage notes, walkthroughs, tutorials, etc. to a help file.  Conceptual
-topics use MAML rather than HTML to define their content.</para>
+          <para>A topic file that contains conceptual content.  These can be used to add usage notes,
+walkthroughs, tutorials, etc. to a help file.  Conceptual topics use MAML rather than HTML to define their
+content.</para>
         </definition>
         <relatedEntry termId="AdditionalContent" />
         <relatedEntry termId="MAML" />
@@ -98,16 +91,13 @@ topics use MAML rather than HTML to define their content.</para>
 			<term>documentation source</term>
 		</terms>
 		<definition>
-			<para>An individual assembly (executable or DLL), an individual XML
-comments file, a Visual Studio project file (C#, VB.NET, or J#), a Visual
-Studio solution file containing one or more of the noted project types,
-or a wildcard item that results in a list of one or more of the previously
-mentioned file types.  These are used to produce API documentation in a help
-project.  At least one assembly must be specified as a documentation source in
-order to produce API help content.  Documentation sources are managed using the
-<legacyBold>Documentation Sources</legacyBold> project node in the
-<legacyBold>Project Explorer</legacyBold> window.</para>
-	<token>SolutionDocSource</token>
+			<para>An individual assembly (executable or DLL), an individual XML comments file, a Visual Studio project
+file (C#, VB.NET, or J#), a Visual Studio solution file containing one or more of the noted project types, or a
+wildcard item that results in a list of one or more of the previously mentioned file types.  These are used to
+produce API documentation in a help project.  At least one assembly must be specified as a documentation source
+in order to produce API help content.  Documentation sources are managed using the <legacyBold>Documentation
+Sources</legacyBold> project node in the <legacyBold>Project Explorer</legacyBold> window.</para>
+		<token>SolutionDocSource</token>
 		</definition>
 	</glossaryEntry>
 
@@ -117,11 +107,10 @@ order to produce API help content.  Documentation sources are managed using the
           <term>GUID</term>
         </terms>
         <definition>
-          <para>A unique value that is associated with each conceptual topic
-and image in a project.  When inserting links to topics or images, the ID is
-used to refer to them.  This allows you to alter the names or locations of the
-topic files without having to change the name or location in each topic that
-references them.</para>
+          <para>A unique value that is associated with each conceptual topic and image in a project.  When
+inserting links to topics or images, the ID is used to refer to them.  This allows you to alter the names or
+locations of the topic files without having to change the name or location in each topic that references
+them.</para>
         </definition>
       </glossaryEntry>
 
@@ -130,8 +119,8 @@ references them.</para>
           <term termId="MAML">MAML</term>
         </terms>
         <definition>
-          <para>An acronym that stands for Microsoft Assistance Markup
-Language.  Conceptual content topics are composed of MAML elements.</para>
+          <para>An acronym that stands for Microsoft Assistance Markup Language.  Conceptual content topics are
+composed of MAML elements.</para>
         </definition>
         <relatedEntry termId="ConceptualContent" />
       </glossaryEntry>
@@ -141,12 +130,10 @@ Language.  Conceptual content topics are composed of MAML elements.</para>
           <term termId="PostTransformComponent">Post-Transform Component</term>
         </terms>
         <definition>
-          <para>A custom build component that can be used insert a logo into
-the header of conceptual and reference build topics.  It is a companion to the
-Code Block Component and inserts the necessary script into each topic if
-colorized code blocks are present and connects them to the language filter.
-In reference builds, it can also insert assembly version information into each
-topic.</para>
+          <para>A custom build component that can be used insert a logo into the header of conceptual and
+reference build topics.  It is a companion to the Code Block Component and inserts the necessary script into each
+topic if colorized code blocks are present and connects them to the language filter.  In reference builds, it can
+also insert assembly version information into each topic.</para>
         </definition>
         <relatedEntry termId="CodeBlockComponent" />
         <relatedEntry termId="Sandcastle" />
@@ -157,12 +144,11 @@ topic.</para>
 		<terms>
 			<term termId="Reference">reference</term>
 		</terms>
-		<definition><para>Also referred to as a <newTerm>dependency</newTerm>.
-This is an assembly that is referenced by one of the documented assemblies for
-base class information but is itself not documented as part of the help project.
-They are managed via the <legacyBold>References</legacyBold> project node in
-the <legacyBold>Project Explorer</legacyBold> window.  References can be GAC
-entries, assembly files, COM objects, or Visual Studio project files.</para></definition>
+		<definition><para>Also referred to as a <newTerm>dependency</newTerm>.  This is an assembly that is
+referenced by one of the documented assemblies for base class information but is itself not documented as part of
+the help project.  They are managed via the <legacyBold>References</legacyBold> project node in the
+<legacyBold>Project Explorer</legacyBold> window.  References can be GAC entries, assembly files, COM objects, or
+Visual Studio project files.</para></definition>
 	</glossaryEntry>
 
       <glossaryEntry>
@@ -170,9 +156,8 @@ entries, assembly files, COM objects, or Visual Studio project files.</para></de
           <term termId="ReferenceBuild">reference build</term>
         </terms>
         <definition>
-          <para>A build that uses Sandcastle to produce help file topics using
-information extracted from managed assemblies and their associated XML comments
-files.</para>
+          <para>A build that uses Sandcastle to produce help file topics using information extracted from managed
+assemblies and their associated XML comments files.</para>
         </definition>
         <relatedEntry termId="ConceptualBuild" />
         <relatedEntry termId="Sandcastle" />
@@ -183,10 +168,10 @@ files.</para>
           <term termId="Sandcastle">Sandcastle</term>
         </terms>
         <definition>
-          <para>
-            <token>Sandcastle</token> is a set of tools produced by
-Microsoft that can be used to build help files for .NET managed libraries,
-conceptual content, or a mix of both.</para>
+          <para>Sandcastle is a set of tools produced by Microsoft that can be used to build help files for .NET
+managed libraries, conceptual content, or a mix of both.  Microsoft officially discontinued development in
+October 2012.  The Sandcastle tools have been merged with the <token>SHFB</token> project and are developed and
+supported there now as part of that project.</para>
         </definition>
         <relatedEntry termId="SHFB" />
       </glossaryEntry>
@@ -197,14 +182,13 @@ conceptual content, or a mix of both.</para>
           <term>SHFB</term>
         </terms>
         <definition>
-          <para>The <token>SHFB</token> is a standalone tool used to automate
-Sandcastle.  It consists of a GUI front end that helps you manage and build
-help file projects.  It uses a standard MSBuild format project file which can
-also by built from the command line using MSBuild or integrated into Visual
-Studio builds or other build scripts to produce a help file when your
-application projects are built.  In addition, it provides a set of additional
-features beyond those supplied with Sandcastle that can improve your help file
-and make it easier to deploy.</para>
+          <para>The <token>SHFB</token> is a standalone tool used to automate Sandcastle.  It consists of a GUI
+front end that helps you manage and build help file projects.  It uses a standard MSBuild format project file
+which can also be built from the command line using MSBuild or integrated into Visual Studio builds or other
+build scripts to produce a help file when your application projects are built.  In addition, it provides a set of
+additional features beyond those supplied with Sandcastle that can improve your help file and make it easier to
+deploy.  A Visual Studio integration package is also available for it that integrates the project management
+and build features into Visual Studio 2010 or later.</para>
         </definition>
         <relatedEntry termId="Sandcastle" />
       </glossaryEntry>
@@ -215,11 +199,10 @@ and make it easier to deploy.</para>
           <term>token file</term>
         </terms>
         <definition>
-          <para>A token is used as a replaceable tag within a topic and is
-represented using a <codeInline>token</codeInline> element.  The inner
-text of the element is a token name.  The tokens are defined in a separate
-token file.  They are an easy way to represent common items that you use
-regularly such as a common phrase or external link.</para>
+          <para>A token is used as a replaceable tag within a topic and is represented using a
+<codeInline>token</codeInline> element.  The inner text of the element is a token name.  The tokens are defined
+in a separate token file.  They are an easy way to represent common items that you use regularly such as a common
+phrase or external link.</para>
         </definition>
       </glossaryEntry>
 

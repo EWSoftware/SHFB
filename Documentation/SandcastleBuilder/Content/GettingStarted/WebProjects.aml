@@ -7,11 +7,11 @@
 		<autoOutline />
 
     <para>A question that comes up with some regularity is how to produce a help file from the XML comments in
-the code for a web project using <token>Sandcastle</token>. There are two types of web project: a
-<legacyItalic>web application</legacyItalic> project and a <legacyItalic>website</legacyItalic> project (both
-include a web service and an AJAX-enabled variant of the project type). A web application project is the simplest
-to document as it generates a single assembly with a fixed name much like any other non-web project.  A website
-project, however, requires some extra effort to document and has a number of limitations:</para>
+the code for a web project using Sandcastle. There are two types of web project: a <legacyItalic>web
+application</legacyItalic> project and a <legacyItalic>website</legacyItalic> project (both include a web service
+and an AJAX-enabled variant of the project type). A web application project is the simplest to document as it
+generates a single assembly with a fixed name much like any other non-web project.  A website project, however,
+requires some extra effort to document and has a number of limitations:</para>
 
     <list class="bullet">
       <listItem>
@@ -48,9 +48,9 @@ files</localUri> so you must locate and retrieve them after each build.</para>
     </list>
 
     <para>To work around the limitations present when documenting website projects, you can use the custom code
-providers available at the <token>Sandcastle</token> project website (one for C# and one for VB.NET).  By using
-these code providers, you can specify a folder to which the XML comments files should be copied.  This saves you
-from having to locate and copy them manually and solves the issue of the C# compiler not being able to output one
+providers made available with the Sandcastle tools installer (one for C# and one for VB.NET).  By using these
+code providers, you can specify a folder to which the XML comments files should be copied.  This saves you from
+having to locate and copy them manually and solves the issue of the C# compiler not being able to output one
 comments file per assembly.  Below are instructions for documenting each type of web project and information
 about how the code providers work.</para>
   </introduction>
@@ -466,11 +466,10 @@ comments files for website projects in order to create help files for them.</par
     </content>
   </section>
 
-  <relatedTopics>
-    <link xlink:href="c47d9242-b3a8-4153-aa9e-ae8cb41cefe2" />
-    <token>Sandcastle</token>
-    <token>SHFB</token>
-  </relatedTopics>
+		<relatedTopics>
+			<link xlink:href="c47d9242-b3a8-4153-aa9e-ae8cb41cefe2" />
+			<token>SHFB</token>
+		</relatedTopics>
 
   </developerConceptualDocument>
 </topic>

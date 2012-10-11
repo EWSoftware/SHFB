@@ -141,7 +141,7 @@
       </HelpKeywords>
     </Topic>
   </Topic>
-  <Topic id="b128ad2a-787e-48c7-b946-f6953080c386" visible="True" title="Visual Studio 2010 Package">
+  <Topic id="b128ad2a-787e-48c7-b946-f6953080c386" visible="True" isExpanded="true" isSelected="true" title="Visual Studio Integration Package">
     <HelpKeywords>
       <HelpKeyword index="K" term="Visual Studio, package" />
     </HelpKeywords>
@@ -1315,7 +1315,7 @@
       <HelpKeyword index="K" term="History" />
       <HelpKeyword index="K" term="Version History" />
     </HelpKeywords>
-    <Topic id="9fee3feb-46b6-4935-aac2-01c0045d3e19" visible="True" isSelected="true" title="Version 1.9.5.0">
+    <Topic id="9fee3feb-46b6-4935-aac2-01c0045d3e19" visible="True" title="Version 1.9.5.0">
       <HelpKeywords>
         <HelpKeyword index="K" term="versions, 1.9.5.0" />
       </HelpKeywords>

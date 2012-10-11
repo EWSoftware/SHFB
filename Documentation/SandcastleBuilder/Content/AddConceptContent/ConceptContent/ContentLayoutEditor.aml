@@ -249,7 +249,7 @@ to topics.</para>
 
 	<alert class="tip">
 		<para>Unless you have a specific reason for using HTML files, it is recommended that you convert them to
-MAML.  An HTML to MAML converter is included with <token>Sandcastle</token>.</para>
+MAML.  An HTML to MAML converter is included with Sandcastle tools installer.</para>
 	</alert>
 
   </content>

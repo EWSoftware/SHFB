@@ -10,7 +10,7 @@
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy
 // of the license should be distributed with the code.  It can also be found
-// at the project website: http://Sandcastle.CodePlex.com.
+// at the project website: http://SHFB.CodePlex.com.
 //
 // Version     Date     Who  Comments
 // ============================================================================

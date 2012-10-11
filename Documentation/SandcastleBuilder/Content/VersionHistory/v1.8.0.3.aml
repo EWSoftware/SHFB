@@ -100,7 +100,7 @@ requires some modifications to the help file builder source code itself which wo
 existing official release.  The help file builder source code is available if you want to rebuild it for use with
 the July 2009 executables.  However, this is not necessary.</para>
 
-		<para>The current release of the <token>SandcastleStyles</token> patch includes all changes from the July
+		<para>The current release of the Sandcastle Styles patch includes all changes from the July
 2009 release in addition to all of the other bug fixes and updates ready for use with the May 2008 executables.
 You only need the updates from the July 2009 release if you want to include the F# syntax filter or if you want
 to create MS Help Viewer files.  If not, you can continue using the May 2008 release with or without the

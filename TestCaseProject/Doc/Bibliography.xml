@@ -25,10 +25,10 @@
   describe those citations.
 
   <reference name="sandcastle activity">
-    <title>Sandcastle Activity Statistics</title>
-    <author>Microsoft</author>
+    <title>Sandcastle Help File Builder Activity Statistics</title>
+    <author>Eric Woodruff</author>
     <publisher>CodePlex.com</publisher>
-    <link>http://sandcastle.codeplex.com/stats/view</link>
+    <link>http://SHFB.codeplex.com/stats/view</link>
   </reference>
 
   Building documentation now will produce your auto-generated reference topic with a
@@ -48,10 +48,10 @@
 <bibliography>
 	<!-- Add <reference> elements here -->
 	<reference name="sandcastle activity">
-		<title>Sandcastle Activity Statistics</title>
-		<author>Microsoft</author>
+		<title>Sandcastle Help File Builder Activity Statistics</title>
+		<author>Eric Woodruff</author>
 		<publisher>CodePlex.com</publisher>
-		<link>http://www.codeplex.com/Sandcastle/stats/view</link>
+		<link>http://SHFB.codeplex.com/stats/view</link>
 	</reference>
 
 </bibliography>

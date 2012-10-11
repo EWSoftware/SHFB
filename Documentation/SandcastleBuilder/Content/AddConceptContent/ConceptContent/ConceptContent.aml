@@ -16,7 +16,7 @@ match it in appearance and features.  This allows you to utilize the various bui
 the presentation style of the topics.</para>
 
 <alert class="tip">
-  <para>A guide to using MAML with Sandcastle is included with <token>Sandcastle</token>.  Open it using the
+  <para>A guide to using MAML with Sandcastle is included with Sandcastle tools installer.  Open it using the
 <legacyBold>Sandcastle MAML Guide</legacyBold> link in the Program Files menu after installing Sandcastle.</para>
 </alert>
 

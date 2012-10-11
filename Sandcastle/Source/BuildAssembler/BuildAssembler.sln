@@ -24,6 +24,30 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	EndProjectSection
 EndProject
 Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 7
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs01
+		SccProjectUniqueName0 = ..\\CommandLine\\CommandLine.csproj
+		SccProjectName0 = ../CommandLine
+		SccLocalPath0 = ..\\CommandLine
+		SccLocalPath1 = .
+		SccProjectUniqueName2 = BuildAssembler\\BuildAssembler.csproj
+		SccProjectName2 = BuildAssembler
+		SccLocalPath2 = BuildAssembler
+		SccProjectUniqueName3 = BuildAssemblerLibrary\\BuildAssemblerLibrary.csproj
+		SccProjectName3 = BuildAssemblerLibrary
+		SccLocalPath3 = BuildAssemblerLibrary
+		SccProjectUniqueName4 = BuildComponents\\BuildComponents.csproj
+		SccProjectName4 = BuildComponents
+		SccLocalPath4 = BuildComponents
+		SccProjectUniqueName5 = CopyComponents\\CopyComponents.csproj
+		SccProjectName5 = CopyComponents
+		SccLocalPath5 = CopyComponents
+		SccProjectUniqueName6 = SyntaxComponents\\SyntaxComponents.csproj
+		SccProjectName6 = SyntaxComponents
+		SccLocalPath6 = SyntaxComponents
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU

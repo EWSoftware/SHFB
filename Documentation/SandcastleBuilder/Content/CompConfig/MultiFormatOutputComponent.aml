@@ -4,52 +4,47 @@
     xmlns:xlink="http://www.w3.org/1999/xlink">
 
     <introduction>
-      <para>The Multi-Format Output Component is used to execute a set of build
-components to generate help topics for one or more help file formats at the
-same time with differing configuration options.</para>
+      <para>The Multi-Format Output Component is used to execute a set of build components to generate help
+topics for one or more help file formats at the same time with differing configuration options.</para>
     </introduction>
 
 <section>
-  <content><para>The following is an example configuration for the Multi-Format
-Output component. It should be inserted as the last component in the configuration
-file.  All subsequent components are nested within it as child elements, one set
-for each possible help file format.</para>
+  <content>
+		<para>The following is an example configuration for the Multi-Format Output component. It should be inserted
+as the last component in the configuration file.  All subsequent components are nested within it as child
+elements, one set for each possible help file format.</para>
 
-<code lang="xml" title="Example Configuration"
-    source="..\SandcastleBuilderGUI\Templates\VS2005.config"
+<code language="xml" title="Example Configuration"
+    source="..\..\SHFB\Source\SandcastleBuilderGUI\Templates\VS2005.config"
     region="Multi-format output component" />
 
-	<para>The example given above is taken from the Sandcastle Help File
-Builder's configuration template file.  When used with it, the replacement tags
-<codeInline>{@SHFBFolder}</codeInline> and <codeInline>{@OutputFolder}</codeInline>
-are used to insert the help file builder's folder and the project's output
-folder in the file paths.  These are replaced at build time with the
-appropriate values.  If using the component in your own build scripts, replace
-the tags with a relative or absolute path to the component assembly and output
-folder respectively.  Likewise, the other tags are replaced with project values.
-Update them with the appropriate settings for your project.</para>
+	<para>The example given above is taken from the Sandcastle Help File Builder's configuration template file.
+When used with it, the replacement tags <codeInline>{@SHFBFolder}</codeInline> and <codeInline>{@OutputFolder}</codeInline>
+are used to insert the help file builder's folder and the project's output folder in the file paths.  These are
+replaced at build time with the appropriate values.  If using the component in your own build scripts, replace
+the tags with a relative or absolute path to the component assembly and output folder respectively.  Likewise,
+the other tags are replaced with project values.  Update them with the appropriate settings for your project.</para>
 
-	<para>The <codeInline>build</codeInline> element specifies which help file
-formats to build.  The <codeInline>formats</codeInline> attribute should contain a
-comma separated list of help file formats.  For example:</para>
+	<para>The <codeInline>build</codeInline> element specifies which help file formats to build.  The
+<codeInline>formats</codeInline> attribute should contain a comma separated list of help file formats.  For
+example:</para>
 
-<code lang="xml" title=" ">
+<code language="xml" title=" ">
 	&lt;build formats=&quot;MSHelpViewer, Website&quot; /&gt;
 </code>
 
-	<para>For each possible help file format, a <codeInline>helpOutput</codeInline>
-element should appear with a <codeInline>format</codeInline> attribute that matches
-one of the possible help file formats.  Nested within that element are the components
-and their configurations specific to that build format.  If a format is not specified
-in the <codeInline>build</codeInline> element, the components for that format are not
-created and will be ignored during the build.</para>
+	<para>For each possible help file format, a <codeInline>helpOutput</codeInline> element should appear with a
+<codeInline>format</codeInline> attribute that matches one of the possible help file formats.  Nested within that
+element are the components and their configurations specific to that build format.  If a format is not specified
+in the <codeInline>build</codeInline> element, the components for that format are not created and will be ignored
+during the build.</para>
 
   </content>
 </section>
 
-    <relatedTopics>
-    <link xlink:href="8dcbb69b-7a1a-4049-8e6b-2bf344efbbc9" />
-    </relatedTopics>
+		<relatedTopics>
+			<link xlink:href="8dcbb69b-7a1a-4049-8e6b-2bf344efbbc9" />
+		</relatedTopics>
 
   </developerConceptualDocument>
 </topic>

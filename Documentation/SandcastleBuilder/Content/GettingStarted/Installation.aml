@@ -44,12 +44,14 @@ CodePlex project site.  In addition, you will need the following:</para>
 	</listItem>
 
     <listItem>
-		<para>The latest version of Microsoft's <token>Sandcastle</token> (currently the <token>SandcastleVersion</token>
-release as of <token>SHFBBuildDate</token>).</para>
+		<para>The latest version of the Sandcastle tools (currently the <token>SandcastleVersion</token> release as
+of <token>SHFBBuildDate</token>).</para>
 
 	<alert class="note">
-  	  <para>This is the set of documentation tools created by Microsoft.  The help file builder uses them to
-produce the help file topics.</para>
+  	  <para>This is the set of documentation tools originally created by Microsoft.  The help file builder uses
+them to produce the help file topics.  Microsoft officially discontinued development in October 2012.  The
+Sandcastle tools have been merged with the <token>SHFB</token> project and are developed and supported there
+now as part of that project.</para>
 	</alert></listItem>
 </list>
 
@@ -153,10 +155,8 @@ shareware tool <externalLink>
 	</listItem>
 
     <listItem>
-		<para>If you are going to document website projects, download the
-<externalLink><linkText>Custom Web Code Providers</linkText>
-  <linkUri>http://SandcastleStyles.codeplex.com</linkUri>
-  <linkTarget>_blank</linkTarget></externalLink>.  These make it easy to document website projects by extracing
+		<para>If you are going to document website projects, install the <legacyBold>Custom Web Code Providers</legacyBold>
+provided as part of the Sandcastle tools installer.  These make it easy to document website projects by extracing
 the XML comments files to a location of your choice when the website is deployed.</para>
 	</listItem>
 
@@ -189,10 +189,8 @@ them useful.</para>
 	</listItem>
 
 	<listItem>
-		<para>If you need to convert HTML additional content topics to MAML, you can download the
-<externalLink><linkText>HTML to MAML Converter</linkText>
-<linkUri>http://SandcastleStyles.codeplex.com</linkUri>
-<linkTarget>_blank</linkTarget></externalLink> utility.</para>
+		<para>If you need to convert HTML additional content topics to MAML, you can use the <legacyBold>HTML to MAML
+Converter</legacyBold> utility included with the Sandcastle tools installer.</para>
 	</listItem>
 
 </list>
