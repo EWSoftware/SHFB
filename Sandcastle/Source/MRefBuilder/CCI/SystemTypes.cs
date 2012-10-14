@@ -544,11 +544,9 @@ namespace System.Compiler
 
             TrivialHashtable assemblyReferenceFor = new TrivialHashtable(allAssemblies.Count);
 
+            // Loading mscorlib causes a reset of the reference cache and other info so we must ignore it.
             foreach(var asm in allAssemblies)
-                if(!asm.Name.Equals("mscorlib", StringComparison.OrdinalIgnoreCase) &&
-                  !asm.Name.Equals("System.Data", StringComparison.OrdinalIgnoreCase) &&
-                  !asm.Name.Equals("System.Xml", StringComparison.OrdinalIgnoreCase) &&
-                  File.Exists(asm.Filename))
+                if(!asm.Name.Equals("mscorlib", StringComparison.OrdinalIgnoreCase) && File.Exists(asm.Filename))
                 {
                     AssemblyReference aref = new AssemblyReference(asm.ToString());
                     aref.Location = asm.Filename;
