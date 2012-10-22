@@ -1,55 +1,48 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder Components
 // File    : CodeBlockConfigDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/23/2009
-// Note    : Copyright 2006-2009, Eric Woodruff, All rights reserved
+// Updated : 10/21/2012
+// Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains a form that is used to configure the settings for the
-// Code Block Component.
+// This file contains a form that is used to configure the settings for the Code Block Component.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.3.3.0  11/24/2006  EFW  Created the code
-// 1.4.0.0  02/12/2007  EFW  Added code block language filter option, default
-//                           title option, and "Copy" image URL.
-// 1.6.0.5  03/05/2008  EFW  Added support for the keepSeeTags attribute.
-// 1.6.0.7  04/05/2008  EFW  JavaScript and XAMl are now treated as separate
-//                           languages for proper language filter support.
+// 1.4.0.0  02/12/2007  EFW  Added code block language filter option, default title option, and "Copy" image URL
+// 1.6.0.5  03/05/2008  EFW  Added support for the keepSeeTags attribute
+// 1.6.0.7  04/05/2008  EFW  JavaScript and XAMl are now treated as separate languages for proper language filter
+//                           support.
 // 1.8.0.0  08/15/2008  EFW  Added option to allow missing source/regions
 // 1.8.0.1  01/23/2009  EFW  Added removeRegionMarkers option
-//=============================================================================
+// 1.9.6.0  10/21/2012  EFW  Removed obsolete options and moved options over from the Post-Transform Component
+//                           configuration dialog box.
+//===============================================================================================================
 
 using System;
-using System.Collections;
-using System.ComponentModel;
-using System.Globalization;
 using System.IO;
 using System.Windows.Forms;
-using System.Xml;
 using System.Xml.Linq;
 
 namespace SandcastleBuilder.Components
 {
     /// <summary>
-    /// This form is used to configure the settings for the
-    /// <see cref="CodeBlockComponent"/>.
+    /// This form is used to configure the settings for the <see cref="CodeBlockComponent"/>
     /// </summary>
     internal partial class CodeBlockConfigDlg : Form
     {
         #region Private data members
         //=====================================================================
 
-        private static string[] languages = { "none", "cs", "vbnet", "cpp",
-            "c", "javascript", "jscriptnet", "jsharp", "vbscript", "xml",
-            "xaml", "python", "sql", "pshell" };
+        private static string[] languages = { "none", "cs", "vbnet", "cpp", "c", "javascript", "jscriptnet",
+            "jsharp", "vbscript", "xml", "xaml", "python", "sql", "pshell" };
 
         private XElement config;     // The configuration
         #endregion
@@ -72,8 +65,7 @@ namespace SandcastleBuilder.Components
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="currentConfig">The current XML configuration
-        /// XML fragment</param>
+        /// <param name="currentConfig">The current XML configuration XML fragment</param>
         public CodeBlockConfigDlg(string currentConfig)
         {
             XElement node;
@@ -91,11 +83,6 @@ namespace SandcastleBuilder.Components
             if(node != null)
                 txtBasePath.Text = node.Attribute("value").Value;
 
-            node = config.Element("languageFilter");
-
-            if(node != null)
-                chkLanguageFilter.Checked = (bool)node.Attribute("value");
-
             node = config.Element("allowMissingSource");
 
             if(node != null)
@@ -107,9 +94,20 @@ namespace SandcastleBuilder.Components
                 chkRemoveRegionMarkers.Checked = (bool)node.Attribute("value");
 
             node = config.Element("colorizer");
+
             txtSyntaxFile.Text = node.Attribute("syntaxFile").Value;
-            txtStyleFile.Text = node.Attribute("styleFile").Value;
-            txtCopyImageUrl.Text = node.Attribute("copyImageUrl").Value;
+            txtXsltStylesheetFile.Text = node.Attribute("styleFile").Value;
+
+            // These two may not be there for older configurations
+            if(node.Attribute("stylesheet") != null)
+                txtCssStylesheet.Text = node.Attribute("stylesheet").Value;
+            else
+                txtCssStylesheet.Text = @"{@SHFBFolder}Colorizer\highlight.css";
+
+            if(node.Attribute("scriptFile") != null)
+                txtScriptFile.Text = node.Attribute("scriptFile").Value;
+            else
+                txtScriptFile.Text = @"{@SHFBFolder}Colorizer\highlight.js";
 
             attr = node.Attribute("language");
 
@@ -176,9 +174,9 @@ namespace SandcastleBuilder.Components
             catch(Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
-                MessageBox.Show("Unable to launch link target.  " +
-                    "Reason: " + ex.Message, "Sandcastle Help File Builder",
-                    MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+
+                MessageBox.Show("Unable to launch link target.  Reason: " + ex.Message,
+                    "Sandcastle Help File Builder", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
 
@@ -193,30 +191,36 @@ namespace SandcastleBuilder.Components
 
             txtBasePath.Text = txtBasePath.Text.Trim();
             txtSyntaxFile.Text = txtSyntaxFile.Text.Trim();
-            txtStyleFile.Text = txtStyleFile.Text.Trim();
-            txtCopyImageUrl.Text = txtCopyImageUrl.Text.Trim();
+            txtXsltStylesheetFile.Text = txtXsltStylesheetFile.Text.Trim();
+            txtCssStylesheet.Text = txtCssStylesheet.Text.Trim();
+            txtScriptFile.Text = txtScriptFile.Text.Trim();
+
             epErrors.Clear();
 
             if(txtSyntaxFile.Text.Length == 0)
             {
-                epErrors.SetError(txtSyntaxFile,
-                    "The syntax filename is required");
+                epErrors.SetError(txtSyntaxFile, "The syntax filename is required");
                 isValid = false;
             }
 
-            if(txtStyleFile.Text.Length == 0)
+            if(txtXsltStylesheetFile.Text.Length == 0)
             {
-                epErrors.SetError(txtStyleFile,
-                    "The XSLT style filename is required");
+                epErrors.SetError(txtXsltStylesheetFile, "The XSLT stylesheet filename is required");
                 isValid = false;
             }
 
-            if(txtCopyImageUrl.Text.Length == 0)
+            if(txtCssStylesheet.Text.Length == 0)
             {
-                epErrors.SetError(txtCopyImageUrl,
-                    "The \"Copy\" image URL is required");
+                epErrors.SetError(txtCssStylesheet, "The CSS stylesheet filename is required");
                 isValid = false;
             }
+
+            if(txtScriptFile.Text.Length == 0)
+            {
+                epErrors.SetError(txtScriptFile, "The script filename is required");
+                isValid = false;
+            }
+
 
             if(!isValid)
                 return;
@@ -227,16 +231,16 @@ namespace SandcastleBuilder.Components
             config.Add(
                 new XElement("basePath",
                     new XAttribute("value", txtBasePath.Text)),
-                new XElement("languageFilter",
-                    new XAttribute("value", chkLanguageFilter.Checked)),
+                new XElement("outputPaths", "{@HelpFormatOutputPaths}"),
                 new XElement("allowMissingSource",
                     new XAttribute("value", chkAllowMissingSource.Checked)),
                 new XElement("removeRegionMarkers",
                     new XAttribute("value", chkRemoveRegionMarkers.Checked)),
                 new XElement("colorizer",
                     new XAttribute("syntaxFile", txtSyntaxFile.Text),
-                    new XAttribute("styleFile", txtStyleFile.Text),
-                    new XAttribute("copyImageUrl", txtCopyImageUrl.Text),
+                    new XAttribute("styleFile", txtXsltStylesheetFile.Text),
+                    new XAttribute("stylesheet", txtCssStylesheet.Text),
+                    new XAttribute("scriptFile", txtScriptFile.Text),
                     new XAttribute("language", languages[cboLanguage.SelectedIndex]),
                     new XAttribute("tabSize", (int)udcTabSize.Value),
                     new XAttribute("numberLines", chkNumberLines.Checked),
@@ -267,7 +271,7 @@ namespace SandcastleBuilder.Components
         }
 
         /// <summary>
-        /// Select the syntax for style file
+        /// Select one of the file types
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
@@ -282,18 +286,32 @@ namespace SandcastleBuilder.Components
                 {
                     t = txtSyntaxFile;
                     dlg.Title = "Select the language syntax file";
-                    dlg.Filter = "XML files (*.xml)|*.xml|" +
-                        "All Files (*.*)|*.*";
+                    dlg.Filter = "XML files (*.xml)|*.xml|All Files (*.*)|*.*";
                     dlg.DefaultExt = "xml";
                 }
                 else
-                {
-                    t = txtStyleFile;
-                    dlg.Title = "Select the XSL transformation file";
-                    dlg.Filter = "XSL files (*.xsl, *.xslt)|*.xsl;*.xslt|" +
-                        "All Files (*.*)|*.*";
-                    dlg.DefaultExt = "xsl";
-                }
+                    if(b == btnSelectXsltStylesheet)
+                    {
+                        t = txtXsltStylesheetFile;
+                        dlg.Title = "Select the XSL transformation file";
+                        dlg.Filter = "XSL files (*.xsl, *.xslt)|*.xsl;*.xslt|All Files (*.*)|*.*";
+                        dlg.DefaultExt = "xsl";
+                    }
+                    else
+                        if(b == btnSelectCssStylesheet)
+                        {
+                            t = txtCssStylesheet;
+                            dlg.Title = "Select the colorized code stylesheet file";
+                            dlg.Filter = "Stylesheet files (*.css)|*.css|All Files (*.*)|*.*";
+                            dlg.DefaultExt = "css";
+                        }
+                        else
+                        {
+                            t = txtScriptFile;
+                            dlg.Title = "Select the colorized code JavaScript file";
+                            dlg.Filter = "JavaScript files (*.js)|*.js|All Files (*.*)|*.*";
+                            dlg.DefaultExt = "js";
+                        }
 
                 dlg.InitialDirectory = Directory.GetCurrentDirectory();
 

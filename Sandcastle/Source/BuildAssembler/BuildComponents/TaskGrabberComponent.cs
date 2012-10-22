@@ -153,7 +153,7 @@ namespace Microsoft.Ddue.Tools {
 					string bkeyword = (pound == -1) ? "" : targetId.Substring(pound + 1);
 					if (bkeyword == "")
 					{
-						WriteMessage(MessageLevel.Warn, string.Format("Invalid id '{0}' in topic '{1}'.", targetId, currentKey));
+						base.WriteMessage(key, MessageLevel.Warn, "Invalid id '{0}' in topic '{1}'.", targetId, currentKey);
 						// delete this target and get the next target node
 						targetNode.DeleteSelf();
 						targetNode = targetDoc.SelectSingleNode(targetExpression);
@@ -163,7 +163,7 @@ namespace Microsoft.Ddue.Tools {
 					List<string> idList;
 					if (!bKeywordMap.TryGetValue(bkeyword, out idList))
 					{
-						WriteMessage(MessageLevel.Warn, string.Format("B-keyword not found '{0}' in topic '{1}'.", targetId, currentKey));
+						base.WriteMessage(key, MessageLevel.Warn, "B-keyword not found '{0}' in topic '{1}'.", targetId, currentKey);
 						// delete this target and get the next target node
 						targetNode.DeleteSelf();
 						targetNode = targetDoc.SelectSingleNode(targetExpression);
@@ -185,7 +185,8 @@ namespace Microsoft.Ddue.Tools {
                         string filepath;
                         if (!index.TryGetValue(topicId, out filepath))
                         {
-                            WriteMessage(MessageLevel.Warn, string.Format("No file found for topicId '{0}' for B-keyword '{1}'. Source topic: '{2}'.", topicId, bkeyword, currentKey));
+                            base.WriteMessage(key, MessageLevel.Warn, "No file found for topicId '{0}' for " +
+                                "B-keyword '{1}'. Source topic: '{2}'.", topicId, bkeyword, currentKey);
                             continue;
                         }
 

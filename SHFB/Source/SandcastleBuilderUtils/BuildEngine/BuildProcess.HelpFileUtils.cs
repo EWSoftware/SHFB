@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.HelpFileUtils.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/05/2012
+// Updated : 10/13/2012
 // Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -467,7 +467,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
         private void CopyHelpBranding(string helpFormatOutputFolder)
         {
             MSHCPackage brandingPackage;
-            bool isDefaultBranding, isPreBranding;
             string brandingSource = Path.GetFullPath(presentationFolder + "branding");
 
             if(Directory.Exists(brandingSource))
@@ -475,7 +474,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 string brandingTarget = Path.Combine(helpFormatOutputFolder, "branding"),
                     brandingTransformsTarget = Path.Combine(WorkingFolder, "branding"),
                     brandingIconsTarget = Path.Combine(helpFormatOutputFolder, "icons"),
-                    brandingName = CurrentProject.BrandingPackageName,
                     brandingManifest = Path.Combine(brandingSource, "branding.manifest");
 
                 this.ReportProgress(BuildStep.CopyStandardContent, "Copying help branding...");
@@ -484,19 +482,9 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     throw (new BuilderException(String.Format("Branding manifest \"{0}\" not found.",
                         brandingManifest)));
 
-                if(String.IsNullOrEmpty(brandingName))
-                    brandingName = "Dev10";
-
-                isDefaultBranding = brandingName.Equals("Dev10", StringComparison.OrdinalIgnoreCase);
-
                 if(helpFormatOutputFolder.Contains(HelpFileFormat.MSHelpViewer.ToString()))
-                {
                     brandingTarget = Path.Combine(helpFormatOutputFolder, @"..\" +
                         HelpFileFormat.MSHelpViewer.ToString() + "_Branding");
-                    isPreBranding = isDefaultBranding || CurrentProject.SelfBranded;
-                }
-                else
-                    isPreBranding = isDefaultBranding;
 
                 brandingTarget = Path.GetFullPath(brandingTarget) + @"\";
 
@@ -512,7 +500,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     {
                         brandingPackage.ManifestProperties.Add(ManifestPropertyHelpOutput,
                             Path.GetFileNameWithoutExtension(helpFormatOutputFolder));
-                        brandingPackage.ManifestProperties.Add(ManifestPropertyPreBranding, isPreBranding.ToString());
+                        brandingPackage.ManifestProperties.Add(ManifestPropertyPreBranding, "true");
 
                         if(!helpFormatOutputFolder.Contains(HelpFileFormat.MSHelpViewer.ToString()))
                             brandingPackage.ManifestProperties.Add(ManifestPropertyNoTransforms, Boolean.TrueString);
@@ -545,7 +533,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 brandingPackage = new MSHCPackage(brandingTarget);
                 brandingPackage.ManifestProperties.Add(ManifestPropertyHelpOutput,
                     Path.GetFileNameWithoutExtension(helpFormatOutputFolder));
-                brandingPackage.ManifestProperties.Add(ManifestPropertyPreBranding, isPreBranding.ToString());
+                brandingPackage.ManifestProperties.Add(ManifestPropertyPreBranding, "true");
 
                 if(!helpFormatOutputFolder.Contains(HelpFileFormat.MSHelpViewer.ToString()))
                     brandingPackage.ManifestProperties.Add(ManifestPropertyNoTransforms, Boolean.TrueString);
@@ -561,7 +549,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     brandingPackage = new MSHCPackage(brandingIconsTarget);
                     brandingPackage.ManifestProperties.Add(ManifestPropertyHelpOutput,
                         Path.GetFileNameWithoutExtension(helpFormatOutputFolder));
-                    brandingPackage.ManifestProperties.Add(ManifestPropertyPreBranding, isDefaultBranding.ToString());
+                    brandingPackage.ManifestProperties.Add(ManifestPropertyPreBranding, "true");
                     brandingPackage.ManifestProperties.Add(ManifestPropertyOnlyIcons, Boolean.TrueString);
                     brandingPackage.LoggingTarget = swLog;
                     brandingPackage.LoggingPrefix = "  ";
@@ -574,7 +562,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     brandingPackage = new MSHCPackage(brandingTransformsTarget);
                     brandingPackage.ManifestProperties.Add(ManifestPropertyHelpOutput,
                         Path.GetFileNameWithoutExtension(helpFormatOutputFolder));
-                    brandingPackage.ManifestProperties.Add(ManifestPropertyPreBranding, isDefaultBranding.ToString());
+                    brandingPackage.ManifestProperties.Add(ManifestPropertyPreBranding, "true");
                     brandingPackage.ManifestProperties.Add(ManifestPropertyOnlyTransforms, Boolean.TrueString);
                     brandingPackage.LoggingTarget = swLog;
                     brandingPackage.LoggingPrefix = "  ";

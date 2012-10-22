@@ -126,6 +126,7 @@ namespace Microsoft.Ddue.Tools
             catch(Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex);
+                ConsoleApplication.WriteMessage(LogLevel.Error, ex.ToString());
             }
             finally
             {

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.Transform.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/05/2012
+// Updated : 10/17/2012
 // Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -242,7 +242,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
             string replaceWith, fieldName;
             string[] parts;
 
-            fieldName = match.Groups["Field"].Value.ToLower(CultureInfo.InvariantCulture);
+            fieldName = match.Groups["Field"].Value.ToLowerInvariant();
 
             switch(fieldName)
             {
@@ -331,10 +331,11 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     break;
 
                 case "docinternals":
-                    if(project.DocumentInternals || project.DocumentPrivates)
-                        replaceWith = "true";
-                    else
-                        replaceWith = "false";
+                    replaceWith = (project.DocumentInternals || project.DocumentPrivates) ? "true" : "false";
+                    break;
+
+                case "disablecodeblockcomponent":
+                    replaceWith = project.DisableCodeBlockComponent.ToString().ToLowerInvariant();
                     break;
 
                 case "htmlhelpname":
@@ -353,8 +354,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 case "frameworkcommentlist":
                 case "cachedframeworkcommentlist":
                 case "importframeworkcommentlist":
-                    replaceWith = this.FrameworkCommentList(match.Groups["Field"].Value.ToLower(
-                        CultureInfo.InvariantCulture));
+                    replaceWith = this.FrameworkCommentList(match.Groups["Field"].Value.ToLowerInvariant());
                     break;
 
                 case "commentfilelist":
@@ -415,7 +415,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     break;
 
                 case "locale":
-                    replaceWith = language.Name.ToLower(CultureInfo.InvariantCulture);
+                    replaceWith = language.Name.ToLowerInvariant();
                     break;
 
                 case "copyright":
@@ -530,7 +530,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     break;
 
                 case "indenthtml":
-                    replaceWith = project.IndentHtml.ToString().ToLower(CultureInfo.InvariantCulture);
+                    replaceWith = project.IndentHtml.ToString().ToLowerInvariant();
                     break;
 
                 case "preliminary":
@@ -594,23 +594,23 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     break;
 
                 case "htmlsdklinktype":
-                    replaceWith = project.HtmlSdkLinkType.ToString().ToLower(CultureInfo.InvariantCulture);
+                    replaceWith = project.HtmlSdkLinkType.ToString().ToLowerInvariant();
                     break;
 
                 case "mshelp2sdklinktype":
-                    replaceWith = project.MSHelp2SdkLinkType.ToString().ToLower(CultureInfo.InvariantCulture);
+                    replaceWith = project.MSHelp2SdkLinkType.ToString().ToLowerInvariant();
                     break;
 
                 case "mshelpviewersdklinktype":
-                    replaceWith = project.MSHelpViewerSdkLinkType.ToString().ToLower(CultureInfo.InvariantCulture);
+                    replaceWith = project.MSHelpViewerSdkLinkType.ToString().ToLowerInvariant();
                     break;
 
                 case "websitesdklinktype":
-                    replaceWith = project.WebsiteSdkLinkType.ToString().ToLower(CultureInfo.InvariantCulture);
+                    replaceWith = project.WebsiteSdkLinkType.ToString().ToLowerInvariant();
                     break;
 
                 case "sdklinktarget":
-                    replaceWith = "_" + project.SdkLinkTarget.ToString().ToLower(CultureInfo.InvariantCulture);
+                    replaceWith = "_" + project.SdkLinkTarget.ToString().ToLowerInvariant();
                     break;
 
                 case "htmltoc":
@@ -628,43 +628,43 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     break;
 
                 case "autodocumentconstructors":
-                    replaceWith = project.AutoDocumentConstructors.ToString().ToLower(CultureInfo.InvariantCulture);
+                    replaceWith = project.AutoDocumentConstructors.ToString().ToLowerInvariant();
                     break;
 
                 case "autodocumentdisposemethods":
-                    replaceWith = project.AutoDocumentDisposeMethods.ToString().ToLower(CultureInfo.InvariantCulture);
+                    replaceWith = project.AutoDocumentDisposeMethods.ToString().ToLowerInvariant();
                     break;
 
                 case "showmissingparams":
-                    replaceWith = project.ShowMissingParams.ToString().ToLower(CultureInfo.InvariantCulture);
+                    replaceWith = project.ShowMissingParams.ToString().ToLowerInvariant();
                     break;
 
                 case "showmissingremarks":
-                    replaceWith = project.ShowMissingRemarks.ToString().ToLower(CultureInfo.InvariantCulture);
+                    replaceWith = project.ShowMissingRemarks.ToString().ToLowerInvariant();
                     break;
 
                 case "showmissingreturns":
-                    replaceWith = project.ShowMissingReturns.ToString().ToLower(CultureInfo.InvariantCulture);
+                    replaceWith = project.ShowMissingReturns.ToString().ToLowerInvariant();
                     break;
 
                 case "showmissingsummaries":
-                    replaceWith = project.ShowMissingSummaries.ToString().ToLower(CultureInfo.InvariantCulture);
+                    replaceWith = project.ShowMissingSummaries.ToString().ToLowerInvariant();
                     break;
 
                 case "showmissingtypeparams":
-                    replaceWith = project.ShowMissingTypeParams.ToString().ToLower(CultureInfo.InvariantCulture);
+                    replaceWith = project.ShowMissingTypeParams.ToString().ToLowerInvariant();
                     break;
 
                 case "showmissingvalues":
-                    replaceWith = project.ShowMissingValues.ToString().ToLower(CultureInfo.InvariantCulture);
+                    replaceWith = project.ShowMissingValues.ToString().ToLowerInvariant();
                     break;
 
                 case "showmissingnamespaces":
-                    replaceWith = project.ShowMissingNamespaces.ToString().ToLower(CultureInfo.InvariantCulture);
+                    replaceWith = project.ShowMissingNamespaces.ToString().ToLowerInvariant();
                     break;
 
                 case "showmissingincludetargets":
-                    replaceWith = project.ShowMissingIncludeTargets.ToString().ToLower(CultureInfo.InvariantCulture);
+                    replaceWith = project.ShowMissingIncludeTargets.ToString().ToLowerInvariant();
                     break;
 
                 case "apifilter":
@@ -876,29 +876,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         HttpUtility.HtmlEncode(project.ProductTitle) : HttpUtility.HtmlEncode(project.HelpTitle);
                     break;
 
-                case "catalogvendorname":
-                    if(presentationParam == "vs2010" && project.CatalogProductId != "VS")
-                        replaceWith = !String.IsNullOrEmpty(project.VendorName) ? project.VendorName : "Vendor Name";
-                    else
-                        replaceWith = "Microsoft";
-                    break;
-
-                case "brandingpackage":
-                    if(presentationParam == "vs2010" && project.CatalogProductId != "VS")
-                    {
-                        if(String.IsNullOrEmpty(project.BrandingPackageName))
-                            replaceWith = project.HtmlHelpName + "Branding";
-                        else
-                            replaceWith = project.BrandingPackageName;
-                    }
-                    else
-                        replaceWith = "Dev10";
-                    break;
-
-                case "selfbranded":
-                    replaceWith = project.SelfBranded.ToString().ToLower(CultureInfo.InvariantCulture);
-                    break;
-
                 case "topicversion":
                     replaceWith = HttpUtility.HtmlEncode(project.TopicVersion);
                     break;
@@ -1030,7 +1007,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
             BuildComponentInfo info;
             BuildComponentConfiguration projectComp;
             XmlDocument config;
-            XmlAttribute attr;
             XmlNode rootNode, configNode, clone;
             XmlNodeList outputFormats;
             string configName, compConfig;
@@ -1111,26 +1087,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         this.ReportProgress("    The configuration for '{0}' is disabled and will not be used.", id);
             }
 
-            // Disable colorization in the code block component if requested
-            if(project.DisableCodeBlockComponent)
-            {
-                configNode = rootNode.SelectSingleNode("component[@type='SandcastleBuilder.Components.CodeBlockComponent']/colorizer");
-
-                if(configNode != null)
-                {
-                    if(configNode.Attributes["disabled"] != null)
-                        configNode.Attributes["disabled"].Value = "true";
-                    else
-                    {
-                        attr = config.CreateAttribute("disabled");
-                        attr.Value = "true";
-                        configNode.Attributes.Append(attr);
-                    }
-                    
-                    this.ReportProgress("    Code Block Component colorization disabled in this project.");
-                }
-            }
-
             config.Save(configName);
 
             // Do the same for conceptual config if necessary
@@ -1206,27 +1162,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                     if(configNode != null)
                         configNode.ParentNode.RemoveChild(configNode);
-                }
-
-                // Disable colorization in the code block component if requested
-                if(project.DisableCodeBlockComponent)
-                {
-                    configNode = rootNode.SelectSingleNode("component[@type='SandcastleBuilder.Components.CodeBlockComponent']/colorizer");
-
-                    if(configNode != null)
-                    {
-                        if(configNode.Attributes["disabled"] != null)
-                            configNode.Attributes["disabled"].Value = "true";
-                        else
-                        {
-                            attr = config.CreateAttribute("disabled");
-                            attr.Value = "true";
-                            configNode.Attributes.Append(attr);
-                        }
-
-                        this.ReportProgress("    Code Block Component colorization disabled in this project.");
-                    }
-
                 }
 
                 config.Save(configName);

@@ -102,7 +102,9 @@
     <Compile Include="TargetInfo.cs" />
     <Compile Include="Targets.cs" />
     <Compile Include="TaskGrabberComponent.cs" />
+    <Compile Include="Transform.cs" />
     <Compile Include="TransformComponent.cs" />
+    <Compile Include="TransformedTopicEventArgs.cs" />
     <Compile Include="ValidateComponent.cs" />
     <Compile Include="WdxResolveConceptualLinksComponent.cs" />
   </ItemGroup>

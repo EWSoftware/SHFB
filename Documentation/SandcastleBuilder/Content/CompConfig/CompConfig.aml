@@ -26,9 +26,6 @@ in its configuration file templates:</para>
 					<listItem>
 						<para><link xlink:href="7e6e0e96-36cd-4541-9477-2657b98661f5" /></para>
 					</listItem>
-					<listItem>
-						<para><link xlink:href="58ce80ee-eb4b-4027-8871-7e83fad8e476" /></para>
-					</listItem>
 			</list>
 
 			<para>You can override the default configuration for the Code Block Component and the Post-Transform

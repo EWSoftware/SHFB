@@ -114,7 +114,6 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShowMissingComponent.cs" />
-    <Compile Include="VersionInfoComponent.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CodeColorizer\ColorizerLibrary\ColorizerLibrary.csproj">

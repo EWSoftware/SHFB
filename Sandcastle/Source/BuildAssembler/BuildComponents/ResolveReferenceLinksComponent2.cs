@@ -206,7 +206,7 @@ namespace Microsoft.Ddue.Tools
 
                 if(link == null)
                 {
-                    WriteMessage(MessageLevel.Warn, "Invalid referenceLink element.");
+                    base.WriteMessage(key, MessageLevel.Warn, "Invalid referenceLink element.");
                 }
                 else
                 {
@@ -221,7 +221,7 @@ namespace Microsoft.Ddue.Tools
                     {
                         // no such target known; set link type to none and warn
                         type = LinkType2.None;
-                        WriteMessage(MessageLevel.Warn, String.Format("Unknown reference link target '{0}'.", targetId));
+                        base.WriteMessage(key, MessageLevel.Warn, "Unknown reference link target '{0}'.", targetId);
 
                         // !EFW - Turn off the Show Parameter option for unresolved elements except methods.  If
                         // not, it outputs an empty "()" after the member name which looks odd.
@@ -322,7 +322,7 @@ namespace Microsoft.Ddue.Tools
                             msdnUrl = msdn.GetMsdnUrl(targetId);
                             if(String.IsNullOrEmpty(msdnUrl))
                             {
-                                WriteMessage(MessageLevel.Warn, String.Format("MSDN URL not found for target '{0}'.", targetId));
+                                base.WriteMessage(key, MessageLevel.Warn, "MSDN URL not found for target '{0}'.", targetId);
                             }
                         }
                         if(String.IsNullOrEmpty(msdnUrl))
@@ -391,7 +391,7 @@ namespace Microsoft.Ddue.Tools
                                 Reference reference = TextReferenceUtilities.CreateReference(targetId);
                                 //Console.WriteLine("Returned");
                                 if(reference is InvalidReference)
-                                    WriteMessage(MessageLevel.Warn, String.Format("Invalid reference link target '{0}'.", targetId));
+                                    base.WriteMessage(key, MessageLevel.Warn, "Invalid reference link target '{0}'.", targetId);
                                 resolver.WriteReference(reference, options, writer);
                             }
                         }

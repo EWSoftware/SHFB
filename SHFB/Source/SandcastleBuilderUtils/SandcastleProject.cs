@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SandcastleProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/05/2012
+// Updated : 10/13/2012
 // Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -62,6 +62,7 @@
 //                           property.  Added Support for XAML configuration files.
 // 1.9.5.0  09/10/2012  EFW  Updated to use the new framework definition file for the .NET Framework versions.
 //                           Added the CatalogName property for Help Viewer 2.0 support.
+// 1.9.6.0  10/13/2012  EFW  Removed the BrandingPackageName and SelfBranded properties.
 //===============================================================================================================
 
 using System;
@@ -156,12 +157,11 @@ namespace SandcastleBuilder.Utils
 
         // Help file properties
         private ContentPlacement contentPlacement;
-        private bool binaryTOC, includeFavorites, preliminary, rootNSContainer, includeStopWordList,
-            indentHtml, selfBranded;
+        private bool binaryTOC, includeFavorites, preliminary, rootNSContainer, includeStopWordList, indentHtml;
         private string helpTitle, htmlHelpName, copyrightHref, copyrightText, feedbackEMailAddress,
             feedbackEMailLinkText, headerText, footerText, projectSummary, rootNSTitle, presentationStyle,
             plugInNamespaces, helpFileVersion, syntaxFilters, vendorName, productTitle, topicVersion,
-            tocParentId, tocParentVersion, catalogProductId, catalogVersion, catalogName, brandingPackageName;
+            tocParentId, tocParentVersion, catalogProductId, catalogVersion, catalogName;
         private CultureInfo language;
         private HtmlSdkLinkType htmlSdkLinkType, websiteSdkLinkType;
         private MSHelp2SdkLinkType help2SdkLinkType;
@@ -994,14 +994,11 @@ namespace SandcastleBuilder.Utils
         /// This is used to get or set the language option for the help file and to determine which set of
         /// presentation resource files to use.
         /// </summary>
-        /// <value>If a matching set of presentation resources cannot be
-        /// found for the specified language, the US English set will be
-        /// used.</value>
+        /// <value>If a matching set of presentation resources cannot be found for the specified language, the
+        /// US English set will be used.</value>
         /// <remarks>The MS Help Viewer 1.0 Catalog ID is composed of the <see cref="CatalogProductId"/>, the
         /// <see cref="CatalogVersion"/>, and the <c>Language</c> code. For example, the English Visual Studio 10
         /// catalog is <c>VS_100_EN-US</c>.</remarks>
-        /// <seealso cref="SelfBranded"/>
-        /// <seealso cref="BrandingPackageName"/>
         [Category("Help File"), Description("The help file language.  For MS Help Viewer 1.0, this is the " +
           "Locale portion of the Catalog ID."), DefaultValue(typeof(CultureInfo), "en-US"),
           TypeConverter(typeof(LanguageResourceConverter))]
@@ -1447,8 +1444,6 @@ namespace SandcastleBuilder.Utils
         /// Studio 10 catalog is <c>VS_100_EN-US</c>.</para>
         /// <note type="note">For styles other than VS2010, you should used the default value.</note>
         /// </remarks>
-        /// <seealso cref="SelfBranded"/>
-        /// <seealso cref="BrandingPackageName"/>
         [Category("MS Help Viewer"), Description("Specify the Product ID portion of the MS Help Viewer 1.0 " +
           "Catalog ID.  If not set, the default is \"VS\" (for \"Visual Studio\")."), DefaultValue("VS"),
           EscapeValue]
@@ -1476,8 +1471,6 @@ namespace SandcastleBuilder.Utils
         /// catalog is <c>VS_100_EN-US</c>.</para>
         /// <note type="note">For styles other than VS2010, you should used the default value.</note>
         /// </remarks>
-        /// <seealso cref="SelfBranded"/>
-        /// <seealso cref="BrandingPackageName"/>
         [Category("MS Help Viewer"), Description("Specify the Version portion of the MS Help Viewer 1.0 " +
           "Catalog ID.  If not set, the default is \"100\" (meaning \"10.0\")."), DefaultValue("100"),
           EscapeValue]
@@ -1561,123 +1554,6 @@ namespace SandcastleBuilder.Utils
 
                 this.SetProjectProperty("ProductTitle", value);
                 productTitle = value;
-            }
-        }
-
-        /// <summary>
-        /// This is used to get or set whether or not the MS Help Viewer (MSHC) content is self-branded.  The MS
-        /// Help Viewer shows self-branded content with minimal reformatting. It shows branded content after
-        /// extensive reformatting by the branding package.
-        /// </summary>
-        /// <remarks>This property is typically set to true for all styles and help file formats.
-        /// <list type="bullet">
-        ///	    <item>For the VS2010 style and the MS Help Viewer format, this value determines how the branding
-        ///	package will be applied by the Sandcastle branding component and the MS Help Viewer.
-        ///         <list type="bullet">
-        ///	            <item>If <c>SelfBranded</c> is true and the default catalog (VS_100) and branding package
-        ///	(Dev10) are used:
-        ///	                <list type="bullet">
-        ///					    <item>The Sandcastle branding component applies pre-branding to the help contents.
-        ///	Pre-branding applies most of the formatting that the default branding package applies to branded
-        ///	content.</item>
-        ///						<item>The MS Help Viewer then shows the content with the minimal self-branded
-        /// reformatting. Since the content has been pre-branded, its final formatting matches the default
-        /// formatting.</item>
-        ///					</list>
-        ///				</item>
-        ///				<item>If <c>SelfBranded</c> is false and the default catalog (VS_100) and branding
-        ///	package (Dev10) are used:
-        ///					<list type="bullet">
-        ///						<item>The Sandcastle branding component does only minimal reformatting to ensure
-        /// that the content conforms to the MTPS conventions expected by the MS Help Viewer.</item>
-        ///						<item>The MS Help Viewer then shows the content after fully reformatting it with
-        ///	the default branding package.
-        ///							<note type="note">The default branding package (Dev10) assumes that the
-        ///	content was authored by the <i>MSDN/TechNet Publishing System</i> (MTPS) and formats it accordingly
-        ///	with Microsoft logos, copyrights, and feedback links.</note>
-        ///						</item>
-        ///					</list>
-        ///				</item>
-        ///				<item>If <c>SelfBranded</c> is true and a custom catalog and branding package are used:
-        ///					<list type="bullet">
-        ///						<item>The Sandcastle branding component applies pre-branding to the help contents.
-        ///	Pre-branding applies most of the formatting that the custom branding package applies to help content
-        ///	(which is essentially the same formatting as the default branding package).</item>
-        ///						<item>The MS Help Viewer then shows the content with the minimal self-branded
-        ///	reformatting. Since the content has been pre-branded, its final formatting matches the custom
-        ///	formatting.</item>
-        ///						<item>The final result is essentially the same as if <c>SelfBranded</c> were
-        ///	false (see below).  However, if the custom branding package changes in the future, those changes will
-        ///	not be applied.</item>
-        ///					</list>
-        ///				</item>
-        ///				<item>If <c>SelfBranded</c> is false and a custom catalog and branding package are used:
-        ///					<list type="bullet">
-        ///						<item>The Sandcastle branding component only does minimal reformatting to ensure
-        ///	that the content conforms to the MTPS conventions expected by the MS Help Viewer.</item>
-        ///						<item>The MS Help Viewer then shows the content after fully reformatting it with
-        ///	the custom branding package.</item>
-        ///					</list>
-        ///				</item>
-        ///			</list>
-        ///		</item>
-        ///		<item>For the VS2010 style and the Help1 or Website formats, self-branding must be used and
-        /// this property value is ignored and true is always.
-        ///			<list type="bullet">
-        ///				<item>The Sandcastle branding component applies all of branding formatting so the content
-        ///	is shown in the default MS Help Viewer format.</item>
-        ///			</list>
-        ///		</item>
-        ///		<item>For other styles, this value is only relevant for the MSHelpViewer format and must be true.
-        ///			<list type="bullet">
-        ///				<item>The Sandcastle transformation component applies the presentation style formatting
-        ///	and the MS Help Viewer shows the content with minimal reformatting.</item>
-        ///			</list>
-        ///		</item>
-        /// </list>
-        /// </remarks>
-        /// <seealso cref="BrandingPackageName"/>
-        [Category("MS Help Viewer"), Description("Indicate whether or not the help content is self-branded.  " +
-          "This property is typically true in almost all cases.  See the help property topic for details " +
-          "about when it can be set to false and the resulting branding behavior.  It must be set to " +
-          "true for all styles other than VS2010."), DefaultValue(true)]
-        public bool SelfBranded
-        {
-            get { return selfBranded; }
-            set
-            {
-                this.SetProjectProperty("SelfBranded", value);
-                selfBranded = value;
-            }
-        }
-
-        /// <summary>
-        /// This is used to get or set the name of the MS Help Viewer branding package.
-        /// </summary>
-        /// <remarks>Typically, this should be left blank to use the default package name.
-        /// <para>A custom branding package can only be used if the help content is <b>not</b> installed in the
-        /// default MS Help Viewer 1.0 catalog.  See <see cref="CatalogProductId"/>, <see cref="CatalogVersion"/>,
-        /// and <see cref="Language"/>.</para>
-        /// <note type="note">
-        /// The branding package is associated with a MS Help Viewer 1.0 catalog when the catalog is created (i.e.
-        /// the first time any content is installed in the catalog).  The branding package associated with a
-        /// catalog can only be changed by manually editing the MS Help Viewer configuration.</note>
-        /// </remarks>
-        /// <seealso cref="SelfBranded"/>
-        [Category("MS Help Viewer"), Description("Specify the name of the branding package.  Typically, this " +
-          "will left blank to use the default package name."), DefaultValue(""), EscapeValue]
-        public String BrandingPackageName
-        {
-            get { return brandingPackageName; }
-            set
-            {
-                if(value == null || value.Trim().Length == 0)
-                    value = String.Empty;
-                else
-                    value = value.Trim();
-
-                this.SetProjectProperty("BrandingPackageName", value);
-                brandingPackageName = value;
             }
         }
 
@@ -3079,7 +2955,7 @@ namespace SandcastleBuilder.Utils
                 loadingProperties = removeProjectWhenDisposed = true;
 
                 contentPlacement = ContentPlacement.AboveNamespaces;
-                cleanIntermediates = keepLogFile = binaryTOC = includeStopWordList = selfBranded = true;
+                cleanIntermediates = keepLogFile = binaryTOC = includeStopWordList = true;
 
                 this.BuildLogFile = null;
 
@@ -3109,11 +2985,10 @@ namespace SandcastleBuilder.Utils
                     this.SandcastlePath = this.WorkingPath = null;
 
                 this.HelpTitle = this.HtmlHelpName = this.CopyrightHref = this.CopyrightText =
-                    this.FeedbackEMailAddress = this.FeedbackEMailLinkText = this.HeaderText =
-                    this.FooterText = this.ProjectSummary = this.RootNamespaceTitle =
-                    this.PlugInNamespaces = this.TopicVersion = this.TocParentId =
-                    this.TocParentVersion = this.CatalogProductId = this.CatalogVersion =
-                    this.CatalogName = this.BrandingPackageName = null;
+                    this.FeedbackEMailAddress = this.FeedbackEMailLinkText = this.HeaderText = this.FooterText =
+                    this.ProjectSummary = this.RootNamespaceTitle = this.PlugInNamespaces = this.TopicVersion =
+                    this.TocParentId = this.TocParentVersion = this.CatalogProductId = this.CatalogVersion =
+                    this.CatalogName = null;
 
                 language = new CultureInfo("en-US");
                 frameworkVersion = FrameworkVersionTypeConverter.DefaultFramework;

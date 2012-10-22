@@ -128,7 +128,7 @@ namespace Microsoft.Ddue.Tools {
                     format = brokenLinkFormat;
                     Target t = targetSets.Lookup(targetGuid);
                     if (t == null) {
-                        WriteMessage(MessageLevel.Warn, String.Format("Conceptual link not found in target sets; target={0}", targetGuid));
+                        base.WriteMessage(key, MessageLevel.Warn, "Conceptual link not found in target sets; target={0}", targetGuid);
                     }
                     else {
                         if (!String.IsNullOrEmpty(t.Url)) {
@@ -139,7 +139,7 @@ namespace Microsoft.Ddue.Tools {
                                 text = t.Text;
                         }
                         else
-                            WriteMessage(MessageLevel.Warn, String.Format("Conceptual link found in target set, but meta data does not specify a url; target={0}", targetGuid));
+                            base.WriteMessage(key, MessageLevel.Warn, "Conceptual link found in target set, but meta data does not specify a url; target={0}", targetGuid);
                     }
                 }
                 else
@@ -147,7 +147,7 @@ namespace Microsoft.Ddue.Tools {
 
                 if (String.IsNullOrEmpty(text)) {
                     node.DeleteSelf();
-                    WriteMessage(MessageLevel.Warn, String.Format("Skipping conceptual link without text; target={0}", url));
+                    base.WriteMessage(key, MessageLevel.Warn, "Skipping conceptual link without text; target={0}", url);
                 }
                 else {
                     node.OuterXml = String.Format(format, url, text);

@@ -114,7 +114,7 @@
 	<item id="nonobsoleteAlternative">A non-obsolete alternative is {0}.</item>
 	<item id="inheritedFrom">(Inherited from {0}.)</item>
 	<item id="overridesMember">(Overrides {0}.)</item>
-	<item id="locationInformation">Assembly: {0} (Module: {1})</item>
+	<item id="locationInformation">Assembly: {0} (Module: {1}.{2}) Version: {3}</item>
 	 <item id="hostProtectionAttributeShort">HostProtectionAttribute.</item>
 	<item id="hostProtectionAttributeLong">This API is protected by HostProtectionAttribute.</item>
   

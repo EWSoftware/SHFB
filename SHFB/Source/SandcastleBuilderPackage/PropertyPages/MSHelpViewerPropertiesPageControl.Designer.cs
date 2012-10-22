@@ -40,7 +40,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.txtProductTitle = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.chkSelfBranded = new System.Windows.Forms.CheckBox();
             this.label5 = new System.Windows.Forms.Label();
             this.udcTocOrder = new System.Windows.Forms.NumericUpDown();
             this.txtTopicVersion = new System.Windows.Forms.TextBox();
@@ -50,9 +49,7 @@
             this.txtTocParentId = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.epNotes = new System.Windows.Forms.ErrorProvider(this.components);
-            this.txtBrandingPackageName = new System.Windows.Forms.TextBox();
             this.txtCatalogName = new System.Windows.Forms.TextBox();
-            this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.udcTocOrder)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.epNotes)).BeginInit();
@@ -102,7 +99,7 @@
             // 
             this.cboMSHelpViewerSdkLinkType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboMSHelpViewerSdkLinkType.FormattingEnabled = true;
-            this.cboMSHelpViewerSdkLinkType.Location = new System.Drawing.Point(279, 431);
+            this.cboMSHelpViewerSdkLinkType.Location = new System.Drawing.Point(279, 360);
             this.cboMSHelpViewerSdkLinkType.MaxDropDownItems = 16;
             this.cboMSHelpViewerSdkLinkType.Name = "cboMSHelpViewerSdkLinkType";
             this.cboMSHelpViewerSdkLinkType.Size = new System.Drawing.Size(302, 28);
@@ -111,7 +108,7 @@
             // 
             // label2
             // 
-            this.label2.Location = new System.Drawing.Point(54, 433);
+            this.label2.Location = new System.Drawing.Point(54, 362);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(219, 23);
             this.label2.TabIndex = 21;
@@ -156,23 +153,9 @@
             this.label4.Text = "Product title";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // chkSelfBranded
-            // 
-            this.chkSelfBranded.AutoSize = true;
-            this.chkSelfBranded.Checked = true;
-            this.chkSelfBranded.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.epNotes.SetError(this.chkSelfBranded, "This is typically left checked");
-            this.chkSelfBranded.Location = new System.Drawing.Point(279, 199);
-            this.chkSelfBranded.Name = "chkSelfBranded";
-            this.chkSelfBranded.Size = new System.Drawing.Size(216, 24);
-            this.chkSelfBranded.TabIndex = 10;
-            this.chkSelfBranded.Tag = "SelfBranded";
-            this.chkSelfBranded.Text = "The help file is self-branded";
-            this.chkSelfBranded.UseVisualStyleBackColor = true;
-            // 
             // label5
             // 
-            this.label5.Location = new System.Drawing.Point(98, 279);
+            this.label5.Location = new System.Drawing.Point(98, 208);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(175, 23);
             this.label5.TabIndex = 13;
@@ -183,7 +166,7 @@
             // 
             this.epNotes.SetError(this.udcTocOrder, "Use -1 to let the build engine determine the sort order");
             this.epNotes.SetIconPadding(this.udcTocOrder, 5);
-            this.udcTocOrder.Location = new System.Drawing.Point(279, 278);
+            this.udcTocOrder.Location = new System.Drawing.Point(279, 207);
             this.udcTocOrder.Maximum = new decimal(new int[] {
             2147483647,
             0,
@@ -207,7 +190,7 @@
             // 
             // txtTopicVersion
             // 
-            this.txtTopicVersion.Location = new System.Drawing.Point(279, 377);
+            this.txtTopicVersion.Location = new System.Drawing.Point(279, 306);
             this.txtTopicVersion.Name = "txtTopicVersion";
             this.txtTopicVersion.Size = new System.Drawing.Size(209, 27);
             this.txtTopicVersion.TabIndex = 20;
@@ -216,7 +199,7 @@
             // 
             // label6
             // 
-            this.label6.Location = new System.Drawing.Point(78, 379);
+            this.label6.Location = new System.Drawing.Point(78, 308);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(195, 23);
             this.label6.TabIndex = 19;
@@ -225,7 +208,7 @@
             // 
             // txtTocParentVersion
             // 
-            this.txtTocParentVersion.Location = new System.Drawing.Point(279, 344);
+            this.txtTocParentVersion.Location = new System.Drawing.Point(279, 273);
             this.txtTocParentVersion.Name = "txtTocParentVersion";
             this.txtTocParentVersion.Size = new System.Drawing.Size(209, 27);
             this.txtTocParentVersion.TabIndex = 18;
@@ -234,7 +217,7 @@
             // 
             // label7
             // 
-            this.label7.Location = new System.Drawing.Point(82, 346);
+            this.label7.Location = new System.Drawing.Point(82, 275);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(191, 23);
             this.label7.TabIndex = 17;
@@ -247,7 +230,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.epNotes.SetError(this.txtTocParentId, "Use -1 to place the root elements at the root of the main table of contents");
             this.epNotes.SetIconPadding(this.txtTocParentId, 5);
-            this.txtTocParentId.Location = new System.Drawing.Point(279, 311);
+            this.txtTocParentId.Location = new System.Drawing.Point(279, 240);
             this.txtTocParentId.Name = "txtTocParentId";
             this.txtTocParentId.Size = new System.Drawing.Size(445, 27);
             this.txtTocParentId.TabIndex = 16;
@@ -256,7 +239,7 @@
             // 
             // label8
             // 
-            this.label8.Location = new System.Drawing.Point(124, 313);
+            this.label8.Location = new System.Drawing.Point(124, 242);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(149, 23);
             this.label8.TabIndex = 15;
@@ -269,16 +252,6 @@
             this.epNotes.ContainerControl = this;
             this.epNotes.Icon = ((System.Drawing.Icon)(resources.GetObject("epNotes.Icon")));
             // 
-            // txtBrandingPackageName
-            // 
-            this.epNotes.SetError(this.txtBrandingPackageName, "Typically, this is left blank to use the default branding package");
-            this.epNotes.SetIconPadding(this.txtBrandingPackageName, 5);
-            this.txtBrandingPackageName.Location = new System.Drawing.Point(279, 229);
-            this.txtBrandingPackageName.Name = "txtBrandingPackageName";
-            this.txtBrandingPackageName.Size = new System.Drawing.Size(445, 27);
-            this.txtBrandingPackageName.TabIndex = 12;
-            this.txtBrandingPackageName.Tag = "BrandingPackageName";
-            // 
             // txtCatalogName
             // 
             this.epNotes.SetError(this.txtCatalogName, "Typically left set to the default, \"VisualStudio11\"");
@@ -289,15 +262,6 @@
             this.txtCatalogName.TabIndex = 5;
             this.txtCatalogName.Tag = "CatalogProductId";
             this.txtCatalogName.Text = "VisualStudio11";
-            // 
-            // label10
-            // 
-            this.label10.Location = new System.Drawing.Point(82, 231);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(191, 23);
-            this.label10.TabIndex = 11;
-            this.label10.Text = "Branding package name";
-            this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label11
             // 
@@ -313,8 +277,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.Controls.Add(this.txtCatalogName);
             this.Controls.Add(this.label11);
-            this.Controls.Add(this.txtBrandingPackageName);
-            this.Controls.Add(this.label10);
             this.Controls.Add(this.txtTocParentId);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.txtTocParentVersion);
@@ -323,7 +285,6 @@
             this.Controls.Add(this.label6);
             this.Controls.Add(this.udcTocOrder);
             this.Controls.Add(this.label5);
-            this.Controls.Add(this.chkSelfBranded);
             this.Controls.Add(this.txtProductTitle);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.txtVendorName);
@@ -336,7 +297,7 @@
             this.Controls.Add(this.label9);
             this.MinimumSize = new System.Drawing.Size(490, 245);
             this.Name = "MSHelpViewerPropertiesPageControl";
-            this.Size = new System.Drawing.Size(765, 470);
+            this.Size = new System.Drawing.Size(765, 402);
             ((System.ComponentModel.ISupportInitialize)(this.udcTocOrder)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.epNotes)).EndInit();
             this.ResumeLayout(false);
@@ -355,7 +316,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox txtProductTitle;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.CheckBox chkSelfBranded;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.NumericUpDown udcTocOrder;
         private System.Windows.Forms.TextBox txtTopicVersion;
@@ -366,8 +326,6 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.ErrorProvider epNotes;
         private System.Windows.Forms.ComboBox cboMSHelpViewerSdkLinkType;
-        private System.Windows.Forms.TextBox txtBrandingPackageName;
-        private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TextBox txtCatalogName;
         private System.Windows.Forms.Label label11;
 

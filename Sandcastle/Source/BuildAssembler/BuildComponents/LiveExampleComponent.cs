@@ -91,7 +91,7 @@ namespace Microsoft.Ddue.Tools {
                     case CodeReferenceType.Msdn:
                         // TODO: remove "msdn:" from code reference and let ExampleComponent handle the snippet.
                         // We'll either pass this through to the regular ExampleComponent or delete the node.
-                        WriteMessage(MessageLevel.Warn, "MSDN-only links not implemented yet.");
+                        base.WriteMessage(key, MessageLevel.Warn, "MSDN-only links not implemented yet.");
                         break;
 
                     case CodeReferenceType.Run:
@@ -114,7 +114,7 @@ namespace Microsoft.Ddue.Tools {
                         break;
 
                     default:
-                        WriteMessage(MessageLevel.Warn, string.Format("Invalid code example reference ignored: '{0}'", node.Value));
+                        WriteMessage(key, MessageLevel.Warn, "Invalid code example reference ignored: '{0}'", node.Value);
                         break;
                 }
             }

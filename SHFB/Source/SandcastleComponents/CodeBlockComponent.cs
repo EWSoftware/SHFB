@@ -2,13 +2,12 @@
 // System  : Sandcastle Help File Builder Components
 // File    : CodeBlockComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/21/2012
+// Updated : 10/22/2012
 // Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a build component that is used to search for <code> XML comment tags and colorize the code
-// within them.  It can also include code from an external file or a region within the file.  Note that this
-// component must be paired with the PostTransformComponent.
+// within them.  It can also include code from an external file or a region within the file.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
 // distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.   This
@@ -34,6 +33,9 @@
 // 1.9.0.1  06/19/2010  EFW  Added support for MS Help Viewer
 // 1.9.3.3  12/30/2011  EFW  Added support for overriding allowMissingSource option on a case by case basis
 // 1.9.5.0  09/21/2012  EFW  Added support disabling all features except leading whitespace normalization
+// 1.9.6.0  10/17/2012  EFW  Moved the code block insertion code from PostTransformComponent into the new
+//                           component event handler in this class.  Moved the title support into the
+//                           presentation style XSL transformations.
 //===============================================================================================================
 
 using System;
@@ -59,22 +61,29 @@ namespace SandcastleBuilder.Components
     /// This build component is used to search for &lt;code&gt; XML comment tags and colorize the code within
     /// them.  It can also include code from an external file or a region within the file.
     /// </summary>
-    /// <remarks>Note that this component must be paired with the
-    /// <see cref="PostTransformComponent"/>.</remarks>
+    /// <remarks>The colorizer files are only copied once and only if code is actually colorized.  If the files
+    /// already exist (i.e. additional content has replaced them), they are not copied either.  That way, you
+    /// can customize the color stylesheet as you see fit without modifying the default stylesheet.</remarks>
     /// <example>
     /// <code lang="xml" title="Example configuration">
     /// &lt;!-- Code block component configuration.  This must appear before
-    ///      the TransformComponent.  See also: PostTransformComponent. --&gt;
+    ///      the TransformComponent. --&gt;
     /// &lt;component type="SandcastleBuilder.Components.CodeBlockComponent"
     ///   assembly="C:\SandcastleBuilder\SandcastleBuilder.Components.dll"&gt;
     ///     &lt;!-- Base path for relative filenames in source
     ///          attributes (optional). --&gt;
     ///     &lt;basePath value="..\SandcastleComponents" /&gt;
     ///
-    ///     &lt;!-- Connect to language filter (optional).  If omitted,
-    ///          language filtering is enabled by default. --&gt;
-    ///     &lt;languageFilter value="true" /&gt;
-    ///
+    ///     &lt;!-- Base output paths for the files (required).  These should
+    ///          match the parent folder of the output path of the HTML files
+    ///          used in the SaveComponent instances. --&gt;
+    ///     &lt;outputPaths&gt;
+    ///       &lt;path value="Output\HtmlHelp1\" /&gt;
+    ///       &lt;path value="Output\MSHelp2\" /&gt;
+    ///       &lt;path value="Output\MSHelpViewer\" /&gt;
+    ///       &lt;path value="Output\Website\" /&gt;
+    ///     &lt;/outputPaths&gt;
+    ///     
     ///     &lt;!-- Allow missing source files (Optional).  If omitted,
     ///          it will generate errors if referenced source files
     ///          are missing. --&gt;
@@ -87,19 +96,20 @@ namespace SandcastleBuilder.Components
     ///     &lt;!-- Code colorizer options (required).
     ///       Attributes:
     ///         Language syntax configuration file (required)
-    ///         XSLT style file (required)
-    ///         "Copy" image file URL (required)
+    ///         XSLT stylesheet file (required)
+    ///         CSS stylesheet file (required)
+    ///         Script file (required)
+    ///         Disabled (optional, leading whitespace normalization only)
     ///         Default language (optional)
     ///         Enable line numbering (optional)
     ///         Enable outlining (optional)
     ///         Keep XML comment "see" tags within the code (optional)
     ///         Tab size for unknown languages (optional, 0 = use default)
-    ///         Use language name as default title (optional)
-    ///         Disabled (optional, normalize leading whitespace only) --&gt;
+    ///         Use language name as default title (optional) --&gt;
     ///     &lt;colorizer syntaxFile="highlight.xml" styleFile="highlight.xsl"
-    ///       copyImageUrl="CopyCode.gif" language="cs" numberLines="false"
-    ///       outlining="false" keepSeeTags="false" tabSize="0"
-    ///       defaultTitle="true" disabled="false" /&gt;
+    ///       stylesheet="highlight.css" scriptFile="highlight.js"
+    ///       disabled="false" language="cs" numberLines="false" outlining="false"
+    ///       keepSeeTags="false" tabSize="0" defaultTitle="true" /&gt;
     /// &lt;/component&gt;
     /// </code>
     ///
@@ -143,25 +153,27 @@ namespace SandcastleBuilder.Components
         #region Private data members
         //=====================================================================
 
-        // Colorized code dictionary and image location used by PostTransformComponent
-        private static Dictionary<string, XmlNode> colorizedCodeBlocks = new Dictionary<string, XmlNode>();
-        private static string copyImageLocation, copyText;
+        // Colorized code dictionary used by the OnComponent event handler
+        private Dictionary<string, XmlNode> colorizedCodeBlocks;
+
+        // Output folder paths
+        private List<string> outputPaths;
 
         private CodeColorizer colorizer;    // The code colorizer
 
-        // Line numbering, outlining, keep see tags, remove region markers, and disabled flags
-        private bool numberLines, outliningEnabled, keepSeeTags, removeRegionMarkers, isDisabled;
+        // The stylesheet, script, and image files to include and the output path
+        private string stylesheet, scriptFile;
+
+        // Line numbering, outlining, keep see tags, remove region markers, disabled, and files copied flags
+        private bool numberLines, outliningEnabled, keepSeeTags, removeRegionMarkers, isDisabled,
+            colorizerFilesCopied;
 
         // The base path to use for file references with relative paths, the syntax and style filenames, and the
         // default language.
-        private string basePath, syntaxFile, styleFile, copyImage, defaultLanguage;
+        private string basePath, syntaxFile, styleFile, defaultLanguage;
 
         // The message level for missing source errors
         private MessageLevel messageLevel;
-
-        // Connect code blocks to the language filter if true
-        private bool languageFilter;
-        private List<string> filtersPresent;
 
         private int defaultTabSize;     // Default tab size
 
@@ -183,41 +195,6 @@ namespace SandcastleBuilder.Components
             nestedConceptCode;
         #endregion
 
-        #region Properties
-        //=====================================================================
-
-        /// <summary>
-        /// This is used by the <see cref="PostTransformComponent"/> to insert the colorized code blocks
-        /// </summary>
-        /// <remarks>The colorized code blocks contain HTML which isn't supported by conceptual topics
-        /// pre-transformation.  As such, we hold onto them here and use a placeholder ID.  The post-transform
-        /// component will replace the placeholder ID with the actual colorized code block.</remarks>
-        public static Dictionary<string, XmlNode> ColorizedCodeBlocks
-        {
-            get { return colorizedCodeBlocks; }
-        }
-
-        /// <summary>
-        /// This is used by the <see cref="PostTransformComponent"/> to get the destination location and filename
-        /// of the "Copy" image.
-        /// </summary>
-        public static string CopyImageLocation
-        {
-            get { return copyImageLocation; }
-        }
-
-        /// <summary>
-        /// This is used by the <see cref="PostTransformComponent"/> to get the "Copy" text so that it can be
-        /// replaced with an include item.
-        /// </summary>
-        /// <remarks>We can't do it here as the TransformComponent strips the &lt;include&gt; tag as it isn't one
-        /// it recognizes.</remarks>
-        public static string CopyText
-        {
-            get { return copyText; }
-        }
-        #endregion
-
         #region Constructor
         //=====================================================================
 
@@ -226,8 +203,8 @@ namespace SandcastleBuilder.Components
         /// </summary>
         /// <param name="assembler">A reference to the build assembler.</param>
         /// <param name="configuration">The configuration information</param>
-        /// <remarks><b>NOTE:</b>  This component must be paired with the <see cref="PostTransformComponent"/>.
-        /// See the <see cref="CodeBlockComponent"/> class topic for an example of the configuration and usage.</remarks>
+        /// <remarks>See the <see cref="CodeBlockComponent"/> class topic for an example of the configuration and
+        /// usage.</remarks>
         /// <exception cref="ConfigurationErrorsException">This is thrown if an error is detected in the
         /// configuration.</exception>
         public CodeBlockComponent(BuildAssembler assembler, XPathNavigator configuration) :
@@ -237,13 +214,15 @@ namespace SandcastleBuilder.Components
             string value = null;
             bool allowMissingSource = false, useDefaultTitle = false;
 
+            outputPaths = new List<string>();
+            colorizedCodeBlocks = new Dictionary<string, XmlNode>();
+
             Assembly asm = Assembly.GetExecutingAssembly();
             FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(asm.Location);
 
-            base.WriteMessage(MessageLevel.Info, String.Format(CultureInfo.InvariantCulture,
-                "\r\n    [{0}, version {1}]\r\n    Code Block Component.  {2}.\r\n    Portions copyright (c) " +
-                "2003, Jonathan de Halleux, All rights reserved.\r\n    http://SHFB.CodePlex.com",
-                fvi.ProductName, fvi.ProductVersion, fvi.LegalCopyright));
+            base.WriteMessage(MessageLevel.Info, "\r\n    [{0}, version {1}]\r\n    Code Block Component.  " +
+                "{2}.\r\n    Portions copyright (c) 2003, Jonathan de Halleux, All rights reserved.\r\n" +
+                "    http://SHFB.CodePlex.com", fvi.ProductName, fvi.ProductVersion, fvi.LegalCopyright);
 
             // The <basePath> element is optional.  If not set, it will assume the current folder as the base
             // path for source references with relative paths.
@@ -258,19 +237,24 @@ namespace SandcastleBuilder.Components
             if(basePath[basePath.Length - 1] != '\\')
                 basePath += @"\";
 
-            // The <languageFilter> element is optional.  If not set, language filtering is enabled by default.
-            nav = configuration.SelectSingleNode("languageFilter");
-
-            if(nav != null)
+            // Get the output paths
+            foreach(XPathNavigator path in configuration.Select("outputPaths/path"))
             {
-                value = nav.GetAttribute("value", String.Empty);
+                value = path.GetAttribute("value", String.Empty);
 
-                if(!String.IsNullOrEmpty(value) && !Boolean.TryParse(value, out languageFilter))
-                    throw new ConfigurationErrorsException("You must specify a Boolean value for the " +
-                        "<languageFilter> 'value' attribute.");
+                if(value[value.Length - 1] != '\\')
+                    value += @"\";
+
+                if(!Directory.Exists(value))
+                    throw new ConfigurationErrorsException("The output path '" + value + "' must exist");
+
+                outputPaths.Add(value);
             }
-            else
-                languageFilter = true;
+
+            if(outputPaths.Count == 0)
+                throw new ConfigurationErrorsException("You must specify at least one <path> element in the " +
+                    "<outputPaths> element.  You may need to delete and re-add the component to the project " +
+                    "to obtain updated configuration settings.");
 
             // The <allowMissingSource> element is optional.  If not set, missing source files generate an error.
             nav = configuration.SelectSingleNode("allowMissingSource");
@@ -309,10 +293,11 @@ namespace SandcastleBuilder.Components
                 throw new ConfigurationErrorsException("You must specify a <colorizer> element to define the " +
                     "code colorizer options.");
 
-            // The syntax configuration file and XSLT style file are required
+            // The file and URL values are all required
             syntaxFile = nav.GetAttribute("syntaxFile", String.Empty);
             styleFile = nav.GetAttribute("styleFile", String.Empty);
-            copyImage = nav.GetAttribute("copyImageUrl", String.Empty);
+            stylesheet = nav.GetAttribute("stylesheet", String.Empty);
+            scriptFile = nav.GetAttribute("scriptFile", String.Empty);
 
             if(String.IsNullOrEmpty(syntaxFile))
                 throw new ConfigurationErrorsException("You must specify a 'syntaxFile' attribute on the " +
@@ -322,12 +307,21 @@ namespace SandcastleBuilder.Components
                 throw new ConfigurationErrorsException("You must specify a 'styleFile' attribute on the " +
                     "<colorizer> element.");
 
-            if(String.IsNullOrEmpty(copyImage))
-                throw new ConfigurationErrorsException("You must specify a 'copyImageUrl' attribute on the " +
-                    "<colorizer> element.");
+            if(String.IsNullOrEmpty(stylesheet))
+                throw new ConfigurationErrorsException("You must specify a 'stylesheet' attribute on the " +
+                    "<colorizer> element");
 
-            // The syntax and style files must also exist.  The "copy" image is just a location and it doesn't
-            // have to exist yet.
+            if(String.IsNullOrEmpty(scriptFile))
+                throw new ConfigurationErrorsException("You must specify a 'scriptFile' attribute on the " +
+                    "<colorizer> element");
+
+            // The syntax and style files must also exist.  The "copy" image URL is just a location and it
+            // doesn't have to exist yet.
+            syntaxFile = Path.GetFullPath(syntaxFile);
+            styleFile = Path.GetFullPath(styleFile);
+            stylesheet = Path.GetFullPath(stylesheet);
+            scriptFile = Path.GetFullPath(scriptFile);
+
             if(!File.Exists(syntaxFile))
                 throw new ConfigurationErrorsException("The specified syntax file could not be found: " +
                     syntaxFile);
@@ -335,6 +329,12 @@ namespace SandcastleBuilder.Components
             if(!File.Exists(styleFile))
                 throw new ConfigurationErrorsException("The specified style file could not be found: " +
                     styleFile);
+
+            if(!File.Exists(stylesheet))
+                throw new ConfigurationErrorsException("Could not find stylesheet file: " + stylesheet);
+
+            if(!File.Exists(stylesheet))
+                throw new ConfigurationErrorsException("Could not find script file: " + scriptFile);
 
             // Optional attributes
             defaultLanguage = nav.GetAttribute("language", String.Empty);
@@ -381,18 +381,7 @@ namespace SandcastleBuilder.Components
             // Initialize the code colorizer
             colorizer = new CodeColorizer(syntaxFile, styleFile);
             colorizer.UseDefaultTitle = useDefaultTitle;
-            colorizer.CopyImageUrl = copyImageLocation = copyImage;
             colorizer.TabSize = defaultTabSize;
-            copyText = colorizer.CopyText;
-
-            // Get the language filters in effect.  If a code block uses a language without a filter, it won't
-            // have the attributes added to it so that it stays visible all the time.
-            nav = configuration.Clone();
-            nav.MoveToParent();
-            filtersPresent = new List<string>();
-
-            foreach(XPathNavigator filter in nav.Select("//language/@name"))
-                filtersPresent.Add(filter.Value);
 
             // Create the XPath queries
             context = new CustomContext();
@@ -405,6 +394,9 @@ namespace SandcastleBuilder.Components
             conceptualCode.SetContext(context);
             nestedConceptCode = XPathExpression.Compile("ddue:code");
             nestedConceptCode.SetContext(context);
+
+            // Hook up the event handler to complete the process after the topic is transformed to HTML
+            base.BuildAssembler.ComponentEvent += TransformComponent_TopicTransformed;
         }
         #endregion
 
@@ -422,11 +414,11 @@ namespace SandcastleBuilder.Components
             XPathNavigator[] codeList;
             XPathExpression nestedCode;
             XmlAttribute attr;
-            XmlNode code, titleDiv, preNode, container, refLink;
+            XmlNode code, preNode, refLink;
 
             string language, title, codeBlock;
-            bool nbrLines, outline, seeTags, filter;
-            int tabSize, start, end, blockId = 1, id = 1;
+            bool nbrLines, outline, seeTags;
+            int tabSize, start, end, id = 1;
             MessageLevel msgLevel;
 
             // Clear the dictionary
@@ -448,7 +440,7 @@ namespace SandcastleBuilder.Components
 
                 if(root == null)
                 {
-                    base.WriteMessage(MessageLevel.Warn, "Root content node not found.  Cannot colorize code.");
+                    base.WriteMessage(key, MessageLevel.Warn, "Root content node not found.  Cannot colorize code.");
                     return;
                 }
 
@@ -468,7 +460,6 @@ namespace SandcastleBuilder.Components
                 nbrLines = numberLines;
                 outline = outliningEnabled;
                 seeTags = keepSeeTags;
-                filter = languageFilter;
                 tabSize = 0;
                 title = String.Empty;
                 msgLevel = messageLevel;
@@ -484,10 +475,10 @@ namespace SandcastleBuilder.Components
                 // no nested blocks, source and region will be used to load the code if found.  Otherwise, the
                 // existing inner XML is used for the code.
                 if(navCode.SelectSingleNode(nestedCode) != null)
-                    codeBlock = this.LoadNestedCodeBlocks(navCode, nestedCode, msgLevel);
+                    codeBlock = this.LoadNestedCodeBlocks(key, navCode, nestedCode, msgLevel);
                 else
                     if(code.Attributes["source"] != null)
-                        codeBlock = this.LoadCodeBlock(code, msgLevel);
+                        codeBlock = this.LoadCodeBlock(key, code, msgLevel);
                     else
                         codeBlock = code.InnerXml;
 
@@ -504,10 +495,6 @@ namespace SandcastleBuilder.Components
                     seeTags = Convert.ToBoolean(code.Attributes["keepSeeTags"].Value,
                         CultureInfo.InvariantCulture);
 
-                if(code.Attributes["filter"] != null)
-                    filter = Convert.ToBoolean(code.Attributes["filter"].Value,
-                        CultureInfo.InvariantCulture);
-
                 if(code.Attributes["tabSize"] != null)
                     tabSize = Convert.ToInt32(code.Attributes["tabSize"].Value,
                         CultureInfo.InvariantCulture);
@@ -516,12 +503,20 @@ namespace SandcastleBuilder.Components
                 // leading whitespace and optionally numbers the lines and adds outlining based on the other
                 // settings.
                 if(code.Attributes["lang"] != null)
+                {
                     language = code.Attributes["lang"].Value;
+
+                    // The XSL transformations consistently use "language" so change the attribute name
+                    attr = document.CreateAttribute("language");
+                    attr.Value = language;
+                    code.Attributes.Remove(code.Attributes["lang"]);
+                    code.Attributes.Append(attr);
+                }
                 else
                     if(code.Attributes["language"] != null)
                         language = code.Attributes["language"].Value;
 
-                // Use the title if one is supplied.
+                // Use the title if one is supplied
                 if(code.Attributes["title"] != null)
                     title = HttpUtility.HtmlEncode(code.Attributes["title"].Value);
 
@@ -539,35 +534,18 @@ namespace SandcastleBuilder.Components
                 // Process the code.  The colorizer is built to highlight <pre> tags in an HTML file so we'll
                 // wrap the code in a <pre> tag with the settings.
                 codeBlock = colorizer.ProcessAndHighlightText(String.Format(CultureInfo.InvariantCulture,
-                    "<pre lang=\"{0}\" numberLines=\"{1}\" outlining=\"{2}\" " +
-                    "keepSeeTags=\"{3}\" tabSize=\"{4}\" {5}>{6}</pre>",
-                    language, nbrLines, outline, seeTags, tabSize,
-                    (title.Length != 0) ? "title=\"" + title + "\"" : String.Empty, codeBlock));
+                    "<pre lang=\"{0}\" numberLines=\"{1}\" outlining=\"{2}\" keepSeeTags=\"{3}\" " +
+                    "tabSize=\"{4}\">{5}</pre>", language, nbrLines, outline, seeTags, tabSize, codeBlock));
 
                 // Non-breaking spaces are replaced with a space entity.  If not, they disappear in the rendered
                 // HTML.  Seems to be an XML or XSLT thing.
                 codeBlock = codeBlock.Replace("&nbsp;", "&#x20;");
 
-                // Move the title above the code block so that it doesn't interfere with the stuff generated
-                // by the transformation component.  The post-transform component will perform some clean-up
-                // to get rid of similar stuff added by it.
-                title = codeBlock.Substring(0, codeBlock.IndexOf("</div>", StringComparison.Ordinal) + 6);
-                codeBlock = codeBlock.Substring(title.Length);
-
-                titleDiv = document.CreateDocumentFragment();
-                titleDiv.InnerXml = title;
-                titleDiv = titleDiv.ChildNodes[0];
-
-                // Remove the colorizer's <pre> tag.  We'll add our own below.
-                start = codeBlock.IndexOf('>') + 1;
+                // Get the location of the actual code excluding the title div and pre elements
+                start = codeBlock.IndexOf('>', codeBlock.IndexOf("</div>", StringComparison.Ordinal) + 6) + 1;
                 end = codeBlock.LastIndexOf('<');
 
-                // We need to add the xml:space="preserve" attribute on the <pre> element so that MS Help Viewer
-                // doesn't remove significant whitespace between colorized elements.
                 preNode = document.CreateNode(XmlNodeType.Element, "pre", null);
-                attr = document.CreateAttribute("xml:space");
-                attr.Value = "preserve";
-                preNode.Attributes.Append(attr);
                 preNode.InnerXml = codeBlock.Substring(start, end - start);
 
                 // Convert <see> tags to <referenceLink> or <a> tags.  We need to do this so that the Resolve
@@ -599,40 +577,12 @@ namespace SandcastleBuilder.Components
                     seeTag.ParentNode.ReplaceChild(refLink, seeTag);
                 }
 
-                // The <span> tags cannot be self-closing if empty.  The colorizer renders them correctly but
-                // when written out as XML, they get converted to self-closing tags which breaks them.  To fix
-                // them, store an empty string in each empty span so that it renders as an opening and closing
-                // tag.  Note that if null, InnerText returns an empty string by default.  As such, this looks
-                // redundant but it really isn't (see note above).
-                foreach(XmlNode span in preNode.SelectNodes("//span"))
-                    if(span.InnerText.Length == 0)
-                        span.InnerText = String.Empty;
-
-                // Add language filter stuff if needed or just the title if there is one and we aren't
-                // using the language filter.
-                if(filter)
-                {
-                    // If necessary, map the language ID to one we will recognize
-                    language = language.ToLower(CultureInfo.InvariantCulture);
-
-                    if(colorizer.AlternateIds.ContainsKey(language))
-                        language = colorizer.AlternateIds[language];
-
-                    container = this.AddLanguageFilter(titleDiv, preNode, language, blockId++);
-                }
-                else
-                {
-                    container = document.CreateNode(XmlNodeType.Element, "span", null);
-                    container.AppendChild(titleDiv);
-                    container.AppendChild(preNode);
-                }
-
-                // Replace the code with a placeholder ID.  The post-transform
-                // component will relace it with the code from the container.
+                // Replace the code with a placeholder ID.  The OnComponent event handler will relace it with the
+                // code from the container node.
                 code.InnerXml = "@@_SHFB_" + id.ToString(CultureInfo.InvariantCulture);
 
                 // Add the container to the code block dictionary
-                colorizedCodeBlocks.Add(code.InnerXml, container);
+                colorizedCodeBlocks.Add(code.InnerXml, preNode);
                 id++;
             }
         }
@@ -644,6 +594,7 @@ namespace SandcastleBuilder.Components
         /// <summary>
         /// This is used to load a set of nested code blocks from external files
         /// </summary>
+        /// <param name="key">The topic key</param>
         /// <param name="navCode">The node in which to replace the nested code blocks</param>
         /// <param name="nestedCode">The XPath expression used to locate the nested code blocks.</param>
         /// <param name="msgLevel">The message level for missing source code</param>
@@ -651,14 +602,14 @@ namespace SandcastleBuilder.Components
         /// <remarks>Only source and region attributes are used.  All other attributes are obtained from the
         /// parent code block.  Text nodes are created to replace the nested code tags so that any additional
         /// text in the parent code block is also retained.</remarks>
-        private string LoadNestedCodeBlocks(XPathNavigator navCode, XPathExpression nestedCode,
+        private string LoadNestedCodeBlocks(string key, XPathNavigator navCode, XPathExpression nestedCode,
           MessageLevel msgLevel)
         {
             XPathNavigator[] codeList = BuildComponentUtilities.ConvertNodeIteratorToArray(
                 navCode.Select(nestedCode));
 
             foreach(XPathNavigator codeElement in codeList)
-                codeElement.ReplaceSelf("\r\n" + this.LoadCodeBlock(((IHasXmlNode)codeElement).GetNode(),
+                codeElement.ReplaceSelf("\r\n" + this.LoadCodeBlock(key, ((IHasXmlNode)codeElement).GetNode(),
                     msgLevel));
 
             return navCode.InnerXml;
@@ -667,10 +618,11 @@ namespace SandcastleBuilder.Components
         /// <summary>
         /// This is used to load a code block from an external file.
         /// </summary>
+        /// <param name="key">The topic key</param>
         /// <param name="code">The node containing the attributes</param>
         /// <param name="msgLevel">The message level for missing source code</param>
         /// <returns>The HTML encoded block extracted from the file.</returns>
-        private string LoadCodeBlock(XmlNode code, MessageLevel msgLevel)
+        private string LoadCodeBlock(string key, XmlNode code, MessageLevel msgLevel)
         {
             XmlNode srcFile;
             Regex reFindRegion;
@@ -685,7 +637,7 @@ namespace SandcastleBuilder.Components
 
             if(String.IsNullOrEmpty(sourceFile))
             {
-                base.WriteMessage(msgLevel, "A nested <code> tag must contain a \"source\" attribute " +
+                base.WriteMessage(key, msgLevel, "A nested <code> tag must contain a \"source\" attribute " +
                     "that specifies the source file to import");
                 return "!ERROR: See log file!";
             }
@@ -704,14 +656,14 @@ namespace SandcastleBuilder.Components
             }
             catch(ArgumentException argEx)
             {
-                base.WriteMessage(msgLevel, String.Format(CultureInfo.InvariantCulture,
-                    "Possible invalid path '{0}{1}'.  Error: {2}", basePath, sourceFile, argEx.Message));
+                base.WriteMessage(key, msgLevel, "Possible invalid path '{0}{1}'.  Error: {2}", basePath,
+                    sourceFile, argEx.Message);
                 return "!ERROR: See log file!";
             }
             catch(IOException ioEx)
             {
-                base.WriteMessage(msgLevel, String.Format(CultureInfo.InvariantCulture,
-                    "Unable to load source file '{0}'.  Error: {1}", sourceFile, ioEx.Message));
+                base.WriteMessage(key, msgLevel, "Unable to load source file '{0}'.  Error: {1}", sourceFile,
+                    ioEx.Message);
                 return "!ERROR: See log file!";
             }
 
@@ -722,16 +674,18 @@ namespace SandcastleBuilder.Components
 
                 // Find the start of the region.  This gives us an immediate starting match on the second
                 // search and we can look for the matching #endregion without caring about the region name.
-                // Otherwise, nested regions get in the way and complicate things.
-                reFindRegion = new Regex("\\#(pragma\\s+)?region\\s+\"?" + Regex.Escape(region),
-                    RegexOptions.IgnoreCase);
+                // Otherwise, nested regions get in the way and complicate things.  The bit at the end ensures
+                // that shorter region names aren't matched in longer ones with the same start that occur before
+                // the shorter one.
+                reFindRegion = new Regex("\\#(pragma\\s+)?region\\s+\"?" + Regex.Escape(region) +
+                    "\\s*?[\"->]*?\\s*?[\\r\\n]", RegexOptions.IgnoreCase);
 
                 find = reFindRegion.Match(codeBlock);
 
                 if(!find.Success)
                 {
-                    base.WriteMessage(msgLevel, String.Format(CultureInfo.InvariantCulture,
-                        "Unable to locate start of region '{0}' in source file '{1}'", region, sourceFile));
+                    base.WriteMessage(key, msgLevel, "Unable to locate start of region '{0}' in source file '{1}'",
+                        region, sourceFile);
                     return "!ERROR: See log file!";
                 }
 
@@ -740,9 +694,8 @@ namespace SandcastleBuilder.Components
 
                 if(!m.Success)
                 {
-                    base.WriteMessage(msgLevel, String.Format(CultureInfo.InvariantCulture,
-                        "Unable to extract region '{0}' in source file '{1}{2}' (missing #endregion?)",
-                        region, basePath, sourceFile));
+                    base.WriteMessage(key, msgLevel, "Unable to extract region '{0}' in source file '{1}{2}' " +
+                        "(missing #endregion?)", region, basePath, sourceFile);
                     return "!ERROR: See log file!";
                 }
 
@@ -769,7 +722,7 @@ namespace SandcastleBuilder.Components
 
             if(code.Attributes["removeRegionMarkers"] != null &&
               !Boolean.TryParse(code.Attributes["removeRegionMarkers"].Value, out removeRegions))
-                base.WriteMessage(MessageLevel.Warn, "Invalid removeRegionMarkers attribute value.  " +
+                base.WriteMessage(key, MessageLevel.Warn, "Invalid removeRegionMarkers attribute value.  " +
                     "Option ignored.");
 
             if(removeRegions)
@@ -781,100 +734,134 @@ namespace SandcastleBuilder.Components
             // Return the HTML encoded block
             return HttpUtility.HtmlEncode(codeBlock);
         }
+        #endregion
+
+        #region Event handlers
+        //=====================================================================
 
         /// <summary>
-        /// This is used to add language filter IDs for the Prototype, VS2005, and Hana styles so that the code
-        /// block is shown or hidden based on the language filter selection.
+        /// This is used to complete the process by inserting the colorized code within the topic after it has
+        /// been transformed to HTML.
         /// </summary>
-        /// <param name="title">The title node if used</param>
-        /// <param name="code">The code node</param>
-        /// <param name="language">The language to use as the filter</param>
-        /// <param name="blockId">A unique ID number for the code block</param>
-        /// <returns>The span node containing the title and code nodes</returns>
-        /// <remarks>The <see cref="PostTransformComponent"/> adds the script necessary to register the code
-        /// blocks and set their initial visible state in the Prototype and Hana styles.</remarks>
-        private XmlNode AddLanguageFilter(XmlNode title, XmlNode code, string language, int blockId)
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event arguments</param>
+        /// <remarks>A two-phase approach is needed as the HTML for the colorized code wouldn't make it through
+        /// the conceptual content XSL transformations.</remarks>
+        private void TransformComponent_TopicTransformed(object sender, EventArgs e)
         {
-            XmlDocument document = code.OwnerDocument;
-            XmlNode span;
-            XmlAttribute idAttr, xlangAttr, codeLangAttr;
+            TransformedTopicEventArgs tt = e as TransformedTopicEventArgs;
+            XmlNode head, node, codeBlock;
+            XmlAttribute attr;
+            string destStylesheet, destScriptFile;
 
-            // Add the language filter attribute
-            span = document.CreateNode(XmlNodeType.Element, "span", null);
-            idAttr = document.CreateAttribute("id");
-            xlangAttr = document.CreateAttribute("x-lang"); // Prototype / Hana
-            codeLangAttr = document.CreateAttribute("codeLanguage"); // VS2005
+            // Don't bother if not a transform event or if the topic contained no code blocks
+            if(tt == null || colorizedCodeBlocks.Count == 0)
+                return;
 
-            switch(language)
+            // TODO: Perhaps move this to the disposed method?
+            // Only copy the files if needed
+            if(!colorizerFilesCopied)
             {
-                case "cs":
-                    xlangAttr.Value = codeLangAttr.Value = "CSharp";
-                    break;
+                foreach(string outputPath in outputPaths)
+                {
+                    destStylesheet = outputPath + @"styles\" + Path.GetFileName(stylesheet);
+                    destScriptFile = outputPath + @"scripts\" + Path.GetFileName(scriptFile);
 
-                case "vbnet":
-                    xlangAttr.Value = codeLangAttr.Value = "VisualBasic";
-                    break;
+                    if(!Directory.Exists(outputPath + @"styles"))
+                        Directory.CreateDirectory(outputPath + @"styles");
 
-                case "cpp":
-                    xlangAttr.Value = codeLangAttr.Value = "ManagedCPlusPlus";
-                    break;
+                    if(!Directory.Exists(outputPath + @"scripts"))
+                        Directory.CreateDirectory(outputPath + @"scripts");
 
-                case "javascript":
-                    xlangAttr.Value = codeLangAttr.Value = "JavaScript";
-                    break;
+                    // All attributes are turned off so that we can delete it later
+                    if(!File.Exists(destStylesheet))
+                    {
+                        File.Copy(stylesheet, destStylesheet);
+                        File.SetAttributes(destStylesheet, FileAttributes.Normal);
+                    }
 
-                case "jsharp":
-                    xlangAttr.Value = codeLangAttr.Value = "JSharp";
-                    break;
+                    if(!File.Exists(destScriptFile))
+                    {
+                        File.Copy(scriptFile, destScriptFile);
+                        File.SetAttributes(destScriptFile, FileAttributes.Normal);
+                    }
+                }
 
-                case "jscriptnet":
-                    xlangAttr.Value = codeLangAttr.Value = "JScript";
-                    break;
-
-                case "xaml":
-                    xlangAttr.Value = codeLangAttr.Value = "XAML";
-                    break;
-
-                default:
-                    // Unknown, don't apply the filter.  It'll show up for all languages.  Just add the title if
-                    // needed.
-                    xlangAttr.Value = String.Empty;
-                    codeLangAttr.Value = language;
-                    break;
+                colorizerFilesCopied = true;
             }
 
-            // If a filter for the language isn't there, don't connect it.  The code block will always be visible.
-            if(xlangAttr.Value.Length != 0 && !filtersPresent.Contains(codeLangAttr.Value))
+            // Find the <head> section
+            head = tt.Document.SelectSingleNode("html/head");
+
+            if(head == null)
             {
-                xlangAttr.Value = String.Empty;
-                codeLangAttr.Value = "none";
+                base.WriteMessage(tt.Key, MessageLevel.Error, "<head> section not found!  Could not insert links.");
+                return;
             }
 
-            if(xlangAttr.Value.Length != 0)
-            {
-                // The post-transform component does all the hard work if it finds spans with an ID attribute
-                // starting with "cbc_".
-                idAttr.Value = "cbc_" + blockId.ToString(CultureInfo.InvariantCulture);
+            // Add the link to the stylesheet
+            node = tt.Document.CreateNode(XmlNodeType.Element, "link", null);
 
-                span.Attributes.Append(idAttr);
-                span.Attributes.Append(xlangAttr);
-                span.Attributes.Append(codeLangAttr);
+            attr = tt.Document.CreateAttribute("type");
+            attr.Value = "text/css";
+            node.Attributes.Append(attr);
 
-                // Add the title
-                span.AppendChild(title);
+            attr = tt.Document.CreateAttribute("rel");
+            attr.Value = "stylesheet";
+            node.Attributes.Append(attr);
 
-                // The Prototype style doesn't need the enclosing span but it doesn't hurt anything.  With the
-                // introduction of custom styles in v1.4.0.0, it needs to be generic so elements are added to
-                // cover all styles.
-                span.AppendChild(code.Clone());
-            }
-            else
-            {
-                span.AppendChild(title);
-                span.AppendChild(code.Clone());
-            }
+            node.InnerXml = String.Format(CultureInfo.InvariantCulture,
+                "<includeAttribute name='href' item='stylePath'><parameter>{0}</parameter></includeAttribute>",
+                Path.GetFileName(stylesheet));
 
-            return span;
+            head.AppendChild(node);
+
+            // Add the link to the script
+            node = tt.Document.CreateNode(XmlNodeType.Element, "script", null);
+
+            attr = tt.Document.CreateAttribute("type");
+            attr.Value = "text/javascript";
+            node.Attributes.Append(attr);
+
+            // Script tags cannot be self-closing so set their inner text
+            // to a space so that they render as an opening and a closing tag.
+            node.InnerXml = String.Format(CultureInfo.InvariantCulture,
+                " <includeAttribute name='src' item='scriptPath'><parameter>{0}</parameter></includeAttribute>",
+                Path.GetFileName(scriptFile));
+
+            head.AppendChild(node);
+
+            // The "local-name()" part of the query is for the VS2010 style which adds an xhtml namespace to
+            // the element.  I could have created a context for the namespace but this is quick and it works for
+            // both cases.
+            foreach(XmlNode placeholder in tt.Document.SelectNodes(
+              "//pre[starts-with(.,'@@_SHFB_')]|//*[local-name() = 'pre' and starts-with(.,'@@_SHFB_')]"))
+                if(colorizedCodeBlocks.TryGetValue(placeholder.InnerText, out codeBlock))
+                {
+                    // Make sure spacing is preserved
+                    if(placeholder.Attributes["xml:space"] == null)
+                    {
+                        attr = tt.Document.CreateAttribute("xml:space");
+                        attr.Value = "preserve";
+                        placeholder.Attributes.Append(attr);
+                    }
+
+                    placeholder.InnerXml = codeBlock.InnerXml;
+
+                    // The <span> tags cannot be self-closing if empty.  The colorizer renders them correctly but
+                    // when written out as XML, they get converted to self-closing tags which breaks them.  To fix
+                    // them, store an empty string in each empty span so that it renders as an opening and closing
+                    // tag.  Note that if null, InnerText returns an empty string by default.  As such, this looks
+                    // redundant but it really isn't.
+                    foreach(XmlNode span in placeholder.SelectNodes(".//span"))
+                        if(span.InnerText.Length == 0)
+                            span.InnerText = String.Empty;
+                }
+                else
+                    base.WriteMessage(tt.Key, MessageLevel.Warn, "Unable to locate colorized code for placeholder: " +
+                        placeholder.InnerText);
+
+            // TODO: Fix up "Copy Code" onclick attribute to call the colorizer version of CopyCode.
         }
         #endregion
 

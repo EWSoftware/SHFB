@@ -46,8 +46,7 @@
 		<xsl:apply-templates select="/document/comments/preliminary"/>
 		<xsl:apply-templates select="/document/comments/summary"/>
 		<xsl:if test="$g_apiTopicSubGroup='overload'">
-			<xsl:apply-templates select="/document/reference/elements"
-													 mode="overloadSummary"/>
+			<xsl:apply-templates select="/document/reference/elements" mode="overloadSummary"/>
 		</xsl:if>
 
 		<!-- inheritance -->
@@ -150,10 +149,16 @@
 		</span>
 	</xsl:template>
 
-	<xsl:template match="preliminary"
-								name="t_preliminary">
-		<div>
-			<include item="preliminary"/>
+	<xsl:template match="preliminary" name="t_preliminary">
+		<div class="preliminary">
+			<xsl:choose>
+				<xsl:when test="normalize-space(.)">
+					<xsl:apply-templates/>
+				</xsl:when>
+				<xsl:otherwise>
+					<include item="preliminaryText" />
+				</xsl:otherwise>
+			</xsl:choose>
 		</div>
 	</xsl:template>
 

@@ -250,7 +250,7 @@ namespace Microsoft.Ddue.Tools
                 // check for validity of reference
                 if (!validSnippetReference.IsMatch(reference))
                 {
-                    WriteMessage(MessageLevel.Warn, "Skipping invalid snippet reference: " + reference);
+                    base.WriteMessage(key, MessageLevel.Warn, "Skipping invalid snippet reference: " + reference);
                     continue;
                 }
 
@@ -267,7 +267,9 @@ namespace Microsoft.Ddue.Tools
                     string examplePath = string.Empty;
                     if (!this.exampleIndex.TryGetValue(identifier.Example, out examplePath))
                     {
-                        WriteMessage(MessageLevel.Warn, String.Format("Snippet with identifier '{0}' was not found. The '{1}' example was not found in the examples directory.", identifier.ToString(), identifier.Example));
+                        base.WriteMessage(key, MessageLevel.Warn, "Snippet with identifier '{0}' was not found. " +
+                            "The '{1}' example was not found in the examples directory.", identifier.ToString(),
+                            identifier.Example);
                         continue;
                     }
 
@@ -282,7 +284,8 @@ namespace Microsoft.Ddue.Tools
                         // if no approval log was specified in the config, all snippets are treated as approved by default
                         // so show an warning message that the snippet was not found
                         if (approvedSnippetIndex.Count == 0)
-                            WriteMessage(MessageLevel.Warn, string.Format("No Snippet with identifier '{0}' was found.", identifier.ToString()));
+                            base.WriteMessage(key, MessageLevel.Warn, "No Snippet with identifier '{0}' was found.",
+                                identifier.ToString());
                         else
                         {
                             // show a warning message: either snippet not found, or snippet not approved.
@@ -300,9 +303,12 @@ namespace Microsoft.Ddue.Tools
 
                             // check whether snippets are present in parsnip approval logs and throw warnings accordingly.
                             if (!isApproved || !rejectedSnippetIndex.ContainsKey(identifier.Example))
-                                WriteMessage(MessageLevel.Warn, string.Format("The snippet with identifier '{0}' was omitted because it is not present in parsnip approval logs.", identifier.ToString()));
+                                base.WriteMessage(key, MessageLevel.Warn, "The snippet with identifier '{0}' " +
+                                    "was omitted because it is not present in parsnip approval logs.",
+                                    identifier.ToString());
                             else
-                                WriteMessage(MessageLevel.Warn, string.Format("No Snippet with identifier '{0}' was found.", identifier.ToString()));
+                                base.WriteMessage(key, MessageLevel.Warn, "No Snippet with identifier '{0}' " +
+                                    "was found.", identifier.ToString());
                         }
 
                         continue;
@@ -313,7 +319,9 @@ namespace Microsoft.Ddue.Tools
                     if (rejectedSnippetIndex.TryGetValue(identifier.Example, out rejectedUnits))
                     {
                         foreach (string rejectedUnit in rejectedUnits)
-                            WriteMessage(MessageLevel.Warn, string.Format("The '{0}' snippet with identifier '{1}' was omitted because the {2}\\{0} unit did not pass Parsnip testing.", rejectedUnit, identifier.ToString(), identifier.Example));
+                            base.WriteMessage(key, MessageLevel.Warn, "The '{0}' snippet with identifier " +
+                                "'{1}' was omitted because the {2}\\{0} unit did not pass Parsnip testing.",
+                                rejectedUnit, identifier.ToString(), identifier.Example);
                     }
                 }
 

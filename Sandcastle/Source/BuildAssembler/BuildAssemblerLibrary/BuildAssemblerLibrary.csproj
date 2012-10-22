@@ -69,6 +69,7 @@
     <Compile Include="BuildComponent.cs" />
     <Compile Include="BuildComponentUtilities.cs" />
     <Compile Include="BuildContext.cs" />
+    <Compile Include="MessageLevel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

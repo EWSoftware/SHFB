@@ -408,7 +408,7 @@
     <b>Сборка:</b>
   </item>
 
-  <item id="assemblyNameAndModule">{0} (в {1}.{2})</item>
+	<item id="assemblyNameAndModule">{0} (в {1}.{2}) Версия: {3}</item>
 
   <item id="requirementsAssemblyLayout">
     <b>Сборка:</b> {0} (в {1}.dll)

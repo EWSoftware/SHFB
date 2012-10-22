@@ -282,23 +282,23 @@ namespace Microsoft.Ddue.Tools
                         }
                         catch(Exception exp)
                         {
-                            WriteMessage(MessageLevel.Warn, exp.Message);
+                            WriteMessage(key, MessageLevel.Error, exp.Message);
                         }
                     }
                 }
                 catch(XsltException exp)
                 {
-                    WriteMessage(MessageLevel.Warn, String.Format("{0} at {1} {2} {3}", exp.Message, exp.SourceUri, exp.LineNumber, exp.LinePosition));
+                    WriteMessage(key, MessageLevel.Error, String.Format("{0} at {1} {2} {3}", exp.Message, exp.SourceUri, exp.LineNumber, exp.LinePosition));
 #if DEBUG
                     if(exp.InnerException != null)
                     {
-                        WriteMessage(MessageLevel.Warn, String.Format("[{0}] {1}", exp.InnerException.GetType().Name, exp.InnerException.Message));
+                        WriteMessage(key, MessageLevel.Error, String.Format("[{0}] {1}", exp.InnerException.GetType().Name, exp.InnerException.Message));
                     }
 #endif
                 }
                 catch(Exception exp)
                 {
-                    WriteMessage(MessageLevel.Error, exp.Message);
+                    WriteMessage(key, MessageLevel.Error, exp.Message);
                 }
             }
         }
@@ -343,7 +343,7 @@ namespace Microsoft.Ddue.Tools
             }
             catch(Exception exp)
             {
-                WriteMessage(MessageLevel.Warn, exp.Message);
+                WriteMessage(MessageLevel.Error, exp.Message);
             }
         }
 
@@ -406,7 +406,7 @@ namespace Microsoft.Ddue.Tools
             }
             catch(Exception exp)
             {
-                WriteMessage(MessageLevel.Warn, exp.Message);
+                WriteMessage(MessageLevel.Error, exp.Message);
             }
         }
 
@@ -479,15 +479,11 @@ namespace Microsoft.Ddue.Tools
                         }
                         catch(XsltException exp)
                         {
-#if DEBUG
-                            WriteMessage(MessageLevel.Error, String.Format("{0} at {1} {2} {3}", exp.Message, exp.SourceUri, exp.LineNumber, exp.LinePosition));
-#else
-                            WriteMessage (MessageLevel.Warn, String.Format ("{0} at {1} {2} {3}", exp.Message, exp.SourceUri, exp.LineNumber, exp.LinePosition));
-#endif
+                            WriteMessage(MessageLevel.Error, String.Format ("{0} at {1} {2} {3}", exp.Message, exp.SourceUri, exp.LineNumber, exp.LinePosition));
 #if DEBUG
                             if(exp.InnerException != null)
                             {
-                                WriteMessage(MessageLevel.Warn, String.Format("[{0}] {1}", exp.InnerException.GetType().Name, exp.InnerException.Message));
+                                WriteMessage(MessageLevel.Error, String.Format("[{0}] {1}", exp.InnerException.GetType().Name, exp.InnerException.Message));
                             }
 #endif
                         }

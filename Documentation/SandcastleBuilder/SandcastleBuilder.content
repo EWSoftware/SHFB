@@ -141,7 +141,7 @@
       </HelpKeywords>
     </Topic>
   </Topic>
-  <Topic id="b128ad2a-787e-48c7-b946-f6953080c386" visible="True" isExpanded="true" isSelected="true" title="Visual Studio Integration Package">
+  <Topic id="b128ad2a-787e-48c7-b946-f6953080c386" visible="True" isExpanded="true" title="Visual Studio Integration Package">
     <HelpKeywords>
       <HelpKeyword index="K" term="Visual Studio, package" />
     </HelpKeywords>
@@ -572,7 +572,7 @@
       </HelpKeywords>
     </Topic>
   </Topic>
-  <Topic id="8dcbb69b-7a1a-4049-8e6b-2bf344efbbc9" visible="True" title="Custom Build Components">
+  <Topic id="8dcbb69b-7a1a-4049-8e6b-2bf344efbbc9" visible="True" isExpanded="true" isSelected="true" title="Custom Build Components">
     <HelpKeywords>
       <HelpKeyword index="K" term="build components, configuring" />
       <HelpKeyword index="K" term="build components, overview" />
@@ -625,12 +625,6 @@
       <HelpKeywords>
         <HelpKeyword index="K" term="build components, show missing documentation component" />
         <HelpKeyword index="K" term="ShowMissingComponent, configuration options" />
-      </HelpKeywords>
-    </Topic>
-    <Topic id="58ce80ee-eb4b-4027-8871-7e83fad8e476" visible="True" title="Version Information Component">
-      <HelpKeywords>
-        <HelpKeyword index="K" term="build components, version information component" />
-        <HelpKeyword index="K" term="VersionInfoComponent, configuration options" />
       </HelpKeywords>
     </Topic>
     <Topic id="e6d18448-2459-46f1-bbdc-a7db415f2bda" visible="True" title="Creating a Component Configuration File">

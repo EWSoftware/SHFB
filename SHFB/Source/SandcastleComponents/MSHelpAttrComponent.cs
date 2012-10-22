@@ -1,9 +1,9 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder Components
 // File    : MSHelpAttrComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/23/2010
-// Note    : Copyright 2008-2010, Eric Woodruff, All rights reserved
+// Updated : 10/14/2012
+// Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a build component that is used to add additional MS
@@ -16,11 +16,10 @@
 // applications, documentation, and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.6.0.7  04/07/2008  EFW  Created the code
-// 1.9.0.0  06/19/2010  EFW  Attributes are now optional.  The component will
-//                           do nothing if none are specified.
-//=============================================================================
+// 1.9.0.0  06/19/2010  EFW  Attributes are now optional.  The component will do nothing if none are specified
+//===============================================================================================================
 
 using System;
 using System.Collections.Generic;
@@ -137,7 +136,7 @@ namespace SandcastleBuilder.Components
                 dataIsland = document.SelectSingleNode("html/head/xml");
 
                 if(dataIsland == null)
-                    base.WriteMessage(MessageLevel.Warn, "<xml> element was not found.  The additional " +
+                    base.WriteMessage(key, MessageLevel.Warn, "<xml> element was not found.  The additional " +
                         "attributes cannot be added.");
                 else
                     foreach(KeyValuePair<string, string> pair in attributes)

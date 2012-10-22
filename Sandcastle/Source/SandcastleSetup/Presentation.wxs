@@ -523,6 +523,9 @@
             <Component Id="cmpE0843D47F7D4CA409FCBA69A4083A1F2" Guid="{5AB9D7B1-E773-44B8-AD77-4D6387BC94BE}">
               <File Id="fil9EB8AAAB04568DD12C251B7E75A91F84" KeyPath="yes" Source="$(var.RootFolder)\Presentation\Prototype\icons\copycode.gif" />
             </Component>
+            <Component Id="cmp3A4D5D18DD9570C40DC7B138165A07E4" Guid="{318F97E7-95AA-4852-BD65-947376D7A47D}">
+              <File Id="filDE05825E4BE98496E2D4F43F830D2FA2" KeyPath="yes" Source="$(var.RootFolder)\Presentation\Prototype\icons\copycodeHighlight.gif" />
+            </Component>
             <Component Id="cmp436910E6D3DF9B77A509BC1224616E78" Guid="{6FA7CEF3-4C73-4304-B1A3-D64AB3480F1A}">
               <File Id="filD2D30C5525F63F99D1B09B06E06B4915" KeyPath="yes" Source="$(var.RootFolder)\Presentation\Prototype\icons\expand_all.gif" />
             </Component>
@@ -1908,6 +1911,7 @@
       <ComponentRef Id="cmp27A8C0C3D4A88ADAC197701A6EEB27DC" />
       <ComponentRef Id="cmpB11C0ED0E2B5C72071D8CFDE5D9EDCDB" />
       <ComponentRef Id="cmpE0843D47F7D4CA409FCBA69A4083A1F2" />
+      <ComponentRef Id="cmp3A4D5D18DD9570C40DC7B138165A07E4" />
       <ComponentRef Id="cmp436910E6D3DF9B77A509BC1224616E78" />
       <ComponentRef Id="cmp9C86F597EFC4C485FC6054481029DED2" />
       <ComponentRef Id="cmp1DF7DDCDCC6E14B51AE2B66E33644F4E" />

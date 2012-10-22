@@ -1,31 +1,28 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder Components
 // File    : ShowMissingComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/18/2010
-// Note    : Copyright 2007-2010, Eric Woodruff, All rights reserved
+// Updated : 10/14/2012
+// Note    : Copyright 2007-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains a build component that is used to add "missing" notes
-// for missing summary, parameter, returns, value, and remarks tags.  It can
-// also add default summary documentation for constructors.
+// This file contains a build component that is used to add "missing" notes for missing summary, parameter,
+// returns, value, and remarks tags.  It can also add default summary documentation for constructors.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.4.0.0  02/16/2007  EFW  Created the code
 // 1.6.0.5  02/25/2008  EFW  Fixed the auto-doc constructor class link
 // 1.6.0.6  03/20/2008  EFW  Added auto-doc of constructors on list pages
-// 1.6.0.7  03/23/2008  EFW  Added support for ShowMissingTypeParams and
-//                           localized the messages.
+// 1.6.0.7  03/23/2008  EFW  Added support for ShowMissingTypeParams and localized the messages
 // 1.8.0.1  01/16/2009  EFW  Added support for missing <include> target docs
 // 1.8.0.3  11/19/2009  EFW  Added support for auto-documenting Dispose methods
-//=============================================================================
+//===============================================================================================================
 
 using System;
 using System.Configuration;
@@ -33,7 +30,6 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Xml;
@@ -44,9 +40,8 @@ using Microsoft.Ddue.Tools;
 namespace SandcastleBuilder.Components
 {
     /// <summary>
-    /// This build component is used to add "missing" notes for missing
-    /// summary, parameter, returns, value, and remarks tags.  It can also
-    /// add default summary documentation for constructors.
+    /// This build component is used to add "missing" notes for missing summary, parameter, returns, value, and
+    /// remarks tags.  It can also add default summary documentation for constructors.
     /// </summary>
     /// <example>
     /// <code lang="xml" title="Example configuration">
@@ -99,15 +94,13 @@ namespace SandcastleBuilder.Components
 
         private static Regex reStripWhitespace = new Regex(@"\s");
 
-        private bool autoDocConstructors, autoDocDispose, showMissingParams,
-            showMissingTypeParams, showMissingRemarks, showMissingReturns,
-            showMissingSummaries, showMissingValues, showMissingNamespaces,
-            showMissingIncludeTargets, isEnabled;
+        private bool autoDocConstructors, autoDocDispose, showMissingParams, showMissingTypeParams,
+            showMissingRemarks, showMissingReturns, showMissingSummaries, showMissingValues,
+            showMissingNamespaces, showMissingIncludeTargets, isEnabled;
 
         // Auto-documented constructor and "missing" messages
-        private string autoDocCtorMsg, autoDocStaticCtorMsg, autoDocDisposeMsg,
-            autoDocDisposeBoolMsg, autoDocDisposeParamMsg, missingTagMsg,
-            missingParamTagMsg, missingIncludeTargetMsg;
+        private string autoDocCtorMsg, autoDocStaticCtorMsg, autoDocDisposeMsg, autoDocDisposeBoolMsg,
+            autoDocDisposeParamMsg, missingTagMsg, missingParamTagMsg, missingIncludeTargetMsg;
         #endregion
 
         #region Constructor
@@ -118,12 +111,11 @@ namespace SandcastleBuilder.Components
         /// </summary>
         /// <param name="assembler">A reference to the build assembler.</param>
         /// <param name="configuration">The configuration information</param>
-        /// <remarks>See the <see cref="ShowMissingComponent"/> class topic
-        /// for an example of the configuration</remarks>
-        /// <exception cref="ConfigurationErrorsException">This is thrown if
-        /// an error is detected in the configuration.</exception>
-        public ShowMissingComponent(BuildAssembler assembler,
-          XPathNavigator configuration) : base(assembler, configuration)
+        /// <remarks>See the <see cref="ShowMissingComponent"/> class topic for an example of the configuration</remarks>
+        /// <exception cref="ConfigurationErrorsException">This is thrown if an error is detected in the
+        /// configuration.</exception>
+        public ShowMissingComponent(BuildAssembler assembler, XPathNavigator configuration) :
+          base(assembler, configuration)
         {
             XPathDocument content;
             XPathNavigator nav, contentNav;
@@ -132,224 +124,202 @@ namespace SandcastleBuilder.Components
             Assembly asm = Assembly.GetExecutingAssembly();
             FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(asm.Location);
 
-            base.WriteMessage(MessageLevel.Info, String.Format(
-                CultureInfo.InvariantCulture,
-                "\r\n    [{0}, version {1}]\r\n    Show Missing " +
-                "Documentation Component. {2}\r\n    http://SHFB.CodePlex.com",
-                fvi.ProductName, fvi.ProductVersion, fvi.LegalCopyright));
+            base.WriteMessage(MessageLevel.Info, "\r\n    [{0}, version {1}]\r\n    Show Missing Documentation " +
+                "Component. {2}\r\nhttp://SHFB.CodePlex.com", fvi.ProductName, fvi.ProductVersion,
+                fvi.LegalCopyright);
 
-            // All elements are optional.  If omitted, all properties are
-            // true except for showMissingRemarks and showMissingValues;
-            autoDocConstructors = autoDocDispose = showMissingParams =
-                showMissingTypeParams = showMissingReturns = showMissingSummaries =
-                showMissingNamespaces = true;
+            // All elements are optional.  If omitted, all properties are true except for showMissingRemarks and
+            // showMissingValues;
+            autoDocConstructors = autoDocDispose = showMissingParams = showMissingTypeParams =
+                showMissingReturns = showMissingSummaries = showMissingNamespaces = true;
 
             nav = configuration.SelectSingleNode("AutoDocumentConstructors");
+
             if(nav != null)
             {
                 value = nav.GetAttribute("value", String.Empty);
 
-                if(!String.IsNullOrEmpty(value) && !Boolean.TryParse(value,
-                  out autoDocConstructors))
-                    throw new ConfigurationErrorsException("You must specify " +
-                        "a Boolean value for the <AutoDocumentConstructors> " +
-                        "'value' attribute.");
+                if(!String.IsNullOrEmpty(value) && !Boolean.TryParse(value, out autoDocConstructors))
+                    throw new ConfigurationErrorsException("You must specify a Boolean value for the " +
+                        "<AutoDocumentConstructors> 'value' attribute.");
             }
 
             nav = configuration.SelectSingleNode("AutoDocumentDisposeMethods");
+
             if(nav != null)
             {
                 value = nav.GetAttribute("value", String.Empty);
 
-                if(!String.IsNullOrEmpty(value) && !Boolean.TryParse(value,
-                  out autoDocDispose))
-                    throw new ConfigurationErrorsException("You must specify " +
-                        "a Boolean value for the <AutoDocumentDisposeMethods> " +
-                        "'value' attribute.");
+                if(!String.IsNullOrEmpty(value) && !Boolean.TryParse(value, out autoDocDispose))
+                    throw new ConfigurationErrorsException("You must specify a Boolean value for the " +
+                        "<AutoDocumentDisposeMethods> 'value' attribute.");
             }
 
             nav = configuration.SelectSingleNode("ShowMissingParams");
+
             if(nav != null)
             {
                 value = nav.GetAttribute("value", String.Empty);
 
-                if(!String.IsNullOrEmpty(value) && !Boolean.TryParse(value,
-                  out showMissingParams))
-                    throw new ConfigurationErrorsException("You must specify " +
-                        "a Boolean value for the <ShowMissingParams> " +
-                        "'value' attribute.");
+                if(!String.IsNullOrEmpty(value) && !Boolean.TryParse(value, out showMissingParams))
+                    throw new ConfigurationErrorsException("You must specify a Boolean value for the " +
+                        "<ShowMissingParams> 'value' attribute.");
             }
 
             nav = configuration.SelectSingleNode("ShowMissingTypeParams");
+
             if(nav != null)
             {
                 value = nav.GetAttribute("value", String.Empty);
 
-                if(!String.IsNullOrEmpty(value) && !Boolean.TryParse(value,
-                  out showMissingTypeParams))
-                    throw new ConfigurationErrorsException("You must specify " +
-                        "a Boolean value for the <ShowMissingTypeParams> " +
-                        "'value' attribute.");
+                if(!String.IsNullOrEmpty(value) && !Boolean.TryParse(value, out showMissingTypeParams))
+                    throw new ConfigurationErrorsException("You must specify a Boolean value for the " +
+                        "<ShowMissingTypeParams> 'value' attribute.");
             }
 
             nav = configuration.SelectSingleNode("ShowMissingRemarks");
+
             if(nav != null)
             {
                 value = nav.GetAttribute("value", String.Empty);
 
-                if(!String.IsNullOrEmpty(value) && !Boolean.TryParse(value,
-                  out showMissingRemarks))
-                    throw new ConfigurationErrorsException("You must specify " +
-                        "a Boolean value for the <ShowMissingRemarks> " +
-                        "'value' attribute.");
+                if(!String.IsNullOrEmpty(value) && !Boolean.TryParse(value, out showMissingRemarks))
+                    throw new ConfigurationErrorsException("You must specify a Boolean value for the " +
+                        "<ShowMissingRemarks> 'value' attribute.");
             }
 
             nav = configuration.SelectSingleNode("ShowMissingReturns");
+
             if(nav != null)
             {
                 value = nav.GetAttribute("value", String.Empty);
 
-                if(!String.IsNullOrEmpty(value) && !Boolean.TryParse(value,
-                  out showMissingReturns))
-                    throw new ConfigurationErrorsException("You must specify " +
-                        "a Boolean value for the <ShowMissingReturns> " +
-                        "'value' attribute.");
+                if(!String.IsNullOrEmpty(value) && !Boolean.TryParse(value, out showMissingReturns))
+                    throw new ConfigurationErrorsException("You must specify a Boolean value for the " +
+                        "<ShowMissingReturns> 'value' attribute.");
             }
 
             nav = configuration.SelectSingleNode("ShowMissingSummaries");
+
             if(nav != null)
             {
                 value = nav.GetAttribute("value", String.Empty);
 
-                if(!String.IsNullOrEmpty(value) && !Boolean.TryParse(value,
-                  out showMissingSummaries))
-                    throw new ConfigurationErrorsException("You must specify " +
-                        "a Boolean value for the <ShowMissingSummaries> " +
-                        "'value' attribute.");
+                if(!String.IsNullOrEmpty(value) && !Boolean.TryParse(value, out showMissingSummaries))
+                    throw new ConfigurationErrorsException("You must specify a Boolean value for the " +
+                        "<ShowMissingSummaries> 'value' attribute.");
             }
 
             nav = configuration.SelectSingleNode("ShowMissingValues");
+
             if(nav != null)
             {
                 value = nav.GetAttribute("value", String.Empty);
 
-                if(!String.IsNullOrEmpty(value) && !Boolean.TryParse(value,
-                  out showMissingValues))
-                    throw new ConfigurationErrorsException("You must specify " +
-                        "a Boolean value for the <ShowMissingValues> " +
-                        "'value' attribute.");
+                if(!String.IsNullOrEmpty(value) && !Boolean.TryParse(value, out showMissingValues))
+                    throw new ConfigurationErrorsException("You must specify a Boolean value for the " +
+                        "<ShowMissingValues> 'value' attribute.");
             }
 
             nav = configuration.SelectSingleNode("ShowMissingNamespaces");
+
             if(nav != null)
             {
                 value = nav.GetAttribute("value", String.Empty);
 
-                if(!String.IsNullOrEmpty(value) && !Boolean.TryParse(value,
-                  out showMissingNamespaces))
-                    throw new ConfigurationErrorsException("You must specify " +
-                        "a Boolean value for the <ShowMissingNamespaces> " +
-                        "'value' attribute.");
+                if(!String.IsNullOrEmpty(value) && !Boolean.TryParse(value, out showMissingNamespaces))
+                    throw new ConfigurationErrorsException("You must specify a Boolean value for the " +
+                        "<ShowMissingNamespaces> 'value' attribute.");
             }
 
             nav = configuration.SelectSingleNode("ShowMissingIncludeTargets");
+
             if(nav != null)
             {
                 value = nav.GetAttribute("value", String.Empty);
 
-                if(!String.IsNullOrEmpty(value) && !Boolean.TryParse(value,
-                  out showMissingIncludeTargets))
-                    throw new ConfigurationErrorsException("You must specify " +
-                        "a Boolean value for the <ShowMissingIncludeTargets> " +
-                        "'value' attribute.");
+                if(!String.IsNullOrEmpty(value) && !Boolean.TryParse(value, out showMissingIncludeTargets))
+                    throw new ConfigurationErrorsException("You must specify a Boolean value for the " +
+                        "<ShowMissingIncludeTargets> 'value' attribute.");
             }
 
-            autoDocCtorMsg = "Initializes a new instance of the <see " +
-                "cref=\"T:{0}\"/> class";
-            autoDocStaticCtorMsg = "Initializes the static fields of the " +
-                "<see cref=\"T:{0}\"/> class";
+            autoDocCtorMsg = "Initializes a new instance of the <see cref=\"T:{0}\"/> class";
+            autoDocStaticCtorMsg = "Initializes the static fields of the <see cref=\"T:{0}\"/> class";
 
-            autoDocDisposeMsg = "Releases all resources used by the <see " +
-                "cref=\"T:{0}\"/>";
-            autoDocDisposeBoolMsg = "Releases the unmanaged resources used by " +
-                "the <see cref=\"T:{0}\"/> and optionally releases the " +
-                "managed resources";
-            autoDocDisposeParamMsg = "True to release both managed and " +
-                "unmanaged resources; false to release only unmanaged resources";
+            autoDocDisposeMsg = "Releases all resources used by the <see cref=\"T:{0}\"/>";
+            autoDocDisposeBoolMsg = "Releases the unmanaged resources used by the <see cref=\"T:{0}\"/> and " +
+                "optionally releases the managed resources";
+            autoDocDisposeParamMsg = "True to release both managed and unmanaged resources; false to release " +
+                "only unmanaged resources";
 
-            missingTagMsg = "<p style=\"color: #dc143c; font-size: 8.5pt; " +
-                        "font-weight: bold;\">[Missing &lt;{0}&gt; " +
-                        "documentation for {1}]</p>";
-            missingParamTagMsg = "<p style=\"color: #dc143c; font-size: 8.5pt; " +
-                    "font-weight: bold;\">[Missing &lt;{0} name=\"{1}\"/&gt; " +
-                    "documentation for \"{2}\"]</p>";
-            missingIncludeTargetMsg = "<p style=\"color: #dc143c; font-size: 8.5pt; " +
-                    "font-weight: bold;\">[Missing &lt;include&gt; target " +
-                    "documentation in '{0}'.  File: '{1}' Path: '{2}']</p>";
+            missingTagMsg = "<p style=\"color: #dc143c; font-size: 8.5pt; font-weight: bold;\">[Missing " +
+                "&lt;{0}&gt; documentation for {1}]</p>";
+            missingParamTagMsg = "<p style=\"color: #dc143c; font-size: 8.5pt; font-weight: bold;\">[Missing " +
+                "&lt;{0} name=\"{1}\"/&gt; documentation for \"{2}\"]</p>";
+            missingIncludeTargetMsg = "<p style=\"color: #dc143c; font-size: 8.5pt; font-weight: bold;\">" +
+                "[Missing &lt;include&gt; target documentation in '{0}'.  File: '{1}' Path: '{2}']</p>";
 
             nav = configuration.SelectSingleNode("contentFile");
+
             if(nav != null)
             {
                 value = nav.GetAttribute("filename", String.Empty);
 
                 if(String.IsNullOrEmpty(value) || !File.Exists(value))
-                    throw new ConfigurationErrorsException("You must specify " +
-                        "a filename value for the <contentFile> 'filename' " +
-                        "attribute and it must exist.");
+                    throw new ConfigurationErrorsException("You must specify a filename value for the " +
+                        "<contentFile> 'filename' attribute and it must exist.");
 
                 content = new XPathDocument(value);
                 contentNav = content.CreateNavigator();
 
-                nav = contentNav.SelectSingleNode(
-                    "content/item[@id='shfbAutoDocConstructor']");
+                nav = contentNav.SelectSingleNode("content/item[@id='shfbAutoDocConstructor']");
+
                 if(nav != null)
                     autoDocCtorMsg = nav.Value;
 
-                nav = contentNav.SelectSingleNode(
-                    "content/item[@id='shfbAutoDocStaticConstructor']");
+                nav = contentNav.SelectSingleNode("content/item[@id='shfbAutoDocStaticConstructor']");
+
                 if(nav != null)
                     autoDocStaticCtorMsg = nav.Value;
 
-                nav = contentNav.SelectSingleNode(
-                    "content/item[@id='shfbAutoDocDispose']");
+                nav = contentNav.SelectSingleNode("content/item[@id='shfbAutoDocDispose']");
+
                 if(nav != null)
                     autoDocDisposeMsg = nav.Value;
 
-                nav = contentNav.SelectSingleNode(
-                    "content/item[@id='shfbAutoDocDisposeBool']");
+                nav = contentNav.SelectSingleNode("content/item[@id='shfbAutoDocDisposeBool']");
+
                 if(nav != null)
                     autoDocDisposeBoolMsg = nav.Value;
 
-                nav = contentNav.SelectSingleNode(
-                    "content/item[@id='shfbAutoDocDisposeParam']");
+                nav = contentNav.SelectSingleNode("content/item[@id='shfbAutoDocDisposeParam']");
+
                 if(nav != null)
                     autoDocDisposeParamMsg = nav.Value;
 
-                nav = contentNav.SelectSingleNode(
-                    "content/item[@id='shfbMissingTag']");
+                nav = contentNav.SelectSingleNode("content/item[@id='shfbMissingTag']");
+
                 if(nav != null)
                     missingTagMsg = nav.Value;
 
-                nav = contentNav.SelectSingleNode(
-                    "content/item[@id='shfbMissingParamTag']");
+                nav = contentNav.SelectSingleNode("content/item[@id='shfbMissingParamTag']");
+
                 if(nav != null)
                     missingParamTagMsg = nav.Value;
 
-                nav = contentNav.SelectSingleNode(
-                    "content/item[@id='shfbMissingIncludeTarget']");
+                nav = contentNav.SelectSingleNode("content/item[@id='shfbMissingIncludeTarget']");
+
                 if(nav != null)
                     missingIncludeTargetMsg = nav.Value;
             }
 
-            isEnabled = (autoDocConstructors || autoDocDispose ||
-                showMissingParams || showMissingTypeParams ||
-                showMissingRemarks || showMissingReturns ||
-                showMissingSummaries || showMissingValues ||
+            isEnabled = (autoDocConstructors || autoDocDispose || showMissingParams || showMissingTypeParams ||
+                showMissingRemarks || showMissingReturns || showMissingSummaries || showMissingValues ||
                 showMissingNamespaces || showMissingIncludeTargets);
 
             if(!isEnabled)
-                base.WriteMessage(MessageLevel.Info, "  All Show Missing " +
-                    "options are disabled.  The component will do nothing.");
+                base.WriteMessage(MessageLevel.Info, "  All Show Missing options are disabled.  The component " +
+                    "will do nothing.");
         }
         #endregion
 
@@ -360,8 +330,7 @@ namespace SandcastleBuilder.Components
         /// This is implemented to add the missing documentation tags
         /// </summary>
         /// <param name="document">The XML document with which to work.</param>
-        /// <param name="key">The key (member name) of the item being
-        /// documented.</param>
+        /// <param name="key">The key (member name) of the item being documented.</param>
         public override void Apply(XmlDocument document, string key)
         {
             XmlNodeList items;
@@ -428,9 +397,8 @@ namespace SandcastleBuilder.Components
                   key.EndsWith(".Dispose(System.Boolean)", StringComparison.Ordinal))))
                     this.CheckForMissingText(comments, key, "summary");
 
-                // All elements can have an include.  We check for this after
-                // summary since the "missing" message is appended to the
-                // summary and we don't want it to count as the summary.
+                // All elements can have an include.  We check for this after summary since the "missing" message
+                // is appended to the summary and we don't want it to count as the summary.
                 if(showMissingIncludeTargets)
                     this.CheckForMissingIncludeTarget(comments, key);
 
@@ -446,18 +414,15 @@ namespace SandcastleBuilder.Components
                     if(showMissingTypeParams && (key[0] == 'T' ||
                       key[0] == 'M'))
                     {
-                        items = document.SelectNodes(
-                            "document/reference/templates/template");
+                        items = document.SelectNodes("document/reference/templates/template");
 
                         foreach(XmlNode p in items)
-                            this.CheckForMissingParameter(comments, key,
-                                p.Attributes["name"].Value, "typeparam");
+                            this.CheckForMissingParameter(comments, key, p.Attributes["name"].Value, "typeparam");
                     }
 
                     if(key[0] == 'M')
                     {
-                        // If it's a member, check for missing <returns>
-                        // and <param> tags.
+                        // If it's a member, check for missing <returns> and <param> tags
                         if(showMissingReturns)
                         {
                             returnsNode = document.SelectSingleNode("document/reference/returns");
@@ -472,16 +437,15 @@ namespace SandcastleBuilder.Components
                             items = document.SelectNodes("document/reference/parameters/parameter");
 
                             foreach(XmlNode p in items)
-                                this.CheckForMissingParameter(comments, key,
-                                    p.Attributes["name"].Value, "param");
+                                this.CheckForMissingParameter(comments, key, p.Attributes["name"].Value, "param");
                         }
                     }
                 }
             }
             catch(Exception ex)
             {
-                base.WriteMessage(MessageLevel.Error, "Error adding " +
-                    "missing documentation tags: " + ex.Message);
+                base.WriteMessage(key, MessageLevel.Error, "Error adding missing documentation tags: " +
+                    ex.Message);
             }
         }
         #endregion
@@ -490,9 +454,8 @@ namespace SandcastleBuilder.Components
         //=====================================================================
 
         /// <summary>
-        /// Check for missing text in the specified documentation tag and, if
-        /// it doesn't exist or the text is blank, add a "missing" message as
-        /// the documentation tag's text.
+        /// Check for missing text in the specified documentation tag and, if it doesn't exist or the text is
+        /// blank, add a "missing" message as the documentation tag's text.
         /// </summary>
         /// <param name="comments">The comments node to check.</param>
         /// <param name="key">The key (name) for the current item</param>
@@ -504,8 +467,7 @@ namespace SandcastleBuilder.Components
 
             if(tag == null)
             {
-                tag = comments.OwnerDocument.CreateNode(XmlNodeType.Element,
-                    tagName, null);
+                tag = comments.OwnerDocument.CreateNode(XmlNodeType.Element, tagName, null);
                 comments.AppendChild(tag);
                 text = String.Empty;
             }
@@ -515,22 +477,18 @@ namespace SandcastleBuilder.Components
             if(text.Length == 0)
             {
                 // Auto document constructor?
-                if(tagName == "summary" && autoDocConstructors &&
-                  (key.Contains("#ctor") || key.Contains("#cctor")))
+                if(tagName == "summary" && autoDocConstructors && (key.Contains("#ctor") || key.Contains("#cctor")))
                 {
-                    this.WriteMessage(MessageLevel.Info, "Auto-documenting " +
-                        "constructor " + key);
+                    this.WriteMessage(key, MessageLevel.Info, "Auto-documenting constructor");
 
                     if(key.Contains("#cctor"))
-                        tag.InnerXml = String.Format(
-                            CultureInfo.InvariantCulture, autoDocStaticCtorMsg,
-                            HttpUtility.HtmlEncode(key.Substring(2,
-                            key.IndexOf(".#cctor", StringComparison.Ordinal) - 2)));
+                        tag.InnerXml = String.Format(CultureInfo.InvariantCulture, autoDocStaticCtorMsg,
+                            HttpUtility.HtmlEncode(key.Substring(2, key.IndexOf(".#cctor",
+                            StringComparison.Ordinal) - 2)));
                     else
-                        tag.InnerXml = String.Format(
-                            CultureInfo.InvariantCulture, autoDocCtorMsg,
-                            HttpUtility.HtmlEncode(key.Substring(2,
-                            key.IndexOf(".#ctor", StringComparison.Ordinal) - 2)));
+                        tag.InnerXml = String.Format(CultureInfo.InvariantCulture, autoDocCtorMsg,
+                            HttpUtility.HtmlEncode(key.Substring(2, key.IndexOf(".#ctor",
+                            StringComparison.Ordinal) - 2)));
 
                     return;
                 }
@@ -540,51 +498,42 @@ namespace SandcastleBuilder.Components
                   key.EndsWith(".Dispose", StringComparison.Ordinal) ||
                   key.EndsWith(".Dispose(System.Boolean)", StringComparison.Ordinal)))
                 {
-                    this.WriteMessage(MessageLevel.Info, "Auto-documenting " +
-                        "dispose method " + key);
+                    this.WriteMessage(key, MessageLevel.Info, "Auto-documenting dispose method");
 
                     if(key.EndsWith(".Dispose", StringComparison.Ordinal))
-                        tag.InnerXml = String.Format(
-                            CultureInfo.InvariantCulture, autoDocDisposeMsg,
+                        tag.InnerXml = String.Format(CultureInfo.InvariantCulture, autoDocDisposeMsg,
                             HttpUtility.HtmlEncode(key.Substring(2, key.Length - 10)));
                     else
-                        tag.InnerXml = String.Format(
-                            CultureInfo.InvariantCulture, autoDocDisposeBoolMsg,
+                        tag.InnerXml = String.Format(CultureInfo.InvariantCulture, autoDocDisposeBoolMsg,
                             HttpUtility.HtmlEncode(key.Substring(2, key.Length - 26)));
 
                     return;
                 }
 
-                this.WriteMessage(MessageLevel.Warn, String.Format(
-                    CultureInfo.InvariantCulture,
-                    "Missing <{0}> documentation for {1}", tagName, key));
+                this.WriteMessage(key, MessageLevel.Warn, "Missing <{0}> documentation", tagName);
 
-                tag.InnerXml = String.Format(CultureInfo.InvariantCulture,
-                    missingTagMsg, tagName, HttpUtility.HtmlEncode(key));
+                tag.InnerXml = String.Format(CultureInfo.InvariantCulture, missingTagMsg, tagName,
+                    HttpUtility.HtmlEncode(key));
             }
         }
 
         /// <summary>
-        /// Check for missing text in the specified &lt;param&gt; or
-        /// &lt;typeparam&gt; tag and, if it doesn't exist or the text is
-        /// blank, add a "missing" message as the tag's text.
+        /// Check for missing text in the specified &lt;param&gt; or &lt;typeparam&gt; tag and, if it doesn't
+        /// exist or the text is blank, add a "missing" message as the tag's text.
         /// </summary>
         /// <param name="comments">The comments node to check.</param>
         /// <param name="key">The key (name) for the current item</param>
         /// <param name="paramName">The parameter name for which to check.</param>
         /// <param name="tagName">The tag type for which to check.</param>
-        private void CheckForMissingParameter(XmlNode comments, string key,
-          string paramName, string tagName)
+        private void CheckForMissingParameter(XmlNode comments, string key, string paramName, string tagName)
         {
             string text;
             XmlAttribute name;
-            XmlNode tag = comments.SelectSingleNode(tagName + "[@name='" +
-                paramName + "']");
+            XmlNode tag = comments.SelectSingleNode(tagName + "[@name='" + paramName + "']");
 
             if(tag == null)
             {
-                tag = comments.OwnerDocument.CreateNode(XmlNodeType.Element,
-                    tagName, null);
+                tag = comments.OwnerDocument.CreateNode(XmlNodeType.Element, tagName, null);
 
                 name = comments.OwnerDocument.CreateAttribute("name");
                 name.Value = paramName;
@@ -601,31 +550,25 @@ namespace SandcastleBuilder.Components
                 // Auto document Dispose(Bool) parameter?
                 if(autoDocDispose && key.EndsWith(".Dispose(System.Boolean)", StringComparison.Ordinal))
                 {
-                    this.WriteMessage(MessageLevel.Info, "Auto-documenting " +
-                        "dispose method parameter for " + key);
+                    this.WriteMessage(key, MessageLevel.Info, "Auto-documenting dispose method parameter");
 
                     tag.InnerXml = String.Format(CultureInfo.InvariantCulture,
-                        autoDocDisposeParamMsg, HttpUtility.HtmlEncode(
-                        key.Substring(2, key.Length - 26)));
+                        autoDocDisposeParamMsg, HttpUtility.HtmlEncode(key.Substring(2, key.Length - 26)));
 
                     return;
                 }
 
-                this.WriteMessage(MessageLevel.Warn, String.Format(
-                    CultureInfo.InvariantCulture,
-                    "Missing <{0} name=\"{1}\"/> documentation for {2}",
-                    tagName, paramName, key));
+                this.WriteMessage(key, MessageLevel.Warn, "Missing <{0} name=\"{1}\"/> documentation", tagName,
+                    paramName);
 
-                tag.InnerXml = String.Format(CultureInfo.InvariantCulture,
-                    missingParamTagMsg, tagName,
-                    HttpUtility.HtmlEncode(paramName),
-                    HttpUtility.HtmlEncode(key));
+                tag.InnerXml = String.Format(CultureInfo.InvariantCulture, missingParamTagMsg, tagName,
+                    HttpUtility.HtmlEncode(paramName), HttpUtility.HtmlEncode(key));
             }
         }
 
         /// <summary>
-        /// Check for bad <c>include</c> elements and, if any are found, add a
-        /// "missing" message to the summary tag's text.
+        /// Check for bad <c>include</c> elements and, if any are found, add a "missing" message to the summary
+        /// tag's text.
         /// </summary>
         /// <param name="comments">The comments node to check.</param>
         /// <param name="key">The key (name) for the current item</param>
@@ -640,18 +583,16 @@ namespace SandcastleBuilder.Components
 
                 if(tag == null)
                 {
-                    tag = comments.OwnerDocument.CreateNode(XmlNodeType.Element,
-                        "summary", null);
+                    tag = comments.OwnerDocument.CreateNode(XmlNodeType.Element, "summary", null);
                     comments.AppendChild(tag);
                     tag.InnerXml = String.Empty;
                 }
 
                 foreach(XmlNode include in includes)
                 {
-                    this.WriteMessage(MessageLevel.Warn, String.Format(
-                        CultureInfo.InvariantCulture, missingIncludeTargetMsg,
-                        key, include.Attributes["file"].Value,
-                        include.Attributes["path"].Value));
+                    this.WriteMessage(key, MessageLevel.Warn, "Missing <include> target documentation.  " +
+                        "File: '{0}' Path: '{1}'", include.Attributes["file"].Value,
+                        include.Attributes["path"].Value);
 
                     tag.InnerXml += String.Format(CultureInfo.InvariantCulture,
                         missingIncludeTargetMsg, HttpUtility.HtmlEncode(key),

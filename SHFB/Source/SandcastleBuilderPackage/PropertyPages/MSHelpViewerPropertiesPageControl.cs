@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : MSHelpViewerPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 10/05/2012
+// Updated : 10/13/2012
 // Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -16,8 +16,7 @@
 // Version     Date     Who  Comments
 // ==============================================================================================================
 // 1.9.3.0  03/27/2011  EFW  Created the code
-// 1.9.4.0  03/31/2012  EFW  Added Branding Package Name property
-// 1.9.5.0  10/05/2012  EFW  Added Catalong Name property
+// 1.9.5.0  10/05/2012  EFW  Added Catalog Name property
 //===============================================================================================================
 
 using System;

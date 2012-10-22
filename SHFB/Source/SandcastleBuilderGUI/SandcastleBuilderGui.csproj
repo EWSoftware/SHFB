@@ -301,6 +301,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Content Include="Colorizer\highlight.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="ItemTemplates\XAML Syntax.xamlcfg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -736,10 +739,6 @@
     <Content Include="SharedContent\VS2005BuilderContent_zh-CN.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\CodeColorizer\ColorizerLibrary\Template\CopyCode_h.gif">
-      <Link>Colorizer\CopyCode_h.gif</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="SharedContent\SharedBuilderContent_de-DE.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -820,16 +819,8 @@
     <Content Include="Templates\Hana.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\CodeColorizer\ColorizerLibrary\Template\CopyCode.gif">
-      <Link>Colorizer\CopyCode.gif</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="..\CodeColorizer\ColorizerLibrary\Template\highlight.css">
       <Link>Colorizer\highlight.css</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\CodeColorizer\ColorizerLibrary\Template\highlight.js">
-      <Link>Colorizer\highlight.js</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="..\CodeColorizer\ColorizerLibrary\Template\highlight.xml">

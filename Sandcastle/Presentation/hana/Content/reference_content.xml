@@ -281,7 +281,6 @@
   </item>
 	<item id="inheritedFrom">(Inherited from {0}.)</item>
 	<item id="overridesMember">(Overrides {0}.)</item>
-	<item id="locationInformation">Assembly: {0} (Module: {1})</item>
   <item id="hostProtectionAttributeShort">HostProtectionAttribute.</item>
 	<item id="hostProtectionAttributeLong">The <referenceLink target="T:System.Security.Permissions.HostProtectionAttribute" prefer-overload="true" /> attribute applied to this <include item="{0}"/> has the following <referenceLink target="P:System.Security.Permissions.HostProtectionAttribute.Resources" prefer-overload="true" /> property value: {1}. The <referenceLink target="T:System.Security.Permissions.HostProtectionAttribute" prefer-overload="true" /> does not affect desktop applications (which are typically started by double-clicking an icon, typing a command, or entering a URL in a browser). For more information, see the <referenceLink target="T:System.Security.Permissions.HostProtectionAttribute" prefer-overload="true" /> class or <a href="http://msdn.microsoft.com/en-us/library/ms172338.aspx" target="_blank">SQL Server Programming and Host Protection Attributes</a>.</item>
   <item id="classLower">class</item>
@@ -406,7 +405,7 @@
     <b>Assembly:</b>
   </item>
 
-   <item id="assemblyNameAndModule">{0} (in {1}.{2})</item>
+	<item id="assemblyNameAndModule">{0} (in {1}.{2}) Version: {3}</item>
 
   <item id="requirementsAssemblyLayout">
     <b>Assembly:</b> {0} (in {1}.dll)

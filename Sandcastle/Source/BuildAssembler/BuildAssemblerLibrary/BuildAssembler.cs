@@ -6,9 +6,11 @@
 // Change history:
 // 02/16/2012 - EFW - Added support for setting a verbosity level.  Messages with a log level below
 // the current verbosity level are ignored.
+// 10/14/2012 - EFW - Added support for topic ID and message parameters in the message logging methods.
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Xml;
@@ -93,7 +95,7 @@ namespace Microsoft.Ddue.Tools
         /// </summary>
         public BuildAssembler()
         {
-            this.handler = BuildAssembler.ConsoleMessageHandler;
+            this.handler = BuildAssembler.WriteComponentMessageToConsole;
         }
 
         /// <summary>
@@ -112,12 +114,23 @@ namespace Microsoft.Ddue.Tools
         #region Events
         //=====================================================================
 
+        /// <summary>
+        /// This event is raised when a component wants to signal that something of interest has happened
+        /// </summary>
         public event EventHandler ComponentEvent;
 
-        internal void OnComponentEvent(Object o, EventArgs e)
+        /// <summary>
+        /// This raises the <see cref="ComponentEvent"/> event
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event arguments.  This may be <see cref="EventArgs.Empty"/> or a derived event
+        /// arguments class containing information for the event handlers.</param>
+        internal void OnComponentEvent(object sender, EventArgs e)
         {
-            if(ComponentEvent != null)
-                ComponentEvent(o, e);
+            var handler = ComponentEvent;
+
+            if(handler != null)
+                handler(sender, e);
         }
         #endregion
 
@@ -136,7 +149,7 @@ namespace Microsoft.Ddue.Tools
                 document.PreserveWhitespace = true;
 
                 // write a log message
-                WriteMessage(MessageLevel.Info, String.Format("Building topic {0}", topic));
+                WriteMessage(MessageLevel.Info, "Building topic {0}", topic);
 
                 // apply the component stack
                 foreach(BuildComponent component in components)
@@ -197,7 +210,9 @@ namespace Microsoft.Ddue.Tools
                         }
                         catch(XmlException e)
                         {
-                            throw new XmlException(String.Format("The manifest file: '{0}' is not well-formed. The error message is: {1}", manifestFilename, e.Message), e);
+                            throw new XmlException(String.Format(CultureInfo.CurrentCulture,
+                                "The manifest file: '{0}' is not well-formed. The error message is: {1}",
+                                manifestFilename, e.Message), e);
                         }
 
                         yield return thisContext;
@@ -239,32 +254,32 @@ namespace Microsoft.Ddue.Tools
             }
             catch(IOException e)
             {
-                WriteMessage(MessageLevel.Error, String.Format("A file access error occured while attempting to load the build component assembly '{0}'. The error message is: {1}", assemblyName, e.Message));
+                WriteMessage(MessageLevel.Error, "A file access error occured while attempting to load the build component assembly '{0}'. The error message is: {1}", assemblyName, e.Message);
             }
             catch(BadImageFormatException e)
             {
-                WriteMessage(MessageLevel.Error, String.Format("The build component assembly '{0}' is not a valid managed assembly. The error message is: {1}", assemblyName, e.Message));
+                WriteMessage(MessageLevel.Error, "The build component assembly '{0}' is not a valid managed assembly. The error message is: {1}", assemblyName, e.Message);
             }
             catch(TypeLoadException)
             {
-                WriteMessage(MessageLevel.Error, String.Format("The build component '{0}' was not found in the assembly '{1}'.", typeName, assemblyName));
+                WriteMessage(MessageLevel.Error, "The build component '{0}' was not found in the assembly '{1}'.", typeName, assemblyName);
             }
             catch(MissingMethodException e)
             {
-                WriteMessage(MessageLevel.Error, String.Format("No appropriate constructor exists for the build component '{0}' in the component assembly '{1}'. The error message is: {1}", typeName, assemblyName, e.Message));
+                WriteMessage(MessageLevel.Error, "No appropriate constructor exists for the build component '{0}' in the component assembly '{1}'. The error message is: {1}", typeName, assemblyName, e.Message);
             }
             catch(TargetInvocationException e)
             {
-                WriteMessage(MessageLevel.Error, String.Format("An error occured while initializing the build component '{0}' in the component assembly '{1}'. The error message and stack trace follows: {2}", typeName, assemblyName, e.InnerException.ToString()));
+                WriteMessage(MessageLevel.Error, "An error occured while initializing the build component '{0}' in the component assembly '{1}'. The error message and stack trace follows: {2}", typeName, assemblyName, e.InnerException.ToString());
             }
             catch(InvalidCastException)
             {
-                WriteMessage(MessageLevel.Error, String.Format("The type '{0}' in the component assembly '{1}' is not a build component.", typeName, assemblyName));
+                WriteMessage(MessageLevel.Error, "The type '{0}' in the component assembly '{1}' is not a build component.", typeName, assemblyName);
             }
 
             if(component == null)
             {
-                WriteMessage(MessageLevel.Error, String.Format("The type '{0}' was not found in the component assembly '{1}'.", typeName, assemblyName));
+                WriteMessage(MessageLevel.Error, "The type '{0}' was not found in the component assembly '{1}'.", typeName, assemblyName);
             }
 
             return (component);
@@ -306,24 +321,42 @@ namespace Microsoft.Ddue.Tools
         #region Message handler methods
         //=====================================================================
 
-        private void WriteMessage(MessageLevel level, string message)
+        /// <summary>
+        /// Write a message to the current message handler
+        /// </summary>
+        /// <param name="level">The message level</param>
+        /// <param name="message">The message to write</param>
+        /// <param name="args">An optional list of arguments to format into the message</param>
+        private void WriteMessage(MessageLevel level, string message, params object[] args)
         {
-            handler(this.GetType(), level, message);
+            handler(this.GetType(), level, null, (args.Length == 0) ? message :
+                String.Format(CultureInfo.CurrentCulture, message, args));
         }
 
-        public static MessageHandler ConsoleMessageHandler
+        /// <summary>
+        /// Write a component message to the console
+        /// </summary>
+        /// <param name="type">The component type making the request</param>
+        /// <param name="level">The message level</param>
+        /// <param name="key">An optional topic key related to the message or null if there isn't one</param>
+        /// <param name="message">The message to write to the console</param>
+        /// <remarks>If the message level is below the current verbosity level setting, the message is ignored</remarks>
+        private static void WriteComponentMessageToConsole(Type type, MessageLevel level, string key,
+          string message)
         {
-            get
-            {
-                return (new MessageHandler(WriteComponentMessageToConsole));
-            }
-        }
+            string text;
 
-        private static void WriteComponentMessageToConsole(Type type, MessageLevel level, string message)
-        {
             if(level >= VerbosityLevel)
             {
-                string text = String.Format("{0}: {1}", type.Name, message);
+                if(String.IsNullOrWhiteSpace(key))
+                    text = String.Format(CultureInfo.CurrentCulture, "{0}: {1}", type.Name, message);
+                else
+                {
+                    // The key can contain braces so escape them
+                    key = key.Replace("{", "{{").Replace("}", "}}");
+
+                    text = String.Format(CultureInfo.CurrentCulture, "{0}: [{1}] {2}", type.Name, key, message);
+                }
 
                 switch(level)
                 {

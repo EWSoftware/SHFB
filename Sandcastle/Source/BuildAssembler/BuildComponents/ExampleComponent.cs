@@ -184,7 +184,7 @@ namespace Microsoft.Ddue.Tools {
 						writer.Close();
 
 					} else {
-						WriteMessage(MessageLevel.Warn, String.Format("No snippet with identifier '{0}' was found.", identifier));
+						base.WriteMessage(key, MessageLevel.Warn, "No snippet with identifier '{0}' was found.", identifier);
 					}
 				} else {
 					// multiple snippets referenced
@@ -229,7 +229,7 @@ namespace Microsoft.Ddue.Tools {
 				}
 
 				} else {
-					WriteMessage(MessageLevel.Warn, String.Format("The code reference '{0}' is not well-formed", reference));
+					base.WriteMessage(key, MessageLevel.Warn, "The code reference '{0}' is not well-formed", reference);
 				}
 
 				node.DeleteSelf();

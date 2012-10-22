@@ -124,7 +124,10 @@
   <item id="AspNet">ASP.NET</item>
   <item id="VisualBasicDeclaration"><include item="VisualBasic"/></item>
   <item id="VisualBasicUsage"><include item="VisualBasic"/> (<include item="usage"/>)</item>
-  
+  <item id="pshell">PowerShell</item>
+  <item id="sql">SQL</item>
+  <item id="Python">Python</item>
+
   <item id="dropdownSeparator"><span>&#160;&#160;&#160;&#160;</span></item>
   <item id="nsrLinkSeparator"> </item>
   

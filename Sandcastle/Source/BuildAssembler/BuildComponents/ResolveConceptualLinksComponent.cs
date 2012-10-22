@@ -206,8 +206,7 @@ namespace Microsoft.Ddue.Tools
                     {
                         // EFW - Removed linkType = Index, broken links should use the None style.
                         text = this.BrokenLinkDisplayText(info.Target, info.Text);
-                        base.WriteMessage(MessageLevel.Warn, String.Format(CultureInfo.InvariantCulture,
-                            "Unknown conceptual link target '{0}'.", info.Target));
+                        base.WriteMessage(key, MessageLevel.Warn, "Unknown conceptual link target '{0}'.", info.Target);
                     }
                     else
                     {
@@ -230,8 +229,7 @@ namespace Microsoft.Ddue.Tools
                 {
                     // EFW - Removed linkType = Index, broken links should use the None style.
                     text = this.BrokenLinkDisplayText(info.Target, info.Text);
-                    base.WriteMessage(MessageLevel.Warn, String.Format(CultureInfo.InvariantCulture,
-                        "Invalid conceptual link target '{0}'.", info.Target));
+                    base.WriteMessage(key, MessageLevel.Warn, "Invalid conceptual link target '{0}'.", info.Target);
                 }
 
                 XmlWriter writer = navigator.InsertAfter();

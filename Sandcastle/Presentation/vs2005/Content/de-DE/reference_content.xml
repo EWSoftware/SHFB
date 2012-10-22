@@ -406,7 +406,7 @@
     <b>Assembly:</b>
   </item>
 
-  <item id="assemblyNameAndModule">{0} (in {1}.{2})</item>
+	<item id="assemblyNameAndModule">{0} (in {1}.{2}) Version: {3}</item>
 
   <item id="requirementsAssemblyLayout">
     <b>Assembly:</b> {0} (in {1}.dll)
