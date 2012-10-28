@@ -1,23 +1,23 @@
-﻿//=============================================================================
+﻿//===============================================================================================================
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : ResourceItemEditorControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/03/2012
+// Updated : 10/27/2012
 // Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the WPF user control used to edit resource item files
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.9.3.3  12/21/2011  EFW  Created the code
-//=============================================================================
+// 1.9.6.0  10/27/2012  EFW  Updated to use the presentation style configuration file
+//===============================================================================================================
 
 using System;
 using System.Collections.Generic;
@@ -32,7 +32,8 @@ using System.Xml;
 using SandcastleBuilder.Utils;
 using SandcastleBuilder.Utils.BuildComponent;
 using SandcastleBuilder.Utils.ConceptualContent;
-using SandcastleBuilder.WPF;
+using SandcastleBuilder.Utils.Design;
+using SandcastleBuilder.Utils.PresentationStyle;
 
 namespace SandcastleBuilder.WPF.UserControls
 {
@@ -95,7 +96,8 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <param name="project">The current Sandcastle Builder project</param>
         public void LoadResourceItemsFile(string resourceItemsFile, SandcastleProject project)
         {
-            string shfbStyleContent, shfbSharedContent, sharedFolder, presentationFolder;
+            PresentationStyleSettings pss = PresentationStyleTypeConverter.AllStyles[project.PresentationStyle];
+            string presentationStylePath, shfbStyleContent, shfbSharedContent;
 
             if(resourceItemsFile == null)
                 throw new ArgumentNullException("resourceItemsFile",
@@ -104,27 +106,16 @@ namespace SandcastleBuilder.WPF.UserControls
             resourceItemFilename = resourceItemsFile;
 
             // Get the presentation style folders
-            shfbStyleContent = BuildComponentManager.HelpFileBuilderFolder;
-            shfbStyleContent = shfbSharedContent = Path.Combine(shfbStyleContent.Substring(0,
-                shfbStyleContent.LastIndexOf('\\')), "SharedContent");
+            presentationStylePath = pss.ResolvePath(pss.ResourceItemsPath);
+            shfbStyleContent = pss.ResolvePath(pss.ToolResourceItemsPath);
+            shfbSharedContent = Path.Combine(BuildComponentManager.HelpFileBuilderFolder, "SharedContent");
 
-            shfbStyleContent = Path.Combine(shfbStyleContent, project.PresentationStyle + "BuilderContent_");
+            shfbStyleContent = Path.Combine(shfbStyleContent, pss.Id + "BuilderContent_");
             shfbSharedContent = Path.Combine(shfbSharedContent, "SharedBuilderContent_");
 
-            if(!String.IsNullOrEmpty(project.SandcastlePath))
-                presentationFolder = Path.Combine(project.SandcastlePath, "Presentation");
-            else
-                presentationFolder = Path.Combine(BuildComponentManager.SandcastlePath, "Presentation");
-
-            sharedFolder = Path.Combine(presentationFolder, @"Shared\Content");
-            presentationFolder = Path.Combine(presentationFolder, project.PresentationStyle + @"\Content");
-
             // Use the language-specific files if they are present
-            if(Directory.Exists(Path.Combine(sharedFolder, project.Language.Name)))
-                sharedFolder = Path.Combine(sharedFolder, project.Language.Name);
-
-            if(Directory.Exists(Path.Combine(presentationFolder, project.Language.Name)))
-                presentationFolder = Path.Combine(presentationFolder, project.Language.Name);
+            if(Directory.Exists(Path.Combine(presentationStylePath, project.Language.Name)))
+                presentationStylePath = Path.Combine(presentationStylePath, project.Language.Name);
 
             if(File.Exists(Path.Combine(shfbStyleContent, project.Language.Name + ".xml")))
                 shfbStyleContent = shfbStyleContent + project.Language.Name + ".xml";
@@ -136,24 +127,10 @@ namespace SandcastleBuilder.WPF.UserControls
             else
                 shfbSharedContent = shfbSharedContent + "en-US.xml";
 
-            // Load the sandcastle and SHFB content files in the order in the
-            // configuration files:
-            //      shared_content.xml
-            //      reference_content.xml
-            //      syntax_content.xml
-            //      feedback_content.xml
-            //      conceptual_content.xml
-            //      SharedBuilderContent.xml
-            //      PresentationStyleBuilderContent.xml
-            foreach(string file in new string[] { "shared_content.xml", "reference_content.xml",
-              "syntax_content.xml", "feedback_content.xml", "conceptual_content.xml" })
-            {
-                if(File.Exists(Path.Combine(presentationFolder, file)))
-                    this.LoadItemFile(Path.Combine(presentationFolder, file), false);
-                else
-                    if(File.Exists(Path.Combine(sharedFolder, file)))
-                        this.LoadItemFile(Path.Combine(sharedFolder, file), false);
-            }
+            // Load the presentation style content files first followed by the help file builder content items
+            // and then the user's resource item file.
+            foreach(string file in Directory.EnumerateFiles(presentationStylePath, "*.xml"))
+                this.LoadItemFile(file, false);
 
             if(File.Exists(shfbSharedContent))
                 this.LoadItemFile(shfbSharedContent, false);
@@ -161,7 +138,6 @@ namespace SandcastleBuilder.WPF.UserControls
             if(File.Exists(shfbStyleContent))
                 this.LoadItemFile(shfbStyleContent, false);
 
-            // Load the user's file with their overrides
             this.LoadItemFile(resourceItemFilename, true);
 
             // Load everything into the list box
@@ -177,12 +153,10 @@ namespace SandcastleBuilder.WPF.UserControls
         }
 
         /// <summary>
-        /// This is used to load a resource item file's content into the
-        /// dictionaries used by the editor.
+        /// This is used to load a resource item file's content into the dictionaries used by the editor
         /// </summary>
         /// <param name="filename">The file to load</param>
-        /// <param name="containsOverrides">True if this file contains overrides
-        /// for the Sandcastle items</param>
+        /// <param name="containsOverrides">True if this file contains overrides for the Sandcastle items</param>
         private void LoadItemFile(string filename, bool containsOverrides)
         {
             ResourceItem r;
@@ -200,8 +174,8 @@ namespace SandcastleBuilder.WPF.UserControls
                 {
                     if(xr.NodeType == XmlNodeType.Element && xr.Name == "item")
                     {
-                        r = new ResourceItem(filename, xr.GetAttribute("id"),
-                            xr.ReadInnerXml(), containsOverrides);
+                        r = new ResourceItem(filename, xr.GetAttribute("id"), xr.ReadInnerXml(),
+                            containsOverrides);
 
                         allItems[r.Id] = r;
 
@@ -262,9 +236,8 @@ namespace SandcastleBuilder.WPF.UserControls
                         writer.WriteStartElement("item");
                         writer.WriteAttributeString("id", r.Id);
 
-                        // The value is written as raw text to preserve any XML
-                        // within it.  The item value is also trimmed to remove
-                        // unnecessary whitespace that might affect the layout.
+                        // The value is written as raw text to preserve any XML within it.  The item value is
+                        // also trimmed to remove unnecessary whitespace that might affect the layout.
                         writer.WriteRaw(r.Value.Trim());
                         writer.WriteEndElement();
                     }
@@ -296,8 +269,8 @@ namespace SandcastleBuilder.WPF.UserControls
                     case "IsOverridden":
                     case "IsSelected":
                     case "SourceFile":
-                        // We don't care about changes to these properties as they are for the
-                        // editor and don't affect the state of the resource item collection.
+                        // We don't care about changes to these properties as they are for the editor and don't
+                        // affect the state of the resource item collection.
                         return;
 
                     case "Value":
@@ -463,9 +436,9 @@ namespace SandcastleBuilder.WPF.UserControls
         {
             ResourceItem defaultItem, r = lbResourceItems.SelectedItem as ResourceItem;
 
-            if(MessageBox.Show("Do you want to revert the resource item '" +
-              r.Id + "' to its default value?", Constants.AppName, MessageBoxButton.YesNo,
-              MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+            if(MessageBox.Show("Do you want to revert the resource item '" + r.Id + "' to its default value?",
+              Constants.AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) ==
+              MessageBoxResult.Yes)
             {
                 if(sandcastleItems.TryGetValue(r.Id, out defaultItem))
                 {

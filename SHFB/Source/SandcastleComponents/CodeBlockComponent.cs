@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Components
 // File    : CodeBlockComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/22/2012
+// Updated : 10/26/2012
 // Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -758,7 +758,6 @@ namespace SandcastleBuilder.Components
             if(tt == null || colorizedCodeBlocks.Count == 0)
                 return;
 
-            // TODO: Perhaps move this to the disposed method?
             // Only copy the files if needed
             if(!colorizerFilesCopied)
             {
@@ -860,8 +859,6 @@ namespace SandcastleBuilder.Components
                 else
                     base.WriteMessage(tt.Key, MessageLevel.Warn, "Unable to locate colorized code for placeholder: " +
                         placeholder.InnerText);
-
-            // TODO: Fix up "Copy Code" onclick attribute to call the colorizer version of CopyCode.
         }
         #endregion
 

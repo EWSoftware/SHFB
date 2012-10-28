@@ -6,7 +6,7 @@
     xmlns:xlink="http://www.w3.org/1999/xlink"
     xmlns:msxsl="urn:schemas-microsoft-com:xslt">
 
-	<xsl:import href="../../shared/transforms/utilities_bibliography.xsl"/>
+	<xsl:import href="utilities_bibliography.xsl"/>
 	<xsl:param name="bibliographyData" select="'../data/bibliography.xml'"/>
 
 	<xsl:output method="xml" indent="no" encoding="utf-8" />

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : FrameworkDictionary.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/10/2012
+// Updated : 10/25/2012
 // Note    : Copyright 2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -24,6 +24,8 @@ using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 
+using SandcastleBuilder.Utils.BuildComponent;
+
 namespace SandcastleBuilder.Utils.Frameworks
 {
     /// <summary>
@@ -41,8 +43,7 @@ namespace SandcastleBuilder.Utils.Frameworks
         {
             get
             {
-                return Path.Combine(Environment.ExpandEnvironmentVariables("%DXROOT%"),
-                    @"ProductionTools\Frameworks.xml");
+                return Path.Combine(BuildComponentManager.SandcastlePath, @"ProductionTools\Frameworks.xml");
             }
         }
         #endregion

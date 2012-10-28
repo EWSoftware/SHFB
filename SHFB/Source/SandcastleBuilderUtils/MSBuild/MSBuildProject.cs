@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : MSBuildProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/12/2012
+// Updated : 10/22/2012
 // Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -20,6 +20,7 @@
 // 1.9.1.0  07/09/2010  EFW  Updated for use with .NET 4.0 and MSBuild 4.0.
 // 1.9.3.2  08/20/2011  EFW  Updated to support Portable .NET Framework
 // 1.9.5.0  09/08/2012  EFW  Updated to support Windows Store App projects
+// 1.9.6.0  10/22/2012  EFW  Updated to support the .winmd output type
 //===============================================================================================================
 
 using System;
@@ -108,7 +109,10 @@ namespace SandcastleBuilder.Utils.MSBuild
                           String.Compare(outputType, "AppContainerExe", StringComparison.OrdinalIgnoreCase) == 0)
                             assemblyName += ".exe";
                         else
-                            assemblyName = null;
+                            if(String.Compare(outputType, "winmdobj", StringComparison.OrdinalIgnoreCase) == 0)
+                                assemblyName += ".winmd";
+                            else
+                                assemblyName = null;
 
                     if(assemblyName != null)
                         if(Path.IsPathRooted(outputPath))

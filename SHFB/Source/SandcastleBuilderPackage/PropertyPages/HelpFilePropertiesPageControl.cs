@@ -1,9 +1,9 @@
-﻿//=============================================================================
+﻿//===============================================================================================================
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : HelpFilePropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 12/31/2011
-// Note    : Copyright 2011, Eric Woodruff, All rights reserved
+// Updated : 10/27/2012
+// Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This user control is used to edit the Help File category properties.
@@ -15,9 +15,10 @@
 // applications, documentation, and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.9.3.0  03/27/2011  EFW  Created the code
-//=============================================================================
+// 1.9.6.0  10/27/2012  EFW  Added support for the new presentation style definition file
+//===============================================================================================================
 
 using System;
 using System.Collections.Generic;
@@ -31,6 +32,7 @@ using Microsoft.Build.Evaluation;
 using SandcastleBuilder.Utils;
 using SandcastleBuilder.Utils.BuildComponent;
 using SandcastleBuilder.Utils.Design;
+using SandcastleBuilder.Utils.PresentationStyle;
 
 namespace SandcastleBuilder.Package.PropertyPages
 {
@@ -65,8 +67,9 @@ namespace SandcastleBuilder.Package.PropertyPages
                 { NamingMethod.MemberName.ToString(), "Member name" },
                 { NamingMethod.HashedMemberName.ToString(), "Hashed member name" } }).ToList();
 
-            cboPresentationStyle.Items.AddRange(PresentationStyleTypeConverter.StandardValues.ToArray());
-            cboPresentationStyle.SelectedItem = PresentationStyleTypeConverter.DefaultStyle;
+            cboPresentationStyle.DisplayMember = "Title";
+            cboPresentationStyle.ValueMember = "Id";
+            cboPresentationStyle.DataSource = PresentationStyleTypeConverter.AllStyles.Values.ToList();
 
             cboSdkLinkTarget.Items.AddRange(Enum.GetNames(typeof(SdkLinkTarget)).OfType<Object>().ToArray());
             cboSdkLinkTarget.SelectedItem = SdkLinkTarget.Blank.ToString();
@@ -254,6 +257,18 @@ namespace SandcastleBuilder.Package.PropertyPages
                 cboLanguage.SelectedItem = this.AddLanguage(cboLanguage.Text);
                 this.IsDirty = true;
             }
+        }
+
+        /// <summary>
+        /// Update the info provider text when the presentation style changes
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event arguments</param>
+        private void cboPresentationStyle_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var pss = (PresentationStyleSettings)cboPresentationStyle.Items[cboPresentationStyle.SelectedIndex];
+
+            epNotes.SetError(cboPresentationStyle, pss.Description);
         }
         #endregion
     }

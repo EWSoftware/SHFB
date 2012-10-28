@@ -3,7 +3,7 @@
 
 	<!-- stuff specified to comments authored in DDUEXML -->
 
-	<xsl:import href="../../shared/transforms/utilities_bibliography.xsl"/>
+	<xsl:import href="utilities_bibliography.xsl"/>
 	<xsl:param name="bibliographyData" select="'../Data/bibliography.xml'"/>
 
 	<xsl:param name="omitXmlnsBoilerplate" select="'false'" />
@@ -1079,8 +1079,6 @@
 			</xsl:choose>
 		</div>
 	</xsl:template>
-
-	<!-- move these off into a shared file -->
 
 	<xsl:template name="createReferenceLink">
 		<xsl:param name="id" />

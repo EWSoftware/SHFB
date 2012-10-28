@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/13/2012
+// Updated : 10/27/2012
 // Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -49,6 +49,7 @@
 // 1.9.3.2  08/20/2011  EFW  Updated to support selection of .NET Portable Framework versions
 // 1.9.4.0  03/25/2012  EFW  Merged changes for VS2010 style from Don Fehr
 // 1.9.5.0  09/10/2012  EFW  Updated to use the new framework definition file for the .NET Framework versions
+// 1.9.6.0  10/25/2012  EFW  Updated to use the new presentation style definition files
 //===============================================================================================================
 
 using System;
@@ -72,14 +73,14 @@ using SandcastleBuilder.Utils.Design;
 using SandcastleBuilder.Utils.Frameworks;
 using SandcastleBuilder.Utils.MSBuild;
 using SandcastleBuilder.Utils.PlugIn;
+using SandcastleBuilder.Utils.PresentationStyle;
 
 using Microsoft.Build.Evaluation;
 
 namespace SandcastleBuilder.Utils.BuildEngine
 {
     /// <summary>
-    /// This class is used to handle all aspects of the build process in a
-    /// separate thread.
+    /// This class is used to handle all aspects of the build process in a separate thread
     /// </summary>
     public partial class BuildProcess
     {
@@ -113,9 +114,9 @@ namespace SandcastleBuilder.Utils.BuildEngine
         private DateTime buildStart, stepStart;
 
         // Various paths and other strings
-        private string shfbFolder, templateFolder, projectFolder, outputFolder, workingFolder,
-            sandcastleFolder, hhcFolder, hxcompFolder, languageFolder, webFolder, presentationFolder,
-            defaultTopic, namespacesTopic, reflectionFile, presentationParam, msBuildExePath;
+        private string shfbFolder, templateFolder, projectFolder, outputFolder, workingFolder, sandcastleFolder,
+            hhcFolder, hxcompFolder, languageFolder, webFolder, defaultTopic, namespacesTopic, reflectionFile,
+            msBuildExePath;
 
         private Collection<string> helpFormatOutputFolders;
 
@@ -126,6 +127,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
         private CultureInfo language;   // The project language
 
+        private PresentationStyleSettings presentationStyle;    // The presentation style settings
+
         // The current help file format being generated
         private HelpFileFormat currentFormat;
 
@@ -134,17 +137,13 @@ namespace SandcastleBuilder.Utils.BuildEngine
         private XmlNode apisNode;
 
         // Regular expressions used for error message checking
-        private static Regex reErrorCheck = new Regex(
-            @"^\s*((Error|UnrecognizedOption|Unhandled Exception|Fatal Error|" +
-            @"Unexpected error.*|HHC\d+: Error|(Fatal )?Error HXC\d+):|" +
-            @"Process is terminated|Build FAILED|\w+\s*:\s*Error\s.*?:|" +
-            @"\w.*?\(\d*,\d*\):\s*error\s.*?:)",
-            RegexOptions.IgnoreCase | RegexOptions.Multiline);
+        private static Regex reErrorCheck = new Regex(@"^\s*((Error|UnrecognizedOption|Unhandled Exception|" +
+            @"Fatal Error|Unexpected error.*|HHC\d+: Error|(Fatal )?Error HXC\d+):|Process is terminated|" +
+            @"Build FAILED|\w+\s*:\s*Error\s.*?:|\w.*?\(\d*,\d*\):\s*error\s.*?:)", RegexOptions.IgnoreCase |
+            RegexOptions.Multiline);
 
-        private static Regex reKillProcess = new Regex(
-            "hhc|hxcomp|BuildAssembler|XslTransform|MRefBuilder|" +
-            "GenerateInheritedDocs|SandcastleHtmlExtract",
-            RegexOptions.IgnoreCase);
+        private static Regex reKillProcess = new Regex("hhc|hxcomp|BuildAssembler|XslTransform|MRefBuilder|" +
+            "GenerateInheritedDocs|SandcastleHtmlExtract", RegexOptions.IgnoreCase);
         #endregion
 
         #region Properties
@@ -172,8 +171,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         }
 
         /// <summary>
-        /// This returns the location of the help file builder template
-        /// folder.
+        /// This returns the location of the help file builder template folder
         /// </summary>
         public string TemplateFolder
         {
@@ -197,8 +195,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
         }
 
         /// <summary>
-        /// This returns the output folder where the log file and help file
-        /// can be found after the build process has finished.
+        /// This returns the output folder where the log file and help file can be found after the build process
+        /// has finished.
         /// </summary>
         public string OutputFolder
         {
@@ -214,8 +212,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         }
 
         /// <summary>
-        /// This returns the name of the main Sandcastle folder determined
-        /// by the build process.
+        /// This returns the name of the main Sandcastle folder determined by the build process
         /// </summary>
         public string SandcastleFolder
         {
@@ -223,8 +220,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         }
 
         /// <summary>
-        /// This returns the name of the HTML Help 1 compiler folder determined
-        /// by the build process.
+        /// This returns the name of the HTML Help 1 compiler folder determined by the build process
         /// </summary>
         public string Help1CompilerFolder
         {
@@ -232,8 +228,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         }
 
         /// <summary>
-        /// This returns the name of the MS Help 2 compiler folder determined
-        /// by the build process.
+        /// This returns the name of the MS Help 2 compiler folder determined by the build process
         /// </summary>
         public string Help2CompilerFolder
         {
@@ -241,17 +236,17 @@ namespace SandcastleBuilder.Utils.BuildEngine
         }
 
         /// <summary>
-        /// This returns the name of the main Sandcastle presentation style
-        /// folder determined by the build process.
+        /// This returns the name of the main Sandcastle presentation style folder determined by the build
+        /// process.
         /// </summary>
         public string PresentationStyleFolder
         {
-            get { return presentationFolder; }
+            get { return presentationStyle.ResolvePath(presentationStyle.BasePath); }
         }
 
         /// <summary>
-        /// This read-only property returns a collection of the output folders
-        /// specific to each help file format produced by the build.
+        /// This read-only property returns a collection of the output folders specific to each help file format
+        /// produced by the build.
         /// </summary>
         public Collection<string> HelpFormatOutputFolders
         {
@@ -259,8 +254,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         }
 
         /// <summary>
-        /// This returns the name of the log file used for saving the
-        /// build progress messages.
+        /// This returns the name of the log file used for saving the build progress messages
         /// </summary>
         public string LogFilename
         {
@@ -286,8 +280,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// <summary>
         /// This returns the current project being used for the build
         /// </summary>
-        /// <remarks>Although there is nothing stopping it, project options
-        /// should not be modified during a build.</remarks>
+        /// <remarks>Although there is nothing stopping it, project options should not be modified during a
+        /// build.</remarks>
         public SandcastleProject CurrentProject
         {
             get { return project; }
@@ -296,12 +290,10 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// <summary>
         /// This returns the current help file format being generated
         /// </summary>
-        /// <remarks>The <b>GenerateHelpFormatTableOfContents</b>,
-        /// <b>GenerateHelpFileIndex</b>, <b>GenerateHelpProject</b>,
-        /// and <b>CompilingHelpFile</b> steps will run once for each help file
-        /// format selected.  This property allows a plug-in to determine which
-        /// files it may need to work with during those steps or to skip processing
-        /// if it is not relevant.</remarks>
+        /// <remarks>The <b>GenerateHelpFormatTableOfContents</b>, <b>GenerateHelpFileIndex</b>,
+        /// <b>GenerateHelpProject</b>, and <b>CompilingHelpFile</b> steps will run once for each help file
+        /// format selected.  This property allows a plug-in to determine which files it may need to work with
+        /// during those steps or to skip processing if it is not relevant.</remarks>
         public HelpFileFormat CurrentFormat
         {
             get { return currentFormat; }
@@ -310,9 +302,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// <summary>
         /// This read-only property is used to get the partial build flag
         /// </summary>
-        /// <remarks>Partial builds occur when editing the namespace summaries,
-        /// editing the API filter, and as part of some plug-ins and may not
-        /// require all build options.  In a partial build, build steps after
+        /// <remarks>Partial builds occur when editing the namespace summaries, editing the API filter, and as
+        /// part of some plug-ins and may not require all build options.  In a partial build, build steps after
         /// <b>ApplyVisibilityProperties</b> are not executed.</remarks>
         public bool IsPartialBuild
         {
@@ -320,11 +311,10 @@ namespace SandcastleBuilder.Utils.BuildEngine
         }
 
         /// <summary>
-        /// This is used to get the conceptual content settings in effect for
-        /// the build.
+        /// This is used to get the conceptual content settings in effect for the build
         /// </summary>
-        /// <remarks>This will not return a useable value until after the
-        /// <b>CopyStandardContent</b> <see cref="BuildStep" />.</remarks>
+        /// <remarks>This will not return a useable value until after the <b>CopyStandardContent</b>
+        /// <see cref="BuildStep" />.</remarks>
         public ConceptualContentSettings ConceptualContent
         {
             get { return conceptualContent; }
@@ -333,8 +323,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// <summary>
         /// This returns a list of the HTML Help 1 (CHM) files that were built
         /// </summary>
-        /// <remarks>If the HTML Help 1 format was not built, this returns an
-        /// empty collection.</remarks>
+        /// <remarks>If the HTML Help 1 format was not built, this returns an empty collection</remarks>
         public Collection<string> Help1Files
         {
             get { return help1Files; }
@@ -343,8 +332,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// <summary>
         /// This returns a list of the MS Help 2 (HxS) files that were built
         /// </summary>
-        /// <remarks>If the MS Help 2 format was not built, this returns an
-        /// empty collection.</remarks>
+        /// <remarks>If the MS Help 2 format was not built, this returns an empty collection</remarks>
         public Collection<string> Help2Files
         {
             get { return help2Files; }
@@ -353,8 +341,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// <summary>
         /// This returns a list of the MS Help Viewer (MSHC) files that were built
         /// </summary>
-        /// <remarks>If the MS Help Viewer format was not built, this returns
-        /// an empty collection.</remarks>
+        /// <remarks>If the MS Help Viewer format was not built, this returns an empty collection</remarks>
         public Collection<string> HelpViewerFiles
         {
             get { return helpViewerFiles; }
@@ -363,19 +350,17 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// <summary>
         /// This returns a list of the website files that were built
         /// </summary>
-        /// <remarks>If the website format was not built, this returns an
-        /// empty collection.</remarks>
+        /// <remarks>If the website format was not built, this returns an empty collection</remarks>
         public Collection<string> WebsiteFiles
         {
             get { return websiteFiles; }
         }
 
         /// <summary>
-        /// This controls whether or not the API filter is suppressed.
+        /// This controls whether or not the API filter is suppressed
         /// </summary>
-        /// <value>By default, it is not suppressed and the API filter will be
-        /// applied.  The API Filter designer uses this to suppress the filter
-        /// so that all members are obtained.</value>
+        /// <value>By default, it is not suppressed and the API filter will be applied.  The API Filter designer
+        /// uses this to suppress the filter so that all members are obtained.</value>
         public bool SuppressApiFilter
         {
             get { return suppressApiFilter; }
@@ -383,13 +368,11 @@ namespace SandcastleBuilder.Utils.BuildEngine
         }
 
         /// <summary>
-        /// This is used to get or set the table of contents parent for the API
-        /// content.
+        /// This is used to get or set the table of contents parent for the API content
         /// </summary>
-        /// <remarks>If not set, <see cref="RootContentContainerId" /> is used if
-        /// it is set.  If it is not, <see cref="SandcastleProject.TocParentId" /> is
-        /// used.  If this property is set, the value should be the ID of a topic in
-        /// the project's conceptual content.  The topic must appear in a content layout
+        /// <remarks>If not set, <see cref="RootContentContainerId" /> is used if it is set.  If it is not,
+        /// <see cref="SandcastleProject.TocParentId" /> is used.  If this property is set, the value should be
+        /// the ID of a topic in the project's conceptual content.  The topic must appear in a content layout
         /// file and must have its <c>Visible</c> property set to True in the layout file.</remarks>
         public string ApiTocParentId
         {
@@ -406,11 +389,11 @@ namespace SandcastleBuilder.Utils.BuildEngine
         }
 
         /// <summary>
-        /// This is used to get or set the sort order for API content so that it
-        /// appears within its parent in the correct position.
+        /// This is used to get or set the sort order for API content so that it appears within its parent in the
+        /// correct position.
         /// </summary>
-        /// <remarks>The default is -1 to let the build engine determine the best
-        /// value to use based on the other project properties.</remarks>
+        /// <remarks>The default is -1 to let the build engine determine the best value to use based on the other
+        /// project properties.</remarks>
         public int ApiTocOrder
         {
             get { return apiTocOrder; }
@@ -424,13 +407,11 @@ namespace SandcastleBuilder.Utils.BuildEngine
         }
 
         /// <summary>
-        /// This is used to get or set the topic ID to use for the root content
-        /// container node.
+        /// This is used to get or set the topic ID to use for the root content container node
         /// </summary>
-        /// <remarks>If not set, all content will appear at the root level
-        /// in the <see cref="SandcastleProject.TocParentId" />.  If set, the
-        /// value should be the ID of a topic in the project's conceptual content.
-        /// The topic must appear in a content layout file and must have its
+        /// <remarks>If not set, all content will appear at the root level in the
+        /// <see cref="SandcastleProject.TocParentId" />.  If set, the value should be the ID of a topic in the
+        /// project's conceptual content.  The topic must appear in a content layout file and must have its
         /// <c>Visible</c> property set to False in the layout file.</remarks>
         public string RootContentContainerId
         {
@@ -540,16 +521,14 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// <summary>
         /// Call this method to perform the build on the project.
         /// </summary>
-        /// <event cref="BuildStepChanged">This event fires when the
-        /// current build step changes.</event>
-        /// <event cref="BuildProgress">This event fires to report progress
-        /// information.</event>
+        /// <event cref="BuildStepChanged">This event fires when the current build step changes.</event>
+        /// <event cref="BuildProgress">This event fires to report progress information.</event>
         public void Build()
         {
             Project msBuildProject = null;
             ProjectItem projectItem;
             Version v;
-            string helpFile, languageFile, scriptFile, hintPath, message = null;
+            string resolvedPath, helpFile, languageFile, scriptFile, hintPath, message = null;
             SandcastleProject originalProject = null;
             int waitCount;
 
@@ -584,9 +563,10 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 // Get the location of the web files
                 webFolder = shfbFolder + @"\Web\";
 
-                // Make sure we start out in the project's output folder
-                // in case the output folder is relative to it.
+                // Make sure we start out in the project's output folder in case the output folder is relative
+                // to it.
                 projectFolder = Path.GetDirectoryName(originalProjectName);
+
                 if(projectFolder.Length == 0)
                     projectFolder = Directory.GetCurrentDirectory();
 
@@ -597,6 +577,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 this.ReportProgress("Creating output and working folders...");
 
                 outputFolder = project.OutputPath;
+
                 if(String.IsNullOrEmpty(outputFolder))
                     outputFolder = Directory.GetCurrentDirectory();
                 else
@@ -608,18 +589,17 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 if(outputFolder[outputFolder.Length - 1] != '\\')
                     outputFolder += @"\";
 
-                // Create the log file.  The log may be in a folder other than
-                // the output so make sure it exists too.
+                // Create the log file.  The log may be in a folder other than the output so make sure it exists
+                // too.
                 if(!Directory.Exists(Path.GetDirectoryName(this.LogFilename)))
                     Directory.CreateDirectory(Path.GetDirectoryName(this.LogFilename));
 
                 swLog = new StreamWriter(this.LogFilename);
-                swLog.WriteLine("<?xml version=\"1.0\" encoding=\"utf-8\"?>" +
-                    "\r\n<shfbBuild product=\"{0}\" version=\"{1}\" " +
-                    "projectFile=\"{2}\" started=\"{3}\">\r\n" +
-                    "<buildStep step=\"{4}\">",
-                    fvi.ProductName, fvi.ProductVersion, originalProjectName,
-                    DateTime.Now, BuildStep.Initializing);
+
+                swLog.WriteLine("<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<shfbBuild product=\"{0}\" " +
+                    "version=\"{1}\" projectFile=\"{2}\" started=\"{3}\">\r\n<buildStep step=\"{4}\">",
+                    fvi.ProductName, fvi.ProductVersion, originalProjectName, DateTime.Now,
+                    BuildStep.Initializing);
 
                 if(project.WorkingPath.Path.Length == 0)
                     workingFolder = outputFolder + @"Working\";
@@ -631,34 +611,45 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 // The output folder and the working folder cannot be the same
                 if(workingFolder == outputFolder)
-                    throw new BuilderException("BE0030", "The OutputPath and " +
-                        "WorkingPath properties cannot be set to the same path");
+                    throw new BuilderException("BE0030", "The OutputPath and WorkingPath properties cannot be " +
+                        "set to the same path");
 
                 // For MS Help 2, the HTML Help Name cannot contain spaces
-                if((project.HelpFileFormat & HelpFileFormat.MSHelp2) != 0 &&
-                  project.HtmlHelpName.IndexOf(' ') != -1)
-                    throw new BuilderException("BE0031", "For MS Help 2 " +
-                        "builds, the HtmlHelpName property cannot contain " +
-                        "spaces as they are not valid in the collection name.");
+                if((project.HelpFileFormat & HelpFileFormat.MSHelp2) != 0 && project.HtmlHelpName.IndexOf(' ') != -1)
+                    throw new BuilderException("BE0031", "For MS Help 2 builds, the HtmlHelpName property " +
+                        "cannot contain spaces as they are not valid in the collection name.");
 
-                // Check for the SHFBROOT environment variable.  It may not be
-                // present yet if a reboot hasn't occurred after installation.
-                // In such cases, set it to the proper folder for this process
-                // so that projects can be loaded and built.
+                // Make sure we can find the tools
+                this.FindTools();
+
+                // Check for the SHFBROOT environment variable.  It may not be present yet if a reboot hasn't
+                // occurred after installation.  In such cases, set it to the proper folder for this process so
+                // that projects can be loaded and built.
                 if(Environment.GetEnvironmentVariable("SHFBROOT") == null)
                 {
-                    // We won't issue a warning since it may not be defined
-                    // in some build environments such as on a build server.
-                    // In such cases, it is passed in as a command line
-                    // option to MSBuild.  Storing it in the environment here
-                    // lets the SHFB build projects work as expected.
-                    this.ReportProgress("The SHFBROOT system environment variable was " +
-                        "not found.  This variable is usually created during installation " +
-                        "and may require a reboot.  It has been defined temporarily " +
-                        "for this process as: SHFBROOT={0}", shfbFolder);
+                    // We won't issue a warning since it may not be defined in some build environments such as
+                    // on a build server.  In such cases, it is passed in as a command line option to MSBuild.
+                    // Storing it in the environment here lets the SHFB build projects work as expected.
+                    this.ReportProgress("The SHFBROOT system environment variable was not found.  This " +
+                        "variable is usually created during installation and may require a reboot.  It has " +
+                        "been defined temporarily for this process as: SHFBROOT={0}", shfbFolder);
 
                     Environment.SetEnvironmentVariable("SHFBROOT", shfbFolder);
                 }
+
+                // Do the same for DXROOT
+                if(Environment.GetEnvironmentVariable("DXROOT") == null)
+                {
+                    this.ReportProgress("The DXROOT system environment variable was not found.  This " +
+                        "variable is usually created during installation and may require a reboot.  It has " +
+                        "been defined temporarily for this process as: DXROOT={0}",
+                        BuildComponentManager.SandcastlePath);
+
+                    Environment.SetEnvironmentVariable("DXROOT", BuildComponentManager.SandcastlePath);
+                }
+
+                if(!Directory.Exists(sandcastleFolder + @"Data\Reflection"))
+                    throw new BuilderException("BE0032", "Reflection data files do not exist yet");
 
                 // Get the framework settings to use for the build
                 frameworkSettings = FrameworkVersionTypeConverter.AllFrameworks.GetFrameworkWithRedirect(
@@ -674,6 +665,18 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     this.ReportWarning("BE0072", "Project framework version '{0}' not found.  It has been " +
                         "redirected and will use '{1}' instead.", project.FrameworkVersion,
                         frameworkSettings.Title);
+
+                // Figure out which presentation style to use
+                if(!PresentationStyleTypeConverter.AllStyles.TryGetValue(project.PresentationStyle, out presentationStyle))
+                    throw new BuilderException("BE0001", "The PresentationStyle property value of '" +
+                        project.PresentationStyle + "' is not recognized as a valid presentation style definition.");
+
+                // If the presentation style does not support any of the selected help file formats, stop now
+                if((project.HelpFileFormat & ~presentationStyle.HelpFileFormats) != 0)
+                    throw new BuilderException("BE0074", String.Format(CultureInfo.CurrentCulture,
+                        "The selected presentation style ({0}) does not support one or more of the selected " +
+                        "help file formats.  Supported formats: {1}", presentationStyle.Id,
+                        presentationStyle.HelpFileFormats));
 
                 // Load the plug-ins
                 if(project.PlugInConfigurations.Count != 0)
@@ -712,8 +715,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         }
                     }
 
-                    // If the help file is open, it will fail to build so try
-                    // to get rid of it now before we get too far into it.
+                    // If the help file is open, it will fail to build so try to get rid of it now before we
+                    // get too far into it.
                     helpFile = outputFolder + project.HtmlHelpName + ".chm";
 
                     if((project.HelpFileFormat & HelpFileFormat.HtmlHelp1) != 0 && File.Exists(helpFile))
@@ -753,14 +756,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 Directory.CreateDirectory(workingFolder);
 
-                // Make sure we can find the tools
-                this.FindTools();
-
-                if(!Directory.Exists(sandcastleFolder + @"Data\Reflection"))
-                    throw new BuilderException("BE0032", "Reflection data files do not exist yet");
-
-                // Make sure the HelpFileVersion property is in the form of
-                // a real version number.
+                // Make sure the HelpFileVersion property is in the form of a real version number
                 try
                 {
                     if(project.HelpFileVersion.IndexOf('{') == -1)
@@ -780,9 +776,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 this.GarbageCollect();
 
-                // Validate the documentation source information, gather
-                // assembly and reference info, and copy XML comments files
-                // to the working folder.
+                // Validate the documentation source information, gather assembly and reference info, and copy
+                // XML comments files to the working folder.
                 this.ValidateDocumentationSources();
 
                 // Transform the shared builder content files
@@ -792,41 +787,18 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 this.ReportProgress(BuildStep.GenerateSharedContent, "Generating shared content files ({0}, {1})...",
                     language.Name, language.DisplayName);
 
-                // First we need to figure out which style is in effect.  Base it on whether the presentation
-                // style folder contains "v2005", "vs2010, "hana", or "prototype".
-                presentationParam = project.PresentationStyle.ToLower(CultureInfo.InvariantCulture);
-
-                if(presentationParam.IndexOf("vs2005", StringComparison.Ordinal) != -1)
-                    presentationParam = "vs2005";
-                else
-                    if(presentationParam.IndexOf("vs2010", StringComparison.Ordinal) != -1)
-                        presentationParam = "vs2010";
-                    else
-                        if(presentationParam.IndexOf("hana", StringComparison.Ordinal) != -1)
-                            presentationParam = "hana";
-                        else
-                        {
-                            if(presentationParam.IndexOf("prototype", StringComparison.Ordinal) == -1)
-                                this.ReportWarning("BE0001", "Unable to determine presentation style from folder " +
-                                    "'{0}'.  Assuming Prototype style.", project.PresentationStyle);
-
-                            presentationParam = "prototype";
-                        }
-
                 if(!File.Exists(templateFolder + @"..\SharedContent\" + languageFile))
                 {
                     languageFile = "SharedBuilderContent_en-US.xml";
 
                     // Warn the user about the default being used
-                    this.ReportWarning("BE0002", "Shared builder content " +
-                        "for the '{0}, {1}' language could not be found.  " +
-                        "Using 'en-US, English (US)' defaults.",
-                        language.Name, language.DisplayName);
+                    this.ReportWarning("BE0002", "Shared builder content for the '{0}, {1}' language could " +
+                        "not be found.  Using 'en-US, English (US)' defaults.", language.Name, language.DisplayName);
                 }
 
-                // See if the user has translated the Sandcastle resources.
-                // If not found, default to US English.
-                languageFolder = presentationFolder + @"\Content\" + language.Name;
+                // See if the user has translated the Sandcastle resources.  If not found, default to US English.
+                languageFolder = Path.Combine(presentationStyle.ResolvePath(presentationStyle.ResourceItemsPath),
+                    language.Name);
 
                 if(Directory.Exists(languageFolder))
                     languageFolder = language.Name + @"\";
@@ -850,13 +822,14 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     File.Move(workingFolder + languageFile, workingFolder + "SharedBuilderContent.xml");
 
                     // Presentation-style specific shared content
-                    languageFile = languageFile.Replace("Shared", presentationParam);
-
-                    this.TransformTemplate(languageFile, templateFolder + @"..\SharedContent\", workingFolder);
+                    languageFile = String.Format("{0}BuilderContent_{1}.xml", presentationStyle.Id, language.Name);
+                        
+                    this.TransformTemplate(languageFile,
+                        presentationStyle.ResolvePath(presentationStyle.ToolResourceItemsPath), workingFolder);
                     File.Move(workingFolder + languageFile, workingFolder + "PresentationStyleBuilderContent.xml");
 
                     // Copy the stop word list
-                    languageFile = Path.ChangeExtension(languageFile.Replace(presentationParam +
+                    languageFile = Path.ChangeExtension(languageFile.Replace(presentationStyle.Id +
                         "BuilderContent", "StopWordList"), ".txt");
                     File.Copy(templateFolder + @"..\SharedContent\" + languageFile, workingFolder +
                         "StopWordList.txt");
@@ -1102,17 +1075,26 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                     this.ReportProgress("    sandcastle.config");
 
-                    // The configuration varies based on the style.  However,
-                    // we'll use a common name (sandcastle.config).
-                    this.TransformTemplate(presentationParam + ".config", templateFolder, workingFolder);
-                    File.Move(workingFolder + presentationParam + ".config", workingFolder + "sandcastle.config");
+                    // The configuration varies based on the style.  We'll use a common name (sandcastle.config).
+                    resolvedPath = presentationStyle.ResolvePath(presentationStyle.ReferenceBuildConfiguration);
+                    this.TransformTemplate(Path.GetFileName(resolvedPath), Path.GetDirectoryName(resolvedPath),
+                        workingFolder);
 
-                    // The conceptual content configuration file is common to
-                    // all styles.  It is only created if needed.
+                    if(!Path.GetFileName(resolvedPath).Equals("sandcastle.config", StringComparison.OrdinalIgnoreCase))
+                        File.Move(workingFolder + Path.GetFileName(resolvedPath), workingFolder + "sandcastle.config");
+
+                    // The conceptual content configuration file is only created if needed.
                     if(conceptualContent.ContentLayoutFiles.Count != 0)
                     {
                         this.ReportProgress("    conceptual.config");
-                        this.TransformTemplate("conceptual.config", templateFolder, workingFolder);
+
+                        resolvedPath = presentationStyle.ResolvePath(presentationStyle.ConceptualBuildConfiguration);
+
+                        this.TransformTemplate(Path.GetFileName(resolvedPath), Path.GetDirectoryName(resolvedPath),
+                            workingFolder);
+
+                        if(!Path.GetFileName(resolvedPath).Equals("conceptual.config", StringComparison.OrdinalIgnoreCase))
+                            File.Move(workingFolder + Path.GetFileName(resolvedPath), workingFolder + "conceptual.config");
                     }
 
                     this.ExecutePlugIns(ExecutionBehaviors.After);
@@ -1903,11 +1885,10 @@ AllDone:
         /// <summary>
         /// Find the Sandcastle tools and the HTML help compiler
         /// </summary>
-        /// <exception cref="BuilderException">This is thrown if any of
-        /// the tools cannot be found.</exception>
+        /// <exception cref="BuilderException">This is thrown if any of the tools cannot be found</exception>
         protected void FindTools()
         {
-            this.ReportProgress(BuildStep.FindingTools, "Finding tools...");
+            this.ReportProgress("Finding tools...");
             this.ExecutePlugIns(ExecutionBehaviors.Before);
 
             sandcastleFolder = project.SandcastlePath;
@@ -1920,8 +1901,7 @@ AllDone:
                     sandcastleFolder = String.Empty;
             }
 
-            // Try to find Sandcastle based on the path if not specified
-            // in the project or DXROOT.
+            // Try to find Sandcastle based on the path if not specified in the project or DXROOT
             if(sandcastleFolder.Length == 0)
             {
                 Match m = Regex.Match(Environment.GetEnvironmentVariable("PATH"),
@@ -1932,7 +1912,7 @@ AllDone:
                     sandcastleFolder = m.Value;
                 else
                 {
-                    this.ReportProgress(BuildStep.FindingTools, "Searching for Sandcastle tools...");
+                    this.ReportProgress("Searching for Sandcastle tools...");
                     sandcastleFolder = BuildProcess.FindOnFixedDrives(@"\Sandcastle");
 
                     // If not found there, try the VS 2005 SDK folders
@@ -1958,16 +1938,14 @@ AllDone:
 
             this.ReportProgress("Found Sandcastle tools in '{0}'", sandcastleFolder);
 
-            // Set the presentation folder too
-            presentationFolder = String.Format(CultureInfo.InvariantCulture,
-                @"{0}Presentation\{1}\", sandcastleFolder, project.PresentationStyle);
+            BuildComponentManager.SandcastlePath = sandcastleFolder;
 
             // Make sure we've got a version we can use
-            FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(
-                sandcastleFolder + @"ProductionTools\MRefBuilder.exe");
+            FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(sandcastleFolder +
+                @"ProductionTools\MRefBuilder.exe");
 
-            Version fileVersion = new Version(fvi.FileMajorPart, fvi.FileMinorPart,
-                fvi.FileBuildPart, fvi.FilePrivatePart);
+            Version fileVersion = new Version(fvi.FileMajorPart, fvi.FileMinorPart, fvi.FileBuildPart,
+                fvi.FilePrivatePart);
 
             Version expectedVersion = new Version("2.7.1.0");
 
@@ -1977,12 +1955,11 @@ AllDone:
                     "date (found '{0}' but expected '{1}').  See the error number topic in the help " +
                     "file for details.\r\n", fileVersion, expectedVersion));
 
-            // If the version is greater, we can't use it as the build components are bound to
-            // the older version and it will fail later on in the BuildAssembler step.
+            // If the version is greater, we can't use it as the build components are bound to the older version
+            // and it will fail later on in the BuildAssembler step.
             if(fileVersion > expectedVersion)
             {
-                // I tend to forget, so this is a clue to me that I need to update
-                // the version number used above.
+                // I tend to forget, so this is a clue to me that I need to update the version number used above
                 if(System.Diagnostics.Debugger.IsAttached)
                     System.Diagnostics.Debugger.Break();
 
@@ -1992,8 +1969,8 @@ AllDone:
                     "file for details.\r\n", fileVersion, expectedVersion));
             }
 
-            // Find the help compilers by looking on all fixed drives.
-            // We don't need them if the result is only a website.
+            // Find the help compilers by looking on all fixed drives.  We don't need them if the result is only
+            // a website.
             if((project.HelpFileFormat & ~HelpFileFormat.Website) != 0)
             {
                 if((project.HelpFileFormat & HelpFileFormat.HtmlHelp1) != 0)
@@ -2002,7 +1979,7 @@ AllDone:
 
                     if(hhcFolder.Length == 0)
                     {
-                        this.ReportProgress(BuildStep.FindingTools, "Searching for HTML Help 1 compiler...");
+                        this.ReportProgress("Searching for HTML Help 1 compiler...");
                         hhcFolder = BuildProcess.FindOnFixedDrives(@"\HTML Help Workshop");
                     }
 
@@ -2023,14 +2000,12 @@ AllDone:
 
                     if(hxcompFolder.Length == 0)
                     {
-                        this.ReportProgress(BuildStep.FindingTools, "Searching for HTML Help 2 compiler...");
+                        this.ReportProgress("Searching for HTML Help 2 compiler...");
 
-                        // Search the Visual Studio SDK folders first as it
-                        // usually has a more recent version.
+                        // Search the Visual Studio SDK folders first as it usually has a more recent version
                         hxcompFolder = BuildProcess.FindSdkExecutable("hxcomp.exe");
 
-                        // If not found there, try the default installation
-                        // folders.
+                        // If not found there, try the default installation folders
                         if(hxcompFolder.Length == 0)
                         {
                             hxcompFolder = BuildProcess.FindOnFixedDrives(
@@ -2041,8 +2016,7 @@ AllDone:
                         }
                     }
 
-                    if(hxcompFolder.Length == 0 ||
-                      !Directory.Exists(hxcompFolder))
+                    if(hxcompFolder.Length == 0 || !Directory.Exists(hxcompFolder))
                         throw new BuilderException("BE0038", "Could not find the path to the MS Help 2 " +
                             "compiler.  See error topic in help file for details.\r\n");
 
@@ -2057,15 +2031,13 @@ AllDone:
         }
 
         /// <summary>
-        /// Find a folder by searching the Program Files folders on all fixed
-        /// drives.
+        /// Find a folder by searching the Program Files folders on all fixed drives.
         /// </summary>
         /// <param name="path">The path for which to search</param>
         /// <returns>The path if found or an empty string if not found</returns>
         protected internal static string FindOnFixedDrives(string path)
         {
-            StringBuilder sb = new StringBuilder(Environment.GetFolderPath(
-                Environment.SpecialFolder.ProgramFiles));
+            StringBuilder sb = new StringBuilder(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles));
 
             // Check for 64-bit Windows.  The tools will be in the x86 folder.
             if(Directory.Exists(sb.ToString() + " (x86)"))
@@ -2085,8 +2057,7 @@ AllDone:
         }
 
         /// <summary>
-        /// This is used to find the named executable in one of the Visual
-        /// Studio SDK installation folders.
+        /// This is used to find the named executable in one of the Visual Studio SDK installation folders.
         /// </summary>
         /// <param name="exeName">The name of the executable to find</param>
         /// <returns>The path if found or an empty string if not found</returns>

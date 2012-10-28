@@ -1,25 +1,24 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder Utilities
 // File    : ConvertFromDocProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/08/2012
+// Updated : 10/25/2012
 // Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains a class used to convert project files created by
-// DocProject to the MSBuild format project files used by SHFB.
+// This file contains a class used to convert project files created by DocProject to the MSBuild format project
+// files used by SHFB.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.8.0.0  07/23/2008  EFW  Created the code
 // 1.9.3.4  01/08/2012  EFW  Added constructor to support use from VSPackage
-//=============================================================================
+//===============================================================================================================
 
 using System;
 using System.Collections.Generic;
@@ -29,13 +28,12 @@ using System.Xml;
 using System.Xml.XPath;
 
 using SandcastleBuilder.Utils.ConceptualContent;
-using SandcastleBuilder.Utils.Design;
 
 namespace SandcastleBuilder.Utils.Conversion
 {
     /// <summary>
-    /// This class is used to convert DocProject project files to the MSBuild
-    /// format project files used by the help file builder.
+    /// This class is used to convert DocProject project files to the MSBuild format project files used by the
+    /// help file builder.
     /// </summary>
     public class ConvertFromDocProject : ConvertToMSBuildFormat
     {
@@ -83,8 +81,7 @@ namespace SandcastleBuilder.Utils.Conversion
         /// <summary>
         /// This is used to perform the actual conversion
         /// </summary>
-        /// <returns>The new project filename on success.  An exception is
-        /// thrown if the conversion fails.</returns>
+        /// <returns>The new project filename on success.  An exception is thrown if the conversion fails.</returns>
         public override string ConvertProject()
         {
             XPathNavigator navProject;
@@ -97,9 +94,8 @@ namespace SandcastleBuilder.Utils.Conversion
                 project.HelpTitle = project.HtmlHelpName =
                     Path.GetFileNameWithoutExtension(base.OldProjectFile);
 
-                // We'll process it as XML rather than an MSBuild project as
-                // it may contain references to target files that don't exist
-                // which would prevent it from loading.
+                // We'll process it as XML rather than an MSBuild project as it may contain references to target
+                // files that don't exist which would prevent it from loading.
                 docProject = new XmlDocument();
                 docProject.Load(base.OldProjectFile);
                 nsm = new XmlNamespaceManager(docProject.NameTable);
@@ -109,13 +105,10 @@ namespace SandcastleBuilder.Utils.Conversion
                 lastProperty = "ProjectExtensions/VisualStudio";
                 this.ImportProjectExtensionProperties();
 
-                // Parse each build item to look for stuff we need to add
-                // to the project.
-                foreach(XPathNavigator buildItem in navProject.Select(
-                  "//prj:Project/prj:ItemGroup/*", nsm))
+                // Parse each build item to look for stuff we need to add to the project
+                foreach(XPathNavigator buildItem in navProject.Select("//prj:Project/prj:ItemGroup/*", nsm))
                 {
-                    lastProperty = String.Format(CultureInfo.InvariantCulture,
-                        "{0} ({1})", buildItem.Name,
+                    lastProperty = String.Format(CultureInfo.InvariantCulture, "{0} ({1})", buildItem.Name,
                         buildItem.GetAttribute("Include", String.Empty));
 
                     switch(buildItem.Name)
@@ -126,9 +119,8 @@ namespace SandcastleBuilder.Utils.Conversion
                             break;
 
                         case "ProjectReference":
-                            project.DocumentationSources.Add(base.FullPath(
-                                buildItem.GetAttribute("Include", String.Empty)),
-                                null, null, false);
+                            project.DocumentationSources.Add(base.FullPath(buildItem.GetAttribute("Include",
+                                String.Empty)), null, null, false);
                             break;
 
                         default:    // Ignore
@@ -152,10 +144,9 @@ namespace SandcastleBuilder.Utils.Conversion
             }
             catch(Exception ex)
             {
-                throw new BuilderException("CVT0005", String.Format(
-                    CultureInfo.CurrentCulture, "Error reading project " +
-                    "from '{0}' (last property = {1}):\r\n{2}",
-                    base.OldProjectFile, lastProperty, ex.Message), ex);
+                throw new BuilderException("CVT0005", String.Format(CultureInfo.CurrentCulture,
+                    "Error reading project from '{0}' (last property = {1}):\r\n{2}", base.OldProjectFile,
+                    lastProperty, ex.Message), ex);
             }
 
             return project.Filename;
@@ -170,26 +161,23 @@ namespace SandcastleBuilder.Utils.Conversion
         /// </summary>
         private void ImportProjectExtensionProperties()
         {
-            XmlNode props = docProject.SelectSingleNode("//prj:Project/" +
-                "prj:ProjectExtensions/prj:VisualStudio/prj:UserProperties",
-                nsm);
+            XmlNode props = docProject.SelectSingleNode("//prj:Project/prj:ProjectExtensions/" +
+                "prj:VisualStudio/prj:UserProperties", nsm);
             string value;
 
             if(props == null)
                 return;
 
-            if(docProject.SelectSingleNode("//prj:Project/prj:ProjectExtensions" +
-              "/prj:VisualStudio/prj:FlavorProperties", nsm) != null)
+            if(docProject.SelectSingleNode("//prj:Project/prj:ProjectExtensions/prj:VisualStudio/" +
+              "prj:FlavorProperties", nsm) != null)
                 project.HelpFileFormat |= HelpFileFormat.Website;
 
             foreach(XmlAttribute attr in props.Attributes)
                 switch(attr.Name)
                 {
                     case "DocumentationScope":
-                        if(String.Compare(attr.Value, "PublicOnly",
-                          StringComparison.OrdinalIgnoreCase) != 0)
-                            project.DocumentInternals =
-                                project.DocumentPrivates = true;
+                        if(String.Compare(attr.Value, "PublicOnly", StringComparison.OrdinalIgnoreCase) != 0)
+                            project.DocumentInternals = project.DocumentPrivates = true;
                         break;
 
                     case "ExternalSources":
@@ -199,26 +187,15 @@ namespace SandcastleBuilder.Utils.Conversion
 
                             if(value.Length != 0)
                                 if(value[value.Length - 1] == '\\')
-                                    project.DocumentationSources.Add(
-                                        base.FullPath(Path.Combine(value, "*.*")),
+                                    project.DocumentationSources.Add(base.FullPath(Path.Combine(value, "*.*")),
                                         null, null, false);
                                 else
-                                    project.DocumentationSources.Add(
-                                        base.FullPath(value), null, null, false);
+                                    project.DocumentationSources.Add(base.FullPath(value), null, null, false);
                         }
                         break;
 
                     case "Sandcastle_PresentationName":
-                        if(attr.Value.IndexOf("prototype", StringComparison.OrdinalIgnoreCase) != -1)
-                            value = "prototype";
-                        else
-                            if(attr.Value.IndexOf("hana", StringComparison.OrdinalIgnoreCase) != -1)
-                                value = "hana";
-                            else
-                                value = "vs2005";
-
-                        project.PresentationStyle =
-                            PresentationStyleTypeConverter.FirstMatching(value);
+                        project.PresentationStyle = attr.Value;
                         break;
 
                     case "Sandcastle_DocumentationSetName":
@@ -226,14 +203,12 @@ namespace SandcastleBuilder.Utils.Conversion
                         break;
 
                     case "Sandcastle_UseFriendlyHtmlFileNames":
-                        if(String.Compare(attr.Value, "True",
-                          StringComparison.OrdinalIgnoreCase) == 0)
+                        if(String.Compare(attr.Value, "True", StringComparison.OrdinalIgnoreCase) == 0)
                             project.NamingMethod = NamingMethod.MemberName;
                         break;
 
                     case "Sandcastle_ProduceHelp1x":
-                        if(String.Compare(attr.Value, "False",
-                          StringComparison.OrdinalIgnoreCase) == 0)
+                        if(String.Compare(attr.Value, "False", StringComparison.OrdinalIgnoreCase) == 0)
                             if(project.HelpFileFormat == HelpFileFormat.HtmlHelp1)
                                 project.HelpFileFormat = HelpFileFormat.MSHelp2;
                             else
@@ -241,14 +216,12 @@ namespace SandcastleBuilder.Utils.Conversion
                         break;
 
                     case "Sandcastle_ProduceHelp2x":
-                        if(String.Compare(attr.Value, "True",
-                          StringComparison.OrdinalIgnoreCase) == 0)
+                        if(String.Compare(attr.Value, "True", StringComparison.OrdinalIgnoreCase) == 0)
                             project.HelpFileFormat |= HelpFileFormat.MSHelp2;
                         break;
 
                     case "Sandcastle_GenerateRootApiTopic":
-                        if(String.Compare(attr.Value, "True",
-                          StringComparison.OrdinalIgnoreCase) == 0)
+                        if(String.Compare(attr.Value, "True", StringComparison.OrdinalIgnoreCase) == 0)
                             project.RootNamespaceContainer = true;
                         break;
 
@@ -261,18 +234,17 @@ namespace SandcastleBuilder.Utils.Conversion
                                 continue;
 
                             if(value[value.Length - 1] != '\\')
-                                project.References.AddReference(
-                                    Path.GetFileNameWithoutExtension(value),
+                                project.References.AddReference(Path.GetFileNameWithoutExtension(value),
                                     base.FullPath(value));
                             else
-                                foreach(string reference in
-                                  ConvertToMSBuildFormat.ExpandWildcard(
+                                foreach(string reference in ConvertToMSBuildFormat.ExpandWildcard(
                                   Path.Combine(base.FullPath(value), "*.*"), true))
+                                {
                                     if(reference.EndsWith(".dll", StringComparison.OrdinalIgnoreCase) ||
                                       reference.EndsWith(".exe", StringComparison.OrdinalIgnoreCase))
                                         project.References.AddReference(
-                                            Path.GetFileNameWithoutExtension(reference),
-                                            reference);
+                                            Path.GetFileNameWithoutExtension(reference), reference);
+                                }
                         }
                         break;
 
@@ -287,8 +259,7 @@ namespace SandcastleBuilder.Utils.Conversion
         /// <param name="buildItem">The file information</param>
         private void ImportFile(XPathNavigator buildItem)
         {
-            string newPath, name, file = buildItem.GetAttribute("Include",
-                String.Empty);
+            string newPath, name, file = buildItem.GetAttribute("Include", String.Empty);
             FileItem fileItem;
             bool isTokens = false, isSnippets = false;
 
@@ -443,14 +414,12 @@ namespace SandcastleBuilder.Utils.Conversion
                 if(!String.IsNullOrEmpty(id))
                     guid = id.Trim();
 
-                if(!String.IsNullOrEmpty(guid) &&
-                  images.FindId(guid) == null && file != null &&
+                if(!String.IsNullOrEmpty(guid) && images.FindId(guid) == null && file != null &&
                   !String.IsNullOrEmpty(file.Value))
                 {
                     path = newName = file.Value;
 
-                    // If relative, get the full path.  If no path, assume
-                    // Help\Art as the default.
+                    // If relative, get the full path.  If no path, assume Help\Art as the default
                     if(String.IsNullOrEmpty(Path.GetDirectoryName(path)))
                     {
                         path = Path.Combine(@"Help\Art", path);
@@ -460,28 +429,24 @@ namespace SandcastleBuilder.Utils.Conversion
                     if(Path.IsPathRooted(path))
                         newName = Path.GetFileName(path);
                     else
-                        path = Path.GetFullPath(Path.Combine(base.OldFolder,
-                            path));
+                        path = Path.GetFullPath(Path.Combine(base.OldFolder, path));
 
-                    // It's possible that two entries share the same file
-                    // so we'll need to create a new copy as in SHFB, the
-                    // settings are managed via the project explorer and each
-                    // file is unique.
+                    // It's possible that two entries share the same file so we'll need to create a new copy as
+                    // in SHFB, the settings are managed via the project explorer and each file is unique.
                     uniqueId = 1;
 
                     while(filesSeen.Contains(newName))
                     {
                         newName = Path.Combine(Path.GetDirectoryName(newName),
                             Path.GetFileNameWithoutExtension(newName) +
-                            uniqueId.ToString(CultureInfo.InvariantCulture) +
-                            Path.GetExtension(newName));
+                            uniqueId.ToString(CultureInfo.InvariantCulture) + Path.GetExtension(newName));
+
                         uniqueId++;
                     }
 
                     filesSeen.Add(newName);
 
-                    fileItem = project.AddFileToProject(path,
-                        Path.Combine(base.ProjectFolder, newName));
+                    fileItem = project.AddFileToProject(path, Path.Combine(base.ProjectFolder, newName));
                     fileItem.BuildAction = BuildAction.Image;
                     fileItem.ImageId = guid;
 
@@ -503,8 +468,7 @@ namespace SandcastleBuilder.Utils.Conversion
 
             foreach(XPathNavigator topic in navTopics.Select("metadata/topic"))
             {
-                if(!topicSettings.TryGetValue(topic.GetAttribute("id",
-                  String.Empty), out t))
+                if(!topicSettings.TryGetValue(topic.GetAttribute("id", String.Empty), out t))
                 {
                     t = new Topic();
                     topicSettings.Add(topic.GetAttribute("id", String.Empty), t);
@@ -522,8 +486,7 @@ namespace SandcastleBuilder.Utils.Conversion
                             break;
 
                         case "attribute":
-                            t.HelpAttributes.Add(attr.GetAttribute("name",
-                                String.Empty), attr.Value);
+                            t.HelpAttributes.Add(attr.GetAttribute("name", String.Empty), attr.Value);
                             break;
 
                         default:
@@ -537,8 +500,7 @@ namespace SandcastleBuilder.Utils.Conversion
         /// </summary>
         private void CreateContentLayoutFile()
         {
-            string filename = Path.Combine(base.ProjectFolder,
-                "ContentLayout.content");
+            string filename = Path.Combine(base.ProjectFolder, "ContentLayout.content");
             XmlTextReader reader = null;
             XmlWriterSettings settings = new XmlWriterSettings();
             XmlWriter writer = null;
@@ -558,8 +520,7 @@ namespace SandcastleBuilder.Utils.Conversion
 
                 while(!reader.EOF && reader.NodeType != XmlNodeType.EndElement)
                 {
-                    if(reader.NodeType == XmlNodeType.Element &&
-                      reader.Name == "topics" && !reader.IsEmptyElement)
+                    if(reader.NodeType == XmlNodeType.Element && reader.Name == "topics" && !reader.IsEmptyElement)
                     {
                         while(!reader.EOF && reader.NodeType != XmlNodeType.EndElement)
                         {
@@ -581,10 +542,8 @@ namespace SandcastleBuilder.Utils.Conversion
             }
             catch(Exception ex)
             {
-                throw new BuilderException("CVT0006", String.Format(
-                    CultureInfo.CurrentCulture, "Error converting " +
-                    "content layout file ({0}):\r\n{1}", topicLayoutFilename,
-                    ex.Message), ex);
+                throw new BuilderException("CVT0006", String.Format(CultureInfo.CurrentCulture,
+                    "Error converting content layout file ({0}):\r\n{1}", topicLayoutFilename, ex.Message), ex);
             }
             finally
             {
@@ -661,14 +620,12 @@ namespace SandcastleBuilder.Utils.Conversion
         }
 
         /// <summary>
-        /// Topic settings were found but no content layout file.  In such
-        /// cases, this is called to create a default content layout file
-        /// based on the settings alone.
+        /// Topic settings were found but no content layout file.  In such cases, this is called to create a
+        /// default content layout file based on the settings alone.
         /// </summary>
         private void CreateDefaultContentLayoutFile()
         {
-            string filename = Path.Combine(base.ProjectFolder,
-                "ContentLayout.content");
+            string filename = Path.Combine(base.ProjectFolder, "ContentLayout.content");
             Topic commonSettings, t;
 
             if(!topicSettings.TryGetValue("*", out commonSettings))

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.HelpFileUtils.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/13/2012
+// Updated : 10/26/2012
 // Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -30,6 +30,7 @@
 // 1.9.0.0  06/30/2010  EFW  Reworked TOC handling to support parenting of API content to a conceptual topic for
 //                           all formats.
 // 1.9.4.0  02/19/2012  EFW  Added support for PHP website files.  Merged changes for VS2010 style from Don Fehr.
+// 1.9.6.0  10/25/2012  EFW  Updated to use the new presentation style definition files
 //===============================================================================================================
 
 using System;
@@ -231,34 +232,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
             tocXml = new XmlDocument();
             tocXml.Load(workingFolder + "toc.xml");
 
-            // Add a root namespace container for the Prototype style?  The Hana
-            // and VS2005 styles add one automatically if requested.
-            if(project.RootNamespaceContainer && presentationParam == "prototype" &&
-              !String.IsNullOrEmpty(namespacesTopic))
-            {
-                node = tocXml.CreateElement("topic");
-
-                attr = tocXml.CreateAttribute("id");
-                attr.Value = "R:Project_" + project.HtmlHelpName.Replace(" ", "_");
-                node.Attributes.Append(attr);
-
-                attr = tocXml.CreateAttribute("file");
-                attr.Value = namespacesTopic;
-                node.Attributes.Append(attr);
-
-                allNodes = tocXml.SelectNodes("topics/topic");
-
-                foreach(XmlNode n in allNodes)
-                {
-                    n.ParentNode.RemoveChild(n);
-
-                    node.AppendChild(n);
-                }
-
-                tocXml.DocumentElement.AppendChild(node);
-                wasModified = true;
-            }
-
             // Merge the conceptual and API TOCs into one?
             if(conceptualXml != null)
             {
@@ -400,20 +373,12 @@ namespace SandcastleBuilder.Utils.BuildEngine
         //=====================================================================
 
         /// <summary>
-        /// This is called to create the help project output folder and copy
-        /// the standard content files (art, media, scripts, and styles) to the
-        /// help project folders.
+        /// This is called to create the help project output folder and copy the standard content files (icons,
+        /// scripts, and stylesheets) to the help project folders.
         /// </summary>
-        /// <remarks>This creates the base folder <b>Output\</b>, one folder
-        /// for each help file format, and an <b>.\html</b> folder under each of
-        /// those.  It then copies the stock art, icon, media, script, and
-        /// stylesheet files from the <b>{@PresentationPath}\art</b>,
-        /// <b>{@PresentationPath}\icons</b>,
-        /// <b>{@PresentationPath}\media</b>,
-        /// <b>{@PresentationPath}\scripts</b>, and
-        /// <b>{@PresentationPath}\styles</b> folders which are located in the
-        /// Sandcastle installation folder.  The art, icons, and media folders
-        /// may or may not exist based on the style.</remarks>
+        /// <remarks>This creates the base folder <b>Output\</b>, one folder for each help file format, and an
+        /// <b>.\html</b> folder under each of those.  It then copies the stock icon, script, and stylesheet
+        /// files from the defined presentation style help content folders.</remarks>
         private void CopyStandardHelpContent()
         {
             this.ReportProgress(BuildStep.CopyStandardContent, "Copying standard help content...");
@@ -426,24 +391,9 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
             foreach(string baseFolder in this.HelpFormatOutputFolders)
             {
-                if(Directory.Exists(presentationFolder + "art"))
-                    this.RecursiveCopy(presentationFolder + @"art\*.*", baseFolder + @"art\");
+                presentationStyle.CopyHelpContent(baseFolder, this.ReportProgress);
 
-                if(Directory.Exists(presentationFolder + "icons"))
-                    this.RecursiveCopy(presentationFolder + @"icons\*.*", baseFolder + @"icons\");
-
-                if(Directory.Exists(presentationFolder + "media"))
-                    this.RecursiveCopy(presentationFolder + @"media\*.*", baseFolder + @"media\");
-
-                // This is optional for the VS2010 style
-                if(Directory.Exists(presentationFolder + "scripts"))
-                    this.RecursiveCopy(presentationFolder + @"scripts\*.*", baseFolder + @"scripts\");
-
-                // This is optional for the VS2010 style
-                if(Directory.Exists(presentationFolder + "styles"))
-                    this.RecursiveCopy(presentationFolder + @"styles\*.*", baseFolder + @"styles\");
-
-                // Added the branding folder
+                // Add the branding folder if present.  This will eventually go away.
                 this.CopyHelpBranding(baseFolder);
             }
 
@@ -451,14 +401,14 @@ namespace SandcastleBuilder.Utils.BuildEngine
         }
 
         /// <summary>
-        /// For presentation styles designed for MS Help Viewer, the branding files are copied from
-        /// <b>{@PresentationPath}\branding</b> to the working folder.
+        /// For presentation styles designed for MS Help Viewer, the branding files are copied from the branding
+        /// subfolder to the working folder.
         /// </summary>
         /// <param name="helpFormatOutputFolder">The working folder for the current HelpFormat.</param>
-        /// <remarks>The existence of the <b>{@PresentationPath}\branding</b> folder indicates that the
-        /// presentation style is designed for MS Help Viewer.
-        /// <para>The <b>{@PresentationPath}\branding</b> folder must contain a file named
-        /// <b>branding.manifest</b> that specifies the files to copy (in MSBuild project format).</para>
+        /// <remarks>The existence of the branding subfolder indicates that the presentation style is designed
+        /// for MS Help Viewer.
+        /// <para>The branding subfolder must contain a file named <b>branding.manifest</b> that specifies the
+        /// files to copy (in MSBuild project format).</para>
         /// <para>The branding files that are copied and their target folder depends on the current contents of
         /// <b>branding.manifest</b> and the current HelpFormat.</para>
         /// <para>The <b>branding.manifest</b> can also contain a reference to a <i>.mshc</i> package that is
@@ -467,7 +417,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         private void CopyHelpBranding(string helpFormatOutputFolder)
         {
             MSHCPackage brandingPackage;
-            string brandingSource = Path.GetFullPath(presentationFolder + "branding");
+            string brandingSource = Path.Combine(this.PresentationStyleFolder, "branding");
 
             if(Directory.Exists(brandingSource))
             {
@@ -574,10 +524,9 @@ namespace SandcastleBuilder.Utils.BuildEngine
         }
 
         /// <summary>
-        /// This copies files from the specified source folder to the specified
-        /// destination folder.  If any subfolders are found below the source
-        /// folder and the wildcard is "*.*", the subfolders are also copied
-        /// recursively.
+        /// This copies files from the specified source folder to the specified destination folder.  If any
+        /// subfolders are found below the source folder and the wildcard is "*.*", the subfolders are also
+        /// copied recursively.
         /// </summary>
         /// <param name="sourcePath">The source path from which to copy</param>
         /// <param name="destPath">The destination path to which to copy</param>
@@ -600,8 +549,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 if(!Directory.Exists(destPath))
                     Directory.CreateDirectory(destPath);
 
-                // All attributes are turned off so that we can delete
-                // it later.
+                // All attributes are turned off so that we can delete it later
                 File.Copy(name, filename, true);
                 File.SetAttributes(filename, FileAttributes.Normal);
 
@@ -611,8 +559,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
             // For "*.*", copy subfolders too
             if(fileSpec == "*.*")
             {
-                // Ignore hidden folders as they may be under source control
-                // and are not wanted.
+                // Ignore hidden folders as they may be under source control and are not wanted
                 foreach(string folder in Directory.EnumerateDirectories(dirName))
                     if((File.GetAttributes(folder) & FileAttributes.Hidden) != FileAttributes.Hidden)
                         this.RecursiveCopy(folder + @"\*.*",

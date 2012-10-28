@@ -327,12 +327,14 @@
             // 
             this.cboPresentationStyle.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboPresentationStyle.FormattingEnabled = true;
+            this.epNotes.SetIconPadding(this.cboPresentationStyle, 5);
             this.cboPresentationStyle.Location = new System.Drawing.Point(254, 146);
             this.cboPresentationStyle.MaxDropDownItems = 16;
             this.cboPresentationStyle.Name = "cboPresentationStyle";
-            this.cboPresentationStyle.Size = new System.Drawing.Size(183, 28);
+            this.cboPresentationStyle.Size = new System.Drawing.Size(346, 28);
             this.cboPresentationStyle.TabIndex = 9;
             this.cboPresentationStyle.Tag = "PresentationStyle";
+            this.cboPresentationStyle.SelectedIndexChanged += new System.EventHandler(this.cboPresentationStyle_SelectedIndexChanged);
             // 
             // label12
             // 

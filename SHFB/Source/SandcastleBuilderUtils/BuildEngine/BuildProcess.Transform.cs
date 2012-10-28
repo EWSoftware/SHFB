@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.Transform.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/17/2012
+// Updated : 10/27/2012
 // Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -42,6 +42,7 @@
 // 1.9.4.0  04/08/2012  EFW  Merged changes for VS2010 style from Don Fehr.  Added BuildAssemblerVerbosity
 //                           property.  Added Support for XAML configuration files.
 // 1.9.5.0  09/10/2012  EFW  Updated to use the new framework definition file for the .NET Framework versions
+// 1.9.6.0  10/25/2012  EFW  Updated to use the new presentation style definition files
 //===============================================================================================================
 
 using System;
@@ -121,14 +122,12 @@ namespace SandcastleBuilder.Utils.BuildEngine
         }
 
         /// <summary>
-        /// Transform the specified template by inserting the necessary
-        /// values into the place holders and saving it to the working folder.
+        /// Transform the specified template by inserting the necessary values into the place holders and saving
+        /// it to the working folder.
         /// </summary>
         /// <param name="template">The template to transform</param>
-        /// <param name="sourceFolder">The folder where the template is
-        /// located</param>
-        /// <param name="destFolder">The folder in which to save the
-        /// transformed file</param>
+        /// <param name="sourceFolder">The folder where the template is located</param>
+        /// <param name="destFolder">The folder in which to save the transformed file</param>
         /// <returns>The path to the transformed file</returns>
         public string TransformTemplate(string template, string sourceFolder, string destFolder)
         {
@@ -311,15 +310,31 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     break;
 
                 case "presentationpath":
-                    replaceWith = presentationFolder;
+                    replaceWith = FolderPath.TerminatePath(this.PresentationStyleFolder);
                     break;
 
                 case "presentationstyle":
                     replaceWith = project.PresentationStyle;
                     break;
 
-                case "presentationparam":
-                    replaceWith = presentationParam;
+                case "manifesttransformation":
+                    replaceWith = presentationStyle.ResolvePath(
+                        presentationStyle.DocumentModelTransformation.TransformationFilename);
+                    break;
+
+                case "manifesttransformparameters":
+                    replaceWith = String.Join(";", presentationStyle.DocumentModelTransformation.Select(p =>
+                        String.Format("{0}={1}", p.Key, p.Value)));
+                    break;
+
+                case "toctransformation":
+                    replaceWith = presentationStyle.ResolvePath(
+                        presentationStyle.IntermediateTocTransformation.TransformationFilename);
+                    break;
+
+                case "toctransformparameters":
+                    replaceWith = String.Join(";", presentationStyle.IntermediateTocTransformation.Select(p =>
+                        String.Format("{0}={1}", p.Key, p.Value)));
                     break;
 
                 case "hhcpath":
@@ -410,8 +425,9 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         "0x{0:X} {1}", language.LCID, language.NativeName);
                     break;
 
-                case "languagefolder":
-                    replaceWith = languageFolder;
+                case "resourceitemsfolder":
+                    replaceWith = FolderPath.TerminatePath(Path.Combine(
+                        presentationStyle.ResolvePath(presentationStyle.ResourceItemsPath), languageFolder));
                     break;
 
                 case "locale":
@@ -689,12 +705,19 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     replaceWith = "R:Project_" + project.HtmlHelpName.Replace(" ", "_");
                     break;
 
-                case "includeprojectnode":
-                    // The Prototype style always needs the name
-                    if(project.RootNamespaceContainer || presentationParam == "prototype")
-                        replaceWith = "project=Project_" + project.HtmlHelpName.Replace(" ", "_");
+                case "rootnamespacecontainer":
+                    replaceWith = project.RootNamespaceContainer.ToString().ToLowerInvariant();
+                    break;
+
+                case "projectnodeidoptional":
+                    if(project.RootNamespaceContainer)
+                        replaceWith = "Project_" + project.HtmlHelpName.Replace(" ", "_");
                     else
                         replaceWith = String.Empty;
+                    break;
+
+                case "projectnodeidrequired":
+                    replaceWith = "Project_" + project.HtmlHelpName.Replace(" ", "_");
                     break;
 
                 case "help1folder":

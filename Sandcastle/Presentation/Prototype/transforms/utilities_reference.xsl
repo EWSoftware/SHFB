@@ -2,7 +2,7 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0"
 		xmlns:MSHelp="http://msdn.microsoft.com/mshelp" >
 
-	<xsl:import href="../../shared/transforms/utilities_reference.xsl"/>
+	<xsl:import href="reference_common.xsl"/>
 
 	<xsl:output method="xml" omit-xml-declaration="yes" encoding="utf-8" />
 

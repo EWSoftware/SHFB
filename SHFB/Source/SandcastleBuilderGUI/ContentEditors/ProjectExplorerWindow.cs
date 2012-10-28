@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : ProjectExplorerWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/08/2012
+// Updated : 10/22/2012
 // Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -20,6 +20,7 @@
 // 1.8.0.3  12/04/2009  EFW  Added support for resource item files
 // 1.9.4.0  04/08/2012  EFW  Added support for XAML configuration files
 // 1.9.5.0  09/08/2012  EFW  Updated to support Windows Store App projects
+// 1.9.6.0  10/22/2012  EFW  Updated to support .winmd documentation sources
 //===============================================================================================================
 
 using System;
@@ -937,9 +938,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
             {
                 dlg.Title = "Select the documentation source(s)";
                 dlg.Filter = "Assemblies, Comments Files, and Projects"  +
-                    "(*.dll, *.exe, *.xml, *.sln, *.*proj)|" +
-                    "*.dll;*.exe;*.xml;*.sln;*.*proj|" +
-                    "Library Files (*.dll)|*.dll|" +
+                    "(*.dll, *.exe, *.winmd, *.xml, *.sln, *.*proj)|" +
+                    "*.dll;*.exe;*.winmd;*.xml;*.sln;*.*proj|" +
+                    "Library Files (*.dll, *.winmd)|*.dll;*.winmd|" +
                     "Executable Files (*.exe)|*.exe|" +
                     "XML Comments Files (*.xml)|*.xml|" +
                     "Visual Studio Solution Files (*.sln)|*.sln|" +
@@ -976,10 +977,17 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
                                     if(File.Exists(otherFile))
                                         docSources.Add(otherFile, null, null, false);
+                                    else
+                                    {
+                                        otherFile = Path.ChangeExtension(file, ".winmd");
+
+                                        if(File.Exists(otherFile))
+                                            docSources.Add(otherFile, null, null, false);
+                                    }
                                 }
                             }
                             else
-                                if(ext == ".dll" || ext == ".exe")
+                                if(ext == ".dll" || ext == ".exe" || ext == ".winmd")
                                 {
                                     otherFile = Path.ChangeExtension(file, ".xml");
 
@@ -1992,8 +2000,8 @@ namespace SandcastleBuilder.Gui.ContentEditors
             if(dropFiles == null)
                 return;
 
-            // The target node should be selected from the DragOver event.
-            // If not, assume we are dropping files in the root.
+            // The target node should be selected from the DragOver event.  If not, assume we are dropping files
+            // in the root.
             targetNode = tvProjectFiles.SelectedNode;
 
             if(targetNode == null || targetNode == tvProjectFiles.Nodes[0])
@@ -2019,46 +2027,46 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
                 foreach(string file in dropFiles)
                 {
-                    ext = Path.GetExtension(file).ToLower(
-                        CultureInfo.InvariantCulture);
+                    ext = Path.GetExtension(file).ToLowerInvariant();
 
                     // Documentation source?
                     if(nodeData.BuildAction == BuildAction.DocumentationSource)
                     {
-                        if(ext != ".dll" && ext != ".exe" && ext != ".xml" &&
-                          ext != ".sln" && !ext.EndsWith("proj",
-                          StringComparison.Ordinal))
+                        if(ext != ".dll" && ext != ".exe" && ext != ".winmd" && ext != ".xml" && ext != ".sln" &&
+                          !ext.EndsWith("proj", StringComparison.Ordinal))
                             continue;
 
-                        currentProject.DocumentationSources.Add(file, null,
-                            null, false);
+                        currentProject.DocumentationSources.Add(file, null, null, false);
 
-                        // If there's a match for a comments file or an
-                        // assembly, add it too.
+                        // If there's a match for a comments file or an assembly, add it too.
                         if(ext == ".xml")
                         {
                             otherFile = Path.ChangeExtension(file, ".dll");
 
                             if(File.Exists(otherFile))
-                                currentProject.DocumentationSources.Add(
-                                    otherFile, null, null, false);
+                                currentProject.DocumentationSources.Add(otherFile, null, null, false);
                             else
                             {
                                 otherFile = Path.ChangeExtension(file, ".exe");
 
                                 if(File.Exists(otherFile))
-                                    currentProject.DocumentationSources.Add(
-                                        otherFile, null, null, false);
+                                    currentProject.DocumentationSources.Add(otherFile, null, null, false);
+                                else
+                                {
+                                    otherFile = Path.ChangeExtension(file, ".winmd");
+
+                                    if(File.Exists(otherFile))
+                                        currentProject.DocumentationSources.Add(otherFile, null, null, false);
+                                }
                             }
                         }
                         else
-                            if(ext == ".dll" || ext == ".exe")
+                            if(ext == ".dll" || ext == ".exe" || ext == ".winmd")
                             {
                                 otherFile = Path.ChangeExtension(file, ".xml");
 
                                 if(File.Exists(otherFile))
-                                    currentProject.DocumentationSources.Add(
-                                        otherFile, null, null, false);
+                                    currentProject.DocumentationSources.Add(otherFile, null, null, false);
                             }
 
                         continue;
@@ -2067,22 +2075,20 @@ namespace SandcastleBuilder.Gui.ContentEditors
                     // Reference item?
                     if(nodeData.BuildAction == BuildAction.ReferenceItem)
                     {
-                        if(ext != ".dll" && ext != ".exe" &&
+                        if(ext != ".dll" && ext != ".exe" && ext != ".winmd" &&
                           !ext.EndsWith("proj", StringComparison.Ordinal))
                             continue;
 
                         if(ext.EndsWith("proj", StringComparison.Ordinal))
                             currentProject.References.AddProjectReference(file);
                         else
-                            currentProject.References.AddReference(
-                                Path.GetFileNameWithoutExtension(file), file);
+                            currentProject.References.AddReference(Path.GetFileNameWithoutExtension(file), file);
 
                         continue;
                     }
 
-                    // If dropped on a folder or file, ignore files that are
-                    // obviously not content.
-                    if(ext == ".dll" || ext == ".exe" || ext == ".sln" ||
+                    // If dropped on a folder or file, ignore files that are obviously not content
+                    if(ext == ".dll" || ext == ".exe" || ext == ".winmd" || ext == ".sln" ||
                       ext.EndsWith("proj", StringComparison.Ordinal))
                         continue;
 
@@ -2098,8 +2104,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             currentProject.DocumentationSources.Sort();
             currentProject.References.Sort();
 
-            // Rather than trying to synch the tree with the new nodes,
-            // we'll just reload the whole thing.
+            // Rather than trying to synch the tree with the new nodes, we'll just reload the whole thing
             this.LoadProject();
         }
         #endregion

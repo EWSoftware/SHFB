@@ -1,43 +1,38 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.AdditionalContent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/06/2012
+// Updated : 10/26/2012
 // Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains the code used to merge the additional content into the
-// working folder and build the table of contents entries for it.
+// This file contains the code used to merge the additional content into the working folder and build the table
+// of contents entries for it.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.3.0.0  08/07/2006  EFW  Created the code
-// 1.3.3.1  12/08/2006  EFW  Added support for colorizing <pre> tags in
-//                           additional content files.
-// 1.3.3.2  12/20/2006  EFW  Added support for project property and shared
-//                           content substitution.
-// 1.4.0.0  02/23/2007  EFW  Added support for Exclude content items and
-//                           support for <code source="file"/> tags.
-// 1.4.0.2  06/12/2007  EFW  Added support for nested code blocks.
+// 1.3.3.1  12/08/2006  EFW  Added support for colorizing <pre> tags in additional content files
+// 1.3.3.2  12/20/2006  EFW  Added support for project property and shared content substitution
+// 1.4.0.0  02/23/2007  EFW  Added support for Exclude content items and support for <code source="file"/> tags
+// 1.4.0.2  06/12/2007  EFW  Added support for nested code blocks
 // 1.5.0.0  06/19/2007  EFW  Various additions and updates for the June CTP
 // 1.5.0.2  07/03/2007  EFW  Added support for content site map file
 // 1.5.2.0  09/13/2007  EFW  Added support for calling plug-ins
 // 1.6.0.0  09/28/2007  EFW  Added support for transforming *.topic files
-// 1.6.0.1  10/29/2007  EFW  Link resolution now works on any tag with a cref
-//                           attribute in it.
+// 1.6.0.1  10/29/2007  EFW  Link resolution now works on any tag with a cref attribute in it
 // 1.6.0.7  04/12/2007  EFW  Added support for a split table of contents
 // 1.8.0.0  07/26/2008  EFW  Modified to support the new project format
-// 1.8.0.1  01/21/2009  EFW  Added support for removeRegionMarkers option on
-//                           imported code blocks.
+// 1.8.0.1  01/21/2009  EFW  Added support for removeRegionMarkers option on imported code blocks
 // 1.9.0.0  06/06/2010  EFW  Added support for multi-format build output
 // 1.9.0.0  06/30/2010  EFW  Removed splitting of TOC collection
-//=============================================================================
+// 1.9.6.0  10/25/2012  EFW  Updated to use the new presentation style definition files
+//===============================================================================================================
 
 using System;
 using System.Collections.Generic;
@@ -66,74 +61,57 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
         // Regular expressions used to match table of contents options and to
         // resolve namespace references in additional content files.
-        private static Regex reTocExclude = new Regex(
-            @"<!--\s*@TOCExclude\s*-->", RegexOptions.IgnoreCase);
+        private static Regex reTocExclude = new Regex(@"<!--\s*@TOCExclude\s*-->", RegexOptions.IgnoreCase);
 
-        internal static Regex reIsDefaultTopic = new Regex(
-            @"<!--\s*@DefaultTopic\s*-->", RegexOptions.IgnoreCase);
+        internal static Regex reIsDefaultTopic = new Regex(@"<!--\s*@DefaultTopic\s*-->", RegexOptions.IgnoreCase);
 
-        internal static Regex reSplitToc = new Regex(
-            @"<!--\s*@SplitTOC\s*-->", RegexOptions.IgnoreCase);
+        internal static Regex reSplitToc = new Regex(@"<!--\s*@SplitTOC\s*-->", RegexOptions.IgnoreCase);
 
-        internal static Regex reSortOrder = new Regex(@"<!--\s*@SortOrder\s*" +
-            @"(?<SortOrder>\d{1,5})\s*-->",
+        internal static Regex reSortOrder = new Regex(@"<!--\s*@SortOrder\s*(?<SortOrder>\d{1,5})\s*-->",
             RegexOptions.IgnoreCase);
 
-        private static Regex rePageTitle = new Regex(
-            @"<title>(?<Title>.*)</title>", RegexOptions.IgnoreCase |
+        private static Regex rePageTitle = new Regex(@"<title>(?<Title>.*)</title>", RegexOptions.IgnoreCase |
             RegexOptions.Singleline);
 
-        private static Regex reResolveLinks = new Regex(
-            "(<\\s*(?<Tag>\\w*)(?<PreAttrs>\\s+[^>]*)cref\\s*=" +
-            "\\s*\"(?<Link>.+?)\"(?<PostAttrs>.*?))(/>|(>(?<Content>.*?)" +
-            "<\\s*/(\\k<Tag>)\\s*>))", RegexOptions.IgnoreCase |
-            RegexOptions.Singleline);
-
-        private static Regex reColorizeCheck = new Regex(
-            @"<pre\s+[^>]*?lang(uage)?\s*=", RegexOptions.IgnoreCase |
-            RegexOptions.Singleline);
-
-        private static Regex reProjectTags = new Regex(
-            @"<\s*@(?<Field>\w*?)(:(?<Format>.*?))?\s*/?>");
-
-        private static Regex reSharedContent = new Regex(
-            "<\\s*include\\s*item\\s*=\\s*\"(?<Item>.*?)\"\\s*/\\s*>",
-            RegexOptions.IgnoreCase);
-
-        private static Regex reCodeBlock = new Regex(
-            "<code([^>]+?)source\\s*=\\s*\"(.*?)\"(.*?)(/>|>\\s*?</code>)",
+        private static Regex reResolveLinks = new Regex("(<\\s*(?<Tag>\\w*)(?<PreAttrs>\\s+[^>]*)cref\\s*=" +
+            "\\s*\"(?<Link>.+?)\"(?<PostAttrs>.*?))(/>|(>(?<Content>.*?)<\\s*/(\\k<Tag>)\\s*>))",
             RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
-        private static Regex reCodeRegion = new Regex(
-            "region\\s*=\\s*\"(.*?)\"", RegexOptions.IgnoreCase |
-            RegexOptions.Singleline);
+        private static Regex reColorizeCheck = new Regex(@"<pre\s+[^>]*?lang(uage)?\s*=",
+            RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
-        private static Regex reIsNested = new Regex("nested\\s*=\\s*(\"|')true",
+        private static Regex reProjectTags = new Regex(@"<\s*@(?<Field>\w*?)(:(?<Format>.*?))?\s*/?>");
+
+        private static Regex reSharedContent = new Regex("<\\s*include\\s*item\\s*=\\s*\"(?<Item>.*?)\"\\s*/\\s*>",
             RegexOptions.IgnoreCase);
 
-        private static Regex reWillRemoveMarkers = new Regex(
-            "removeRegionMarkers\\s*=\\s*(\"|')true", RegexOptions.IgnoreCase);
+        private static Regex reCodeBlock = new Regex("<code([^>]+?)source\\s*=\\s*\"(.*?)\"(.*?)(/>|>\\s*?</code>)",
+            RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
-        private static Regex reRemoveRegionMarkers = new Regex(
-            @"^.*?#(pragma\s+)?(region|end\s?region).*?$",
+        private static Regex reCodeRegion = new Regex("region\\s*=\\s*\"(.*?)\"", RegexOptions.IgnoreCase |
+            RegexOptions.Singleline);
+
+        private static Regex reIsNested = new Regex("nested\\s*=\\s*(\"|')true", RegexOptions.IgnoreCase);
+
+        private static Regex reWillRemoveMarkers = new Regex("removeRegionMarkers\\s*=\\s*(\"|')true",
+            RegexOptions.IgnoreCase);
+
+        private static Regex reRemoveRegionMarkers = new Regex(@"^.*?#(pragma\s+)?(region|end\s?region).*?$",
             RegexOptions.IgnoreCase | RegexOptions.Multiline);
 
-        private static Regex reSpanScript = new Regex(
-            "<(span|script)([^>]*?)(/>)", RegexOptions.IgnoreCase);
+        private static Regex reSpanScript = new Regex("<(span|script)([^>]*?)(/>)", RegexOptions.IgnoreCase);
 
-        // NOTE: This same expression is used in the CodeBlockComponent.
-        // See it for details on what it is and what it does.
+        // NOTE: This same expression is used in the CodeBlockComponent.  See it for details on what it is and
+        // what it does.
         private static Regex reMatchRegion = new Regex(
             @"\#(pragma\s+)?region\s+(.*?(((?<Open>\#(pragma\s+)?region\s+).*?)+" +
             @"((?<Close-Open>\#(pragma\s+)?end\s?region).*?)+)*(?(Open)(?!)))" +
-            @"\#(pragma\s+)?end\s?region", RegexOptions.IgnoreCase |
-            RegexOptions.Singleline);
+            @"\#(pragma\s+)?end\s?region", RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
-        private MatchEvaluator linkMatchEval, contentMatchEval,
-            codeBlockMatchEval;
+        private MatchEvaluator linkMatchEval, contentMatchEval, codeBlockMatchEval;
 
         // The XML documents used to resolve shared content
-        private XPathNavigator sharedContent, sharedBuilderContent, styleContent;
+        private List<XPathNavigator> sharedContent;
 
         private string pathToRoot;      // Path to root for resolved links
 
@@ -153,8 +131,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// copied recursively.</remarks>
         private void CopyAdditionalContent()
         {
-            Dictionary<string, TocEntryCollection> tocItems =
-                new Dictionary<string, TocEntryCollection>();
+            Dictionary<string, TocEntryCollection> tocItems = new Dictionary<string, TocEntryCollection>();
             TocEntryCollection parentToc;
             TocEntry tocEntry, tocFolder;
             FileItemCollection contentItems;
@@ -279,7 +256,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
             toc.Sort();
 
             codeColorizer = null;
-            sharedContent = sharedBuilderContent = styleContent = null;
+            sharedContent = null;
 
             this.ExecutePlugIns(ExecutionBehaviors.After);
         }
@@ -723,47 +700,42 @@ namespace SandcastleBuilder.Utils.BuildEngine
         }
 
         /// <summary>
-        /// Replace a shared content item with it's value.  Note that these
-        /// may be nested.
+        /// Replace a shared content item with it's value.  Note that these  may be nested.
         /// </summary>
         /// <param name="match">The match that was found</param>
         /// <returns>The string to use as the replacement</returns>
         private string OnContentMatch(Match match)
         {
-            XPathDocument contentFile;
             XPathNavigator item;
             string content = String.Empty;
 
             // Load the shared content files on first use
             if(sharedContent == null)
             {
-                contentFile = new XPathDocument(presentationFolder +
-                    @"content\shared_content.xml");
-                sharedContent = contentFile.CreateNavigator();
+                sharedContent = new List<XPathNavigator>();
 
-                contentFile = new XPathDocument(workingFolder +
-                    "SharedBuilderContent.xml");
-                sharedBuilderContent = contentFile.CreateNavigator();
+                // Give preference to the help file builder's shared content files
+                sharedContent.Add(new XPathDocument(workingFolder + "SharedBuilderContent.xml").CreateNavigator());
 
-                contentFile = new XPathDocument(workingFolder +
-                    "PresentationStyleBuilderContent.xml");
-                styleContent = contentFile.CreateNavigator();
+                sharedContent.Add(new XPathDocument(workingFolder +
+                    "PresentationStyleBuilderContent.xml").CreateNavigator());
+
+                // Load the presentation style shared content files
+                foreach(string contentFile in Directory.EnumerateFiles(presentationStyle.ResolvePath(
+                  presentationStyle.ResourceItemsPath), "*.xml"))
+                    sharedContent.Add(new XPathDocument(contentFile).CreateNavigator());
             }
 
-            // Give preference to the help file builder's shared content files
-            item = sharedBuilderContent.SelectSingleNode("content/item[@id='" +
-                match.Groups["Item"] + "']");
+            foreach(var nav in sharedContent)
+            {
+                item = nav.SelectSingleNode("content/item[@id='" + match.Groups["Item"] + "']");
 
-            if(item == null)
-                item = styleContent.SelectSingleNode("content/item[@id='" +
-                    match.Groups["Item"] + "']");
-
-            if(item == null)
-                item = sharedContent.SelectSingleNode("content/item[@id='" +
-                    match.Groups["Item"] + "']");
-
-            if(item != null)
-                content = item.InnerXml;
+                if(item != null)
+                {
+                    content = item.InnerXml;
+                    break;
+                }
+            }
 
             return content;
         }
@@ -925,7 +897,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         sourceStylesheet = transforms[0].FullPath;
                     }
                     else
-                        sourceStylesheet = templateFolder + presentationParam + ".xsl";
+                        sourceStylesheet = templateFolder + presentationStyle.Id + ".xsl";
 
                     xslStylesheet = workingFolder + Path.GetFileName(sourceStylesheet);
                     tocInfo = BuildProcess.GetTocInfo(sourceStylesheet);

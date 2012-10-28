@@ -1,25 +1,25 @@
-﻿//=============================================================================
+﻿//===============================================================================================================
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SandcastleBuilderProjectNode.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/18/2012
+// Updated : 10/22/2012
 // Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains the class that represents a project node in a Sandcastle
-// Help File Builder Visual Studio project.
+// This file contains the class that represents a project node in a Sandcastle Help File Builder Visual Studio
+// project.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.  This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.9.3.0  03/22/2011  EFW  Created the code
 // 1.9.3.3  11/19/2011  EFW  Added support for drag and drop from Explorer
-//=============================================================================
+// 1.9.6.0  10/22/2012  EFW  Updated to support .winmd documentation sources
+//===============================================================================================================
 
 using System;
 using System.Collections.Generic;
@@ -46,7 +46,6 @@ using SandcastleBuilder.Package.Properties;
 using SandcastleBuilder.Package.PropertyPages;
 using SandcastleBuilder.Package.UI;
 
-using SandcastleBuilder.Utils.Design;
 using SandcastleProject = SandcastleBuilder.Utils.SandcastleProject;
 using SandcastleBuildAction = SandcastleBuilder.Utils.BuildAction;
 
@@ -450,7 +449,8 @@ namespace SandcastleBuilder.Package.Nodes
                             string ext = Path.GetExtension(f);
 
                             return (ext.Equals(".dll", StringComparison.OrdinalIgnoreCase) ||
-                              ext.Equals(".exe", StringComparison.OrdinalIgnoreCase));
+                              ext.Equals(".exe", StringComparison.OrdinalIgnoreCase) ||
+                              ext.Equals(".winmd", StringComparison.OrdinalIgnoreCase));
                         }).ToList(),
                     xmlDocSources = filesDropped.Where(f =>
                         {

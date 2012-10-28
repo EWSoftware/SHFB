@@ -1,30 +1,30 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder Utilities
 // File    : DocumentationSource.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/09/2011
-// Note    : Copyright 2006-2011, Eric Woodruff, All rights reserved
+// Updated : 10/22/2012
+// Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains a class representing a documentation source such as an
-// assembly, an XML comments file, a solution, or a project.
+// This file contains a class representing a documentation source such as an assembly, an XML comments file, a
+// solution, or a project.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.0.0.0  08/02/2006  EFW  Created the code
 // 1.3.2.0  11/10/2006  EFW  Added CommentsOnly property.
 // 1.3.4.0  12/31/2006  EFW  Converted path properties to FilePath objects
 // 1.6.0.7  04/16/2008  EFW  Added support for wildcards
 // 1.8.0.0  06/23/2008  EFW  Rewrote to support the MSBuild project format
-// 1.8.0.4  06/05/2010  EFW  Added support for getting build include status and
-//                           configuration settings from the solution file.
-//=============================================================================
+// 1.8.0.4  06/05/2010  EFW  Added support for getting build include status and configuration settings from the
+//                           solution file.
+// 1.9.6.0  10/22/2012  EFW  Added support for .winmd documentation sources
+//===============================================================================================================
 
 using System;
 using System.Collections.Generic;
@@ -41,12 +41,10 @@ using SandcastleBuilder.Utils.Design;
 namespace SandcastleBuilder.Utils
 {
     /// <summary>
-    /// This represents an assembly, an XML comments file, a Visual Studio
-    /// Solution (C#, VB.NET, or J#), or a Visual Studio solution containing
-    /// one or more C#, VB.NET or J# projects to use for building a help file.
+    /// This represents an assembly, an XML comments file, a Visual Studio Solution (C#, VB.NET, or J#), or a
+    /// Visual Studio solution containing one or more C#, VB.NET or J# projects to use for building a help file.
     /// </summary>
-    /// <remarks>Wildcards are supported in the <see cref="SourceFile"/>
-    /// property.</remarks>
+    /// <remarks>Wildcards are supported in the <see cref="SourceFile"/> property.</remarks>
     [DefaultProperty("SourceFile")]
     public class DocumentationSource : PropertyBasedCollectionItem
     {
@@ -73,15 +71,13 @@ namespace SandcastleBuilder.Utils
         //=====================================================================
 
         /// <summary>
-        /// This is used to get or set the project configuration to use when
-        /// the source path refers to a Visual Studio solution or project.
+        /// This is used to get or set the project configuration to use when the source path refers to a Visual
+        /// Studio solution or project.
         /// </summary>
-        /// <value>If not set, the configuration value from the owning help
-        /// file project will be used.  This will be ignored for assembly
-        /// and XML comments file entries.</value>
-        [Category("Project"), Description("The configuration to use for a " +
-          "solution or project documentation source.  If blank, the " +
-          "configuration from the owning help file project will be used."),
+        /// <value>If not set, the configuration value from the owning help file project will be used.  This will
+        /// be ignored for assembly and XML comments file entries.</value>
+        [Category("Project"), Description("The configuration to use for a solution or project documentation " +
+          "source.  If blank, the configuration from the owning help file project will be used."),
           DefaultValue(null)]
         public string Configuration
         {
@@ -98,15 +94,13 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get or set the project platform to use when the
-        /// source path refers to a Visual Studio solution or project.
+        /// This is used to get or set the project platform to use when the source path refers to a Visual Studio
+        /// solution or project.
         /// </summary>
-        /// <value>If not set, the platform value from the owning help file
-        /// project will be used.  This will be ignored for assembly and XML
-        /// comments file entries.</value>
-        [Category("Project"), Description("The platform to use for a " +
-          "solution or project documentation source.  If blank, the " +
-          "platform from the owning help file project will be used."),
+        /// <value>If not set, the platform value from the owning help file project will be used.  This will be
+        /// ignored for assembly and XML comments file entries.</value>
+        [Category("Project"), Description("The platform to use for a solution or project documentation " +
+          "source.  If blank, the platform from the owning help file project will be used."),
           DefaultValue(null)]
         public string Platform
         {
@@ -125,16 +119,15 @@ namespace SandcastleBuilder.Utils
         /// <summary>
         /// This is used to set or get the documentation source file path
         /// </summary>
-        /// <value>Wildcards are supported.  If used, all files matching
-        /// the wildcard will be included as long as their extension is one of
-        /// the following: .exe, .dll, .*proj, .sln.</value>
+        /// <value>Wildcards are supported.  If used, all files matching the wildcard will be included as long as
+        /// their extension is one of the following: .exe, .dll, .winmd, .*proj, .sln.</value>
         [Category("File"), Description("The path to the documentation source file(s)"),
           MergableProperty(false), Editor(typeof(FilePathObjectEditor), typeof(UITypeEditor)),
           RefreshProperties(RefreshProperties.All),
           FileDialog("Select the documentation source",
-            "Documentation Sources (*.sln, *.*proj, *.dll, *.exe, *.xml)|*.sln;*.*proj;*.dll;*.exe;*.xml|" +
-            "Assemblies and Comments Files (*.dll, *.exe, *.xml)|*.dll;*.exe;*.xml|" +
-            "Library Files (*.dll)|*.dll|Executable Files (*.exe)|*.exe|" +
+            "Documentation Sources (*.sln, *.*proj, *.dll, *.exe, *.winmd, *.xml)|*.sln;*.*proj;*.dll;*.exe;*.winmd;*.xml|" +
+            "Assemblies and Comments Files (*.dll, *.exe, *.winmd, *.xml)|*.dll;*.exe;*.winmd;*.xml|" +
+            "Library Files (*.dll, *.winmd)|*.dll;*.winmd|Executable Files (*.exe)|*.exe|" +
             "XML Comments Files (*.xml)|*.xml|" +
             "Visual Studio Solution Files (*.sln)|*.sln|" +
             "Visual Studio Project Files (*.*proj)|*.*proj|" +
@@ -157,17 +150,14 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get or set whether subfolders are included when
-        /// searching for files if the <see cref="SourceFile" /> value
-        /// contains wildcards.
+        /// This is used to get or set whether subfolders are included when searching for files if the
+        /// <see cref="SourceFile" /> value contains wildcards.
         /// </summary>
-        /// <value>If set to true and the source file value contains wildcards,
-        /// subfolders will be included.  If set to false, the default, or the
-        /// source file value does not contain wildcards, only the top-level
+        /// <value>If set to true and the source file value contains wildcards, subfolders will be included.  If
+        /// set to false, the default, or the source file value does not contain wildcards, only the top-level
         /// folder is included in the search.</value>
-        [Category("File"), Description("True to include subfolders in " +
-          "wildcard searches or false to only search the top-level folder."),
-          DefaultValue(false)]
+        [Category("File"), Description("True to include subfolders in wildcard searches or false to only " +
+          "search the top-level folder."), DefaultValue(false)]
         public bool IncludeSubFolders
         {
             get { return includeSubFolders; }
@@ -179,8 +169,7 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This returns a description of the entry suitable for display in a
-        /// bound list control.
+        /// This returns a description of the entry suitable for display in a bound list control
         /// </summary>
         [Browsable(false)]
         public string SourceDescription
@@ -217,9 +206,8 @@ namespace SandcastleBuilder.Utils
         //=====================================================================
 
         /// <summary>
-        /// This is used to handle changes in the <see cref="FilePath" />
-        /// properties such that the source path gets stored in the project
-        /// file.
+        /// This is used to handle changes in the <see cref="FilePath" /> properties such that the source path
+        /// gets stored in the project file.
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
@@ -231,12 +219,10 @@ namespace SandcastleBuilder.Utils
         /// <summary>
         /// Extract all project files from the given Visual Studio solution file
         /// </summary>
-        /// <param name="solutionFile">The Visual Studio solution from which to
-        /// extract the projects.</param>
+        /// <param name="solutionFile">The Visual Studio solution from which to extract the projects.</param>
         /// <param name="configuration">The configuration to use</param>
         /// <param name="platform">The platform to use</param>
-        /// <param name="projectFiles">The collection used to return the
-        /// extracted projects.</param>
+        /// <param name="projectFiles">The collection used to return the extracted projects.</param>
         private static void ExtractProjectsFromSolution(string solutionFile,
           string configuration, string platform, Collection<ProjectFileConfiguration> projectFiles)
         {
@@ -292,12 +278,10 @@ namespace SandcastleBuilder.Utils
         /// <param name="filename">The filename of the documentation source</param>
         /// <param name="projConfig">The configuration to use for projects</param>
         /// <param name="projPlatform">The platform to use for projects</param>
-        /// <param name="subFolders">True to include subfolders, false to
-        /// only search the top-level folder.</param>
+        /// <param name="subFolders">True to include subfolders, false to only search the top-level folder.</param>
         /// <param name="project">The owning project</param>
-        internal DocumentationSource(string filename, string projConfig,
-          string projPlatform, bool subFolders, SandcastleProject project) :
-          base(project)
+        internal DocumentationSource(string filename, string projConfig, string projPlatform, bool subFolders,
+          SandcastleProject project) : base(project)
         {
             sourceFile = new FilePath(filename, project);
             sourceFile.PersistablePathChanging += sourceFile_PersistablePathChanging;
@@ -315,9 +299,8 @@ namespace SandcastleBuilder.Utils
         /// </summary>
         /// <param name="obj">The object to compare to this one</param>
         /// <returns>True if equal, false if not</returns>
-        /// <remarks>For documentation sources, equality is based solely on
-        /// the <see cref="SourceFile" /> value.  The configuration and
-        /// platform settings are not considered.</remarks>
+        /// <remarks>For documentation sources, equality is based solely on the <see cref="SourceFile" /> value.
+        /// The configuration and platform settings are not considered.</remarks>
         public override bool Equals(object obj)
         {
             DocumentationSource ds = obj as DocumentationSource;
@@ -331,8 +314,7 @@ namespace SandcastleBuilder.Utils
         /// <summary>
         /// Get a hash code for this item
         /// </summary>
-        /// <returns>Returns the hash code for the assembly path and
-        /// XML comments path.</returns>
+        /// <returns>Returns the hash code for the assembly path and XML comments path.</returns>
         public override int GetHashCode()
         {
             return this.ToString().GetHashCode();
@@ -341,8 +323,7 @@ namespace SandcastleBuilder.Utils
         /// <summary>
         /// Return a string representation of the item
         /// </summary>
-        /// <returns>Returns the assembly path and XML comments path separated
-        /// by a comma.</returns>
+        /// <returns>Returns the assembly path and XML comments path separated by a comma.</returns>
         public override string ToString()
         {
             return this.SourceDescription;
@@ -353,13 +334,11 @@ namespace SandcastleBuilder.Utils
         //=====================================================================
 
         /// <summary>
-        /// This returns a collection of assemblies based on the specified
-        /// wildcard.
+        /// This returns a collection of assemblies based on the specified wildcard.
         /// </summary>
         /// <param name="wildcard">The wildcard to use to find assemblies.</param>
-        /// <param name="includeSubfolders">If true and the wildcard parameter
-        /// includes wildcard characters, subfolders will be searched as well.
-        /// If not, only the top-level folder is searched.</param>
+        /// <param name="includeSubfolders">If true and the wildcard parameter includes wildcard characters,
+        /// subfolders will be searched as well.  If not, only the top-level folder is searched.</param>
         /// <returns>A list of assemblies matching the wildcard</returns>
         public static Collection<string> Assemblies(string wildcard, bool includeSubfolders)
         {
@@ -377,7 +356,8 @@ namespace SandcastleBuilder.Utils
                 foreach(string f in Directory.EnumerateFiles(dirName,
                   Path.GetFileName(wildcard), searchOpt).Where(
                   f => f.EndsWith(".exe", StringComparison.OrdinalIgnoreCase) ||
-                  f.EndsWith(".dll", StringComparison.OrdinalIgnoreCase)))
+                  f.EndsWith(".dll", StringComparison.OrdinalIgnoreCase) ||
+                  f.EndsWith(".winmd")))
                     assemblies.Add(f);
             }
 
@@ -385,14 +365,12 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This returns a collection of XML comments files based on the
-        /// specified wildcard.
+        /// This returns a collection of XML comments files based on the specified wildcard.
         /// </summary>
         /// <param name="wildcard">The wildcard to use to find comments
         /// files.</param>
-        /// <param name="includeSubfolders">If true and the wildcard parameter
-        /// includes wildcard characters, subfolders will be searched as well.
-        /// If not, only the top-level folder is searched.</param>
+        /// <param name="includeSubfolders">If true and the wildcard parameter includes wildcard characters,
+        /// subfolders will be searched as well.  If not, only the top-level folder is searched.</param>
         /// <returns>A list of XML comments files matching the wildcard</returns>
         public static Collection<string> CommentsFiles(string wildcard, bool includeSubfolders)
         {
@@ -417,19 +395,16 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This returns a collection of MSBuild project filenames based on the
-        /// specified wildcard.
+        /// This returns a collection of MSBuild project filenames based on the specified wildcard.
         /// </summary>
         /// <param name="wildcard">The wildcard to use to find solutions and
         /// projects.</param>
-        /// <param name="includeSubfolders">If true and the wildcard parameter
-        /// includes wildcard characters, subfolders will be searched as well.
-        /// If not, only the top-level folder is searched.</param>
+        /// <param name="includeSubfolders">If true and the wildcard parameter includes wildcard characters,
+        /// subfolders will be searched as well.  If not, only the top-level folder is searched.</param>
         /// <param name="configuration">The configuration to use</param>
         /// <param name="platform">The platform to use</param>
-        /// <returns>A list of projects matching the wildcard.  Any solution
-        /// files (.sln) found are returned last, each followed by the projects
-        /// extracted from it.</returns>
+        /// <returns>A list of projects matching the wildcard.  Any solution files (.sln) found are returned
+        /// last, each followed by the projects extracted from it.</returns>
         public static Collection<ProjectFileConfiguration> Projects(string wildcard,
           bool includeSubfolders, string configuration, string platform)
         {
@@ -454,9 +429,8 @@ namespace SandcastleBuilder.Utils
                             projects.Add(new ProjectFileConfiguration(f));
                 }
 
-                // Add solutions last followed by the projects that they contain.
-                // The caller can then set solution specific values in each project
-                // related to the solution.
+                // Add solutions last followed by the projects that they contain.  The caller can then set
+                // solution specific values in each project related to the solution.
                 foreach(string s in solutions)
                 {
                     projects.Add(new ProjectFileConfiguration(s));

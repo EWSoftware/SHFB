@@ -2,4 +2,5 @@
 <content xml:space="preserve">
   <item id="assemblyNameAndModule">{0} (in {1}.{2})</item>
   <item id="fb_headerFeedBack">Send Us Feedback</item>
+  <item id="preliminary"><p style="color: green; font-size: 10pt; font-weight: bold;">[This is preliminary documentation and is subject to change.]</p></item>
 </content>

@@ -11,6 +11,7 @@
     >
 	<!-- ======================================================================================== -->
 
+	<xsl:import href="utilities_metadata.xsl" />
 	<xsl:import href="metadataHelp30.xsl"/>
 	<xsl:import href="metadataHelp20.xsl"/>
 	<xsl:import href="xamlSyntax.xsl"/>

@@ -9,8 +9,6 @@
    >
 	<!-- ======================================================================================== -->
 
-	<xsl:import href="../../shared/transforms/utilities_metadata.xsl" />
-
 	<xsl:template name="t_insertMetadataHelp20">
 		<xsl:if test="$metadata='true'">
 			<xml>

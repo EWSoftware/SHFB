@@ -8,33 +8,26 @@
 	<xsl:import href="globalTemplates.xsl"/>
 	<xsl:import href="codeTemplates.xsl"/>
 	<xsl:import href="utilities_reference.xsl"/>
-	<xsl:import href="../../shared/transforms/utilities_bibliography.xsl"/>
+	<xsl:import href="utilities_bibliography.xsl"/>
 
-	<xsl:output method="xml"
-							omit-xml-declaration="yes"
-							indent="no"
-							encoding="utf-8"/>
+	<xsl:output method="xml" omit-xml-declaration="yes" indent="no" encoding="utf-8"/>
 
 	<!-- ============================================================================================
 	Parameters
 	============================================================================================= -->
 
-	<xsl:param name="bibliographyData"
-						 select="'../Data/bibliography.xml'"/>
-	<xsl:param name="omitXmlnsBoilerplate"
-						 select="'false'"/>
-	<xsl:param name="omitVersionInformation"
-						 select="'false'"/>
+	<xsl:param name="bibliographyData" select="'../Data/bibliography.xml'"/>
+	<xsl:param name="omitXmlnsBoilerplate" select="'false'"/>
+	<xsl:param name="omitVersionInformation" select="'false'"/>
 
 	<!-- ============================================================================================
 	Global Variables
 	============================================================================================= -->
 
-	<xsl:variable name="g_abstractSummary"
-								select="/document/comments/summary"/>
+	<xsl:variable name="g_abstractSummary" select="/document/comments/summary"/>
 	<xsl:variable name="g_hasSeeAlsoSection"
-								select="boolean((count(/document/comments//seealso | /document/reference/elements/element/overloads//seealso) > 0)  or 
-                           ($g_apiTopicGroup='type' or $g_apiTopicGroup='member' or $g_apiTopicGroup='list'))"/>
+		select="boolean((count(/document/comments//seealso | /document/reference/elements/element/overloads//seealso) > 0)  or 
+    ($g_apiTopicGroup='type' or $g_apiTopicGroup='member' or $g_apiTopicGroup='list'))"/>
 
 	<!-- ============================================================================================
 	Body
@@ -655,8 +648,7 @@
 					<td>
 						<div class="code"
 								 style="margin-bottom: 0pt; white-space: pre-wrap;">
-							<pre xml:space="preserve"
-									 style="margin-bottom: 0pt"><xsl:value-of select="."/></pre>
+							<pre xml:space="preserve" style="margin-bottom: 0pt"><xsl:value-of select="."/></pre>
 						</div>
 						<xsl:if test="@description or @inheritedFrom or @exception">
 							<div style="font-size:95%; margin-left: 10pt;

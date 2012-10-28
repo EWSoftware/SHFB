@@ -256,6 +256,11 @@
     <Compile Include="PlugIn\PlugInConfigurationDictionary.cs" />
     <Compile Include="PlugIn\PlugInInfo.cs" />
     <Compile Include="PlugIn\PlugInManager.cs" />
+    <Compile Include="PresentationStyle\ContentFiles.cs" />
+    <Compile Include="PresentationStyle\PresentationStyleDictionary.cs" />
+    <Compile Include="PresentationStyle\PresentationStyleSettings.cs" />
+    <Compile Include="PresentationStyle\TransformationFile.cs" />
+    <Compile Include="PresentationStyle\TransformComponentArgument.cs" />
     <Compile Include="ProjectElement.cs" />
     <Compile Include="ProjectPropertyChangedEventArgs.cs" />
     <Compile Include="ProjectReferenceItem.cs" />

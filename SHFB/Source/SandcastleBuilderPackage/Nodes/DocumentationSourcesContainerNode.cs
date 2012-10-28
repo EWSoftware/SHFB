@@ -1,24 +1,24 @@
-﻿//=============================================================================
+﻿//===============================================================================================================
 // System  : Sandcastle Help File Builder Package
 // File    : DocumentationSourcesContainerNode.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/31/2011
-// Note    : Copyright 2011, Eric Woodruff, All rights reserved
+// Updated : 10/22/2012
+// Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains the class that represents the documentation sources
-// container node in a Sandcastle Help File Builder project.
+// This file contains the class that represents the documentation sources container node in a Sandcastle Help
+// File Builder project.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.  This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.9.3.0  03/30/2011  EFW  Created the code
-//=============================================================================
+// 1.9.6.0  10/22/2012  EFW  Updated to support .winmd documentation sources
+//===============================================================================================================
 
 using System;
 using System.IO;
@@ -169,9 +169,8 @@ namespace SandcastleBuilder.Package.Nodes
         /// <summary>
         /// This is used to add documentation sources to the project
         /// </summary>
-        /// <remarks>Documentation sources can be assemblies, XML comments
-        /// files, Visual Studio solution files, or Visual Studio project
-        /// files.</remarks>
+        /// <remarks>Documentation sources can be assemblies, XML comments files, Visual Studio solution files,
+        /// or Visual Studio project files.</remarks>
         private void AddDocumentationSources()
         {
             string ext, otherFile;
@@ -183,15 +182,11 @@ namespace SandcastleBuilder.Package.Nodes
             using(OpenFileDialog dlg = new OpenFileDialog())
             {
                 dlg.Title = "Select the documentation source(s)";
-                dlg.Filter = "Assemblies, Comments Files, and Projects" +
-                    "(*.dll, *.exe, *.xml, *.sln, *.*proj)|" +
-                    "*.dll;*.exe;*.xml;*.sln;*.*proj|" +
-                    "Library Files (*.dll)|*.dll|" +
-                    "Executable Files (*.exe)|*.exe|" +
-                    "XML Comments Files (*.xml)|*.xml|" +
-                    "Visual Studio Solution Files (*.sln)|*.sln|" +
-                    "Visual Studio Project Files (*.*proj)|*.*proj|" +
-                    "All Files (*.*)|*.*";
+                dlg.Filter = "Assemblies, Comments Files, and Projects (*.dll, *.exe, *.winmd, *.xml, " +
+                    "*.sln, *.*proj)|*.dll;*.exe;*.winmd;*.xml;*.sln;*.*proj|" +
+                    "Library Files (*.dll, *.winmd)|*.dll;*.winmd|Executable Files (*.exe)|*.exe|" +
+                    "XML Comments Files (*.xml)|*.xml|Visual Studio Solution Files (*.sln)|*.sln|" +
+                    "Visual Studio Project Files (*.*proj)|*.*proj|All Files (*.*)|*.*";
                 dlg.InitialDirectory = this.ProjectMgr.ProjectFolder;
                 dlg.DefaultExt = "dll";
                 dlg.Multiselect = true;
@@ -220,10 +215,17 @@ namespace SandcastleBuilder.Package.Nodes
 
                                     if(File.Exists(otherFile))
                                         this.AddDocumentationSource(otherFile);
+                                    else
+                                    {
+                                        otherFile = Path.ChangeExtension(file, ".winmd");
+
+                                        if(File.Exists(otherFile))
+                                            this.AddDocumentationSource(otherFile);
+                                    }
                                 }
                             }
                             else
-                                if(ext == ".dll" || ext == ".exe")
+                                if(ext == ".dll" || ext == ".exe" || ext == ".winmd")
                                 {
                                     otherFile = Path.ChangeExtension(file, ".xml");
 

@@ -7,12 +7,10 @@
         xmlns:msxsl="urn:schemas-microsoft-com:xslt"
     >
 
-	<xsl:import href="../../shared/transforms/utilities_reference.xsl"/>
+	<xsl:import href="reference_common.xsl"/>
 
 	<xsl:output method="xml" omit-xml-declaration="yes" encoding="utf-8" />
-	<!--
-  <xsl:output method="xml" omit-xml-declaration="yes" encoding="utf-8" doctype-public="-//W3C//DTD HTML 4.0 Transitional//EN" doctype-system="http://www.w3.org/TR/html4/loose.dtd" />
--->
+
 	<!-- key parameter is the api identifier string -->
 	<xsl:param name="key" />
 	<xsl:param name="metadata" select="false" />

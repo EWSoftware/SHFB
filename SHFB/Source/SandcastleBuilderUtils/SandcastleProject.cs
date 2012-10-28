@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SandcastleProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/13/2012
+// Updated : 10/25/2012
 // Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -1176,8 +1176,7 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get or set the presentation style for the help
-        /// topic pages.
+        /// This is used to get or set the presentation style for the help topic pages.
         /// </summary>
         /// <value>The default is to use the VS2005 style.</value>
         [Category("Help File"), Description("Select which presentation style to use for the generated " +
@@ -1188,8 +1187,8 @@ namespace SandcastleBuilder.Utils
             get { return presentationStyle; }
             set
             {
-                if(value == null || !PresentationStyleTypeConverter.IsPresent(value))
-                    value = PresentationStyleTypeConverter.FirstMatching(value);
+                if(value == null || !PresentationStyleTypeConverter.AllStyles.ContainsKey(value))
+                    value = PresentationStyleTypeConverter.DefaultStyle;
 
                 this.SetProjectProperty("PresentationStyle", value);
                 presentationStyle = value;
@@ -2338,19 +2337,16 @@ namespace SandcastleBuilder.Utils
         //=====================================================================
 
         /// <summary>
-        /// This is used to see if the <see cref="FrameworkVersion"/> property
-        /// should be serialized.
+        /// This is used to see if the <see cref="FrameworkVersion"/> property should be serialized
         /// </summary>
-        /// <returns>True to serialize it, false if it matches the default
-        /// and should not be serialized.</returns>
+        /// <returns>True to serialize it, false if it matches the default and should not be serialized.</returns>
         private bool ShouldSerializeFrameworkVersion()
         {
             return (this.FrameworkVersion != FrameworkVersionTypeConverter.DefaultFramework);
         }
 
         /// <summary>
-        /// This is used to reset the <see cref="FrameworkVersion"/> property
-        /// to its default value.
+        /// This is used to reset the <see cref="FrameworkVersion"/> property to its default value.
         /// </summary>
         private void ResetFrameworkVersion()
         {
@@ -2358,20 +2354,16 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to see if the <see cref="PresentationStyle"/> property
-        /// should be serialized.
+        /// This is used to see if the <see cref="PresentationStyle"/> property should be serialized.
         /// </summary>
-        /// <returns>True to serialize it, false if it matches the default
-        /// and should not be serialized.</returns>
+        /// <returns>True to serialize it, false if it matches the default and should not be serialized.</returns>
         private bool ShouldSerializePresentationStyle()
         {
-            return (this.PresentationStyle !=
-                PresentationStyleTypeConverter.DefaultStyle);
+            return (this.PresentationStyle != PresentationStyleTypeConverter.DefaultStyle);
         }
 
         /// <summary>
-        /// This is used to reset the <see cref="PresentationStyle"/> property
-        /// to its default value.
+        /// This is used to reset the <see cref="PresentationStyle"/> property to its default value.
         /// </summary>
         private void ResetPresentationStyle()
         {
@@ -2379,78 +2371,65 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to see if the <see cref="NamespaceSummaries"/>
-        /// property should be serialized.
+        /// This is used to see if the <see cref="NamespaceSummaries"/> property should be serialized.
         /// </summary>
-        /// <returns>True to serialize it, false if it matches the default
-        /// and should not be serialized.</returns>
-        /// <remarks>We do not allow resetting this property as it is a
-        /// collection and we don't want to lose all items accidentally.</remarks>
+        /// <returns>True to serialize it, false if it matches the default and should not be serialized.</returns>
+        /// <remarks>We do not allow resetting this property as it is a collection and we don't want to lose all
+        /// items accidentally.</remarks>
         private bool ShouldSerializeNamespaceSummaries()
         {
             return (this.NamespaceSummaries.Count != 0);
         }
 
         /// <summary>
-        /// This is used to see if the <see cref="ComponentConfigurations"/>
-        /// property should be serialized.
+        /// This is used to see if the <see cref="ComponentConfigurations"/> property should be serialized.
         /// </summary>
-        /// <returns>True to serialize it, false if it matches the default
-        /// and should not be serialized.</returns>
-        /// <remarks>We do not allow resetting this property as it is a
-        /// dictionary and we don't want to lose all items accidentally.</remarks>
+        /// <returns>True to serialize it, false if it matches the default and should not be serialized.</returns>
+        /// <remarks>We do not allow resetting this property as it is a dictionary and we don't want to lose all
+        /// items accidentally.</remarks>
         private bool ShouldSerializeComponentConfigurations()
         {
             return (this.ComponentConfigurations.Count != 0);
         }
 
         /// <summary>
-        /// This is used to see if the <see cref="PlugInConfigurations"/>
-        /// property should be serialized.
+        /// This is used to see if the <see cref="PlugInConfigurations"/> property should be serialized.
         /// </summary>
-        /// <returns>True to serialize it, false if it matches the default
-        /// and should not be serialized.</returns>
-        /// <remarks>We do not allow resetting this property as it is a
-        /// dictionary and we don't want to lose all items accidentally.</remarks>
+        /// <returns>True to serialize it, false if it matches the default and should not be serialized.</returns>
+        /// <remarks>We do not allow resetting this property as it is a dictionary and we don't want to lose all
+        /// items accidentally.</remarks>
         private bool ShouldSerializePlugInConfigurations()
         {
             return (this.PlugInConfigurations.Count != 0);
         }
 
         /// <summary>
-        /// This is used to see if the <see cref="ApiFilter"/> property
-        /// should be serialized.
+        /// This is used to see if the <see cref="ApiFilter"/> property should be serialized.
         /// </summary>
-        /// <returns>True to serialize it, false if it matches the default
-        /// and should not be serialized.</returns>
-        /// <remarks>We do not allow resetting this property as it is a
-        /// collection and we don't want to lose all items accidentally.</remarks>
+        /// <returns>True to serialize it, false if it matches the default and should not be serialized.</returns>
+        /// <remarks>We do not allow resetting this property as it is a collection and we don't want to lose all
+        /// items accidentally.</remarks>
         private bool ShouldSerializeApiFilter()
         {
             return (this.ApiFilter.Count != 0);
         }
 
         /// <summary>
-        /// This is used to see if the <see cref="HelpAttributes"/> property
-        /// should be serialized.
+        /// This is used to see if the <see cref="HelpAttributes"/> property should be serialized.
         /// </summary>
-        /// <returns>True to serialize it, false if it matches the default
-        /// and should not be serialized.</returns>
-        /// <remarks>We do not allow resetting this property as it is a
-        /// collection and we don't want to lose all items accidentally.</remarks>
+        /// <returns>True to serialize it, false if it matches the default and should not be serialized.</returns>
+        /// <remarks>We do not allow resetting this property as it is a collection and we don't want to lose all
+        /// items accidentally.</remarks>
         private bool ShouldSerializeHelpAttributes()
         {
             return (this.HelpAttributes.Count != 0);
         }
 
         /// <summary>
-        /// This is used to see if the <see cref="UserDefinedProperties"/>
-        /// property should be serialized.
+        /// This is used to see if the <see cref="UserDefinedProperties"/> property should be serialized.
         /// </summary>
-        /// <returns>True to serialize it, false if it matches the default
-        /// and should not be serialized.</returns>
-        /// <remarks>We do not allow resetting this property as it is a
-        /// design-time only property.</remarks>
+        /// <returns>True to serialize it, false if it matches the default and should not be serialized.</returns>
+        /// <remarks>We do not allow resetting this property as it is a design-time only property.</remarks>
         private bool ShouldSerializeUserDefinedProperties()
         {
             return this.GetUserDefinedProperties().Count != 0;
