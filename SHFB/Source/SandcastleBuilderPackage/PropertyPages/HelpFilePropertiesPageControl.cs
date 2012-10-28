@@ -266,7 +266,22 @@ namespace SandcastleBuilder.Package.PropertyPages
         /// <param name="e">The event arguments</param>
         private void cboPresentationStyle_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var pss = (PresentationStyleSettings)cboPresentationStyle.Items[cboPresentationStyle.SelectedIndex];
+            PresentationStyleSettings pss;
+
+            // If the presentation style wasn't recognized, it may not have matched by case
+            if(cboPresentationStyle.SelectedIndex == -1)
+            {
+                // Try to get it based on the current setting.  If still not found, use the first one.
+                if(!PresentationStyleTypeConverter.AllStyles.TryGetValue(base.ProjectMgr.GetProjectProperty(
+                  "PresentationStyle"), out pss))
+                    cboPresentationStyle.SelectedIndex = 0;
+                else
+                    cboPresentationStyle.SelectedValue = pss.Id;
+
+                return;
+            }
+
+            pss = (PresentationStyleSettings)cboPresentationStyle.Items[cboPresentationStyle.SelectedIndex];
 
             epNotes.SetError(cboPresentationStyle, pss.Description);
         }

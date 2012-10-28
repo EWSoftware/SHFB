@@ -44,7 +44,7 @@ Example:
 <pre>
 &lt;pre lang="cpp"&gt;
 /*
-Testing the colorzing
+Testing the colorizing
 */
 #define A_CONSTANT
 
