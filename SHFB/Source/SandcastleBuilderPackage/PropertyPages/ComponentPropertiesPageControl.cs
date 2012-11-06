@@ -1,23 +1,23 @@
-﻿//=============================================================================
+﻿//===============================================================================================================
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : ComponentPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 12/31/2011
-// Note    : Copyright 2011, Eric Woodruff, All rights reserved
+// Updated : 10/28/2012
+// Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This user control is used to edit the Components category properties.
+// This user control is used to edit the Components category properties
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.  This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.9.3.0  03/27/2011  EFW  Created the code
-//=============================================================================
+// 1.9.6.0  10/28/2012  EFW  Updated for use in the standalone GUI
+//===============================================================================================================
 
 using System;
 using System.Globalization;
@@ -29,7 +29,10 @@ using System.Windows.Forms;
 
 using Microsoft.Build.Evaluation;
 
+#if !STANDALONEGUI
 using SandcastleBuilder.Package.Properties;
+#endif
+
 using SandcastleBuilder.Utils.BuildComponent;
 using SandcastleBuilder.Utils.Design;
 
@@ -45,6 +48,7 @@ namespace SandcastleBuilder.Package.PropertyPages
         //=====================================================================
 
         private ComponentConfigurationDictionary currentConfigs;
+        private string messageBoxTitle;
         #endregion
 
         #region Constructor
@@ -57,6 +61,11 @@ namespace SandcastleBuilder.Package.PropertyPages
         {
             InitializeComponent();
 
+#if !STANDALONEGUI
+            messageBoxTitle = Resources.PackageTitle;
+#else
+            messageBoxTitle = SandcastleBuilder.Utils.Constants.AppName;
+#endif
             this.Title = "Components";
             this.HelpKeyword = "8dcbb69b-7a1a-4049-8e6b-2bf344efbbc9";
 
@@ -71,14 +80,14 @@ namespace SandcastleBuilder.Package.PropertyPages
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
 
                 MessageBox.Show("Unexpected error loading build components: " + ex.Message,
-                    Resources.PackageTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    messageBoxTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
             if(lbAvailableComponents.Items.Count != 0)
                 lbAvailableComponents.SelectedIndex = 0;
             else
             {
-                MessageBox.Show("No valid build components found", Resources.PackageTitle, MessageBoxButtons.OK,
+                MessageBox.Show("No valid build components found", messageBoxTitle, MessageBoxButtons.OK,
                     MessageBoxIcon.Information);
                 gbAvailableComponents.Enabled = gbProjectAddIns.Enabled = false;
             }
@@ -89,8 +98,7 @@ namespace SandcastleBuilder.Package.PropertyPages
         //=====================================================================
 
         /// <summary>
-        /// This is handled to resolve dependent assemblies and load them
-        /// when necessary.
+        /// This is handled to resolve dependent assemblies and load them when necessary
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="args">The event arguments</param>
@@ -140,11 +148,17 @@ namespace SandcastleBuilder.Package.PropertyPages
             currentConfigs = new ComponentConfigurationDictionary(null);
             lbProjectComponents.Items.Clear();
 
+#if !STANDALONEGUI
             if(this.ProjectMgr == null)
                 return false;
 
             projProp = this.ProjectMgr.BuildProject.GetProperty("ComponentConfigurations");
+#else
+            if(this.CurrentProject == null)
+                return false;
 
+            projProp = this.CurrentProject.MSBuildProject.GetProperty("ComponentConfigurations");
+#endif
             if(projProp != null && !String.IsNullOrEmpty(projProp.UnevaluatedValue))
                 currentConfigs.FromXml(projProp.UnevaluatedValue);
 
@@ -165,10 +179,17 @@ namespace SandcastleBuilder.Package.PropertyPages
         /// <inheritdoc />
         protected override bool StoreControlValue(Control control)
         {
+#if !STANDALONEGUI
             if(this.ProjectMgr == null)
                 return false;
 
             this.ProjectMgr.SetProjectProperty("ComponentConfigurations", currentConfigs.ToXml());
+#else
+            if(this.CurrentProject == null)
+                return false;
+
+            this.CurrentProject.MSBuildProject.SetProperty("ComponentConfigurations", currentConfigs.ToXml());
+#endif
             return true;
         }
         #endregion
@@ -192,8 +213,7 @@ namespace SandcastleBuilder.Package.PropertyPages
         }
 
         /// <summary>
-        /// Update the enabled state of the build component based on its
-        /// checked state.
+        /// Update the enabled state of the build component based on its checked state
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
@@ -280,7 +300,7 @@ namespace SandcastleBuilder.Package.PropertyPages
             if(info.ConfigureMethod == "-")
             {
                 MessageBox.Show("The selected component contains no editable configuration information",
-                    Resources.PackageTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    messageBoxTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
@@ -318,21 +338,21 @@ namespace SandcastleBuilder.Package.PropertyPages
                 else
                     MessageBox.Show(String.Format(CultureInfo.InvariantCulture, "Unable to locate the '{0}' " +
                         "method in component '{1}' in assembly {2}", info.ConfigureMethod, info.TypeName,
-                        assembly), Resources.PackageTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        assembly), messageBoxTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             catch(IOException ioEx)
             {
                 System.Diagnostics.Debug.WriteLine(ioEx.ToString());
                 MessageBox.Show(String.Format(CultureInfo.InvariantCulture, "A file access error occurred " +
                     "trying to configure the component '{0}'.  Error: {1}", info.TypeName, ioEx.Message),
-                    Resources.PackageTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    messageBoxTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             catch(Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
                 MessageBox.Show(String.Format(CultureInfo.InvariantCulture, "An error occurred trying to " +
                     "configure the component '{0}'.  Error: {1}", info.TypeName, ex.Message),
-                    Resources.PackageTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    messageBoxTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {

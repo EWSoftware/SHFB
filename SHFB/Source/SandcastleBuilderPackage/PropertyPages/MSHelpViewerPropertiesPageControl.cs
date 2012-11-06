@@ -44,6 +44,9 @@ namespace SandcastleBuilder.Package.PropertyPages
         {
             InitializeComponent();
 
+            // Set the maximum size to prevent an unnecessary vertical scrollbar
+            this.MaximumSize = new System.Drawing.Size(2048, this.Height);
+
             this.Title = "MS Help Viewer";
             this.HelpKeyword = "5f743a6e-3239-409a-a8c1-0bff4b5375f4";
 

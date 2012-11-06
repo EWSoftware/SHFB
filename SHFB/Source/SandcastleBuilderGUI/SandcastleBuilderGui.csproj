@@ -46,7 +46,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;STANDALONEGUI</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\SandcastleBuilderGUI.xml</DocumentationFile>
@@ -55,14 +55,14 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;STANDALONEGUI</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\SandcastleBuilderGUI.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'ReleaseNoDoc|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;STANDALONEGUI</DefineConstants>
     <DocumentationFile>bin\Release\SandcastleBuilderGUI.xml</DocumentationFile>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -100,6 +100,102 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\BuildPropertiesPageControl.cs">
+      <Link>PropertyPages\BuildPropertiesPageControl.cs</Link>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\BuildPropertiesPageControl.designer.cs">
+      <Link>PropertyPages\BuildPropertiesPageControl.designer.cs</Link>
+      <DependentUpon>BuildPropertiesPageControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\ComponentPropertiesPageControl.cs">
+      <Link>PropertyPages\ComponentPropertiesPageControl.cs</Link>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\ComponentPropertiesPageControl.designer.cs">
+      <Link>PropertyPages\ComponentPropertiesPageControl.designer.cs</Link>
+      <DependentUpon>ComponentPropertiesPageControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\Help1WebsitePropertiesPageControl.cs">
+      <Link>PropertyPages\Help1WebsitePropertiesPageControl.cs</Link>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\Help1WebsitePropertiesPageControl.designer.cs">
+      <Link>PropertyPages\Help1WebsitePropertiesPageControl.designer.cs</Link>
+      <DependentUpon>Help1WebsitePropertiesPageControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\HelpFilePropertiesPageControl.cs">
+      <Link>PropertyPages\HelpFilePropertiesPageControl.cs</Link>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\HelpFilePropertiesPageControl.designer.cs">
+      <Link>PropertyPages\HelpFilePropertiesPageControl.designer.cs</Link>
+      <DependentUpon>HelpFilePropertiesPageControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\MissingTagPropertiesPageControl.cs">
+      <Link>PropertyPages\MissingTagPropertiesPageControl.cs</Link>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\MissingTagPropertiesPageControl.designer.cs">
+      <Link>PropertyPages\MissingTagPropertiesPageControl.designer.cs</Link>
+      <DependentUpon>MissingTagPropertiesPageControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\MSHelp2PropertiesPageControl.cs">
+      <Link>PropertyPages\MSHelp2PropertiesPageControl.cs</Link>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\MSHelp2PropertiesPageControl.designer.cs">
+      <Link>PropertyPages\MSHelp2PropertiesPageControl.designer.cs</Link>
+      <DependentUpon>MSHelp2PropertiesPageControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\MSHelpViewerPropertiesPageControl.cs">
+      <Link>PropertyPages\MSHelpViewerPropertiesPageControl.cs</Link>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\MSHelpViewerPropertiesPageControl.designer.cs">
+      <Link>PropertyPages\MSHelpViewerPropertiesPageControl.designer.cs</Link>
+      <DependentUpon>MSHelpViewerPropertiesPageControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\PathPropertiesPageControl.cs">
+      <Link>PropertyPages\PathPropertiesPageControl.cs</Link>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\PathPropertiesPageControl.designer.cs">
+      <Link>PropertyPages\PathPropertiesPageControl.designer.cs</Link>
+      <DependentUpon>PathPropertiesPageControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\PlugInPropertiesPageControl.cs">
+      <Link>PropertyPages\PlugInPropertiesPageControl.cs</Link>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\PlugInPropertiesPageControl.designer.cs">
+      <Link>PropertyPages\PlugInPropertiesPageControl.designer.cs</Link>
+      <DependentUpon>PlugInPropertiesPageControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\SummaryPropertiesPageControl.cs">
+      <Link>PropertyPages\SummaryPropertiesPageControl.cs</Link>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\SummaryPropertiesPageControl.designer.cs">
+      <Link>PropertyPages\SummaryPropertiesPageControl.designer.cs</Link>
+      <DependentUpon>SummaryPropertiesPageControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\UserDefinedPropertiesPageControl.cs">
+      <Link>PropertyPages\UserDefinedPropertiesPageControl.cs</Link>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\UserDefinedPropertiesPageControl.designer.cs">
+      <Link>PropertyPages\UserDefinedPropertiesPageControl.designer.cs</Link>
+      <DependentUpon>UserDefinedPropertiesPageControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\VisibilityPropertiesPageControl.cs">
+      <Link>PropertyPages\VisibilityPropertiesPageControl.cs</Link>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\VisibilityPropertiesPageControl.designer.cs">
+      <Link>PropertyPages\VisibilityPropertiesPageControl.designer.cs</Link>
+      <DependentUpon>VisibilityPropertiesPageControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="..\SandcastleBuilderUtils\Properties\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
@@ -219,8 +315,62 @@
     <Compile Include="PromptToSaveDlg.Designer.cs">
       <DependentUpon>PromptToSaveDlg.cs</DependentUpon>
     </Compile>
+    <Compile Include="PropertyPages\BasePropertyPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PropertyPages\BasePropertyPage.designer.cs">
+      <DependentUpon>BasePropertyPage.cs</DependentUpon>
+    </Compile>
     <Compile Include="StartUp.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="..\SandcastleBuilderPackage\PropertyPages\BuildPropertiesPageControl.resx">
+      <Link>PropertyPages\BuildPropertiesPageControl.resx</Link>
+      <DependentUpon>BuildPropertiesPageControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\SandcastleBuilderPackage\PropertyPages\ComponentPropertiesPageControl.resx">
+      <Link>PropertyPages\ComponentPropertiesPageControl.resx</Link>
+      <DependentUpon>ComponentPropertiesPageControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\SandcastleBuilderPackage\PropertyPages\Help1WebsitePropertiesPageControl.resx">
+      <Link>PropertyPages\Help1WebsitePropertiesPageControl.resx</Link>
+      <DependentUpon>Help1WebsitePropertiesPageControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\SandcastleBuilderPackage\PropertyPages\HelpFilePropertiesPageControl.resx">
+      <Link>PropertyPages\HelpFilePropertiesPageControl.resx</Link>
+      <DependentUpon>HelpFilePropertiesPageControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\SandcastleBuilderPackage\PropertyPages\MissingTagPropertiesPageControl.resx">
+      <Link>PropertyPages\MissingTagPropertiesPageControl.resx</Link>
+      <DependentUpon>MissingTagPropertiesPageControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\SandcastleBuilderPackage\PropertyPages\MSHelp2PropertiesPageControl.resx">
+      <Link>PropertyPages\MSHelp2PropertiesPageControl.resx</Link>
+      <DependentUpon>MSHelp2PropertiesPageControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\SandcastleBuilderPackage\PropertyPages\MSHelpViewerPropertiesPageControl.resx">
+      <Link>PropertyPages\MSHelpViewerPropertiesPageControl.resx</Link>
+      <DependentUpon>MSHelpViewerPropertiesPageControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\SandcastleBuilderPackage\PropertyPages\PathPropertiesPageControl.resx">
+      <Link>PropertyPages\PathPropertiesPageControl.resx</Link>
+      <DependentUpon>PathPropertiesPageControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\SandcastleBuilderPackage\PropertyPages\PlugInPropertiesPageControl.resx">
+      <Link>PropertyPages\PlugInPropertiesPageControl.resx</Link>
+      <DependentUpon>PlugInPropertiesPageControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\SandcastleBuilderPackage\PropertyPages\SummaryPropertiesPageControl.resx">
+      <Link>PropertyPages\SummaryPropertiesPageControl.resx</Link>
+      <DependentUpon>SummaryPropertiesPageControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\SandcastleBuilderPackage\PropertyPages\UserDefinedPropertiesPageControl.resx">
+      <Link>PropertyPages\UserDefinedPropertiesPageControl.resx</Link>
+      <DependentUpon>UserDefinedPropertiesPageControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\SandcastleBuilderPackage\PropertyPages\VisibilityPropertiesPageControl.resx">
+      <Link>PropertyPages\VisibilityPropertiesPageControl.resx</Link>
+      <DependentUpon>VisibilityPropertiesPageControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="AboutDlg.resx">
       <DependentUpon>AboutDlg.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -291,6 +441,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PropertyPages\BasePropertyPage.resx">
+      <DependentUpon>BasePropertyPage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserPreferencesDlg.resx">
       <SubType>Designer</SubType>
@@ -923,6 +1076,7 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

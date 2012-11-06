@@ -15,7 +15,7 @@
     <RootNamespace>Documentation</RootNamespace>
     <Name>Documentation</Name>
     <!-- SHFB properties -->
-    <OutputPath>.\Help\</OutputPath>
+    <OutputPath>Help\</OutputPath>
     <HtmlHelpName>TestCaseProject</HtmlHelpName>
     <ProjectSummary>Test project summary! Updated on 04/09/2011 from within Visual Studio.</ProjectSummary>
     <MissingTags>Summary, Parameter, Returns, AutoDocumentCtors, Namespace, TypeParameter, IncludeTargets, AutoDocumentDispose</MissingTags>
@@ -147,52 +147,12 @@
       <PlugInConfig id="Additional Content Only" enabled="False">
         <configuration />
       </PlugInConfig>
-      <PlugInConfig id="XPath Reflection File Filter" enabled="False">
-        <configuration>
-          <expressions>
-            <expression>/reflection/apis/api[apidata/@subgroup="class" and typedata/@sealed="true"]/elements/element[@api="M:System.Object.Equals(System.Object)"]</expression>
-            <expression>/reflection/apis/api[apidata/@subgroup="class" and typedata/@sealed="true"]/elements/element[@api="M:System.Object.GetHashCode"]</expression>
-            <expression>/reflection/apis/api[apidata/@subgroup="class" and typedata/@sealed="true"]/elements/element[@api="M:System.Object.GetType"]</expression>
-            <expression>/reflection/apis/api[apidata/@subgroup="class" and typedata/@sealed="true"]/elements/element[@api="M:System.Object.Finalize"]</expression>
-            <expression>/reflection/apis/api[apidata/@subgroup="class" and typedata/@sealed="true"]/elements/element[@api="M:System.Object.MemberwiseClone"]</expression>
-            <expression>/reflection/apis/api[apidata/@subgroup="class" and typedata/@sealed="true"]/elements/element[@api="M:System.Object.ToString"]</expression>
-          </expressions>
-        </configuration>
-      </PlugInConfig>
-      <PlugInConfig id="Bibliography Support" enabled="False">
-        <configuration>
-          <bibliography path="{@ProjectFolder}Bibliography.xml" />
-        </configuration>
-      </PlugInConfig>
-      <PlugInConfig id="Completion Notification" enabled="False">
-        <configuration>
-          <smtpServer host="mail.somecompany.org" port="25" />
-          <userCredentials useDefault="true" userName="" password="" />
-          <fromEMail address="SHFB@SomeCompany.org" />
-          <successEMail address="EWoodruff@SomeCompany.org" attachLog="false" />
-          <failureEMail address="EWoodruff@SomeCompany.org" attachLog="true" />
-          <xslTransform filename="{@SHFBFolder}Templates\TransformBuildLog.xsl" />
-        </configuration>
-      </PlugInConfig>
-      <PlugInConfig id="DBCS Fix for CHM Builds" enabled="False">
-        <configuration>
-          <sbAppLocale path="C:\UTILS\SBAppLocale.exe" />
-        </configuration>
-      </PlugInConfig>
-      <PlugInConfig id="Hierarchical Table of Contents" enabled="False">
-        <configuration>
-          <toc minParts="2" insertBelow="False" />
-        </configuration>
-      </PlugInConfig>
-      <PlugInConfig id="Wildcard Assembly References" enabled="False">
-        <configuration>
-          <references>
-            <reference path="..\..\CodeColorizer\ColorizerLibrary\bin\Debug\" wildcard="*.dll" recurse="false" />
-            <reference path="..\..\SandcastleBuilder\" wildcard="*.dll" recurse="true" />
-          </references>
-        </configuration>
-      </PlugInConfig>
-    </PlugInConfigurations>
+<PlugInConfig id="XPath Reflection File Filter" enabled="False"><configuration><expressions><expression>/reflection/apis/api[apidata/@subgroup="class" and typedata/@sealed="true"]/elements/element[@api="M:System.Object.Equals(System.Object)"]</expression><expression>/reflection/apis/api[apidata/@subgroup="class" and typedata/@sealed="true"]/elements/element[@api="M:System.Object.GetHashCode"]</expression><expression>/reflection/apis/api[apidata/@subgroup="class" and typedata/@sealed="true"]/elements/element[@api="M:System.Object.GetType"]</expression><expression>/reflection/apis/api[apidata/@subgroup="class" and typedata/@sealed="true"]/elements/element[@api="M:System.Object.Finalize"]</expression><expression>/reflection/apis/api[apidata/@subgroup="class" and typedata/@sealed="true"]/elements/element[@api="M:System.Object.MemberwiseClone"]</expression><expression>/reflection/apis/api[apidata/@subgroup="class" and typedata/@sealed="true"]/elements/element[@api="M:System.Object.ToString"]</expression></expressions></configuration></PlugInConfig>
+<PlugInConfig id="Bibliography Support" enabled="False"><configuration><bibliography path="{@ProjectFolder}Bibliography.xml" /></configuration></PlugInConfig>
+<PlugInConfig id="Completion Notification" enabled="False"><configuration><smtpServer host="mail.somecompany.org" port="25" /><userCredentials useDefault="true" userName="" password="" /><fromEMail address="SHFB@SomeCompany.org" /><successEMail address="EWoodruff@SomeCompany.org" attachLog="false" /><failureEMail address="EWoodruff@SomeCompany.org" attachLog="true" /><xslTransform filename="{@SHFBFolder}Templates\TransformBuildLog.xsl" /></configuration></PlugInConfig>
+<PlugInConfig id="DBCS Fix for CHM Builds" enabled="False"><configuration><sbAppLocale path="C:\UTILS\SBAppLocale.exe" /></configuration></PlugInConfig>
+<PlugInConfig id="Hierarchical Table of Contents" enabled="False"><configuration><toc minParts="2" insertBelow="False" /></configuration></PlugInConfig>
+<PlugInConfig id="Wildcard Assembly References" enabled="False"><configuration><references><reference path="..\..\CodeColorizer\ColorizerLibrary\bin\Debug\" wildcard="*.dll" recurse="false" /><reference path="..\..\SandcastleBuilder\" wildcard="*.dll" recurse="true" /></references></configuration></PlugInConfig></PlugInConfigurations>
     <ApiFilter>
     </ApiFilter>
     <HelpFileFormat>HtmlHelp1</HelpFileFormat>
@@ -210,7 +170,6 @@
     <ProductTitle>Sandcastle Help File Builder Example Project</ProductTitle>
     <VendorName>EWSoftware</VendorName>
     <MSHelp2SdkLinkType>Msdn</MSHelp2SdkLinkType>
-    <SelfBranded>True</SelfBranded>
     <TocParentVersion>100</TocParentVersion>
     <TopicVersion>100</TopicVersion>
     <TocOrder>3</TocOrder>

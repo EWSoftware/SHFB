@@ -1,23 +1,23 @@
-﻿//=============================================================================
+﻿//===============================================================================================================
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : MSHelp2PropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 12/31/2011
-// Note    : Copyright 2011, Eric Woodruff, All rights reserved
+// Updated : 10/28/2012
+// Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This user control is used to edit the MS Help 2 category properties.
+// This user control is used to edit the MS Help 2 category properties
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.  This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.9.3.0  03/27/2011  EFW  Created the code
-//=============================================================================
+// 1.9.6.0  10/28/2012  EFW  Updated for use in the standalone GUI
+//===============================================================================================================
 
 using System;
 using System.Collections.Generic;
@@ -118,16 +118,23 @@ namespace SandcastleBuilder.Package.PropertyPages
         {
             ProjectProperty projProp;
 
+#if !STANDALONEGUI
             if(this.ProjectMgr == null)
                 return false;
-
+#else
+            if(this.CurrentProject == null)
+                return false;
+#endif
             if(control.Name == "dgvHelpAttributes")
             {
                 attributes = new MSHelpAttrCollection(null);
                 attributesChanged = false;
 
+#if !STANDALONEGUI
                 projProp = this.ProjectMgr.BuildProject.GetProperty("HelpAttributes");
-
+#else
+                projProp = this.CurrentProject.MSBuildProject.GetProperty("HelpAttributes");
+#endif
                 if(projProp != null && !String.IsNullOrEmpty(projProp.UnevaluatedValue))
                     attributes.FromXml(projProp.UnevaluatedValue);
 
@@ -141,9 +148,13 @@ namespace SandcastleBuilder.Package.PropertyPages
         /// <inheritdoc />
         protected override bool StoreControlValue(System.Windows.Forms.Control control)
         {
+#if !STANDALONEGUI
             if(this.ProjectMgr == null)
                 return false;
-
+#else
+            if(this.CurrentProject == null)
+                return false;
+#endif
             if(control.Name == "dgvHelpAttributes")
             {
                 if(attributesChanged)
@@ -152,7 +163,11 @@ namespace SandcastleBuilder.Package.PropertyPages
                     dgvHelpAttributes.DataSource = null;
                     attributes.Sort();
 
+#if !STANDALONEGUI
                     this.ProjectMgr.SetProjectProperty("HelpAttributes", attributes.ToXml());
+#else
+                    this.CurrentProject.MSBuildProject.SetProperty("HelpAttributes", attributes.ToXml());
+#endif
                     attributesChanged = false;
 
                     dgvHelpAttributes.DataSource = attributes;

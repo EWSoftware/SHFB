@@ -34,10 +34,12 @@
 					 if specified, defines the relative location of the files in the compiled help file.  If omitted, the
 					 files are copied to a like-named folder relative to the root of the compiled help file.  If the
 					 Destination attribute is set to an empty string, the files are copied to the root of the compiled
-					 help file.  Unlike all other path values, the Destination value must always be a relative path. -->
-			<Files Source="Icons\*.*" Destination="Icons" />
-			<Files Source="Scripts\*.*" />
-			<Files Source="Styles\*.*" />
+					 help file.  Unlike all other path values, the Destination value must always be a relative path.
+					 Note that UNIX based web servers may be case-sensitive with regard to folder and filenames so match
+					 the case of the folder and filenames in the elements to their actual casing on the file system. -->
+			<Files Source="icons\*.*" Destination="icons" />
+			<Files Source="scripts\*.*" />
+			<Files Source="styles\*.*" />
 		</HelpContent>
 
 		<!-- This defines the path to the shared content resource items. -->
@@ -117,9 +119,9 @@
 		</SupportedFormats>
 
 		<HelpContent>
-			<Files Source="Icons\*.*" />
-			<Files Source="Scripts\*.*" />
-			<Files Source="Styles\*.*" />
+			<Files Source="icons\*.*" />
+			<Files Source="scripts\*.*" />
+			<Files Source="styles\*.*" />
 		</HelpContent>
 
 		<ResourceItems Path="Content">
@@ -165,9 +167,9 @@
 		</SupportedFormats>
 
 		<HelpContent>
-			<Files Source="Icons\*.*" />
-			<Files Source="Scripts\*.*" />
-			<Files Source="Styles\*.*" />
+			<Files Source="icons\*.*" />
+			<Files Source="scripts\*.*" />
+			<Files Source="styles\*.*" />
 		</HelpContent>
 
 		<ResourceItems Path="Content">
@@ -213,9 +215,9 @@
 		</SupportedFormats>
 
 		<HelpContent>
-			<Files Source="Icons\*.*" />
-			<Files Source="Scripts\*.*" />
-			<Files Source="Styles\*.*" />
+			<Files Source="icons\*.*" />
+			<Files Source="scripts\*.*" />
+			<Files Source="styles\*.*" />
 		</HelpContent>
 
 		<ResourceItems Path="Content">

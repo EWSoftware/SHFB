@@ -1,23 +1,23 @@
-﻿//=============================================================================
+﻿//===============================================================================================================
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : MissingTagPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 12/31/2011
-// Note    : Copyright 2011, Eric Woodruff, All rights reserved
+// Updated : 10/28/2012
+// Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This user control is used to edit the Missing Tags category properties.
+// This user control is used to edit the Missing Tags category properties
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.  This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.9.3.0  03/27/2011  EFW  Created the code
-//=============================================================================
+// 1.9.6.0  10/28/2012  EFW  Updated for use in the standalone GUI
+//===============================================================================================================
 
 using System;
 using System.Runtime.InteropServices;
@@ -43,6 +43,9 @@ namespace SandcastleBuilder.Package.PropertyPages
         {
             InitializeComponent();
 
+            // Set the maximum size to prevent an unnecessary vertical scrollbar
+            this.MaximumSize = new System.Drawing.Size(2048, this.Height);
+
             this.Title = "Missing Tags";
             this.HelpKeyword = "5a2ab898-7161-454d-b5d3-959df0de0e36";
 
@@ -63,17 +66,23 @@ namespace SandcastleBuilder.Package.PropertyPages
         //=====================================================================
 
         /// <inheritdoc />
-        /// <remarks>For this page, we only need to bind one control as all the values are stored
-        /// in a single property.</remarks>
+        /// <remarks>For this page, we only need to bind one control as all the values are stored in a single
+        /// property.</remarks>
         protected override bool BindControlValue(Control control)
         {
             MissingTags tags;
 
+#if !STANDALONEGUI
             if(this.ProjectMgr == null)
                 return false;
 
             var projProp = this.ProjectMgr.BuildProject.GetProperty("MissingTags");
+#else
+            if(this.CurrentProject == null)
+                return false;
 
+            var projProp = this.CurrentProject.MSBuildProject.GetProperty("MissingTags");
+#endif
             // If not found or not valid, we'll ignore it and use the defaults
             if(projProp != null && Enum.TryParse<MissingTags>(projProp.UnevaluatedValue, out tags))
             {
@@ -93,15 +102,19 @@ namespace SandcastleBuilder.Package.PropertyPages
         }
 
         /// <inheritdoc />
-        /// <remarks>For this page, we only need to bind one control as all the values are stored
-        /// in a single property.</remarks>
+        /// <remarks>For this page, we only need to bind one control as all the values are stored in a single
+        /// property.</remarks>
         protected override bool StoreControlValue(Control control)
         {
             MissingTags tags = MissingTags.None;
 
+#if !STANDALONEGUI
             if(this.ProjectMgr == null)
                 return false;
-
+#else
+            if(this.CurrentProject == null)
+                return false;
+#endif
             if(chkAutoDocumentConstructors.Checked)
                 tags |= MissingTags.AutoDocumentCtors;
 
@@ -132,8 +145,11 @@ namespace SandcastleBuilder.Package.PropertyPages
             if(chkShowMissingValues.Checked)
                 tags |= MissingTags.Value;
 
+#if !STANDALONEGUI
             this.ProjectMgr.SetProjectProperty("MissingTags", tags.ToString());
-
+#else
+            this.CurrentProject.MSBuildProject.SetProperty("MissingTags", tags.ToString());
+#endif
             return true;
         }
         #endregion

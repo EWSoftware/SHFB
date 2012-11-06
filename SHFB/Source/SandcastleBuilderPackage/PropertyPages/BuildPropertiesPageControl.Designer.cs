@@ -214,7 +214,7 @@
             this.Controls.Add(this.chkCppCommentsFixup);
             this.Controls.Add(this.chkCleanIntermediates);
             this.Controls.Add(this.label1);
-            this.MinimumSize = new System.Drawing.Size(745, 285);
+            this.MinimumSize = new System.Drawing.Size(745, 310);
             this.Name = "BuildPropertiesPageControl";
             this.Size = new System.Drawing.Size(785, 310);
             ((System.ComponentModel.ISupportInitialize)(this.epNotes)).EndInit();

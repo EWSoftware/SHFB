@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : BuildPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 09/17/2012
+// Updated : 10/28/2012
 // Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -17,6 +17,7 @@
 // ==============================================================================================================
 // 1.9.3.0  03/27/2011  EFW  Created the code
 // 1.9.4.0  03/31/2012  EFW  Added BuildAssembler Verbosity property
+// 1.9.6.0  10/28/2012  EFW  Updated for use in the standalone GUI
 //===============================================================================================================
 
 using System;
@@ -26,7 +27,10 @@ using System.Runtime.InteropServices;
 
 using Microsoft.Build.Evaluation;
 
+#if !STANDALONEGUI
 using SandcastleBuilder.Package.Nodes;
+#endif
+
 using SandcastleBuilder.Utils;
 using SandcastleBuilder.Utils.Design;
 
@@ -72,6 +76,9 @@ namespace SandcastleBuilder.Package.PropertyPages
         public BuildPropertiesPageControl()
         {
             InitializeComponent();
+
+            // Set the maximum size to prevent an unnecessary vertical scrollbar
+            this.MaximumSize = new System.Drawing.Size(2048, this.Height);
 
             this.Title = "Build";
             this.HelpKeyword = "da405a33-3eeb-4451-9aa8-a55be5026434";
@@ -120,12 +127,18 @@ namespace SandcastleBuilder.Package.PropertyPages
         /// <inheritdoc />
         protected override void Initialize()
         {
+#if!STANDALONEGUI
             // Set the project as the base path provider so that the folder is correct
             if(base.ProjectMgr != null)
             {
                 SandcastleProject project = ((SandcastleBuilderProjectNode)base.ProjectMgr).SandcastleProject;
                 txtBuildLogFile.File = new FilePath(project);
             }
+#else
+            // Set the project as the base path provider so that the folder is correct
+            if(base.CurrentProject != null)
+                txtBuildLogFile.File = new FilePath(base.CurrentProject);
+#endif
         }
 
         /// <inheritdoc />
@@ -144,7 +157,11 @@ namespace SandcastleBuilder.Package.PropertyPages
                 List<string> allFormats = cblHelpFileFormat.Items.OfType<HelpFileFormatItem>().Select(
                     f => f.Format.ToString()).ToList();
 
+#if !STANDALONEGUI
                 projProp = this.ProjectMgr.BuildProject.GetProperty("HelpFileFormat");
+#else
+                projProp = this.CurrentProject.MSBuildProject.GetProperty("HelpFileFormat");
+#endif
 
                 if(projProp == null || !Enum.TryParse<HelpFileFormat>(projProp.UnevaluatedValue, out format))
                     format = HelpFileFormat.HtmlHelp1;
@@ -168,17 +185,24 @@ namespace SandcastleBuilder.Package.PropertyPages
         {
             string formats;
 
+#if !STANDALONEGUI
             if(this.ProjectMgr == null)
                 return false;
-
+#else
+            if(this.CurrentProject == null)
+                return false;
+#endif
             // Set the selected help file formats value
             if(control.Name == "cblHelpFileFormat")
             {
                 formats = String.Join(", ", cblHelpFileFormat.CheckedItems.Cast<HelpFileFormatItem>().Select(
                     f => f.Format.ToString()).ToArray());
 
+#if !STANDALONEGUI
                 this.ProjectMgr.SetProjectProperty("HelpFileFormat", formats);
-
+#else
+                this.CurrentProject.MSBuildProject.SetProperty("HelpFileFormat", formats);
+#endif
                 return true;
             }
 

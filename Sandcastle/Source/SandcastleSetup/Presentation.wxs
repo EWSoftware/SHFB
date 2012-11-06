@@ -384,39 +384,39 @@
           </Directory>
           <Directory Id="dir3AECC09508FB5DBA7955751217254549" Name="Scripts">
             <Component Id="cmp34D109DC263C4B90C7482B61918368D3" Guid="{162F04A7-CAE7-43DF-9568-FBC9F7162B58}">
-              <File Id="fil6877677C737D415DF81B628B2A494E7C" KeyPath="yes" Source="$(var.RootFolder)\Presentation\hana\Scripts\CommonUtilities.js" />
+              <File Id="fil6877677C737D415DF81B628B2A494E7C" KeyPath="yes" Source="$(var.RootFolder)\Presentation\hana\scripts\CommonUtilities.js" />
             </Component>
             <Component Id="cmp947EFBEA681EF6D90A3E4E873BF576D3" Guid="{946472D3-93E1-400F-A001-1C93184E5E78}">
-              <File Id="fil85F9A31C4849BD558B068747A36261D3" KeyPath="yes" Source="$(var.RootFolder)\Presentation\hana\Scripts\DataStore.js" />
+              <File Id="fil85F9A31C4849BD558B068747A36261D3" KeyPath="yes" Source="$(var.RootFolder)\Presentation\hana\scripts\DataStore.js" />
             </Component>
             <Component Id="cmpB9CAB81207E7875F66CA2E017A938B9B" Guid="{F38F6CCE-B466-46D1-B74A-A2EC18FFEA7D}">
-              <File Id="filB0BEC2975C8B57300D9EAC8671009311" KeyPath="yes" Source="$(var.RootFolder)\Presentation\hana\Scripts\Dropdown.js" />
+              <File Id="filB0BEC2975C8B57300D9EAC8671009311" KeyPath="yes" Source="$(var.RootFolder)\Presentation\hana\scripts\Dropdown.js" />
             </Component>
             <Component Id="cmpFFDC10A7ABE1A14245BE5B3AD9F60493" Guid="{E4BC1E77-7246-4BFD-93A8-F4267094B431}">
-              <File Id="fil9CAEDEB8F8635AD9BB2768151F56DA27" KeyPath="yes" Source="$(var.RootFolder)\Presentation\hana\Scripts\EventUtilities.js" />
+              <File Id="fil9CAEDEB8F8635AD9BB2768151F56DA27" KeyPath="yes" Source="$(var.RootFolder)\Presentation\hana\scripts\EventUtilities.js" />
             </Component>
             <Component Id="cmp6DB02EE817BD1E4E462E25D416771097" Guid="{C98D6D84-514C-4AD4-8474-6E01BC252C64}">
-              <File Id="fil19D3609E17E72746DB6A579991307ACD" KeyPath="yes" Source="$(var.RootFolder)\Presentation\hana\Scripts\LanguageFilter.js" />
+              <File Id="fil19D3609E17E72746DB6A579991307ACD" KeyPath="yes" Source="$(var.RootFolder)\Presentation\hana\scripts\LanguageFilter.js" />
             </Component>
             <Component Id="cmpCA35FE4DD29D2CC02633BDDE48A4A455" Guid="{83A73264-FB18-4581-BBDD-2BDAD529C903}">
-              <File Id="fil0F4F662EF8831F091E42F704A60CD271" KeyPath="yes" Source="$(var.RootFolder)\Presentation\hana\Scripts\MemberFilter.js" />
+              <File Id="fil0F4F662EF8831F091E42F704A60CD271" KeyPath="yes" Source="$(var.RootFolder)\Presentation\hana\scripts\MemberFilter.js" />
             </Component>
             <Component Id="cmp86D4811C30C1B929EA140BD3AF88E1ED" Guid="{E668282C-3F91-4F70-A26E-AB514CE4DDDE}">
-              <File Id="filDA392AA96FE9334751233B509EB30FBF" KeyPath="yes" Source="$(var.RootFolder)\Presentation\hana\Scripts\script_manifold.js" />
+              <File Id="filDA392AA96FE9334751233B509EB30FBF" KeyPath="yes" Source="$(var.RootFolder)\Presentation\hana\scripts\script_manifold.js" />
             </Component>
             <Component Id="cmpA5201E3A0491236BF92C5ACC7B7C18E2" Guid="{FE7B57EB-03F7-4D2D-8986-A3C4476CAA88}">
-              <File Id="fil0F398E9E29CA5D5F835C2ED5FA41298C" KeyPath="yes" Source="$(var.RootFolder)\Presentation\hana\Scripts\SplitScreen.js" />
+              <File Id="fil0F398E9E29CA5D5F835C2ED5FA41298C" KeyPath="yes" Source="$(var.RootFolder)\Presentation\hana\scripts\SplitScreen.js" />
             </Component>
           </Directory>
           <Directory Id="dir8B484C348443919F5C79FBE2340C01AA" Name="Styles">
             <Component Id="cmp357B17E59EE08233CD7BA2E4910EF033" Guid="{541B9EF9-A306-4DFA-9639-B96280C6428F}">
-              <File Id="fil6771E96AA06652570F613A2F7F74D5D0" KeyPath="yes" Source="$(var.RootFolder)\Presentation\hana\Styles\Presentation.css" />
+              <File Id="fil6771E96AA06652570F613A2F7F74D5D0" KeyPath="yes" Source="$(var.RootFolder)\Presentation\hana\styles\Presentation.css" />
             </Component>
             <Component Id="cmpA2A23B3A984344ED423187DE9F25A901" Guid="{55E3CC3D-9C2D-41BF-BC6F-B9CF45B8C0F6}">
-              <File Id="filA92F93F1ABA442453296F3954CE57273" KeyPath="yes" Source="$(var.RootFolder)\Presentation\hana\Styles\syntax.css" />
+              <File Id="filA92F93F1ABA442453296F3954CE57273" KeyPath="yes" Source="$(var.RootFolder)\Presentation\hana\styles\syntax.css" />
             </Component>
             <Component Id="cmp2ECCF9909DE8AC28302EA761E3E1E0A1" Guid="{A649524F-FA32-449C-B73F-2AB8F38CF989}">
-              <File Id="fil539FE8CF1F35F32108AA6AA53D49714E" KeyPath="yes" Source="$(var.RootFolder)\Presentation\hana\Styles\tabs.css" />
+              <File Id="fil539FE8CF1F35F32108AA6AA53D49714E" KeyPath="yes" Source="$(var.RootFolder)\Presentation\hana\styles\tabs.css" />
             </Component>
           </Directory>
           <Directory Id="dirBEDE471365741226A199DEFBA7BB07D2" Name="transforms">
@@ -1177,34 +1177,34 @@
           </Directory>
           <Directory Id="dirB22C4153ADB9719ADBA744D212BC7528" Name="Scripts">
             <Component Id="cmp7684F87B0E5FAC92AD0E06E75CED59EB" Guid="{6BC085ED-1F70-404A-91BC-C77EE4A5FC30}">
-              <File Id="filBC4D20A3251E0E424541F7D1884B61BD" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2005\Scripts\CheckboxMenu.js" />
+              <File Id="filBC4D20A3251E0E424541F7D1884B61BD" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2005\scripts\CheckboxMenu.js" />
             </Component>
             <Component Id="cmp09EA83AC05FA5EC6101E6C37F04D45BB" Guid="{99DE4770-49F0-4755-90B0-FFFC7ABDD084}">
-              <File Id="filBCF79A53A738D0673A57626A4C0F3DE1" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2005\Scripts\CommonUtilities.js" />
+              <File Id="filBCF79A53A738D0673A57626A4C0F3DE1" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2005\scripts\CommonUtilities.js" />
             </Component>
             <Component Id="cmp2E01475D42EFC0F74983778A6900E244" Guid="{4DE6A7E2-F135-4E6C-97E1-263409325CE1}">
-              <File Id="fil07E5ADF91EFE20524410B7EE90984C4E" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2005\Scripts\Dropdown.js" />
+              <File Id="fil07E5ADF91EFE20524410B7EE90984C4E" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2005\scripts\Dropdown.js" />
             </Component>
             <Component Id="cmp8B2E6CE9FB19505935C11926C3A3E9B3" Guid="{9D12AC08-6E2C-42FA-A988-9423E5E6CA3F}">
-              <File Id="filF84BD1305C3819F1963503E365FDCF13" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2005\Scripts\EventUtilities.js" />
+              <File Id="filF84BD1305C3819F1963503E365FDCF13" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2005\scripts\EventUtilities.js" />
             </Component>
             <Component Id="cmp3A7A485C0FB7A2EE90F5A1AE6F0EF18F" Guid="{0277AE28-3F53-4620-BCA2-CCA2B9B3BF6C}">
-              <File Id="fil4EA9400295F63009633AD7930A35B830" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2005\Scripts\script_feedBack.js" />
+              <File Id="fil4EA9400295F63009633AD7930A35B830" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2005\scripts\script_feedBack.js" />
             </Component>
             <Component Id="cmp150DEB8B77C63AEA3B77B8B53DCB96BF" Guid="{11453126-2E74-4974-A3E4-F6C03C8B9C52}">
-              <File Id="fil38F145F9B314F7D13C0174DE98C8A10A" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2005\Scripts\script_manifold.js" />
+              <File Id="fil38F145F9B314F7D13C0174DE98C8A10A" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2005\scripts\script_manifold.js" />
             </Component>
             <Component Id="cmpE4114B95662509DFD7B6CBE88BBFA504" Guid="{1DC2A63C-1C9B-4967-BF58-3C90B11203CD}">
-              <File Id="filEAA0E30A444B74DDAD946333A2797330" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2005\Scripts\SplitScreen.js" />
+              <File Id="filEAA0E30A444B74DDAD946333A2797330" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2005\scripts\SplitScreen.js" />
             </Component>
           </Directory>
           <Directory Id="dirAA309B6F0EDADF937FA43277A0C76A4C" Name="Styles">
             <Component Id="cmpD6C3A0B8CC1021340510C98E84A41470" Guid="{FA82C32A-34A3-4198-9DA3-6480AE94B4AB}">
-              <File Id="fil95F0B46306F392D92619E0DAE944D36A" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2005\Styles\Presentation.css" />
+              <File Id="fil95F0B46306F392D92619E0DAE944D36A" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2005\styles\Presentation.css" />
             </Component>
             <Directory Id="dir09EE729ABF17CD3948B95F6C590DCC45" Name="Whidbey">
               <Component Id="cmp4AD5A8EDCC76D986A2B11CEA7EFF661B" Guid="{7B9A461C-8F27-405E-9AE7-7B58B5793BB7}">
-                <File Id="fil62E31B981DB7066FCCD4AFEBA7B7739F" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2005\Styles\Whidbey\Presentation.css" />
+                <File Id="fil62E31B981DB7066FCCD4AFEBA7B7739F" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2005\styles\Whidbey\Presentation.css" />
               </Component>
             </Directory>
           </Directory>
@@ -1618,54 +1618,54 @@
           </Directory>
           <Directory Id="dirC7775264464895533F9DEB88421FFC60" Name="Scripts">
             <Component Id="cmp1B42A2BCBADA630E683E2D5FA41A0CDA" Guid="{3B75738F-04A9-4A03-85C9-3F7669944EDC}">
-              <File Id="fil575FBBF4051A35E91BCE1A84D5B6DD63" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2010\Scripts\branding.js" />
+              <File Id="fil575FBBF4051A35E91BCE1A84D5B6DD63" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2010\scripts\branding.js" />
             </Component>
           </Directory>
           <Directory Id="dir3BCB95BEE1A854152580F7C1DC303572" Name="Styles">
             <Component Id="cmp2339E30E182102ACC281988FAD77C732" Guid="{672E87BE-41FA-4A60-9862-68C49900DF3A}">
-              <File Id="fil6C4FAE5FEFE6ADE22B314F5F3085347A" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2010\Styles\branding-cs-CZ.css" />
+              <File Id="fil6C4FAE5FEFE6ADE22B314F5F3085347A" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2010\styles\branding-cs-CZ.css" />
             </Component>
             <Component Id="cmp4AAF8F9E641843186608CCA83423AE6A" Guid="{9D2357AD-4248-4C4B-B45C-18F8B6B2E0AC}">
-              <File Id="fil66E4EF32B9D30EC07813918373BF14C1" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2010\Styles\branding-de-DE.css" />
+              <File Id="fil66E4EF32B9D30EC07813918373BF14C1" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2010\styles\branding-de-DE.css" />
             </Component>
             <Component Id="cmpB6C5C3524A4A8F4A2578E8F7E6BF635F" Guid="{6F690955-0027-4FE1-9B78-3892FD462A78}">
-              <File Id="filB2C98693C7D1713999CA50576928B825" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2010\Styles\branding-en-US.css" />
+              <File Id="filB2C98693C7D1713999CA50576928B825" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2010\styles\branding-en-US.css" />
             </Component>
             <Component Id="cmpB3F267C7B77B7B6E86BF4C5721B8FF7C" Guid="{00280AED-12A1-4E95-A62A-0D3A3F32D7D7}">
-              <File Id="fil3E2993986C6328DD377B1E14250B591B" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2010\Styles\branding-es-ES.css" />
+              <File Id="fil3E2993986C6328DD377B1E14250B591B" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2010\styles\branding-es-ES.css" />
             </Component>
             <Component Id="cmp82172ECEE621AC5906DA086B139DE788" Guid="{C8B15450-C473-43FF-B557-F1A9A50E1136}">
-              <File Id="fil938039E8695537F8376CCFDC07E48387" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2010\Styles\branding-fr-FR.css" />
+              <File Id="fil938039E8695537F8376CCFDC07E48387" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2010\styles\branding-fr-FR.css" />
             </Component>
             <Component Id="cmp17693B0F11E3E82C501D1C9CC0DB3F90" Guid="{0AA1615C-C59E-45E7-A52A-76D5CD244B14}">
-              <File Id="filEB716CC099826F8176146B9B0A51A4C8" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2010\Styles\branding-it-IT.css" />
+              <File Id="filEB716CC099826F8176146B9B0A51A4C8" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2010\styles\branding-it-IT.css" />
             </Component>
             <Component Id="cmp6DF065198D458E83BD3F231CA3773CF1" Guid="{AB07F718-7820-4C4B-BBB1-51FEB6C6D0A6}">
-              <File Id="fil864306E0DBFDDE43C2CB3CF939D0D4BD" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2010\Styles\branding-ja-JP.css" />
+              <File Id="fil864306E0DBFDDE43C2CB3CF939D0D4BD" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2010\styles\branding-ja-JP.css" />
             </Component>
             <Component Id="cmp86884BD6F3FD3D6A72FA363BE9C7F7F9" Guid="{A32BE2A8-B6EF-4D47-BEF7-25FF07F1A7FD}">
-              <File Id="fil3A10C1B897565FBA3DC68FBB33EE54A0" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2010\Styles\branding-ko-KR.css" />
+              <File Id="fil3A10C1B897565FBA3DC68FBB33EE54A0" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2010\styles\branding-ko-KR.css" />
             </Component>
             <Component Id="cmp69FC7753827CA0F97C16A1597A8AEF73" Guid="{D25C4E65-A312-4F97-9BEB-52B2AC57C746}">
-              <File Id="fil213188F38DD94292D1AF6C45AD5AC7CC" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2010\Styles\branding-pl-PL.css" />
+              <File Id="fil213188F38DD94292D1AF6C45AD5AC7CC" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2010\styles\branding-pl-PL.css" />
             </Component>
             <Component Id="cmpF3A89C31DBA51AD4196B088D0EFB6E28" Guid="{A2B48DB1-416E-4EA7-B4CB-559ABD1F7673}">
-              <File Id="fil7A79680140B9056F5899AFA546EEB06A" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2010\Styles\branding-pt-BR.css" />
+              <File Id="fil7A79680140B9056F5899AFA546EEB06A" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2010\styles\branding-pt-BR.css" />
             </Component>
             <Component Id="cmp305C2486D271505D7109589AB50625C6" Guid="{DDEDA65D-DC3F-43AE-9EF6-A9C4088B9377}">
-              <File Id="fil737D457B4B02F2C7BBBCEAEE8E1690CE" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2010\Styles\branding-ru-RU.css" />
+              <File Id="fil737D457B4B02F2C7BBBCEAEE8E1690CE" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2010\styles\branding-ru-RU.css" />
             </Component>
             <Component Id="cmpCAA2904DC9623B46E5048E8E2B660FDD" Guid="{C4E0E7E1-CBB8-4E2C-8879-637141193A33}">
-              <File Id="fil886CA5F21809B191E4CE69AA1D57D2A4" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2010\Styles\branding-tr-TR.css" />
+              <File Id="fil886CA5F21809B191E4CE69AA1D57D2A4" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2010\styles\branding-tr-TR.css" />
             </Component>
             <Component Id="cmp31A84DF9619C68F55C225AFE6FE07112" Guid="{54D29039-062B-4CC4-A5A6-5481D73159D8}">
-              <File Id="fil5CD420D4440DDBCB2CFA5D5ACD339DED" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2010\Styles\branding-zh-CN.css" />
+              <File Id="fil5CD420D4440DDBCB2CFA5D5ACD339DED" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2010\styles\branding-zh-CN.css" />
             </Component>
             <Component Id="cmp8F3D7F0475E12D36091EEEDD3E8DFAAD" Guid="{9469A5E2-7AB8-4D16-9298-D3688C7D840B}">
-              <File Id="fil40FD3689176AEAA5792278B5F2515F67" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2010\Styles\branding-zh-TW.css" />
+              <File Id="fil40FD3689176AEAA5792278B5F2515F67" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2010\styles\branding-zh-TW.css" />
             </Component>
             <Component Id="cmp389857C10D25FB83766818BEA2E39BBD" Guid="{9ECCA6A8-AAEA-4B9C-A9D9-4E43AE5A43AA}">
-              <File Id="fil50EBD02F80E75E84DED5B9C26F9ED77C" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2010\Styles\branding.css" />
+              <File Id="fil50EBD02F80E75E84DED5B9C26F9ED77C" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2010\styles\branding.css" />
             </Component>
           </Directory>
           <Directory Id="dir63DDB8F4C89D90CCF4EEADFFB7C1C7D1" Name="transforms">

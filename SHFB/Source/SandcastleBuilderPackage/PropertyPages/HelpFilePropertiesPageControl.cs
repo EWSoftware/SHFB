@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : HelpFilePropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 10/27/2012
+// Updated : 10/28/2012
 // Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -51,6 +51,9 @@ namespace SandcastleBuilder.Package.PropertyPages
         public HelpFilePropertiesPageControl()
         {
             InitializeComponent();
+
+            // Set the maximum size to prevent an unnecessary vertical scrollbar
+            this.MaximumSize = new System.Drawing.Size(2048, this.Height);
 
             this.Title = "Help File";
             this.HelpKeyword = "1b2dff59-92cc-4578-b261-f3849f30c26c";
@@ -181,14 +184,21 @@ namespace SandcastleBuilder.Package.PropertyPages
             List<string> allFilters;
             int idx;
 
+#if !STANDALONEGUI
             if(this.ProjectMgr == null)
                 return false;
-
+#else
+            if(this.CurrentProject == null)
+                return false;
+#endif
             // Add the project's selected language to the list if it is not there
             if(control.Name == "cboLanguage")
             {
+#if !STANDALONEGUI
                 projProp = this.ProjectMgr.BuildProject.GetProperty("Language");
-
+#else
+                projProp = this.CurrentProject.MSBuildProject.GetProperty("Language");
+#endif
                 if(projProp != null)
                     cboLanguage.SelectedItem = this.AddLanguage(projProp.UnevaluatedValue ?? "en-US");
 
@@ -201,7 +211,11 @@ namespace SandcastleBuilder.Package.PropertyPages
                 for(idx = 0; idx < cblSyntaxFilters.Items.Count; idx++)
                     cblSyntaxFilters.SetItemChecked(idx, false);
 
+#if !STANDALONEGUI
                 projProp = this.ProjectMgr.BuildProject.GetProperty("SyntaxFilters");
+#else
+                projProp = this.CurrentProject.MSBuildProject.GetProperty("SyntaxFilters");
+#endif
 
                 if(projProp != null)
                     allFilters = BuildComponentManager.SyntaxFiltersFrom(projProp.UnevaluatedValue).Select(f => f.Id).ToList();
@@ -225,16 +239,25 @@ namespace SandcastleBuilder.Package.PropertyPages
         /// <inheritdoc />
         protected override bool StoreControlValue(Control control)
         {
+#if !STANDALONEGUI
             if(this.ProjectMgr == null)
                 return false;
-
+#else
+            if(this.CurrentProject == null)
+                return false;
+#endif
             // Set the selected syntax filters value
             if(control.Name == "cblSyntaxFilters")
             {
+#if !STANDALONEGUI
                 this.ProjectMgr.SetProjectProperty("SyntaxFilters",
                     SyntaxFilterTypeConverter.ToRecognizedFilterIds(String.Join(", ",
                         cblSyntaxFilters.CheckedItems.Cast<string>().ToArray())));
-
+#else
+                this.CurrentProject.MSBuildProject.SetProperty("SyntaxFilters",
+                    SyntaxFilterTypeConverter.ToRecognizedFilterIds(String.Join(", ",
+                        cblSyntaxFilters.CheckedItems.Cast<string>().ToArray())));
+#endif
                 return true;
             }
 
@@ -271,9 +294,13 @@ namespace SandcastleBuilder.Package.PropertyPages
             // If the presentation style wasn't recognized, it may not have matched by case
             if(cboPresentationStyle.SelectedIndex == -1)
             {
+#if !STANDALONEGUI
+                string prop = base.ProjectMgr.GetProjectProperty("PresentationStyle");
+#else
+                string prop = base.CurrentProject.MSBuildProject.GetPropertyValue("PresentationStyle");
+#endif
                 // Try to get it based on the current setting.  If still not found, use the first one.
-                if(!PresentationStyleTypeConverter.AllStyles.TryGetValue(base.ProjectMgr.GetProjectProperty(
-                  "PresentationStyle"), out pss))
+                if(!PresentationStyleTypeConverter.AllStyles.TryGetValue(prop, out pss))
                     cboPresentationStyle.SelectedIndex = 0;
                 else
                     cboPresentationStyle.SelectedValue = pss.Id;

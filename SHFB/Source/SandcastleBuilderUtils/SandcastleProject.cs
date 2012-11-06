@@ -1493,7 +1493,7 @@ namespace SandcastleBuilder.Utils
         /// </summary>
         /// <remarks>If not specified, the default is "VisualStudio11".  This should typically be left set to
         /// the default value.</remarks>
-        [Category("MS Help Viewer"), Description("Specify the MS Help Viewer 2.0 content catalong name.  This " +
+        [Category("MS Help Viewer"), Description("Specify the MS Help Viewer 2.0 content catalog name.  This " +
           "should typically be left set to the default value \"VisualStudio11\"."), DefaultValue("VisualStudio11"),
           EscapeValue]
         public string CatalogName

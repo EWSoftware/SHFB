@@ -1,33 +1,36 @@
-﻿//=============================================================================
+﻿//===============================================================================================================
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : VisibilityPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 04/04/2012
+// Updated : 10/28/2012
 // Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This user control is used to edit the Visibility category properties.
+// This user control is used to edit the Visibility category properties
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.  This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.9.3.0  03/27/2011  EFW  Created the code
-//=============================================================================
+// 1.9.6.0  10/28/2012  EFW  Updated for use in the standalone GUI
+//===============================================================================================================
 
 using System;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 using Microsoft.Build.Evaluation;
+
+#if !STANDALONEGUI
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.OLE.Interop;
 
 using SandcastleBuilder.Package.Nodes;
+#endif
 using SandcastleBuilder.Utils;
 using SandcastleBuilder.Utils.Design;
 
@@ -55,6 +58,9 @@ namespace SandcastleBuilder.Package.PropertyPages
         public VisibilityPropertiesPageControl()
         {
             InitializeComponent();
+
+            // Set the maximum size to prevent an unnecessary vertical scrollbar
+            this.MaximumSize = new System.Drawing.Size(2048, this.Height);
 
             this.Title = "Visibility";
             this.HelpKeyword = "3c489bd6-598c-4684-aafb-fbe9400864d3";
@@ -95,13 +101,14 @@ namespace SandcastleBuilder.Package.PropertyPages
         //=====================================================================
 
         /// <inheritdoc />
-        /// <remarks>For this page, we only need to bind one control as all the values are stored
-        /// in a single property.</remarks>
+        /// <remarks>For this page, we only need to bind one control as all the values are stored in a single
+        /// property.</remarks>
         protected override bool BindControlValue(Control control)
         {
             ProjectProperty projProp;
             VisibleItems items;
 
+#if !STANDALONEGUI
             if(this.ProjectMgr == null)
                 return false;
 
@@ -117,7 +124,23 @@ namespace SandcastleBuilder.Package.PropertyPages
             }
 
             projProp = this.ProjectMgr.BuildProject.GetProperty("VisibleItems");
+#else
+            if(this.CurrentProject == null)
+                return false;
 
+            if(control.Name == "lblAPIFilterState")
+            {
+                projProp = this.CurrentProject.MSBuildProject.GetProperty("ApiFilter");
+
+                if(projProp != null)
+                    apiFilter = projProp.UnevaluatedValue ?? String.Empty;
+
+                this.UpdateApiFilterInfo();
+                return true;
+            }
+
+            projProp = this.CurrentProject.MSBuildProject.GetProperty("VisibleItems");
+#endif
             // If not found or not valid, we'll ignore it and use the defaults
             if(projProp != null && Enum.TryParse<VisibleItems>(projProp.UnevaluatedValue, out items))
             {
@@ -139,12 +162,13 @@ namespace SandcastleBuilder.Package.PropertyPages
         }
 
         /// <inheritdoc />
-        /// <remarks>For this page, we only need to bind one control as all the values are stored
-        /// in a single property.</remarks>
+        /// <remarks>For this page, we only need to bind one control as all the values are stored in a single
+        /// property.</remarks>
         protected override bool StoreControlValue(Control control)
         {
             VisibleItems items = VisibleItems.None;
 
+#if !STANDALONEGUI
             if(this.ProjectMgr == null)
                 return false;
 
@@ -158,7 +182,21 @@ namespace SandcastleBuilder.Package.PropertyPages
 
                 return true;
             }
+#else
+            if(this.CurrentProject == null)
+                return false;
 
+            if(control.Name == "lblAPIFilterState")
+            {
+                if(filterChanged)
+                {
+                    this.CurrentProject.MSBuildProject.SetProperty("ApiFilter", apiFilter);
+                    filterChanged = false;
+                }
+
+                return true;
+            }
+#endif
             if(chkAttributes.Checked)
                 items |= VisibleItems.Attributes;
 
@@ -195,8 +233,11 @@ namespace SandcastleBuilder.Package.PropertyPages
             if(chkSealedProtected.Checked)
                 items |= VisibleItems.SealedProtected;
 
+#if !STANDALONEGUI
             this.ProjectMgr.SetProjectProperty("VisibleItems", items.ToString());
-
+#else
+            this.CurrentProject.MSBuildProject.SetProperty("VisibleItems", items.ToString());
+#endif
             return true;
         }
         #endregion
@@ -312,6 +353,7 @@ namespace SandcastleBuilder.Package.PropertyPages
         /// <param name="e">The event arguments</param>
         private void btnEditAPIFilter_Click(object sender, EventArgs e)
         {
+#if !STANDALONEGUI
             if(this.ProjectMgr == null)
                 return;
 
@@ -322,6 +364,17 @@ namespace SandcastleBuilder.Package.PropertyPages
             // Create an API filter collection that we can edit
             ApiFilterCollection filter = new ApiFilterCollection(
                 ((SandcastleBuilderProjectNode)this.ProjectMgr).SandcastleProject);
+#else
+            if(base.CurrentProject == null)
+                return;
+
+            // Apply any pending visibility changes first
+            if(this.IsDirty && !this.Apply())
+                return;
+
+            // Create an API filter collection that we can edit
+            ApiFilterCollection filter = new ApiFilterCollection(base.CurrentProject);
+#endif
             filter.FromXml(apiFilter);
 
             using(ApiFilterEditorDlg dlg = new ApiFilterEditorDlg(filter))

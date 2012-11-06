@@ -30,26 +30,46 @@ namespace SandcastleBuilder.Gui.ContentEditors
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProjectPropertiesWindow));
-            this.pgProps = new SandcastleBuilder.Utils.Controls.CustomPropertyGrid();
             this.statusBarTextProvider1 = new SandcastleBuilder.Utils.Controls.StatusBarTextProvider(this.components);
+            this.tvPropertyPages = new System.Windows.Forms.TreeView();
+            this.pnlPropertyPages = new System.Windows.Forms.Panel();
             this.SuspendLayout();
             // 
-            // pgProps
+            // tvPropertyPages
             // 
-            this.pgProps.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pgProps.Location = new System.Drawing.Point(0, 0);
-            this.pgProps.Name = "pgProps";
-            this.pgProps.PropertyNamePaneWidth = 330;
-            this.pgProps.Size = new System.Drawing.Size(475, 480);
-            this.statusBarTextProvider1.SetStatusBarText(this.pgProps, "Project properties");
-            this.pgProps.TabIndex = 0;
-            this.pgProps.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.pgProps_PropertyValueChanged);
+            this.tvPropertyPages.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.tvPropertyPages.FullRowSelect = true;
+            this.tvPropertyPages.HideSelection = false;
+            this.tvPropertyPages.Location = new System.Drawing.Point(12, 12);
+            this.tvPropertyPages.Name = "tvPropertyPages";
+            this.tvPropertyPages.ShowLines = false;
+            this.tvPropertyPages.ShowPlusMinus = false;
+            this.tvPropertyPages.ShowRootLines = false;
+            this.tvPropertyPages.Size = new System.Drawing.Size(181, 531);
+            this.tvPropertyPages.TabIndex = 0;
+            this.tvPropertyPages.BeforeSelect += new System.Windows.Forms.TreeViewCancelEventHandler(this.tvPropertyPages_BeforeSelect);
+            this.tvPropertyPages.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvPropertyPages_AfterSelect);
+            // 
+            // pnlPropertyPages
+            // 
+            this.pnlPropertyPages.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnlPropertyPages.AutoScroll = true;
+            this.pnlPropertyPages.Location = new System.Drawing.Point(199, 12);
+            this.pnlPropertyPages.Name = "pnlPropertyPages";
+            this.pnlPropertyPages.Size = new System.Drawing.Size(571, 531);
+            this.pnlPropertyPages.TabIndex = 1;
+            this.pnlPropertyPages.SizeChanged += new System.EventHandler(this.pnlPropertyPages_SizeChanged);
             // 
             // ProjectPropertiesWindow
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
-            this.ClientSize = new System.Drawing.Size(475, 480);
-            this.Controls.Add(this.pgProps);
+            this.ClientSize = new System.Drawing.Size(782, 555);
+            this.Controls.Add(this.pnlPropertyPages);
+            this.Controls.Add(this.tvPropertyPages);
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.HideOnClose = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimizeBox = false;
@@ -64,7 +84,8 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
         #endregion
 
-        private SandcastleBuilder.Utils.Controls.CustomPropertyGrid pgProps;
         private SandcastleBuilder.Utils.Controls.StatusBarTextProvider statusBarTextProvider1;
+        private System.Windows.Forms.TreeView tvPropertyPages;
+        private System.Windows.Forms.Panel pnlPropertyPages;
     }
 }

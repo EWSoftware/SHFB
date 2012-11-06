@@ -88,7 +88,7 @@
             this.Controls.Add(this.pgProps);
             this.Controls.Add(this.lbProperties);
             this.Controls.Add(this.btnAdd);
-            this.MinimumSize = new System.Drawing.Size(490, 245);
+            this.MinimumSize = new System.Drawing.Size(706, 359);
             this.Name = "UserDefinedPropertiesPageControl";
             this.Size = new System.Drawing.Size(706, 359);
             this.ResumeLayout(false);

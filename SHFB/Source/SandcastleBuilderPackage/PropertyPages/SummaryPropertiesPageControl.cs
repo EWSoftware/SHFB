@@ -1,23 +1,23 @@
-﻿//=============================================================================
+﻿//===============================================================================================================
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SummaryPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 04/04/2012
+// Updated : 10/28/2012
 // Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This user control is used to edit the Summaries category properties.
+// This user control is used to edit the Summaries category properties
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.  This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.9.3.0  03/27/2011  EFW  Created the code
-//=============================================================================
+// 1.9.6.0  10/28/2012  EFW  Updated for use in the standalone GUI
+// ==============================================================================================================
 
 using System;
 using System.Globalization;
@@ -26,10 +26,13 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 using Microsoft.Build.Evaluation;
+
+#if !STANDALONEGUI
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.OLE.Interop;
 
 using SandcastleBuilder.Package.Nodes;
+#endif
 using SandcastleBuilder.Utils;
 using SandcastleBuilder.Utils.Design;
 
@@ -57,6 +60,9 @@ namespace SandcastleBuilder.Package.PropertyPages
         public SummaryPropertiesPageControl()
         {
             InitializeComponent();
+
+            // Set the maximum size to prevent an unnecessary vertical scrollbar
+            this.MaximumSize = new System.Drawing.Size(2048, this.Height);
 
             this.Title = "Summaries";
             this.HelpKeyword = "eb7e1bc7-21c5-4453-bbaf-dec8c62c15bd";
@@ -100,19 +106,30 @@ namespace SandcastleBuilder.Package.PropertyPages
         {
             ProjectProperty projProp;
 
+#if !STANDALONEGUI
             if(this.ProjectMgr == null)
                 return false;
+#else
+            if(this.CurrentProject == null)
+                return false;
+#endif
 
             if(control.Name == "lblNamespaceSummaryState")
             {
                 // Pass it the Sandcastle project instance as we use the designer dialog to edit the collection
                 // and it obtains it from the collection to do the required partial build.
+#if !STANDALONEGUI
                 namespaceSummaries = new NamespaceSummaryItemCollection(
                     ((SandcastleBuilderProjectNode)base.ProjectMgr).SandcastleProject);
                 summariesChanged = false;
 
                 projProp = this.ProjectMgr.BuildProject.GetProperty("NamespaceSummaries");
+#else
+                namespaceSummaries = new NamespaceSummaryItemCollection(base.CurrentProject);
+                summariesChanged = false;
 
+                projProp = this.CurrentProject.MSBuildProject.GetProperty("NamespaceSummaries");
+#endif
                 if(projProp != null && !String.IsNullOrEmpty(projProp.UnevaluatedValue))
                     namespaceSummaries.FromXml(projProp.UnevaluatedValue);
 
@@ -126,14 +143,22 @@ namespace SandcastleBuilder.Package.PropertyPages
         /// <inheritdoc />
         protected override bool StoreControlValue(Control control)
         {
+#if !STANDALONEGUI
             if(this.ProjectMgr == null)
                 return false;
-
+#else
+            if(this.CurrentProject == null)
+                return false;
+#endif
             if(control.Name == "lblNamespaceSummaryState")
             {
                 if(summariesChanged)
                 {
+#if !STANDALONEGUI
                     this.ProjectMgr.SetProjectProperty("NamespaceSummaries", namespaceSummaries.ToXml());
+#else
+                    this.CurrentProject.MSBuildProject.SetProperty("NamespaceSummaries", namespaceSummaries.ToXml());
+#endif
                     summariesChanged = false;
                 }
 
@@ -167,12 +192,21 @@ namespace SandcastleBuilder.Package.PropertyPages
         {
             string oldSummaries, newSummaries;
 
+#if !STANDALONEGUI
             if(this.ProjectMgr == null)
                 return;
 
             // Apply any pending changes first
             if(this.IsDirty && ((IPropertyPage)this).Apply() != VSConstants.S_OK)
                 return;
+#else
+            if(this.CurrentProject == null)
+                return;
+
+            // Apply any pending changes first
+            if(this.IsDirty && !this.Apply())
+                return;
+#endif
 
             using(NamespaceSummaryItemEditorDlg dlg = new NamespaceSummaryItemEditorDlg(namespaceSummaries))
             {

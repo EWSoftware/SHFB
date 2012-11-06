@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : MainForm.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/06/2012
+// Updated : 10/28/2012
 // Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -107,6 +107,14 @@ namespace SandcastleBuilder.Gui
         public ProjectExplorerWindow ProjectExplorer
         {
             get { return projectExplorer; }
+        }
+
+        /// <summary>
+        /// Get a reference to the Project Properties pane
+        /// </summary>
+        public ProjectPropertiesWindow ProjectProperties
+        {
+            get { return projectProperties; }
         }
 
         /// <summary>
@@ -336,8 +344,7 @@ namespace SandcastleBuilder.Gui
         }
 
         /// <summary>
-        /// This is used to save the project and/or document windows prior to
-        /// doing a build.
+        /// This is used to save the project and/or document windows prior to doing a build
         /// </summary>
         /// <returns>True if successful, false if it fails or is cancelled.</returns>
         private bool SaveBeforeBuild()
@@ -347,11 +354,13 @@ namespace SandcastleBuilder.Gui
             DialogResult result;
             bool success = true;
 
+            if(!projectProperties.Apply())
+                return false;
+
             if(Settings.Default.BeforeBuild == BeforeBuildAction.DoNotSave)
                 return true;
 
-            // Content layout windows need saving too.  We'll prompt to save
-            // these.
+            // Content layout windows need saving too.  We'll prompt to save these
             foreach(IDockContent document in dockPanel.Contents)
             {
                 editor = document as BaseContentEditor;

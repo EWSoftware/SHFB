@@ -46,6 +46,9 @@ namespace SandcastleBuilder.Package.PropertyPages
         {
             InitializeComponent();
 
+            // Set the maximum size to prevent an unnecessary vertical scrollbar
+            this.MaximumSize = new System.Drawing.Size(2048, this.Height);
+
             this.Title = "Help 1/Website";
 
             cboWebsiteSdkLinkType.BindingContext = new BindingContext();
@@ -63,7 +66,7 @@ namespace SandcastleBuilder.Package.PropertyPages
         //=====================================================================
 
         /// <inheritdoc />
-        protected override bool ShowHelp()
+        public override bool ShowHelp()
         {
             // If a website control has the focus, show the Website help page.  If not, show the Help 1 help page
             if(cboWebsiteSdkLinkType.Focused)

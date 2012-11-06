@@ -1,23 +1,23 @@
-﻿//=============================================================================
+﻿//===============================================================================================================
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : PlugInPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 12/31/2011
-// Note    : Copyright 2011, Eric Woodruff, All rights reserved
+// Updated : 10/28/2012
+// Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This user control is used to edit the Plug-In category properties.
+// This user control is used to edit the Plug-In category properties
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.  This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.9.3.0  03/27/2011  EFW  Created the code
-//=============================================================================
+// 1.9.6.0  10/28/2012  EFW  Updated for use in the standalone GUI
+//===============================================================================================================
 
 using System;
 using System.Globalization;
@@ -27,7 +27,9 @@ using System.Windows.Forms;
 
 using Microsoft.Build.Evaluation;
 
+#if !STANDALONEGUI
 using SandcastleBuilder.Package.Properties;
+#endif
 using SandcastleBuilder.Utils.PlugIn;
 
 namespace SandcastleBuilder.Package.PropertyPages
@@ -42,6 +44,7 @@ namespace SandcastleBuilder.Package.PropertyPages
         //=====================================================================
 
         private PlugInConfigurationDictionary currentConfigs;
+        private string messageBoxTitle;
         #endregion
 
         #region Constructor
@@ -54,6 +57,11 @@ namespace SandcastleBuilder.Package.PropertyPages
         {
             InitializeComponent();
 
+#if !STANDALONEGUI
+            messageBoxTitle = Resources.PackageTitle;
+#else
+            messageBoxTitle = SandcastleBuilder.Utils.Constants.AppName;
+#endif
             this.Title = "Plug-Ins";
             this.HelpKeyword = "e031b14e-42f0-47e1-af4c-9fed2b88cbc7";
 
@@ -68,13 +76,13 @@ namespace SandcastleBuilder.Package.PropertyPages
                 System.Diagnostics.Debug.WriteLine(loadEx.LoaderExceptions[0].ToString());
 
                 MessageBox.Show("Unexpected error loading plug-ins: " + loadEx.LoaderExceptions[0].Message,
-                    Resources.PackageTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    messageBoxTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             catch(Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
 
-                MessageBox.Show("Unexpected error loading plug-ins: " + ex.Message, Resources.PackageTitle,
+                MessageBox.Show("Unexpected error loading plug-ins: " + ex.Message, messageBoxTitle,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
@@ -82,7 +90,7 @@ namespace SandcastleBuilder.Package.PropertyPages
                 lbAvailablePlugIns.SelectedIndex = 0;
             else
             {
-                MessageBox.Show("No valid plug-ins found", Resources.PackageTitle, MessageBoxButtons.OK,
+                MessageBox.Show("No valid plug-ins found", messageBoxTitle, MessageBoxButtons.OK,
                     MessageBoxIcon.Information);
                 gbAvailablePlugIns.Enabled = gbProjectAddIns.Enabled = false;
             }
@@ -101,11 +109,17 @@ namespace SandcastleBuilder.Package.PropertyPages
             currentConfigs = new PlugInConfigurationDictionary(null);
             lbProjectPlugIns .Items.Clear();
 
+#if !STANDALONEGUI
             if(this.ProjectMgr == null)
                 return false;
 
             projProp = this.ProjectMgr.BuildProject.GetProperty("PlugInConfigurations");
+#else
+            if(this.CurrentProject == null)
+                return false;
 
+            projProp = this.CurrentProject.MSBuildProject.GetProperty("PlugInConfigurations");
+#endif
             if(projProp != null && !String.IsNullOrEmpty(projProp.UnevaluatedValue))
                 currentConfigs.FromXml(projProp.UnevaluatedValue);
 
@@ -126,10 +140,17 @@ namespace SandcastleBuilder.Package.PropertyPages
         /// <inheritdoc />
         protected override bool StoreControlValue(Control control)
         {
+#if !STANDALONEGUI
             if(this.ProjectMgr == null)
                 return false;
 
             this.ProjectMgr.SetProjectProperty("PlugInConfigurations", currentConfigs.ToXml());
+#else
+            if(this.CurrentProject == null)
+                return false;
+
+            this.CurrentProject.MSBuildProject.SetProperty("PlugInConfigurations", currentConfigs.ToXml());
+#endif
             return true;
         }
         #endregion
@@ -199,7 +220,7 @@ namespace SandcastleBuilder.Package.PropertyPages
                 }
                 else
                     MessageBox.Show("The selected plug-in's version is not compatible with this version of the " +
-                        "help file builder and cannot be used.", Resources.PackageTitle, MessageBoxButtons.OK,
+                        "help file builder and cannot be used.", messageBoxTitle, MessageBoxButtons.OK,
                         MessageBoxIcon.Error);
         }
 
@@ -234,7 +255,7 @@ namespace SandcastleBuilder.Package.PropertyPages
             else
                 MessageBox.Show("The selected plug-in either does not exist or is of a version that is not " +
                     "compatible with this version of the help file builder and cannot be used.",
-                    Resources.PackageTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    messageBoxTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         /// <summary>

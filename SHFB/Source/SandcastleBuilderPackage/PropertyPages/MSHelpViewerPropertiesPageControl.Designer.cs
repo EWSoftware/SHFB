@@ -232,7 +232,7 @@
             this.epNotes.SetIconPadding(this.txtTocParentId, 5);
             this.txtTocParentId.Location = new System.Drawing.Point(279, 240);
             this.txtTocParentId.Name = "txtTocParentId";
-            this.txtTocParentId.Size = new System.Drawing.Size(445, 27);
+            this.txtTocParentId.Size = new System.Drawing.Size(475, 27);
             this.txtTocParentId.TabIndex = 16;
             this.txtTocParentId.Tag = "TocParentId";
             this.txtTocParentId.Text = "-1";
@@ -260,7 +260,7 @@
             this.txtCatalogName.Name = "txtCatalogName";
             this.txtCatalogName.Size = new System.Drawing.Size(209, 27);
             this.txtCatalogName.TabIndex = 5;
-            this.txtCatalogName.Tag = "CatalogProductId";
+            this.txtCatalogName.Tag = "CatalogName";
             this.txtCatalogName.Text = "VisualStudio11";
             // 
             // label11
@@ -295,9 +295,9 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtCatalogProductId);
             this.Controls.Add(this.label9);
-            this.MinimumSize = new System.Drawing.Size(490, 245);
+            this.MinimumSize = new System.Drawing.Size(765, 402);
             this.Name = "MSHelpViewerPropertiesPageControl";
-            this.Size = new System.Drawing.Size(765, 402);
+            this.Size = new System.Drawing.Size(795, 402);
             ((System.ComponentModel.ISupportInitialize)(this.udcTocOrder)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.epNotes)).EndInit();
             this.ResumeLayout(false);

@@ -1,29 +1,32 @@
-﻿//=============================================================================
+﻿//===============================================================================================================
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : PathPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 04/16/2011
-// Note    : Copyright 2011, Eric Woodruff, All rights reserved
+// Updated : 10/28/2012
+// Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This user control is used to edit the Path category properties.
+// This user control is used to edit the Path category properties
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.  This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.9.3.0  03/27/2011  EFW  Created the code
-//=============================================================================
+// 1.9.6.0  10/28/2012  EFW  Updated for use in the standalone GUI
+//===============================================================================================================
 
 using System;
 using System.Runtime.InteropServices;
 
+#if !STANDALONEGUI
 using SandcastleBuilder.Package.Nodes;
+#endif
 using SandcastleBuilder.Utils;
+using SandcastleBuilder.Utils.BuildComponent;
 
 namespace SandcastleBuilder.Package.PropertyPages
 {
@@ -42,6 +45,9 @@ namespace SandcastleBuilder.Package.PropertyPages
         public PathPropertiesPageControl()
         {
             InitializeComponent();
+
+            // Set the maximum size to prevent an unnecessary vertical scrollbar
+            this.MaximumSize = new System.Drawing.Size(2048, this.Height);
 
             this.Title = "Paths";
             this.HelpKeyword = "e6fcfa33-e7ee-430a-abfe-6b7962e6d068";
@@ -63,6 +69,15 @@ namespace SandcastleBuilder.Package.PropertyPages
                 else
                     txtOutputPath.Text = FolderPath.TerminatePath(txtOutputPath.Text);
 
+                // Update the Sandcastle path in the build component manager if necessary
+                string scPath = BuildComponentManager.SandcastlePath,
+                       prjPath = txtSandcastlePath.Folder;
+
+                if((String.IsNullOrEmpty(scPath) && prjPath.Length != 0) ||
+                  (!String.IsNullOrEmpty(scPath) && prjPath.Length == 0) ||
+                  (!String.IsNullOrEmpty(scPath) && prjPath.Length != 0 && scPath != prjPath))
+                    BuildComponentManager.SandcastlePath = prjPath;
+
                 return true;
             }
         }
@@ -71,10 +86,15 @@ namespace SandcastleBuilder.Package.PropertyPages
         protected override void Initialize()
         {
             // Set the project as the base path provider so that the folder is correct
+#if !STANDALONEGUI
             if(base.ProjectMgr != null)
             {
                 SandcastleProject project = ((SandcastleBuilderProjectNode)base.ProjectMgr).SandcastleProject;
-
+#else
+            if(base.CurrentProject != null)
+            {
+                SandcastleProject project = base.CurrentProject;
+#endif
                 txtHtmlHelp1xCompilerPath.Folder = new FolderPath(project);
                 txtHtmlHelp2xCompilerPath.Folder = new FolderPath(project);
                 txtOutputPath.Folder = new FolderPath(project);

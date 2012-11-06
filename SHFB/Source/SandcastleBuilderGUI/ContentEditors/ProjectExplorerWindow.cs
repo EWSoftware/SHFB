@@ -2,17 +2,16 @@
 // System  : Sandcastle Help File Builder
 // File    : ProjectExplorerWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/22/2012
+// Updated : 10/28/2012
 // Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the form used to manage the project items and files.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
 //===============================================================================================================
@@ -112,7 +111,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         public override bool IsDirty
         {
             get { return currentProject != null && currentProject.IsDirty; }
-            set { /* Handled by the property grid and main form */ }
+            set { /* Handled by the property page and main form */ }
         }
 
         /// <inheritdoc />
@@ -132,11 +131,14 @@ namespace SandcastleBuilder.Gui.ContentEditors
         {
             bool result = false;
 
+            if(!MainForm.Host.ProjectProperties.Apply())
+                return false;
+
             using(SaveFileDialog dlg = new SaveFileDialog())
             {
                 dlg.Title = "Save Help Project As";
-                dlg.Filter = "Sandcastle Help File Builder Project " +
-                    "Files (*.shfbproj)|*.shfbproj|All files (*.*)|*.*";
+                dlg.Filter = "Sandcastle Help File Builder Project Files (*.shfbproj)|*.shfbproj|" +
+                    "All files (*.*)|*.*";
                 dlg.DefaultExt = "shfbproj";
                 dlg.InitialDirectory = Directory.GetCurrentDirectory();
 
@@ -152,8 +154,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         //=====================================================================
 
         /// <summary>
-        /// This is called to refresh the project explorer view after another
-        /// pane has added files to the project.
+        /// This is called to refresh the project explorer view after another pane has added files to the project
         /// </summary>
         public void RefreshProject()
         {
@@ -163,8 +164,8 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// <summary>
         /// This is called to ask the user if they want to save their project
         /// </summary>
-        /// <returns>Returns true if saved successfully or no save is
-        /// wanted.  Returns false on error or if cancelled.</returns>
+        /// <returns>Returns true if saved successfully or no save is wanted.  Returns false on error or if
+        /// cancelled.</returns>
         public bool AskToSaveProject()
         {
             DialogResult dr;
@@ -172,10 +173,8 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
             if(currentProject != null && currentProject.IsDirty)
             {
-                dr = MessageBox.Show("Do you want to save your changes to " +
-                  "this project?  Click YES to save changes, NO to " +
-                  "discard them, or CANCEL to stay here and make " +
-                  "more changes.", Constants.AppName,
+                dr = MessageBox.Show("Do you want to save your changes to this project?  Click YES to save " +
+                  "changes, NO to discard them, or CANCEL to stay here and make more changes.", Constants.AppName,
                   MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
 
                 if(dr == DialogResult.Cancel)
@@ -195,24 +194,24 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// <returns>True if successful, false if not</returns>
         public bool Save(string filename)
         {
+            if(!MainForm.Host.ProjectProperties.Apply())
+                return false;
+
             try
             {
                 Cursor.Current = Cursors.WaitCursor;
 
-                // Saving the project sets the given filename as the project's
-                // filename.
+                // Saving the project sets the given filename as the project's filename
                 currentProject.SaveProject(filename);
                 MainForm.UpdateMruList(currentProject.Filename);
                 pgProps.Refresh();
-                tvProjectFiles.Nodes[0].Text = Path.GetFileNameWithoutExtension(
-                    filename);
+                tvProjectFiles.Nodes[0].Text = Path.GetFileNameWithoutExtension(filename);
                 return true;
             }
             catch(Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex);
-                MessageBox.Show(ex.Message, Constants.AppName,
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, Constants.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             finally
@@ -225,8 +224,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// Create an editor for the specified file
         /// </summary>
         /// <param name="fullName">The full path to the file</param>
-        /// <param name="fileItem">The project file item or null if the
-        /// method should find it for itself</param>
+        /// <param name="fileItem">The project file item or null if the method should find it for itself</param>
         /// <returns>The editor window created for the file</returns>
         public DockContent CreateFileEditor(string fullName, FileItem fileItem)
         {
