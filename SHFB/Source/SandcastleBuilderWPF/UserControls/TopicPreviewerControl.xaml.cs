@@ -1,26 +1,26 @@
-﻿//=============================================================================
+﻿//===============================================================================================================
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : TopicPreviewerControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/03/2012
+// Updated : 11/18/2012
 // Note    : Copyright 2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the class used to preview MAML topic files.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.  This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.9.3.4  01/02/2012  EFW  Created the code
-//=============================================================================
+//===============================================================================================================
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -653,8 +653,8 @@ namespace SandcastleBuilder.WPF.UserControls
             }
             catch(Exception ex)
             {
-                MessageBox.Show(String.Format("Unable to launch URL: {0}\r\n\r\nReason: {1}",
-                    link.NavigateUri.Host, ex.Message), "Topic Previewer", MessageBoxButton.OK,
+                MessageBox.Show(String.Format(CultureInfo.InvariantCulture, "Unable to launch URL: {0}\r\n\r\n" +
+                    "Reason: {1}", link.NavigateUri.Host, ex.Message), "Topic Previewer", MessageBoxButton.OK,
                     MessageBoxImage.Exclamation);
             }
         }

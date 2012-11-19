@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : PresentationStyleDictionary.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/24/2012
+// Updated : 11/18/2012
 // Note    : Copyright 2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -20,12 +20,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Xml.Linq;
 
 using SandcastleBuilder.Utils.BuildComponent;
-
-// TODO: This needs to load 3rd party style definitions from the common app data folder too like build components and plug-ins.
 
 namespace SandcastleBuilder.Utils.PresentationStyle
 {
@@ -34,6 +34,12 @@ namespace SandcastleBuilder.Utils.PresentationStyle
     /// </summary>
     public sealed class PresentationStyleDictionary : Dictionary<string, PresentationStyleSettings>
     {
+        #region Private data members
+        //=====================================================================
+
+        private static PresentationStyleDictionary styles;
+        #endregion
+
         #region Properties
         //=====================================================================
 
@@ -45,6 +51,61 @@ namespace SandcastleBuilder.Utils.PresentationStyle
             get
             {
                 return Path.Combine(BuildComponentManager.HelpFileBuilderFolder, "StandardStyles.presentation");
+            }
+        }
+
+        /// <summary>
+        /// This read-only property returns an enumerable list of third-party presentation style definition files
+        /// </summary>
+        /// <remarks>Third party presentation styles should be located in an
+        /// "EWSoftware\Sandcastle Help File Builder\Presentation Styles" folder in the common application data
+        /// folder.  It will also return other presentation style definition files from the SHFB folder.</remarks>
+        public static IEnumerable<string> ThirdPartyPresentationStyleDefinitions
+        {
+            get
+            {
+                string folder = FolderPath.TerminatePath(Path.Combine(Environment.GetFolderPath(
+                    Environment.SpecialFolder.CommonApplicationData), Constants.PresentationStylesFolder));
+
+                if(Directory.Exists(folder))
+                    foreach(string file in Directory.EnumerateFiles(folder, "*.presentation", SearchOption.AllDirectories))
+                        yield return file;
+
+                foreach(string file in Directory.EnumerateFiles(BuildComponentManager.HelpFileBuilderFolder,
+                  "*.presentation", SearchOption.AllDirectories))
+                    if(!Path.GetFileNameWithoutExtension(file).Equals("StandardStyles", StringComparison.OrdinalIgnoreCase))
+                        yield return file;
+            }
+        }
+
+        /// <summary>
+        /// This read-only property returns the values in the collection
+        /// </summary>
+        public static PresentationStyleDictionary AllStyles
+        {
+            get
+            {
+                if(styles == null)
+                    styles = LoadStandardPresentationStyleDictionary();
+
+                return styles;
+            }
+        }
+
+        /// <summary>
+        /// This is used to get the default presentation style to use
+        /// </summary>
+        /// <remarks>The default is the VS2005 style</remarks>
+        public static string DefaultStyle
+        {
+            get
+            {
+                PresentationStyleSettings pss = null;
+
+                if(!AllStyles.TryGetValue("VS2005", out pss))
+                    pss = AllStyles.Values.First();
+
+                return pss.Id;
             }
         }
         #endregion
@@ -72,7 +133,7 @@ namespace SandcastleBuilder.Utils.PresentationStyle
         /// dictionary is returned.</returns>
         public static PresentationStyleDictionary LoadStandardPresentationStyleDictionary()
         {
-            PresentationStyleDictionary psd;
+            PresentationStyleDictionary psd, thirdPartyPSD;
 
             if(!File.Exists(PresentationStyleFilePath))
                 throw new FileNotFoundException("Unable to locate standard presentation style definition file");
@@ -80,6 +141,23 @@ namespace SandcastleBuilder.Utils.PresentationStyle
             try
             {
                 psd = FromXml(PresentationStyleFilePath);
+            }
+            catch(Exception ex)
+            {
+                throw new InvalidOperationException("Unable to parse standard presentation style definition file", ex);
+            }
+
+            try
+            {
+                foreach(string file in ThirdPartyPresentationStyleDefinitions)
+                {
+                    thirdPartyPSD = FromXml(file);
+
+                    // Add the definitions to the main dictionary.  We do not allow overriding existing keys
+                    // to avoid any issues with a third-party style overriding a default style without warning.
+                    foreach(var settings in thirdPartyPSD)
+                        psd.Add(settings.Key, settings.Value);
+                }
             }
             catch(Exception ex)
             {

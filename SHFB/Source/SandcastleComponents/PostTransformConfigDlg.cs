@@ -2,11 +2,11 @@
 // System  : Sandcastle Help File Builder Components
 // File    : PostTransformConfigDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/21/2012
+// Updated : 11/17/2012
 // Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains a form that is used to configure the settings for the Post Transform Component
+// The post transform component is obsolete and will be removed in a future release.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
 // distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
@@ -19,8 +19,7 @@
 // 1.4.0.0  01/31/2007  EFW  Added support for logo placement options and the colorizer's "Copy" image filename.
 // 1.9.0.0  06/06/2010  EFW  Removed outputPath as a configurable option as it is now represented by multiple
 //                           paths.
-// 1.9.6.0  10/21/2012  EFW  Removed obsolete options and moved some to the Code Block Component configuration
-//                           dialog box.
+// 1.9.6.0  10/21/2012  EFW  Disabled editing as the component is now obsolete.
 //===============================================================================================================
 
 using System;
@@ -45,7 +44,6 @@ namespace SandcastleBuilder.Components
         // Current image information
         private string currentLogoFile;
         private Bitmap bmImage;
-        private bool changingValue;
 
         #endregion
 
@@ -109,29 +107,17 @@ namespace SandcastleBuilder.Components
                 attr = node.Attributes["placement"];
 
                 if(attr != null)
-                    cboPlacement.SelectedIndex = (int)Enum.Parse(typeof(PostTransformComponent.LogoPlacement),
-                        attr.Value, true);
+                    cboPlacement.SelectedIndex = cboPlacement.FindString(attr.Value);
 
                 attr = node.Attributes["alignment"];
 
                 if(attr != null)
-                    cboAlignment.SelectedIndex = (int)Enum.Parse(typeof(PostTransformComponent.LogoAlignment),
-                        attr.Value, true);
+                    cboAlignment.SelectedIndex = cboAlignment.FindString(attr.Value);
 
-                try
-                {
-                    changingValue = true;
-                    udcWidth.Value = width;
-                    udcHeight.Value = height;
-                    txtLogoFile_Leave(this, EventArgs.Empty);
-                }
-                finally
-                {
-                    changingValue = false;
-                }
-            }
-            else
+                udcWidth.Value = width;
+                udcHeight.Value = height;
                 txtLogoFile_Leave(this, EventArgs.Empty);
+            }
         }
         #endregion
 
@@ -163,125 +149,8 @@ namespace SandcastleBuilder.Components
             catch(Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
-                MessageBox.Show("Unable to launch link target.  " +
-                    "Reason: " + ex.Message, "Sandcastle Help File Builder",
-                    MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            }
-        }
-
-        /// <summary>
-        /// Validate the configuration and save it
-        /// </summary>
-        /// <param name="sender">The sender of the event</param>
-        /// <param name="e">The event arguments</param>
-        private void btnOK_Click(object sender, EventArgs e)
-        {
-            XmlAttribute attr;
-            XmlNode component, node;
-
-            // Store the changes
-            component = config.SelectSingleNode("component");
-
-            // Auto-correct the configuration if it is still using the old outputPath element
-            node = component.SelectSingleNode("outputPath");
-
-            if(node != null)
-            {
-                XmlNode outputPaths = config.CreateNode(XmlNodeType.Element, "outputPaths", null);
-                outputPaths.InnerText = "{@HelpFormatOutputPaths}";
-                component.ReplaceChild(outputPaths, node);
-            }
-
-            node = component.SelectSingleNode("logoFile");
-
-            if(node == null)
-            {
-                node = config.CreateNode(XmlNodeType.Element, "logoFile", null);
-                component.AppendChild(node);
-
-                attr = config.CreateAttribute("filename");
-                node.Attributes.Append(attr);
-            }
-            else
-                attr = node.Attributes["filename"];
-
-            attr.Value = txtLogoFile.Text;
-
-            attr = node.Attributes["altText"];
-
-            if(attr == null)
-            {
-                attr = config.CreateAttribute("altText");
-                node.Attributes.Append(attr);
-            }
-
-            attr.Value = txtAltText.Text;
-
-            attr = node.Attributes["width"];
-
-            if(attr == null)
-            {
-                attr = config.CreateAttribute("width");
-                node.Attributes.Append(attr);
-            }
-
-            attr.Value = ((int)udcWidth.Value).ToString(CultureInfo.InvariantCulture);
-
-            attr = node.Attributes["height"];
-
-            if(attr == null)
-            {
-                attr = config.CreateAttribute("height");
-                node.Attributes.Append(attr);
-            }
-
-            attr.Value = ((int)udcHeight.Value).ToString(CultureInfo.InvariantCulture);
-
-            attr = node.Attributes["placement"];
-
-            if(attr == null)
-            {
-                attr = config.CreateAttribute("placement");
-                node.Attributes.Append(attr);
-            }
-
-            attr.Value = ((PostTransformComponent.LogoPlacement)cboPlacement.SelectedIndex).ToString().ToLowerInvariant();
-
-            attr = node.Attributes["alignment"];
-
-            if(attr == null)
-            {
-                attr = config.CreateAttribute("alignment");
-                node.Attributes.Append(attr);
-            }
-
-            attr.Value = ((PostTransformComponent.LogoAlignment)cboAlignment.SelectedIndex).ToString().ToLowerInvariant();
-
-            this.DialogResult = DialogResult.OK;
-            this.Close();
-        }
-
-        /// <summary>
-        /// Select the logo image file
-        /// </summary>
-        /// <param name="sender">The sender of the event</param>
-        /// <param name="e">The event arguments</param>
-        private void SelectImage_Click(object sender, EventArgs e)
-        {
-            using(OpenFileDialog dlg = new OpenFileDialog())
-            {
-                dlg.Title = "Select the logo image file";
-                dlg.Filter = "Image files (*.gif, *.jpg, *.jpe*, *.png, *.bmp)|*.gif;*.jpg;*.jpe*;*.png;*.bmp|" +
-                    "All Files (*.*)|*.*";
-                dlg.InitialDirectory = Directory.GetCurrentDirectory();
-                dlg.DefaultExt = "jpg";
-
-                // If selected, add the new file(s)
-                if(dlg.ShowDialog() == DialogResult.OK)
-                {
-                    txtLogoFile.Text = dlg.FileName;
-                    txtLogoFile_Leave(sender, e);
-                }
+                MessageBox.Show("Unable to launch link target.  Reason: " + ex.Message,
+                    "Sandcastle Help File Builder", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
 
@@ -300,8 +169,6 @@ namespace SandcastleBuilder.Components
             currentLogoFile = txtLogoFile.Text;
             lblActualSize.Text = "--";
 
-            chkProportional.Enabled = false;
-
             if(bmImage != null)
             {
                 bmImage.Dispose();
@@ -312,13 +179,9 @@ namespace SandcastleBuilder.Components
             {
                 if(logoFile.Length != 0 && File.Exists(logoFile))
                 {
-                    if(!changingValue)
-                        udcHeight.Value = udcWidth.Value = 0;
-
                     bmImage = new Bitmap(logoFile);
                     lblActualSize.Text = String.Format(CultureInfo.InvariantCulture, "{0} x {1}",
                         bmImage.Width, bmImage.Height);
-                    chkProportional.Enabled = true;
                 }
             }
             catch(Exception ex)
@@ -349,47 +212,6 @@ namespace SandcastleBuilder.Components
                     Rectangle r = new Rectangle(0, 0, (int)udcWidth.Value, (int)udcHeight.Value);
                     e.Graphics.DrawImage(bmImage, r);
                 }
-        }
-
-        /// <summary>
-        /// Redraw the image when the width or height changes
-        /// </summary>
-        /// <param name="sender">The sender of the event</param>
-        /// <param name="e">The event arguments</param>
-        private void WidthHeight_ValueChanged(object sender, EventArgs e)
-        {
-            if(changingValue)
-                return;
-
-            if(chkProportional.Enabled && chkProportional.Checked)
-            {
-                try
-                {
-                    changingValue = true;
-
-                    if(sender == udcHeight || sender == chkProportional)
-                        udcWidth.Value = udcHeight.Value * ((decimal)bmImage.Width / (decimal)bmImage.Height);
-                    else
-                        udcHeight.Value = udcWidth.Value * ((decimal)bmImage.Height / (decimal)bmImage.Width);
-                }
-                finally
-                {
-                    changingValue = false;
-                }
-            }
-
-            pnlImage.Invalidate();
-            pnlImage.Update();
-        }
-
-        /// <summary>
-        /// Disable alignment unless "Above" is selected for placement
-        /// </summary>
-        /// <param name="sender">The sender of the event</param>
-        /// <param name="e">The event arguments</param>
-        private void cboPlacement_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            cboAlignment.Enabled = (cboPlacement.SelectedIndex == (int)PostTransformComponent.LogoPlacement.Above);
         }
         #endregion
     }

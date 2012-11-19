@@ -91,6 +91,7 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="UIAutomationProvider" />
     <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=2.2.3199.27942, Culture=neutral, PublicKeyToken=7c3444e32642107f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -179,6 +180,14 @@
     <Compile Include="..\SandcastleBuilderPackage\PropertyPages\SummaryPropertiesPageControl.designer.cs">
       <Link>PropertyPages\SummaryPropertiesPageControl.designer.cs</Link>
       <DependentUpon>SummaryPropertiesPageControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\TransformArgumentsPageControl.cs">
+      <Link>PropertyPages\TransformArgumentsPageControl.cs</Link>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="..\SandcastleBuilderPackage\PropertyPages\TransformArgumentsPageControl.designer.cs">
+      <Link>PropertyPages\TransformArgumentsPageControl.designer.cs</Link>
+      <DependentUpon>TransformArgumentsPageControl.cs</DependentUpon>
     </Compile>
     <Compile Include="..\SandcastleBuilderPackage\PropertyPages\UserDefinedPropertiesPageControl.cs">
       <Link>PropertyPages\UserDefinedPropertiesPageControl.cs</Link>
@@ -362,6 +371,10 @@
     <EmbeddedResource Include="..\SandcastleBuilderPackage\PropertyPages\SummaryPropertiesPageControl.resx">
       <Link>PropertyPages\SummaryPropertiesPageControl.resx</Link>
       <DependentUpon>SummaryPropertiesPageControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\SandcastleBuilderPackage\PropertyPages\TransformArgumentsPageControl.resx">
+      <Link>PropertyPages\TransformArgumentsPageControl.resx</Link>
+      <DependentUpon>TransformArgumentsPageControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="..\SandcastleBuilderPackage\PropertyPages\UserDefinedPropertiesPageControl.resx">
       <Link>PropertyPages\UserDefinedPropertiesPageControl.resx</Link>

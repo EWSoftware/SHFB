@@ -1,28 +1,26 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : BuildHelp.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/26/2012
+// Updated : 11/16/2012
 // Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains the MSBuild task used to build help file output using the
-// Sandcastle Help File Builder.
+// This file contains the MSBuild task used to build help file output using the Sandcastle Help File Builder
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.8.0.0  06/27/2008  EFW  Created the code
 // 1.8.0.1  12/19/2008  EFW  Updated to work with MSBuild 3.5 and Team Build
 // 1.8.0.2  04/20/2009  EFW  Added DumpLogOnFailure property
 // 1.8.0.3  07/06/2009  EFW  Added support for MS Help Viewer output files
 // 1.9.1.0  07/09/2010  EFW  Updated for use with .NET 4.0 and MSBuild 4.0.
-// ============================================================================
+//===============================================================================================================
 
 using System;
 using System.Collections;
@@ -388,17 +386,14 @@ namespace SandcastleBuilder.Utils.MSBuild
         //=====================================================================
 
         /// <summary>
-        /// This is used to obtain project instance for the project that is
-        /// currently being built.
+        /// This is used to obtain project instance for the project that is currently being built
         /// </summary>
-        /// <returns>The project instance for the current project if possible
-        /// or null if it could not be obtained.</returns>
-        /// <remarks>When you run MSBuild.exe, it does not store the projects
-        /// in the global project collection.  We could build the project
-        /// without it but we lose the ability to use command line overrides
-        /// and changes to user-defined properties.  As such we need to resort
-        /// to reflection to get the current project information.  This is
-        /// easier than in past MSBuild versions though.</remarks>
+        /// <returns>The project instance for the current project if possible or null if it could not be
+        /// obtained.</returns>
+        /// <remarks>When you run MSBuild.exe, it does not store the projects in the global project collection.
+        /// We could build the project without it but we lose the ability to use command line overrides and
+        /// changes to user-defined properties.  As such we need to resort to reflection to get the current
+        /// project information.  This is easier than in past MSBuild versions though.</remarks>
         private ProjectInstance GetCurrentProjectInstance()
         {
             FieldInfo fieldInfo;
@@ -439,8 +434,7 @@ namespace SandcastleBuilder.Utils.MSBuild
         }
 
         /// <summary>
-        /// This is called by the build process thread to update the
-        /// application with the current build step.
+        /// This is called by the build process thread to update the application with the current build step
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
@@ -456,7 +450,7 @@ namespace SandcastleBuilder.Utils.MSBuild
                 // If successful, report the location of the help file/website
                 if(e.BuildStep == BuildStep.Completed)
                 {
-                    outputPath = buildProcess.OutputFolder + sandcastleProject.HtmlHelpName;
+                    outputPath = buildProcess.OutputFolder + buildProcess.ResolvedHtmlHelpName;
 
                     switch(sandcastleProject.HelpFileFormat)
                     {
@@ -491,8 +485,7 @@ namespace SandcastleBuilder.Utils.MSBuild
         }
 
         /// <summary>
-        /// This is called by the build process thread to update the
-        /// task with information about progress.
+        /// This is called by the build process thread to update the task with information about progress
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
@@ -525,8 +518,7 @@ namespace SandcastleBuilder.Utils.MSBuild
         /// <summary>
         /// Cancel the build
         /// </summary>
-        /// <remarks>The build will be cancelled as soo as the next message
-        /// arrives from the build process.</remarks>
+        /// <remarks>The build will be cancelled as soo as the next message arrives from the build process</remarks>
         public void Cancel()
         {
             buildCancelled = true;

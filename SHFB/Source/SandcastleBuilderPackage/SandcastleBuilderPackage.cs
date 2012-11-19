@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SandcastleBuilderPackage.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/06/2012
+// Updated : 11/14/2012
 // Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -91,6 +91,7 @@ namespace SandcastleBuilder.Package
     [ProvideObject(typeof(PathPropertiesPageControl), RegisterUsing = RegistrationMethod.CodeBase)]
     [ProvideObject(typeof(PlugInPropertiesPageControl), RegisterUsing = RegistrationMethod.CodeBase)]
     [ProvideObject(typeof(SummaryPropertiesPageControl), RegisterUsing = RegistrationMethod.CodeBase)]
+    [ProvideObject(typeof(TransformArgumentsPageControl), RegisterUsing = RegistrationMethod.CodeBase)]
     [ProvideObject(typeof(UserDefinedPropertiesPageControl), RegisterUsing = RegistrationMethod.CodeBase)]
     [ProvideObject(typeof(VisibilityPropertiesPageControl), RegisterUsing = RegistrationMethod.CodeBase)]
     // Provide custom file editors.  As above, a non-existent template path is used.

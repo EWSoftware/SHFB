@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/27/2012
+// Updated : 11/18/2012
 // Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -426,6 +426,15 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 rootContentContainerId = value;
             }
         }
+
+        /// <summary>
+        /// This returns the <see cref="SandcastleProject.HtmlHelpName"/> project property value with all
+        /// substitution tags it contains, if any, resolved to actual values.
+        /// </summary>
+        public string ResolvedHtmlHelpName
+        {
+            get { return this.TransformText(project.HtmlHelpName); }
+        }
         #endregion
 
         #region Events
@@ -499,9 +508,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
             helpViewerFiles = new Collection<string>();
             websiteFiles = new Collection<string>();
             helpFormatOutputFolders = new Collection<string>();
-
-            frameworkSettings = FrameworkVersionTypeConverter.AllFrameworks.GetFrameworkWithRedirect(
-                buildProject.FrameworkVersion);
         }
 
         /// <summary>
@@ -615,7 +621,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         "set to the same path");
 
                 // For MS Help 2, the HTML Help Name cannot contain spaces
-                if((project.HelpFileFormat & HelpFileFormat.MSHelp2) != 0 && project.HtmlHelpName.IndexOf(' ') != -1)
+                if((project.HelpFileFormat & HelpFileFormat.MSHelp2) != 0 && this.ResolvedHtmlHelpName.IndexOf(' ') != -1)
                     throw new BuilderException("BE0031", "For MS Help 2 builds, the HtmlHelpName property " +
                         "cannot contain spaces as they are not valid in the collection name.");
 
@@ -652,7 +658,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     throw new BuilderException("BE0032", "Reflection data files do not exist yet");
 
                 // Get the framework settings to use for the build
-                frameworkSettings = FrameworkVersionTypeConverter.AllFrameworks.GetFrameworkWithRedirect(
+                frameworkSettings = FrameworkDictionary.AllFrameworks.GetFrameworkWithRedirect(
                     project.FrameworkVersion);
 
                 if(frameworkSettings == null)
@@ -667,7 +673,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         frameworkSettings.Title);
 
                 // Figure out which presentation style to use
-                if(!PresentationStyleTypeConverter.AllStyles.TryGetValue(project.PresentationStyle, out presentationStyle))
+                if(!PresentationStyleDictionary.AllStyles.TryGetValue(project.PresentationStyle, out presentationStyle))
                     throw new BuilderException("BE0001", "The PresentationStyle property value of '" +
                         project.PresentationStyle + "' is not recognized as a valid presentation style definition.");
 
@@ -717,7 +723,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                     // If the help file is open, it will fail to build so try to get rid of it now before we
                     // get too far into it.
-                    helpFile = outputFolder + project.HtmlHelpName + ".chm";
+                    helpFile = outputFolder + this.ResolvedHtmlHelpName + ".chm";
 
                     if((project.HelpFileFormat & HelpFileFormat.HtmlHelp1) != 0 && File.Exists(helpFile))
                         File.Delete(helpFile);
@@ -822,8 +828,9 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     File.Move(workingFolder + languageFile, workingFolder + "SharedBuilderContent.xml");
 
                     // Presentation-style specific shared content
-                    languageFile = String.Format("{0}BuilderContent_{1}.xml", presentationStyle.Id, language.Name);
-                        
+                    languageFile = String.Format(CultureInfo.InvariantCulture, "{0}BuilderContent_{1}.xml",
+                        presentationStyle.Id, language.Name);
+
                     this.TransformTemplate(languageFile,
                         presentationStyle.ResolvePath(presentationStyle.ToolResourceItemsPath), workingFolder);
                     File.Move(workingFolder + languageFile, workingFolder + "PresentationStyleBuilderContent.xml");
@@ -1350,14 +1357,14 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                         // Rename the content setup file to use the help filename to keep them related and
                         // so that multiple output files can be sent to the same output folder.
-                        File.Move(workingFolder + "HelpContentSetup.msha", workingFolder + project.HtmlHelpName + ".msha");
+                        File.Move(workingFolder + "HelpContentSetup.msha", workingFolder + this.ResolvedHtmlHelpName + ".msha");
 
                         // Generate the example install and remove scripts
                         this.TransformTemplate("InstallMSHC.bat", templateFolder, workingFolder);
-                        File.Move(workingFolder + "InstallMSHC.bat", workingFolder + "Install_" + project.HtmlHelpName + ".bat");
+                        File.Move(workingFolder + "InstallMSHC.bat", workingFolder + "Install_" + this.ResolvedHtmlHelpName + ".bat");
 
                         this.TransformTemplate("RemoveMSHC.bat", templateFolder, workingFolder);
-                        File.Move(workingFolder + "RemoveMSHC.bat", workingFolder + "Remove_" + project.HtmlHelpName + ".bat");
+                        File.Move(workingFolder + "RemoveMSHC.bat", workingFolder + "Remove_" + this.ResolvedHtmlHelpName + ".bat");
 
                         // Copy the launcher utility
                         File.Copy(shfbFolder + "HelpLibraryManagerLauncher.exe", workingFolder + "HelpLibraryManagerLauncher.exe");
@@ -1823,18 +1830,18 @@ AllDone:
             switch(currentFormat)
             {
                 case HelpFileFormat.HtmlHelp1:
-                    patterns[0] = project.HtmlHelpName + "*.chm";
+                    patterns[0] = this.ResolvedHtmlHelpName + "*.chm";
                     break;
 
                 case HelpFileFormat.MSHelp2:
-                    patterns[0] = project.HtmlHelpName + "*.Hx?";
-                    patterns[1] = project.HtmlHelpName + "*.ini";
+                    patterns[0] = this.ResolvedHtmlHelpName + "*.Hx?";
+                    patterns[1] = this.ResolvedHtmlHelpName + "*.ini";
                     break;
 
                 case HelpFileFormat.MSHelpViewer:
-                    patterns[0] = project.HtmlHelpName + "*.msh?";
-                    patterns[1] = "Install_" + project.HtmlHelpName + "*.bat";
-                    patterns[2] = "Remove_" + project.HtmlHelpName + "*.bat";
+                    patterns[0] = this.ResolvedHtmlHelpName + "*.msh?";
+                    patterns[1] = "Install_" + this.ResolvedHtmlHelpName + "*.bat";
+                    patterns[2] = "Remove_" + this.ResolvedHtmlHelpName + "*.bat";
                     patterns[3] = "HelpLibraryManagerLauncher.exe";
                     break;
 
@@ -2312,7 +2319,7 @@ AllDone:
                             "documentation project.  See the error number topic in the help file for details.");
 
                     // If a project with a higher framework version was found, switch to that version now
-                    var projectFramework = FrameworkVersionTypeConverter.AllFrameworks.FrameworkMatching(
+                    var projectFramework = FrameworkDictionary.AllFrameworks.FrameworkMatching(
                         targetFrameworksSeen.First(), new Version(targetFrameworkVersionsSeen.Max(f => f)), true);
 
                     if(frameworkSettings != projectFramework)

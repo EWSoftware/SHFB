@@ -2,14 +2,14 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SandcastleProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/25/2012
+// Updated : 11/18/2012
 // Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the project class.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.   This
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -62,7 +62,8 @@
 //                           property.  Added Support for XAML configuration files.
 // 1.9.5.0  09/10/2012  EFW  Updated to use the new framework definition file for the .NET Framework versions.
 //                           Added the CatalogName property for Help Viewer 2.0 support.
-// 1.9.6.0  10/13/2012  EFW  Removed the BrandingPackageName and SelfBranded properties.
+// 1.9.6.0  10/13/2012  EFW  Removed the BrandingPackageName and SelfBranded properties.  Added support for
+//                           transform component arguments.
 //===============================================================================================================
 
 using System;
@@ -76,13 +77,16 @@ using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Xml;
+using System.Xml.Linq;
 using System.Xml.Serialization;
 
 using Microsoft.Build.Evaluation;
 
 using SandcastleBuilder.Utils.BuildComponent;
 using SandcastleBuilder.Utils.Design;
+using SandcastleBuilder.Utils.Frameworks;
 using SandcastleBuilder.Utils.PlugIn;
+using SandcastleBuilder.Utils.PresentationStyle;
 
 namespace SandcastleBuilder.Utils
 {
@@ -106,12 +110,12 @@ namespace SandcastleBuilder.Utils
         /// <summary>The default platform</summary>
         public const string DefaultPlatform = "AnyCPU";
 
-        // Restricted property names that cannot be used for user-defined
-        // property names.
+        // Restricted property names that cannot be used for user-defined property names
         internal static List<string> restrictedProps = new List<string>() {
             "AssemblyName", "Configuration", "CustomBeforeSHFBTargets", "CustomAfterSHFBTargets",
             "DumpLogOnFailure", "Name", "Platform", "ProjectGuid", "RootNamespace", "SHFBSchemaVersion",
-            "SchemaVersion", "Verbose", "SccProjectName", "SccProvider", "SccAuxPath", "SccLocalPath" };
+            "SchemaVersion", "Verbose", "SccProjectName", "SccProvider", "SccAuxPath", "SccLocalPath",
+            "TransformComponentArguments" };
         #endregion
 
         #region Private data members
@@ -456,6 +460,32 @@ namespace SandcastleBuilder.Utils
                 return fileItems;
             }
         }
+
+        /// <summary>
+        /// This returns an enumerable list of transform component arguments
+        /// </summary>
+        /// <remarks>These are passed as arguments to the XSL transformations used by the <b>BuildAssembler</b>
+        /// <c>TransformComponent</c>.</remarks>
+        /// <returns>An enumerable list of transform component arguments</returns>
+        [Browsable(false)]
+        public IEnumerable<TransformComponentArgument> TransformComponentArguments
+        {
+            get
+            {
+                var argsProp = msBuildProject.GetProperty("TransformComponentArguments");
+
+                if(argsProp != null && !String.IsNullOrEmpty(argsProp.UnevaluatedValue))
+                {
+                    var xr = new XmlTextReader("<Args>" + argsProp.UnevaluatedValue + "</Args>",
+                        XmlNodeType.Element, new XmlParserContext(null, null, null, XmlSpace.Preserve));
+                    xr.Namespaces = false;
+                    xr.MoveToContent();
+
+                    foreach(var arg in XElement.Load(xr, LoadOptions.PreserveWhitespace).Descendants("Argument"))
+                        yield return new TransformComponentArgument(arg);
+                }
+            }
+        }
         #endregion
 
         #region Summary related properties
@@ -781,17 +811,20 @@ namespace SandcastleBuilder.Utils
         /// This is used to get or set the .NET Framework version used to resolve references to system types
         /// (basic .NET Framework, Silverlight, Portable, etc.).
         /// </summary>
-        /// <remarks>If not found, it will default to the most recent version of the basic .NET Framework
+        /// <remarks>If set to null, it will default to the most recent version of the basic .NET Framework
         /// installed.</remarks>
         [Category("Build"), Description("The .NET Framework version used to resolve references to system types."),
-          TypeConverter(typeof(FrameworkVersionTypeConverter))]
+          EscapeValue]
         public string FrameworkVersion
         {
             get { return frameworkVersion; }
             set
             {
-                if(value == null || !FrameworkVersionTypeConverter.AllFrameworks.ContainsKey(value))
-                    value = FrameworkVersionTypeConverter.DefaultFramework;
+                // Let bad values through.  The SandcastlePath value may be needed to find the installed
+                // frameworks and it might not have been set yet.  The property pages or the build engine will
+                // catch bad values if necessary.
+                if(value == null)
+                    value = FrameworkDictionary.DefaultFrameworkInternal;
 
                 this.SetProjectProperty("FrameworkVersion", value);
                 frameworkVersion = value;
@@ -1180,15 +1213,14 @@ namespace SandcastleBuilder.Utils
         /// </summary>
         /// <value>The default is to use the VS2005 style.</value>
         [Category("Help File"), Description("Select which presentation style to use for the generated " +
-          "help topic pages"), TypeConverter(typeof(PresentationStyleTypeConverter)), EscapeValue,
-          RefreshProperties(RefreshProperties.Repaint)]
+          "help topic pages"), EscapeValue, RefreshProperties(RefreshProperties.Repaint)]
         public string PresentationStyle
         {
             get { return presentationStyle; }
             set
             {
-                if(value == null || !PresentationStyleTypeConverter.AllStyles.ContainsKey(value))
-                    value = PresentationStyleTypeConverter.DefaultStyle;
+                if(value == null || !PresentationStyleDictionary.AllStyles.ContainsKey(value))
+                    value = PresentationStyleDictionary.DefaultStyle;
 
                 this.SetProjectProperty("PresentationStyle", value);
                 presentationStyle = value;
@@ -1200,8 +1232,8 @@ namespace SandcastleBuilder.Utils
         /// help topic filenames.
         /// </summary>
         /// <value>The default is to use GUID values as the filenames.</value>
-        [Category("Help File"), Description("Specify the naming method to " +
-          "use for the help topic filenames"), DefaultValue(NamingMethod.Guid)]
+        [Category("Help File"), Description("Specify the naming method to use for the help topic filenames"),
+          DefaultValue(NamingMethod.Guid)]
         public NamingMethod NamingMethod
         {
             get { return namingMethod; }
@@ -2337,40 +2369,6 @@ namespace SandcastleBuilder.Utils
         //=====================================================================
 
         /// <summary>
-        /// This is used to see if the <see cref="FrameworkVersion"/> property should be serialized
-        /// </summary>
-        /// <returns>True to serialize it, false if it matches the default and should not be serialized.</returns>
-        private bool ShouldSerializeFrameworkVersion()
-        {
-            return (this.FrameworkVersion != FrameworkVersionTypeConverter.DefaultFramework);
-        }
-
-        /// <summary>
-        /// This is used to reset the <see cref="FrameworkVersion"/> property to its default value.
-        /// </summary>
-        private void ResetFrameworkVersion()
-        {
-            this.FrameworkVersion = FrameworkVersionTypeConverter.DefaultFramework;
-        }
-
-        /// <summary>
-        /// This is used to see if the <see cref="PresentationStyle"/> property should be serialized.
-        /// </summary>
-        /// <returns>True to serialize it, false if it matches the default and should not be serialized.</returns>
-        private bool ShouldSerializePresentationStyle()
-        {
-            return (this.PresentationStyle != PresentationStyleTypeConverter.DefaultStyle);
-        }
-
-        /// <summary>
-        /// This is used to reset the <see cref="PresentationStyle"/> property to its default value.
-        /// </summary>
-        private void ResetPresentationStyle()
-        {
-            this.PresentationStyle = PresentationStyleTypeConverter.DefaultStyle;
-        }
-
-        /// <summary>
         /// This is used to see if the <see cref="NamespaceSummaries"/> property should be serialized.
         /// </summary>
         /// <returns>True to serialize it, false if it matches the default and should not be serialized.</returns>
@@ -2594,16 +2592,17 @@ namespace SandcastleBuilder.Utils
                 schemaVersion = new Version(property.EvaluatedValue);
 
                 if(schemaVersion > SandcastleProject.SchemaVersion)
-                    throw new BuilderException("PRJ0002", "The selected file is for a more recent " +
-                        "version of the help file builder.  Please upgrade your copy to load the file.");
+                    throw new BuilderException("PRJ0002", "The selected file is for a more recent version of " +
+                        "the help file builder.  Please upgrade your copy to load the file.");
 
-                // Note that many properties don't use the final value as they
-                // don't contain variables that need replacing.
+                // Note that many properties don't use the final value as they don't contain variables that
+                // need replacing.
                 foreach(ProjectProperty prop in this.ProjectPropertyCache.Values)
-                    switch(prop.Name.ToUpper(CultureInfo.InvariantCulture))
+                    switch(prop.Name.ToUpperInvariant())
                     {
                         case "CONFIGURATION":   // These are ignored
                         case "PLATFORM":
+                        case "TRANSFORMCOMPONENTARGUMENTS":
                             break;
 
                         case "APIFILTER":
@@ -2615,8 +2614,8 @@ namespace SandcastleBuilder.Utils
                             break;
 
                         case "DOCUMENTATIONSOURCES":
-                            // The paths in the elements may contain variable
-                            // references so use final values if requested.
+                            // The paths in the elements may contain variable references so use final values if
+                            // requested.
                             if(!usingFinalValues)
                                 docSources.FromXml(prop.UnevaluatedValue);
                             else
@@ -2660,7 +2659,7 @@ namespace SandcastleBuilder.Utils
                               (schemaVersion.Minor == 9 && schemaVersion.Build < 5)))
                             {
                                 this.SetLocalProperty(prop.Name,
-                                    FrameworkVersionTypeConverter.ConvertFromOldValue(prop.UnevaluatedValue));
+                                    FrameworkDictionary.ConvertFromOldValue(prop.UnevaluatedValue));
                                 msBuildProject.SetProperty("FrameworkVersion", this.FrameworkVersion);
                             }
                             else
@@ -2677,15 +2676,13 @@ namespace SandcastleBuilder.Utils
                             break;
                     }
 
-                // Note: Project data stored in item groups are loaded on
-                // demand when first used (i.e. references, additional and
-                // conceptual content, etc.)
+                // Note: Project data stored in item groups are loaded on demand when first used (i.e.
+                // references, additional and conceptual content, etc.)
             }
             catch(Exception ex)
             {
                 throw new BuilderException("PRJ0003", String.Format(CultureInfo.CurrentCulture,
-                    "Error reading project from '{0}':\r\n{1}", msBuildProject.FullPath,
-                    ex.Message), ex);
+                    "Error reading project from '{0}':\r\n{1}", msBuildProject.FullPath, ex.Message), ex);
             }
             finally
             {
@@ -2695,20 +2692,18 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to set the named property to the specified value
-        /// using Reflection.
+        /// This is used to set the named property to the specified value using Reflection
         /// </summary>
         /// <param name="name">The name of the property to set</param>
         /// <param name="value">The value to which it is set</param>
         /// <returns>The parsed object value to which the property was set.</returns>
-        /// <remarks>Property name matching is case insensitive as are the
-        /// values.  This is used to allow setting of simple project properties
-        /// (non-collection) from the MSBuild project file.  Unknown properties
-        /// are ignored.</remarks>
-        /// <exception cref="ArgumentNullException">This is thrown if the
-        /// name parameter is null or an empty string.</exception>
-        /// <exception cref="BuilderException">This is thrown if an error
-        /// occurs while trying to set the named property.</exception>
+        /// <remarks>Property name matching is case insensitive as are the values.  This is used to allow setting
+        /// of simple project properties (non-collection) from the MSBuild project file.  Unknown properties are
+        /// ignored.</remarks>
+        /// <exception cref="ArgumentNullException">This is thrown if the name parameter is null or an empty
+        /// string.</exception>
+        /// <exception cref="BuilderException">This is thrown if an error occurs while trying to set the named
+        /// property.</exception>
         private void SetLocalProperty(string name, string value)
         {
             TypeConverter tc;
@@ -2769,8 +2764,8 @@ namespace SandcastleBuilder.Utils
                                 parsedValue = tc.ConvertFromString(value);
                             }
 
-                        // If it's a file or folder path, set the IsFixedPath
-                        // property based on whether or not it is rooted.
+                        // If it's a file or folder path, set the IsFixedPath property based on whether or not
+                        // it is rooted.
                         filePath = parsedValue as FilePath;
 
                         if(filePath != null && Path.IsPathRooted(value))
@@ -2952,7 +2947,7 @@ namespace SandcastleBuilder.Utils
                 help2SdkLinkType = MSHelp2SdkLinkType.Msdn;
                 helpViewerSdkLinkType = MSHelpViewerSdkLinkType.Msdn;
                 sdkLinkTarget = SdkLinkTarget.Blank;
-                presentationStyle = PresentationStyleTypeConverter.DefaultStyle;
+                presentationStyle = PresentationStyleDictionary.DefaultStyle;
                 namingMethod = NamingMethod.Guid;
                 syntaxFilters = BuildComponentManager.DefaultSyntaxFilter;
                 collectionTocStyle = CollectionTocStyle.Hierarchical;
@@ -2970,7 +2965,7 @@ namespace SandcastleBuilder.Utils
                     this.CatalogName = null;
 
                 language = new CultureInfo("en-US");
-                frameworkVersion = FrameworkVersionTypeConverter.DefaultFramework;
+                frameworkVersion = FrameworkDictionary.DefaultFrameworkInternal;
             }
             finally
             {

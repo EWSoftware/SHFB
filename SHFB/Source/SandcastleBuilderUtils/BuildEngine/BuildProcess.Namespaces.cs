@@ -1,22 +1,21 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.Namespaces.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/02/2012
+// Updated : 11/16/2012
 // Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains the code used to generate the namespace summary file and
-// to purge the unwanted namespaces from the reflection information file.
+// This file contains the code used to generate the namespace summary file and to purge the unwanted namespaces
+// from the reflection information file.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.2.0.0  09/04/2006  EFW  Created the code
 // 1.3.1.0  09/29/2006  EFW  Reworked to insert "missing summary" note for all
 //                           namespaces without a summary.
@@ -26,14 +25,13 @@
 //                           ripping feature.
 // 1.5.2.0  09/13/2007  EFW  Added support for calling plug-ins
 // 1.6.0.6  03/08/2008  EFW  Added support for NamespaceDoc classes
-//=============================================================================
+//===============================================================================================================
 
 using System;
 using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Web;
 using System.Xml;
 
 using SandcastleBuilder.Utils.PlugIn;
@@ -78,8 +76,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
             this.ReportProgress(BuildStep.GenerateNamespaceSummaries,
                 "Generating namespace summary information...");
 
-            // Add a dummy file if there are no comments files specified.
-            // This will contain the project and namespace summaries.
+            // Add a dummy file if there are no comments files specified.  This will contain the project and
+            // namespace summaries.
             if(commentsFiles.Count == 0)
             {
                 nsName = workingFolder + "_ProjNS_.xml";
@@ -94,9 +92,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 commentsFiles.Add(new XmlCommentsFile(nsName));
             }
 
-            // Replace any "NamespaceDoc" class IDs with their containing
-            // namespace.  The comments in these then become the comments
-            // for the namespace.
+            // Replace any "NamespaceDoc" class IDs with their containing namespace.  The comments in these then
+            // become the comments for the namespace.
             commentsFiles.ReplaceNamespaceDocEntries();
 
             if(this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
@@ -104,18 +101,17 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
             this.ExecutePlugIns(ExecutionBehaviors.Before);
 
-            // XML comments do not support summaries on namespace elements by default.  However, if
-            // Sandcastle finds them, it will add them to the help file.  The same holds true for
-            // project comments on the root namespaces page (R:Project_[HtmlHelpName]).  We can
-            // accomplish this by adding elements to the first comments file or by supplying them
-            // in an external XML comments file.
+            // XML comments do not support summaries on namespace elements by default.  However, if Sandcastle
+            // finds them, it will add them to the help file.  The same holds true for project comments on the
+            // root namespaces page (R:Project_[HtmlHelpName]).  We can accomplish this by adding elements to
+            // the first comments file or by supplying them in an external XML comments file.
             try
             {
                 // Add the project comments if specified
                 if(project.ProjectSummary.Length != 0)
                 {
                     // Set the name in case it isn't valid
-                    nsName = "R:Project_" + project.HtmlHelpName.Replace(" ", "_");
+                    nsName = "R:Project_" + this.ResolvedHtmlHelpName.Replace(" ", "_");
                     member = commentsFiles.FindMember(nsName);
                     this.AddNamespaceComments(member, project.ProjectSummary);
                 }
@@ -141,13 +137,11 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         summaryText = String.Empty;
                     }
 
-                    // As of 1.5.0.2, namespace removal is handled by
-                    // the MRefBuilder ripping feature so we don't have
-                    // to deal with it here anymore.
+                    // As of 1.5.0.2, namespace removal is handled by the MRefBuilder ripping feature so we don't
+                    // have to deal with it here anymore.
 
-                    // MRefBuilder bug, June CTP and prior.  If ripped, an
-                    // empty node still appears in the reflection file that
-                    // needs to go away when using /internal+.
+                    // MRefBuilder bug, June CTP and prior.  If ripped, an empty node still appears in the
+                    // reflection file that needs to go away when using /internal+.
                     if(n.SelectSingleNode("elements").ChildNodes.Count == 0)
                         n.ParentNode.RemoveChild(n);
                     else
@@ -161,13 +155,11 @@ namespace SandcastleBuilder.Utils.BuildEngine
             }
             catch(Exception ex)
             {
-                // Eat the error in a partial build so that the user can
-                // get into the namespace comments editor to fix it.
+                // Eat the error in a partial build so that the user can get into the namespace comments editor
+                // to fix it.
                 if(!isPartialBuild)
-                    throw new BuilderException("BE0012", String.Format(
-                        CultureInfo.InvariantCulture, "Error generating " +
-                        "namespace summaries (Namespace = {0}): {1}", nsName,
-                        ex.Message), ex);
+                    throw new BuilderException("BE0012", String.Format(CultureInfo.InvariantCulture,
+                        "Error generating namespace summaries (Namespace = {0}): {1}", nsName, ex.Message), ex);
             }
 
             this.ExecutePlugIns(ExecutionBehaviors.After);
@@ -192,9 +184,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
             text = reStripWhitespace.Replace(tag.InnerText, String.Empty);
 
-            // NOTE: The text is not HTML encoded as it can contain HTML
-            //       tags.  As such, entities such as "&" should be entered
-            //       in encoded form in the text (i.e. &amp;).
+            // NOTE: The text is not HTML encoded as it can contain HTML tags.  As such, entities such as
+            //       "&" should be entered in encoded form in the text (i.e. &amp;).
             if(!String.IsNullOrEmpty(text))
             {
                 if(!String.IsNullOrEmpty(summaryText))
@@ -207,8 +198,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     if(!project.ShowMissingNamespaces)
                         tag.InnerXml = "&#xA0;";
 
-                    // The ShowMissingComponent handles adding the "missing"
-                    // error message to the topic.
+            // The ShowMissingComponent handles adding the "missing" error message to the topic.
         }
     }
 }

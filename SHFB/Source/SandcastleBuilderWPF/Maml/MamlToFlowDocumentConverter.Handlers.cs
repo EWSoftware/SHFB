@@ -1,27 +1,26 @@
-﻿//=============================================================================
+﻿//===============================================================================================================
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : MamlToFlowDocumentConverter.Handlers.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/28/2012
+// Updated : 11/18/2012
 // Note    : Copyright 2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains the element handler methods for the MAML to flow document
-// converter class.
+// This file contains the element handler methods for the MAML to flow document converter class
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.  This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.9.3.4  01/02/2012  EFW  Created the code
-//=============================================================================
+//===============================================================================================================
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -212,12 +211,14 @@ namespace SandcastleBuilder.WPF.Maml
 
             if(attribute != null)
             {
-                p.Inlines.Add(new Run(String.Format("Import code from {0}", attribute.Value)));
+                p.Inlines.Add(new Run(String.Format(CultureInfo.InvariantCulture, "Import code from {0}",
+                    attribute.Value)));
 
                 attribute = props.Element.Attribute("region");
 
                 if(attribute != null)
-                    p.Inlines.Add(new Run(String.Format(" limited to the region named '{0}'", attribute.Value)));
+                    p.Inlines.Add(new Run(String.Format(CultureInfo.InvariantCulture,
+                        " limited to the region named '{0}'", attribute.Value)));
 
                 p.Inlines.Add(new LineBreak());
             }
@@ -616,7 +617,7 @@ namespace SandcastleBuilder.WPF.Maml
             else
                 imageBlock.Child = new TextBlock
                 {
-                    Text = String.Format("[INVALID IMAGE ID: {0}]", id),
+                    Text = String.Format(CultureInfo.InvariantCulture, "[INVALID IMAGE ID: {0}]", id),
                     Background = new SolidColorBrush(Colors.Red),
                     Foreground = new SolidColorBrush(Colors.White),
                     HorizontalAlignment = alignment
@@ -669,7 +670,7 @@ namespace SandcastleBuilder.WPF.Maml
             else
                 inlineImage.Child = new TextBlock
                 {
-                    Text = String.Format("[INVALID IMAGE ID: {0}]", id),
+                    Text = String.Format(CultureInfo.InvariantCulture, "[INVALID IMAGE ID: {0}]", id),
                     Background = new SolidColorBrush(Colors.Red),
                     Foreground = new SolidColorBrush(Colors.White)
                 };
@@ -1209,7 +1210,7 @@ namespace SandcastleBuilder.WPF.Maml
             }
             else
             {
-                props.Converter.AddInlineToContainer(new Bold(new Run(String.Format(
+                props.Converter.AddInlineToContainer(new Bold(new Run(String.Format(CultureInfo.InvariantCulture, 
                     "[MISSING TOKEN: {0}]", props.Element.Value.Trim()))));
 
                 // We just added a bold span so it will need to go back to the last parent
@@ -1328,7 +1329,7 @@ namespace SandcastleBuilder.WPF.Maml
                 }
                 else
                 {
-                    id = "__GlossaryDiv" + autoId.ToString();
+                    id = "__GlossaryDiv" + autoId.ToString(CultureInfo.InvariantCulture);
                     autoId++;
                 }
 

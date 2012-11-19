@@ -142,7 +142,7 @@ namespace SandcastleBuilder.Utils.BuildComponent
                     }
                 }
                 else
-                    if(!File.Exists(sandcastlePath + @"ProductionTools\MRefBuilder.exe"))
+                    if(!File.Exists(Path.Combine(sandcastlePath, @"ProductionTools\MRefBuilder.exe")))
                         sandcastlePath = String.Empty;
 
                 return sandcastlePath;

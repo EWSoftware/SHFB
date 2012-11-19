@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : PresentationStyleSettings.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/26/2012
+// Updated : 11/15/2012
 // Note    : Copyright 2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -108,6 +108,14 @@ namespace SandcastleBuilder.Utils.PresentationStyle
         /// This read-only property returns the BuildAssembler configuration filename for reference builds
         /// </summary>
         public string ReferenceBuildConfiguration { get; private set; }
+
+        /// <summary>
+        /// This read-only property retuns the transform component arguments if any
+        /// </summary>
+        public IEnumerable<TransformComponentArgument> TransformComponentArguments
+        {
+            get { return transformComponentArgs; }
+        }
         #endregion
 
         #region Constructor
@@ -213,6 +221,9 @@ namespace SandcastleBuilder.Utils.PresentationStyle
             if(!Path.IsPathRooted(path))
             {
                 rootPath = ResolveEnvironmentVariables(this.BasePath);
+
+                if(path.Equals(rootPath, StringComparison.OrdinalIgnoreCase))
+                    path = String.Empty;
 
                 if(!Path.IsPathRooted(rootPath))
                     rootPath = Path.Combine(parentFilePath, rootPath);

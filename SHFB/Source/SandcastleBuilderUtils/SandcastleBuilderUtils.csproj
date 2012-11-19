@@ -215,7 +215,6 @@
     <Compile Include="Design\PlugInConfigurationEditorDlg.Designer.cs">
       <DependentUpon>PlugInConfigurationEditorDlg.cs</DependentUpon>
     </Compile>
-    <Compile Include="Design\PresentationStyleTypeConverter.cs" />
     <Compile Include="Design\VersionTypeConverter.cs" />
     <Compile Include="FilePath.cs" />
     <Compile Include="FolderPath.cs" />
@@ -288,7 +287,6 @@
     <Compile Include="Controls\DividerLabel.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Design\FrameworkVersionTypeConverter.cs" />
     <Compile Include="DocumentationSource.cs" />
     <Compile Include="DocumentationSourceCollection.cs" />
     <Compile Include="MissingTags.cs" />

@@ -2,14 +2,14 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.Transform.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/27/2012
+// Updated : 11/17/2012
 // Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the code used to transform and generate the files used to define and compile the help file.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.   This
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
@@ -58,10 +58,8 @@ using System.Xml;
 using Microsoft.Build.Evaluation;
 
 using SandcastleBuilder.Utils.BuildComponent;
-using SandcastleBuilder.Utils.Design;
 using SandcastleBuilder.Utils.Frameworks;
 using SandcastleBuilder.Utils.PlugIn;
-using SandcastleBuilder.MicrosoftHelpViewer;
 
 namespace SandcastleBuilder.Utils.BuildEngine
 {
@@ -97,14 +95,12 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 return String.Empty;
 
             if(args.Length != 0)
-                templateText = String.Format(CultureInfo.InvariantCulture,
-                    templateText, args);
+                templateText = String.Format(CultureInfo.InvariantCulture, templateText, args);
 
             try
             {
-                // Use a regular expression to find and replace all field
-                // tags with a matching value from the project.  They can
-                // be nested.
+                // Use a regular expression to find and replace all field tags with a matching value from the
+                // project.  They can be nested.
                 while(reField.IsMatch(templateText))
                     templateText = reField.Replace(templateText, fieldMatchEval);
             }
@@ -324,7 +320,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 case "manifesttransformparameters":
                     replaceWith = String.Join(";", presentationStyle.DocumentModelTransformation.Select(p =>
-                        String.Format("{0}={1}", p.Key, p.Value)));
+                        String.Format(CultureInfo.InvariantCulture, "{0}={1}", p.Key, p.Value)));
                     break;
 
                 case "toctransformation":
@@ -334,7 +330,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 case "toctransformparameters":
                     replaceWith = String.Join(";", presentationStyle.IntermediateTocTransformation.Select(p =>
-                        String.Format("{0}={1}", p.Key, p.Value)));
+                        String.Format(CultureInfo.InvariantCulture, "{0}={1}", p.Key, p.Value)));
                     break;
 
                 case "hhcpath":
@@ -940,6 +936,18 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         replaceWith = String.Empty;
                     break;
 
+                case "transformcomponentarguments":
+                    sb = new StringBuilder(1024);
+
+                    foreach(var arg in project.TransformComponentArguments)
+                        if(arg.Value != null)
+                            sb.AppendFormat("<argument key=\"{0}\" value=\"{1}\" />\r\n", arg.Key, arg.Value);
+                        else
+                            sb.AppendFormat("<argument key=\"{0}\">{1}</argument>\r\n", arg.Key, arg.Content);
+
+                    replaceWith = sb.ToString();
+                    break;
+
                 default:
                     // Try for a custom project property.  Use the last one since the original may be
                     // in a parent project file or it may have been overridden from the command line.
@@ -982,7 +990,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// <returns>The list of framework comments file sources in the appropriate format.</returns>
         private string FrameworkCommentList(string listType)
         {
-            FrameworkSettings frameworkSettings = FrameworkVersionTypeConverter.AllFrameworks.GetFrameworkWithRedirect(
+            FrameworkSettings frameworkSettings = FrameworkDictionary.AllFrameworks.GetFrameworkWithRedirect(
                 project.FrameworkVersion);
             StringBuilder sb = new StringBuilder(1024);
             string folder, wildcard, cacheFilename;
@@ -1002,8 +1010,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                     case "cachedframeworkcommentlist":
                         // Files are cached by platform, version, and location
-                        cacheFilename = String.Format("{0}_{1}_{2:X}", frameworkSettings.Platform,
-                            frameworkSettings.Version, location.GetHashCode());
+                        cacheFilename = String.Format(CultureInfo.InvariantCulture, "{0}_{1}_{2:X}",
+                            frameworkSettings.Platform, frameworkSettings.Version, location.GetHashCode());
 
                         sb.AppendFormat(CultureInfo.InvariantCulture, "<cache base=\"{0}\" files=\"{1}\" " +
                             "recurse=\"false\" cacheFile=\"{{@LocalDataFolder}}Cache\\{2}.cache\" " +

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : HelpFilePropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 10/28/2012
+// Updated : 11/18/2012
 // Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -72,7 +72,7 @@ namespace SandcastleBuilder.Package.PropertyPages
 
             cboPresentationStyle.DisplayMember = "Title";
             cboPresentationStyle.ValueMember = "Id";
-            cboPresentationStyle.DataSource = PresentationStyleTypeConverter.AllStyles.Values.ToList();
+            cboPresentationStyle.DataSource = PresentationStyleDictionary.AllStyles.Values.ToList();
 
             cboSdkLinkTarget.Items.AddRange(Enum.GetNames(typeof(SdkLinkTarget)).OfType<Object>().ToArray());
             cboSdkLinkTarget.SelectedItem = SdkLinkTarget.Blank.ToString();
@@ -300,7 +300,7 @@ namespace SandcastleBuilder.Package.PropertyPages
                 string prop = base.CurrentProject.MSBuildProject.GetPropertyValue("PresentationStyle");
 #endif
                 // Try to get it based on the current setting.  If still not found, use the first one.
-                if(!PresentationStyleTypeConverter.AllStyles.TryGetValue(prop, out pss))
+                if(!PresentationStyleDictionary.AllStyles.TryGetValue(prop, out pss))
                     cboPresentationStyle.SelectedIndex = 0;
                 else
                     cboPresentationStyle.SelectedValue = pss.Id;

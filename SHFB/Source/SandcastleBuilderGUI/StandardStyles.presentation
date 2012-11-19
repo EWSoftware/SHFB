@@ -44,7 +44,7 @@
 
 		<!-- This defines the path to the shared content resource items. -->
 		<ResourceItems Path="Content">
-			<!-- This define a location for additional resource item files specific to the Sandcastle Help File
+			<!-- This defines a location for additional resource item files specific to the Sandcastle Help File
 					 Builder.  Files in the folder should be named using the format [ID]BuilderContent_[Language].xml
 					 where ID is the presentation style ID and Language is the language code for the resources
 					 (i.e. VS2005BuilderContent_en-US.xml). -->
@@ -86,17 +86,17 @@
 					 used (i.e. the syntax filter language definitions).  The Description attribute provides a description
 					 of the parameter that can be displayed by build tools. -->
 			<Argument Key="logoFile" ForConceptualBuild="true" ForReferenceBuild="true" Value=""
-					Description="An optional logo file to insert into the page headers.  Filename only, no path.  Place the file in your project in an Icons\ folder as a Content item.  If blank, no logo will appear in the topic headers."/>
+					Description="An optional logo file to insert into the topic headers.  Specify the filename only, omit the path.  Place the file in your project in an Icons\ folder and set the Build Action to Content.  If blank, no logo will appear in the topic headers."/>
 			<Argument Key="logoHeight" ForConceptualBuild="true" ForReferenceBuild="true" Value=""
-					Description="An optional logo height.  If left blank, the logo image height is used."/>
+					Description="An optional logo height.  If left blank, the actual logo image height is used."/>
 			<Argument Key="logoWidth" ForConceptualBuild="true" ForReferenceBuild="true" Value=""
-					Description="An optional logo width.  If left blank, the logo image width is used."/>
+					Description="An optional logo width.  If left blank, the actual logo image width is used."/>
 			<Argument Key="logoAltText" ForConceptualBuild="true" ForReferenceBuild="true" Value=""
 					Description="Optional logo alternate text.  If left blank, no alternate text is added."/>
 			<Argument Key="logoPlacement" ForConceptualBuild="true" ForReferenceBuild="true" Value="left"
-					Description="An optional logo placement.  Specify left, right, or above."/>
+					Description="An optional logo placement.  Specify left, right, or above.  If not specified, the default is left."/>
 			<Argument Key="logoAlignment" ForConceptualBuild="true" ForReferenceBuild="true" Value="left"
-					Description="An optional logo alignment when using the 'above' placement option.  Specify left, right, or center."/>
+					Description="An optional logo alignment when using the 'above' placement option.  Specify left, right, or center.  If not specified, the default is left."/>
 
 			<!-- An example of a complex content argument for reference builds only:
 			<Argument Key="complexParameter" ForConceptualBuild="false" ForReferenceBuild="true"
@@ -142,17 +142,17 @@
 
 		<TransformComponentArguments>
 			<Argument Key="logoFile" ForConceptualBuild="true" ForReferenceBuild="true" Value=""
-					Description="An optional logo file to insert into the page headers.  Filename only, no path.  Place the file in your project in an Icons\ folder as a Content item.  If blank, no logo will appear in the topic headers."/>
+					Description="An optional logo file to insert into the topic headers.  Specify the filename only, omit the path.  Place the file in your project in an Icons\ folder and set the Build Action to Content.  If blank, no logo will appear in the topic headers."/>
 			<Argument Key="logoHeight" ForConceptualBuild="true" ForReferenceBuild="true" Value=""
-					Description="An optional logo height.  If left blank, the logo image height is used."/>
+					Description="An optional logo height.  If left blank, the actual logo image height is used."/>
 			<Argument Key="logoWidth" ForConceptualBuild="true" ForReferenceBuild="true" Value=""
-					Description="An optional logo width.  If left blank, the logo image width is used."/>
+					Description="An optional logo width.  If left blank, the actual logo image width is used."/>
 			<Argument Key="logoAltText" ForConceptualBuild="true" ForReferenceBuild="true" Value=""
 					Description="Optional logo alternate text.  If left blank, no alternate text is added."/>
 			<Argument Key="logoPlacement" ForConceptualBuild="true" ForReferenceBuild="true" Value="left"
-					Description="An optional logo placement.  Specify left, right, or above."/>
+					Description="An optional logo placement.  Specify left, right, or above.  If not specified, the default is left."/>
 			<Argument Key="logoAlignment" ForConceptualBuild="true" ForReferenceBuild="true" Value="left"
-					Description="An optional logo alignment when using the 'above' placement option.  Specify left, right, or center."/>
+					Description="An optional logo alignment when using the 'above' placement option.  Specify left, right, or center.  If not specified, the default is left."/>
 		</TransformComponentArguments>
 	</PresentationStyle>
 
@@ -190,17 +190,17 @@
 
 		<TransformComponentArguments>
 			<Argument Key="logoFile" ForConceptualBuild="true" ForReferenceBuild="true" Value=""
-					Description="An optional logo file to insert into the page headers.  Filename only, no path.  Place the file in your project in an Icons\ folder as a Content item.  If blank, no logo will appear in the topic headers."/>
+					Description="An optional logo file to insert into the topic headers.  Specify the filename only, omit the path.  Place the file in your project in an Icons\ folder and set the Build Action to Content.  If blank, no logo will appear in the topic headers."/>
 			<Argument Key="logoHeight" ForConceptualBuild="true" ForReferenceBuild="true" Value=""
-					Description="An optional logo height.  If left blank, the logo image height is used."/>
+					Description="An optional logo height.  If left blank, the actual logo image height is used."/>
 			<Argument Key="logoWidth" ForConceptualBuild="true" ForReferenceBuild="true" Value=""
-					Description="An optional logo width.  If left blank, the logo image width is used."/>
+					Description="An optional logo width.  If left blank, the actual logo image width is used."/>
 			<Argument Key="logoAltText" ForConceptualBuild="true" ForReferenceBuild="true" Value=""
 					Description="Optional logo alternate text.  If left blank, no alternate text is added."/>
 			<Argument Key="logoPlacement" ForConceptualBuild="true" ForReferenceBuild="true" Value="left"
-					Description="An optional logo placement.  Specify left, right, or above."/>
+					Description="An optional logo placement.  Specify left, right, or above.  If not specified, the default is left."/>
 			<Argument Key="logoAlignment" ForConceptualBuild="true" ForReferenceBuild="true" Value="left"
-					Description="An optional logo alignment when using the 'above' placement option.  Specify left, right, or center."/>
+					Description="An optional logo alignment when using the 'above' placement option.  Specify left, right, or center.  If not specified, the default is left."/>
 		</TransformComponentArguments>
 	</PresentationStyle>
 
@@ -240,17 +240,17 @@
 
 		<TransformComponentArguments>
 			<Argument Key="logoFile" ForConceptualBuild="true" ForReferenceBuild="true" Value=""
-					Description="An optional logo file to insert into the page headers.  Filename only, no path.  Place the file in your project in an Icons\ folder as a Content item.  If blank, no logo will appear in the topic headers."/>
+					Description="An optional logo file to insert into the topic headers.  Specify the filename only, omit the path.  Place the file in your project in an Icons\ folder and set the Build Action to Content.  If blank, no logo will appear in the topic headers."/>
 			<Argument Key="logoHeight" ForConceptualBuild="true" ForReferenceBuild="true" Value=""
-					Description="An optional logo height.  If left blank, the logo image height is used."/>
+					Description="An optional logo height.  If left blank, the actual logo image height is used."/>
 			<Argument Key="logoWidth" ForConceptualBuild="true" ForReferenceBuild="true" Value=""
-					Description="An optional logo width.  If left blank, the logo image width is used."/>
+					Description="An optional logo width.  If left blank, the actual logo image width is used."/>
 			<Argument Key="logoAltText" ForConceptualBuild="true" ForReferenceBuild="true" Value=""
 					Description="Optional logo alternate text.  If left blank, no alternate text is added."/>
 			<Argument Key="logoPlacement" ForConceptualBuild="true" ForReferenceBuild="true" Value="left"
-					Description="An optional logo placement.  Specify left, right, or above."/>
+					Description="An optional logo placement.  Specify left, right, or above.  If not specified, the default is left."/>
 			<Argument Key="logoAlignment" ForConceptualBuild="true" ForReferenceBuild="true" Value="left"
-					Description="An optional logo alignment when using the 'above' placement option.  Specify left, right, or center."/>
+					Description="An optional logo alignment when using the 'above' placement option.  Specify left, right, or center.  If not specified, the default is left."/>
 		</TransformComponentArguments>
 	</PresentationStyle>
 

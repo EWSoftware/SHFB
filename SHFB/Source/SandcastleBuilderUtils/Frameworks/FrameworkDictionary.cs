@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : FrameworkDictionary.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/25/2012
+// Updated : 11/17/2012
 // Note    : Copyright 2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -16,10 +16,12 @@
 // Version     Date     Who  Comments
 // ==============================================================================================================
 // 1.9.5.0  09/09/2012  EFW  Created the code
+// 1.9.6.0  11/17/2012  EFW  Moved the code from the framework type converter into this class
 //===============================================================================================================
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
@@ -33,8 +35,59 @@ namespace SandcastleBuilder.Utils.Frameworks
     /// </summary>
     public sealed class FrameworkDictionary : Dictionary<string, FrameworkSettings>
     {
+        #region Private data members
+        //=====================================================================
+
+        private static FrameworkDictionary frameworks;
+        #endregion
+
         #region Properties
         //=====================================================================
+
+        /// <summary>
+        /// This read-only property returns the values in the collection
+        /// </summary>
+        public static FrameworkDictionary AllFrameworks
+        {
+            get
+            {
+                if(frameworks == null)
+                    frameworks = LoadSandcastleFrameworkDictionary();
+
+                return frameworks; 
+            }
+        }
+
+        /// <summary>
+        /// This is used to get the default framework version to use
+        /// </summary>
+        /// <remarks>The default is the .NET Framework 4.0</remarks>
+        public static string DefaultFramework
+        {
+            get
+            {
+                FrameworkSettings fs = null;
+
+                // If the framework file didn't exist or wasn't valid, the collection will be null here
+                if(frameworks == null)
+                    throw new InvalidOperationException(String.Format(CultureInfo.CurrentCulture,
+                        "The framework definitions were not loaded.  Does a valid definition file exist ({0})?",
+                        FrameworkDictionary.FrameworkFilePath));
+
+                if(!frameworks.TryGetValue(DefaultFrameworkInternal, out fs))
+                    fs = frameworks.Values.First();
+
+                return fs.Title;
+            }
+        }
+
+        /// <summary>
+        /// This returns the hard-coded default framework value used internally
+        /// </summary>
+        internal static string DefaultFrameworkInternal
+        {
+            get { return ".NET Framework 4.0"; }
+        }
 
         /// <summary>
         /// This read-only property returns the path to the framework definition file
@@ -74,7 +127,8 @@ namespace SandcastleBuilder.Utils.Frameworks
             FrameworkDictionary fd;
 
             if(!File.Exists(FrameworkFilePath))
-                throw new FileNotFoundException("Unable to locate Sandcastle framework definition file");
+                throw new FileNotFoundException("Unable to locate Sandcastle framework definition file: " +
+                    FrameworkFilePath);
 
             try
             {
@@ -82,7 +136,8 @@ namespace SandcastleBuilder.Utils.Frameworks
             }
             catch(Exception ex)
             {
-                throw new InvalidOperationException("Unable to parse Sandcastle framework definition file", ex);
+                throw new InvalidOperationException("Unable to parse Sandcastle framework definition file: " +
+                    FrameworkFilePath, ex);
             }
 
             return fd;
@@ -170,6 +225,51 @@ namespace SandcastleBuilder.Utils.Frameworks
             } while(key != null);
 
             return null;
+        }
+
+        /// <summary>
+        /// This is used to convert old SHFB project framework version values to the new framework version values
+        /// </summary>
+        /// <param name="oldValue">The old value to convert</param>
+        /// <returns>The equivalent new value</returns>
+        internal static string ConvertFromOldValue(string oldValue)
+        {
+            FrameworkSettings fs = null;
+
+            if(String.IsNullOrWhiteSpace(oldValue))
+                return DefaultFramework;
+
+            oldValue = oldValue.Trim();
+
+            if(oldValue.IndexOf(".NET ", StringComparison.OrdinalIgnoreCase) != -1 || Char.IsDigit(oldValue[0]))
+            {
+                oldValue = oldValue.ToUpperInvariant().Replace(".NET ", String.Empty).Trim();
+
+                if(oldValue.Length == 0)
+                    oldValue = "4.0";
+                else
+                    if(oldValue.Length > 3)
+                        oldValue = oldValue.Substring(0, 3);
+
+                oldValue = ".NET Framework " + oldValue;
+            }
+            else
+                if(oldValue.IndexOf("Silverlight ", StringComparison.OrdinalIgnoreCase) != -1)
+                {
+                    oldValue = oldValue.ToUpperInvariant().Trim();
+
+                    if(oldValue.EndsWith(".0", StringComparison.Ordinal))
+                        oldValue = oldValue.Substring(0, oldValue.Length - 2);
+                }
+                else
+                    if(oldValue.IndexOf("Portable ", StringComparison.OrdinalIgnoreCase) != -1)
+                        oldValue = ".NET Portable Library 4.0 (Legacy)";
+
+            // If not found, default to .NET 4.0
+            if(!frameworks.TryGetValue(oldValue, out fs))
+                return DefaultFramework;
+
+            return fs.Title;
         }
         #endregion
     }

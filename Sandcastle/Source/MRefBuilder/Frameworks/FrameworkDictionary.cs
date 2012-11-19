@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : FrameworkDictionary.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/10/2012
+// Updated : 11/18/2012
 // Note    : Copyright 2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -22,6 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Xml.Linq;
 
 namespace Microsoft.Ddue.Tools.Frameworks
@@ -37,12 +38,20 @@ namespace Microsoft.Ddue.Tools.Frameworks
         /// <summary>
         /// This read-only property returns the path to the framework definition file
         /// </summary>
+        /// <remarks>The file <b>Frameworks.xml</b> should be in the <b>%DXROOT%\ProductionTools</b> folder.
+        /// If not found there, it looks in the location of the executing assembly.</remarks>
         public static string FrameworkFilePath
         {
             get
             {
-                return Path.Combine(Environment.ExpandEnvironmentVariables("%DXROOT%"),
+                string path = Path.Combine(Environment.ExpandEnvironmentVariables("%DXROOT%"),
                     @"ProductionTools\Frameworks.xml");
+
+                if(path.IndexOf('%') != -1)
+                    path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                        "Frameworks.xml");
+
+                return path;
             }
         }
         #endregion
@@ -73,7 +82,8 @@ namespace Microsoft.Ddue.Tools.Frameworks
             FrameworkDictionary fd;
 
             if(!File.Exists(FrameworkFilePath))
-                throw new FileNotFoundException("Unable to locate Sandcastle framework definition file");
+                throw new FileNotFoundException("Unable to locate Sandcastle framework definition file: " +
+                    FrameworkFilePath);
 
             try
             {
@@ -81,7 +91,8 @@ namespace Microsoft.Ddue.Tools.Frameworks
             }
             catch(Exception ex)
             {
-                throw new InvalidOperationException("Unable to parse Sandcastle framework definition file", ex);
+                throw new InvalidOperationException("Unable to parse Sandcastle framework definition file: " +
+                    FrameworkFilePath, ex);
             }
 
             return fd;

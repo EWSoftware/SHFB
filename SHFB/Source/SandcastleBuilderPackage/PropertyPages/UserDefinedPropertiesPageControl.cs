@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : UserDefinedPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 10/28/2012
+// Updated : 11/15/2012
 // Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -41,7 +41,7 @@ using SandcastleBuilder.Utils.Design;
 namespace SandcastleBuilder.Package.PropertyPages
 {
     /// <summary>
-    /// This is used to edit the Visibility category project properties
+    /// This is used to edit the User Defined Properties category project properties
     /// </summary>
     [Guid("D9EDDED9-4825-40F5-B394-262D9153C4E2")]
     public partial class UserDefinedPropertiesPageControl : BasePropertyPage

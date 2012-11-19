@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : EntityReferencesControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/10/2012
+// Updated : 11/18/2012
 // Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -23,7 +23,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -33,9 +32,7 @@ using System.Windows.Input;
 using System.Xml.XPath;
 
 using SandcastleBuilder.Utils;
-using SandcastleBuilder.Utils.BuildEngine;
 using SandcastleBuilder.Utils.ConceptualContent;
-using SandcastleBuilder.Utils.Design;
 using SandcastleBuilder.Utils.Frameworks;
 using SandcastleBuilder.Utils.InheritedDocumentation;
 using SandcastleBuilder.Utils.MSBuild;
@@ -603,7 +600,7 @@ namespace SandcastleBuilder.WPF.UserControls
             currentProject.EnsureProjectIsCurrent(false);
 
             // Index the framework comments based on the framework version in the project
-            FrameworkSettings frameworkSettings = FrameworkVersionTypeConverter.AllFrameworks.GetFrameworkWithRedirect(
+            FrameworkSettings frameworkSettings = FrameworkDictionary.AllFrameworks.GetFrameworkWithRedirect(
                 currentProject.FrameworkVersion);
 
             if(frameworkSettings == null)

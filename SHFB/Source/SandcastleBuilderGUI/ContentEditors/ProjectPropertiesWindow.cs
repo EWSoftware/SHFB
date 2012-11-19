@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : ProjectPropertiesWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/28/2012
+// Updated : 11/14/2012
 // Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -83,6 +83,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
                 typeof(PathPropertiesPageControl),
                 typeof(ComponentPropertiesPageControl),
                 typeof(PlugInPropertiesPageControl),
+                typeof(TransformArgumentsPageControl),
                 typeof(UserDefinedPropertiesPageControl)
             };
 

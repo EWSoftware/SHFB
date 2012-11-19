@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : ComponentPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 10/28/2012
+// Updated : 11/18/2012
 // Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -68,29 +68,6 @@ namespace SandcastleBuilder.Package.PropertyPages
 #endif
             this.Title = "Components";
             this.HelpKeyword = "8dcbb69b-7a1a-4049-8e6b-2bf344efbbc9";
-
-            try
-            {
-                // Show all but the hidden components
-                lbAvailableComponents.Items.AddRange(BuildComponentManager.BuildComponents.Values.Where(
-                    bc => !bc.IsHidden).Select(bc => bc.Id).ToArray());
-            }
-            catch(Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine(ex.ToString());
-
-                MessageBox.Show("Unexpected error loading build components: " + ex.Message,
-                    messageBoxTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-
-            if(lbAvailableComponents.Items.Count != 0)
-                lbAvailableComponents.SelectedIndex = 0;
-            else
-            {
-                MessageBox.Show("No valid build components found", messageBoxTitle, MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
-                gbAvailableComponents.Enabled = gbProjectAddIns.Enabled = false;
-            }
         }
         #endregion
 
@@ -144,6 +121,44 @@ namespace SandcastleBuilder.Package.PropertyPages
         {
             ProjectProperty projProp;
             int idx;
+
+            if(lbAvailableComponents.Items.Count == 0)
+            {
+                try
+                {
+                    // If Sandcastle cannot be found, use the SandcastlePath project property setting
+                    if(String.IsNullOrEmpty(BuildComponentManager.SandcastlePath))
+                    {
+#if !STANDALONEGUI
+                        projProp = this.ProjectMgr.BuildProject.GetProperty("SandcastlePath");
+#else
+                        projProp = this.CurrentProject.MSBuildProject.GetProperty("SandcastlePath");
+#endif
+                        if(projProp != null && !String.IsNullOrEmpty(projProp.EvaluatedValue))
+                            BuildComponentManager.SandcastlePath = projProp.EvaluatedValue;
+                    }
+
+                    // Show all but the hidden components
+                    lbAvailableComponents.Items.AddRange(BuildComponentManager.BuildComponents.Values.Where(
+                        bc => !bc.IsHidden).Select(bc => bc.Id).ToArray());
+                }
+                catch(Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine(ex.ToString());
+
+                    MessageBox.Show("Unexpected error loading build components: " + ex.Message,
+                        messageBoxTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+                if(lbAvailableComponents.Items.Count != 0)
+                    lbAvailableComponents.SelectedIndex = 0;
+                else
+                {
+                    MessageBox.Show("No valid build components found", messageBoxTitle, MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+                    gbAvailableComponents.Enabled = gbProjectAddIns.Enabled = false;
+                }
+            }
 
             currentConfigs = new ComponentConfigurationDictionary(null);
             lbProjectComponents.Items.Clear();

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SandcastleBuilderProjectNode.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/22/2012
+// Updated : 11/14/2012
 // Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -676,6 +676,7 @@ namespace SandcastleBuilder.Package.Nodes
                 typeof(PathPropertiesPageControl).GUID,
                 typeof(ComponentPropertiesPageControl).GUID,
                 typeof(PlugInPropertiesPageControl).GUID,
+                typeof(TransformArgumentsPageControl).GUID,
                 typeof(UserDefinedPropertiesPageControl).GUID
             };
         }

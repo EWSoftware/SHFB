@@ -1,27 +1,25 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder
 // File    : PreviewTopicWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/05/2012
+// Updated : 11/18/2012
 // Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the form used to preview a topic.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.6.0.7  05/27/2008  EFW  Created the code
 // 1.8.0.0  07/26/2008  EFW  Reworked for use with the new project format
 // 1.9.0.0  06/07/2010  EFW  Added support for multi-format build output
-// 1.9.3.4  01/18/2012  EFW  Rewrote to use the shared WPF Topic Previewer
-//                           user control.
-//=============================================================================
+// 1.9.3.4  01/18/2012  EFW  Rewrote to use the shared WPF Topic Previewer user control
+//===============================================================================================================
 
 using System;
 using System.Globalization;
@@ -79,16 +77,16 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// Load the conceptual content information and preview the topics
         /// </summary>
         /// <param name="project">The current project</param>
-        /// <param name="previewTopic">The filename of the topic to show as the starting topic or null for the
+        /// <param name="topicToPreview">The filename of the topic to show as the starting topic or null for the
         /// first topic.</param>
-        public void PreviewTopic(SandcastleProject project, string previewTopic)
+        public void PreviewTopic(SandcastleProject project, string topicToPreview)
         {
             if(project == null || ucTopicPreviewer.CurrentProject == null ||
               ucTopicPreviewer.CurrentProject.Filename != project.Filename)
                 ucTopicPreviewer.CurrentProject = project;
 
             ucTopicPreviewer.Refresh(false);
-            ucTopicPreviewer.FindAndDisplay(previewTopic);
+            ucTopicPreviewer.FindAndDisplay(topicToPreview);
         }
         #endregion
 

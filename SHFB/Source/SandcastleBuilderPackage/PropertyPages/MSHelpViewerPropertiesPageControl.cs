@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : MSHelpViewerPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 10/13/2012
+// Updated : 11/14/2012
 // Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -29,7 +29,7 @@ using SandcastleBuilder.Utils;
 namespace SandcastleBuilder.Package.PropertyPages
 {
     /// <summary>
-    /// This is used to edit the MS Help 2 category project properties
+    /// This is used to edit the MS Help Viewer category project properties
     /// </summary>
     [Guid("DCD56A8C-8A49-4A9C-804F-0BE55420D77F")]
     public partial class MSHelpViewerPropertiesPageControl : BasePropertyPage

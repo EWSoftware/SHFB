@@ -85,6 +85,18 @@ DIV.OH_outerContent table td
 	margin: 1px;
 }
 
+DIV.OH_outerContent table.TitleTable
+{
+	width: 100%;
+	border-collapse: collapse;
+	border-width: 0px;
+}
+
+DIV.OH_outerContent table.TitleTable td
+{
+	border-width: 0px;
+}
+
 .OH_topic
 {
 	margin: 13px;
@@ -137,7 +149,7 @@ DIV.OH_title table tr td
 	text-align: left;
 }
 
-.OH_tdLogoColumn
+.OH_tdRunningTitleColumn
 {
 	padding: 0px;
 	padding-top: 11px;
@@ -145,6 +157,26 @@ DIV.OH_title table tr td
 	padding-bottom: 12px;
 	vertical-align: middle;
 	text-align: right;
+}
+
+.OH_tdLogoColumn
+{
+	padding: 0px;
+	padding-top: 11px;
+	padding-left: 5px;
+	padding-right: 5px;
+	padding-bottom: 12px;
+	vertical-align: middle;
+    width: 1px;
+}
+
+.OH_tdLogoColumnAbove
+{
+	padding: 0px;
+	padding-top: 5px;
+	padding-left: 10px;
+	padding-right: 10px;
+	vertical-align: middle;
 }
 
 DIV.majorTitle

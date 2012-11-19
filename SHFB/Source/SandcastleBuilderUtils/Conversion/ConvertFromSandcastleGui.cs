@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : ConvertFromSandcastleGui.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/25/2012
+// Updated : 11/17/2012
 // Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -121,9 +121,10 @@ namespace SandcastleBuilder.Utils.Conversion
                                 fileItem = project.AddFileToProject(value, Path.Combine(base.ProjectFolder,
                                     Path.GetFileName(value)));
 
-                                // Since the logo is copied by the Post-Transform component, set the build action
-                                // to None so that it isn't added to the help file as content.
-                                fileItem.BuildAction = BuildAction.None;
+                                // The transform arguments category of properties will need to be set to include
+                                // the logo in the XSL transformations.  The build action must be content.  It
+                                // will also need to be moved to the .\Icons folder in the project.
+                                fileItem.BuildAction = BuildAction.Content;
                                 break;
 
                             case "msdnlinks":

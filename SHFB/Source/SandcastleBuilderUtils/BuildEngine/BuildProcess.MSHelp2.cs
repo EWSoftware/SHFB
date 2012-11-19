@@ -1,36 +1,28 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.MSHelp2.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/09/2011
-// Note    : Copyright 2008-2011, Eric Woodruff, All rights reserved
+// Updated : 11/16/2012
+// Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the code used to modify the MS Help 2 collection files.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.6.0.7  03/21/2008  EFW  Created the code
-//=============================================================================
+//===============================================================================================================
 
-using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
-using System.Xml.XPath;
-using System.Web;
-
-using SandcastleBuilder.Utils.PlugIn;
 
 namespace SandcastleBuilder.Utils.BuildEngine
 {
@@ -39,14 +31,13 @@ namespace SandcastleBuilder.Utils.BuildEngine
         #region Private data members
         //=====================================================================
 
-        private static Regex reRemoveDTD = new Regex(
-            "(<\\s*!DOCTYPE \\w+)(\\s*SYSTEM\\s*\".*?\")(>)",
+        private static Regex reRemoveDTD = new Regex("(<\\s*!DOCTYPE \\w+)(\\s*SYSTEM\\s*\".*?\")(>)",
             RegexOptions.IgnoreCase);
         #endregion
 
         /// <summary>
-        /// This is used to clean up the MS Help 2 collection files so that
-        /// they are ready for use in registering the collection.
+        /// This is used to clean up the MS Help 2 collection files so that they are ready for use in registering
+        /// the collection.
         /// </summary>
         private void CleanUpCollectionFiles()
         {
@@ -56,7 +47,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
             this.ReportProgress("Cleaning up collection files...");
 
-            foreach(string file in Directory.EnumerateFiles(outputFolder, project.HtmlHelpName + "*.Hx?"))
+            foreach(string file in Directory.EnumerateFiles(outputFolder, this.ResolvedHtmlHelpName + "*.Hx?"))
             {
                 extension = Path.GetExtension(file).ToLower(
                     CultureInfo.InvariantCulture);
@@ -67,8 +58,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         document = BuildProcess.OpenCollectionFile(file);
 
                         // Remove the compiler options
-                        node = document.SelectSingleNode(
-                            "HelpCollection/CompilerOptions");
+                        node = document.SelectSingleNode("HelpCollection/CompilerOptions");
+
                         if(node != null)
                             node.ParentNode.RemoveChild(node);
                         break;
@@ -106,19 +97,17 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
             this.ReportProgress("Creating H2Reg.ini file...");
 
-            iniFile = outputFolder + project.HtmlHelpName + "_H2Reg.ini";
+            iniFile = outputFolder + this.ResolvedHtmlHelpName + "_H2Reg.ini";
 
             if(File.Exists(iniFile))
                 File.Delete(iniFile);
 
-            this.TransformTemplate("Help2x_H2Reg.ini", templateFolder,
-                outputFolder);
+            this.TransformTemplate("Help2x_H2Reg.ini", templateFolder, outputFolder);
             File.Move(outputFolder + "Help2x_H2Reg.ini", iniFile);
         }
 
         /// <summary>
-        /// Open the specified collection file and return it as an
-        /// <see cref="XmlDocument"/> ready for editing.
+        /// Open the specified collection file and return it as an <see cref="XmlDocument"/> ready for editing
         /// </summary>
         /// <param name="file">The file to open</param>
         /// <remarks>The DTD is removed before returning it.</remarks>

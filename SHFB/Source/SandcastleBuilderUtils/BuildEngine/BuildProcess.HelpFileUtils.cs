@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.HelpFileUtils.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/26/2012
+// Updated : 11/16/2012
 // Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -429,8 +429,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 this.ReportProgress(BuildStep.CopyStandardContent, "Copying help branding...");
 
                 if(!File.Exists(brandingManifest))
-                    throw (new BuilderException(String.Format("Branding manifest \"{0}\" not found.",
-                        brandingManifest)));
+                    throw (new BuilderException(String.Format(CultureInfo.InvariantCulture,
+                        "Branding manifest \"{0}\" not found.", brandingManifest)));
 
                 if(helpFormatOutputFolder.Contains(HelpFileFormat.MSHelpViewer.ToString()))
                     brandingTarget = Path.Combine(helpFormatOutputFolder, @"..\" +
@@ -602,10 +602,10 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     this.ReportWarning("BE0060", "The file path '{0}' contains a comma or '.h' which may " +
                         "cause the Help 1 compiler to fail.", folder);
 
-                if(project.HtmlHelpName.IndexOf(',') != -1 ||
-                  project.HtmlHelpName.IndexOf(".h", StringComparison.OrdinalIgnoreCase) != -1)
-                    this.ReportWarning("BE0060", "The HTMLHelpName property value '{0}' contains a comma " +
-                        "or '.h' which may cause the Help 1 compiler to fail.", project.HtmlHelpName);
+                if(this.ResolvedHtmlHelpName.IndexOf(',') != -1 ||
+                  this.ResolvedHtmlHelpName.IndexOf(".h", StringComparison.OrdinalIgnoreCase) != -1)
+                    this.ReportWarning("BE0060", "The HtmlHelpName property value '{0}' contains a comma " +
+                        "or '.h' which may cause the Help 1 compiler to fail.", this.ResolvedHtmlHelpName);
 
                 itemFormat = "{0}\r\n";
                 encode = false;

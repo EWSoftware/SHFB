@@ -1,23 +1,22 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : BuildLogViewerControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/07/2012
+// Updated : 11/18/2012
 // Note    : Copyright 2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the class used to view the build log content.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.  This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.9.3.4  01/05/2012  EFW  Created the code
-//=============================================================================
+//===============================================================================================================
 
 using System;
 using System.Globalization;
@@ -100,18 +99,19 @@ namespace SandcastleBuilder.WPF.UserControls
                     wbContent.NavigateToString(TransformLogFile(logFilename, rbFilter.IsChecked.Value,
                         rbHighlight.IsChecked.Value));
                 else
-                    wbContent.NavigateToString(String.Format("<div style='font-family: Arial; font-size: 9pt'>" +
-                        "Log File: {0}<br /><br />There is no log file to view.  Please build the project " +
-                        "first.  You may also need to enable the <b>Keep log file after successful build " +
-                        "(KeepLogFile)</b> project property.</div>", (logFilename == null) ? "(Build cleaned)" :
-                        logFilename));
+                    wbContent.NavigateToString(String.Format(CultureInfo.InvariantCulture, "<div " +
+                        "style='font-family: Arial; font-size: 9pt'>Log File: {0}<br /><br />There is no log " +
+                        "file to view.  Please build the project first.  You may also need to enable the " +
+                        "<b>Keep log file after successful build (KeepLogFile)</b> project property.</div>",
+                        (logFilename == null) ? "(Build cleaned)" : logFilename));
             }
             catch(Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
 
-                wbContent.NavigateToString(String.Format("<div style='font-family: Arial; font-size: 9pt'>" +
-                    "Log File: {0}<br /><br />Unable to load log file: {1}</div>", logFilename, ex.Message));
+                wbContent.NavigateToString(String.Format(CultureInfo.InvariantCulture, "<div " +
+                    "style='font-family: Arial; font-size: 9pt'>Log File: {0}<br /><br />Unable to load " +
+                    "log file: {1}</div>", logFilename, ex.Message));
             }
             finally
             {
@@ -177,9 +177,9 @@ namespace SandcastleBuilder.WPF.UserControls
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
 
                 // Just use the raw data prefixed with the error message
-                return String.Format(CultureInfo.CurrentCulture, "<pre><b>An error occurred trying to transform the log " +
-                    "file '{0}'</b>:\r\n{1}\r\n\r\n<b>Log Content:</b>\r\n{2}</pre>", logFile, ex.Message,
-                    WebUtility.HtmlEncode(html));
+                return String.Format(CultureInfo.CurrentCulture, "<pre><b>An error occurred trying to " +
+                    "transform the log file '{0}'</b>:\r\n{1}\r\n\r\n<b>Log Content:</b>\r\n{2}</pre>", logFile,
+                    ex.Message, WebUtility.HtmlEncode(html));
             }
         }
         #endregion

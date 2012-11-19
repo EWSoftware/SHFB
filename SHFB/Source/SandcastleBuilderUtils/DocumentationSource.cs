@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : DocumentationSource.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/22/2012
+// Updated : 11/18/2012
 // Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -184,7 +184,7 @@ namespace SandcastleBuilder.Utils
                 if(path[0] == '*' && path[1] == '.')
                     path = sourceFile.PersistablePath;
 
-                ext = Path.GetExtension(path).ToLower(CultureInfo.InvariantCulture);
+                ext = Path.GetExtension(path).ToLowerInvariant();
 
                 if((ext.IndexOfAny(wildcards) != -1 || ext == ".sln" ||
                   ext.EndsWith("proj", StringComparison.Ordinal)) &&
@@ -357,7 +357,7 @@ namespace SandcastleBuilder.Utils
                   Path.GetFileName(wildcard), searchOpt).Where(
                   f => f.EndsWith(".exe", StringComparison.OrdinalIgnoreCase) ||
                   f.EndsWith(".dll", StringComparison.OrdinalIgnoreCase) ||
-                  f.EndsWith(".winmd")))
+                  f.EndsWith(".winmd", StringComparison.OrdinalIgnoreCase)))
                     assemblies.Add(f);
             }
 

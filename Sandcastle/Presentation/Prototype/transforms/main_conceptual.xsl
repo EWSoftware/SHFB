@@ -7,7 +7,16 @@
     xmlns:msxsl="urn:schemas-microsoft-com:xslt">
 
 	<xsl:import href="utilities_bibliography.xsl"/>
+
 	<xsl:param name="bibliographyData" select="'../data/bibliography.xml'"/>
+
+	<!-- Topic header logo parameters -->
+	<xsl:param name="logoFile" />
+	<xsl:param name="logoHeight" />
+	<xsl:param name="logoWidth" />
+	<xsl:param name="logoAltText" />
+	<xsl:param name="logoPlacement" />
+	<xsl:param name="logoAlignment" />
 
 	<xsl:output method="xml" indent="no" encoding="utf-8" />
 
@@ -197,41 +206,109 @@
 
 	<xsl:template name="control">
 		<div id="control">
-			<span class="productTitle">
-				<include item="productTitle" />
-			</span>
-			<br/>
-			<span class="topicTitle">
-				<xsl:call-template name="topicTitle" />
-			</span>
-			<br/>
+			<xsl:choose>
+				<xsl:when test="normalize-space($logoFile)">
+					<xsl:variable name="placementLC" select="translate($logoPlacement, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')"/>
+					<xsl:variable name="alignmentLC" select="translate($logoAlignment, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')"/>
 
-			<xsl:if test="boolean(($languages != 'false') and (count($languages/language) &gt; 0))">
-				<div id="toolbar">
-					<span id="languageFilter">
-						<!-- Hide the language filter if there is only one language.  It still needs to be present though. -->
-						<xsl:if test="count($languages/language) &lt; 2">
-							<xsl:attribute name="style">
-								<xsl:text>visibility: hidden;</xsl:text>
-							</xsl:attribute>
-						</xsl:if>
-						<select id="languageSelector" onchange="var names = this.value.split(' '); toggleVisibleLanguage(names[1]); switchLanguage(names, this.value);">
-							<xsl:for-each select="$languages/language">
-								<option value="{@name} {@style}">
-									<include item="{@label}Label" />
-								</option>
-							</xsl:for-each>
-						</select>
-					</span>
-				</div>
-			</xsl:if>
-
-			<!--
-			<div id="toolbar">
-				<span class="chickenFeet"><xsl:call-template name="chickenFeet" /></span>
-			</div>
--->
+					<table border='0' width='100%' cellpadding='0' cellspacing='0'>
+						<xsl:choose>
+							<xsl:when test="$placementLC = 'right'">
+								<tr>
+									<td valign='top' width='100%'><xsl:call-template name="controlContentDiv" /></td>
+									<td align='center' style='padding-left: 5px'><xsl:call-template name="logoImage" /></td>
+								</tr>
+							</xsl:when>
+							<xsl:when test="$placementLC = 'above'">
+								<tr>
+									<td style='padding-bottom: 5px'>
+										<xsl:attribute name="align">
+											<xsl:choose>
+												<xsl:when test="normalize-space($alignmentLC)">
+													<xsl:value-of select="$alignmentLC"/>
+												</xsl:when>
+												<xsl:otherwise>
+													<xsl:text>left</xsl:text>
+												</xsl:otherwise>
+											</xsl:choose>
+										</xsl:attribute>
+										<xsl:call-template name="logoImage" />
+									</td>
+								</tr>
+								<tr>
+									<td valign='top' width='100%'><xsl:call-template name="controlContentDiv" /></td>
+								</tr>
+							</xsl:when>
+							<xsl:otherwise>
+								<tr>
+									<td align='center' style='padding-right: 5px'><xsl:call-template name="logoImage" /></td>
+									<td valign='top' width='100%'><xsl:call-template name="controlContentDiv" /></td>
+								</tr>
+							</xsl:otherwise>
+						</xsl:choose>
+					</table>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:call-template name="controlContentDiv" />
+				</xsl:otherwise>
+			</xsl:choose>
 		</div>
+	</xsl:template>
+
+	<xsl:template name="logoImage">
+		<img>
+			<xsl:if test="normalize-space($logoAltText)">
+				<xsl:attribute name="alt">
+					<xsl:value-of select="$logoAltText" />
+				</xsl:attribute>
+			</xsl:if>
+			<xsl:if test="normalize-space($logoWidth) and $logoWidth != '0'">
+				<xsl:attribute name="width">
+					<xsl:value-of select="$logoWidth" />
+				</xsl:attribute>
+			</xsl:if>
+			<xsl:if test="normalize-space($logoHeight) and $logoHeight != '0'">
+				<xsl:attribute name="height">
+					<xsl:value-of select="$logoHeight" />
+				</xsl:attribute>
+			</xsl:if>
+			<includeAttribute name='src' item='iconPath'>
+				<parameter>
+					<xsl:value-of select="$logoFile"/>
+				</parameter>
+			</includeAttribute>
+		</img>
+	</xsl:template>
+
+	<xsl:template name="controlContentDiv">
+		<span class="productTitle">
+			<include item="productTitle" />
+		</span>
+		<br/>
+		<span class="topicTitle">
+			<xsl:call-template name="topicTitle" />
+		</span>
+		<br/>
+
+		<xsl:if test="boolean(($languages != 'false') and (count($languages/language) &gt; 0))">
+			<div id="toolbar">
+				<span id="languageFilter">
+					<!-- Hide the language filter if there is only one language.  It still needs to be present though. -->
+					<xsl:if test="count($languages/language) &lt; 2">
+						<xsl:attribute name="style">
+							<xsl:text>visibility: hidden;</xsl:text>
+						</xsl:attribute>
+					</xsl:if>
+					<select id="languageSelector" onchange="var names = this.value.split(' '); toggleVisibleLanguage(names[1]); switchLanguage(names, this.value);">
+						<xsl:for-each select="$languages/language">
+							<option value="{@name} {@style}">
+								<include item="{@label}Label" />
+							</option>
+						</xsl:for-each>
+					</select>
+				</span>
+			</div>
+		</xsl:if>
 	</xsl:template>
 
 	<!-- Title in topic -->

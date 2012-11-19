@@ -1,28 +1,27 @@
-﻿//=============================================================================
+﻿//===============================================================================================================
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : MamlToFlowDocumentConverter.Core.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/28/2012
+// Updated : 11/18/2012
 // Note    : Copyright 2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains the core methods of the class used to convert a MAML
-// topic file to a flow document so that it can be previewed in the standalone
-// GUI and Visual Studio.
+// This file contains the core methods of the class used to convert a MAML topic file to a flow document so that
+// it can be previewed in the standalone GUI and Visual Studio.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.  This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.9.3.4  01/02/2012  EFW  Created the code
-//=============================================================================
+//===============================================================================================================
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -277,7 +276,7 @@ namespace SandcastleBuilder.WPF.Maml
         /// as a flow document element name.</remarks>
         public static string ToElementName(string name)
         {
-            return "_" + name.GetHashCode().ToString("X");
+            return "_" + name.GetHashCode().ToString("X", CultureInfo.InvariantCulture);
         }
         #endregion
 
@@ -366,7 +365,7 @@ namespace SandcastleBuilder.WPF.Maml
                             // If the inline element has no children, insert its name so that it shows up
                             if(!elementProps.ParseChildren)
                             {
-                                this.AddInlineToContainer(new Bold(new Run(String.Format(
+                                this.AddInlineToContainer(new Bold(new Run(String.Format(CultureInfo.InvariantCulture,
                                     "[{0}]", elementProps.Element.Name.LocalName))));
 
                                 // We just added a bold run so we'll need to return to the parent

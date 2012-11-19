@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : AssemblyDetails.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/10/2012
+// Updated : 11/18/2012
 // Note    : Copyright 2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -19,6 +19,7 @@
 //===============================================================================================================
 
 using System;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -87,7 +88,8 @@ namespace Microsoft.Ddue.Tools.Frameworks
                 Name = name.Name,
                 Version = name.Version,
                 Culture = name.CultureInfo.ToString().ToLowerInvariant(),
-                PublicKeyToken = String.Concat(name.GetPublicKeyToken().Select(c => c.ToString("x2")))
+                PublicKeyToken = String.Concat(name.GetPublicKeyToken().Select(c => c.ToString("x2",
+                    CultureInfo.InvariantCulture)))
             };
         }
 
@@ -134,8 +136,8 @@ namespace Microsoft.Ddue.Tools.Frameworks
         /// <returns>The assembly details as a strong name string</returns>
         public override string ToString()
         {
-            return String.Format("{0}, Version={1}, Culture={2}, PublicKeyToken={3}", this.Name, this.Version,
-                String.IsNullOrEmpty(this.Culture) ? "neutral" : this.Culture,
+            return String.Format(CultureInfo.InvariantCulture, "{0}, Version={1}, Culture={2}, PublicKeyToken={3}",
+                this.Name, this.Version, String.IsNullOrEmpty(this.Culture) ? "neutral" : this.Culture,
                 String.IsNullOrEmpty(this.PublicKeyToken) ? "null" : this.PublicKeyToken);
         }
 

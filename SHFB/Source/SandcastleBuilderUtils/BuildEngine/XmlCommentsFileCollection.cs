@@ -1,27 +1,25 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder Utilities
 // File    : XmlCommentsFileCollection.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/27/2012
+// Updated : 11/18/2012
 // Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a collection class used to hold the XML comments files
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.   This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.3.1.0  09/26/2006  EFW  Created the code
-// 1.6.0.2  11/10/2007  EFW  Moved the CommentFileList method from
-//                           XmlCommentsFileCollection to this class.
-// 1.6.0.5  03/02/2008  EFW  Added support for the <inheritdoc /> tag.
+// 1.6.0.2  11/10/2007  EFW  Moved the CommentFileList method from XmlCommentsFileCollection to this class
+// 1.6.0.5  03/02/2008  EFW  Added support for the <inheritdoc /> tag
 // 1.6.0.6  03/08/2008  EFW  Added support for NamespaceDoc classes
-//=============================================================================
+//===============================================================================================================
 
 using System;
 using System.ComponentModel;
@@ -144,10 +142,10 @@ namespace SandcastleBuilder.Utils.BuildEngine
             // files added by plug-ins).
             foreach(XmlCommentsFile f in this)
                 if(!f.SourcePath.StartsWith(workingFolder, StringComparison.OrdinalIgnoreCase))
-                    sb.AppendFormat("            <{0}=\"{1}{2}\"{3} />\r\n", tagName,
+                    sb.AppendFormat(CultureInfo.InvariantCulture, "            <{0}=\"{1}{2}\"{3} />\r\n", tagName,
                         HttpUtility.HtmlEncode(workingFolder), Path.GetFileName(f.SourcePath), dupWarning);
                 else
-                    sb.AppendFormat("            <{0}=\"{1}\"{2} />\r\n", tagName,
+                    sb.AppendFormat(CultureInfo.InvariantCulture, "            <{0}=\"{1}\"{2} />\r\n", tagName,
                         HttpUtility.HtmlEncode(f.SourcePath), dupWarning);
 
             return sb.ToString();

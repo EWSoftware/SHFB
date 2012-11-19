@@ -47,6 +47,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.tvPropertyPages.ShowPlusMinus = false;
             this.tvPropertyPages.ShowRootLines = false;
             this.tvPropertyPages.Size = new System.Drawing.Size(181, 531);
+            this.statusBarTextProvider1.SetStatusBarText(this.tvPropertyPages, "Select a property category");
             this.tvPropertyPages.TabIndex = 0;
             this.tvPropertyPages.BeforeSelect += new System.Windows.Forms.TreeViewCancelEventHandler(this.tvPropertyPages_BeforeSelect);
             this.tvPropertyPages.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvPropertyPages_AfterSelect);
@@ -60,6 +61,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.pnlPropertyPages.Location = new System.Drawing.Point(199, 12);
             this.pnlPropertyPages.Name = "pnlPropertyPages";
             this.pnlPropertyPages.Size = new System.Drawing.Size(571, 531);
+            this.statusBarTextProvider1.SetStatusBarText(this.pnlPropertyPages, "Category properties");
             this.pnlPropertyPages.TabIndex = 1;
             this.pnlPropertyPages.SizeChanged += new System.EventHandler(this.pnlPropertyPages_SizeChanged);
             // 

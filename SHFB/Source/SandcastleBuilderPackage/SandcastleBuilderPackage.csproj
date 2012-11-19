@@ -158,6 +158,12 @@
     <Compile Include="Editors\SiteMapEditorPane.cs" />
     <Compile Include="Editors\TokenEditorFactory.cs" />
     <Compile Include="Editors\TokenEditorPane.cs" />
+    <Compile Include="PropertyPages\TransformArgumentsPageControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PropertyPages\TransformArgumentsPageControl.Designer.cs">
+      <DependentUpon>TransformArgumentsPageControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="ProvideBindingPathAttribute.cs" />
     <Compile Include="ToolWindows\EntityReferencesToolWindow.cs" />
     <Compile Include="ToolWindows\BuildLogToolWindow.cs" />
@@ -288,6 +294,11 @@
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <Resource Include="Button Bitmaps\LogFile.bmp" />
+    <Content Include="..\SandcastleBuilderGUI\StandardStyles.presentation">
+      <Link>StandardStyles.presentation</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <None Include="Images\MoveDown.bmp" />
     <None Include="Images\MoveUp.bmp" />
     <None Include="Images\Properties.bmp" />
@@ -580,6 +591,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="PropertyPages\MSHelp2PropertiesPageControl.resx">
       <DependentUpon>MSHelp2PropertiesPageControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PropertyPages\TransformArgumentsPageControl.resx">
+      <DependentUpon>TransformArgumentsPageControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PropertyPages\UserDefinedPropertiesPageControl.resx">
       <DependentUpon>UserDefinedPropertiesPageControl.cs</DependentUpon>

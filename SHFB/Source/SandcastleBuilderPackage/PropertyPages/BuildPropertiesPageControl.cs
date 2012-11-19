@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : BuildPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 10/28/2012
+// Updated : 11/18/2012
 // Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -24,15 +24,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
 
 using Microsoft.Build.Evaluation;
 
 #if !STANDALONEGUI
 using SandcastleBuilder.Package.Nodes;
+using SandcastleBuilder.Package.Properties;
 #endif
 
 using SandcastleBuilder.Utils;
-using SandcastleBuilder.Utils.Design;
+using SandcastleBuilder.Utils.BuildComponent;
+using SandcastleBuilder.Utils.Frameworks;
 
 namespace SandcastleBuilder.Package.PropertyPages
 {
@@ -91,13 +94,6 @@ namespace SandcastleBuilder.Package.PropertyPages
                 new HelpFileFormatItem { Format = HelpFileFormat.Website, Description = "Website (HTML/ASP.NET)" }
             });
 
-            // If the frameworks file failed to load, skip this.  We'll get a more descriptive exception later on.
-            if(FrameworkVersionTypeConverter.AllFrameworks != null)
-            {
-                cboFrameworkVersion.Items.AddRange(FrameworkVersionTypeConverter.AllFrameworks.Keys.ToArray());
-                cboFrameworkVersion.SelectedItem = FrameworkVersionTypeConverter.DefaultFramework;
-            }
-
             cboBuildAssemblerVerbosity.DisplayMember = "Value";
             cboBuildAssemblerVerbosity.ValueMember = "Key";
 
@@ -147,6 +143,44 @@ namespace SandcastleBuilder.Package.PropertyPages
             ProjectProperty projProp;
             HelpFileFormat format;
             int idx;
+
+            // Load the framework versions of first use so that we have a chance to set the Sandcastle tools
+            // path if necessary.
+            if(control.Name == "cboFrameworkVersion" && cboFrameworkVersion.Items.Count == 0)
+            {
+                try
+                {
+                    // If Sandcastle cannot be found, use the SandcastlePath project property setting
+                    if(String.IsNullOrEmpty(BuildComponentManager.SandcastlePath))
+                    {
+#if !STANDALONEGUI
+                        projProp = this.ProjectMgr.BuildProject.GetProperty("SandcastlePath");
+#else
+                        projProp = this.CurrentProject.MSBuildProject.GetProperty("SandcastlePath");
+#endif
+                        if(projProp != null && !String.IsNullOrEmpty(projProp.EvaluatedValue))
+                            BuildComponentManager.SandcastlePath = projProp.EvaluatedValue;
+                    }
+
+                    cboFrameworkVersion.Items.AddRange(FrameworkDictionary.AllFrameworks.Keys.ToArray());
+                    cboFrameworkVersion.SelectedItem = FrameworkDictionary.DefaultFramework;
+                }
+                catch(Exception ex)
+                {
+#if !STANDALONEGUI
+                    MessageBox.Show("Unable to determine framework versions:\r\n\r\n" + ex.Message +
+                        "\r\n\r\nYou may need to set the Sandcastle Path project property first.",
+                        Resources.PackageTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
+#else
+                    MessageBox.Show("Unable to determine framework versions:\r\n\r\n" + ex.Message +
+                        "\r\n\r\nYou may need to set the Sandcastle Path project property first.",
+                        Constants.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+#endif
+                    return true;
+                }
+
+                return false;
+            }
 
             // Get the selected help file formats
             if(control.Name == "cblHelpFileFormat")

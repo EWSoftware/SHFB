@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : ConvertFromNDoc.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/10/2012
+// Updated : 11/17/2012
 // Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -27,7 +27,7 @@ using System.IO;
 using System.Xml;
 using System.Xml.XPath;
 
-using SandcastleBuilder.Utils.Design;
+using SandcastleBuilder.Utils.Frameworks;
 
 namespace SandcastleBuilder.Utils.Conversion
 {
@@ -421,7 +421,7 @@ namespace SandcastleBuilder.Utils.Conversion
 
                             case "SdkDocVersion":
                                 value = child.GetAttribute("value", String.Empty).Substring(5).Replace('_', '.');
-                                project.FrameworkVersion = FrameworkVersionTypeConverter.ConvertFromOldValue(value);
+                                project.FrameworkVersion = FrameworkDictionary.ConvertFromOldValue(value);
                                 break;
 
                             case "SdkLinksOnWeb":

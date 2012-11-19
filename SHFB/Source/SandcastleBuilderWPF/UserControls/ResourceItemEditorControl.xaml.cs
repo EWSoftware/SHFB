@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : ResourceItemEditorControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/27/2012
+// Updated : 11/18/2012
 // Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -32,7 +32,6 @@ using System.Xml;
 using SandcastleBuilder.Utils;
 using SandcastleBuilder.Utils.BuildComponent;
 using SandcastleBuilder.Utils.ConceptualContent;
-using SandcastleBuilder.Utils.Design;
 using SandcastleBuilder.Utils.PresentationStyle;
 
 namespace SandcastleBuilder.WPF.UserControls
@@ -96,7 +95,7 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <param name="project">The current Sandcastle Builder project</param>
         public void LoadResourceItemsFile(string resourceItemsFile, SandcastleProject project)
         {
-            PresentationStyleSettings pss = PresentationStyleTypeConverter.AllStyles[project.PresentationStyle];
+            PresentationStyleSettings pss = PresentationStyleDictionary.AllStyles[project.PresentationStyle];
             string presentationStylePath, shfbStyleContent, shfbSharedContent;
 
             if(resourceItemsFile == null)

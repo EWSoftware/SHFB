@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : TranformComponentArgument.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/24/2012
+// Updated : 11/15/2012
 // Note    : Copyright 2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -65,22 +65,71 @@ namespace SandcastleBuilder.Utils.PresentationStyle
         public string Content { get; set; }
         #endregion
 
-        #region Constructor
+        #region Constructors
         //=====================================================================
+
+        /// <summary>
+        /// Private copy constructor
+        /// </summary>
+        private TransformComponentArgument(TransformComponentArgument clone)
+        {
+            this.Key = clone.Key;
+            this.IsForConceptualBuild = clone.IsForConceptualBuild;
+            this.IsForReferenceBuild = clone.IsForReferenceBuild;
+            this.Description = clone.Description;
+            this.Value = clone.Value;
+
+            if(this.Value == null)
+                this.Content = clone.Content;
+        }
 
         /// <summary>
         /// Constructor
         /// </summary>
-        internal TransformComponentArgument(XElement argument)
+        public TransformComponentArgument(XElement argument)
         {
             this.Key = argument.Attribute("Key").Value;
-            this.IsForConceptualBuild = (bool)argument.Attribute("ForConceptualBuild");
-            this.IsForReferenceBuild = (bool)argument.Attribute("ForReferenceBuild");
+            this.IsForConceptualBuild = ((bool?)argument.Attribute("ForConceptualBuild") ?? false);
+            this.IsForReferenceBuild = ((bool?)argument.Attribute("ForReferenceBuild") ?? false);
             this.Description = (string)argument.Attribute("Description");
             this.Value = (string)argument.Attribute("Value");
 
             if(this.Value == null)
-                this.Content = argument.Value;
+            {
+                var reader = argument.CreateReader();
+                reader.MoveToContent();
+
+                this.Content = reader.ReadInnerXml();
+            }
+        }
+        #endregion
+
+        #region Methods
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to clone a transform component argument
+        /// </summary>
+        /// <returns>A clone of the current transform component argument</returns>
+        public TransformComponentArgument Clone()
+        {
+            return new TransformComponentArgument(this);
+        }
+
+        /// <summary>
+        /// This is used to convert the transform component argument to an XML element for storing in a project
+        /// </summary>
+        /// <returns>The transform component argument as an XML element</returns>
+        public XElement ToXml()
+        {
+            var e = new XElement("Argument", new XAttribute("Key", this.Key));
+
+            if(this.Value != null)
+                e.Add(new XAttribute("Value", this.Value));
+            else
+                e.Add(XElement.Parse("<Content>" + this.Content + "</Content>").Elements());
+
+            return e;
         }
         #endregion
     }

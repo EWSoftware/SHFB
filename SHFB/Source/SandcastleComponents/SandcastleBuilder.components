@@ -102,22 +102,21 @@
 	<component id="Post-transform Component"
 		type="SandcastleBuilder.Components.PostTransformComponent"
 		assembly="{@SHFBFolder}SandcastleBuilder.Components.dll">
-		<description>This build component is used to insert a logo image into the header of each API reference and conceptual content topic.</description>
+		<description>This component is obsolete and will be removed in a future release.</description>
 
 		<insert placement="after" type="Microsoft.Ddue.Tools.TransformComponent" />
 		<insertConceptual placement="after" type="Microsoft.Ddue.Tools.TransformComponent" />
 
 		<configureMethod name="ConfigureComponent" />
 
+		<!-- This component is obsolete and will be removed in a future release. -->
+		<hidden />
+
 		<defaultConfiguration>
-			<!-- Base output paths for the files (required).  These should match the parent folder of the output path
-					 of the HTML files (see each of the SaveComponent instances in the configuration files). -->
 			<outputPaths>
 				{@HelpFormatOutputPaths}
 			</outputPaths>
 
-			<!-- Logo image file (optional).  Filename is required. The height, width, altText, placement, and
-					 alignment attributes are optional. -->
 			<logoFile filename="" height="0" width="0" altText="" placement="left" alignment="left" />
 		</defaultConfiguration>
 	</component>
