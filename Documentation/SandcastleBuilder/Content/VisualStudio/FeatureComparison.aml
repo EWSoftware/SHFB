@@ -123,15 +123,12 @@ content of the build log from the last time the help file project was built.</pa
 <section address="ProjectProps">
 	<title>Editing a Project's Properties</title>
 	<content>
-	  <para>The project properties editor window in Visual Studio is quite different from the one in the
-standalone GUI but provides access to all of the properties in a much easier to use fashion.  Project properties
-are grouped into tabs.  The group tabs are ordered by frequency of usage rather than alphabetically as they are in
-the standalone GUI.  Each set of properties is edited using standard controls such as text boxes, combo boxes,
-list boxes, etc. with more descriptive labels than the ones found in the standalone GUI.  The component
-configurations, plug-in configurations, and user-defined properties have each been given their own tab.  Since
-there is only one website property, it has been combined with the Help 1 properties on the <ui>Help 1/Website</ui>
-tab.  An information and/or warning tip icon appears after some properties.  Hover the mouse over the icon to
-see additional usage notes or warnings related to the property.</para>
+	  <para>The project properties can be accessed by selecting the <ui>Properties</ui> context menu option on the
+project node or by double-clicking the <ui>Project Properties</ui> node in the <ui>Solution Explorer</ui> tool
+window.  The project properties editor window in Visual Studio is almost identical to the one in the standalone
+GUI.  Properties are grouped into categories sorted by frequency of usage rather than alphabetically.  On each
+property page, an information and/or warning tip icon appears after some properties.  Hover the mouse over the
+icon to see additional usage notes or warnings related to the property.</para>
 
 		<mediaLink>
 			<image xlink:href="VSProjectPropsEditor" placement="center" />

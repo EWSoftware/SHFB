@@ -51,7 +51,7 @@ conflict with any other XML comments file in the related projects.</para>
 		<alert class="important">
 			<para>The project summary comments will be placed in the member with the ID starting with
 "<codeInline>R:Project_</codeInline>".  The ID must be suffixed with the value from your project's
-<codeInline>HtmlHelpName</codeInline> property.  Replace any spaces in the value with underscores.  This is
+<codeInline>Html Help Name</codeInline> property.  Replace any spaces in the value with underscores.  This is
 required so that the root namespace container has a unique name that will not cause any conflicts when building
 MS Help Viewer output.
 		</para>
@@ -63,7 +63,7 @@ MS Help Viewer output.
 			<listItem>
 				<para>To specify shared project summary comments, add them to the <codeInline>&lt;summary&gt;</codeInline>
 tag in the <legacyBold>R:Project_[HtmlHelpName]</legacyBold> node.  As noted above, substitute the value of your
-project's <codeInline>HtmlHelpName</codeInline> property in the ID.  Any project summary comments in the help file
+project's <codeInline>Html Help Name</codeInline> property in the ID.  Any project summary comments in the help file
 projects will be appended to these comments.  If you do not have any shared project summary notes, you may remove
 this node from the file.</para>
 			</listItem>

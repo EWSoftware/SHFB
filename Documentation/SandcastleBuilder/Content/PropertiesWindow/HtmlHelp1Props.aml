@@ -9,41 +9,41 @@
 		    excludeRelatedTopics="true" />
     </introduction>
 
-<section address="BinaryTOC">
-	<title>BinaryTOC</title>
-	<content><para>When set to True, the default, a binary table of
-contents is created for the help file. According to the HTML Help Compiler
-documentation this can significantly reduce the amount of time required to
-load a very large help document.</para>
+<section address="HtmlSdkLinkType">
+	<title>Help 1 SDK link type (HtmlSdkLinkType)</title>
+	<content>
+		<para>This property is used to define the type of links used to reference other help topics referring to
+framework (SDK) help topics. It can be set to <codeInline>None</codeInline> which renders non-clickable links or
+<codeInline>MSDN</codeInline> (the default) which renders links to the online MSDN help content for the topic.
+When set to <codeInline>MSDN</codeInline>, the
+<link xlink:href="1b2dff59-92cc-4578-b261-f3849f30c26c#SdkLinkTarget">Sdk Link Target</link> property is used to
+define where the MSDN links will open in the browser.</para>
 	</content>
 </section>
 
-<section address="HtmlSdkLinkType">
-	<title>HtmlSdkLinkType</title>
-	<content><para>This property is used to define the type of links used to reference
-other help topics referring to framework (SDK) help topics. It can be set to
-<codeInline>None</codeInline> which renders non-clickable links or
-<codeInline>MSDN</codeInline> (the default) which renders links to the online MSDN
-help content for the topic.  When set to <codeInline>MSDN</codeInline>, the
-<link xlink:href="1b2dff59-92cc-4578-b261-f3849f30c26c#SdkLinkTarget">SdkLinkTarget</link>
-property is used to define where the MSDN links will open in the browser.</para>
+<section address="BinaryTOC">
+	<title>Create a binary table of contents to reduce load time (BinaryTOC)</title>
+	<content>
+		<para>When set to True, the default, a binary table of contents is created for the help file.  According to
+the HTML Help Compiler documentation this can significantly reduce the amount of time required to load a very
+large help document.</para>
 	</content>
 </section>
 
 <section address="IncludeFavorites">
-	<title>IncludeFavorites</title>
-	<content><para>If this property is set to True, a Favorites tab will
-be included in the compiled help file. By default, it is set to false and only
-the Contents, Index, and Search tabs are available.</para>
+	<title>Include a Favorites tab in the compiled help file (IncludeFavorites)</title>
+	<content>
+		<para>If this property is set to True, a Favorites tab will be included in the compiled help file. By
+default, it is set to false and only the Contents, Index, and Search tabs are available.</para>
 	</content>
 </section>
 
-    <relatedTopics>
-    	<link xlink:href="e32086c6-de17-4e54-a746-1ac80bf0c45a" />
-    	<link xlink:href="d0c2dabd-3caf-4586-b81d-cbd765dec7cf" />
-    	<link xlink:href="5f743a6e-3239-409a-a8c1-0bff4b5375f4" />
-    	<link xlink:href="f818e4d1-3457-4be6-a833-1b700f1e2f18" />
-    </relatedTopics>
+		<relatedTopics>
+			<link xlink:href="e32086c6-de17-4e54-a746-1ac80bf0c45a" />
+			<link xlink:href="d0c2dabd-3caf-4586-b81d-cbd765dec7cf" />
+			<link xlink:href="5f743a6e-3239-409a-a8c1-0bff4b5375f4" />
+			<link xlink:href="f818e4d1-3457-4be6-a833-1b700f1e2f18" />
+		</relatedTopics>
 
   </developerConceptualDocument>
 </topic>

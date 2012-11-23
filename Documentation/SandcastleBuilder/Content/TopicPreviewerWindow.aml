@@ -72,7 +72,7 @@ the presentation style applied.</para>
 			<listItem>
 				<para>Flow documents do not size table columns the same way that HTML does.  By default, space is
 distributed evenly across all columns rather than alloting more space to columns containing wider content.
-To rememdy this, the parser uses a simple algorithm to adjust the column widths based on the maximum width of the
+To remedy this, the parser uses a simple algorithm to adjust the column widths based on the maximum width of the
 content in each table cell across all rows.  While it does not result in an exact match to the table column
 widths seen in the built topics, it is fairly close and should be fine for almost all cases.  You will see that
 it wraps the text in shorter columns more often than the HTML layout but the column width differences are usually

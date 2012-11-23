@@ -135,7 +135,7 @@ topic's main content.</para>
 topic files.  The above is just a guideline.  Below is an example of a typical topic file for the three default
 transformations:</para>
 
-<code lang="xml" title="Example Topic File">
+<code language="xml" title="Example Topic File">
 &lt;?xml version="1.0" encoding="utf-8"?&gt;
 
 &lt;!DOCTYPE bodyText [ &lt;!ENTITY nbsp "&amp;#160;"&gt; ]&gt;
@@ -181,7 +181,7 @@ defines the path to the help file's root folder.  This allows you to add script,
 prefix the filename in the tag's attributes with the <codeInline>pathToRoot</codeInline> variables during the
 transformation.  For example:</para>
 
-<code lang="xml" title="Example use of pathToRoot">
+<code language="xml" title="Example use of pathToRoot">
 &lt;link rel="stylesheet" type="text/css"
     href="{$pathToRoot}styles/presentation.css" /&gt;
 

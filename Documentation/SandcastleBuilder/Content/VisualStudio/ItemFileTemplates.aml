@@ -51,17 +51,17 @@ This will cause Visual Studio to automatically insert a new GUID value in the to
 </alert>
 
 <code language="c#" title="Example Template File: BlankTopic.aml">
-&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
-&lt;topic id=&quot;$guid1$&quot; revisionNumber=&quot;1&quot;&gt;
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;topic id="$guid1$" revisionNumber="1"&gt;
   &lt;developerConceptualDocument
-    xmlns=&quot;http://ddue.schemas.microsoft.com/authoring/2003/5&quot;
-    xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot;&gt;
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink"&gt;
 
     &lt;introduction&gt;
       &lt;para&gt;Required introduction&lt;/para&gt;
     &lt;/introduction&gt;
 
-&lt;section address=&quot;Section1&quot;&gt;
+&lt;section address="Section1"&gt;
   &lt;title&gt;Optional section title&lt;/title&gt;
   &lt;content&gt;
     &lt;para&gt;Add one or more sections with content&lt;/para&gt;
@@ -83,8 +83,8 @@ filename should match the base filename of your template file (i.e. <localUri>Bl
 <localUri>BlankTopic.aml</localUri> template file).  An exampe is shown below:</para>
 
 <code language="xml" title="Example VSTemplate File: BlankTopic.vstemplate">
-&lt;VSTemplate Version=&quot;3.0.0&quot; Type=&quot;Item&quot;
-  xmlns=&quot;http://schemas.microsoft.com/developer/vstemplate/2005&quot;&gt;
+&lt;VSTemplate Version="3.0.0" Type="Item"
+  xmlns="http://schemas.microsoft.com/developer/vstemplate/2005"&gt;
 
   &lt;TemplateData&gt;
     &lt;!-- This is the name displayed for the template --&gt;
@@ -97,7 +97,7 @@ filename should match the base filename of your template file (i.e. <localUri>Bl
          an icon from the SHFB project package.  If you want to add your
          own icon, use an Icon element as shown in the commented out example
          below instead. --&gt;
-    &lt;Icon Package=&quot;{c997d569-ee8e-4947-a46f-9a0717ce39a0}&quot; ID=&quot;407&quot; /&gt;
+    &lt;Icon Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="407" /&gt;
 
     &lt;!-- &lt;Icon&gt;MyTemplateIcon.ico&lt;/Icon&gt; --&gt;
 
@@ -121,9 +121,9 @@ filename should match the base filename of your template file (i.e. <localUri>Bl
   &lt;TemplateContent&gt;
     &lt;!-- This defines the project item template file.  The name should
          match the name of the item template you created.  If it contains
-         replaceable parameters such as &quot;$guid1$&quot;, add the
-         ReplaceParameters attribute and set it to &quot;true&quot;. --&gt;
-    &lt;ProjectItem ReplaceParameters=&quot;true&quot;&gt;BlankTopic.aml&lt;/ProjectItem&gt;
+         replaceable parameters such as "$guid1$", add the
+         ReplaceParameters attribute and set it to "true". --&gt;
+    &lt;ProjectItem ReplaceParameters="true"&gt;BlankTopic.aml&lt;/ProjectItem&gt;
   &lt;/TemplateContent&gt;
 &lt;/VSTemplate&gt;
 </code>

@@ -129,7 +129,7 @@ All relative paths specified on the command line and those in a response file
 (see below) are relative to the project's path as usual.  Below are a couple of
 example command lines:</para>
 
-<code lang="none" title="Note: Lines wrapped for display purposes">
+<code language="none" title="Note: Lines wrapped for display purposes">
 %SystemRoot%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe
   /p:Configuration=Release HelpFile.shfbproj
 
@@ -182,7 +182,7 @@ by MSBuild based on the help file builder's target file location.  Do not enclos
 quotes or it will be ignored.  If necessary, enclose the entire command line parameter in double quotes.</para>
 </alert>
 
-<code lang="xml" title="Example Override Project File">
+<code language="xml" title="Example Override Project File">
 <![CDATA[<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <HtmlHelpName>TestDoc</HtmlHelpName>
@@ -271,20 +271,18 @@ help file builder GUI.  These are only executed when built using MSBuild.</para>
 
 <section address="PostBuildEvent">
   <title>Specifying a Post-Build Event to Build a Help File</title>
-  <content><para>Currently, help file builder projects are not directly
-supported as solution project items.  However, a post-build event in a Visual
-Studio project can be used to build them.  To do so, right click on a project
-name in the Solution Explorer, select <legacyBold>Properties</legacyBold>, and
-select the <legacyBold>Build Events</legacyBold> sub-item.  Click in the
-<legacyBold>Post-build Event Command Line</legacyBold> option to enter the
-command line to run.  You can click the <legacyBold>Edit Post-build</legacyBold>
-button to open a dialog with a larger editor and a list of available macros.
-Below is an example of a common command line script that can be used (lines
-wrapped for display purposes). Replace the path to the tool with the path where
-you installed it on your PC.  The <codeInline>IF</codeInline> statement
-prevents building the help file in debug builds where it may not be needed.</para>
+  <content>
+		<para>Help file builder projects are supported in Visual Studio if you install the Visual Studio extension
+package.  In addition, a post-build event in a Visual Studio project can be used to build them.  To do so, right
+click on a project name in the Solution Explorer, select <legacyBold>Properties</legacyBold>, and select the
+<legacyBold>Build Events</legacyBold> sub-item.  Click in the <legacyBold>Post-build Event Command Line</legacyBold>
+option to enter the command line to run.  You can click the <legacyBold>Edit Post-build</legacyBold> button to
+open a dialog with a larger editor and a list of available macros.  Below is an example of a common command line
+script that can be used (lines wrapped for display purposes). Replace the path to the tool with the path where
+you installed it on your PC.  The <codeInline>IF</codeInline> statement prevents building the help file in debug
+builds where it may not be needed.</para>
 
-<code lang="none" title="Note: Lines wrapped for display purposes">
+<code language="none" title="Note: Lines wrapped for display purposes">
 IF "$(ConfigurationName)"=="Debug" Goto Exit
 
 ECHO Building SHFB help file via MSBuild

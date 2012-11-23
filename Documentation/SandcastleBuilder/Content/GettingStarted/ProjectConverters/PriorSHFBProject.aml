@@ -1,126 +1,129 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <topic id="5864f501-6433-4bd3-825d-1843b9b27540" revisionNumber="1">
-  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <introduction>
-      <para>This is used to convert project files created using the
-<token>SHFB</token> v1.7.0.0 or earlier to the new MSBuild project file
-format.</para>
-    </introduction>
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>This is used to convert project files created using the <token>SHFB</token> v1.7.0.0 or earlier to
+the new MSBuild project file format.</para>
+		</introduction>
 
-    <section>
-      <title>Post-Conversion Review</title>
-      <content><para>While significantly different, the new project file format
-still has all of the same features and project options as the old file format.
-The main difference that you will notice is that additional content and
-conceptual content files are now exposed and managed via the
-<legacyBold>Project Explorer</legacyBold>.  This makes it much easier to
-manage the files and add new ones.  The following are the main differences and
-some issues that you may encounter with the converted project file:</para>
+		<section>
+			<title>Post-Conversion Review</title>
+			<content>
+				<para>While significantly different, the new project file format still has all of the same features and
+project options as the old file format.  The main difference that you will notice is that additional content and
+conceptual content files are now exposed and managed via the <legacyBold>Project Explorer</legacyBold>.  This
+makes it much easier to manage the files and add new ones.  The following are the main differences and some
+issues that you may encounter with the converted project file:</para>
 
-<list class="bullet">
-	<listItem>Review all path related properties to ensure that they are still
-accurate in the new project.</listItem>
+				<list class="bullet">
+					<listItem>
+						<para>Review all path related properties to ensure that they are still accurate in the new project.</para>
+					</listItem>
 
-    <listItem><para>Review the <legacyBold>Documentation Sources</legacyBold> and
-<legacyBold>References</legacyBold> project nodes to see that the required
-items were imported correctly and make any necessary adjustments.</para>
-		<token>SolutionDocSource</token>
-	</listItem>
+					<listItem>
+						<para>Review the <legacyBold>Documentation Sources</legacyBold> and <legacyBold>References</legacyBold>
+project nodes to see that the required items were imported correctly and make any necessary adjustments.</para>
 
-	<listItem>Review the configurations for all build components added via the
-<codeInline>ComponentConfigurations</codeInline> property and the configurations
-for all plug-ins added via the <codeInline>PlugInConfigurations</codeInline>
-property.  It may be necessary to adjust the paths on file-related options.</listItem>
+						<token>SolutionDocSource</token>
+					</listItem>
 
-	<listItem>Not all files can be detected and added to the project (i.e.
-files referenced in topics such as example code files, the logo file in the
-Post-Transform component, etc.).  If build errors result from missing files,
-simply add them to the project or adjust the paths and/or filenames as
-needed.</listItem>
+					<listItem>
+						<para>Review the configurations for all build components added via the
+<codeInline>ComponentConfigurations</codeInline> property and the configurations for all plug-ins added via the
+<codeInline>PlugInConfigurations</codeInline> property.  It may be necessary to adjust the paths on file-related
+options.</para>
+					</listItem>
 
-	<listItem>If you were using the Code Block Component, you may need to
-adjust the path to external source files in the source attribute on the
-<codeInline>&lt;code&gt;</codeInline> elements.</listItem>
+					<listItem>
+						<para>Not all files can be detected and added to the project (i.e. files referenced in topics such as
+example code files, the logo file in the Post-Transform component, etc.).  If build errors result from missing
+files, simply add them to the project or adjust the paths and/or filenames as needed.</para>
+					</listItem>
 
-	<listItem>Conceptual content media files are added as project file items.
-Their <codeInline>BuildAction</codeInline> is set to <codeInline>Image</codeInline>
-and the additional properties such as the ID and alternate text are stored in
-the file item properties.</listItem>
+					<listItem>
+						<para>If you were using the Code Block Component, you may need to adjust the path to external source
+files in the source attribute on the <codeInline>&lt;code&gt;</codeInline> elements.</para>
+					</listItem>
 
-	<listItem>Conceptual content tokens are stored in a file that is added to
-the project and its <codeInline>BuildAction</codeInline> is set to
-<codeInline>Tokens</codeInline> to indicate that it should be treated as such
-in the build.  The extension on the filename is set to
-<localUri>.tokens</localUri>.</listItem>
+					<listItem>
+						<para>Conceptual content media files are added as project file items.  Their
+<codeInline>BuildAction</codeInline> is set to <codeInline>Image</codeInline> and the additional properties such
+as the ID and alternate text are stored in the file item properties.</para>
+					</listItem>
 
-	<listItem>If a conceptual content code snippets files is defined, it is
-added to the project and its <codeInline>BuildAction</codeInline> is set to
-<codeInline>CodeSnippets</codeInline> to indicate that it should be treated as
-such in the build.  The extension on the filename is changed to
-<localUri>.snippets</localUri>.</listItem>
+					<listItem>
+						<para>Conceptual content tokens are stored in a file that is added to the project and its
+<codeInline>BuildAction</codeInline> is set to <codeInline>Tokens</codeInline> to indicate that it should be
+treated as such in the build.  The extension on the filename is set to <localUri>.tokens</localUri>.</para>
+					</listItem>
 
-	<listItem><para>All additional content files and subfolders are added to
-the project recursively as file items with default build actions based on the
-file extensions.  If it does not already contain one, you can add a site map to
-the project and edit it to set the order and layout of the additional content
-items.</para>
+					<listItem>
+						<para>If a conceptual content code snippets files is defined, it is added to the project and its
+<codeInline>BuildAction</codeInline> is set to <codeInline>CodeSnippets</codeInline> to indicate that it should
+be treated as such in the build.  The extension on the filename is changed to <localUri>.snippets</localUri>.</para>
+					</listItem>
 
-	<alert class="tip">
-	  <para>The help file builder contains full support for conceptual content
-that uses Microsoft Assistance Markup Language (MAML) to create additional
-non-API topics such as How-Tos, walkthroughs, etc.  You may want to consider
-switching any additional HTML content to conceptual content to take advantage
-of its features.  See the <link xlink:href="3d4edd2d-7883-4508-b9d2-bd7b4d848b0d" />
-topic for more information.</para>
-	</alert></listItem>
+					<listItem>
+						<para>All additional content files and subfolders are added to the project recursively as file items
+with default build actions based on the file extensions.  If it does not already contain one, you can add a site
+map to the project and edit it to set the order and layout of the additional content items.</para>
 
-	<listItem>Wildcard additional content items are expanded into individual
-file entries in the new project.  As such, you may find that unwanted files
-have been added to the project (i.e. source control files) that you were not
-aware of before as they were copied as part of build and may not have been
-noticed.  The extra files can be deleted from the new project.</listItem>
+						<alert class="tip">
+							<para>The help file builder contains full support for conceptual content that uses Microsoft
+Assistance Markup Language (MAML) to create additional non-API topics such as How-Tos, walkthroughs, etc.  You
+may want to consider switching any additional HTML content to conceptual content to take advantage of its
+features.  See the <link xlink:href="3d4edd2d-7883-4508-b9d2-bd7b4d848b0d" /> topic for more information.</para>
+						</alert>
+					</listItem>
 
-	<listItem>Because the additional content files actually become part of the
-project and are copied to the project folder, their base path may be different
-than the destination path specified in the old project.  The file's location
-within the project is used to determine its destination path in the compiled
-help file.  Files at the root end up in the root folder of the compiled help
-file.  Files in subfolders end up in like-named subfolders in the compiled
-help file.  These paths may differ from the old project and you may need to
-adjust the file locations within the project after conversion to get them
-where they need to be when the project is built.</listItem>
+					<listItem>
+						<para>Wildcard additional content items are expanded into individual file entries in the new project.
+As such, you may find that unwanted files have been added to the project (i.e. source control files) that you
+were not aware of before as they were copied as part of build and may not have been noticed.  The extra files can
+be deleted from the new project.</para>
+					</listItem>
 
-	<listItem>Conceptual content topics are copied to the project and will have
-their filename extension changed from <localUri>.xml</localUri> to
-<localUri>.aml</localUri> to reflect their actual purpose.  Note that the
-<codeInline>BuildAction</codeInline> on topics files is set to
-<codeInline>None</codeInline>.  This is correct as the <newTerm>content layout
-file</newTerm> determines which topics are included in the help file at
-build time.</listItem>
+					<listItem>
+						<para>Because the additional content files actually become part of the project and are copied to the
+project folder, their base path may be different than the destination path specified in the old project.  The
+file's location within the project is used to determine its destination path in the compiled help file.  Files at
+the root end up in the root folder of the compiled help file.  Files in subfolders end up in like-named
+subfolders in the compiled help file.  These paths may differ from the old project and you may need to adjust the
+file locations within the project after conversion to get them where they need to be when the project is built.</para>
+					</listItem>
 
-	<listItem>In addition to the filename extension change, the topic ID and
-revision number are embedded in each converted MAML topic file.  Going forward,
-all conceptual topic files must contain a root <codeInline>&lt;topic&gt;</codeInline>
-element with <codeInline>id</codeInline> and <codeInline>revisionNumber</codeInline>
-attributes.  This is done to allow the content layout file to reference topics
-by ID alone and lets topic files move around without you having to update
-their physical location in the layout files.</listItem>
+					<listItem>
+						<para>Conceptual content topics are copied to the project and will have their filename extension
+changed from <localUri>.xml</localUri> to <localUri>.aml</localUri> to reflect their actual purpose.  Note that
+the <codeInline>BuildAction</codeInline> on topics files is set to <codeInline>None</codeInline>.  This is
+correct as the <newTerm>content layout file</newTerm> determines which topics are included in the help file at
+build time.</para>
+					</listItem>
 
-	<listItem>Any HTML or <localUri>.topic</localUri> files found in the
-conceptual content layout will be modified to include
-<codeInline>&lt;meta&gt;</codeInline> elements that contain the ID and revision
-number for the same reason the ID and revision number are added to the
-conceptual content MAML topic files.</listItem>
+					<listItem>
+						<para>In addition to the filename extension change, the topic ID and revision number are embedded in
+each converted MAML topic file.  Going forward, all conceptual topic files must contain a root
+<codeInline>&lt;topic&gt;</codeInline> element with <codeInline>id</codeInline> and
+<codeInline>revisionNumber</codeInline> attributes.  This is done to allow the content layout file to reference
+topics by ID alone and lets topic files move around without you having to update their physical location in the
+layout files.</para>
+					</listItem>
 
-</list>
+					<listItem>
+						<para>Any HTML or <localUri>.topic</localUri> files found in the conceptual content layout will be
+modified to include <codeInline>&lt;meta&gt;</codeInline> elements that contain the ID and revision number for
+the same reason the ID and revision number are added to the conceptual content MAML topic files.</para>
+					</listItem>
 
-      </content>
-    </section>
+				</list>
 
-    <relatedTopics>
-	<link xlink:href="f68822d2-97ba-48da-a98b-46747983b4a0" />
-	<link xlink:href="8e3f8757-0ef3-4772-bb2f-5d7ae57e50da" />
-	<link xlink:href="5a484e94-6940-4c97-940c-3f46fb8736d2" />
-    </relatedTopics>
-  </developerConceptualDocument>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="f68822d2-97ba-48da-a98b-46747983b4a0" />
+			<link xlink:href="8e3f8757-0ef3-4772-bb2f-5d7ae57e50da" />
+			<link xlink:href="5a484e94-6940-4c97-940c-3f46fb8736d2" />
+		</relatedTopics>
+	</developerConceptualDocument>
 </topic>

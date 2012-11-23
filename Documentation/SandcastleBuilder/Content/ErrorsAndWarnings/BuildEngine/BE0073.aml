@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="91dd8d47-3a32-42d3-b2c5-69f210de7372" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Error BE0073: A project with a different or higher framework version was found but that version
+(<legacyItalic>XXXX</legacyItalic>) or a suitable redirected version was not found on this system.  The build
+cannot continue.</para>
+    </introduction>
+
+    <section>
+      <title>Cause</title>
+      <content>
+        <para>A project documentation source specified a later framework version than the one found in the help
+file builder project.  The build engine was unable to locate framework information for that later version and an
+attempt was made to redirect usage to a later version but none were found.</para>
+      </content>
+    </section>
+
+    <section>
+      <title>Solution</title>
+      <content>
+        <para>This can happen if you add a project documentation source that uses a later framework version than
+the one defined in the help file builder project and it is not installed on the system.  For example, the
+documentation source project specifies Silverlight 5 but the help file builder project specified Silverlight 4.
+If the later version is not found, the build engine will attempt to redirect usage to a later version of the
+framework if one can be found on the system.  If the specified version or a later version cannot be found, you
+will need to install the selected or later version of the framework specified in the project on the system.</para>
+      </content>
+    </section>
+
+    <relatedTopics>
+			<link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
+		</relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

@@ -29,22 +29,22 @@ the help file.</para>
 <section>
   <content>
 
-<code lang="xml" title=" ">
+<code language="xml" title=" ">
 &lt;!-- Import an entire file --&gt;
-&lt;code lang="xml" source="..\Test.xml" numberLines="true" title=" "/&gt;
+&lt;code language="xml" source="..\Test.xml" numberLines="true" title=" "/&gt;
 
 &lt;!-- Import a defined region --&gt;
-&lt;code lang="vbnet" source="..\Class1.vb" region="Test Region"
+&lt;code language="vbnet" source="..\Class1.vb" region="Test Region"
     title="Test region from class" /&gt;&lt;/code&gt;
 
 &lt;!-- A few more examples --&gt;
-&lt;code lang="vbnet" source="..\Class1.vb" region="Embedded snippet"
+&lt;code language="vbnet" source="..\Class1.vb" region="Embedded snippet"
     title="Test region from method" numberLines="true" /&gt;
 
-&lt;code lang="cs" source="..\TestClass.cs" region="Methods"
+&lt;code language="cs" source="..\TestClass.cs" region="Methods"
     numberLines="true" outlining="true" /&gt;
 
-&lt;code source="..\GenericClass.cs" lang="cs" &gt; &lt;/code&gt;
+&lt;code language="cs" source="..\GenericClass.cs" &gt; &lt;/code&gt;
 </code>
 
 	<para>You can also import multiple code snippets into one common colorized code block by nesting them within a
@@ -54,8 +54,8 @@ imported code block.  Only the <codeInline>source</codeInline> and <codeInline>r
 will be utilized.  All other attributes that control colorization of the merged code block will be retrieved
 from the parent <codeInline>pre</codeInline> tag.</para>
 
-<code lang="xml" title=" ">
-&lt;pre title="Nested code block example" lang="VB.NET"&gt;
+<code language="xml" title=" ">
+&lt;pre title="Nested code block example" language="VB.NET"&gt;
 &lt;code source="..\Class1.vb" region="Snippet #1" nested="true" /&gt;
 &lt;code source="..\Class1.vb" region="Snippet #2" nested="true" /&gt;
 &lt;/pre&gt;
@@ -63,7 +63,7 @@ from the parent <codeInline>pre</codeInline> tag.</para>
 
 	<para>Literal code can also be mixed in between the nested <codeInline>code</codeInline> tags.</para>
 
-<code lang="xml" title=" ">
+<code language="xml" title=" ">
 &lt;pre title="Nested code block example" lang="VB.NET"&gt;
 &lt;code source="..\Class1.vb" region="Snippet #1" nested="true" /&gt;
 

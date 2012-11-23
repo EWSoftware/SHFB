@@ -23,7 +23,7 @@ component. It should be inserted into the configuration file before the
 Documentation component, you should insert it after that one so that you can
 get information about missing documentation items as well.</para>
 
-<code lang="xml" title="Example Configuration">
+<code language="xml" title="Example Configuration">
 &lt;!-- IntelliSense component configuration.  This must appear
      before the TransformComponent. --&gt;
 &lt;component type="SandcastleBuilder.Components.IntelliSenseComponent"

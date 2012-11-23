@@ -24,7 +24,7 @@ the help file.</para>
 <section>
   <content>
 
-<code lang="xml" title=" ">
+<code language="xml" title=" ">
 For a list of all classes, see the
 &lt;see cref="N:SandcastleBuilder.Utils"&gt;SandcastleBuilder.Utils
 Namespace&lt;/see&gt; topic.
@@ -69,7 +69,7 @@ converted to an <codeInline>href</codeInline> attribute.  For example, if you ha
 could use <codeInline>cref</codeInline> attributes on the <codeInline>area</codeInline> tags to have them resolve
 to links to the classes represented by the image areas as in the following example.</para>
 
-<code lang="xml" title=" ">
+<code language="xml" title=" ">
 &lt;img src ="images/TestClass.jpg" width="300" height="300" alt="TestClass"
     usemap ="#TestClass" /&gt;
 

@@ -67,7 +67,7 @@ that a <codeInline>meta</codeInline> tag specifying UTF-8 encoding appears in
 each file.  This will ensure that all additional content pages are also
 properly encoded if necessary.  For example:</para>
 
-<code lang="xml" title="Example Character Set Encoding Meta Tag">
+<code language="xml" title="Example Character Set Encoding Meta Tag">
 &lt;head&gt;
 &lt;title&gt;My Additional Content&lt;title&gt;
 &lt;meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /&gt;

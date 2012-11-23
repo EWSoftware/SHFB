@@ -51,18 +51,14 @@ snippets into a single code example.</para>
 			</listItem>
 
 			<listItem>
-				<para>C#, VB.NET, C++, J#, JScript.NET, XAML, and JavaScript code blocks can be associated with the
-language filter to show or hide them based on the language filter setting (VS2005 style only).</para>
-			</listItem>
-
-			<listItem>
 				<para>Syntax highlighting of code blocks in <codeInline>&lt;code&gt;</codeInline> tags.  Languages
 supported include C#, VB.NET, JScript.NET, C++, J#, C, JavaScript, VBScript, XAML, XML, HTML, SQL script,
 PowerShell script, and Python.  An external configuration file is used so that it is possible to extend the
 colorizer to support other languages. The stylesheet is also replaceable. All of the features noted above are
 available whether or not you enable the colorizing feature.  The code colorizer is a modified and extended
 version of the one written by Jonathan de Halleux in the Code Project article <externalLink><linkText>Multiple
-Language Syntax Highlighting, Part 2: C# Control</linkText><linkUri>http://www.codeproject.com/KB/cs/highlightcs.aspx</linkUri>
+Language Syntax Highlighting, Part 2: C# Control</linkText>
+<linkUri>http://www.codeproject.com/Articles/3767/Multiple-Language-Syntax-Highlighting-Part-2-C-Con</linkUri>
 <linkTarget>_blank</linkTarget></externalLink>.  The modified code is available with the source download for
 the help file builder and the build components.</para>
 			</listItem>
@@ -82,7 +78,8 @@ attribute.  All attribute names and values are case-sensitive.</para>
 
 		<definitionTable>
 			<definedTerm>The <codeInline>source</codeInline>, <codeInline>region</codeInline>, and
-<codeInline>removeRegionMarkers</codeInline> Attributes</definedTerm>
+<codeInline>removeRegionMarkers</codeInline> Attributes
+			</definedTerm>
 			<definition>
 				<para>This feature is based on an idea suggested by Morten Nielsen in the MSDN Documentation Forum.  The
 <codeInline>source</codeInline> attribute is used to specify that the code block's content should be read from an
@@ -103,15 +100,15 @@ some examples:</para>
 				<para>Retrieve all code from an external file and use the VB.NET syntax to color it.  The path is
 relative to the <codeInline>basePath</codeInline> configuration element.</para>
 
-<code lang="xml" title=" ">
-&lt;code source="..\Examples\WholeDemo.vb" lang="vbnet" /&gt;
+<code language="xml" title=" ">
+&lt;code source="..\Examples\WholeDemo.vb" language="vbnet" /&gt;
 </code>
 
 				<para>Retrieve a specific <codeInline>#region</codeInline> from an external file.</para>
 
-<code lang="xml" title=" ">
+<code language="xml" title=" ">
 &lt;code source="..\Examples\SeveralExamples.vb"
-    region="Example 1" lang="vbnet" title="Example #1" /&gt;
+	region="Example 1" language="vbnet" title="Example #1" /&gt;
 </code>
 
 				<para>Note that VB.NET does not allow <codeInline>#Region</codeInline> and <codeInline>#End Region</codeInline>
@@ -120,7 +117,7 @@ statements.  However, if you want to extract a region from a VB.NET method body 
 type, you can add the region statements in comments to workaround the limitation.  The component will still find
 it and extract the region.</para>
 
-<code lang="none" title="Commented Region Examples">
+<code language="none" title="Commented Region Examples">
 <b><u>VB.NET Example</u></b>
 Public Sub SomeMethod()
     ' #Region VB.NET Snippet
@@ -171,142 +168,152 @@ component configuration.</para>
 configuration.  Either one will have the same effect.  Any <codeInline>&lt;code&gt;</codeInline> tag without a
 <codeInline>lang</codeInline>/<codeInline>language</codeInline> attribute will use the value specified in the
 component's configuration.  For example, if most or all of your code examples are in C#, you can set the default
-language in the configuration to "cs".  If you have an example in VB.NET, you can add <codeInline>lang="vbnet"</codeInline>
+language in the configuration to "cs".  If you have an example in VB.NET, you can add <codeInline>language="vbnet"</codeInline>
 to colorize that example as VB.NET code.  The possible language values in the supplied configuration file are as
 follows:</para>
 
-<table>
-  <tableHeader>
-    <row>
-      <entry>
-				<para>Language ID (case-insensitive)</para>
-			</entry>
-      <entry>
-				<para>Language Syntax Used</para>
-			</entry>
-    </row>
-  </tableHeader>
-  <row>
-    <entry>
-			<para>cs, C#, CSharp</para>
-		</entry>
-    <entry>
-			<para>C#</para>
-		</entry>
-  </row>
-  <row>
-    <entry>
-			<para>cpp, cpp#, C++, CPlusPlus</para>
-		</entry>
-    <entry>
-			<para>C++</para>
-		</entry>
-  </row>
-  <row>
-    <entry>
-			<para>c</para>
-		</entry>
-    <entry>
-			<para>C</para>
-		</entry>
-  </row>
-  <row>
-    <entry>
-			<para>fs, f#, FSharp, fscript</para>
-		</entry>
-    <entry>
-			<para>F#</para>
-		</entry>
-  </row>
-  <row>
-    <entry>
-			<para>EcmaScript, js, JavaScript</para>
-		</entry>
-    <entry>
-			<para>JavaScript</para>
-		</entry>
-  </row>
-  <row>
-    <entry>
-			<para>jscript, jscript#, jscriptnet, JScript.NET</para>
-		</entry>
-    <entry>
-			<para>JScript.NET</para>
-		</entry>
-  </row>
-  <row>
-    <entry>
-			<para>VB, VB#, vbnet, VB.NET</para>
-		</entry>
-    <entry>
-			<para>VB/VB.NET</para>
-		</entry>
-  </row>
-  <row>
-    <entry>
-			<para>vbs, vbscript</para>
-		</entry>
-    <entry>
-			<para>VBScript</para>
-		</entry>
-  </row>
-  <row>
-    <entry>
-			<para>htm, html, xml, xsl</para>
-		</entry>
-    <entry>
-			<para>XML</para>
-		</entry>
-  </row>
-  <row>
-    <entry>
-			<para>XAML</para>
-		</entry>
-    <entry>
-			<para>XAML</para>
-		</entry>
-  </row>
-  <row>
-    <entry>
-			<para>jsharp, J#</para>
-		</entry>
-    <entry>
-			<para>J#</para>
-		</entry>
-  </row>
-  <row>
-    <entry>
-			<para>sql, sql server, sqlserver</para>
-		</entry>
-    <entry>
-			<para>SQL script</para>
-		</entry>
-  </row>
-  <row>
-    <entry>
-			<para>pshell, powershell, ps1</para>
-		</entry>
-    <entry>
-			<para>PowerShell script</para>
-		</entry>
-  </row>
-  <row>
-    <entry>
-			<para>py, python</para>
-		</entry>
-    <entry>
-			<para>Python</para>
-		</entry>
-  </row>
-  <row>
-    <entry>
-			<para>Anything else (i.e. "none")</para>
-		</entry>
-    <entry>
-			<para>No highlighting</para>
-		</entry>
-  </row>
-</table>
+				<table>
+					<tableHeader>
+						<row>
+							<entry>
+								<para>Language ID (case-insensitive)</para>
+							</entry>
+							<entry>
+								<para>Language Syntax Used</para>
+							</entry>
+						</row>
+					</tableHeader>
+					<row>
+						<entry>
+							<para>cs, C#, CSharp</para>
+						</entry>
+						<entry>
+							<para>C#</para>
+						</entry>
+					</row>
+					<row>
+						<entry>
+							<para>cpp, cpp#, C++, CPlusPlus</para>
+						</entry>
+						<entry>
+							<para>C++</para>
+						</entry>
+					</row>
+					<row>
+						<entry>
+							<para>c</para>
+						</entry>
+						<entry>
+							<para>C</para>
+						</entry>
+					</row>
+					<row>
+						<entry>
+							<para>fs, f#, FSharp, fscript</para>
+						</entry>
+						<entry>
+							<para>F#</para>
+						</entry>
+					</row>
+					<row>
+						<entry>
+							<para>EcmaScript, js, JavaScript</para>
+						</entry>
+						<entry>
+							<para>JavaScript</para>
+						</entry>
+					</row>
+					<row>
+						<entry>
+							<para>jscript, jscript#, jscriptnet, JScript.NET</para>
+						</entry>
+						<entry>
+							<para>JScript.NET</para>
+						</entry>
+					</row>
+					<row>
+						<entry>
+							<para>VB, VB#, vbnet, VB.NET</para>
+						</entry>
+						<entry>
+							<para>VB/VB.NET</para>
+						</entry>
+					</row>
+					<row>
+						<entry>
+							<para>vbs, vbscript</para>
+						</entry>
+						<entry>
+							<para>VBScript</para>
+						</entry>
+					</row>
+					<row>
+						<entry>
+							<para>htm, html, xml, xsl</para>
+						</entry>
+						<entry>
+							<para>XML</para>
+						</entry>
+					</row>
+					<row>
+						<entry>
+							<para>XAML</para>
+						</entry>
+						<entry>
+							<para>XAML</para>
+						</entry>
+					</row>
+					<row>
+						<entry>
+							<para>jsharp, J#</para>
+						</entry>
+						<entry>
+							<para>J#</para>
+						</entry>
+					</row>
+					<row>
+						<entry>
+							<para>sql, sql server, sqlserver</para>
+						</entry>
+						<entry>
+							<para>SQL script</para>
+						</entry>
+					</row>
+					<row>
+						<entry>
+							<para>pshell, powershell, ps1</para>
+						</entry>
+						<entry>
+							<para>PowerShell script</para>
+						</entry>
+					</row>
+					<row>
+						<entry>
+							<para>py, python</para>
+						</entry>
+						<entry>
+							<para>Python</para>
+						</entry>
+					</row>
+					<row>
+						<entry>
+							<para>Anything else (i.e. "none")</para>
+						</entry>
+						<entry>
+							<para>No highlighting</para>
+						</entry>
+					</row>
+				</table>
+
+				<alert class="important">
+					<para>The full name "<codeInline>language</codeInline>" should be used for the attribute name rather
+than the abbreviated form "<codeInline>lang</codeInline>".  The reason is that the XSL transformations used by
+the presentation styles expect the full name when they search for the language attribute.  The abbreviated form
+is a legacy syntax that should be avoided.  The code block component will auto-correct the attribute name so that
+it is not missed by the transformations.</para>
+
+					<para>It is recommended that you always specify a language attribute.</para>
+				</alert>
 			</definition>
 
 			<definedTerm>The <codeInline>numberLines</codeInline> Attribute</definedTerm>
@@ -355,16 +362,9 @@ will appear for the title.  If it is set to false, no title will appear.  If usi
 want a title on a particular block, set the <codeInline>title</codeInline> attribute to a single space (" ").</para>
 			</definition>
 
-			<definedTerm>The <codeInline>filter</codeInline> Attribute</definedTerm>
-			<definition>
-				<para>This attribute allows you to specify whether or not the code block should be connected to the
-language filter (VS2005 only).  If omitted or set to true, the code block will be connected to the appropriate
-language filter if it is present.  If set to false, it is not connected and will remain visible at all times.</para>
-			</definition>
-
 		</definitionTable>
 
-  </content>
+	</content>
 </section>
 
 <section address="SpecialChars">
@@ -387,9 +387,9 @@ of the following:</para>
 				<para>Use a <codeInline>CDATA</codeInline> section to encapsulate the code so that special characters and
 formatting are preserved.  For example:</para>
 
-<code lang="xml" title="CDATA Example">
+<code language="xml" title="CDATA Example">
 /// &lt;example&gt;
-/// &lt;code lang="xml" title="Example Configuration"&gt;
+/// &lt;code language="xml" title="Example Configuration"&gt;
 /// &lt;![CDATA[
 /// &lt;?xml version="1.0" encoding="utf-8"?&gt;
 /// &lt;config&gt;
@@ -409,7 +409,8 @@ Visual Studio 2005 to lock up when you type an angle bracket within a comment bl
 issue, there is a hotfix available at: <externalLink>
 <linkText>https://connect.microsoft.com/VisualStudio/Downloads/DownloadDetails.aspx?DownloadID=9646</linkText>
 <linkUri>https://connect.microsoft.com/VisualStudio/Downloads/DownloadDetails.aspx?DownloadID=9646</linkUri>
-<linkTarget>_blank</linkTarget></externalLink>.</para>
+<linkTarget>_blank</linkTarget>
+</externalLink>.</para>
 				</alert>
 			</listItem>
 		</list>
@@ -417,20 +418,20 @@ issue, there is a hotfix available at: <externalLink>
 		<para>Using either of the methods above preserves the formatting and has the same effect as the
 <codeInline>escaped</codeInline> attribute in NDoc.</para>
 
-  </content>
+	</content>
 </section>
 
 <section address="Nesting">
-  <title>Nested Code Tags</title>
-  <content>
-		<para>You can import multiple code snippets into one common colorized code block by nesting
-<codeInline>code</codeInline> tags within a parent <codeInline>code</codeInline> tag. On nested
-<codeInline>code</codeInline> tags, only the <codeInline>source</codeInline> and <codeInline>region</codeInline>
-attributes will be utilized.  All other attributes that control colorization of the merged code block will be
-retrieved from the parent <codeInline>code</codeInline> tag.</para>
+	<title>Nested Code Tags</title>
+	<content>
+		<para>You can import multiple code snippets into one common colorized code block by nesting <codeInline>code</codeInline>
+tags within a parent <codeInline>code</codeInline> tag. On nested <codeInline>code</codeInline> tags, only the
+<codeInline>source</codeInline> and <codeInline>region</codeInline> attributes will be utilized.  All other
+attributes that control colorization of the merged code block will be retrieved from the parent
+<codeInline>code</codeInline> tag.</para>
 
-<code lang="xml" title="Nested Code Tag Example">
-&lt;code title="Nested code tag example" lang="VB.NET"&gt;
+<code language="xml" title="Nested Code Tag Example">
+&lt;code title="Nested code tag example" language="VB.NET"&gt;
     &lt;code source="..\Class1.vb" region="Snippet #1" /&gt;
     &lt;code source="..\Class1.vb" region="Snippet #2" /&gt;
 &lt;/code&gt;
@@ -445,8 +446,8 @@ and remove the excess leading whitespace.  Use an <codeInline>include</codeInlin
 comments.  When done this way, the compiler preserves the spacing when writing the example out to the XML
 comments file.</para>
 
-<code lang="xml" title="Nested Code Tag Example">
-&lt;code title="Nested code tag example" lang="VB.NET"&gt;
+<code language="xml" title="Nested Code Tag Example">
+&lt;code title="Nested code tag example" language="VB.NET"&gt;
 &lt;code source="..\Class1.vb" region="Snippet #1" /&gt;
 
 ' ... Some stuff happens here ...
@@ -459,30 +460,28 @@ comments file.</para>
 </section>
 
 <section address="Configuration">
-  <title>Example Configuration</title>
-  <content>
+	<title>Example Configuration</title>
+	<content>
 		<para>The following is the default configuration for the code block component. It should be inserted into the
 configuration file just ahead of the <codeInline>TransformComponent</codeInline>.  All attribute names and values
 are case-sensitive.</para>
 
-		<alert class="note">
-			<para>This component must be paired with the <codeInline>PostTransformComponent</codeInline> as it is used
-to insert the script and stylesheet references in pages that have colorized code.  See below for details.</para>
-		</alert>
-
-<code lang="xml" title="Example Configuration">
+<code language="xml" title="Example Configuration">
 &lt;!-- Code block component configuration.  This must appear before the
-     TransformComponent.  See also: PostTransformComponent. --&gt;
+     TransformComponent. --&gt;
 &lt;component type="SandcastleBuilder.Components.CodeBlockComponent"
   assembly="{@SHFBFolder}SandcastleBuilder.Components.dll"
   id="Code Block Component"&gt;
     &lt;!-- Base path for relative filenames in source attributes
          (optional) --&gt;
-    &lt;basePath value="{@ProjectFolder}" /&gt;
+    &lt;basePath value="{@HtmlEncProjectFolder}" /&gt;
 
-    &lt;!-- Connect to language filter (optional).  If omitted,
-         language filtering is enabled by default. --&gt;
-    &lt;languageFilter value="true" /&gt;
+    &lt;!-- Base output paths for the files (required).  These should match
+         the parent folder of the output path of the HTML files (see each of
+         the SaveComponent instances below). --&gt;
+    &lt;outputPaths&gt;
+        {@HelpFormatOutputPaths}
+    &lt;/outputPaths&gt;
 
     &lt;!-- Allow missing source files (Optional).  If omitted,
          it will generate errors if referenced source files
@@ -495,21 +494,24 @@ to insert the script and stylesheet references in pages that have colorized code
 
     &lt;!-- Code colorizer options (required).
          Attributes:
-            Language syntax configuration file (required)
-            XSLT style file (required)
-            "Copy" image file URL (required)
-            Default language (optional)
-            Enable line numbering (optional)
-            Enable outlining (optional)
-            Keep XML comment "see" tags within the code (optional)
-            Tab size for unknown lanugages (optional, 0 = use default)
-            Use language name as default title (optional) --&gt;
+           Language syntax configuration file (required)
+           XSLT stylesheet file (required)
+           CSS stylesheet file (required)
+           Script file (required)
+           Disabled (optional, leading whitespace normalization only)
+           Default language (optional)
+           Enable line numbering (optional)
+           Enable outlining (optional)
+           Keep XML comment "see" tags within the code (optional)
+           Tab size override (optional, 0 = Use syntax file setting)
+           Use language name as default title (optional) --&gt;
     &lt;colorizer syntaxFile="{@SHFBFolder}Colorizer\highlight.xml"
-        styleFile="{@SHFBFolder}Colorizer\highlight.xsl"
-        copyImageUrl="../icons/CopyCode.gif"
-        language="cs" numberLines="false" outlining="false"
-        keepSeeTags="false" tabSize="0" defaultTitle="true" /&gt;
-&lt;/component&gt;
+      styleFile="{@SHFBFolder}Colorizer\highlight.xsl"
+      stylesheet="{@SHFBFolder}Colorizer\highlight.css"
+      scriptFile="{@SHFBFolder}Colorizer\highlight.js"
+      disabled="{@DisableCodeBlockComponent}" language="cs" numberLines="false"
+      outlining="false" keepSeeTags="false" tabSize="0" defaultTitle="true" /&gt;
+	&lt;/component&gt;
 </code>
 
 		<para>The example given above is taken from the Sandcastle Help File Builder's configuration file.  When used
@@ -524,11 +526,12 @@ with an actual absolute or relative path.</para>
 use for relative paths in the <codeInline>source</codeInline> attributes of code blocks.  If omitted or left
 blank, the current folder at build time is assumed to be the base path.</para>
 
-		<para>The <codeInline>languageFilter</codeInline> element is optional.  If omitted, or if specified and set
-to true, and the code block's language is C#, VB.NET, C++, or J# it will be connected to the page's language
-filter so that it is shown or hidden based on the language filter's setting (VS2005 only).  If the
-<codeInline>languageFilter</codeInline> value is set to false, no language filtering will occur and all code
-blocks will be visible at the same time.</para>
+		<para>The <codeInline>outputPaths</codeInline> element is required.  It defines the output paths to use for
+each help file format in the build.  These will be used when copying the colorizer script and stylesheet files.
+The help file builder will fill these in automatically.  If using this with your own build scripts, specify
+one <codeInline>path</codeInline> element for each help file output format being generated with a
+<codeInline>value</codeInline> attribute set to the relative path of the format's output folder (i.e.
+<localUri>Output\HtmlHelp1</localUri>).</para>
 
 		<para>The <codeInline>allowMissingSource</codeInline> element is optional.  If omitted, or if specified and
 set to false, any code block that references a source code file or region within a file will generate an error
@@ -547,25 +550,24 @@ snippet examples.  This setting can be overridden by specifying the attribute on
 <codeInline>code</codeInline> elements.</para>
 
 		<para>The <codeInline>colorizer</codeInline> element is required along with the <codeInline>syntaxFile</codeInline>,
-<codeInline>styleFile</codeInline>, and <codeInline>copyImageUrl</codeInline> attributes which define the default
-syntax definition file, the transformation file used by the colorizer, and the URL to use for the "Copy" image
-that appears to the right on the title line.  The supplied <localUri>highlight.xml</localUri> file contains the
-syntax definitions for the languages supported by the colorizer.  The supplied <localUri>highlight.xsl</localUri>
-file defines the XSLT transformation used to convert the parsed code block into the colorized HTML.  The
-<codeInline>copyImageUrl</codeInline> value is the location of the image file to use for the "Copy" link.  It
-should be specified as a path relative to the HTML output folder (normally <localUri>html\</localUri>.  It does
-not have to physically exist at the time the component is used.  The <codeInline>PostTransformComponent</codeInline>
-copies an image to the appropriate location.  All other attributes are optional.  If specified, they define the
-defaults for code blocks that do not specify the matching attribute.  The optional <codeInline>defaultTitle</codeInline>
-attribute specifies whether or not to use the language name as the title if a specific title is not supplied.</para>
+<codeInline>styleFile</codeInline>, <codeInline>stylesheet</codeInline>, and <codeInline>scriptFile</codeInline>
+attributes which define the default syntax definition file, the transformation file used by the colorizer,
+the stylesheet to use for the colorized code, and the colorized code script file.  The supplied
+<localUri>highlight.xml</localUri> file contains the syntax definitions for the languages supported by the
+colorizer.  The supplied <localUri>highlight.xsl</localUri> file defines the XSLT transformation used to convert
+the parsed code block into the colorized HTML.  The supplied <localUri>highlight.css</localUri> and
+<localUri>highlight.js</localUri> files contain the default styles and script used for the colorized code.  All
+other attributes are optional.  If specified, they define the defaults for code blocks that do not specify the
+matching attribute.  The optional <codeInline>defaultTitle</codeInline> attribute specifies whether or not to use
+the language name as the title if a specific title is not supplied.  The optional <codeInline>disabled</codeInline>
+attribute will turn off code colorization if set to true.</para>
 
-  </content>
+	</content>
 </section>
 
-	<relatedTopics>
-    <link xlink:href="f502c07b-8110-477d-8953-73255296206b" />
-    <link xlink:href="8dcbb69b-7a1a-4049-8e6b-2bf344efbbc9" />
-  </relatedTopics>
+		<relatedTopics>
+			<link xlink:href="8dcbb69b-7a1a-4049-8e6b-2bf344efbbc9" />
+		</relatedTopics>
 
-  </developerConceptualDocument>
+	</developerConceptualDocument>
 </topic>

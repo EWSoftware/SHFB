@@ -5,22 +5,20 @@
     xmlns:xlink="http://www.w3.org/1999/xlink">
 
     <introduction>
-      <para>The MS Help 2 system maintains a registry of all help collections
-and titles currently installed on a machine.  This registry determines what
-help titles are included in each help collection as well as maintaining
+      <para>The MS Help 2 system maintains a registry of all help collections and titles currently installed on a
+machine.  This registry determines what help titles are included in each help collection as well as maintaining
 references between the help collections.</para>
     </introduction>
 
 <section>
-  <content><para>Unlike HTML Help 1 (CHM) files, an MS Help 2 title or
-collection must be registered in order to view it. This makes deploying HTML
-Help 2 documentation more complex than simply delivering a single file and
-creating a shortcut to it.  While it is possible to create a Windows Installer
-package to deploy and register help collections and titles, it is a rather
-lengthy process and it does not always work as well as it should.</para>
+  <content>
+		<para>Unlike HTML Help 1 (CHM) files, an MS Help 2 title or collection must be registered in order to view
+it. This makes deploying HTML Help 2 documentation more complex than simply delivering a single file and creating
+a shortcut to it.  While it is possible to create a Windows Installer package to deploy and register help
+collections and titles, it is a rather lengthy process and it does not always work as well as it should.</para>
 
-<para>The easiest approach to deploying and registering Help 2 collections is
-to use the shareware tool <externalLink>
+		<para>The easiest approach to deploying and registering Help 2 collections is to use the shareware tool
+<externalLink>
   <linkText>H2Reg.exe</linkText>
   <linkUri>http://www.helpware.net/mshelp2/h2reg.htm</linkUri>
   <linkTarget>_blank</linkTarget>
@@ -28,65 +26,71 @@ to use the shareware tool <externalLink>
   <linkText>The Helpware Group</linkText>
   <linkUri>http://www.helpware.net</linkUri>
   <linkTarget>_blank</linkTarget>
-</externalLink>.  It is a command line tool that can be included by scripted
-installers as well as Windows Installer packages as a custom action.</para>
+</externalLink>.  It is a command line tool that can be included by scripted installers as well as Windows
+Installer packages as a custom action.</para>
 
-<para>When producing an MS Help 2 file, the help file builder produces a
-valid set of collection files and creates a configuration file suitable for
-use by <localUri>H2Reg.exe</localUri>.  In order to deploy the generated HTML
-Help 2 files, follow these steps:</para>
+		<para>When producing an MS Help 2 file, the help file builder produces a valid set of collection files and
+creates a configuration file suitable for use by <localUri>H2Reg.exe</localUri>.  In order to deploy the
+generated HTML Help 2 files, follow these steps:</para>
 
-<list class="ordered">
-    <listItem>Set the <codeInline>PlugInNamespaces</codeInline> project
-property to a comma separated list of one or more namespaces that your
-collection should be plugged into when deployed.  The default setting will plug
-it into all available collections.  See the <localUri>H2Reg.exe</localUri> help
-file for details about the possible values that can be used.</listItem>
+		<list class="ordered">
+			<listItem>
+				<para>Set the <codeInline>Plug In Namespaces</codeInline> project property to a comma separated list of
+one or more namespaces that your collection should be plugged into when deployed.  The default setting will plug
+it into all available collections.  See the <localUri>H2Reg.exe</localUri> help file for details about the
+possible values that can be used.</para>
+			</listItem>
 
-    <listItem>Build the help project.</listItem>
+			<listItem>
+				<para>Build the help project.</para>
+			</listItem>
     
-    <listItem>Include all of the generated help files as well as the generated
-configuration file and the <localUri>H2Reg.exe</localUri> executable in your
-installer.</listItem>
+			<listItem>
+				<para>Include all of the generated help files as well as the generated configuration file and the
+<localUri>H2Reg.exe</localUri> executable in your installer.</para>
+			</listItem>
 
-    <listItem>During installation, copy the help files, the configuration file,
-and <localUri>H2Reg.exe</localUri> to their installed location.</listItem>
+			<listItem>
+				<para>During installation, copy the help files, the configuration file, and <localUri>H2Reg.exe</localUri>
+to their installed location.</para>
+			</listItem>
 
-    <listItem>Execute <localUri>H2Reg.exe</localUri> with the following syntax:
+			<listItem>
+				<para>Execute <localUri>H2Reg.exe</localUri> with the following syntax:</para>
 
-<code lang="none">
+<code language="none">
 H2Reg -r "CmdFile=&lt;Path to the configuration file&gt;"
 </code>
-	</listItem>
+			</listItem>
 
-    <listItem>During uninstallation, before the help files are removed, execute
-<localUri>H2Reg.exe</localUri> with the following syntax:
+			<listItem>
+				<para>During uninstallation, before the help files are removed, execute <localUri>H2Reg.exe</localUri>
+with the following syntax:</para>
 
-<code lang="none">
+<code language="none">
 H2Reg -u "CmdFile=&lt;Path to the configuration file&gt;"
 </code>
-	</listItem>
+			</listItem>
+		</list>
 
-</list>
+		<para>Your product's installer can create a shortcut to open your Help 2 file by executing a command similar
+to the following (lines wrapped for display purposes):</para>
 
-<para>Your product's installer can create a shortcut to open your Help 2 file
-by executing the following command (lines wrapped for display purposes):</para>
-
-<code lang="none" title=" ">
-"%CommonProgramFiles%\Microsoft Shared\Help\dexplore.exe"
-  /helpcol ms-help://MyProduct.Namespace
+<code language="none" title=" ">
+"%CommonProgramFiles%\Microsoft Shared\Help 9\dexplore.exe" /helpcol ms-help://MS.VSCC.v90
+  /filter "[Your help title here]"
 </code>
 
-<para>Substitute your product's namespace for
-<codeInline>MyProduct.Namespace</codeInline> in the example above.</para>
+		<para>Substitute your product's help title project property value for "[Your help title here]" in the
+example above.</para>
 
   </content>
 </section>
 
-    <relatedTopics>
-    <link xlink:href="74664b00-b83f-450a-833a-25984ba812e3" />
-    <link xlink:href="d0c2dabd-3caf-4586-b81d-cbd765dec7cf" />
-    </relatedTopics>
+		<relatedTopics>
+			<link xlink:href="74664b00-b83f-450a-833a-25984ba812e3" />
+			<link xlink:href="d0c2dabd-3caf-4586-b81d-cbd765dec7cf" />
+		</relatedTopics>
 
   </developerConceptualDocument>
 </topic>

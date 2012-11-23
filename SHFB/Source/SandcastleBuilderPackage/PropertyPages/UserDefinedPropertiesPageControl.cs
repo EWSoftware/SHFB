@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : UserDefinedPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 11/15/2012
+// Updated : 11/21/2012
 // Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -230,7 +230,7 @@ namespace SandcastleBuilder.Package.PropertyPages
             InitializeComponent();
 
             this.Title = "User Defined";
-            this.HelpKeyword = "da405a33-3eeb-4451-9aa8-a55be5026434#UserDefProps";
+            this.HelpKeyword = "c4e3ce8e-6881-47a7-a429-49ec5c755c8c";
         }
         #endregion
 

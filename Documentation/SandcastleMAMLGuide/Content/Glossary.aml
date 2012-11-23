@@ -25,7 +25,6 @@ same project site for use in other tools or your own build scripts.</para>
         </definition>
         <relatedEntry termId="Sandcastle" />
         <relatedEntry termId="SHFB" />
-        <relatedEntry termId="PostTransformComponent" />
       </glossaryEntry>
       <glossaryEntry>
         <terms>
@@ -92,20 +91,6 @@ them.</para>
           <para>An acronym that stands for Microsoft Assistance Markup Language.  Conceptual content topics are
 composed of MAML elements.</para>
         </definition>
-      </glossaryEntry>
-      <glossaryEntry>
-        <terms>
-          <term termId="PostTransformComponent">Post-Transform Component</term>
-        </terms>
-        <definition>
-          <para>A custom build component that can be used insert a logo into the header of conceptual and
-reference build topics.  It is a companion to the Code Block Component and inserts the necessary script into each
-topic if colorized code blocks are present and connects them to the language filter.  In reference builds, it can
-also insert assembly version information into each topic.</para>
-        </definition>
-        <relatedEntry termId="CodeBlockComponent" />
-        <relatedEntry termId="Sandcastle" />
-        <relatedEntry termId="SHFB" />
       </glossaryEntry>
       <glossaryEntry>
         <terms>

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : ComponentPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 11/18/2012
+// Updated : 11/21/2012
 // Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -67,7 +67,7 @@ namespace SandcastleBuilder.Package.PropertyPages
             messageBoxTitle = SandcastleBuilder.Utils.Constants.AppName;
 #endif
             this.Title = "Components";
-            this.HelpKeyword = "8dcbb69b-7a1a-4049-8e6b-2bf344efbbc9";
+            this.HelpKeyword = "d1ec47f6-b611-41cf-a78c-f68e01d6ae9e";
         }
         #endregion
 

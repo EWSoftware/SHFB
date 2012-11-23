@@ -40,9 +40,8 @@ is included with Sandcastle as an extra along with this guide.</para>
   <title>Discussion Groups, Blogs, Etc.</title>
   <content>
 <list class="bullet">
-	<listItem><para>To discuss Microsoft's Sandcastle, suggest new features, report
-bugs in it, and request help using it, visit the <token>Sandcastle</token>
-CodePlex project.</para></listItem>
+	<listItem><para>To discuss Microsoft's Sandcastle, suggest new features, report bugs in it, and request help
+using it, visit the <token>SHFB</token> CodePlex project.</para></listItem>
     <listItem><para>For discussion and questions about help systems in general,
 visit the <externalLink>
   <linkText>Microsoft Developer Documentation and Help System forum</linkText>
@@ -118,12 +117,6 @@ download the <externalLink>
 </externalLink>.</para>
 			</listItem>
 
-      <listItem>
-				<para><token>SHFB</token></para>
-			</listItem>
-      <listItem>
-				<para><token>DocProject</token></para>
-			</listItem>
     </list>
   </content>
 </section>
@@ -149,16 +142,10 @@ reference topics.</para>
 						<para>The IntelliSense Component used to generate XML comments files for use as IntelliSense in
 Visual Studio.</para>
 					</listItem>
-					<listItem><para>The Post-Transform Component used as a companion to the Code Block and Version
-Information Components and to add logos to the topic headers.</para>
-					</listItem>
 					<listItem>
 						<para>The Show Missing Documentation Component used to add "missing documentation" notes to
 reference topics and to auto-document constructors.</para>
 					</listItem>
-					<listItem>
-						<para>The Version Information Component used to add assembly version information to reference
-topics.</para></listItem>
 					<listItem>
 						<para>A set of cached build data components that cache key information such as comment,
 reflection index information, and MSDN URLs across builds in order to speed them up.</para>

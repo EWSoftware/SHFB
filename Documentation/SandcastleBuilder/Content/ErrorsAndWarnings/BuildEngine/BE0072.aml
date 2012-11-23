@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="d91955b7-1b2d-421b-8d75-b364afcad41e" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Warning BE0072: Project framework version '<legacyItalic>XXXX</legacyItalic>' not found.  It has been
+redirected and will use '<legacyItalic>YYYY</legacyItalic>' instead.</para>
+    </introduction>
+
+    <section>
+      <title>Cause</title>
+      <content>
+        <para>The build engine was unable to locate framework information for the version specified in the
+project's <codeInline>FrameworkVersion</codeInline> property.  A later version of the framework was found and
+will be used instead.
+				</para>
+      </content>
+    </section>
+
+    <section>
+      <title>Solution</title>
+      <content>
+        <para>If you require the later version of the framework, it must be installed on the system.</para>
+      </content>
+    </section>
+
+    <relatedTopics>
+			<link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
+		</relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

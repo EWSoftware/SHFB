@@ -104,7 +104,7 @@ the July 2009 executables.  However, this is not necessary.</para>
 2009 release in addition to all of the other bug fixes and updates ready for use with the May 2008 executables.
 You only need the updates from the July 2009 release if you want to include the F# syntax filter or if you want
 to create MS Help Viewer files.  If not, you can continue using the May 2008 release with or without the
-<token>SandcastleStyles</token> patch.</para>
+Sandcastle Styles patch.</para>
   </content>
 </section>
 
@@ -137,23 +137,23 @@ if needed.  Open the project file in a text editor and do the following:</para>
 
 <code language="xml" title=" ">
   &lt;!-- Find these two property group definitions --&gt;
-  &lt;PropertyGroup Condition=&quot; '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' &quot;&gt;
+  &lt;PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' "&gt;
   &lt;/PropertyGroup&gt;
-  &lt;PropertyGroup Condition=&quot; '$(Configuration)|$(Platform)' == 'Release|AnyCPU' &quot;&gt;
+  &lt;PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' "&gt;
   &lt;/PropertyGroup&gt;
 
   &lt;!-- Paste these property group definitions in after them --&gt;
-  &lt;PropertyGroup Condition=&quot; '$(Configuration)|$(Platform)' == 'Debug|x86' &quot;&gt;
+  &lt;PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' "&gt;
   &lt;/PropertyGroup&gt;
-  &lt;PropertyGroup Condition=&quot; '$(Configuration)|$(Platform)' == 'Release|x86' &quot;&gt;
+  &lt;PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' "&gt;
   &lt;/PropertyGroup&gt;
-  &lt;PropertyGroup Condition=&quot; '$(Configuration)|$(Platform)' == 'Debug|x64' &quot;&gt;
+  &lt;PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' "&gt;
   &lt;/PropertyGroup&gt;
-  &lt;PropertyGroup Condition=&quot; '$(Configuration)|$(Platform)' == 'Release|x64' &quot;&gt;
+  &lt;PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' "&gt;
   &lt;/PropertyGroup&gt;
-  &lt;PropertyGroup Condition=&quot; '$(Configuration)|$(Platform)' == 'Debug|Win32' &quot;&gt;
+  &lt;PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|Win32' "&gt;
   &lt;/PropertyGroup&gt;
-  &lt;PropertyGroup Condition=&quot; '$(Configuration)|$(Platform)' == 'Release|Win32' &quot;&gt;
+  &lt;PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|Win32' "&gt;
   &lt;/PropertyGroup&gt;
 </code></listItem>
 
@@ -230,7 +230,7 @@ when viewing output from a failed preview topic build.</para>
 		<alert class="note">
 			<para>This requires the XSL transformations and resource files from the July 2009 Sandcastle source code
 release.  These changes are available for use with the May 2008 release by downloading and applying the
-<token>SandcastleStyles</token> patch.  A copy of the F# syntax declaration generator component is included with
+Sandcastle Styles patch.  A copy of the F# syntax declaration generator component is included with
 the help file builder that is compatible with the May 2008 Sandcastle release.</para>
 		</alert>
 	</listItem>
@@ -242,7 +242,7 @@ property options.  Preliminary support for building Microsoft Help Viewer files 
 		<alert class="note">
 			<para>This requires the XSL transformations and resource files from the July 2009 Sandcastle source code
 release.  These changes are available for use with the May 2008 release by downloading and applying the
-<token>SandcastleStyles</token> patch.  However, full MS Help Viewer support is not yet implemented since
+Sandcastle Styles patch.  However, full MS Help Viewer support is not yet implemented since
 Sandcastle does not appear to add the necessary table of contents metadata to the topics yet. This will be fully
 implemented as the tools become available and changes are made in Sandcastle to support it.</para>
 		</alert>

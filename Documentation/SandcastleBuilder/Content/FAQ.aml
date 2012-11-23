@@ -249,7 +249,7 @@ IEnumerable&lt;T&gt; in a cref target and/or XML comments?</definedTerm>
 and HTML entities (&amp;lt; and &amp;gt;) in the general XML comments.  For
 example:</para>
 
-<code lang="cs" title=" ">
+<code language="cs" title=" ">
 /// &lt;summary&gt;
 /// See &lt;see cref="IEnumerable{T}"/&gt; for more information.
 /// &lt;p/&gt;Another reference to IEnumerable&amp;lt;T&amp;gt;.
@@ -286,7 +286,7 @@ required.  The second example assumes that the image is copied to an
 folder name.  As noted above, the image tag must be self-closing to conform to
 the XML specification.</para>
 
-<code lang="cs" title="Example &lt;img&gt; Tag Usage">
+<code language="cs" title="Example &lt;img&gt; Tag Usage">
 /// &lt;summary&gt;
 /// A class member.
 /// &lt;/summary&gt;
@@ -328,7 +328,7 @@ an Intellisense file.  How can I do that?</definedTerm>
     <definition><para>Create a blank XML comments file like the following and
 name it after the assembly with a <localUri>.xml</localUri> extension:</para>
 
-<code lang="xml" title="Blank XML Comments File">
+<code language="xml" title="Blank XML Comments File">
 &lt;?xml version="1.0"?&gt;
 &lt;doc&gt;
   &lt;assembly&gt;
@@ -353,7 +353,7 @@ folder.  Edit the <codeInline>&lt;member&gt;</codeInline> elements in the
 XML comments file to add the comments that you want for each member.  For
 example:</para>
 
-<code lang="xml" title="Member Comments Example">
+<code language="xml" title="Member Comments Example">
 &lt;member name="M:SandcastleBuilder.Utils.XmlCommentsFileCollection.FindMember(System.String)"&gt;
     &lt;summary&gt;
     Search all comments files for the specified member.  If not found,
@@ -470,7 +470,7 @@ easiest way to reference them is to add the <link xlink:href="96557037-c19e-4183
 to the project's <codeInline>PlugInConfigurations</codeInline> property and add
 an entry to its configuration for a path similar to the following:</para>
 
-<code lang="none" title=" ">
+<code language="none" title=" ">
 %VS80COMNTOOLS%\..\..\SmartDevices\SDK\CompactFramework\2.0\v2.0\WindowsCE\
 </code>
 
@@ -536,7 +536,7 @@ folder as <application>BuildAssembler.exe</application> (the <localUri>.\Product
 the Sandcastle installation folder) and putting one of the following in it may allow it to work with the proxy
 server:</para>
 
-<code lang="xml" title="Method 1 (this works most often so try it first):">
+<code language="xml" title="Method 1 (this works most often so try it first):">
 &lt;configuration&gt;
 	&lt;system.net&gt;
 		&lt;defaultProxy useDefaultCredentials="true"&gt;
@@ -550,7 +550,7 @@ server:</para>
 &lt;/configuration&gt;
 </code>
 
-<code lang="xml" title="Method 2:">
+<code language="xml" title="Method 2:">
 &lt;configuration&gt;
 	&lt;system.net&gt;
 		&lt;defaultProxy enabled="true" useDefaultCredentials="true"&gt;
@@ -565,7 +565,7 @@ server:</para>
 &lt;/configuration&gt;
 </code>
 
-<code lang="xml" title="Method 3 (use this if your company uses a proxy configuration script):">
+<code language="xml" title="Method 3 (use this if your company uses a proxy configuration script):">
 &lt;configuration&gt;
 	&lt;system.net&gt;
 		&lt;defaultProxy useDefaultCredentials="true"&gt;
@@ -633,7 +633,7 @@ to copy it to the failing system and register it.  This can be done by running
 the following command from a command prompt.  Adjust the path to the DLL as
 necessary based on its location on your system.</para>
 
-<code lang="none">
+<code language="none">
 regsvr32 C:\Windows\System\itcc.dll
 </code></definition>
 
@@ -666,7 +666,7 @@ prevents the help viewer from running from the intranet zone (i.e. a network
 share).  You can fix this problem by saving the following to a file and
 importing it into the registry.</para>
 
-<code lang="none" title="HelpFix.reg">
+<code language="none" title="HelpFix.reg">
 Windows Registry Editor Version 5.00
 
 [HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\HTMLHelp\1.x\ItssRestrictions]
@@ -883,7 +883,7 @@ beyond the relative indicator is required.  The second example assumes that the
 file is copied to a <localUri>.\Tutorials</localUri> folder.  In that case, you
 must also specify the folder name.</para>
 
-<code lang="cs" title="Linking to Additional Content">
+<code language="cs" title="Linking to Additional Content">
 /// &lt;summary&gt;
 /// A class member.
 /// &lt;/summary&gt;

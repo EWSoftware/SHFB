@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : TranformComponentArgument.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/15/2012
+// Updated : 11/23/2012
 // Note    : Copyright 2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -71,6 +71,7 @@ namespace SandcastleBuilder.Utils.PresentationStyle
         /// <summary>
         /// Private copy constructor
         /// </summary>
+        /// <param name="clone">The transform component argument to clone</param>
         private TransformComponentArgument(TransformComponentArgument clone)
         {
             this.Key = clone.Key;
@@ -86,6 +87,7 @@ namespace SandcastleBuilder.Utils.PresentationStyle
         /// <summary>
         /// Constructor
         /// </summary>
+        /// <param name="argument">The XML element containing the transform component argument settings</param>
         public TransformComponentArgument(XElement argument)
         {
             this.Key = argument.Attribute("Key").Value;

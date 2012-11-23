@@ -1,65 +1,72 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <topic id="c7378077-fc10-45f9-b52a-c57dda96fe8d" revisionNumber="1">
-  <developerConceptualDocument
+	<developerConceptualDocument
     xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
     xmlns:xlink="http://www.w3.org/1999/xlink">
 
-    <introduction>
-      <para>The text that appears in the header, footer, and copyright notice
-can be specified using the standard project properties.  If you need to modify
-the format or style of these items, the preliminary documentation warning, or
-the feedback e-mail note, you can modify the related entries in the help file
-builder shared content files.  These are found in the
-<localUri>.\SharedContent</localUri> folder under the help file builder
+		<introduction>
+			<para>The text that appears in the header, footer, and copyright notice can be specified using the standard
+project properties.  If you need to modify the format or style of these items, the preliminary documentation
+warning, or the feedback e-mail note, you can modify the related entries in the help file builder shared content
+files.  These are found in the <localUri>.\SharedContent</localUri> folder under the help file builder
 installation folder.</para>
 
-<alert class="note">
-    <para>The resource files are language and presentation style specific.
-You will need to modify the entries for each language and presentation style
-that you support.</para>
-</alert>
-    </introduction>
+			<alert class="note">
+				<para>The resource files are language and presentation style specific.  You will need to modify the
+entries for each language and presentation style that you support.</para>
 
-<section>
-  <content><para>The following entries are available:</para>
+				<para>As an alternative to modifying the help file builder files, you can add a
+<link xlink:href="fcf8e4ac-5b32-4d5f-9bce-2e85c3468fdc">resource item file</link> to your project and modify the
+affected items through it instead.</para>
+			</alert>
+		</introduction>
 
-<list class="bullet">
-    <listItem>The <legacyBold>header</legacyBold> entry controls the header
-text.  By default, only the <codeInline>HeaderText</codeInline> and
-<codeInline>Preliminary</codeInline> substitution tags are listed in
-here.</listItem>
+		<section>
+			<content>
+				<para>The following entries are available:</para>
 
-    <listItem>The <legacyBold>preliminary</legacyBold> entry controls the text
-of the preliminary documentation warning.  When enabled, this text is
-substituted for the tag in the <legacyBold>header</legacyBold>
-entry.</listItem>
+				<list class="bullet">
+					<listItem>
+						<para>The <legacyBold>header</legacyBold> entry controls the header text.  By default, only the
+<codeInline>HeaderText</codeInline> and <codeInline>Preliminary</codeInline> substitution tags are listed in
+here.</para>
+					</listItem>
 
-    <listItem>The <legacyBold>footer</legacyBold> entry controls the layout of
-the page footer.  By default, only the <codeInline>Comments</codeInline> and
-<codeInline>Copyright</codeInline> substitution tags appear in
-here.</listItem>
+					<listItem>
+						<para>The <legacyBold>preliminary</legacyBold> entry controls the text of the preliminary
+documentation warning.  When enabled, this text is substituted for the tag in the <legacyBold>header</legacyBold>
+entry.</para>
+					</listItem>
 
-    <listItem>The <legacyBold>comments</legacyBold> entry controls the layout
-of the "send e-mail" note that appears if a
-<codeInline>FeedbackEMailAddress</codeInline> is specified.</listItem>
+					<listItem>
+						<para>The <legacyBold>footer</legacyBold> entry controls the layout of the page footer.  By default,
+only the <codeInline>Comments</codeInline> and <codeInline>Copyright</codeInline> substitution tags appear in
+here.</para>
+					</listItem>
 
-    <listItem>The <legacyBold>copyright</legacyBold> entry controls the layout
-of the copyright information that appears in the footer if
-<codeInline>CopyrightHref</codeInline> and/or
-<codeInline>CopyrightText</codeInline> are specified.</listItem>
+					<listItem>
+						<para>The <legacyBold>comments</legacyBold> entry controls the layout of the "send e-mail" note that
+appears if a <codeInline>FeedbackEMailAddress</codeInline> is specified.</para>
+					</listItem>
 
-</list>
+					<listItem>
+						<para>The <legacyBold>copyright</legacyBold> entry controls the layout of the copyright information
+that appears in the footer if <codeInline>CopyrightHref</codeInline> and/or <codeInline>CopyrightText</codeInline>
+are specified.</para>
+					</listItem>
 
-<para>There are several additional entries in the files but almost all of them
-are set using project property replacement tags alone.</para>
+				</list>
 
-  </content>
-</section>
+				<para>There are several additional entries in the files but almost all of them are set using project
+property replacement tags alone.</para>
 
-    <relatedTopics>
-    <link xlink:href="e2ed6222-c3ee-4c6e-b0f9-fa3c86bc3e2c" />
-    <link xlink:href="69d998a7-1af5-4bf5-889b-59cd00b64000" />
-    </relatedTopics>
+			</content>
+		</section>
 
-  </developerConceptualDocument>
+		<relatedTopics>
+			<link xlink:href="e2ed6222-c3ee-4c6e-b0f9-fa3c86bc3e2c" />
+			<link xlink:href="69d998a7-1af5-4bf5-889b-59cd00b64000" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
 </topic>

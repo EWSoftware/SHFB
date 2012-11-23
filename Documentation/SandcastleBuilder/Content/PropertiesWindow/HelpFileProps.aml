@@ -4,9 +4,9 @@
     xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
     xmlns:xlink="http://www.w3.org/1999/xlink">
 
-    <introduction>
-      <autoOutline lead="The Help File category properties control the appearance and features of the generated help topics."
-           excludeRelatedTopics="true" />
+		<introduction>
+			<autoOutline lead="The Help File category properties control the appearance and features of the generated help topics."
+				excludeRelatedTopics="true">2</autoOutline>
 
 <alert class="note">
   <para>The layout of several of these properties can be customized.  See the
@@ -18,75 +18,8 @@ properties and will be expanded at build time to the current project property va
 
     </introduction>
 
-<section address="ContentPlacement">
-  <title>ContentPlacement</title>
-  <content>
-		<para>This property allows you to define where the additional and/or conceptual content items appear in the
-table of contents.  By default, they will appear above the namespaces.  By setting this property to
-<codeInline>BelowNamespaces</codeInline>, you can make the items appear below the namespace entries in the table
-of contents.</para>
-
-	<para>This property's setting will be ignored if the table of contents is split via a
-<link xlink:href="54de66c4-a57a-4bfc-9eb6-bd9e6fb56589">custom tag</link> in one of the additional content files,
-a <link xlink:href="3dd5fe3b-1bc3-42e5-8900-56165e3f9aed">site map</link> is defined that specifies a split table
-of contents, or <link xlink:href="54e3dc97-5125-441e-8e84-7f9303e95f26">conceptual content</link> is defined with
-an entry marked as the split location.  In such cases, items prior to the entry with the "split" option will
-appear before the API content. The item with the "split" option and all items after it will appear below the API
-content.</para>
-  </content>
-</section>
-
-<section address="CopyrightProps">
-  <title>CopyrightHref and CopyrightText</title>
-  <content>
-		<para>These two properties can be used individually or in combination.  If only
-<codeInline>CopyrightHref</codeInline> is specified, a link will appear in the footer of each page for the
-specified URL.  If only the <codeInline>CopyrightText</codeInline> property is specified, that message appears in
-the footer of each page. If both are specified, a link appears in the footer of each page using the text from the
-<codeInline>CopyrightText</codeInline> property and the target of the link is set to the URL specified in the
-<codeInline>CopyrightHref</codeInline> property.  The value of the <codeInline>CopyrightText</codeInline>
-property is treated as plain text. It will be HTML encoded where necessary to resolve issues related to the
-ampersand character and the XML parser.  In addition, you can encode special characters such as the copyright
-symbol using an escaped hex value (i.e. &#169; = \xA9).</para>
-
-  </content>
-</section>
-
-<section address="FeedbackEMailAddress">
-  <title>FeedbackEMailAddress and FeedbackEMailLinkText</title>
-  <content>
-		<para>If an e-mail address is specified in the <codeInline>FeedbackEMailAddress</codeInline> property, an
-extra message is included in the footer of each page with a message saying "Send comments on this topic to" plus
-the specified e-mail address or link text.  If a <codeInline>FeedbackEMailLinkText</codeInline> value is
-specified along with a feedback e-mail address, that text will be displayed as the link text rather than the
-e-mail address.  If left blank, the e-mail address will be used.  The e-mail address is rendered as a clickable
-<codeInline>mailto:</codeInline> link and the subject of the e-mail will be set to the title of the help file
-plus the title of the page in which the link appears.</para>
-
-  </content>
-</section>
-
-<section address="FooterText">
-  <title>FooterText</title>
-  <content>
-		<para>This property can be used to insert an extra message in the footer of each page.  By default, it is
-blank.  HTML tags are supported within the text.</para>
-
-  </content>
-</section>
-
-<section address="HeaderText">
-  <title>HeaderText</title>
-  <content>
-		<para>This property can be used to insert an extra message in the header of each page.  By default, it is
-blank.  HTML tags are supported within the text.  See the <codeInline>Preliminary</codeInline> property for a way
-to mark all topics as preliminary.</para>
-
-  </content>
-</section>
-
 <section address="HelpTitle">
-  <title>HelpTitle</title>
+  <title>Help title (HelpTitle)</title>
   <content>
 		<para>This property is used to set the title for the help file.  This text will appear as the title of the
 help file's window.</para>
@@ -95,13 +28,13 @@ help file's window.</para>
 </section>
 
 <section address="HtmlHelpName">
-  <title>HtmlHelpName</title>
+  <title>Help file name (HtmlHelpName)</title>
   <content>
-		<para>This property is used to specify the name of the HTML help file.  This name is used during the build
-process for a couple of other files so be sure that you do not specify a path or an extension on this value.  It
-should only specify the name part of the file.  The extension will always be <localUri>.chm</localUri> (HTML
-Help 1), <localUri>.HxS</localUri> (MS Help 2), or <localUri>.mshc</localUri> (MS Help Viewer) and the path is
-controlled via the <codeInline>OutputPath</codeInline> property.</para>
+		<para>This property is used to specify the name of the resulting help file.  This name is used during the
+build process for a couple of other files so be sure that you do not specify a path or an extension on this
+value.  It should only specify the name part of the file.  The extension will always be <localUri>.chm</localUri>
+(HTML Help 1), <localUri>.HxS</localUri> (MS Help 2), or <localUri>.mshc</localUri> (MS Help Viewer) and the path
+is controlled via the <codeInline>Output Path</codeInline> property.</para>
 
 <alert class="note">
   <para>For MS Help 2 builds, this name is used as the collection namespace name.  In such cases, spaces in the
@@ -116,7 +49,7 @@ generating MS Help Viewer output.</para>
 </section>
 
 <section address="Language">
-  <title>Language</title>
+  <title>Help file language (Language)</title>
   <content>
 		<para>This property allows you to specify the language to use for the compiled help file.  The default is to
 use the English language resource files.  A shared content file is supplied that contains various item overrides
@@ -130,14 +63,14 @@ language resource files, see the <link xlink:href="e2ed6222-c3ee-4c6e-b0f9-fa3c8
 </section>
 
 <section address="NamingMethod">
-  <title>NamingMethod</title>
+  <title>Topic file naming method (NamingMethod)</title>
   <content>
 		<para>This property allows you to specify how the help topic filenames will be generated.  There are three
 options:</para>
 
 		<list class="bullet">
 			<listItem>
-				<para><codeInline>Guid</codeInline> will generate an MD5 hash of the topic ID and format it as a GUID
+				<para><codeInline>GUID</codeInline> will generate an MD5 hash of the topic ID and format it as a GUID
 value.  The topic ID is the member name from the XML comments file for the item and includes all parameter values
 for methods.  This is the default value and is suitable for most help files.  While this guarantees unique topic
 filenames, it does make it cumbersome to link to help topics from external sources such as application code or
@@ -146,7 +79,7 @@ non-intuitive.</para>
 			</listItem>
 
 			<listItem>
-				<para><codeInline>MemberName</codeInline> will name each help topic after the member that it represents.
+				<para><codeInline>Member Name</codeInline> will name each help topic after the member that it represents.
 To avoid problems with invalid filename characters, " " (space), ":", ".", "`" (0x60), "#", "*", and "?"
 characters are replaced with an underscore in the member names.  Overloaded methods will generate duplicate
 names.  To avoid this problem, all subsequent duplicate names will have a counter added to the end of their name
@@ -157,11 +90,11 @@ fail. If so, try using the next option.</para>
 			</listItem>
 
 			<listItem>
-				<para><codeInline>HashedMemberName</codeInline> will name each topic using the hash value of the member
+				<para><codeInline>Hashed Member Name</codeInline> will name each topic using the hash value of the member
 name in hex format.  This results in a much shorter filename, even shorter than the GUID names, but it can still
 be easily reproduced by an application or ASP.NET web page in order to link to the help topic.  The actual member
-name is used without any of the character replacements noted for the <codeInline>MemberName</codeInline> option.
-As with the <codeInline>MemberName</codeInline> option, overloaded methods will generate duplicate names.  To
+name is used without any of the character replacements noted for the <codeInline>Member Name</codeInline> option.
+As with the <codeInline>Member Name</codeInline> option, overloaded methods will generate duplicate names.  To
 avoid this problem, all subsequent duplicate names will have a counter added to the end of their name separated
 by an underscore (i.e. <codeInline>M:Type.Method</codeInline>, <codeInline>M:Type.Method_1</codeInline>,
 <codeInline>M:Type.Method_2</codeInline>, etc.).  When this occurs, a message is recorded in the log file.</para>
@@ -175,7 +108,7 @@ by an underscore (i.e. <codeInline>M:Type.Method</codeInline>, <codeInline>M:Typ
 			<listItem>
 				<para><codeInline>R:</codeInline> represents the root namespace page.  There will always be a single
 entry named <codeInline>R:Project_[HtmlHelpName]</codeInline> where "<codeInline>[HtmlHelpName]</codeInline>" is
-the value of your project's <codeInline>HtmlHelpName</codeInline> property with spaces replaced by underscores.
+the value of your project's <codeInline>Html Help Name</codeInline> property with spaces replaced by underscores.
 This suffix is required to keep the root namespace container page ID unique across all help files so that there
 are no duplicate IDs when generating MS Help Viewer output.</para>
 			</listItem>
@@ -213,8 +146,8 @@ particular class member.</para>
 		</list>
 
 		<para>Below are some examples of the member names and their equivalent filenames.  The values in the first
-column would be used for the <codeInline>HashedMemberName</codeInline> option to create the hash value.  The
-second column would be used for the <codeInline>MemberName</codeInline> option.  For GUID filenames, the method
+column would be used for the <codeInline>Hashed Member Name</codeInline> option to create the hash value.  The
+second column would be used for the <codeInline>Member Name</codeInline> option.  For GUID filenames, the method
 names in the first column would include parameter information rather than a numeric suffix.</para>
 
 <table>
@@ -234,7 +167,7 @@ names in the first column would include parameter information rather than a nume
 		</entry>
     <entry>
 			<para>R_Project_HtmlHelpName (where "HtmlHelpName" is the value of your project's
-<codeInline>HtmlHelpName</codeInline> property value with spaced replaced by underscores.</para>
+<codeInline>Html Help Name</codeInline> property value with spaces replaced by underscores.</para>
 		</entry>
   </row>
   <row>
@@ -396,12 +329,12 @@ Help.ShowHelp(parentForm, helpFilePath, _
 
 		<para>The naming rules are the same for pages generated for the website output.  One way to get the URL to
 use for a page in the website output is to bring up the Index page for the generated website
-(<localUri>Index.html</localUri> or <localUri>Index.aspx</localUri>), you can right click on the links in the
-navigation pane and select <ui>Copy Shortcut</ui>.  Paste that into your web page that you want to link to the
-selected topic and modify the link by inserting "<codeInline>Index.html?topic=</codeInline>" or
-"<codeInline>Index.aspx?topic=</codeInline>" immediately in front of the "<codeInline>html/</codeInline>" part
-of the link.  That will bring up the index page and show the selected topic as the default page in the right-hand
-pane.  For example:</para>
+(<localUri>Index.html</localUri> or <localUri>Index.aspx</localUri>).  You can click on the links in the
+navigation pane to display the topics and click the <ui>Direct Link</ui> option at the top of the index pane to
+show the direct link URL in a message box.  Copy and paste that link into your web page.  That will bring up the
+index page and show the selected topic as the default page in the right-hand pane.  You can replace
+<localUri>Index.aspx</localUri> with one of the other index pages such as the HTML or PHP version.
+Here is an example link:</para>
 
 <code language="none" title=" ">
 http://www.ewoodruff.us/shfbdocs/Index.aspx?topic=html/1aea789d-b226-4b39-b534-4c97c256fac8.htm
@@ -415,52 +348,124 @@ and they are always placed in the <localUri>html/</localUri> folder.</para>
   </content>
 </section>
 
-<section address="Preliminary">
-  <title>Preliminary</title>
-  <content>
-		<para>When this property is set to True, it will mark all topics in the help file with a large, red message
-"[This is preliminary documentation and is subject to change.]".  This is a quick and easy way to mark
-documentation for beta software as preliminary and subject to change.</para>
-
-  </content>
-</section>
-
 <section address="PresentationStyle">
-  <title>PresentationStyle</title>
+  <title>Presentation style (PresentationStyle)</title>
   <content>
 		<para>This property is used to choose the presentation style that determines the layout and appearance of
-the help topics.  Sandcastle comes with three styles: <codeInline>VS2005</codeInline> (the default),
-<codeInline>Prototype</codeInline>, and <codeInline>Hana</codeInline>.  The files for each style are located in
-the <localUri>.\Presentation</localUri> folder under the main Sandcastle installation folder.</para>
+the help topics.  Sandcastle comes with four styles: <codeInline>VS2005</codeInline> (the default),
+<codeInline>VS2010</codeInline>, <codeInline>Prototype</codeInline>, and <codeInline>Hana</codeInline>.  The
+files for each style are located in the <localUri>.\Presentation</localUri> folder under the main Sandcastle
+installation folder.</para>
 
 <alert class="tip">
-  <para>If you create your own styles, place the folders in the same location and the help file builder will
-detect them automatically and let you select them in the project.  Be sure to include one of the default style
-names in your folder name as certain build steps are performed differently based on the selected style and this
-will be the hint that the help file builder uses to determine what action to take.</para>
+  <para>The help file builder also supports custom presentation styles that you may have created.  See the
+<link xlink:href="baf1dcbc-e9cf-4d71-a770-621e6eaf10a7" /> topic for more information.</para>
 </alert>
 
   </content>
 </section>
 
-<section address="RootNS">
-  <title>RootNamespaceContainer and RootNamespaceTitle</title>
+<section address="ContentPlacement">
+  <title>Conceptual content placement (ContentPlacement)</title>
   <content>
-		<para>The <codeInline>RootNamespaceContainer</codeInline> property is used to specify whether or not a root
+		<para>This property allows you to define where the additional and/or conceptual content items appear in the
+table of contents.  By default, they will appear above the namespaces.  By setting this property to
+<codeInline>Below namespaces</codeInline>, you can make the items appear below the namespace entries in the table
+of contents.</para>
+
+	<para>This property's setting will be ignored if the table of contents is split via a
+<link xlink:href="54de66c4-a57a-4bfc-9eb6-bd9e6fb56589">custom tag</link> in one of the additional content files,
+a <link xlink:href="3dd5fe3b-1bc3-42e5-8900-56165e3f9aed">site map</link> is defined that specifies a split table
+of contents, or <link xlink:href="54e3dc97-5125-441e-8e84-7f9303e95f26">conceptual content</link> is defined with
+an entry marked as the split location.  In such cases, items prior to the entry with the "split" option will
+appear before the API content. The item with the "split" option and all items after it will appear below the API
+content.  See the <link xlink:href="ba42b2c2-985d-46f1-ba4c-3d921edcafe3" /> topic for more information.</para>
+  </content>
+</section>
+
+<section address="RootNS">
+  <title>Include root namespace container/Title (RootNamespaceContainer) and (RootNamespaceTitle)</title>
+  <content>
+		<para>The <codeInline>Root Namespace Container</codeInline> property is used to specify whether or not a root
 namespace entry is added to the table of contents to act as a container for the namespaces from the documented
 assemblies.  If set to True, a root <legacyBold>Namespaces</legacyBold> table of contents entry will be created
 as the container of the namespaces in the documented assemblies.  If set to False, the default, the namespaces
 are listed in the table of contents as root entries.  To change the name of the root container from "Namespaces",
-enter the new name in the <codeInline>RootNamespaceTitle</codeInline> property.</para>
+enter the new name in the <codeInline>Root Namespace Title</codeInline> property.</para>
+
+  </content>
+</section>
+
+<section address="Preliminary">
+  <title>Include "preliminary documentation" warning (Preliminary)</title>
+  <content>
+		<para>When this property is set to True, it will mark all topics in the help file with a large, red message
+"[This is preliminary documentation and is subject to change.]".  This is a quick and easy way to mark
+documentation for beta software as preliminary and subject to change.</para>
+
+		<alert class="tip">
+			<para>Individual API members can be marked as preliminary using the <codeInline>&lt;preliminary /&gt;</codeInline>
+XML comments tag.  If no inner text is specified, a default message is used.  A custom message can be displayed
+by adding inner text to the tag.</para>
+		</alert>
+
+  </content>
+</section>
+
+<section address="HeaderText">
+  <title>Additional header content (HeaderText)</title>
+  <content>
+		<para>This property can be used to insert an extra message in the header of each page.  By default, it is
+blank.  HTML tags are supported within the text.  See the <codeInline>Preliminary</codeInline> property for a way
+to mark all topics as preliminary.</para>
+
+  </content>
+</section>
+
+<section address="FooterText">
+  <title>Additional footer content (FooterText)</title>
+  <content>
+		<para>This property can be used to insert an extra message in the footer of each page.  By default, it is
+blank.  HTML tags are supported within the text.</para>
+
+  </content>
+</section>
+
+<section address="CopyrightProps">
+  <title>Copyright notice URL/Notice text (CopyrightHref) and (CopyrightText)</title>
+  <content>
+		<para>These two properties can be used individually or in combination.  If only
+<codeInline>Copyright Href</codeInline> is specified, a link will appear in the footer of each page for the
+specified URL.  If only the <codeInline>Copyright Text</codeInline> property is specified, that message appears in
+the footer of each page. If both are specified, a link appears in the footer of each page using the text from the
+<codeInline>Copyright Text</codeInline> property and the target of the link is set to the URL specified in the
+<codeInline>Copyright Href</codeInline> property.  The value of the <codeInline>Copyright Text</codeInline>
+property is treated as plain text. It will be HTML encoded where necessary to resolve issues related to the
+ampersand character and the XML parser.  In addition, you can encode special characters such as the copyright
+symbol using an escaped hex value (i.e. &#169; = \xA9).</para>
+
+  </content>
+</section>
+
+<section address="FeedbackEMailAddress">
+  <title>Feedback e-mail address/E-mail link text (FeedbackEMailAddress) and (FeedbackEMailLinkText)</title>
+  <content>
+		<para>If an e-mail address is specified in the <codeInline>Feedback E-Mail Address</codeInline> property, an
+extra message is included in the footer of each page with a message saying "Send comments on this topic to" plus
+the specified e-mail address or link text.  If a <codeInline>Feedback E-Mail Link Text</codeInline> value is
+specified along with a feedback e-mail address, that text will be displayed as the link text rather than the
+e-mail address.  If left blank, the e-mail address will be used.  The e-mail address is rendered as a clickable
+<codeInline>mailto:</codeInline> link and the subject of the e-mail will be set to the title of the help file
+plus the title of the page in which the link appears.</para>
 
   </content>
 </section>
 
 <section address="SdkLinkTarget">
-  <title>SdkLinkTarget</title>
+  <title>SDK Link Target (SdkLinkTarget)</title>
   <content>
 		<para>When an SDK link type property is set to <codeInline>MSDN</codeInline>, the
-<codeInline>SdkLinkTarget</codeInline> property is used to define where the MSDN links will open in the browser.
+<codeInline>SDK Link Target</codeInline> property is used to define where the MSDN links will open in the browser.
 This property has no effect if the SDK link type property for a particular help file format is set to any other
 value.  The default value is <codeInline>Blank</codeInline> to open MSDN links in a new window.  It can also be
 set to <codeInline>Self</codeInline>, <codeInline>Parent</codeInline>, or <codeInline>Top</codeInline> which have
@@ -472,20 +477,40 @@ page.</para>
 </section>
 
 <section address="SyntaxFilters">
-  <title>SyntaxFilters</title>
+  <title>Syntax Filters (SyntaxFilters)</title>
   <content>
 		<para>This property lets you specify which languages appear in the <legacyBold>Syntax</legacyBold> section of
 the help topics and the languages that will appear in the language filter dropdown.  It can be set to one
 language, a combination of languages, <codeInline>All</codeInline> to include them all,
 <codeInline>Standard</codeInline> (the default) for C#, VB.NET, and C++ only, or <codeInline>None</codeInline> to
-remove the <legacyBold>Syntax</legacyBold> section entirely.</para>
+remove the <legacyBold>Syntax</legacyBold> section entirely.  In the property page, put a checkmark next to each
+syntax filter that you wanted included in the API topics.</para>
 
   </content>
+
+	<sections>
+		<section address="CustomSyntaxGen">
+			<title>Adding Third-Party Syntax Filter Generators</title>
+			<content>
+				<para>Custom language syntax filter generators can be made available via the project's
+<codeInline>Syntax Filters</codeInline> property by creating a syntax filter generator definition file.  Copy the
+syntax filter generator's assembly, configuration file, and any supporting files to the
+<localUri>.\Components and Plug-Ins</localUri> folder or a subfolder beneath it in the help file builder's
+<legacyBold>Common Application Data</legacyBold> folder.  See the
+<link xlink:href="a24489fb-45d6-46f4-9eaa-9a9c4e0919b2#BuildComponents" /> topic for more information.  Refer to
+the component's documentation for information about its features and configuration options.  See the
+<link xlink:href="5e80d139-811c-48ed-9b52-dcd8a3f5aef3" /> topic for information on creating a configuration file
+for a third-party syntax generator that does not have one.  For a list of current third-party build components,
+see the <link xlink:href="c18d6cb6-e4e4-4944-84ee-f867aa6cfb0d" /> topic.</para>
+
+			</content>
+		</section>
+	</sections>
 </section>
 
-    <relatedTopics>
-    <link xlink:href="e32086c6-de17-4e54-a746-1ac80bf0c45a" />
-    </relatedTopics>
+<relatedTopics>
+			<link xlink:href="e32086c6-de17-4e54-a746-1ac80bf0c45a" />
+		</relatedTopics>
 
   </developerConceptualDocument>
 </topic>

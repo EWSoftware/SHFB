@@ -6,95 +6,81 @@
 		<autoOutline lead="The MS Help Viewer category properties control the features of MS Help Viewer (MSHC) files."
 		    excludeRelatedTopics="true" />
 
-<alert class="tip">
-  <para>Due to the requirement that MS Help Viewer files be installed before you can view them which can be time
-consuming, it is recommended that you generate one of the other help formats such as Help 1 or website while
-developing and proofreading your help file.</para>
-</alert>
+			<alert class="tip">
+				<para>Due to the requirement that MS Help Viewer files be installed before you can view them which can be
+time consuming, it is recommended that you generate one of the other help formats such as Help 1 or website while
+developing and proofreading your help file.
+				</para>
+			</alert>
 
-<alert class="tip">
-  <para>For information on deploying MS Help Viewer files, see the
-<link xlink:href="4baf93f2-f395-4281-b7ef-bfe6c878a4d7" /> and
-<link xlink:href="534c4ff1-3bba-4431-a3a6-76dcb2d374f8" /> topics.</para>
-</alert>
-    </introduction>
-
-<section address="BrandingPackageName">
-	<title>BrandingPackageName</title>
-	<content>
-		<para>This property is used to specify the name of the MS Help Viewer branding package.  Typically, this
-should be left blank to use the default package name.  A custom branding package can only be used if the help
-content is <legacyBold>not</legacyBold> installed in the default MS Help Viewer catalog.</para>
-
-		<alert class="note">
-			<para>The branding package is associated with a MS Help Viewer catalog when the catalog is created (i.e.
-the first time any content is installed in the catalog).  The branding package associated with a catalog can only
-be changed by manually editing the MS Help Viewer configuration.</para>
-		</alert>
-	</content>
-</section>
+			<alert class="tip">
+				<para>For information on deploying MS Help Viewer files, see the
+<link xlink:href="4baf93f2-f395-4281-b7ef-bfe6c878a4d7" /> and <link xlink:href="534c4ff1-3bba-4431-a3a6-76dcb2d374f8" />
+topics.</para>
+			</alert>
+		</introduction>
 
 <section address="CatalogProductId">
-	<title>CatalogProductId</title>
+	<title>Help Viewer 1.0 catalog product ID (CatalogProductId)</title>
 	<content>
-		<para>This property is used to specify the catalog product ID to use for the installation script.  If not
-set, it defaults to "VS" to use the standard Visual Studio catalog.</para>
+		<para>This property is used to specify the MS Help Viewer 1.0 catalog product ID to use for the installation
+script.  If not set, it defaults to "VS" to use the standard Visual Studio catalog.</para>
 
 		<alert class="note">
-			<para>For styles other than VS2010, you should used the default value.</para>
+			<para>This should typically be left set to the default value.</para>
 		</alert>
 	</content>
 </section>
 
 <section address="CatalogProductVersion">
-	<title>CatalogProductVersion</title>
+	<title>Help Viewer 1.0 catalog version (CatalogProductVersion)</title>
 	<content>
-		<para>This property is used to specify the catalog version number to use for the installation script.  If not
-set, it defaults to "100" to use the standard Visual Studio catalog version.</para>
+		<para>This property is used to specify the MS Help Viewer 1.0 catalog version number to use for the
+installation script.  If not set, it defaults to "100" to use the standard Visual Studio catalog version.</para>
 
 		<alert class="note">
-			<para>For styles other than VS2010, you should used the default value.</para>
+			<para>This should typically be left set to the default value.</para>
 		</alert>
 
 	</content>
 </section>
 
-<section address="MSHelpViewerSdkLinkType">
-	<title>MSHelpViewerSdkLinkType</title>
-	<content><para>This property is used to define the type of links used to reference other help topics referring
-to framework (SDK) help topics. It can be set to <codeInline>None</codeInline> which renders non-clickable links,
-<codeInline>Id</codeInline> which renders MS Help Viewer style <codeInline>ms-xhelp</codeInline> style links, or
-<codeInline>MSDN</codeInline> (the default) which renders links to the online MSDN help content for the topic.
-When set to <codeInline>MSDN</codeInline>, the
-<link xlink:href="1b2dff59-92cc-4578-b261-f3849f30c26c#SdkLinkTarget">SdkLinkTarget</link> property is used to
-define where the MSDN links will open in the browser.</para>
+<section address="CatalogName">
+	<title>Help Viewer 2.0 content catalog name (CatalogName)</title>
+	<content>
+		<para>This property is used to specify the MS Help Viewer 2.0 content catalog name to use for the
+installation script.  If not set, it defaults to "VisualStudio11" to use the standard Visual Studio catalog.</para>
+
+		<alert class="note">
+			<para>This should typically be left set to the default value.</para>
+		</alert>
+	</content>
+</section>
+
+<section address="VendorName">
+	<title>Vendor name (VendorName)</title>
+	<content><para>This property is used to set the vendor name that appears in the help content setup file.  If
+not set, a default value of "Vendor Name" will be used.</para>
 	</content>
 </section>
 
 <section address="ProductTitle">
-	<title>ProductTitle</title>
+	<title>Product title (ProductTitle)</title>
 	<content><para>This property is used to set the product title that appears in the help content setup file.  If
-not set, the <codeInline>HelpTitle</codeInline> property value will be used.</para>
-	</content>
-</section>
-
-<section address="SelfBranded">
-	<title>SelfBranded</title>
-	<content><para>This property is used to indicate whether the topics are marked as self-branded thus allowing
-them to use their own stylesheets, scripts, etc.  Typically, you should leave this property set to True.</para>
+not set, the <codeInline>Help Title</codeInline> property value will be used.</para>
 	</content>
 </section>
 
 <section address="TocOrder">
-	<title>TocOrder</title>
-	<content><para>This property is used in conjunction with the <codeInline>TocParentId</codeInline> property to
+	<title>Starting TOC sort order (TocOrder)</title>
+	<content><para>This property is used in conjunction with the <codeInline>TOC Parent Id</codeInline> property to
 set the placement and ordering of your help topics amongst existing topics in the parent location.  If left set
 to -1, the help file builder will start ordering your topics at zero.</para>
 	</content>
 </section>
 
 <section address="TocParentId">
-	<title>TocParentId</title>
+	<title>TOC parent topic ID (TocParentId)</title>
 	<content><para>This property allows you to define the location of your help file's content within the entire
 collection of help viewer content.  If left set to -1, your help content will appear in the top level of the
 table of contents.  If you want to parent your content at a different location, specify the value of the parent
@@ -111,36 +97,42 @@ placement and parenting help file viewer output.</para>
 </section>
 
 <section address="TocParentVersion">
-	<title>TocParentVersion</title>
+	<title>TOC parent topic version (TocParentVersion)</title>
 	<content><para>This property is used to specify the version of the parent topic identified in the
-<codeInline>TocParentId</codeInline> property.  You can find the value by going to the parent topic in the help
+<codeInline>TOC Parent Id</codeInline> property.  You can find the value by going to the parent topic in the help
 viewer, viewing the source for the page, and finding the <codeInline>Microsoft.Help.TopicVersion</codeInline>
 metadata item.</para>
 	</content>
 </section>
 
 <section address="TopicVersion">
-	<title>TopicVersion</title>
+	<title>Topic version for this file (TopicVersion)</title>
 	<content><para>This property is used to specify the version value that should be applied to all topics in your
 help file.</para>
 	</content>
 </section>
 
-<section address="VendorName">
-	<title>VendorName</title>
-	<content><para>This property is used to set the vendor name that appears in the help content setup file.  If
-not set, a default value of "Vendor Name" will be used.</para>
+<section address="MSHelpViewerSdkLinkType">
+	<title>MS Help Viewer SDK link type (MSHelpViewerSdkLinkType)</title>
+	<content><para>This property is used to define the type of links used to reference other help topics referring
+to framework (SDK) help topics. It can be set to <codeInline>None</codeInline> which renders non-clickable links,
+<codeInline>Id</codeInline> which renders MS Help Viewer style <codeInline>ms-xhelp</codeInline> style links, or
+<codeInline>MSDN</codeInline> (the default) which renders links to the online MSDN help content for the topic.
+When set to <codeInline>MSDN</codeInline>, the
+<link xlink:href="1b2dff59-92cc-4578-b261-f3849f30c26c#SdkLinkTarget">Sdk Link Target</link> property is used to
+define where the MSDN links will open in the browser.</para>
 	</content>
 </section>
 
-    <relatedTopics>
-    	<link xlink:href="e32086c6-de17-4e54-a746-1ac80bf0c45a" />
-    	<link xlink:href="7d28bf8f-923f-44c1-83e1-337a416947a1" />
-    	<link xlink:href="d0c2dabd-3caf-4586-b81d-cbd765dec7cf" />
-    	<link xlink:href="f818e4d1-3457-4be6-a833-1b700f1e2f18" />
-    	<link xlink:href="4baf93f2-f395-4281-b7ef-bfe6c878a4d7" />
-    	<link xlink:href="534c4ff1-3bba-4431-a3a6-76dcb2d374f8" />
-    </relatedTopics>
+		<relatedTopics>
+			<link xlink:href="e32086c6-de17-4e54-a746-1ac80bf0c45a" />
+			<link xlink:href="7d28bf8f-923f-44c1-83e1-337a416947a1" />
+			<link xlink:href="d0c2dabd-3caf-4586-b81d-cbd765dec7cf" />
+			<link xlink:href="f818e4d1-3457-4be6-a833-1b700f1e2f18" />
+			<link xlink:href="4baf93f2-f395-4281-b7ef-bfe6c878a4d7" />
+			<link xlink:href="534c4ff1-3bba-4431-a3a6-76dcb2d374f8" />
+			<link xlink:href="650e50e7-f174-472a-bbea-f9000dba722c" />
+		</relatedTopics>
 
-  </developerConceptualDocument>
+	</developerConceptualDocument>
 </topic>

@@ -93,7 +93,7 @@ as the documentation sources.  If you do not, the help file builder will look
 in the wrong place for the assemblies to document.</para>
 </alert>
 
-<code lang="xml" title=" ">
+<code language="xml" title=" ">
 &lt;Target Name="GenerateDocumentation"&gt;
   &lt;!-- Build source code docs --&gt;
   &lt;MSBuild Projects="$(SolutionRoot)\src\MyProjectHelp.shfbproj"
@@ -136,7 +136,7 @@ documentation.</listItem>
         <listItem>Add an <codeInline>AfterDropBuild</codeInline> target to
 your build script to copy all the new help files to the web server:
 
-<code lang="xml" title=" ">
+<code language="xml" title=" ">
 &lt;Target Name="AfterDropBuild"&gt;
   &lt;!-- Delete old source code docs --&gt;
   &lt;CreateItem Include="\\tfsserver\Code Documentation\MyProject\**\*.*"&gt;

@@ -40,7 +40,7 @@ of inserting references of various types is to use the
 are inserted using the default empty namespace and they will not be processed by the Sandcastle
 transformations.</para>
 
-<code lang="xml" title="Token with MAML Elements">
+<code language="xml" title="Token with MAML Elements">
 &lt;ddue:externalLink&gt;
     &lt;ddue:linkText&gt;Sandcastle Help File Builder&lt;/ddue:linkText&gt;
     &lt;ddue:linkUri&gt;http://shfb.codeplex.com&lt;/ddue:linkUri&gt;

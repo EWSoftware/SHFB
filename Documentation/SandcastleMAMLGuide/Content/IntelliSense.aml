@@ -41,7 +41,7 @@ that you created in the previous step.</para>
 file by including the following line:</para>
 
 <code language="xml" title=" ">
-&lt;Catalog href=&quot;%InstallRoot%/xml/schemas/MAML/catalog.xml&quot;/&gt;
+&lt;Catalog href="%InstallRoot%/xml/schemas/MAML/catalog.xml" /&gt;
 </code>
 			</content>
 		</step>

@@ -77,11 +77,6 @@ information if there are unsaved documents.</para>
 		</listItem>
 	</list>
 
-	<alert class="note">
-		<para>When opening the topic preview window, the previewed document is always saved regardless of this setting
-so that it shows current information.</para>
-	</alert>
-
 		<para>The Visual Studio shell will save files for the extension package according to the <ui>Before
 building</ui> option in the <ui>Tools</ui> | <ui>Options</ui> | <ui>Projects and Solutions</ui> | <ui>Build and
 Run</ui> category.</para>
@@ -103,7 +98,7 @@ can diagnose the problem.</para>
 
 	<listItem>
 		<para><ui>Open help file after successful build</ui> - If enabled, the help file will be opened after
-a successful build.  The format opened will depend on the format chosen in the <codeInline>HelpFileFormat</codeInline>
+a successful build.  The format opened will depend on the format chosen in the <codeInline>Help File Format</codeInline>
 project property.  Preference is given to Help 1, then Help 2, then MS Help Viewer, and finally website output.
 In the standalone GUI, this option can also be toggled on and off via the <ui>Documentation | View Help File</ui>
 menu.</para>

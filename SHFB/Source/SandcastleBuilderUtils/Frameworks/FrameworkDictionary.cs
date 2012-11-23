@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : FrameworkDictionary.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/17/2012
+// Updated : 11/23/2012
 // Note    : Copyright 2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -266,7 +266,7 @@ namespace SandcastleBuilder.Utils.Frameworks
                         oldValue = ".NET Portable Library 4.0 (Legacy)";
 
             // If not found, default to .NET 4.0
-            if(!frameworks.TryGetValue(oldValue, out fs))
+            if(!AllFrameworks.TryGetValue(oldValue, out fs))
                 return DefaultFramework;
 
             return fs.Title;

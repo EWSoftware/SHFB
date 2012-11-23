@@ -16,6 +16,12 @@
       <HelpKeyword index="K" term="License agreement" />
     </HelpKeywords>
   </Topic>
+  <Topic id="ac8e467d-c0aa-4a6d-9690-73d148f67bc7" visible="True" title="Benefits and Features">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="benefits" />
+      <HelpKeyword index="K" term="features" />
+    </HelpKeywords>
+  </Topic>
   <Topic id="21c2a363-6c94-440b-8985-6b224d275463" visible="True" title="Known Issues and Limitations">
     <HelpKeywords>
       <HelpKeyword index="K" term="known issues" />
@@ -141,7 +147,7 @@
       </HelpKeywords>
     </Topic>
   </Topic>
-  <Topic id="b128ad2a-787e-48c7-b946-f6953080c386" visible="True" isExpanded="true" title="Visual Studio Integration Package">
+  <Topic id="b128ad2a-787e-48c7-b946-f6953080c386" visible="True" title="Visual Studio Integration Package">
     <HelpKeywords>
       <HelpKeyword index="K" term="Visual Studio, package" />
     </HelpKeywords>
@@ -192,16 +198,14 @@
       <HelpKeywords>
         <HelpKeyword index="K" term="properties, BuildLogFile" />
         <HelpKeyword index="K" term="properties, CleanIntermediates" />
-        <HelpKeyword index="K" term="properties, ComponentConfigurations" />
         <HelpKeyword index="K" term="properties, CppCommentsFixup" />
-        <HelpKeyword index="K" term="properties, Dependencies" />
         <HelpKeyword index="K" term="properties, DisableCodeBlockComponent" />
         <HelpKeyword index="K" term="properties, FrameworkVersion" />
         <HelpKeyword index="K" term="properties, HelpFileFormat" />
         <HelpKeyword index="K" term="properties, IndentHtml" />
         <HelpKeyword index="K" term="properties, KeepLogFile" />
-        <HelpKeyword index="K" term="properties, PlugInConfigurations" />
         <HelpKeyword index="K" term="property categories, Build" />
+        <HelpKeyword index="K" term="properties, BuildAssemblerVerbosity" />
       </HelpKeywords>
     </Topic>
     <Topic id="1b2dff59-92cc-4578-b261-f3849f30c26c" visible="True" title="Help File Category Properties">
@@ -231,6 +235,12 @@
         <HelpKeyword index="K" term="properties, HtmlSdkLinkType" />
         <HelpKeyword index="K" term="properties, IncludeFavorites" />
         <HelpKeyword index="K" term="property categories, HTML Help 1" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="f818e4d1-3457-4be6-a833-1b700f1e2f18" visible="True" title="Website Category Properties">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="properties, WebsiteSdkLinkType" />
+        <HelpKeyword index="K" term="property categories, Website" />
       </HelpKeywords>
     </Topic>
     <Topic id="d0c2dabd-3caf-4586-b81d-cbd765dec7cf" visible="True" title="MS Help 2 Category Properties">
@@ -290,30 +300,11 @@
           <HelpKeyword index="K" term="HelpLibraryManagerLauncher.exe" />
         </HelpKeywords>
       </Topic>
-    </Topic>
-    <Topic id="e6fcfa33-e7ee-430a-abfe-6b7962e6d068" visible="True" title="Paths Category Properties">
-      <HelpKeywords>
-        <HelpKeyword index="K" term="property categories, Paths" />
-        <HelpKeyword index="K" term="properties, HtmlHelp1xCompilerPath" />
-        <HelpKeyword index="K" term="properties, HtmlHelp2xCompilerPath" />
-        <HelpKeyword index="K" term="properties, OutputPath" />
-        <HelpKeyword index="K" term="properties, SandcastlePath" />
-        <HelpKeyword index="K" term="properties, WorkingPath" />
-      </HelpKeywords>
-    </Topic>
-    <Topic id="5a2ab898-7161-454d-b5d3-959df0de0e36" visible="True" title="Show Missing Tags Category Properties">
-      <HelpKeywords>
-        <HelpKeyword index="K" term="properties, AutoDocumentConstructors" />
-        <HelpKeyword index="K" term="properties, AutoDocumentDisposeMethods" />
-        <HelpKeyword index="K" term="properties, ShowMissingNamespaces" />
-        <HelpKeyword index="K" term="properties, ShowMissingParams" />
-        <HelpKeyword index="K" term="properties, ShowMissingRemarks" />
-        <HelpKeyword index="K" term="properties, ShowMissingReturns" />
-        <HelpKeyword index="K" term="properties, ShowMissingSummaries" />
-        <HelpKeyword index="K" term="properties, ShowMissingTypeParams" />
-        <HelpKeyword index="K" term="properties, ShowMissingValues" />
-        <HelpKeyword index="K" term="property categories, Show Missing" />
-      </HelpKeywords>
+      <Topic id="650e50e7-f174-472a-bbea-f9000dba722c" visible="True" title="Signing MS Help Viewer Content">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="deployment, signing content" />
+        </HelpKeywords>
+      </Topic>
     </Topic>
     <Topic id="eb7e1bc7-21c5-4453-bbaf-dec8c62c15bd" visible="True" title="Summaries Category Properties">
       <HelpKeywords>
@@ -358,10 +349,52 @@
         </HelpKeywords>
       </Topic>
     </Topic>
-    <Topic id="f818e4d1-3457-4be6-a833-1b700f1e2f18" visible="True" title="Website Category Properties">
+    <Topic id="5a2ab898-7161-454d-b5d3-959df0de0e36" visible="True" title="Missing Tags Category Properties">
       <HelpKeywords>
-        <HelpKeyword index="K" term="properties, WebsiteSdkLinkType" />
-        <HelpKeyword index="K" term="property categories, Website" />
+        <HelpKeyword index="K" term="properties, AutoDocumentConstructors" />
+        <HelpKeyword index="K" term="properties, AutoDocumentDisposeMethods" />
+        <HelpKeyword index="K" term="properties, ShowMissingNamespaces" />
+        <HelpKeyword index="K" term="properties, ShowMissingParams" />
+        <HelpKeyword index="K" term="properties, ShowMissingRemarks" />
+        <HelpKeyword index="K" term="properties, ShowMissingReturns" />
+        <HelpKeyword index="K" term="properties, ShowMissingSummaries" />
+        <HelpKeyword index="K" term="properties, ShowMissingTypeParams" />
+        <HelpKeyword index="K" term="properties, ShowMissingValues" />
+        <HelpKeyword index="K" term="property categories, Missing Tags" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="e6fcfa33-e7ee-430a-abfe-6b7962e6d068" visible="True" title="Paths Category Properties">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="property categories, Paths" />
+        <HelpKeyword index="K" term="properties, HtmlHelp1xCompilerPath" />
+        <HelpKeyword index="K" term="properties, HtmlHelp2xCompilerPath" />
+        <HelpKeyword index="K" term="properties, OutputPath" />
+        <HelpKeyword index="K" term="properties, SandcastlePath" />
+        <HelpKeyword index="K" term="properties, WorkingPath" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="d1ec47f6-b611-41cf-a78c-f68e01d6ae9e" visible="True" title="Build Component Configurations">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="properties, ComponentConfigurations" />
+        <HelpKeyword index="K" term="property categories, Components" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="be2b5b09-cf5f-4fc3-be8c-f6d8a27c3691" visible="True" title="Plug-In Configurations">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="properties, PlugInConfigurations" />
+        <HelpKeyword index="K" term="property categories, Plug-Ins" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="c584509f-0b18-49a8-ab06-114b0058a739" visible="True" title="Transform Component Arguments">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="properties, TransformComponentArguments" />
+        <HelpKeyword index="K" term="property categories, Transform Args" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="c4e3ce8e-6881-47a7-a429-49ec5c755c8c" visible="True" title="User Defined Properties">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="property categories, User Defined" />
+        <HelpKeyword index="K" term="properties, User Defined" />
       </HelpKeywords>
     </Topic>
   </Topic>
@@ -572,7 +605,7 @@
       </HelpKeywords>
     </Topic>
   </Topic>
-  <Topic id="8dcbb69b-7a1a-4049-8e6b-2bf344efbbc9" visible="True" isExpanded="true" isSelected="true" title="Custom Build Components">
+  <Topic id="8dcbb69b-7a1a-4049-8e6b-2bf344efbbc9" visible="True" title="Custom Build Components">
     <HelpKeywords>
       <HelpKeyword index="K" term="build components, configuring" />
       <HelpKeyword index="K" term="build components, overview" />
@@ -615,12 +648,6 @@
         <HelpKeyword index="K" term="MultiFormatOutputComponent, configuration options" />
       </HelpKeywords>
     </Topic>
-    <Topic id="f502c07b-8110-477d-8953-73255296206b" visible="True" title="Post-Transform Component">
-      <HelpKeywords>
-        <HelpKeyword index="K" term="build components, post-transform component" />
-        <HelpKeyword index="K" term="PostTransformComponent, configuration options" />
-      </HelpKeywords>
-    </Topic>
     <Topic id="7e6e0e96-36cd-4541-9477-2657b98661f5" visible="True" title="Show Missing Documentation Component">
       <HelpKeywords>
         <HelpKeyword index="K" term="build components, show missing documentation component" />
@@ -646,9 +673,9 @@
       <HelpKeyword index="K" term="warning list" />
     </HelpKeywords>
     <Topic id="b8d73995-2acc-446b-92b7-1ac8884a1424" visible="True" noFile="true" title="Build Engine">
-      <Topic id="13bf1e14-bf8f-478b-8fe6-932d18922a85" visible="True" title="BE0001: Unable to determine presentation style from folder '[folder]'">
+      <Topic id="13bf1e14-bf8f-478b-8fe6-932d18922a85" visible="True" title="BE0001: The PresentationStyle property value of 'XXXX' is not recognized">
         <HelpKeywords>
-          <HelpKeyword index="K" term="warnings, BE0001" />
+          <HelpKeyword index="K" term="error, BE0001" />
         </HelpKeywords>
       </Topic>
       <Topic id="726e79fd-260d-4f9f-96c7-cc62d3c210db" visible="True" title="BE0002: Shared builder content for the '[langId]' language could not be found">
@@ -998,6 +1025,26 @@
           <HelpKeyword index="K" term="errors, BE0070" />
         </HelpKeywords>
       </Topic>
+      <Topic id="31414af7-b465-4dc3-9454-19a2d01953bc" visible="True" title="BE0071: Unable to locate information for the project framework version 'XXXX'">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BE0071" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="d91955b7-1b2d-421b-8d75-b364afcad41e" visible="True" title="BE0072: Project framework version '{0}' not found.  It has been redirected.">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="warnings, BE0072" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="91dd8d47-3a32-42d3-b2c5-69f210de7372" visible="True" title="BE0073: A project with a different or higher framework version was found but that version was not found">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BE0073" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="a393787d-76d1-4c08-9b52-66d0384210fb" visible="True" title="BE0074: The selected presentation style (XXX) does not support one or more of the selected help file formats">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BE0074" />
+        </HelpKeywords>
+      </Topic>
     </Topic>
     <Topic id="5d721885-2307-4df0-a0d5-1bd332ccfeae" visible="True" noFile="true" title="Generate Inherited Documentation">
       <Topic id="ceaee6cc-6393-40c6-bca4-869b0553f2b3" visible="True" title="GID0001: Unexpected error while generating inherited documentation">
@@ -1274,6 +1321,16 @@
       <HelpKeyword index="K" term="customize, build tags" />
     </HelpKeywords>
   </Topic>
+  <Topic id="baf1dcbc-e9cf-4d71-a770-621e6eaf10a7" visible="True" title="Custom Presentation Style Definition File">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="customize, presentation style definition file" />
+    </HelpKeywords>
+    <Topic id="81f38cdc-8859-441b-a249-b67b03e492ed" visible="True" title="Walkthrough: Creating a Custom Presentation Style">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="customize, custom presentation style walkthrough" />
+      </HelpKeywords>
+    </Topic>
+  </Topic>
   <Topic id="1aea789d-b226-4b39-b534-4c97c256fac8" visible="True" title="Frequently Asked Questions (FAQ)" linkText="FAQ">
     <HelpKeywords>
       <HelpKeyword index="K" term="errors, HHC3002" />
@@ -1309,6 +1366,11 @@
       <HelpKeyword index="K" term="History" />
       <HelpKeyword index="K" term="Version History" />
     </HelpKeywords>
+    <Topic id="4bc61ac3-ac19-4c8b-9ff9-95aaefa0b18e" visible="True" isSelected="true" title="Version 1.9.6.0">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 1.9.6.0" />
+      </HelpKeywords>
+    </Topic>
     <Topic id="9fee3feb-46b6-4935-aac2-01c0045d3e19" visible="True" title="Version 1.9.5.0">
       <HelpKeywords>
         <HelpKeyword index="K" term="versions, 1.9.5.0" />

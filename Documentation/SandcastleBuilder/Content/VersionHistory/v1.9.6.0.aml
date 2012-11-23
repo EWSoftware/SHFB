@@ -1,0 +1,154 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="4bc61ac3-ac19-4c8b-9ff9-95aaefa0b18e" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<autoOutline excludeRelatedTopics="true" lead="Version 1.9.6.0 was released on November 23rd, 2012." />
+
+		</introduction>
+
+		<section address="BreakingChanges">
+			<title>Breaking Changes</title>
+			<content>
+
+				<list class="bullet">
+					<listItem>
+						<para>The configuration of the <legacyBold>Code Block Component</legacyBold> has been changed.  As
+such, if you have added it to your projects to override the default configuration, you must remove it, add it
+again, and reconfigure it so that the configuration elements are up to date.</para>
+					</listItem>
+
+					<listItem>
+						<para>Moved the various parts of the <legacyBold>Post-Transform Component</legacyBold> processing
+into the presentation style XSL transformations and the Code Block Component.  The Post-Transform Component is
+now obsolete and, if you have added it to your project, it must be removed.  Make a note of the configuration
+settings for the logo option if you are using it and transfer those values to the new transform component
+arguments on the <link xlink:href="c584509f-0b18-49a8-ab06-114b0058a739" /> property page.</para>
+
+						<alert class="important">
+							<para>Be sure to move your logo image file to an <localUri>.\Icons</localUri> subfolder in your
+project and set its <codeInline>BuildAction</codeInline> to <codeInline>Content</codeInline> so that it is
+included properly.  See the transform component argument descriptions for more information.</para>
+						</alert>
+					</listItem>
+
+					<listItem>
+						<para>If you have created your own presentation style, it will no longer be picked up by the
+presentation style property.  You will need to create a definition file for it.  This was necessary to break the
+dependencies the help file builder had on the existing presentation styles and their names.  See the
+<link xlink:href="baf1dcbc-e9cf-4d71-a770-621e6eaf10a7" /> topic and the related walkthrough on creating a
+custom presentation style for more information.</para>
+					</listItem>
+
+					<listItem>
+						<para>The <codeInline>FindingTools</codeInline> build step was removed and its processing was moved
+to be part of the <codeInline>Initializing</codeInline> build step due to the need to locate framework and
+presentation style configuration files during initialization.  If you have custom plug-ins that rely on the
+removed build step, you will need to update them accordingly.</para>
+					</listItem>
+				</list>
+
+			</content>
+		</section>
+
+		<section address="OtherChanges">
+			<title>Other Changes in This Release</title>
+			<content>
+
+				<list class="bullet">
+					<listItem>
+						<para>Fixed the MAML to Flow Document Converter so that it no longer locks image files that it adds
+to the preview documents which was preventing them from being updated in the project.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the XML comments file search so that the local system language does not override the
+lanuage defined in the project when searching for localized versions of the .NET Framework XML comments files.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed up comment colorizer rules for VB.NET, VBScript, and Python so that they do not add an
+extra line after end of line comments.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the Code Block Component so that it doesn't match shorter region names in longer ones
+that start with the shorter name that occur before it.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated the Code Block Component to convert the <codeInline>lang</codeInline> attribute to
+<codeInline>language</codeInline> so that the XSL transformations work as expected (they use
+<codeInline>language</codeInline> throughout to determine the language).</para>
+					</listItem>
+
+					<listItem>
+						<para>Moved the <codeInline>code</codeInline> element's <codeInline>title</codeInline> attribute
+handling to the presentation styles and greatly simplified the Code Block Component code which allows it to work
+without any knowledge of the document structure for any given presentation style.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated all build components to include the topic key in warning and error messages when
+available.  This provides more context when the <application>BuildAssembler</application> verbosity level is set
+to Warnings and Errors or Errors Only.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated the build process so that it handles substitution tags in the <codeInline>HtmlHelpName</codeInline>
+property value.  This allows insertion of other property values such as <codeInline>HelpFileVersion</codeInline>
+into the help filename value.</para>
+					</listItem>
+
+					<listItem>
+						<para>Removed the Version Information Component as the version number information is now included by
+the presentation style XSL transformations.</para>
+					</listItem>
+
+					<listItem>
+						<para>Removed the <codeInline>BrandingPackageName</codeInline> and <codeInline>SelfBranded</codeInline>
+project properties.  Sandcastle presentation styles are either self-branded or not and cannot switch between the
+two states so exposing these properties no longer made sense.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added support for <localUri>.winmd</localUri> documentation sources.  I'm not sure if this was
+worthwhile as a majority of the user written code in the assembly is marked as compiler generated and thus does
+not show up in the help file.  I may need an option to include compiler generated code. We'll see how the feature
+is used and if it is an issue.</para>
+					</listItem>
+
+					<listItem>
+						<para>Rewrote the standalone GUI's Project Properties window to use the property page user controls
+from the Visual Studio Package. This makes the property descriptions and usage consistent between the two.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added the <localUri>StandardStyles.presentation</localUri> configuration file which defines the
+standard Sandcastle presentation styles available for use.  Support for 3rd party presentation styles is also
+available.  See the <link xlink:href="baf1dcbc-e9cf-4d71-a770-621e6eaf10a7" /> topic for more information.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated the build engine and project management tools to use the presentation style
+configuration files (standard and custom) for all presentation style related settings.  The build engine no
+longer has any internal dependencies on the presentation styles or their names which will make adding new
+presentation styles much easier.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added a new <codeInline>TransformComponentArguments</codeInline> property to the project along
+with a corresponding property page. This allows editing the <codeInline>TransformComponent</codeInline> arguments
+defined in the presentation style configuration file (i.e. for logo support).</para>
+					</listItem>
+
+				</list>
+
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="078cc1c7-7995-431e-bf9c-8813becbe8df" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

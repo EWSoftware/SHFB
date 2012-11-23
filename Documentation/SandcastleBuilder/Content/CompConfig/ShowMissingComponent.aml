@@ -24,7 +24,7 @@ missing documentation" component. It should be inserted into the configuration
 file before the <codeInline>TransformComponent</codeInline>.  All attribute
 names and values are case-sensitive.</para>
 
-<code lang="xml" title="Example Configuration">
+<code language="xml" title="Example Configuration">
 &lt;!-- Show missing documentation component configuration.  This must
      appear before the TransformComponent. --&gt;
 &lt;component type="SandcastleBuilder.Components.ShowMissingComponent"
@@ -87,7 +87,7 @@ constructor and "show missing" messages.  If omitted, default English language
 messages are used.  The format of the content should be similar to the
 following (lines wrapped for display purposes):</para>
 
-<code lang="xml" title="Localized Messages Example">
+<code language="xml" title="Localized Messages Example">
 &lt;?xml version="1.0" encoding="utf-8"?&gt;
 &lt;content xml:space="preserve"&gt;
     &lt;!-- SHFB Show Missing Component messages --&gt;

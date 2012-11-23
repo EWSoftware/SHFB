@@ -1,23 +1,22 @@
-﻿//=============================================================================
+﻿//===============================================================================================================
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : SharedResources.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/20/2012
+// Updated : 11/20/2012
 // Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class used to load shared resources at runtime
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.9.3.3  12/27/2011  EFW  Created the code
-//=============================================================================
+//===============================================================================================================
 
 using System;
 using System.Windows;
@@ -76,7 +75,13 @@ namespace SandcastleBuilder.WPF
                 {
                     Uri image = new Uri(
                         "pack://application:,,,/SandcastleBuilder.WPF;component/Resources/AlertCaution.png");
-                    cautionIcon = new BitmapImage(image);
+
+                    // Cache on load to prevent it locking the image
+                    cautionIcon = new BitmapImage();
+                    cautionIcon.BeginInit();
+                    cautionIcon.CacheOption = BitmapCacheOption.OnLoad;
+                    cautionIcon.UriSource = image;
+                    cautionIcon.EndInit();
                 }
 
                 return cautionIcon;
@@ -94,7 +99,13 @@ namespace SandcastleBuilder.WPF
                 {
                     Uri image = new Uri(
                         "pack://application:,,,/SandcastleBuilder.WPF;component/Resources/AlertNote.png");
-                    noteIcon = new BitmapImage(image);
+
+                    // Cache on load to prevent it locking the image
+                    noteIcon = new BitmapImage();
+                    noteIcon.BeginInit();
+                    noteIcon.CacheOption = BitmapCacheOption.OnLoad;
+                    noteIcon.UriSource = image;
+                    noteIcon.EndInit();
                 }
 
                 return noteIcon;
@@ -112,7 +123,13 @@ namespace SandcastleBuilder.WPF
                 {
                     Uri image = new Uri(
                         "pack://application:,,,/SandcastleBuilder.WPF;component/Resources/AlertSecurity.png");
-                    securityIcon = new BitmapImage(image);
+
+                    // Cache on load to prevent it locking the image
+                    securityIcon = new BitmapImage();
+                    securityIcon.BeginInit();
+                    securityIcon.CacheOption = BitmapCacheOption.OnLoad;
+                    securityIcon.UriSource = image;
+                    securityIcon.EndInit();
                 }
 
                 return securityIcon;

@@ -32,7 +32,7 @@ attribute that can be used to link to a specific defined term from another locat
       <title>Example</title>
       <content>
 <code language="xml" title=" ">
-&lt;para&gt;This link takes you to &lt;link xlink:href=&quot;#Term8&quot;&gt;Term #8&lt;/link&gt;.&lt;/para&gt;
+&lt;para&gt;This link takes you to &lt;link xlink:href="#Term8"&gt;Term #8&lt;/link&gt;.&lt;/para&gt;
 
 &lt;definitionTable&gt;
   &lt;definedTerm&gt;Term 1&lt;/definedTerm&gt;
@@ -56,7 +56,7 @@ attribute that can be used to link to a specific defined term from another locat
   &lt;definedTerm&gt;Term 7&lt;/definedTerm&gt;
   &lt;definition&gt;&lt;para&gt;Definition 7&lt;/para&gt;&lt;/definition&gt;
 
-  &lt;definedTerm address=&quot;Term8&quot;&gt;Term 8&lt;/definedTerm&gt;
+  &lt;definedTerm address="Term8"&gt;Term 8&lt;/definedTerm&gt;
   &lt;definition&gt;&lt;para&gt;Definition 8.  The entry's term has an &lt;codeInline&gt;address&lt;/codeInline&gt;
 attribute that can be used as a link target.&lt;/para&gt;&lt;/definition&gt;
 &lt;/definitionTable&gt;

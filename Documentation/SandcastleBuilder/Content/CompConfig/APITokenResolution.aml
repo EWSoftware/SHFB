@@ -12,7 +12,7 @@ when the help file is built.</para>
     <para>The following is the default configuration for the API Token Resolution component. It should be
 inserted into the configuration file before the <codeInline>ShowMissingComponent</codeInline>.</para>
 
-<code lang="xml" title="Example Configuration">
+<code language="xml" title="Example Configuration">
 &lt;component type="Microsoft.Ddue.Tools.SharedContentComponent"
   assembly="{@SandcastlePath}ProductionTools\BuildComponents.dll"&gt;
 

@@ -58,7 +58,7 @@
             this.chkBinaryTOC.Size = new System.Drawing.Size(376, 24);
             this.chkBinaryTOC.TabIndex = 3;
             this.chkBinaryTOC.Tag = "BinaryTOC";
-            this.chkBinaryTOC.Text = "Create a binary table of content to reduce load time";
+            this.chkBinaryTOC.Text = "Create a binary table of contents to reduce load time";
             this.chkBinaryTOC.UseVisualStyleBackColor = true;
             // 
             // dividerLabel1

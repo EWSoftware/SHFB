@@ -36,6 +36,10 @@ have them appear in the help topics.</para>
 <link xlink:href="da405a33-3eeb-4451-9aa8-a55be5026434#UserDefProps">UserDefinedProperties</link> project
 property and use them in other project properties such as <codeInline>HelpFileVersion</codeInline>,
 <codeInline>HeaderText</codeInline>, etc.</para>
+
+	<para>For a list of the standard help file builder property names, see the
+<link xlink:href="e32086c6-de17-4e54-a746-1ac80bf0c45a">property page</link> help topics.  The internal property
+name of each property option is listed after the property section title in parentheses.</para>
 </alert>
 
 <table>
@@ -59,27 +63,6 @@ help file builder.  This is used to store third-party build components and plug-
 <codeInline>{@LocalDataFolder}</codeInline> is replaced with the local application data folder for the help file
 builder.  This is used to store cache files and other user settings.  See the
 <link xlink:href="a24489fb-45d6-46f4-9eaa-9a9c4e0919b2" /> topic for more information.</para>
-		</entry>
-  </row>
-  <row>
-    <entry>
-			<para>{@AutoDocumentConstructors}, {@AutoDocumentDisposeMethods}, {@ShowMissingNamespaces},
-{@ShowMissingParams}, {@ShowMissingRemarks}, {@ShowMissingReturns}, {@ShowMissingSummaries},
-{@ShowMissingTypeParams}, {@ShowMissingValues}</para>
-		</entry>
-    <entry>
-			<para>These tags equates to the <codeInline>ShowMissing*</codeInline> project properties and are used to
-set the <codeInline>ShowMissingComponent</codeInline> build component configuration settings in the
-<localUri>sandcastle.config</localUri> file templates.</para>
-		</entry>
-  </row>
-  <row>
-    <entry>
-			<para>{@BinaryTOC}</para>
-		</entry>
-    <entry>
-			<para>This tag equates to a Yes or No value based on the <codeInline>BinaryTOC</codeInline> project
-setting.  This is placed in the help file project template.</para>
 		</entry>
   </row>
   <row>
@@ -133,14 +116,6 @@ the include directive that adds the "send e-mail" note to the page footers.</par
   </row>
   <row>
     <entry>
-			<para>{@CopyrightHref}</para>
-		</entry>
-    <entry>
-			<para>This tag expands to the <codeInline>CopyrightHref</codeInline> project option.</para>
-		</entry>
-  </row>
-  <row>
-    <entry>
 			<para>{@CopyrightInfo} and {@HtmlEncCopyrightInfo}</para>
 		</entry>
     <entry>
@@ -169,7 +144,15 @@ encoded).</para>
 directive necessary to place the text in the page footers.</para>
 		</entry>
   </row>
-  <row>
+	<row>
+		<entry>
+			<para>{@CoreFrameworkPath}</para>
+		</entry>
+		<entry>
+			<para>This expands to the core assembly path for the selected framework version.</para>
+		</entry>
+	</row>
+	<row>
     <entry>
 			<para>{@DefaultTopic} and {@WebDefaultTopic}</para>
 		</entry>
@@ -212,7 +195,7 @@ tag's value.</para>
   </row>
   <row>
     <entry>
-			<para>{@FrameworkVersion}, {@FrameworkVersionShort}, {@MRefFrameworkVersion}, {@MRefFrameworkVersionShort}</para>
+			<para>{@FrameworkVersion}, {@FrameworkVersionShort}</para>
 		</entry>
     <entry>
 			<para>These tags expand to the selected <codeInline>FrameworkVersion</codeInline> project option (full and
@@ -258,14 +241,6 @@ found or the <codeInline>HtmlHelp2xCompilerPath</codeInline> project option if i
   </row>
   <row>
     <entry>
-			<para>{@HeaderText}</para>
-		</entry>
-    <entry>
-			<para>This tag expands to the value of the <codeInline>HeaderText</codeInline> project option.</para>
-		</entry>
-  </row>
-  <row>
-    <entry>
 			<para>{@Help1xProjectFiles} and {@Help2xProjectFiles}</para>
 		</entry>
     <entry>
@@ -280,26 +255,6 @@ should be compiled into the help file.</para>
     <entry>
 			<para>These tags expand to the <codeInline>HelpTitle</codeInline> project option (plain text, HTML encoded,
 URL encoded, and quote-escaped for JavaScript).</para>
-		</entry>
-  </row>
-  <row>
-    <entry>
-			<para>{@IncludeProjectNode}</para>
-		</entry>
-    <entry>
-			<para>This tag expands to the parameter used to indicate that the "Project" root namespace node should be
-included in the table of contents for the Hana and VS2005 presentation styles based on the setting of the
-<codeInline>RootNamespaceContainer</codeInline> project property.</para>
-		</entry>
-  </row>
-  <row>
-    <entry>
-			<para>{@IndentHtml}</para>
-		</entry>
-    <entry>
-			<para>This tag expands to the parameter used to indicate whether or not the HTML rendered by
-<application>BuildAssembler</application> is indented.  This is mainly a debugging aid.  When true, the HTML is
-indented to make it more readable.  Leave it set to false to produce more compact HTML.</para>
 		</entry>
   </row>
   <row>
@@ -338,7 +293,23 @@ is not found for the selected language, the default US-English Sandcastle shared
 			<para>This tag expands to the locale name for the <codeInline>Language</codeInline> project option.</para>
 		</entry>
   </row>
-  <row>
+	<row>
+		<entry>
+			<para>{@ManifestTransformation}</para>
+		</entry>
+		<entry>
+			<para>This tag expands to the document model transformation filename for the selected presentation style.</para>
+		</entry>
+	</row>
+	<row>
+		<entry>
+			<para>{@ManifestTransformationParameters}</para>
+		</entry>
+		<entry>
+			<para>This tag expands to the document model transformation parameters for the selected presentation style.</para>
+		</entry>
+	</row>
+	<row>
     <entry>
 			<para>{@OutputFolder}</para>
 		</entry>
@@ -349,21 +320,12 @@ locate the output folder.</para>
   </row>
   <row>
     <entry>
-			<para>{@Preliminary}</para>
-		</entry>
-    <entry>
-			<para>This tag will expand to the include directive to place the "preliminary documentation" warning in all
-page headers if the <codeInline>Preliminary</codeInline> project option is set to true.</para>
-		</entry>
-  </row>
-  <row>
-    <entry>
 			<para>{@PresentationPath} and {@PresentationStyle}</para>
 		</entry>
     <entry>
 			<para>The first tag expands to the path of the presentation folder that contains the art, scripts, style
 sheets, and transformations for the style selected with the project's <codeInline>PresentationStyle</codeInline>
-property.  The second expands to the name of the style itself.</para>
+property.  The second expands to the ID of the style itself.</para>
 		</entry>
   </row>
   <row>
@@ -375,7 +337,28 @@ property.  The second expands to the name of the style itself.</para>
 useful for build components that need paths relative to the project.</para>
 		</entry>
   </row>
-  <row>
+	<row>
+		<entry>
+			<para>{@ProjectNodeName}</para>
+		</entry>
+		<entry>
+			<para>This expands to the root namespace page ID (the project node ID).  The resolved value will be in the
+format <codeInline>R:Project_[HtmlHelpName]</codeInline> where "<codeInline>HtmlHelpName</codeInline>" is the
+value of that property from your project.</para>
+		</entry>
+	</row>
+	<row>
+		<entry>
+			<para>{@ProjectNodeIDRequired} and {@ProjectNodeIdOptional}</para>
+		</entry>
+		<entry>
+			<para>These expand to the root namespace page ID (the project node ID) that gets passed to the document
+model XSL transformation.  The resolved value will be in the format <codeInline>Project_[HtmlHelpName]</codeInline>
+where "<codeInline>HtmlHelpName</codeInline>" is the value of that property from your project.  The "Optional"
+version may be an empty string if not used for the build.</para>
+		</entry>
+	</row>
+	<row>
     <entry>
 			<para>{@ResourceItemFiles}</para>
 		</entry>
@@ -387,27 +370,11 @@ its <codeInline>BuildAction</codeInline> set to <codeInline>ResourceItems</codeI
   </row>
   <row>
     <entry>
-			<para>{@RootNamespaceTitle}</para>
-		</entry>
-    <entry>
-			<para>This tag expands to the value of the <codeInline>RootNamespaceTitle</codeInline> project option.</para>
-		</entry>
-  </row>
-  <row>
-    <entry>
 			<para>{@SandcastlePath}</para>
 		</entry>
     <entry>
 			<para>This tag expands to the path to the Sandcastle installation folder.  This will be the path that the
 help builder found or the <codeInline>SandcastlePath</codeInline> project option if it is specified instead.</para>
-		</entry>
-  </row>
-  <row>
-    <entry>
-			<para>{@HtmlSdkLinkType}, {@MSHelp2SdkLinkType}, {@MSHelpViewerSdkLinkType}, and {@WebsiteSdkLinkType}</para>
-		</entry>
-    <entry>
-			<para>These tags expands to the value of the matching named project properties.</para>
 		</entry>
   </row>
   <row>
@@ -444,11 +411,28 @@ topic in the Prototype style.</para>
     <entry>
 			<para>This tag expands to target framework identifier based on the current <codeInline>FrameworkVersion</codeInline>
 project property setting.  It will be <codeInline>.NETFramework</codeInline> for .NET versions,
-<codeInline>Silverlight</codeInline> for Silverlight versions, or <codeInline>.NETPortable</codeInline> for the
-.NET Portable framework versions.</para>
+<codeInline>Silverlight</codeInline> for Silverlight versions, <codeInline>.NETPortable</codeInline> for the
+.NET Portable framework versions, or <codeInline>.NETCore</codeInline> for .NET for Windows Store Apps
+frameworks.</para>
 		</entry>
   </row>
-  <row>
+	<row>
+		<entry>
+			<para>{@TocTransformation}</para>
+		</entry>
+		<entry>
+			<para>This tag expands to the table of contents transformation filename for the selected presentation style.</para>
+		</entry>
+	</row>
+	<row>
+		<entry>
+			<para>{@TocTransformationParameters}</para>
+		</entry>
+		<entry>
+			<para>This tag expands to the table of contents transformation parameters for the selected presentation style.</para>
+		</entry>
+	</row>
+	<row>
     <entry>
 			<para>{@TokenFiles}</para>
 		</entry>
@@ -458,7 +442,16 @@ Shared Content Component in conceptual content builds.  To appear in the list, t
 <codeInline>BuildAction</codeInline> set to <codeInline>Tokens</codeInline>.</para>
 		</entry>
   </row>
-  <row>
+	<row>
+		<entry>
+			<para>{@TransformComponentArguments}</para>
+		</entry>
+		<entry>
+			<para>This expands to the transform component arguments that are passed to the <application>BuildAssembler</application>
+tool's <codeInline>TransformComponent</codeInline>.</para>
+		</entry>
+	</row>
+	<row>
     <entry>
 			<para>{@WindowOptions}</para>
 		</entry>
@@ -502,11 +495,13 @@ installation folder.</para>
   </tableHeader>
   <row>
     <entry>
-			<para>Build1xHelpFile.proj and Build2xHelpFile.proj</para>
+			<para>Build1xHelpFile.proj, Build2xHelpFile.proj, BuildHelpViewerFile.proj</para>
 		</entry>
     <entry>
 			<para>These MSBuild projects are used to build the HTML Help 1 and MS Help 2 help file projects
-respectively and copy the resulting help file and supporting files to the project's output folder.</para>
+respectively and copy the resulting help file and supporting files to the project's output folder.  The
+MS Help Viewer version simply copies the supporting files to the project's output folder as the build engine
+compresses the topics into the archive that becomes the MSHC file.</para>
 		</entry>
   </row>
   <row>
@@ -541,18 +536,6 @@ encountered while using the HTML Help 1 compiler with certain languages that req
   </row>
   <row>
     <entry>
-			<para>FixScriptSharp.xsl</para>
-		</entry>
-    <entry>
-			<para>This XSL transformation is used to fix up the reflection information file produced by runing
-<application>MRefBuilder</application> on assemblies created by the <application>Script#</application> compiler.
-It adds fixes up some of the entries for use with Sandcastle and adds a <codeInline>scriptSharp</codeInline>
-element to the members so that the JavaScript syntax generator produces code that matches the actual output of
-the <application>Script#</application> tools.</para>
-		</entry>
-  </row>
-  <row>
-    <entry>
 			<para>GenerateInheritedDocs.proj and GenerateInheritedDocs.config</para>
 		</entry>
     <entry>
@@ -581,7 +564,7 @@ contains information about the types in each assembly.</para>
   </row>
   <row>
     <entry>
-			<para>Hana.config, Prototype.config, and VS2005.config</para>
+			<para>Hana.config, Prototype.config, VS2005.config, and VS2010.config</para>
 		</entry>
     <entry>
 			<para>These are the Sandcastle configuration file templates.  One of these will be updated with the
@@ -621,7 +604,16 @@ options and the help window properties.</para>
 			<para>This set of files defines the help file project templates for MS Help 2 help files.</para>
 		</entry>
   </row>
-  <row>
+	<row>
+		<entry>
+			<para>HelpContentSetup.msha, InstallMSHC.bat, and RemoveMSHC.bat</para>
+		</entry>
+		<entry>
+			<para>These are the template file used for the MS Help Viewer content setup file and the example scripts
+used to install and remove the MS Help Viewer content.</para>
+		</entry>
+	</row>
+	<row>
     <entry>
 			<para>HelpFileBuilderTokens.tokens</para>
 		</entry>
@@ -639,7 +631,17 @@ single entry for the standard <codeInline>autoOutline</codeInline> token.</para>
 that it uses when generating the reflection information file.</para>
 		</entry>
   </row>
-  <row>
+	<row>
+		<entry>
+			<para>PlaceHolderNode.aml</para>
+		</entry>
+		<entry>
+			<para>This is a blank MAML topic used as the target for empty place holder nodes when generating MS Help
+Viewer files.  MS Help Viewer does not support empty place holder nodes so this topic fills them so that the
+build succeeds and generates a valid file.  A unique ID is generated for each placeholder inserted into the file.</para>
+		</entry>
+	</row>
+	<row>
     <entry>
 			<para>TransformBuildLog.xsl</para>
 		</entry>

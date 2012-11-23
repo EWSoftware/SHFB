@@ -138,7 +138,7 @@ anything if they are both present.</para>
               EWSoftware.CodeDom, Version=1.1.0.0, Culture=neutral,
               PublicKeyToken=d633d7d5b41cbb65"&gt;
         &lt;!-- NOTE: Change value to "v3.5" for .NET 3.5 projects -->
-        &lt;providerOption name=&quot;CompilerVersion&quot; value=&quot;v2.0&quot;/&gt;
+        &lt;providerOption name="CompilerVersion" value="v2.0"/&gt;
       &lt;/compiler&gt;
 
       &lt;!-- For VB.NET --&gt;
@@ -148,7 +148,7 @@ anything if they are both present.</para>
               EWSoftware.CodeDom, Version=1.1.0.0, Culture=neutral,
               PublicKeyToken=d633d7d5b41cbb65"&gt;
         &lt;!-- NOTE: Change value to "v3.5" for .NET 3.5 projects -->
-        &lt;providerOption name=&quot;CompilerVersion&quot; value=&quot;v2.0&quot;/&gt;
+        &lt;providerOption name="CompilerVersion" value="v2.0"/&gt;
       &lt;/compiler&gt;
     &lt;/compilers&gt;
   &lt;/system.codedom&gt;

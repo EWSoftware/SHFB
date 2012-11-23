@@ -54,7 +54,7 @@ Sandcastle Help File Builder, and create your first project.</para>
 	</listItem>
 
   <listItem>
-		<para><externalLink>
+		<para>The following article is outdated now but does contain some useful information: <externalLink>
 <linkText>Taming Sandcastle: A .NET Programmer's Guide to Documenting Your Code</linkText>
 <linkAlternateText>Taming Sandcastle</linkAlternateText>
 <linkUri>http://www.simple-talk.com/dotnet/.net-tools/taming-sandcastle-a-.net-programmers-guide-to-documenting-your-code</linkUri>

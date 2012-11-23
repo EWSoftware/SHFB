@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : TransformArgumentsPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 11/18/2012
+// Updated : 11/21/2012
 // Note    : Copyright 2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -66,7 +66,7 @@ namespace SandcastleBuilder.Package.PropertyPages
             txtValue.GotFocus += (s, e) => { this.BindControlValue(null); };
 
             this.Title = "Transform Args";
-            this.HelpKeyword = "TODO: Add help topic";
+            this.HelpKeyword = "c584509f-0b18-49a8-ab06-114b0058a739";
         }
         #endregion
 
@@ -107,7 +107,9 @@ namespace SandcastleBuilder.Package.PropertyPages
             argsProp = this.CurrentProject.MSBuildProject.GetProperty("TransformComponentArguments");
             styleProp = this.CurrentProject.MSBuildProject.GetProperty("PresentationStyle");
 #endif
-            if(styleProp != null && !String.IsNullOrEmpty(styleProp.UnevaluatedValue) && styleProp.UnevaluatedValue.Equals(lastStyle))
+            if((styleProp == null && lastStyle != null) || (styleProp != null &&
+              !String.IsNullOrEmpty(styleProp.UnevaluatedValue) &&
+              styleProp.UnevaluatedValue.Equals(lastStyle, StringComparison.OrdinalIgnoreCase)))
                 return true;
 
             var transformComponentArgs = new Dictionary<string, TransformComponentArgument>();

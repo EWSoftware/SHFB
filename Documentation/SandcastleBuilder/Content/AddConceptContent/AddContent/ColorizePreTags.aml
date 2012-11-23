@@ -28,7 +28,7 @@ the help file.</para>
 <section>
   <content>
 
-<code lang="xml" title="As specified in the HTML">
+<code language="xml" title="As specified in the HTML">
 &lt;pre lang="cs" numberLines="true" outlining="true"
   title="Example of Syntax Highlighting"&gt;
 #region Collapsible region
@@ -54,7 +54,7 @@ public void TestMethod(string s, int x)
 
 <para>As rendered with colorizing and collapsible regions:</para>
 
-<code lang="cs" numberLines="true" outlining="true" title="Example of Syntax Highlighting">
+<code language="cs" numberLines="true" outlining="true" title="Example of Syntax Highlighting">
 
 #region Collapsible region
 // Test method

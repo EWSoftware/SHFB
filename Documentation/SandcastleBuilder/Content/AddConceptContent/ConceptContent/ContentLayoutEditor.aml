@@ -227,8 +227,8 @@ For example:</para>
 <code language="html" title=" ">
 &lt;head&gt;
   &lt;title&gt;Demo Topic&lt;/title&gt;
-  &lt;meta name=&quot;id&quot; content=&quot;64e3dc97-5125-541e-9e84-7f9303e95f27&quot;&gt;
-  &lt;meta name=&quot;revisionNumber&quot; content=&quot;1&quot;&gt;
+  &lt;meta name="id" content="64e3dc97-5125-541e-9e84-7f9303e95f27" /&gt;
+  &lt;meta name="revisionNumber" content="1" /&gt;
 &lt;/head&gt;
 </code></listItem>
 

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="a393787d-76d1-4c08-9b52-66d0384210fb" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>The selected presentation style (<legacyItalic>XXXX</legacyItalic>) does not support one or more of
+the selected help file formats.  Supported formats: <legacyItalic>YYYY</legacyItalic></para>
+    </introduction>
+
+    <section>
+      <title>Cause</title>
+      <content>
+        <para>The presentation style selected in the help file builder project's <codeInline>PresentationStyle</codeInline>
+property does not support one or more of the selected output formats (Help 1, Help 2, MS Help Viewer, or Website).</para>
+      </content>
+    </section>
+
+    <section>
+      <title>Solution</title>
+      <content>
+        <para>In order to be built correctly, the selected presentation style must support all of the selected
+help file output formats.  Certain styles may be written for a specific help file formats or, as in the case of
+the Prototype and Hana styles, have been deprecated and have not been updated to support later file formats such
+as MS Help Viewer.  Either unselect the unsupported format(s) or choose a different presentation style that does
+support the selected format(s).</para>
+      </content>
+    </section>
+
+    <relatedTopics>
+			<link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
+		</relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

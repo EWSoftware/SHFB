@@ -36,7 +36,7 @@
     <CopyrightHref>http://SHFB.CodePlex.com</CopyrightHref>
     <CopyrightText>[v{%40HelpFileVersion}] Sandcastle MAML Guide</CopyrightText>
     <FeedbackEMailAddress>Eric%40EWoodruff.us</FeedbackEMailAddress>
-    <PresentationStyle>vs2005</PresentationStyle>
+    <PresentationStyle>VS2005</PresentationStyle>
     <HelpFileVersion>1.1.0.2</HelpFileVersion>
     <ComponentConfigurations>
       <ComponentConfig id="Cached MSDN URL References" enabled="True">
@@ -61,26 +61,6 @@
             <targets base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" type="{@WebsiteSdkLinkType}" />
             <targets files="reflection.xml" type="Local" />
           </helpOutput>
-        </component>
-      </ComponentConfig>
-      <ComponentConfig id="Post-transform Component" enabled="True">
-        <component id="Post-transform Component" type="SandcastleBuilder.Components.PostTransformComponent" assembly="{@SHFBFolder}SandcastleBuilder.Components.dll">
-          <!-- Code colorizer files (required).
-                 Attributes:
-                    Stylesheet file (required)
-                    Script file (required)
-                    "Copy" image file (required) -->
-          <colorizer stylesheet="{@SHFBFolder}Colorizer\highlight.css" scriptFile="{@SHFBFolder}Colorizer\highlight.js" copyImage="{@SHFBFolder}Colorizer\CopyCode.gif" />
-          <!-- Base output paths for the files (required).  These should match
-                 the parent folder of the output path of the HTML files (see
-                 each of the SaveComponent instances below). -->
-          <outputPaths>
-{@HelpFormatOutputPaths}
-            </outputPaths>
-          <!-- Logo image file (optional).  Filename is required. The height,
-                 width, altText, placement, and alignment attributes are
-                 optional. -->
-          <logoFile filename="{@ProjectFolder}Media\SandcastleLogoSmall.jpg" height="0" width="0" altText="Sandcastle MAML Guide" placement="left" alignment="left" />
         </component>
       </ComponentConfig>
     </ComponentConfigurations>
@@ -129,6 +109,14 @@
     <CollectionTocStyle>Hierarchical</CollectionTocStyle>
     <MSHelp2SdkLinkType>Msdn</MSHelp2SdkLinkType>
     <IncludeStopWordList>True</IncludeStopWordList>
+    <TransformComponentArguments>
+      <Argument Key="logoFile" Value="Sandcastle.jpg" />
+      <Argument Key="logoHeight" Value="" />
+      <Argument Key="logoWidth" Value="" />
+      <Argument Key="logoAltText" Value="Sandcastle MAML Guide" />
+      <Argument Key="logoPlacement" Value="left" />
+      <Argument Key="logoAlignment" Value="left" />
+    </TransformComponentArguments>
   </PropertyGroup>
   <!-- There are no properties for these two groups but they need to appear in
        order for Visual Studio to perform the build. -->
@@ -149,8 +137,13 @@
     <Folder Include="Content\MiscElements\" />
     <Folder Include="Media\" />
     <Folder Include="Content\" />
+    <Folder Include="Icons" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Icons\Sandcastle.jpg">
+      <ImageId>Sandcastle</ImageId>
+      <AlternateText>Sandcastle</AlternateText>
+    </Content>
     <Image Include="Media\SmallInformation.png">
       <ImageId>4cfacbe8-d100-471c-9d69-1dbcce50e316</ImageId>
       <AlternateText>Information</AlternateText>

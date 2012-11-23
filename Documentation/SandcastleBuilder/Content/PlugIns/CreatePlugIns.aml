@@ -21,10 +21,10 @@ configuration that is passed to a plug-in.</para>
 
 <code language="xml" title="Example Plug-In Configuration">
 &lt;configuration&gt;
-    &lt;ajaxDoc url=&quot;http://localhost:/AjaxDoc/&quot; project=&quot;MicrosoftAjax&quot; regenerate=&quot;true&quot; /&gt;
-    &lt;userCredentials useDefault=&quot;true&quot; userName=&quot;&quot; password=&quot;&quot; /&gt;
-    &lt;proxyCredentials useProxy=&quot;false&quot; proxyServer=&quot;&quot;&gt;
-        &lt;userCredentials useDefault=&quot;true&quot; userName=&quot;&quot; password=&quot;&quot; /&gt;
+    &lt;ajaxDoc url="http://localhost:/AjaxDoc/" project="MicrosoftAjax" regenerate="true" /&gt;
+    &lt;userCredentials useDefault="true" userName="" password="" /&gt;
+    &lt;proxyCredentials useProxy="false" proxyServer=""&gt;
+        &lt;userCredentials useDefault="true" userName="" password="" /&gt;
     &lt;/proxyCredentials&gt;
 &lt;/configuration&gt;
 </code>
@@ -59,7 +59,7 @@ been created, right click on the project and select Properties.</para>
 following command based on your operating system which will copy the plug-in to the shared application data
 <localUri>.\Components and Plug-Ins</localUri> folder ready for testing (lines wrapped for display purposes):</para>
 
-<code language="none" title="Windows Vista/Windows 7">
+<code language="none" title="Windows Vista or Later">
 Copy /y "$(TargetPath)" "%ProgramData%\EWSoftware\Sandcastle Help File
 Builder\Components and Plug-Ins\$(TargetName).plugins"
 </code>
@@ -261,14 +261,13 @@ your plug-in.</para>
 		</listItem>
 
     <listItem>
-			<para>The <codeInline>Before</codeInline> and <codeInline>InsteadOf</codeInline> behaviors cannot be used
-with the <codeInline>Initializing</codeInline>, <codeInline>Canceled</codeInline>, or <codeInline>Failed</codeInline>
-steps.</para>
+			<para>The <codeInline>Before</codeInline> behavior cannot be used with the <codeInline>Initializing</codeInline>,
+<codeInline>Canceled</codeInline>, or <codeInline>Failed</codeInline> steps.</para>
 		</listItem>
 
     <listItem>
-			<para>The <codeInline>InsteadOf</codeInline> behavior cannot be used with the <codeInline>FindingTools</codeInline>
-or <codeInline>Completed</codeInline> steps.</para>
+			<para>The <codeInline>InsteadOf</codeInline> behavior cannot be used with the <codeInline>Initializing</codeInline>,
+<codeInline>Completed</codeInline>, <codeInline>Canceled</codeInline>, or <codeInline>Failed</codeInline> steps.</para>
 		</listItem>
 
     <listItem>

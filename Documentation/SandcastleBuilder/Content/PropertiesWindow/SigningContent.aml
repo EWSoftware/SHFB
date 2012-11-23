@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="650e50e7-f174-472a-bbea-f9000dba722c" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>The following steps can be used to sign the MS Help Viewer content so that it can be installed
+silently.</para>
+
+			<alert class="note">
+				<para>Please note that this information was supplied by an end user and diagnosing any problems that
+you may encounter is outside the scope of the Sandcastle Help File Builder project.  If you have issues, the best
+course of action is to post a message asking for help with signing content on the <externalLink>
+	<linkText>MSDN Developer Documentation and Help System</linkText>
+	<linkAlternateText>MSDN Dev Doc and Help</linkAlternateText>
+	<linkUri>http://social.msdn.microsoft.com/forums/en-US/devdocs/threads/</linkUri>
+	<linkTarget>_blank</linkTarget>
+</externalLink> forum.
+			</para>
+			</alert>
+    </introduction>
+
+<section address="Section1">
+  <content>
+		<para>In all of the following examples, substitute your file name for the "Documenation" filename.</para>
+
+		<list class="ordered">
+			<listItem>
+				<para>Create the help files using Sandcastle Help File Builder.</para>
+			</listItem>
+
+			<listItem>
+				<para>Create the cabinet file using the following command:</para>
+
+<code language="none" title=" ">
+makecab Documentation.mshc Documentation.cab
+</code>
+			</listItem>
+
+			<listItem>
+				<para>Sign the cabinet file: </para>
+<code language="none" title=" ">
+signtool sign /q /sha1 [Your signing certificate thumbprint] Documentation.cab
+</code>
+			</listItem>
+
+			<listItem>
+				<para>Modify the file reference in the MSHA file to point to the new cabinet file: </para>
+
+<code language="xml" title=" ">
+&lt;html xmlns="http://www.w3.org/1999/xhtml"&gt;
+	&lt;head&gt;
+		&lt;title&gt;My Class Library Documentation&lt;/title&gt;
+	&lt;/head&gt;
+	&lt;body class="vendor-book"&gt;
+		&lt;div class="details"&gt;
+			&lt;span class="vendor"&gt;Your Company Name&lt;/span&gt;
+			&lt;span class="locale"&gt;en-us&lt;/span&gt;
+			&lt;span class="product"&gt;My Class Library&lt;/span&gt;
+			&lt;span class="name"&gt;My Class Library Documentation&lt;/span&gt;
+		&lt;/div&gt;
+		&lt;div class="package-list"&gt;
+			&lt;div class="package"&gt;
+				&lt;!-- NOTE: The "name" span value cannot contain any periods! --&gt;
+				&lt;span class="name"&gt;Documentation&lt;/span&gt;
+				&lt;a class="current-link" href="Documentation.cab"&gt;Documentation.cab&lt;/a&gt;
+			&lt;/div&gt;
+		&lt;/div&gt;
+	&lt;/body&gt;
+&lt;/html&gt;
+</code>
+			</listItem>
+
+			<listItem>
+				<para>You can now install silently using a command line similar to the following:</para>
+
+<code language="none" title=" ">
+REM Help Viewer 1.0
+HelpLibraryManagerLauncher.exe /product "VS" /version "100" /locale en-us /silent
+	/sourceMedia "C:\FullPathToFile\Documentation.msha"
+
+REM Help Viewer 2.0
+HelpLibraryManagerLauncher.exe /viewerVersion 2.0 /catalogName VisualStudio11
+	/locale en-us /wait 0 /operation install /silent
+	/sourceUri "C:\FullPathToFile\Documentation.msha"
+</code>
+			</listItem>
+
+		</list>
+		</content>
+</section>
+
+    <relatedTopics>
+			<link xlink:href="4baf93f2-f395-4281-b7ef-bfe6c878a4d7" />
+			<link xlink:href="534c4ff1-3bba-4431-a3a6-76dcb2d374f8" />
+			<link xlink:href="5f743a6e-3239-409a-a8c1-0bff4b5375f4" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

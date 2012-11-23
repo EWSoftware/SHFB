@@ -13,9 +13,9 @@ the table of contents.</para>
       <title>Automatic Placement Options</title>
       <content>
         <para>In the absence of any explicit instructions in the content layout file, conceptual content topics
-will be placed according to the <codeInline>ContentPlacement</codeInline> project property.  If set to
-<codeInline>AboveNamespaces</codeInline> (the default), the conceptual content topics will appear before the
-namespace topics.  If set to <codeInline>BelowNamespaces</codeInline>, they will appear after the namespace
+will be placed according to the <codeInline>Content Placement</codeInline> project property.  If set to
+<codeInline>Above Namespaces</codeInline> (the default), the conceptual content topics will appear before the
+namespace topics.  If set to <codeInline>Below Namespaces</codeInline>, they will appear after the namespace
 topics.</para>
         
     <para>In Help 1, Help 2, and Website output, if no conceptual content is present or no topic is marked as
@@ -41,7 +41,7 @@ is no option to specify a default topic.</para>
 						<para>A conceptual topic anywhere within the content layout file can be marked as the API content
 insertion point using the <ui>API Content</ui> option.  You can choose to insert the API content below the
 selected topic, above the selected topic, or as a child of the selected topic.  When an insertion point is
-defined, the <codeInline>ContentPlacement</codeInline> project property is ignored.</para>
+defined, the <codeInline>Content Placement</codeInline> project property is ignored.</para>
 					</listItem>
 				</list>
       </content>
@@ -56,7 +56,7 @@ the above options have been applied.</para>
 
 				<list class="bullet">
 					<listItem>
-						<para>The <codeInline>TocParentId</codeInline> and <codeInline>TocParentVersion</codeInline>
+						<para>The <codeInline>TOC Parent Id</codeInline> and <codeInline>TOC Parent Version</codeInline>
 properties allow you to specify where your help file content is parented.  If left at their default settings,
 your content will appear in the main table of contents.  If you specify a parent ID and version, you can place
 your content below an existing topic in the help file viewer.  You can find the values to use by going to the
@@ -65,7 +65,7 @@ and <codeInline>Microsoft.Help.TopicVersion</codeInline> metadata items.</para>
 					</listItem>
 
 					<listItem>
-						<para>The <codeInline>TocOrder</codeInline> property allows you to specify the sort order for your
+						<para>The <codeInline>TOC Order</codeInline> property allows you to specify the sort order for your
 topics within the parent item.  If left set to the default, your topics are given a sort order starting at zero
 and increment by one for each subsequent topic.  If set to a specific value, they will begin numbering from that
 value and increment by one for each subsequent topic.  If parenting your content within an existing topic, you

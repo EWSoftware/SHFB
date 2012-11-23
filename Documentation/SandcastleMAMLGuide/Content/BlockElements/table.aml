@@ -64,7 +64,7 @@ which can be used to achieve a similar effect.</para>
       <title>Example</title>
       <content>
 <code language="xml" title=" ">
-&lt;para&gt;This link takes you to &lt;link xlink:href=&quot;#Row3Cell1&quot;&gt;Row 3, Cell 1&lt;/link&gt;
+&lt;para&gt;This link takes you to &lt;link xlink:href="#Row3Cell1"&gt;Row 3, Cell 1&lt;/link&gt;
 in the first table.&lt;/para&gt;
       
 &lt;table&gt;
@@ -87,7 +87,7 @@ in the first table.&lt;/para&gt;
   	  &lt;entry&gt;&lt;para&gt;Row 2, Cell 3&lt;/para&gt;&lt;/entry&gt;
   &lt;/row&gt;
   &lt;row&gt;
-  	  &lt;entry address=&quot;Row3Cell1&quot;&gt;&lt;para&gt;This entry has an &lt;codeInline&gt;address&lt;/codeInline&gt;
+  	  &lt;entry address="Row3Cell1"&gt;&lt;para&gt;This entry has an &lt;codeInline&gt;address&lt;/codeInline&gt;
 attribute that can be used as a link target.&lt;/para&gt;&lt;/entry&gt;
   	  &lt;entry&gt;&lt;para&gt;Row 3, Cell 2&lt;/para&gt;&lt;/entry&gt;
   	  &lt;entry&gt;&lt;para&gt;Row 3, Cell 3&lt;/para&gt;&lt;/entry&gt;
@@ -103,7 +103,7 @@ attribute that can be used as a link target.&lt;/para&gt;&lt;/entry&gt;
   &lt;/tableHeader&gt;
   &lt;row&gt;
     &lt;entry&gt;&lt;mediaLink&gt;&lt;image
-       xlink:href=&quot;98a8a8b7-c374-40c7-902a-91c947bf107c&quot;/&gt;
+       xlink:href="98a8a8b7-c374-40c7-902a-91c947bf107c"/&gt;
        &lt;/mediaLink&gt;&lt;/entry&gt;
     &lt;entry&gt;
 		&lt;table&gt;

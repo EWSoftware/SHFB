@@ -37,9 +37,9 @@ Italian language book <externalLink>
   <linkUri>http://community.visual-basic.it/alessandro/articles/19644.aspx</linkUri>
   <linkTarget>_blank</linkTarget></externalLink>.</para></listItem>
 
-	<listItem><para>For an article with a more in depth walkthrough of documenting a project with Sandcastle
-and the Sandcastle Help File Builder see the following article on Simple Talk by Michael Sorens:
-<externalLink>
+	<listItem>
+		<para>The following article is outdated now but does contain some useful information:
+			<externalLink>
 <linkText>Taming Sandcastle: A .NET Programmer's Guide to Documenting Your Code</linkText>
 <linkAlternateText>Taming Sandcastle</linkAlternateText>
 <linkUri>http://www.simple-talk.com/dotnet/.net-tools/taming-sandcastle-a-.net-programmers-guide-to-documenting-your-code</linkUri>
@@ -125,7 +125,7 @@ and the help file builder.</para>
     <listItem>
 			<para>Code Project Article: <externalLink>
   <linkText>Producing Documentation for SQL Server Objects Using Sandcastle</linkText>
-  <linkUri>http://www.codeproject.com/KB/cs/SQL_XML_Documentation.aspx</linkUri>
+  <linkUri>http://www.codeproject.com/Articles/21271/SQL-XML-Documentation</linkUri>
   <linkTarget>_blank</linkTarget>
 </externalLink></para>
 	</listItem>

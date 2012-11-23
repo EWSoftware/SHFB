@@ -2,14 +2,12 @@
 <topic id="534c4ff1-3bba-4431-a3a6-76dcb2d374f8" revisionNumber="1">
   <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
     <introduction>
-      <para>In order to install an MS Help Viewer file, several conditions must
-be met.  To hide the details and save you from having to perform all of the
-necessary checks, the Help Library Manager Launcher utility was created.  It is
-copied as part of the output of an MS Help Viewer build and is freely distributable
-and can be used as part of your product's installer.  The utility was created based
-on information found on the HelpWare
-<externalLink><linkText>MSHC Migrate Utility FAQ</linkText><linkAlternateText>MSHC
-Migrate FAQ</linkAlternateText><linkUri>http://mshcmigrate.helpmvp.com/faq</linkUri>
+      <para>In order to install an MS Help Viewer file, several conditions must be met.  To hide the details and
+save you from having to perform all of the necessary checks, the Help Library Manager Launcher utility was
+created.  It is copied as part of the output of an MS Help Viewer build and is freely distributable and can be
+used as part of your product's installer.  The utility was created based on information found on the HelpWare
+<externalLink><linkText>MSHC Migrate Utility FAQ</linkText><linkAlternateText>MSHC Migrate FAQ</linkAlternateText>
+<linkUri>http://mshcmigrate.helpmvp.com/faq</linkUri>
 <linkTarget>_blank</linkTarget></externalLink> and <externalLink>
 <linkText>MSHC Migrate Utility How to Install Help</linkText>
 <linkAlternateText>How to Install Help</linkAlternateText>
@@ -22,131 +20,142 @@ Migrate FAQ</linkAlternateText><linkUri>http://mshcmigrate.helpmvp.com/faq</link
 <section address="Overview">
   <title>Overview</title>
   <content>
-    <para>The launcher utility takes care of the following tasks before
-launching the Help Library Manager:</para>
+    <para>The launcher utility takes care of the following tasks before launching the Help Library Manager:</para>
 
+		<list class="bullet">
+			<listItem>
+				<para>It checks to be sure that the Help Library Manager has been installed.  If not, it exits with an
+error message requesting that it be installed first.</para>
+			</listItem>
 
-<list class="bullet">
-	<listItem>It checks to be sure that the Help Library Manager has been installed.
-If not, it exits with an error message requesting that it be installed first.</listItem>
+			<listItem>
+				<para>It checks to see if an instance of the Help Library Manager is already running.  If so, the install
+or remove operation would fail so the launcher exits with an error message telling the user to close the
+currently open instance.</para>
+			</listItem>
 
-    <listItem>It checks to see if an instance of the Help Library Manager is already
-running.  If so, the install or remove operation would fail so the launcher exits
-with an error message telling the user to close the currently open instance.</listItem>
+			<listItem>
+				<para>It checks to make sure that the local store has been initialized.  If not, the launcher exits with
+an error message stating that you need to run the Help Library Manager to initialize it for the first time.</para>
+			</listItem>
 
-	<listItem>It checks to make sure that the local store has been initialized.  If
-not, the launcher exits with an error message stating that you need to run the Help
-Library Manager to initialize it for the first time.</listItem>
+			<listItem>
+				<para>It checks for the required <codeInline>product</codeInline> and <codeInline>version</codeInline>
+or <codeInline>catalogName</codeInline> command line options.  If not specified, it exits with an error message
+stating which one was missing.</para>
+			</listItem>
 
-	<listItem>It checks for the required <codeInline>product</codeInline> and
-<codeInline>version</codeInline> command line options.  If not specified, it exits
-with an error message stating which one was missing.</listItem>
+			<listItem>
+				<para>If no <codeInline>locale</codeInline> command line option was supplied, it tries to determine the
+default locale based on the specified product and version.  If a locale cannot be determined, it exits with an
+error message.</para>
+			</listItem>
+		</list>
 
-	<listItem>If no <codeInline>locale</codeInline> command line option was
-supplied, it tries to determine the default locale based on the specified
-product and version.  If a locale cannot be determined, it exits with an
-error message.</listItem>
-</list>
+		<para>If the requirements are met, the Help Library Manager will be launched with the command line options
+passed to the launcher.  If installation is requested via the <codeInline>sourceMedia</codeInline> command line
+option, the Help Library Manager is ran with a request for administrator privileges.  For all other tasks such as
+removal of content, it is ran with normal privileges.</para>
 
-	<para>If the requirements are met, the Help Library Manager will be launched
-with the command line options passed to the launcher.  If installation is requested
-via the <codeInline>sourceMedia</codeInline> command line option, the Help Library
-Manager is ran with a request for administrator privileges.  For all other tasks
-such as removal of content, it is ran with normal privileges.</para>
+		<alert class="note">
+			<para>If you are installing unsigned help content, the Help Library Manager cannot be ran in silent mode
+using the <codeInline>/silent</codeInline> option.  It must be ran interactively so that it can confirm the
+installation.  Removal of content, whether signed or unsigned, can be performed silently.</para>
+		</alert>
 
-<alert class="note">
-  <para>If you are installing unsigned help content, the Help Library Manager
-cannot be ran in silent mode using the <codeInline>/silent</codeInline> option.
-It must be ran interactively so that it can confirm the installation.  Removal
-of content, whether signed or unsigned, can be performed silently.</para>
-</alert>
-
-  </content>
+	</content>
 </section>
 
 <section address="Installation">
   <title>Installing Content</title>
   <content>
-    <para>Below are a sample <localUri>HelpContentSetup.msha</localUri> file
-and an example command line for running the Help Library Manager launcher to
-install content.  The command line is wrapped for display purposes.</para>
+    <para>Below are a sample <localUri>HelpContentSetup.msha</localUri> file and an example command line for
+running the Help Library Manager launcher to install content.  The command line is wrapped for display purposes.</para>
 
-<code lang="xml" title="Sample HelpContentSetup.msha File">
-&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;
+<code language="xml" title="Sample HelpContentSetup.msha File">
+&lt;html xmlns="http://www.w3.org/1999/xhtml"&gt;
 &lt;head&gt;
-    &lt;title&gt;Sandcastle Standalone Build Components&lt;/title&gt;
+    &lt;title&gt;Sandcastle Test Case Library&lt;/title&gt;
 &lt;/head&gt;
-&lt;body class=&quot;vendor-book&quot;&gt;
-    &lt;div class=&quot;details&quot;&gt;
-        &lt;span class=&quot;vendor&quot;&gt;EWSoftware&lt;/span&gt;
-        &lt;span class=&quot;locale&quot;&gt;en-us&lt;/span&gt;
-        &lt;span class=&quot;product&quot;&gt;Sandcastle Help File Builder&lt;/span&gt;
-        &lt;span class=&quot;name&quot;&gt;Sandcastle Standalone Build Components&lt;/span&gt;
+&lt;body class="vendor-book"&gt;
+    &lt;div class="details"&gt;
+        &lt;span class="vendor"&gt;EWSoftware&lt;/span&gt;
+        &lt;span class="locale"&gt;en-us&lt;/span&gt;
+        &lt;span class="product"&gt;Sandcastle Help File Builder Example Project&lt;/span&gt;
+        &lt;span class="name"&gt;Sandcastle Test Case Library&lt;/span&gt;
     &lt;/div&gt;
-    &lt;div class=&quot;package-list&quot;&gt;
-        &lt;div class=&quot;package&quot;&gt;
-            &lt;!-- NOTE: The &quot;name&quot; span value cannot contain any periods! --&gt;
-            &lt;span class=&quot;name&quot;&gt;BuildComponents&lt;/span&gt;
-            &lt;a class=&quot;current-link&quot; href=&quot;BuildComponents.mshc&quot;&gt;BuildComponents.mshc&lt;/a&gt;
+    &lt;div class="package-list"&gt;
+        &lt;div class="package"&gt;
+            &lt;!-- NOTE: The "name" span value cannot contain any periods! --&gt;
+            &lt;span class="name"&gt;TestCaseProject&lt;/span&gt;
+            &lt;a class="current-link" href="TestCaseProject.mshc"&gt;TestCaseProject.mshc&lt;/a&gt;
         &lt;/div&gt;
     &lt;/div&gt;
 &lt;/body&gt;
 &lt;/html&gt;
 </code>
 
-<code lang="none" title="Install a Help File">
+<code language="none" title="Install a Help File">
+REM Help Viewer 1.0
 HelpLibraryManagerLauncher.exe /product "VS" /version "100" /locale en-us
-  /brandingPackage Dev10.mshc /sourceMedia HelpContentSetup.msha
+	/sourceMedia "C:\FullPathToFile\HelpContentSetup.msha"
+
+REM Help Viewer 2.0
+HelpLibraryManagerLauncher.exe /viewerVersion 2.0 /catalogName VisualStudio11
+	/locale en-us /wait 0 /operation install
+	/sourceUri "C:\FullPathToFile\TestCaseProject.msha"
 </code>
 
-	<para>The <codeInline>product</codeInline>, <codeInline>version</codeInline>,
-and <codeInline>locale</codeInline> options uniquely identify the catalog into
-which your help file will be installed.  By default, the help file builder
-project properties are set to install it in the Visual Studio 2010 catalog.  The
-<codeInline>sourceMedia</codeInline> option tells it to install the content
-based on the settings in the specified <localUri>HelpContentSetup.msha</localUri>
-file.  The <codeInline>brandingPackage</codeInline> is an optional component that
-customizes the content presentation. This argument is ignored if the product
-already has a branding package defined.  For more information on the available
-command line options, see the <externalLink><linkText>Help Library Manager
-Administrator's Guide</linkText><linkAlternateText>Help Library Manager Admin
-Guide</linkAlternateText><linkUri>http://msdn.microsoft.com/en-us/library/ee855704.aspx</linkUri>
-<linkTarget>_blank</linkTarget></externalLink>.</para>
+	<para>The <codeInline>product</codeInline>, <codeInline>version</codeInline>, <codeInline>locale</codeInline>,
+and <codeInline>catalogName</codeInline> options uniquely identify the catalog into which your help file will be
+installed.  By default, the help file builder project properties are set to install it in the Visual Studio
+catalog.  The <codeInline>sourceMedia</codeInline>/<codeInline>sourceUri</codeInline> option tells it to install
+the content based on the settings in the specified <localUri>HelpContentSetup.msha</localUri> file.  For more
+information on the available command line options, see the <externalLink><linkText>Help Library Manager
+Administrator's Guide</linkText><linkAlternateText>Help Library Manager Admin Guide</linkAlternateText>
+<linkUri>http://msdn.microsoft.com/en-us/library/ee855704.aspx</linkUri> <linkTarget>_blank</linkTarget></externalLink>.</para>
 
 <alert class="tip">
-  <para>If the product and/or version values contain spaces, they should be
-enclosed in quote marks.</para>
+  <para>If the product and/or version values contain spaces, they should be enclosed in quote marks.</para>
 </alert>
 
 <alert class="tip">
-  <para>To have the launcher determine the installed locale and use it, omit
-the <codeInline>/locale</codeInline> and locale name parameters.</para>
+		<para>To have the launcher determine the installed locale and use it, omit the <codeInline>/locale</codeInline>
+and locale name parameters.</para>
 </alert>
 
-	<para>When installing unsigned content, the Help Library Manager's user
-interface will always appear.  Follow these steps to install the content:</para>
+		<para>When installing unsigned content, the Help Library Manager's user interface will always appear.  Follow
+these steps to install the content:</para>
 
-<list class="ordered">
-	<listItem>You will be presented with a list of content that has already been
-installed along with content waiting to be installed.  Scroll through the list
-to find your help content.</listItem>
-	<listItem>Click the <ui>Add</ui> link next to your content to select it for
-installation.</listItem>
-	<listItem>Next, click the <ui>Update</ui> button to install it.</listItem>
-	<listItem>A security alert will appear.  Click <ui>Yes</ui> to confirm the
-installation of the unsigned content.</listItem>
-	<listItem>Once confirmed, the content is installed and the indexes are
-merged.  This may take several minutes.</listItem>
-	<listItem>Once it has finished installing the content, you an exit the Help
-Library Manager.</listItem>
-</list>
+		<list class="ordered">
+			<listItem>
+				<para>You will be presented with a list of content that has already been installed along with content
+waiting to be installed.  Scroll through the list to find your help content.</para>
+			</listItem>
+			<listItem>
+				<para>Click the <ui>Add</ui> link next to your content to select it for installation.</para>
+			</listItem>
+			<listItem>
+				<para>Next, click the <ui>Update</ui> button to install it.</para>
+			</listItem>
+			<listItem>
+				<para>A security alert will appear.  Click <ui>Yes</ui> to confirm the installation of the unsigned
+content.</para>
+			</listItem>
+			<listItem>
+				<para>Once confirmed, the content is installed and the indexes are merged.  This may take several
+minutes.</para>
+			</listItem>
+			<listItem>
+				<para>Once it has finished installing the content, you an exit the Help Library Manager.</para>
+			</listItem>
+		</list>
 
-<alert class="important">
-  <para>If you attempt to install a newer version of an already installed package,
-the install request will have no effect.  As such, it is recommended that you always
-execute a request to remove the content before installing it.  You can ignore any
-errors returned from the remove request if the content is not there.</para>
-</alert>
+		<alert class="important">
+			<para>If you attempt to install a newer version of an already installed package, the install request will
+have no effect.  As such, it is recommended that you always execute a request to remove the content before
+installing it.  You can ignore any errors returned from the remove request if the content is not there.</para>
+		</alert>
 
   </content>
 </section>
@@ -154,88 +163,136 @@ errors returned from the remove request if the content is not there.</para>
 <section address="Removal">
   <title>Removing Content</title>
   <content>
-    <para>Below is an example command line for running the Help Library Manager
-launcher to remove content.  The command line is wrapped for display purposes.</para>
+    <para>Below is an example command line for running the Help Library Manager launcher to remove content.  The
+command line is wrapped for display purposes.</para>
 
-<code lang="none" title="Install a Help File">
+<code language="none" title="Install a Help File">
+REM Help Viewer 1.0
 HelpLibraryManagerLauncher.exe /product "VS" /version "100" /locale en-us
-  /uninstall /silent /vendor "EWSoftware"
-  /mediaBookList "Sandcastle Standalone Build Components"
-  /productName "Sandcastle Help File Builder"
+	/uninstall /silent /vendor "EWSoftware"
+	/productName "Sandcastle Help File Builder Example Project"
+	/mediaBookList "Sandcastle Test Case Library"
+
+REM Help Viewer 2.0
+HelpLibraryManagerLauncher.exe /viewerVersion 2.0 /catalogName VisualStudio11
+	/locale en-us /wait 0 /operation uninstall /vendor "EWSoftware"
+	/productName "Sandcastle Help File Builder Example Project"
+	/bookList "Sandcastle Test Case Library"
 </code>
 
-	<para>The <codeInline>product</codeInline>, <codeInline>version</codeInline>,
-and <codeInline>locale</codeInline> parameters identify the catalog from which
-to remove the content.  The <codeInline>vendor</codeInline>, <codeInline>mediaBookList</codeInline>,
-and <codeInline>productName</codeInline> values should match the values from the
-<localUri>HelpContentSetup.msha</localUri> file.  The <codeInline>uninstall</codeInline>
-and <codeInline>silent</codeInline> options tell it to uninstall the content
-without any interaction on the user's part.</para>
+	<para>The <codeInline>product</codeInline>, <codeInline>version</codeInline>, <codeInline>locale</codeInline>,
+and <codeInline>catalogName</codeInline> parameters identify the catalog from which to remove the content.  The
+<codeInline>vendor</codeInline>, <codeInline>mediaBookList</codeInline>/<codeInline>bookList</codeInline>, and
+<codeInline>productName</codeInline> values should match the values from the <localUri>HelpContentSetup.msha</localUri>
+file.  The <codeInline>uninstall</codeInline> and <codeInline>silent</codeInline> options tell it to uninstall
+the content without any interaction on the user's part.</para>
 
   </content>
 </section>
-
 
 <section address="ExitCodes">
   <title>Exit Codes</title>
   <content>
-    <para>The Help Library Manager launcher will return one of the following
-exit code values:</para>
+		<para>The Help Library Manager launcher will return one of the following exit code values:</para>
 
-<table>
-  <tableHeader>
-    <row>
-      <entry>Value</entry>
-      <entry>Description</entry>
-    </row>
-  </tableHeader>
-  <row>
-    <entry>0</entry>
-    <entry>The operation completed successfully.</entry>
-  </row>
-  <row>
-    <entry>1</entry>
-    <entry>The Help Library Manager was not found.  It probably needs to be installed.</entry>
-  </row>
-  <row>
-    <entry>2</entry>
-    <entry>The Help Library Manager is already running.  It needs to be closed first.</entry>
-  </row>
-  <row>
-    <entry>3</entry>
-    <entry>The local store is not initialized.  Run the Help Library Manager to
-initialize it on first time use.</entry>
-  </row>
-  <row>
-    <entry>4</entry>
-    <entry>A required command line argument is missing.</entry>
-  </row>
-  <row>
-    <entry>5</entry>
-    <entry>The catalog identified by the product and version values is not installed
-and there wasn't enough information to create it.</entry>
-  </row>
-  <row>
-    <entry>6</entry>
-    <entry>An unknown error occurred in the Help Library Manager launcher.  Post
-a message on the <token>SHFB</token> Discussion page requesting help.</entry>
-  </row>
-  <row>
-    <entry>100-999</entry>
-    <entry>A Help Library Manager exit code.  See the <externalLink><linkText>Help
-Library Manager Administrator's Guide</linkText><linkAlternateText>Help Library Manager
-Admin Guide</linkAlternateText><linkUri>http://msdn.microsoft.com/en-us/library/ee855704.aspx</linkUri>
-<linkTarget>_blank</linkTarget></externalLink> for a list of possible exit codes
-and their meaning.</entry>
-  </row>
-</table>
+		<table>
+			<tableHeader>
+				<row>
+					<entry>
+						<para>Value</para>
+					</entry>
+					<entry>
+						<para>Description</para>
+					</entry>
+				</row>
+			</tableHeader>
+			<row>
+				<entry>
+					<para>0</para>
+				</entry>
+				<entry>
+					<para>The operation completed successfully.</para>
+				</entry>
+			</row>
+			<row>
+				<entry>
+					<para>1</para>
+				</entry>
+				<entry>
+					<para>The Help Library Manager was not found.  It probably needs to be installed.</para>
+				</entry>
+			</row>
+			<row>
+				<entry>
+					<para>2</para>
+				</entry>
+				<entry>
+					<para>The Help Library Manager is already running.  It needs to be closed first.</para>
+				</entry>
+			</row>
+			<row>
+				<entry>
+					<para>3</para>
+				</entry>
+				<entry>
+					<para>The local store is not initialized.  Run the Help Library Manager to initialize it on first time
+use.</para>
+				</entry>
+			</row>
+			<row>
+				<entry>
+					<para>4</para>
+				</entry>
+				<entry>
+					<para>A required command line argument is missing.</para>
+				</entry>
+			</row>
+			<row>
+				<entry>
+					<para>5</para>
+				</entry>
+				<entry>
+					<para>The catalog identified by the product and version values is not installed and there wasn't enough
+information to create it.</para>
+				</entry>
+			</row>
+			<row>
+				<entry>
+					<para>6</para>
+				</entry>
+				<entry>
+					<para>An unknown error occurred in the Help Library Manager launcher.  Post a message on the
+<token>SHFB</token> Discussion page requesting help.</para>
+				</entry>
+			</row>
+			<row>
+				<entry>
+					<para>100-9999</para>
+				</entry>
+				<entry>
+					<para>A Help Library Manager exit code.  See the <externalLink>
+						<linkText>
+							Help
+							Library Manager Administrator's Guide
+						</linkText>
+						<linkAlternateText>
+							Help Library Manager
+							Admin Guide
+						</linkAlternateText>
+						<linkUri>http://msdn.microsoft.com/en-us/library/ee855704.aspx</linkUri>
+						<linkTarget>_blank</linkTarget>
+					</externalLink> for a list of possible exit codes and their meaning.</para>
+				</entry>
+			</row>
+		</table>
 
-  </content>
+	</content>
 </section>
 
-    <relatedTopics>
-      <link xlink:href="4baf93f2-f395-4281-b7ef-bfe6c878a4d7" />
-      <link xlink:href="5f743a6e-3239-409a-a8c1-0bff4b5375f4" />
-    </relatedTopics>
-  </developerConceptualDocument>
+		<relatedTopics>
+			<link xlink:href="4baf93f2-f395-4281-b7ef-bfe6c878a4d7" />
+			<link xlink:href="650e50e7-f174-472a-bbea-f9000dba722c" />
+			<link xlink:href="5f743a6e-3239-409a-a8c1-0bff4b5375f4" />
+		</relatedTopics>
+	</developerConceptualDocument>
 </topic>

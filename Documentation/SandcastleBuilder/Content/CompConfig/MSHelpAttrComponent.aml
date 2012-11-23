@@ -23,7 +23,7 @@ need to add them again using this component.</para>
 attributes component. It should be inserted into the configuration file after
 the <codeInline>TransformComponent</codeInline>.</para>
 
-<code lang="xml" title="Example Configuration">
+<code language="xml" title="Example Configuration">
 &lt;!-- MS Help 2 attribute configuration.  This must appear after
      the TransformComponent. --&gt;
 &lt;component type="SandcastleBuilder.Components.MSHelpAttrComponent"

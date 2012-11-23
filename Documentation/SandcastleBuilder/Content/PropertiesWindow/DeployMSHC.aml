@@ -3,73 +3,75 @@
   <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
     xmlns:xlink="http://www.w3.org/1999/xlink">
     <introduction>
-      <para>The MS Help Viewer system maintains a catalog of all help packages
-currently installed on a machine.  This catalog determines what books are included
-in each package as well as maintaining references between the packages.  More
-information can be found on the <externalLink><linkText>Introducing MS Help Viewer 1.0</linkText>
-<linkAlternateText>MS Help Viewer</linkAlternateText>
-<linkUri>http://www.helpware.net/mshelp3/intro.htm</linkUri>
+      <para>The MS Help Viewer system maintains a catalog of all help packages currently installed on a machine.
+This catalog determines what books are included in each package as well as maintaining references between the
+packages.  More information can be found on the <externalLink><linkText>Introducing MS Help Viewer 1.0</linkText>
+<linkAlternateText>MS Help Viewer</linkAlternateText> <linkUri>http://www.helpware.net/mshelp3/intro.htm</linkUri>
 <linkTarget>_blank</linkTarget></externalLink>  page at the HelpWare Group website.</para>
     </introduction>
 
 <section>
-  <content><para>Unlike HTML Help 1 (CHM) files, an MS Help Viewer package or
-book must be installed in order to view it. This makes deploying MS Help
-Viewer documentation more complex than simply delivering a single file and
-creating a shortcut to it.  However, it is much simpler than its predecessor, MS
-Help 2.</para>
+  <content>
+		<para>Unlike HTML Help 1 (CHM) files, an MS Help Viewer package or book must be installed in order to view
+it. This makes deploying MS Help Viewer documentation more complex than simply delivering a single file and
+creating a shortcut to it.  However, it is much simpler than its predecessor, MS Help 2.</para>
 
 <alert class="tip">
-  <para>Due to the requirement that MS Help Viewer files be installed before you can
-view them which can be time consuming, it is recommended that you generate one of the
-other help formats such as Help 1 or website while developing and proofreading your
-help file.</para>
+  <para>Due to the requirement that MS Help Viewer files be installed before you can view them which can be time
+consuming, it is recommended that you generate one of the other help formats such as Help 1 or website while
+developing and proofreading your help file.</para>
 </alert>
 
-<para>When producing an MS Help Viewer file, the help file builder produces a
-valid help content setup file suitable for use by the Help Library Manager.  It
-also includes a Help Library Manager launcher utility that takes care of the
-standard housekeeping tasks required when installing and removing MS Help Viewer
-content.  It is a command line tool that can be included by scripted installers
-as well as Windows Installer packages as a custom action.  In order to deploy the
-generated MS Help Viewer file, follow these steps:</para>
+		<para>When producing an MS Help Viewer file, the help file builder produces a valid help content setup file
+suitable for use by the Help Library Manager.  It also includes a Help Library Manager launcher utility that
+takes care of the standard housekeeping tasks required when installing and removing MS Help Viewer content.  It
+is a command line tool that can be included by scripted installers as well as Windows Installer packages as a
+custom action.  In order to deploy the generated MS Help Viewer file, follow these steps:</para>
 
-<list class="ordered">
-    <listItem>Set the MS Help Viewer <link xlink:href="5f743a6e-3239-409a-a8c1-0bff4b5375f4">project
-properties</link> as needed.  At the minimum, you should set the <codeInline>VendorName</codeInline>
-and <codeInline>ProductTitle</codeInline> properties to something other than their default values.</listItem>
+		<list class="ordered">
+			<listItem>
+				<para>Set the MS Help Viewer <link xlink:href="5f743a6e-3239-409a-a8c1-0bff4b5375f4"> project properties</link>
+as needed.  At the minimum, you should set the <codeInline>Vendor Name</codeInline> and <codeInline>Product Title</codeInline>
+properties to something other than their default values.</para>
+			</listItem>
 
-    <listItem>Build the help project.</listItem>
-    
-    <listItem><para>In order to install an MS Help Viewer file, a help content setup
-file is required.  The help file builder automatically creates a help content setup
-file for you named after the help file but with a <localUri>.msha</localUri> extension.
-This allows you to build and deploy multiple MS Help Viewer files to the same location.</para>
+			<listItem>
+				<para>Build the help project.</para>
+			</listItem>
 
-<alert class="important">
-  <para>The name of the help content setup file used during installation must be
-<localUri>HelpContentSetup.msha</localUri>.  If you only have one help file, you can
-rename the setup file created by the help file builder to <localUri>HelpContentSetup.msha</localUri>.
-If you have multiple help files, you can rename one of the setup files and merge the package
-information from the others into it.</para>
-</alert></listItem>
+			<listItem>
+				<para>In order to install an MS Help Viewer file, a help content setup file is required.  The help file
+builder automatically creates a help content setup file for you named after the help file but with a
+<localUri>.msha</localUri> extension.  This allows you to build and deploy multiple MS Help Viewer files to the
+same location.</para>
 
-    <listItem>Include all of the generated help files (the <localUri>.mshc</localUri>
-files) as well as the <localUri>HelpContentSetup.msha</localUri> and the 
-<localUri>HelpLibraryManagerLauncher.exe</localUri> executable in your installer.</listItem>
+				<alert class="important">
+					<para>For MS Help Viewer 1.0, the name of the help content setup file used during installation must be
+<localUri>HelpContentSetup.msha</localUri>.  If you only have one help file, you can rename the setup file
+created by the help file builder to <localUri>HelpContentSetup.msha</localUri>.  If you have multiple help
+files, you can rename one of the setup files and merge the package information from the others into it.</para>
+				</alert>
+			</listItem>
 
-    <listItem>During installation, copy the help files, the help content setup
-file, and <localUri>HelpLibraryManagerLauncher.exe</localUri> to their installed location.</listItem>
+			<listItem>
+				<para>Include all of the generated help files (the <localUri>.mshc</localUri> files) as well as the
+<localUri>HelpContentSetup.msha</localUri> and the <localUri>HelpLibraryManagerLauncher.exe</localUri> executable
+in your installer.</para>
+			</listItem>
 
-    <listItem><para>Execute the <link xlink:href="534c4ff1-3bba-4431-a3a6-76dcb2d374f8">Help
-Library Manager launcher</link> or a script to install the help file.  This step will
-vary based on whether or not you are using signed cabinet files to deploy your help
-content.  Note that silent installs are only allowed with signed cabinet files.  For
-unsigned files, the Help Library Manager will always appear and confirm the installation.
-Below is an example of the script that the help file builder creates to install the
-help file  (lines wrapped for display purposes).</para>
+			<listItem>
+				<para>During installation, copy the help files, the help content setup file, and
+<localUri>HelpLibraryManagerLauncher.exe</localUri> to their installed location.</para>
+			</listItem>
 
-<code lang="none" title=" ">
+			<listItem>
+				<para>Execute the <link xlink:href="534c4ff1-3bba-4431-a3a6-76dcb2d374f8">Help Library Manager launcher</link>
+or a script to install the help file.  This step will vary based on whether or not you are using signed cabinet
+files to deploy your help content.  Note that silent installs are only allowed with signed cabinet files.  For
+unsigned files, the Help Library Manager will always appear and confirm the installation.  Below is an example of
+the script that the help file builder creates to install the help file  (lines wrapped for display purposes).</para>
+
+<code language="none" title=" ">
 @ECHO OFF
 CLS
 
@@ -77,28 +79,56 @@ REM This is an example script to show how to use the Help Library Manager
 REM Launcher to install an MS Help Viewer file.  You can use this as an example
 REM for creating a script to run from your product's installer.
 
-REM NOTE: If not executed from within the same folder as the executable, a
-REM full path is required on the executable and the HelpContentSetup.msha file.
+REM NOTE: If not executed from within the same folder as the executable, a full
+REM path is required on the executable and the HelpContentSetup.msha file.
 
+IF "%1%"=="H2" GOTO HelpViewer2
+IF "%1%"=="h2" GOTO HelpViewer2
+
+REM Help Viewer 1.0
 REM Uninstall first in case it is already there.  If not, it won't install
-REM below.  We'll ignore output by redirecting it to NUL.
+REM below.  We'll ignore any error output by redirecting it to NUL.
 HelpLibraryManagerLauncher.exe /product "VS" /version "100" /locale en-us
-  /uninstall /silent /vendor "EWSoftware"
-  /mediaBookList "Sandcastle Standalone Build Components"
-  /productName "Sandcastle Help File Builder" > NUL
+	/uninstall /silent /vendor "EWSoftware"
+	/productName "Sandcastle Help File Builder Example Project"
+	/mediaBookList "Sandcastle Test Case Library" &gt; NUL
+
+REM For Help Viewer 1.0. the setup name must be HelpContentSetup.msha so make
+REM sure we copy the setup file to that name.  SHFB names it after the help
+REM file so that multiple files can be deployed to the same output older at
+REM build time.
+IF EXIST "TestCaseProject.msha" COPY /Y "TestCaseProject.msha" HelpContentSetup.msha
 
 REM Install the new content.
 HelpLibraryManagerLauncher.exe /product "VS" /version "100" /locale en-us
-  /brandingPackage Dev10.mshc /sourceMedia HelpContentSetup.msha
+	/sourceMedia "%CD%\HelpContentSetup.msha"
+
+GOTO Exit
+
+:HelpViewer2
+
+REM Help Viewer 2.0
+REM Uninstall first in case it is already there.  If not, it won't install
+REM below.  We'll ignore any error output by redirecting it to NUL.
+HelpLibraryManagerLauncher.exe /viewerVersion 2.0 /catalogName VisualStudio11
+	/locale en-us /wait 0 /operation uninstall /vendor "EWSoftware"
+	/productName "Sandcastle Help File Builder Example Project"
+	/bookList "Sandcastle Test Case Library" &gt; NUL
+
+REM Install the new content.
+HelpLibraryManagerLauncher.exe /viewerVersion 2.0 /catalogName VisualStudio11
+	/locale en-us /wait 0 /operation install /sourceUri "%CD%\TestCaseProject.msha"
+
+:Exit
 </code>
 </listItem>
 
-    <listItem><para>During uninstallation, before the help files are removed, execute
-the Help Library Manager launcher to uninstall your help file.  Below is an example of
-the script that the help file builder creates to remove the help file  (lines
-wrapped for display purposes).</para>
+    <listItem>
+			<para>During uninstallation, before the help files are removed, execute the Help Library Manager launcher
+to uninstall your help file.  Below is an example of the script that the help file builder creates to remove the
+help file  (lines wrapped for display purposes).</para>
 
-<code lang="none" title=" ">
+<code language="none" title=" ">
 @ECHO OFF
 CLS
 
@@ -106,34 +136,49 @@ REM This is an example script to show how to use the Help Library Manager
 REM Launcher to remove an MS Help Viewer file.  You can use this as an example
 REM for creating a script to run from your product's uninstaller.
 
-REM NOTE: If not executed from within the same folder as the executable, a
-REM full path is required on the executable.
+REM NOTE: If not executed from within the same folder as the executable, a full
+REM path is required on the executable.
 
+IF "%1%"=="H2" GOTO HelpViewer2
+IF "%1%"=="h2" GOTO HelpViewer2
+
+REM Help Viewer 1.0
 HelpLibraryManagerLauncher.exe /product "VS" /version "100" /locale en-us
-  /uninstall /silent /vendor "EWSoftware"
-  /mediaBookList "Sandcastle Standalone Build Components"
-  /productName "Sandcastle Help File Builder" > NUL
+	/uninstall /silent /vendor "EWSoftware"
+	/productName "Sandcastle Help File Builder Example Project"
+	/mediaBookList "Sandcastle Test Case Library"
+
+GOTO Exit
+
+:HelpViewer2
+
+REM Help Viewer 2.0
+HelpLibraryManagerLauncher.exe /viewerVersion 2.0 /catalogName VisualStudio11
+	/locale en-us /wait 0 /operation uninstall /vendor "EWSoftware"
+	/productName "Sandcastle Help File Builder Example Project"
+	/bookList "Sandcastle Test Case Library" &gt; NUL
+
+:Exit
+
 </code>
 </listItem>
 
 </list>
 
-<para>Your product's installer can create a shortcut to open your Help Viewer file
-by executing the following command (lines wrapped for display purposes):</para>
+			<para>Your product's installer can create a shortcut to open your Help Viewer file by executing the
+following command (lines wrapped for display purposes):</para>
 
-<code lang="none" title=" ">
+<code language="none" title=" ">
 "ms-xhelp:///?method=page&amp;id=57301AAE-7D51-4006-A9EF-C82B6C0FF21E&amp;product=vs&amp;
 productversion=100&amp;locale=en-us"
 </code>
 
-<para>Substitute the ID of a page in your product's help file and adjust the
-product, version, and locale as needed in the example above.  See the
-<externalLink><linkText>Getting Started with HV 1.0</linkText>
+			<para>Substitute the ID of a page in your product's help file and adjust the product, version, and locale
+as needed in the example above.  See the <externalLink><linkText>Getting Started with HV 1.0</linkText>
 <linkAlternateText>Install and view MSHV files</linkAlternateText>
 <linkUri>http://mshcmigrate.helpmvp.com/default/starthere</linkUri>
-<linkTarget>_blank</linkTarget></externalLink> page at the HelpWare Group website for
-more information on installing help files and viewing help content.  A standalone
-viewer (<externalLink><linkText>H3Viewer.exe</linkText>
+<linkTarget>_blank</linkTarget></externalLink> page at the HelpWare Group website for more information on
+installing help files and viewing help content.  A standalone viewer (<externalLink><linkText>H3Viewer.exe</linkText>
 <linkAlternateText>Optional alternate text</linkAlternateText>
 <linkUri>http://mshcmigrate.helpmvp.com/viewer</linkUri><linkTarget>_blank</linkTarget>
 </externalLink>) is also available there.</para>
@@ -141,10 +186,11 @@ viewer (<externalLink><linkText>H3Viewer.exe</linkText>
   </content>
 </section>
 
-    <relatedTopics>
-        <link xlink:href="534c4ff1-3bba-4431-a3a6-76dcb2d374f8" />
-    	<link xlink:href="5f743a6e-3239-409a-a8c1-0bff4b5375f4" />
-    </relatedTopics>
+		<relatedTopics>
+			<link xlink:href="534c4ff1-3bba-4431-a3a6-76dcb2d374f8" />
+			<link xlink:href="5f743a6e-3239-409a-a8c1-0bff4b5375f4" />
+			<link xlink:href="650e50e7-f174-472a-bbea-f9000dba722c" />
+		</relatedTopics>
 
-  </developerConceptualDocument>
+	</developerConceptualDocument>
 </topic>

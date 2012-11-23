@@ -1,129 +1,119 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <topic id="b91996c3-4c92-4c99-8958-92ce04bca0f9" revisionNumber="1">
-  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <introduction>
-      <para>This is used to convert project files created with Steven Smetsers'
-<application>SandcastleGUI</application> tool to the help file builder project
-file format.</para>
-    </introduction>
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>This is used to convert project files created with Steven Smetsers' <application>SandcastleGUI</application>
+tool to the help file builder project file format.</para>
+		</introduction>
 
-    <section>
-      <title>Post-Conversion Review</title>
-      <content>
-      <para>Most SandcastleGUI project properties have equivalents in the
-help file builder and are converted to the matching property and value.  The
-information converted from the following old project properties may need
+		<section>
+			<title>Post-Conversion Review</title>
+			<content>
+				<para>Most SandcastleGUI project properties have equivalents in the help file builder and are converted
+to the matching property and value.  The information converted from the following old project properties may need
 attention after conversion:</para>
 
-<list class="bullet">
-  <listItem><para><codeInline>AssemblyDir</codeInline> - The specified folder
-is added as a wildcard documentation source which may not be appropriate.  If
-necessary, change it to include only the required assemblies and XML comments
-files or split it into individual entries in the <legacyBold>Documentation
-Sources</legacyBold> project node.  Add all dependency assemblies to the
-<legacyBold>References</legacyBold> project node so that they are not
-documented.</para>
-		<token>SolutionDocSource</token></listItem>
+				<list class="bullet">
+					<listItem>
+						<para><codeInline>AssemblyDir</codeInline> - The specified folder is added as a wildcard
+documentation source which may not be appropriate.  If necessary, change it to include only the required
+assemblies and XML comments files or split it into individual entries in the <legacyBold>Documentation Sources</legacyBold>
+project node.  Add all dependency assemblies to the <legacyBold>References</legacyBold> project node so that they
+are not documented.</para>
 
-  <listItem><para><codeInline>Logo</codeInline> - This controls the logo that
-appears in the topic headers.  The image will be added to the project file but
-will not be set as the logo.  In order to do this, follow these steps:</para>
+						<token>SolutionDocSource</token>
+					</listItem>
 
-	<list class="ordered">
-	  <listItem>Select the <codeInline>ComponentConfigurations</codeInline>
-property in the <ui>Properties</ui> window and click the "..." button to the
-right of the property.</listItem>
-	  <listItem>In the Component Configuration dialog that appears, double
-click on the <legacyBold>Post-transform Component</legacyBold> in the list
-on the left to add it to the project.</listItem>
-	  <listItem>Select the component in the right-hand list and click the
-<ui>Configure</ui> button.</listItem>
-	  <listItem>In the configuration dialog, click on the <ui>Logo File</ui>
-tab and set the logo properties.  See the
-<link xlink:href="f502c07b-8110-477d-8953-73255296206b" /> topic for
-information on the configuration settings.</listItem> </list>
+					<listItem>
+						<para><codeInline>Logo</codeInline> - This controls the logo that appears in the topic headers.  The
+image will be added to the project file but will not be set as the logo.  In order to do this, use the
+<link xlink:href="c584509f-0b18-49a8-ab06-114b0058a739" /> property page to define the logo filename and its
+other options such as width, height, alternate text, and placement.</para>
 
-	<alert class="note">
-	  <para>The converter places the logo file in the root folder of the
-project.  The build component copies the logo file to the <localUri>.\Images</localUri>
-folder in the compiled help file at build time.  Since it is not considered
-content (something that other non-API topic HTML pages will use), the converter
-sets the <codeInline>BuildAction</codeInline> on the logo file to
-<codeInline>None</codeInline>.</para>
-	</alert></listItem>
-	
-	<listItem><para><codeInline>DocDir</codeInline> - All files and subfolders
-in the indicated folder are added to the project recursively as file items with
-default build actions based on the file extensions.  You can add a site map
-to the project and edit it to set the order and layout of the additional
-content items.</para>
+						<alert class="note">
+							<para>The converter places the logo file in the root folder of the project.  In order for it to
+work with the transformation component arguments, you must create a folder called <localUri>.\Icons</localUri> in
+your project and move the logo image file there.  Be sure to set the <codeInline>BuildAction</codeInline>
+property on the logo image file to <codeInline>Content</codeInline> so that it is included properly in the help
+file when it is built.</para>
+						</alert>
+					</listItem>
 
-	<alert class="tip">
-	  <para>The help file builder contains full support for conceptual content
-that uses Microsoft Assistance Markup Language (MAML) to create additional
-non-API topics such as How-Tos, walkthroughs, etc.  You may want to consider
-switching any additional HTML content to conceptual content to take advantage
-of its features.  See the <link xlink:href="3d4edd2d-7883-4508-b9d2-bd7b4d848b0d" />
-topic for more information.</para>
-	</alert></listItem>
+					<listItem>
+						<para>
+							<codeInline>DocDir</codeInline> - All files and subfolders in the indicated folder are added to the
+project recursively as file items with default build actions based on the file extensions.  You can add a site map
+to the project and edit it to set the order and layout of the additional content items.</para>
 
-</list>
+						<alert class="tip">
+							<para>The help file builder contains full support for conceptual content that uses Microsoft
+Assistance Markup Language (MAML) to create additional non-API topics such as How-Tos, walkthroughs, etc.  You
+may want to consider switching any additional HTML content to conceptual content to take advantage of its
+features.  See the <link xlink:href="3d4edd2d-7883-4508-b9d2-bd7b4d848b0d" /> topic for more information.</para>
+						</alert>
+					</listItem>
 
-	<para>The following project properties are not converted:</para>
+				</list>
 
-<list class="bullet">
-  <listItem><codeInline>OutputDir</codeInline> - The output directory is left
-at its default for the help file builder (a <localUri>.\Help</localUri>
-subfolder beneath the project folder).  You can specify a different location
-if needed.</listItem>
+				<para>The following project properties are not converted:</para>
 
-  <listItem><codeInline>Namespaces</codeInline> - By default, all namespaces
-and members will be documented.  To adjust which items are not documented,
-you can use the <link xlink:href="3c489bd6-598c-4684-aafb-fbe9400864d3" />
-to exclude groups of items and/or the
-<link xlink:href="7df16a60-f718-4b8f-bfa2-88c42906070c" /> for
-finer control over which items are excluded.</listItem>
+				<list class="bullet">
+					<listItem>
+						<para><codeInline>OutputDir</codeInline> - The output directory is left at its default for the help
+file builder (a <localUri>.\Help</localUri> subfolder beneath the project folder).  You can specify a different
+location if needed.</para>
+					</listItem>
 
-  <listItem><para><codeInline>CodeHighlighting</codeInline> - By default, the
-custom code block component is included in all builds to colorize code based
-on the language.  To alter its settings, do the following:</para>
+					<listItem>
+						<para><codeInline>Namespaces</codeInline> - By default, all namespaces and members will be documented.
+To adjust which items are not documented, you can use the <link xlink:href="3c489bd6-598c-4684-aafb-fbe9400864d3" />
+to exclude groups of items and/or the <link xlink:href="7df16a60-f718-4b8f-bfa2-88c42906070c" /> for finer control
+over which items are excluded.</para>
+					</listItem>
 
-	<list class="ordered">
-	  <listItem>Select the <codeInline>ComponentConfigurations</codeInline>
-property in the <ui>Properties</ui> window and click the "..." button to the
-right of the property.</listItem>
-	  <listItem>In the Component Configuration dialog that appears, double
-click on the <legacyBold>Code Block Component</legacyBold> in the list
-on the left to add it to the project to allow overriding the defaults.</listItem>
-	  <listItem>Select the component in the right-hand list and click the
-<ui>Configure</ui> button.</listItem>
-	  <listItem>In the configuration dialog, alter the settings as needed.  If
-the default settings are to your liking, you can remove the component and the
-default instance will be used.</listItem>
-	</list>
+					<listItem>
+						<para><codeInline>CodeHighlighting</codeInline> - By default, the custom code block component is
+included in all builds to colorize code based on the language.  To alter its settings, do the following:</para>
 
-	<alert class="note">
-	  <para>The Code Block Component offers a significant number of options
-beyond what was available in SandcastleGUI including the ability to colorize
-many other languages, add line numbering and collapsible regions, and to import
-code from working source code files.  See the <link xlink:href="7f03ba39-09f8-4320-bdbd-ed31a3bd885f" />
+						<list class="ordered">
+							<listItem>
+								<para>Select the <codeInline>Components</codeInline> category of project properties.</para>
+							</listItem>
+							<listItem>
+								<para>Double click on the <legacyBold>Code Block Component</legacyBold> in the list on the left
+to add it to the project to allow overriding the defaults.</para>
+							</listItem>
+							<listItem>
+								<para>Select the component in the right-hand list and click the <ui>Configure</ui> button.</para>
+							</listItem>
+							<listItem>
+								<para>In the configuration dialog, alter the settings as needed.  If the default settings are to
+your liking, you can remove the component and the default instance will be used.</para>
+							</listItem>
+						</list>
+
+						<alert class="note">
+							<para>The Code Block Component offers a significant number of options beyond what was available in
+SandcastleGUI including the ability to colorize many other languages, add line numbering and collapsible regions,
+and to import code from working source code files.  See the <link xlink:href="7f03ba39-09f8-4320-bdbd-ed31a3bd885f" />
 documentation for more information on what you can do with it.</para>
-	</alert></listItem>
-	
-	<listItem><codeInline>TOC</codeInline> - There are some project properties
-and plug-ins that can be used to customize the table of contents in various
-ways.  See the documentation for the <codeInline>RootNamespaceContainer</codeInline>
-and <codeInline>RootNamespaceTitle</codeInline> properties as well as the
-<link xlink:href="aa7bcd07-1a86-42dc-9f1d-49bd4afeb5d2" /> and the
-<link xlink:href="d0e91b66-135e-446b-9239-c02fcafabd09" />.</listItem>
-</list>
+						</alert>
+					</listItem>
 
-      </content>
-    </section>
+					<listItem>
+						<para><codeInline>TOC</codeInline> - There are some project properties and plug-ins that can be used
+to customize the table of contents in various ways.  See the documentation for the <codeInline>Root Namespace
+Container</codeInline> and <codeInline>Root Namespace Title</codeInline> properties as well as the
+<link xlink:href="aa7bcd07-1a86-42dc-9f1d-49bd4afeb5d2" /> and the <link xlink:href="d0e91b66-135e-446b-9239-c02fcafabd09" />.</para>
+					</listItem>
+				</list>
 
-    <relatedTopics>
-	<link xlink:href="f68822d2-97ba-48da-a98b-46747983b4a0" />
-	<link xlink:href="8e3f8757-0ef3-4772-bb2f-5d7ae57e50da" />
-    </relatedTopics>
-  </developerConceptualDocument>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="f68822d2-97ba-48da-a98b-46747983b4a0" />
+			<link xlink:href="8e3f8757-0ef3-4772-bb2f-5d7ae57e50da" />
+		</relatedTopics>
+	</developerConceptualDocument>
 </topic>

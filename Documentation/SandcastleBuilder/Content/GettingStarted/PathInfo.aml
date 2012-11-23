@@ -1,39 +1,33 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <topic id="576b6a36-0808-4857-bec0-e6eeeae4e36b" revisionNumber="1">
-  <developerConceptualDocument
+	<developerConceptualDocument
     xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
     xmlns:xlink="http://www.w3.org/1999/xlink">
 
-    <introduction>
-      <para>With a few exceptions, all file and folder path properties in the
-project options allow you to specify either a relative or an absolute path.
-All paths default to relative when first entered.  This allows you to move the
-project folder and the paths in the properties will be still be correct when
-the project is opened again.</para>
-    </introduction>
+		<introduction>
+			<para>With a few exceptions, all file and folder path properties in the project options allow you to
+specify either a relative or an absolute path.  All paths default to relative when first entered.  This allows
+you to move the project folder and the paths in the properties will be still be correct when the project is
+opened again.</para>
+		</introduction>
 
-<section>
-  <content><para>You can change this behavior for a particular property by
-expanding it by clicking the "+" to the left of the property name and setting
-the <codeInline>IsFixedPath</codeInline> sub-property to true.  The path is
-then displayed as an absolute path and will be saved as such in the project.</para>
+		<section>
+			<content>
+				<para>You can change this behavior for a particular property by checking the <legacyBold>Fixed Path</legacyBold>
+option below the path text box on the related project property page.  The path is then displayed as an absolute
+path and will be saved as such in the project.</para>
 
-	<para>In addition, environment variables such as
-<environmentVariable>%DXROOT%</environmentVariable>,
-<environmentVariable>%WINDIR%</environmentVariable>, etc. can be specified in
-the paths and they will be expanded at build time to the value of the specified
-environment variable. The path's <codeInline>ExpandedPath</codeInline>
-sub-property will show you the expanded form based on the current system's
-settings.  The MSBuild-format for environment variables is also supported
-(<environmentVariable>$(DXROOT)</environmentVariable>,
+				<para>In addition, environment variables such as <environmentVariable>%DXROOT%</environmentVariable>,
+<environmentVariable>%WINDIR%</environmentVariable>, etc. can be specified in the paths and they will be expanded
+at build time to the value of the specified environment variable.  The display area below the related path
+property's text box will show you the expanded form based on the current system's settings.  The MSBuild-format
+for environment variables is also supported (<environmentVariable>$(DXROOT)</environmentVariable>,
 <environmentVariable>$(WINDIR)</environmentVariable>, etc.).</para>
 
-	<para>The key point to remember is that help file builder projects built
-either from the standalone GUI or from the command line always expect that
-relative paths are relative to either the folder in which the project file is
-located or to the working folder used for the build.  The expected relative
-location is noted in the description of each affected property.  A typical
-folder layout is shown below:</para>
+				<para>The key point to remember is that help file builder projects built either from the standalone GUI,
+from within Visual Studio, or from the command line always expect that relative paths are relative to either the
+folder in which the project file is located or to the working folder used for the build.  The expected relative
+location is noted in the description of each affected property.  A typical folder layout is shown below:</para>
 
 <code language="none" title=" ">
 C:\HelpTest\        Solution folder.
@@ -46,52 +40,53 @@ C:\HelpTest\        Solution folder.
   |
   +-Doc             Help file builder project location.
     |
-    + Content       Other optional content folders (i.e. conceptual topics)
+    +-Content       Other optional content folders (i.e. conceptual topics).
+    |
+    +-Media         Image files used in conceptual content.
+    |
+    +-Icons         Optional folder used to contain a logo image.
     |
     +-Help          The output folder for the help file.
       |
-      +-Working     The intermediate working folder used
-        |           during the build.
+      +-Working     The intermediate working folder used during the build.
         |
         +-Output    Help file project compilation folder.
-          +-html
-          +-images
-          +-media
-          +-scripts
-          +-styles
+          |
+          +-HtmlHelp1        Root help file format folder.
+            |
+            +-html           Content folders for the given help file format.
+            +-images
+            +-media
+            +-scripts
+            +-styles
 </code>
 
-<para>The example above places the help file builder project in the
-<localUri>C:\HelpTest\Doc\</localUri> folder.  As such, the relative path to
-the assembly that will be documented and its comment file is
-<localUri>..\TestAssembly\Bin\Release\</localUri>.  The default output folder
-for a project is always <localUri>.\Help\</localUri>.  If you would prefer the
-help file to end up in a different location, you can modify it using the
-<codeInline>OutputPath</codeInline> property.</para>
+				<para>The example above places the help file builder project in the <localUri>C:\HelpTest\Doc\</localUri>
+folder.  As such, the relative path to the assembly that will be documented and its comment file is
+<localUri>..\TestAssembly\Bin\Release\</localUri>.  The default output folder for a project is always
+<localUri>.\Help\</localUri>.  If you would prefer the help file to end up in a different location, you can
+modify it using the <codeInline>Help Content Output Path</codeInline> property.</para>
 
-<alert class="warning">
-  <para>Be aware that if an option is selected that produces a website, the
-output folder specified by the <codeInline>OutputPath</codeInline> property
-will be cleared of all of its current content without any prompting before the
-web site content is copied to it.  In other words, don't do something stupid
-like set it to the root of your C: drive or your desktop folder.  The help file
-builder will check for common special folders to prevent this from happening
-but always be sure to confirm the folder name that you enter.  When producing
-a Help 1 (CHM) and/or Help 2 (HxS) file without the website output format, the
-output folder is not cleared.</para>
+				<alert class="warning">
+					<para>Be aware that if an option is selected that produces a website, the output folder specified by
+the <codeInline>Help Content Output Path</codeInline> property will be cleared of all of its current content
+without any prompting before the web site content is copied to it.  In other words, don't do something stupid
+like set it to the root of your C: drive or your desktop folder.  The help file builder will check for common
+special folders to prevent this from happening but always be sure to confirm the folder name that you enter.
+When producing a Help 1 (.chm), Help 2 (.HxS), and/or MS Help Viewer (.mshc) file without the website output
+format, the output folder is not cleared.</para>
 
-  <para>A similar warning applies to the <codeInline>WorkingPath</codeInline>
-property.  Its content is always cleared unconditionally prior to a build
-regardless of the help file format selected.</para>
-</alert>
+					<para>A similar warning applies to the <codeInline>Working Path</codeInline> property.  Its content is
+always cleared unconditionally prior to a build regardless of the help file format selected.</para>
+				</alert>
 
-  </content>
-</section>
+			</content>
+		</section>
 
-    <relatedTopics>
-    <link xlink:href="b772e00e-1705-4062-adb6-774826ce6700" />
-    <link xlink:href="8e3f8757-0ef3-4772-bb2f-5d7ae57e50da" />
-    </relatedTopics>
+		<relatedTopics>
+			<link xlink:href="b772e00e-1705-4062-adb6-774826ce6700" />
+			<link xlink:href="8e3f8757-0ef3-4772-bb2f-5d7ae57e50da" />
+		</relatedTopics>
 
-  </developerConceptualDocument>
+	</developerConceptualDocument>
 </topic>

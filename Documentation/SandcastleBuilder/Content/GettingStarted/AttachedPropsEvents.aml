@@ -30,7 +30,7 @@ their names if you want to create a link to them with a <codeInline>see</codeInl
 examples below.</para>
 		</alert>
 
-<code lang="cs" title="Attached Property Comments Example">
+<code language="cs" title="Attached Property Comments Example">
 /// &lt;summary&gt;
 /// This defines the &lt;see cref="P:TestDoc.TestClass.IsBroughtIntoViewWhenSelected"/&gt;
 /// attached property.
@@ -48,7 +48,7 @@ public static readonly DependencyProperty IsBroughtIntoViewWhenSelectedProperty 
     new UIPropertyMetadata(false, OnIsBroughtIntoViewWhenSelectedChanged));
 </code>
 
-<code lang="cs" title="Attached Event Comments Example">
+<code language="cs" title="Attached Event Comments Example">
 /// &lt;summary&gt;
 /// This defines the &lt;see cref="E:TestDoc.TestClass.ItemActivate"/&gt;
 /// attached event.

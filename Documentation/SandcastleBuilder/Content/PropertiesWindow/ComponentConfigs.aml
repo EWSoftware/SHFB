@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="d1ec47f6-b611-41cf-a78c-f68e01d6ae9e" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+			<para>This property page allows you to select, add, and configure build components for the project that
+support the help file builder's component configuration method to interactively set their options.
+			</para>
+
+			<autoOutline excludeRelatedTopics="true" lead="none" />
+		</introduction>
+
+		<section address="SelectComponents">
+			<title>Selecting and Configuring Build Components</title>
+			<content>
+				<mediaLink><image xlink:href="CompConfig" placement="center"/></mediaLink>
+
+				<para>Available build components are listed on the left.  Version, copyright, and description information
+is shown below the list and will change to reflected the currently selected component.  The list on the right
+displays the components selected for use in the current project.  Double-click a component on the left or click
+the <ui>Add</ui> button to add a component to the project.  Click the <ui>Configure</ui> button to configure the
+component.  Click the <ui>Delete</ui> button to delete a component from the project.  The checkboxes next to each
+project component allow you to enable or disable the component within the project.  If disabled, it will remain
+in the project with its configuration information but it will not be used during a build.    Third-party build
+components contain a default configuration but it may not be suitable for your project.  As such, you should
+configure each component that you add to the project so that it will work as expected.</para>
+
+				<alert class="note">
+					<para>The Code Block Component exists in the help file builder configuration file templates so you do
+not need to add it to your project unless you want to override its default configuration.  If you add it and
+later disable your customized settings, the component will still be used but will revert to the default
+configuration.</para>
+
+					<para>In either case, if the <codeInline>Disable Code Block Component</codeInline> project property is
+set to true, the code colorization features of the component will be disabled.</para>
+				</alert>
+
+			</content>
+		</section>
+
+		<section address="ThirdPartyComps">
+			<title>Making Third-Party Build Components Available</title>
+			<content>
+				<para>Third-party build components can also be made available on this property page by copying their
+assembly, configuration file, and any supporting files to the <localUri>.\Components and Plug-Ins</localUri>
+folder or a subfolder beneath it in the help file builder's <legacyBold>Common Application Data</legacyBold>
+folder.  See the <link xlink:href="a24489fb-45d6-46f4-9eaa-9a9c4e0919b2#BuildComponents" /> topic for more
+information.  Refer to the component's documentation for information about its features and configuration
+options.  See the <link xlink:href="e6d18448-2459-46f1-bbdc-a7db415f2bda" /> topic for information on creating a
+configuration file for a third-party component that does not have one or to allow configuration of a stock
+Sandcastle build component.  For a list of current third-party build components, see the
+<link xlink:href="c18d6cb6-e4e4-4944-84ee-f867aa6cfb0d" /> topic.</para>
+
+				<para>For information on writing your own custom build components, see the Code Project article
+					<externalLink>
+						<linkText>Creating Custom Build Components for Sandcastle</linkText>
+						<linkUri>http://www.codeproject.com/Articles/16740/Creating-Custom-Build-Components-for-Sandcastle</linkUri>
+						<linkTarget>_blank</linkTarget>
+					</externalLink>.
+				</para>
+				
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="e32086c6-de17-4e54-a746-1ac80bf0c45a" />
+		</relatedTopics>
+  </developerConceptualDocument>
+</topic>

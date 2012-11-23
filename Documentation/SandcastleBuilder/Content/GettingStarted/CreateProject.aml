@@ -50,7 +50,7 @@ in the Project Explorer.  In the context menu, select <ui>Add Documentation Sour
 source</newTerm> is a file such as an assembly or a Visual Studio solution or project from which information will be
 extracted to produce API documentation.  For this demo, navigate to the help file builder folder
 (typically <localUri>C:\Program Files (x86)\EWSoftware\Sandcastle Help File Builder</localUri>) and select the
-<localUri>SandcastleBuilder.MRefBuilder.dll</localUri> assembly.</para>
+<localUri>SandcastleBuilder.WPF.dll</localUri> assembly.</para>
 
                 <alert class="tip">
                   <para>When selecting either an assembly or an XML comments file, the help file builder will
@@ -66,9 +66,9 @@ Explorer and dropped on the Documentation Sources node.</para>
 assemblies that are dependencies of one or more of the documentation source assemblies.  They contain information
 necessary to create inherited member information for the documented classes but that are themselves not wanted in
 the API documentation.  Right click on the <ui>References</ui> node and select <ui>Add File/Project Reference</ui>.
-For this example, navigate to the Sandcastle installation folder (typically
-<localUri>C:\Program Files (x86)\Sandcastle\ProductionTools</localUri>) and select the
-<localUri>CommandLine.dll</localUri> assembly.</para>
+For this demo, navigate to the help file builder folder (typically
+<localUri>C:\Program Files (x86)\EWSoftware\Sandcastle Help File Builder</localUri>)  and select the
+<localUri>SandcastleBuilder.Utils.dll</localUri> assembly.</para>
 
                 <token>SolutionDocSource</token>
               </content>
@@ -89,9 +89,9 @@ what they mean and possible solutions to fix the problem.</para>
                 <alert class="note">
                   <para>The build process can consume a lot of memory and, if your system has less than 1GB, it
 may take much more time to complete a build.  Another factor that can affect the build time are the
-<codeInline>HtmlSdkLinkType</codeInline>, <codeInline>MSHelp2SdkLinkType</codeInline>,
-<codeInline>MSHelpViewerSdkLinkType</codeInline>, and <codeInline>WebsiteSdkLinkType</codeInline> project property
-settings.  By default, they are all set to <codeInline>Msdn</codeInline> which causes the
+<codeInline>Html SDK Link Type</codeInline>, <codeInline>MS Help 2 SDK Link Type</codeInline>,
+<codeInline>MS Help Viewer SDK Link Type</codeInline>, and <codeInline>Website SDK Link Type</codeInline> project
+property settings.  By default, they are all set to <codeInline>MSDN</codeInline> which causes the
 <application>BuildAssembler</application> tool to contact the MSDN web service to resolve links to online content
 for all .NET Framework types and members.  If your internet connection is slow, the resulting build will take longer.
 See the documentation for the above noted SDK link type properties for information on their possible values and the
@@ -100,7 +100,7 @@ you can reduce the build time.</para>
                 </alert>
 
                 <alert class="note">
-                  <para>When the SDK link type properties are set to <codeInline>Msdn</codeInline>, the build may
+                  <para>When the SDK link type properties are set to <codeInline>MSDN</codeInline>, the build may
 fail if you are behind a proxy server.  See the <link xlink:href="1aea789d-b226-4b39-b534-4c97c256fac8#Proxy">FAQ</link>
 for the workaround.</para>
                 </alert>
@@ -112,7 +112,7 @@ for the workaround.</para>
                 <para>Once the build process finishes, you can select the <ui>Documentation | View Help File</ui> menu
 option to view the help file.  The default <ui>View Help File</ui> option displays the help format based on which type
 or types where built (Help 1, Help 2, MS Help Viewer, or website).  You can also select a specific help format to view
-if multiple formats were built as determined by the <codeInline>HelpFileFormat</codeInline> project property.</para>
+if multiple formats were built as determined by the <codeInline>Help File Format</codeInline> project property.</para>
 
                 <alert class="note">
                   <para>In order to view MS Help 2 files, a separate viewer application is required and must be

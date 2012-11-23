@@ -228,7 +228,7 @@ copied to the help file's <localUri>.\html</localUri> folder and are named using
 <localUri>.htm</localUri> extension.  You can use that name to link to the topic from other HTML pages or the XML
 comments on API members.  For example:</para>
 
-<code lang="xml" title="Link Examples">
+<code language="xml" title="Link Examples">
 Link to a topic from an HTML file in the .\html folder:
 &lt;a href="303c996a-2911-4c08-b492-6496c82b3edb.htm"&gt;Test Topic&lt;/a&gt;
 

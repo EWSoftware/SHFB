@@ -5,69 +5,66 @@
     xmlns:xlink="http://www.w3.org/1999/xlink">
 
     <introduction>
-		<para>All of the main project properties except documentation sources and references can be edited via the
-<ui>Project Properties</ui> window.  In the standalone GUI, the options are displayed and edited using a property
-grid.  The properties are grouped into several categories and are listed alphabetically within them.  Most are
-simple data types and can be edited directly in the text box or dropdown to the right of the property name.
-Other values, such as <codeInline>ComponentConfigurations</codeInline> are collection-based and use a pop-up
-editor accessed by clicking the "..." button that appears to the right of the property value when it is selected.
-The description panel at the bottom of the property grid gives brief information and other usage notes related
-to the selected property.</para>
-
-		<para>In the Visual Studio extension package, the project properties can be accessed by selecting the
-<ui>Properties</ui> context menu option on the project node or by double-clicking the <ui>Project Properties</ui>
-node in the <ui>Solution Explorer</ui> tool window.  The property categories match the standalone GUI's property
-categories quite closely.  A few of the properties are given their own tab in the property editor window such as
-the component configurations, plug-in configurations, and user-defined properties.  The extension package also
-has a more user-friendly approach to editing the properties that utilizes standard controls such as text boxes,
-combo boxes, list boxes, etc. with more descriptive labels.  Informational and warning tip icons appear after
-certain properties to give additional information about their purpose or usage where needed.</para>
+			<para>All of the main project properties except documentation sources and references can be edited via the
+<ui>Project Properties</ui> window.  Project properties are grouped into categories ordered by frequency of
+usage.  Each set of properties is edited using standard controls such as text boxes, combo boxes, list boxes, etc.
+with descriptive labels.  Since there is only one website property, it has been combined with the Help 1
+properties in the <ui>Help 1/Website</ui> category.  An information and/or warning tip icon appears after some
+properties.  Hover the mouse over the icon to see additional usage notes or warnings related to the property.
+For full details about the properties in any given category, press the F1 key while a control on the property
+page has the focus to show the related help topic for the property category.</para>
     </introduction>
 
 <section>
   <title>Property Categories</title>
-  <content><para>Select a topic below to learn more about the properties in
-each category.</para>
+  <content>
+		<para>Select a topic below to learn more about the properties in each category.  Properties are listed with
+their descriptive title followed by their internal project property name in parentheses.</para>
 
-<list class="bullet">
-    <listItem><para><link xlink:href="da405a33-3eeb-4451-9aa8-a55be5026434"/></para></listItem>
-    <listItem><para><link xlink:href="1b2dff59-92cc-4578-b261-f3849f30c26c"/></para></listItem>
-    <listItem><para><link xlink:href="7d28bf8f-923f-44c1-83e1-337a416947a1"/></para></listItem>
-	<listItem><para><link xlink:href="d0c2dabd-3caf-4586-b81d-cbd765dec7cf" /></para>
 		<list class="bullet">
-			<listItem><para><link xlink:href="74664b00-b83f-450a-833a-25984ba812e3" /></para></listItem>
-			<listItem><para><link xlink:href="68a2fa4e-c6de-47ed-a9a6-60cc6ef01df4" /></para></listItem>
+			<listItem><para><link xlink:href="da405a33-3eeb-4451-9aa8-a55be5026434"/></para></listItem>
+			<listItem><para><link xlink:href="1b2dff59-92cc-4578-b261-f3849f30c26c"/></para></listItem>
+			<listItem><para><link xlink:href="7d28bf8f-923f-44c1-83e1-337a416947a1"/></para></listItem>
+			<listItem><para><link xlink:href="f818e4d1-3457-4be6-a833-1b700f1e2f18" /></para></listItem>
+			<listItem><para><link xlink:href="d0c2dabd-3caf-4586-b81d-cbd765dec7cf" /></para>
+				<list class="bullet">
+					<listItem><para><link xlink:href="74664b00-b83f-450a-833a-25984ba812e3" /></para></listItem>
+					<listItem><para><link xlink:href="68a2fa4e-c6de-47ed-a9a6-60cc6ef01df4" /></para></listItem>
+				</list>
+			</listItem>
+			<listItem><para><link xlink:href="5f743a6e-3239-409a-a8c1-0bff4b5375f4" /></para>
+				<list class="bullet">
+					<listItem><para><link xlink:href="4baf93f2-f395-4281-b7ef-bfe6c878a4d7" /></para></listItem>
+					<listItem><para><link xlink:href="534c4ff1-3bba-4431-a3a6-76dcb2d374f8" /></para></listItem>
+				</list>
+			</listItem>
+			<listItem><para><link xlink:href="eb7e1bc7-21c5-4453-bbaf-dec8c62c15bd" /></para>
+				<list class="bullet">
+					<listItem><para><link xlink:href="48f5a893-acde-4e50-8c17-72b83d9c3f9d" /></para></listItem>
+					<listItem><para><link xlink:href="52aa172a-a310-4f75-b20f-7e2c7d870c65" /></para></listItem>
+				</list>
+			</listItem>
+			<listItem><para><link xlink:href="3c489bd6-598c-4684-aafb-fbe9400864d3"/></para>
+				<list class="bullet">
+					<listItem><para><link xlink:href="7df16a60-f718-4b8f-bfa2-88c42906070c" /></para></listItem>
+				</list>
+			</listItem>
+			<listItem><para><link xlink:href="5a2ab898-7161-454d-b5d3-959df0de0e36"/></para></listItem>
+			<listItem><para><link xlink:href="e6fcfa33-e7ee-430a-abfe-6b7962e6d068"/></para></listItem>
+			<listItem><para><link xlink:href="d1ec47f6-b611-41cf-a78c-f68e01d6ae9e" /></para></listItem>
+			<listItem><para><link xlink:href="be2b5b09-cf5f-4fc3-be8c-f6d8a27c3691" /></para></listItem>
+			<listItem><para><link xlink:href="c584509f-0b18-49a8-ab06-114b0058a739" /></para></listItem>
+			<listItem><para><link xlink:href="c4e3ce8e-6881-47a7-a429-49ec5c755c8c" /></para></listItem>
 		</list>
-	</listItem>
-	<listItem><para><link xlink:href="5f743a6e-3239-409a-a8c1-0bff4b5375f4" /></para>
-		<list class="bullet">
-			<listItem><para><link xlink:href="4baf93f2-f395-4281-b7ef-bfe6c878a4d7" /></para></listItem>
-			<listItem><para><link xlink:href="534c4ff1-3bba-4431-a3a6-76dcb2d374f8" /></para></listItem>
-		</list></listItem>
-    <listItem><para><link xlink:href="e6fcfa33-e7ee-430a-abfe-6b7962e6d068"/></para></listItem>
-    <listItem><para><link xlink:href="5a2ab898-7161-454d-b5d3-959df0de0e36"/></para></listItem>
-    <listItem><para><link xlink:href="eb7e1bc7-21c5-4453-bbaf-dec8c62c15bd" /></para>
-        <list class="bullet">
-        	<listItem><para><link xlink:href="48f5a893-acde-4e50-8c17-72b83d9c3f9d" /></para></listItem>
-            <listItem><para><link xlink:href="52aa172a-a310-4f75-b20f-7e2c7d870c65" /></para></listItem>
-        </list>
-    </listItem>
-    <listItem><para><link xlink:href="3c489bd6-598c-4684-aafb-fbe9400864d3"/></para>
-    	<list class="bullet">
-    		<listItem><para><link xlink:href="7df16a60-f718-4b8f-bfa2-88c42906070c" /></para></listItem>
-    	</list>
-    </listItem>
-	<listItem><para><link xlink:href="f818e4d1-3457-4be6-a833-1b700f1e2f18" /></para></listItem>
-</list>
 
   </content>
 </section>
 
-    <relatedTopics>
+	<relatedTopics>
 		<link xlink:href="4fd3b2b6-dfad-4513-983b-5e74d2342ff0"/>
 		<link xlink:href="3d4edd2d-7883-4508-b9d2-bd7b4d848b0d"/>
 		<link xlink:href="e12c2b9f-18c7-4718-850b-ac3c2e293672" />
-    </relatedTopics>
+	</relatedTopics>
 
   </developerConceptualDocument>
 </topic>

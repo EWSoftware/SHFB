@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : AssemblyLocation.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/10/2012
+// Updated : 11/20/2012
 // Note    : Copyright 2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -110,6 +110,8 @@ namespace Microsoft.Ddue.Tools.Frameworks
         /// <returns>The assembly location as an XML element</returns>
         internal XElement ToXml()
         {
+            this.DetermineAssemblyDetails();
+
             XElement e = new XElement("Location", new[] {
                 this.IsCoreLocation ? new XAttribute("IsCore", this.IsCoreLocation) : null,
                 new XAttribute("Path", this.Path)
@@ -130,7 +132,7 @@ namespace Microsoft.Ddue.Tools.Frameworks
         /// <remarks>If the location already has assembly details, it will do nothing.</remarks>
         public void DetermineAssemblyDetails()
         {
-            if(assemblyDetails.Count == 0)
+            if(assemblyDetails.Count == 0 && Directory.Exists(this.Path))
                 foreach(string assembly in Directory.EnumerateFiles(this.Path, "*.dll").Concat(
                   Directory.EnumerateFiles(this.Path, "*.winmd")))
                 {

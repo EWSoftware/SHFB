@@ -81,7 +81,7 @@ folder to set its properties).  If the <codeInline>@TOCExclude</codeInline> comm
 the associated page will be displayed when the folder is selected in the table of contents.  Below are a couple
 of examples:</para>
 
-<code lang="xml" title="OtherContent\OtherContent.html">
+<code language="xml" title="OtherContent\OtherContent.html">
 &lt;!-- @TOCExclude --&gt;
 &lt;!-- @SortOrder 3 --&gt;
 &lt;title&gt;Other Content&lt;/title&gt;
@@ -90,7 +90,7 @@ of examples:</para>
 		<para>The example above sets the sort order and title of the folder entry but does not display anything when
 the folder is selected as it contains the <codeInline>@TOCExclude</codeInline> comment.</para>
 
-<code lang="xml" title="FolderWithPage\FolderWithPage.html">
+<code language="xml" title="FolderWithPage\FolderWithPage.html">
 &lt;html&gt;
 &lt;head&gt;
 &lt;title&gt;Folder Entry with a Content Page&lt;/title&gt;

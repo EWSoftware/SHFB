@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : PlugInPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 10/28/2012
+// Updated : 11/21/2012
 // Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -63,7 +63,7 @@ namespace SandcastleBuilder.Package.PropertyPages
             messageBoxTitle = SandcastleBuilder.Utils.Constants.AppName;
 #endif
             this.Title = "Plug-Ins";
-            this.HelpKeyword = "e031b14e-42f0-47e1-af4c-9fed2b88cbc7";
+            this.HelpKeyword = "be2b5b09-cf5f-4fc3-be8c-f6d8a27c3691";
 
             try
             {

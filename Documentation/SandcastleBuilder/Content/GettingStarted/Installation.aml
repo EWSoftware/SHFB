@@ -84,7 +84,7 @@ so you must download the 1.0 version.  The latest release can be installed after
 
 	<listItem>
 		<para>The Help Library Manager and Help Library Agent for installing and viewing MS Help Viewer (.mshc)
-help files.  These are installed as part of Visual Studio 2010.</para>
+help files.  These are installed as part of Visual Studio.</para>
 	</listItem>
 </list>
 
@@ -109,8 +109,8 @@ contains, it can be deleted.</para>
 		<para>Check the <legacyUnderline>system</legacyUnderline> environment variables to ensure that a
 <environmentVariable>DXROOT</environmentVariable> environment variable does exist and that it points to the
 correct location of the Microsoft Sandcastle tools (<legacyBold>not</legacyBold> the help file builder).
-Usually this will be <localUri>C:\Program Files\Sandcastle</localUri> unless you installed it in an alternate
-location.</para>
+Usually this will be <localUri>C:\Program Files (x86)\Sandcastle</localUri> unless you installed it in an
+alternate location.</para>
 	</listItem>
 
 </list>
@@ -124,8 +124,8 @@ location.</para>
 
 <section address="Recommended">
   <title>Recommended Additions</title>
-  <content><para>The following tools and patches are optional but you will find them useful and it is highly
-recommended that they be installed as well.</para>
+  <content><para>The following tools are optional but you will find them useful and it is highly recommended that
+they be installed as well.</para>
 
 <list class="bullet">
     <listItem>
@@ -155,9 +155,10 @@ shareware tool <externalLink>
 	</listItem>
 
     <listItem>
-		<para>If you are going to document website projects, install the <legacyBold>Custom Web Code Providers</legacyBold>
-provided as part of the Sandcastle tools installer.  These make it easy to document website projects by extracing
-the XML comments files to a location of your choice when the website is deployed.</para>
+		<para>If you are going to document website projects, install the
+<link xlink:href="94c7f744-9b90-4254-93ab-9b15f47d9f42">Custom Web Code Providers</link> provided as part of the
+Sandcastle tools installer.  These make it easy to document website projects by extracing the XML comments files
+to a location of your choosing when the website is deployed.</para>
 	</listItem>
 
 </list>

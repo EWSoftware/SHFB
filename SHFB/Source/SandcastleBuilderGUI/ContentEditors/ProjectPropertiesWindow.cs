@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : ProjectPropertiesWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/14/2012
+// Updated : 11/23/2012
 // Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -198,7 +198,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// </summary>
         /// <param name="msg">The message to process</param>
         /// <param name="keyData">The key data to process</param>
-        /// <returns></returns>
+        /// <returns>True if the command key is handled, false if not</returns>
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
             if(keyData == Keys.F1 && tvPropertyPages.SelectedNode != null)

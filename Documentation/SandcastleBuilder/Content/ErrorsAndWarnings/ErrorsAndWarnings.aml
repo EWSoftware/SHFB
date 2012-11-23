@@ -1,197 +1,432 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <topic id="46d1f76e-a97e-4ee6-971c-fdeab725ff09" revisionNumber="1">
-  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <introduction>
-      <para>The topics in this section contains detailed information about each
-of the warning and error messages that you may encounter when building a
-project.  Each warning or error contains a code.  Use that code to look up
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>The topics in this section contains detailed information about each of the warning and error messages
+that you may encounter when building a project.  Each warning or error contains a code.  Use that code to look up
 the related topic for information about what it means and possible solutions.</para>
-	<autoOutline lead="none" />
-    </introduction>
 
-    <section address="BuildEngine">
-      <title>Build Engine</title>
-      <content>
+			<autoOutline lead="none" />
+		</introduction>
 
-<list class="bullet">
-  <listItem><link xlink:href="13bf1e14-bf8f-478b-8fe6-932d18922a85" /></listItem>
-  <listItem><link xlink:href="726e79fd-260d-4f9f-96c7-cc62d3c210db" /></listItem>
-  <listItem><link xlink:href="7f4054ff-9490-452e-b842-5b783f31a8af" /></listItem>
-  <listItem><link xlink:href="06ad726a-d35b-419c-bff6-0157f32d659b" /></listItem>
-  <listItem><link xlink:href="ed7661b1-f675-4a8d-a0a2-6eed59cd3720" /></listItem>
-  <listItem><link xlink:href="c7b03c89-be8f-42d8-8a8e-a16034e4c9e0" /></listItem>
-  <listItem><link xlink:href="74ced26b-73de-42f7-aa8e-b6a6d8c8aa40" /></listItem>
-  <listItem><link xlink:href="89a0728c-fe7c-49b1-9b6b-14ac952630dc" /></listItem>
-  <listItem><link xlink:href="4fc20fd3-6ed3-49ed-ac97-c99b08c72f38" /></listItem>
-  <listItem><link xlink:href="29685951-0496-4717-bf33-a14bf065a8b8" /></listItem>
-  <listItem><link xlink:href="4a961b0a-7558-472a-9ec1-3a0b9f0f6410" /></listItem>
-  <listItem><link xlink:href="44bd5bf4-6cf0-41ca-b12c-41c34076c298" /></listItem>
-  <listItem><link xlink:href="7b30aec2-4942-4805-a072-c22db33ab2b6" /></listItem>
-  <listItem><link xlink:href="757d284c-5c04-4bf1-93c5-f00961b92132" /></listItem>
-  <listItem><link xlink:href="40f7d484-1b99-4bf9-a905-9a67b4801568" /></listItem>
-  <listItem><link xlink:href="ced6d9d6-33df-4b14-abfd-4cc18b9b0ea8" /></listItem>
-  <listItem><link xlink:href="1dcdb33a-4227-4aaa-833f-1354e683180a" /></listItem>
-  <listItem><link xlink:href="c03a9cf5-553c-4a93-9da2-cb70605232d8" /></listItem>
-  <listItem><link xlink:href="6976940c-6e75-4b8f-a812-57265911b51d" /></listItem>
-  <listItem><link xlink:href="e4c67ec0-236c-449f-8def-ce0ae480e2eb" /></listItem>
-  <listItem><link xlink:href="4fd3af24-e11f-409f-9725-59f4bdedab51" /></listItem>
-  <listItem><link xlink:href="db8785bc-617c-4b3f-ae1e-2f886b0e3b88" /></listItem>
-  <listItem><link xlink:href="56534d41-8d1f-41bd-a3a1-ed2787ab3b89" /></listItem>
-  <listItem><link xlink:href="fec21ccb-1873-4bad-a04e-7d6c01ab70a7" /></listItem>
-  <listItem><link xlink:href="155a7ef8-6cce-420a-b2ff-4d6217f71075" /></listItem>
-  <listItem><link xlink:href="e91ccee4-4e65-4e41-9d15-88cc327b370b" /></listItem>
-  <listItem><link xlink:href="d78a99d7-248c-4711-8967-096b8e936cb4" /></listItem>
-  <listItem><link xlink:href="25036a28-bd82-4032-8108-ac614423a2cf" /></listItem>
-  <listItem><link xlink:href="72ef66af-a2ea-4947-a5d3-b64ec7a0b943" /></listItem>
-  <listItem><link xlink:href="bbbf3033-0d53-4d23-98cc-7b4f0c5f960b" /></listItem>
-  <listItem><link xlink:href="8e2f5ce6-0815-4635-949d-4b314926bb3d" /></listItem>
-  <listItem><link xlink:href="bc38b398-4cca-4972-b4b5-966def8428b4" /></listItem>
-  <listItem><link xlink:href="0d0868d8-6ee2-472e-b627-bc5890017190" /></listItem>
-  <listItem><link xlink:href="3e506dda-8d9e-4e87-a265-cd213b97d815" /></listItem>
-  <listItem><link xlink:href="378d6894-02b8-4ee9-9c50-58f278490ed8" /></listItem>
-  <listItem><link xlink:href="593259a3-ea02-4023-b318-0d33362f1e2c" /></listItem>
-  <listItem><link xlink:href="e2af12c6-af9e-4b59-9fe1-fc3c413022ae" /></listItem>
-  <listItem><link xlink:href="b9604d2f-3c75-4b84-9164-82e2dbaa75e5" /></listItem>
-  <listItem><link xlink:href="2d72ecc9-b388-44f4-a76a-5786ca708b4f" /></listItem>
-  <listItem><link xlink:href="24033cf4-69c1-4fc9-baac-103699ac90f8" /></listItem>
-  <listItem><link xlink:href="f5ebb418-9a07-4854-89e1-13fbf8de4630" /></listItem>
-  <listItem><link xlink:href="9a54f7c2-2ca6-425e-89fb-c939ff50224f" /></listItem>
-  <listItem><link xlink:href="50c2326c-5f1d-4615-9ee6-ad1d4952eded" /></listItem>
-  <listItem><link xlink:href="4acd8d52-bdf9-4794-a880-da34e46d743a" /></listItem>
-  <listItem><link xlink:href="2cf8d4a0-14c8-46db-a18d-f56eda1e4f4f" /></listItem>
-  <listItem><link xlink:href="5e951c2b-d012-46e0-b80e-17ebd741410b" /></listItem>
-  <listItem><link xlink:href="f94a8e73-784a-4a3c-9688-28202a4462c3" /></listItem>
-  <listItem><link xlink:href="ba3f61ed-0b01-4986-9442-6488b960d83f" /></listItem>
-  <listItem><link xlink:href="97715366-3002-4735-8004-29205cd522b9" /></listItem>
-  <listItem><link xlink:href="62fe32a8-7c35-4fda-835f-1b2cf84e2b5f" /></listItem>
-  <listItem><link xlink:href="34b2d026-649e-4822-9e48-c1d095eeec66" /></listItem>
-  <listItem><link xlink:href="b04316ef-8b8f-4374-acb5-0880e44daea4" /></listItem>
-  <listItem><link xlink:href="b0632326-5af8-4ab3-9d11-a80191978477" /></listItem>
-  <listItem><link xlink:href="1aad4b53-77df-4a0e-b6a9-676c2f753953" /></listItem>
-  <listItem><link xlink:href="802873dd-138e-4b35-9298-730c188cb991" /></listItem>
-  <listItem><link xlink:href="7ebfa7b8-e0ba-453c-a236-094b4ec076c4" /></listItem>
-  <listItem><link xlink:href="f645ebaa-e368-4cc4-bca8-8deb9117e25e" /></listItem>
-  <listItem><link xlink:href="a68cc0cf-11cf-41dd-acd3-6955f5209e41" /></listItem>
-  <listItem><link xlink:href="d7c089fd-1dfc-47a2-8d1f-874288e0655d" /></listItem>
-  <listItem><link xlink:href="e076c319-ff84-40dc-bb00-ff4c72718215" /></listItem>
-  <listItem><link xlink:href="fe808500-7b87-4f68-ae13-c3e68cae8b13" /></listItem>
-  <listItem><link xlink:href="270ef6fd-7bec-4db0-875c-5d857294e9c6" /></listItem>
-  <listItem><link xlink:href="ff831dbb-fa08-414e-be84-3982d9df1970" /></listItem>
-  <listItem><link xlink:href="082d9890-6de5-43c9-ae5e-2e1533b82f6b" /></listItem>
-  <listItem><link xlink:href="cdaaca46-b815-4763-9dac-c4a57cdb2a58" /></listItem>
-  <listItem><link xlink:href="e4c00c10-9368-4790-b1c4-4a47adeb2af9" /></listItem>
-  <listItem><link xlink:href="355bb237-acf6-4df8-bfc6-d89736837abb" /></listItem>
-  <listItem><link xlink:href="e0b6a8f5-27d3-48ce-b37b-0c328735b106" /></listItem>
-</list>
+		<section address="BuildEngine">
+			<title>Build Engine</title>
+			<content>
 
-      </content>
-    </section>
+				<list class="bullet">
+					<listItem>
+						<para><link xlink:href="13bf1e14-bf8f-478b-8fe6-932d18922a85" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="726e79fd-260d-4f9f-96c7-cc62d3c210db" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="7f4054ff-9490-452e-b842-5b783f31a8af" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="06ad726a-d35b-419c-bff6-0157f32d659b" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="ed7661b1-f675-4a8d-a0a2-6eed59cd3720" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="c7b03c89-be8f-42d8-8a8e-a16034e4c9e0" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="74ced26b-73de-42f7-aa8e-b6a6d8c8aa40" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="89a0728c-fe7c-49b1-9b6b-14ac952630dc" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="4fc20fd3-6ed3-49ed-ac97-c99b08c72f38" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="29685951-0496-4717-bf33-a14bf065a8b8" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="4a961b0a-7558-472a-9ec1-3a0b9f0f6410" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="44bd5bf4-6cf0-41ca-b12c-41c34076c298" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="7b30aec2-4942-4805-a072-c22db33ab2b6" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="757d284c-5c04-4bf1-93c5-f00961b92132" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="40f7d484-1b99-4bf9-a905-9a67b4801568" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="ced6d9d6-33df-4b14-abfd-4cc18b9b0ea8" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="1dcdb33a-4227-4aaa-833f-1354e683180a" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="c03a9cf5-553c-4a93-9da2-cb70605232d8" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="6976940c-6e75-4b8f-a812-57265911b51d" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="e4c67ec0-236c-449f-8def-ce0ae480e2eb" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="4fd3af24-e11f-409f-9725-59f4bdedab51" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="db8785bc-617c-4b3f-ae1e-2f886b0e3b88" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="56534d41-8d1f-41bd-a3a1-ed2787ab3b89" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="fec21ccb-1873-4bad-a04e-7d6c01ab70a7" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="155a7ef8-6cce-420a-b2ff-4d6217f71075" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="e91ccee4-4e65-4e41-9d15-88cc327b370b" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="d78a99d7-248c-4711-8967-096b8e936cb4" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="25036a28-bd82-4032-8108-ac614423a2cf" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="72ef66af-a2ea-4947-a5d3-b64ec7a0b943" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="bbbf3033-0d53-4d23-98cc-7b4f0c5f960b" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="8e2f5ce6-0815-4635-949d-4b314926bb3d" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="bc38b398-4cca-4972-b4b5-966def8428b4" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="0d0868d8-6ee2-472e-b627-bc5890017190" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="3e506dda-8d9e-4e87-a265-cd213b97d815" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="378d6894-02b8-4ee9-9c50-58f278490ed8" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="593259a3-ea02-4023-b318-0d33362f1e2c" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="e2af12c6-af9e-4b59-9fe1-fc3c413022ae" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="b9604d2f-3c75-4b84-9164-82e2dbaa75e5" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="2d72ecc9-b388-44f4-a76a-5786ca708b4f" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="24033cf4-69c1-4fc9-baac-103699ac90f8" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="f5ebb418-9a07-4854-89e1-13fbf8de4630" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="9a54f7c2-2ca6-425e-89fb-c939ff50224f" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="50c2326c-5f1d-4615-9ee6-ad1d4952eded" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="4acd8d52-bdf9-4794-a880-da34e46d743a" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="2cf8d4a0-14c8-46db-a18d-f56eda1e4f4f" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="5e951c2b-d012-46e0-b80e-17ebd741410b" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="f94a8e73-784a-4a3c-9688-28202a4462c3" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="ba3f61ed-0b01-4986-9442-6488b960d83f" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="97715366-3002-4735-8004-29205cd522b9" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="62fe32a8-7c35-4fda-835f-1b2cf84e2b5f" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="34b2d026-649e-4822-9e48-c1d095eeec66" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="b04316ef-8b8f-4374-acb5-0880e44daea4" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="b0632326-5af8-4ab3-9d11-a80191978477" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="1aad4b53-77df-4a0e-b6a9-676c2f753953" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="802873dd-138e-4b35-9298-730c188cb991" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="7ebfa7b8-e0ba-453c-a236-094b4ec076c4" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="f645ebaa-e368-4cc4-bca8-8deb9117e25e" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="a68cc0cf-11cf-41dd-acd3-6955f5209e41" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="d7c089fd-1dfc-47a2-8d1f-874288e0655d" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="e076c319-ff84-40dc-bb00-ff4c72718215" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="fe808500-7b87-4f68-ae13-c3e68cae8b13" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="270ef6fd-7bec-4db0-875c-5d857294e9c6" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="ff831dbb-fa08-414e-be84-3982d9df1970" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="082d9890-6de5-43c9-ae5e-2e1533b82f6b" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="cdaaca46-b815-4763-9dac-c4a57cdb2a58" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="e4c00c10-9368-4790-b1c4-4a47adeb2af9" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="355bb237-acf6-4df8-bfc6-d89736837abb" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="e0b6a8f5-27d3-48ce-b37b-0c328735b106" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="a01d4e99-a9d8-487e-af30-50f04696036a" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="a73e776d-0f62-41ee-aa5f-637916c09553" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="31414af7-b465-4dc3-9454-19a2d01953bc" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="d91955b7-1b2d-421b-8d75-b364afcad41e" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="91dd8d47-3a32-42d3-b2c5-69f210de7372" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="a393787d-76d1-4c08-9b52-66d0384210fb" /></para>
+					</listItem>
+				</list>
 
-    <section address="InheritDoc">
-      <title>Generate Inherited Documentation</title>
-      <content>
+			</content>
+		</section>
 
-<list class="bullet">
-  <listItem><link xlink:href="ceaee6cc-6393-40c6-bca4-869b0553f2b3" /></listItem>
-  <listItem><link xlink:href="ac7c5fc5-134a-495c-a743-f4f577ffa31a" /></listItem>
-  <listItem><link xlink:href="f6fd25df-5d9c-449e-a63a-32c05ee731d7" /></listItem>
-  <listItem><link xlink:href="c472d97b-e5b9-4e60-8746-dc1ec660167b" /></listItem>
-  <listItem><link xlink:href="82ead344-5447-484d-acfe-e778b7ac12cf" /></listItem>
-  <listItem><link xlink:href="93aecba9-ef0e-40d8-a82e-34399bee6ca3" /></listItem>
-  <listItem><link xlink:href="6038c08c-de58-4579-a018-bdbbce3134f5" /></listItem>
-  <listItem><link xlink:href="efa6ca2b-c052-4555-90d8-a9cc9093f793" /></listItem>
-</list>
+		<section address="InheritDoc">
+			<title>Generate Inherited Documentation</title>
+			<content>
 
-      </content>
-    </section>
+				<list class="bullet">
+					<listItem>
+						<para><link xlink:href="ceaee6cc-6393-40c6-bca4-869b0553f2b3" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="ac7c5fc5-134a-495c-a743-f4f577ffa31a" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="f6fd25df-5d9c-449e-a63a-32c05ee731d7" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="c472d97b-e5b9-4e60-8746-dc1ec660167b" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="82ead344-5447-484d-acfe-e778b7ac12cf" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="93aecba9-ef0e-40d8-a82e-34399bee6ca3" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="6038c08c-de58-4579-a018-bdbbce3134f5" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="efa6ca2b-c052-4555-90d8-a9cc9093f793" /></para>
+					</listItem>
+				</list>
 
-    <section address="HtmlExtract">
-      <title>HTML Extract</title>
-      <content>
+			</content>
+		</section>
 
-<list class="bullet">
-  <listItem><link xlink:href="c3dbcf13-6585-4b45-ae2f-6bd8acd8b62b" /></listItem>
-  <listItem><link xlink:href="0f17b9b9-8e80-41d7-85cc-d9a97ff529ea" /></listItem>
-  <listItem><link xlink:href="7cf02d57-8cb3-4f29-ab90-236ae57f9c23" /></listItem>
-  <listItem><link xlink:href="cc3ac64c-a882-47ff-b104-bf497f56b42d" /></listItem>
-</list>
+		<section address="HtmlExtract">
+			<title>HTML Extract</title>
+			<content>
 
-      </content>
-    </section>
+				<list class="bullet">
+					<listItem>
+						<para><link xlink:href="c3dbcf13-6585-4b45-ae2f-6bd8acd8b62b" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="0f17b9b9-8e80-41d7-85cc-d9a97ff529ea" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="7cf02d57-8cb3-4f29-ab90-236ae57f9c23" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="cc3ac64c-a882-47ff-b104-bf497f56b42d" /></para>
+					</listItem>
+				</list>
 
-    <section address="BuildTasks">
-      <title>MSBuild Tasks</title>
-      <content>
+			</content>
+		</section>
 
-<list class="bullet">
-  <listItem><link xlink:href="e4b1c387-d296-42ed-9458-7c6b460b5c35" /></listItem>
-  <listItem><link xlink:href="c47b9dfb-e27c-4af2-b9e9-68258a8eca01" /></listItem>
-  <listItem><link xlink:href="93d73e6e-2b07-4bc4-9535-c706dbf8540a" /></listItem>
-  <listItem><link xlink:href="a707806a-1173-4a0e-a21d-7b2d5a42f7fe" /></listItem>
-  <listItem><link xlink:href="c1f743fb-2040-4d5e-bf9f-5a4985481cc8" /></listItem>
-  <listItem><link xlink:href="bc626934-b59f-4557-9db7-9bedcec39bc0" /></listItem>
-  <listItem><link xlink:href="842594b8-d1ba-4baa-9082-de991e376d4f" /></listItem>
-  <listItem><link xlink:href="e8c8417f-ac01-450c-8aef-984a69ecbb93" /></listItem>
-  <listItem><link xlink:href="20cf4894-e127-46f7-a0f3-6da7252f3652" /></listItem>
-  <listItem><link xlink:href="42262e8b-6aa4-4ca0-85cb-a395cabb96c7" /></listItem>
-  <listItem><link xlink:href="13b7b97f-6a6d-442a-aabf-b00a026b54c0" /></listItem>
-  <listItem><link xlink:href="bddb17b5-2733-4b82-9b0f-7e9cef5e8c56" /></listItem>
-  <listItem><link xlink:href="3eedd8d1-9172-49c3-9f54-f75d21f251d9" /></listItem>
-  <listItem><link xlink:href="3c2c627c-8cbe-4f41-82f4-e383efe5c7cb" /></listItem>
-  <listItem><link xlink:href="bc743362-c234-4684-973e-0710543314dc" /></listItem>
-  <listItem><link xlink:href="a763207e-4afd-400d-afb5-fa7c632f5144" /></listItem>
-</list>
+		<section address="BuildTasks">
+			<title>MSBuild Tasks</title>
+			<content>
 
-      </content>
-    </section>
+				<list class="bullet">
+					<listItem>
+						<para><link xlink:href="e4b1c387-d296-42ed-9458-7c6b460b5c35" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="c47b9dfb-e27c-4af2-b9e9-68258a8eca01" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="93d73e6e-2b07-4bc4-9535-c706dbf8540a" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="a707806a-1173-4a0e-a21d-7b2d5a42f7fe" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="c1f743fb-2040-4d5e-bf9f-5a4985481cc8" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="bc626934-b59f-4557-9db7-9bedcec39bc0" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="842594b8-d1ba-4baa-9082-de991e376d4f" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="e8c8417f-ac01-450c-8aef-984a69ecbb93" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="20cf4894-e127-46f7-a0f3-6da7252f3652" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="42262e8b-6aa4-4ca0-85cb-a395cabb96c7" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="13b7b97f-6a6d-442a-aabf-b00a026b54c0" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="bddb17b5-2733-4b82-9b0f-7e9cef5e8c56" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="3eedd8d1-9172-49c3-9f54-f75d21f251d9" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="3c2c627c-8cbe-4f41-82f4-e383efe5c7cb" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="bc743362-c234-4684-973e-0710543314dc" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="a763207e-4afd-400d-afb5-fa7c632f5144" /></para>
+					</listItem>
+				</list>
 
-    <section address="Plug-Ins">
-      <title>Plug-Ins</title>
-      <content>
+			</content>
+		</section>
 
-<list class="bullet">
-  <listItem>TODO: Add topic links here</listItem>
-</list>
+		<section address="Plug-Ins">
+			<title>Plug-Ins</title>
+			<content>
 
-      </content>
-    </section>
+				<list class="bullet">
+					<listItem>TODO: Add topic links here</listItem>
+				</list>
 
-    <section address="Project">
-      <title>Project File</title>
-      <content>
+			</content>
+		</section>
 
-<list class="bullet">
-  <listItem><link xlink:href="f6258ea1-df3f-4397-81e4-3e0a39abcdc2" /></listItem>
-  <listItem><link xlink:href="d813065b-c867-44a8-9315-56fc951c374e" /></listItem>
-  <listItem><link xlink:href="2c0b4d20-b8a3-40ce-b3ac-fff52918b454" /></listItem>
-  <listItem><link xlink:href="c5acba93-0ecf-449c-b968-df0572f75203" /></listItem>
-  <listItem><link xlink:href="1d095fa4-c79c-4728-988d-48ad040f8c1c" /></listItem>
-  <listItem><link xlink:href="b490911e-d7ce-42ee-920a-1615f6bc3b19" /></listItem>
-</list>
+		<section address="Project">
+			<title>Project File</title>
+			<content>
 
-      </content>
-    </section>
+				<list class="bullet">
+					<listItem>
+						<para><link xlink:href="f6258ea1-df3f-4397-81e4-3e0a39abcdc2" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="d813065b-c867-44a8-9315-56fc951c374e" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="2c0b4d20-b8a3-40ce-b3ac-fff52918b454" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="c5acba93-0ecf-449c-b968-df0572f75203" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="1d095fa4-c79c-4728-988d-48ad040f8c1c" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="b490911e-d7ce-42ee-920a-1615f6bc3b19" /></para>
+					</listItem>
+				</list>
 
-    <section address="ProjectConv">
-      <title>Project File Converters</title>
-      <content>
+			</content>
+		</section>
 
-<list class="bullet">
-  <listItem><link xlink:href="6c55e03c-0b22-4913-ab2a-f0148309b2b5" /></listItem>
-  <listItem><link xlink:href="4854d16a-93bf-4701-997d-049ce91f82cf" /></listItem>
-  <listItem><link xlink:href="07498c61-02a4-4f04-ac76-a89cafedbfec" /></listItem>
-  <listItem><link xlink:href="6417667f-ea10-421f-839c-647561ed207b" /></listItem>
-  <listItem><link xlink:href="860e4647-cb23-448f-93cb-da45f52c3ec7" /></listItem>
-  <listItem><link xlink:href="e50090cc-d866-4428-9b44-d7d145df5eb7" /></listItem>
-</list>
+		<section address="ProjectConv">
+			<title>Project File Converters</title>
+			<content>
 
-      </content>
-    </section>
+				<list class="bullet">
+					<listItem>
+						<para><link xlink:href="6c55e03c-0b22-4913-ab2a-f0148309b2b5" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="4854d16a-93bf-4701-997d-049ce91f82cf" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="07498c61-02a4-4f04-ac76-a89cafedbfec" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="6417667f-ea10-421f-839c-647561ed207b" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="860e4647-cb23-448f-93cb-da45f52c3ec7" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="e50090cc-d866-4428-9b44-d7d145df5eb7" /></para>
+					</listItem>
+				</list>
 
-    <relatedTopics>
-    <link xlink:href="8c0c97d0-c968-4c15-9fe9-e8f3a443c50a" />
-    <link xlink:href="1aea789d-b226-4b39-b534-4c97c256fac8" />
-    <link xlink:href="c18d6cb6-e4e4-4944-84ee-f867aa6cfb0d" />
-    </relatedTopics>
-  </developerConceptualDocument>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="8c0c97d0-c968-4c15-9fe9-e8f3a443c50a" />
+			<link xlink:href="1aea789d-b226-4b39-b534-4c97c256fac8" />
+			<link xlink:href="c18d6cb6-e4e4-4944-84ee-f867aa6cfb0d" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
 </topic>

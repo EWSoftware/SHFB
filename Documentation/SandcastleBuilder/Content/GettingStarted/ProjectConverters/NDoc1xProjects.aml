@@ -1,62 +1,60 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <topic id="0a38fb2a-1166-4a4f-bd76-12390655df5c" revisionNumber="1">
-  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <introduction>
-      <para>This is used to convert <application>NDoc</application> project
-files to the help file builder project file format.</para>
-    </introduction>
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>This is used to convert <application>NDoc</application> project files to the help file builder
+project file format.</para>
+		</introduction>
 
-    <section>
-      <title>Post-Conversion Review</title>
-      <content>
-        <para>From its very beginning, the help file builder was written to be
-a viable replacement for NDoc.  As such, almost all of the NDoc project
-properties have matching help file builder project properties and convert
-straight across to the equivalent properties in the new project.  However,
-after conversion, the following items will need to be reviewed:</para>
+		<section>
+			<title>Post-Conversion Review</title>
+			<content>
+				<para>From its very beginning, the help file builder was written to be a viable replacement for NDoc.  As
+such, almost all of the NDoc project properties have matching help file builder project properties and convert
+straight across to the equivalent properties in the new project.  However, after conversion, the following items
+will need to be reviewed:</para>
 
-<list class="bullet">
-  <listItem><para>Review the <legacyBold>Documentation Sources</legacyBold> and
-<legacyBold>References</legacyBold> project nodes to see that the required
-items were imported correctly and make any necessary adjustments.</para>
-		<token>SolutionDocSource</token>
-		</listItem>
+				<list class="bullet">
+					<listItem>
+						<para>Review the <legacyBold>Documentation Sources</legacyBold> and <legacyBold>References</legacyBold>
+project nodes to see that the required items were imported correctly and make any necessary adjustments.</para>
 
-  <listItem><para>All files and subfolders in the folder specified in the NDoc
-<codeInline>AdditionalContentResourceDirectory</codeInline> property are added
-recursively to the project as file items.  In addition, the files in the
-<codeInline>FilesToInclude</codeInline> property and the various Help 2
-<codeInline>NamedUrlIndex</codeInline> page type related properties are also
-added to the project as file items.  Each file will have a default build
-action based on its file extension.  You can add a site map to the project and
-edit it to set the order and layout of the additional content HTML files.</para>
+						<token>SolutionDocSource</token>
+					</listItem>
 
-	<alert class="tip">
-	  <para>The help file builder contains full support for conceptual content
-that uses Microsoft Assistance Markup Language (MAML) to create additional
-non-API topics such as How-Tos, walkthroughs, etc.  You may want to consider
-switching any additional HTML content to conceptual content to take advantage
-of its features.  See the <link xlink:href="3d4edd2d-7883-4508-b9d2-bd7b4d848b0d" />
-topic for more information.</para>
-	</alert></listItem>
-	
-    <listItem>NDoc project files contain sections for several different
-documenters that it supported.  Since there is no indication as to which is the
-active documenter, all properties are imported from the <codeInline>MSDN</codeInline>,
-<codeInline>MSDN-CHM</codeInline>, <codeInline>VS.NET 2003</codeInline>,
-and <codeInline>MSDN 2003</codeInline> documenters.  If the documenters contain
-properties that are duplicated in the other documenters, it is possible that
-the wrong value may end up in the converted project.  Review the properties
-after conversion to be sure that the values that you wanted were used.</listItem>
+					<listItem>
+						<para>All files and subfolders in the folder specified in the NDoc
+<codeInline>AdditionalContentResourceDirectory</codeInline> property are added recursively to the project as file
+items.  In addition, the files in the <codeInline>FilesToInclude</codeInline> property and the various Help 2
+<codeInline>NamedUrlIndex</codeInline> page type related properties are also added to the project as file items.
+Each file will have a default build action based on its file extension.  You can add a site map to the project
+and edit it to set the order and layout of the additional content HTML files.</para>
 
-</list>
+						<alert class="tip">
+							<para>The help file builder contains full support for conceptual content that uses Microsoft
+Assistance Markup Language (MAML) to create additional non-API topics such as How-Tos, walkthroughs, etc.  You
+may want to consider switching any additional HTML content to conceptual content to take advantage of its
+features.  See the <link xlink:href="3d4edd2d-7883-4508-b9d2-bd7b4d848b0d" /> topic for more information.</para>
+						</alert>
+					</listItem>
 
-      </content>
-    </section>
+					<listItem>
+						<para>NDoc project files contain sections for several different documenters that it supported.  Since
+there is no indication as to which is the active documenter, all properties are imported from the
+<codeInline>MSDN</codeInline>, <codeInline>MSDN-CHM</codeInline>, <codeInline>VS.NET 2003</codeInline>, and
+<codeInline>MSDN 2003</codeInline> documenters.  If the documenters contain properties that are duplicated in the
+other documenters, it is possible that the wrong value may end up in the converted project.  Review the
+properties after conversion to be sure that the values that you wanted were used.</para>
+					</listItem>
 
-    <relatedTopics>
-	<link xlink:href="f68822d2-97ba-48da-a98b-46747983b4a0" />
-	<link xlink:href="8e3f8757-0ef3-4772-bb2f-5d7ae57e50da" />
-    </relatedTopics>
-  </developerConceptualDocument>
+				</list>
+
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="f68822d2-97ba-48da-a98b-46747983b4a0" />
+			<link xlink:href="8e3f8757-0ef3-4772-bb2f-5d7ae57e50da" />
+		</relatedTopics>
+	</developerConceptualDocument>
 </topic>

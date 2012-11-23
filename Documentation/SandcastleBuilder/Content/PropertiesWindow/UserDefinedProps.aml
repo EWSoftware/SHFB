@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="c4e3ce8e-6881-47a7-a429-49ec5c755c8c" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+			<para>This property page allows you to add or edit user-defined project properties.  These are custom
+properties that you can create to hold additional information or for use in substitution tags within other help
+file builder project properties.
+			</para>
+		</introduction>
+
+		<section address="Section1">
+			<content>
+				<mediaLink><image xlink:href="UserDefinedProps"/></mediaLink>
+				
+				<para>User-defined project properties themselves consist of three property values:</para>
+
+				<list class="bullet">
+					<listItem>
+						<para><codeInline>Name</codeInline> - The name of the project propety.  This cannot match the name of
+an existing help file builder project property, certain reserved MSBuild property names, or the name of an existing
+user-defined property.</para>
+					</listItem>
+
+					<listItem>
+						<para><codeInline>Condition</codeInline> - An optional condition that defines when the property will
+be evaluated and the given value used.  This is useful if you have environment variables or other command-line
+defined properties in your build environment that do not exist on your development PC.  In such cases, you can
+add a condition to define a default value while you test the project.  For example, assume you define a property
+called <codeInline>MyCustomProperty</codeInline> with a value of "Test" and set the condition to
+<codeInline>'$(MyCustomProperty)' == ''</codeInline>.  This is stored in the project file as:</para>
+
+<code language="none" title=" ">
+&lt;MyCustomProperty Condition=" '$(MyCustomProperty)' == '' "&gt;Test&lt;/MyCustomProperty&gt;
+</code>
+
+						<para>The property will only be defined in the project using the given value if it does not already
+have a value defined elsewhere (i.e. from a command line property definition, an environment variable, etc.).</para>
+
+						<alert class="warning">
+							<para>Entering an invalid <codeInline>Condition</codeInline> value can cause the project to become
+unloadable.  If this occurs, you will need to edit the project file by hand with a text editor to delete the
+invalid property.</para>
+
+						</alert>
+					</listItem>
+
+					<listItem>
+						<para><codeInline>Value</codeInline> - This defines the value to use for the property.  User-defined
+property values are not escaped and thus can contain references to other project or MSBuild properties.</para>
+					</listItem>
+				</list>
+
+				<alert class="note">
+					<para>The MSBuild project object does not provide a way to rename project properties.  As such, if you
+need to rename a user-defined property, you will need to delete it and re-add it with the new name.</para>
+				</alert>
+			</content>
+		</section>
+
+    <relatedTopics>
+			<link xlink:href="e32086c6-de17-4e54-a746-1ac80bf0c45a" />
+		</relatedTopics>
+  </developerConceptualDocument>
+</topic>

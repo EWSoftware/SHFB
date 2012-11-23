@@ -16,13 +16,14 @@ match it in appearance and features.  This allows you to utilize the various bui
 the presentation style of the topics.</para>
 
 <alert class="tip">
-  <para>A guide to using MAML with Sandcastle is included with Sandcastle tools installer.  Open it using the
-<legacyBold>Sandcastle MAML Guide</legacyBold> link in the Program Files menu after installing Sandcastle.</para>
+  <para>A guide to using MAML with Sandcastle is included with the Sandcastle tools installer.  Open it using the
+<legacyBold>Sandcastle MAML Guide</legacyBold> link in the <legacyBold>Sandcastle</legacyBold> group of the
+<legacyBold>All Programs</legacyBold> menu after installing Sandcastle.</para>
 </alert>
 
 <alert class="tip">
   <para>If you need to convert HTML topics to MAML topics, the <legacyBold>HTML to MAML Converter</legacyBold> is
-also available at the Sandcastle Styles project website.</para>
+also available as part of the Sandcastle tools installer.</para>
 </alert>
     </introduction>
 
@@ -72,12 +73,14 @@ files.</para>
 
 <section address="CustomTemplate">
   <title>Custom Template Files</title>
-  <content><para>The designer uses template files to create new conceptual topics.  You can create your own
-templates for use in the designer by creating a <localUri>Conceptual Templates</localUri> folder in the
+  <content>
+		<para>The designer uses template files to create new conceptual topics.  You can create your own templates
+for use in the designer by creating a <localUri>Conceptual Templates</localUri> folder in the
 <legacyBold>Local Application Data</legacyBold> folder.  Any MAML (<localUri>.aml</localUri>) files found in this
 folder will be added to the <ui>Custom Templates</ui> menu option in the <ui>Add Sibling Topic</ui> and <ui>Add
 Child Topic</ui> submenus.  See the <link xlink:href="a24489fb-45d6-46f4-9eaa-9a9c4e0919b2#FileTemplates" />
-topic for more information.</para>
+topic for more information.  See the <link xlink:href="ece3a395-589f-45c3-9f0e-2a25b8b6c537" /> topic for
+information on creating file templates for use with the Visual Studio package.</para>
 
   </content>
 </section>

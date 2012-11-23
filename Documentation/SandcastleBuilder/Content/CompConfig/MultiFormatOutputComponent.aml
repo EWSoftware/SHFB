@@ -30,7 +30,7 @@ the other tags are replaced with project values.  Update them with the appropria
 example:</para>
 
 <code language="xml" title=" ">
-	&lt;build formats=&quot;MSHelpViewer, Website&quot; /&gt;
+	&lt;build formats="MSHelpViewer, Website" /&gt;
 </code>
 
 	<para>For each possible help file format, a <codeInline>helpOutput</codeInline> element should appear with a

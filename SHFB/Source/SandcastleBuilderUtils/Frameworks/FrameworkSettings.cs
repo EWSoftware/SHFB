@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : FrameworkSettings.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/10/2012
+// Updated : 11/21/2012
 // Note    : Copyright 2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -180,8 +180,9 @@ namespace SandcastleBuilder.Utils.Frameworks
                     if(language != null)
                         path = CultureSpecificCommentsFileFolder(l, language);
 
-                    // If not found, check for localized versions using the current language
-                    if(path == null && (language == null || language.Name != CultureInfo.CurrentCulture.Name))
+                    // If not found, check for localized versions using the current language but only if a
+                    // specific language was not specified.
+                    if(path == null && language == null)
                         path = CultureSpecificCommentsFileFolder(l, CultureInfo.CurrentCulture);
 
                     // If not found, check for localized versions using the default English language

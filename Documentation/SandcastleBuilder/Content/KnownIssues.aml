@@ -11,26 +11,15 @@
       <content>
 				<list class="bullet">
 					<listItem>
-						<para>The <application>Help Library Manager</application> tool included with the Sandcastle Help File
-Builder along with the install and remove scripts produced by the build for MS Help Viewer output will currently
-only work with MS Help Viewer 1.0 that comes with Visual Studio 2010.  They are not compatible and will not work
-with the new management tools that come with MS Help Viewer 2.0 in Visual Studio 2011.  This will be addressed in
-a future release.  The help files produced by the build can be installed manually and will work with the new
-version though.  The install and remove scripts produced as part of the build contain a temporary workaround that
-calls the Help Viewer 2.0 content manager tool directly to install or remove the content if the script is passed
-the command line parameter "<system>H2</system>".</para>
-					</listItem>
-
-					<listItem>
 						<para>Full Microsoft Help Viewer support has been implemented within the Sandcastle Help File Builder.
 However, please note that only the <legacyBold>VS2010</legacyBold> and <legacyBold>VS2005</legacyBold>
 presentation styles contain the necessary resources and XSL transformations to output the necessary metadata.
-This was Microsoft's decision:</para>
+This was Microsoft's decision as noted in the June 2010 release:</para>
 
 						<quote>The <legacyBold>Hana</legacyBold> presentation is not supported because its support was
 already dropped in the latest Sandcastle code before our changes.  The <legacyBold>Prototype</legacyBold>
 presentation is not supported because we consider it outdated, existing only for compatibility purposes even in
-the earlier Sandcastle version.</quote>
+the earlier Sandcastle versions.</quote>
 
 						<para>Support for the <legacyBold>Hana</legacyBold> and <legacyBold>Prototype</legacyBold> styles is
 present in the help file builder but the Sandcastle transformations and resource files will need updating in
@@ -44,8 +33,9 @@ presentation style.</para>
 currently no fix available.  The problem is that the table of contents is generated off of the help topics when
 the help viewer file is installed and, since there are no physical topics for the namespace nodes added to the
 intermediate table of contents file by the plug-in, they do not appear in the help file.  Updating the plug-in to
-support help viewer output would have required more work than time would allow for this release.  If building
-other output formats in which you want to use the plug-in, build them separately from the MS Help Viewer output.</para>
+support help viewer output would have required more work than time would allow.  If building other output formats
+in which you want to use the plug-in, build them separately from the MS Help Viewer output.  Support for MS Help
+Viewer may be added in a future release.</para>
 					</listItem>
 
 					<listItem>
@@ -122,8 +112,9 @@ standalone GUI.</para>
 
 					<listItem>
 						<para>Due to their non-standard format, managed C++ projects from Visual Studio 2008 and before are
-not currently supported as documentation sources or project references.  Add the targets and references
-individually for the time being.</para>
+not supported as documentation sources or project references.  Add the targets and references individually.
+Visual Studio 2010 and later use a standard MSBuild format for C++ projects and they are supported as
+documentation sources.</para>
 					</listItem>
 
 					<listItem>

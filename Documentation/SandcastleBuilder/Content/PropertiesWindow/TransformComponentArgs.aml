@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="c584509f-0b18-49a8-ab06-114b0058a739" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>The <application>BuildAssembler</application> tool contains a transformation build component that
+takes the reflection data, XML comments, and/or MAML topics and converts them to a format suitable for use in
+the resulting help file.  The XSL transformations that it uses to accomplish this vary by presentation style and
+may expose arguments that can be used to customize the transformation.  For example, the existing XSL
+transformations for the standard Sandcastle presentation styles expose a set of arguments used to insert a logo
+image into the page headers.  Such arguments are exposed to your project using this property page.</para>
+		</introduction>
+
+		<section>
+			<content>
+				<mediaLink><image xlink:href="TransformArgsPropPage"/></mediaLink>
+
+				<para>The list of available transform component arguments is shown on the left.  As you select each one,
+information about it and its current value are displayed on the right.  The description at the top of the page
+provides information about the argument's purpose, how to use it, and information about valid values that it
+supports.  The two checkboxes indicate whether the argument is used for conceptual and/or reference builds.</para>
+
+				<para>For simple values, a single-line text box is provided in which you can enter the value to use for
+the argument.  If the argument supports a more complex value such as an XML fragment, a multi-line text box will
+appear instead.</para>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<!-- Add related topics -->
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

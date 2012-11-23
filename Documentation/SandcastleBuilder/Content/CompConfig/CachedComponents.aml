@@ -1,127 +1,121 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <topic id="3a1c4bf1-8ecf-4ab3-8010-277bed8d3819" revisionNumber="1">
-  <developerConceptualDocument
+	<developerConceptualDocument
     xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
     xmlns:xlink="http://www.w3.org/1999/xlink">
 
-    <introduction>
-      <para>There are three custom build components that can be used to cache
-some key information and potentially speed up the <codeInline>BuildAssembler</codeInline>
-build step.</para>
+		<introduction>
+			<para>There are three custom build components that can be used to cache some key information and
+potentially speed up the <codeInline>BuildAssembler</codeInline> build step.</para>
 
-<list class="bullet">
-    <listItem><legacyBold>Cached Framework Comments Index Data</legacyBold> -
-Caches index file information about the location of the framework member
-comments.  Comment file caches are language and version specific so multiple
-copies may be created based on the project language and framework version
-settings.  The name of the cache file is related to the language and framework
-version.</listItem>
+			<list class="bullet">
+				<listItem>
+					<para><legacyBold>Cached Framework Comments Index Data</legacyBold> - Caches index file information
+about the location of the framework member comments.  Comment file caches are language and version specific so
+multiple copies may be created based on the project language and framework version settings.  The name of the
+cache file is related to the language and framework version.</para>
+				</listItem>
 
-    <listItem><legacyBold>Cached Reflection Index Data</legacyBold> - Caches
-index file information about the location of the base .NET Framework members in
-the reflection data files.</listItem>
+				<listItem>
+					<para><legacyBold>Cached Reflection Index Data</legacyBold> - Caches index file information about the
+location of the base .NET Framework members in the reflection data files.</para>
+				</listItem>
 
-    <listItem><legacyBold>Cached MSDN URL References</legacyBold> - Caches
-resolved MSDN URLs for the <legacyBold>Resolve Reference Links</legacyBold>
-build component when any of the <codeInline>*SdkLinkType</codeInline> properties
-are set to <codeInline>MSDN</codeInline>. This saves it having to hit the web
-service in every build to get the same information.</listItem>
+				<listItem>
+					<para><legacyBold>Cached MSDN URL References</legacyBold> - Caches resolved MSDN URLs for the
+<legacyBold>Resolve Reference Links</legacyBold> build component when any of the <codeInline>*SdkLinkType</codeInline>
+properties are set to <codeInline>MSDN</codeInline>. This saves it having to hit the web service in every build
+to get the same information.</para>
+				</listItem>
 
-</list>
-    </introduction>
+			</list>
+		</introduction>
 
-<section>
-  <title>Component Usage</title>
-  <content><para>To use these components, select the <codeInline>ComponentConfigurations</codeInline>
-property in the project and add the three components noted above to your
-project.  The components contain no editable configuration options.  If using
-the build components in your own build scripts or with other build tools, see
-the <localUri>Example.config</localUri> file included with the standalone
-build component download for an example of how to add the components to the
-configuration file.</para>
+		<section>
+			<title>Component Usage</title>
+			<content>
+				<para>To use these components, select the <codeInline>Components</codeInline> property category in
+the project properties and add the three components noted above to your project.  The components contain no
+editable configuration options.  If using the build components in your own build scripts or with other build
+tools, see the configuration template files included with the help file builder for an example of how to add
+the components to your configuration file.</para>
 
-<alert class="note">
-  <para>You must perform at least one build with any project to create the
-comments and reflection data cache files. The MSDN URL cache is cumulative so
-you must perform at least one build with each project to which you add it so as
-to ensure that all URLs for the given project are in the cache.  Once built,
-you can find the cache files in the <localUri>.\Cache</localUri> folder located
-in the <localUri>EWSoftware\Sandcastle Help File Builder</localUri>
-folder in the <localUri>Local Application Data</localUri> folder.  Under
-Vista and Windows 7, the local application data folder is usually equivalent to
-the value of the <environmentVariable>%LOCALAPPDATA%</environmentVariable>
-environment variable value.  Under Windows XP, the equivalent is usually
-<environmentVariable>%USERPROFILE%\Local Settings\Application Data</environmentVariable>.
+				<alert class="note">
+					<para>You must perform at least one build with any project to create the comments and reflection data
+cache files. The MSDN URL cache is cumulative so you must perform at least one build with each project to which
+you add it so as to ensure that all URLs for the given project are in the cache.  Once built, you can find the
+cache files in the <localUri>.\Cache</localUri> folder located in the <localUri>EWSoftware\Sandcastle Help File
+Builder</localUri> folder in the <localUri>Local Application Data</localUri> folder.  Under Windows Vista and
+later, the local application data folder is usually equivalent to the value of the
+<environmentVariable>%LOCALAPPDATA%</environmentVariable> environment variable value.  Under Windows XP, the
+equivalent is usually <environmentVariable>%USERPROFILE%\Local Settings\Application Data</environmentVariable>.
 To rebuild the cache files, simply delete them from that location.</para>
-</alert>
+				</alert>
 
-  </content>
-</section>
+			</content>
+		</section>
 
-<section>
-  <title>Usage Benefits</title>
-  <content><para>These are some observations made by using the three components
-in various projects:</para>
+		<section>
+			<title>Usage Benefits</title>
+			<content>
+				<para>These are some observations made by using the three components in various projects:</para>
 
-<list class="bullet">
-    <listItem>The first two provide the least benefit and are fairly consistent in
-the amount of time saved. They benefit small projects with shorter build times
-the most and, to a certain extent, can be used to offset the rather lengthy
-initialization time of the Resolve Reference Links component.  Nothing could
-be done to shorten its startup time unfortunately (see below).</listItem>
+				<list class="bullet">
+					<listItem>
+						<para>The first two provide the least benefit and are fairly consistent in the amount of time saved.
+They benefit small projects with shorter build times the most and, to a certain extent, can be used to offset the
+rather lengthy initialization time of the Resolve Reference Links component.  Nothing could be done to shorten
+its startup time unfortunately (see below).</para>
+					</listItem>
 
-    <listItem>The cached MSDN URL component can provide a huge performance
-increase.  This will be most evident in control libraries in which the classes
-are derived from Windows Forms or web controls which have a large number of
-inherited members thus causing a spike in the number of MSDN lookups that
-occur.  Non-UI projects with base classes that are simpler result in fewer
-lookups and benefit less.</listItem>
+					<listItem>
+						<para>The cached MSDN URL component can provide a huge performance increase.  This will be most
+evident in control libraries in which the classes are derived from Windows Forms or web controls which have a
+large number of inherited members thus causing a spike in the number of MSDN lookups that occur.  Non-UI projects
+with base classes that are simpler result in fewer lookups and benefit less.</para>
+					</listItem>
 
-    <listItem>Using the cached MSDN URL component is, after the initial build,
-almost equivalent to setting the <codeInline>*SdkLinkType</codeInline> property
-to <codeInline>None</codeInline>/<codeInline>Index</codeInline>/<codeInline>Id</codeInline>
- in regards to build time but adds the benefit of keeping the actual online
-links in place.</listItem>
+					<listItem>
+						<para>Using the cached MSDN URL component is, after the initial build, almost equivalent to setting
+the <codeInline>*SdkLinkType</codeInline> property to
+<codeInline>None</codeInline>/<codeInline>Index</codeInline>/<codeInline>Id</codeInline> in regards to build time
+but adds the benefit of keeping the actual online links in place.</para>
+					</listItem>
 
-    <listItem>That said, the larger the project the less benefit you may see.
-For example, if your project contains 10,000+ topics, it is already going to
-run pretty long and the few minutes saved by the cached URLs may end up making
-little difference in the end.</listItem>
-</list>
+					<listItem>
+						<para>That said, the larger the project the less benefit you may see.  For example, if your project
+contains 10,000+ topics, it is already going to run pretty long and the few minutes saved by the cached URLs may
+end up making little difference in the end.</para>
+					</listItem>
+				</list>
 
-<para>An attempt was made to try to cache the index information generated when
-the Resolve Reference Links component initializes but in that case, the
-information is much more complex and there is so much of it that there was a
-negative impact on performance.  As such, it must still load the index
-information in the normal fashion when it starts.  As noted, you can use the
-first two cached build components to offset that somewhat.</para>
+				<para>An attempt was made to try to cache the index information generated when the Resolve Reference
+Links component initializes but in that case, the information is much more complex and there is so much of it
+that there was a negative impact on performance.  As such, it must still load the index information in the normal
+fashion when it starts.  As noted, you can use the first two cached build components to offset that somewhat.</para>
 
-  </content>
-</section>
+			</content>
+		</section>
 
-<section>
-  <title>Example Configurations</title>
-  <content><para>The examples given below are taken from the Sandcastle Help
-File Builder's configuration file templates.  When used with it, you may
-specify various replacement tags such as <codeInline>{@SHFBFolder}</codeInline>,
-and <codeInline>{@LocalDataFolder}</codeInline> to insert special folder and
-project option values into the configuration at build time. If using the
-component in your own build scripts, replace the tags with an actual absolute
-or relative path or an appropriate option value.  The
-<codeInline>{@ProjectLinks}</codeInline> option should be replaced with
-<codeInline>None</codeInline>, <codeInline>Local</codeInline>, or
-<codeInline>Index</codeInline> based on your preferred link type and help file
-format.  The <codeInline>{@SdkLinkType}</codeInline> option should be replaced
-with <codeInline>None</codeInline>, <codeInline>Index</codeInline>,
-<codeInline>Id</codeInline>, or <codeInline>Msdn</codeInline> based on your
+		<section>
+			<title>Example Configurations</title>
+			<content>
+				<para>The examples given below are taken from the Sandcastle Help File Builder's configuration file
+templates.  When used with it, you may specify various replacement tags such as <codeInline>{@SHFBFolder}</codeInline>,
+and <codeInline>{@LocalDataFolder}</codeInline> to insert special folder and project option values into the
+configuration at build time. If using the component in your own build scripts, replace the tags with an actual
+absolute or relative path or an appropriate option value.  The <codeInline>{@ProjectLinks}</codeInline> option
+should be replaced with <codeInline>None</codeInline>, <codeInline>Local</codeInline>, or
+<codeInline>Index</codeInline> based on your preferred link type and help file format.  The
+<codeInline>{@SdkLinkType}</codeInline> option should be replaced with <codeInline>None</codeInline>,
+<codeInline>Index</codeInline>, <codeInline>Id</codeInline>, or <codeInline>Msdn</codeInline> based on your
 preferred link type and help file format.</para>
 
-<para>When documenting a .NET 3.0 or .NET 3.5 assembly, there are several
-framework comments files.  You can add additional <codeInline>cache</codeInline>
-elements specifying the additional framework comments files.  Be sure to give
-each <codeInline>cacheFile</codeInline> attribute a unique name.</para>
+				<para>When documenting a .NET 3.0 or later assembly, there are several framework comments files.  You can
+add additional <codeInline>cache</codeInline> elements specifying the additional framework comments files.  Be
+sure to give each <codeInline>cacheFile</codeInline> attribute a unique name.</para>
 
-<code lang="xml" title="Cached Reflection Index Data Example">
+<code language="xml" title="Cached Reflection Index Data Example">
 &lt;!-- Cached Reflection Index Data component.  This should replace
      the first instance of the CopyFromIndexComponent. --&gt;
 &lt;component id="Cached Reflection Index Data"
@@ -138,7 +132,7 @@ each <codeInline>cacheFile</codeInline> attribute a unique name.</para>
 &lt;/component&gt;
 </code>
 
-<code lang="xml" title="Cached Framework Comments Index Data Example">
+<code language="xml" title="Cached Framework Comments Index Data Example">
 &lt;!-- Cached Framework Comments Index Data component.  This should
      replace the third instance of the CopyFromIndexComponent. --&gt;
 &lt;component id="Cached Framework Comments Index Data"
@@ -156,7 +150,7 @@ each <codeInline>cacheFile</codeInline> attribute a unique name.</para>
 &lt;/component&gt;
 </code>
 
-<code lang="xml" title="Cached MSDN URL References Example">
+<code language="xml" title="Cached MSDN URL References Example">
 &lt;!-- Cached MSDN URL references component.  This should replace
      the standard ResolveReferenceLinksComponent2 build component. --&gt;
 &lt;component id="Cached MSDN URL References"
@@ -169,13 +163,12 @@ each <codeInline>cacheFile</codeInline> attribute a unique name.</para>
     &lt;targets files="reflection.xml" type="{@ProjectLinkType}" /&gt;
 &lt;/component&gt;
 </code>
+			</content>
+		</section>
 
-  </content>
-</section>
+		<relatedTopics>
+			<link xlink:href="8dcbb69b-7a1a-4049-8e6b-2bf344efbbc9" />
+		</relatedTopics>
 
-    <relatedTopics>
-    <link xlink:href="8dcbb69b-7a1a-4049-8e6b-2bf344efbbc9" />
-    </relatedTopics>
-
-  </developerConceptualDocument>
+	</developerConceptualDocument>
 </topic>

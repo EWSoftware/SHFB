@@ -567,7 +567,13 @@ namespace SandcastleBuilder.WPF.Maml
 
             if(!String.IsNullOrEmpty(imageInfo.Key) && File.Exists(imageInfo.Key))
             {
-                var bm = new BitmapImage(new Uri(imageInfo.Key));
+                var bm = new BitmapImage();
+
+                // Cache on load to prevent it locking the image
+                bm.BeginInit();
+                bm.CacheOption = BitmapCacheOption.OnLoad;
+                bm.UriSource = new Uri(imageInfo.Key);
+                bm.EndInit();
 
                 // Use the actual image size to mimic the HTML layout
                 image.Height = bm.Height;
@@ -655,7 +661,13 @@ namespace SandcastleBuilder.WPF.Maml
 
             if(!String.IsNullOrEmpty(imageInfo.Key) && File.Exists(imageInfo.Key))
             {
-                var bm = new BitmapImage(new Uri(imageInfo.Key));
+                var bm = new BitmapImage();
+
+                // Cache on load to prevent it locking the image
+                bm.BeginInit();
+                bm.CacheOption = BitmapCacheOption.OnLoad;
+                bm.UriSource = new Uri(imageInfo.Key);
+                bm.EndInit();
 
                 // Use the actual image size to mimic the HTML layout
                 image.Height = bm.Height;

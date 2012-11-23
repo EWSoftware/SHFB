@@ -23,7 +23,7 @@ the help file.</para>
 <section>
   <content>
 
-<code lang="none" title=" ">
+<code language="none" title=" ">
 &lt;@CopyrightInfo/&gt;
 &lt;@FeedbackEMailAddress/&gt;
 
@@ -56,7 +56,7 @@ files.</para>
 	<para>To include shared content items such as the header, preliminary message, comments, copyright, or footer,
 use an include item as in this example:</para>
 
-<code lang="xml" title=" ">
+<code language="xml" title=" ">
 &lt;include item="header"/&gt;
 &lt;include item="preliminary"/&gt;
 &lt;include item="footer"/&gt;

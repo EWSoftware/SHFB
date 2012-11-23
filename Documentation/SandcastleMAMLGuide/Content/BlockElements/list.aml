@@ -42,18 +42,18 @@ attribute that can be used to link to a specific list item from another location
       <title>Example</title>
       <content>
 <code language="xml" title=" ">
-&lt;para&gt;This link takes you to &lt;link xlink:href=&quot;#SubItem2&quot;&gt;Sub-Item #2&lt;/link&gt;.&lt;/para&gt;
+&lt;para&gt;This link takes you to &lt;link xlink:href="#SubItem2"&gt;Sub-Item #2&lt;/link&gt;.&lt;/para&gt;
 
-&lt;list class=&quot;bullet&quot;&gt;
+&lt;list class="bullet"&gt;
   &lt;listItem&gt;&lt;para&gt;Item 1&lt;/para&gt;&lt;/listItem&gt;
   &lt;listItem&gt;&lt;para&gt;Item 2&lt;/para&gt;&lt;/listItem&gt;
   &lt;listItem&gt;&lt;para&gt;Item 3&lt;/para&gt;&lt;/listItem&gt;
   &lt;listItem&gt;&lt;para&gt;Item 4 - This has an nested
 &lt;codeInline&gt;ordered&lt;/codeInline&gt; list.&lt;/para&gt;
 
-	&lt;list class=&quot;ordered&quot;&gt;
+	&lt;list class="ordered"&gt;
 	  &lt;listItem&gt;&lt;para&gt;Sub-Item 1&lt;/para&gt;&lt;/listItem&gt;
-	  &lt;listItem address=&quot;SubItem2&quot;&gt;&lt;para&gt;Sub-Item 2 - This has an
+	  &lt;listItem address="SubItem2"&gt;&lt;para&gt;Sub-Item 2 - This has an
 &lt;codeInline&gt;address&lt;/codeInline&gt; attribute and can be used as a
 link target.&lt;/para&gt;&lt;/listItem&gt;
 	  &lt;listItem&gt;&lt;para&gt;Sub-Item 3&lt;/para&gt;&lt;/listItem&gt;
@@ -61,7 +61,7 @@ link target.&lt;/para&gt;&lt;/listItem&gt;
 	  &lt;listItem&gt;&lt;para&gt;Sub-Item 5 - This has a nested
 &lt;codeInline&gt;nobullet&lt;/codeInline&gt; list.&lt;/para&gt;
 
-		&lt;list class=&quot;nobullet&quot;&gt;
+		&lt;list class="nobullet"&gt;
 		  &lt;listItem&gt;&lt;para&gt;No-bullet item 1&lt;/para&gt;&lt;/listItem&gt;
 		  &lt;listItem&gt;&lt;para&gt;No-bullet item 2&lt;/para&gt;&lt;/listItem&gt;
 		  &lt;listItem&gt;&lt;para&gt;No-bullet item 3&lt;/para&gt;&lt;/listItem&gt;

@@ -39,23 +39,6 @@
     <SyntaxFilters>CSharp, VisualBasic</SyntaxFilters>
     <HelpFileVersion>1.9.5.0</HelpFileVersion>
     <ComponentConfigurations>
-      <ComponentConfig id="Post-transform Component" enabled="True">
-        <component type="SandcastleBuilder.Components.PostTransformComponent" assembly="{@SHFBFolder}SandcastleBuilder.Components.dll" id="Post-transform Component">
-          <!-- Code colorizer files (required).
-                 Attributes:
-                    Stylesheet file (required)
-                    Script file (required)
-                    "Copy code" image file (required) -->
-          <colorizer stylesheet="{@SHFBFolder}Colorizer\highlight.css" scriptFile="{@SHFBFolder}Colorizer\highlight.js" copyImage="{@SHFBFolder}Colorizer\CopyCode.gif" />
-          <!-- Output path for the files (required).  This should match the
-                 output path of the HTML files (see SaveComponent below). -->
-          <outputPaths>{@HelpFormatOutputPaths}</outputPaths>
-          <!-- Logo image file (optional).  Filename is required. The height,
-                 width, altText, placement, and alignment attributes are
-                 optional. -->
-          <logoFile filename="{@ProjectFolder}..\..\SHFB\Source\SandcastleBuilderGUI\Images\Sandcastle.jpg" height="68" width="70" altText="Sandcastle Help File Builder" placement="left" alignment="left" />
-        </component>
-      </ComponentConfig>
       <ComponentConfig id="Cached Framework Comments Index Data" enabled="True">
         <component id="Cached Framework Comments Index Data" type="SandcastleBuilder.Components.CachedCopyFromIndexComponent" assembly="{@SHFBFolder}SandcastleBuilder.Components.dll">
           <index name="comments" value="/doc/members/member" key="@name" cache="100">
@@ -104,34 +87,35 @@
     </DocumentationSources>
     <NamespaceSummaries>
       <NamespaceSummaryItem name="(global)" isDocumented="False" />
-      <NamespaceSummaryItem name="SandcastleBuilder.Components" isDocumented="True">This namespace contains custom build components used by the Sandcastle tools &lt;b&gt;MRefBuilder&lt;/b&gt; and &lt;b&gt;BuildAssembler&lt;/b&gt;.  The &lt;b&gt;MRefBuilder&lt;/b&gt; components are used to add features such as assembly binding redirection when generating reflection information.  The &lt;b&gt;BuildAssembler&lt;/b&gt; components are used to add additional features to the help topics such as a logo, code colorization, warnings that indicate missing documentation elements, etc.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="SandcastleBuilder.PlugIns" isDocumented="True">This namespace contains the plug-ins supplied with the Sandcastle Help File Builder.  These can be used in a project to extend or alter the build process in various ways such as supporting build completion notification, deployment, and generating documentation with AjaxDoc.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="SandcastleBuilder.Utils" isDocumented="True">This namespace contains various utility classes and the help file builder project classes.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="SandcastleBuilder.Utils.BuildComponent" isDocumented="True">This namespace contains the classes used to manage the configurations for third-party build components that can be merged into the sandcastle.config configuration file.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="SandcastleBuilder.Utils.ConceptualContent" isDocumented="True">This namespace contains classes related to conceptual content items.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="SandcastleBuilder.Utils.Controls" isDocumented="True">This namespace contains various control classes.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="SandcastleBuilder.Utils.Design" isDocumented="True">This namespace contains various designer classes.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="SandcastleBuilder.Utils.Gac" isDocumented="True">This namespace contains a couple of classes used to interact with the GAC and to load assemblies in an alternate application domain.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="SandcastleBuilder.Utils.InheritedDocumentation" isDocumented="True">This namespace contains classes related to indexing comments files used when generating inherited documentation.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="SandcastleBuilder.Utils.PlugIn" isDocumented="True">This namespace contains the classes used to create plug-ins for use with the Sandcastle Help File Builder build process.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="SandcastleBuilder.Utils.XPath" isDocumented="True">This namespace contains some classes that extend XPath queries with some custom functions used in the API filter editor.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="SandcastleBuilder.HtmlExtract" isDocumented="True">This namespace contains documentation for the console mode application used to extract title and keyword information from HTML files for use in creating the CHM table of contents and keyword index files.  The application supports running as an MSBuild task.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="SandcastleBuilder.Utils.BuildEngine" isDocumented="True">This namespace contains the classes related to the build engine.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="SandcastleBuilder.Utils.Conversion" isDocumented="True">This namespace contains classes used to convert projects in other formats to the latest MSBuild project format used by the help file builder.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="SandcastleBuilder.Utils.MSBuild" isDocumented="True">This namespace contains MSBuild related classes such as tasks and project file wrappers.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="SandcastleBuilder.Gui" isDocumented="True">This namespace contains the classes for the GUI help file builder and project manager.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="SandcastleBuilder.Gui.ContentEditors" isDocumented="True">This namespace contains content editors used to edit the conceptual content items in the GUI.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="SandcastleBuilder.InheritedDocumentation" isDocumented="True">This namespace contains documentation for the console mode application used to generate inherited documentation.  The application supports running as an MSBuild task.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="SandcastleBuilder.MicrosoftHelpViewer" isDocumented="True">This namespace contains classes related to the Microsoft Help Viewer help file format.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="SandcastleBuilder.WPF" isDocumented="True">This namespace contains common classes used by the WPF user controls.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="SandcastleBuilder.WPF.Behaviors" isDocumented="True">This namespace contains behavior classes used by the WPF user controls.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="SandcastleBuilder.WPF.Commands" isDocumented="True">This namespace defines new commands used by the help file builder WPF user controls.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="SandcastleBuilder.WPF.Controls" isDocumented="True">This namespace contains WPF custom controls.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="SandcastleBuilder.WPF.UserControls" isDocumented="True">This namespace contains a set of WPF user controls used by both the standalone GUI and the Visual Studio package to provide a consistent set of features and functionality to the file editors and tool windows used in both.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="XamlGeneratedNamespace" isDocumented="False" />
-      <NamespaceSummaryItem name="SandcastleBuilder.Utils.Frameworks" isDocumented="True">This namespace contains classes used to load and work with the Sandcastle &lt;i&gt;Frameworks.xml&lt;/i&gt; file that defines assembly information for the various .NET Frameworks.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="SandcastleBuilder.WPF.Maml" isDocumented="True">This namespace contains various classes used to convert MAML topics to WPF flow documents for previewing.</NamespaceSummaryItem>
-    </NamespaceSummaries>
+<NamespaceSummaryItem name="SandcastleBuilder.Components" isDocumented="True">This namespace contains custom build components used by the Sandcastle tools &lt;b&gt;MRefBuilder&lt;/b&gt; and &lt;b&gt;BuildAssembler&lt;/b&gt;.  The &lt;b&gt;MRefBuilder&lt;/b&gt; components are used to add features such as assembly binding redirection when generating reflection information.  The &lt;b&gt;BuildAssembler&lt;/b&gt; components are used to add additional features to the help topics such as a logo, code colorization, warnings that indicate missing documentation elements, etc.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="SandcastleBuilder.PlugIns" isDocumented="True">This namespace contains the plug-ins supplied with the Sandcastle Help File Builder.  These can be used in a project to extend or alter the build process in various ways such as supporting build completion notification, deployment, and generating documentation with AjaxDoc.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="SandcastleBuilder.Utils" isDocumented="True">This namespace contains various utility classes and the help file builder project classes.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="SandcastleBuilder.Utils.BuildComponent" isDocumented="True">This namespace contains the classes used to manage the configurations for third-party build components that can be merged into the sandcastle.config configuration file.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="SandcastleBuilder.Utils.ConceptualContent" isDocumented="True">This namespace contains classes related to conceptual content items.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="SandcastleBuilder.Utils.Controls" isDocumented="True">This namespace contains various control classes.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="SandcastleBuilder.Utils.Design" isDocumented="True">This namespace contains various designer classes.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="SandcastleBuilder.Utils.Gac" isDocumented="True">This namespace contains a couple of classes used to interact with the GAC and to load assemblies in an alternate application domain.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="SandcastleBuilder.Utils.InheritedDocumentation" isDocumented="True">This namespace contains classes related to indexing comments files used when generating inherited documentation.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="SandcastleBuilder.Utils.PlugIn" isDocumented="True">This namespace contains the classes used to create plug-ins for use with the Sandcastle Help File Builder build process.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="SandcastleBuilder.Utils.XPath" isDocumented="True">This namespace contains some classes that extend XPath queries with some custom functions used in the API filter editor.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="SandcastleBuilder.HtmlExtract" isDocumented="True">This namespace contains documentation for the console mode application used to extract title and keyword information from HTML files for use in creating the CHM table of contents and keyword index files.  The application supports running as an MSBuild task.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="SandcastleBuilder.Utils.BuildEngine" isDocumented="True">This namespace contains the classes related to the build engine.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="SandcastleBuilder.Utils.Conversion" isDocumented="True">This namespace contains classes used to convert projects in other formats to the latest MSBuild project format used by the help file builder.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="SandcastleBuilder.Utils.MSBuild" isDocumented="True">This namespace contains MSBuild related classes such as tasks and project file wrappers.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="SandcastleBuilder.Gui" isDocumented="True">This namespace contains the classes for the GUI help file builder and project manager.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="SandcastleBuilder.Gui.ContentEditors" isDocumented="True">This namespace contains content editors used to edit the conceptual content items in the GUI.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="SandcastleBuilder.InheritedDocumentation" isDocumented="True">This namespace contains documentation for the console mode application used to generate inherited documentation.  The application supports running as an MSBuild task.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="SandcastleBuilder.MicrosoftHelpViewer" isDocumented="True">This namespace contains classes related to the Microsoft Help Viewer help file format.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="SandcastleBuilder.WPF" isDocumented="True">This namespace contains common classes used by the WPF user controls.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="SandcastleBuilder.WPF.Behaviors" isDocumented="True">This namespace contains behavior classes used by the WPF user controls.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="SandcastleBuilder.WPF.Commands" isDocumented="True">This namespace defines new commands used by the help file builder WPF user controls.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="SandcastleBuilder.WPF.Controls" isDocumented="True">This namespace contains WPF custom controls.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="SandcastleBuilder.WPF.UserControls" isDocumented="True">This namespace contains a set of WPF user controls used by both the standalone GUI and the Visual Studio package to provide a consistent set of features and functionality to the file editors and tool windows used in both.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="XamlGeneratedNamespace" isDocumented="False" />
+<NamespaceSummaryItem name="SandcastleBuilder.Utils.Frameworks" isDocumented="True">This namespace contains classes used to load and work with the Sandcastle &lt;i&gt;Frameworks.xml&lt;/i&gt; file that defines assembly information for the various .NET Frameworks.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="SandcastleBuilder.WPF.Maml" isDocumented="True">This namespace contains various classes used to convert MAML topics to WPF flow documents for previewing.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="SandcastleBuilder.Package.PropertyPages" isDocumented="True">This namespace contains property pages for the Visual Studio package.  The property pages are also used by the standalone GUI.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="SandcastleBuilder.Utils.PresentationStyle" isDocumented="True">This namespace contains classes used to load and work with the presentation style configuration files that define the supported presentation styles used for the build.</NamespaceSummaryItem></NamespaceSummaries>
     <CleanIntermediates>True</CleanIntermediates>
     <ApiFilter>
       <Filter entryType="Namespace" fullName="ColorizerLibrary" isExposed="False" />
@@ -174,6 +158,18 @@
     <Language>en-US</Language>
     <ContentPlacement>AboveNamespaces</ContentPlacement>
     <BuildAssemblerVerbosity>OnlyWarningsAndErrors</BuildAssemblerVerbosity>
+    <TransformComponentArguments>
+      <Argument Key="logoFile" Value="Sandcastle.jpg" />
+      <Argument Key="logoHeight" Value="68" />
+      <Argument Key="logoWidth" Value="70" />
+      <Argument Key="logoAltText" Value="Sandcastle Help File Builder" />
+      <Argument Key="logoPlacement" Value="left" />
+      <Argument Key="logoAlignment" Value="left" />
+    </TransformComponentArguments>
+    <WebsiteSdkLinkType>Msdn</WebsiteSdkLinkType>
+    <HtmlSdkLinkType>Msdn</HtmlSdkLinkType>
+    <IncludeFavorites>False</IncludeFavorites>
+    <BinaryTOC>True</BinaryTOC>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in
        order for Visual Studio to perform the build.  The others are optional
@@ -217,10 +213,23 @@
     <Folder Include="Content\ProjectExplorer\" />
     <Folder Include="Content\ErrorsAndWarnings\Converters\" />
     <Folder Include="Media\" />
+    <Folder Include="Icons" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Content\BenefitsAndFeatures.aml" />
     <None Include="Content\CompConfig\APITokenResolution.aml" />
+    <None Include="Content\CustomPresentationStyle.aml" />
+    <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0071.aml" />
+    <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0072.aml" />
+    <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0073.aml" />
+    <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0074.aml" />
     <None Include="Content\GettingStarted\AttachedPropsEvents.aml" />
+    <None Include="Content\PresentationStyleWalkthrough.aml" />
+    <None Include="Content\PropertiesWindow\ComponentConfigs.aml" />
+    <None Include="Content\PropertiesWindow\PlugInConfigs.aml" />
+    <None Include="Content\PropertiesWindow\SigningContent.aml" />
+    <None Include="Content\PropertiesWindow\TransformComponentArgs.aml" />
+    <None Include="Content\PropertiesWindow\UserDefinedProps.aml" />
     <None Include="Content\TopicPreviewerWindow.aml" />
     <None Include="Content\VersionHistory\v1.9.3.1.aml" />
     <None Include="Content\VersionHistory\v1.9.3.2.aml" />
@@ -228,6 +237,7 @@
     <None Include="Content\VersionHistory\v1.9.3.4.aml" />
     <None Include="Content\VersionHistory\v1.9.4.0.aml" />
     <None Include="Content\VersionHistory\v1.9.5.0.aml" />
+    <None Include="Content\VersionHistory\v1.9.6.0.aml" />
     <None Include="Content\VisualStudio\ItemFileTemplates.aml" />
     <None Include="Content\VisualStudio\FeatureComparison.aml" />
     <None Include="Content\VisualStudio\VisualStudioPackage.aml" />
@@ -391,7 +401,6 @@
     <None Include="Content\CompConfig\CompConfigFile.aml" />
     <None Include="Content\CompConfig\IntelliSenseComponent.aml" />
     <None Include="Content\CompConfig\MSHelpAttrComponent.aml" />
-    <None Include="Content\CompConfig\PostTransformComponent.aml" />
     <None Include="Content\CompConfig\ShowMissingComponent.aml" />
     <None Include="Content\GettingStarted\CreateProject.aml" />
     <None Include="Content\GettingStarted\InheritDoc.aml" />
@@ -476,13 +485,17 @@
     <None Include="Content\VersionHistory\v1.8.0.3.aml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Icons\Sandcastle.jpg">
+      <ImageId>Sandcastle</ImageId>
+      <AlternateText>Sandcastle</AlternateText>
+    </Content>
     <Image Include="Media\ApiFilter.png">
       <ImageId>ApiFilter</ImageId>
       <AlternateText>API Filter</AlternateText>
     </Image>
     <Image Include="Media\CompConfig.png">
       <ImageId>CompConfig</ImageId>
-      <AlternateText>Build Component Configuration Dialog</AlternateText>
+      <AlternateText>Build component configuration property page</AlternateText>
     </Image>
     <Image Include="Media\ContentLayoutEditor.png">
       <ImageId>ContentLayoutEditor</ImageId>
@@ -502,7 +515,7 @@
     </Image>
     <Image Include="Media\PlugInConfig.png">
       <ImageId>PlugInConfig</ImageId>
-      <AlternateText>Plug-In Configuration Dialog</AlternateText>
+      <AlternateText>Plug-in configurations property page</AlternateText>
     </Image>
     <Image Include="Media\ProjectExplorer.png">
       <ImageId>ProjectExplorer</ImageId>
@@ -525,10 +538,6 @@
       <AlternateText>Make donations with PayPal - It's fast, free and secure!</AlternateText>
       <CopyToMedia>False</CopyToMedia>
     </Content>
-    <Image Include="Media\Sandcastle.jpg">
-      <ImageId>Sandcastle</ImageId>
-      <AlternateText>Sandcastle Help File Builder</AlternateText>
-    </Image>
     <Image Include="Media\TokenFileEditor.png">
       <ImageId>TokenFileEditor</ImageId>
       <AlternateText>Token File Editor</AlternateText>
@@ -536,6 +545,14 @@
     <Image Include="Media\TopicPreviewer.png">
       <ImageId>TopicPreviewer</ImageId>
       <AlternateText>Topic Previewer</AlternateText>
+    </Image>
+    <Image Include="Media\TransformArgsPropPage.png">
+      <ImageId>TransformArgsPropPage</ImageId>
+      <AlternateText>Transform Component arguments property page</AlternateText>
+    </Image>
+    <Image Include="Media\UserDefinedProps.png">
+      <ImageId>UserDefinedProps</ImageId>
+      <AlternateText>User Defined Props</AlternateText>
     </Image>
     <Image Include="Media\VSAddNewItemDlg.png">
       <ImageId>VSAddNewItemDlg</ImageId>

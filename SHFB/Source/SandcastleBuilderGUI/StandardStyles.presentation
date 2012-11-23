@@ -3,7 +3,7 @@
 <PresentationStyles>
 	<!-- This defines a presentation style.  The ID attribute uniquely identifies the presentation style.  The
 			 Title attribute defines a friendly name that can be used in development tools.  The BasePath attribute
-			 defines the base base folder location for the content files.
+			 defines the base base folder location for the presentation style's files.
 
 			 Throughout the file, all file and folder path values support environment variables which will be expanded
 			 at runtime.  If relative, the BasePath value will be considered relative to the presentation style file's
