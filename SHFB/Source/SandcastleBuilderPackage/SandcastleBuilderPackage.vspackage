@@ -126,6 +126,13 @@
               </groupBaseReferencesButtons>
             </buttons>
           </group>
+          <group Id="a6ce26fe-de18-4496-8b5a-309c27d2a9a2" name="SHFBEditorCommandGroup" idNumeric="51" priority="3840">
+            <buttons>
+              <groupBaseReferencesButtons Id="8c152e09-9deb-438e-b9f4-211bdcb40b45">
+                <buttonMoniker Id="9bf37359-0e7b-4b4a-a241-046935d2c5f7" />
+              </groupBaseReferencesButtons>
+            </buttons>
+          </group>
         </groups>
         <buttons>
           <commandTableHasButtons Id="7e6fddcd-7e27-45c0-8fa4-199338d4700c">
@@ -175,6 +182,9 @@
           </commandTableHasButtons>
           <commandTableHasButtons Id="ce8b783b-6735-401e-b58f-c28a31b5062a">
             <button Id="98ef1de5-0d65-4901-a7d5-b2f4daa6563e" name="LaunchContentMgr" idNumeric="49" buttonText="Lau&amp;nch Help Viewer 2.0 Content Manager" menuText="Lau&amp;nch Help Viewer 2.0 Content Manager" commandName="cmdidLaunchContentMgr" toolTipText="Lau&amp;nch Help Viewer 2.0 Content Manager" mod1="0" mod2="0" visibilityConstraints="0" priority="258" icon="HelpContentManager.bmp" commandFlags="DefaultInvisible, DynamicVisibility" sampleData="false" />
+          </commandTableHasButtons>
+          <commandTableHasButtons Id="165c2b93-c4b7-4ca5-89f1-a62ab5a2de23">
+            <button Id="9bf37359-0e7b-4b4a-a241-046935d2c5f7" name="HtmlEncode" idNumeric="50" buttonText="HTML Encode Selected Text" menuText="HTML Encode Selected Text" commandName="cmdidHtmlEncode" toolTipText="HTML encode the selected text" mod1="0" mod2="0" visibilityConstraints="0" icon="HtmlEncode.bmp" commandFlags="0" sampleData="false" />
           </commandTableHasButtons>
         </buttons>
         <menuBases>
@@ -285,6 +295,24 @@
               <groupBases>
                 <menuBaseReferencesGroupBases Id="f3139b1a-a041-4afc-a903-97b81d92aa97">
                   <groupMoniker Id="b90c2061-5c8f-4029-ab9f-3f869c072e01" />
+                </menuBaseReferencesGroupBases>
+              </groupBases>
+            </externalMenu>
+          </commandTableHasMenuBases>
+          <commandTableHasMenuBases Id="8d66c41b-0a3a-48c1-9432-687f56dcaa83">
+            <externalMenu Id="ce33755a-f750-417f-bb14-07a0c6e701d7" name="Context Menu | Editor" idNumeric="52" parentData="guidSHLMainMenu,IDM_VS_CTXT_CODEWIN,Menu">
+              <groupBases>
+                <menuBaseReferencesGroupBases Id="7196e4b6-2a7f-4e20-b2e1-8898c5575355">
+                  <groupMoniker Id="a6ce26fe-de18-4496-8b5a-309c27d2a9a2" />
+                </menuBaseReferencesGroupBases>
+              </groupBases>
+            </externalMenu>
+          </commandTableHasMenuBases>
+          <commandTableHasMenuBases Id="df2d49c3-42c2-4f15-8ec1-4b3ce95808c0">
+            <externalMenu Id="acc490c5-1b62-4c3d-b96f-82e2efc514dd" name="Custom" idNumeric="53" parentData="guidVSHtmlEditor,IDMX_HTM_SOURCE_HTML,Menu">
+              <groupBases>
+                <menuBaseReferencesGroupBases Id="cd1dcd3d-dd98-4f01-88cb-4f66e9991fd6">
+                  <groupMoniker Id="a6ce26fe-de18-4496-8b5a-309c27d2a9a2" />
                 </menuBaseReferencesGroupBases>
               </groupBases>
             </externalMenu>

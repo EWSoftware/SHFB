@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="7cbf7f9b-d456-430a-8f85-9e30ed250cfa" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>The Visual Studio text editor is feature rich and very little needed to be added in the way of extra
+features to support the Sandcastle Help File Builder.  The following sections describe the built-in features that
+you can take advantage of as well as a couple of extra additions added by the help file builder's integration
+package.</para>
+
+			<autoOutline lead="none" excludeRelatedTopics="true" />
+		</introduction>
+
+		<section address="StandardFeatures">
+			<title>IntelliSense for the MAML Schema</title>
+			<content>
+				<para>When editing MAML topics, you can take advantage of IntelliSense to help you enter the MAML
+elements, their attributes, and attribute values.  In order to do this, use the option in the guided installer
+to install the MAML schemas in the Visual Studio IntelliSense cache.  If you did not do it when you first
+installed the tools, you can re-run the installer and skip down to the step that installs them.</para>
+			</content>
+		</section>
+
+		<section address="DragAndDrop">
+			<title>Drag and Drop</title>
+			<content>
+				<para>The text editor window also supports drag and drop operations from the <ui>Content Layout Editor</ui>
+and the <ui>Site Map Editor</ui>  to insert links to other topics in the project.  It also supports drag and
+drop from the <ui>Entity References Window</ui> to insert token references, image links, code entity reference
+inks, code snippet references, and table of contents links.</para>
+
+				<para>By default, links to MAML topics are inserted as self-closing link elements and will use the topic's
+title from the content layout file when converted to HTML at build-time.  If necessary, you can modify the link
+element to specify inner text which will be used instead of the title text.</para>
+			</content>
+		</section>
+
+		<section address="HTMLEncoding">
+			<title>HTML Encoding Selected Text</title>
+			<content>
+				<para>When editing MAML topics and other XML files, you will see an extra option on the text editor's
+context menu: <ui>HTML Encode Selected Text</ui>.  It is only enabled when there is selected text.  If selected
+from the context menu, it will HTML encode the selected text.  This is useful for the content of
+<codeInline>code</codeInline> elements.  You can paste text into the element and then use this option to encode
+it rather than editing the text by hand to encode the special characters.</para>
+			</content>
+		</section>
+
+		<section address="Snippets">
+			<title>MAML Snippets</title>
+			<content>
+				<para>When editing MAML topics, you can take advantage of snippets to insert various block and inline
+MAML elements.  This is useful if you are not yet familiar with the various common MAML elements or for quickly
+inserting block elements that have several parts like the <codeInline>externalLink</codeInline> element.  In
+order to do this, use the option in the guided installer to install the MAML snippets in the Visual Studio
+snippet cache.  If you did not do it when you first installed the tools, you can re-run the installer and skip
+down to the step that installs them.</para>
+
+				<para>To take advantage of the MAML snippets, use one of the following snippet insertion commands:</para>
+
+				<list class="bullet">
+					<listItem>
+						<para>Select <ui>Insert Snippet</ui> from the text editor context menu or press its shortcut key
+combination <ui>Ctrl+K, Ctrl+X</ui>.  This will allow you to insert a snippet at the selected location.</para>
+					</listItem>
+
+					<listItem>
+						<para>Certain elements support wrapping selected text within the snippet (i.e. the various
+inline elements).  To wrap the selected text in the snippet element, select <ui>Surround With</ui> from the text
+editor context menu or press its shortcut key combination <ui>Ctrl+K, Ctrl+S</ui>.</para>
+					</listItem>
+
+				</list>
+
+				<para>Regardless of the option chosen, an auto-completion pop-up will appear.  Select the <ui>My
+Xml Snippets</ui> option using either the down arrow key or by typing its name and pressing Enter or by
+double-clicking it with the mouse.  Repeat the process to select either the <ui>MAML Block Elements</ui> or
+<ui>MAML Inline Elements</ui> category.  The list of elements will then appear.  If you selected <ui>Insert
+Snippet</ui>, you will see the full list of available snippets in the selected category.  If you selected
+<ui>Surround With</ui>, the available elements are limited to those that can surround the selected text.
+Select the one you want by  using the down arrow key or typing its name and pressing Enter or double-clicking
+it with the mouse.</para>
+
+				<para>Certain snippets such as <codeInline>externalLink</codeInline> have replacement parameters.  In
+such cases, you will be placed on the first parameter and can type over its default value.  Press the Tab key to
+move between any subsequent parameters.  Hovering the mouse over a parameter location will give you a tooltip
+describing the parameter.  Press Enter when done to complete the process.</para>
+
+				<para>Refer to the Visual Studio documentation for information on adding your own custom snippets.</para>
+
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="b128ad2a-787e-48c7-b946-f6953080c386" />
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

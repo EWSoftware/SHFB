@@ -5,7 +5,7 @@
 	xmlns:asmv2="urn:schemas-microsoft-com:asm.v2"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
-	<assemblyIdentity version="1.1.0.1" name="SandcastleInstaller" />
+	<assemblyIdentity version="1.1.0.2" name="SandcastleInstaller" />
 
 	<trustInfo xmlns="urn:schemas-microsoft-com:asm.v2">
 		<security>

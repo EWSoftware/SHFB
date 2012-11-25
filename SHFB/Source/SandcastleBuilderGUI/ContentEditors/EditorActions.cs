@@ -1,39 +1,32 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder
 // File    : EditorActions.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/06/2009
-// Note    : Copyright 2008-2009, Eric Woodruff, All rights reserved
+// Updated : 11/23/2012
+// Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains various custom actions for the topic editor.
+// This file contains various custom actions for the topic editor
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.6.0.7  05/24/2008  EFW  Created the code
-//=============================================================================
+// 1.9.6.0  11/23/2012  EFW  Changed HTML encoding action so that it doesn't encode single and double quotes
+//===============================================================================================================
 
 using System;
-using System.ComponentModel;
 using System.Globalization;
-using System.IO;
-using System.Web;
+using System.Net;
 using System.Windows.Forms;
-
-using SandcastleBuilder.Utils;
-using SandcastleBuilder.Utils.ConceptualContent;
-using SandcastleBuilder.Utils.Design;
 
 using ICSharpCode.TextEditor;
 using ICSharpCode.TextEditor.Actions;
 using ICSharpCode.TextEditor.Document;
-using WeifenLuo.WinFormsUI.Docking;
 
 namespace SandcastleBuilder.Gui.ContentEditors
 {
@@ -183,8 +176,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// <summary>
         /// Execute the HTML Encode action
         /// </summary>
-        /// <param name="textArea">The text area in which to perform the
-        /// action</param>
+        /// <param name="textArea">The text area in which to perform the action</param>
         public override void Execute(TextArea textArea)
         {
             int offset = textArea.Caret.Offset;
@@ -195,8 +187,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
             {
                 selectedText = textArea.SelectionManager.SelectionCollection[0].SelectedText;
 
+                // HTML encode everything but single and double quotes as they're fine as-is
                 ContentEditorControl.InsertString(textArea,
-                    HttpUtility.HtmlEncode(selectedText));
+                    WebUtility.HtmlEncode(selectedText).Replace("&quot;", "\"").Replace("&#39;", "'"));
             }
         }
     }

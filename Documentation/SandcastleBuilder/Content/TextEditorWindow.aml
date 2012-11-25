@@ -4,9 +4,10 @@
     <introduction>
 			<alert class="note">
 				<para>This topic applies to the text editor in the standalone GUI.  The Visual Studio package utilizes
-the built-in XML file editor.  As such, it provides IntelliSense support for the MAML schema to make creating the
-documents easier provided you have installed them.  It is highly recommended that you do so using the Sandcastle
-Installer.  You can re-run it and skip forward to the step that installs the schemas if necessary.</para>
+the <link xlink:href="7cbf7f9b-d456-430a-8f85-9e30ed250cfa">built-in XML file editor</link>.  As such, it
+provides IntelliSense support for the MAML schema to make creating the documents easier provided you have
+installed them.  It is highly recommended that you do so using the Sandcastle Installer.  You can re-run it and
+skip forward to the step that installs the schemas if necessary.</para>
 			</alert>
 
       <para>The general text editor window is used for editing various file types such as MAML topics, HTML
@@ -177,6 +178,7 @@ text will automatically make the selected text the inner text of the link.</para
       <link xlink:href="54e3dc97-5125-441e-8e84-7f9303e95f26" />
       <link xlink:href="3dd5fe3b-1bc3-42e5-8900-56165e3f9aed" />
 			<link xlink:href="d3c7584d-73c0-4725-87f8-51e4ad956694" />
+			<link xlink:href="7cbf7f9b-d456-430a-8f85-9e30ed250cfa" />
 		</relatedTopics>
   </developerConceptualDocument>
 </topic>

@@ -2,7 +2,7 @@
 // System  : Sandcastle Guided Installation
 // File    : AssemblyInfo.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/06/2012
+// Updated : 11/25/2012
 // Compiler: Microsoft Visual C#
 //
 // Sandcastle Guided Installation application attributes.
@@ -54,4 +54,4 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Revision and Build Numbers
 // by using the '*' as shown below:
 
-[assembly: AssemblyVersion("1.1.0.1")]  // NOTE: Update app.manifest with this version number when it changes
+[assembly: AssemblyVersion("1.1.0.2")]  // NOTE: Update app.manifest with this version number when it changes

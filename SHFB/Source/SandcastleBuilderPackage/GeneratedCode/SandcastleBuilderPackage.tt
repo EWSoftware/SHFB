@@ -329,6 +329,11 @@
 	}
 #>
   <Symbols>
+	<!-- EFW - Added HTML editor symbols for encoding command placement. -->
+	<GuidSymbol name="guidVSHtmlEditor" value="{D7E8C5E1-BDB8-11d0-9C88-0000F8040A53}">
+		<IDSymbol name="IDMX_HTM_SOURCE_HTML" value="0x0033" />
+	</GuidSymbol>
+
     <!-- This is the package guid. -->
     <GuidSymbol name="guidPackage" value="{<#= this.Root.CommandTable.PackageGuid #>}" />
     

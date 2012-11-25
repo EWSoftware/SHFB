@@ -16,6 +16,10 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -87,6 +91,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="InstallerPages\MamlSnippetsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="InstallerPages\RequiredFrameworkPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -134,6 +142,9 @@
     <Compile Include="InstallerPages\IInstallerPage.cs" />
     <Compile Include="InstallerPages\MamlIntelliSensePage.xaml.cs">
       <DependentUpon>MamlIntelliSensePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="InstallerPages\MamlSnippetsPage.xaml.cs">
+      <DependentUpon>MamlSnippetsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="InstallerPages\RequiredFrameworkPage.xaml.cs">
       <DependentUpon>RequiredFrameworkPage.xaml</DependentUpon>

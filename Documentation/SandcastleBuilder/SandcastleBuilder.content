@@ -147,7 +147,7 @@
       </HelpKeywords>
     </Topic>
   </Topic>
-  <Topic id="b128ad2a-787e-48c7-b946-f6953080c386" visible="True" title="Visual Studio Integration Package">
+  <Topic id="b128ad2a-787e-48c7-b946-f6953080c386" visible="True" isExpanded="true" title="Visual Studio Integration Package">
     <HelpKeywords>
       <HelpKeyword index="K" term="Visual Studio, package" />
     </HelpKeywords>
@@ -161,6 +161,14 @@
       <HelpKeywords>
         <HelpKeyword index="K" term="Visual Studio, custom item file templates" />
         <HelpKeyword index="K" term="Visual Studio, item file templates" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="7cbf7f9b-d456-430a-8f85-9e30ed250cfa" visible="True" isSelected="true" title="Visual Studio Text Editor">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Visual Studio, text editor" />
+        <HelpKeyword index="K" term="Visual Studio, IntelliSense" />
+        <HelpKeyword index="K" term="Visual Studio, snippets" />
+        <HelpKeyword index="K" term="Visual Studio, HTML encoding text" />
       </HelpKeywords>
     </Topic>
   </Topic>
@@ -1366,7 +1374,7 @@
       <HelpKeyword index="K" term="History" />
       <HelpKeyword index="K" term="Version History" />
     </HelpKeywords>
-    <Topic id="4bc61ac3-ac19-4c8b-9ff9-95aaefa0b18e" visible="True" isSelected="true" title="Version 1.9.6.0">
+    <Topic id="4bc61ac3-ac19-4c8b-9ff9-95aaefa0b18e" visible="True" title="Version 1.9.6.0">
       <HelpKeywords>
         <HelpKeyword index="K" term="versions, 1.9.6.0" />
       </HelpKeywords>

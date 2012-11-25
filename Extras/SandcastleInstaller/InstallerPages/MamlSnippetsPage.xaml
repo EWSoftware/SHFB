@@ -1,0 +1,39 @@
+﻿<sci:BasePage x:Class="Sandcastle.Installer.InstallerPages.MamlSnippetsPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:sci="clr-namespace:Sandcastle.Installer.InstallerPages"
+             mc:Ignorable="d" 
+             d:DesignHeight="325" d:DesignWidth="500">
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+
+    <FlowDocumentScrollViewer Grid.Row="0">
+      <FlowDocument FontFamily="Verdana" FontSize="11" PagePadding="10,15" TextAlignment="Left">
+        <Paragraph><Bold FontSize="16">MAML Snippets for Visual Studio</Bold></Paragraph>
+
+        <Paragraph>The Sandcastle MAML snippet files can be integrated into the Visual Studio local snippet cache
+so that you can have a list of common block and inline elements available for insertion as snippets while editing
+MAML topic files within Visual Studio.  Select the versions of Visual Studio in which to install the snippets and
+click the <Bold>Install Snippets</Bold> button.  If you choose to skip this, you can run this application again
+to install the snippets at a later date.  Click the <Bold>Next</Bold> button to continue with the next step.</Paragraph>
+
+        <Section Name="secResults" />
+
+      </FlowDocument>
+    </FlowDocumentScrollViewer>
+    <StackPanel Grid.Row="1" Name="pnlVersions"
+      Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" />
+    <StackPanel Grid.Row="2" Orientation="Horizontal"
+      Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}">
+      <Button Name="btnInstallSnippets" Content="_Install Snippets" Padding="10,3" Margin="10"
+        ToolTip="Install the Sandcastle MAML snippets for use with Visual Studio"
+        Click="btnInstallSnippets_Click" />
+    </StackPanel>
+  </Grid>
+</sci:BasePage>

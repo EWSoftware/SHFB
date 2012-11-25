@@ -126,6 +126,10 @@ namespace SandcastleBuilder.Package
                 commandId = new CommandID(GuidList.guidSandcastleBuilderPackageCmdSet, (int)PkgCmdIDList.LaunchContentMgr);
                 menuItem = new OleMenuCommand(LaunchContentMgrExecuteHandler, LaunchContentMgrChangeHandler, LaunchContentMgrQueryStatusHandler, commandId);
                 mcs.AddCommand(menuItem);
+				// Create the command for button HtmlEncode
+                commandId = new CommandID(GuidList.guidSandcastleBuilderPackageCmdSet, (int)PkgCmdIDList.HtmlEncode);
+                menuItem = new OleMenuCommand(HtmlEncodeExecuteHandler, HtmlEncodeChangeHandler, HtmlEncodeQueryStatusHandler, commandId);
+                mcs.AddCommand(menuItem);
 
 			}
 		}
@@ -383,6 +387,22 @@ namespace SandcastleBuilder.Package
 		}
 		
 		protected virtual void LaunchContentMgrQueryStatusHandler(object sender, EventArgs e)
+		{
+		}
+
+		#endregion
+
+		#region Handlers for Button: HtmlEncode
+
+		protected virtual void HtmlEncodeExecuteHandler(object sender, EventArgs e)
+		{
+		}
+		
+		protected virtual void HtmlEncodeChangeHandler(object sender, EventArgs e)
+		{
+		}
+		
+		protected virtual void HtmlEncodeQueryStatusHandler(object sender, EventArgs e)
 		{
 		}
 

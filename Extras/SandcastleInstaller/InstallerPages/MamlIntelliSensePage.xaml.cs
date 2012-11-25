@@ -228,7 +228,7 @@ namespace Sandcastle.Installer.InstallerPages
             }
 
             if(pnlVersions.Children.Count == 0)
-                throw new InvalidOperationException("At least on visualStudio element must be defined");
+                throw new InvalidOperationException("At least one visualStudio element must be defined");
 
             base.Initialize(configuration);
         }
