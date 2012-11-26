@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SandcastleProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/18/2012
+// Updated : 11/25/2012
 // Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -116,6 +116,9 @@ namespace SandcastleBuilder.Utils
             "DumpLogOnFailure", "Name", "Platform", "ProjectGuid", "RootNamespace", "SHFBSchemaVersion",
             "SchemaVersion", "Verbose", "SccProjectName", "SccProvider", "SccAuxPath", "SccLocalPath",
             "TransformComponentArguments" };
+
+        // Bad characters for the vendor name property
+        private static Regex reBadVendorNameChars = new Regex(@"[:\\/\.,#]");
         #endregion
 
         #region Private data members
@@ -1547,7 +1550,7 @@ namespace SandcastleBuilder.Utils
         /// This is used to get or set the vendor name for the help viewer file
         /// </summary>
         /// <remarks>The default if not specified will be "Vendor Name".  The value must not contain the ':',
-        /// '\', '/', '.', or '#' characters.</remarks>
+        /// '\', '/', '.', ',', or '#' characters.</remarks>
         [Category("MS Help Viewer"), Description("Specify the vendor name for the help file.  If not set, " +
           "'Vendor Name' will be used at build time."), DefaultValue(""), EscapeValue]
         public string VendorName
@@ -1558,8 +1561,10 @@ namespace SandcastleBuilder.Utils
                 if(value == null || value.Trim().Length == 0)
                     value = String.Empty;
                 else
-                    value = Uri.EscapeDataString(Uri.UnescapeDataString(
-                        value.Trim().Replace('.', '_'))).Replace("%20", " ");
+                {
+                    // Replace any problem characters in their normal and/or encoded forms
+                    value = reBadVendorNameChars.Replace(Uri.UnescapeDataString(value.Trim()), String.Empty);
+                }
 
                 this.SetProjectProperty("VendorName", value);
                 vendorName = value;

@@ -1,25 +1,24 @@
-//=============================================================================
+//===============================================================================================================
 // System  : EWSoftware Design Time Attributes and Editors
 // File    : BindingRedirectResolverConfigDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/31/2012
+// Updated : 11/25/2012
 // Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains the form used to edit the assembly binding redirection
-// resolver plug-in configuration.
+// This file contains the form used to edit the assembly binding redirection resolver plug-in configuration
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.8.0.1  11/14/2008  EFW  Created the code
 // 1.9.4.0  03/31/2012  EFW  Added Use GAC option
-//=============================================================================
+// 1.9.6.0  11/25/2012  EFW  Added support for Ignore if Unresolved assembly names
+//===============================================================================================================
 
 using System;
 using System.Windows.Forms;
@@ -102,10 +101,18 @@ namespace SandcastleBuilder.PlugIns
 
                 lbRedirects.SelectedIndex = 0;
             }
+
+            foreach(XPathNavigator nav in root.Select("ignoreIfUnresolved/assemblyIdentity/@name"))
+                lbIgnoreIfUnresolved.Items.Add(nav.Value);
+
+            if(lbIgnoreIfUnresolved.Items.Count == 0)
+                lbIgnoreIfUnresolved.Items.Add("BusinessObjects.Licensing.KeycodeDecoder");
+
+            lbIgnoreIfUnresolved.SelectedIndex = 0;
         }
         #endregion
 
-        #region Event handlers
+        #region General event handlers
         //=====================================================================
 
         /// <summary>
@@ -117,6 +124,85 @@ namespace SandcastleBuilder.PlugIns
         {
             this.Close();
         }
+
+        /// <summary>
+        /// Validate the configuration and save it
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event arguments</param>
+        private void btnOK_Click(object sender, EventArgs e)
+        {
+            XmlNode root, node, ignore;
+            XmlAttribute attr;
+
+            // Store the changes
+            root = config.SelectSingleNode("configuration");
+
+            attr = root.Attributes["useGAC"];
+
+            if(attr == null)
+            {
+                attr = config.CreateAttribute("useGAC");
+                root.Attributes.Append(attr);
+            }
+
+            attr.Value = chkUseGAC.Checked.ToString().ToLowerInvariant();
+
+            items.Clear();
+
+            foreach(BindingRedirectSettings brs in lbRedirects.Items)
+                items.Add(brs);
+
+            items.ToXml(config, root);
+
+            node = root.SelectSingleNode("ignoreIfUnresolved");
+
+            if(node == null)
+            {
+                node = config.CreateNode(XmlNodeType.Element, "ignoreIfUnresolved", null);
+                root.AppendChild(node);
+            }
+            else
+                node.RemoveAll();
+
+            foreach(string item in lbIgnoreIfUnresolved.Items)
+            {
+                ignore = config.CreateNode(XmlNodeType.Element, "assemblyIdentity", null);
+                root.AppendChild(node);
+
+                attr = config.CreateAttribute("name");
+                attr.Value = item;
+                ignore.Attributes.Append(attr);
+
+                node.AppendChild(ignore);
+            }
+
+            this.DialogResult = DialogResult.OK;
+            this.Close();
+        }
+
+        /// <summary>
+        /// Launch the URL in the web browser
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event arguments</param>
+        private void lnkCodePlexSHFB_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            try
+            {
+                System.Diagnostics.Process.Start((string)e.Link.LinkData);
+            }
+            catch(Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.ToString());
+                MessageBox.Show("Unable to launch link target.  Reason: " + ex.Message, Constants.AppName,
+                    MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+        }
+        #endregion
+
+        #region Binding Redirection tab event handlers
+        //=====================================================================
 
         /// <summary>
         /// Add a new setting item to the collection
@@ -177,58 +263,50 @@ namespace SandcastleBuilder.PlugIns
         {
             lbRedirects.Refresh(lbRedirects.SelectedIndex);
         }
+        #endregion
+
+        #region Ignore If Unresolved tab  event handlers
+        //=====================================================================
 
         /// <summary>
-        /// Validate the configuration and save it
+        /// Add a new ignored assembly name
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        private void btnOK_Click(object sender, EventArgs e)
+        private void btnAddIgnoredName_Click(object sender, EventArgs e)
         {
-            XmlNode root;
-            XmlAttribute attr;
+            txtAssemblyName.Text = txtAssemblyName.Text.Trim();
 
-            // Store the changes
-            root = config.SelectSingleNode("configuration");
-
-            attr = root.Attributes["useGAC"];
-
-            if(attr == null)
-            {
-                attr = config.CreateAttribute("useGAC");
-                root.Attributes.Append(attr);
-            }
-
-            attr.Value = chkUseGAC.Checked.ToString().ToLowerInvariant();
-
-            items.Clear();
-
-            foreach(BindingRedirectSettings brs in lbRedirects.Items)
-                items.Add(brs);
-
-            items.ToXml(config, root);
-
-            this.DialogResult = DialogResult.OK;
-            this.Close();
+            if(txtAssemblyName.Text.Length != 0 && !lbIgnoreIfUnresolved.Items.Contains(txtAssemblyName.Text))
+                lbIgnoreIfUnresolved.Items.Add(txtAssemblyName.Text);
         }
 
         /// <summary>
-        /// Launch the URL in the web browser
+        /// Delete the selected ignored assembly name
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        private void lnkCodePlexSHFB_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void btnDeleteIgnoredName_Click(object sender, EventArgs e)
         {
-            try
-            {
-                System.Diagnostics.Process.Start((string)e.Link.LinkData);
-            }
-            catch(Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine(ex.ToString());
-                MessageBox.Show("Unable to launch link target.  Reason: " + ex.Message, Constants.AppName,
-                    MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            }
+            int idx = lbIgnoreIfUnresolved.SelectedIndex;
+
+            if(idx < 0)
+                return;
+
+            if(MessageBox.Show("Are you sure you want to delete the selected assembly name?",
+             "Binding Redirection Plug-In", MessageBoxButtons.YesNo, MessageBoxIcon.Question,
+             MessageBoxDefaultButton.Button2) == DialogResult.No)
+                return;
+
+            lbIgnoreIfUnresolved.Items.RemoveAt(idx);
+
+            idx--;
+
+            if(idx < 0)
+                idx = 0;
+
+            if(idx < lbIgnoreIfUnresolved.Items.Count)
+                lbIgnoreIfUnresolved.SelectedIndex = idx;
         }
         #endregion
     }

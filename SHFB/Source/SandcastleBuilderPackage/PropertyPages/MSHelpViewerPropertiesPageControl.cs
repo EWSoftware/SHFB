@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : MSHelpViewerPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 11/14/2012
+// Updated : 11/25/2012
 // Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -23,6 +23,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 
 using SandcastleBuilder.Utils;
 
@@ -34,6 +35,13 @@ namespace SandcastleBuilder.Package.PropertyPages
     [Guid("DCD56A8C-8A49-4A9C-804F-0BE55420D77F")]
     public partial class MSHelpViewerPropertiesPageControl : BasePropertyPage
     {
+        #region Private data members
+        //=====================================================================
+
+        // Bad characters for the vendor name property
+        private static Regex reBadVendorNameChars = new Regex(@"[:\\/\.,#]");
+        #endregion
+
         #region Constructor
         //=====================================================================
 
@@ -86,6 +94,11 @@ namespace SandcastleBuilder.Package.PropertyPages
                 if(txtCatalogName.Text.Length == 0)
                     txtCatalogName.Text = "VisualStudio11";
 
+                // The vendor name has some restrictions with regard to certain characters in their normal
+                // and encoded forms.
+                txtVendorName.Text = reBadVendorNameChars.Replace(Uri.UnescapeDataString(txtVendorName.Text),
+                    String.Empty);
+                
                 if(txtTocParentId.Text.Length == 0)
                     txtTocParentId.Text = "-1";
 

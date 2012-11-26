@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : LaunchMSHelpViewDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/06/2012
+// Updated : 11/25/2012
 // Note    : Copyright 2010-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -163,12 +163,16 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
                             "/product \"{0}\" /version \"{1}\" /locale {2} /uninstall /silent /vendor " +
                             "\"{3}\" /productName \"{4}\" /mediaBookList \"{5}\"",
                             project.CatalogProductId, project.CatalogVersion, project.Language.Name,
-                            project.VendorName, project.ProductTitle, project.HelpTitle);
+                            !String.IsNullOrEmpty(project.VendorName) ? project.VendorName : "Vendor Name",
+                            !String.IsNullOrEmpty(project.ProductTitle) ? project.ProductTitle : project.HelpTitle,
+                            project.HelpTitle);
                     else
                         arguments = String.Format(CultureInfo.InvariantCulture,
                             "/catalogName \"{0}\" /locale {1} /wait 0 /operation uninstall /vendor \"{2}\" " +
                             "/productName \"{3}\" /bookList \"{4}\" ",
-                            project.CatalogName, project.Language.Name, project.VendorName, project.ProductTitle,
+                            project.CatalogName, project.Language.Name,
+                            !String.IsNullOrEmpty(project.VendorName) ? project.VendorName : "Vendor Name",
+                            !String.IsNullOrEmpty(project.ProductTitle) ? project.ProductTitle : project.HelpTitle,
                             project.HelpTitle);
 
                     // This doesn't have to run as an administrator

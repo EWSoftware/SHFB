@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/18/2012
+// Updated : 11/25/2012
 // Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -241,7 +241,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// </summary>
         public string PresentationStyleFolder
         {
-            get { return presentationStyle.ResolvePath(presentationStyle.BasePath); }
+            get { return FolderPath.TerminatePath(presentationStyle.ResolvePath(presentationStyle.BasePath)); }
         }
 
         /// <summary>

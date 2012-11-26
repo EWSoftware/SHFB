@@ -1,26 +1,27 @@
-﻿//=============================================================================
+﻿//===============================================================================================================
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : BindingRedirectResolverPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/30/2012
+// Updated : 11/25/2012
 // Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains a plug-in that is used to add assembly binding
-// redirection support to the MRefBuilder configuration file.
+// This file contains a plug-in that is used to add assembly binding redirection support to the MRefBuilder
+// configuration file.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.8.0.1  11/07/2008  EFW  Created the code
-//=============================================================================
+// 1.9.6.0  11/25/2012  EFW  Added support for the ignoreIfUnresolved configuraiton element
+//===============================================================================================================
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
 using System.Windows.Forms;
@@ -47,6 +48,7 @@ namespace SandcastleBuilder.PlugIns
 
         private bool useGac;
         private BindingRedirectSettingsCollection redirects;
+        private List<string> ignoreIfUnresolved;
         #endregion
 
         #region IPlugIn implementation
@@ -155,13 +157,14 @@ namespace SandcastleBuilder.PlugIns
         /// <summary>
         /// This method is used to initialize the plug-in at the start of the build process
         /// </summary>
-        /// <param name="buildProcess">A reference to the current build
-        /// process.</param>
+        /// <param name="buildProcess">A reference to the current build process.</param>
         /// <param name="configuration">The configuration data that the plug-in should use to initialize
         /// itself.</param>
         public void Initialize(BuildProcess buildProcess, XPathNavigator configuration)
         {
             XPathNavigator root;
+
+            ignoreIfUnresolved = new List<string>();
 
             builder = buildProcess;
 
@@ -181,6 +184,9 @@ namespace SandcastleBuilder.PlugIns
 
             redirects = new BindingRedirectSettingsCollection();
             redirects.FromXml(builder.CurrentProject, root);
+
+            foreach(XPathNavigator nav in root.Select("ignoreIfUnresolved/assemblyIdentity/@name"))
+                ignoreIfUnresolved.Add(nav.Value);
         }
 
         /// <summary>
@@ -191,7 +197,7 @@ namespace SandcastleBuilder.PlugIns
         {
             XmlDocument config = new XmlDocument();
             XmlAttribute attr;
-            XmlNode resolver, ddue;
+            XmlNode resolver, ddue, ignoreNode, assemblyNode;
 
             config.Load(builder.WorkingFolder + "MRefBuilder.config");
             resolver = config.SelectSingleNode("configuration/dduetools/resolver");
@@ -224,12 +230,42 @@ namespace SandcastleBuilder.PlugIns
             // Allow turning GAC resolution on
             resolver.Attributes["use-gac"].Value = useGac.ToString().ToLowerInvariant();
 
-            builder.ReportProgress("Adding binding redirections to assembly resolver configuration:");
+            if(redirects.Count != 0)
+            {
+                builder.ReportProgress("Adding binding redirections to assembly resolver configuration:");
 
-            foreach(BindingRedirectSettings brs in redirects)
-                builder.ReportProgress("    {0}", brs);
+                foreach(BindingRedirectSettings brs in redirects)
+                    builder.ReportProgress("    {0}", brs);
 
-            redirects.ToXml(config, resolver);
+                redirects.ToXml(config, resolver);
+            }
+
+            if(ignoreIfUnresolved.Count != 0)
+            {
+                builder.ReportProgress("Adding ignored assembly names to assembly resolver configuration:");
+
+                ignoreNode = resolver.SelectSingleNode("ignoreIfUnresolved");
+
+                if(ignoreNode == null)
+                {
+                    ignoreNode = config.CreateNode(XmlNodeType.Element, "ignoreIfUnresolved", null);
+                    resolver.AppendChild(ignoreNode);
+                }
+                else
+                    ignoreNode.RemoveAll();
+
+                foreach(string ignoreName in ignoreIfUnresolved)
+                {
+                    assemblyNode = config.CreateNode(XmlNodeType.Element, "assemblyIdentity", null);
+                    ignoreNode.AppendChild(assemblyNode);
+
+                    attr = config.CreateAttribute("name");
+                    attr.Value = ignoreName;
+                    assemblyNode.Attributes.Append(attr);
+
+                    builder.ReportProgress("    {0}", ignoreName);
+                }
+            }
 
             config.Save(builder.WorkingFolder + "MRefBuilder.config");
         }

@@ -56,6 +56,10 @@ removed build step, you will need to update them accordingly.</para>
 
 				<list class="bullet">
 					<listItem>
+						<para>Fixed issues with invalid characters in the vendor name project property.</para>
+					</listItem>
+
+					<listItem>
 						<para>Fixed the MAML to Flow Document Converter so that it no longer locks image files that it adds
 to the preview documents which was preventing them from being updated in the project.</para>
 					</listItem>
@@ -139,6 +143,11 @@ presentation styles much easier.</para>
 						<para>Added a new <codeInline>TransformComponentArguments</codeInline> property to the project along
 with a corresponding property page. This allows editing the <codeInline>TransformComponent</codeInline> arguments
 defined in the presentation style configuration file (i.e. for logo support).</para>
+					</listItem>
+
+					<listItem>
+						<para>Added support for the <codeInline>ignoreIfUnresolved</codeInline> element in the Assembly
+Binding Redirection plug-in.</para>
 					</listItem>
 
 					<listItem>
