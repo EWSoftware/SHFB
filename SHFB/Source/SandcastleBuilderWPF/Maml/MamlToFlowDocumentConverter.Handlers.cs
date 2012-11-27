@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : MamlToFlowDocumentConverter.Handlers.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/18/2012
+// Updated : 11/26/2012
 // Note    : Copyright 2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -16,6 +16,7 @@
 // Version     Date     Who  Comments
 // ==============================================================================================================
 // 1.9.3.4  01/02/2012  EFW  Created the code
+// 1.9.6.0  11/26/2012  EFW  Added support for imported code blocks
 //===============================================================================================================
 
 using System;
@@ -24,6 +25,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -38,6 +40,101 @@ namespace SandcastleBuilder.WPF.Maml
 	{
         #region Helper methods
         //=====================================================================
+
+        /// <summary>
+        /// This is used to load a code block from an external file
+        /// </summary>
+        /// <param name="sourceFile">The source file from which to obtain the code.</param>
+        /// <param name="regionName">An optional region name to limit what is imported.</param>
+        /// <param name="removeRegionMarkers">True to removed region markers or false to keep them if importing
+        /// a region.</param>
+        /// <returns>The code block extracted from the file.</returns>
+        private static string LoadCodeBlock(string sourceFile, string regionName, bool removeRegionMarkers)
+        {
+            Regex reFindRegion;
+            Match find, m;
+            string codeBlock = null, basePath = (ImportedCodeBasePath ?? String.Empty);
+
+            if(String.IsNullOrEmpty(sourceFile))
+                return "ERROR: A nested <code> tag must contain a \"source\" attribute that specifies the " +
+                    "source file to import";
+
+            try
+            {
+                sourceFile = Environment.ExpandEnvironmentVariables(sourceFile);
+
+                if(!Path.IsPathRooted(sourceFile))
+                    sourceFile = Path.GetFullPath(Path.Combine(basePath, sourceFile));
+
+                using(StreamReader sr = new StreamReader(sourceFile))
+                {
+                    codeBlock = sr.ReadToEnd();
+                }
+            }
+            catch(ArgumentException argEx)
+            {
+                return String.Format(CultureInfo.InvariantCulture, "Possible invalid path '{0}{1}'.  Error: {2}",
+                    basePath, sourceFile, argEx.Message);
+            }
+            catch(IOException ioEx)
+            {
+                return String.Format(CultureInfo.InvariantCulture, "Unable to load source file '{0}'.  Error: {1}",
+                    sourceFile, ioEx.Message);
+            }
+
+            // If no region is specified, the whole file is included
+            if(!String.IsNullOrWhiteSpace(regionName))
+            {
+                // Find the start of the region.  This gives us an immediate starting match on the second
+                // search and we can look for the matching #endregion without caring about the region name.
+                // Otherwise, nested regions get in the way and complicate things.  The bit at the end ensures
+                // that shorter region names aren't matched in longer ones with the same start that occur before
+                // the shorter one.
+                reFindRegion = new Regex("\\#(pragma\\s+)?region\\s+\"?" + Regex.Escape(regionName) +
+                    "\\s*?[\"->]*?\\s*?[\\r\\n]", RegexOptions.IgnoreCase);
+
+                find = reFindRegion.Match(codeBlock);
+
+                if(!find.Success)
+                    return String.Format(CultureInfo.InvariantCulture, "Unable to locate start of region '{0}' " +
+                        "in source file '{1}'", regionName, sourceFile);
+
+                // Find the end of the region taking into account any nested regions
+                m = reMatchRegion.Match(codeBlock, find.Index);
+
+                if(!m.Success)
+                    return String.Format(CultureInfo.InvariantCulture, "Unable to extract region '{0}' in " +
+                        "source file '{1}{2}' (missing #endregion?)", regionName, basePath, sourceFile);
+
+                // Extract just the specified region starting after the description
+                codeBlock = m.Groups[2].Value.Substring(m.Groups[2].Value.IndexOf('\n') + 1);
+
+                // Strip off the trailing comment characters if present
+                if(codeBlock[codeBlock.Length - 1] == ' ')
+                    codeBlock = codeBlock.TrimEnd();
+
+                // VB commented #End Region statement within a method body
+                if(codeBlock[codeBlock.Length - 1] == '\'')
+                    codeBlock = codeBlock.Substring(0, codeBlock.Length - 1);
+
+                // XML/XAML commented #endregion statement
+                if(codeBlock.EndsWith("<!--", StringComparison.Ordinal))
+                    codeBlock = codeBlock.Substring(0, codeBlock.Length - 4);
+
+                // C or SQL style commented #endregion statement
+                if(codeBlock.EndsWith("/*", StringComparison.Ordinal) ||
+                  codeBlock.EndsWith("--", StringComparison.Ordinal))
+                    codeBlock = codeBlock.Substring(0, codeBlock.Length - 2);
+            }
+
+            if(removeRegionMarkers)
+            {
+                codeBlock = reRemoveRegionMarkers.Replace(codeBlock, String.Empty);
+                codeBlock = codeBlock.Replace("\r\n\n", "\r\n");
+            }
+
+            return StripLeadingWhitespace(codeBlock, 4);
+        }
 
         /// <summary>
         /// This is used to strip a common amount of leading whitespace on all  lines of a text block and to
@@ -168,7 +265,8 @@ namespace SandcastleBuilder.WPF.Maml
             XAttribute attribute;
             Section code = new Section();
             props.Converter.AddToBlockContainer(code);
-            string language = "none", title;
+            string language = "none", title, sourceFile, region;
+            bool removeRegionMarkers;
 
             if(props.Element.Name.LocalName != "codeReference")
             {
@@ -190,6 +288,30 @@ namespace SandcastleBuilder.WPF.Maml
                 else
                     if(!LanguageTitles.TryGetValue(language, out title))
                         title = language;
+
+                // If there are nested code blocks, import the code and replace them with their content
+                foreach(var nestedBlock in props.Element.Descendants(ddue + "code").ToList())
+                {
+                    attribute = nestedBlock.Attribute("source");
+
+                    if(attribute != null)
+                    {
+                        sourceFile = attribute.Value;
+                        attribute = nestedBlock.Attribute("region");
+
+                        if(attribute != null)
+                            region = attribute.Value;
+                        else
+                            region = null;
+
+                        attribute = nestedBlock.Attribute("removeRegionMarkers");
+
+                        if(attribute == null || !Boolean.TryParse(attribute.Value, out removeRegionMarkers))
+                            removeRegionMarkers = false;
+
+                        nestedBlock.Value = LoadCodeBlock(sourceFile, region, removeRegionMarkers);
+                    }
+                }
             }
             else
                 title = "Code Reference";
@@ -211,16 +333,20 @@ namespace SandcastleBuilder.WPF.Maml
 
             if(attribute != null)
             {
-                p.Inlines.Add(new Run(String.Format(CultureInfo.InvariantCulture, "Import code from {0}",
-                    attribute.Value)));
-
+                sourceFile = attribute.Value;
                 attribute = props.Element.Attribute("region");
 
                 if(attribute != null)
-                    p.Inlines.Add(new Run(String.Format(CultureInfo.InvariantCulture,
-                        " limited to the region named '{0}'", attribute.Value)));
+                    region = attribute.Value;
+                else
+                    region = null;
 
-                p.Inlines.Add(new LineBreak());
+                attribute = props.Element.Attribute("removeRegionMarkers");
+
+                if(attribute == null || !Boolean.TryParse(attribute.Value, out removeRegionMarkers))
+                    removeRegionMarkers = false;
+
+                p.Inlines.Add(new Run(LoadCodeBlock(sourceFile, region, removeRegionMarkers)));
             }
 
             p.Inlines.Add(new Run(StripLeadingWhitespace(props.Element.Value, 4)));

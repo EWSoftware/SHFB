@@ -151,6 +151,10 @@ Binding Redirection plug-in.</para>
 					</listItem>
 
 					<listItem>
+						<para>The Topic Previewer Window now supports the display of imported code blocks.</para>
+					</listItem>
+
+					<listItem>
 						<para>Added the <ui>HTML Encode Selected Text</ui> command to the Visual Studio text editor's context
 menu when editing HTML, MAML topics, and other XML files.  This allows you to HTML encode the selected text
 rather than doing it by hand.</para>

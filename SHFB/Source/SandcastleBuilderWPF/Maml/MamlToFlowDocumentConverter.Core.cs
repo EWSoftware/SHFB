@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : MamlToFlowDocumentConverter.Core.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/18/2012
+// Updated : 11/26/2012
 // Note    : Copyright 2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -17,6 +17,7 @@
 // Version     Date     Who  Comments
 // ==============================================================================================================
 // 1.9.3.4  01/02/2012  EFW  Created the code
+// 1.9.6.0  11/26/2012  EFW  Added support for imported code blocks
 //===============================================================================================================
 
 using System;
@@ -24,11 +25,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Xml.Linq;
 
 namespace SandcastleBuilder.WPF.Maml
@@ -123,6 +122,11 @@ namespace SandcastleBuilder.WPF.Maml
         {
             get { return languageTitles; }
         }
+
+        /// <summary>
+        /// This is used to get or set the base path for imported code blocks
+        /// </summary>
+        public static string ImportedCodeBasePath { get; set; }
 
         /// <summary>
         /// This read-only property returns the flow document being created

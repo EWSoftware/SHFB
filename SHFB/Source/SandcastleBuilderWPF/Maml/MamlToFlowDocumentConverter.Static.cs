@@ -1,24 +1,23 @@
-﻿//=============================================================================
+﻿//===============================================================================================================
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : MamlToFlowDocumentConverter.Static.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/18/2012
+// Updated : 11/26/2012
 // Note    : Copyright 2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains the static data definitions used by the MAML to flow
-// document converter class.
+// This file contains the static data definitions used by the MAML to flow document converter class
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.  This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.9.3.4  01/02/2012  EFW  Created the code
-//=============================================================================
+// 1.9.6.0  11/26/2012  EFW  Added support for imported code blocks
+//===============================================================================================================
 
 using System;
 using System.Collections.Generic;
@@ -27,8 +26,7 @@ using System.Xml.Linq;
 
 namespace SandcastleBuilder.WPF.Maml
 {
-    // This contains the static data definitions used by the MAML to flow
-    // document converter.
+    // This contains the static data definitions used by the MAML to flow document converter.
     partial class MamlToFlowDocumentConverter
     {
         #region XML namespaces
@@ -74,9 +72,22 @@ namespace SandcastleBuilder.WPF.Maml
         #region Regular expressions
         //=====================================================================
 
-        // Regular expressions used by the parser.
+        // Regular expressions used by the parser
         private static Regex reCondenseWhitespace = new Regex(@"\s+");
         private static Regex reRemoveNamespace = new Regex(" xmlns=\".+?\"");
+
+        // Uh, yeah.  Don't ask me to explain this.  Just accept that it works (I hope :)).  It uses balancing
+        // groups to extract #region to #endregion accounting for any nested regions within it.  If you want to
+        // know all of the mind-bending details, Google for the terms: regex "balancing group".
+        private static Regex reMatchRegion = new Regex(
+            @"\#(pragma\s+)?region\s+(.*?(((?<Open>\#(pragma\s+)?region\s+).*?)+" +
+            @"((?<Close-Open>\#(pragma\s+)?end\s?region).*?)+)*(?(Open)(?!)))" +
+            @"\#(pragma\s+)?end\s?region", RegexOptions.IgnoreCase | RegexOptions.Singleline);
+
+        // This is used to remove unwanted region markers from imported code
+        private static Regex reRemoveRegionMarkers = new Regex(@"^.*?#(pragma\s+)?(region|end\s?region).*?$",
+            RegexOptions.IgnoreCase | RegexOptions.Multiline);
+
         #endregion
 
         #region Alert class name to display title dictionary

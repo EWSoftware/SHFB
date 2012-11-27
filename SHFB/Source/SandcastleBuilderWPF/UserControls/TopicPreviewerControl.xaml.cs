@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : TopicPreviewerControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/18/2012
+// Updated : 11/26/2012
 // Note    : Copyright 2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -252,6 +252,10 @@ namespace SandcastleBuilder.WPF.UserControls
                 lblCurrentProject.Text = "None - Select a help file builder project in the Solution Explorer";
                 return;
             }
+
+            // Make sure the base path is set for imported code blocks
+            MamlToFlowDocumentConverter.ImportedCodeBasePath = Path.GetDirectoryName(
+                Path.GetFullPath(currentProject.Filename));
 
             // Get content from open file editors
             var args = new FileContentNeededEventArgs(FileContentNeededEvent, this);
