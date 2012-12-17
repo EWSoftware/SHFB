@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="3de64a85-dafb-4a01-85dc-7f69a76ef790" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>This element lets you import comments from another XML file that describe the types and members in
+your source code.  The comments are imported into the XML comments file generated at build time by the compiler.</para>
+		</introduction>
+
+		<section>
+			<title>Syntax</title>
+			<content>
+				<para>This element is valid on all types and type members as a top-level or an inline element.</para>
+
+<code language="xml" title=" ">
+&lt;include file="xmlFilename" path="xpath-filter-expr" /&gt;
+</code>
+
+				<para>The <codeInline>file</codeInline> attribute specifies the path to an external XML file.  The
+filename can be a fully qualified or a relative path.  If no path is specified on the filename or it is prefixed
+with a folder name alone, the file is assumed to be in the same folder as the Visual Studio project or a
+subfolder beneath it.  If a relative path is given that starts with <localUri>..\</localUri>, the file is assumed
+to be in a location relative to the current source code file.</para>
+
+				<para>The <codeInline>path</codeInline> element specifies an XPath query used to import one or more
+elements into the member's XML comments.  The structure of the XML file is entirely up to you.  A common
+convention is to use elements with an ID attribute and to look them up with an XPath query such as
+"<codeInline>rootElement/subElement[@id='idValue']/*</codeInline>".  The "/*" at the end of the query pulls in
+the content of the matching element.</para>
+			</content>
+		</section>
+
+		<section>
+			<title>Remarks</title>
+			<content>
+				<para>Using this element allows you to keep common sets of XML comments or examples in a shared file as
+an alternative to repeatedly cutting and pasting the same elements into multiple locations in your source code.
+This allows you to maintain the comment elements in a single location.  When the project is built, the updated
+comments will automatically be imported into each of the locations where they are referenced.  It also allows
+one person to work on the code while another writes the comments.</para>
+
+				<alert class="note">
+					<para>The XPath query typically uses quote marks to surround an ID value.  If you use double quotes to
+surround the XPath expression, use single quotes to surround the ID value.  You can also use single quotes to
+surround the XPath expression and use double quotes to surround the ID value.  Examples of both ways are shown
+below.</para>
+
+					<para>A missing XML file or an ill-formed XPath query will result in a compiler warning being generated.
+A valid XPath query that fails to locate anything will not generate any warning but will cause missing comments
+in the resulting XML comments file.</para>
+				</alert>
+			</content>
+		</section>
+		
+		<section>
+			<title>Examples</title>
+			<content>
+<code language="cs" title="Comments Examples" source="SampleClass.cs" region="include Examples" />
+<code language="xml" title="Example XML File" source="IncludeComments.xml" />
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="9341fdc8-1571-405c-8e61-6a6b9b601b46" />
+			<codeEntityReference qualifyHint="false" autoUpgrade="true">M:XMLCommentsExamples.SampleClass.IncludeAllExample</codeEntityReference>
+			<codeEntityReference qualifyHint="false" autoUpgrade="true">M:XMLCommentsExamples.SampleClass.IncludeSectionsExample</codeEntityReference>
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

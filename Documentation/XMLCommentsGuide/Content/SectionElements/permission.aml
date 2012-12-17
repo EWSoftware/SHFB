@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="4af64f3f-a9a3-42d7-a95c-bc0a40951286" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>This element is used to define the permissions required to access a type or member.</para>
+		</introduction>
+
+		<section>
+			<title>Syntax</title>
+			<content>
+				<para>This top-level element is valid on all types and type members.</para>
+
+<code language="xml" title=" ">
+&lt;permission cref="permissionTypeOrMember"&gt;description&lt;/permission&gt;
+</code>
+
+				<para>The <codeInline>cref</codeInline> attribute is used to specify a permission type required to access
+the type or member.  It is typically one of the .NET permission set types such as
+<codeEntityReference qualifyHint="false">T:System.Security.PermissionSet</codeEntityReference>
+or <codeEntityReference qualifyHint="false">T:System.Security.Permissions.SecurityPermission</codeEntityReference>.
+Use the inner text to describe how the permission applies to the type or member.</para>
+
+			</content>
+
+		</section>
+
+		<section>
+			<title>Examples</title>
+			<content>
+				<code language="cs" title=" " source="SampleClass.cs" region="permission Example" />
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="20dc8c5f-9979-4ecd-92ce-cea6ce7acaeb" />
+			<codeEntityReference qualifyHint="false" autoUpgrade="true">M:XMLCommentsExamples.SampleClass.MethodRequiringSpecificPermissions</codeEntityReference>
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

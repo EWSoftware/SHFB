@@ -2,28 +2,30 @@
 <topic id="a8792cd2-e8a1-4e37-bd16-eea84ac463b1" revisionNumber="1">
   <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
     <introduction>
-      <para>This element can be used to create a note-like section within a
-conceptual topic to draw attention to some important information.</para>
+      <para>This element can be used to create a note-like section within a conceptual topic to draw attention to
+some important information.</para>
     </introduction>
+
     <section>
       <title>Usage</title>
       <content>
-        <para>Enter the element in the topic and specify the type of alert
-using the <codeInline>class</codeInline> attribute.  The content of the alert
-element is usually one or more paragraphs of text describing the important
+        <para>Enter the element in the topic and specify the type of alert using the <codeInline>class</codeInline>
+attribute.  The content of the alert element is usually one or more paragraphs of text describing the important
 information.</para>
+
         <alert class="note">
-          <para>The class attribute value is case-sensitive.  Unrecognized values will
+          <para>The <codeInline>class</codeInline> attribute value is case-sensitive.  Unrecognized values will
 default to the "note" alert style.</para>
         </alert>
-        <para>The <codeInline>class</codeInline> attribute can be any of the
-following values which fall into a couple of different groups that use
-different icons to the left of the alert title.  The title will generally be
+
+        <para>The <codeInline>class</codeInline> attribute can be any of the following values which fall into
+four different categories that use different icons to the left of the alert title.  The title will generally be
 the alert class name or an expanded form of it.</para>
+
         <table>
           <tableHeader>
             <row>
-              <entry><para>Type</para></entry>
+              <entry><para>Category</para></entry>
               <entry><para>Class Value</para></entry>
             </row>
           </tableHeader>
@@ -41,12 +43,14 @@ the alert class name or an expanded form of it.</para>
           </row>
           <row>
             <entry><para>Language note</para></entry>
-            <entry><para>cs, CSharp, c#, C#, visual c# note, cpp, CPP, c++, C++, visual c++ note,
-vb, VB, VisualBasic, visual basic note, JSharp, j#, J#, visual j# note</para></entry>
+            <entry><para>cs, CSharp, c#, C#, visual c# note, cpp, CPP, c++, C++, visual c++ note, vb, VB,
+VisualBasic, visual basic note, JSharp, j#, J#, visual j# note</para></entry>
           </row>
         </table>
+
       </content>
     </section>
+
     <section>
       <title>Example</title>
       <content>
@@ -69,6 +73,7 @@ vb, VB, VisualBasic, visual basic note, JSharp, j#, J#, visual j# note</para></e
 </code>
       </content>
     </section>
+
     <section>
       <title>Example Output</title>
       <content>
@@ -90,8 +95,8 @@ vb, VB, VisualBasic, visual basic note, JSharp, j#, J#, visual j# note</para></e
       </content>
     </section>
 
-    <relatedTopics>
-	  <link xlink:href="b32a73b8-fc26-4c98-912c-d595fc1a17c2" />
-    </relatedTopics>
-  </developerConceptualDocument>
+		<relatedTopics>
+			<link xlink:href="b32a73b8-fc26-4c98-912c-d595fc1a17c2" />
+		</relatedTopics>
+	</developerConceptualDocument>
 </topic>

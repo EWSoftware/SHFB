@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="B597E874-6D7C-4E05-B8F7-5B530C656B70" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+			<para>Project summary and namespace comments can be maintained manually by creating a standalone XML
+comments file to contain the information.</para>
+
+			<alert class="note">
+				<para>Project summary comments will appear on the Namespace List topic in the compiled help file.</para>
+			</alert>
+
+	</introduction>
+
+<section>
+  <content>
+		<para>Start by creating an XML comments file like the following and give it a unique name that will not
+conflict with any other XML comments file in the related projects.</para>
+
+<code language="xml" title="Sample Project/Namespace XML Comments File">
+&lt;?xml version="1.0"?&gt;
+&lt;doc&gt;
+  &lt;assembly&gt;
+    &lt;name&gt;_NamespaceComments_&lt;/name&gt;
+  &lt;/assembly&gt;
+  &lt;members&gt;
+    &lt;member name="R:Project_CustomControlsHelp"&gt;
+      &lt;summary&gt;
+        Project summary comments go in here.
+      &lt;/summary&gt;
+    &lt;/member&gt;
+    &lt;member name="N:"&gt;
+      &lt;exclude /&gt;
+      &lt;summary&gt;
+        Exclude the global namespace from the help file.
+      &lt;/summary&gt;
+    &lt;/member&gt;
+    &lt;member name="N:CustomControls.Internal"&gt;
+      &lt;exclude /&gt;
+    &lt;/member&gt;
+    &lt;member name="N:CustomControls.Design"&gt;
+      &lt;summary&gt;
+        Common namespace summary info for the CustomControls.Design
+        namespace go here.
+      &lt;/summary&gt;
+    &lt;/member&gt;
+  &lt;/members&gt;
+&lt;/doc&gt;
+</code>
+
+		<alert class="important">
+			<para>The project summary comments will be placed in the member with the ID starting with
+"<codeInline>R:Project_</codeInline>".  The ID must be suffixed with a unique value such as your help project's
+name (exclude any spaces in the suffix).  This is required so that the root namespace container has a unique name
+that will not cause any conflicts when building MS Help Viewer output.</para>
+		</alert>
+
+		<para>Next, do one or more of the following:</para>
+
+		<list class="bullet">
+			<listItem>
+				<para>To specify project summary comments, add them to the <codeInline>&lt;summary&gt;</codeInline>
+tag in the <legacyBold>R:Project_[HtmlHelpName]</legacyBold> node.  As noted above, substitute a unique value
+for the ID's suffix.  If you do not have any project summary notes, you may remove this node from the file.</para>
+			</listItem>
+
+			<listItem>
+				<para>To exclude a namespace from the help file, add a <codeInline>&lt;member&gt;</codeInline>
+node, set it's <codeInline>name</codeInline> attribute to the namespace name prefixed with "<codeInline>N:</codeInline>",
+and place an <codeInline>&lt;exclude /&gt;</codeInline> tag in it.  Any other tags are optional.  The example
+above would exclude the unnamed global namespace and the <codeInline>CustomControls.Internal</codeInline>
+namespace from the help file if your build tool supports it.</para>
+			</listItem>
+
+			<listItem>
+				<para>To specify namespace summary comments, add a <codeInline>&lt;member&gt;</codeInline> node,
+set it's <codeInline>name</codeInline> attribute to the namespace name prefixed with "<codeInline>N:</codeInline>",
+and add the comments to the <codeInline>&lt;summary&gt;</codeInline> tag in the node.</para>
+			</listItem>
+
+		</list>
+
+		<para>Once you have created the file, you can add it to the build tool that you use to include the comments
+in the help file when it is built.  Refer to your build tool's documentation for further information</para>
+
+  </content>
+</section>
+
+		<relatedTopics>
+			<link xlink:href="BD91FAD4-188D-4697-A654-7C07FD47EF31" />
+			<link xlink:href="41B2D835-DB0D-4828-8D9E-0E423EDA4590" />
+		</relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

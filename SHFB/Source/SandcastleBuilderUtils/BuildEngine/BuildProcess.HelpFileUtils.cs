@@ -530,7 +530,9 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// </summary>
         /// <param name="sourcePath">The source path from which to copy</param>
         /// <param name="destPath">The destination path to which to copy</param>
-        private void RecursiveCopy(string sourcePath, string destPath)
+        /// <param name="verbose">True to list all files copied, false to display file counts instead</param>
+        /// <param name="fileCount">A reference to the file count variable</param>
+        private void RecursiveCopy(string sourcePath, string destPath, bool verbose, ref int fileCount)
         {
             if(sourcePath == null)
                 throw new ArgumentNullException("sourcePath");
@@ -553,7 +555,15 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 File.Copy(name, filename, true);
                 File.SetAttributes(filename, FileAttributes.Normal);
 
-                this.ReportProgress("{0} -> {1}", name, filename);
+                if(verbose)
+                    this.ReportProgress("{0} -> {1}", name, filename);
+                else
+                {
+                    fileCount++;
+
+                    if((fileCount % 100) == 0)
+                        this.ReportProgress("Copied {0} files", fileCount);
+                }
             }
 
             // For "*.*", copy subfolders too
@@ -562,8 +572,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 // Ignore hidden folders as they may be under source control and are not wanted
                 foreach(string folder in Directory.EnumerateDirectories(dirName))
                     if((File.GetAttributes(folder) & FileAttributes.Hidden) != FileAttributes.Hidden)
-                        this.RecursiveCopy(folder + @"\*.*",
-                            destPath + folder.Substring(dirName.Length + 1) + @"\");
+                        this.RecursiveCopy(folder + @"\*.*", destPath + folder.Substring(dirName.Length + 1) +
+                            @"\", verbose, ref fileCount);
             }
         }
         #endregion
@@ -648,6 +658,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         {
             string destFile, webWorkingFolder = String.Format(CultureInfo.InvariantCulture,
                 "{0}Output\\{1}", workingFolder, HelpFileFormat.Website);
+            int fileCount = 0;
 
             // Generate the full-text index for the ASP.NET search option
             this.ReportProgress(BuildStep.GenerateFullTextIndex, "Generating full-text index for the website...\r\n");
@@ -687,7 +698,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 }
 
             // Copy the help pages and related content
-            this.RecursiveCopy(webWorkingFolder + @"\*.*", outputFolder);
+            this.RecursiveCopy(webWorkingFolder + @"\*.*", outputFolder, false, ref fileCount);
+            this.ReportProgress("Copied {0} files for the website content", fileCount);
 
             this.GatherBuildOutputFilenames();
             this.ExecutePlugIns(ExecutionBehaviors.After);

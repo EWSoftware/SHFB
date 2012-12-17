@@ -17,13 +17,14 @@
 				<MSHelp:Attr Name="Locale">
 					<includeAttribute name="Value" item="locale" />
 				</MSHelp:Attr>
-				<xsl:if test="boolean($summary) and (string-length($summary) &lt; 255)">
-					<MSHelp:Attr Name="Abstract">
-						<xsl:attribute name="Value">
-							<xsl:value-of select="$summary" />
-						</xsl:attribute>
-					</MSHelp:Attr>
-				</xsl:if>
+				<xsl:choose>
+					<xsl:when test="string-length(normalize-space($summary)) &gt; 254">
+						<MSHelp:Attr Name="Abstract" Value="{concat(substring(normalize-space($summary),1,250), ' ...')}" />
+					</xsl:when>
+					<xsl:when test="string-length(normalize-space($summary)) &gt; 0 and $summary != '&#160;'">
+						<MSHelp:Attr Name="Abstract" Value="{normalize-space($summary)}" />
+					</xsl:when>
+				</xsl:choose>
 			</xml>
 		</xsl:if>
 	</xsl:template>

@@ -422,7 +422,7 @@
       <HelpKeyword index="K" term="extensibility" />
     </HelpKeywords>
   </Topic>
-  <Topic id="dc4fcc96-283e-4202-9ecc-08a65e0c9313" visible="True" title="Links to Resources">
+  <Topic id="dc4fcc96-283e-4202-9ecc-08a65e0c9313" visible="True" isSelected="true" title="Links to Resources">
     <HelpKeywords>
       <HelpKeyword index="K" term="build components, article on creating components" />
       <HelpKeyword index="K" term="build components, links to third-party components" />
@@ -433,12 +433,23 @@
       <HelpKeyword index="K" term="support, tools" />
     </HelpKeywords>
   </Topic>
-  <Topic id="ba47a67c-4825-4fcd-b806-2b2e02d4373a" visible="True" isExpanded="true" title="Version History">
+  <Topic id="847c2d90-c877-4369-a3ab-f7373b6547df" visible="True" title="Making a Donation">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="donate" />
+      <HelpKeyword index="K" term="support, donate" />
+    </HelpKeywords>
+  </Topic>
+  <Topic id="ba47a67c-4825-4fcd-b806-2b2e02d4373a" visible="True" title="Version History">
     <HelpKeywords>
       <HelpKeyword index="K" term="History" />
       <HelpKeyword index="K" term="Version history" />
     </HelpKeywords>
-    <Topic id="2ac532de-69cc-45c7-9f78-5d668fcb4339" visible="True" isSelected="true" title="Version 1.1.0.2">
+    <Topic id="bea57722-4254-47b3-a86c-415af363eb2f" visible="True" title="Version 1.1.0.3">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 1.1.0.3" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="2ac532de-69cc-45c7-9f78-5d668fcb4339" visible="True" title="Version 1.1.0.2">
       <HelpKeywords>
         <HelpKeyword index="K" term="versions, 1.1.0.2" />
       </HelpKeywords>

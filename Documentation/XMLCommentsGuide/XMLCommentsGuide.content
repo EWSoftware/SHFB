@@ -1,0 +1,248 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Topics>
+  <Topic id="d326da5b-f570-40fa-9802-40149370ae60" visible="False" isMSHVRoot="true" title="Sandcastle XML Comments Guide">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="Sandcastle XML Comments Guide" />
+    </HelpKeywords>
+  </Topic>
+  <Topic id="4268757F-CE8D-4E6D-8502-4F7F2E22DDA3" visible="True" isDefault="true" title="Welcome">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="Welcome" />
+    </HelpKeywords>
+  </Topic>
+  <Topic id="B9370929-E413-447F-9E41-EE3A362CD7DC" visible="True" title="License Agreement">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="license agreement" />
+    </HelpKeywords>
+  </Topic>
+  <Topic id="57C91630-95D6-4E3E-AF24-3415CC569AC8" visible="True" title="Walkthrough: Enabling and Using XML Comments">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="enable XML comments" />
+      <HelpKeyword index="K" term="Visual Studio" />
+      <HelpKeyword index="K" term="Visual Studio projects" />
+      <HelpKeyword index="K" term="XML comments setup" />
+    </HelpKeywords>
+  </Topic>
+  <Topic id="515d5a54-5047-4d6f-bf51-d47c7c699cc2" visible="True" title="Usage Notes">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="usage notes" />
+    </HelpKeywords>
+  </Topic>
+  <Topic id="BD91FAD4-188D-4697-A654-7C07FD47EF31" visible="True" title="Namespace Comments">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="namespace comments, managing" />
+    </HelpKeywords>
+    <Topic id="B597E874-6D7C-4E05-B8F7-5B530C656B70" visible="True" title="External XML Comments Files">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="namespace comments, external comments files" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="41B2D835-DB0D-4828-8D9E-0E423EDA4590" visible="True" title="Using a NamespaceDoc Class">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="namespace comments, NamespaceDoc class" />
+      </HelpKeywords>
+    </Topic>
+  </Topic>
+  <Topic id="20dc8c5f-9979-4ecd-92ce-cea6ce7acaeb" visible="True" title="Section Elements">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="element categories, section" />
+    </HelpKeywords>
+    <Topic id="81bf7ad3-45dc-452f-90d5-87ce2494a182" visible="True" title="event">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="section elements, event" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="1bef716a-235b-4d96-a23e-f43b8dcf9abd" visible="True" title="example">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="section elements, example" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="bbd1e65d-c87c-4b46-9a1a-259d3c5cd936" visible="True" title="exception">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="section elements, exception" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="e54dcff7-f8f3-4a11-9d17-1cf7decd880e" visible="True" title="param">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="section elements, param" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="4af64f3f-a9a3-42d7-a95c-bc0a40951286" visible="True" title="permission">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="section elements, permission" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="c16bece7-694e-48ca-802d-cf3ae9205c55" visible="True" title="preliminary">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="section elements, preliminary" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="3671b61e-0695-4f0f-bcb5-7cf9108dd642" visible="True" title="remarks">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="section elements, remarks" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="fa97c10b-a683-4d10-a01c-5787dbdd42d3" visible="True" title="returns">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="section elements, returns" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="16cdb957-a35b-4c17-bf5e-ea511b0218e3" visible="True" title="seealso">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="section elements, seealso" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="c3743eaf-9ef2-4d35-8f59-876f1e48a6a8" visible="True" title="summary">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="section elements, summary" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="fb4625cb-52d0-428e-9c7c-7a0d88e1b692" visible="True" title="threadsafety">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="section elements, threadsafety" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="163cae15-9020-4095-9b9c-da134b5b496c" visible="True" title="typeparam">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="section elements, typeparam" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="f512d714-e100-4296-916c-99a46e572e9d" visible="True" title="value">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="section elements, value" />
+      </HelpKeywords>
+    </Topic>
+  </Topic>
+  <Topic id="f8464c0f-f62a-4faf-b11a-9a41173307e8" visible="True" title="Block Elements">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="element categories, block" />
+    </HelpKeywords>
+    <Topic id="1abd1992-e3d0-45b4-b43d-91fcfc5e5574" visible="True" title="code">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="block elements, code" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="e433d846-db15-4ac8-a5f5-f3428609ae6c" visible="True" title="list">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="block elements, list" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="4302a60f-e4f4-4b8d-a451-5f453c4ebd46" visible="True" title="note">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="block elements, note" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="c7973ac7-5a4f-4e4d-9786-5ce659ac8e24" visible="True" title="para">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="block elements, para" />
+      </HelpKeywords>
+    </Topic>
+  </Topic>
+  <Topic id="d297bc14-33aa-4152-ae36-9f658b15de87" visible="True" title="Inline Elements">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="element categories, inline" />
+    </HelpKeywords>
+    <Topic id="d0db2290-08bb-40cc-9797-23a342b96564" visible="True" title="c">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="inline elements, c" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="fa7d6ea0-93ce-41f6-9417-2f98e80fe9f5" visible="True" title="paramref">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="inline elements, paramref" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="983fed56-321c-4daf-af16-e3169b28ffcd" visible="True" title="see">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="inline elements, see" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="073a5ae1-828f-4bab-b0cb-438cefb5e9fb" visible="True" title="typeparamref">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="inline elements, typeparamref" />
+      </HelpKeywords>
+    </Topic>
+  </Topic>
+  <Topic id="9341fdc8-1571-405c-8e61-6a6b9b601b46" visible="True" isExpanded="true" title="Miscellaneous Elements">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="element categories, miscellaneous" />
+    </HelpKeywords>
+    <Topic id="3563f000-5677-4cd9-afd7-4e3f2a7fe4fc" visible="True" title="AttachedEventComments">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="miscellaneous elements, AttachedEventComments" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="c0346d23-f376-4948-8f9a-d17b2f1acef3" visible="True" title="AttachedPropertyComments">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="miscellaneous elements, AttachedPropertyComments" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="db2703b4-12bc-4cf5-8642-544b41002809" visible="True" title="conceptualLink">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="miscellaneous elements, conceptualLink" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="a8ade450-e201-401a-923d-1a1169ef7828" visible="True" title="exclude">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="miscellaneous elements, exclude" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="0522f3bf-0a57-4d70-a2a5-d64a14c5bcc9" visible="True">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="miscellaneous elements, filterpriority" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="3de64a85-dafb-4a01-85dc-7f69a76ef790" visible="True" title="include">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="miscellaneous elements, include" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="86453FFB-B978-4A2A-9EB5-70E118CA8073" visible="True" isSelected="true" title="inheritdoc">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="miscellaneous elements, inheritdoc" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="5b11b235-2b6c-4dfc-86b0-2e7dd98f2716" visible="True" title="overloads">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="miscellaneous elements, overloads" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="8c9273f3-0000-43cd-bb53-932b80855297" visible="True" title="token">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="miscellaneous elements, token" />
+      </HelpKeywords>
+    </Topic>
+  </Topic>
+  <Topic id="6C5FE68C-2E66-4B0A-967C-34868220D6EC" visible="True" title="Frequently Asked Questions (FAQ)">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="FAQ" />
+      <HelpKeyword index="K" term="frequently asked questions" />
+    </HelpKeywords>
+  </Topic>
+  <Topic id="7F003236-9AF3-4B6A-8F14-4124FFF0AD7B" visible="True" title="Links to Resources">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="links to resources" />
+    </HelpKeywords>
+  </Topic>
+  <Topic id="BD2B1A8B-275D-4584-9FB1-92759FAF37D7" visible="True" title="Making a Donation">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="donate" />
+      <HelpKeyword index="K" term="support, donate" />
+    </HelpKeywords>
+  </Topic>
+  <Topic id="0999CAAA-4992-4352-9ED2-965892040176" visible="True" title="Version History">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="version history" />
+    </HelpKeywords>
+    <Topic id="40c5a184-aae2-4296-bc55-949e65e9909a" visible="True" title="Version 1.0.0.0">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 1.0.0.0" />
+      </HelpKeywords>
+    </Topic>
+  </Topic>
+  <Topic id="461BBB39-1C25-4B05-BD25-F56FDACF54A5" visible="True" title="Glossary">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="glossary" />
+    </HelpKeywords>
+  </Topic>
+</Topics>

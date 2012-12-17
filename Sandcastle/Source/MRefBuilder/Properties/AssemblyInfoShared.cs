@@ -1,18 +1,16 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Tools
 // File    : AssemblyInfoShared.cs
-// Updated : 09/30/2012
+// Updated : 12/15/2012
 // Note    : Copyright 2006-2012, Microsoft Corporation, All rights reserved
 //
 // Sandcastle tools common assembly attributes.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice and
-// all copyright notices must remain intact in all applications, documentation,
-// and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice and all copyright notices must remain intact in all applications, documentation, and source files.
 //
-//=============================================================================
+//===============================================================================================================
 
 using System.Reflection;
 using System.Resources;
@@ -49,6 +47,6 @@ using System.Runtime.InteropServices;
 // and plug-in developers to use the same major, minor, and build numbers
 // as the Sandcastle tools to indicate with which version their components are
 // compatible.
-[assembly: AssemblyVersion("2.7.1.0")]
+[assembly: AssemblyVersion("2.7.2.0")]
 
 // See AssemblyInfo.cs for project-specific assembly attributes

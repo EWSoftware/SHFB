@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="c3743eaf-9ef2-4d35-8f59-876f1e48a6a8" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>This element is used to provide a brief description of the type or member.</para>
+		</introduction>
+
+		<section>
+			<title>Syntax</title>
+			<content>
+				<para>This top-level element is valid on all types and type members.</para>
+
+<code language="xml" title=" ">
+&lt;summary&gt;description&lt;/summary&gt;
+</code>
+			</content>
+		</section>
+
+		<section>
+			<title>Remarks</title>
+			<content>
+				<para>The description will appear in IntelliSense and the Object Browser.  As such, it should be kept
+brief.  Use the <codeInline>remarks</codeInline> element to provide more detailed information about the type or
+member.</para>
+			</content>
+		</section>
+		
+		<section>
+			<title>Examples</title>
+			<content>
+				<code language="cs" title=" " source="SampleClass.cs" region="summary/remarks Example" />
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="20dc8c5f-9979-4ecd-92ce-cea6ce7acaeb" />
+			<link xlink:href="3671b61e-0695-4f0f-bcb5-7cf9108dd642" />
+			<codeEntityReference qualifyHint="false" autoUpgrade="true">M:XMLCommentsExamples.SampleClass.SummaryRemarksExample</codeEntityReference>
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

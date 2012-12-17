@@ -74,10 +74,21 @@
 			<ComponentGroupRef Id="ProductionTools" />
 			<ComponentGroupRef Id="ProductionTransforms" />
 			<ComponentGroupRef Id="Schemas" />
+			<ComponentGroupRef Id="Snippets" />
+
+			<Feature Id="SandcastleToolsHelp" Title="Sandcastle Tools Help File" Absent="allow" AllowAdvertise="no"
+				Level="3" Description="A help file for the Sandcastle tools and components">
+				<ComponentGroupRef Id="SandcastleToolsHelp" />
+			</Feature>
 
 			<Feature Id="MAMLGuide" Title="Sandcastle MAML Guide" Absent="allow" AllowAdvertise="no"
 				Level="3" Description="A guide to Microsoft Assistance Markup Language (MAML) and how to use it with Sandcastle.">
 				<ComponentGroupRef Id="MAMLGuide" />
+			</Feature>
+
+			<Feature Id="XMLCommentsGuide" Title="Sandcastle XML Comments Guide" Absent="allow" AllowAdvertise="no"
+				Level="3" Description="A guide to XML comments and how to use them with Sandcastle.">
+				<ComponentGroupRef Id="XMLCommentsGuide" />
 			</Feature>
 
 			<Feature Id="WebCodeProviders" Title="Custom Web Code Providers" Absent="allow" AllowAdvertise="no"

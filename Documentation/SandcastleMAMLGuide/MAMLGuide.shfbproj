@@ -37,7 +37,7 @@
     <CopyrightText>[v{%40HelpFileVersion}] Sandcastle MAML Guide</CopyrightText>
     <FeedbackEMailAddress>Eric%40EWoodruff.us</FeedbackEMailAddress>
     <PresentationStyle>VS2005</PresentationStyle>
-    <HelpFileVersion>1.1.0.2</HelpFileVersion>
+    <HelpFileVersion>1.1.0.3</HelpFileVersion>
     <ComponentConfigurations>
       <ComponentConfig id="Cached MSDN URL References" enabled="True">
         <component id="Cached MSDN URL References" type="SandcastleBuilder.Components.CachedResolveReferenceLinksComponent" assembly="{@SHFBFolder}SandcastleBuilder.Components.dll" locale="{@Locale}" linkTarget="{@SdkLinkTarget}">
@@ -101,7 +101,6 @@
     <TocParentId>-1</TocParentId>
     <TocParentVersion>100</TocParentVersion>
     <TopicVersion>100</TopicVersion>
-    <SelfBranded>True</SelfBranded>
     <MSHelpViewerSdkLinkType>Msdn</MSHelpViewerSdkLinkType>
     <CatalogVersion>100</CatalogVersion>
     <CatalogProductId>VS</CatalogProductId>
@@ -117,6 +116,7 @@
       <Argument Key="logoPlacement" Value="left" />
       <Argument Key="logoAlignment" Value="left" />
     </TransformComponentArguments>
+    <FeedbackEMailLinkText>Eric Woodruff</FeedbackEMailLinkText>
   </PropertyGroup>
   <!-- There are no properties for these two groups but they need to appear in
        order for Visual Studio to perform the build. -->
@@ -144,6 +144,11 @@
       <ImageId>Sandcastle</ImageId>
       <AlternateText>Sandcastle</AlternateText>
     </Content>
+    <Content Include="Media\PayPal.gif">
+      <ImageId>PayPal</ImageId>
+      <AlternateText>Pay Pal</AlternateText>
+      <CopyToMedia>True</CopyToMedia>
+    </Content>
     <Image Include="Media\SmallInformation.png">
       <ImageId>4cfacbe8-d100-471c-9d69-1dbcce50e316</ImageId>
       <AlternateText>Information</AlternateText>
@@ -164,9 +169,13 @@
     <CodeSnippets Include="ExampleFiles\CodeSnippets.snippets" />
   </ItemGroup>
   <ItemGroup>
+    <Tokens Include="..\SandcastleBuilder\CommonTokens.tokens">
+      <Link>CommonTokens.tokens</Link>
+    </Tokens>
     <Tokens Include="MAMLGuide.tokens" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Content\Donate.aml" />
     <None Include="Content\MiscElements\markup.aml" />
     <None Include="Content\VersionHistory\v1.1.0.1.aml" />
     <None Include="Content\MSHelpViewerRoot.aml" />
@@ -194,6 +203,7 @@
     <None Include="ConceptualTemplates\Error Message.aml" />
     <None Include="ConceptualTemplates\Conceptual.aml" />
     <None Include="Content\VersionHistory\v1.1.0.2.aml" />
+    <None Include="Content\VersionHistory\v1.1.0.3.aml" />
     <None Include="ExampleFiles\MediaContent.xml" />
     <None Include="ExampleFiles\Tokens.xml" />
     <None Include="Content\VersionHistory\VersionHistory.aml" />

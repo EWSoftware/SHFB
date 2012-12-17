@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="d0db2290-08bb-40cc-9797-23a342b96564" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>This element is used to indicate that text within a description should be marked as code.</para>
+		</introduction>
+
+		<section>
+			<title>Syntax</title>
+			<content>
+				<para>This inline element can be used within any other element.</para>
+
+<code language="xml" title=" ">
+&lt;c&gt;text&lt;/c&gt;
+</code>
+			</content>
+		</section>
+
+		<section>
+			<title>Remarks</title>
+			<content>
+				<para>Use this element to mark inline text as code.  Use the <link xlink:href="1abd1992-e3d0-45b4-b43d-91fcfc5e5574" />
+element to mark a multi-line block of lines as code.</para>
+			</content>
+		</section>
+		
+		<section>
+			<title>Example</title>
+			<content>
+<code language="cs" title=" " source="SampleClass.cs" region="c/returns Example" />
+			</content>
+		</section>
+		
+		<relatedTopics>
+			<link xlink:href="d297bc14-33aa-4152-ae36-9f658b15de87" />
+			<link xlink:href="1abd1992-e3d0-45b4-b43d-91fcfc5e5574" />
+			<codeEntityReference qualifyHint="false" autoUpgrade="true">M:XMLCommentsExamples.SampleClass.Increment</codeEntityReference>
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

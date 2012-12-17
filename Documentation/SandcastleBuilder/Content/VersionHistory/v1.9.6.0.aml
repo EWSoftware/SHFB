@@ -2,7 +2,7 @@
 <topic id="4bc61ac3-ac19-4c8b-9ff9-95aaefa0b18e" revisionNumber="1">
 	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
 		<introduction>
-			<autoOutline excludeRelatedTopics="true" lead="Version 1.9.6.0 was released on November 25th, 2012." />
+			<autoOutline excludeRelatedTopics="true" lead="Version 1.9.6.0 was released on December 16th, 2012." />
 
 		</introduction>
 
@@ -56,6 +56,12 @@ removed build step, you will need to update them accordingly.</para>
 
 				<list class="bullet">
 					<listItem>
+						<para>Fixed the <codeInline>SandcastleProject</codeInline> class so that it reuses existing MSBuild
+project instances if the project being loaded is already in the global collection.  This prevents it from trying
+to unload a shared instance owned by MSBuild when disposed.</para>
+					</listItem>
+					
+					<listItem>
 						<para>Fixed issues with invalid characters in the vendor name project property.</para>
 					</listItem>
 
@@ -77,6 +83,23 @@ extra line after end of line comments.</para>
 					<listItem>
 						<para>Fixed the Code Block Component so that it doesn't match shorter region names in longer ones
 that start with the shorter name that occur before it.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the IntelliSense Component so that it uses a case-insensitive comparer for the assembly
+names in the writer dictionary to prevent it from trying to create the same file twice when the names differ only
+by case.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the Topic Previewer and Entity References windows so that they retain the help file
+builder project reference when a non-help file builder project is selected in the same solution.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated the Help 2 build task to suppress all informational warnings and updated the MS Help
+Viewer build task to reduce the number of informational messages it produces.  This significantly reduces both
+build time and log file size for projects with a large number of topics.</para>
 					</listItem>
 
 					<listItem>
@@ -161,8 +184,20 @@ rather than doing it by hand.</para>
 					</listItem>
 
 					<listItem>
-						<para>Added an option to the guided installer to install some MAML snippets for Visual Studio.</para>
+						<para>Added support for the <codeInline>conceptualLink</codeInline> XML comments TOC entry format in
+the <ui>Entity References</ui> tool window.</para>
 					</listItem>
+
+					<listItem>
+						<para>Changed the default for the <codeInline>BuildAssembler Verbosity</codeInline> project property
+from <codeInline>All Messages</codeInline> to <codeInline>Only Warnings and Errors</codeInline>.</para>
+					</listItem>
+
+					<listItem>
+						<para>Reduced the build log output when copying website files from all file names to just a file
+count as it progresses to reduce the volume of output on large help files.</para>
+					</listItem>
+
 				</list>
 
 			</content>

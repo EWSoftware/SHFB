@@ -288,6 +288,15 @@ div.mediaCenter {
 	margin-bottom: 1em;
 }
 
+div.preliminary
+{
+	margin-top: 1em;
+	margin-bottom: 1em;
+	font-weight: bold;
+	font-size: 110%;
+	color: #333333;
+}
+
 div.caption
 {
 	margin-top: 1em;

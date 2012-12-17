@@ -591,7 +591,7 @@ div#mainSection table td.imageCell, div#mainSectionMHS table td.imageCell
 
 div.code table
 {
-	border: 0;
+	border: 0 none;
 	font-size: 95%;
 	margin-bottom: 5px;
 	width: 100%
@@ -599,6 +599,7 @@ div.code table
 
 div.code table th
 {
+    border: 0 none;
 	border-bottom-color: #C8CDDE;
 	border-bottom-style: solid;
 	border-bottom-width: 1px;
@@ -960,6 +961,15 @@ div.mediaCenter {
 	margin-bottom: 1em;
 }
 
+div.preliminary
+{
+	margin-top: 1em;
+	margin-bottom: 1em;
+	font-weight: bold;
+	font-size: 110%;
+	color: #333333;
+}
+
 div.caption
 {
 	margin-top: 1em;
@@ -1246,4 +1256,18 @@ table.members th.valueColumn {
 
 table.members th.descriptionColumn {
 /*	No fixed width, use whatever is left over */
+}
+
+/* These two entries were added by ComponentOne to fix MS Help Viewer 1.0 display issues */
+table#bottomTable, table#bottomTable tr, table#bottomTable td,
+	table#topTable, table#topTable tr, table#topTable td,
+	table#gradientTable, table#gradientTable tr, table#gradientTable td,
+	table#logoTable, table#logoTable tr, table#logoTable td
+{
+	border: 0 none;
+}
+
+body
+{
+	overflow: auto;
 }

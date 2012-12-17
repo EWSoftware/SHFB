@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="e433d846-db15-4ac8-a5f5-f3428609ae6c" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>This element describes content that should be displayed as a list or a table.</para>
+		</introduction>
+
+		<section>
+			<title>Syntax</title>
+			<content>
+				<para>This inline block element can be used within any other element.</para>
+
+<code language="xml" title=" ">
+&lt;list type="bullet"&gt;
+  &lt;item&gt;
+    &lt;term&gt;Optional term&lt;/term&gt;
+    &lt;description&gt;Required description.  If term is omitted, the description can be
+listed as the item element's inner text.&lt;/description&gt;
+  &lt;/item&gt;
+  ...
+&lt;/list&gt;
+
+or
+
+&lt;list type="number" [start="###"]&gt;
+  &lt;item&gt;
+    &lt;term&gt;Optional term&lt;/term&gt;
+    &lt;description&gt;Required description.  If term is omitted, the description can be
+listed as the item element's inner text.&lt;/description&gt;
+  &lt;/item&gt;
+  ...
+&lt;/list&gt;
+
+or
+
+&lt;list type="definition"&gt;
+  &lt;item&gt;
+    &lt;term&gt;Required term&lt;/term&gt;
+    &lt;description&gt;Required description&lt;/description&gt;
+  &lt;/item&gt;
+  ...
+&lt;/list&gt;
+
+or
+
+&lt;list type="table"&gt;
+  &lt;listHeader&gt;
+    &lt;term&gt;Multi-column table header&lt;/term&gt;
+    &lt;term&gt;Add additional term or description elements to create new header columns&lt;/term&gt;
+    ...
+  &lt;/listHeader&gt;
+  &lt;item&gt;
+    &lt;description&gt;Multi-column table&lt;/description&gt;
+    &lt;description&gt;Add additional term or description elements to create new columns&lt;/description&gt;
+    ...
+  &lt;/item&gt;
+  ...
+&lt;/list&gt;
+
+</code>
+
+				<para>The <codeInline>type</codeInline> attribute defines the list type.  The list type value should be
+one of the values shown below.  The list item terms and descriptions can be any valid inline or block XML comments
+similar to a <codeInline>remarks</codeInline> element.</para>
+
+        <alert class="important">
+          <para>The <codeInline>type</codeInline> attribute value is case-sensitive.  Unrecognized values will
+cause the entire list element to be ignored with the item content rendered inline without any special list
+formatting.</para>
+        </alert>
+
+        <para>The <codeInline>type</codeInline> attribute can be any of the following values.  The requirements
+of each format are noted in the description.</para>
+
+        <table>
+          <tableHeader>
+            <row>
+              <entry><para>List Type</para></entry>
+              <entry><para>Description</para></entry>
+            </row>
+          </tableHeader>
+          <row>
+            <entry><para>bullet</para></entry>
+            <entry>
+							<para>This renders a bulleted list.  Each <codeInline>item</codeInline> element will render a new
+bulleted item.  If <codeInline>term</codeInline> and <codeInline>description</codeInline> elements are omitted,
+the inner text is rendered after the bullet point.  The same thing happens if a <codeInline>description</codeInline>
+element is included by itself.  If both a <codeInline>term</codeInline> and a <codeInline>description</codeInline>
+element are present, the term is highlighted and separated from the description by a dash.</para>
+						</entry>
+          </row>
+          <row>
+            <entry><para>number</para></entry>
+            <entry>
+							<para>This renders a numbered list.  Each <codeInline>item</codeInline> element will render a new
+numbered item.  If <codeInline>term</codeInline> and <codeInline>description</codeInline> elements are omitted,
+the inner text is rendered after the number.  The same thing happens if a <codeInline>description</codeInline>
+element is included by itself.  If both a <codeInline>term</codeInline> and a <codeInline>description</codeInline>
+element are present, the term is highlighted and separated from the description by a dash.</para>
+
+							<para>The <codeInline>number</codeInline> style supports an optional <codeInline>start</codeInline>
+attribute that can be used to indicate the starting number for the numbered list.  This lets you create a list
+at a later point in the topic that continues numbering from the end point of a prior list.  You are responsible
+for providing the appropriate starting number for the new list.</para>
+
+							<alert class="note">
+								<para><codeInline>start</codeInline> is a custom attribute implemented by Sandcastle.</para>
+							</alert>
+						</entry>
+          </row>
+          <row>
+            <entry><para>definition</para></entry>
+            <entry>
+							<para>A definition list.  A <codeInline>term</codeInline> and <codeInline>description</codeInline>
+element are required within each <codeInline>item</codeInline> element.  The term is highlighted and rendered on
+a separate line with the description following in a new paragraph.</para>
+						</entry>
+          </row>
+          <row>
+            <entry><para>table</para></entry>
+            <entry>
+							<para>A multi-column table.  The <codeInline>item</codeInline> elements create new rows in the
+table.  With this type, the optional <codeInline>listHeader</codeInline> element can be used to define the column
+headers.  Use a <codeInline>term</codeInline> or a <codeInline>description</codeInline> element to define the
+columns in the <codeInline>listHeader</codeInline> and each <codeInline>item</codeInline> element.</para>
+						</entry>
+          </row>
+        </table>
+
+			</content>
+		</section>
+
+		<section>
+			<title>Examples</title>
+			<content>
+<code language="cs" title=" " source="SampleClass.cs" region="list Examples" />
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="f8464c0f-f62a-4faf-b11a-9a41173307e8" />
+			<codeEntityReference qualifyHint="false" autoUpgrade="true">M:XMLCommentsExamples.SampleClass.VariousListExamples</codeEntityReference>
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

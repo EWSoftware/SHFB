@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Topics>
+  <Topic id="55798556-c18a-46bd-8bb6-902c45e5ebbc" visible="True" title="Welcome">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="Welcome" />
+    </HelpKeywords>
+  </Topic>
+  <Topic id="3367AE66-A888-49A7-9B1E-448D8DDB1544" visible="True" title="License Agreement">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="License agreement" />
+    </HelpKeywords>
+  </Topic>
+  <Topic id="6D925E85-3DEA-422D-8F4B-F5995C33BD0F" visible="True" isExpanded="true" isSelected="true" title="Getting Started">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="Getting Started" />
+    </HelpKeywords>
+    <Topic id="8A556640-5741-4108-AD6E-D1CAE4D91860" visible="True" title="Installation Instructions">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Getting started, installation" />
+        <HelpKeyword index="K" term="installation" />
+        <HelpKeyword index="K" term="prerequisites" />
+        <HelpKeyword index="K" term="requirements" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="1466166B-0BC0-4B0F-ABDC-B5A755EA4ED9" visible="True" title="Walkthrough: Enabling and Using XML Comments">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Getting started, enable XML comments" />
+        <HelpKeyword index="K" term="Getting started, Visual Studio" />
+        <HelpKeyword index="K" term="Getting started, Visual Studio projects" />
+        <HelpKeyword index="K" term="XML comment tags, tag reference" />
+        <HelpKeyword index="K" term="XML comments" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="2D292E99-83FF-4978-B1F8-CF70385C3B4F" visible="True" title="Documenting Web Projects">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Getting started, websites and web projects" />
+      </HelpKeywords>
+    </Topic>
+  </Topic>
+  <Topic id="1f2caa70-729b-48e1-9a9c-b612efd2f3b7" visible="True" isExpanded="true" title="Sandcastle Tools">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="Sandcastle tools" />
+    </HelpKeywords>
+    <Topic id="5a8fa02a-01cd-466e-a2c1-2bb30190cc5a" visible="True" title="General Information">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="tools, general information" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="80c983f4-1a97-473b-b614-2b4d671d50ca" visible="True" title="Architecture">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="tools architecture" />
+      </HelpKeywords>
+    </Topic>
+  </Topic>
+  <Topic id="69c47b63-55bd-4493-ad05-1068bb0d930f" visible="True" title="Frequently Asked Questions (FAQ)">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="FAQ" />
+      <HelpKeyword index="K" term="frequently asked questions" />
+    </HelpKeywords>
+  </Topic>
+  <Topic id="f11815bb-2226-4a23-b28d-a1e71dfccd40" visible="True" title="Links to Resources">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="links to resources" />
+    </HelpKeywords>
+  </Topic>
+  <Topic id="ECE14E8F-CA3D-41CE-8186-B649B6B95B81" visible="True" title="Making a Donation">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="donate" />
+      <HelpKeyword index="K" term="support, donate" />
+    </HelpKeywords>
+  </Topic>
+  <Topic id="e0636c2c-3da0-4d5e-9e86-6fb3f0c83eef" visible="True" isExpanded="true" title="Version History">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="version history" />
+    </HelpKeywords>
+    <Topic id="2df020c8-13c1-46d0-82c3-69b57fd9c484" visible="True" title="Version 2.7.2.0, December 2012">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 2.7.2.0" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="05027d1d-855f-4939-b1d1-09b674be66a0" visible="True" title="Version 2.7.1.0, October 2012">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 2.7.1.0" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="0f2756ce-8089-4902-9ae4-68e593b2ec51" visible="True" title="Version 2.7.0.0, April 2012">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 2.7.0.0" />
+      </HelpKeywords>
+    </Topic>
+  </Topic>
+  <Topic id="B7E856D9-2576-4527-81AD-2A04F8BFD84B" visible="True" title="Glossary">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="glossary" />
+    </HelpKeywords>
+  </Topic>
+</Topics>

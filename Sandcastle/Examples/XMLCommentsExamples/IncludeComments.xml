@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Comments>
+	<!-- This element's content is imported by element name -->
+	<IncludeAllExample>
+		<summary>
+			This summary came from an external XML file.
+		</summary>
+
+		<remarks>
+			These remarks came from an external XML file.
+		</remarks>
+
+		<conceptualLink target="db2703b4-12bc-4cf5-8642-544b41002809" />
+		<seealso cref="IncludeSectionsExample" />
+	</IncludeAllExample>
+
+	<!-- These examples use an ID attribute to identify the element content to import -->
+	<Example id="paraExample">
+		<para>This paragraph was imported from an external XML file.</para>
+
+		<remarks>This element is not imported as it is not referenced.</remarks>
+	</Example>
+
+	<Example id="AnotherExample">
+		<para>Paragraph 1</para>
+		<para>Paragraph 2</para>
+	</Example>
+</Comments>

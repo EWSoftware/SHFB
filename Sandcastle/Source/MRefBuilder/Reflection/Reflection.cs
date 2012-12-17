@@ -4,19 +4,20 @@
 // Change history:
 // 03/15/2012 - EFW - Fixed GetTemplateMember() and ParametersMatch() to properly check for template
 // parameters when there are method overloads in which one uses a generic type and the other does not.
+// 11/30/2012 - EFW - Added updates based on changes submitted by ComponentOne to fix crashes caused by
+// obfuscated member names.
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 using System.Compiler;
 
 namespace Microsoft.Ddue.Tools.Reflection
 {
-
     public static class ReflectionUtilities
     {
-
         public static Event[] GetImplementedEvents(Event trigger)
         {
             List<Event> list = new List<Event>();
@@ -36,7 +37,6 @@ namespace Microsoft.Ddue.Tools.Reflection
             }
 
             return (list.ToArray());
-
         }
 
         public static Method[] GetImplementedMethods(Method method)
@@ -205,7 +205,12 @@ namespace Microsoft.Ddue.Tools.Reflection
                 Identifier name = new Identifier(String.Format("{0}`{1}", type.GetUnmangledNameWithoutTypeParameters(), type.TemplateArguments.Count));
                 Identifier space = type.Namespace;
                 TypeNode template = templateModule.GetType(space, name);
-                return (template);
+
+                // !EFW - Added by ComponentOne
+                if(template == null)
+                    template = type;
+
+                return template;
             }
             else
             {
@@ -248,14 +253,21 @@ namespace Microsoft.Ddue.Tools.Reflection
                 // move down the stack to the inner type we want
                 while(identifiers.Count > 0)
                 {
+                    // !EFW - Added by ComponentOne
+                    if(current == null)
+                        return type;
+
                     current = (TypeNode)current.GetMembersNamed(identifiers.Pop())[0];
                     // Console.WriteLine("D {0} {1}", current.GetFullUnmangledNameWithTypeParameters(), CountArguments(current));
                 }
 
-                // whew, finally we've got it
-                return (current);
-            }
+                // !EFW - Added by ComponentOne
+                if(current == null)
+                    return type;
 
+                // whew, finally we've got it
+                return current;
+            }
         }
 
         public static bool IsDefaultMember(Member member)
@@ -406,6 +418,37 @@ namespace Microsoft.Ddue.Tools.Reflection
                 // they are normal types
                 return (type1.IsStructurallyEquivalentTo(type2));
             }
+        }
+
+        // EFW - Submitted by ComponentOne.  These are used to prevent crashes caused by obfuscated member names
+        private static Regex reBadXmlChars = new Regex("[^\u0020-\uD7FF\uE000-\uFFFD\u10000-\u10FFFF]");
+
+        /// <summary>
+        /// This is used to check for bad XML characters in a member name
+        /// </summary>
+        /// <param name="name">The member name to check</param>
+        /// <returns>True if the name contains bad characters, false if not</returns>
+        public static bool HasInvalidXmlCharacters(this string name)
+        {
+            if(String.IsNullOrEmpty(name))
+                return false;
+
+            return reBadXmlChars.IsMatch(name);
+        }
+
+        /// <summary>
+        /// This is used to translate a value, replacing bad XML characters with ther hex equivalent
+        /// </summary>
+        /// <param name="translateValue">The value to check and translate</param>
+        /// <returns>The unchanged value if it contains no bad characters or the translated value if it does
+        /// contain bad characters.</returns>
+        /// <remarks>This prevents crashes caused by obfuscated member names and encrypted values</remarks>
+        public static string TranslateToValidXmlValue(this string translateValue)
+        {
+            if(String.IsNullOrEmpty(translateValue) || !reBadXmlChars.IsMatch(translateValue))
+                return translateValue;
+
+            return reBadXmlChars.Replace(translateValue, m => ((int)m.Value[0]).ToString("X2"));
         }
     }
 }

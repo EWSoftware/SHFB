@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="16cdb957-a35b-4c17-bf5e-ea511b0218e3" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>This element is used to create a link to another API topic or an external website within the
+<legacyBold>See Also</legacyBold> section of a topic.</para>
+
+			<autoOutline lead="none">2</autoOutline>
+		</introduction>
+
+		<section address="Syntax">
+			<title>Syntax</title>
+			<content>
+				<para>This top-level element can be used on any type or its members.  Any of the following formats may be
+used based on the need.</para>
+
+			</content>
+
+			<sections>
+				<section address="CodeReference">
+					<title>Code Reference</title>
+					<content>
+<code language="xml" title=" ">
+&lt;seealso cref="member" /&gt;
+	
+or
+
+&lt;seealso cref="member"&gt;inner text&lt;/see&gt;
+</code>
+
+						<para>The code reference form uses a <codeInline>cref</codeInline> attribute to specify the
+member name to which the link should be connected.  The compiler will check that the target member name exists
+and will generate a warning if it is not found.  The member name does not have to be fully qualified as long as
+the reference is within the containing class or if the appropriate <codeInline>using</codeInline>
+(<codeInline>Imports</codeInline> in VB) statements are present.</para>
+
+						<para>If the self-closing form is used, the inner text of the link will be set to the member name
+without a namespace or type qualifier.  You can specify inner text on the element to use an alternate value for
+the link text or to add a qualifying namespace or type to the member name.</para>
+
+						<para>When specifying type, field, property, event, and non-overloaded method names, the name alone
+will suffice as the <codeInline>cref</codeInline> attribute value.  However, when referencing overloaded methods,
+you must supply parameter type information to help the compiler determine to which overload you are referring.
+The parameter type names are enclosed in parentheses and can be specified using the types for the language being
+used (i.e. <codeInline>int</codeInline> or <codeInline>string</codeInline> for C# or <codeInline>Integer</codeInline>
+or <codeInline>String</codeInline> for VB).  They can also be specified using the .NET Framework type names such
+as <codeInline>Int32</codeInline>, <codeInline>System.Int32</codeInline>, etc.  If an overload takes no
+parameters, just specify an empty set of parentheses.  If you want to link to the auto-generated member overloads
+help topic, you can specify the fully qualified member name with an "<codeInline>O:</codeInline>" prefix.  See
+the <link xlink:href="#Examples">Method Overload Examples</link> below for details.</para>
+					</content>
+				</section>
+
+				<section address="ExternalRef">
+					<title>External Reference</title>
+					<content>
+<code language="xml" title=" ">
+&lt;seealso href="url" [target="_blank | _self | _parent | _top"]
+    [alt="alternate text"] /&gt;
+	
+or
+
+&lt;seealso href="url" [target="_blank | _self | _parent | _top"]
+    [alt="alternate text"]&gt;inner text&lt;/see&gt;
+</code>
+
+						<para>The external reference form is a customization implemented by Sandcastle.  It uses an
+<codeInline>href</codeInline> attribute to specify the URL of an external website or resource to which the link
+should be connected.  If the self-closing form is used, the inner text of the link will be set to the URL.  You
+can specify inner text on the element to use an alternate value for the link text.</para>
+
+						<para>The optional <codeInline>target</codeInline> attribute can be used to specify where the
+content will be opened.  If not specified, <codeInline>_blank</codeInline> is used to open the content in a new
+browser window.  The <codeInline>_self</codeInline> option can be used to replace the current topic with the
+content of the target URL.  The <codeInline>_parent</codeInline> and <codeInline>_top</codeInline> options can be
+used to force the content to be displayed in the parent frame or full window if the current topic is hosted in
+one of those manners.</para>
+
+						<para>The optional <codeInline>alt</codeInline> attribute can be used to specify alternate text to
+display for the link's tooltip when the mouse hovers over it.  If not specified, no alternate text is added for
+the tooltip.</para>
+
+					</content>
+				</section>
+
+			</sections>
+		</section>
+
+		<section address="Remarks">
+			<title>Remarks</title>
+			<content>
+				<para>Use this element to insert a link in the <legacyBold>See Also</legacyBold> section of the topic.
+Use the <link xlink:href="983fed56-321c-4daf-af16-e3169b28ffcd" /> element to insert an inline link.</para>
+
+				<alert class="note">
+					<para>Although listed as a top-level element, the <codeInline>seealso</codeInline> element can be used
+as an inline element like the <codeInline>see</codeInline> element.  The difference is that this element will not
+render anything inline.  As with its top-level usage, it only adds an entry in the <legacyBold>See Also</legacyBold>
+section.</para>
+				</alert>
+			</content>
+		</section>
+		
+		<section address="Examples">
+			<title>Examples</title>
+			<content>
+				<code language="cs" title="Code Reference Examples" source="SampleClass.cs" region="see/seealso cref Examples" />
+				<code language="cs" title="Method Overload Examples" source="SampleClass.cs" region="see/seealso Method Overload Examples" />
+				<code language="cs" title="External Reference Examples" source="SampleClass.cs" region="see/seealso href Examples" />
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="20dc8c5f-9979-4ecd-92ce-cea6ce7acaeb" />
+			<link xlink:href="983fed56-321c-4daf-af16-e3169b28ffcd" />
+			<link xlink:href="db2703b4-12bc-4cf5-8642-544b41002809" />
+			<codeEntityReference qualifyHint="false">E:XMLCommentsExamples.SampleClass.SomethingHappened</codeEntityReference>
+			<codeEntityReference qualifyHint="false" autoUpgrade="true">M:XMLCommentsExamples.SampleClass.OnSomethingHappened</codeEntityReference>
+			<codeEntityReference qualifyHint="false" autoUpgrade="true">M:XMLCommentsExamples.SampleClass.SeeElementExternalExample</codeEntityReference>
+			<codeEntityReference qualifyHint="false" autoUpgrade="true">M:XMLCommentsExamples.SampleClass.DoSomething</codeEntityReference>
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

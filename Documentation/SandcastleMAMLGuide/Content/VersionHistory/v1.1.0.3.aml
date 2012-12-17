@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="bea57722-4254-47b3-a86c-415af363eb2f" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>Version 1.1.0.3 was released on December 16th, 2012.
+			</para>
+		</introduction>
+
+		<section>
+			<title>Changes in This Release</title>
+			<content>
+
+				<list class="bullet">
+					<listItem>
+						<para>Removed references to the Sandcastle Help File Builder components and features that have been
+moved into the Sandcastle tools and presentation style XSL transformations and reworded the affected sections to
+reflect their actual use with Sandcastle alone.</para>
+					</listItem>
+				</list>
+
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="ba47a67c-4825-4fcd-b806-2b2e02d4373a" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

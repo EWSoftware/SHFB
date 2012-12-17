@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : TopicPreviewerControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/26/2012
+// Updated : 12/05/2012
 // Note    : Copyright 2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -31,6 +31,7 @@ using System.Windows.Media;
 using System.Xml.Linq;
 
 using SandcastleBuilder.Utils;
+using SandcastleBuilder.Utils.BuildComponent;
 using SandcastleBuilder.Utils.ConceptualContent;
 using SandcastleBuilder.WPF.Commands;
 using SandcastleBuilder.WPF.Maml;
@@ -254,8 +255,7 @@ namespace SandcastleBuilder.WPF.UserControls
             }
 
             // Make sure the base path is set for imported code blocks
-            MamlToFlowDocumentConverter.ImportedCodeBasePath = Path.GetDirectoryName(
-                Path.GetFullPath(currentProject.Filename));
+            this.SetImportedCodeBasePath();
 
             // Get content from open file editors
             var args = new FileContentNeededEventArgs(FileContentNeededEvent, this);
@@ -321,6 +321,8 @@ namespace SandcastleBuilder.WPF.UserControls
 
             try
             {
+                converter.TopicTitles.Clear();
+
                 // Get the content layout files.  Site maps are ignored.  We don't support rendering them.
                 contentLayoutFiles = new FileItemCollection(currentProject, BuildAction.ContentLayout);
                 tocFiles = new List<ITableOfContents>();
@@ -379,6 +381,41 @@ namespace SandcastleBuilder.WPF.UserControls
             }
 
             tvContent.ItemsSource = tableOfContents;
+        }
+
+        /// <summary>
+        /// This is used to set the base path for imported code regions
+        /// </summary>
+        private void SetImportedCodeBasePath()
+        {
+            BuildComponentConfiguration compConfig = null;
+            string cfgPath, basePath = Path.GetDirectoryName(Path.GetFullPath(currentProject.Filename));
+
+            try
+            {
+                // If there is a code block component configuration, get the base path from it
+                if(currentProject.ComponentConfigurations.TryGetValue("Code Block Component", out compConfig) &&
+                  compConfig.Enabled)
+                {
+                    var cfg = XElement.Parse(compConfig.Configuration);
+                    var basePathCfg = cfg.Descendants("basePath").FirstOrDefault();
+
+                    if(basePathCfg != null)
+                    {
+                        cfgPath = basePathCfg.Attribute("value").Value.Replace("{@HtmlEncProjectFolder}",
+                            FolderPath.TerminatePath(basePath));
+
+                        if(Directory.Exists(cfgPath))
+                            basePath = cfgPath; 
+                    }
+                }
+            }
+            catch
+            {
+                // Ignore exceptions, if we can't figure it out, we'll use the project's folder
+            }
+
+            MamlToFlowDocumentConverter.ImportedCodeBasePath = basePath;
         }
 
         /// <summary>
@@ -640,6 +677,14 @@ namespace SandcastleBuilder.WPF.UserControls
                         MessageBox.Show("Unknown link target: " + link.NavigateUri.Host +
                             link.NavigateUri.Fragment, "Topic Previewer", MessageBoxButton.OK,
                             MessageBoxImage.Exclamation);
+                }
+                catch(Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine(ex);
+
+                    MessageBox.Show("Unknown link target: " + link.NavigateUri.Host +
+                        link.NavigateUri.Fragment, "Topic Previewer", MessageBoxButton.OK,
+                        MessageBoxImage.Exclamation);
                 }
                 finally
                 {

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : LaunchMSHelpViewDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/25/2012
+// Updated : 12/08/2012
 // Note    : Copyright 2010-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -84,6 +84,8 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
         private BackgroundWorker actionThread;
         private Thread runningThread;
         private Version viewerVersion;
+
+        private static int lastVersionSelected;
         #endregion
 
         #region Constructor
@@ -125,7 +127,7 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
             actionThread.ProgressChanged += actionThread_ProgressChanged;
             actionThread.RunWorkerCompleted += actionThread_RunWorkerCompleted;
 
-            cboHelpViewerVersion.SelectedIndex = 0;
+            cboHelpViewerVersion.SelectedIndex = lastVersionSelected;
         }
         #endregion
 
@@ -326,6 +328,8 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
         private void cboHelpViewerVersion_SelectedIndexChanged(object sender, EventArgs e)
         {
             txtInfo.Text = null;
+
+            lastVersionSelected = cboHelpViewerVersion.SelectedIndex;
 
             if(!File.Exists(helpFilePath) || !File.Exists(setupFile))
             {

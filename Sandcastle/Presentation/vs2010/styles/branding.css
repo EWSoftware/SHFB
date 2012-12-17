@@ -516,6 +516,14 @@ span.selflink
 	font-weight: bold;
 }
 
+div.preliminary
+{
+	margin-top: 1em;
+	margin-bottom: 1em;
+	font-weight: bold;
+	color: #333333;
+}
+
 div.caption
 {
 	font-weight: bold;

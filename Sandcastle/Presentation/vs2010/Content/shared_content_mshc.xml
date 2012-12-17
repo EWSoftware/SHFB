@@ -54,6 +54,7 @@
   <!-- section titles -->
   <item id="title_remarks">Remarks</item>
   <item id="title_changeHistory">Change History</item>
+  <item id="title_events">Events</item>
   <item id="title_exceptions">Exceptions</item>
   <item id="title_contracts">Contracts</item>
   <item id="title_setter">Set</item>

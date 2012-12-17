@@ -126,8 +126,7 @@ download the <externalLink>
   <content>
 	<list class="bullet">
       <listItem>
-				<para>The Sandcastle Standalone Build Components download available at the <token>SHFB</token>
-project site contains the following custom build components:</para>
+				<para>The <token>SHFB</token> contains the following custom build components:</para>
 
 				<list class="bullet">
 					<listItem>

@@ -1,5 +1,4 @@
 @ECHO OFF
-CLS
 
 SETLOCAL
 SET DXROOT=%CD%\..\Sandcastle\

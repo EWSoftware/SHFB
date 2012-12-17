@@ -82,8 +82,8 @@
 				<File Id="SandcastleBuilder.Components.dll" KeyPath="yes" Source="$(var.BinFolder)SandcastleBuilder.Components.dll" />
 				<File Id="SandcastleBuilder.Components.xml" Source="$(var.BinFolder)SandcastleBuilder.Components.xml" />
 				<File Id="SandcastleBuilder.components" Source="$(var.BinFolder)SandcastleBuilder.components" />
-        <File Id="SandcastleBuilder.filters" Source="$(var.BinFolder)SandcastleBuilder.filters" />
-      </Component>
+				<File Id="SandcastleBuilder.filters" Source="$(var.BinFolder)SandcastleBuilder.filters" />
+			</Component>
 
 			<Component Id="SandcastleBuilder.PlugIns.plugins" Guid="{FD01471A-A05E-4289-858C-5E981E6EE9A5}">
 				<File Id="SandcastleBuilder.PlugIns.plugins" KeyPath="yes" Source="$(var.BinFolder)SandcastleBuilder.PlugIns.plugins" />
@@ -93,6 +93,7 @@
 			<Component Id="SandcastleBuilder.Utils.dll" Guid="{63A7C5A1-3858-4ADB-A036-C3A0A0AC575E}">
 				<File Id="SandcastleBuilder.Utils.dll" KeyPath="yes" Source="$(var.BinFolder)SandcastleBuilder.Utils.dll" />
 				<File Id="SandcastleBuilder.Utils.xml" Source="$(var.BinFolder)SandcastleBuilder.Utils.xml" />
+				<File Id="StandardStyles.presentation" Source="$(var.BinFolder)StandardStyles.presentation" />
 			</Component>
 
 			<Component Id="SandcastleBuilder.WPF.dll" Guid="{41C0EEE7-7725-450E-ADFF-96F5F251D12C}">
@@ -107,7 +108,7 @@
 			</Component>
 
 			<!-- License -->
-			
+
 			<Component Id="License.txt" Guid="{2029F775-623C-4838-B5AC-D815A3358856}">
 				<File Id="License.txt" KeyPath="yes" Source="$(var.SolutionDir)License.txt" />
 			</Component>
@@ -148,10 +149,10 @@
 				<File Id="WeifenLuo.WinFormsUI.Docking.dll" KeyPath="yes" Source="$(var.BinFolder)WeifenLuo.WinFormsUI.Docking.dll" />
 			</Component>
 
-      <Component Id="Ionic.Zip.Reduced.dll" Guid="{93981174-57F0-467C-937B-F59C79D65FAD}">
-        <File Id="Ionic.Zip.Reduced.dll" KeyPath="yes" Source="$(var.BinFolder)Ionic.Zip.Reduced.dll" />
-      </Component>
-    </DirectoryRef>
+			<Component Id="Ionic.Zip.Reduced.dll" Guid="{93981174-57F0-467C-937B-F59C79D65FAD}">
+				<File Id="Ionic.Zip.Reduced.dll" KeyPath="yes" Source="$(var.BinFolder)Ionic.Zip.Reduced.dll" />
+			</Component>
+		</DirectoryRef>
 
 		<ComponentGroup Id="Binaries">
 
@@ -162,8 +163,8 @@
 			<ComponentRef Id="WriteSHFBEnvironmentPath" />
 
 			<!-- Main executables -->
-      <ComponentRef Id="SHFBProjectLauncher.exe" />
-      <ComponentRef Id="SandcastleBuilderGUI.exe" />
+			<ComponentRef Id="SHFBProjectLauncher.exe" />
+			<ComponentRef Id="SandcastleBuilderGUI.exe" />
 			<ComponentRef Id="HelpLibraryManagerLauncher.exe" />
 			<ComponentRef Id="SandcastleHtmlExtract.exe" />
 			<ComponentRef Id="GenerateInheritedDocs.exe" />
@@ -190,7 +191,7 @@
 			<!-- 3rd party libraries -->
 			<ComponentRef Id="ICSharpCode.TextEditor.dll" />
 			<ComponentRef Id="WeifenLuo.WinFormsUI.Docking.dll" />
-      <ComponentRef Id="Ionic.Zip.Reduced.dll" />
-    </ComponentGroup>
+			<ComponentRef Id="Ionic.Zip.Reduced.dll" />
+		</ComponentGroup>
 	</Fragment>
 </Wix>

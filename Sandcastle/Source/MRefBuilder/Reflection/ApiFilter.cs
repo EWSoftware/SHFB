@@ -11,6 +11,8 @@
 // names).
 // 03/02/2012 - EFW - Added HasExposedMembers() check to IsExposedType() so that it doesn't exclude
 // a type that contains exposed members when the type is marked as not exposed.
+// 11/30/2012 - EFW - Added updates based on changes submitted by ComponentOne to fix crashes caused by
+// obfuscated member names.
 
 using System;
 using System.Collections.Generic;
@@ -134,7 +136,7 @@ namespace Microsoft.Ddue.Tools.Reflection
 
             // !EFW - Bug fix.  Some obfuscated assemblies have mangled names containing characters that
             // are not valid in XML.  Exclude those by default.
-            if(member.FullName.ToCharArray().Any(ch => ch < 0x20 || ch > 0xFFFD))
+            if(member.FullName.HasInvalidXmlCharacters())
                 return false;
 
             // !EFW - Bug fix.  If not a recognized visibility, ignore it as it's probably an obfuscated
@@ -156,7 +158,7 @@ namespace Microsoft.Ddue.Tools.Reflection
 
             // !EFW - Bug fix.  Some obfuscated assemblies have mangled names containing characters that
             // are not valid in XML.  Exclude those by default.
-            if(space.FullName.ToCharArray().Any(ch => ch < 0x20 || ch > 0xFFFD))
+            if(space.FullName.HasInvalidXmlCharacters())
                 return false;
 
             string name = space.Name.Name;
@@ -196,7 +198,7 @@ namespace Microsoft.Ddue.Tools.Reflection
 
             // !EFW - Bug fix.  Some obfuscated assemblies have mangled names containing characters that
             // are not valid in XML.  Exclude those by default.
-            if(type.FullName.ToCharArray().Any(ch => ch < 0x20 || ch > 0xFFFD))
+            if(type.FullName.HasInvalidXmlCharacters())
                 return false;
 
             // !EFW - Bug fix.  If not a recognized visibility, ignore it as it's probably an obfuscated

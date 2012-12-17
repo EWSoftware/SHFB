@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="bbd1e65d-c87c-4b46-9a1a-259d3c5cd936" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>This element is used to list exceptions that can be thrown by a type's member.</para>
+		</introduction>
+
+		<section>
+			<title>Syntax</title>
+			<content>
+				<para>This top-level element is valid on property, method, event, operator, and type conversion members.
+<legacyItalic>exceptionType</legacyItalic> is the name of the exception type that can be thrown.</para>
+
+<code language="xml" title=" ">
+&lt;exception cref="exceptionType"&gt;description&lt;/exception&gt;
+</code>
+			</content>
+		</section>
+
+		<section>
+			<title>Remarks</title>
+			<content>
+				<para>There should be one <codeInline>exception</codeInline> element for each exception type that can be
+thrown.  The description will be used as the display text for the exception in IntelliSense and the Object
+Browser.</para>
+			</content>
+		</section>
+
+		<section>
+			<title>Example</title>
+			<content>
+<code language="cs" title=" " source="SampleClass.cs" region="exception Example" />
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="20dc8c5f-9979-4ecd-92ce-cea6ce7acaeb" />
+			<codeEntityReference qualifyHint="false" autoUpgrade="true">M:XMLCommentsExamples.SampleClass.ProcessText(System.String)</codeEntityReference>
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

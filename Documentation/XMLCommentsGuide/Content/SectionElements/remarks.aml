@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="3671b61e-0695-4f0f-bcb5-7cf9108dd642" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>This element is used to provide a more detailed description of the type or member.</para>
+		</introduction>
+
+		<section>
+			<title>Syntax</title>
+			<content>
+				<para>This top-level element is valid on all types and type members.</para>
+
+<code language="xml" title=" ">
+&lt;remarks&gt;description&lt;/remarks&gt;
+</code>
+			</content>
+		</section>
+
+		<section>
+			<title>Remarks</title>
+			<content>
+				<para>Use it when necessary to provide more detailed information about the type or member such as how it
+is used, its processing, etc.  Remarks will only appear in the help file and can be as long as necessary.</para>
+			</content>
+		</section>
+		
+		<section>
+			<title>Examples</title>
+			<content>
+				<code language="cs" title=" " source="SampleClass.cs" region="summary/remarks Example" />
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="20dc8c5f-9979-4ecd-92ce-cea6ce7acaeb" />
+			<link xlink:href="c3743eaf-9ef2-4d35-8f59-876f1e48a6a8" />
+			<link xlink:href="f512d714-e100-4296-916c-99a46e572e9d" />
+			<codeEntityReference qualifyHint="false" autoUpgrade="true">M:XMLCommentsExamples.SampleClass.SummaryRemarksExample</codeEntityReference>
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

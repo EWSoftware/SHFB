@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Components
 // File    : IntelliSenseComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/14/2012
+// Updated : 11/28/2012
 // Note    : Copyright 2007-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -102,7 +102,9 @@ namespace SandcastleBuilder.Components
 
             outputFolder = String.Empty;
             namespacesFilename = "Namespaces";
-            this.writers = new Dictionary<string, XmlWriter>();
+
+            // Assembly names are compared case insensitively
+            this.writers = new Dictionary<string, XmlWriter>(StringComparer.InvariantCultureIgnoreCase);
 
             assemblyExpression = XPathExpression.Compile("/document/reference/containers/library/@assembly");
             subgroupExpression = XPathExpression.Compile("string(/document/reference/apidata/@subgroup)");

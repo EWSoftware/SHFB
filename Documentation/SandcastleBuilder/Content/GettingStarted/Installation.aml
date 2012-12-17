@@ -45,7 +45,7 @@ CodePlex project site.  In addition, you will need the following:</para>
 
     <listItem>
 		<para>The latest version of the Sandcastle tools (currently the <token>SandcastleVersion</token> release as
-of <token>SHFBBuildDate</token>).</para>
+of <token>BuildDate</token>).</para>
 
 	<alert class="note">
   	  <para>This is the set of documentation tools originally created by Microsoft.  The help file builder uses
@@ -156,9 +156,9 @@ shareware tool <externalLink>
 
     <listItem>
 		<para>If you are going to document website projects, install the
-<link xlink:href="94c7f744-9b90-4254-93ab-9b15f47d9f42">Custom Web Code Providers</link> provided as part of the
-Sandcastle tools installer.  These make it easy to document website projects by extracing the XML comments files
-to a location of your choosing when the website is deployed.</para>
+<link xlink:href="94c7f744-9b90-4254-93ab-9b15f47d9f42">Custom Web Code Providers</link> included as part of
+the Sandcastle tools installer.  These make it easy to document website projects by extracting the XML comments
+files to a location of your choosing when the website is deployed.</para>
 	</listItem>
 
 </list>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="fa97c10b-a683-4d10-a01c-5787dbdd42d3" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>This element is used to describe the return value of a method.</para>
+		</introduction>
+
+		<section>
+			<title>Syntax</title>
+			<content>
+				<para>This top-level element is valid on all methods that return a value.  The description will appear
+in the Object Browser.</para>
+
+<code language="xml" title=" ">
+&lt;returns&gt;description&lt;/returns&gt;
+</code>
+			</content>
+		</section>
+
+		<section>
+			<title>Examples</title>
+			<content>
+				<code language="cs" title=" " source="SampleClass.cs" region="c/returns Example" />
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="20dc8c5f-9979-4ecd-92ce-cea6ce7acaeb" />
+			<codeEntityReference qualifyHint="false" autoUpgrade="true">M:XMLCommentsExamples.SampleClass.Increment</codeEntityReference>
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

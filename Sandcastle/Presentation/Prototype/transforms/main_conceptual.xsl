@@ -188,9 +188,14 @@
 
 			<!-- Abstract -->
 			<xsl:variable name="abstract" select="normalize-space(string(/document/topic//ddue:para[1]))" />
-			<xsl:if test="(string-length($abstract) &lt; 255) and (string-length($abstract) &gt; 0)">
-				<MSHelp:Attr Name="Abstract" Value="{$abstract}" />
-			</xsl:if>
+			<xsl:choose>
+				<xsl:when test="string-length($abstract) &gt; 254">
+					<MSHelp:Attr Name="Abstract" Value="{concat(substring($abstract,1,250), ' ...')}" />
+				</xsl:when>
+				<xsl:when test="string-length($abstract) &gt; 0 and $abstract != '&#160;'">
+					<MSHelp:Attr Name="Abstract" Value="{$abstract}" />
+				</xsl:when>
+			</xsl:choose>
 
 			<!-- authored attributes -->
 			<xsl:for-each select="/document/metadata/attribute">

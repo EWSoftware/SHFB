@@ -1,0 +1,245 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <!-- The configuration and platform will be used to determine which
+         assemblies to include from solution and project documentation
+         sources -->
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{721bd6ec-48f5-4391-95bd-fefefc528993}</ProjectGuid>
+    <SHFBSchemaVersion>1.9.5.0</SHFBSchemaVersion>
+    <!-- AssemblyName, Name, and RootNamespace are not used by SHFB but Visual
+         Studio adds them anyway -->
+    <AssemblyName>XMLCommentsGuide</AssemblyName>
+    <RootNamespace>XMLCommentsGuide</RootNamespace>
+    <Name>XMLCommentsGuide</Name>
+    <!-- SHFB properties -->
+    <OutputPath>.\Help\</OutputPath>
+    <HtmlHelpName>XMLCommentsGuide</HtmlHelpName>
+    <Language>en-US</Language>
+    <ApiFilter />
+    <ComponentConfigurations>
+      <ComponentConfig id="Cached MSDN URL References" enabled="True">
+        <component id="Cached MSDN URL References" type="SandcastleBuilder.Components.CachedResolveReferenceLinksComponent" assembly="{@SHFBFolder}SandcastleBuilder.Components.dll" locale="{@Locale}" linkTarget="{@SdkLinkTarget}">
+          <helpOutput format="HtmlHelp1">
+            <cache filename="{@LocalDataFolder}Cache\MsdnUrl.cache" />
+            <targets base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" type="{@HtmlSdkLinkType}" />
+            <targets files="reflection.xml" type="Local" />
+          </helpOutput>
+          <helpOutput format="MSHelp2">
+            <cache filename="{@LocalDataFolder}Cache\MsdnUrl.cache" />
+            <targets base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" type="{@MSHelp2SdkLinkType}" />
+            <targets files="reflection.xml" type="Index" />
+          </helpOutput>
+          <helpOutput format="MSHelpViewer">
+            <cache filename="{@LocalDataFolder}Cache\MsdnUrl.cache" />
+            <targets base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" type="{@MSHelpViewerSdkLinkType}" />
+            <targets files="reflection.xml" type="Id" />
+          </helpOutput>
+          <helpOutput format="Website">
+            <cache filename="{@LocalDataFolder}Cache\MsdnUrl.cache" />
+            <targets base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" type="{@WebsiteSdkLinkType}" />
+            <targets files="reflection.xml" type="Local" />
+          </helpOutput>
+        </component>
+      </ComponentConfig>
+      <ComponentConfig id="Code Block Component" enabled="True">
+        <component id="Code Block Component" type="SandcastleBuilder.Components.CodeBlockComponent" assembly="{@SHFBFolder}SandcastleBuilder.Components.dll">
+          <basePath value="{@HtmlEncProjectFolder}..\..\Sandcastle\Examples\XMLCommentsExamples" />
+          <outputPaths>{@HelpFormatOutputPaths}</outputPaths>
+          <allowMissingSource value="true" />
+          <removeRegionMarkers value="false" />
+          <colorizer syntaxFile="{@SHFBFolder}Colorizer\highlight.xml" styleFile="{@SHFBFolder}Colorizer\highlight.xsl" stylesheet="{@SHFBFolder}Colorizer\highlight.css" scriptFile="{@SHFBFolder}Colorizer\highlight.js" language="cs" tabSize="0" numberLines="false" outlining="false" keepSeeTags="false" defaultTitle="true" />
+        </component>
+      </ComponentConfig>
+      <ComponentConfig id="Cached Framework Comments Index Data" enabled="True">
+        <component id="Cached Framework Comments Index Data" type="SandcastleBuilder.Components.CachedCopyFromIndexComponent" assembly="{@SHFBFolder}SandcastleBuilder.Components.dll">
+          <index name="comments" value="/doc/members/member" key="@name" cache="100">
+				{@CachedFrameworkCommentList}
+				{@CommentFileList}
+			</index>
+          <copy name="comments" source="*" target="/document/comments" />
+        </component>
+      </ComponentConfig>
+      <ComponentConfig id="Cached Reflection Index Data" enabled="True">
+        <component id="Cached Reflection Index Data" type="SandcastleBuilder.Components.CachedCopyFromIndexComponent" assembly="{@SHFBFolder}SandcastleBuilder.Components.dll">
+          <index name="reflection" value="/reflection/apis/api" key="@id" cache="10">
+            <cache base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" cacheFile="{@LocalDataFolder}Cache\Reflection.cache" />
+            <data files="reflection.xml" />
+          </index>
+          <copy name="reflection" source="*" target="/document/reference" />
+        </component>
+      </ComponentConfig>
+      <ComponentConfig id="IntelliSense Component" enabled="True">
+        <component id="IntelliSense Component" type="SandcastleBuilder.Components.IntelliSenseComponent" assembly="{@SHFBFolder}SandcastleBuilder.Components.dll">
+          <!-- Output options (optional)
+					 Attributes:
+							Include Namespaces (false by default)
+							Namespaces filename ("Namespaces" if not specified or empty)
+							Directory (current folder if not specified or empty) -->
+          <output includeNamespaces="false" namespacesFile="Namespaces" folder="{@OutputFolder}" />
+        </component>
+      </ComponentConfig>
+      <ComponentConfig id="API Token Resolution" enabled="True">
+        <component id="API Token Resolution" type="Microsoft.Ddue.Tools.SharedContentComponent" assembly="{@SandcastlePath}ProductionTools\BuildComponents.dll">
+
+			{@TokenFiles}
+			<replace elements="/*//token" item="string(.)" /></component>
+      </ComponentConfig>
+    </ComponentConfigurations>
+    <DocumentationSources>
+      <DocumentationSource sourceFile="..\..\Sandcastle\Examples\XMLCommentsExamples\XMLCommentsExamples.sln" />
+    </DocumentationSources>
+    <HelpAttributes>
+      <HelpAttribute name="DocSet" value="{@HtmlHelpName}" />
+      <HelpAttribute name="DocSet" value="NetFramework" />
+      <HelpAttribute name="TargetOS" value="Windows" />
+    </HelpAttributes>
+    <NamespaceSummaries>
+      <NamespaceSummaryItem name="XMLCommentsExamples" isDocumented="True">This namespace contains classes used to demonstrate the various XML comments elements.</NamespaceSummaryItem>
+    </NamespaceSummaries>
+    <PlugInConfigurations>
+    </PlugInConfigurations>
+    <BuildLogFile />
+    <HtmlHelp1xCompilerPath />
+    <HtmlHelp2xCompilerPath />
+    <SandcastlePath />
+    <WorkingPath />
+    <SyntaxFilters>Standard</SyntaxFilters>
+    <SdkLinkTarget>Blank</SdkLinkTarget>
+    <RootNamespaceContainer>False</RootNamespaceContainer>
+    <PresentationStyle>VS2005</PresentationStyle>
+    <Preliminary>False</Preliminary>
+    <NamingMethod>Guid</NamingMethod>
+    <HelpTitle>Sandcastle XML Comments Guide</HelpTitle>
+    <FeedbackEMailAddress>Eric%40EWoodruff.us</FeedbackEMailAddress>
+    <CopyrightText>[v{%40HelpFileVersion}] Sandcastle XML Comments Guide</CopyrightText>
+    <CopyrightHref>http://SHFB.CodePlex.com</CopyrightHref>
+    <ContentPlacement>AboveNamespaces</ContentPlacement>
+    <HelpFileVersion>1.0.0.0</HelpFileVersion>
+    <PlugInNamespaces>ms.vsipcc+, ms.vsexpresscc+</PlugInNamespaces>
+    <CollectionTocStyle>Hierarchical</CollectionTocStyle>
+    <MSHelp2SdkLinkType>Msdn</MSHelp2SdkLinkType>
+    <IncludeStopWordList>True</IncludeStopWordList>
+    <CatalogName>VisualStudio11</CatalogName>
+    <TocParentId>-1</TocParentId>
+    <TocParentVersion>100</TocParentVersion>
+    <TopicVersion>100</TopicVersion>
+    <TocOrder>9999</TocOrder>
+    <ProductTitle>Sandcastle XML Comments Guide</ProductTitle>
+    <VendorName>EWSoftware</VendorName>
+    <MSHelpViewerSdkLinkType>Msdn</MSHelpViewerSdkLinkType>
+    <CatalogVersion>100</CatalogVersion>
+    <CatalogProductId>VS</CatalogProductId>
+    <BuildAssemblerVerbosity>OnlyWarningsAndErrors</BuildAssemblerVerbosity>
+    <HelpFileFormat>HtmlHelp1</HelpFileFormat>
+    <IndentHtml>False</IndentHtml>
+    <FrameworkVersion>.NET Framework 4.0</FrameworkVersion>
+    <KeepLogFile>True</KeepLogFile>
+    <DisableCodeBlockComponent>False</DisableCodeBlockComponent>
+    <CppCommentsFixup>False</CppCommentsFixup>
+    <CleanIntermediates>True</CleanIntermediates>
+    <VisibleItems>ExplicitInterfaceImplementations, InheritedMembers, InheritedFrameworkMembers, Protected, SealedProtected</VisibleItems>
+    <ProjectSummary>This project demonstrates the use of the various XML comments elements.</ProjectSummary>
+    <SccProjectName>SAK</SccProjectName>
+    <SccProvider>SAK</SccProvider>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccLocalPath>SAK</SccLocalPath>
+  </PropertyGroup>
+  <!-- There are no properties for these groups.  AnyCPU needs to appear in
+       order for Visual Studio to perform the build.  The others are optional
+       common platform types that may appear. -->
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|Win32' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|Win32' ">
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Content" />
+    <Folder Include="Content\BlockElements" />
+    <Folder Include="Content\InlineElements" />
+    <Folder Include="Content\MiscElements" />
+    <Folder Include="Content\SectionElements" />
+    <Folder Include="Content\VersionHistory" />
+    <Folder Include="Media" />
+  </ItemGroup>
+  <ItemGroup>
+    <ContentLayout Include="XMLCommentsGuide.content" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\MiscElements\AttachedEventComments.aml" />
+    <None Include="Content\MiscElements\AttachedPropertyComments.aml" />
+    <None Include="Content\MiscElements\conceptualLink.aml" />
+    <None Include="Content\MiscElements\exclude.aml" />
+    <None Include="Content\MiscElements\filterpriority.aml" />
+    <None Include="Content\MiscElements\include.aml" />
+    <None Include="Content\MiscElements\InheritDoc.aml" />
+    <None Include="Content\MiscElements\MiscElements.aml" />
+    <None Include="Content\MiscElements\overloads.aml" />
+    <None Include="Content\MiscElements\token.aml" />
+    <None Include="Content\MSHelpViewerRoot.aml" />
+    <None Include="Content\NamespaceDoc.aml" />
+    <None Include="Content\SharedComments.aml" />
+    <None Include="Content\BlockElements\BlockElements.aml" />
+    <None Include="Content\BlockElements\code.aml" />
+    <None Include="Content\BlockElements\list.aml" />
+    <None Include="Content\BlockElements\note.aml" />
+    <None Include="Content\BlockElements\para.aml" />
+    <None Include="Content\Donate.aml" />
+    <None Include="Content\FAQ.aml" />
+    <None Include="Content\Glossary.aml" />
+    <None Include="Content\InlineElements\c.aml" />
+    <None Include="Content\InlineElements\InlineElements.aml" />
+    <None Include="Content\InlineElements\paramref.aml" />
+    <None Include="Content\InlineElements\see.aml" />
+    <None Include="Content\InlineElements\typeparamref.aml" />
+    <None Include="Content\License.aml" />
+    <None Include="Content\LinksToResources.aml" />
+    <None Include="Content\NamespaceComments.aml" />
+    <None Include="Content\ProjectSetup.aml" />
+    <None Include="Content\SectionElements\event.aml" />
+    <None Include="Content\SectionElements\example.aml" />
+    <None Include="Content\SectionElements\exception.aml" />
+    <None Include="Content\SectionElements\param.aml" />
+    <None Include="Content\SectionElements\permission.aml" />
+    <None Include="Content\SectionElements\preliminary.aml" />
+    <None Include="Content\SectionElements\remarks.aml" />
+    <None Include="Content\SectionElements\returns.aml" />
+    <None Include="Content\SectionElements\SectionElements.aml" />
+    <None Include="Content\SectionElements\seealso.aml" />
+    <None Include="Content\SectionElements\summary.aml" />
+    <None Include="Content\SectionElements\threadsafety.aml" />
+    <None Include="Content\SectionElements\typeparam.aml" />
+    <None Include="Content\SectionElements\value.aml" />
+    <None Include="Content\UsageNotes.aml" />
+    <None Include="Content\VersionHistory\v1.0.0.0.aml" />
+    <None Include="Content\VersionHistory\VersionHistory.aml" />
+    <None Include="Content\Welcome.aml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Media\PayPal.gif">
+      <ImageId>PayPal</ImageId>
+      <AlternateText>Pay Pal</AlternateText>
+      <CopyToMedia>True</CopyToMedia>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Tokens Include="..\SandcastleBuilder\CommonTokens.tokens">
+      <Link>CommonTokens.tokens</Link>
+    </Tokens>
+  </ItemGroup>
+  <!-- Import the SHFB build targets -->
+  <Import Project="$(SHFBROOT)\SandcastleHelpFileBuilder.targets" />
+</Project>

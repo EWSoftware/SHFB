@@ -834,6 +834,11 @@
 					<span class="vb">False</span>
 					<span class="cpp">false</span>
 				</xsl:when>
+				<xsl:when test="$word='abstract' or $word='MustInherit'">
+					<span class="cs">abstract</span>
+					<span class="vb">MustInherit</span>
+					<span class="cpp">abstract</span>
+				</xsl:when>
 				<xsl:otherwise>
 					<xsl:value-of select="." />
 				</xsl:otherwise>

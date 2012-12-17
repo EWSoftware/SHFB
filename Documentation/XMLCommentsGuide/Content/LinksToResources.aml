@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="7F003236-9AF3-4B6A-8F14-4124FFF0AD7B" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+	  <autoOutline lead="This topics contains links to various resources that you may find useful." />
+    </introduction>
+
+<section address="MAML">
+  <title>Information and Guides</title>
+  <content>
+			<para>The most recent version of this help file and other guides on MAML and XML comments can be download
+from the <token>SHFB</token> project on CodePlex.</para>
+
+  </content>
+</section>
+
+<section address="Discussion">
+  <title>Discussion Groups, Blogs, Etc.</title>
+  <content>
+<list class="bullet">
+	<listItem><para>To discuss Microsoft's Sandcastle, suggest new features, report bugs in it, and request help
+using it, visit the <token>SHFB</token> CodePlex project.</para></listItem>
+    <listItem><para>For discussion and questions about help systems in general,
+visit the <externalLink>
+  <linkText>Microsoft Developer Documentation and Help System forum</linkText>
+  <linkUri>http://social.msdn.microsoft.com/forums/en-US/devdocs/threads/</linkUri>
+  <linkTarget>_blank</linkTarget>
+</externalLink>.</para></listItem>
+    <listItem><para><externalLink>
+  <linkText>The Sandcastle Blog</linkText>
+  <linkUri>http://blogs.msdn.com/sandcastle/default.aspx</linkUri>
+  <linkTarget>_blank</linkTarget>
+</externalLink> provides news about Sandcastle and blog entries describing how its various features work.  That
+information will eventually be merged into the Sandcastle Tools help file.</para></listItem>
+</list>
+
+  </content>
+</section>
+
+<section address="BuildTools">
+  <title>Build and Project Management Tools</title>
+  <content>
+    <list class="bullet">
+      <listItem>
+				<para>The <externalLink><linkText>.NET 2.0 Framework</linkText>
+  <linkUri>http://www.microsoft.com/downloads/details.aspx?FamilyID=0856EACB-4362-4B0D-8EDD-AAB15C5E04F5&amp;displaylang=en</linkUri>
+  <linkTarget>_blank</linkTarget>
+</externalLink>.</para>
+			</listItem>
+
+      <listItem>
+				<para>The <externalLink><linkText>.NET 3.5 Framework</linkText>
+  <linkUri>http://www.microsoft.com/downloads/details.aspx?familyid=333325FD-AE52-4E35-B531-508D977D32A6&amp;displaylang=en</linkUri>
+  <linkTarget>blank</linkTarget>
+</externalLink>.</para>
+			</listItem>
+
+      <listItem>
+				<para>The <externalLink><linkText>.NET 4.0 Framework</linkText>
+  <linkUri>http://www.microsoft.com/download/en/details.aspx?id=17851&amp;WT.mc_id=MSCOM_EN_US_DLC_DETAILS_121LSUS007996</linkUri>
+  <linkTarget>blank</linkTarget>
+</externalLink>.</para>
+			</listItem>
+
+			<listItem>
+				<para>The latest version of the Sandcastle tools (currently the <token>SandcastleVersion</token> release
+as of <token>BuildDate</token>).  These are distributed along with the <token>SHFB</token>.</para>
+			</listItem>
+
+      <listItem>
+				<para>The <externalLink><linkText>HTML Help Workshop</linkText>
+  <linkUri>http://msdn2.microsoft.com/en-us/library/ms669985.aspx</linkUri>
+  <linkTarget>_blank</linkTarget></externalLink> for building HTML Help 1.x (.CHM) help files.</para>
+			</listItem>
+
+      <listItem>
+				<para>The HTML Help 2.x compiler for building HTML Help 2.x (.HxS) help files.  This must be
+downloaded and installed as part of the <externalLink>
+  <linkText>Visual Studio 2005 SDK</linkText>
+  <linkUri>http://www.microsoft.com/downloads/details.aspx?familyid=51A5C65B-C020-4E08-8AC0-3EB9C06996F4&amp;displaylang=en</linkUri>
+  <linkTarget>_blank</linkTarget>
+</externalLink> or the <externalLink>
+  <linkText>Visual Studio 2008 SDK</linkText>
+  <linkUri>http://www.microsoft.com/downloads/en/details.aspx?familyid=30402623-93ca-479a-867c-04dc45164f5b&amp;displaylang=en</linkUri>
+  <linkTarget>_blank</linkTarget>
+</externalLink>.</para>
+			</listItem>
+
+			<listItem>
+				<para>If you are documenting .NET 1.1 applications and need the Help 2 compiler tools, you can
+download the <externalLink>
+  <linkText>Visual Studio 2003 Help Integration Toolkit</linkText>
+  <linkUri>http://www.microsoft.com/downloads/details.aspx?familyid=ce1b26dc-d6af-42a1-a9a4-88c4eb456d87&amp;displaylang=en</linkUri>
+  <linkTarget>_blank</linkTarget>
+</externalLink>.</para>
+			</listItem>
+
+    </list>
+  </content>
+</section>
+
+<section address="ThirdParty">
+  <title>Third-Party Build Components</title>
+  <content>
+	<list class="bullet">
+      <listItem>
+				<para>The <token>SHFB</token> contains the following custom build components:</para>
+
+				<list class="bullet">
+					<listItem>
+						<para>The Code Block Component used to colorize code blocks and add optional line numbering and
+collapsible sections.</para>
+					</listItem>
+					<listItem>
+						<para>The Help Attributes Component used to insert additional HTML Help 2 attributes into
+reference topics.</para>
+					</listItem>
+					<listItem>
+						<para>The IntelliSense Component used to generate XML comments files for use as IntelliSense in
+Visual Studio.</para>
+					</listItem>
+					<listItem>
+						<para>The Show Missing Documentation Component used to add "missing documentation" notes to
+reference topics and to auto-document constructors.</para>
+					</listItem>
+					<listItem>
+						<para>A set of cached build data components that cache key information such as comment,
+reflection index information, and MSDN URLs across builds in order to speed them up.</para>
+					</listItem>
+				</list>
+			</listItem>
+	</list>
+  </content>
+</section>
+
+    <relatedTopics>
+      <link xlink:href="4268757F-CE8D-4E6D-8502-4F7F2E22DDA3" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

@@ -66,10 +66,6 @@ will not toggle the visiblity on code examples.</para>
 						<para>The language filter is present but only toggles syntax and code snippet visibility.  It
 will not toggle the visiblity on code examples.</para>
 					</listItem>
-          <listItem>
-						<para>Most section headers are not rendered as collapsible sections like they are in the Hana
-and VS2005 styles.</para>
-					</listItem>
         </list>
 
 				<alert class="note">

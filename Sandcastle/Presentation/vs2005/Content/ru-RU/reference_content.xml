@@ -164,6 +164,8 @@
   <item id="memberNameHeader">Имя члена</item>
   <item id="memberValueHeader">Значение</item>
   <item id="memberDescriptionHeader">Описание</item>
+	<item id="eventTypeHeader">Event Type</item>
+	<item id="eventReasonHeader">Reason</item>
   <item id="exceptionNameHeader">Исключение</item>
   <item id="exceptionConditionHeader">Условие</item>
   <item id="permissionNameHeader">Разрешение</item>

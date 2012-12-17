@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="55798556-c18a-46bd-8bb6-902c45e5ebbc" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>Welcome to the Sandcastle Tools help file.  The Sandcastle tools are used to create help files
+for managed class libraries containing both conceptual and API reference topics. API reference topics are created
+by combining the XML comments that are embedded in your source code with the syntax and structure of the types
+which is acquired by reflecting against the associated .NET Framework assembly.  Conceptual topics are created by
+converting XML documents that you author containing Microsoft Assistance Markup Language (MAML).</para>
+		</introduction>
+
+		<section>
+			<content>
+				<para>Sandcastle was originally created by Microsoft back in 2006. The last official release from
+Microsoft occurred in June 2010.  Until October 2012, it was hosted at the Sandcastle project site on CodePlex.
+In October 2012, Microsoft officially declared that they were ceasing support and development of Sandcastle. The
+Sandcastle tools have been merged into the <token>SHFB</token> project and all future development and support for
+them will be handled at its project site. The Sandcastle tools themselves remain separate from and have no
+dependency on the help file builder.  As such, they can be used in a standalone fashion with your own scripts and
+build tools if that is your preference.</para>
+
+				<alert class="tip">
+					<para>See the <link xlink:href="8A556640-5741-4108-AD6E-D1CAE4D91860" /> for information about the
+required set of additional tools that need to be installed, where to get them, and how to make sure everything is
+configured correctly. The guided installer also provides information on the necessary tools and walks you through
+the installation steps.</para>
+				</alert>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="6D925E85-3DEA-422D-8F4B-F5995C33BD0F" />
+			<link xlink:href="8A556640-5741-4108-AD6E-D1CAE4D91860" />
+			<link xlink:href="e0636c2c-3da0-4d5e-9e86-6fb3f0c83eef" />
+			<link xlink:href="ECE14E8F-CA3D-41CE-8186-B649B6B95B81" />
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

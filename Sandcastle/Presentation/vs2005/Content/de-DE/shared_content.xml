@@ -65,6 +65,7 @@
   <item id="XAMLLabel">XAML</item>
 
   <!-- section titles -->
+  <item id="eventsTitle">Events</item>
   <item id="exceptionsTitle">Exceptions</item>
   <item id="SeeAlso">Siehe&#160;auch</item>
   <item id="SeeAlsoTasks">Aufgaben</item>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="a8ade450-e201-401a-923d-1a1169ef7828" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>This element is used to indicate that a particular type or member should be excluded from the
+documentation.</para>
+		</introduction>
+
+		<section>
+			<title>Syntax</title>
+			<content>
+				<para>This top-level element is valid on all types and type members.</para>
+
+<code language="xml" title=" ">
+&lt;exclude /&gt;
+</code>
+
+			</content>
+
+		</section>
+
+		<section>
+			<title>Remarks</title>
+			<content>
+				<para>This element takes precedence over all other visibility options and the type or member will not
+appear in the resulting help file at all.</para>
+
+				<alert class="note">
+					<para>This is a custom XML comments element implemented by the <token>SHFB</token>.  It will not appear
+in the list of valid elements for XML comments IntelliSense.</para>
+
+					<para>This element has been deprecated in favor of using the project's <legacyBold>API Filter</legacyBold>
+project property to exclude members.  The help file builder will translate members with this element into an API
+filter entry.  Be aware that if used on an overloaded member, all versions of the overloaded member will be
+removed from the documentation due to the way the API filter works in Sandcastle.</para>
+				</alert>
+			</content>
+		</section>
+		
+		<section>
+			<title>Example</title>
+			<content>
+<code language="cs" title=" ">
+/// &lt;summary&gt;
+/// This method will not appear in the help file even though it is public.
+/// &lt;/summary&gt;
+/// &lt;exclude /&gt;
+public void UndocumentedMethod()
+{
+}
+</code>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="9341fdc8-1571-405c-8e61-6a6b9b601b46" />
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

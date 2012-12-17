@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/25/2012
+// Updated : 12/16/2012
 // Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -1169,7 +1169,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         try
                         {
                             // Ignore the working folder
-                            if(!folder.EndsWith("Working", StringComparison.Ordinal))
+                            if(!folder.Equals(workingFolder.Substring(0, workingFolder.Length - 1), StringComparison.OrdinalIgnoreCase))
                             {
                                 // Some source control providers have a mix of read-only/hidden files within a folder
                                 // that isn't read-only/hidden (i.e. Subversion).  In such cases, leave the folder alone.
@@ -1954,7 +1954,7 @@ AllDone:
             Version fileVersion = new Version(fvi.FileMajorPart, fvi.FileMinorPart, fvi.FileBuildPart,
                 fvi.FilePrivatePart);
 
-            Version expectedVersion = new Version("2.7.1.0");
+            Version expectedVersion = new Version("2.7.2.0");
 
             if(fileVersion < expectedVersion)
                 throw new BuilderException("BE0036", String.Format(CultureInfo.InvariantCulture,

@@ -4,17 +4,20 @@
     <introduction>
       <para>This element can be used to create paragraphs in conceptual content.</para>
     </introduction>
+
     <section>
       <title>Usage</title>
       <content>
         <para>Enter the element in the topic and specify the paragraph text as the inner text.  Making the
-element self-closing or empty will cause the element to be ignored.</para>
+element self-closing or empty will cause the element to be ignored unless it creates an initial paragraph
+break.</para>
       </content>
     </section>
+
     <section>
       <title>Example</title>
       <content>
-        <code language="xml" title=" ">
+<code language="xml" title=" ">
 &lt;para&gt;Paragraph 1.&lt;/para&gt;
 &lt;para&gt;Paragraph 2.&lt;/para&gt;
 &lt;para/&gt;
@@ -24,6 +27,7 @@ element self-closing or empty will cause the element to be ignored.</para>
 </code>
       </content>
     </section>
+
     <section>
       <title>Example Output</title>
       <content>

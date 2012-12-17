@@ -158,6 +158,8 @@
 	<item id="header_memberName">Member name</item>
 	<item id="header_memberValue">Value</item>
 	<item id="header_memberDescription">Description</item>
+	<item id="header_eventType">Event Type</item>
+	<item id="header_eventReason">Reason</item>
 	<item id="header_exceptionName">Exception</item>
 	<item id="header_exceptionCondition">Condition</item>
 	<item id="header_permissionName">Permission</item>

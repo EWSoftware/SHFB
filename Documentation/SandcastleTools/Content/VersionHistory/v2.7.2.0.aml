@@ -1,0 +1,191 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="2df020c8-13c1-46d0-82c3-69b57fd9c484" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<autoOutline excludeRelatedTopics="true" lead="Version 2.7.2.0 was released on December 16th, 2012." />
+		</introduction>
+
+		<section address="MRefBuilder">
+			<title>MRefBuilder Tool</title>
+			<content>
+
+				<list class="bullet">
+					<listItem>
+						<para>Fixed MRefBuilder so that it does not exclude <codeInline>System.Xml</codeInline> and
+<codeInline>System.Data</codeInline> from the framework assembly cache.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated the <localUri>Frameworks.xml</localUri> file to reference the December 2011
+Silverlight Toolkit for Silverlight 5 rather than the older April 2010 version for Silverlight 4.</para>
+					</listItem>
+
+					<listItem>
+						<para>Merged changes from ComponentOne that prevent additional cases that cause a crash when
+documenting obfuscated assemblies.</para>
+					</listItem>
+				</list>
+
+			</content>
+		</section>
+
+		<section address="BuildAssembler">
+			<title>BuildAssembler Tool and Components</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Added support for topic key and message parameters in the message logging methods in
+BuildAssembler.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated all build components to include the topic key in warning and error messages when
+available.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated <codeInline>TransformComponent</codeInline> to raise a <codeInline>ComponentEvent</codeInline>
+with a <codeInline>TransformedTopicEventArgs</codeInline> parameter that contains the topic key and the
+transformed topic document.  This allows components that ran earlier in the stack to perform tasks after the
+topic has been converted to HTML.  This eliminates the need for a post-transform component as the component that
+ran earlier can handle the post-transform processing itself.</para>
+					</listItem>
+
+				</list>
+			</content>
+		</section>
+
+		<section address="ProductionTransforms">
+			<title>Production Transforms</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Updated <localUri>CreatePrototypeToc.xsl</localUri> with a <codeInline>rootNamespaceContainer</codeInline>
+parameter that can be set to true to have it generate a root namespace container node like the transformation for
+the other presentation styles.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated <codeInline>ApplyVSDocModel.xsl</codeInline> and <codeInline>ApplyPrototypeDocModel.xsl</codeInline>
+to include assembly version number information in the API member data.</para>
+					</listItem>
+
+				</list>
+			</content>
+		</section>
+
+		<section address="PresentationStyles">
+			<title>Presentation Styles</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Fixed up the casing on the <localUri>scripts\</localUri> and <localUri>styles\</localUri>
+folder references so that they are all consistent and will not cause casing issues on UNIX based web servers.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed VS2005 <localUri>CommonUtilities.js</localUri> so that the <codeInline>&lt;see
+langword="XXX" /&gt;</codeInline> elements work properly.  The prior Help Viewer 2.0 fix broke their handling in
+the other help formats.</para>
+					</listItem>
+
+					<listItem>
+						<para>Moved <localUri>Shared\Content\syntax_content.xml</localUri> and the files in
+<localUri>Shared\Transforms\</localUri> into each of the presentation styles so that they are all self-contained.
+This will make cloning a presentation style to customize it easier.  There was already a significant amount of
+duplication anyway so merging the few files that were shared does not make much difference in terms of maintenance.</para>
+					</listItem>
+
+					<listItem>
+						<para>Removed the unused files in <localUri>Shared\Scripts</localUri>.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated all presentation styles to include assembly version number information in the API
+topics.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated all presentation styles to handle the <codeInline>title</codeInline> attribute on
+<codeInline>code</codeInline> elements.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added a condition to hide the language selector in the Prototype presentation style if there is
+only one language.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed handling of the <codeInline>preliminary</codeInline> XML comment element in all
+presentation styles so that it renders the content if specified.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added a transformation template in all presentation styles to get the code language so that it
+is consistent in all places that need it for the language filter.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added logo support to all presentation style XSL transformations. The VS2010 style now supports
+all of the logo placement options to match the other styles.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated the XSL transformations so that they do not output an empty <codeInline>Abstract</codeInline>
+Help 2 metadata element for certain cases such as when it only contains a non-breaking space character.</para>
+					</listItem>
+
+					<listItem>
+						<para>Merged changes from ComponentOne into the VS2005 style to prevent the unnecessary borders on
+the page headers in MS Help Viewer 1.0.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added support for the <codeInline>event</codeInline> XML comments element in all presentation styles.
+This was a custom element implemented by NDoc that never made it into Sandcastle.  It renders a section called
+<legacyBold>Events</legacyBold> containing a table listing events that can be raised by the method and a
+description for how the event can be raised.</para>
+					</listItem>
+				</list>
+			</content>
+		</section>
+
+		<section address="Extras">
+			<title>Extras</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+				<para>Added MAML snippet definitions for the common block and inline elements and a related page to the
+guided installer to copy them to the local snippets cache for the various Visual Studio versions.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated the Sandcastle MAML guide to remove references to the Sandcastle Help File Builder
+components and features that have been moved into the Sandcastle build components and presentation style XSL
+transformations.</para>
+					</listItem>
+
+					<listItem>
+						<para>Started to document the Sandcastle tools by adding this help file.  The content and images in
+the general information and architecture topics was originally created by Dave Sexton as part of the wiki
+content on the Sandcastle Styles project site on CodePlex.</para>
+
+						<para>As of this release, it is still a work in progress.  More information on the various tools and
+components will be added as time permits.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added the <legacyBold>Sandcastle XML Comments Guide</legacyBold> help file to
+provide a comprehensive set of documentation on the XML comments elements and how they are used with Sandcastle.</para>
+					</listItem>
+
+				</list>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="e0636c2c-3da0-4d5e-9e86-6fb3f0c83eef" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

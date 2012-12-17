@@ -163,6 +163,8 @@
 	<item id="memberIconHeader">Symbol</item>
 	<item id="memberNameHeader">Member Name</item>
 	<item id="memberDescriptionHeader">Beschreibung</item>
+	<item id="eventTypeHeader">Event Type</item>
+	<item id="eventReasonHeader">Reason</item>
 	<item id="exceptionNameHeader">Ausnahme</item>
 	<item id="exceptionConditionHeader">Bedingung</item>
 	<item id="permissionNameHeader">Erlaubnis</item>

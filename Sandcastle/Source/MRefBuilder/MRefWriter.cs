@@ -6,6 +6,8 @@
 // Change history:
 // 02/09/2012 - EFW - Updated WriteParameter() so that it notes optional parameters indicated by
 // OptionalAttribute alone (no default value).
+// 11/30/2012 - EFW - Added updates based on changes submitted by ComponentOne to fix crashes caused by
+// obfuscated member names.
 
 using System;
 using System.Collections.Generic;
@@ -178,11 +180,16 @@ namespace Microsoft.Ddue.Tools
                 throw new ArgumentNullException("member");
             writer.WriteStartElement("member");
             Member template = ReflectionUtilities.GetTemplateMember(member);
-            writer.WriteAttributeString("api", namer.GetMemberName(template));
+
+            // !EFW - Change from ComponentOne
+            writer.WriteAttributeString("api", namer.GetMemberName(template).TranslateToValidXmlValue());
+
             if(!member.DeclaringType.IsStructurallyEquivalentTo(template.DeclaringType))
             {
-                writer.WriteAttributeString("display-api", namer.GetMemberName(member));
+                // !EFW - Change from ComponentOne
+                writer.WriteAttributeString("display-api", namer.GetMemberName(member).TranslateToValidXmlValue());
             }
+
             WriteTypeReference(member.DeclaringType);
             writer.WriteEndElement();
         }
@@ -201,7 +208,10 @@ namespace Microsoft.Ddue.Tools
             parsedMembers.Add(member);
 
             writer.WriteStartElement("api");
-            writer.WriteAttributeString("id", namer.GetMemberName(member));
+
+            // !EFW - Change from ComponentOne
+            writer.WriteAttributeString("id", namer.GetMemberName(member).TranslateToValidXmlValue());
+
             StartElementCallbacks("api", member);
             WriteMember(member);
             EndElementCallbacks("api", member);
@@ -815,7 +825,9 @@ namespace Microsoft.Ddue.Tools
             ITypeParameter itp = (ITypeParameter)templateParameter;
 
             writer.WriteStartElement("template");
-            writer.WriteAttributeString("name", templateParameter.Name.Name);
+
+            // !EFW - Change from ComponentOne
+            writer.WriteAttributeString("name", templateParameter.Name.Name.TranslateToValidXmlValue());
 
             // evaluate constraints
             bool reference = ((itp.TypeParameterFlags & TypeParameterFlags.ReferenceTypeConstraint) > 0);
@@ -1010,7 +1022,9 @@ namespace Microsoft.Ddue.Tools
                     for(int i = 0; i < fields.Count; i++)
                     {
                         writer.WriteStartElement("field");
-                        writer.WriteAttributeString("name", fields[i].Name.Name);
+
+                        // !EFW - Change from ComponentOne
+                        writer.WriteAttributeString("name", fields[i].Name.Name.TranslateToValidXmlValue());
                         writer.WriteEndElement();
                     }
                     writer.WriteEndElement();
@@ -1141,7 +1155,9 @@ namespace Microsoft.Ddue.Tools
         private void WriteNamespace(Namespace space)
         {
             writer.WriteStartElement("api");
-            writer.WriteAttributeString("id", namer.GetNamespaceName(space));
+
+            // !EFW - Change from ComponentOne
+            writer.WriteAttributeString("id", namer.GetNamespaceName(space).TranslateToValidXmlValue());
             StartElementCallbacks("api", space);
 
             WriteApiData(space);
@@ -1166,7 +1182,10 @@ namespace Microsoft.Ddue.Tools
                 if(!ApiFilter.IsExposedType(type) && !ApiFilter.HasExposedMembers(type))
                     continue;
                 writer.WriteStartElement("element");
-                writer.WriteAttributeString("api", namer.GetTypeName(type));
+
+                // !EFW - Change from ComponentOne
+                writer.WriteAttributeString("api", namer.GetTypeName(type).TranslateToValidXmlValue());
+
                 writer.WriteEndElement();
             }
             writer.WriteEndElement();
@@ -1175,7 +1194,10 @@ namespace Microsoft.Ddue.Tools
         private void WriteNamespaceReference(Namespace space)
         {
             writer.WriteStartElement("namespace");
-            writer.WriteAttributeString("api", namer.GetNamespaceName(space));
+
+            // !EFW - Change from ComponentOne
+            writer.WriteAttributeString("api", namer.GetNamespaceName(space).TranslateToValidXmlValue());
+
             writer.WriteEndElement();
         }
 
@@ -1187,9 +1209,9 @@ namespace Microsoft.Ddue.Tools
         private void WriteParameter(Parameter parameter)
         {
             writer.WriteStartElement("parameter");
-            writer.WriteAttributeString("name", parameter.Name.Name);
 
-            // writer.WriteAttributeString("type", namer.GetTypeName(parameter.Type));
+            // !EFW - Change from ComponentOne
+            writer.WriteAttributeString("name", parameter.Name.Name.TranslateToValidXmlValue());
 
             if(parameter.IsIn)
                 WriteBooleanAttribute("in", true);
@@ -1312,20 +1334,20 @@ namespace Microsoft.Ddue.Tools
                     writer.WriteStartElement("arrayOf");
                     writer.WriteAttributeString("rank", array.Rank.ToString());
                     WriteTypeReference(array.ElementType);
-                    // writer.WriteEndElement();
                     break;
+
                 case NodeType.Reference:
                     Reference reference = type as Reference;
                     writer.WriteStartElement("referenceTo");
                     WriteTypeReference(reference.ElementType);
-                    // writer.WriteEndElement();
                     break;
+
                 case NodeType.Pointer:
                     Pointer pointer = type as Pointer;
                     writer.WriteStartElement("pointerTo");
                     WriteTypeReference(pointer.ElementType);
-                    // writer.WriteEndElement();
                     break;
+
                 case NodeType.OptionalModifier:
                     TypeModifier optionalModifierClause = type as TypeModifier;
                     WriteStartTypeReference(optionalModifierClause.ModifiedType);
@@ -1333,6 +1355,7 @@ namespace Microsoft.Ddue.Tools
                     WriteTypeReference(optionalModifierClause.Modifier);
                     writer.WriteEndElement();
                     break;
+
                 case NodeType.RequiredModifier:
                     TypeModifier requiredModifierClause = type as TypeModifier;
                     WriteStartTypeReference(requiredModifierClause.ModifiedType);
@@ -1340,15 +1363,17 @@ namespace Microsoft.Ddue.Tools
                     WriteTypeReference(requiredModifierClause.Modifier);
                     writer.WriteEndElement();
                     break;
+
                 default:
                     if(type.IsTemplateParameter)
                     {
                         ITypeParameter gtp = (ITypeParameter)type;
                         writer.WriteStartElement("template");
-                        writer.WriteAttributeString("name", type.Name.Name);
+
+                        // !EFW - Change from ComponentOne
+                        writer.WriteAttributeString("name", type.Name.Name.TranslateToValidXmlValue());
                         writer.WriteAttributeString("index", gtp.ParameterListIndex.ToString());
-                        writer.WriteAttributeString("api", namer.GetApiName(gtp.DeclaringMember));
-                        // writer.WriteEndElement();
+                        writer.WriteAttributeString("api", namer.GetApiName(gtp.DeclaringMember).TranslateToValidXmlValue());
                     }
                     else
                     {
@@ -1357,7 +1382,9 @@ namespace Microsoft.Ddue.Tools
                         if(type.IsGeneric)
                         {
                             TypeNode template = ReflectionUtilities.GetTemplateType(type);
-                            writer.WriteAttributeString("api", namer.GetTypeName(template));
+
+                            // !EFW - Change from ComponentOne
+                            writer.WriteAttributeString("api", namer.GetTypeName(template).TranslateToValidXmlValue());
                             WriteBooleanAttribute("ref", !template.IsValueType);
 
                             // record specialization							
@@ -1365,7 +1392,7 @@ namespace Microsoft.Ddue.Tools
                             if((arguments != null) && (arguments.Count > 0))
                             {
                                 writer.WriteStartElement("specialization");
-                                // writer.WriteAttributeString("of", namer.GetTypeName(currentTemplate));
+
                                 for(int i = 0; i < arguments.Count; i++)
                                 {
                                     WriteTypeReference(arguments[i]);
@@ -1376,7 +1403,8 @@ namespace Microsoft.Ddue.Tools
                         }
                         else
                         {
-                            writer.WriteAttributeString("api", namer.GetTypeName(type));
+                            // !EFW - Change from ComponentOne
+                            writer.WriteAttributeString("api", namer.GetTypeName(type).TranslateToValidXmlValue());
                             WriteBooleanAttribute("ref", !type.IsValueType);
                         }
 
@@ -1391,13 +1419,16 @@ namespace Microsoft.Ddue.Tools
 
         private void WriteStringAttribute(string attribute, string value)
         {
-            writer.WriteAttributeString(attribute, value);
+            // !EFW - Change from ComponentOne
+            writer.WriteAttributeString(attribute, value.TranslateToValidXmlValue());
         }
 
         private void WriteType(TypeNode type)
         {
             writer.WriteStartElement("api");
-            writer.WriteAttributeString("id", namer.GetTypeName(type));
+
+            // !EFW - Change from ComponentOne
+            writer.WriteAttributeString("id", namer.GetTypeName(type).TranslateToValidXmlValue());
             StartElementCallbacks("api", type);
 
             WriteApiData(type);
@@ -1513,9 +1544,9 @@ namespace Microsoft.Ddue.Tools
 
         private void WriteTypeElements(TypeNode type)
         {
-
             // collect members
             MemberDictionary members = new MemberDictionary(type, this.ApiFilter);
+
             if(members.Count == 0)
                 return;
 
@@ -1527,7 +1558,9 @@ namespace Microsoft.Ddue.Tools
                 writer.WriteStartElement("element");
 
                 Member template = ReflectionUtilities.GetTemplateMember(member);
-                writer.WriteAttributeString("api", namer.GetMemberName(template));
+
+                // !EFW - Change from ComponentOne
+                writer.WriteAttributeString("api", namer.GetMemberName(template).TranslateToValidXmlValue());
 
                 bool write = false;
 
@@ -1535,7 +1568,8 @@ namespace Microsoft.Ddue.Tools
                 // we also write out their info, since it can't be looked up anywhere
                 if(!member.DeclaringType.IsStructurallyEquivalentTo(template.DeclaringType))
                 {
-                    writer.WriteAttributeString("display-api", namer.GetMemberName(member));
+                    // !EFW - Change from ComponentOne
+                    writer.WriteAttributeString("display-api", namer.GetMemberName(member).TranslateToValidXmlValue());
                     write = true;
                 }
 
@@ -1556,7 +1590,6 @@ namespace Microsoft.Ddue.Tools
         }
 
         // Return value or property value or field value
-
         private void WriteValue(TypeNode type)
         {
             if(type.FullName == "System.Void")
@@ -1566,7 +1599,5 @@ namespace Microsoft.Ddue.Tools
             // writer.WriteAttributeString("type", namer.GetTypeName(type));
             writer.WriteEndElement();
         }
-
     }
-
 }

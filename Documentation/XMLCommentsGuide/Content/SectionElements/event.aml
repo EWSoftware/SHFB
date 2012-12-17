@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="81bf7ad3-45dc-452f-90d5-87ce2494a182" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>This element is used to list events that can be raised by a type's member.</para>
+		</introduction>
+
+		<section>
+			<title>Syntax</title>
+			<content>
+				<para>This top-level element is valid on any member in which an event can be raised.
+<legacyItalic>eventType</legacyItalic> is the name of the event type that can be raised.</para>
+
+<code language="xml" title=" ">
+&lt;event cref="eventType"&gt;description&lt;/event&gt;
+</code>
+			</content>
+		</section>
+
+		<section>
+			<title>Remarks</title>
+			<content>
+				<para>There should be one <codeInline>event</codeInline> element for each event type that can be
+raised.</para>
+
+				<alert class="note">
+					<para>This is a custom XML comments element implemented by Sandcastle.  It will not appear in the list
+of valid elements for XML comments IntelliSense.</para>
+				</alert>
+			</content>
+		</section>
+
+		<section>
+			<title>Example</title>
+			<content>
+<code language="cs" title=" " source="SampleClass.cs" region="event Example" />
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="20dc8c5f-9979-4ecd-92ce-cea6ce7acaeb" />
+			<codeEntityReference qualifyHint="false" autoUpgrade="true">M:XMLCommentsExamples.SampleClass.PerformAnAction</codeEntityReference>
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

@@ -1,15 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <content xml:space="preserve" xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
-  <item id="BuildDate">{@BuildDate:MMMM d, yyyy}</item>
   <item id="DocProject"><ddue:externalLink xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5">
     <ddue:linkText>DocProject</ddue:linkText>
     <ddue:linkUri>http://DocProject.CodePlex.com</ddue:linkUri>
-    <ddue:linkTarget>_blank</ddue:linkTarget>
-</ddue:externalLink></item>
-  <item id="SandcastleVersion">October 2012 v2.7.1.0</item>
-  <item id="SHFB"><ddue:externalLink xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5">
-    <ddue:linkText>Sandcastle Help File Builder</ddue:linkText>
-    <ddue:linkUri>http://SHFB.CodePlex.com</ddue:linkUri>
     <ddue:linkTarget>_blank</ddue:linkTarget>
 </ddue:externalLink></item>
 </content>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="69c47b63-55bd-4493-ad05-1068bb0d930f" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+      <para>The following are some common problems and solutions along with some known issues with Sandcastle and
+help files that you may encounter.</para>
+		</introduction>
+
+		<section>
+			<content>
+				<para>TODO: This will be filled in as time permits.</para>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="6D925E85-3DEA-422D-8F4B-F5995C33BD0F" />
+			<link xlink:href="f11815bb-2226-4a23-b28d-a1e71dfccd40" />
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="1f2caa70-729b-48e1-9a9c-b612efd2f3b7" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>Select a topic below to learn more about Sandcastle and its various parts.</para>
+		</introduction>
+
+		<section>
+			<title>Sandcastle Tools</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para><link xlink:href="5a8fa02a-01cd-466e-a2c1-2bb30190cc5a" /></para>
+					</listItem>
+
+					<listItem>
+						<para><link xlink:href="80c983f4-1a97-473b-b614-2b4d671d50ca" /></para>
+					</listItem>
+
+					<listItem>
+						<para>TODO: More information will be added as time permits.</para>
+					</listItem>
+				</list>
+
+				<alert class="note">
+					<para>Author Credit: The information and images in the General Information and Architecture topics was
+originally created by Dave Sexton as part of the wiki content for the Sandcastle Styles project on CodePlex.</para>
+				</alert>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="6D925E85-3DEA-422D-8F4B-F5995C33BD0F" />
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

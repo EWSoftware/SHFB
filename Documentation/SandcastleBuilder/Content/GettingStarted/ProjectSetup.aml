@@ -132,9 +132,10 @@ your source code.  At a minimum, you should add a <codeInline>&lt;summary&gt;</c
 type and to the public and protected members of those types.  There are many other tags available that will help
 improve the quality of your documentation.</para>
 
-				<para>For a comprehensive list of XML documentation tags and a description of their attributes and usage
-you can download the <token>XMLCommentsGuide</token>.  Basic information on XML comments and how to use them can
-also be found at either <externalLink><linkText>XML Documentation Comments (C# Programming Guide)</linkText>
+				<para>For a comprehensive list of XML documentation elements and a description of their attributes and
+usage, see the <legacyBold>Sandcastle XML Comments Guide</legacyBold> installed as part of the Sandcastle tools.
+Basic information on XML comments and how to use them can also be found at either
+<externalLink><linkText>XML Documentation Comments (C# Programming Guide)</linkText>
 <linkUri>http://msdn.microsoft.com/en-us/library/b2s063f7.aspx?ppud=4</linkUri>
 <linkTarget>_blank</linkTarget>
 </externalLink> or <externalLink><linkText>Documenting Your Code with XML

@@ -18,6 +18,9 @@
 				<Component Id="highlight.js" Guid="{98EB7EF1-6B2F-4C47-B240-9FE3A255CCFC}">
 					<File Id="highlight.js" KeyPath="yes" Source="$(var.BinFolder)Colorizer\highlight.js" />
 				</Component>
+				<Component Id="highlight_ac.js" Guid="{A9C8C88F-0096-4958-A8AE-179A37C426EE}">
+					<File Id="highlight_ac.js" KeyPath="yes" Source="$(var.BinFolder)Colorizer\highlight_ac.js" />
+				</Component>
 				<Component Id="highlight.xml" Guid="{688083E8-9233-4E9E-B204-37B90FCC78EB}">
 					<File Id="highlight.xml" KeyPath="yes" Source="$(var.BinFolder)Colorizer\highlight.xml" />
 				</Component>
@@ -32,6 +35,7 @@
 			<ComponentRef Id="CopyCode_h.gif" />
 			<ComponentRef Id="highlight.css" />
 			<ComponentRef Id="highlight.js" />
+			<ComponentRef Id="highlight_ac.js" />
 			<ComponentRef Id="highlight.xml" />
 			<ComponentRef Id="highlight.xsl" />
 		</ComponentGroup>

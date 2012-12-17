@@ -32,7 +32,7 @@
 					<xsl:variable name="placementLC" select="translate($logoPlacement, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')"/>
 					<xsl:variable name="alignmentLC" select="translate($logoAlignment, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')"/>
 
-					<table border='0' width='100%' cellpadding='0' cellspacing='0'>
+					<table id="logoTable" border='0' width='100%' cellpadding='0' cellspacing='0'>
 						<xsl:choose>
 							<xsl:when test="$placementLC = 'right'">
 								<tr>

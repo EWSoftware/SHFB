@@ -40,13 +40,11 @@
 
 				<!-- Abstract -->
 				<xsl:choose>
-					<xsl:when test="string-length($g_abstractSummary) &gt; 254">
-						<MSHelp:Attr Name="Abstract"
-												 Value="{normalize-space(concat(substring($g_abstractSummary,1,250), ' ...'))}" />
+					<xsl:when test="string-length(normalize-space($g_abstractSummary)) &gt; 254">
+						<MSHelp:Attr Name="Abstract" Value="{concat(substring(normalize-space($g_abstractSummary),1,250), ' ...')}" />
 					</xsl:when>
-					<xsl:when test="string-length($g_abstractSummary) &gt; 0">
-						<MSHelp:Attr Name="Abstract"
-												 Value="{normalize-space($g_abstractSummary)}" />
+					<xsl:when test="string-length(normalize-space($g_abstractSummary)) &gt; 0 and $g_abstractSummary != '&#160;'">
+						<MSHelp:Attr Name="Abstract" Value="{normalize-space($g_abstractSummary)}" />
 					</xsl:when>
 				</xsl:choose>
 

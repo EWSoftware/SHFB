@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="c7973ac7-5a4f-4e4d-9786-5ce659ac8e24" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>This element is used to start a new paragraph within other elements.</para>
+		</introduction>
+
+		<section>
+			<title>Syntax</title>
+			<content>
+				<para>This inline block element can be used within any other element.</para>
+
+<code language="xml" title=" ">
+&lt;para&gt;paragraph content&lt;/para&gt;
+</code>
+			</content>
+		</section>
+
+		<section>
+			<title>Remarks</title>
+			<content>
+				<para>As an alternative, you can use the HTML &lt;p /&gt; or &lt;p&gt; &lt;/p&gt; tags to create
+paragraphs.  Making the element self-closing or empty will cause the element to be ignored unless it creates an
+initial paragraph break.</para>
+			</content>
+		</section>
+		
+		<section>
+			<title>Example</title>
+			<content>
+<code language="cs" title=" " source="SampleClass.cs" region="para Example" />
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="f8464c0f-f62a-4faf-b11a-9a41173307e8" />
+			<codeEntityReference qualifyHint="false" autoUpgrade="true">M:XMLCommentsExamples.SampleClass.ParagraphExample</codeEntityReference>
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

@@ -5,6 +5,11 @@
 	  <para>This topic covers how to integrate MAML schema files into Visual Studio's
 global schema cache to provide IntelliSense when editing MAML topics within Visual Studio.</para>
 
+		<alert class="tip">
+			<para>The guided installer used to install Sandcastle and the related tools provides an option to install
+the MAML schemas in the Visual Studio global schema cache for you.</para>
+		</alert>
+
 <alert class="note">
   <para>Because changes are made to the Program Files folder, you will need administrative
 privileges to perform these updates.  In the instructions below, <localUri>%ProgramFiles%</localUri>

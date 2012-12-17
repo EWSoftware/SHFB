@@ -22,7 +22,8 @@ members as default comments to prevent a "missing comments" warning.</para>
 comments nested within those elements for the related compiler-generated members.  This allows you to provide
 comments for the field member and the related compiler-generated member that are entirely different but are
 managed from within the code.  Below are examples of an attached property and an attached event with the extra
-comments for the compiler-generated members.</para>
+comments for the compiler-generated members.  The <legacyBold>Sandcastle XML Comments Guide</legacyBold>
+installed as part of the Sandcastle tools contains working examples that you look at to see the end result.</para>
 
 		<alert class="note">
 			<para>Because the attached property and event members are compiler-generated, you must fully qualify

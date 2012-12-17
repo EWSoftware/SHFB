@@ -1,0 +1,440 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="1abd1992-e3d0-45b4-b43d-91fcfc5e5574" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>This element is used to indicate that a multi-line section of text should be formatted as a code
+block.</para>
+
+			<autoOutline lead="none">2</autoOutline>
+		</introduction>
+
+		<section address="Syntax">
+			<title>Syntax</title>
+			<content>
+				<para>This inline block element can be used within any other element.</para>
+
+<code language="xml" title=" ">
+&lt;code language="languageId"
+  [title="Optional title"]
+  [source="externalCodeFile" [region="importRegion"] [removeRegionMarkers="true | false"]]
+  [tabsize="###"]
+  [numberLines="true | false"]
+  [outlining="true | false"]
+  [keepSeeTags="true | false"]&gt;
+
+/// Code to display
+
+&lt;/code&gt;
+</code>
+
+				<para>Use this element to mark a multi-line block of lines as code.  Use the
+<link xlink:href="d0db2290-08bb-40cc-9797-23a342b96564" /> element to mark inline text as code.</para>
+
+				<alert class="note">
+				<para>The <codeInline>language</codeInline> and <codeInline>title</codeInline> attributes are supported
+by Sandcastle.  All other attributes are implemented by the <legacyBold>Code Block Component</legacyBold>
+supplied with the <token>SHFB</token>.  Refer to its help file for more information about the build component.</para>
+				</alert>
+
+			</content>
+		</section>
+
+		<section address="SpecialChars">
+			<title>Literal XML And Other Special Characters</title>
+			<content>
+				<para>If you want to include XML or other unencoded information you can do one of the following:</para>
+
+				<list class="bullet">
+					<listItem>
+						<para>Utilize the <codeInline>source</codeInline> attribute to read it in from an external file instead.</para>
+					</listItem>
+
+					<listItem>
+						<para>Use a <codeInline>CDATA</codeInline> section to encapsulate the code so that special characters
+and formatting are preserved.  For example:</para>
+
+<code language="xml" title="CDATA Example">
+/// &lt;example&gt;
+/// &lt;code language="xml" title="Example Configuration"&gt;
+/// &lt;![CDATA[
+/// &lt;?xml version="1.0" encoding="utf-8"?&gt;
+/// &lt;config&gt;
+///   &lt;path&gt;C:\Test\&lt;/path&gt;
+///   &lt;filespec mask="*.txt" /&gt;
+/// &lt;/config&gt;]]&gt;
+/// &lt;/code&gt;
+/// &lt;/example&gt;
+</code>
+
+						<para>Be sure to start the example code on a new line after the opening "<codeInline>&lt;![CDATA[</codeInline>"
+tag as shown so that the leading whitespace can be normalized correctly.</para>
+
+						<alert class="note">
+							<para>The inclusion of a <codeInline>CDATA</codeInline> tag anywhere in the code comments can cause
+Visual Studio 2005 to lock up when you type an angle bracket within a comment block.  If you are affected by this
+issue, there is a hotfix available at: <externalLink>
+<linkText>https://connect.microsoft.com/VisualStudio/Downloads/DownloadDetails.aspx?DownloadID=9646</linkText>
+<linkUri>https://connect.microsoft.com/VisualStudio/Downloads/DownloadDetails.aspx?DownloadID=9646</linkUri>
+<linkTarget>_blank</linkTarget></externalLink>.</para>
+						</alert>
+					</listItem>
+				</list>
+
+			</content>
+		</section>
+
+		<section address="Attributes">
+			<title>Attributes</title>
+			<content>
+				<para>The following attributes can be used to control how the code block is handled.</para>
+			</content>
+
+			<sections>
+				<section address="language">
+					<title>language</title>
+					<content>
+						<para>This attribute allows you to define the code language.  Although optional, it is recommended
+that you always specify a language attribute if using Sandcastle alone.  Many of the presentation styles rely on
+the language attribute to classify the code block and handle it in some way such as attaching it to a language
+filter or grouping it with like code blocks.  The Sandcastle Help File Builder's code block component will apply
+a default language if one is not specified.  The possible language values are as follows:</para>
+
+						<table>
+							<tableHeader>
+								<row>
+									<entry>
+										<para>Language ID (case-insensitive)</para>
+									</entry>
+									<entry>
+										<para>Language Syntax Used</para>
+									</entry>
+								</row>
+							</tableHeader>
+							<row>
+								<entry>
+									<para>cs, C#, CSharp</para>
+								</entry>
+								<entry>
+									<para>C#</para>
+								</entry>
+							</row>
+							<row>
+								<entry>
+									<para>cpp, cpp#, C++, CPlusPlus</para>
+								</entry>
+								<entry>
+									<para>C++</para>
+								</entry>
+							</row>
+							<row>
+								<entry>
+									<para>c</para>
+								</entry>
+								<entry>
+									<para>C</para>
+								</entry>
+							</row>
+							<row>
+								<entry>
+									<para>fs, f#, FSharp, fscript</para>
+								</entry>
+								<entry>
+									<para>F#</para>
+								</entry>
+							</row>
+							<row>
+								<entry>
+									<para>EcmaScript, js, JavaScript</para>
+								</entry>
+								<entry>
+									<para>JavaScript</para>
+								</entry>
+							</row>
+							<row>
+								<entry>
+									<para>jscript, jscript#, jscriptnet, JScript.NET</para>
+								</entry>
+								<entry>
+									<para>JScript.NET</para>
+								</entry>
+							</row>
+							<row>
+								<entry>
+									<para>VB, VB#, vbnet, VB.NET</para>
+								</entry>
+								<entry>
+									<para>VB/VB.NET</para>
+								</entry>
+							</row>
+							<row>
+								<entry>
+									<para>vbs, vbscript</para>
+								</entry>
+								<entry>
+									<para>VBScript</para>
+								</entry>
+							</row>
+							<row>
+								<entry>
+									<para>htm, html, xml, xsl</para>
+								</entry>
+								<entry>
+									<para>XML</para>
+								</entry>
+							</row>
+							<row>
+								<entry>
+									<para>XAML</para>
+								</entry>
+								<entry>
+									<para>XAML</para>
+								</entry>
+							</row>
+							<row>
+								<entry>
+									<para>jsharp, J#</para>
+								</entry>
+								<entry>
+									<para>J#</para>
+								</entry>
+							</row>
+							<row>
+								<entry>
+									<para>sql, sql server, sqlserver</para>
+								</entry>
+								<entry>
+									<para>SQL script</para>
+								</entry>
+							</row>
+							<row>
+								<entry>
+									<para>pshell, powershell, ps1</para>
+								</entry>
+								<entry>
+									<para>PowerShell script</para>
+								</entry>
+							</row>
+							<row>
+								<entry>
+									<para>py, python</para>
+								</entry>
+								<entry>
+									<para>Python</para>
+								</entry>
+							</row>
+							<row>
+								<entry>
+									<para>Anything else (i.e. "none")</para>
+								</entry>
+								<entry>
+									<para>No language, no special handling.</para>
+								</entry>
+							</row>
+						</table>
+
+						<alert class="important">
+							<para>The full name "<codeInline>language</codeInline>" should be used for the attribute name rather
+than the abbreviated form "<codeInline>lang</codeInline>".  The reason is that the XSL transformations used by
+the presentation styles expect the full name when they search for the language attribute.  The abbreviated form
+is a legacy syntax that should be avoided.  The code block component will auto-correct the attribute name so that
+it is not missed by the transformations.</para>
+
+							<para>It is recommended that you always specify a language attribute.</para>
+						</alert>
+					</content>
+				</section>
+
+				<section address="title">
+					<title>title</title>
+					<content>
+						<para>This attribute allows you to add a title that appears before the code block.  An example of its
+use would be to label the example with a description.  If omitted, the language name will appear for the title.
+If you do not want a title on a particular block, set the <codeInline>title</codeInline> attribute to a single
+space (" ").</para>
+					</content>
+				</section>
+
+				<section address="CodeImporting">
+					<title>source, region, and removeRegionMarkers</title>
+					<content>
+						<para>These three attributes are extensions implemented by the code block build component.  The
+<codeInline>source</codeInline> attribute is used to specify that the code block's content should be read from an
+external source code file.  If used alone, the entire file is imported.  The optional <codeInline>region</codeInline>
+attribute can be used to limit the code to a specific section of the file delimited with the named
+<codeInline>#region</codeInline> (<codeInline>#pragma region</codeInline> for C++).  The
+<codeInline>#region</codeInline> and <codeInline>#endregion</codeInline> tags are excluded from the extracted
+section of code.</para>
+
+						<para>This is not to be confused with the XML comments <codeInline>include</codeInline> element.
+This extension is intended to extract code from actual source files.  This allows you to manage your code
+examples in buildable projects to test them for correctness as a project is developed and altered in the future.
+It also saves you from managing the code in the XML comments and does not require that the code be HTML encoded
+as it is when written in the comments. The code will be HTML encoded when it is read in for processing.  When
+used, it is assumed that there is no code within the code element itself and thus it will always be self-closing.
+Here are some examples:</para>
+
+						<para>Retrieve all code from an external file and use the VB.NET syntax to color it.  The path is
+relative to the code block component's <codeInline>basePath</codeInline> configuration element.</para>
+
+<code language="xml" title=" ">
+&lt;code source="..\Examples\WholeDemo.vb" language="vbnet" /&gt;
+</code>
+
+						<para>Retrieve a specific <codeInline>#region</codeInline> from an external file.</para>
+
+<code language="xml" title=" ">
+&lt;code source="..\Examples\SeveralExamples.vb"
+	region="Example 1" language="vbnet" title="Example #1" /&gt;
+</code>
+
+						<para>Note that VB.NET does not allow <codeInline>#Region</codeInline> and <codeInline>#End Region</codeInline>
+within a method body.  Other file types such as XML, XAML, and SQL script do not understand <codeInline>#region</codeInline>
+statements.  However, if you want to extract a region from a VB.NET method body or a section of another file
+type, you can add the region statements in comments to workaround the limitation.  The component will still find
+it and extract the region.</para>
+
+<code language="none" title="Commented Region Examples">
+<b><u>VB.NET Example</u></b>
+Public Sub SomeMethod()
+    ' #Region VB.NET Snippet
+    Dim x As Integer
+
+    For x = 1 To 10
+        Console.WriteLine(x)
+    Next x
+    ' #End Region
+End Sub
+
+<b><u>XAML Example</u></b>
+&lt;Style x:Key="SpecialButton" TargetType="{x:Type Button}"&gt;
+  &lt;Style.Triggers&gt;
+    &lt;!-- #region XAML Snippet --&gt;
+    &lt;Trigger Property="Button.IsMouseOver" Value="true"&gt;
+      &lt;Setter Property = "Background" Value="Red"/&gt;
+    &lt;/Trigger&gt;
+    &lt;!-- #endregion --&gt;
+  &lt;/Style.Triggers&gt;
+&lt;/Style&gt;
+
+<b><u>SQL Example</u></b>
+-- #region SQL snippet
+Select *
+From   tblName
+Where  LastName = 'SMITH'
+-- #endregion
+
+/* #region Another snippet */
+Select *
+From   tblName
+Where  FirstName = 'JOHN'
+/* #endregion */
+</code>
+
+							<para>The <codeInline>removeRegionMarkers</codeInline> attribute can be used to specify whether or
+not region markers within the imported code file or region are removed.  If not specified or set to false, any
+nested region markers are left in the imported code block.  If specified and set to true, nested region markers
+are removed from the imported code.  This is useful for removing nested region markers from larger code samples
+that contain smaller snippets of code used in other examples.  The default setting (false) can be overridden via
+the component configuration.</para>
+						</content>
+				</section>
+
+				<section address="tabSize">
+					<title>tabSize</title>
+					<content>
+						<para>When the code blocks are formatted by the build component, tab characters are replaced with a
+set number of spaces to preserve formatting.  This attribute can be used to override the default setting for a
+language which is specified in the syntax file.  For example, if the default tab size for a language is four, adding
+<codeInline>tabSize="8"</codeInline> will force it to use eight spaces instead.  If set to zero, the syntax file
+setting is used.  This attribute sets the default tab size for unknown languages when used in the component's
+configuration.</para>
+					</content>
+				</section>
+
+				<section address="numberLines">
+					<title>numberLines</title>
+					<content>
+						<para>This attribute allows you to override the default setting in the component's configuration.
+For example, if the default setting is false to turn off line numbering, you can add
+<codeInline>numberLines="true"</codeInline> to enable numbering on a specific code example.</para>
+					</content>
+				</section>
+
+				<section address="outlining">
+					<title>outlining</title>
+					<content>
+						<para>This attribute allows you to override the default setting in the component's configuration.
+For example, if the default setting is false to not add collapsible regions, you can add
+<codeInline>outlining="true"</codeInline> to enable collapsible regions on a specific code example.  Note that if
+a code block contains no <codeInline>#region</codeInline> or <codeInline>#if</codeInline> blocks, outlining is
+automatically disabled and it will not reserve space in the margin for the markers.</para>
+					</content>
+				</section>
+
+				<section address="keepSeeTags">
+					<title>keepSeeTags</title>
+					<content>
+						<para>When set to true, this attribute allows you to tell the build component's code colorizer to
+preserve <codeInline>see</codeInline> tags within the code so that they can be rendered as clickable links to the
+related topic.  If set to false, the default, any <codeInline>see</codeInline> tags within the code will be
+colorized and passed through as literal text.  When using this option, you may find that you need to specify
+inner text for the <codeInline>see</codeInline> tag so that the link text appears as you want it.  If the
+self-closing version of the tag is used, Sandcastle will generally set the link text to the name of the item plus
+any parameters if it is a generic type or takes parameters which may not be appropriate within a code sample.</para>
+					</content>
+				</section>
+			</sections>
+		</section>
+
+		<section address="Nesting">
+			<title>Nested Code Elements</title>
+			<content>
+				<para>You can import multiple code snippets into one common colorized code block by nesting
+<codeInline>code</codeInline> elements within a parent <codeInline>code</codeInline> element.  On nested
+<codeInline>code</codeInline> elements, only the <codeInline>source</codeInline> and <codeInline>region</codeInline>
+attributes will be utilized.  All other attributes that control colorization of the merged code block will be
+retrieved from the parent <codeInline>code</codeInline> element.</para>
+
+<code language="xml" title="Nested Code Elements Example">
+&lt;code title="Nested code elements example" language="VB.NET"&gt;
+&lt;code source="..\Class1.vb" region="Snippet #1" /&gt;
+&lt;code source="..\Class1.vb" region="Snippet #2" /&gt;
+&lt;/code&gt;
+</code>
+
+				<para>Literal code can also be mixed in between the nested <codeInline>code</codeInline> elements.
+However, there are some limitations.  All elements and literal code should be flush left within the parent
+<codeInline>code</codeInline> element or you will end up with additional spaces before the first line of each
+nested <codeInline>code</codeInline> element.  There may still be additional spaces before the literal code.
+This is caused by the indentation included when the XML comments file is created by the compiler.  If this is a
+problem, move the example to an include file and remove the excess leading whitespace.  Use an
+<codeInline>include</codeInline> element to bring it into the XML comments.  When done this way, the compiler
+preserves the spacing when writing the example out to the XML comments file.</para>
+
+<code language="xml" title="Nested Code Elements Example">
+&lt;code title="Nested code elements example" language="VB.NET"&gt;
+&lt;code source="..\Class1.vb" region="Snippet #1" /&gt;
+
+' ... Some stuff happens here ...
+
+&lt;code source="..\Class1.vb" region="Snippet #2" /&gt;
+&lt;/code&gt;
+</code>
+
+			</content>
+		</section>
+
+		<section address="Examples">
+			<title>Examples</title>
+			<content>
+<code language="cs" title=" " source="SampleClass.cs" region="example/code Example" />
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="f8464c0f-f62a-4faf-b11a-9a41173307e8" />
+			<link xlink:href="1bef716a-235b-4d96-a23e-f43b8dcf9abd" />
+			<codeEntityReference qualifyHint="false" autoUpgrade="true">M:XMLCommentsExamples.SampleClass.GetRandomNumber</codeEntityReference>
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="20dc8c5f-9979-4ecd-92ce-cea6ce7acaeb" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>Section elements are used to define the content for the different sections of the documentation of a
+type or member and are always top-level elements that appear at the root of the XML comments block.  Select a
+topic below for more information.</para>
+		</introduction>
+
+		<section>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para><link xlink:href="81bf7ad3-45dc-452f-90d5-87ce2494a182" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="1bef716a-235b-4d96-a23e-f43b8dcf9abd" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="bbd1e65d-c87c-4b46-9a1a-259d3c5cd936" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="e54dcff7-f8f3-4a11-9d17-1cf7decd880e" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="4af64f3f-a9a3-42d7-a95c-bc0a40951286" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="c16bece7-694e-48ca-802d-cf3ae9205c55" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="3671b61e-0695-4f0f-bcb5-7cf9108dd642" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="fa97c10b-a683-4d10-a01c-5787dbdd42d3" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="16cdb957-a35b-4c17-bf5e-ea511b0218e3" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="c3743eaf-9ef2-4d35-8f59-876f1e48a6a8" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="fb4625cb-52d0-428e-9c7c-7a0d88e1b692" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="163cae15-9020-4095-9b9c-da134b5b496c" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="f512d714-e100-4296-916c-99a46e572e9d" /></para>
+					</listItem>
+				</list>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="515d5a54-5047-4d6f-bf51-d47c7c699cc2" />
+			<link xlink:href="BD91FAD4-188D-4697-A654-7C07FD47EF31" />
+			<link xlink:href="f8464c0f-f62a-4faf-b11a-9a41173307e8" />
+			<link xlink:href="d297bc14-33aa-4152-ae36-9f658b15de87" />
+			<link xlink:href="9341fdc8-1571-405c-8e61-6a6b9b601b46" />
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

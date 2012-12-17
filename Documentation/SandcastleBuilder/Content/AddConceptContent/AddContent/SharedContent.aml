@@ -42,10 +42,10 @@ Formatted Build Date: &lt;@BuildDate:MMMM d, yyyy a\t hh:mm tt/&gt;
 			<para><token>FeedbackEMailAddress</token></para>
 		</listItem>
 		<listItem>
-			<para>Full Build Date: <token>BuildDate</token></para>
+			<para>Full Build Date: <token>BuildDateFull</token></para>
 		</listItem>
 		<listItem>
-			<para>Formatted Build Date: <token>BuildDate_1</token></para>
+			<para>Formatted Build Date: <token>BuildDateFormatted</token></para>
 		</listItem>
 	</list>
 

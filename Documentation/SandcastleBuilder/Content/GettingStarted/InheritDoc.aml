@@ -220,17 +220,19 @@ accurate API help in the code editor and object browser.</para>
   <title>Examples</title>
   <content>
 		<para>The following show various examples of using the <codeInline>&lt;inheritdoc /&gt;</codeInline> tag.
-See the comments within each for details about what the examples are showing.</para>
+See the comments within each for details about what the examples are showing.  The <legacyBold>Sandcastle XML
+Comments Guide</legacyBold> installed as part of the Sandcastle tools contains working examples that you look
+at to see the end result.</para>
 
-<code source="..\..\TestCaseProject\DocumentationInheritance\CustomException.cs"
+<code source="..\..\Sandcastle\Examples\XMLCommentsExamples\DocumentationInheritance\CustomException.cs"
     region="Constructor documentation inheritance" outlining="true"
     language="cs" title="Constructor Documentation Inheritance" />
 
-<code source="..\..\TestCaseProject\DocumentationInheritance\ExplicitImplementation.cs"
+<code source="..\..\Sandcastle\Examples\XMLCommentsExamples\DocumentationInheritance\ExplicitImplementation.cs"
     region="Interface implementation documentation inheritance" outlining="true"
     language="cs" title="Interface Implementation Examples" />
 
-<code source="..\..\TestCaseProject\DocumentationInheritance\DocumentationInheritance.cs"
+<code source="..\..\Sandcastle\Examples\XMLCommentsExamples\DocumentationInheritance\DocumentationInheritance.cs"
     region="Various documentation inheritance examples" outlining="true"
     language="cs" title="Various Other Examples" />
 

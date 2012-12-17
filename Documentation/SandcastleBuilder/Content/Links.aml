@@ -19,13 +19,14 @@
 you become familiar with XML comments, conceptual content, and Sandcastle.</para>
 <list class="bullet">
     <listItem>
-			<para>For a comprehensive list of XML documentation tags and a description of their attributes and
-usage you can download the <token>XMLCommentsGuide</token>.</para></listItem>
+			<para>For a comprehensive list of XML documentation elements and a description of their attributes and
+usage, see the <legacyBold>Sandcastle XML Comments Guide</legacyBold> installed as part of the Sandcastle
+tools.</para></listItem>
 
     <listItem>
-			<para>For a comprehensive list of MAML documentation tags used in conceptual content and a description of
-their attributes and usage see the <legacyBold>Sandcastle MAML Guide</legacyBold> included with Sandcastle tools
-installer.</para></listItem>
+			<para>For a comprehensive list of MAML documentation elements used in conceptual content and a description
+of their attributes and usage, see the <legacyBold>Sandcastle MAML Guide</legacyBold> installed as part of the
+Sandcastle tools.</para></listItem>
 
 	<listItem>
 		<para>Special thanks to <externalLink>

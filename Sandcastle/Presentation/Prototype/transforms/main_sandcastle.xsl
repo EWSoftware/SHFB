@@ -69,6 +69,8 @@
 		<!-- other comment sections -->
 		<!-- permissions -->
 		<xsl:call-template name="permissions" />
+		<!-- events -->
+		<xsl:call-template name="events" />
 		<!-- exceptions -->
 		<xsl:call-template name="exceptions" />
 		<!-- inheritance -->
@@ -244,6 +246,39 @@
 		</div>
 	</xsl:template>
 
+	<xsl:template name="events">
+		<xsl:if test="count(/document/comments/event) &gt; 0">
+			<xsl:call-template name="section">
+				<xsl:with-param name="title">
+					<include item="eventsTitle" />
+				</xsl:with-param>
+				<xsl:with-param name="content">
+					<table class="exceptions">
+						<tr>
+							<th class="exceptionNameColumn">
+								<include item="eventTypeHeader" />
+							</th>
+							<th class="exceptionConditionColumn">
+								<include item="eventReasonHeader" />
+							</th>
+						</tr>
+						<xsl:for-each select="/document/comments/event">
+							<tr>
+								<td>
+									<referenceLink target="{@cref}" />
+								</td>
+								<td>
+									<xsl:apply-templates select="." />
+									<br />
+								</td>
+							</tr>
+						</xsl:for-each>
+					</table>
+				</xsl:with-param>
+			</xsl:call-template>
+		</xsl:if>
+	</xsl:template>
+
 	<xsl:template name="exceptions">
 		<xsl:if test="count(/document/comments/exception) &gt; 0">
 			<xsl:call-template name="section">
@@ -312,7 +347,9 @@
 
 	<xsl:template name="seealso">
 		<!-- EFW: For comments//seealso, exclude any nested in an overloads element -->
-		<xsl:if test="count(/document/comments//seealso[not(ancestor::overloads)] | /document/reference/elements/element/overloads//seealso) &gt; 0">
+		<xsl:if test="count(/document/comments//seealso[not(ancestor::overloads)] |
+			/document/comments/conceptualLink |
+			/document/reference/elements/element/overloads//seealso) &gt; 0">
 			<xsl:call-template name="section">
 				<xsl:with-param name="title">
 					<include item="relatedTitle" />
@@ -323,6 +360,12 @@
 							<xsl:with-param name="displaySeeAlso" select="true()" />
 						</xsl:apply-templates>
 						<br />
+					</xsl:for-each>
+					<!-- EFW: Copy conceptualLink elements as-is -->
+					<xsl:for-each select="/document/comments/conceptualLink">
+						<div class="seeAlsoStyle">
+							<xsl:copy-of select="."/>
+						</div>
 					</xsl:for-each>
 				</xsl:with-param>
 			</xsl:call-template>
@@ -528,7 +571,7 @@
 					<span class="vb">False</span>
 					<span class="cpp">false</span>
 				</xsl:when>
-				<xsl:when test="@langword='abstract'">
+				<xsl:when test="@langword='abstract' or @langword='MustInherit'">
 					<span class="cs">abstract</span>
 					<span class="vb">MustInherit</span>
 					<span class="cpp">abstract</span>

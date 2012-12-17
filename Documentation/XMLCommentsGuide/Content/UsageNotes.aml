@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="515d5a54-5047-4d6f-bf51-d47c7c699cc2" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>The following are some general usage notes and things to keep in mind when authoring XML comments in
+your code.</para>
+		</introduction>
+
+		<section>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>XML comments support all of the common HTML tags such as <codeInline>a</codeInline> (anchor),
+<codeInline>b</codeInline> (bold), <codeInline>img</codeInline> (image), <codeInline>p</codeInline> (paragraph),
+etc.  As such, you can use HTML markup to add additional formatting to your XML comments if necessary.</para>
+
+						<alert class="caution">
+							<para>Not all help output formats support HTML elements in XML comments or may use a different
+URL format from other help formats.  For example, MS Help Viewer's URL format differs from the other help formats
+which may result in broken links if literal HTML anchor or image links are used.  As such, try to use XML comments
+elements whenever possible.  For example, to link to API topics, use <codeInline>see</codeInline> elements and
+for conceptual topics, use <codeInline>conceptualLink</codeInline>.</para>
+						</alert>
+					</listItem>
+
+					<listItem>
+						<para>All XML and HTML within XML comments must be well formed.  That means that all elements must
+have a corresponding closing element or must be self-closing, special characters such as "&lt;" and "&gt;" must
+be encoded appropriately (i.e. <codeInline>&amp;lt;</codeInline> and <codeInline>&amp;gt;</codeInline>), entities
+not recognized by the XML parser must be encoded in their numeric form (i.e. <codeInline>&amp;#160;</codeInline>
+rather than <codeInline>&amp;nbsp;</codeInline> for a non-breaking space).</para>
+					</listItem>
+
+					<listItem>
+						<para>For larger blocks of XML that you want to insert literally such as code examples, you can use
+the <codeInline>&lt;![CDATA[ ]]&gt;</codeInline> option to place them in the element.  See the
+<link xlink:href="1abd1992-e3d0-45b4-b43d-91fcfc5e5574" /> element for an example.</para>
+					</listItem>
+
+					<listItem>
+						<para>When referencing a generic type or a member with generic parameters as the target of an
+element attribute such as the <codeInline>cref</codeInline> attribute on a <codeInline>see</codeInline>
+element, use curly braces rather than angle brackets on the generic type parameters.  For example:</para>
+						
+<code language="cs" title=" ">
+/// &lt;summary&gt;
+/// This class is derived from &lt;see cref="List{T}" /&gt;
+/// &lt;/summary&gt;
+/// &lt;typeparam name="T"&gt;The element type of the list&lt;/typeparam&gt;
+/// &lt;seealso cref="CustomDictionary{TKey, TValue}" /&gt;
+public class CustomList&lt;T&gt; : List&lt;T&gt;
+{
+}
+</code>
+					</listItem>
+
+					<listItem>
+						<para>Namespace comments cannot be attached directly to a namespace code element.  Instead, you must
+use an alternate means to specify namespace comments.  See the <link xlink:href="BD91FAD4-188D-4697-A654-7C07FD47EF31" />
+topic for more information.</para>
+					</listItem>
+				</list>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="57C91630-95D6-4E3E-AF24-3415CC569AC8" />
+			<link xlink:href="BD91FAD4-188D-4697-A654-7C07FD47EF31" />
+			<link xlink:href="20dc8c5f-9979-4ecd-92ce-cea6ce7acaeb" />
+			<link xlink:href="f8464c0f-f62a-4faf-b11a-9a41173307e8" />
+			<link xlink:href="d297bc14-33aa-4152-ae36-9f658b15de87" />
+			<link xlink:href="9341fdc8-1571-405c-8e61-6a6b9b601b46" />
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

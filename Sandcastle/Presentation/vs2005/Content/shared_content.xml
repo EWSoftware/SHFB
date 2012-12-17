@@ -64,6 +64,7 @@
   <item id="XAMLLabel">XAML</item>
 
   <!-- section titles -->
+  <item id="eventsTitle">Events</item>
   <item id="exceptionsTitle">Exceptions</item>
   <item id="contractsTitle">Contracts</item>
   <item id="setterTitle">Set</item>

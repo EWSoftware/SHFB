@@ -62,9 +62,12 @@ within each file.  As such, the topics will appear in the entity references wind
 used them and the last selected topic in the file will be selected as the default item in the tool window.
 This is helpful when you have the associated content layout file open for editing in the environment.</para>
 
-		<para>For MAML conceptual topics, choose <ui>MAML link</ui> as the type to create.  For HTML topics,
-choose the <ui>HTML anchor link</ui> option.  The HTML option is for backward compatibility with the older
-additional content model and should not be used for MAML conceptual content topics.</para>
+		<para>For MAML conceptual topics, choose <ui>MAML link</ui> as the type to create.  To insert MAML topic
+references in XML comments in your source code, choose <ui>XML comments conceptualLink</ui> as the type to
+create.  For HTML topics, choose the <ui>HTML anchor link</ui> option.  The HTML option is for backward
+compatibility with the older additional content model and should not be used for MAML conceptual content
+topics.  It is not recommended for XML comments either as the link target format may vary based on the help file
+format.</para>
 	</definition>
 
   <definedTerm>Code Snippets</definedTerm>

@@ -23,8 +23,7 @@ that you can take.  Click the <Bold>Close</Bold> button to exit.</Paragraph>
     </FlowDocumentScrollViewer>
     <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
       CanContentScroll="False">
-      <StackPanel Grid.Row="1" Name="pnlActions"
-        Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}" />
+      <StackPanel Grid.Row="1" Name="pnlActions" />
     </ScrollViewer>
   </Grid>
 </sci:BasePage>

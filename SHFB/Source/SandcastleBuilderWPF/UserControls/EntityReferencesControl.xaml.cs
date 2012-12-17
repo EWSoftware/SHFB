@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : EntityReferencesControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/18/2012
+// Updated : 12/08/2012
 // Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -17,6 +17,7 @@
 // Version     Date     Who  Comments
 // =========================================================================================================
 // 1.9.3.3  12/04/2011  EFW  Created the code
+// 1.9.6.0  12/08/2012  EFW  Added support for XML comments conceptualLink TOC entry format
 //==========================================================================================================
 
 using System;
@@ -772,7 +773,11 @@ namespace SandcastleBuilder.WPF.UserControls
                                 textToCopy = String.Format(CultureInfo.InvariantCulture,
                                     "<link xlink:href=\"{0}\" />", (toc.Id ?? "[Unknown ID]"));
                             else
-                                textToCopy = String.Format(CultureInfo.InvariantCulture,
+                                if(rbConceptualLink.IsChecked.Value)
+                                    textToCopy = String.Format(CultureInfo.InvariantCulture,
+                                        "<conceptualLink target=\"{0}\" />", (toc.Id ?? "[Unknown ID]"));
+                                else
+                                    textToCopy = String.Format(CultureInfo.InvariantCulture,
                                     "<a href=\"html/{0}.htm\">{1}</a>", toc.Id, toc.Title);
                         }
                         else

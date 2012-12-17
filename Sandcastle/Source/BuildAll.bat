@@ -1,5 +1,4 @@
 @ECHO OFF
-CLS
 
 SETLOCAL
 SET OUTDIR=%CD%\..\ProductionTools\
@@ -23,6 +22,7 @@ DEL /Q %OUTDIR%
 "%WINDIR%\Microsoft.Net\Framework\v4.0.30319\msbuild.exe" "MergeXml\MergeXml.csproj" /t:Clean;Build /p:Configuration=Release;Platform=AnyCPU;OutDir=%OUTDIR%
 "%WINDIR%\Microsoft.Net\Framework\v4.0.30319\msbuild.exe" "MSHCPackager\MSHCPackager.csproj" /t:Clean;Build /p:Configuration=Release;Platform=AnyCPU;OutDir=%OUTDIR%
 "%WINDIR%\Microsoft.Net\Framework\v4.0.30319\msbuild.exe" "SandcastleGUI\SandcastleGUI.csproj" /t:Clean;Build /p:Configuration=Release;Platform=AnyCPU;OutDir=%OUTDIR%..\Examples\Generic\
+"%WINDIR%\Microsoft.Net\Framework\v4.0.30319\msbuild.exe" "..\Examples\XMLCommentsExamples\XMLCommentsExamples.csproj" /t:Clean;Build /p:Configuration=Release;Platform=AnyCPU;OutDir=%OUTDIR%..\Examples\XMLCommentsExamples\bin\Release\
 
 CD %OUTDIR%..\Examples\Sandcastle
 

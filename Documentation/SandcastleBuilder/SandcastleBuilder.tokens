@@ -1,16 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <content xml:space="preserve" xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
-  <item id="BuildDate">{@BuildDate}</item>
-  <item id="BuildDate_1">{@BuildDate:MMMM d, yyyy a\t hh:mm tt}</item>
+  <item id="BuildDateFull">{@BuildDate}</item>
+  <item id="BuildDateFormatted">{@BuildDate:MMMM d, yyyy a\t hh:mm tt}</item>
   <item id="CopyrightInfo">{@CopyrightInfo}</item>
   <item id="FeedbackEMailAddress">{@FeedbackEMailAddress}</item>
-  <item id="SandcastleVersion">October 2012 v2.7.1.0</item>
-  <item id="SHFB"><ddue:externalLink xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5">
-    <ddue:linkText>Sandcastle Help File Builder</ddue:linkText>
-    <ddue:linkUri>http://SHFB.CodePlex.com</ddue:linkUri>
-    <ddue:linkTarget>_blank</ddue:linkTarget>
-</ddue:externalLink></item>
-  <item id="SHFBBuildDate">{@BuildDate:MMMM d, yyyy}</item>
   <item id="SolutionDocSource"><ddue:alert class="tip" xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5">
 	  <ddue:para>Given that solutions and projects are supported as
 documentation sources, you may find it easier to add them as documentation
@@ -30,9 +23,4 @@ know if it has already been done to save you the effort. See the
 <ddue:link xlink:href="e2ed6222-c3ee-4c6e-b0f9-fa3c86bc3e2c" xmlns:xlink="http://www.w3.org/1999/xlink" /> topic for
 information about the files and how to translate them.  Thanks!</ddue:para>
 </ddue:alert></item>
-  <item id="XMLCommentsGuide"><ddue:externalLink xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5">
-    <ddue:linkText>XML Documentation Comments Guide</ddue:linkText>
-    <ddue:linkUri>http://www.EWoodruff.us/Downloads/XMLDocsGuide.pdf</ddue:linkUri>
-    <ddue:linkTarget>_blank</ddue:linkTarget>
-</ddue:externalLink></item>
 </content>

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SandcastleProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/25/2012
+// Updated : 12/15/2012
 // Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -100,6 +100,7 @@ namespace SandcastleBuilder.Utils
         #region Constants
         //=====================================================================
 
+        // NOTE: When this changes, update the version in Resources\ProjectTemplate.txt
         /// <summary>
         /// The schema version used in the saved project files
         /// </summary>
@@ -680,7 +681,7 @@ namespace SandcastleBuilder.Utils
         /// significantly reduce the size of the build log for large projects.</remarks>
         [Category("Build"), Description("This sets the verbosity level of the BuildAssembler tool.  Setting it " +
           "to OnlyWarningsAndErrors or OnlyErrors can significantly reduce the size of the build log for " +
-          "large projects."), DefaultValue(BuildAssemblerVerbosity.AllMessages)]
+          "large projects."), DefaultValue(BuildAssemblerVerbosity.OnlyWarningsAndErrors)]
         public BuildAssemblerVerbosity BuildAssemblerVerbosity
         {
             get { return buildAssemblerVerbosity; }
@@ -2938,15 +2939,14 @@ namespace SandcastleBuilder.Utils
 
                 this.BuildLogFile = null;
 
-                missingTags = MissingTags.Summary | MissingTags.Parameter |
-                    MissingTags.TypeParameter | MissingTags.Returns |
-                    MissingTags.AutoDocumentCtors | MissingTags.Namespace |
+                missingTags = MissingTags.Summary | MissingTags.Parameter | MissingTags.TypeParameter |
+                    MissingTags.Returns | MissingTags.AutoDocumentCtors | MissingTags.Namespace |
                     MissingTags.AutoDocumentDispose;
 
                 visibleItems = VisibleItems.InheritedFrameworkMembers | VisibleItems.InheritedMembers |
                     VisibleItems.Protected | VisibleItems.SealedProtected;
 
-                buildAssemblerVerbosity = BuildAssemblerVerbosity.AllMessages;
+                buildAssemblerVerbosity = BuildAssemblerVerbosity.OnlyWarningsAndErrors;
                 helpFileFormat = HelpFileFormat.HtmlHelp1;
                 htmlSdkLinkType = websiteSdkLinkType = HtmlSdkLinkType.Msdn;
                 help2SdkLinkType = MSHelp2SdkLinkType.Msdn;
@@ -2960,8 +2960,8 @@ namespace SandcastleBuilder.Utils
                 tocOrder = -1;
 
                 this.OutputPath = null;
-                this.HtmlHelp1xCompilerPath = this.HtmlHelp2xCompilerPath =
-                    this.SandcastlePath = this.WorkingPath = null;
+                this.HtmlHelp1xCompilerPath = this.HtmlHelp2xCompilerPath = this.SandcastlePath =
+                    this.WorkingPath = null;
 
                 this.HelpTitle = this.HtmlHelpName = this.CopyrightHref = this.CopyrightText =
                     this.FeedbackEMailAddress = this.FeedbackEMailLinkText = this.HeaderText = this.FooterText =
@@ -2982,12 +2982,10 @@ namespace SandcastleBuilder.Utils
         /// Load a Sandcastle Builder project from the given filename.
         /// </summary>
         /// <param name="filename">The filename to load</param>
-        /// <param name="mustExist">Specify true if the file must exist
-        /// or false if a new project should be created if the file does
-        /// not exist.</param>
-        /// <exception cref="ArgumentException">This is thrown if a filename
-        /// is not specified or if it does not exist and <c>mustExist</c> is
-        /// true.</exception>
+        /// <param name="mustExist">Specify true if the file must exist or false if a new project should be
+        /// created if the file does not exist.</param>
+        /// <exception cref="ArgumentException">This is thrown if a filename is not specified or if it does not
+        /// exist and <c>mustExist</c> is true.</exception>
         public SandcastleProject(string filename, bool mustExist) : this()
         {
             string template;
@@ -3018,7 +3016,18 @@ namespace SandcastleBuilder.Utils
                 msBuildProject.FullPath = filename;
             }
             else
-                msBuildProject = new Project(filename);
+            {
+                // If already loaded into the global project collection, use the existing instance
+                var loadedProjects = ProjectCollection.GlobalProjectCollection.GetLoadedProjects(filename).ToList();
+
+                if(loadedProjects.Count != 0)
+                {
+                    msBuildProject = loadedProjects[0];
+                    removeProjectWhenDisposed = false;
+                }
+                else
+                    msBuildProject = new Project(filename);
+            }
 
             this.LoadProperties();
         }
@@ -3034,8 +3043,8 @@ namespace SandcastleBuilder.Utils
         /// get the correct final values.</remarks>
         public SandcastleProject(Project existingProject) : this()
         {
-            // Do not remove the project from the MSBuild project collection
-            // when this is disposed of since we didn't create it.
+            // Do not remove the project from the MSBuild project collection when this is disposed of since we
+            // didn't create it.
             removeProjectWhenDisposed = false;
 
             msBuildProject = existingProject;
@@ -3044,12 +3053,11 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to clone an existing project in order to build it
-        /// without affecting the existing project's properties.
+        /// This is used to clone an existing project in order to build it without affecting the existing
+        /// project's properties.
         /// </summary>
         /// <param name="cloneProject">The project to clone</param>
-        /// <remarks>This is used to perform partial builds where we may want
-        /// to use alternate property values.</remarks>
+        /// <remarks>This is used to perform partial builds where we may want to use alternate property values.</remarks>
         public SandcastleProject(SandcastleProject cloneProject) : this()
         {
             string newName = Guid.NewGuid().ToString();
@@ -3065,9 +3073,8 @@ namespace SandcastleBuilder.Utils
                 }
             }
 
-            // Use the same folder so that relative paths have the same
-            // base location.  Use a different filename to prevent the
-            // cloned instance from being unloaded by the build engine.
+            // Use the same folder so that relative paths have the same base location.  Use a different filename
+            // to prevent the cloned instance from being unloaded by the build engine.
             msBuildProject.FullPath = Path.Combine(Path.GetDirectoryName(cloneProject.Filename),
                 newName + ".shfbproj");
 
@@ -3085,8 +3092,8 @@ namespace SandcastleBuilder.Utils
         //=====================================================================
 
         /// <summary>
-        /// This handles garbage collection to ensure proper disposal of the
-        /// Sandcastle project if not done explicity with <see cref="Dispose()"/>.
+        /// This handles garbage collection to ensure proper disposal of the Sandcastle project if not done
+        /// explicity with <see cref="Dispose()"/>.
         /// </summary>
         ~SandcastleProject()
         {
@@ -3094,8 +3101,7 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This implements the Dispose() interface to properly dispose of
-        /// the Sandcastle project object.
+        /// This implements the Dispose() interface to properly dispose of the Sandcastle project object.
         /// </summary>
         /// <overloads>There are two overloads for this method.</overloads>
         public void Dispose()
@@ -3105,16 +3111,14 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This can be overridden by derived classes to add their own
-        /// disposal code if necessary.
+        /// This can be overridden by derived classes to add their own disposal code if necessary.
         /// </summary>
-        /// <param name="disposing">Pass true to dispose of the managed
-        /// and unmanaged resources or false to just dispose of the
-        /// unmanaged resources.</param>
+        /// <param name="disposing">Pass true to dispose of the managed and unmanaged resources or false to just
+        /// dispose of the unmanaged resources.</param>
         protected virtual void Dispose(bool disposing)
         {
-            // If we loaded the MSBuild project, we must unload it.  If not, it
-            // is cached and will cause problems if loaded a second time.
+            // If we loaded the MSBuild project, we must unload it.  If not, it is cached and will cause problems
+            // if loaded a second time.
             if(removeProjectWhenDisposed)
             {
                 if(msBuildProject != null && !String.IsNullOrEmpty(this.Filename))

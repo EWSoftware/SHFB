@@ -1,24 +1,22 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : EntityReferencesToolWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/21/2012
+// Updated : 12/09/2012
 // Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains the class used to implement the Entity References tool
-// window.
+// This file contains the class used to implement the Entity References tool window
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.  This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.9.3.3  12/11/2011  EFW  Created the code
-//=============================================================================
+//===============================================================================================================
 
 using System;
 using System.Runtime.InteropServices;
@@ -247,7 +245,8 @@ namespace SandcastleBuilder.Package.ToolWindows
                         }
                     }
 
-                    if((shfbProject == null && ucEntityReferences.CurrentProject != null) ||
+                    // We'll keep the existing reference unless it changes or the project is closed
+                    if((shfbProject == null && pHierNew == null) ||
                       (shfbProject != null && (ucEntityReferences.CurrentProject == null ||
                       ucEntityReferences.CurrentProject.Filename != shfbProject.Filename)))
                         ucEntityReferences.CurrentProject = shfbProject;

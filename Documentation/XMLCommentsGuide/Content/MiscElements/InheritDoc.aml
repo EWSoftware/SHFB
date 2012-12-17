@@ -1,0 +1,257 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="86453FFB-B978-4A2A-9EB5-70E118CA8073" revisionNumber="1">
+	<developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+		<introduction>
+			<para>This element can help minimize the effort required to document complex APIs by allowing common
+documentation to be inherited from base types/members.</para>
+
+			<autoOutline lead="none" />
+			
+				<alert class="note">
+					<para>This is a custom XML comments element implemented by Sandcastle and the Sandcastle Help File
+Builder.  It will not appear in the list of valid elements for XML comments IntelliSense.</para>
+				</alert>
+
+		</introduction>
+
+		<section address="Syntax">
+			<title>Syntax</title>
+			<content>
+				<para>Although typically used as a top-level element, it can be used as an inline element as well.  The
+use of the element by itself on a member is enough to satisfy the compiler so that it will not issue warnings
+about missing comments on public members.  Using it in conjunction with other elements allows you to inherit
+common information such as value and parameter descriptions while overriding the inherited documentation for
+other elements such as <codeInline>summary</codeInline> and <codeInline>remarks</codeInline>.  Documentation can
+be inherited from any member from classes within your own assemblies or from members of other assemblies as well
+as the base .NET Framework class library.  The syntax of the element is as follows:</para>
+
+<code language="xml" title=" ">
+&lt;inheritdoc [cref="member"] [select="xpath-filter-expr"] /&gt;
+</code>
+
+				<para>The optional <codeInline>cref</codeInline> attribute overrides the standard search method to allow
+documentation inheritance from an alternate user-specified member indicated by the <legacyItalic>member</legacyItalic>
+value.</para>
+
+				<para>The optional <codeInline>select</codeInline> attribute applies the specified XPath filter
+expression to the inherited comments.  This is useful if you want to limit the inherited documentation to a
+specific subset of elements or just select a particular instance or set of comments.  The expression can be any valid
+XPath query that will result in a node set.</para>
+
+				<para>By making use of the <codeInline>cref</codeInline> and <codeInline>select</codeInline> attributes
+either by themselves or together, you can fine tune the inheritance of documentation.  You can also nest the
+element within other elements to further refine the level of inheritance.</para>
+
+				<para>When using the Sandcastle tools alone, the <codeInline>InheritDocumentationComponent</codeInline>
+must be added to the <application>BuildAssembler</application> configuration file to handle the
+<codeInline>inheritdoc</codeInline> elements.  When using the Sandcastle Help File Builder, its
+<application>GenerateInheritedDocumentation</application> tool handles the task of generating the inherited
+documentation.  The following documentation is based on the Sandcastle Help File Builder's implementation.
+The build component works in a similar fashion but does not support all of the scenarios related to merging
+and overriding existing elements.</para>
+				
+			</content>
+		</section>
+
+		<section address="TopLevelRules">
+			<title>Top-Level Inheritance Rules</title>
+			<content>
+				<para>The <codeInline>inheritdoc</codeInline> element is valid at the root level (i.e. the same level
+as <codeInline>summary</codeInline> elements) on types, interfaces, virtual members, interface member
+implementations, and constructors.  Its use on any other member type will result in no comments being inherited
+unless a <codeInline>cref</codeInline> attribute is specified.  Note that the element is also valid in project
+summary and namespace summary comments as long as a <codeInline>cref</codeInline> attribute is specified to
+indicate from where to inherit the comments.  When specified at the root level in a set of XML comments, the
+documentation search is performed as follows:</para>
+
+				<list class="bullet">
+					<listItem>
+						<para>If an explicit <codeInline>cref</codeInline> attribute is specified, the documentation from the
+specified namespace/type/member is inherited.  If a <codeInline>cref</codeInline> attribute is not specified, the
+following rules apply.</para>
+					</listItem>
+
+					<listItem>
+						<para>For types and interfaces:</para>
+
+						<list class="bullet">
+							<listItem>
+								<para>Inherit documentation from all base classes working backwards up the inheritance chain.</para>
+							</listItem>
+
+							<listItem>
+								<para>Inherit documentation from all interface implementations (if any) working through them in
+the order listed in the reflection information file (usually alphabetically).</para>
+							</listItem>
+						</list>
+					</listItem>
+
+					<listItem>
+						<para>For constructors:</para>
+
+						<list class="bullet">
+							<listItem>
+								<para>Search backwards up the type inheritance chain for a constructor with a matching signature.</para>
+							</listItem>
+
+							<listItem>
+								<para>If a match is found, its documentation is inherited.</para>
+							</listItem>
+						</list>
+					</listItem>
+
+					<listItem>
+						<para>For virtual members and interface implementations:</para>
+
+						<list class="bullet">
+							<listItem>
+								<para>If the member is an override, documentation is inherited from the member it overrides.</para>
+							</listItem>
+
+							<listItem>
+								<para>If the member is part of an interface, documentation is inherited from the interface member
+being implemented.</para>
+							</listItem>
+						</list>
+					</listItem>
+
+					<listItem>
+						<para>Explicit interface implementations will automatically inherit documentation from the interface
+member that they implement if no documentation is supplied by the user.  This is done automatically because these
+members are by definition private and the compiler will not issue a warning if the user does not supply
+documentation.  As such, you can omit the <codeInline>inheritdoc</codeInline> element from them unless you
+want to customize the comments.</para>
+					</listItem>
+
+					<listItem>
+						<para>With or without an explicit <codeInline>cref</codeInline> attribute, if the inherited
+documentation itself contains <codeInline>inheritdoc</codeInline> elements, they will be expanded recursively
+working backwards up the inheritance chain.</para>
+					</listItem>
+
+					<listItem>
+						<para>In all cases, if a <codeInline>select</codeInline> attribute is present, it is used to filter
+the inherited comments based on the specified XPath query.</para>
+					</listItem>
+
+				</list>
+
+				<para>When inheriting documentation at the root level, if the following elements already exist in the
+member's comments, the inherited versions are ignored:</para>
+
+				<list class="bullet">
+					<listItem>
+						<para><codeInline>example</codeInline></para>
+					</listItem>
+					<listItem>
+						<para><codeInline>exclude</codeInline></para>
+					</listItem>
+					<listItem>
+						<para><codeInline>filterpriority</codeInline></para>
+					</listItem>
+					<listItem>
+						<para><codeInline>preliminary</codeInline></para>
+					</listItem>
+					<listItem>
+						<para><codeInline>summary</codeInline></para>
+					</listItem>
+					<listItem>
+						<para><codeInline>remarks</codeInline></para>
+					</listItem>
+					<listItem>
+						<para><codeInline>returns</codeInline></para>
+					</listItem>
+					<listItem>
+						<para><codeInline>threadsafety</codeInline></para>
+					</listItem>
+					<listItem>
+						<para><codeInline>value</codeInline></para>
+					</listItem>
+				</list>
+
+				<para>The <codeInline>overloads</codeInline> element will never be inherited.  This prevents the doubling
+of comments on the overloads page.  However, you can inherit the contents of the <codeInline>overloads</codeInline>
+element using a <codeInline>select</codeInline> attribute with a value of "<codeInline>overloads/*</codeInline>".
+See below for an example.</para>
+
+				<para>All other elements will be inherited unless they match an element by the same name that contains a
+<codeInline>cref</codeInline>, <codeInline>href</codeInline>, <codeInline>name</codeInline>,
+<codeInline>vref</codeInline>, or <codeInline>xref</codeInline> attribute with an identical value in the member's
+comments.  To merge comments in one of the above elements from one or more sources, use one or more nested
+<codeInline>inheritdoc</codeInline> elements within the given element.  See below for examples.</para>
+
+				<para>Be aware that when <codeInline>param</codeInline> elements are inherited, the parameter's name
+in your class's member must match the base member's parameter name.  If they do not match, you will not see any
+inherited documentation for the parameter.  Also, if you supply comments for one parameter but omit comments for
+other parameters in order to inherit their documentation from a base implementation, the compiler will issue a
+warning.  In this case, you can use a <codeInline>#pragma warning</codeInline> directive to disable the warning
+temporarily or add it to the project settings to disable the warning globally.  See below for an example.</para>
+
+			</content>
+		</section>
+
+		<section address="InlineRules">
+			<title>Inline Inheritance Rules</title>
+			<content>
+				<para>The <codeInline>inheritdoc</codeInline> element can also be nested within other XML comments
+elements such as <codeInline>summary</codeInline>, <codeInline>remarks</codeInline>, <codeInline>example</codeInline>
+etc. in order to inherit specific parts of the documentation within those elements.  When nested, the same root
+level inheritance rules apply and will be used to locate the first member with comments from which to inherit
+documentation.  In addition, a filter will be automatically included based on the parent element or elements
+within which the <codeInline>inheritdoc</codeInline> element is nested.  The <codeInline>cref</codeInline> and
+<codeInline>select</codeInline> attributes can also be applied to further qualify how the documentation is
+inherited.  If you do not want to have the parent elements automatically included in the filter, you must supply
+a <codeInline>select</codeInline> attribute with a rooted XPath query that specifies from where to obtain the
+comments (i.e. <codeInline>select="/summary/node()"</codeInline>).</para>
+
+			</content>
+		</section>
+
+		<section address="IntelliSense">
+			<title>Additional Comment File Sources and IntelliSense</title>
+			<content>
+				<para>In the Sandcastle Help File Builder, additional sources of inherited documentation (i.e. comments
+from third party class libraries) can be added to the <ui>Documentation Sources</ui> project node.  This allows
+you to inherit documentation from base class libraries without having to add them as documentated assemblies in
+your project.</para>
+
+				<para>Since the XML comments produced by the compiler are incomplete when using <codeInline>inheritdoc</codeInline>,
+it is highly recommended that you make use of the <legacyBold>IntelliSense Build Component</legacyBold> to
+produce an IntelliSense XML comments file.  It will include the fully expanded set of inherited documentation so
+that Visual Studio can provide useful and accurate API help in the code editor and object browser.</para>
+
+			</content>
+		</section>
+
+		<section address="Examples">
+			<title>Examples</title>
+			<content>
+				<para>The following show various examples of using the <codeInline>inheritdoc</codeInline> element.  See
+the comments within each for details about what the examples are showing.</para>
+
+<code source="DocumentationInheritance\CustomException.cs" region="Constructor documentation inheritance"
+	outlining="true" language="cs" title="Constructor Documentation Inheritance" />
+
+<code source="DocumentationInheritance\ExplicitImplementation.cs" region="Interface implementation documentation inheritance"
+	outlining="true" language="cs" title="Interface Implementation Examples" />
+
+<code source="DocumentationInheritance\DocumentationInheritance.cs" region="Various documentation inheritance examples"
+	outlining="true" language="cs" title="Various Other Examples" />
+
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="9341fdc8-1571-405c-8e61-6a6b9b601b46" />
+			<codeEntityReference qualifyHint="false">T:XMLCommentsExamples.DocumentationInheritance.BaseInheritDoc</codeEntityReference>
+			<codeEntityReference qualifyHint="false">T:XMLCommentsExamples.DocumentationInheritance.CustomException</codeEntityReference>
+			<codeEntityReference qualifyHint="false">T:XMLCommentsExamples.DocumentationInheritance.DerivedClassWithInheritedDocs</codeEntityReference>
+			<codeEntityReference qualifyHint="false">T:XMLCommentsExamples.DocumentationInheritance.ExplicitImplementation</codeEntityReference>
+			<codeEntityReference qualifyHint="false">T:XMLCommentsExamples.DocumentationInheritance.SetDocumentation</codeEntityReference>
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

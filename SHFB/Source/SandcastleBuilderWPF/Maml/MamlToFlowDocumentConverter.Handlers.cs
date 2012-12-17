@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : MamlToFlowDocumentConverter.Handlers.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/26/2012
+// Updated : 12/02/2012
 // Note    : Copyright 2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -1087,7 +1087,7 @@ namespace SandcastleBuilder.WPF.Maml
             if(href != null)
                 id = href.Value;
             else
-                id = "[MISSING LINK HREF]";
+                id = "MISSING_LINK_HREF";
 
             props.Converter.AddInlineToContainer(new Hyperlink { NavigateUri = new Uri("link://" + id) });
 

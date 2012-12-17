@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="8c9273f3-0000-43cd-bb53-932b80855297" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>This element represents a replaceable tag within a topic.  The inner text of the element is a token
+name.  The tokens are defined in a separate token file.  They are an easy way to represent common items that you
+use regularly such as a common phrase or external link.</para>
+		</introduction>
+
+		<section>
+			<title>Syntax</title>
+			<content>
+				<para>This element is valid on all types and type members as a top-level or an inline element.</para>
+
+<code language="xml" title=" ">
+&lt;token&gt;tokenName&lt;/token&gt;
+</code>
+
+				<para>The <codeInline>tokenName</codeInline> inner text specifies the ID of the token to insert into the
+topic.</para>
+
+				<alert class="note">
+					<para>This is a custom XML comments element implemented by the <token>SHFB</token>.  It will not appear
+in the list of valid elements for XML comments IntelliSense.  The <ui>API Token Resolution</ui> build component
+must be added to the project's <ui>Component Configurations</ui> property in order for tokens in XML comments to
+be replaced.  Only general token values can be used when referenced from XML comments.  MAML elements will not
+be resolved and rendered.</para>
+
+					<para>Those using the Sandcastle tools by themselves can achieve the same results by adding the
+<codeInline>SharedContentComponent</codeInline> to their reference build configuration file for
+<application>BuildAssembler</application>.  The configuration will match the settings from the copy used for
+conceptual builds.</para>
+
+					<para>See the Sandcastle Help File Builder's help file for more information on the component and on
+token files in general.</para>
+
+				</alert>
+			</content>
+		</section>
+		
+		<section>
+			<title>Example</title>
+			<content>
+				<code language="cs" title=" " source="SampleClass.cs" region="token Example" />
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="9341fdc8-1571-405c-8e61-6a6b9b601b46" />
+			<codeEntityReference qualifyHint="false" autoUpgrade="true">M:XMLCommentsExamples.SampleClass.TokenExample</codeEntityReference>
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

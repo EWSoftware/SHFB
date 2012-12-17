@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="fb4625cb-52d0-428e-9c7c-7a0d88e1b692" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>This element is used to indicate whether or not a class or structure's static and instance members
+are safe for use in multi-threaded scenarios.</para>
+		</introduction>
+
+		<section>
+			<title>Syntax</title>
+			<content>
+				<para>This top-level element is valid on all classes and structures.</para>
+
+<code language="xml" title=" ">
+&lt;threadsafety static="true | false" instance="true | false" /&gt;
+</code>
+
+				<para>The <codeInline>static</codeInline> attribute specifies whether static members of the class or 
+structure are safe for use in multi-threaded operations.  The <codeInline>instance</codeInline> attribute
+specifies whether instance members of the class or structure are safe for use in multi-threaded operations.</para>
+				
+				<alert class="note">
+					<para>This is a custom XML comments element implemented by Sandcastle.  It will not appear in the list
+of valid elements for XML comments IntelliSense.</para>
+				</alert>
+			</content>
+		</section>
+
+		<section>
+			<title>Examples</title>
+			<content>
+				<code language="cs" title=" " source="ThreadSafetyClass.cs" region="threadsafety Example" />
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="20dc8c5f-9979-4ecd-92ce-cea6ce7acaeb" />
+			<codeEntityReference qualifyHint="false">T:XMLCommentsExamples.ThreadSafetyClass</codeEntityReference>
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

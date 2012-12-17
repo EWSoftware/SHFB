@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="0522f3bf-0a57-4d70-a2a5-d64a14c5bcc9" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>This element is used by the Visual Basic editor to control the IntelliSense visibility for methods
+and properties.  It has no effect on the appearance of the topic in the compiled help file.</para>
+		</introduction>
+
+		<section>
+			<title>Syntax</title>
+			<content>
+				<para>This top-level element can be used on methods and properties.</para>
+
+<code language="xml" title=" ">
+&lt;filterpriority&gt;1 | 2 | 3&lt;/filterpriority&gt;
+</code>
+			</content>
+		</section>
+
+		<section>
+			<title>Remarks</title>
+			<content>
+				<para>This element determines how a member appears in Visual Basic IntelliSense.  A value of 1 means
+that it should appear in the <legacyBold>Common</legacyBold> tab, 2 means it should appear in the
+<legacyBold>All</legacyBold> tab, and 3 means it should be hidden from IntelliSense completely.</para>
+
+				<alert class="note">
+					<para>This is effectively equivalent to using
+<codeEntityReference qualifyHint="false">T:System.ComponentModel.EditorBrowsableAttribute</codeEntityReference>.
+However, unlike the attribute, the XML comments element only has effect in Visual Basic and is ignored by all
+other languages.  As such, it is rarely used.  The most common place to see it is in the XML comments for the
+base .NET Framework classes themselves.</para>
+				</alert>
+
+			</content>
+		</section>
+		
+		<section>
+			<title>Example</title>
+			<content>
+<code language="cs" title=" " source="SampleClass.cs" region="filterpriority Example" />
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="9341fdc8-1571-405c-8e61-6a6b9b601b46" />
+			<codeEntityReference qualifyHint="false" autoUpgrade="true">M:XMLCommentsExamples.SampleClass.FilterPriorityExample</codeEntityReference>
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

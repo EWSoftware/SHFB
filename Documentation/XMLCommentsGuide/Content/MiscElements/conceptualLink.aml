@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="db2703b4-12bc-4cf5-8642-544b41002809" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>This element is used to create a link to a MAML topic within the <legacyBold>See Also</legacyBold>
+section of a topic or an inline link to a MAML topic within one of the other XML comments elements.</para>
+		</introduction>
+
+		<section>
+			<title>Syntax</title>
+			<content>
+				<para>This element is valid on all types and type members as a top-level or an inline element.</para>
+
+<code language="xml" title=" ">
+&lt;conceptualLink target="topicGUID" /&gt;
+
+or
+
+&lt;conceptualLink target="topicGUID"&gt;inner text&lt;/conceptualLink&gt;
+</code>
+
+				<para>The <codeInline>target</codeInline> attribute specifies the GUID of the MAML topic to which the
+link should be connected.  When used as a top-level element, a link will be created to the MAML topic in the
+<legacyBold>See Also</legacyBold> section.  When used as an inline element within another XML comments element,
+it creates an inline link to the MAML topic.  The self-closing form will use the topic title as the link text.
+Specifying inner text on the element will use that text instead for the link text.</para>
+
+				<alert class="note">
+					<para>This is a custom XML comments element implemented by the <token>SHFB</token>.  It will not appear
+in the list of valid elements for XML comments IntelliSense.</para>
+
+				</alert>
+			</content>
+		</section>
+		
+		<section>
+			<title>Example</title>
+			<content>
+				<code language="cs" title=" " source="SampleClass.cs" region="conceptualLink Examples" />
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="9341fdc8-1571-405c-8e61-6a6b9b601b46" />
+			<link xlink:href="983fed56-321c-4daf-af16-e3169b28ffcd" />
+			<link xlink:href="16cdb957-a35b-4c17-bf5e-ea511b0218e3" />
+			<codeEntityReference qualifyHint="false" autoUpgrade="true">M:XMLCommentsExamples.SampleClass.ConceptualLinkExample</codeEntityReference>
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

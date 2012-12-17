@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{7CF6DF6D-3B04-46F8-A40B-537D21BCA0B4}") = "XMLCommentsGuide", "XMLCommentsGuide.shfbproj", "{721BD6EC-48F5-4391-95BD-FEFEFC528993}"
+	ProjectSection(ProjectDependencies) = postProject
+		{46157C34-C925-4733-8682-957F3D97345A} = {46157C34-C925-4733-8682-957F3D97345A}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XMLCommentsExamples", "..\..\Sandcastle\Examples\XMLCommentsExamples\XMLCommentsExamples.csproj", "{46157C34-C925-4733-8682-957F3D97345A}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 3
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs01
+		SccProjectUniqueName0 = XMLCommentsGuide.shfbproj
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = ..\\..\\Sandcastle\\Examples\\XMLCommentsExamples\\XMLCommentsExamples.csproj
+		SccProjectName1 = ../../Sandcastle/Examples/XMLCommentsExamples
+		SccLocalPath1 = ..\\..\\Sandcastle\\Examples\\XMLCommentsExamples
+		SccLocalPath2 = .
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{721BD6EC-48F5-4391-95BD-FEFEFC528993}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{721BD6EC-48F5-4391-95BD-FEFEFC528993}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{721BD6EC-48F5-4391-95BD-FEFEFC528993}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{721BD6EC-48F5-4391-95BD-FEFEFC528993}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46157C34-C925-4733-8682-957F3D97345A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46157C34-C925-4733-8682-957F3D97345A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46157C34-C925-4733-8682-957F3D97345A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46157C34-C925-4733-8682-957F3D97345A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

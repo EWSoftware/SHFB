@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="5b11b235-2b6c-4dfc-86b0-2e7dd98f2716" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>This element is used to define the content that should appear on the auto-generated overloads topic
+for a given set of member overloads.</para>
+		</introduction>
+
+		<section>
+			<title>Syntax</title>
+			<content>
+				<para>This top-level element is valid on any overloaded member.  However, it should only appear on one
+of the members in each overload set.  The member on which the element appears should have its own set of
+member-specific XML comments as well.</para>
+
+<code language="xml" title=" ">
+&lt;overloads&gt;description&lt;/overloads&gt;
+
+or
+
+&lt;overloads&gt;
+  &lt;summary&gt;
+  Summary description
+  &lt;/summary&gt;
+  [&lt;remarks&gt;Optional remarks&lt;/remarks&gt;]
+  [&lt;example&gt;Optional examples&lt;/example&gt;]
+  [... other top-level comments elements as needed ...]
+&lt;/overloads&gt;
+</code>
+
+				<para>In its simplest form, the element contains a description that will appear as the summary in the
+auto-generated overloads member topic.  The expanded form allows you to include any top-level XML comments
+elements as you would on a standard member.  These elements will be formatted in an identical fashion and will
+appear in the auto-generated overloads member topic.</para>
+
+			</content>
+
+		</section>
+
+		<section>
+			<title>Example</title>
+			<content>
+<code language="cs" title=" " source="SampleClass.cs" region="overloads Examples" />
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="9341fdc8-1571-405c-8e61-6a6b9b601b46" />
+			<codeEntityReference qualifyHint="false" autoUpgrade="true">M:XMLCommentsExamples.SampleClass.SumValues(System.Collections.Generic.IEnumerable{System.Int32})</codeEntityReference>
+			<codeEntityReference qualifyHint="false" autoUpgrade="true">M:XMLCommentsExamples.SampleClass.AverageValues(System.Collections.Generic.IEnumerable{System.Double})</codeEntityReference>
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : BuildPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 11/18/2012
+// Updated : 12/15/2012
 // Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -101,6 +101,8 @@ namespace SandcastleBuilder.Package.PropertyPages
                 { BuildAssemblerVerbosity.AllMessages.ToString(), "All Messages" },
                 { BuildAssemblerVerbosity.OnlyWarningsAndErrors.ToString(), "Only warnings and errors" },
                 { BuildAssemblerVerbosity.OnlyErrors.ToString(), "Only Errors" } }).ToList();
+
+            cboBuildAssemblerVerbosity.SelectedIndex = 1;
         }
         #endregion
 

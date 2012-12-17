@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="1bef716a-235b-4d96-a23e-f43b8dcf9abd" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>This element is used to define an example for a type or one of its members to show how it is used.</para>
+		</introduction>
+
+		<section>
+			<title>Syntax</title>
+			<content>
+				<para>This top-level element is valid on all types and members.  A description is optional.  One or more
+<codeInline>code</codeInline> elements are typically included to show the example code.  More descriptive text
+can be included between the <codeInline>code</codeInline> elements as needed.</para>
+
+<code language="xml" title=" ">
+&lt;example&gt;
+Optional code description
+
+&lt;code language="cs"&gt;
+/// Example code
+&lt;/code&gt;
+
+&lt;/example&gt;
+</code>
+			</content>
+		</section>
+
+		<section>
+			<title>Example</title>
+			<content>
+<code language="cs" title=" " source="SampleClass.cs" region="example/code Example" />
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="20dc8c5f-9979-4ecd-92ce-cea6ce7acaeb" />
+			<link xlink:href="1abd1992-e3d0-45b4-b43d-91fcfc5e5574" />
+			<codeEntityReference qualifyHint="false" autoUpgrade="true">M:XMLCommentsExamples.SampleClass.GetRandomNumber</codeEntityReference>
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

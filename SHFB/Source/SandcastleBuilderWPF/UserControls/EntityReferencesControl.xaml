@@ -85,6 +85,7 @@
       <StackPanel Name="spTocFormats" Margin="3">
         <TextBlock Text="Insert as:" Margin="0,5" />
         <RadioButton Content="MAML link" IsChecked="True" Margin="15, 0, 0, 0" Name="rbMamlLink" />
+        <RadioButton Content="XML comments conceptualLink" Margin="15, 0, 0, 0" Name="rbConceptualLink" />
         <RadioButton Content="HTML anchor link" Margin="15, 0, 0, 0" Name="rbHtmlAnchor" />
       </StackPanel>
       <StackPanel Name="spCodeEntityRefFormats" Margin="3">

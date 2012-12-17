@@ -162,6 +162,8 @@
 	<item id="memberNameHeader">Member name</item>
 	<item id="memberValueHeader">Value</item>
 	<item id="memberDescriptionHeader">Description</item>
+	<item id="eventTypeHeader">Event Type</item>
+	<item id="eventReasonHeader">Reason</item>
 	<item id="exceptionNameHeader">Exception</item>
 	<item id="exceptionConditionHeader">Condition</item>
 	<item id="permissionNameHeader">Permission</item>

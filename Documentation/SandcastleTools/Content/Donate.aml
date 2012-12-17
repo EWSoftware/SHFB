@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="ECE14E8F-CA3D-41CE-8186-B649B6B95B81" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+      <para>Several people have asked how to make a donation to support the
+Sandcastle Help File Builder project.  If you would like to do so, you can make
+a donation of any amount you like by clicking on the PayPal donation button
+below.  If you would prefer to donate via check or money order (USD), please
+send me an e-mail at <externalLink><linkText>Eric@EWoodruff.us</linkText>
+<linkUri>mailto:Eric@EWoodruff.us?Subject=Sandcastle Help File Builder Donation</linkUri>
+</externalLink> and I will reply with my mailing address.</para>
+    </introduction>
+
+<section>
+  <content>
+<markup>
+<div align="center">
+<p/><a href="http://www.EWoodruff.us/SHFBDonate.html" target="_blank"><img
+  border="0" src="../Media/PayPal.gif"
+  alt="Make donations with PayPal - It's fast, free and secure!"/></a>
+</div>
+</markup>
+
+<para>The above method of donating is secure. PayPal guarantees your privacy
+and security. I never receive details of your payment other than the amount,
+your name, e-mail address, and any optionally entered information.</para>
+
+<para>Thanks to those of you that have made a donation. It is much
+appreciated!</para>
+
+  </content>
+</section>
+
+    <relatedTopics />
+
+  </developerConceptualDocument>
+</topic>

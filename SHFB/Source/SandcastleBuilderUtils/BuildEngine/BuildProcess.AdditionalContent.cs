@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.AdditionalContent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/26/2012
+// Updated : 12/15/2012
 // Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -516,7 +516,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 {
                     script = String.Format(CultureInfo.InvariantCulture,
                         "<link type='text/css' rel='stylesheet' href='{0}styles/highlight.css' />" +
-                        "<script type='text/javascript' src='{0}scripts/highlight.js'></script>", pathToRoot);
+                        "<script type='text/javascript' src='{0}scripts/highlight_ac.js'></script>", pathToRoot);
 
                     pos = content.IndexOf("</head>", StringComparison.Ordinal);
 
@@ -547,8 +547,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         File.Copy(shfbFolder + @"Colorizer\highlight.css", syntaxFile);
                         File.SetAttributes(syntaxFile, FileAttributes.Normal);
 
-                        syntaxFile = baseFolder + @"scripts\highlight.js";
-                        File.Copy(shfbFolder + @"Colorizer\highlight.js", syntaxFile);
+                        syntaxFile = baseFolder + @"scripts\highlight_ac.js";
+                        File.Copy(shfbFolder + @"Colorizer\highlight_ac.js", syntaxFile);
                         File.SetAttributes(syntaxFile, FileAttributes.Normal);
 
                         // Always copy the image files, they may be different.  Also, delete the

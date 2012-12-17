@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="BD91FAD4-188D-4697-A654-7C07FD47EF31" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>XML comments cannot be applied directly to a namespace within your code.  As such, you must take
+an alternate approach to specifying namespace comments.</para>
+			
+		</introduction>
+
+		<section>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Your documentation build tool may provide support for defining project summary and namespace
+comments from within the development environment.  For example, the <token>SHFB</token> provides a Summaries
+project property category that you can use to specify project summary and namespace summary comments.  See your
+build tool's documentation for further information.</para>
+					</listItem>
+
+					<listItem>
+						<para>You can manage the XML comments for the project summary and namespace summaries in an
+<link xlink:href="B597E874-6D7C-4E05-B8F7-5B530C656B70">external XML comments file</link>.</para>
+					</listItem>
+
+					<listItem>
+						<para>Your documentation build tool may provide support for managing the namespace summary comments
+within your source code using a special hidden class called <codeInline>NamespaceDoc</codeInline> to which you
+<link xlink:href="41B2D835-DB0D-4828-8D9E-0E423EDA4590">attach the comments</link> in each namespace.</para>
+					</listItem>
+				</list>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="57C91630-95D6-4E3E-AF24-3415CC569AC8" />
+			<link xlink:href="515d5a54-5047-4d6f-bf51-d47c7c699cc2" />
+			<link xlink:href="20dc8c5f-9979-4ecd-92ce-cea6ce7acaeb" />
+			<link xlink:href="f8464c0f-f62a-4faf-b11a-9a41173307e8" />
+			<link xlink:href="d297bc14-33aa-4152-ae36-9f658b15de87" />
+			<link xlink:href="9341fdc8-1571-405c-8e61-6a6b9b601b46" />
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

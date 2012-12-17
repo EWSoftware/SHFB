@@ -13,24 +13,19 @@ project.
 				<para>Select a version below to see a description of its changes.</para>
 				<list class="bullet">
 					<listItem>
-						<para>
-							<link xlink:href="2ac532de-69cc-45c7-9f78-5d668fcb4339" />
-						</para>
+						<para><link xlink:href="bea57722-4254-47b3-a86c-415af363eb2f" /></para>
 					</listItem>
 					<listItem>
-						<para>
-							<link xlink:href="0ff85a0b-3fed-48dc-87a7-c73d8711ea92" />
-						</para>
+						<para><link xlink:href="2ac532de-69cc-45c7-9f78-5d668fcb4339" /></para>
 					</listItem>
 					<listItem>
-						<para>
-							<link xlink:href="e5f49add-f931-4a46-9958-f50eda227479" />
-						</para>
+						<para><link xlink:href="0ff85a0b-3fed-48dc-87a7-c73d8711ea92" /></para>
 					</listItem>
 					<listItem>
-						<para>
-							<link xlink:href="075a7b21-73d8-4fe2-a0c1-2289a575fbe7" />
-						</para>
+						<para><link xlink:href="e5f49add-f931-4a46-9958-f50eda227479" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="075a7b21-73d8-4fe2-a0c1-2289a575fbe7" /></para>
 					</listItem>
 				</list>
 

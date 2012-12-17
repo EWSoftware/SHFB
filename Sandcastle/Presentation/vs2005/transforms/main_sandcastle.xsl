@@ -14,8 +14,10 @@
 
 	<xsl:variable name="summary" select="normalize-space(/document/comments/summary)" />
 	<xsl:variable name="abstractSummary" select="/document/comments/summary" />
-	<xsl:variable name="hasSeeAlsoSection" select="boolean((count(/document/comments//seealso | /document/reference/elements/element/overloads//seealso) > 0)  or
-                           ($group='type' or $group='member' or $group='list'))"/>
+	<xsl:variable name="hasSeeAlsoSection" select="boolean((count(/document/comments//seealso[not(ancestor::overloads)] |
+		/document/comments/conceptualLink |
+		/document/reference/elements/element/overloads//seealso) > 0)  or
+		($group='type' or $group='member' or $group='list'))"/>
 	<xsl:variable name="examplesSection" select="boolean(string-length(/document/comments/example[normalize-space(.)]) > 0)"/>
 	<xsl:variable name="languageFilterSection" select="boolean(string-length(/document/comments/example[normalize-space(.)]) > 0)" />
 
@@ -71,6 +73,8 @@
 		<!-- other comment sections -->
 		<!-- permissions -->
 		<xsl:call-template name="permissions" />
+		<!-- events -->
+		<xsl:call-template name="events" />
 		<!-- exceptions -->
 		<xsl:call-template name="exceptions" />
 		<!-- contracts -->
@@ -229,6 +233,41 @@
 			<xsl:with-param name="codeLang" select="$codeLang" />
 		</xsl:call-template>
 
+	</xsl:template>
+
+	<xsl:template name="events">
+		<xsl:if test="count(/document/comments/event) &gt; 0">
+			<xsl:call-template name="section">
+				<xsl:with-param name="toggleSwitch" select="'events'"/>
+				<xsl:with-param name="title">
+					<include item="eventsTitle" />
+				</xsl:with-param>
+				<xsl:with-param name="content">
+					<div class="tableSection">
+						<table width="100%" cellspacing="2" cellpadding="5" frame="lhs" >
+							<tr>
+								<th>
+									<include item="eventTypeHeader" />
+								</th>
+								<th>
+									<include item="eventReasonHeader" />
+								</th>
+							</tr>
+							<xsl:for-each select="/document/comments/event">
+								<tr>
+									<td>
+										<referenceLink target="{@cref}" qualified="true" />
+									</td>
+									<td>
+										<xsl:apply-templates select="." />
+									</td>
+								</tr>
+							</xsl:for-each>
+						</table>
+					</div>
+				</xsl:with-param>
+			</xsl:call-template>
+		</xsl:if>
 	</xsl:template>
 
 	<xsl:template name="exceptions">
@@ -533,6 +572,12 @@
 							</xsl:apply-templates>
 						</div>
 					</xsl:for-each>
+					<!-- EFW: Copy conceptualLink elements as-is -->
+					<xsl:for-each select="/document/comments/conceptualLink">
+						<div class="seeAlsoStyle">
+							<xsl:copy-of select="."/>
+						</div>
+					</xsl:for-each>
 				</xsl:with-param>
 			</xsl:call-template>
 		</xsl:if>
@@ -757,7 +802,7 @@
 						<span class="cpp">false</span>
 					</span>
 				</xsl:when>
-				<xsl:when test="@langword='abstract'">
+				<xsl:when test="@langword='abstract' or @langword='MustInherit'">
 					<span class="languageSpecificText">
 						<span class="cs">abstract</span>
 						<span class="vb">MustInherit</span>
@@ -795,7 +840,7 @@
 					<include item="falseKeyword"/>
 				</span>
 			</xsl:when>
-			<xsl:when test="@langword='abstract'">
+			<xsl:when test="@langword='abstract' or @langword='MustInherit'">
 				<span class="nu">
 					<include item="abstractKeyword"/>
 				</span>

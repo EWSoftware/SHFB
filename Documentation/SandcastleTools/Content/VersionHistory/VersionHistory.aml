@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="e0636c2c-3da0-4d5e-9e86-6fb3f0c83eef" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>The topics in this section describe the various changes made to the Sandcastle tools over the life of
+the project.
+			</para>
+		</introduction>
+
+		<section>
+			<title>Version History</title>
+			<content>
+				<para>Select a version below to see a description of its changes.</para>
+				<list class="bullet">
+					<listItem>
+						<para><link xlink:href="2df020c8-13c1-46d0-82c3-69b57fd9c484" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="05027d1d-855f-4939-b1d1-09b674be66a0" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="0f2756ce-8089-4902-9ae4-68e593b2ec51" /></para>
+					</listItem>
+				</list>
+
+			</content>
+		</section>
+
+		<relatedTopics />
+
+	</developerConceptualDocument>
+</topic>

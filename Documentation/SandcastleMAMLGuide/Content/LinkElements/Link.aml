@@ -2,9 +2,8 @@
 <topic id="53a2b7c6-a269-4916-9313-bdc301ee9398" revisionNumber="1">
   <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
     <introduction address="intro">
-      <para>This is used to insert a link to another conceptual topic using its
-ID value.  It can also be used to create links to elements within the same
-page that have an <codeInline>address</codeInline> attribute such as the
+      <para>This is used to insert a link to another conceptual topic using its ID value.  It can also be used to
+create links to elements within the same page that have an <codeInline>address</codeInline> attribute such as the
 <codeInline>introduction</codeInline> and <codeInline>section</codeInline>
 elements.</para>
     </introduction>
@@ -12,40 +11,25 @@ elements.</para>
     <section>
       <title>Usage</title>
       <content>
-        <para>For topic links, a link consists of a required
-<codeInline>xlink:href</codeInline> attribute that contains the GUID of the
-topic to which the link will go and optional inner text.  If no inner text is
-specified, the text will be retrieved from the referenced topic's
-<link xlink:href="cfd9dabf-22f3-4742-8b54-d84404610db1">companion file</link>.
-If the companion file contains a <codeInline>linkText</codeInline> element, its
-value will be used.  If not, the value of the <codeInline>title</codeInline>
-element will be used.</para>
-        <para>For in-page links, simply specify a hash character (#) followed by
-the name of the anchor from an element's <codeInline>address</codeInline>
-attribute.  Inner text is also required.</para>
-        <alert class="note">
-          <para>In order for the inner text to appear on topic links, you currently
-need to use a custom version of the
-<legacyBold>ResolveConceptualLinksComponent</legacyBold>.  The component is
-integrated with <token>SHFB</token> and is also available in a standalone build
-component download at the same site for use in third-party tools or your own
-build scripts.</para>
-        </alert>
-        <alert class="note">
-          <para>The custom build component also adds the ability to link to anchors
-within a topic by adding a hash character (#) followed by the anchor name after
-the GUID.</para>
-        </alert>
-        
+        <para>For topic links, a link consists of a required <codeInline>xlink:href</codeInline> attribute that
+contains the GUID of the topic to which the link will go and optional inner text.  If no inner text is specified,
+the text will be retrieved from the referenced topic's
+<link xlink:href="cfd9dabf-22f3-4742-8b54-d84404610db1">companion file</link>.  If the companion file contains a
+<codeInline>linkText</codeInline> element, its value will be used.  If not, the value of the
+<codeInline>title</codeInline> element will be used.</para>
+
+        <para>You can link to anchors within the target topic by adding a hash character (#) followed by the
+anchor name after the topic's GUID.  For in-page links, simply specify a hash character (#) followed by the name
+of the anchor from an element's <codeInline>address</codeInline> attribute.  Inner text is required for in-page
+links.</para>
+
         <alert class="tip">
-        	<para>When used in a <codeInline>relatedTopics</codeInline>
-element, an optional <codeInline>topicType_id</codeInline> attribute can be
-added that specifies a GUID value used to classify the link type so that it is
-grouped with other similar links.  See the
-<link xlink:href="bfdd5115-f594-480d-9e79-af906e599337" /> topic for more
-information.</para>
+        	<para>When used in a <codeInline>relatedTopics</codeInline> element, an optional
+<codeInline>topicType_id</codeInline> attribute can be added that specifies a GUID value used to classify the
+link type so that it is grouped with other similar links.  See the
+<link xlink:href="bfdd5115-f594-480d-9e79-af906e599337" /> topic for more information.</para>
         </alert>
-        
+
       </content>
     </section>
 
@@ -54,9 +38,12 @@ information.</para>
       <content>
         <code language="xml" title=" ">
 Self-closing: &lt;link xlink:href="cfd9dabf-22f3-4742-8b54-d84404610db1" /&gt;
+
 With inner text: &lt;link xlink:href="cfd9dabf-22f3-4742-8b54-d84404610db1"&gt;
 companion file&lt;/link&gt;
+
 In-page link to introduction: &lt;link xlink:href="#intro"&gt;Back to Intro&lt;/link&gt;
+
 Link to other topic anchor:
 &lt;link xlink:href="dc4fcc96-283e-4202-9ecc-08a65e0c9313#BuildTools" /&gt;
 </code>
@@ -75,9 +62,9 @@ companion file</link></para>
     </section>
 
     <relatedTopics>
-      <link xlink:href="3be5c58d-d6af-45a4-ac51-f219a75c4c4d" />
-      <link xlink:href="cfd9dabf-22f3-4742-8b54-d84404610db1" />
-      <link xlink:href="d0c9ce6d-115b-4c70-891c-69b4af944dea" />
-    </relatedTopics>
+			<link xlink:href="3be5c58d-d6af-45a4-ac51-f219a75c4c4d" />
+			<link xlink:href="cfd9dabf-22f3-4742-8b54-d84404610db1" />
+			<link xlink:href="d0c9ce6d-115b-4c70-891c-69b4af944dea" />
+		</relatedTopics>
   </developerConceptualDocument>
 </topic>

@@ -8,11 +8,29 @@
 		<DirectoryRef Id="INSTALLDIR">
 			<Directory Id="ExtrasFolder" Name="Extras">
 
+				<!-- Sandcastle Tools help file -->
+				<Component Id="SandcastleToolsHelp" Guid="{A63A7AB6-5E64-4D29-AC83-7D99756588DD}">
+					<File Id="SandcastleToolsHelp" KeyPath="yes" Source="$(var.DocsFolder)\SandcastleTools\Help\SandcastleTools.chm">
+						<Shortcut Id="SandcastleToolsHelp" Directory="SandcastleProgramMenuDir" Icon="Help.ico"
+							Name="Sandcastle Tools Help" Description="A help file for the Sandcastle tools and components"
+							Advertise="yes" />
+					</File>
+				</Component>
+
 				<!-- Sandcastle MAML Guide -->
 				<Component Id="SandcastleMAMLGuide" Guid="{00AE9F5B-32EB-49F3-B245-9A236E9A0BCF}">
 					<File Id="SandcastleMAMLGuide" KeyPath="yes" Source="$(var.DocsFolder)\SandcastleMAMLGuide\Help\SandcastleMAMLGuide.chm">
 						<Shortcut Id="SandcastleMAMLGuide" Directory="SandcastleProgramMenuDir" Icon="Help.ico"
 							Name="Sandcastle MAML Guide" Description="Microsoft Assistance Markup Language (MAML) usage guide"
+							Advertise="yes" />
+					</File>
+				</Component>
+
+				<!-- Sandcastle XML Comments Guide -->
+				<Component Id="SandcastleXMLCommentsGuide" Guid="{8BB0F2D2-D632-4A6D-9ACA-6CA526A99992}">
+					<File Id="SandcastleXMLCommentsGuide" KeyPath="yes" Source="$(var.DocsFolder)\XMLCommentsGuide\Help\XMLCommentsGuide.chm">
+						<Shortcut Id="SandcastleXMLCommentsGuide" Directory="SandcastleProgramMenuDir" Icon="Help.ico"
+							Name="Sandcastle XML Comments Guide" Description="XML comments usage guide"
 							Advertise="yes" />
 					</File>
 				</Component>
@@ -56,8 +74,20 @@
 	</Fragment>
 
 	<Fragment>
+		<ComponentGroup Id="SandcastleToolsHelp">
+			<ComponentRef Id="SandcastleToolsHelp" />
+		</ComponentGroup>
+	</Fragment>
+
+	<Fragment>
 		<ComponentGroup Id="MAMLGuide">
 			<ComponentRef Id="SandcastleMAMLGuide" />
+		</ComponentGroup>
+	</Fragment>
+
+	<Fragment>
+		<ComponentGroup Id="XMLCommentsGuide">
+			<ComponentRef Id="SandcastleXMLCommentsGuide" />
 		</ComponentGroup>
 	</Fragment>
 

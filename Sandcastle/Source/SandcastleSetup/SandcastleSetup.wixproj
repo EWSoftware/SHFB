@@ -35,6 +35,7 @@
     <Compile Include="ProductionTools.wxs" />
     <Compile Include="ProductionTransforms.wxs" />
     <Compile Include="Schemas.wxs" />
+    <Compile Include="Snippets.wxs" />
   </ItemGroup>
   <ItemGroup>
     <WixExtension Include="WixNetFxExtension">

@@ -1,0 +1,732 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="0f2756ce-8089-4902-9ae4-68e593b2ec51" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>Version 2.7.0.0 was released on April 15th, 2012.  This release was issued before officially being
+merged with the Sandcastle Help File Builder project.  It fixed almost all of the known tool bugs and merged all
+changes from the Sandcastle Styles patch into the Sandcastle XSL transformations.</para>
+
+			<autoOutline excludeRelatedTopics="true" lead="none" />
+		</introduction>
+
+		<section address="GeneralChanges">
+			<title>General Changes</title>
+			<content>
+
+				<list class="bullet">
+					<listItem>
+						<para>Rearranged the source project folders to match the installed folder layout.  This makes testing
+a development build much easier as you can point <environmentVariable>DXROOT</environmentVariable> at the
+<localUri>.\Sandcastle\Main</localUri> folder and have it work like a release build.</para>
+					</listItem>
+
+					<listItem>
+						<para>Created separate solutions for each tool so that they can be loaded, built, and tested
+individually.  Reflector was used to get the source code for the tools that were missing source code and projects
+were added for them too.</para>
+					</listItem>
+
+					<listItem>
+						<para>All tools are now built using .NET 4.0.  This will allow taking advantage of newer features in
+the runtime added since .NET 2.0.  This does not change the ability to run the tools against assemblies built
+with prior framework versions.  That is still supported.</para>
+					</listItem>
+
+					<listItem>
+						<para>Removed all <localUri>GlobalSuppressions.cs</localUri> files from all projects.  Many of us
+do not have a version of Visual Studio that supports code analysis within the IDE.  Instead, individual FxCop
+projects have been created for each project.  Some clean up has been performed based on the initial scans.
+Warnings still exist in several projects and have been left for review until later.</para>
+					</listItem>
+
+					<listItem>
+						<para>Signed all assemblies with a new key file and standardized the assembly attributes.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added <localUri>Data\BuildReflectionData.bat</localUri> and
+<localUri>Data\BuildReflectionData.proj</localUri> to properly rebuild the reflection data files.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated the XSL stylesheet version number to 2.0 in all XSL transformations. A bug in .NET 4.0
+prevents the <codeInline>&lt;xsl:sort&gt;</codeInline> function from working when using XSL version 1.1.</para>
+					</listItem>
+
+					<listItem>
+						<para>Merged the Sandcastle Guided Installer, the Language Pack, Sandcastle MAML Guide, Web Code
+Providers, and the HTML to MAML Converter projects from Sandcastle Styles into the Sandcastle project.  These are
+located under the <localUri>.\Extras</localUri> folder.</para>
+					</listItem>
+
+					<listItem>
+						<para>The Sandcastle Guided Installer has been rewritten as a WPF application.  It uses flow
+documents rather than HTML resources for the pages which are much easier to extend and work with in the code.</para>
+					</listItem>
+
+					<listItem>
+						<para>Created a new setup project to install Sandcastle.  This version includes the content from the
+<localUri>.\Extras</localUri> folder as additional installable options.  This installer also gives Sandcastle a
+presence on the Program Files menu with links to the included help files, the project web site, and the example
+GUI.  The setup project is located in the <localUri>.\Extras folder</localUri> too as it isn't part of the core
+Sandcastle code and uses the WiX tools.</para>
+					</listItem>
+
+				</list>
+
+			</content>
+		</section>
+
+		<section address="Schemas">
+			<title>Schemas</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Added a new <codeInline>optional</codeInline> attribute to the reflection data schema for
+parameter elements.  This is needed to properly document optional parameters that use
+<codeInline>OptionalAttribute</codeInline> and have no default specified using assignment.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated the MAML schemas to include all of the new elements and attributes added by the
+Sandcastle Styles patch and adjusted a few elements to reflect how Sandcastle uses them.  This allows for proper
+validation of MAML topics in Visual Studio.</para>
+					</listItem>
+
+				</list>
+			</content>
+		</section>
+
+		<section address="CommandLineLibrary">
+			<title>Command Line Library</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Reworked the command line option classes to fix various FxCop warnings and to correctly
+implement support for required options.</para>
+					</listItem>
+				</list>
+			</content>
+		</section>
+
+		<section address="MRefBuilder">
+			<title>MRefBuilder Tool</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Moved the content of the <localUri>CCI\</localUri> and <localUri>Reflection\</localUri> folders
+into the MRefBuilder project and made them members of the project so that they are compiled directly into
+<localUri>MRefBuilder.exe</localUri> to match prior releases of Sandcastle.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed <localUri>ExtensionMethodAddIn.cs</localUri> so that it doesn't add extension methods to
+enumerations and static classes (Sandcastle work item #8852).</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed <localUri>ExtensionMethodAddIn.cs</localUri> so that it ignores unexposed namespaces and
+types.  This prevents it from scanning unnecessary namespaces and types and stops a crash caused by it scanning
+compiler generated types created by the code contracts post-processing tool (Sandcastle work item #11066).</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed <codeInline>Method.ImplicitlyImplementedInterfaceMethods</codeInline> in
+<localUri>Nodes.cs</localUri> so that it recognizes interface member matches when the return type is generic
+(Sandcastle work item #22970).</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed <localUri>GetTemplateMember()</localUri> and <localUri>ParametersMatch()</localUri> to
+properly check for template parameters when there are method overloads in which one uses a generic type and the
+other does not (i.e. <codeInline>Contains(T)</codeInline> and <codeInline>Contains(Guid)</codeInline>).
+This was Sandcastle work item #1908 and most likely fixed work item #7803 too as it looks similar and the test
+case works as expected now.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed <codeInline>TypeNode.Attributes</codeInline> so that it will not get stuck in an endless
+loop if a type's attribute references the type being parsed (Sandcastle work item #2253).</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed <codeInline>TypeNode.NestedTypes</codeInline> so that it will not get stuck in an endless
+loop when a type contains a nested type that itself implements a nested type from within the containing type.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed <codeInline>IsExposedMember()</codeInline> and <codeInline>IsExposedType()</codeInline>
+in <localUri>ApiFilter.cs</localUri> so that they ignore unrecognized type and member visibility values
+(Sandcastle work item #2967 and #2969).</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed <codeInline>IsExposedMember()</codeInline> so that it compares generic members using the
+<codeInline>Name&lt;T&gt;</codeInline> and <codeInline>Name{T}</codeInline> syntax so that it gets a match either
+way (Sandcastle work item #5593).</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed <codeInline>IsExposedExpression()</codeInline> in <localUri>ApiFilter.cs</localUri> so
+that it doesn't exclude a type in an attribute expression as long as the hidden type has exposed members thus
+exposing the type.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed <codeInline>IsExposedNamespace()</codeInline>, <codeInline>IsExposedType()</codeInline>,
+and <codeInline>IsExposedMember()</codeInline> in <localUri>ApFilter.cs</localUri> so that they exclude members
+with names containing characters that are not valid in XML (i.e. obfuscated member names).</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed <localUri>MemberDictionary.Contains()</localUri> so that when checking for matching
+members it compares generic template parameters by name to match members with generic parameters correctly.  This
+fixes an issue where it treats overridden members as overloads when they contain generic template parameters.
+This was Sandcastle work item #4553 and most likely fixed work item #11303 too as it looks similar and the test
+case works as expected now.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed <codeInline>OrcasNamer.WriteTemplate()</codeInline> so that it uses the correct template
+parameter names which do not always match the base class's template parameter names (i.e.
+<codeInline>Collection&lt;TControl&gt;</codeInline> vs. <codeInline>Collection&lt;T&gt;</codeInline>).
+Sandcastle work item #5594.</para>
+					</listItem>
+
+					<listItem>
+						<para>I am not sure if one of the other changes fixed it or if it was fixed already in the source
+code, but Sandcastle work item #2903 (Spurious references to parameterized class with inner class) is fixed as
+the test cases in it work as expected.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added a check for exposed members in unexposed types in <codeInline>IsExposedType()</codeInline>
+in <localUri>ApiFilter.cs</localUri>.  Such cases effectively expose the type and it should be included whenever
+this check occurs for it.  Without the check, it was incorrectly excluding types in several locations.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added <codeInline>CompilerGeneratedAttribute</codeInline> check to <codeInline>IsExposedType()</codeInline>
+in <localUri>ExternalDocumentedFilter.cs</localUri> as public members can sometimes be compiler generated (i.e.
+generated types for public fields that use the <codeInline>fixed</codeInline> keyword).  This was a new issue I
+found while testing the <codeInline>fixed</codeInline> keyword syntax issue.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added <codeInline>FixedBufferAttribute</codeInline> to the default <localUri>MRefBuilder.config</localUri>
+API filter as an exposed attribute so that it gets passed through.  This is needed in order to properly document
+fixed members in the syntax section.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added <codeInline>OptionalAttribute</codeInline> to the default <localUri>MRefBuilder.config</localUri>
+API filter as an exposed attribute so that it gets passed through.  This is needed in order to properly document
+optional parameters.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added code to write out the new <codeInline>optional</codeInline> attribute for optional
+parameters.  This is needed to properly document optional parameters that use <codeInline>OptionalAttribute</codeInline>
+and have no default specified using assignment.  The syntax components and XSL transformations have been updated
+to make use of it to document optional parameters and their values (Sandcastle work item #9627).</para>
+					</listItem>
+
+					<listItem>
+						<para>Merged my changes into the <codeInline>AssemblyResolver</codeInline> class to provide support
+for assembly binding redirection.  Added example configuration info for it to <localUri>MRefBuilder.config</localUri>
+(Sandcastle work item #1014).</para>
+					</listItem>
+
+				</list>
+			</content>
+		</section>
+
+		<section address="BuildAssembler">
+			<title>BuildAssember Tools</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Added the proxy configuration settings that work around the HTTP 407 and HTTP 417 errors in
+comments to the <localUri>BuildAssembler.exe.config</localUri> file.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added support for specifying a verbosity level on the configuration element.  This can
+significantly reduce the build assembler output and makes it easier to see warnings as it is much less chatty.
+The default verbosity is <codeInline>Info</codeInline> so that its default behavior matches prior releases.</para>
+					</listItem>
+
+				</list>
+			</content>
+		</section>
+
+		<section address="BuildComponents">
+			<title>Build Components</title>
+			<content>
+				<alert class="important">
+					<para>Custom build components that override <codeInline>Dispose()</codeInline> will need to be updated
+to override <codeInline>protected void Dispose(bool disposing)</codeInline> rather than <codeInline>public void
+Dispose()</codeInline> as the Sandcastle source code release correctly implements the <codeInline>IDisposable</codeInline>
+pattern.</para>
+				</alert>
+
+				<list class="bullet">
+					<listItem>
+						<para>Fixed <codeInline>ResolveReferenceLinksComponent2</codeInline> so that it does not write out
+unnecessary parentheses on unresolved property elements (Sandcastle work item #1987).</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed <codeInline>ResolveReferenceLinksComponent2</codeInline> so that references to enumerated
+field types are redirected to the containing enumerated type so as to produce a valid link target (Sandcastle
+work item #2221).</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the C#, C++, VB.NET, F#, and J# syntax generator components so that they output numeric
+attribute values.  In the event that an unrecognized attribute parameter type is encountered, the syntax
+generators write out the value as-is.  Array parameters are also supported now but the reflection data does not
+contain the values.  As such, it writes out the array type and a generic "{ ... }" placeholder where the values
+would go.  The information is probably there but it would probably require changes to the CCI code to include it
+(Sandcastle work item #6779)</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the <codeInline>XamlUsageSyntaxGenerator.WritePropertySyntax()</codeInline> so that it
+generates syntax for properties with abstract return types as long as there is a type converter for it (i.e.
+<codeInline>Brush</codeInline>)  Sandcastle work item #5466.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added support for a <codeInline>duplicateWarnings</codeInline> attribute that can be added to
+the data elements of the index element on the <codeInline>CopyFromIndexComponent</codeInline>.  When set to
+false, it suppresses duplicate index key warnings.  This is useful for comments files where there can be
+duplicate keys but it isn't an issue.  The default is true if not specified to maintain the behavior from past
+releases and report the warnings (Sancastle work item #11844).</para>
+					</listItem>
+
+					<listItem>
+						<para>Added support for optional arguments to the C#, C++, VB.NET, F#, and J# syntax generator
+components. I did not enclose them in brackets as it looked rather odd when attributes were present and the
+assignment is a dead giveaway that it is an optional parameter.  As such, it uses the standard syntax but I did
+update the XSL transformations to include "(Optional") after the parameter name in the Parameters section of the
+topic (Sancastle work item #9627).</para>
+					</listItem>
+
+					<listItem>
+						<para>Added support for attributes on property getter/setter methods to the C#, C++, VB.NET, F#, and
+J# syntax generator components (Sandcastle work item #973).</para>
+					</listItem>
+
+					<listItem>
+						<para>Made the unsafe code checks consistent across all syntax generators and added a check for the
+<codeInline>FixedBufferAttribute</codeInline> to the <codeInline>apiIsUnsafeExpression</codeInline> XPath
+expression.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added <codeInline>fixed</codeInline> keyword support to the C# and C++ syntax generators
+(Sandcastle work item #10107).</para>
+					</listItem>
+
+					<listItem>
+						<para>Added <codeInline>interior_ptr&lt;&gt;</codeInline> support to the C++ syntax generator.  Added
+a fixup regular expression to the Sandcastle help file builder too so that the comments are included in the
+member page (Sandcastle work item #2299).</para>
+					</listItem>
+
+					<listItem>
+						<para>Merged my changes and bug fixes into the <codeInline>MSHCComponent</codeInline>.  The changes
+include:</para>
+
+						<list class="bullet">
+							<listItem>
+								<para>Support for a <codeInline>sortOrder</codeInline> option on the TOC elements to allow the
+sort order of the elements to be defined to set the proper placement of the TOC entries when parented to an entry
+outside of the help file and to parent the API content within a conceptual content folder.</para>
+							</listItem>
+
+							<listItem>
+								<para>Fixed a bug that caused a "duplicate key" error under certain conditions.</para>
+							</listItem>
+
+							<listItem>
+								<para>Fixed an incorrect XPath expression that was letting duplicate metadata through.</para>
+							</listItem>
+
+						</list>
+					</listItem>
+
+					<listItem>
+						<para>Added my <codeInline>JavaScriptDeclarationSyntaxGenerator</codeInline> to the
+<codeInline>SyntaxComponents</codeInline> assembly.  Modified <localUri>FixScriptSharp.xsl</localUri> to include
+a <codeInline>scriptSharp</codeInline> element to indicate to the syntax generator that it should apply the
+casing rules to member names.  This allows the added syntax generator to work with normal JavaScript and
+Script# projects alike (Sandcastle work item #1999).</para>
+					</listItem>
+
+					<listItem>
+						<para>Merged my changes and bug fixes into the ResolveConceptualLinksComponent (Sandcastle work item
+#2193):</para>
+
+						<list class="bullet">
+							<listItem>
+								<para>Broken links use the <codeInline>None</codeInline> style rather than the <codeInline>Index</codeInline>
+style so that it is apparent that they do not work.</para>
+							</listItem>
+
+							<listItem>
+								<para>The inner text from the conceptual link is used if specified.</para>
+							</listItem>
+
+							<listItem>
+								<para>On broken links, when the <codeInline>showBrokenLinkText</codeInline> option is true and
+there is no inner text, the target value is displayed.</para>
+							</listItem>
+
+							<listItem>
+								<para>Conceptual link targets can include an optional anchor name from within the target such as
+"#Name".</para>
+							</listItem>
+
+							<listItem>
+								<para>Unnecessary whitespace is removed from the link text.</para>
+							</listItem>
+
+							<listItem>
+								<para>If the companion file contains a <codeInline>&lt;linkText&gt;</codeInline> element and no
+inner text is specified, its value will be used for the link text rather than the title.  This allows for a
+shorter title or description to use as the default link text.</para>
+							</listItem>
+						</list>
+					</listItem>
+					
+				</list>
+			</content>
+		</section>
+
+		<section address="DBCSFix">
+			<title>DBCSFix Tool</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Updated the file masks to use <localUri>*.htm?</localUri> to find both <localUri>.htm</localUri>
+and <localUri>.html</localUri> files (Sandcastle work item #1072).</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the incorrect check for LCID value (Sandcastle work item #1072).</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed <codeInline>SubstituteAsciiEquivalents()</codeInline> so that it actually performs the
+substitutions for encodings other than Windows-1252 (Sandcastle work item #1072).</para>
+					</listItem>
+
+					<listItem>
+						<para>Switched to using <codeInline>EnumerateFiles()</codeInline> which is more efficient for large
+projects.</para>
+					</listItem>
+				</list>
+
+			</content>
+		</section>
+
+		<section address="ChmBuilder">
+			<title>ChmBuilder Tools</title>
+			<content>
+				<para>Switched to using <codeInline>EnumerateDirectories()</codeInline> and <codeInline>EnumerateFiles()</codeInline>
+which is more efficient for large projects.</para>
+			</content>
+		</section>
+
+		<section address="PresentationStyles">
+			<title>Presentation Styles</title>
+			<content>
+				<para>This release added the new VS2010 presentation style developed by Don Fehr.  Consider this a beta
+release as we work out the bugs.  The following fixes and feature enhancements from the Sandcastle Styles patch
+and some unreported bugs from the discussion pages were applied to the presentation style files:</para>
+
+				<list class="bullet">
+					<listItem>
+						<para>Sandcastle work item #6858: The omitVersionInformation parameter is missing from
+VS2005\transforms\main_sandcastle.xsl</para>
+					</listItem>
+
+					<listItem>
+						<para>Sandcastle work item #1943: ResolveArtLinksComponent is wrong in the configs</para>
+					</listItem>
+
+					<listItem>
+						<para>Sandcastle work item #6785: Enumerated type members no longer contain a description in VS2005
+style</para>
+					</listItem>
+
+					<listItem>
+						<para>Sandcastle work item #2268: The sub-section toggles do not work in Hana and VS2005 because they
+are not given a unique ID</para>
+					</listItem>
+
+					<listItem>
+						<para>Sandcastle work item #2603: "this" argument modifier not shown for extension methods</para>
+					</listItem>
+
+					<listItem>
+						<para>Sandcastle work item #1965: XAML code samples cannot be hidden (VS2005 style)</para>
+					</listItem>
+
+					<listItem>
+						<para>Sandcastle work item #4476: Cannot link to overloads page</para>
+					</listItem>
+
+					<listItem>
+						<para>Sandcastle work item #938: Hana and VS2005 styles generate unnecessary Overloads pages and
+TOC entries</para>
+					</listItem>
+
+					<listItem>
+						<para>Sandcastle Styles work item #6572: Unresolved types don't show up in overloaded method
+signatures in TOC entries and topic titles</para>
+					</listItem>
+
+					<listItem>
+						<para>Sandcastle work item #2255: Remaining presentation Style Issues</para>
+					</listItem>
+
+					<listItem>
+						<para>Sandcastle work item #1249: Conceptual: codeEntityReference is sensitive to whitespace</para>
+					</listItem>
+
+					<listItem>
+						<para>Sandcastle work item #2034: Conceptual: XLinks in relatedTopics section requires explicit text</para>
+					</listItem>
+
+					<listItem>
+						<para>Sandcastle work item #6788: Support for definition list type is missing.</para>
+					</listItem>
+
+					<listItem>
+						<para>Sandcastle work item #2258: Conceptual: ddue:copyright processing is broken</para>
+					</listItem>
+
+					<listItem>
+						<para>Sandcastle work item #2264: ddue:list should support the "nobullet" style</para>
+					</listItem>
+
+					<listItem>
+						<para>Sandcastle work item #2949: Sections containing nothing but an image or a list of link elements
+are not rendered</para>
+					</listItem>
+
+					<listItem>
+						<para>Sandcastle work item #3652: MAML - XSLT Generates Self-Closing Tag for Bookmarks</para>
+					</listItem>
+
+					<listItem>
+						<para>Sandcastle work item #8879: Some pre elements are missing xml:space="preserve"</para>
+					</listItem>
+
+					<listItem>
+						<para>Sandcastle Styles work item #11465: FireFox website output issues</para>
+					</listItem>
+
+					<listItem>
+						<para>Sandcastle work item #2421 and #2435: Case of Presentation.css is not consistent in
+transformations.  This causes case-sensitive web servers to miss the stylesheet.</para>
+					</listItem>
+
+					<listItem>
+						<para>Sandcastle work item #2416: vs2005: summary from outer class ends up on inner class member page</para>
+					</listItem>
+
+					<listItem>
+						<para>Sandcastle Styles work item #5362: Help 1 Sticky Language Filter</para>
+					</listItem>
+
+					<listItem>
+						<para>Sandcastle work item #2274: Conceptual: Hana style, External link in a token not rendered in
+relatedTopics</para>
+					</listItem>
+
+					<listItem>
+						<para>Sandcastle work item #2951: JavaScript syntax section is not shown in the Hana style</para>
+					</listItem>
+
+					<listItem>
+						<para>Sandcastle work item #2260: Anchor tag styles need to be fixed</para>
+					</listItem>
+
+					<listItem>
+						<para>Sandcastle work item #2261: Conceptual: All three styles, normalize the space on the abstract</para>
+					</listItem>
+
+					<listItem>
+						<para>Sandcastle work item #2265: ddue:table handling needs fixing</para>
+					</listItem>
+
+					<listItem>
+						<para>Sandcastle work item #2266: Rendering of ddue:definitionTable isn't consistent in presentation
+styles</para>
+					</listItem>
+
+					<listItem>
+						<para>Sandcastle work item #2950: autoOutline displays "Related Topics" instead of "See Also"</para>
+					</listItem>
+
+					<listItem>
+						<para>Sandcastle work item #2275: Conceptual: ddue:math should apply templates to its inner text</para>
+					</listItem>
+
+					<listItem>
+						<para>Sandcastle work item #2060: Conceptual: Formatting is not applied to some in-line MAML elements</para>
+					</listItem>
+
+					<listItem>
+						<para>Sandcastle work item #2273: Support linkAlternateText and linkTarget in externalLink</para>
+					</listItem>
+
+					<listItem>
+						<para>Sandcastle work item #1854: Conceptual: Don't Display Summary in Topic</para>
+					</listItem>
+
+					<listItem>
+						<para>Sandcastle work item #2282: Prototype syntax sections have unnecessary leading whitespace</para>
+					</listItem>
+
+					<listItem>
+						<para>Sandcastle work item #939: Version Builder Issues</para>
+					</listItem>
+
+					<listItem>
+						<para>Sandcastle Styles work item #226453: Version Builder is broken in the June 2010 release</para>
+					</listItem>
+
+					<listItem>
+						<para>Sandcastle work item #2257: Conceptual: Hana does not wrap code blocks in &lt;div class="code"&gt;</para>
+					</listItem>
+
+					<listItem>
+						<para>Sandcastle work item #998: Hana and Prototype styles need to add CHARSET attribute to topics</para>
+					</listItem>
+
+					<listItem>
+						<para>Sandcastle work item #2259: Conceptual: Hana and Prototype are missing some namespace declarations</para>
+					</listItem>
+
+					<listItem>
+						<para>Sandcastle work item 2267: ddue:schemaHierarchy and indent templates are missing from Prototype</para>
+					</listItem>
+
+					<listItem>
+						<para>Sandcastle work item 2272: The Prototype See Also section doesn't have a #seeAlsoSection anchor</para>
+					</listItem>
+
+					<listItem>
+						<para>Sandcastle work item #1613: seealso tags within an overloads tag not listed</para>
+					</listItem>
+
+					<listItem>
+						<para>Sandcastle work item #6787: Add missing resource items to Hana and Prototype styles</para>
+					</listItem>
+
+					<listItem>
+						<para>Sandcastle work item #1978: APIName Attributes Incorrect (Hana and Prototype)</para>
+					</listItem>
+
+					<listItem>
+						<para>Sandcastle work item #974: Support External Hyperlink Target with Appropriate Default</para>
+					</listItem>
+
+					<listItem>
+						<para>Sandcastle work item #6803: Support term element in bullet and number list types</para>
+					</listItem>
+
+					<listItem>
+						<para>Sandcastle work item #6789: Support starting number on numbered lists</para>
+					</listItem>
+
+					<listItem>
+						<para>Sandcastle work item #2948: Add address attribute support to several elements</para>
+					</listItem>
+
+					<listItem>
+						<para>Sandcastle work item #2270: Conceptual: Support NamedUrlIndex keywords in metadata</para>
+					</listItem>
+
+					<listItem>
+						<para>Sandcastle work item #2174: Conceptual: Pass-through HTML (using a markup element), supersedes
+Sandcastle work item #933</para>
+					</listItem>
+
+					<listItem>
+						<para>Sandcastle work item #6786: Enumeration topics should show the value of each enumeration member</para>
+					</listItem>
+
+					<listItem>
+						<para>Sandcastle work item #1835: Conceptual: Glossary Improvements</para>
+					</listItem>
+
+					<listItem>
+						<para>Sandcastle work item #1795: Better implementation of the &lt;note&gt; tag</para>
+					</listItem>
+
+					<listItem>
+						<para>Sandcastle work item #2256: Better implementation of the ddue:alert element</para>
+					</listItem>
+
+					<listItem>
+						<para>Sandcastle work item #2189: mediaLink and mediaLinkInline should be handled as separate templates</para>
+					</listItem>
+
+					<listItem>
+						<para>Sandcastle work item #2142: Conceptual: autoOutline Changes</para>
+					</listItem>
+
+					<listItem>
+						<para>Sandcastle work item #2082: Auto-generated Bibliography (No dependency on build components)</para>
+					</listItem>
+
+					<listItem>
+						<para>Sandcastle work item #6790: Add code contract support for VS2005 style</para>
+					</listItem>
+
+					<listItem>
+						<para>Sandcastle work item #2271: List formatting doesn't look good (all three styles)</para>
+					</listItem>
+
+					<listItem>
+						<para>Sandcastle work item #2947: Stylesheet updates needed to correct spacing and alignment</para>
+					</listItem>
+
+					<listItem>
+						<para>Sandcastle work item #1950: Conceptual: Glossary term requires termClass attribute</para>
+					</listItem>
+
+					<listItem>
+						<para>Sandcastle work item #2021: Conceptual: codeSection template ignores valid code languages</para>
+					</listItem>
+
+					<listItem>
+						<para>Ureported feature request: Replace conceptualLink elements in the reference content with anchor
+links to the actual MSDN pages</para>
+					</listItem>
+
+					<listItem>
+						<para>Unreported feature request: Support conceptualLink elements in code XML comments to allow
+linking to conceptual topics from API member docs</para>
+					</listItem>
+
+					<listItem>
+						<para>Unreported bug: VS2005 CommonUtilities.js fails under MS Help Viewer 2</para>
+					</listItem>
+
+				</list>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="e0636c2c-3da0-4d5e-9e86-6fb3f0c83eef" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

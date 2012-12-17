@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="9341fdc8-1571-405c-8e61-6a6b9b601b46" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>Miscellaneous elements are typically top-level or mixed use elements that do not fit one of the other
+categories.  Select a topic below for more information.</para>
+		</introduction>
+
+		<section>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para><link xlink:href="3563f000-5677-4cd9-afd7-4e3f2a7fe4fc" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="c0346d23-f376-4948-8f9a-d17b2f1acef3" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="db2703b4-12bc-4cf5-8642-544b41002809" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="a8ade450-e201-401a-923d-1a1169ef7828" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="0522f3bf-0a57-4d70-a2a5-d64a14c5bcc9" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="3de64a85-dafb-4a01-85dc-7f69a76ef790" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="86453FFB-B978-4A2A-9EB5-70E118CA8073" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="5b11b235-2b6c-4dfc-86b0-2e7dd98f2716" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="8c9273f3-0000-43cd-bb53-932b80855297" /></para>
+					</listItem>
+				</list>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="515d5a54-5047-4d6f-bf51-d47c7c699cc2" />
+			<link xlink:href="BD91FAD4-188D-4697-A654-7C07FD47EF31" />
+			<link xlink:href="20dc8c5f-9979-4ecd-92ce-cea6ce7acaeb" />
+			<link xlink:href="f8464c0f-f62a-4faf-b11a-9a41173307e8" />
+			<link xlink:href="d297bc14-33aa-4152-ae36-9f658b15de87" />
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

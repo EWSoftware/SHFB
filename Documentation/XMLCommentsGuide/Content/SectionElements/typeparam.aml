@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="163cae15-9020-4095-9b9c-da134b5b496c" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>This element is used to describe generic parameters on generic types and methods.</para>
+		</introduction>
+
+		<section>
+			<title>Syntax</title>
+			<content>
+				<para>This top-level element is valid on generic types and generic methods to describe each generic
+type parameter. <legacyItalic>typeParamName</legacyItalic> is the name of the generic type parameter being
+referenced.</para>
+
+<code language="xml" title=" ">
+&lt;typeparam name="typeParamName"&gt;Type parameter description&lt;/typeparam&gt;
+</code>
+			</content>
+		</section>
+
+		<section>
+			<title>Remarks</title>
+			<content>
+				<para>There should be one <codeInline>typeparam</codeInline> element for each generic type parameter in
+the class or method declaration.  The description will be used as the display text for the parameter in
+IntelliSense and the Object Browser.
+				</para>
+			</content>
+		</section>
+
+		<section>
+			<title>Examples</title>
+			<content>
+				<code language="cs" title=" " source="GenericClass.cs" region="typeparam/typeparamref Examples" />
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="20dc8c5f-9979-4ecd-92ce-cea6ce7acaeb" />
+			<link xlink:href="073a5ae1-828f-4bab-b0cb-438cefb5e9fb" />
+			<codeEntityReference qualifyHint="false">T:XMLCommentsExamples.GenericClass`2</codeEntityReference>
+			<codeEntityReference qualifyHint="false" autoUpgrade="true">M:XMLCommentsExamples.GenericClass`2.GenericMethod``2(``0)</codeEntityReference>
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

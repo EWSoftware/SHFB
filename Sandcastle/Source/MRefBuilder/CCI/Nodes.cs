@@ -10,6 +10,8 @@
 // attribute references the type being parsed.
 // 04/04/2012 - EFW - Fixed TypeNode.NestedTypes so that it won't get stuck in an endless loop when a type
 // contains a nested type that itself implements a nested type from within the containing type.
+// 11/30/2012 - EFW - Added updates based on changes submitted by ComponentOne to fix crashes caused by
+// obfuscated member names.
 
 using System;
 using System.Collections;
@@ -6728,7 +6730,10 @@ notfound:
                         nsTable[name.UniqueIdKey] = result;
                         return result;
                     }
-                    nsTable[name.UniqueIdKey] = Class.DoesNotExist;
+
+                    // !EFW - Removed by ComponentOne
+                    //nsTable[name.UniqueIdKey] = Class.DoesNotExist;
+
                     return null;
                 }
             }
