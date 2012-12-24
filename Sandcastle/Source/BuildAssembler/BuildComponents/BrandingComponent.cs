@@ -154,7 +154,7 @@ namespace Microsoft.Ddue.Tools
             // If self-branding is required, force it and issue a warning
             if(!m_selfBranded && String.Compare(m_helpOutput, s_defaultHelpOutput, StringComparison.OrdinalIgnoreCase) != 0)
             {
-                WriteMessage(MessageLevel.Warn, String.Format("Self-branding is required for {0} help format and it is being enabled.", m_helpOutput));
+                WriteMessage(MessageLevel.Warn, "Self-branding is required for {0} help format and it is being enabled.", m_helpOutput);
                 m_selfBranded = true;
             }
 
@@ -202,7 +202,7 @@ namespace Microsoft.Ddue.Tools
             if(m_brandingTransform != null)
             {
 #if DEBUG
-                WriteMessage(MessageLevel.Info, String.Format("  Branding topic {0} ({1}) SelfBranded={2}", key, m_locale, m_selfBranded));
+                WriteMessage(MessageLevel.Info, "  Branding topic {0} ({1}) SelfBranded={2}", key, m_locale, m_selfBranded);
 #endif
                 try
                 {
@@ -288,11 +288,11 @@ namespace Microsoft.Ddue.Tools
                 }
                 catch(XsltException exp)
                 {
-                    WriteMessage(key, MessageLevel.Error, String.Format("{0} at {1} {2} {3}", exp.Message, exp.SourceUri, exp.LineNumber, exp.LinePosition));
+                    WriteMessage(key, MessageLevel.Error, "{0} at {1} {2} {3}", exp.Message, exp.SourceUri, exp.LineNumber, exp.LinePosition);
 #if DEBUG
                     if(exp.InnerException != null)
                     {
-                        WriteMessage(key, MessageLevel.Error, String.Format("[{0}] {1}", exp.InnerException.GetType().Name, exp.InnerException.Message));
+                        WriteMessage(key, MessageLevel.Error, "[{0}] {1}", exp.InnerException.GetType().Name, exp.InnerException.Message);
                     }
 #endif
                 }
@@ -327,7 +327,7 @@ namespace Microsoft.Ddue.Tools
                     {
                         XmlElement v_meta = document.CreateElement("meta", s_xhtmlNamespace);
                         v_meta.SetAttribute("name", "SelfBranded");
-                        v_meta.SetAttribute("content", selfBranded.ToString().ToLower());
+                        v_meta.SetAttribute("content", selfBranded.ToString().ToLowerInvariant());
                         v_header.AppendChild(v_meta);
                     }
                     else
@@ -335,7 +335,7 @@ namespace Microsoft.Ddue.Tools
                         foreach(XmlNode v_brandedNode in v_branded)
                         {
                             XmlAttribute v_Attribute = document.CreateAttribute("meta", String.Empty);
-                            v_Attribute.Value = selfBranded.ToString().ToLower();
+                            v_Attribute.Value = selfBranded.ToString().ToLowerInvariant();
                             v_brandedNode.Attributes.SetNamedItem(v_Attribute);
                         }
                     }
@@ -379,18 +379,19 @@ namespace Microsoft.Ddue.Tools
                     foreach(XmlNode v_attribute in v_attribues)
                     {
 #if DEBUG_NOT
-                        WriteMessage (MessageLevel.Info, String.Format ("    Check namespace [{0}] [{1}]", v_attribute.LocalName, v_attribute.Name));
+                        WriteMessage (MessageLevel.Info, "    Check namespace [{0}] [{1}]", v_attribute.LocalName, v_attribute.Name);
 #endif
                         XmlNode v_namespaceUsed = null;
 
                         if(v_attribute.LocalName.ToLowerInvariant() != "xhtml")
-                            v_namespaceUsed = document.SelectSingleNode(String.Format("(/*//{0}:*) | (/*//*[@{0}:*])", v_attribute.LocalName), v_namespaceManager);
+                            v_namespaceUsed = document.SelectSingleNode(String.Format(CultureInfo.InvariantCulture,
+                                "(/*//{0}:*) | (/*//*[@{0}:*])", v_attribute.LocalName), v_namespaceManager);
 
                         if(v_namespaceUsed != null)
                         {
 #if DEBUG_NOT
-                            WriteMessage(MessageLevel.Info, String.Format ("      Used [{0}] [{1}] [{2}] [{3}]", v_namespaceUsed.Prefix, v_namespaceUsed.LocalName, v_namespaceUsed.Name, v_namespaceUsed.NamespaceURI));
-                            WriteMessage(MessageLevel.Info, String.Format ("      Used [{0}]", v_namespaceUsed.OuterXml));
+                            WriteMessage(MessageLevel.Info, "      Used [{0}] [{1}] [{2}] [{3}]", v_namespaceUsed.Prefix, v_namespaceUsed.LocalName, v_namespaceUsed.Name, v_namespaceUsed.NamespaceURI);
+                            WriteMessage(MessageLevel.Info, "      Used [{0}]", v_namespaceUsed.OuterXml);
 #endif
                         }
                         else
@@ -433,7 +434,9 @@ namespace Microsoft.Ddue.Tools
                     {
                         try
                         {
-                            String v_brandingTransformName = String.Format("branding-{0}.xslt", m_locale);
+                            String v_brandingTransformName = String.Format(CultureInfo.InvariantCulture,
+                                "branding-{0}.xslt", m_locale);
+
                             XslCompiledTransform v_brandingTransform = new XslCompiledTransform();
                             XmlResolver v_resolver = new XmlUrlResolver();
 
@@ -473,18 +476,16 @@ namespace Microsoft.Ddue.Tools
                                 PutTransformParam(s_codeRemoveClass, m_codeRemoveClass);
                             }
 
-                            WriteMessage(MessageLevel.Info, String.Format("Branding Transform \"{0}\" catalogProductFamily={1} catalogProductVersion={2} catalogLocale={3}", Path.Combine(v_brandingContentBase, v_brandingTransformName), m_catalogProductId, m_catalogVersion, m_locale));
+                            WriteMessage(MessageLevel.Info, "Branding Transform \"{0}\" catalogProductFamily={1} catalogProductVersion={2} catalogLocale={3}", Path.Combine(v_brandingContentBase, v_brandingTransformName), m_catalogProductId, m_catalogVersion, m_locale);
                             v_brandingTransform.Load(Path.Combine(v_brandingContentBase, v_brandingTransformName), XsltSettings.TrustedXslt, v_resolver);
                             m_brandingTransform = v_brandingTransform;
                         }
                         catch(XsltException exp)
                         {
-                            WriteMessage(MessageLevel.Error, String.Format ("{0} at {1} {2} {3}", exp.Message, exp.SourceUri, exp.LineNumber, exp.LinePosition));
+                            WriteMessage(MessageLevel.Error, "{0} at {1} {2} {3}", exp.Message, exp.SourceUri, exp.LineNumber, exp.LinePosition);
 #if DEBUG
                             if(exp.InnerException != null)
-                            {
-                                WriteMessage(MessageLevel.Error, String.Format("[{0}] {1}", exp.InnerException.GetType().Name, exp.InnerException.Message));
-                            }
+                                WriteMessage(MessageLevel.Error, "[{0}] {1}", exp.InnerException.GetType().Name, exp.InnerException.Message);
 #endif
                         }
                         catch(Exception exp)
@@ -505,7 +506,7 @@ namespace Microsoft.Ddue.Tools
         }
 
         /// <summary>
-        /// Loads the branding transform confuration from <c>branding.xml</c>
+        /// Loads the branding transform configuration from <c>branding.xml</c>
         /// </summary>
         /// <param name="configPath">The full path of <c>branding.xml</c></param>
         /// <param name="transformName">The full path of the branding transform file to load.</param>
@@ -523,7 +524,9 @@ namespace Microsoft.Ddue.Tools
                 v_namespaceManager.AddNamespace("branding", "urn:FH-Branding");
 
                 v_argumentsNode = v_brandingConfig.DocumentElement.SelectSingleNode("branding:common-parameters", v_namespaceManager);
-                v_transformNode = v_brandingConfig.DocumentElement.SelectSingleNode(String.Format("branding:transform-parameters[@xml:lang='{0}']", m_locale), v_namespaceManager);
+                v_transformNode = v_brandingConfig.DocumentElement.SelectSingleNode(String.Format(
+                    CultureInfo.InvariantCulture, "branding:transform-parameters[@xml:lang='{0}']",
+                    m_locale), v_namespaceManager);
 
                 if(v_argumentsNode != null)
                 {
@@ -550,7 +553,10 @@ namespace Microsoft.Ddue.Tools
                     transformName = v_transformNode.Value;
                 }
             }
-            catch { }
+            catch(Exception ex)
+            {
+                WriteMessage(MessageLevel.Error, ex.Message);
+            }
         }
 
         /// <summary>
@@ -597,7 +603,7 @@ namespace Microsoft.Ddue.Tools
                 if(v_ret && (base.Depth <= 2) && (base.NodeType == XmlNodeType.Attribute) && (base.Name == "xmlns"))
                 {
 #if DEBUG_NOT
-                    m_MessageHandler (GetType (), MessageLevel.Info, String.Format ("  Skip Attribute [{0}] [{1}] [{2}] [{3}] [{4}]", base.Depth, base.NodeType, base.Name, base.Prefix, base.LocalName));
+                    m_MessageHandler(GetType(), MessageLevel.Info, "  Skip Attribute [{0}] [{1}] [{2}] [{3}] [{4}]", base.Depth, base.NodeType, base.Name, base.Prefix, base.LocalName);
 #endif
                     v_ret = base.MoveToNextAttribute();
                 }
@@ -610,7 +616,7 @@ namespace Microsoft.Ddue.Tools
                 if(v_ret && (base.Depth <= 2) && (base.NodeType == XmlNodeType.Attribute) && (base.Name == "xmlns"))
                 {
 #if DEBUG_NOT
-                    m_MessageHandler (GetType (), MessageLevel.Info, String.Format ("  Skip Attribute [{0}] [{1}] [{2}] [{3}] [{4}]", base.Depth, base.NodeType, base.Name, base.Prefix, base.LocalName));
+                    m_MessageHandler(GetType(), MessageLevel.Info, "  Skip Attribute [{0}] [{1}] [{2}] [{3}] [{4}]", base.Depth, base.NodeType, base.Name, base.Prefix, base.LocalName);
 #endif
                     v_ret = base.MoveToNextAttribute();
                 }
@@ -624,11 +630,10 @@ namespace Microsoft.Ddue.Tools
         //=====================================================================
 
         /// <summary>
-        /// Reformats all LanguageSpecific spans to the format used by the
-        /// MS Help Viewer.
+        /// Reformats all LanguageSpecific spans to the format used by the MS Help Viewer
         /// </summary>
         /// <param name="document">The current document.</param>
-        private void ReformatLanguageSpecific(XmlDocument document)
+        private static void ReformatLanguageSpecific(XmlDocument document)
         {
             int v_uniqueIdSequence = 0;
             XmlNodeList v_nodeList = document.SelectNodes("//span[@class='languageSpecificText']");
@@ -683,7 +688,6 @@ namespace Microsoft.Ddue.Tools
                 }
             }
         }
-
         #endregion
     }
 }

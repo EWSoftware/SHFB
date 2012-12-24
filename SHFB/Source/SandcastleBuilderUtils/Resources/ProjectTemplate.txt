@@ -17,6 +17,7 @@
     <Name>$safeprojectname$</Name>
 
     <!-- SHFB properties -->
+    <FrameworkVersion>.NET Framework 4.0</FrameworkVersion>
     <OutputPath>.\Help\</OutputPath>
     <HtmlHelpName>$safeprojectname$</HtmlHelpName>
     <Language>en-US</Language>

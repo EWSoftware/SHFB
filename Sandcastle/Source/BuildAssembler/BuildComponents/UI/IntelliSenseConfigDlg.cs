@@ -1,34 +1,30 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder Components
 // File    : IntelliSenseConfigDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/07/2007
-// Note    : Copyright 2006-2007, Eric Woodruff, All rights reserved
+// Updated : 12/21/2012
+// Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains a form that is used to configure the settings for the
-// IntelliSense Component.
+// This file contains a form that is used to configure the settings for the IntelliSense build component
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.6.0.2  11/07/2007  EFW  Created the code
-//=============================================================================
+// 2.7.3.0  12/21/2012  EFW  Moved the configuration dialog into the Sandcastle build components assembly
+//===============================================================================================================
 
 using System;
-using System.Collections;
-using System.ComponentModel;
-using System.Globalization;
 using System.IO;
 using System.Windows.Forms;
 using System.Xml;
 
-namespace SandcastleBuilder.Components
+namespace Microsoft.Ddue.Tools.UI
 {
     /// <summary>
     /// This form is used to configure the settings for the
@@ -36,7 +32,14 @@ namespace SandcastleBuilder.Components
     /// </summary>
     internal partial class IntelliSenseConfigDlg : Form
     {
+        #region Private data members
+        //=====================================================================
+
         private XmlDocument config;     // The configuration
+        #endregion
+
+        #region Properties
+        //=====================================================================
 
         /// <summary>
         /// This is used to return the configuration information
@@ -45,12 +48,15 @@ namespace SandcastleBuilder.Components
         {
             get { return config.OuterXml; }
         }
+        #endregion
+
+        #region Constructor
+        //=====================================================================
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="currentConfig">The current XML configuration
-        /// XML fragment</param>
+        /// <param name="currentConfig">The current XML configuration XML fragment</param>
         public IntelliSenseConfigDlg(string currentConfig)
         {
             XmlNode component, node;
@@ -71,18 +77,25 @@ namespace SandcastleBuilder.Components
             if(node != null)
             {
                 attr = node.Attributes["includeNamespaces"];
+
                 if(attr != null && Boolean.TryParse(attr.Value, out itemChecked))
                     chkIncludeNamespaces.Checked = itemChecked;
 
                 attr = node.Attributes["namespacesFile"];
+
                 if(attr != null)
                     txtNamespacesFile.Text = attr.Value;
 
                 attr = node.Attributes["folder"];
+
                 if(attr != null)
                     txtFolder.Text = attr.Value;
             }
         }
+        #endregion
+
+        #region Event handlers
+        //=====================================================================
 
         /// <summary>
         /// Close without saving
@@ -95,13 +108,11 @@ namespace SandcastleBuilder.Components
         }
 
         /// <summary>
-        /// Go to the CodePlex home page of the Sandcastle Help File Builder
-        /// project.
+        /// Go to the CodePlex home page of the Sandcastle Help File Builder project.
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        private void lnkCodePlexSHFB_LinkClicked(object sender,
-          LinkLabelLinkClickedEventArgs e)
+        private void lnkCodePlexSHFB_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             try
             {
@@ -110,9 +121,8 @@ namespace SandcastleBuilder.Components
             catch(Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
-                MessageBox.Show("Unable to launch link target.  " +
-                    "Reason: " + ex.Message, "Sandcastle Help File Builder",
-                    MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show("Unable to launch link target.  Reason: " + ex.Message,
+                    "Sandcastle Help File Builder", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
 
@@ -132,24 +142,24 @@ namespace SandcastleBuilder.Components
             // Store the changes
             component = config.SelectSingleNode("component");
             node = component.SelectSingleNode("output");
+
             if(node == null)
             {
-                node = config.CreateNode(XmlNodeType.Element,
-                    "output", null);
+                node = config.CreateNode(XmlNodeType.Element, "output", null);
                 component.AppendChild(node);
             }
 
             attr = node.Attributes["includeNamespaces"];
+
             if(attr == null)
             {
                 attr = config.CreateAttribute("includeNamespaces");
                 node.Attributes.Append(attr);
             }
 
-            attr.Value = chkIncludeNamespaces.Checked.ToString().ToLower(
-                CultureInfo.InvariantCulture);
-
+            attr.Value = chkIncludeNamespaces.Checked.ToString().ToLowerInvariant();
             attr = node.Attributes["namespacesFile"];
+
             if(attr == null)
             {
                 attr = config.CreateAttribute("namespacesFile");
@@ -159,6 +169,7 @@ namespace SandcastleBuilder.Components
             attr.Value = txtNamespacesFile.Text;
 
             attr = node.Attributes["folder"];
+
             if(attr == null)
             {
                 attr = config.CreateAttribute("folder");
@@ -188,5 +199,6 @@ namespace SandcastleBuilder.Components
                     txtFolder.Text = dlg.SelectedPath + @"\";
             }
         }
+        #endregion
     }
 }

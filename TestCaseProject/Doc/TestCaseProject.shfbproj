@@ -52,13 +52,13 @@
         </component>
       </ComponentConfig>
       <ComponentConfig id="IntelliSense Component" enabled="True">
-        <component id="IntelliSense Component" type="SandcastleBuilder.Components.IntelliSenseComponent" assembly="{@SHFBFolder}SandcastleBuilder.Components.dll">
+        <component id="IntelliSense Component" type="Microsoft.Ddue.Tools.IntelliSenseComponent" assembly="{@SandcastlePath}ProductionTools\BuildComponents.dll">
           <!-- Output options (optional)
-                 Attributes:
-                    Include Namespaces (false by default)
-                    Namespaces filename ("Namespaces" if not specified or empty)
-                    Directory (current folder if not specified or empty) -->
-          <output includeNamespaces="false" namespacesFile="Namespaces" folder="{@OutputFolder}" />
+					 Attributes:
+							Include Namespaces (false by default)
+							Namespaces filename ("Namespaces" if not specified or empty)
+							Directory (current folder if not specified or empty) -->
+          <output includeNamespaces="false" namespacesFile="NamespaceComments" folder="{@OutputFolder}" />
         </component>
       </ComponentConfig>
       <ComponentConfig id="Cached Framework Comments Index Data" enabled="True">
@@ -190,7 +190,7 @@
     <Revision>123</Revision>
     <CustomProperty Condition="'$(CustomProperty)' == ''">A value from a custom user-defined property</CustomProperty>
     <HelpTitle>Sandcastle Test Case Library</HelpTitle>
-    <SyntaxFilters>CSharp, VisualBasic, CPlusPlus, FSharp, JavaScript</SyntaxFilters>
+    <SyntaxFilters>Standard</SyntaxFilters>
     <KeepLogFile>True</KeepLogFile>
     <Language>en-US</Language>
     <ProductTitle>Sandcastle Help File Builder Example Project</ProductTitle>

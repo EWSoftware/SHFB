@@ -10,6 +10,7 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Globalization;
 using System.IO;
 using System.Xml;
 using System.Xml.XPath;
@@ -77,8 +78,9 @@ namespace Microsoft.Ddue.Tools
                 // get the cache size
                 int cache = 10;
                 string cache_value = index_node.GetAttribute("cache", String.Empty);
+
                 if(!String.IsNullOrEmpty(cache_value))
-                    cache = Convert.ToInt32(cache_value);
+                    cache = Convert.ToInt32(cache_value, CultureInfo.InvariantCulture);
 
                 // create the index
                 IndexedDocumentCache index = new IndexedDocumentCache(this, key_xpath, value_xpath, context, cache);
@@ -96,13 +98,13 @@ namespace Microsoft.Ddue.Tools
                     string recurse_value = data_node.GetAttribute("recurse", String.Empty);
 
                     if(!String.IsNullOrEmpty(recurse_value))
-                        recurse = Convert.ToBoolean(recurse_value);
+                        recurse = Convert.ToBoolean(recurse_value, CultureInfo.InvariantCulture);
 
                     // !EFW - Added to support suppression of duplicate warnings on comment files
                     string duplicateWarning = data_node.GetAttribute("duplicateWarning", String.Empty);
 
                     if(!String.IsNullOrEmpty(duplicateWarning))
-                        this.DuplicateIdWarnings = Convert.ToBoolean(duplicateWarning);
+                        this.DuplicateIdWarnings = Convert.ToBoolean(duplicateWarning, CultureInfo.InvariantCulture);
 
                     // get the files				
                     string files = data_node.GetAttribute("files", String.Empty);
@@ -113,14 +115,14 @@ namespace Microsoft.Ddue.Tools
                     files = Environment.ExpandEnvironmentVariables(files);
 
                     if(!String.IsNullOrEmpty(base_value))
-                        WriteMessage(MessageLevel.Info, String.Format("Searching for files that match '{0}' in '{1}'.", files, base_value));
+                        WriteMessage(MessageLevel.Info, "Searching for files that match '{0}' in '{1}'.", files, base_value);
                     else
-                        WriteMessage(MessageLevel.Info, String.Format("Searching for files that match '{0}'.", files));
+                        WriteMessage(MessageLevel.Info, "Searching for files that match '{0}'.", files);
 
                     index.AddDocuments(base_value, files, recurse);
                 }
 
-                WriteMessage(MessageLevel.Info, String.Format("Indexed {0} elements in {1} files.", index.Count, index.DocumentCount));
+                WriteMessage(MessageLevel.Info, "Indexed {0} elements in {1} files.", index.Count, index.DocumentCount);
 
                 BuildComponent.Data.Add(name, index);
             }
@@ -165,7 +167,7 @@ namespace Microsoft.Ddue.Tools
                     }
                     catch(ArgumentException)
                     {
-                        WriteMessage(MessageLevel.Error, String.Format("'{0}' is not a message level.", missingEntryValue));
+                        WriteMessage(MessageLevel.Error, "'{0}' is not a message level.", missingEntryValue);
                     }
                 }
                 
@@ -177,7 +179,7 @@ namespace Microsoft.Ddue.Tools
                     }
                     catch(ArgumentException)
                     {
-                        WriteMessage(MessageLevel.Error, String.Format("'{0}' is not a message level.", missingSourceValue));
+                        WriteMessage(MessageLevel.Error, "'{0}' is not a message level.", missingSourceValue);
                     }
                 }
                 
@@ -189,7 +191,7 @@ namespace Microsoft.Ddue.Tools
                     }
                     catch(ArgumentException)
                     {
-                        WriteMessage(MessageLevel.Error, String.Format("'{0}' is not a message level.", missingTargetValue));
+                        WriteMessage(MessageLevel.Error, "'{0}' is not a message level.", missingTargetValue);
                     }
                 }
 
@@ -213,15 +215,17 @@ namespace Microsoft.Ddue.Tools
                 // expand environment variables in the path
                 assembly_path = Environment.ExpandEnvironmentVariables(assembly_path);
 
-                //Console.WriteLine("loading {0} from {1}", type_name, assembly_path);
                 try
                 {
                     Assembly assembly = Assembly.LoadFrom(assembly_path);
-                    CopyComponent component = (CopyComponent)assembly.CreateInstance(type_name, false, BindingFlags.Public | BindingFlags.Instance, null, new Object[2] { component_node.Clone(), Data }, null, null);
+
+                    CopyComponent component = (CopyComponent)assembly.CreateInstance(type_name, false,
+                        BindingFlags.Public | BindingFlags.Instance, null,
+                        new object[2] { component_node.Clone(), Data }, null, null);
 
                     if(component == null)
                     {
-                        WriteMessage(MessageLevel.Error, String.Format("The type '{0}' does not exist in the assembly '{1}'.", type_name, assembly_path));
+                        WriteMessage(MessageLevel.Error, "The type '{0}' does not exist in the assembly '{1}'.", type_name, assembly_path);
                     }
                     else
                     {
@@ -231,32 +235,31 @@ namespace Microsoft.Ddue.Tools
                 }
                 catch(IOException e)
                 {
-                    WriteMessage(MessageLevel.Error, String.Format("A file access error occured while attempting to load the build component '{0}'. The error message is: {1}", assembly_path, e.Message));
+                    WriteMessage(MessageLevel.Error, "A file access error occured while attempting to load the build component '{0}'. The error message is: {1}", assembly_path, e.Message);
                 }
                 catch(BadImageFormatException e)
                 {
-                    WriteMessage(MessageLevel.Error, String.Format("A syntax generator assembly '{0}' is invalid. The error message is: {1}.", assembly_path, e.Message));
+                    WriteMessage(MessageLevel.Error, "A syntax generator assembly '{0}' is invalid. The error message is: {1}.", assembly_path, e.Message);
                 }
                 catch(TypeLoadException e)
                 {
-                    WriteMessage(MessageLevel.Error, String.Format("The type '{0}' does not exist in the assembly '{1}'. The error message is: {2}", type_name, assembly_path, e.Message));
+                    WriteMessage(MessageLevel.Error, "The type '{0}' does not exist in the assembly '{1}'. The error message is: {2}", type_name, assembly_path, e.Message);
                 }
                 catch(MissingMethodException e)
                 {
-                    WriteMessage(MessageLevel.Error, String.Format("The type '{0}' in the assembly '{1}' does not have an appropriate constructor. The error message is: {2}", type_name, assembly_path, e.Message));
+                    WriteMessage(MessageLevel.Error, "The type '{0}' in the assembly '{1}' does not have an appropriate constructor. The error message is: {2}", type_name, assembly_path, e.Message);
                 }
                 catch(TargetInvocationException e)
                 {
-                    WriteMessage(MessageLevel.Error, String.Format("An error occured while attempting to instantiate the type '{0}' in the assembly '{1}'. The error message is: {2}", type_name, assembly_path, e.InnerException.Message));
+                    WriteMessage(MessageLevel.Error, "An error occured while attempting to instantiate the type '{0}' in the assembly '{1}'. The error message is: {2}", type_name, assembly_path, e.InnerException.Message);
                 }
                 catch(InvalidCastException)
                 {
-                    WriteMessage(MessageLevel.Error, String.Format("The type '{0}' in the assembly '{1}' is not a SyntaxGenerator.", type_name, assembly_path));
+                    WriteMessage(MessageLevel.Error, "The type '{0}' in the assembly '{1}' is not a SyntaxGenerator.", type_name, assembly_path);
                 }
             }
 
-            WriteMessage(MessageLevel.Info, String.Format("Loaded {0} copy components.", components.Count));
-
+            WriteMessage(MessageLevel.Info, "Loaded {0} copy components.", components.Count);
         }
 
         // the actual work of the component
@@ -274,24 +277,25 @@ namespace Microsoft.Ddue.Tools
                 // get the source comment
                 XPathExpression key_expression = copy_command.Key.Clone();
                 key_expression.SetContext(context);
-                // Console.WriteLine(key_expression.Expression);
+
                 string key_value = (string)document.CreateNavigator().Evaluate(key_expression);
-                // Console.WriteLine("got key '{0}'", key_value);
+
                 XPathNavigator data = copy_command.Index.GetContent(key_value);
 
                 if(data == null && copy_command.IgnoreCase == "true")
-                    data = copy_command.Index.GetContent(key_value.ToLower());
+                    data = copy_command.Index.GetContent(key_value.ToLowerInvariant());
 
                 // notify if no entry
                 if(data == null)
                 {
-                    WriteMessage(copy_command.MissingEntry, String.Format("No index entry found for key '{0}'.", key_value));
+                    WriteMessage(copy_command.MissingEntry, "No index entry found for key '{0}'.", key_value);
                     continue;
                 }
 
                 // get the target node
                 String target_xpath = copy_command.Target.Clone().ToString();
-                XPathExpression target_expression = XPathExpression.Compile(string.Format(target_xpath, key_value));
+                XPathExpression target_expression = XPathExpression.Compile(String.Format(
+                    CultureInfo.InvariantCulture, target_xpath, key_value));
                 target_expression.SetContext(context);
 
                 XPathNavigator target = document.CreateNavigator().SelectSingleNode(target_expression);
@@ -299,7 +303,7 @@ namespace Microsoft.Ddue.Tools
                 // notify if no target found
                 if(target == null)
                 {
-                    WriteMessage(copy_command.MissingTarget, String.Format("Target node '{0}' not found.", target_expression.Expression));
+                    WriteMessage(copy_command.MissingTarget, "Target node '{0}' not found.", target_expression.Expression);
                     continue;
                 }
 
@@ -322,16 +326,23 @@ namespace Microsoft.Ddue.Tools
                         XmlWriter attributes = target.CreateAttributes();
 
                         source.MoveToFirstAttribute();
-                        string attrFirst = target.GetAttribute(string.Format("{0}_{1}", source_name, source.Name), string.Empty);
+                        string attrFirst = target.GetAttribute(String.Format(CultureInfo.InvariantCulture,
+                            "{0}_{1}", source_name, source.Name), string.Empty);
+
                         if(string.IsNullOrEmpty(attrFirst))
-                            attributes.WriteAttributeString(string.Format("{0}_{1}", source_name, source.Name), source.Value);
+                            attributes.WriteAttributeString(String.Format(CultureInfo.InvariantCulture,
+                                "{0}_{1}", source_name, source.Name), source.Value);
 
                         while(source.MoveToNextAttribute())
                         {
-                            string attrNext = target.GetAttribute(string.Format("{0}_{1}", source_name, source.Name), string.Empty);
+                            string attrNext = target.GetAttribute(String.Format(CultureInfo.InvariantCulture,
+                                "{0}_{1}", source_name, source.Name), string.Empty);
+
                             if(string.IsNullOrEmpty(attrNext))
-                                attributes.WriteAttributeString(string.Format("{0}_{1}", source_name, source.Name), source.Value);
+                                attributes.WriteAttributeString(String.Format(CultureInfo.InvariantCulture,
+                                    "{0}_{1}", source_name, source.Name), source.Value);
                         }
+
                         attributes.Close();
                     }
                     else
@@ -340,22 +351,17 @@ namespace Microsoft.Ddue.Tools
 
                 // notify if no source found
                 if(source_count == 0)
-                {
-                    WriteMessage(copy_command.MissingSource, String.Format("Source node '{0}' not found.", source_expression.Expression));
-                }
+                    WriteMessage(copy_command.MissingSource, "Source node '{0}' not found.", source_expression.Expression);
 
                 foreach(CopyComponent component in components)
-                {
                     component.Apply(document, key);
-                }
             }
         }
 
-        internal void WriteHelperMessage(MessageLevel level, string message)
+        internal void WriteHelperMessage(MessageLevel level, string message, params object[] args)
         {
-            WriteMessage(level, message);
+            WriteMessage(level, message, args);
         }
-
     }
 
     // the storage system
@@ -379,7 +385,7 @@ namespace Microsoft.Ddue.Tools
             }
             catch(XPathException)
             {
-                component.WriteHelperMessage(MessageLevel.Error, String.Format("The key expression '{0}' is not a valid XPath expression.", keyXPath));
+                component.WriteHelperMessage(MessageLevel.Error, "The key expression '{0}' is not a valid XPath expression.", keyXPath);
             }
             keyExpression.SetContext(context);
 
@@ -389,7 +395,7 @@ namespace Microsoft.Ddue.Tools
             }
             catch(XPathException)
             {
-                component.WriteHelperMessage(MessageLevel.Error, String.Format("The value expression '{0}' is not a valid XPath expression.", valueXPath));
+                component.WriteHelperMessage(MessageLevel.Error, "The value expression '{0}' is not a valid XPath expression.", valueXPath);
             }
             valueExpression.SetContext(context);
 
@@ -448,9 +454,8 @@ namespace Microsoft.Ddue.Tools
             {
                 // !EFW - Only report the warning if wanted
                 if(index.ContainsKey(key) && component.DuplicateIdWarnings)
-                    component.WriteHelperMessage(MessageLevel.Warn, String.Format("Entries for the key " +
-                        "'{0}' occur in both '{1}' and '{2}'. The last entry will be used.", key,
-                        index[key], file));
+                    component.WriteHelperMessage(MessageLevel.Warn, "Entries for the key '{0}' occur in both " +
+                        "'{1}' and '{2}'. The last entry will be used.", key, index[key], file);
 
                 index[key] = file;
             }
@@ -463,29 +468,23 @@ namespace Microsoft.Ddue.Tools
                 directory_part = Environment.CurrentDirectory;
             directory_part = Path.GetFullPath(directory_part);
             string file_part = Path.GetFileName(wildcardPath);
-            //Console.WriteLine("{0}::{1}", directory_part, file_part);
-            string[] files = Directory.GetFiles(directory_part, file_part);
-            foreach(string file in files)
-            {
-                AddDocument(file);
-            }
 
-            //Console.WriteLine(files.Length);
+            string[] files = Directory.GetFiles(directory_part, file_part);
+
+            foreach(string file in files)
+                AddDocument(file);
+
             documentCount += files.Length;
         }
 
         public void AddDocuments(string baseDirectory, string wildcardPath, bool recurse)
         {
-
             string path;
+
             if(String.IsNullOrEmpty(baseDirectory))
-            {
                 path = wildcardPath;
-            }
             else
-            {
                 path = Path.Combine(baseDirectory, wildcardPath);
-            }
 
             AddDocuments(path);
 
@@ -595,9 +594,9 @@ namespace Microsoft.Ddue.Tools
 
         public IndexedDocument(IndexedDocumentCache cache, string file)
         {
-
             if(cache == null)
                 throw new ArgumentNullException("cache");
+
             if(file == null)
                 throw new ArgumentNullException("file");
 
@@ -612,43 +611,27 @@ namespace Microsoft.Ddue.Tools
 
                 // search for value nodes
                 XPathNodeIterator valueNodes = document.CreateNavigator().Select(cache.ValueExpression);
-                // Console.WriteLine("found {0} instances of '{1}' (key xpath is '{2}')", valueNodes.Count, valueExpression.Expression, keyExpression.Expression);
 
                 // get the key string for each value node and record it in the index
                 foreach(XPathNavigator valueNode in valueNodes)
                 {
-
                     XPathNavigator keyNode = valueNode.SelectSingleNode(cache.KeyExpression);
+
                     if(keyNode == null)
-                    {
-                        // Console.WriteLine("null key");
                         continue;
-                    }
 
                     string key = keyNode.Value;
                     index[key] = valueNode;
-                    if(!index.ContainsKey(key))
-                    {
-                        //index.Add(key, valueNode);
-                    }
-                    else
-                    {
-                        // Console.WriteLine("Repeat key '{0}'", key);
-                    }
                 }
-
             }
             catch(IOException e)
             {
-                cache.Component.WriteHelperMessage(MessageLevel.Error, String.Format("An access error occured while attempting to load the file '{0}'. The error message is: {1}", file, e.Message));
+                cache.Component.WriteHelperMessage(MessageLevel.Error, "An access error occured while attempting to load the file '{0}'. The error message is: {1}", file, e.Message);
             }
             catch(XmlException e)
             {
-                cache.Component.WriteHelperMessage(MessageLevel.Error, String.Format("The indexed document '{0}' is not a valid XML document. The error message is: {1}", file, e.Message));
+                cache.Component.WriteHelperMessage(MessageLevel.Error, "The indexed document '{0}' is not a valid XML document. The error message is: {1}", file, e.Message);
             }
-            // Console.WriteLine("indexed {0} keys", index.Count);
-
-
         }
 
         // the indexed file
@@ -705,16 +688,12 @@ namespace Microsoft.Ddue.Tools
         public CopyCommand(IndexedDocumentCache source_index, string key_xpath, string source_xpath, string target_xpath, string attribute_value, string ignoreCase_value)
         {
             this.cache = source_index;
+
             if(String.IsNullOrEmpty(key_xpath))
-            {
-                // Console.WriteLine("null key xpath");
                 key = XPathExpression.Compile("string($key)");
-            }
             else
-            {
-                // Console.WriteLine("compiling key xpath '{0}'", key_xpath);
                 key = XPathExpression.Compile(key_xpath);
-            }
+
             source = XPathExpression.Compile(source_xpath);
             target = target_xpath;
             attribute = attribute_value;
@@ -828,10 +807,10 @@ namespace Microsoft.Ddue.Tools
     // the abstract CopyComponent
     public abstract class CopyComponent
     {
-
-        public CopyComponent(XPathNavigator configuration, Dictionary<string, object> data) { }
+        protected CopyComponent(XPathNavigator configuration, Dictionary<string, object> data)
+        {
+        }
 
         public abstract void Apply(XmlDocument document, string key);
-
     }
 }

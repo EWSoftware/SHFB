@@ -1042,4 +1042,10 @@
 		</xsl:for-each>
 	</xsl:template>
 
+	<!-- Pass through a chunk of markup.  This will allow build components to add HTML or other elements such as
+			 "include" for localized shared content to a pre-transformed document.  This prevents it being removed as
+			 unrecognized content by the transformations. -->
+	<xsl:template match="markup">
+		<xsl:copy-of select="node()"/>
+	</xsl:template>
 </xsl:stylesheet>

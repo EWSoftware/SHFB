@@ -10,17 +10,20 @@
 // for use by Sandcastle.
 // </summary>
 // ------------------------------------------------------------------------------------------------
+
+// Change History
+// 12/21/2012 - EFW - Moved this component into the main BuildComponents project and removed the CopyComponents
+// project as this was the only thing in it.
+
+using System;
+using System.Collections.Generic;
+using System.Xml;
+using System.Xml.XPath;
+using System.Configuration;
+using System.Globalization;
+
 namespace Microsoft.Ddue.Tools
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
-    using System.Xml;
-    using System.Xml.XPath;
-    using System.Configuration;
-    using System.Globalization;
-    using Microsoft.Ddue.Tools.CommandLine;
-   
     /// <summary>
     /// InheritDocumentationComponent class.
     /// </summary>
@@ -104,15 +107,17 @@ namespace Microsoft.Ddue.Tools
         /// </summary>
         /// <param name="configuration">Configuration section to be parsed.</param>
         /// <param name="data">A dictionary object with string as key and object as value.</param>
-        public InheritDocumentationComponent(XPathNavigator configuration, Dictionary<string, object> data)
-            : base(configuration, data)
+        public InheritDocumentationComponent(XPathNavigator configuration, Dictionary<string, object> data) :
+          base(configuration, data)
         {
             // get the copy commands
             XPathNodeIterator copy_nodes = configuration.Select("copy");
+
             foreach (XPathNavigator copy_node in copy_nodes)
             {
                 // get the comments info
                 string source_name = copy_node.GetAttribute("name", string.Empty);
+
 		        if (String.IsNullOrEmpty(source_name))
                 {
                     throw new ConfigurationErrorsException("Each copy command must specify an index to copy from.");
@@ -120,10 +125,9 @@ namespace Microsoft.Ddue.Tools
 
                 // get the reflection info
                 string reflection_name = copy_node.GetAttribute("use", String.Empty);
+
                 if (String.IsNullOrEmpty(reflection_name))
-                {
                     throw new ConfigurationErrorsException("Each copy command must specify an index to get reflection information from.");
-                }
                                
                 this.index = (IndexedDocumentCache)data[source_name];
                 this.reflectionIndex = (IndexedDocumentCache)data[reflection_name];
@@ -139,7 +143,8 @@ namespace Microsoft.Ddue.Tools
         /// <param name="key">Id of the topic specified</param>
         public static void DeleteNode(XPathNavigator inheritDocNodeNavigator, string key)
         {
-            ConsoleApplication.WriteMessage(LogLevel.Info, string.Format(CultureInfo.InvariantCulture, "Comments are not found for topic:{0}", key));
+// TODO: This should be able to use the standard BuildAssembler message mechanism
+//            ConsoleApplication.WriteMessage(LogLevel.Info, string.Format(CultureInfo.InvariantCulture, "Comments are not found for topic:{0}", key));
             inheritDocNodeNavigator.DeleteSelf();
         }
 

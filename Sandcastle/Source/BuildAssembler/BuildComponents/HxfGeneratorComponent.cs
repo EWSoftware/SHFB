@@ -10,42 +10,48 @@ using System.Xml;
 using System.Xml.XPath;
 using System.Collections.Generic;
 
-namespace Microsoft.Ddue.Tools {
-
-    public class FileCreatedEventArgs : EventArgs {
-
+namespace Microsoft.Ddue.Tools
+{
+    public class FileCreatedEventArgs : EventArgs
+    {
         private string filePath;
         private string hxfPath;
-        
-        public FileCreatedEventArgs(string filePath, string hxfPath) {
+
+        public FileCreatedEventArgs(string filePath, string hxfPath)
+        {
             this.filePath = filePath;
             this.hxfPath = hxfPath;
         }
 
-        public string FilePath {
-            get {
-                return(filePath);
-            }
+        public string FilePath
+        {
+            get { return filePath; }
         }
 
-        public string HxfPath {
-            get {
-                return (hxfPath);
-            }
+        public string HxfPath
+        {
+            get { return hxfPath; }
         }
 
     }
 
-    public class HxfGeneratorComponent : BuildComponent {
-
-        public HxfGeneratorComponent (BuildAssembler assembler, XPathNavigator configuration) : base(assembler, configuration) {
+    public class HxfGeneratorComponent : BuildComponent
+    {
+        public HxfGeneratorComponent(BuildAssembler assembler, XPathNavigator configuration) :
+          base(assembler, configuration)
+        {
 
             // get configuration data
             inputValue = configuration.GetAttribute("input", String.Empty);
-            if (!String.IsNullOrEmpty(inputValue)) inputValue = Environment.ExpandEnvironmentVariables(inputValue);
+
+            if(!String.IsNullOrEmpty(inputValue))
+                inputValue = Environment.ExpandEnvironmentVariables(inputValue);
+
             outputValue = configuration.GetAttribute("output", String.Empty);
-            if (!String.IsNullOrEmpty(outputValue)) outputValue = Environment.ExpandEnvironmentVariables(outputValue);
-           
+
+            if(!String.IsNullOrEmpty(outputValue))
+                outputValue = Environment.ExpandEnvironmentVariables(outputValue);
+
             // subscribe to component events
             assembler.ComponentEvent += new EventHandler(FileCreatedHandler);
         }
@@ -56,42 +62,55 @@ namespace Microsoft.Ddue.Tools {
 
         private XmlWriter writer;
 
-        private Dictionary<string, XmlWriter> writers = new Dictionary<string, XmlWriter>();
+        // TODO: This can probably go away.  There's only ever one output file right?
+        // Path names are compared case insensitively
+        private Dictionary<string, XmlWriter> writers = new Dictionary<string, XmlWriter>(StringComparer.OrdinalIgnoreCase);
 
-        private void FileCreatedHandler (Object o, EventArgs e) {
+        private void FileCreatedHandler(Object o, EventArgs e)
+        {
             FileCreatedEventArgs fe = e as FileCreatedEventArgs;
-            if (fe == null) return;
-            
-            string path = Path.Combine(fe.HxfPath, outputValue).ToLower();
-           
+
+            if(fe == null)
+                return;
+
+            string path = Path.Combine(fe.HxfPath, outputValue);
+
             XmlWriter tempWriter;
-            if (!writers.TryGetValue(path, out tempWriter)) {
-                if (writer != null) {
+
+            if(!writers.TryGetValue(path, out tempWriter))
+            {
+                if(writer != null)
+                {
                     writer.WriteEndDocument();
                     writer.Close();
                 }
+
                 WriteFile(path);
             }
-            
+
             WriteFileElement(fe.FilePath);
-                       
         }
 
-        private void WriteFileElement (string url) {
+        private void WriteFileElement(string url)
+        {
             writer.WriteStartElement("File");
             writer.WriteAttributeString("Url", url);
             writer.WriteEndElement();
         }
 
-        protected override void Dispose(bool disposing) {
-            if (disposing) {
+        protected override void Dispose(bool disposing)
+        {
+            if(disposing)
+            {
                 writer.WriteEndDocument();
                 writer.Close();
             }
+
             base.Dispose(disposing);
         }
 
-        public void WriteFile(string path) {
+        public void WriteFile(string path)
+        {
             XmlWriterSettings writerSettings = new XmlWriterSettings();
             writerSettings.Indent = true;
             writer = XmlWriter.Create(path);
@@ -100,24 +119,33 @@ namespace Microsoft.Ddue.Tools {
             writer.WriteAttributeString("DTDVersion", "1.0");
 
             // use the input to seed the output
-            if (!String.IsNullOrEmpty(inputValue)) {
-
-                try {
+            if(!String.IsNullOrEmpty(inputValue))
+            {
+                try
+                {
                     TextReader reader = File.OpenText(inputValue);
 
-                    try {
-                        while (true) {
+                    try
+                    {
+                        while(true)
+                        {
                             string line = reader.ReadLine();
-                            if (line == null) break;
+
+                            if(line == null)
+                                break;
+
                             WriteFileElement(line);
                         }
                     }
-                    finally {
+                    finally
+                    {
                         reader.Close();
                     }
                 }
-                catch (IOException ex) {
-                    WriteMessage(MessageLevel.Error, String.Format("An access error occured while attempting to copy the input HxF data. The error message is:", ex.Message));
+                catch(IOException ex)
+                {
+                    WriteMessage(MessageLevel.Error, "An access error occured while attempting to copy the " +
+                        "input HxF data. The error message is:", ex.Message);
                 }
             }
 
@@ -125,8 +153,8 @@ namespace Microsoft.Ddue.Tools {
         }
 
         // don't do anything for individual files
-        public override void Apply (XmlDocument document, string key) {}
-
+        public override void Apply(XmlDocument document, string key)
+        {
+        }
     }
-
 }

@@ -2,9 +2,8 @@
 <!-- Translations provided by Milly -->
 <!-- Translations provided by euphory -->
 <content xml:space="preserve">
-    <!-- NOTE: This file must appear LAST in the list of content files
-               so that these items override the matching items in the
-               stock content files! -->
+    <!-- NOTE: This file must appear LAST in the list of content files so that these items override the matching
+         items in the stock content files! -->
 
     <!-- reference_content.xml overrides -->
     <item id="rootTopicTitle">{@RootNamespaceTitle}</item>
@@ -13,8 +12,6 @@
     <item id="runningHeaderText">{@HtmlEncHelpTitle}</item>
 
     <!-- shared_content.xml overrides -->
-    <item id="copyCode">コピー</item>
-
     <item id="locale">{@Locale}</item>
 
     <item id="preliminary"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[これは仮のドキュメントであり、予告なく変更されます。]</p></item>
@@ -28,18 +25,7 @@
         HT_mailLink.innerHTML = HT_mailLinkText;
         </script></item>
 
-    <!-- To format the copyright HREF and/or copyright text into a message of
-         your choosing, you can specify @HtmlEncCopyrightHref and/or
-         @HtmlEncCopyrightText in braces -->
+    <!-- To format the copyright HREF and/or copyright text into a message of your choosing, you can specify
+         @HtmlEncCopyrightHref and/or @HtmlEncCopyrightText in braces -->
     <item id="copyright">{@HtmlEncCopyrightInfo}</item>
-
-	<!-- SHFB Show Missing Component messages -->
-	<item id="shfbAutoDocConstructor">&lt;see cref="T:{0}"/&gt; クラスの新しいインスタンスを初期化します。</item>
-	<item id="shfbAutoDocStaticConstructor">&lt;see cref="T:{0}"/&gt; クラスの静的フィールドを初期化します。</item>
-    <item id="shfbAutoDocDispose">&lt;see cref="T:{0}"/&gt; によって使用された全てのリソースを解放します。</item>
-    <item id="shfbAutoDocDisposeBool">&lt;see cref="T:{0}"/&gt; によって使用されたアンマネージド リソースを解放し、任意でマネージド リソースを解放します。</item>
-    <item id="shfbAutoDocDisposeParam">True でマネージド リソースとアンマネージド リソースの両方とも解放し、False でアンマネージド リソースのみを解放します。</item>
-	<item id="shfbMissingTag">&lt;p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;"&gt;["{1}" の為の説明文 &amp;lt;{0}&amp;gt; が欠落しています。]&lt;/p&gt;</item>
-	<item id="shfbMissingParamTag">&lt;p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;"&gt;["{2}" の為の説明文 &amp;lt;{0} name="{1}"/&amp;gt; が欠落しています。]&lt;/p&gt;</item>
-    <item id="shfbMissingIncludeTarget">&lt;p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;"&gt;['{0}'の中の &amp;lt;include&amp;gt; 対象の説明文が欠落しています。ファイル: '{1}' パス: '{2}']&lt;/p&gt;</item>
 </content>

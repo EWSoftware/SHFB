@@ -123,9 +123,8 @@
 
 	<!-- ****************************************************************** -->
 
-	<component id="Show Missing Documentation Component"
-		type="SandcastleBuilder.Components.ShowMissingComponent"
-		assembly="{@SHFBFolder}SandcastleBuilder.Components.dll">
+	<component id="Show Missing Documentation Component" type="Microsoft.Ddue.Tools.ShowMissingComponent"
+		assembly="{@SandcastlePath}ProductionTools\BuildComponents.dll">
 		<description>This build component is used to add "missing" notes for missing summary, parameter, returns, value, and remarks tags.  It can also add default summary documentation for constructors.</description>
 
 		<insert placement="before" type="Microsoft.Ddue.Tools.TransformComponent" />
@@ -166,16 +165,15 @@
 			<!-- Show missing namespace comments (true by default) -->
 			<ShowMissingNamespaces value="{@ShowMissingNamespaces}" />
 
-			<!-- Shared content file containing the localized messages -->
-			<contentFile filename="{@HtmlEncWorkingFolder}SharedBuilderContent.xml" />
+			<!-- Show missing include targets (true by default) -->
+			<ShowMissingIncludeTargets value="{@ShowMissingIncludeTargets}" />
 		</defaultConfiguration>
 	</component>
 
 	<!-- ****************************************************************** -->
 
-	<component id="IntelliSense Component"
-		type="SandcastleBuilder.Components.IntelliSenseComponent"
-		assembly="{@SHFBFolder}SandcastleBuilder.Components.dll">
+	<component id="IntelliSense Component" type="Microsoft.Ddue.Tools.IntelliSenseComponent"
+		assembly="{@SandcastlePath}ProductionTools\BuildComponents.dll">
 		<description>This build component is used to extract the XML comments into files that can be used for IntelliSense.  Only the basic set of tags needed for IntelliSense are exported and only for documented API members.</description>
 
 		<!-- It's more useful when used with the Show Missing component but it can be used by itself (see the insert
@@ -288,9 +286,8 @@
 
 	<!-- ****************************************************************** -->
 
-	<component id="MS Help 2 Attributes"
-		type="SandcastleBuilder.Components.MSHelpAttrComponent"
-		assembly="{@SHFBFolder}SandcastleBuilder.Components.dll">
+	<component id="MS Help 2 Attributes" type="Microsoft.Ddue.Tools.MSHelpAttrComponent"
+		assembly="{@SandcastlePath}ProductionTools\BuildComponents.dll">
 		<description>This build component is used to add additional MS Help 2 attributes to the XML data island in each generated API topic.</description>
 
 		<insert placement="after" type="Microsoft.Ddue.Tools.TransformComponent" />

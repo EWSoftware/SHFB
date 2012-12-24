@@ -16,43 +16,50 @@ using Microsoft.Ddue.Tools.CommandLine;
 
 namespace Microsoft.Ddue.Tools
 {
+    /// <summary>
+    /// This controls the BuildAssembler process
+    /// </summary>
     class BuildAssemblerConsole
     {
+        /// <summary>
+        /// Main program entry point
+        /// </summary>
+        /// <param name="args">The command line arguments</param>
+        /// <returns>Zero on success or one on failure</returns>
         public static int Main(string[] args)
         {
             ConsoleApplication.WriteBanner();
 
-            #region read command line arguments, and setup config
+            #region Read command line arguments, and setup config
 
-            // specify options
+            // Specify options
             OptionCollection options = new OptionCollection();
             options.Add(new SwitchOption("?", "Show this help page."));
             options.Add(new StringOption("config", "Specify a configuration file.", "configFilePath"));
 
-            // process options
+            // Process options
             ParseArgumentsResult results = options.ParseArguments(args);
 
-            // process help option
+            // Process help option
             if(results.Options["?"].IsPresent)
             {
                 Console.WriteLine("BuildAssembler [options] manifestFilename");
                 options.WriteOptionSummary(Console.Out);
-                return (0);
+                return 1;
             }
 
             // check for invalid options
             if(!results.Success)
             {
                 results.WriteParseErrors(Console.Out);
-                return (1);
+                return 1;
             }
 
-            // check for manifest
-
+            // Check for manifest
             if(results.UnusedArguments.Count != 1)
             {
                 Console.WriteLine("You must supply exactly one manifest file.");
-                return (1);
+                return 1;
             }
 
             string manifest = results.UnusedArguments[0];
@@ -63,28 +70,25 @@ namespace Microsoft.Ddue.Tools
             try
             {
                 if(results.Options["config"].IsPresent)
-                {
                     configuration = ConsoleApplication.GetConfigurationFile((string)results.Options["config"].Value);
-                }
                 else
-                {
                     configuration = ConsoleApplication.GetConfigurationFile();
-                }
             }
             catch(IOException e)
             {
-                ConsoleApplication.WriteMessage(LogLevel.Error, String.Format("The specified configuration file could not be loaded. The error message is: {0}", e.Message));
-                return (1);
+                ConsoleApplication.WriteMessage(LogLevel.Error, "The specified configuration file could not " +
+                    "be loaded. The error message is: {0}", e.Message);
+                return 1;
             }
             catch(XmlException e)
             {
-                ConsoleApplication.WriteMessage(LogLevel.Error, String.Format("The specified configuration file is not well-formed. The error message is: {0}", e.Message));
-                return (1);
+                ConsoleApplication.WriteMessage(LogLevel.Error, "The specified configuration file is not " +
+                    "well-formed. The error message is: {0}", e.Message);
+                return 1;
             }
-
             #endregion
 
-            // create a BuildAssembler to do the work
+            // Create a BuildAssembler instance to do the work
             BuildAssembler buildAssembler = new BuildAssembler();
 
             try
@@ -121,7 +125,7 @@ namespace Microsoft.Ddue.Tools
 
                 int count = buildAssembler.Apply(manifest);
 
-                ConsoleApplication.WriteMessage(LogLevel.Info, String.Format("Processed {0} topics", count));
+                ConsoleApplication.WriteMessage(LogLevel.Info, "Processed {0} topics", count);
             }
             catch(Exception ex)
             {

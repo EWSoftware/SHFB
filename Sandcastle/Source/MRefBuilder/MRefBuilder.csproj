@@ -110,7 +110,6 @@
     <Compile Include="Reflection\ExternalDocumentedFilter.cs" />
     <Compile Include="Reflection\ExternalFilter.cs" />
     <Compile Include="Reflection\ExternalTopicFilter.cs" />
-    <Compile Include="Reflection\GlobalSuppressions.cs" />
     <Compile Include="Reflection\MemberFilter.cs" />
     <Compile Include="Reflection\NamespaceFilter.cs" />
     <Compile Include="Reflection\NoFilter.cs" />

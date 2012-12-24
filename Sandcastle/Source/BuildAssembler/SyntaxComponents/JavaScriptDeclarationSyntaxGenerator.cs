@@ -1,33 +1,27 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Build Components
 // File    : JavaScriptDeclarationSyntaxGenerator.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
 // Updated : 02/16/2012
-// Note    : This is a slightly modified version of the Microsoft
-//           ScriptSharpDeclarationSyntaxGenerator (Copyright 2007-2012
-//           Microsoft Corporation).  My changes are indicated by my initials
-//           "EFW" in a comment on the changes.
+// Note    : This is a slightly modified version of the Microsoft ScriptSharpDeclarationSyntaxGenerator
+//           (Copyright 2007-2012 Microsoft Corporation).  My changes are indicated by my initials "EFW" in a
+//           comment on the changes.
 // Compiler: Microsoft Visual C#
 //
-// This file contains a JavaScript declaration syntax generator that is used to
-// add a JavaScript Syntax section to each generated API topic.  This version
-// differs from the ScriptSharpDeclarationSyntaxGenerator in that it looks for
-// a <scriptSharp /> element in the <api> node and, if found, only then will
-// it apply the casing rules to the member name.  If not present, no casing
-// rules are applied to the member names thus it is suitable for use with
-// regular JavaScript such as that used in AjaxDoc projects.  There are
-// actually only two minor changes plus a change to the FixScriptSharp.xsl
-// transformation.
+// This file contains a JavaScript declaration syntax generator that is used to add a JavaScript Syntax section
+// to each generated API topic.  This version differs from the ScriptSharpDeclarationSyntaxGenerator in that it
+// looks for a <scriptSharp /> element in the <api> node and, if found, only then will it apply the casing rules
+// to the member name.  If not present, no casing rules are applied to the member names thus it is suitable for
+// use with regular JavaScript such as that used in AjaxDoc projects.  There are actually only two minor changes
+// plus a change to the FixScriptSharp.xsl transformation.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice and
-// all copyright notices must remain intact in all applications, documentation,
-// and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice and all copyright notices must remain intact in all applications, documentation, and source files.
 //
 // Change History
 // 02/16/2012 - EFW - Merged my changes into the code
-//=============================================================================
+//===============================================================================================================
 
 using System;
 using System.Globalization;
@@ -36,23 +30,19 @@ using System.Xml.XPath;
 namespace Microsoft.Ddue.Tools
 {
     /// <summary>
-    /// This is a JavaScript declaration syntax generator that is used to add a
-    /// JavaScript Syntax section to each generated API topic.
+    /// This is a JavaScript declaration syntax generator that is used to add a JavaScript Syntax section to
+    /// each generated API topic.
     /// </summary>
-    /// <remarks><para>This version differs from the
-    /// <c>ScriptSharpDeclarationSyntaxGenerator</c> in that it looks for a
-    /// <c>&lt;scriptSharp /&gt;</c> element in the <c>&lt;api&gt;</c> node
-    /// and, if found, only then will it apply the casing rules to the member
-    /// name.  If not present, no casing rules are applied to the member names
-    /// thus it is suitable for use with regular JavaScript such as that used
-    /// in AjaxDoc projects.</para>
+    /// <remarks><para>This version differs from the <c>ScriptSharpDeclarationSyntaxGenerator</c> in that it
+    /// looks for a <c>&lt;scriptSharp /&gt;</c> element in the <c>&lt;api&gt;</c> node and, if found, only then
+    /// will it apply the casing rules to the member name.  If not present, no casing rules are applied to the
+    /// member names thus it is suitable for use with regular JavaScript such as that used in AjaxDoc projects.</para>
     /// 
-    /// <para>In order to use this script generator with Script# content, the
-    /// Sandcastle reflection data file must first be transformed using the XSL
-    /// transformation <b>ProductionTransforms\FixScriptSharp.xsl</b> so that
-    /// the necessary changes are made to it.</para>
+    /// <para>In order to use this script generator with Script# content, the Sandcastle reflection data file
+    /// must first be transformed using the XSL transformation <b>ProductionTransforms\FixScriptSharp.xsl</b> so
+    /// that the necessary changes are made to it.</para>
     /// </remarks>
-    public class JavaScriptDeclarationSyntaxGenerator : SyntaxGeneratorTemplate
+    public sealed class JavaScriptDeclarationSyntaxGenerator : SyntaxGeneratorTemplate
     {
         #region Fields
         //=====================================================================
@@ -151,12 +141,12 @@ namespace Microsoft.Ddue.Tools
             {
                 // Convert the leading uppercase segment, except the last character
                 // which is assumed to be the first letter of the next word
-                return name.Substring(0, conversionLength - 1).ToLower(
-                    CultureInfo.InvariantCulture) + name.Substring(conversionLength - 1);
+                return name.Substring(0, conversionLength - 1).ToLowerInvariant() +
+                    name.Substring(conversionLength - 1);
             }
             else if(name.Length == 1)
             {
-                return name.ToLower(CultureInfo.InvariantCulture);
+                return name.ToLowerInvariant();
             }
             else
             {

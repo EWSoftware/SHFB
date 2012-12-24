@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Globalization;
 using System.IO;
 using System.Xml;
 using System.Xml.XPath;
@@ -13,232 +14,258 @@ using System.Xml.Schema;
 
 // still have problems with spaces
 
-namespace Microsoft.Ddue.Tools {
+namespace Microsoft.Ddue.Tools
+{
 
-	public class SharedContentComponent : BuildComponent {
+    public class SharedContentComponent : BuildComponent
+    {
 
-		public SharedContentComponent (BuildAssembler assembler, XPathNavigator configuration) : base(assembler, configuration) {
+        public SharedContentComponent(BuildAssembler assembler, XPathNavigator configuration) :
+          base(assembler, configuration)
+        {
 
-			// get context
-			context = GetContext(configuration);
+            // get context
+            context = GetContext(configuration);
 
-			// get the tags to be resolved
-			XPathNodeIterator resolve_nodes = configuration.Select("replace");
-			foreach (XPathNavigator resolve_node in resolve_nodes) {
-				string path = resolve_node.GetAttribute("elements", String.Empty);
-				if (String.IsNullOrEmpty(path)) path = "//(include|includeAttribute)";
-				// if (String.IsNullOrEmpty(path)) WriteMessage(MessageLevel.Error, "Each resolve element must contain a path attribute specifying an XPath expression for shared content elements.");
-				try {
-					XPathExpression path_expresion = XPathExpression.Compile(path, context);
-				} catch (XPathException) {
-					WriteMessage(MessageLevel.Error, String.Format("The elements expression '{0}' is not a valid XPath.", path));
-				}
+            // get the tags to be resolved
+            XPathNodeIterator resolve_nodes = configuration.Select("replace");
+            foreach(XPathNavigator resolve_node in resolve_nodes)
+            {
+                string path = resolve_node.GetAttribute("elements", String.Empty);
+                if(String.IsNullOrEmpty(path))
+                    path = "//(include|includeAttribute)";
+                // if (String.IsNullOrEmpty(path)) WriteMessage(MessageLevel.Error, "Each resolve element must contain a path attribute specifying an XPath expression for shared content elements.");
+                try
+                {
+                    XPathExpression path_expresion = XPathExpression.Compile(path, context);
+                }
+                catch(XPathException)
+                {
+                    WriteMessage(MessageLevel.Error, "The elements expression '{0}' is not a valid XPath.", path);
+                }
 
-				string item = resolve_node.GetAttribute("item", String.Empty);
-				if (String.IsNullOrEmpty(item)) item = "string(@item)";
-				try {
-					XPathExpression item_expression = XPathExpression.Compile(item, context);
-				} catch (XPathException) {
-					WriteMessage(MessageLevel.Error, String.Format("The item expression '{0}' is not a valid XPath.", item));
-				}
+                string item = resolve_node.GetAttribute("item", String.Empty);
+                if(String.IsNullOrEmpty(item))
+                    item = "string(@item)";
+                try
+                {
+                    XPathExpression item_expression = XPathExpression.Compile(item, context);
+                }
+                catch(XPathException)
+                {
+                    WriteMessage(MessageLevel.Error, "The item expression '{0}' is not a valid XPath.", item);
+                }
 
-				string parameters = resolve_node.GetAttribute("parameters", String.Empty);
-				if (String.IsNullOrEmpty(parameters)) parameters = "parameter";
+                string parameters = resolve_node.GetAttribute("parameters", String.Empty);
+                if(String.IsNullOrEmpty(parameters))
+                    parameters = "parameter";
 
-				string attribute = resolve_node.GetAttribute("attribute", String.Empty);
-				if (String.IsNullOrEmpty(attribute)) attribute = "string(@name)";
+                string attribute = resolve_node.GetAttribute("attribute", String.Empty);
+                if(String.IsNullOrEmpty(attribute))
+                    attribute = "string(@name)";
 
-				elements.Add( new SharedContentElement(path, item, parameters, attribute, context) );
-			}
+                elements.Add(new SharedContentElement(path, item, parameters, attribute, context));
+            }
 
-			// Console.WriteLine("{0} elements explicitly defined", elements.Count);
+            if(elements.Count == 0)
+                elements.Add(new SharedContentElement(@"//include | //includeAttribute", "string(@item)", "parameter", "string(@name)", context));
 
-			if (elements.Count == 0) elements.Add( new SharedContentElement(@"//include | //includeAttribute", "string(@item)", "parameter", "string(@name)", context) );
-
-			// get the source and target formats
-			XPathNodeIterator content_nodes = configuration.Select("content");
-			foreach (XPathNavigator content_node in content_nodes)
+            // get the source and target formats
+            XPathNodeIterator content_nodes = configuration.Select("content");
+            foreach(XPathNavigator content_node in content_nodes)
             {
                 // get the files				
                 string sharedContentFiles = content_node.GetAttribute("file", String.Empty);
-                if (String.IsNullOrEmpty(sharedContentFiles))
+                if(String.IsNullOrEmpty(sharedContentFiles))
                     WriteMessage(MessageLevel.Error, "The content/@file attribute must specify a path.");
                 ParseDocuments(sharedContentFiles);
             }
-            WriteMessage(MessageLevel.Info, String.Format("Loaded {0} shared content items.", content.Count));
-		}
+
+            WriteMessage(MessageLevel.Info, "Loaded {0} shared content items.", content.Count);
+        }
 
         public void ParseDocuments(string wildcardPath)
         {
             string sharedContentFiles = Environment.ExpandEnvironmentVariables(wildcardPath);
-            if (String.IsNullOrEmpty(sharedContentFiles))
+            if(String.IsNullOrEmpty(sharedContentFiles))
                 WriteMessage(MessageLevel.Error, "The content/@file attribute specifies an empty string.");
 
-            WriteMessage(MessageLevel.Info, String.Format("Searching for files that match '{0}'.", sharedContentFiles));
+            WriteMessage(MessageLevel.Info, "Searching for files that match '{0}'.", sharedContentFiles);
             string directoryPart = Path.GetDirectoryName(sharedContentFiles);
-            if (String.IsNullOrEmpty(directoryPart))
+            if(String.IsNullOrEmpty(directoryPart))
                 directoryPart = Environment.CurrentDirectory;
             directoryPart = Path.GetFullPath(directoryPart);
             string filePart = Path.GetFileName(sharedContentFiles);
             string[] files = Directory.GetFiles(directoryPart, filePart);
-            foreach (string file in files)
+            foreach(string file in files)
                 LoadContent(file);
-            WriteMessage(MessageLevel.Info, String.Format("Found {0} files in {1}.", files.Length, sharedContentFiles));
+            WriteMessage(MessageLevel.Info, "Found {0} files in {1}.", files.Length, sharedContentFiles);
         }
 
         private void LoadContent(string file)
         {
 
-			WriteMessage(MessageLevel.Info, String.Format("Loading shared content file '{0}'.", file) );
+            WriteMessage(MessageLevel.Info, "Loading shared content file '{0}'.", file);
 
-            try {
+            try
+            {
                 XmlReader reader = XmlReader.Create(file);
 
-                try {
+                try
+                {
                     reader.MoveToContent();
-                    while (!reader.EOF) {
+                    while(!reader.EOF)
+                    {
 
-                        if ((reader.NodeType == XmlNodeType.Element) && (reader.Name == "item")) {
+                        if((reader.NodeType == XmlNodeType.Element) && (reader.Name == "item"))
+                        {
 
-                            string key = reader.GetAttribute("id").ToLower();
+                            string key = reader.GetAttribute("id").ToLowerInvariant();
                             string value = reader.ReadInnerXml();
 
-                            if (content.ContainsKey(key)) WriteMessage(MessageLevel.Info, String.Format("Overriding shared content item '{0}' with value in file '{1}'.", key, file));
+                            if(content.ContainsKey(key))
+                                WriteMessage(MessageLevel.Info, "Overriding shared content item '{0}' with value in file '{1}'.", key, file);
                             content[key] = value;
                             // content.Add(key, value);
-                        } else {
+                        }
+                        else
+                        {
                             reader.Read();
                         }
 
                     }
-                } finally {
+                }
+                finally
+                {
                     reader.Close();
                 }
 
-            } catch (IOException e) {
-                WriteMessage(MessageLevel.Error, String.Format("The shared content file '{0}' could not be opened. The error message is: {1}", file, BuildComponentUtilities.GetExceptionMessage(e)));
-            } catch (XmlException e) {
-                WriteMessage(MessageLevel.Error, String.Format("The shared content file '{0}' is not well-formed. The error message is: {1}", file, BuildComponentUtilities.GetExceptionMessage(e)));
-            } catch (XmlSchemaException e) {
-                WriteMessage(MessageLevel.Error, String.Format("The shared content file '{0}' is not valid. The error message is: {1}", file, BuildComponentUtilities.GetExceptionMessage(e)));
             }
+            catch(IOException e)
+            {
+                WriteMessage(MessageLevel.Error, "The shared content file '{0}' could not be opened. The " +
+                    "error message is: {1}", file, e.GetExceptionMessage());
+            }
+            catch(XmlException e)
+            {
+                WriteMessage(MessageLevel.Error, "The shared content file '{0}' is not well-formed. The " +
+                    "error message is: {1}", file, e.GetExceptionMessage());
+            }
+            catch(XmlSchemaException e)
+            {
+                WriteMessage(MessageLevel.Error, "The shared content file '{0}' is not valid. The error " +
+                    "message is: {1}", file, e.GetExceptionMessage());
+            }
+        }
 
-		}
+        // Stored data
 
-		private void DetectLoops () {
+        // The context
+        private CustomContext context = new CustomContext();
 
-		}
+        // The shared content items
+        private Dictionary<string, string> content = new Dictionary<string, string>();
 
-		// Stored data
+        // THe shared content elements
+        private List<SharedContentElement> elements = new List<SharedContentElement>();
 
-		// The context
-		private CustomContext context = new CustomContext();
+        public override void Apply(XmlDocument document, string key)
+        {
+            ResolveContent(document);
+        }
 
-		// The shared content items
-		private Dictionary<string,string> content = new Dictionary<string,string>();
+        // private XPathExpression expression = XPathExpression.Compile("//include | //includeAttribute");
 
-		// THe shared content elements
-		private List<SharedContentElement> elements = new List<SharedContentElement>();
+        private void ResolveContent(XmlDocument document)
+        {
+            ResolveContent(document, document.CreateNavigator());
+        }
 
-		public override void Apply (XmlDocument document, string key) {
-			ResolveContent(document);
-		}
+        private void ResolveContent(XmlDocument document, XPathNavigator start)
+        {
 
-		// private XPathExpression expression = XPathExpression.Compile("//include | //includeAttribute");
+            // for each kind of shared content element
+            foreach(SharedContentElement element in elements)
+            {
 
-		private void ResolveContent (XmlDocument document) {
-            //Console.WriteLine("doc={0}", document.CreateNavigator().InnerXml);
-			ResolveContent(document, document.CreateNavigator());
-		}
+                // find all such elements
+                XPathNodeIterator nodeIterator = start.Select(element.Path);
 
-		private void ResolveContent (XmlDocument document, XPathNavigator start) {
+                // convert to an array so as not to cause an error when manipulating the document
+                XPathNavigator[] nodes = ConvertIteratorToArray(nodeIterator);
 
-			// for each kind of shared content element
-			foreach (SharedContentElement element in elements) {
+                // process each element
+                foreach(XPathNavigator node in nodes)
+                {
+                    // get the key
+                    string item = node.Evaluate(element.Item).ToString().ToLowerInvariant();
 
-				// find all such elements
-				XPathNodeIterator nodeIterator = start.Select(element.Path);
-				// Console.WriteLine("Found {0} shared content elements.", nodeIterator.Count);
+                    // check for missing key
+                    if(String.IsNullOrEmpty(item))
+                    {
+                        WriteMessage(MessageLevel.Warn, "A shared content element did not specify an item.");
+                    }
+                    else
+                    {
+                        // extract parameters
+                        List<string> parameters = new List<string>();
 
-				// convert to an array so as not to cause an error when manipulating the document
-				XPathNavigator[] nodes = ConvertIteratorToArray(nodeIterator);
+                        XPathNodeIterator parameter_nodes = node.Select(element.Parameters);
 
-				// process each element
-				foreach (XPathNavigator node in nodes) {
+                        foreach(XPathNavigator parameter_node in parameter_nodes)
+                            parameters.Add(parameter_node.GetInnerXml());
 
-					// Console.WriteLine(node.LocalName);
+                        // get the content
+                        string content = GetContent(item, parameters.ToArray());
 
-					// get the key
-					string item = node.Evaluate(element.Item).ToString().ToLower();
+                        // check for missing content
+                        if(content == null)
+                            WriteMessage(MessageLevel.Warn, "Missing shared content item. Tag:'{0}'; Id:'{1}'.", node.LocalName, item);
+                        else
+                        {
+                            // store the content in a document fragment
+                            XmlDocumentFragment fragment = document.CreateDocumentFragment();
+                            fragment.InnerXml = content;
 
-					// check for missing key
-					if (String.IsNullOrEmpty(item)) {
-						WriteMessage(MessageLevel.Warn, "A shared content element did not specify an item.");
-					} else {
+                            // resolve any shared content in the fragment
+                            ResolveContent(document, fragment.CreateNavigator());
 
-                        // Console.WriteLine("node={0}", node.OuterXml);
+                            // look for an attribute name
+                            string attribute = node.Evaluate(element.Attribute).ToString();
 
-						// extract parameters
-						List<string> parameters = new List<string>();
-						XPathNodeIterator parameter_nodes = node.Select(element.Parameters);
-						foreach (XPathNavigator parameter_node in parameter_nodes) {
-							string parameter = BuildComponentUtilities.GetInnerXml(parameter_node);
-                            // Console.WriteLine("parameter={0}", parameter);
-							parameters.Add(parameter);
-						}
+                            // insert the resolved content
+                            if(String.IsNullOrEmpty(attribute))
+                            {
+                                // as mixed content
+                                // node.InsertAfter(resolvedContent);
+                                XmlWriter writer = node.InsertAfter();
+                                fragment.WriteTo(writer);
+                                writer.Close();
+                            }
+                            else
+                            {
+                                // as an attribute
+                                XPathNavigator parent = node.CreateNavigator();
+                                parent.MoveToParent();
+                                parent.CreateAttribute(String.Empty, attribute, String.Empty, fragment.InnerText);
+                            }
+                        }
+                    }
 
-						// get the content
-						string content = GetContent(item, parameters.ToArray());
-
-						// check for missing content
-						if (content == null) {
-							WriteMessage(MessageLevel.Warn, String.Format("Missing shared content item. Tag:'{0}'; Id:'{1}'.", node.LocalName, item));
-						} else {
-
-							// store the content in a document fragment
-							XmlDocumentFragment fragment = document.CreateDocumentFragment();
-							fragment.InnerXml = content;
-
-							// resolve any shared content in the fragment
-							ResolveContent(document, fragment.CreateNavigator());
-							//string resolvedContent = fragment.InnerXml;
-							//Console.WriteLine("value = '{0}'", resolvedContent);
-
-							// look for an attribute name
-							string attribute = node.Evaluate(element.Attribute).ToString();
-
-							// insert the resolved content
-							if (String.IsNullOrEmpty(attribute)) {
-								// as mixed content
-								// node.InsertAfter(resolvedContent);
-								XmlWriter writer = node.InsertAfter();
-								fragment.WriteTo(writer);
-								writer.Close();
-							} else {
-								// as an attribute
-								XPathNavigator parent = node.CreateNavigator();
-								parent.MoveToParent();
-								parent.CreateAttribute(String.Empty, attribute, String.Empty, fragment.InnerText);
-							}
-
-						}
-		
-
-					}
-
-					// keep a reference to the parent element
+                    // keep a reference to the parent element
                     XPathNavigator parentElement = node.CreateNavigator();
                     parentElement.MoveToParent();
 
                     // remove the node
-					node.DeleteSelf();
+                    node.DeleteSelf();
 
                     // if there is no content left in the parent element, make sure it is self-closing
-                    if (!parentElement.HasChildren && !parentElement.IsEmptyElement) {
+                    if(!parentElement.HasChildren && !parentElement.IsEmptyElement)
+                    {
 
                         //If 'node' was already the root then we will have a blank node now and 
                         //doing an InsertAfter() will throw an exception.
-                        if (parentElement.Name.Length > 0)
+                        if(parentElement.Name.Length > 0)
                         {
                             // create a new element
                             XmlWriter attributeWriter = parentElement.InsertAfter();
@@ -266,115 +293,114 @@ namespace Microsoft.Ddue.Tools {
                             WriteMessage(MessageLevel.Error, "Error replacing item.");
                         }
                     }
+                }
+            }
+        }
 
-				}
+        // look up shared content
+        private string GetContent(string key, string[] parameters)
+        {
+            string value;
 
-			}
+            if(content.TryGetValue(key, out value))
+            {
+                try
+                {
+                    value = String.Format(CultureInfo.InvariantCulture, value, parameters);
+                }
+                catch(FormatException)
+                {
+                    WriteMessage(MessageLevel.Error, "The shared content item '{0}' could not be formatted with {1} parameters.", key, parameters.Length);
+                }
 
-		}
+                return (value);
+            }
+            else
+            {
+                return (null);
+            }
 
-		// look up shared content
-		private string GetContent (string key, string[] parameters) {
+        }
 
-			string value;
-			if (content.TryGetValue(key, out value)) {
-				try {
-					value = String.Format(value, parameters);
-				} catch (FormatException) {
-					WriteMessage(MessageLevel.Error, String.Format("The shared content item '{0}' could not be formatted with {1} parameters.", key, parameters.Length));
-				}
+        private static XPathNavigator[] ConvertIteratorToArray(XPathNodeIterator iterator)
+        {
+            XPathNavigator[] result = new XPathNavigator[iterator.Count];
+            for(int i = 0; i < result.Length; i++)
+            {
+                iterator.MoveNext();
+                result[i] = iterator.Current.Clone();
+            }
+            return (result);
+        }
 
-				return(value);
-			} else {
-				return(null);
-			}
+        private static CustomContext GetContext(XPathNavigator configuration)
+        {
 
-		}
+            CustomContext context = new CustomContext();
 
-		private static XPathNavigator[] ConvertIteratorToArray (XPathNodeIterator iterator) {
-			XPathNavigator[] result = new XPathNavigator[iterator.Count];
-			for (int i=0; i<result.Length; i++) {
-				iterator.MoveNext();
-				result[i] = iterator.Current.Clone();
-			}
-			return(result);
-		}
+            XPathNodeIterator context_nodes = configuration.Select("context");
+            foreach(XPathNavigator context_node in context_nodes)
+            {
+                string prefix = context_node.GetAttribute("prefix", String.Empty);
+                string name = context_node.GetAttribute("name", String.Empty);
+                context.AddNamespace(prefix, name);
+            }
 
-		private static CustomContext GetContext (XPathNavigator configuration) {
+            return (context);
 
-			CustomContext context = new CustomContext();
+        }
 
-			XPathNodeIterator context_nodes = configuration.Select("context");
-			foreach (XPathNavigator context_node in context_nodes) {
-				string prefix = context_node.GetAttribute("prefix", String.Empty);
-				string name = context_node.GetAttribute("name", String.Empty);
-				context.AddNamespace(prefix, name);
-			}
+    }
 
-			return(context);			
+    internal class SharedContentElement
+    {
 
-		}
+        public SharedContentElement(string path, string item, string parameters, string attribute, IXmlNamespaceResolver context)
+        {
+            this.path = XPathExpression.Compile(path, context);
+            this.item = XPathExpression.Compile(item, context);
+            this.parameters = XPathExpression.Compile(parameters, context);
+            this.attribute = XPathExpression.Compile(attribute, context);
+        }
 
-	}
+        private XPathExpression path;
 
-	internal class SharedContentElement {
+        private XPathExpression item;
 
-		public SharedContentElement (string path, string item, string parameters, string attribute, IXmlNamespaceResolver context) {
-			this.path = XPathExpression.Compile(path, context);
-			this.item = XPathExpression.Compile(item, context);
-			this.parameters = XPathExpression.Compile(parameters, context);
-			this.attribute = XPathExpression.Compile(attribute, context);
-		}
+        private XPathExpression parameters;
 
+        private XPathExpression attribute;
 
+        public XPathExpression Path
+        {
+            get
+            {
+                return (path);
+            }
+        }
 
-		public SharedContentElement (string path, string item, string parameters, string attribute) {
-			this.path = XPathExpression.Compile(path);
-			this.item = XPathExpression.Compile(item);
-			this.parameters = XPathExpression.Compile(parameters);
-			if (attribute != null) {
-				this.attribute = XPathExpression.Compile(attribute);
-			}
-		}
+        public XPathExpression Item
+        {
+            get
+            {
+                return (item);
+            }
+        }
 
-		private XPathExpression path;
+        public XPathExpression Parameters
+        {
+            get
+            {
+                return (parameters);
+            }
+        }
 
-		private XPathExpression item;
-
-		private XPathExpression parameters;
-
-		private XPathExpression attribute;
-
-		public XPathExpression Path {
-			get {
-				return(path);
-			}
-		}
-
-		public XPathExpression Item {
-			get {
-				return(item);
-			}
-		}
-
-		public XPathExpression Parameters {
-			get {
-				return(parameters);
-			}
-		}
-		
-		public XPathExpression Attribute {
-			get {
-				return(attribute);
-			}
-		}
-
-		public bool IsAttribute {
-			get {
-				return(attribute != null);
-			}
-		}
-
-	}
-
+        public XPathExpression Attribute
+        {
+            get
+            {
+                return (attribute);
+            }
+        }
+    }
 }

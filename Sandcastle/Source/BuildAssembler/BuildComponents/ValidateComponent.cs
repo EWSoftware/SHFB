@@ -3,45 +3,61 @@
 // See http://www.microsoft.com/resources/sharedsource/licensingbasics/sharedsourcelicenses.mspx.
 // All other rights reserved.
 
+// Change History
+// 12/21/2012 - EFW - Updated the warning message to include the document key
+
 using System;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.XPath;
 
-namespace Microsoft.Ddue.Tools {
+namespace Microsoft.Ddue.Tools
+{
+    /// <summary>
+    /// This component serves as a debugging aid.  It is used to validate the generated document against one
+    /// or more XML schemas.
+    /// </summary>
+    public class ValidateComponent : BuildComponent
+    {
+        #region Private data members
+        //=====================================================================
 
-	public class ValidateComponent : BuildComponent {
+        private XmlSchemaSet schemas = new XmlSchemaSet();
+        #endregion
 
-		private XmlSchemaSet schemas = new XmlSchemaSet();
+        #region Constructor
+        //=====================================================================
 
-		public ValidateComponent (BuildAssembler assembler, XPathNavigator configuration) : base(assembler, configuration) {
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="assembler">The build assembler reference</param>
+        /// <param name="configuration">The component configuration</param>
+        /// <remarks>The configuration should contain one or more <c>schema</c> elements with a <c>file</c>
+        /// attribute that specifies the XSD schema file to use.</remarks>
+        public ValidateComponent(BuildAssembler assembler, XPathNavigator configuration) :
+          base(assembler, configuration)
+        {
+            foreach(XPathNavigator schema_node in configuration.Select("schema"))
+                schemas.Add(null, schema_node.GetAttribute("file", String.Empty));
+        }
+        #endregion
 
-			XPathNodeIterator schema_nodes = configuration.Select("schema");
-			foreach (XPathNavigator schema_node in schema_nodes) {
-				string file = schema_node.GetAttribute("file", String.Empty);
-				schemas.Add(null, file);
-			}
-					
-		}
+        #region Method overrides
+        //=====================================================================
 
-		public override void Apply (XmlDocument document, string key) {
+        /// <inheritdoc />
+        public override void Apply(XmlDocument document, string key)
+        {
+            // Set the validation schemas
+            document.Schemas = schemas;
 
-			// set the validate schema
-			document.Schemas = schemas;
-
-			// create a validation handler
-			ValidationEventHandler handler = new ValidationEventHandler(LogValidationError);
-
-			// validate the document
-			document.Validate(handler);
-
-		}
-
-		private void LogValidationError (Object o, ValidationEventArgs e) {
-			string message = String.Format("ValidationError: {0}", e.Message);
-			WriteMessage(MessageLevel.Warn, message);
-		}
-
-	}
-
+            // Validate the document
+            document.Validate((sender, e) =>
+            {
+                this.WriteMessage(key, MessageLevel.Warn, e.Message);
+            });
+        }
+        #endregion
+    }
 }

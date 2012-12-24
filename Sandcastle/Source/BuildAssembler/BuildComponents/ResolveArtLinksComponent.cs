@@ -5,18 +5,17 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Xml;
 using System.Xml.XPath;
 
 namespace Microsoft.Ddue.Tools
 {
-
     public class ResolveArtLinksComponent : BuildComponent
     {
-
-        public ResolveArtLinksComponent(BuildAssembler assembler, XPathNavigator configuration)
-            : base(assembler, configuration)
+        public ResolveArtLinksComponent(BuildAssembler assembler, XPathNavigator configuration) :
+          base(assembler, configuration)
         {
 
             XPathNodeIterator targets_nodes = configuration.Select("targets");
@@ -28,7 +27,7 @@ namespace Microsoft.Ddue.Tools
                     WriteMessage(MessageLevel.Error, "Each targets element must have an input attribute specifying a directory containing art files.");
                 input = Environment.ExpandEnvironmentVariables(input);
                 if(!Directory.Exists(input))
-                    WriteMessage(MessageLevel.Error, String.Format("The art input directory '{0}' does not exist.", input));
+                    WriteMessage(MessageLevel.Error, "The art input directory '{0}' does not exist.", input);
 
                 string baseOutputPath = targets_node.GetAttribute("baseOutput", String.Empty);
                 if(!String.IsNullOrEmpty(baseOutputPath))
@@ -51,7 +50,7 @@ namespace Microsoft.Ddue.Tools
                     WriteMessage(MessageLevel.Error, "Each targets element must have a map attribute specifying a file that maps art ids to files in the input directory.");
                 map = Environment.ExpandEnvironmentVariables(map);
                 if(!File.Exists(map))
-                    WriteMessage(MessageLevel.Error, String.Format("The art map file '{0}' does not exist.", map));
+                    WriteMessage(MessageLevel.Error, "The art map file '{0}' does not exist.", map);
 
                 string format = targets_node.GetAttribute("format", String.Empty);
                 XPathExpression format_xpath = String.IsNullOrEmpty(format) ? null : XPathExpression.Compile(format);
@@ -63,8 +62,7 @@ namespace Microsoft.Ddue.Tools
 
             }
 
-            WriteMessage(MessageLevel.Info, String.Format("Indexed {0} art targets.", targets.Count));
-
+            WriteMessage(MessageLevel.Info, "Indexed {0} art targets.", targets.Count);
         }
 
         private void AddTargets(string map, string input, string baseOutputPath, XPathExpression outputXPath, string link, XPathExpression formatXPath, XPathExpression relativeToXPath)
@@ -80,11 +78,10 @@ namespace Microsoft.Ddue.Tools
                 string file = (string)item.Evaluate(artFileExpression);
                 string text = (string)item.Evaluate(artTextExpression);
 
-                id = id.ToLower();
+                id = id.ToLowerInvariant();
                 string name = Path.GetFileName(file);
 
                 ArtTarget target = new ArtTarget();
-                target.Id = id;
                 target.InputPath = Path.Combine(input, file);
                 target.baseOutputPath = baseOutputPath;
                 target.OutputXPath = outputXPath;
@@ -92,7 +89,7 @@ namespace Microsoft.Ddue.Tools
                 if(string.IsNullOrEmpty(name))
                     target.LinkPath = link;
                 else
-                    target.LinkPath = string.Format("{0}/{1}", link, name);
+                    target.LinkPath = String.Format(CultureInfo.InvariantCulture, "{0}/{1}", link, name);
 
                 target.Text = text;
                 target.Name = name;
@@ -100,9 +97,7 @@ namespace Microsoft.Ddue.Tools
                 target.RelativeToXPath = relativeToXPath;
 
                 targets[id] = target;
-                // targets.Add(id, target);
             }
-
         }
 
         private XPathExpression artIdExpression = XPathExpression.Compile("string(@id)");
@@ -111,15 +106,11 @@ namespace Microsoft.Ddue.Tools
 
         private Dictionary<string, ArtTarget> targets = new Dictionary<string, ArtTarget>();
 
-        public override void Apply(XmlDocument document, string id)
+        public override void Apply(XmlDocument document, string key)
         {
-
-            XPathNodeIterator artLinkIterator = document.CreateNavigator().Select(artLinkExpression);
-            XPathNavigator[] artLinks = BuildComponentUtilities.ConvertNodeIteratorToArray(artLinkIterator);
-            foreach(XPathNavigator artLink in artLinks)
+            foreach(XPathNavigator artLink in document.CreateNavigator().Select(artLinkExpression).ToArray())
             {
-
-                string name = artLink.GetAttribute("target", String.Empty).ToLower();
+                string name = artLink.GetAttribute("target", String.Empty).ToLowerInvariant();
 
                 if(targets.ContainsKey(name))
                 {
@@ -149,7 +140,7 @@ namespace Microsoft.Ddue.Tools
                     }
                     else
                     {
-                        base.WriteMessage(id, MessageLevel.Warn, "The file '{0}' for the art target '{1}' was not found.", target.InputPath, name);
+                        base.WriteMessage(key, MessageLevel.Warn, "The file '{0}' for the art target '{1}' was not found.", target.InputPath, name);
                     }
 
                     // Get the relative art path for HXF generation.
@@ -171,12 +162,14 @@ namespace Microsoft.Ddue.Tools
                     }
                     else
                     {
-                        // WebDocs way, which uses the 'format' xpath expression to calculate the target path
-                        // and then makes it relative to the current page if the 'relative-to' attribute is
-                        // used.
-                        string src = BuildComponentUtilities.EvalXPathExpr(document, target.FormatXPath, "key", Path.GetFileName(outputPath));
+                        // WebDocs way, which uses the 'format' xpath expression to calculate the target path and
+                        // then makes it relative to the current page if the 'relative-to' attribute is used.
+                        string src = document.EvalXPathExpr(target.FormatXPath, "key",
+                            Path.GetFileName(outputPath));
+
                         if(target.RelativeToXPath != null)
-                            src = BuildComponentUtilities.GetRelativePath(src, BuildComponentUtilities.EvalXPathExpr(document, target.RelativeToXPath, "key", id));
+                            src = src.GetRelativePath(document.EvalXPathExpr(target.RelativeToXPath, "key", key));
+
                         writer.WriteAttributeString("src", src);
                     }
 
@@ -185,26 +178,17 @@ namespace Microsoft.Ddue.Tools
                     writer.Close();
 
                     artLink.DeleteSelf();
-
                 }
                 else
-                {
-                    base.WriteMessage(id, MessageLevel.Warn, "Unknown art target '{0}'", name);
-                }
-
+                    base.WriteMessage(key, MessageLevel.Warn, "Unknown art target '{0}'", name);
             }
-
         }
 
         private static XPathExpression artLinkExpression = XPathExpression.Compile("//artLink");
-
     }
 
     internal class ArtTarget
     {
-
-        public string Id;
-
         public string InputPath;
 
         public string baseOutputPath;
@@ -220,7 +204,5 @@ namespace Microsoft.Ddue.Tools
         public XPathExpression FormatXPath;
 
         public XPathExpression RelativeToXPath;
-
     }
-
 }

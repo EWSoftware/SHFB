@@ -5,14 +5,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildAssembler", "BuildAsse
 	ProjectSection(ProjectDependencies) = postProject
 		{30773718-BC7C-4FCC-A9C2-7EE61DF4EC41} = {30773718-BC7C-4FCC-A9C2-7EE61DF4EC41}
 		{CEAEC85B-973A-4414-8668-723EB65E5088} = {CEAEC85B-973A-4414-8668-723EB65E5088}
-		{E64725D7-2208-4C28-922D-B6543C0BC483} = {E64725D7-2208-4C28-922D-B6543C0BC483}
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildAssemblerLibrary", "BuildAssemblerLibrary\BuildAssemblerLibrary.csproj", "{399E78F8-4954-409E-991A-37DA9D0579CC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildComponents", "BuildComponents\BuildComponents.csproj", "{30773718-BC7C-4FCC-A9C2-7EE61DF4EC41}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CopyComponents", "CopyComponents\CopyComponents.csproj", "{E64725D7-2208-4C28-922D-B6543C0BC483}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SyntaxComponents", "SyntaxComponents\SyntaxComponents.csproj", "{CEAEC85B-973A-4414-8668-723EB65E5088}"
 EndProject
@@ -25,13 +22,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 7
+		SccNumberOfProjects = 6
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs01
-		SccProjectUniqueName0 = ..\\CommandLine\\CommandLine.csproj
-		SccProjectName0 = ../CommandLine
-		SccLocalPath0 = ..\\CommandLine
-		SccLocalPath1 = .
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = ..\\CommandLine\\CommandLine.csproj
+		SccProjectName1 = ../CommandLine
+		SccLocalPath1 = ..\\CommandLine
 		SccProjectUniqueName2 = BuildAssembler\\BuildAssembler.csproj
 		SccProjectName2 = BuildAssembler
 		SccLocalPath2 = BuildAssembler
@@ -41,12 +38,9 @@ Global
 		SccProjectUniqueName4 = BuildComponents\\BuildComponents.csproj
 		SccProjectName4 = BuildComponents
 		SccLocalPath4 = BuildComponents
-		SccProjectUniqueName5 = CopyComponents\\CopyComponents.csproj
-		SccProjectName5 = CopyComponents
-		SccLocalPath5 = CopyComponents
-		SccProjectUniqueName6 = SyntaxComponents\\SyntaxComponents.csproj
-		SccProjectName6 = SyntaxComponents
-		SccLocalPath6 = SyntaxComponents
+		SccProjectUniqueName5 = SyntaxComponents\\SyntaxComponents.csproj
+		SccProjectName5 = SyntaxComponents
+		SccLocalPath5 = SyntaxComponents
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -65,10 +59,6 @@ Global
 		{30773718-BC7C-4FCC-A9C2-7EE61DF4EC41}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{30773718-BC7C-4FCC-A9C2-7EE61DF4EC41}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{30773718-BC7C-4FCC-A9C2-7EE61DF4EC41}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E64725D7-2208-4C28-922D-B6543C0BC483}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E64725D7-2208-4C28-922D-B6543C0BC483}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E64725D7-2208-4C28-922D-B6543C0BC483}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E64725D7-2208-4C28-922D-B6543C0BC483}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CEAEC85B-973A-4414-8668-723EB65E5088}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CEAEC85B-973A-4414-8668-723EB65E5088}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CEAEC85B-973A-4414-8668-723EB65E5088}.Release|Any CPU.ActiveCfg = Release|Any CPU

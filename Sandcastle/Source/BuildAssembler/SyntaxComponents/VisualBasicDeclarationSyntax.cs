@@ -9,11 +9,12 @@
 // 02/14/2012 - EFW - Made the unsafe code checks consistent across all syntax generators
 
 using System;
+using System.Globalization;
 using System.Xml.XPath;
 
 namespace Microsoft.Ddue.Tools
 {
-    public class VisualBasicDeclarationSyntaxGenerator : SyntaxGeneratorTemplate
+    public sealed class VisualBasicDeclarationSyntaxGenerator : SyntaxGeneratorTemplate
     {
         public VisualBasicDeclarationSyntaxGenerator(XPathNavigator configuration) : base(configuration)
         {
@@ -571,7 +572,7 @@ namespace Microsoft.Ddue.Tools
             }
         }
 
-        private void WriteProcedureModifiers(XPathNavigator reflection, SyntaxWriter writer)
+        private static void WriteProcedureModifiers(XPathNavigator reflection, SyntaxWriter writer)
         {
 
             // interface members don't get modified
@@ -667,16 +668,14 @@ namespace Microsoft.Ddue.Tools
         }
 
         // Visibility
-        private void WriteVisibility(XPathNavigator reflection, SyntaxWriter writer)
+        private static void WriteVisibility(XPathNavigator reflection, SyntaxWriter writer)
         {
-
             string visibility = (string)reflection.Evaluate(apiVisibilityExpression);
             WriteVisibility(visibility, writer);
         }
 
-        private void WriteVisibility(string visibility, SyntaxWriter writer)
+        private static void WriteVisibility(string visibility, SyntaxWriter writer)
         {
-
             switch(visibility)
             {
                 case "public":
@@ -698,21 +697,21 @@ namespace Microsoft.Ddue.Tools
                     writer.WriteKeyword("Private");
                     break;
             }
-
         }
 
         // Attributes
 
-        private void WriteAttribute(string reference, SyntaxWriter writer)
+        private static void WriteAttribute(string reference, SyntaxWriter writer)
         {
             WriteAttribute(reference, true, writer);
         }
 
-        private void WriteAttribute(string reference, bool newLine, SyntaxWriter writer)
+        private static void WriteAttribute(string reference, bool newLine, SyntaxWriter writer)
         {
             writer.WriteString("<");
             writer.WriteReferenceLink(reference);
             writer.WriteString(">");
+
             if(newLine)
             {
                 writer.WriteString(" _");
@@ -800,9 +799,6 @@ namespace Microsoft.Ddue.Tools
             XPathNavigator type = parent.SelectSingleNode(attributeTypeExpression);
             XPathNavigator value = parent.SelectSingleNode(valueExpression);
 
-            if(value == null)
-                Console.WriteLine("null value");
-
             switch(value.LocalName)
             {
                 case "nullValue":
@@ -846,15 +842,8 @@ namespace Microsoft.Ddue.Tools
                             break;
 
                         case "T:System.Boolean":
-                            bool bool_value = Convert.ToBoolean(text);
-                            if(bool_value)
-                            {
-                                writer.WriteKeyword("True");
-                            }
-                            else
-                            {
-                                writer.WriteKeyword("False");
-                            }
+                            writer.WriteKeyword(Convert.ToBoolean(text, CultureInfo.InvariantCulture) ?
+                                "true" : "false");
                             break;
 
                         case "T:System.Char":
@@ -1081,7 +1070,6 @@ namespace Microsoft.Ddue.Tools
 
                 XPathNavigator type = parameter.SelectSingleNode(parameterTypeExpression);
                 string name = (string)parameter.Evaluate(parameterNameExpression);
-                bool isIn = (bool)parameter.Evaluate(parameterIsInExpression);
                 bool isOut = (bool)parameter.Evaluate(parameterIsOutExpression);
                 bool isParamArray = (bool)parameter.Evaluate(parameterIsParamArrayExpression);
                 bool isByRef = (bool)parameter.Evaluate(parameterIsRefExpression);
@@ -1091,7 +1079,7 @@ namespace Microsoft.Ddue.Tools
                 // !EFW - Optional indicated by OptionalAttribute?
                 if(isOptional && argument == null)
                 {
-                    this.WriteAttribute("T:System.Runtime.InteropServices.OptionalAttribute", false, writer);
+                    WriteAttribute("T:System.Runtime.InteropServices.OptionalAttribute", false, writer);
                     writer.WriteString(" ");
                 }
 
@@ -1147,13 +1135,19 @@ namespace Microsoft.Ddue.Tools
             switch(reference.LocalName)
             {
                 case "arrayOf":
-                    int rank = Convert.ToInt32(reference.GetAttribute("rank", String.Empty));
+                    int rank = Convert.ToInt32(reference.GetAttribute("rank", String.Empty),
+                        CultureInfo.InvariantCulture);
+
                     XPathNavigator element = reference.SelectSingleNode(typeExpression);
                     WriteTypeReference(element, writer);
                     writer.WriteString("(");
-                    for(int i = 1; i < rank; i++) { writer.WriteString(","); }
+
+                    for(int i = 1; i < rank; i++)
+                        writer.WriteString(",");
+
                     writer.WriteString(")");
                     break;
+
                 case "pointerTo":
                     XPathNavigator pointee = reference.SelectSingleNode(typeExpression);
                     WriteTypeReference(pointee, writer);
@@ -1197,7 +1191,7 @@ namespace Microsoft.Ddue.Tools
             }
         }
 
-        private void WriteNormalTypeReference(string reference, SyntaxWriter writer)
+        private static void WriteNormalTypeReference(string reference, SyntaxWriter writer)
         {
             switch(reference)
             {
@@ -1225,12 +1219,10 @@ namespace Microsoft.Ddue.Tools
             }
         }
 
-        private void WriteMemberReference(XPathNavigator member, SyntaxWriter writer)
+        private static void WriteMemberReference(XPathNavigator member, SyntaxWriter writer)
         {
             string api = member.GetAttribute("api", String.Empty);
             writer.WriteReferenceLink(api);
         }
-
     }
-
 }

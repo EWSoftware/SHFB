@@ -191,8 +191,7 @@ namespace Microsoft.Ddue.Tools
             LinkType linkType;
             string url, text;
 
-            foreach(XPathNavigator navigator in BuildComponentUtilities.ConvertNodeIteratorToArray(
-              document.CreateNavigator().Select(conceptualLinks)))
+            foreach(XPathNavigator navigator in document.CreateNavigator().Select(conceptualLinks).ToArray())
             {
                 info = ConceptualLinkInfo.Create(navigator);
                 url = text = null;
@@ -200,7 +199,7 @@ namespace Microsoft.Ddue.Tools
 
                 if(validGuid.IsMatch(info.Target))
                 {
-                    targetInfo = this.GetTargetInfoFromCache(info.Target.ToLower(CultureInfo.InvariantCulture));
+                    targetInfo = this.GetTargetInfoFromCache(info.Target.ToLowerInvariant());
 
                     if(targetInfo == null)
                     {
@@ -248,7 +247,7 @@ namespace Microsoft.Ddue.Tools
 
                     case LinkType.Index:
                         writer.WriteStartElement("mshelp", "link", "http://msdn.microsoft.com/mshelp");
-                        writer.WriteAttributeString("keywords", info.Target.ToLower(CultureInfo.InvariantCulture));
+                        writer.WriteAttributeString("keywords", info.Target.ToLowerInvariant());
                         writer.WriteAttributeString("tabindex", "0");
                         break;
 

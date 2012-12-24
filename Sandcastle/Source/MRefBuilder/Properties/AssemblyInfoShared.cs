@@ -1,7 +1,7 @@
 //===============================================================================================================
 // System  : Sandcastle Tools
 // File    : AssemblyInfoShared.cs
-// Updated : 12/15/2012
+// Updated : 12/22/2012
 // Note    : Copyright 2006-2012, Microsoft Corporation, All rights reserved
 //
 // Sandcastle tools common assembly attributes.
@@ -27,7 +27,8 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyProduct("Sandcastle Tools")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Microsoft Corporation")]
-[assembly: AssemblyCopyright("Copyright \xA9 2006-2012, Microsoft Corporation, All Rights Reserved")]
+[assembly: AssemblyCopyright("Copyright \xA9 2006-2012, Microsoft Corporation, All Rights Reserved.\r\n" +
+    "Portions Copyright \xA9 2006-2012, Eric Woodruff, All Rights Reserved.")]
 [assembly: AssemblyTrademark("Microsoft Corporation, All Rights Reserved")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]

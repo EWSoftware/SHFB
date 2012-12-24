@@ -9,6 +9,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Xml;
 using System.Xml.XPath;
@@ -73,17 +74,17 @@ namespace Microsoft.Ddue.Tools
                 catch(IOException e)
                 {
                     base.WriteMessage(MessageLevel.Error, "The transform file '{0}' could not be loaded. The " +
-                        "error message is: {1}", file, BuildComponentUtilities.GetExceptionMessage(e));
+                        "error message is: {1}", file, e.GetExceptionMessage());
                 }
                 catch(XmlException e)
                 {
                     base.WriteMessage(MessageLevel.Error, "The transform file '{0}' is not a valid XML file. " +
-                        "The error message is: {1}", file, BuildComponentUtilities.GetExceptionMessage(e));
+                        "The error message is: {1}", file, e.GetExceptionMessage());
                 }
                 catch(XsltException e)
                 {
                     base.WriteMessage(MessageLevel.Error, "The XSL transform '{0}' contains an error. The " +
-                        "error message is: {1}", file, BuildComponentUtilities.GetExceptionMessage(e));
+                        "error message is: {1}", file, e.GetExceptionMessage());
                 }
 
                 transforms.Add(transform);
@@ -101,7 +102,8 @@ namespace Microsoft.Ddue.Tools
 
                     // set "expand-value" attribute to true to expand environment variables embedded in "value".
                     string expand_attr = argument_node.GetAttribute("expand-value", String.Empty);
-                    bool expand_value = String.IsNullOrEmpty(expand_attr) ? false : Convert.ToBoolean(expand_attr);
+                    bool expand_value = String.IsNullOrEmpty(expand_attr) ? false :
+                        Convert.ToBoolean(expand_attr, CultureInfo.InvariantCulture);
 
                     string value = argument_node.GetAttribute("value", String.Empty);
 

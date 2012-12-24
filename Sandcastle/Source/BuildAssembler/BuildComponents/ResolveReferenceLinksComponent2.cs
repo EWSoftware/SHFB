@@ -6,8 +6,10 @@
 // Change History
 // 03/17/2012 - EFW - Added code to suppress output of empty parameter list for unresolved property elements.
 // Added code to redirect enum field IDs to their containing enumeration type ID.
+// 12/21/2012 - EFW - Removed obsolete ResolveReferenceLinksComponent class
 
 using System;
+using System.Globalization;
 using System.IO;
 using System.Xml;
 using System.Xml.Schema;
@@ -15,18 +17,8 @@ using System.Xml.XPath;
 
 namespace Microsoft.Ddue.Tools
 {
-
-    // replace the old component with the new one
-    public class ResolveReferenceLinksComponent : ResolveReferenceLinksComponent2
-    {
-
-        public ResolveReferenceLinksComponent(BuildAssembler assembler, XPathNavigator configuration) : base(assembler, configuration) { }
-
-    }
-
     public class ResolveReferenceLinksComponent2 : BuildComponent
     {
-
         // instantiation logic 
         public ResolveReferenceLinksComponent2(BuildAssembler assembler, XPathNavigator configuration) : base(assembler, configuration)
         {
@@ -71,7 +63,7 @@ namespace Microsoft.Ddue.Tools
                 }
                 catch(ArgumentException)
                 {
-                    WriteMessage(MessageLevel.Error, String.Format("'{0}' is not a supported reference link type.", typeValue));
+                    WriteMessage(MessageLevel.Error, "'{0}' is not a supported reference link type.", typeValue);
                 }
 
                 // get base directory
@@ -85,21 +77,10 @@ namespace Microsoft.Ddue.Tools
                 // determine whether to search recursively
                 bool recurse = false;
                 string recurseValue = targets_node.GetAttribute("recurse", String.Empty);
-                if(!String.IsNullOrEmpty(recurseValue))
-                {
-                    if(String.Compare(recurseValue, Boolean.TrueString, true) == 0)
-                    {
-                        recurse = true;
-                    }
-                    else if(String.Compare(recurseValue, Boolean.FalseString, true) == 0)
-                    {
-                        recurse = false;
-                    }
-                    else
-                    {
-                        WriteMessage(MessageLevel.Error, String.Format("On the targets element, recurse='{0}' is not an allowed value.", recurseValue));
-                    }
-                }
+
+                if(!String.IsNullOrEmpty(recurseValue) && !Boolean.TryParse(recurseValue, out recurse))
+                    WriteMessage(MessageLevel.Error, "On the targets element, recurse='{0}' is not an " +
+                        "allowed value.", recurseValue);
 
                 // turn baseValue and filesValue into directoryPath and filePattern
                 string fullPath;
@@ -119,15 +100,15 @@ namespace Microsoft.Ddue.Tools
 
                 // verify that directory exists
                 if(!Directory.Exists(directoryPath))
-                    WriteMessage(MessageLevel.Error, String.Format("The targets directory '{0}' does not exist.", directoryPath));
+                    WriteMessage(MessageLevel.Error, "The targets directory '{0}' does not exist.", directoryPath);
 
                 // add the specified targets from the directory
-                WriteMessage(MessageLevel.Info, String.Format("Searching directory '{0}' for targets files of the form '{1}'.", directoryPath, filePattern));
+                WriteMessage(MessageLevel.Info, "Searching directory '{0}' for targets files of the form '{1}'.", directoryPath, filePattern);
                 AddTargets(directoryPath, filePattern, recurse, type);
 
             }
 
-            WriteMessage(MessageLevel.Info, String.Format("Loaded {0} reference targets.", targets.Count));
+            WriteMessage(MessageLevel.Info, "Loaded {0} reference targets.", targets.Count);
 
             string locale_value = configuration.GetAttribute("locale", String.Empty);
             if(!String.IsNullOrEmpty(locale_value) && msdn != null)
@@ -164,15 +145,18 @@ namespace Microsoft.Ddue.Tools
             }
             catch(XmlSchemaException e)
             {
-                WriteMessage(MessageLevel.Error, String.Format("The reference targets file '{0}' is not valid. The error message is: {1}", file, BuildComponentUtilities.GetExceptionMessage(e)));
+                WriteMessage(MessageLevel.Error, "The reference targets file '{0}' is not valid. The error " +
+                    "message is: {1}", file, e.GetExceptionMessage());
             }
             catch(XmlException e)
             {
-                WriteMessage(MessageLevel.Error, String.Format("The reference targets file '{0}' is not well-formed XML. The error message is: {1}", file, BuildComponentUtilities.GetExceptionMessage(e)));
+                WriteMessage(MessageLevel.Error, "The reference targets file '{0}' is not well-formed XML.  " +
+                    "The error message is: {1}", file, e.GetExceptionMessage());
             }
             catch(IOException e)
             {
-                WriteMessage(MessageLevel.Error, String.Format("An access error occured while opening the reference targets file '{0}'. The error message is: {1}", file, BuildComponentUtilities.GetExceptionMessage(e)));
+                WriteMessage(MessageLevel.Error, "An access error occured while opening the reference " +
+                    "targets file '{0}'. The error message is: {1}", file, e.GetExceptionMessage());
             }
         }
 
@@ -196,10 +180,7 @@ namespace Microsoft.Ddue.Tools
 
         public override void Apply(XmlDocument document, string key)
         {
-            XPathNodeIterator linkIterator = document.CreateNavigator().Select(referenceLinkExpression);
-            XPathNavigator[] linkNodes = BuildComponentUtilities.ConvertNodeIteratorToArray(linkIterator);
-
-            foreach(XPathNavigator linkNode in linkNodes)
+            foreach(XPathNavigator linkNode in document.CreateNavigator().Select(referenceLinkExpression).ToArray())
             {
                 // extract link information
                 ReferenceLinkInfo2 link = ReferenceLinkInfo2.Create(linkNode);
@@ -346,11 +327,11 @@ namespace Microsoft.Ddue.Tools
 
                         case LinkType2.Local:
                             // format link with prefix and/or postfix
-                            string href = String.Format(hrefFormat, target.File);
+                            string href = String.Format(CultureInfo.InvariantCulture, hrefFormat, target.File);
 
                             // make link relative, if we have a baseUrl
                             if(baseUrl != null)
-                                href = BuildComponentUtilities.GetRelativePath(href, BuildComponentUtilities.EvalXPathExpr(document, baseUrl, "key", key));
+                                href = href.GetRelativePath(document.EvalXPathExpr(baseUrl, "key", key));
 
                             writer.WriteStartElement("a");
                             writer.WriteAttributeString("href", href);
@@ -369,7 +350,8 @@ namespace Microsoft.Ddue.Tools
                             break;
 
                         case LinkType2.Id:
-                            string xhelp = String.Format("ms-xhelp:///?Id={0}", targetId);
+                            string xhelp = String.Format(CultureInfo.InvariantCulture, "ms-xhelp:///?Id={0}",
+                                targetId);
                             xhelp = xhelp.Replace("#", "%23");
                             writer.WriteStartElement("a");
                             writer.WriteAttributeString("href", xhelp);
@@ -387,11 +369,11 @@ namespace Microsoft.Ddue.Tools
                             }
                             else
                             {
-                                //Console.WriteLine("Attemting to create reference");
                                 Reference reference = TextReferenceUtilities.CreateReference(targetId);
-                                //Console.WriteLine("Returned");
+
                                 if(reference is InvalidReference)
                                     base.WriteMessage(key, MessageLevel.Warn, "Invalid reference link target '{0}'.", targetId);
+
                                 resolver.WriteReference(reference, options, writer);
                             }
                         }
@@ -403,25 +385,23 @@ namespace Microsoft.Ddue.Tools
                     }
                     else
                     {
-                        //Console.WriteLine("Display target = {0}", link.DisplayTarget);
-                        if((String.Compare(link.DisplayTarget, "content", true) == 0) && (link.Contents != null))
+                        if(link.DisplayTarget.Equals("content", StringComparison.OrdinalIgnoreCase)  &&
+                          link.Contents != null)
                         {
                             // Use the contents as an XML representation of the display target
-
-                            //Console.WriteLine(link.Contents.NodeType);
                             Reference reference = XmlTargetCollectionUtilities.CreateReference(link.Contents);
-                            //Console.WriteLine(reference.GetType().FullName);
                             resolver.WriteReference(reference, options, writer);
                         }
-                        if((String.Compare(link.DisplayTarget, "format", true) == 0) && (link.Contents != null))
+
+                        if(link.DisplayTarget.Equals("format", StringComparison.OrdinalIgnoreCase) &&
+                          link.Contents != null)
                         {
                             // Use the contents as a format string for the display target
-
                             string format = link.Contents.OuterXml;
-                            //Console.WriteLine("format = {0}", format);
 
                             string input = null;
-                            StringWriter textStore = new StringWriter();
+                            StringWriter textStore = new StringWriter(CultureInfo.InvariantCulture);
+
                             try
                             {
                                 XmlWriterSettings settings = new XmlWriterSettings();
@@ -450,18 +430,15 @@ namespace Microsoft.Ddue.Tools
                             {
                                 textStore.Close();
                             }
-                            //Console.WriteLine("input = {0}", input);
 
-                            string output = String.Format(format, input);
-                            //Console.WriteLine("output = {0}", output);
+                            string output = String.Format(CultureInfo.InvariantCulture, format, input);
 
                             XmlDocumentFragment fragment = document.CreateDocumentFragment();
                             fragment.InnerXml = output;
                             fragment.WriteTo(writer);
-
-                            //writer.WriteRaw(output);
                         }
-                        else if((String.Compare(link.DisplayTarget, "extension", true) == 0) && (link.Contents != null))
+                        else if(link.DisplayTarget.Equals("extension", StringComparison.OrdinalIgnoreCase) &&
+                          link.Contents != null)
                         {
                             Reference extMethodReference = XmlTargetCollectionUtilities.CreateExtensionMethodReference(link.Contents);
                             resolver.WriteReference(extMethodReference, options, writer);
@@ -469,10 +446,8 @@ namespace Microsoft.Ddue.Tools
                         else
                         {
                             // Use the display target value as a CER for the display target
-
                             TextReferenceUtilities.SetGenericContext(key);
                             Reference reference = TextReferenceUtilities.CreateReference(link.DisplayTarget);
-                            //Console.WriteLine("Reference is {0}", reference.GetType().FullName);
                             resolver.WriteReference(reference, options, writer);
                         }
                     }
@@ -560,6 +535,8 @@ namespace Microsoft.Ddue.Tools
 
         public static ReferenceLinkInfo2 Create(XPathNavigator element)
         {
+            bool attrValue;
+
             if(element == null)
                 throw new ArgumentNullException("element");
 
@@ -572,84 +549,69 @@ namespace Microsoft.Ddue.Tools
             info.displayTarget = element.GetAttribute("display-target", String.Empty);
 
             string showContainer = element.GetAttribute("show-container", String.Empty);
+
             if(String.IsNullOrEmpty(showContainer))
                 showContainer = element.GetAttribute("qualified", String.Empty);
+
             if(!String.IsNullOrEmpty(showContainer))
             {
-                if(String.Compare(showContainer, Boolean.TrueString, true) == 0)
-                {
+                if(!Boolean.TryParse(showContainer, out attrValue))
+                    return null;
+
+                if(attrValue)
                     info.options = info.options | DisplayOptions.ShowContainer;
-                }
-                else if(String.Compare(showContainer, Boolean.FalseString, true) == 0)
-                {
-                    info.options = info.options & ~DisplayOptions.ShowContainer;
-                }
                 else
-                {
-                    return (null);
-                }
+                    info.options = info.options & ~DisplayOptions.ShowContainer;
             }
 
             string showTemplates = element.GetAttribute("show-templates", String.Empty);
+
             if(!String.IsNullOrEmpty(showTemplates))
             {
-                if(String.Compare(showTemplates, Boolean.TrueString, true) == 0)
-                {
+                if(!Boolean.TryParse(showTemplates, out attrValue))
+                    return null;
+
+                if(attrValue)
                     info.options = info.options | DisplayOptions.ShowTemplates;
-                }
-                else if(String.Compare(showTemplates, Boolean.FalseString, true) == 0)
-                {
-                    info.options = info.options & ~DisplayOptions.ShowTemplates;
-                }
                 else
-                {
-                    return (null);
-                }
+                    info.options = info.options & ~DisplayOptions.ShowTemplates;
             }
 
             string showParameters = element.GetAttribute("show-parameters", String.Empty);
+
             if(!String.IsNullOrEmpty(showParameters))
             {
-                if(String.Compare(showParameters, Boolean.TrueString, true) == 0)
-                {
+                if(!Boolean.TryParse(showParameters, out attrValue))
+                    return null;
+
+                if(attrValue)
                     info.options = info.options | DisplayOptions.ShowParameters;
-                }
-                else if(String.Compare(showParameters, Boolean.FalseString, true) == 0)
-                {
-                    info.options = info.options & ~DisplayOptions.ShowParameters;
-                }
                 else
-                {
-                    return (null);
-                }
+                    info.options = info.options & ~DisplayOptions.ShowParameters;
             }
 
-
             string preferOverload = element.GetAttribute("prefer-overload", String.Empty);
+
             if(String.IsNullOrEmpty(preferOverload))
                 preferOverload = element.GetAttribute("auto-upgrade", String.Empty);
+
             if(!String.IsNullOrEmpty(preferOverload))
             {
-                if(String.Compare(preferOverload, Boolean.TrueString, true) == 0)
-                {
+                if(!Boolean.TryParse(preferOverload, out attrValue))
+                    return null;
+
+                if(attrValue)
                     info.preferOverload = true;
-                }
-                else if(String.Compare(preferOverload, Boolean.FalseString, true) == 0)
-                {
-                    info.preferOverload = false;
-                }
                 else
-                {
-                    return (null);
-                }
+                    info.preferOverload = false;
             }
 
             info.contents = element.Clone();
+
             if(!info.contents.MoveToFirstChild())
                 info.contents = null;
 
-            return (info);
+            return info;
         }
-
     }
 }

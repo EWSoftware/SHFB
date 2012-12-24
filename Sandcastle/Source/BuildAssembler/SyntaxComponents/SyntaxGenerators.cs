@@ -7,6 +7,10 @@
 // 02/09/2012 - EFW - Added XPath expressions for optional parameter argument element and property
 // getter and setter to list their attributes.
 // 02/14/2012 - EFW - Added XPath expressions for fixed keyword support
+// 12/23/2012 - EFW - Removed DeclarationSyntaxGeneratorTemplate as it was identical to SyntaxGeneratorTemplate
+// with the exception of a couple of unused static methods and an abstract WriteVisibility() method.  It was
+// only used by the JSharpDeclarationSyntaxGenerator which has been changed to use SyntaxGeneratorTemplate as
+// its base class.
 
 using System;
 using System.Collections.Generic;
@@ -288,27 +292,19 @@ namespace Microsoft.Ddue.Tools
             if(isSpecialName)
             {
                 string subsubgroup = (string)reflection.Evaluate(apiSubsubgroupExpression);
+
                 if(subsubgroup == "operator")
-                {
-                    if((name == "Implicit") || (name == "Explicit"))
-                    {
+                    if(name == "Implicit" || name == "Explicit")
                         WriteCastSyntax(reflection, writer);
-                    }
                     else
-                    {
                         WriteOperatorSyntax(reflection, writer);
-                    }
-                }
+
                 // Write out let properties (no .Net equivalent) as methods
-                if(name.StartsWith("let_"))
-                {
+                if(name.StartsWith("let_", StringComparison.Ordinal))
                     WriteNormalMethodSyntax(reflection, writer);
-                }
             }
             else
-            {
                 WriteNormalMethodSyntax(reflection, writer);
-            }
         }
 
         public abstract void WritePropertySyntax(XPathNavigator reflection, SyntaxWriter writer);
@@ -403,101 +399,5 @@ namespace Microsoft.Ddue.Tools
 
         }
 
-    }
-
-    public abstract class DeclarationSyntaxGeneratorTemplate : SyntaxGeneratorTemplate
-    {
-
-        protected DeclarationSyntaxGeneratorTemplate(XPathNavigator configuration) : base(configuration) { }
-
-        // Methods to implement
-
-        protected abstract void WriteVisibility(XPathNavigator reflection, SyntaxWriter writer);
-
-        // Utility methods
-
-        protected static string[] SeperateTypes(string typelist)
-        {
-            List<string> types = new List<string>();
-
-            int start = 0;
-            int specializationCount = 0;
-            for(int index = 0; index < typelist.Length; index++)
-            {
-                switch(typelist[index])
-                {
-                    case '{':
-                        specializationCount++;
-                        break;
-                    case '}':
-                        specializationCount--;
-                        break;
-                    case ',':
-                        if(specializationCount == 0)
-                        {
-                            types.Add("T:" + typelist.Substring(start, index - start));
-                            start = index + 1;
-                        }
-                        break;
-                }
-            }
-            types.Add("T:" + typelist.Substring(start));
-            return (types.ToArray());
-        }
-
-        protected static string GetTemplateParameterName(string reference, XPathNavigator reflection)
-        {
-
-            string group = (string)reflection.Evaluate(apiGroupExpression);
-
-            XPathNavigator template = null;
-            if(reference.StartsWith("T:`"))
-            {
-                if(reference[3] == '`')
-                {
-
-                    // a method template parameter
-
-                    int position = Convert.ToInt32(reference.Substring(4)) + 1;
-
-                    if(group == "member")
-                    {
-                        // we are in a method, so presumably it is one of that method's template parameters
-                        template = reflection.SelectSingleNode(String.Format("templates/template[{0}]", position));
-                    }
-
-                }
-                else
-                {
-
-                    // a type template parameter
-
-                    int position = Convert.ToInt32(reference.Substring(3)) + 1;
-
-                    if(group == "type")
-                    {
-                        // we are in a type, so look there for the parameter
-                        template = reflection.SelectSingleNode(String.Format("templates/template[{0}]", position));
-                    }
-
-                    if(template == null)
-                    {
-                        // either we weren't in a type, or it didn't have the template
-                        // so now look at the templates of the containing type
-                        template = reflection.SelectSingleNode(String.Format("containers/container[@type]/templates/template[{0}]", position));
-                    }
-                }
-            }
-
-            if(template != null)
-            {
-                return (template.GetAttribute("name", String.Empty));
-            }
-            else
-            {
-                Console.WriteLine("UNRESOLVED TEMPLATE PARAMETER NAME");
-                return ("T");
-            }
-        }
     }
 }

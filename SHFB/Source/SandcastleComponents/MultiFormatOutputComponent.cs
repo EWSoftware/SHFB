@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Components
 // File    : MultiFormatOutputComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/10/2012
+// Updated : 12/22/2012
 // Note    : Copyright 2010-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -33,12 +33,11 @@ using Microsoft.Ddue.Tools;
 namespace SandcastleBuilder.Components
 {
     /// <summary>
-    /// This build component is used to execute one or more sets of build
-    /// components each based on a specific help file output format.
+    /// This build component is used to execute one or more sets of build components each based on a specific
+    /// help file output format.
     /// </summary>
-    /// <remarks>One or more components can be executed based on a specified
-    /// list of one or more help file output formats.  Only the components
-    /// related to the requested set of format types will be executed.</remarks>
+    /// <remarks>One or more components can be executed based on a specified list of one or more help file output
+    /// formats.  Only the components related to the requested set of format types will be executed.</remarks>
     /// <example>
     /// <code lang="xml" title="Example Configuration"
     ///     source="..\..\SHFB\Source\SandcastleBuilderGUI\Templates\VS2005.config"
@@ -50,15 +49,6 @@ namespace SandcastleBuilder.Components
         //=====================================================================
 
         private Dictionary<string, IEnumerable<BuildComponent>> formatComponents;
-        #endregion
-
-        #region Properties
-        //=====================================================================
-
-        /// <summary>
-        /// This read-only property returns the current help format being generated
-        /// </summary>
-        public static string CurrentFormat { get; private set; }
         #endregion
 
         #region Constructor
@@ -121,8 +111,7 @@ namespace SandcastleBuilder.Components
         //=====================================================================
 
         /// <summary>
-        /// This is implemented to execute each set of components for the
-        /// requested output formats.
+        /// This is implemented to execute each set of components for the requested output formats.
         /// </summary>
         /// <param name="document">The XML document with which to work.</param>
         /// <param name="key">The key (member name) of the item being documented.</param>
@@ -132,7 +121,6 @@ namespace SandcastleBuilder.Components
 
             foreach(string format in formatComponents.Keys)
             {
-                CurrentFormat = format;
                 clone = (XmlDocument)document.Clone();
 
                 foreach(BuildComponent component in formatComponents[format])

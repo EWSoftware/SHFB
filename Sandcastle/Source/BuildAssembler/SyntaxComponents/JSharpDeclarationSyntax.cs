@@ -7,13 +7,16 @@
 // 01/30/2012 - EFW - Fixed WriteValue() so that it outputs numeric attribute values.
 // 02/09/2012 - EFW - Added support for optional parameters and property getter/setter attributes.
 // 02/14/2012 - EFW - Made the unsafe code checks consistent across all syntax generators
+// 12/23/2012 - EFW - Changed base class to SyntaxGeneratorTemplate as it was identical with the exception of
+// the static WriteVisibility() method.
 
 using System;
+using System.Globalization;
 using System.Xml.XPath;
 
 namespace Microsoft.Ddue.Tools
 {
-    public class JSharpDeclarationSyntaxGenerator : DeclarationSyntaxGeneratorTemplate
+    public sealed class JSharpDeclarationSyntaxGenerator : SyntaxGeneratorTemplate
     {
         public JSharpDeclarationSyntaxGenerator(XPathNavigator configuration) : base(configuration)
         {
@@ -220,10 +223,6 @@ namespace Microsoft.Ddue.Tools
             WriteMethodParameters(reflection, writer);
         }
 
-        private void WriteNamedNormalMethodSyntax(string name, XPathNavigator reflection, SyntaxWriter writer)
-        {
-        }
-
         public override void WritePropertySyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             if(IsUnsupportedUnsafe(reflection, writer))
@@ -327,11 +326,11 @@ namespace Microsoft.Ddue.Tools
 
         }
 
-        private void WriteProcedureModifiers(XPathNavigator reflection, SyntaxWriter writer)
+        private static void WriteProcedureModifiers(XPathNavigator reflection, SyntaxWriter writer)
         {
-
             // interface members don't get modified
             string typeSubgroup = (string)reflection.Evaluate(apiContainingTypeSubgroupExpression);
+
             if(typeSubgroup == "interface")
                 return;
 
@@ -339,10 +338,10 @@ namespace Microsoft.Ddue.Tools
             bool isVirtual = (bool)reflection.Evaluate(apiIsVirtualExpression);
             bool isAbstract = (bool)reflection.Evaluate(apiIsAbstractProcedureExpression);
             bool isFinal = (bool)reflection.Evaluate(apiIsFinalExpression);
-            // bool isOverride = (bool) reflection.Evaluate(apiIsOverrideExpression);
 
             WriteVisibility(reflection, writer);
             writer.WriteString(" ");
+
             if(isStatic)
             {
                 writer.WriteKeyword("static");
@@ -364,7 +363,6 @@ namespace Microsoft.Ddue.Tools
                     }
                 }
             }
-
         }
 
         public override void WriteFieldSyntax(XPathNavigator reflection, SyntaxWriter writer)
@@ -403,9 +401,8 @@ namespace Microsoft.Ddue.Tools
 
         // Visibility
 
-        protected override void WriteVisibility(XPathNavigator reflection, SyntaxWriter writer)
+        private static void WriteVisibility(XPathNavigator reflection, SyntaxWriter writer)
         {
-
             string visibility = reflection.Evaluate(apiVisibilityExpression).ToString();
 
             switch(visibility)
@@ -427,25 +424,24 @@ namespace Microsoft.Ddue.Tools
                     writer.WriteKeyword("private");
                     break;
             }
-
         }
 
         // Attributes
 
-        private void WriteAttribute(string reference, SyntaxWriter writer)
+        private static void WriteAttribute(string reference, SyntaxWriter writer)
         {
             WriteAttribute(reference, writer, true);
         }
 
-        private void WriteAttribute(string reference, SyntaxWriter writer, bool newline)
+        private static void WriteAttribute(string reference, SyntaxWriter writer, bool newline)
         {
             writer.WriteString("/** @attribute ");
             writer.WriteReferenceLink(reference);
             writer.WriteString(" */ ");
+
             if(newline)
                 writer.WriteLine();
         }
-
 
         private void WriteAttributes(XPathNavigator reflection, SyntaxWriter writer)
         {
@@ -519,8 +515,6 @@ namespace Microsoft.Ddue.Tools
             XPathNavigator type = parent.SelectSingleNode(attributeTypeExpression);
             XPathNavigator value = parent.SelectSingleNode(valueExpression);
 
-            // if (value == null) Console.WriteLine("null value");
-
             switch(value.LocalName)
             {
                 case "nullValue":
@@ -561,15 +555,8 @@ namespace Microsoft.Ddue.Tools
                             break;
 
                         case "T:System.Boolean":
-                            bool bool_value = Convert.ToBoolean(text);
-                            if(bool_value)
-                            {
-                                writer.WriteKeyword("true");
-                            }
-                            else
-                            {
-                                writer.WriteKeyword("false");
-                            }
+                            writer.WriteKeyword(Convert.ToBoolean(text, CultureInfo.InvariantCulture) ?
+                                "true" : "false");
                             break;
 
                         case "T:System.Char":
@@ -660,16 +647,14 @@ namespace Microsoft.Ddue.Tools
             if(parameters.Count > 0)
             {
                 writer.WriteLine();
-                WriteParameters(parameters, reflection, writer);
+                WriteParameters(parameters, writer);
             }
             writer.WriteString(")");
 
         }
 
-
-        private void WriteParameters(XPathNodeIterator parameters, XPathNavigator reflection, SyntaxWriter writer)
+        private void WriteParameters(XPathNodeIterator parameters, SyntaxWriter writer)
         {
-
             while(parameters.MoveNext())
             {
                 XPathNavigator parameter = parameters.Current;
@@ -688,7 +673,7 @@ namespace Microsoft.Ddue.Tools
 
                 // !EFW - Optional indicated by OptionalAttribute?
                 if(isOptional && argument == null)
-                    this.WriteAttribute("T:System.Runtime.InteropServices.OptionalAttribute", writer, false);
+                    WriteAttribute("T:System.Runtime.InteropServices.OptionalAttribute", writer, false);
 
                 if(isIn)
                     WriteAttribute("T:System.Runtime.InteropServices.InAttribute", writer, false);
@@ -741,13 +726,19 @@ namespace Microsoft.Ddue.Tools
             switch(reference.LocalName)
             {
                 case "arrayOf":
-                    int rank = Convert.ToInt32(reference.GetAttribute("rank", String.Empty));
+                    int rank = Convert.ToInt32(reference.GetAttribute("rank", String.Empty),
+                        CultureInfo.InvariantCulture);
+
                     XPathNavigator element = reference.SelectSingleNode(typeExpression);
                     WriteTypeReference(element, writer);
                     writer.WriteString("[");
-                    for(int i = 1; i < rank; i++) { writer.WriteString(","); }
+
+                    for(int i = 1; i < rank; i++)
+                        writer.WriteString(",");
+
                     writer.WriteString("]");
                     break;
+
                 case "pointerTo":
                     XPathNavigator pointee = reference.SelectSingleNode(typeExpression);
                     WriteTypeReference(pointee, writer);
@@ -789,7 +780,7 @@ namespace Microsoft.Ddue.Tools
             }
         }
 
-        private void WriteNormalTypeReference(string reference, SyntaxWriter writer)
+        private static void WriteNormalTypeReference(string reference, SyntaxWriter writer)
         {
             switch(reference)
             {

@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Globalization;
 using System.Xml;
 using System.Xml.XPath;
 using System.IO;
@@ -18,7 +19,6 @@ namespace Microsoft.Ddue.Tools
 
     public class PlatformsComponent : BuildComponent
     {
-
         private Dictionary<string, Dictionary<string, VersionFilter>> versionFilters = new Dictionary<string, Dictionary<string, VersionFilter>>();
 
         private XPathExpression platformQuery = XPathExpression.Compile("/platforms/platform");
@@ -32,10 +32,9 @@ namespace Microsoft.Ddue.Tools
         private XPathExpression memberTypeNameExpression = XPathExpression.Compile("string(containers/type/apidata/@name)");
 
         private XPathExpression listTopicElementNodesExpression = XPathExpression.Compile("elements//element");
-        private XPathExpression elementIdExpression = XPathExpression.Compile("string(@api)");
 
-        public PlatformsComponent(BuildAssembler assembler, XPathNavigator configuration)
-            : base(assembler, configuration)
+        public PlatformsComponent(BuildAssembler assembler, XPathNavigator configuration) :
+          base(assembler, configuration)
         {
             // get the filter files
             XPathNodeIterator filterNodes = configuration.Select("filter");
@@ -46,7 +45,6 @@ namespace Microsoft.Ddue.Tools
                     throw new ConfigurationErrorsException("The filter/@files attribute must specify a path.");
                 ParseDocuments(filterFiles);
             }
-            //WriteMessage(MessageLevel.Info, String.Format("Indexed {0} elements.", index.Count));
         }
 
         public void ParseDocuments(string wildcardPath)
@@ -55,7 +53,7 @@ namespace Microsoft.Ddue.Tools
             if ((filterFiles == null) || (filterFiles.Length == 0))
                 throw new ConfigurationErrorsException("The filter path is an empty string.");
 
-            WriteMessage(MessageLevel.Info, String.Format("Searching for files that match '{0}'.", filterFiles));
+            WriteMessage(MessageLevel.Info, "Searching for files that match '{0}'.", filterFiles);
             string directoryPart = Path.GetDirectoryName(filterFiles);
             if (String.IsNullOrEmpty(directoryPart))
                 directoryPart = Environment.CurrentDirectory;
@@ -64,7 +62,7 @@ namespace Microsoft.Ddue.Tools
             string[] files = Directory.GetFiles(directoryPart, filePart);
             foreach (string file in files)
                 ParseDocument(file);
-            WriteMessage(MessageLevel.Info, String.Format("Found {0} files in {1}.", files.Length, filterFiles));
+            WriteMessage(MessageLevel.Info, "Found {0} files in {1}.", files.Length, filterFiles);
         }
 
         private void AddPlatformVersionFilter(string platformId, string versionId, XPathNavigator platformNode, string file)
@@ -146,9 +144,7 @@ namespace Microsoft.Ddue.Tools
 
             // write platforms info for normal api topics (excluding memberlist and overload list topics
             if (topicdataGroup != "list" && topicdataSubgroup != "DerivedTypeList" && (apiGroup == "type" || apiGroup == "member") && versionFilters.Count > 0)
-            {
-                WriteApiPlatforms(referenceNode, apiGroup, key, topicTypeName, topicNamespaceName);
-            }
+                WriteApiPlatforms(referenceNode, apiGroup, topicTypeName, topicNamespaceName);
 
             // write platforms for elements//element nodes (member list and overload topics; not root or namespace)
             if ((topicdataGroup == "list" && topicdataSubgroup != "DerivedTypeList") && apiGroup != "root" && versionFilters.Count > 0)
@@ -157,15 +153,13 @@ namespace Microsoft.Ddue.Tools
                     topicTypeName = (string)referenceNode.Evaluate(listTypeNameExpression);
 
                 XPathNodeIterator elementNodes = referenceNode.Select(listTopicElementNodesExpression);
+
                 foreach (XPathNavigator elementNode in elementNodes)
-                {
-                    string elementId = (string)elementNode.Evaluate(elementIdExpression);
-                    WriteApiPlatforms(elementNode, "member", elementId, topicTypeName, topicNamespaceName);
-                }
+                    WriteApiPlatforms(elementNode, "member", topicTypeName, topicNamespaceName);
             }
         }
 
-        private void WriteApiPlatforms(XPathNavigator referenceNode, string apiGroup, string key, string topicTypeName, string topicNamespaceName)
+        private void WriteApiPlatforms(XPathNavigator referenceNode, string apiGroup, string topicTypeName, string topicNamespaceName)
         {
             XPathNodeIterator versionNodes = referenceNode.Select(versionNodesExpression);
             List<string> supportedPlatforms = new List<string>();
@@ -184,10 +178,11 @@ namespace Microsoft.Ddue.Tools
                         switch (apiGroup)
                         {
                             case "type":
-                                included = filter.IsIncludedType(referenceNode, key, topicNamespaceName);
+                                included = filter.IsIncludedType(referenceNode, topicNamespaceName);
                                 break;
+
                             case "member":
-                                included = filter.IsIncludedMember(referenceNode, key, topicTypeName, topicNamespaceName);
+                                included = filter.IsIncludedMember(referenceNode, topicTypeName, topicNamespaceName);
                                 break;
                         }
                     }
@@ -211,7 +206,7 @@ namespace Microsoft.Ddue.Tools
 
     public abstract class InclusionFilter
     {
-        public InclusionFilter(string file)
+        protected InclusionFilter(string file)
         {
             sourceFiles.Add(file);
         }
@@ -255,7 +250,8 @@ namespace Microsoft.Ddue.Tools
                         // if the version already has a filter for this namespace, add the data from the current namespace node
                         // unless the namespace node has a different @include value, in which case log a warning
                         string nsIncludeAttr = subtree.GetAttribute("include");
-                        bool nsIncluded = Convert.ToBoolean(string.IsNullOrEmpty(nsIncludeAttr) ? "true" : nsIncludeAttr);
+                        bool nsIncluded = Convert.ToBoolean(String.IsNullOrEmpty(nsIncludeAttr) ? "true" : nsIncludeAttr,
+                            CultureInfo.InvariantCulture);
                         if (nsIncluded != namespaceFilter.Included)
                         {
                             // write warning message about conflicting filters
@@ -304,25 +300,25 @@ namespace Microsoft.Ddue.Tools
         /// </summary>
         /// <param name="referenceNode">The type's reflection data.</param>
         /// <returns></returns>
-        public bool IsIncludedType(XPathNavigator referenceNode, string key, string topicNamespaceName)
+        public bool IsIncludedType(XPathNavigator referenceNode, string topicNamespaceName)
         {
             // if we have a filter for the topic's namespace, check it
             NamespaceFilter namespaceFilter;
-            if (namespaceFilters.TryGetValue(topicNamespaceName, out namespaceFilter))
-            {
-                return namespaceFilter.IsIncludedType(referenceNode, key);
-            }
+
+            if(namespaceFilters.TryGetValue(topicNamespaceName, out namespaceFilter))
+                return namespaceFilter.IsIncludedType(referenceNode);
+
             return included;
         }
 
-        public bool IsIncludedMember(XPathNavigator referenceNode, string key, string topicTypeName, string topicNamespaceName)
+        public bool IsIncludedMember(XPathNavigator referenceNode, string topicTypeName, string topicNamespaceName)
         {
             // if we have a filter for the topic's namespace, check it
             NamespaceFilter namespaceFilter;
+
             if (namespaceFilters.TryGetValue(topicNamespaceName, out namespaceFilter))
-            {
-                return namespaceFilter.IsIncludedMember(referenceNode, key, topicTypeName);
-            }
+                return namespaceFilter.IsIncludedMember(referenceNode, topicTypeName);
+
             return included;
         }
     }
@@ -336,7 +332,8 @@ namespace Microsoft.Ddue.Tools
         {
             //name = namespaceReader.GetAttribute("name");
             string includeAttr = namespaceReader.GetAttribute("include");
-            included = Convert.ToBoolean(string.IsNullOrEmpty(includeAttr) ? "true" : includeAttr);
+            included = Convert.ToBoolean(String.IsNullOrEmpty(includeAttr) ? "true" : includeAttr,
+                CultureInfo.InvariantCulture);
             AddNamespaceNode(namespaceReader, file);
         }
 
@@ -359,7 +356,9 @@ namespace Microsoft.Ddue.Tools
                         // if the namespace already has a filter for this type, add the data from the current type node
                         // unless the type node has a different @include value, in which case log a warning
                         string typeIncludeAttr = subtree.GetAttribute("include");
-                        bool typeIncluded = Convert.ToBoolean(string.IsNullOrEmpty(typeIncludeAttr) ? "true" : typeIncludeAttr);
+                        bool typeIncluded = Convert.ToBoolean(String.IsNullOrEmpty(typeIncludeAttr) ? "true" :
+                            typeIncludeAttr, CultureInfo.InvariantCulture);
+
                         if (typeIncluded != typeFilter.Included)
                         {
                             // write warning message about conflicting filters
@@ -398,28 +397,28 @@ namespace Microsoft.Ddue.Tools
             }
         }
 
-        public bool IsIncludedType(XPathNavigator referenceNode, string key)
+        public bool IsIncludedType(XPathNavigator referenceNode)
         {
             // get the type's name
             string typeName = (string)referenceNode.Evaluate(apiNameExpression);
 
             // if we have a filter for that type, check it
             TypeFilter typeFilter;
+
             if (typeFilters.TryGetValue(typeName, out typeFilter))
-            {
                 return typeFilter.Included;
-            }
+
             return included;
         }
 
-        public bool IsIncludedMember(XPathNavigator referenceNode, string key, string topicTypeName)
+        public bool IsIncludedMember(XPathNavigator referenceNode, string topicTypeName)
         {
             // if we have a filter for the type, check it
             TypeFilter typeFilter;
+
             if (typeFilters.TryGetValue(topicTypeName, out typeFilter))
-            {
-                return typeFilter.IsIncludedMember(referenceNode, key);
-            }
+                return typeFilter.IsIncludedMember(referenceNode);
+
             return included;
         }
     }
@@ -432,7 +431,8 @@ namespace Microsoft.Ddue.Tools
         {
             //name = typeReader.GetAttribute("name");
             string includeAttr = typeReader.GetAttribute("include");
-            included = Convert.ToBoolean(string.IsNullOrEmpty(includeAttr) ? "true" : includeAttr);
+            included = Convert.ToBoolean(String.IsNullOrEmpty(includeAttr) ? "true" : includeAttr,
+                CultureInfo.InvariantCulture);
             AddTypeNode(typeReader, file);
         }
 
@@ -455,7 +455,8 @@ namespace Microsoft.Ddue.Tools
                         // if the type already has a filter for this member, add the data from the current member node
                         // unless the member node has a different @include value, in which case log a warning
                         string memberIncludeAttr = subtree.GetAttribute("include");
-                        bool memberIncluded = Convert.ToBoolean(string.IsNullOrEmpty(memberIncludeAttr) ? "true" : memberIncludeAttr);
+                        bool memberIncluded = Convert.ToBoolean(String.IsNullOrEmpty(memberIncludeAttr) ?
+                            "true" : memberIncludeAttr, CultureInfo.InvariantCulture);
                         if (memberIncluded != memberFilter.Included)
                         {
                             // write warning message about conflicting filters
@@ -494,20 +495,19 @@ namespace Microsoft.Ddue.Tools
             }
         }
 
-        public bool IsIncludedMember(XPathNavigator referenceNode, string key)
+        public bool IsIncludedMember(XPathNavigator referenceNode)
         {
             // get the member's name
             string memberName = (string)referenceNode.Evaluate(apiNameExpression);
 
             // if we have a filter for that member, check it
             MemberFilter memberFilter;
+
             if (memberFilters.TryGetValue(memberName, out memberFilter))
-            {
-                return memberFilter.IsIncludedMember(referenceNode, key);
-            }
+                return memberFilter.IsIncludedMember(referenceNode);
+
             return included;
         }
-
     }
 
     public class MemberFilter : InclusionFilter
@@ -519,7 +519,8 @@ namespace Microsoft.Ddue.Tools
             //name = memberReader.GetAttribute("name");
 
             string includeAttr = memberReader.GetAttribute("include");
-            included = Convert.ToBoolean(string.IsNullOrEmpty(includeAttr) ? "true" : includeAttr);
+            included = Convert.ToBoolean(String.IsNullOrEmpty(includeAttr) ? "true" : includeAttr,
+                CultureInfo.InvariantCulture);
             AddMemberNode(memberReader, file);
         }
 
@@ -530,11 +531,11 @@ namespace Microsoft.Ddue.Tools
             {
                 if ((subtree.NodeType == XmlNodeType.Element) && (subtree.Name == "overload"))
                 {
-                    string overloadId = subtree.GetAttribute("api");
                     string paramTypes = subtree.GetAttribute("types");
-                    string paramNames = subtree.GetAttribute("names");
                     string overloadIncludeAttr = subtree.GetAttribute("include");
-                    bool overloadIncluded = Convert.ToBoolean(string.IsNullOrEmpty(overloadIncludeAttr) ? "true" : overloadIncludeAttr);
+                    bool overloadIncluded = Convert.ToBoolean(String.IsNullOrEmpty(overloadIncludeAttr) ?
+                        "true" : overloadIncludeAttr, CultureInfo.InvariantCulture);
+
                     // check for existing overload filters that identify the same overload
                     bool alreadyFiltered = false;
                     foreach (OverloadFilter overloadFilter in overloadFilters)
@@ -571,13 +572,10 @@ namespace Microsoft.Ddue.Tools
 
         private List<OverloadFilter> overloadFilters = new List<OverloadFilter>();
 
-        public bool IsIncludedMember(XPathNavigator referenceNode, string key)
+        public bool IsIncludedMember(XPathNavigator referenceNode)
         {
             if (overloadFilters.Count == 0)
                 return included;
-
-            // get the member's paramTypes string
-
 
             // get the member's paramNames string
             XPathNodeIterator parameterNodes = referenceNode.Select(apiParameterNodesExpression);
@@ -626,7 +624,9 @@ namespace Microsoft.Ddue.Tools
         {
             //name = overloadReader.GetAttribute("name");
             string includeAttr = overloadReader.GetAttribute("include");
-            included = Convert.ToBoolean(string.IsNullOrEmpty(includeAttr) ? "true" : includeAttr);
+            included = Convert.ToBoolean(string.IsNullOrEmpty(includeAttr) ? "true" : includeAttr,
+                CultureInfo.InvariantCulture);
+
             overloadId = overloadReader.GetAttribute("api");
             paramTypes = overloadReader.GetAttribute("types");
             paramNames = overloadReader.GetAttribute("names");

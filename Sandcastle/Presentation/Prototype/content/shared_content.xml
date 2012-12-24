@@ -77,7 +77,7 @@
   <item id="everett">1.1</item>
   <item id="whidbey">2.0</item>
 
-<!-- dynamic Link Information -->
+	<!-- dynamic Link Information -->
   <item id="mshelpKTable"><MSHelp:ktable keywords='{0}' locHeader='Location' topicHeader = 'Topic' disambiguator='table' indexMoniker='!DefaultDynamicLinkIndex' /></item>
 
   <item id="dynamicLinkInlinePreFixText">For more information, see </item>
@@ -88,11 +88,10 @@
 	<item id="footer"><div id="footer"><include item="copyright"/> </div></item>
 	<item id="copyright">2008 Microsoft Corporation. All rights reserved.</item>
 
-    <!-- Bibliography -->
-    <item id="bibliographyTitle">Bibliography</item>
-
+  <!-- Bibliography -->
+  <item id="bibliographyTitle">Bibliography</item>
 
 	<item id="copyHoverImage">CopyHover image</item>
 	<item id="copyImage">Copy image</item>
-	<item id="copyCode">Copy Code</item>
+	<item id="copyCode">Copy</item>
 </content>

@@ -1,4 +1,4 @@
-namespace SandcastleBuilder.Components
+namespace Microsoft.Ddue.Tools.UI
 {
     partial class IntelliSenseConfigDlg
     {

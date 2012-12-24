@@ -123,6 +123,6 @@
 
 	<!-- Legacy shared content -->
 	<item id="copyrightText"><include item="copyright_text"/></item>
-	<item id="copyCode">--- NA ---</item>
+	<item id="copyCode">Copy</item>
   
 </content>

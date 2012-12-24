@@ -93,16 +93,15 @@
 	<item id="copyImage">Copy image</item>
 	<item id="footerImage">Footer image</item>
 
-  	 <!-- product labels -->
-  	<item id="framework">.NET Framework</item>
-  	<item id="compact">.NET Compact Framework</item>
-  	<item id="everett">1.1</item>
-  	<item id="whidbey">2.0</item>
+	<!-- product labels -->
+ 	<item id="framework">.NET Framework</item>
+ 	<item id="compact">.NET Compact Framework</item>
+ 	<item id="everett">1.1</item>
+	<item id="whidbey">2.0</item>
 
-	<item id="copyCode">Copy Code</item>
-  	
-  
-   <!-- dynamic Link Information -->
+	<item id="copyCode">Copy</item>
+
+  <!-- dynamic Link Information -->
   <item id="mshelpKTable"><MSHelp:ktable keywords='{0}' locHeader='Location' topicHeader = 'Topic' disambiguator='table' indexMoniker='!DefaultDynamicLinkIndex' /></item>
 
   <item id="dynamicLinkInlinePreFixText">For more information, see </item>

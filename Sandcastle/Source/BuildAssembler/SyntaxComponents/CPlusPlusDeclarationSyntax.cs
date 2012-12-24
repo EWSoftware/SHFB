@@ -10,11 +10,12 @@
 // 03/30/2012 - EFW - Added support for interior_ptr<T>
 
 using System;
+using System.Globalization;
 using System.Xml.XPath;
 
 namespace Microsoft.Ddue.Tools
 {
-    public class CPlusPlusDeclarationSyntaxGenerator : SyntaxGeneratorTemplate
+    public sealed class CPlusPlusDeclarationSyntaxGenerator : SyntaxGeneratorTemplate
     {
         public CPlusPlusDeclarationSyntaxGenerator(XPathNavigator configuration) : base(configuration)
         {
@@ -177,12 +178,10 @@ namespace Microsoft.Ddue.Tools
 
         }
 
-
         public override void WriteNormalMethodSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             string name = (string)reflection.Evaluate(apiNameExpression);
             string typeSubgroup = (string)reflection.Evaluate(apiContainingTypeSubgroupExpression);
-            bool isExplicit = (bool)reflection.Evaluate(apiIsExplicitImplementationExpression);
 
             if(typeSubgroup == "interface")
             {
@@ -381,7 +380,6 @@ namespace Microsoft.Ddue.Tools
         public override void WritePropertySyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             string name = (string)reflection.Evaluate(apiNameExpression);
-            string typeSubgroup = (string)reflection.Evaluate(apiContainingTypeSubgroupExpression);
             bool isDefault = (bool)reflection.Evaluate(apiIsDefaultMemberExpression);
             bool hasGetter = (bool)reflection.Evaluate(apiIsReadPropertyExpression);
             bool hasSetter = (bool)reflection.Evaluate(apiIsWritePropertyExpression);
@@ -662,11 +660,11 @@ namespace Microsoft.Ddue.Tools
             }
         }
 
-        private void WritePrefixProcedureModifiers(XPathNavigator reflection, SyntaxWriter writer)
+        private static void WritePrefixProcedureModifiers(XPathNavigator reflection, SyntaxWriter writer)
         {
-
             // interface members don't get modified
             string typeSubgroup = (string)reflection.Evaluate(apiContainingTypeSubgroupExpression);
+
             if(typeSubgroup == "interface")
                 return;
 
@@ -683,14 +681,13 @@ namespace Microsoft.Ddue.Tools
                 writer.WriteKeyword("virtual");
                 writer.WriteString(" ");
             }
-
         }
 
-        private void WritePostfixProcedureModifiers(XPathNavigator reflection, SyntaxWriter writer)
+        private static void WritePostfixProcedureModifiers(XPathNavigator reflection, SyntaxWriter writer)
         {
-
             // interface members don't get modified
             string typeSubgroup = (string)reflection.Evaluate(apiContainingTypeSubgroupExpression);
+
             if(typeSubgroup == "interface")
                 return;
 
@@ -721,28 +718,26 @@ namespace Microsoft.Ddue.Tools
 
         // Visibility
 
-        private void WriteProcedureVisibility(XPathNavigator reflection, SyntaxWriter writer)
+        private static void WriteProcedureVisibility(XPathNavigator reflection, SyntaxWriter writer)
         {
             string typeSubgroup = (string)reflection.Evaluate(apiContainingTypeSubgroupExpression);
+
             if(typeSubgroup != "interface")
             {
                 WriteVisibility(reflection, writer);
                 writer.WriteString(":");
                 writer.WriteLine();
             }
-
         }
 
-        private void WriteVisibility(XPathNavigator reflection, SyntaxWriter writer)
+        private static void WriteVisibility(XPathNavigator reflection, SyntaxWriter writer)
         {
-
             string visibility = reflection.Evaluate(apiVisibilityExpression).ToString();
             WriteVisibility(visibility, writer);
         }
 
-        private void WriteVisibility(string visibility, SyntaxWriter writer)
+        private static void WriteVisibility(string visibility, SyntaxWriter writer)
         {
-
             switch(visibility)
             {
                 case "public":
@@ -764,24 +759,26 @@ namespace Microsoft.Ddue.Tools
                     writer.WriteKeyword("private");
                     break;
             }
-
         }
 
         // Generics
 
         private void WriteGenericTemplates(XPathNavigator reflection, SyntaxWriter writer)
         {
-
             XPathNodeIterator templateNodes = (XPathNodeIterator)reflection.Evaluate(apiTemplatesExpression);
+
             if(templateNodes.Count == 0)
                 return;
-            XPathNavigator[] templates = ConvertIteratorToArray(templateNodes);
+
+            XPathNavigator[] templates = templateNodes.ToArray();
+
             if(templates.Length == 0)
                 return;
 
             // generic declaration
             writer.WriteKeyword("generic");
             writer.WriteString("<");
+
             for(int i = 0; i < templates.Length; i++)
             {
                 XPathNavigator template = templates[i];
@@ -792,6 +789,7 @@ namespace Microsoft.Ddue.Tools
                 writer.WriteString(" ");
                 writer.WriteString(name);
             }
+
             writer.WriteString(">");
             writer.WriteLine();
 
@@ -988,7 +986,7 @@ namespace Microsoft.Ddue.Tools
                 // !EFW - Optional indicated by OptionalAttribute?
                 if(isOptional && argument == null)
                 {
-                    this.WriteAttribute("T:System.Runtime.InteropServices.OptionalAttribute", false, writer);
+                    WriteAttribute("T:System.Runtime.InteropServices.OptionalAttribute", false, writer);
                     writer.WriteString(" ");
                 }
 
@@ -1049,7 +1047,9 @@ namespace Microsoft.Ddue.Tools
             {
                 case "arrayOf":
                     XPathNavigator element = reference.SelectSingleNode(typeExpression);
-                    int rank = Convert.ToInt32(reference.GetAttribute("rank", String.Empty));
+                    int rank = Convert.ToInt32(reference.GetAttribute("rank", String.Empty),
+                        CultureInfo.InvariantCulture);
+
                     writer.WriteKeyword("array");
                     writer.WriteString("<");
                     WriteTypeReference(element, writer);
@@ -1057,14 +1057,13 @@ namespace Microsoft.Ddue.Tools
                     if(rank > 1)
                     {
                         writer.WriteString(",");
-                        writer.WriteString(rank.ToString());
+                        writer.WriteString(rank.ToString(CultureInfo.InvariantCulture));
                     }
 
                     writer.WriteString(">");
 
                     if(handle)
                         writer.WriteString("^");
-
                     break;
 
                 case "pointerTo":
@@ -1131,7 +1130,7 @@ namespace Microsoft.Ddue.Tools
             }
         }
 
-        private void WriteNormalTypeReference(string reference, SyntaxWriter writer)
+        private static void WriteNormalTypeReference(string reference, SyntaxWriter writer)
         {
             switch(reference)
             {
@@ -1182,11 +1181,12 @@ namespace Microsoft.Ddue.Tools
 
         // Attributes
 
-        private void WriteAttribute(string reference, bool newline, SyntaxWriter writer)
+        private static void WriteAttribute(string reference, bool newline, SyntaxWriter writer)
         {
             writer.WriteString("[");
             writer.WriteReferenceLink(reference);
             writer.WriteString("]");
+
             if(newline)
                 writer.WriteLine();
         }
@@ -1268,9 +1268,6 @@ namespace Microsoft.Ddue.Tools
             XPathNavigator type = parent.SelectSingleNode(attributeTypeExpression);
             XPathNavigator value = parent.SelectSingleNode(valueExpression);
 
-            if(value == null)
-                Console.WriteLine("null value");
-
             switch(value.LocalName)
             {
                 case "nullValue":
@@ -1310,15 +1307,8 @@ namespace Microsoft.Ddue.Tools
                             break;
 
                         case "T:System.Boolean":
-                            bool bool_value = Convert.ToBoolean(text);
-                            if(bool_value)
-                            {
-                                writer.WriteKeyword("true");
-                            }
-                            else
-                            {
-                                writer.WriteKeyword("false");
-                            }
+                            writer.WriteKeyword(Convert.ToBoolean(text, CultureInfo.InvariantCulture) ?
+                                "true" : "false");
                             break;
 
                         case "T:System.Char":
@@ -1364,21 +1354,10 @@ namespace Microsoft.Ddue.Tools
             }
         }
 
-        private void WriteMemberReference(XPathNavigator member, SyntaxWriter writer)
+        private static void WriteMemberReference(XPathNavigator member, SyntaxWriter writer)
         {
             string api = member.GetAttribute("api", String.Empty);
             writer.WriteReferenceLink(api);
-        }
-
-        private static XPathNavigator[] ConvertIteratorToArray(XPathNodeIterator iterator)
-        {
-            XPathNavigator[] result = new XPathNavigator[iterator.Count];
-            for(int i = 0; i < result.Length; i++)
-            {
-                iterator.MoveNext();
-                result[i] = iterator.Current.Clone();
-            }
-            return (result);
         }
     }
 }

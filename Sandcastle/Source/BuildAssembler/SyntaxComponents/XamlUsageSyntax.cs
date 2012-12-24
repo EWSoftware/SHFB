@@ -6,21 +6,23 @@
 // Change History
 // 03/28/2012 - EFW - Fixed WritePropertySyntax() so that it generates syntax for properties with
 // abstract return types as long as there is a type converter for it (i.e. Brush).
+// 12/23/2012 - EFW - Made the xamlAssemblies dictionary use case-insensitive key comparisons
 
 using System;
 using System.Collections.Generic;
-using System.Xml.XPath;
 using System.Configuration;
+using System.Globalization;
 using System.IO;
+using System.Xml.XPath;
 
 namespace Microsoft.Ddue.Tools
 {
-    public class XamlUsageSyntaxGenerator : SyntaxGeneratorTemplate
+    public sealed class XamlUsageSyntaxGenerator : SyntaxGeneratorTemplate
     {
-
         public XamlUsageSyntaxGenerator(XPathNavigator configuration) : base(configuration)
         {
             LoadConfigNode(configuration);
+
             if(String.IsNullOrEmpty(Language))
                 Language = "XAML";
         }
@@ -32,7 +34,8 @@ namespace Microsoft.Ddue.Tools
             // Check the list of assemblies for which to generate XAML syntax
             string assemblyName = (string)reflection.Evaluate(apiContainingAssemblyExpression);
             string namespaceName = (string)reflection.Evaluate(apiContainingNamespaceNameExpression);
-            if(!xamlAssemblies.ContainsKey(assemblyName.ToLower()))
+
+            if(!xamlAssemblies.ContainsKey(assemblyName))
             {
                 WriteXamlBoilerplate(XamlBoilerplateID.nonXamlAssemblyBoilerplate, writer);
             }
@@ -60,7 +63,8 @@ namespace Microsoft.Ddue.Tools
         private void WriteXamlXmlnsUri(string assemblyName, string namespaceName, SyntaxWriter writer)
         {
             Dictionary<string, List<string>> clrNamespaces;
-            if(xamlAssemblies.TryGetValue(assemblyName.ToLower(), out clrNamespaces))
+
+            if(xamlAssemblies.TryGetValue(assemblyName, out clrNamespaces))
             {
                 List<string> xmlnsUriList;
                 if(clrNamespaces.TryGetValue(namespaceName, out xmlnsUriList))
@@ -77,12 +81,12 @@ namespace Microsoft.Ddue.Tools
         }
 
         // list of classes whose subclasses do NOT get XAML syntax
-        protected List<string> excludedAncestorList = new List<string>();
+        private List<string> excludedAncestorList = new List<string>();
 
-        // list of assemblies whose members get XAML syntax
-        // the nested Dictionary is a list of assembly's namespaces that have one or more xmlns uris for xaml
-        private Dictionary<string, Dictionary<string, List<string>>> xamlAssemblies = new Dictionary<string, Dictionary<string, List<string>>>();
-
+        // List of assemblies whose members get XAML syntax.  The assembly name key is compared case-insensitively.
+        // The nested dictionary is a list of assembly namespaces that have one or more xmlns uris for xaml.
+        private Dictionary<string, Dictionary<string, List<string>>> xamlAssemblies =
+            new Dictionary<string, Dictionary<string, List<string>>>(StringComparer.OrdinalIgnoreCase);
 
         private void LoadConfigNode(XPathNavigator configuration)
         {
@@ -121,10 +125,10 @@ namespace Microsoft.Ddue.Tools
                     continue; // should emit warning message
 
                 Dictionary<string, List<string>> clrNamespaces;
-                if(!xamlAssemblies.TryGetValue(assemblyName.ToLower(), out clrNamespaces))
+                if(!xamlAssemblies.TryGetValue(assemblyName, out clrNamespaces))
                 {
                     clrNamespaces = new Dictionary<string, List<string>>();
-                    xamlAssemblies.Add(assemblyName.ToLower(), clrNamespaces);
+                    xamlAssemblies.Add(assemblyName, clrNamespaces);
                 }
 
                 foreach(XPathNavigator xmlnsNode in xamlAssembly.Select("xmlns[@uri][clrNamespace]"))
@@ -155,19 +159,21 @@ namespace Microsoft.Ddue.Tools
         public void ParseDocuments(string wildcardPath)
         {
             string filterFiles = Environment.ExpandEnvironmentVariables(wildcardPath);
-            if((filterFiles == null) || (filterFiles.Length == 0))
+
+            if(filterFiles == null || filterFiles.Length == 0)
                 throw new ConfigurationErrorsException("The XamlUsageSyntaxGenerator filter path is an empty string.");
 
-            //WriteMessage(MessageLevel.Info, String.Format("XamlUsageSyntaxGenerator: Searching for files that match '{0}'.", filterFiles));
             string directoryPart = Path.GetDirectoryName(filterFiles);
+
             if(String.IsNullOrEmpty(directoryPart))
                 directoryPart = Environment.CurrentDirectory;
+
             directoryPart = Path.GetFullPath(directoryPart);
             string filePart = Path.GetFileName(filterFiles);
             string[] files = Directory.GetFiles(directoryPart, filePart);
+
             foreach(string file in files)
                 ParseDocument(file);
-            //WriteMessage(MessageLevel.Info, String.Format("Found {0} files in {1}.", files.Length, filterFiles));
         }
 
         private void ParseDocument(string file)
@@ -181,7 +187,9 @@ namespace Microsoft.Ddue.Tools
             }
             catch(Exception e)
             {
-                throw new ConfigurationErrorsException(string.Format("Exception parsing XamlUsageSyntaxGenerator filter file: {0}. Exception message: {1}", file, e.Message));
+                throw new ConfigurationErrorsException(String.Format(CultureInfo.CurrentCulture,
+                    "Exception parsing XamlUsageSyntaxGenerator filter file: {0}. Exception message: {1}", file,
+                    e.Message));
             }
         }
 
@@ -209,11 +217,9 @@ namespace Microsoft.Ddue.Tools
 
         public override void WriteClassSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
-            string name = reflection.Evaluate(apiNameExpression).ToString();
             bool isAbstract = (bool)reflection.Evaluate(apiIsAbstractTypeExpression);
             bool isSealed = (bool)reflection.Evaluate(apiIsSealedTypeExpression);
-            bool isSerializable = (bool)reflection.Evaluate(apiIsSerializableTypeExpression);
-            // 
+
             if(isAbstract && !isSealed)
             {
                 // Output boilerplate for abstract class 
@@ -222,13 +228,9 @@ namespace Microsoft.Ddue.Tools
             else if(!HasDefaultConstructor(reflection))
             {
                 if(HasTypeConverterAttribute(reflection))
-                {
                     WriteXamlBoilerplate(XamlBoilerplateID.classXamlSyntax_noDefaultCtorWithTypeConverter, writer);
-                }
                 else
-                {
                     WriteXamlBoilerplate(XamlBoilerplateID.classXamlSyntax_noDefaultCtor, writer);
-                }
             }
             else if(IsExcludedSubClass(reflection))
             {
@@ -249,30 +251,36 @@ namespace Microsoft.Ddue.Tools
             string xamlBlockId = System.Enum.GetName(typeof(XamlHeadingID), XamlHeadingID.xamlObjectElementUsageHeading);
 
             string contentPropertyId = (string)reflection.Evaluate(contentPropertyIdExpression);
-            if(contentPropertyId == "")
+
+            if(String.IsNullOrEmpty(contentPropertyId))
                 contentPropertyId = (string)reflection.Evaluate(ancestorContentPropertyIdExpression);
 
             // start the syntax block
             writer.WriteStartSubBlock(xamlBlockId);
 
             writer.WriteString("<");
+
             if(isGeneric)
             {
                 writer.WriteIdentifier(typeName);
 
                 // for generic types show the type arguments
                 XPathNodeIterator templates = (XPathNodeIterator)reflection.Evaluate(apiTemplatesExpression);
+
                 if(templates.Count > 0)
                 {
                     writer.WriteString(" x:TypeArguments=\"");
+
                     while(templates.MoveNext())
                     {
                         XPathNavigator template = templates.Current;
                         string name = template.GetAttribute("name", String.Empty);
                         writer.WriteString(name);
+
                         if(templates.CurrentPosition < templates.Count)
                             writer.WriteString(",");
                     }
+
                     writer.WriteString("\"");
                 }
             }
@@ -281,10 +289,9 @@ namespace Microsoft.Ddue.Tools
                 // for non-generic types just show the name
                 writer.WriteIdentifier(typeName);
             }
-            if(contentPropertyId == string.Empty)
-            {
+
+            if(String.IsNullOrEmpty(contentPropertyId))
                 writer.WriteString(" .../>");
-            }
             else
             {
                 // close the start tag
@@ -307,10 +314,8 @@ namespace Microsoft.Ddue.Tools
             writer.WriteEndSubBlock();
         }
 
-
         public override void WriteStructureSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
-            string name = (string)reflection.Evaluate(apiNameExpression);
             bool notWriteable = (bool)reflection.Evaluate(noSettablePropertiesExpression);
 
             if(notWriteable)
@@ -384,8 +389,6 @@ namespace Microsoft.Ddue.Tools
 
         public override void WritePropertySyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
-            //containingTypeSubgroupExpression
-            string propertyName = (string)reflection.Evaluate(apiNameExpression);
             bool isSettable = (bool)reflection.Evaluate(apiIsWritePropertyExpression);
             bool isSetterPublic = (bool)reflection.Evaluate(apiIsSetterPublicExpression);
             bool isAbstract = (bool)reflection.Evaluate(apiIsAbstractProcedureExpression);
@@ -397,7 +400,8 @@ namespace Microsoft.Ddue.Tools
             string returnTypeId = returnType.GetAttribute("api", string.Empty);
             string returnTypeSubgroup = (string)returnType.Evaluate(apiSubgroupExpression);
             bool returnTypeIsAbstract = (bool)returnType.Evaluate(apiIsAbstractTypeExpression);
-            bool returnTypeIsReadonlyStruct = (returnTypeSubgroup == "structure" && notWriteableReturnType && !IsPrimitiveType(returnTypeId));
+            bool returnTypeIsReadonlyStruct = (returnTypeSubgroup == "structure" && notWriteableReturnType &&
+                !IsPrimitiveType(returnTypeId));
 
             XPathNavigator containingType = reflection.SelectSingleNode(apiContainingTypeExpression);
             string containingTypeSubgroup = (string)containingType.Evaluate(apiSubgroupExpression);
@@ -407,7 +411,8 @@ namespace Microsoft.Ddue.Tools
             {
                 WriteXamlBoilerplate(XamlBoilerplateID.propertyXamlSyntax_noXamlSyntaxForInterfaceMembers, writer);
             }
-            else if((bool)containingType.Evaluate(apiIsAbstractTypeExpression) && (bool)containingType.Evaluate(apiIsSealedTypeExpression))
+            else if((bool)containingType.Evaluate(apiIsAbstractTypeExpression) &&
+                    (bool)containingType.Evaluate(apiIsSealedTypeExpression))
             {
                 // the property's containing type is static if it's abstract and sealed
                 // members of a static class cannot be used in XAML.
@@ -652,7 +657,7 @@ namespace Microsoft.Ddue.Tools
             writer.WriteIdentifier(containingTypeName + "." + eventName);
             writer.WriteString("=\"");
             WriteTypeReference(eventHandler, writer);
-            writer.WriteString(string.Format("\" .../>"));
+            writer.WriteString("\" .../>");
 
             writer.WriteEndSubBlock();
         }
@@ -669,13 +674,19 @@ namespace Microsoft.Ddue.Tools
             switch(reference.LocalName)
             {
                 case "arrayOf":
-                    int rank = Convert.ToInt32(reference.GetAttribute("rank", String.Empty));
+                    int rank = Convert.ToInt32(reference.GetAttribute("rank", String.Empty),
+                        CultureInfo.InvariantCulture);
+
                     XPathNavigator element = reference.SelectSingleNode(typeExpression);
                     WriteTypeReference(element, writer);
                     writer.WriteString("[");
-                    for(int i = 1; i < rank; i++) { writer.WriteString(","); }
+
+                    for(int i = 1; i < rank; i++)
+                        writer.WriteString(",");
+
                     writer.WriteString("]");
                     break;
+
                 case "pointerTo":
                     XPathNavigator pointee = reference.SelectSingleNode(typeExpression);
                     WriteTypeReference(pointee, writer);
@@ -725,7 +736,7 @@ namespace Microsoft.Ddue.Tools
             }
         }
 
-        private void WriteNormalTypeReference(string reference, SyntaxWriter writer)
+        private static void WriteNormalTypeReference(string reference, SyntaxWriter writer)
         {
             switch(reference)
             {
@@ -867,7 +878,7 @@ namespace Microsoft.Ddue.Tools
             return false;
         }
 
-        private bool IsPrimitiveType(string typeId)
+        private static bool IsPrimitiveType(string typeId)
         {
             // The primitive types are Boolean, Byte, SByte, Int16, UInt16, Int32, UInt32, Int64, UInt64, IntPtr, Char, Double, and Single.
             switch(typeId)
@@ -887,17 +898,16 @@ namespace Microsoft.Ddue.Tools
                 case "T:System.Single":
                 case "T:System.String": // String is not a primitive but is treated as one for this XAML purpose
                     return true;
+
                 default:
                     return false;
             }
         }
 
-
         private XPathExpression hasTypeConverterAttributeExpression = XPathExpression.Compile("boolean(attributes/attribute/type[@api='T:System.ComponentModel.TypeConverterAttribute'])");
 
         private XPathExpression hasDefaultConstructorExpression = XPathExpression.Compile("boolean(typedata/@defaultConstructor)");
 
-        private XPathExpression contentPropertyNameExpression = XPathExpression.Compile("string(attributes/attribute[type[contains(@api,'.ContentPropertyAttribute')]]/argument/value/.)");
         private XPathExpression contentPropertyIdExpression = XPathExpression.Compile("string(typedata/@contentProperty)");
         private XPathExpression ancestorContentPropertyIdExpression = XPathExpression.Compile("string(family/ancestors/type/@contentProperty)");
 

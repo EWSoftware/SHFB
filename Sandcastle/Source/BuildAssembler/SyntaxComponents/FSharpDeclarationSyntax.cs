@@ -10,15 +10,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Xml.XPath;
 
 namespace Microsoft.Ddue.Tools
 {
-
-    public class FSharpDeclarationSyntaxGenerator : SyntaxGeneratorTemplate
+    public sealed class FSharpDeclarationSyntaxGenerator : SyntaxGeneratorTemplate
     {
-        public FSharpDeclarationSyntaxGenerator(XPathNavigator configuration)
-            : base(configuration)
+        public FSharpDeclarationSyntaxGenerator(XPathNavigator configuration) : base(configuration)
         {
             if(String.IsNullOrEmpty(Language))
                 Language = "FSharp";
@@ -107,7 +106,6 @@ namespace Microsoft.Ddue.Tools
                 return;
 
             string name = (string)reflection.Evaluate(apiContainingTypeNameExpression);
-            bool isStatic = (bool)reflection.Evaluate(apiIsStaticExpression);
 
             WriteAttributes(reflection, writer);
 
@@ -130,7 +128,6 @@ namespace Microsoft.Ddue.Tools
                 return;
 
             string name = (string)reflection.Evaluate(apiNameExpression);
-            bool isOverride = (bool)reflection.Evaluate(apiIsOverrideExpression);
             bool isStatic = (bool)reflection.Evaluate(apiIsStaticExpression);
             bool isVirtual = (bool)reflection.Evaluate(apiIsVirtualExpression) && !(bool)reflection.Evaluate(apiIsAbstractProcedureExpression);
             int iterations = isVirtual ? 2 : 1;
@@ -476,20 +473,20 @@ namespace Microsoft.Ddue.Tools
 
             string name = (string)reflection.Evaluate(apiNameExpression);
             bool isStatic = (bool)reflection.Evaluate(apiIsStaticExpression);
-            bool isLiteral = (bool)reflection.Evaluate(apiIsLiteralFieldExpression);
             bool isInitOnly = (bool)reflection.Evaluate(apiIsInitOnlyFieldExpression);
             bool isSerialized = (bool)reflection.Evaluate(apiIsSerializedFieldExpression);
 
             if(!isSerialized)
                 WriteAttribute("T:System.NonSerializedAttribute", true, writer);
-            WriteAttributes(reflection, writer);
 
+            WriteAttributes(reflection, writer);
 
             if(isStatic)
             {
                 writer.WriteKeyword("static");
                 writer.WriteString(" ");
             }
+
             writer.WriteKeyword("val");
             writer.WriteString(" ");
 
@@ -584,63 +581,53 @@ namespace Microsoft.Ddue.Tools
 
         // Visibility
 
-        private void WriteVisibility(XPathNavigator reflection, SyntaxWriter writer)
+        private static void WriteVisibility(XPathNavigator reflection, SyntaxWriter writer)
         {
-
             string visibility = reflection.Evaluate(apiVisibilityExpression).ToString();
             WriteVisibility(visibility, writer);
         }
 
-
-        private Dictionary<string, string> visibilityDictionary = new Dictionary<string, string>()
-            {
-                { "public", null }, // Default in F#, so unnecessary.
-                { "family", null }, // Not supported in F#, section 8.8 in F# spec.
-                { "family or assembly", null }, // Not supported in F#, section 8.8 in F# spec. 
-                { "family and assembly", null }, // Not supported in F#, section 8.8 in F# spec.
-                { "assembly", "internal" },
-                { "private", "private" },
-            };
+        private static Dictionary<string, string> visibilityDictionary = new Dictionary<string, string>()
+        {
+            { "public", null }, // Default in F#, so unnecessary.
+            { "family", null }, // Not supported in F#, section 8.8 in F# spec.
+            { "family or assembly", null }, // Not supported in F#, section 8.8 in F# spec. 
+            { "family and assembly", null }, // Not supported in F#, section 8.8 in F# spec.
+            { "assembly", "internal" },
+            { "private", "private" },
+        };
 
         // DONE
-        private void WriteVisibility(string visibility, SyntaxWriter writer)
+        private static void WriteVisibility(string visibility, SyntaxWriter writer)
         {
-
             if(visibilityDictionary.ContainsKey(visibility) && visibilityDictionary[visibility] != null)
             {
                 writer.WriteKeyword(visibilityDictionary[visibility]);
                 writer.WriteString(" ");
             }
-
         }
 
         // Write member | abstract | override
-        private void WriteMemberKeyword(XPathNavigator reflection, SyntaxWriter writer)
+        private static void WriteMemberKeyword(XPathNavigator reflection, SyntaxWriter writer)
         {
             bool isOverride = (bool)reflection.Evaluate(apiIsOverrideExpression);
             bool isAbstract = (bool)reflection.Evaluate(apiIsAbstractProcedureExpression);
 
             if(isOverride)
-            {
                 writer.WriteKeyword("override");
-            }
-            else if(isAbstract)
-            {
-                writer.WriteKeyword("abstract");
-            }
             else
-            {
-                writer.WriteKeyword("member");
-            }
-            writer.WriteString(" ");
+                if(isAbstract)
+                    writer.WriteKeyword("abstract");
+                else
+                    writer.WriteKeyword("member");
 
-            return;
+            writer.WriteString(" ");
         }
 
         // Attributes
 
         // !EFW - Added newLine parameter
-        private void WriteAttribute(string reference, bool newLine, SyntaxWriter writer)
+        private static void WriteAttribute(string reference, bool newLine, SyntaxWriter writer)
         {
             writer.WriteString("[<");
             writer.WriteReferenceLink(reference);
@@ -727,9 +714,6 @@ namespace Microsoft.Ddue.Tools
             XPathNavigator type = parent.SelectSingleNode(attributeTypeExpression);
             XPathNavigator value = parent.SelectSingleNode(valueExpression);
 
-            if(value == null)
-                Console.WriteLine("null value");
-
             switch(value.LocalName)
             {
                 case "nullValue":
@@ -769,15 +753,8 @@ namespace Microsoft.Ddue.Tools
                             break;
 
                         case "T:System.Boolean":
-                            bool bool_value = Convert.ToBoolean(text);
-                            if(bool_value)
-                            {
-                                writer.WriteKeyword("true");
-                            }
-                            else
-                            {
-                                writer.WriteKeyword("false");
-                            }
+                            writer.WriteKeyword(Convert.ToBoolean(text, CultureInfo.InvariantCulture) ?
+                                "true" : "false");
                             break;
 
                         case "T:System.Char":
@@ -920,25 +897,20 @@ namespace Microsoft.Ddue.Tools
 
         private void WriteParameters(XPathNavigator reflection, SyntaxWriter writer)
         {
-
             XPathNodeIterator parameters = reflection.Select(apiParametersExpression);
 
             if(parameters.Count > 0)
-            {
-                WriteParameters(parameters, reflection, writer);
-            }
+                WriteParameters(parameters, writer);
             else
             {
                 writer.WriteKeyword("unit");
                 writer.WriteString(" ");
             }
-            return;
         }
 
-        private void WriteParameters(XPathNodeIterator parameters, XPathNavigator reflection, SyntaxWriter writer)
+        private void WriteParameters(XPathNodeIterator parameters, SyntaxWriter writer)
         {
             List<KeyValuePair<string, XPathNavigator>> optionalParams = new List<KeyValuePair<string, XPathNavigator>>();
-            bool isExtension = (bool)reflection.Evaluate(apiIsExtensionMethod);
             writer.WriteLine();
 
             while(parameters.MoveNext())
@@ -957,10 +929,9 @@ namespace Microsoft.Ddue.Tools
 
                 // !EFW - Optional indicated by OptionalAttribute?
                 if(isOptional)
-                {
                     if(argument == null)
                     {
-                        this.WriteAttribute("T:System.Runtime.InteropServices.OptionalAttribute", false, writer);
+                        WriteAttribute("T:System.Runtime.InteropServices.OptionalAttribute", false, writer);
                         writer.WriteString(" ");
                     }
                     else
@@ -968,7 +939,6 @@ namespace Microsoft.Ddue.Tools
                         writer.WriteString("?");
                         optionalParams.Add(new KeyValuePair<string, XPathNavigator>(name, argument));
                     }
-                }
 
                 writer.WriteParameter(name);
                 writer.WriteString(" : ");
@@ -986,9 +956,7 @@ namespace Microsoft.Ddue.Tools
                     writer.WriteLine();
                 }
                 else
-                {
                     writer.WriteString(" ");
-                }
             }
 
             // !EFW - Write out the optional value assignments.  F# uses a function to assign defaults
@@ -1042,13 +1010,19 @@ namespace Microsoft.Ddue.Tools
             switch(reference.LocalName)
             {
                 case "arrayOf":
-                    int rank = Convert.ToInt32(reference.GetAttribute("rank", String.Empty));
+                    int rank = Convert.ToInt32(reference.GetAttribute("rank", String.Empty),
+                        CultureInfo.InvariantCulture);
+
                     XPathNavigator element = reference.SelectSingleNode(typeExpression);
                     WriteTypeReference(element, writer);
                     writer.WriteString("[");
-                    for(int i = 1; i < rank; i++) { writer.WriteString(","); }
+
+                    for(int i = 1; i < rank; i++)
+                        writer.WriteString(",");
+
                     writer.WriteString("]");
                     break;
+
                 case "pointerTo":
                     XPathNavigator pointee = reference.SelectSingleNode(typeExpression);
                     writer.WriteKeyword("nativeptr");
@@ -1094,7 +1068,7 @@ namespace Microsoft.Ddue.Tools
         }
 
         // DONE
-        private void WriteNormalTypeReference(string api, SyntaxWriter writer)
+        private static void WriteNormalTypeReference(string api, SyntaxWriter writer)
         {
             switch(api)
             {

@@ -133,11 +133,11 @@ a build to see if it works.</para>
 
 		&lt;IntermediateTOCTransformation File="%DXROOT%\ProductionTransforms\CreateVSToc.xsl" /&gt;
 
-		&lt;-- NOTE: This example assumes you have made a copy of the SHFB configuration file.
+		&lt;!-- NOTE: This example assumes you have made a copy of the SHFB configuration file.
 		    If not, change the path too "%SHFBROOT%\Templates\Conceptual.config" --&gt;
 		&lt;ConceptualBuildConfiguration File="Configuration\CustomConceptualBuild.config" /&gt;
 
-		&lt;-- NOTE: This example assumes you have made a copy of the SHFB configuration file.
+		&lt;!-- NOTE: This example assumes you have made a copy of the SHFB configuration file.
 		    If not, change the path too "%SHFBROOT%\Templates\VS2005.config" --&gt;
 		&lt;ReferenceBuildConfiguration File="Configuration\CustomAPIBuild.config" /&gt;
 

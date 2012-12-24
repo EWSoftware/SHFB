@@ -4,9 +4,11 @@
 // All other rights reserved.
 
 // Change history:
-// 02/16/2012 - EFW - Added support for setting a verbosity level.  Messages with a log level below
-// the current verbosity level are ignored.
+// 02/16/2012 - EFW - Added support for setting a verbosity level.  Messages with a log level below the current
+// verbosity level are ignored.
 // 10/14/2012 - EFW - Added support for topic ID and message parameters in the message logging methods.
+// 12/23/2012 - EFW - Updated to use and return enumerable lists of components rather than arrays.  Replaced
+// TopicManifest and TopicEnumerator with a private ReadManifest() method.
 
 using System;
 using System.Collections.Generic;
@@ -51,9 +53,9 @@ namespace Microsoft.Ddue.Tools
         /// <summary>
         /// This read-only property returns the current list of build components
         /// </summary>
-        public BuildComponent[] BuildComponents
+        public IEnumerable<BuildComponent> BuildComponents
         {
-            get { return components.ToArray(); }
+            get { return components; }
         }
 
         /// <summary>
@@ -111,6 +113,28 @@ namespace Microsoft.Ddue.Tools
         }
         #endregion
 
+        #region IDisposable implementation
+        //=====================================================================
+
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Dispose of all components when being disposed
+        /// </summary>
+        /// <param name="disposing">Pass true to dispose of the managed and unmanaged resources or false to just
+        /// dispose of the unmanaged resources.</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if(disposing)
+                this.ClearComponents();
+        }
+        #endregion
+
         #region Events
         //=====================================================================
 
@@ -137,63 +161,81 @@ namespace Microsoft.Ddue.Tools
         #region Operations
         //=====================================================================
 
+        /// <summary>
+        /// This is used to read a manifest file to extract topic IDs for processing
+        /// </summary>
+        /// <param name="manifest">The manifest file to read</param>
+        /// <returns>An enumerable list of topic IDs</returns>
+        private IEnumerable<string> ReadManifest(string manifest)
+        {
+            string id;
+
+            using(var reader = XmlReader.Create(manifest))
+            {
+                reader.MoveToContent();
+
+                while(reader.Read())
+                    if(reader.NodeType == XmlNodeType.Element && reader.LocalName == "topic")
+                    {
+                        id = reader.GetAttribute("id");
+
+                        if(String.IsNullOrEmpty(id))
+                            throw new InvalidOperationException("A manifest topic is missing the required " +
+                                " id attribute");
+
+                        yield return id;
+                    }
+            }
+        }
+
+        /// <summary>
+        /// Apply the current set of components to the topics defined in the given manifest file
+        /// </summary>
+        /// <param name="manifestFile">The manifest file containing the topics to generate</param>
+        /// <returns>A count of the number of topics processed</returns>
+        /// <overloads>There are two overloads for this method</overloads>
+        public int Apply(string manifestFile)
+        {
+            return this.Apply(this.ReadManifest(manifestFile));
+        }
+
+        /// <summary>
+        /// Apply the current set of components to the given list of topics
+        /// </summary>
+        /// <param name="topics">The enumerable list of topic IDs</param>
+        /// <returns>A count of the number of topics processed</returns>
         public int Apply(IEnumerable<string> topics)
         {
             int count = 0;
 
             foreach(string topic in topics)
             {
-
-                // create the document
+                // Create the document
                 XmlDocument document = new XmlDocument();
                 document.PreserveWhitespace = true;
 
-                // write a log message
                 WriteMessage(MessageLevel.Info, "Building topic {0}", topic);
 
-                // apply the component stack
+                // Apply the component stack
                 foreach(BuildComponent component in components)
-                {
-
                     component.Apply(document, topic);
-                }
 
                 count++;
             }
 
-            return (count);
+            return count;
         }
 
-        public int Apply(string manifestFile)
-        {
-            return (Apply(new TopicManifest(manifestFile)));
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if(disposing)
-            {
-                foreach(BuildComponent component in components)
-                {
-                    ((IDisposable)component).Dispose();
-                }
-            }
-        }
-
+        // TODO: This doesn't appear to be used anymore.  Remove?
         public IEnumerable<BuildContext> GetFileManifestBuildContextEnumerator(string manifestFilename)
         {
             using(XmlReader reader = XmlReader.Create(manifestFilename))
             {
                 reader.MoveToContent();
+
                 while(reader.Read())
                 {
-                    if((reader.NodeType == XmlNodeType.Element) && (reader.LocalName == "topic"))
+                    if(reader.NodeType == XmlNodeType.Element && reader.LocalName == "topic")
                     {
                         BuildContext thisContext = new BuildContext();
 
@@ -221,99 +263,118 @@ namespace Microsoft.Ddue.Tools
             }
         }
 
+        /// <summary>
+        /// This is used to create a component based on the given configuration
+        /// </summary>
+        /// <param name="configuration">The component configuration</param>
+        /// <returns>A component created using the given definition</returns>
+        /// <exception cref="ArgumentNullException">This is thrown if <paramref name="configuration"/> is null</exception>
         public BuildComponent LoadComponent(XPathNavigator configuration)
         {
-
             if(configuration == null)
                 throw new ArgumentNullException("configuration");
 
-            // get the component infomation
+            // Get the component information
             string assemblyName = configuration.GetAttribute("assembly", String.Empty);
+
             if(String.IsNullOrEmpty(assemblyName))
-            {
-                WriteMessage(MessageLevel.Error, "Each component element must have an assembly attribute that specifys a path to the component assembly.");
-            }
+                WriteMessage(MessageLevel.Error, "Each component element must have an assembly attribute that " +
+                    "specifies a path to the component assembly.");
 
             string typeName = configuration.GetAttribute("type", String.Empty);
-            if(String.IsNullOrEmpty(typeName))
-            {
-                WriteMessage(MessageLevel.Error, "Each component element must have a type attribute that specifys the fully qualified name of a component type.");
-            }
 
-            // expand environmet variables in path of assembly name
+            if(String.IsNullOrEmpty(typeName))
+                WriteMessage(MessageLevel.Error, "Each component element must have a type attribute that " +
+                    "specifies the fully qualified name of a component type.");
+
+            // Expand environment variables in path of assembly name
             assemblyName = Environment.ExpandEnvironmentVariables(assemblyName);
 
-            // load and instantiate the component
+            // Load and instantiate the component
             BuildComponent component = null;
+
             try
             {
-
                 Assembly assembly = Assembly.LoadFrom(assemblyName);
-                component = (BuildComponent)assembly.CreateInstance(typeName, false, BindingFlags.Public | BindingFlags.Instance, null, new Object[2] { this, configuration }, null, null);
-
+                component = (BuildComponent)assembly.CreateInstance(typeName, false, BindingFlags.Public |
+                    BindingFlags.Instance, null, new object[2] { this, configuration }, null, null);
             }
             catch(IOException e)
             {
-                WriteMessage(MessageLevel.Error, "A file access error occured while attempting to load the build component assembly '{0}'. The error message is: {1}", assemblyName, e.Message);
+                WriteMessage(MessageLevel.Error, "A file access error occured while attempting to load the " +
+                    "build component assembly '{0}'. The error message is: {1}", assemblyName, e.Message);
             }
             catch(BadImageFormatException e)
             {
-                WriteMessage(MessageLevel.Error, "The build component assembly '{0}' is not a valid managed assembly. The error message is: {1}", assemblyName, e.Message);
+                WriteMessage(MessageLevel.Error, "The build component assembly '{0}' is not a valid " +
+                    "managed assembly. The error message is: {1}", assemblyName, e.Message);
             }
             catch(TypeLoadException)
             {
-                WriteMessage(MessageLevel.Error, "The build component '{0}' was not found in the assembly '{1}'.", typeName, assemblyName);
+                WriteMessage(MessageLevel.Error, "The build component '{0}' was not found in the assembly '{1}'.",
+                    typeName, assemblyName);
             }
             catch(MissingMethodException e)
             {
-                WriteMessage(MessageLevel.Error, "No appropriate constructor exists for the build component '{0}' in the component assembly '{1}'. The error message is: {1}", typeName, assemblyName, e.Message);
+                WriteMessage(MessageLevel.Error, "No appropriate constructor exists for the build component " +
+                    "'{0}' in the component assembly '{1}'. The error message is: {1}", typeName, assemblyName, e.Message);
             }
             catch(TargetInvocationException e)
             {
-                WriteMessage(MessageLevel.Error, "An error occured while initializing the build component '{0}' in the component assembly '{1}'. The error message and stack trace follows: {2}", typeName, assemblyName, e.InnerException.ToString());
+                WriteMessage(MessageLevel.Error, "An error occured while initializing the build component " +
+                    "'{0}' in the component assembly '{1}'. The error message and stack trace follows: {2}",
+                    typeName, assemblyName, e.InnerException.ToString());
             }
             catch(InvalidCastException)
             {
-                WriteMessage(MessageLevel.Error, "The type '{0}' in the component assembly '{1}' is not a build component.", typeName, assemblyName);
+                WriteMessage(MessageLevel.Error, "The type '{0}' in the component assembly '{1}' is not a " +
+                    "build component.", typeName, assemblyName);
             }
 
             if(component == null)
-            {
-                WriteMessage(MessageLevel.Error, "The type '{0}' was not found in the component assembly '{1}'.", typeName, assemblyName);
-            }
+                WriteMessage(MessageLevel.Error, "The type '{0}' was not found in the component assembly '{1}'.",
+                    typeName, assemblyName);
 
-            return (component);
+            return component;
         }
 
-        public BuildComponent[] LoadComponents(XPathNavigator configuration)
+        /// <summary>
+        /// This is used to load a set of components in a configuration and return them as an enumerable list
+        /// </summary>
+        /// <param name="configuration">The con</param>
+        /// <returns>An enumerable list of components created based on the configuration information</returns>
+        public IEnumerable<BuildComponent> LoadComponents(XPathNavigator configuration)
         {
             XPathNodeIterator componentNodes = configuration.Select("component");
-
             List<BuildComponent> components = new List<BuildComponent>();
 
             foreach(XPathNavigator componentNode in componentNodes)
-            {
-                components.Add(LoadComponent(componentNode));
-            }
+                components.Add(this.LoadComponent(componentNode));
 
-            return (components.ToArray());
+            return components;
         }
         #endregion
 
         #region Methods used to add and remove components
         //=====================================================================
 
+        /// <summary>
+        /// Add a set of components based on the given configuration
+        /// </summary>
+        /// <param name="configuration">The configuration containing the component definitions</param>
         public void AddComponents(XPathNavigator configuration)
         {
-            BuildComponent[] componentsToAdd = LoadComponents(configuration);
-            foreach(BuildComponent componentToAdd in componentsToAdd)
-            {
-                components.Add(componentToAdd);
-            }
+            components.AddRange(this.LoadComponents(configuration));
         }
 
+        /// <summary>
+        /// Dispose of all components and clear them from the collection
+        /// </summary>
         public void ClearComponents()
         {
+            foreach(BuildComponent component in components)
+                component.Dispose();
+
             components.Clear();
         }
         #endregion
@@ -379,94 +440,6 @@ namespace Microsoft.Ddue.Tools
 
                     default:    // Ignored
                         break;
-                }
-            }
-        }
-        #endregion
-
-        #region Topic manifest class
-        //=====================================================================
-
-        private class TopicManifest : IEnumerable<string>
-        {
-
-            public TopicManifest(string manifest)
-            {
-                this.manifest = manifest;
-            }
-
-            private string manifest;
-
-            public IEnumerator<string> GetEnumerator()
-            {
-                return (new TopicEnumerator(manifest));
-            }
-
-            System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-            {
-                return (GetEnumerator());
-            }
-        }
-        #endregion
-
-        #region Topic enumerator class
-        //=====================================================================
-
-        private class TopicEnumerator : IEnumerator<string>
-        {
-
-            public TopicEnumerator(string manifest)
-            {
-                reader = XmlReader.Create(manifest);
-                reader.MoveToContent();
-            }
-
-            private XmlReader reader;
-
-            public bool MoveNext()
-            {
-                while(reader.Read())
-                {
-                    if((reader.NodeType == XmlNodeType.Element) && (reader.LocalName == "topic"))
-                        return (true);
-                }
-
-                return (false);
-            }
-
-            public string Current
-            {
-                get
-                {
-                    string id = reader.GetAttribute("id");
-                    return (id);
-                }
-            }
-
-            Object System.Collections.IEnumerator.Current
-            {
-                get
-                {
-                    return (Current);
-                }
-            }
-
-            public void Reset()
-            {
-                throw new InvalidOperationException();
-            }
-
-            public void Dispose()
-            {
-                Dispose(true);
-                GC.SuppressFinalize(this);
-            }
-
-            protected virtual void Dispose(bool disposing)
-            {
-                if(disposing)
-                {
-                    reader.Close();
                 }
             }
         }

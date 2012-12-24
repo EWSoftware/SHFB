@@ -5,6 +5,7 @@
 
 using System;
 using System.Configuration;
+using System.Globalization;
 using System.Text;
 using System.Xml;
 using System.Xml.XPath;
@@ -13,10 +14,8 @@ using System.IO;
 
 namespace Microsoft.Ddue.Tools
 {
-
     public class SaveComponent : BuildComponent
     {
-
         private CustomContext context = new CustomContext();
 
         private XPathExpression path_expression;
@@ -25,8 +24,8 @@ namespace Microsoft.Ddue.Tools
 
         private XmlWriterSettings settings = new XmlWriterSettings();
 
-        public SaveComponent(BuildAssembler assembler, XPathNavigator configuration)
-            : base(assembler, configuration)
+        public SaveComponent(BuildAssembler assembler, XPathNavigator configuration) :
+          base(assembler, configuration)
         {
 
             // load the target path format
@@ -52,12 +51,14 @@ namespace Microsoft.Ddue.Tools
             settings.Encoding = Encoding.UTF8;
 
             string indent_value = save_node.GetAttribute("indent", String.Empty);
+
             if(!String.IsNullOrEmpty(indent_value))
-                settings.Indent = Convert.ToBoolean(indent_value);
+                settings.Indent = Convert.ToBoolean(indent_value, CultureInfo.InvariantCulture);
 
             string omit_value = save_node.GetAttribute("omit-xml-declaration", String.Empty);
+
             if(!String.IsNullOrEmpty(omit_value))
-                settings.OmitXmlDeclaration = Convert.ToBoolean(omit_value);
+                settings.OmitXmlDeclaration = Convert.ToBoolean(omit_value, CultureInfo.InvariantCulture);
 
             linkPath = save_node.GetAttribute("link", String.Empty);
             if(String.IsNullOrEmpty(linkPath))
@@ -65,14 +66,11 @@ namespace Microsoft.Ddue.Tools
 
             // add-xhtml-namespace adds a default namespace for xhtml. Required by Help3 documentation.
             string addXhtmlDeclaration = save_node.GetAttribute("add-xhtml-namespace", String.Empty);
+
             if(!String.IsNullOrEmpty(addXhtmlDeclaration))
-                writeXhtmlNamespace = Convert.ToBoolean(addXhtmlDeclaration);
-
-
-            // encoding
+                writeXhtmlNamespace = Convert.ToBoolean(addXhtmlDeclaration, CultureInfo.InvariantCulture);
 
             settings.CloseOutput = true;
-
         }
 
         private string basePath = null;
@@ -84,7 +82,6 @@ namespace Microsoft.Ddue.Tools
 
         public override void Apply(XmlDocument document, string key)
         {
-
             // set the evaluation context
             context["key"] = key;
 
@@ -96,10 +93,12 @@ namespace Microsoft.Ddue.Tools
             string file = Path.GetFileName(path);
 
             string fileLinkPath = Path.Combine(linkPath, file);
+
             if(basePath != null)
                 path = Path.Combine(basePath, path);
 
             string targetDirectory = Path.GetDirectoryName(path);
+
             if(!Directory.Exists(targetDirectory))
                 Directory.CreateDirectory(targetDirectory);
 
@@ -116,29 +115,22 @@ namespace Microsoft.Ddue.Tools
             // "literal-text" processing instruction, which outputs its content as unescaped text.
             if(select_expression == null)
             {
-                XmlNode doctype = document.DocumentType;
                 try
                 {
-                    //Console.WriteLine("path = '{0}'", path);
-                    //document.Save(path);
-
                     using(XmlWriter writer = XmlWriter.Create(path, settings))
                     {
                         document.Save(writer);
                     }
-
                 }
                 catch(IOException e)
                 {
                     base.WriteMessage(key, MessageLevel.Error, "An access error occured while attempting to " +
-                        "save to the file '{0}'. The error message is: {1}", path,
-                        BuildComponentUtilities.GetExceptionMessage(e));
+                        "save to the file '{0}'. The error message is: {1}", path, e.GetExceptionMessage());
                 }
                 catch(XmlException e)
                 {
                     base.WriteMessage(key, MessageLevel.Error, "Invalid XML was written to the output " +
-                        "file '{0}'. The error message is: '{1}'", path,
-                        BuildComponentUtilities.GetExceptionMessage(e));
+                        "file '{0}'. The error message is: '{1}'", path, e.GetExceptionMessage());
                 }
 
                 // Get the relative html path for HXF generation.

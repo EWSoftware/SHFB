@@ -540,4 +540,14 @@
   <item id="SeeAlsoMembersLinkText"><include item="boilerplate_seeAlsoMembersLink"><parameter>{0}</parameter></include></item>
   <item id="SeeAlsoOverloadLinkText"><include item="boilerplate_seeAlsoOverloadLink"><parameter>{0}</parameter></include></item>
   <item id="nonScrollingTypeLinkText"><include item="boilerplate_seeAlsoTypeLink"><parameter>{0}</parameter><parameter>{1}</parameter></include></item>
+
+  <!-- Show Missing Component messages -->
+  <item id="SMCAutoDocConstructor">Инициализирует новый экземпляр класса <referenceLink target="T:{0}" /></item>
+  <item id="SMCAutoDocStaticConstructor">Инициализирует статические члены класса <referenceLink target="T:{0}" /></item>
+  <item id="SMCAutoDocDispose">Освобождает все ресурсы, используемые <referenceLink target="T:{0}" /></item>
+  <item id="SMCAutoDocDisposeBool">Освобождает все неуправляемые ресурсы, используемые <referenceLink target="T:{0}" />, и, опционально, освобождает управляемые ресурсы</item>
+  <item id="SMCAutoDocDisposeParam">True для освобождения как неуправляемых, так и управляемых ресурсов; false для освобождения только неуправляемых ресурсов.</item>
+  <item id="SMCMissingTag"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[&lt;{0}&gt; отсутствует в документации для "{1}"]</p></item>
+  <item id="SMCMissingParamTag"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[&lt;{0} name="{1}"/&gt; отсутствует в документации для "{2}"]</p></item>
+  <item id="SMCMissingIncludeTarget"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[&lt;include&gt; отсутствует в '{0}'.  Файл: '{1}' Путь: '{2}']</p></item>
 </content>

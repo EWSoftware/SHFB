@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Components
 // File    : CodeBlockComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/26/2012
+// Updated : 12/23/2012
 // Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -44,10 +44,10 @@ using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Globalization;
+using System.Net;
 using System.Reflection;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
-using System.Web;
 using System.Xml;
 using System.Xml.XPath;
 
@@ -430,7 +430,7 @@ namespace SandcastleBuilder.Components
             // If not null, it's a reference (API) build.  If null, it's a conceptual build.
             if(root != null)
             {
-                codeList = BuildComponentUtilities.ConvertNodeIteratorToArray(root.Select(referenceCode));
+                codeList = root.Select(referenceCode).ToArray();
                 nestedCode = nestedRefCode;
             }
             else
@@ -444,7 +444,7 @@ namespace SandcastleBuilder.Components
                     return;
                 }
 
-                codeList = BuildComponentUtilities.ConvertNodeIteratorToArray(root.Select(conceptualCode));
+                codeList = root.Select(conceptualCode).ToArray();
             }
 
             foreach(XPathNavigator navCode in codeList)
@@ -518,7 +518,7 @@ namespace SandcastleBuilder.Components
 
                 // Use the title if one is supplied
                 if(code.Attributes["title"] != null)
-                    title = HttpUtility.HtmlEncode(code.Attributes["title"].Value);
+                    title = WebUtility.HtmlEncode(code.Attributes["title"].Value);
 
                 // If disabled, we'll just normalize the leading whitespace and let the Sandcastle transformation
                 // handle it.  The language ID is passed to use the appropriate tab size if not overridden.
@@ -605,10 +605,7 @@ namespace SandcastleBuilder.Components
         private string LoadNestedCodeBlocks(string key, XPathNavigator navCode, XPathExpression nestedCode,
           MessageLevel msgLevel)
         {
-            XPathNavigator[] codeList = BuildComponentUtilities.ConvertNodeIteratorToArray(
-                navCode.Select(nestedCode));
-
-            foreach(XPathNavigator codeElement in codeList)
+            foreach(XPathNavigator codeElement in navCode.Select(nestedCode).ToArray())
                 codeElement.ReplaceSelf("\r\n" + this.LoadCodeBlock(key, ((IHasXmlNode)codeElement).GetNode(),
                     msgLevel));
 
@@ -732,7 +729,7 @@ namespace SandcastleBuilder.Components
             }
 
             // Return the HTML encoded block
-            return HttpUtility.HtmlEncode(codeBlock);
+            return WebUtility.HtmlEncode(codeBlock);
         }
         #endregion
 
