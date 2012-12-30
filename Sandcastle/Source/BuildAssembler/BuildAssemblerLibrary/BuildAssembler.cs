@@ -431,6 +431,10 @@ namespace Microsoft.Ddue.Tools
 
                     case MessageLevel.Error:
                         ConsoleApplication.WriteMessage(LogLevel.Error, text);
+
+                        if(System.Diagnostics.Debugger.IsAttached)
+                            System.Diagnostics.Debugger.Break();
+
                         Environment.Exit(1);
                         break;
 

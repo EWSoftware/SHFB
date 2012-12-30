@@ -248,7 +248,7 @@
 		type="SandcastleBuilder.Components.CachedResolveReferenceLinksComponent"
 		assembly="{@SHFBFolder}SandcastleBuilder.Components.dll"
 		locale="{@Locale}" linkTarget="{@SdkLinkTarget}">
-		<description>This build component is used to load resolved MSDN URL references from a cache so that they do not have to be looked up on each build using the MSDN web service.  This can significantly decrease the build time.</description>
+		<description>This component is obsolete and will be removed in a future release.</description>
 
 		<insert placement="replace" type="Microsoft.Ddue.Tools.ResolveReferenceLinksComponent2" />
 		<insertConceptual placement="replace" type="Microsoft.Ddue.Tools.ResolveReferenceLinksComponent2" />
@@ -256,7 +256,9 @@
 		<!-- Not editable at all -->
 		<configureMethod name="-" />
 
-		<!-- This component is output format dependent so a configuration for each output format is provided. -->
+		<!-- This component is obsolete and will be removed in a future release. -->
+		<hidden />
+
 		<defaultConfiguration>
 			<helpOutput format="HtmlHelp1">
 				<cache filename="{@LocalDataFolder}Cache\MsdnUrl.cache" />

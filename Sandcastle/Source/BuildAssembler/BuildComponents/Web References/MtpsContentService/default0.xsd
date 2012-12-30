@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" blockDefault="#all" elementFormDefault="qualified" targetNamespace="urn:mtpg-com:mtps/2004/1/common/category" version="1" id="default" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:include schemaLocation="urn_mtpg_com_mtps_2004_1_common_category_atoms.xsd" />
+</xs:schema>

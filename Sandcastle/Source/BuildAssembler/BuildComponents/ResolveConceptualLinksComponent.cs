@@ -1,22 +1,20 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Build Components
 // File    : ResolveConceptualLinksComponent.cs
 // Note    : Copyright 2010-2012 Microsoft Corporation
 //
-// This file contains a modified version of the original
-// ResolveConceptualLinksComponent that allows the use of inner text from the
-// <link> tag and also allows the use of anchor references (#anchorName) in the
-// link target.
+// This file contains a modified version of the original ResolveConceptualLinksComponent that allows the use of
+// inner text from the <link> tag and also allows the use of anchor references (#anchorName) in the link target.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice and
-// all copyright notices must remain intact in all applications, documentation,
-// and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice and all copyright notices must remain intact in all applications, documentation, and source files.
 //
 // Change History
 // 02/16/2012 - EFW - Merged my changes into the code
-//=============================================================================
+// 12/26/2012 - EFW - Minor updates to processing.  As with the SharedContentComponent, this one doesn't load
+// enough info to warrant trying to share the common data across all instances.
+//===============================================================================================================
 
 using System;
 using System.Collections.Generic;
@@ -26,31 +24,31 @@ using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.XPath;
 
+using Microsoft.Ddue.Tools.Targets;
+
 namespace Microsoft.Ddue.Tools
 {
     /// <summary>
-    /// This is a modified version of the original <c>ResolveConceptualLinksComponent</c> that is used
-    /// to resolve links to conceptual topics.
+    /// This is a modified version of the original <c>ResolveConceptualLinksComponent</c> that is used to resolve
+    /// links to conceptual topics.
     /// </summary>
     /// <remarks>This version contains the following improvements and fixes:
     /// <list type="bullet">
-    ///   <item>Broken links use the <b>None</b> style rather than the
-    /// <b>Index</b> style so that it is apparant that they do not work.</item>
+    ///   <item>Broken links use the <b>None</b> style rather than the <c>Index</c> style so that it is apparent
+    /// that they do not work.</item>
     ///   <item>The inner text from the conceptual link is used if specified.</item>
-    ///   <item>On broken links, when the <c>showBrokenLinkText</c> option
-    /// is true and there is no inner text, the target value is displayed.</item>
-    ///   <item>Conceptual link targets can include an optional anchor name
-    /// from within the target such as "#Name" (see examples below).</item>
+    ///   <item>On broken links, when the <c>showBrokenLinkText</c> option is true and there is no inner text,
+    /// the target value is displayed.</item>
+    ///   <item>Conceptual link targets can include an optional anchor name from within the target such as
+    /// "#Name" (see examples below).</item>
     ///   <item>Unnecessary whitespace is removed from the link text.</item>
-    ///   <item>If the companion file contains a <c>&lt;linkText&gt;</c>
-    /// element and no inner text is specified, its value will be used for the
-    /// link text rather than the title.  This allows for a shorter title or
+    ///   <item>If the companion file contains a <c>&lt;linkText&gt;</c> element and no inner text is specified,
+    /// its value will be used for the link text rather than the title.  This allows for a shorter title or
     /// description to use as the default link text.</item>
     /// </list></remarks>
     /// <example>
-    /// On links without inner text, if the companion file contains a
-    /// <c>linkText</c> element, that text will be used.  If not, the title
-    /// is used.
+    /// On links without inner text, if the companion file contains a <c>linkText</c> element, that text will be
+    /// used.  If not, the title is used.
     ///
     /// <code lang="xml" title="Example Links">
     /// <![CDATA[<!-- Link with inner text -->
@@ -84,7 +82,7 @@ namespace Microsoft.Ddue.Tools
         private static Regex validGuid = new Regex(
             "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$");
 
-        private static int cacheSize = 1000;
+        private const int CacheSize = 1000;
         #endregion
 
         #region Constructor
@@ -93,18 +91,20 @@ namespace Microsoft.Ddue.Tools
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="assembler">A reference to the build assembler.</param>
+        /// <param name="assembler">A reference to the build assembler</param>
         /// <param name="configuration">The configuration information</param>
-        public ResolveConceptualLinksComponent(BuildAssembler assembler,
-          XPathNavigator configuration) : base(assembler, configuration)
+        public ResolveConceptualLinksComponent(BuildAssembler assembler, XPathNavigator configuration) :
+          base(assembler, configuration)
         {
             TargetDirectory targetDirectory;
             XPathExpression urlExp, textExp, linkTextExp;
-            LinkType linkType = LinkType.None;
+            ConceptualLinkType linkType = ConceptualLinkType.None;
             string attribute, basePath;
 
             targetDirectories = new TargetDirectoryCollection();
-            cache = new Dictionary<string, TargetInfo>(cacheSize);
+
+            // This is a simple cache.  If the cache size limit is reached, it clears the cache and starts over
+            cache = new Dictionary<string, TargetInfo>(CacheSize);
 
             attribute = configuration.GetAttribute("showBrokenLinkText", String.Empty);
 
@@ -116,15 +116,14 @@ namespace Microsoft.Ddue.Tools
                 basePath = navigator.GetAttribute("base", String.Empty);
 
                 if(String.IsNullOrEmpty(basePath))
-                    base.WriteMessage(MessageLevel.Error, "Every targets " +
-                        "element must have a base attribute that specifies " +
-                        "the path to a directory of target metadata files.");
+                    base.WriteMessage(MessageLevel.Error, "Every targets element must have a base attribute " +
+                        "that specifies the path to a directory of target metadata files.");
 
                 basePath = Environment.ExpandEnvironmentVariables(basePath);
+
                 if(!Directory.Exists(basePath))
-                    base.WriteMessage(MessageLevel.Error, String.Format(
-                        CultureInfo.InvariantCulture, "The specified target " +
-                        "metadata directory '{0}' does not exist.", basePath));
+                    base.WriteMessage(MessageLevel.Error, "The specified target metadata directory '{0}' " +
+                        "does not exist.", basePath);
 
                 attribute = navigator.GetAttribute("url", String.Empty);
 
@@ -151,27 +150,17 @@ namespace Microsoft.Ddue.Tools
                 attribute = navigator.GetAttribute("type", String.Empty);
 
                 if(String.IsNullOrEmpty(attribute))
-                    base.WriteMessage(MessageLevel.Error, "Every targets " +
-                        "element must have a type attribute that specifies " +
-                        "what kind of link to create to targets found in " +
-                        "that directory.");
+                    base.WriteMessage(MessageLevel.Error, "Every targets element must have a type attribute " +
+                        "that specifies what kind of link to create to targets found in that directory.");
 
-                try
-                {
-                    linkType = (LinkType)Enum.Parse(typeof(LinkType), attribute, true);
-                }
-                catch(ArgumentException)
-                {
-                    base.WriteMessage(MessageLevel.Error, String.Format(CultureInfo.InvariantCulture,
-                        "'{0}' is not a valid link type.", attribute));
-                }
+                if(!Enum.TryParse<ConceptualLinkType>(attribute, true, out linkType))
+                    base.WriteMessage(MessageLevel.Error, "'{0}' is not a valid link type.", attribute);
 
                 targetDirectory = new TargetDirectory(basePath, urlExp, textExp, linkTextExp, linkType);
                 targetDirectories.Add(targetDirectory);
             }
 
-            base.WriteMessage(MessageLevel.Info, String.Format(CultureInfo.InvariantCulture,
-                "Collected {0} targets directories.", targetDirectories.Count));
+            base.WriteMessage(MessageLevel.Info, "Collected {0} targets directories.", targetDirectories.Count);
         }
         #endregion
 
@@ -182,24 +171,23 @@ namespace Microsoft.Ddue.Tools
         /// This is implemented to resolve the conceptual links
         /// </summary>
         /// <param name="document">The XML document with which to work.</param>
-        /// <param name="key">The key (member name) of the item being
-        /// documented.</param>
+        /// <param name="key">The key (member name) of the item being documented.</param>
         public override void Apply(XmlDocument document, string key)
         {
             ConceptualLinkInfo info;
             TargetInfo targetInfo;
-            LinkType linkType;
+            ConceptualLinkType linkType;
             string url, text;
 
             foreach(XPathNavigator navigator in document.CreateNavigator().Select(conceptualLinks).ToArray())
             {
-                info = ConceptualLinkInfo.Create(navigator);
+                info = new ConceptualLinkInfo(navigator);
                 url = text = null;
-                linkType = LinkType.None;
+                linkType = ConceptualLinkType.None;
 
                 if(validGuid.IsMatch(info.Target))
                 {
-                    targetInfo = this.GetTargetInfoFromCache(info.Target.ToLowerInvariant());
+                    targetInfo = this.GetTargetInfoFromCache(info.Target);
 
                     if(targetInfo == null)
                     {
@@ -235,26 +223,25 @@ namespace Microsoft.Ddue.Tools
 
                 switch(linkType)
                 {
-                    case LinkType.None:
+                    case ConceptualLinkType.None:
                         writer.WriteStartElement("span");
                         writer.WriteAttributeString("class", "nolink");
                         break;
 
-                    case LinkType.Local:
+                    case ConceptualLinkType.Local:
                         writer.WriteStartElement("a");
                         writer.WriteAttributeString("href", url);
                         break;
 
-                    case LinkType.Index:
+                    case ConceptualLinkType.Index:
                         writer.WriteStartElement("mshelp", "link", "http://msdn.microsoft.com/mshelp");
-                        writer.WriteAttributeString("keywords", info.Target.ToLowerInvariant());
+                        writer.WriteAttributeString("keywords", info.Target);
                         writer.WriteAttributeString("tabindex", "0");
                         break;
 
-                    case LinkType.Id:
+                    case ConceptualLinkType.Id:
                         writer.WriteStartElement("a");
-                        writer.WriteAttributeString("href", String.Format(CultureInfo.InvariantCulture,
-                            "ms-xhelp:///?Id={0}", info.Target));
+                        writer.WriteAttributeString("href", "ms-xhelp:///?Id=" + info.Target);
                         break;
                 }
 
@@ -282,7 +269,7 @@ namespace Microsoft.Ddue.Tools
             if(showBrokenLinkText && !String.IsNullOrEmpty(text))
                 return text;
 
-            return String.Format(CultureInfo.InvariantCulture, "[{0}]", target);
+            return String.Concat("[", target, "]");
         }
 
         /// <summary>
@@ -300,13 +287,13 @@ namespace Microsoft.Ddue.Tools
             }
             catch(ArgumentException argEx)
             {
-                base.WriteMessage(MessageLevel.Error, String.Format(CultureInfo.InvariantCulture,
-                    "'{0}' is not a valid XPath expression. The error message is: {1}", xpath, argEx.Message));
+                base.WriteMessage(MessageLevel.Error, "'{0}' is not a valid XPath expression. The error " +
+                    "message is: {1}", xpath, argEx.Message);
             }
             catch(XPathException xpathEx)
             {
-                base.WriteMessage(MessageLevel.Error, String.Format(CultureInfo.InvariantCulture,
-                    "'{0}' is not a valid XPath expression. The error message is: {1}", xpath, xpathEx.Message));
+                base.WriteMessage(MessageLevel.Error, "'{0}' is not a valid XPath expression. The error " +
+                    "message is: {1}", xpath, xpathEx.Message);
             }
 
             return expression;
@@ -323,9 +310,9 @@ namespace Microsoft.Ddue.Tools
 
             if(!cache.TryGetValue(target, out targetInfo))
             {
-                targetInfo = targetDirectories.GetTargetInfo(target + ".cmp.xml");
+                targetInfo = targetDirectories[target];
 
-                if(cache.Count >= cacheSize)
+                if(cache.Count >= CacheSize)
                     cache.Clear();
 
                 cache.Add(target, targetInfo);

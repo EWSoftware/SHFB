@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:cat="urn:mtpg-com:mtps/2004/1/feature/category" attributeFormDefault="unqualified" blockDefault="#all" elementFormDefault="qualified" targetNamespace="urn:mtpg-com:mtps/2004/1/feature" version="1" id="atoms" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="urn_mtpg_com_mtps_2004_1_feature_category_default.xsd" namespace="urn:mtpg-com:mtps/2004/1/feature/category" />
+  <xs:element name="feature">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:any minOccurs="0" maxOccurs="unbounded" namespace="##other" processContents="lax" />
+      </xs:sequence>
+      <xs:attribute ref="cat:featureFormat" use="required" />
+      <xs:attribute name="location" type="xs:string" use="optional" />
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

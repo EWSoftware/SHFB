@@ -23,7 +23,20 @@
  <Targets>
   <Target Name="$(ProjectDir)/../../ProductionTools/BuildAssembler.exe" Analyze="True" AnalyzeAllChildren="True" />
   <Target Name="$(ProjectDir)/../../ProductionTools/BuildAssemblerLibrary.dll" Analyze="True" AnalyzeAllChildren="True" />
-  <Target Name="$(ProjectDir)/../../ProductionTools/BuildComponents.dll" Analyze="True" AnalyzeAllChildren="True" />
+  <Target Name="$(ProjectDir)/../../ProductionTools/BuildComponents.dll" Analyze="True" AnalyzeAllChildren="False">
+   <Modules AnalyzeAllChildren="False">
+    <Module Name="buildcomponents.dll" Analyze="True" AnalyzeAllChildren="False">
+     <Namespaces AnalyzeAllChildren="False">
+      <Namespace Name="" Analyze="True" AnalyzeAllChildren="True" />
+      <Namespace Name="Microsoft.Ddue.Tools" Analyze="True" AnalyzeAllChildren="True" />
+      <Namespace Name="Microsoft.Ddue.Tools.Properties" Analyze="True" AnalyzeAllChildren="True" />
+      <Namespace Name="Microsoft.Ddue.Tools.Targets" Analyze="True" AnalyzeAllChildren="True" />
+      <Namespace Name="Microsoft.Ddue.Tools.UI" Analyze="True" AnalyzeAllChildren="True" />
+     </Namespaces>
+     <Resources AnalyzeAllChildren="True" />
+    </Module>
+   </Modules>
+  </Target>
   <Target Name="$(ProjectDir)/../../ProductionTools/SyntaxComponents.dll" Analyze="True" AnalyzeAllChildren="True" />
  </Targets>
  <Rules>
@@ -64,6 +77,21 @@
       <Notes>
        <User Name="EWOODRUFF">
         <Note Id="0" />
+       </User>
+      </Notes>
+     </Message>
+    </Messages>
+   </Namespace>
+   <Namespace Name="Microsoft.Ddue.Tools.Targets">
+    <Messages>
+     <Message Id="Ddue" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2012-12-27 01:14:32Z">
+      <Issue Name="Namespace">
+       <Item>Ddue</Item>
+       <Item>Microsoft.Ddue.Tools.Targets</Item>
+      </Issue>
+      <Notes>
+       <User Name="EWOODRUFF">
+        <Note Id="31" />
        </User>
       </Notes>
      </Message>
@@ -236,958 +264,6 @@
     <Modules>
      <Module Name="buildcomponents.dll">
       <Namespaces>
-       <Namespace Name="">
-        <Types>
-         <Type Name="appId">
-          <Messages>
-           <Message TypeName="DeclareTypesInNamespaces" Category="Microsoft.Design" CheckId="CA1050" Created="2012-03-10 20:52:03Z">
-            <Issue>
-             <Item>'appId'</Item>
-            </Issue>
-           </Message>
-           <Message Id="app" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-03-10 20:52:03Z">
-            <Issue Name="Type">
-             <Item>app</Item>
-             <Item>'appId'</Item>
-             <Item>App</Item>
-            </Issue>
-           </Message>
-          </Messages>
-          <Members>
-           <Member Name="#value">
-            <Messages>
-             <Message Id="value" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-03-10 20:52:03Z">
-              <Issue Name="Member">
-               <Item>value</Item>
-               <Item>'appId.value'</Item>
-               <Item>Value</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="availableVersionAndLocale">
-          <Messages>
-           <Message TypeName="DeclareTypesInNamespaces" Category="Microsoft.Design" CheckId="CA1050" Created="2012-03-10 20:52:03Z">
-            <Issue>
-             <Item>'availableVersionAndLocale'</Item>
-            </Issue>
-           </Message>
-           <Message Id="available" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-03-10 20:52:03Z">
-            <Issue Name="Type">
-             <Item>available</Item>
-             <Item>'availableVersionAndLocale'</Item>
-             <Item>Available</Item>
-            </Issue>
-           </Message>
-          </Messages>
-          <Members>
-           <Member Name="#locale">
-            <Messages>
-             <Message Id="locale" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-03-10 20:52:03Z">
-              <Issue Name="Member">
-               <Item>locale</Item>
-               <Item>'availableVersionAndLocale.locale'</Item>
-               <Item>Locale</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#version">
-            <Messages>
-             <Message Id="version" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-03-10 20:52:03Z">
-              <Issue Name="Member">
-               <Item>version</Item>
-               <Item>'availableVersionAndLocale.version'</Item>
-               <Item>Version</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="common">
-          <Messages>
-           <Message TypeName="DeclareTypesInNamespaces" Category="Microsoft.Design" CheckId="CA1050" Created="2012-03-10 20:52:03Z">
-            <Issue>
-             <Item>'common'</Item>
-            </Issue>
-           </Message>
-           <Message Id="common" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-03-10 20:52:03Z">
-            <Issue Name="Type">
-             <Item>common</Item>
-             <Item>'common'</Item>
-             <Item>Common</Item>
-            </Issue>
-           </Message>
-           <Message TypeName="TypeNamesShouldNotMatchNamespaces" Category="Microsoft.Naming" CheckId="CA1724" Created="2012-03-10 20:52:03Z">
-            <Issue Name="System">
-             <Item>'common'</Item>
-             <Item>System.Data.Common</Item>
-            </Issue>
-           </Message>
-          </Messages>
-          <Members>
-           <Member Name="#Any">
-            <Messages>
-             <Message TypeName="PropertiesShouldNotReturnArrays" Category="Microsoft.Performance" CheckId="CA1819" Created="2012-03-10 20:52:03Z">
-              <Issue>
-               <Item>'common.Any'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#anyField">
-            <Messages>
-             <Message TypeName="MarkAllNonSerializableFields" Category="Microsoft.Usage" CheckId="CA2235" Created="2012-03-10 20:52:03Z">
-              <Issue>
-               <Item>'common.anyField'</Item>
-               <Item>'common'</Item>
-               <Item>'XmlElement[]'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#commonFormat">
-            <Messages>
-             <Message Id="common" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-03-10 20:52:03Z">
-              <Issue Name="Member">
-               <Item>common</Item>
-               <Item>'common.commonFormat'</Item>
-               <Item>Common</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#location">
-            <Messages>
-             <Message Id="location" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-03-10 20:52:03Z">
-              <Issue Name="Member">
-               <Item>location</Item>
-               <Item>'common.location'</Item>
-               <Item>Location</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="ContentService">
-          <Messages>
-           <Message TypeName="DeclareTypesInNamespaces" Category="Microsoft.Design" CheckId="CA1050" Created="2012-03-10 20:52:03Z">
-            <Issue>
-             <Item>'ContentService'</Item>
-            </Issue>
-           </Message>
-          </Messages>
-          <Members>
-           <Member Name="#appIdValue">
-            <Messages>
-             <Message Id="app" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-03-10 20:52:03Z">
-              <Issue Name="Member">
-               <Item>app</Item>
-               <Item>'ContentService.appIdValue'</Item>
-               <Item>App</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="documentTypes">
-          <Messages>
-           <Message TypeName="DeclareTypesInNamespaces" Category="Microsoft.Design" CheckId="CA1050" Created="2012-03-10 20:52:03Z">
-            <Issue>
-             <Item>'documentTypes'</Item>
-            </Issue>
-           </Message>
-           <Message Id="document" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-03-10 20:52:03Z">
-            <Issue Name="Type">
-             <Item>document</Item>
-             <Item>'documentTypes'</Item>
-             <Item>Document</Item>
-            </Issue>
-           </Message>
-           <Message TypeName="OnlyFlagsEnumsShouldHavePluralNames" Category="Microsoft.Naming" CheckId="CA1717" Created="2012-03-10 20:52:03Z">
-            <Issue>
-             <Item>'documentTypes'</Item>
-            </Issue>
-           </Message>
-          </Messages>
-          <Members>
-           <Member Name="#common">
-            <Messages>
-             <Message Id="common" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-03-10 20:52:03Z">
-              <Issue Name="Member">
-               <Item>common</Item>
-               <Item>'documentTypes.common'</Item>
-               <Item>Common</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#feature">
-            <Messages>
-             <Message Id="feature" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-03-10 20:52:03Z">
-              <Issue Name="Member">
-               <Item>feature</Item>
-               <Item>'documentTypes.feature'</Item>
-               <Item>Feature</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#image">
-            <Messages>
-             <Message Id="image" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-03-10 20:52:03Z">
-              <Issue Name="Member">
-               <Item>image</Item>
-               <Item>'documentTypes.image'</Item>
-               <Item>Image</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#primary">
-            <Messages>
-             <Message Id="primary" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-03-10 20:52:03Z">
-              <Issue Name="Member">
-               <Item>primary</Item>
-               <Item>'documentTypes.primary'</Item>
-               <Item>Primary</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="feature">
-          <Messages>
-           <Message TypeName="DeclareTypesInNamespaces" Category="Microsoft.Design" CheckId="CA1050" Created="2012-03-10 20:52:03Z">
-            <Issue>
-             <Item>'feature'</Item>
-            </Issue>
-           </Message>
-           <Message Id="feature" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-03-10 20:52:03Z">
-            <Issue Name="Type">
-             <Item>feature</Item>
-             <Item>'feature'</Item>
-             <Item>Feature</Item>
-            </Issue>
-           </Message>
-          </Messages>
-          <Members>
-           <Member Name="#Any">
-            <Messages>
-             <Message TypeName="PropertiesShouldNotReturnArrays" Category="Microsoft.Performance" CheckId="CA1819" Created="2012-03-10 20:52:03Z">
-              <Issue>
-               <Item>'feature.Any'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#anyField">
-            <Messages>
-             <Message TypeName="MarkAllNonSerializableFields" Category="Microsoft.Usage" CheckId="CA2235" Created="2012-03-10 20:52:03Z">
-              <Issue>
-               <Item>'feature.anyField'</Item>
-               <Item>'feature'</Item>
-               <Item>'XmlElement[]'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#featureFormat">
-            <Messages>
-             <Message Id="feature" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-03-10 20:52:03Z">
-              <Issue Name="Member">
-               <Item>feature</Item>
-               <Item>'feature.featureFormat'</Item>
-               <Item>Feature</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#location">
-            <Messages>
-             <Message Id="location" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-03-10 20:52:03Z">
-              <Issue Name="Member">
-               <Item>location</Item>
-               <Item>'feature.location'</Item>
-               <Item>Location</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="GetContentCompletedEventArgs">
-          <Messages>
-           <Message TypeName="DeclareTypesInNamespaces" Category="Microsoft.Design" CheckId="CA1050" Created="2012-03-10 20:52:03Z">
-            <Issue>
-             <Item>'GetContentCompletedEventArgs'</Item>
-            </Issue>
-           </Message>
-          </Messages>
-         </Type>
-         <Type Name="GetContentCompletedEventHandler">
-          <Messages>
-           <Message TypeName="DeclareTypesInNamespaces" Category="Microsoft.Design" CheckId="CA1050" Created="2012-03-10 20:52:03Z">
-            <Issue>
-             <Item>'GetContentCompletedEventHandler'</Item>
-            </Issue>
-           </Message>
-           <Message TypeName="UseGenericEventHandlerInstances" Category="Microsoft.Design" CheckId="CA1003" Created="2012-03-10 20:52:03Z">
-            <Issue>
-             <Item>'GetContentCompletedEventHandler'</Item>
-            </Issue>
-           </Message>
-          </Messages>
-         </Type>
-         <Type Name="getContentRequest">
-          <Messages>
-           <Message TypeName="DeclareTypesInNamespaces" Category="Microsoft.Design" CheckId="CA1050" Created="2012-03-10 20:52:03Z">
-            <Issue>
-             <Item>'getContentRequest'</Item>
-            </Issue>
-           </Message>
-           <Message Id="get" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-03-10 20:52:03Z">
-            <Issue Name="Type">
-             <Item>get</Item>
-             <Item>'getContentRequest'</Item>
-             <Item>Get</Item>
-            </Issue>
-           </Message>
-          </Messages>
-          <Members>
-           <Member Name="#contentIdentifier">
-            <Messages>
-             <Message Id="content" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-03-10 20:52:03Z">
-              <Issue Name="Member">
-               <Item>content</Item>
-               <Item>'getContentRequest.contentIdentifier'</Item>
-               <Item>Content</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#locale">
-            <Messages>
-             <Message Id="locale" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-03-10 20:52:03Z">
-              <Issue Name="Member">
-               <Item>locale</Item>
-               <Item>'getContentRequest.locale'</Item>
-               <Item>Locale</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#requestedDocuments">
-            <Messages>
-             <Message Id="requested" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-03-10 20:52:03Z">
-              <Issue Name="Member">
-               <Item>requested</Item>
-               <Item>'getContentRequest.requestedDocuments'</Item>
-               <Item>Requested</Item>
-              </Issue>
-             </Message>
-             <Message TypeName="PropertiesShouldNotReturnArrays" Category="Microsoft.Performance" CheckId="CA1819" Created="2012-03-10 20:52:03Z">
-              <Issue>
-               <Item>'getContentRequest.requestedDocuments'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#version">
-            <Messages>
-             <Message Id="version" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-03-10 20:52:03Z">
-              <Issue Name="Member">
-               <Item>version</Item>
-               <Item>'getContentRequest.version'</Item>
-               <Item>Version</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="getContentResponse">
-          <Messages>
-           <Message TypeName="DeclareTypesInNamespaces" Category="Microsoft.Design" CheckId="CA1050" Created="2012-03-10 20:52:03Z">
-            <Issue>
-             <Item>'getContentResponse'</Item>
-            </Issue>
-           </Message>
-           <Message Id="get" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-03-10 20:52:03Z">
-            <Issue Name="Type">
-             <Item>get</Item>
-             <Item>'getContentResponse'</Item>
-             <Item>Get</Item>
-            </Issue>
-           </Message>
-          </Messages>
-          <Members>
-           <Member Name="#availableVersionsAndLocales">
-            <Messages>
-             <Message Id="available" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-03-10 20:52:03Z">
-              <Issue Name="Member">
-               <Item>available</Item>
-               <Item>'getContentResponse.availableVersionsAndLocales'</Item>
-               <Item>Available</Item>
-              </Issue>
-             </Message>
-             <Message TypeName="PropertiesShouldNotReturnArrays" Category="Microsoft.Performance" CheckId="CA1819" Created="2012-03-10 20:52:03Z">
-              <Issue>
-               <Item>'getContentResponse.availableVersionsAndLocales'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#commonDocuments">
-            <Messages>
-             <Message Id="common" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-03-10 20:52:03Z">
-              <Issue Name="Member">
-               <Item>common</Item>
-               <Item>'getContentResponse.commonDocuments'</Item>
-               <Item>Common</Item>
-              </Issue>
-             </Message>
-             <Message TypeName="PropertiesShouldNotReturnArrays" Category="Microsoft.Performance" CheckId="CA1819" Created="2012-03-10 20:52:03Z">
-              <Issue>
-               <Item>'getContentResponse.commonDocuments'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#contentAlias">
-            <Messages>
-             <Message Id="content" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-03-10 20:52:03Z">
-              <Issue Name="Member">
-               <Item>content</Item>
-               <Item>'getContentResponse.contentAlias'</Item>
-               <Item>Content</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#contentGuid">
-            <Messages>
-             <Message Id="content" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-03-10 20:52:03Z">
-              <Issue Name="Member">
-               <Item>content</Item>
-               <Item>'getContentResponse.contentGuid'</Item>
-               <Item>Content</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#contentId">
-            <Messages>
-             <Message Id="content" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-03-10 20:52:03Z">
-              <Issue Name="Member">
-               <Item>content</Item>
-               <Item>'getContentResponse.contentId'</Item>
-               <Item>Content</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#featureDocuments">
-            <Messages>
-             <Message Id="feature" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-03-10 20:52:03Z">
-              <Issue Name="Member">
-               <Item>feature</Item>
-               <Item>'getContentResponse.featureDocuments'</Item>
-               <Item>Feature</Item>
-              </Issue>
-             </Message>
-             <Message TypeName="PropertiesShouldNotReturnArrays" Category="Microsoft.Performance" CheckId="CA1819" Created="2012-03-10 20:52:03Z">
-              <Issue>
-               <Item>'getContentResponse.featureDocuments'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#imageDocuments">
-            <Messages>
-             <Message Id="image" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-03-10 20:52:03Z">
-              <Issue Name="Member">
-               <Item>image</Item>
-               <Item>'getContentResponse.imageDocuments'</Item>
-               <Item>Image</Item>
-              </Issue>
-             </Message>
-             <Message TypeName="PropertiesShouldNotReturnArrays" Category="Microsoft.Performance" CheckId="CA1819" Created="2012-03-10 20:52:03Z">
-              <Issue>
-               <Item>'getContentResponse.imageDocuments'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#locale">
-            <Messages>
-             <Message Id="locale" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-03-10 20:52:03Z">
-              <Issue Name="Member">
-               <Item>locale</Item>
-               <Item>'getContentResponse.locale'</Item>
-               <Item>Locale</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#primaryDocuments">
-            <Messages>
-             <Message Id="primary" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-03-10 20:52:03Z">
-              <Issue Name="Member">
-               <Item>primary</Item>
-               <Item>'getContentResponse.primaryDocuments'</Item>
-               <Item>Primary</Item>
-              </Issue>
-             </Message>
-             <Message TypeName="PropertiesShouldNotReturnArrays" Category="Microsoft.Performance" CheckId="CA1819" Created="2012-03-10 20:52:03Z">
-              <Issue>
-               <Item>'getContentResponse.primaryDocuments'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#version">
-            <Messages>
-             <Message Id="version" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-03-10 20:52:03Z">
-              <Issue Name="Member">
-               <Item>version</Item>
-               <Item>'getContentResponse.version'</Item>
-               <Item>Version</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="GetNavigationPathsCompletedEventArgs">
-          <Messages>
-           <Message TypeName="DeclareTypesInNamespaces" Category="Microsoft.Design" CheckId="CA1050" Created="2012-03-10 20:52:03Z">
-            <Issue>
-             <Item>'GetNavigationPathsCompletedEventArgs'</Item>
-            </Issue>
-           </Message>
-          </Messages>
-         </Type>
-         <Type Name="GetNavigationPathsCompletedEventHandler">
-          <Messages>
-           <Message TypeName="DeclareTypesInNamespaces" Category="Microsoft.Design" CheckId="CA1050" Created="2012-03-10 20:52:03Z">
-            <Issue>
-             <Item>'GetNavigationPathsCompletedEventHandler'</Item>
-            </Issue>
-           </Message>
-           <Message TypeName="UseGenericEventHandlerInstances" Category="Microsoft.Design" CheckId="CA1003" Created="2012-03-10 20:52:03Z">
-            <Issue>
-             <Item>'GetNavigationPathsCompletedEventHandler'</Item>
-            </Issue>
-           </Message>
-          </Messages>
-         </Type>
-         <Type Name="getNavigationPathsRequest">
-          <Messages>
-           <Message TypeName="DeclareTypesInNamespaces" Category="Microsoft.Design" CheckId="CA1050" Created="2012-03-10 20:52:03Z">
-            <Issue>
-             <Item>'getNavigationPathsRequest'</Item>
-            </Issue>
-           </Message>
-           <Message Id="get" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-03-10 20:52:03Z">
-            <Issue Name="Type">
-             <Item>get</Item>
-             <Item>'getNavigationPathsRequest'</Item>
-             <Item>Get</Item>
-            </Issue>
-           </Message>
-          </Messages>
-          <Members>
-           <Member Name="#root">
-            <Messages>
-             <Message Id="root" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-03-10 20:52:03Z">
-              <Issue Name="Member">
-               <Item>root</Item>
-               <Item>'getNavigationPathsRequest.root'</Item>
-               <Item>Root</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#target">
-            <Messages>
-             <Message Id="target" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-03-10 20:52:03Z">
-              <Issue Name="Member">
-               <Item>target</Item>
-               <Item>'getNavigationPathsRequest.target'</Item>
-               <Item>Target</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="getNavigationPathsResponse">
-          <Messages>
-           <Message TypeName="DeclareTypesInNamespaces" Category="Microsoft.Design" CheckId="CA1050" Created="2012-03-10 20:52:03Z">
-            <Issue>
-             <Item>'getNavigationPathsResponse'</Item>
-            </Issue>
-           </Message>
-           <Message Id="get" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-03-10 20:52:03Z">
-            <Issue Name="Type">
-             <Item>get</Item>
-             <Item>'getNavigationPathsResponse'</Item>
-             <Item>Get</Item>
-            </Issue>
-           </Message>
-          </Messages>
-          <Members>
-           <Member Name="#navigationPaths">
-            <Messages>
-             <Message Id="navigation" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-03-10 20:52:03Z">
-              <Issue Name="Member">
-               <Item>navigation</Item>
-               <Item>'getNavigationPathsResponse.navigationPaths'</Item>
-               <Item>Navigation</Item>
-              </Issue>
-             </Message>
-             <Message TypeName="PropertiesShouldNotReturnArrays" Category="Microsoft.Performance" CheckId="CA1819" Created="2012-03-10 20:52:03Z">
-              <Issue>
-               <Item>'getNavigationPathsResponse.navigationPaths'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="image">
-          <Messages>
-           <Message TypeName="DeclareTypesInNamespaces" Category="Microsoft.Design" CheckId="CA1050" Created="2012-03-10 20:52:03Z">
-            <Issue>
-             <Item>'image'</Item>
-            </Issue>
-           </Message>
-           <Message Id="image" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-03-10 20:52:03Z">
-            <Issue Name="Type">
-             <Item>image</Item>
-             <Item>'image'</Item>
-             <Item>Image</Item>
-            </Issue>
-           </Message>
-          </Messages>
-          <Members>
-           <Member Name="#imageFormat">
-            <Messages>
-             <Message Id="image" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-03-10 20:52:03Z">
-              <Issue Name="Member">
-               <Item>image</Item>
-               <Item>'image.imageFormat'</Item>
-               <Item>Image</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#location">
-            <Messages>
-             <Message Id="location" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-03-10 20:52:03Z">
-              <Issue Name="Member">
-               <Item>location</Item>
-               <Item>'image.location'</Item>
-               <Item>Location</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#name">
-            <Messages>
-             <Message Id="name" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-03-10 20:52:03Z">
-              <Issue Name="Member">
-               <Item>name</Item>
-               <Item>'image.name'</Item>
-               <Item>Name</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#Value">
-            <Messages>
-             <Message TypeName="PropertiesShouldNotReturnArrays" Category="Microsoft.Performance" CheckId="CA1819" Created="2012-03-10 20:52:03Z">
-              <Issue>
-               <Item>'image.Value'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="navigationKey">
-          <Messages>
-           <Message TypeName="DeclareTypesInNamespaces" Category="Microsoft.Design" CheckId="CA1050" Created="2012-03-10 20:52:03Z">
-            <Issue>
-             <Item>'navigationKey'</Item>
-            </Issue>
-           </Message>
-           <Message Id="navigation" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-03-10 20:52:03Z">
-            <Issue Name="Type">
-             <Item>navigation</Item>
-             <Item>'navigationKey'</Item>
-             <Item>Navigation</Item>
-            </Issue>
-           </Message>
-          </Messages>
-          <Members>
-           <Member Name="#contentId">
-            <Messages>
-             <Message Id="content" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-03-10 20:52:03Z">
-              <Issue Name="Member">
-               <Item>content</Item>
-               <Item>'navigationKey.contentId'</Item>
-               <Item>Content</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#locale">
-            <Messages>
-             <Message Id="locale" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-03-10 20:52:03Z">
-              <Issue Name="Member">
-               <Item>locale</Item>
-               <Item>'navigationKey.locale'</Item>
-               <Item>Locale</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#version">
-            <Messages>
-             <Message Id="version" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-03-10 20:52:03Z">
-              <Issue Name="Member">
-               <Item>version</Item>
-               <Item>'navigationKey.version'</Item>
-               <Item>Version</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="navigationPath">
-          <Messages>
-           <Message TypeName="DeclareTypesInNamespaces" Category="Microsoft.Design" CheckId="CA1050" Created="2012-03-10 20:52:03Z">
-            <Issue>
-             <Item>'navigationPath'</Item>
-            </Issue>
-           </Message>
-           <Message Id="navigation" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-03-10 20:52:03Z">
-            <Issue Name="Type">
-             <Item>navigation</Item>
-             <Item>'navigationPath'</Item>
-             <Item>Navigation</Item>
-            </Issue>
-           </Message>
-          </Messages>
-          <Members>
-           <Member Name="#navigationPathNodes">
-            <Messages>
-             <Message Id="navigation" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-03-10 20:52:03Z">
-              <Issue Name="Member">
-               <Item>navigation</Item>
-               <Item>'navigationPath.navigationPathNodes'</Item>
-               <Item>Navigation</Item>
-              </Issue>
-             </Message>
-             <Message TypeName="PropertiesShouldNotReturnArrays" Category="Microsoft.Performance" CheckId="CA1819" Created="2012-03-10 20:52:03Z">
-              <Issue>
-               <Item>'navigationPath.navigationPathNodes'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="navigationPathNode">
-          <Messages>
-           <Message TypeName="DeclareTypesInNamespaces" Category="Microsoft.Design" CheckId="CA1050" Created="2012-03-10 20:52:03Z">
-            <Issue>
-             <Item>'navigationPathNode'</Item>
-            </Issue>
-           </Message>
-           <Message Id="navigation" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-03-10 20:52:03Z">
-            <Issue Name="Type">
-             <Item>navigation</Item>
-             <Item>'navigationPathNode'</Item>
-             <Item>Navigation</Item>
-            </Issue>
-           </Message>
-          </Messages>
-          <Members>
-           <Member Name="#contentNodeKey">
-            <Messages>
-             <Message Id="content" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-03-10 20:52:03Z">
-              <Issue Name="Member">
-               <Item>content</Item>
-               <Item>'navigationPathNode.contentNodeKey'</Item>
-               <Item>Content</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#isPhantom">
-            <Messages>
-             <Message Id="is" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-03-10 20:52:03Z">
-              <Issue Name="Member">
-               <Item>is</Item>
-               <Item>'navigationPathNode.isPhantom'</Item>
-               <Item>Is</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#isPhantomSpecified">
-            <Messages>
-             <Message Id="is" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-03-10 20:52:03Z">
-              <Issue Name="Member">
-               <Item>is</Item>
-               <Item>'navigationPathNode.isPhantomSpecified'</Item>
-               <Item>Is</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#navigationNodeKey">
-            <Messages>
-             <Message Id="navigation" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-03-10 20:52:03Z">
-              <Issue Name="Member">
-               <Item>navigation</Item>
-               <Item>'navigationPathNode.navigationNodeKey'</Item>
-               <Item>Navigation</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#title">
-            <Messages>
-             <Message Id="title" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-03-10 20:52:03Z">
-              <Issue Name="Member">
-               <Item>title</Item>
-               <Item>'navigationPathNode.title'</Item>
-               <Item>Title</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="primary">
-          <Messages>
-           <Message TypeName="DeclareTypesInNamespaces" Category="Microsoft.Design" CheckId="CA1050" Created="2012-03-10 20:52:03Z">
-            <Issue>
-             <Item>'primary'</Item>
-            </Issue>
-           </Message>
-           <Message Id="primary" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-03-10 20:52:03Z">
-            <Issue Name="Type">
-             <Item>primary</Item>
-             <Item>'primary'</Item>
-             <Item>Primary</Item>
-            </Issue>
-           </Message>
-          </Messages>
-          <Members>
-           <Member Name="#Any">
-            <Messages>
-             <Message Id="System.Xml.XmlNode" TypeName="MembersShouldNotExposeCertainConcreteTypes" Category="Microsoft.Design" CheckId="CA1059" Status="Excluded" Created="2012-03-10 20:52:03Z">
-              <Issue Name="Xml">
-               <Item>'primary.Any'</Item>
-               <Item>'XmlElement'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="18" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#anyField">
-            <Messages>
-             <Message TypeName="MarkAllNonSerializableFields" Category="Microsoft.Usage" CheckId="CA2235" Created="2012-03-10 20:52:03Z">
-              <Issue>
-               <Item>'primary.anyField'</Item>
-               <Item>'primary'</Item>
-               <Item>'XmlElement'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#location">
-            <Messages>
-             <Message Id="location" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-03-10 20:52:03Z">
-              <Issue Name="Member">
-               <Item>location</Item>
-               <Item>'primary.location'</Item>
-               <Item>Location</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#primaryFormat">
-            <Messages>
-             <Message Id="primary" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-03-10 20:52:03Z">
-              <Issue Name="Member">
-               <Item>primary</Item>
-               <Item>'primary.primaryFormat'</Item>
-               <Item>Primary</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="requestedDocument">
-          <Messages>
-           <Message TypeName="DeclareTypesInNamespaces" Category="Microsoft.Design" CheckId="CA1050" Created="2012-03-10 20:52:03Z">
-            <Issue>
-             <Item>'requestedDocument'</Item>
-            </Issue>
-           </Message>
-           <Message Id="requested" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-03-10 20:52:03Z">
-            <Issue Name="Type">
-             <Item>requested</Item>
-             <Item>'requestedDocument'</Item>
-             <Item>Requested</Item>
-            </Issue>
-           </Message>
-          </Messages>
-          <Members>
-           <Member Name="#selector">
-            <Messages>
-             <Message Id="selector" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-03-10 20:52:03Z">
-              <Issue Name="Member">
-               <Item>selector</Item>
-               <Item>'requestedDocument.selector'</Item>
-               <Item>Selector</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#type">
-            <Messages>
-             <Message Id="type" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2012-03-10 20:52:03Z">
-              <Issue Name="Member">
-               <Item>type</Item>
-               <Item>'requestedDocument.type'</Item>
-               <Item>Type</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-        </Types>
-       </Namespace>
        <Namespace Name="Microsoft.Ddue.Tools">
         <Types>
          <Type Name="BrandingComponent">
@@ -1324,19 +400,6 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="ConstructorTarget">
-          <Members>
-           <Member Name="#Parameters">
-            <Messages>
-             <Message TypeName="PropertiesShouldNotReturnArrays" Category="Microsoft.Performance" CheckId="CA1819" Created="2012-03-10 20:52:03Z">
-              <Issue>
-               <Item>'ConstructorTarget.Parameters'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
          <Type Name="CopyComponent">
           <Members>
            <Member Name="#.ctor(System.Xml.XPath.XPathNavigator,System.Collections.Generic.Dictionary`2&lt;System.String,System.Object&gt;)">
@@ -1408,63 +471,6 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="ExtensionMethodReference">
-          <Members>
-           <Member Name="#Parameters">
-            <Messages>
-             <Message TypeName="PropertiesShouldNotReturnArrays" Category="Microsoft.Performance" CheckId="CA1819" Created="2012-03-10 20:52:03Z">
-              <Issue>
-               <Item>'ExtensionMethodReference.Parameters'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#TemplateArgs">
-            <Messages>
-             <Message TypeName="PropertiesShouldNotReturnArrays" Category="Microsoft.Performance" CheckId="CA1819" Created="2012-03-10 20:52:03Z">
-              <Issue>
-               <Item>'ExtensionMethodReference.TemplateArgs'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="FileCreatedEventArgs">
-          <Members>
-           <Member Name="#.ctor(System.String,System.String)">
-            <Messages>
-             <Message Id="hxf" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2012-03-10 20:52:03Z">
-              <Issue Name="MemberParameter">
-               <Item>'FileCreatedEventArgs.FileCreatedEventArgs(string, string)'</Item>
-               <Item>hxf</Item>
-               <Item>'hxfPath'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="32" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#HxfPath">
-            <Messages>
-             <Message Id="Hxf" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2012-03-10 20:52:03Z">
-              <Issue Name="Member">
-               <Item>Hxf</Item>
-               <Item>'FileCreatedEventArgs.HxfPath'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="31" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
          <Type Name="HxfGeneratorComponent">
           <Messages>
            <Message Id="Hxf" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2012-03-10 20:52:03Z">
@@ -1479,6 +485,23 @@
             </Notes>
            </Message>
           </Messages>
+          <Members>
+           <Member Name="#WriteFile(System.String)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2012-12-26 03:42:59Z">
+              <Issue>
+               <Item>'HxfGeneratorComponent.WriteFile(string)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="37" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
          </Type>
          <Type Name="InclusionFilter">
           <Members>
@@ -1691,94 +714,6 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="LinkTextResolver">
-          <Members>
-           <Member Name="#WriteMemberTarget(Microsoft.Ddue.Tools.MemberTarget,Microsoft.Ddue.Tools.DisplayOptions,System.Xml.XmlWriter,System.Collections.Generic.Dictionary`2&lt;Microsoft.Ddue.Tools.IndexedTemplateTypeReference,Microsoft.Ddue.Tools.TypeReference&gt;)">
-            <Messages>
-             <Message TypeName="DoNotCastUnnecessarily" Category="Microsoft.Performance" CheckId="CA1800" Status="Excluded" Created="2012-03-10 20:52:03Z">
-              <Issue Name="Parameter">
-               <Item>'target'</Item>
-               <Item>'MethodTarget'</Item>
-               <Item>'LinkTextResolver.WriteMemberTarget(MemberTarget, DisplayOptions, XmlWriter, Dictionary&lt;IndexedTemplateTypeReference, TypeReference&gt;)'</Item>
-               <Item>isint</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="13" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#WriteTemplateType(Microsoft.Ddue.Tools.TemplateTypeReference,Microsoft.Ddue.Tools.DisplayOptions,System.Xml.XmlWriter)">
-            <Messages>
-             <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Created="2012-03-10 20:52:03Z">
-              <Issue>
-               <Item>'LinkTextResolver.WriteTemplateType(TemplateTypeReference, DisplayOptions, XmlWriter)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="MemberTarget">
-          <Members>
-           <Member Name="#Type">
-            <Messages>
-             <Message TypeName="PropertyNamesShouldNotMatchGetMethods" Category="Microsoft.Naming" CheckId="CA1721" Created="2012-03-10 20:52:03Z">
-              <Issue Name="BaseType">
-               <Item>'MemberTarget.Type'</Item>
-               <Item>'object.GetType()'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="MethodTarget">
-          <Members>
-           <Member Name="#Parameters">
-            <Messages>
-             <Message TypeName="PropertiesShouldNotReturnArrays" Category="Microsoft.Performance" CheckId="CA1819" Created="2012-03-10 20:52:03Z">
-              <Issue>
-               <Item>'MethodTarget.Parameters'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#TemplateArgs">
-            <Messages>
-             <Message TypeName="PropertiesShouldNotReturnArrays" Category="Microsoft.Performance" CheckId="CA1819" Created="2012-03-10 20:52:03Z">
-              <Issue>
-               <Item>'MethodTarget.TemplateArgs'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#Templates">
-            <Messages>
-             <Message TypeName="PropertiesShouldNotReturnArrays" Category="Microsoft.Performance" CheckId="CA1819" Created="2012-03-10 20:52:03Z">
-              <Issue>
-               <Item>'MethodTarget.Templates'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="MethodTemplateTypeReference">
-          <Members>
-           <Member Name="#.ctor(Microsoft.Ddue.Tools.MemberReference,System.Int32)">
-            <Messages>
-             <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Created="2012-03-10 20:52:03Z">
-              <Issue>
-               <Item>'MethodTemplateTypeReference.MethodTemplateTypeReference(MemberReference, int)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
          <Type Name="MsdnResolver">
           <Messages>
            <Message TypeName="TypesThatOwnDisposableFieldsShouldBeDisposable" Category="Microsoft.Design" CheckId="CA1001" Created="2012-03-10 20:52:03Z" FixCategory="DependsOnFix">
@@ -1877,20 +812,6 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="Parameter">
-          <Members>
-           <Member Name="#Type">
-            <Messages>
-             <Message TypeName="PropertyNamesShouldNotMatchGetMethods" Category="Microsoft.Naming" CheckId="CA1721" Created="2012-03-10 20:52:03Z">
-              <Issue Name="BaseType">
-               <Item>'Parameter.Type'</Item>
-               <Item>'object.GetType()'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
          <Type Name="PlatformsComponent">
           <Members>
            <Member Name="#AddPlatformVersionFilter(System.String,System.String,System.Xml.XPath.XPathNavigator,System.String)">
@@ -1925,45 +846,8 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="PropertyTarget">
-          <Members>
-           <Member Name="#Parameters">
-            <Messages>
-             <Message TypeName="PropertiesShouldNotReturnArrays" Category="Microsoft.Performance" CheckId="CA1819" Created="2012-03-10 20:52:03Z">
-              <Issue>
-               <Item>'PropertyTarget.Parameters'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#returnType">
-            <Messages>
-             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Created="2012-03-10 20:52:03Z">
-              <Issue>
-               <Item>'PropertyTarget.returnType'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
          <Type Name="ResolveArtLinksComponent">
           <Members>
-           <Member Name="#AddTargets(System.String,System.String,System.String,System.Xml.XPath.XPathExpression,System.String,System.Xml.XPath.XPathExpression,System.Xml.XPath.XPathExpression)">
-            <Messages>
-             <Message TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308" Status="Excluded" Created="2012-12-24 21:13:44Z">
-              <Issue Name="ToUpperInvariant">
-               <Item>'ResolveArtLinksComponent.AddTargets(string, string, string, XPathExpression, string, XPathExpression, XPathExpression)'</Item>
-               <Item>'string.ToLowerInvariant()'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="22" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
            <Member Name="#Apply(System.Xml.XmlDocument,System.String)">
             <Messages>
              <Message TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308" Status="Excluded" Created="2012-12-24 21:13:44Z">
@@ -2039,21 +923,6 @@
              <Message TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308" Status="Excluded" Created="2012-12-24 21:13:44Z">
               <Issue Name="ToUpperInvariant">
                <Item>'SharedContentComponent.LoadContent(string)'</Item>
-               <Item>'string.ToLowerInvariant()'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="22" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#ResolveContent(System.Xml.XmlDocument,System.Xml.XPath.XPathNavigator)">
-            <Messages>
-             <Message TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308" Status="Excluded" Created="2012-12-24 21:13:44Z">
-              <Issue Name="ToUpperInvariant">
-               <Item>'SharedContentComponent.ResolveContent(XmlDocument, XPathNavigator)'</Item>
                <Item>'string.ToLowerInvariant()'</Item>
               </Issue>
               <Notes>
@@ -2243,54 +1112,6 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="Specialization">
-          <Members>
-           <Member Name="#Arguments">
-            <Messages>
-             <Message TypeName="PropertiesShouldNotReturnArrays" Category="Microsoft.Performance" CheckId="CA1819" Created="2012-03-10 20:52:03Z">
-              <Issue>
-               <Item>'Specialization.Arguments'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="SpecializedMemberWithParametersReference">
-          <Members>
-           <Member Name="#ParameterTypes">
-            <Messages>
-             <Message TypeName="PropertiesShouldNotReturnArrays" Category="Microsoft.Performance" CheckId="CA1819" Created="2012-03-10 20:52:03Z">
-              <Issue>
-               <Item>'SpecializedMemberWithParametersReference.ParameterTypes'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="SpecializedTypeReference">
-          <Members>
-           <Member Name="#GetSpecializationDictionary()">
-            <Messages>
-             <Message TypeName="UsePropertiesWhereAppropriate" Category="Microsoft.Design" CheckId="CA1024" Created="2012-03-10 20:52:03Z">
-              <Issue Certainty="50">
-               <Item>'SpecializedTypeReference.GetSpecializationDictionary()'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#Specializations">
-            <Messages>
-             <Message TypeName="PropertiesShouldNotReturnArrays" Category="Microsoft.Performance" CheckId="CA1819" Created="2012-03-10 20:52:03Z">
-              <Issue>
-               <Item>'SpecializedTypeReference.Specializations'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
          <Type Name="SyntaxGenerator">
           <Members>
            <Member Name="#.ctor(System.Xml.XPath.XPathNavigator)">
@@ -2314,59 +1135,6 @@
                <Item>'location'</Item>
                <Item>'SyntaxWriter.SyntaxWriter(XPathNavigator)'</Item>
               </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="TargetCollection">
-          <Messages>
-           <Message TypeName="IdentifiersShouldNotHaveIncorrectSuffix" Category="Microsoft.Naming" CheckId="CA1711" Created="2012-03-10 20:52:03Z">
-            <Issue Name="TypeNoAlternate">
-             <Item>'TargetCollection'</Item>
-             <Item>Collection</Item>
-            </Issue>
-           </Message>
-          </Messages>
-         </Type>
-         <Type Name="TargetDirectoryCollection">
-          <Messages>
-           <Message TypeName="IdentifiersShouldNotHaveIncorrectSuffix" Category="Microsoft.Naming" CheckId="CA1711" Created="2012-03-10 20:52:03Z">
-            <Issue Name="TypeNoAlternate">
-             <Item>'TargetDirectoryCollection'</Item>
-             <Item>Collection</Item>
-            </Issue>
-           </Message>
-          </Messages>
-         </Type>
-         <Type Name="TargetInfo">
-          <Members>
-           <Member Name="#.ctor(System.String,System.String,Microsoft.Ddue.Tools.LinkType)">
-            <Messages>
-             <Message Id="0#" TypeName="UriParametersShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1054" Status="Excluded" Created="2012-03-10 20:52:03Z">
-              <Issue>
-               <Item>'targetUrl'</Item>
-               <Item>'TargetInfo.TargetInfo(string, string, LinkType)'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="36" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#Url">
-            <Messages>
-             <Message TypeName="UriPropertiesShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1056" Status="Excluded" Created="2012-03-10 20:52:03Z">
-              <Issue>
-               <Item>'TargetInfo.Url'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="36" />
-               </User>
-              </Notes>
              </Message>
             </Messages>
            </Member>
@@ -2448,35 +1216,6 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="TextReferenceUtilities">
-          <Members>
-           <Member Name="#.cctor()">
-            <Messages>
-             <Message TypeName="InitializeReferenceTypeStaticFieldsInline" Category="Microsoft.Performance" CheckId="CA1810" Status="Excluded" Created="2012-03-10 20:52:03Z">
-              <Issue>
-               <Item>'TextReferenceUtilities'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="35" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#SetGenericContext(System.String)">
-            <Messages>
-             <Message Id="cer" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2012-03-10 20:52:03Z">
-              <Issue Name="MemberParameter">
-               <Item>'TextReferenceUtilities.SetGenericContext(string)'</Item>
-               <Item>cer</Item>
-               <Item>'cer'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
          <Type Name="TransformComponent">
           <Members>
            <Member Name="#Transformations">
@@ -2530,11 +1269,303 @@
            </Member>
           </Members>
          </Type>
+        </Types>
+       </Namespace>
+       <Namespace Name="Microsoft.Ddue.Tools.Targets">
+        <Types>
+         <Type Name="ConceptualLinkInfo">
+          <Members>
+           <Member Name="#Create(System.Xml.XPath.XPathNavigator)">
+            <Messages>
+             <Message TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308" Status="Excluded" Created="2012-12-27 01:14:32Z">
+              <Issue Name="ToUpperInvariant">
+               <Item>'ConceptualLinkInfo.Create(XPathNavigator)'</Item>
+               <Item>'string.ToLowerInvariant()'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="32" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="ConstructorTarget">
+          <Members>
+           <Member Name="#Parameters">
+            <Messages>
+             <Message TypeName="PropertiesShouldNotReturnArrays" Category="Microsoft.Performance" CheckId="CA1819" Created="2012-12-27 01:14:32Z">
+              <Issue>
+               <Item>'ConstructorTarget.Parameters'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="ExtensionMethodReference">
+          <Members>
+           <Member Name="#Parameters">
+            <Messages>
+             <Message TypeName="PropertiesShouldNotReturnArrays" Category="Microsoft.Performance" CheckId="CA1819" Created="2012-12-27 01:14:32Z">
+              <Issue>
+               <Item>'ExtensionMethodReference.Parameters'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#TemplateArgs">
+            <Messages>
+             <Message TypeName="PropertiesShouldNotReturnArrays" Category="Microsoft.Performance" CheckId="CA1819" Created="2012-12-27 01:14:32Z">
+              <Issue>
+               <Item>'ExtensionMethodReference.TemplateArgs'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="LinkTextResolver">
+          <Members>
+           <Member Name="#WriteMemberTarget(Microsoft.Ddue.Tools.Targets.MemberTarget,Microsoft.Ddue.Tools.Targets.DisplayOptions,System.Xml.XmlWriter,System.Collections.Generic.Dictionary`2&lt;Microsoft.Ddue.Tools.Targets.IndexedTemplateTypeReference,Microsoft.Ddue.Tools.Targets.TypeReference&gt;)">
+            <Messages>
+             <Message TypeName="DoNotCastUnnecessarily" Category="Microsoft.Performance" CheckId="CA1800" Created="2012-12-27 01:14:32Z">
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
+               <Item>'MethodTarget'</Item>
+               <Item>'LinkTextResolver.WriteMemberTarget(MemberTarget, DisplayOptions, XmlWriter, Dictionary&lt;IndexedTemplateTypeReference, TypeReference&gt;)'</Item>
+               <Item>isint</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#WriteTemplateType(Microsoft.Ddue.Tools.Targets.TemplateTypeReference,Microsoft.Ddue.Tools.Targets.DisplayOptions,System.Xml.XmlWriter)">
+            <Messages>
+             <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Created="2012-12-27 01:14:32Z">
+              <Issue>
+               <Item>'LinkTextResolver.WriteTemplateType(TemplateTypeReference, DisplayOptions, XmlWriter)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="MemberTarget">
+          <Members>
+           <Member Name="#Type">
+            <Messages>
+             <Message TypeName="PropertyNamesShouldNotMatchGetMethods" Category="Microsoft.Naming" CheckId="CA1721" Created="2012-12-27 01:14:32Z">
+              <Issue Name="BaseType">
+               <Item>'MemberTarget.Type'</Item>
+               <Item>'object.GetType()'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="MethodTarget">
+          <Members>
+           <Member Name="#Parameters">
+            <Messages>
+             <Message TypeName="PropertiesShouldNotReturnArrays" Category="Microsoft.Performance" CheckId="CA1819" Created="2012-12-27 01:14:32Z">
+              <Issue>
+               <Item>'MethodTarget.Parameters'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#TemplateArgs">
+            <Messages>
+             <Message TypeName="PropertiesShouldNotReturnArrays" Category="Microsoft.Performance" CheckId="CA1819" Created="2012-12-27 01:14:32Z">
+              <Issue>
+               <Item>'MethodTarget.TemplateArgs'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Templates">
+            <Messages>
+             <Message TypeName="PropertiesShouldNotReturnArrays" Category="Microsoft.Performance" CheckId="CA1819" Created="2012-12-27 01:14:32Z">
+              <Issue>
+               <Item>'MethodTarget.Templates'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="MethodTemplateTypeReference">
+          <Members>
+           <Member Name="#.ctor(Microsoft.Ddue.Tools.Targets.MemberReference,System.Int32)">
+            <Messages>
+             <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Created="2012-12-27 01:14:32Z">
+              <Issue>
+               <Item>'MethodTemplateTypeReference.MethodTemplateTypeReference(MemberReference, int)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="Parameter">
+          <Members>
+           <Member Name="#Type">
+            <Messages>
+             <Message TypeName="PropertyNamesShouldNotMatchGetMethods" Category="Microsoft.Naming" CheckId="CA1721" Created="2012-12-27 01:14:32Z">
+              <Issue Name="BaseType">
+               <Item>'Parameter.Type'</Item>
+               <Item>'object.GetType()'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="PropertyTarget">
+          <Members>
+           <Member Name="#Parameters">
+            <Messages>
+             <Message TypeName="PropertiesShouldNotReturnArrays" Category="Microsoft.Performance" CheckId="CA1819" Created="2012-12-27 01:14:32Z">
+              <Issue>
+               <Item>'PropertyTarget.Parameters'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#returnType">
+            <Messages>
+             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Created="2012-12-27 01:14:32Z">
+              <Issue>
+               <Item>'PropertyTarget.returnType'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="Specialization">
+          <Members>
+           <Member Name="#Arguments">
+            <Messages>
+             <Message TypeName="PropertiesShouldNotReturnArrays" Category="Microsoft.Performance" CheckId="CA1819" Created="2012-12-27 01:14:32Z">
+              <Issue>
+               <Item>'Specialization.Arguments'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="SpecializedMemberWithParametersReference">
+          <Members>
+           <Member Name="#ParameterTypes">
+            <Messages>
+             <Message TypeName="PropertiesShouldNotReturnArrays" Category="Microsoft.Performance" CheckId="CA1819" Created="2012-12-27 01:14:32Z">
+              <Issue>
+               <Item>'SpecializedMemberWithParametersReference.ParameterTypes'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="SpecializedTypeReference">
+          <Members>
+           <Member Name="#GetSpecializationDictionary()">
+            <Messages>
+             <Message TypeName="UsePropertiesWhereAppropriate" Category="Microsoft.Design" CheckId="CA1024" Created="2012-12-27 01:14:32Z">
+              <Issue Certainty="50">
+               <Item>'SpecializedTypeReference.GetSpecializationDictionary()'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Specializations">
+            <Messages>
+             <Message TypeName="PropertiesShouldNotReturnArrays" Category="Microsoft.Performance" CheckId="CA1819" Created="2012-12-27 01:14:32Z">
+              <Issue>
+               <Item>'SpecializedTypeReference.Specializations'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="TargetCollection">
+          <Messages>
+           <Message TypeName="IdentifiersShouldNotHaveIncorrectSuffix" Category="Microsoft.Naming" CheckId="CA1711" Created="2012-12-27 01:14:32Z">
+            <Issue Name="TypeNoAlternate">
+             <Item>'TargetCollection'</Item>
+             <Item>Collection</Item>
+            </Issue>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="TargetInfo">
+          <Members>
+           <Member Name="#.ctor(System.String,System.String,Microsoft.Ddue.Tools.Targets.ConceptualLinkType)">
+            <Messages>
+             <Message Id="0#" TypeName="UriParametersShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1054" Status="Excluded" Created="2012-12-27 01:14:32Z">
+              <Issue>
+               <Item>'targetUrl'</Item>
+               <Item>'TargetInfo.TargetInfo(string, string, ConceptualLinkType)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="38" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Url">
+            <Messages>
+             <Message TypeName="UriPropertiesShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1056" Status="Excluded" Created="2012-12-27 01:14:32Z">
+              <Issue>
+               <Item>'TargetInfo.Url'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="38" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="TextReferenceUtilities">
+          <Members>
+           <Member Name="#.cctor()">
+            <Messages>
+             <Message TypeName="InitializeReferenceTypeStaticFieldsInline" Category="Microsoft.Performance" CheckId="CA1810" Created="2012-12-27 01:14:32Z">
+              <Issue>
+               <Item>'TextReferenceUtilities'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#SetGenericContext(System.String)">
+            <Messages>
+             <Message Id="cer" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2012-12-27 01:14:32Z">
+              <Issue Name="MemberParameter">
+               <Item>'TextReferenceUtilities.SetGenericContext(string)'</Item>
+               <Item>cer</Item>
+               <Item>'cer'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
          <Type Name="TypeTarget">
           <Members>
            <Member Name="#Templates">
             <Messages>
-             <Message TypeName="PropertiesShouldNotReturnArrays" Category="Microsoft.Performance" CheckId="CA1819" Created="2012-03-10 20:52:03Z">
+             <Message TypeName="PropertiesShouldNotReturnArrays" Category="Microsoft.Performance" CheckId="CA1819" Created="2012-12-27 01:14:32Z">
               <Issue>
                <Item>'TypeTarget.Templates'</Item>
               </Issue>
@@ -2545,9 +1576,9 @@
          </Type>
          <Type Name="TypeTemplateTypeReference">
           <Members>
-           <Member Name="#.ctor(Microsoft.Ddue.Tools.SimpleTypeReference,System.Int32)">
+           <Member Name="#.ctor(Microsoft.Ddue.Tools.Targets.SimpleTypeReference,System.Int32)">
             <Messages>
-             <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Created="2012-03-10 20:52:03Z">
+             <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Created="2012-12-27 01:14:32Z">
               <Issue>
                <Item>'TypeTemplateTypeReference.TypeTemplateTypeReference(SimpleTypeReference, int)'</Item>
               </Issue>
@@ -4642,7 +3673,6 @@
     <Note Id="10" Modified="2012-12-24 00:53:01Z">The error is reported</Note>
     <Note Id="11" Modified="2012-12-24 18:32:22Z">Okay as is</Note>
     <Note Id="12" Modified="2012-12-24 18:32:57Z">Okay as is</Note>
-    <Note Id="13" Modified="2012-12-24 19:03:18Z">Okay as is</Note>
     <Note Id="14" Modified="2012-12-24 01:03:11Z">The error is reported</Note>
     <Note Id="15" Modified="2012-12-24 01:04:01Z">Lowercase is required</Note>
     <Note Id="16" Modified="2012-12-24 01:05:00Z">Lowercase is required</Note>
@@ -4660,12 +3690,13 @@
     <Note Id="28" Modified="2012-12-24 04:33:22Z">Okay as is</Note>
     <Note Id="29" Modified="2012-12-24 04:33:40Z">Okay as is</Note>
     <Note Id="30" Modified="2012-12-24 07:00:20Z">Okay as is</Note>
-    <Note Id="31" Modified="2012-12-24 07:00:29Z">Okay as is</Note>
-    <Note Id="32" Modified="2012-12-24 07:00:39Z">Okay as is</Note>
+    <Note Id="31" Modified="2012-12-27 01:15:32Z">Okay as is</Note>
+    <Note Id="32" Modified="2012-12-27 01:18:03Z">Lowercase is preferred</Note>
     <Note Id="33" Modified="2012-12-24 07:00:53Z">Okay as is</Note>
     <Note Id="34" Modified="2012-12-24 07:01:09Z">Okay as is</Note>
-    <Note Id="35" Modified="2012-12-24 07:04:28Z">This one is more complex so it'll be fine.</Note>
     <Note Id="36" Modified="2012-12-24 21:31:54Z">Okay as is</Note>
+    <Note Id="37" Modified="2012-12-26 03:43:21Z">The error is reported</Note>
+    <Note Id="38" Modified="2012-12-27 01:18:53Z">Okay as is</Note>
    </User>
   </Notes>
   <Rules>
@@ -4683,9 +3714,6 @@
    </Rule>
    <Rule TypeName="CompoundWordsShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1702">
     <Resolution Name="MemberShouldBeDiscreteTerm">The compound word '{0}' in member name {1} exists as a discrete term. If your usage is intended to be single word, case it as '{2}' or strip the first token entirely if it represents any sort of Hungarian notation.</Resolution>
-   </Rule>
-   <Rule TypeName="DeclareTypesInNamespaces" Category="Microsoft.Design" CheckId="CA1050">
-    <Resolution Name="Default">{0} should be declared inside a namespace.</Resolution>
    </Rule>
    <Rule TypeName="DoNotCastUnnecessarily" Category="Microsoft.Performance" CheckId="CA1800">
     <Resolution Name="Parameter">{0}, a parameter, is cast to type {1} multiple times in method {2}. Cache the result of the 'as' operator or direct cast in order to eliminate the redundant {3} instruction.</Resolution>
@@ -4732,9 +3760,6 @@
    <Rule TypeName="InitializeReferenceTypeStaticFieldsInline" Category="Microsoft.Performance" CheckId="CA1810">
     <Resolution Name="Default">Initialize all static fields in {0} when those fields are declared and remove the explicit static constructor.</Resolution>
    </Rule>
-   <Rule TypeName="MarkAllNonSerializableFields" Category="Microsoft.Usage" CheckId="CA2235">
-    <Resolution Name="Default">Field {0} is a member of type {1}, which is serializable, but is of type {2}, which is not serializable. Add the NonSerializedAttribute to {0}.</Resolution>
-   </Rule>
    <Rule TypeName="MembersShouldNotExposeCertainConcreteTypes" Category="Microsoft.Design" CheckId="CA1059">
     <Resolution Name="Xml">Modify member {0} so that it no longer exposes the concrete type {1}. Use IXPathNavigable to represent XML data sources.</Resolution>
    </Rule>
@@ -4743,9 +3768,6 @@
    </Rule>
    <Rule TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308">
     <Resolution Name="ToUpperInvariant">In method {0}, replace the call to {1} with String.ToUpperInvariant().</Resolution>
-   </Rule>
-   <Rule TypeName="OnlyFlagsEnumsShouldHavePluralNames" Category="Microsoft.Naming" CheckId="CA1717">
-    <Resolution Name="Default">If the name {0} is plural, change it to its singular form.</Resolution>
    </Rule>
    <Rule TypeName="ParameterNamesShouldMatchBaseDeclaration" Category="Microsoft.Naming" CheckId="CA1725">
     <Resolution Name="Default">In member {0}, change parameter name {1} to {2} in order to match the identifier as it has been declared in {3}.</Resolution>
@@ -4762,9 +3784,6 @@
    <Rule TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801">
     <Resolution Name="Default">Parameter {0} of {1} is never used. Remove the parameter or use it in the method body.</Resolution>
    </Rule>
-   <Rule TypeName="TypeNamesShouldNotMatchNamespaces" Category="Microsoft.Naming" CheckId="CA1724">
-    <Resolution Name="System">The type name {0} conflicts in whole or in part with the namespace name '{1}' defined in the .NET Framework. Rename the type to eliminate the conflict.</Resolution>
-   </Rule>
    <Rule TypeName="TypesThatOwnDisposableFieldsShouldBeDisposable" Category="Microsoft.Design" CheckId="CA1001">
     <Resolution Name="DependsOnFix">Implement IDisposable on {0} because it creates members of the following IDisposable types: {1}. If {0} has previously shipped, adding new members that implement IDisposable to this type is considered a breaking change to existing consumers.</Resolution>
    </Rule>
@@ -4776,9 +3795,6 @@
    </Rule>
    <Rule TypeName="UriReturnValuesShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1055">
     <Resolution Name="Default">Change the return type of {0} from string to System.Uri.</Resolution>
-   </Rule>
-   <Rule TypeName="UseGenericEventHandlerInstances" Category="Microsoft.Design" CheckId="CA1003">
-    <Resolution Name="Default">Remove {0} and replace its usage with EventHandler&lt;T&gt;</Resolution>
    </Rule>
    <Rule TypeName="UsePropertiesWhereAppropriate" Category="Microsoft.Design" CheckId="CA1024">
     <Resolution Name="Default">Change {0} to a property if appropriate.</Resolution>

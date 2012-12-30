@@ -8,7 +8,7 @@
     <ProjectGuid>{30773718-BC7C-4FCC-A9C2-7EE61DF4EC41}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BuildComponents</RootNamespace>
+    <RootNamespace>Microsoft.Ddue.Tools</RootNamespace>
     <AssemblyName>BuildComponents</AssemblyName>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
@@ -59,7 +59,9 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
@@ -68,8 +70,16 @@
     <Compile Include="..\..\MRefBuilder\Properties\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Targets\ArrayTypeReference.cs" />
+    <Compile Include="Targets\ArtTarget.cs" />
     <Compile Include="BrandingComponent.cs" />
-    <Compile Include="ConceptualLinkInfo.cs" />
+    <Compile Include="Targets\ConceptualLinkInfo.cs" />
+    <Compile Include="FileCreatedEventArgs.cs" />
     <Compile Include="HxfGeneratorComponent.cs" />
     <Compile Include="InheritDocumentationComponent.cs" />
     <Compile Include="IntelliSenseComponent.cs" />
@@ -87,20 +97,59 @@
     <Compile Include="ForEachComponent.cs" />
     <Compile Include="IfThenComponent.cs" />
     <Compile Include="IndexedFileCache.cs" />
-    <Compile Include="MsdnService.cs" />
     <Compile Include="PlatformsComponent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResolveArtLinksComponent.cs" />
     <Compile Include="SaveComponent.cs" />
     <Compile Include="SharedContentComponent.cs" />
+    <Compile Include="Targets\ConceptualLinkType.cs" />
+    <Compile Include="Targets\ConstructorTarget.cs" />
+    <Compile Include="Targets\DisplayOptions.cs" />
+    <Compile Include="Targets\EnumerationTarget.cs" />
+    <Compile Include="Targets\EventTarget.cs" />
+    <Compile Include="Targets\ExtensionMethodReference.cs" />
+    <Compile Include="Targets\IndexedTemplateTypeReference.cs" />
+    <Compile Include="Targets\InvalidReference.cs" />
+    <Compile Include="Targets\LinkTextResolver.cs" />
+    <Compile Include="Targets\MemberReference.cs" />
+    <Compile Include="Targets\MemberTarget.cs" />
+    <Compile Include="Targets\MethodTarget.cs" />
+    <Compile Include="Targets\MethodTemplateTypeReference.cs" />
+    <Compile Include="Targets\NamedTemplateTypeReference.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Targets\NamespaceReference.cs" />
+    <Compile Include="Targets\NamespaceTarget.cs" />
+    <Compile Include="Targets\Parameter.cs" />
+    <Compile Include="Targets\PointerTypeReference.cs" />
+    <Compile Include="Targets\ProcedureTarget.cs" />
+    <Compile Include="Targets\PropertyTarget.cs" />
+    <Compile Include="Targets\Reference.cs" />
+    <Compile Include="Targets\ReferenceLinkInfo.cs" />
+    <Compile Include="Targets\ReferenceLinkType.cs" />
+    <Compile Include="Targets\ReferenceTypeReference.cs" />
+    <Compile Include="Targets\SharedContentElement.cs" />
     <Compile Include="ShowMissingComponent.cs" />
     <Compile Include="SnippetComponent.cs" />
     <Compile Include="SwitchComponent.cs" />
     <Compile Include="SyntaxComponent.cs" />
-    <Compile Include="TargetCollection.cs" />
-    <Compile Include="TargetDirectory.cs" />
-    <Compile Include="TargetDirectoryCollection.cs" />
-    <Compile Include="TargetInfo.cs" />
+    <Compile Include="Targets\SimpleMemberReference.cs" />
+    <Compile Include="Targets\SimpleTypeReference.cs" />
+    <Compile Include="Targets\Specialization.cs" />
+    <Compile Include="Targets\SpecializedMemberReference.cs" />
+    <Compile Include="Targets\SpecializedMemberWithParametersReference.cs" />
+    <Compile Include="Targets\SpecializedTypeReference.cs" />
+    <Compile Include="Targets\Target.cs" />
+    <Compile Include="Targets\TargetCollection.cs" />
+    <Compile Include="Targets\TargetDirectory.cs" />
+    <Compile Include="Targets\TargetDirectoryCollection.cs" />
+    <Compile Include="Targets\TargetInfo.cs" />
+    <Compile Include="Targets\TemplateTypeReference.cs" />
+    <Compile Include="Targets\TextReferenceUtilities.cs" />
+    <Compile Include="Targets\TypeReference.cs" />
+    <Compile Include="Targets\TypeTarget.cs" />
+    <Compile Include="Targets\TypeTemplateTypeReference.cs" />
+    <Compile Include="Targets\XmlTargetCollectionUtilities.cs" />
     <Compile Include="TaskGrabberComponent.cs" />
     <Compile Include="Transform.cs" />
     <Compile Include="TransformComponent.cs" />
@@ -112,6 +161,11 @@
       <DependentUpon>IntelliSenseConfigDlg.cs</DependentUpon>
     </Compile>
     <Compile Include="ValidateComponent.cs" />
+    <Compile Include="Web References\MtpsContentService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BuildAssemblerLibrary\BuildAssemblerLibrary.csproj">
@@ -151,6 +205,84 @@
       <DependentUpon>IntelliSenseConfigDlg.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferences Include="Web References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferenceUrl Include="http://services.msdn.microsoft.com/ContentServices/ContentService.asmx">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\MtpsContentService\</RelPath>
+      <UpdateFromURL>http://services.msdn.microsoft.com/ContentServices/ContentService.asmx</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>BuildComponents_MtpsContentService_ContentService</CachedSettingsPropName>
+    </WebReferenceUrl>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\MtpsContentService\atoms.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\MtpsContentService\atoms0.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\MtpsContentService\atoms1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\MtpsContentService\atoms2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\MtpsContentService\atoms3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\MtpsContentService\atoms4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\MtpsContentService\atoms5.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\MtpsContentService\atoms6.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\MtpsContentService\atoms7.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\MtpsContentService\ContentService.wsdl" />
+    <None Include="Web References\MtpsContentService\default.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\MtpsContentService\default0.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\MtpsContentService\default1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\MtpsContentService\default2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\MtpsContentService\getContentResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\MtpsContentService\getNavigationPathsResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\MtpsContentService\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\MtpsContentService\urn_msdn_com_public_content_syndication_2006_09_common.xsd">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Web References\MtpsContentService\ContentService.disco" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

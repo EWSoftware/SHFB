@@ -3,96 +3,107 @@
 // See http://www.microsoft.com/resources/sharedsource/licensingbasics/sharedsourcelicenses.mspx.
 // All other rights reserved.
 
+// Change History
+// 12/24/2012 - Removed support for the link configuration attribute and simplified the FileCreatedEventArgs
+// class to make it more generic.  Components that handle the event arguments are responsible for determining
+// additional file locations rather than relying on this component to tell them.
+
 using System;
 using System.Configuration;
 using System.Globalization;
+using System.IO;
 using System.Text;
 using System.Xml;
 using System.Xml.XPath;
 
-using System.IO;
-
 namespace Microsoft.Ddue.Tools
 {
+    /// <summary>
+    /// This build component is used to save the generated document or parts of it to a file
+    /// </summary>
     public class SaveComponent : BuildComponent
     {
+        #region Private data members
+        //=====================================================================
+
         private CustomContext context = new CustomContext();
-
-        private XPathExpression path_expression;
-
-        private XPathExpression select_expression;
-
         private XmlWriterSettings settings = new XmlWriterSettings();
+        private XPathExpression pathExpression, selectExpression;
 
+        private string basePath;
+        private bool writeXhtmlNamespace;
+        #endregion
+
+        #region Constructor
+        //=====================================================================
+
+        /// <inheritdoc />
         public SaveComponent(BuildAssembler assembler, XPathNavigator configuration) :
           base(assembler, configuration)
         {
+            settings.Encoding = Encoding.UTF8;
+            settings.CloseOutput = true;
 
             // load the target path format
-            XPathNavigator save_node = configuration.SelectSingleNode("save");
-            if(save_node == null)
-                throw new ConfigurationErrorsException("When instantiating a save component, you must specify a the target file using the <save> element.");
+            XPathNavigator saveNode = configuration.SelectSingleNode("save");
 
-            string base_value = save_node.GetAttribute("base", String.Empty);
-            if(!String.IsNullOrEmpty(base_value))
+            if(saveNode == null)
+                throw new ConfigurationErrorsException("When instantiating a save component, you must specify " +
+                    "a the target file using the <save> element.");
+
+            string baseValue = saveNode.GetAttribute("base", String.Empty);
+
+            if(!String.IsNullOrEmpty(baseValue))
+                basePath = Path.GetFullPath(Environment.ExpandEnvironmentVariables(baseValue));
+
+            string pathValue = saveNode.GetAttribute("path", String.Empty);
+
+            if(String.IsNullOrEmpty(pathValue))
+                base.WriteMessage(MessageLevel.Error, "Each save element must have a path attribute specifying " +
+                    "an XPath expression that evaluates to the location to save the file.");
+
+            pathExpression = XPathExpression.Compile(pathValue);
+
+            string selectValue = saveNode.GetAttribute("select", String.Empty);
+
+            if(!String.IsNullOrEmpty(selectValue))
             {
-                basePath = Path.GetFullPath(Environment.ExpandEnvironmentVariables(base_value));
+                settings.ConformanceLevel = ConformanceLevel.Auto;
+                selectExpression = XPathExpression.Compile(selectValue);
             }
 
-            string path_value = save_node.GetAttribute("path", String.Empty);
-            if(String.IsNullOrEmpty(path_value))
-                WriteMessage(MessageLevel.Error, "Each save element must have a path attribute specifying an XPath that evaluates to the location to save the file.");
-            path_expression = XPathExpression.Compile(path_value);
+            string indentValue = saveNode.GetAttribute("indent", String.Empty);
 
-            string select_value = save_node.GetAttribute("select", String.Empty);
-            if(!String.IsNullOrEmpty(select_value))
-                select_expression = XPathExpression.Compile(select_value);
+            if(!String.IsNullOrEmpty(indentValue))
+                settings.Indent = Convert.ToBoolean(indentValue, CultureInfo.InvariantCulture);
 
-            settings.Encoding = Encoding.UTF8;
+            string omitValue = saveNode.GetAttribute("omit-xml-declaration", String.Empty);
 
-            string indent_value = save_node.GetAttribute("indent", String.Empty);
+            if(!String.IsNullOrEmpty(omitValue))
+                settings.OmitXmlDeclaration = Convert.ToBoolean(omitValue, CultureInfo.InvariantCulture);
 
-            if(!String.IsNullOrEmpty(indent_value))
-                settings.Indent = Convert.ToBoolean(indent_value, CultureInfo.InvariantCulture);
-
-            string omit_value = save_node.GetAttribute("omit-xml-declaration", String.Empty);
-
-            if(!String.IsNullOrEmpty(omit_value))
-                settings.OmitXmlDeclaration = Convert.ToBoolean(omit_value, CultureInfo.InvariantCulture);
-
-            linkPath = save_node.GetAttribute("link", String.Empty);
-            if(String.IsNullOrEmpty(linkPath))
-                linkPath = "../html";
-
-            // add-xhtml-namespace adds a default namespace for xhtml. Required by Help3 documentation.
-            string addXhtmlDeclaration = save_node.GetAttribute("add-xhtml-namespace", String.Empty);
+            // add-xhtml-namespace adds a default namespace for xhtml.  Required by Help Viewer documentation.
+            string addXhtmlDeclaration = saveNode.GetAttribute("add-xhtml-namespace", String.Empty);
 
             if(!String.IsNullOrEmpty(addXhtmlDeclaration))
                 writeXhtmlNamespace = Convert.ToBoolean(addXhtmlDeclaration, CultureInfo.InvariantCulture);
-
-            settings.CloseOutput = true;
         }
+        #endregion
 
-        private string basePath = null;
+        #region Method overrides
+        //=====================================================================
 
-        private string linkPath = null;
-
-        private bool writeXhtmlNamespace = false;
-
-
+        /// <inheritdoc />
         public override void Apply(XmlDocument document, string key)
         {
-            // set the evaluation context
+            // Set the evaluation context
             context["key"] = key;
 
-            XPathExpression path_xpath = path_expression.Clone();
-            path_xpath.SetContext(context);
+            XPathExpression xpath = pathExpression.Clone();
+            xpath.SetContext(context);
 
-            // evaluate the path
-            string path = document.CreateNavigator().Evaluate(path_xpath).ToString();
-            string file = Path.GetFileName(path);
-
-            string fileLinkPath = Path.Combine(linkPath, file);
+            // Evaluate the path
+            string path = document.CreateNavigator().Evaluate(xpath).ToString();
 
             if(basePath != null)
                 path = Path.Combine(basePath, path);
@@ -108,12 +119,13 @@ namespace Microsoft.Ddue.Tools
                 document.LoadXml(document.OuterXml);
             }
 
-            // save the document
-            // select_expression determines which nodes get saved. If there is no select_expression
-            // we simply save the root node as before. If there is a select_expression, we evaluate the
-            // xpath expression and save the resulting node set. The select expression also enables the 
-            // "literal-text" processing instruction, which outputs its content as unescaped text.
-            if(select_expression == null)
+            // Save the document.
+
+            // selectExpression determines which nodes get saved. If there is no selectExpression we simply
+            // save the root node as before. If there is a selectExpression, we evaluate the XPath expression
+            // and save the resulting node set. The select expression also enables the "literal-text" processing
+            // instruction, which outputs its content as unescaped text.
+            if(selectExpression == null)
             {
                 try
                 {
@@ -132,30 +144,24 @@ namespace Microsoft.Ddue.Tools
                     base.WriteMessage(key, MessageLevel.Error, "Invalid XML was written to the output " +
                         "file '{0}'. The error message is: '{1}'", path, e.GetExceptionMessage());
                 }
-
-                // Get the relative html path for HXF generation.
-                int index = fileLinkPath.IndexOf('/');
-                string htmlPath = fileLinkPath.Substring(index + 1, fileLinkPath.Length - (index + 1));
-
-                FileCreatedEventArgs fe = new FileCreatedEventArgs(htmlPath, Path.GetDirectoryName(targetDirectory));
-                OnComponentEvent(fe);
             }
             else
             {
-                // IMPLEMENTATION NOTE: The separate StreamWriter is used to maintain XML indenting.
-                // Without it the XmlWriter won't honor our indent settings after plain text nodes have been
-                // written.
-                settings.ConformanceLevel = ConformanceLevel.Auto;
+                // IMPLEMENTATION NOTE: The separate StreamWriter is used to maintain XML indenting.  Without it
+                // the XmlWriter won't honor our indent settings after plain text nodes have been written.
                 using(StreamWriter output = File.CreateText(path))
                 {
                     using(XmlWriter writer = XmlWriter.Create(output, settings))
                     {
-                        XPathExpression select_xpath = select_expression.Clone();
+                        XPathExpression select_xpath = selectExpression.Clone();
                         select_xpath.SetContext(context);
-                        XPathNodeIterator ni = document.CreateNavigator().Select(select_expression);
+
+                        XPathNodeIterator ni = document.CreateNavigator().Select(selectExpression);
+
                         while(ni.MoveNext())
                         {
-                            if(ni.Current.NodeType == XPathNodeType.ProcessingInstruction && ni.Current.Name.Equals("literal-text"))
+                            if(ni.Current.NodeType == XPathNodeType.ProcessingInstruction &&
+                              ni.Current.Name.Equals("literal-text"))
                             {
                                 writer.Flush();
                                 output.Write(ni.Current.Value);
@@ -166,6 +172,10 @@ namespace Microsoft.Ddue.Tools
                     }
                 }
             }
+
+            // Raise an event to indicate that a file was created
+            this.OnComponentEvent(new FileCreatedEventArgs(path, true));
         }
+        #endregion
     }
 }

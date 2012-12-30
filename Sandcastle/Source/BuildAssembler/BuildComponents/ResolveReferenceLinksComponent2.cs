@@ -7,35 +7,102 @@
 // 03/17/2012 - EFW - Added code to suppress output of empty parameter list for unresolved property elements.
 // Added code to redirect enum field IDs to their containing enumeration type ID.
 // 12/21/2012 - EFW - Removed obsolete ResolveReferenceLinksComponent class
+// 12/28/2012 - EFW - General code clean-up.  Added code to report the reason for MSDN service failures.
+// Exposed the target collection and MSDN resolver via properties.
 
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.XPath;
 
+using Microsoft.Ddue.Tools.Targets;
+
 namespace Microsoft.Ddue.Tools
 {
+    /// <summary>
+    /// This build component is used to resolve links to reference topics
+    /// </summary>
     public class ResolveReferenceLinksComponent2 : BuildComponent
     {
-        // instantiation logic 
-        public ResolveReferenceLinksComponent2(BuildAssembler assembler, XPathNavigator configuration) : base(assembler, configuration)
+        #region Constants
+        //=====================================================================
+
+        /// <summary>
+        /// This is used a the key name when sharing the MSDN content ID cache across instances
+        /// </summary>
+        public const string SharedMsdnCacheId = "SharedMsdnCache";
+        #endregion
+
+        #region Private data members
+        //=====================================================================
+
+        private static XPathExpression referenceLinkExpression = XPathExpression.Compile("//referenceLink");
+
+        private string linkTarget, msdnIdCacheFile;
+
+        private TargetCollection targets;
+
+        private LinkTextResolver resolver;
+
+        private MsdnResolver msdnResolver;
+
+        // WebDocs target url formatting (legacy Microsoft stuff)
+        private XPathExpression baseUrl;
+        private string hrefFormat;
+
+        #endregion
+
+        #region Properties
+        //=====================================================================
+
+        /// <summary>
+        /// This read-only property returns the MSDN resolver instance
+        /// </summary>
+        protected MsdnResolver MsdnResolver
         {
+            get { return msdnResolver; }
+        }
+
+        /// <summary>
+        /// This read-only property returns the target dictionary
+        /// </summary>
+        protected TargetCollection Targets
+        {
+            get { return targets; }
+        }
+        #endregion
+
+        #region Constructor
+        //=====================================================================
+
+        /// <inheritdoc />
+        public ResolveReferenceLinksComponent2(BuildAssembler assembler, XPathNavigator configuration) :
+          base(assembler, configuration)
+        {
+            Target target;
+            ReferenceLinkType type;
+
             // base-url is an xpath expression applied against the current document to pick up the save location of the
             // document. If specified, local links will be made relative to the base-url.
             string baseUrlValue = configuration.GetAttribute("base-url", String.Empty);
+
             if(!String.IsNullOrEmpty(baseUrlValue))
                 baseUrl = XPathExpression.Compile(baseUrlValue);
 
             // url-format is a string format that is used to format the value of local href attributes. The default is
             // "{0}.htm" for backwards compatibility.
-            string hrefFormatValue = configuration.GetAttribute("href-format", String.Empty);
-            if(!String.IsNullOrEmpty(hrefFormatValue))
-                hrefFormat = hrefFormatValue;
+            hrefFormat = configuration.GetAttribute("href-format", String.Empty);
 
-            // the container XPath can be replaced; this is useful
+            if(String.IsNullOrWhiteSpace(hrefFormat))
+                hrefFormat = "{0}.htm";
+
+            // The container XPath can be replaced; this is useful
             string containerValue = configuration.GetAttribute("container", String.Empty);
+
             if(!String.IsNullOrEmpty(containerValue))
                 XmlTargetCollectionUtilities.ContainerExpression = containerValue;
 
@@ -43,575 +110,507 @@ namespace Microsoft.Ddue.Tools
             resolver = new LinkTextResolver(targets);
 
             XPathNodeIterator targets_nodes = configuration.Select("targets");
+
+#if DEBUG
+            base.WriteMessage(MessageLevel.Diagnostic, "Loading reference link target info");
+
+            DateTime startLoad = DateTime.Now;
+#endif
             foreach(XPathNavigator targets_node in targets_nodes)
             {
-
-                // get target type
+                // Get target type
                 string typeValue = targets_node.GetAttribute("type", String.Empty);
+
                 if(String.IsNullOrEmpty(typeValue))
-                    WriteMessage(MessageLevel.Error, "Each targets element must have a type attribute that specifies which type of links to create.");
+                    base.WriteMessage(MessageLevel.Error, "Each targets element must have a type attribute " +
+                        "that specifies which type of links to create.");
 
-                LinkType2 type = LinkType2.None;
-                try
+                if(!Enum.TryParse<ReferenceLinkType>(typeValue, true, out type))
+                    base.WriteMessage(MessageLevel.Error, "'{0}' is not a supported reference link type.", typeValue);
+
+                if(type == ReferenceLinkType.Msdn && msdnResolver == null)
                 {
-                    type = (LinkType2)Enum.Parse(typeof(LinkType2), typeValue, true);
-                    if((type == LinkType2.Msdn) && (msdn == null))
-                    {
-                        WriteMessage(MessageLevel.Info, "Creating MSDN URL resolver.");
-                        msdn = new MsdnResolver();
-                    }
-                }
-                catch(ArgumentException)
-                {
-                    WriteMessage(MessageLevel.Error, "'{0}' is not a supported reference link type.", typeValue);
+                    base.WriteMessage(MessageLevel.Info, "Creating MSDN URL resolver.");
+                    msdnResolver = this.CreateMsdnResolver(configuration);
                 }
 
-                // get base directory
+                // Get base directory
                 string baseValue = targets_node.GetAttribute("base", String.Empty);
 
-                // get file pattern
+                // Get file pattern
                 string filesValue = targets_node.GetAttribute("files", String.Empty);
-                if(String.IsNullOrEmpty(filesValue))
-                    WriteMessage(MessageLevel.Error, "Each targets element must have a files attribute specifying which target files to load.");
 
-                // determine whether to search recursively
+                if(String.IsNullOrEmpty(filesValue))
+                    base.WriteMessage(MessageLevel.Error, "Each targets element must have a files attribute " +
+                        "specifying which target files to load.");
+
+                // Determine whether to search recursively
                 bool recurse = false;
                 string recurseValue = targets_node.GetAttribute("recurse", String.Empty);
 
                 if(!String.IsNullOrEmpty(recurseValue) && !Boolean.TryParse(recurseValue, out recurse))
-                    WriteMessage(MessageLevel.Error, "On the targets element, recurse='{0}' is not an " +
+                    base.WriteMessage(MessageLevel.Error, "On the targets element, recurse='{0}' is not an " +
                         "allowed value.", recurseValue);
 
-                // turn baseValue and filesValue into directoryPath and filePattern
+                // Turn baseValue and filesValue into directoryPath and filePattern
                 string fullPath;
+
                 if(String.IsNullOrEmpty(baseValue))
-                {
                     fullPath = filesValue;
-                }
                 else
-                {
                     fullPath = Path.Combine(baseValue, filesValue);
-                }
+
                 fullPath = Environment.ExpandEnvironmentVariables(fullPath);
+
                 string directoryPath = Path.GetDirectoryName(fullPath);
+
                 if(String.IsNullOrEmpty(directoryPath))
                     directoryPath = Environment.CurrentDirectory;
+
                 string filePattern = Path.GetFileName(fullPath);
 
-                // verify that directory exists
+                // Verify that the directory exists
                 if(!Directory.Exists(directoryPath))
-                    WriteMessage(MessageLevel.Error, "The targets directory '{0}' does not exist.", directoryPath);
+                    base.WriteMessage(MessageLevel.Error, "The targets directory '{0}' does not exist.", directoryPath);
 
-                // add the specified targets from the directory
-                WriteMessage(MessageLevel.Info, "Searching directory '{0}' for targets files of the form '{1}'.", directoryPath, filePattern);
-                AddTargets(directoryPath, filePattern, recurse, type);
+                // Add the specified targets from the directory
+                base.WriteMessage(MessageLevel.Info, "Searching directory '{0}' for targets files of the " +
+                    "form '{1}'.", directoryPath, filePattern);
 
-            }
-
-            WriteMessage(MessageLevel.Info, "Loaded {0} reference targets.", targets.Count);
-
-            string locale_value = configuration.GetAttribute("locale", String.Empty);
-            if(!String.IsNullOrEmpty(locale_value) && msdn != null)
-                msdn.Locale = locale_value;
-
-            string target_value = configuration.GetAttribute("linkTarget", String.Empty);
-            if(!String.IsNullOrEmpty(target_value))
-                linkTarget = target_value;
-        }
-
-        private void AddTargets(string directory, string filePattern, bool recurse, LinkType2 type)
-        {
-            string[] files = Directory.GetFiles(directory, filePattern);
-            foreach(string file in files)
-            {
-                AddTargets(file, type);
-            }
-            if(recurse)
-            {
-                string[] subdirectories = Directory.GetDirectories(directory);
-                foreach(string subdirectory in subdirectories)
+                foreach(string file in Directory.EnumerateFiles(directoryPath, filePattern, recurse ?
+                  SearchOption.AllDirectories : SearchOption.TopDirectoryOnly))
                 {
-                    AddTargets(subdirectory, filePattern, recurse, type);
+                    try
+                    {
+                        XPathDocument document = new XPathDocument(file);
+                        XmlTargetCollectionUtilities.AddTargets(targets, document.CreateNavigator(), type);
+                    }
+                    catch(XmlSchemaException e)
+                    {
+                        base.WriteMessage(MessageLevel.Error, "The reference targets file '{0}' is not valid. " +
+                            "The error message is: {1}", file, e.GetExceptionMessage());
+                    }
+                    catch(XmlException e)
+                    {
+                        base.WriteMessage(MessageLevel.Error, "The reference targets file '{0}' is not " +
+                            "well-formed XML.  The error message is: {1}", file, e.GetExceptionMessage());
+                    }
+                    catch(IOException e)
+                    {
+                        base.WriteMessage(MessageLevel.Error, "An access error occured while opening the " +
+                            "reference targets file '{0}'. The error message is: {1}", file,
+                            e.GetExceptionMessage());
+                    }
                 }
             }
+
+            // If we have an MSDN resolver with cached entries, update targets with a null content ID to use a
+            // link type of None so that we don't waste time looking them up again.
+            if(msdnResolver != null && msdnResolver.MsdnContentIdCache.Count != 0)
+                foreach(var kv in msdnResolver.MsdnContentIdCache)
+                    if(kv.Value == null && targets.TryGetValue(kv.Key, out target))
+                        target.DefaultLinkType = ReferenceLinkType.None;
+
+#if DEBUG
+            TimeSpan loadTime = (DateTime.Now - startLoad);
+            base.WriteMessage(MessageLevel.Diagnostic, "Load time: {0} seconds", loadTime.TotalSeconds);
+
+            // Dump targets for comparison to other versions
+//            targets.DumpTargetCollection(Path.GetFullPath("TargetCollection.xml"));
+#endif
+
+            base.WriteMessage(MessageLevel.Info, "Loaded {0} reference targets.", targets.Count);
+
+            string locale_value = configuration.GetAttribute("locale", String.Empty);
+
+            if(!String.IsNullOrEmpty(locale_value) && msdnResolver != null)
+                msdnResolver.Locale = locale_value;
+
+            linkTarget = configuration.GetAttribute("linkTarget", String.Empty);
+
+            if(String.IsNullOrWhiteSpace(linkTarget))
+                linkTarget = "_blank";
         }
+        #endregion
 
-        private void AddTargets(string file, LinkType2 type)
-        {
-            try
-            {
-                XPathDocument document = new XPathDocument(file);
-                XmlTargetCollectionUtilities.AddTargets(targets, document.CreateNavigator(), type);
-            }
-            catch(XmlSchemaException e)
-            {
-                WriteMessage(MessageLevel.Error, "The reference targets file '{0}' is not valid. The error " +
-                    "message is: {1}", file, e.GetExceptionMessage());
-            }
-            catch(XmlException e)
-            {
-                WriteMessage(MessageLevel.Error, "The reference targets file '{0}' is not well-formed XML.  " +
-                    "The error message is: {1}", file, e.GetExceptionMessage());
-            }
-            catch(IOException e)
-            {
-                WriteMessage(MessageLevel.Error, "An access error occured while opening the reference " +
-                    "targets file '{0}'. The error message is: {1}", file, e.GetExceptionMessage());
-            }
-        }
+        #region Method overrides
+        //=====================================================================
 
-        private string linkTarget = "_blank";
-
-        // target information storage
-
-        private TargetCollection targets;
-
-        private LinkTextResolver resolver;
-
-        private static XPathExpression referenceLinkExpression = XPathExpression.Compile("//referenceLink");
-
-        // WebDocs target url formatting
-
-        private XPathExpression baseUrl;
-
-        private string hrefFormat = "{0}.htm";
-
-        // component logic
-
+        /// <inheritdoc />
         public override void Apply(XmlDocument document, string key)
         {
+            Target keyTarget;
+            string msdnUrl = null;
+
             foreach(XPathNavigator linkNode in document.CreateNavigator().Select(referenceLinkExpression).ToArray())
             {
-                // extract link information
-                ReferenceLinkInfo2 link = ReferenceLinkInfo2.Create(linkNode);
+                // Extract link information
+                ReferenceLinkInfo link = new ReferenceLinkInfo(linkNode);
 
-                if(link == null)
+                // Determine target, link type, and display options
+                string targetId = link.Target;
+                DisplayOptions options = link.DisplayOptions;
+                ReferenceLinkType type = ReferenceLinkType.None;
+
+                Target target = targets[targetId];
+
+                if(target == null)
                 {
-                    base.WriteMessage(key, MessageLevel.Warn, "Invalid referenceLink element.");
+                    // No such target known; set link type to none and warn
+                    type = ReferenceLinkType.None;
+                    base.WriteMessage(key, MessageLevel.Warn, "Unknown reference link target '{0}'.", targetId);
+
+                    // !EFW - Turn off the Show Parameters option for unresolved elements except methods.  If
+                    // not, it outputs an empty "()" after the member name which looks odd.
+                    if(targetId[0] != 'M')
+                        options &= ~DisplayOptions.ShowParameters;
                 }
                 else
                 {
-
-                    // determine target, link type, and display options
-                    string targetId = link.Target;
-                    DisplayOptions options = link.DisplayOptions;
-                    LinkType2 type = LinkType2.None;
-
-                    Target target = targets[targetId];
-                    if(target == null)
+                    // If overload is prefered and found, change targetId and make link options hide parameters
+                    if(link.PreferOverload)
                     {
-                        // no such target known; set link type to none and warn
-                        type = LinkType2.None;
-                        base.WriteMessage(key, MessageLevel.Warn, "Unknown reference link target '{0}'.", targetId);
+                        bool isConversionOperator = false;
 
-                        // !EFW - Turn off the Show Parameter option for unresolved elements except methods.  If
-                        // not, it outputs an empty "()" after the member name which looks odd.
-                        if(targetId[0] != 'M')
-                            options &= ~DisplayOptions.ShowParameters;
-                    }
-                    else
-                    {
-                        // if overload is prefered and found, change targetId and make link options hide parameters
-                        if(link.PreferOverload)
-                        {
-                            bool isConversionOperator = false;
+                        MethodTarget method = target as MethodTarget;
 
-                            MethodTarget method = target as MethodTarget;
-                            if(method != null)
-                            {
-                                isConversionOperator = method.conversionOperator;
-                            }
+                        if(method != null)
+                            isConversionOperator = method.conversionOperator;
 
-                            MemberTarget member = target as MemberTarget;
-
-                            // if conversion operator is found, always link to individual topic.
-                            if((member != null) && (!String.IsNullOrEmpty(member.OverloadId)) && !isConversionOperator)
-                            {
-                                Target overloadTarget = targets[member.OverloadId];
-                                if(overloadTarget != null)
-                                {
-                                    target = overloadTarget;
-                                    targetId = overloadTarget.Id;
-                                }
-                            }
-
-                            // if individual conversion operator is found, always display parameters.
-                            if(isConversionOperator && member != null && (!string.IsNullOrEmpty(member.OverloadId)))
-                            {
-                                options = options | DisplayOptions.ShowParameters;
-                            }
-                            else
-                            {
-                                options = options & ~DisplayOptions.ShowParameters;
-                            }
-                        }
-
-                        // get stored link type
-                        type = target.DefaultLinkType;
-
-                        // if link type is local or index, determine which
-                        if(type == LinkType2.LocalOrIndex)
-                        {
-                            if((key != null) && targets.Contains(key) && (target.Container == targets[key].Container))
-                            {
-                                type = LinkType2.Local;
-                            }
-                            else
-                            {
-                                type = LinkType2.Index;
-                            }
-                        }
-                    }
-
-                    // links to this page are not live
-                    if(targetId == key)
-                    {
-                        type = LinkType2.Self;
-                    }
-                    else if((target != null) && (key != null) && targets.Contains(key) && (target.File == targets[key].File))
-                    {
-                        type = LinkType2.Self;
-                    }
-
-                    // !EFW - Redirect enumeration fields to the containing enumerated type so that we
-                    // get a valid link target.  Enum fields don't have a topic to themselves.
-                    if(type != LinkType2.None && type != LinkType2.Self && type != LinkType2.Local &&
-                      targetId.StartsWith("F:", StringComparison.OrdinalIgnoreCase))
-                    {
                         MemberTarget member = target as MemberTarget;
 
-                        if(member != null)
+                        // If conversion operator is found, always link to individual topic
+                        if(member != null && !String.IsNullOrEmpty(member.OverloadId) && !isConversionOperator)
                         {
-                            SimpleTypeReference typeRef = member.Type as SimpleTypeReference;
+                            Target overloadTarget = targets[member.OverloadId];
 
-                            if(typeRef != null && targets[typeRef.Id] is EnumerationTarget)
-                                targetId = typeRef.Id;
-                        }
-                    }
-
-                    // get msdn endpoint, if needed
-                    string msdnUrl = null;
-
-                    if(type == LinkType2.Msdn)
-                    {
-                        if((msdn == null) || (msdn.IsDisabled))
-                        {
-                            // no msdn resolver
-                        }
-                        else
-                        {
-                            msdnUrl = msdn.GetMsdnUrl(targetId);
-                            if(String.IsNullOrEmpty(msdnUrl))
+                            if(overloadTarget != null)
                             {
-                                base.WriteMessage(key, MessageLevel.Warn, "MSDN URL not found for target '{0}'.", targetId);
+                                target = overloadTarget;
+                                targetId = overloadTarget.Id;
                             }
                         }
+
+                        // If individual conversion operator is found, always display parameters
+                        if(isConversionOperator && member != null && !String.IsNullOrEmpty(member.OverloadId))
+                            options = options | DisplayOptions.ShowParameters;
+                        else
+                            options = options & ~DisplayOptions.ShowParameters;
+                    }
+
+                    // Get stored link type
+                    type = target.DefaultLinkType;
+
+                    // If link type is Local or Index, determine which
+                    if(type == ReferenceLinkType.LocalOrIndex)
+                        if(targets.TryGetValue(key, out keyTarget) && target.Container == keyTarget.Container)
+                            type = ReferenceLinkType.Local;
+                        else
+                            type = ReferenceLinkType.Index;
+                }
+
+                // Links to this page are not live
+                if(targetId == key)
+                    type = ReferenceLinkType.Self;
+                else
+                    if(target != null && targets.TryGetValue(key, out keyTarget) && target.File == keyTarget.File)
+                        type = ReferenceLinkType.Self;
+
+                // !EFW - Redirect enumeration fields to the containing enumerated type so that we
+                // get a valid link target.  Enum fields don't have a topic to themselves.
+                if(type != ReferenceLinkType.None && type != ReferenceLinkType.Self && type != ReferenceLinkType.Local &&
+                  targetId.StartsWith("F:", StringComparison.OrdinalIgnoreCase))
+                {
+                    MemberTarget member = target as MemberTarget;
+
+                    if(member != null)
+                    {
+                        SimpleTypeReference typeRef = member.Type as SimpleTypeReference;
+
+                        if(typeRef != null && targets[typeRef.Id] is EnumerationTarget)
+                            targetId = typeRef.Id;
+                    }
+                }
+
+                // Get MSDN endpoint if needed
+                if(type == ReferenceLinkType.Msdn)
+                    if(msdnResolver != null && !msdnResolver.IsDisabled)
+                    {
+                        msdnUrl = msdnResolver.GetMsdnUrl(targetId);
+
                         if(String.IsNullOrEmpty(msdnUrl))
-                            type = LinkType2.None;
-                    }
-
-                    // write opening link tag and target info
-                    XmlWriter writer = linkNode.InsertAfter();
-
-                    switch(type)
-                    {
-                        case LinkType2.None:
-                            writer.WriteStartElement("span");
-                            writer.WriteAttributeString("class", "nolink");
-                            break;
-
-                        case LinkType2.Self:
-                            writer.WriteStartElement("span");
-                            writer.WriteAttributeString("class", "selflink");
-                            break;
-
-                        case LinkType2.Local:
-                            // format link with prefix and/or postfix
-                            string href = String.Format(CultureInfo.InvariantCulture, hrefFormat, target.File);
-
-                            // make link relative, if we have a baseUrl
-                            if(baseUrl != null)
-                                href = href.GetRelativePath(document.EvalXPathExpr(baseUrl, "key", key));
-
-                            writer.WriteStartElement("a");
-                            writer.WriteAttributeString("href", href);
-                            break;
-
-                        case LinkType2.Index:
-                            writer.WriteStartElement("mshelp", "link", "http://msdn.microsoft.com/mshelp");
-                            writer.WriteAttributeString("keywords", targetId);
-                            writer.WriteAttributeString("tabindex", "0");
-                            break;
-
-                        case LinkType2.Msdn:
-                            writer.WriteStartElement("a");
-                            writer.WriteAttributeString("href", msdnUrl);
-                            writer.WriteAttributeString("target", linkTarget);
-                            break;
-
-                        case LinkType2.Id:
-                            string xhelp = String.Format(CultureInfo.InvariantCulture, "ms-xhelp:///?Id={0}",
-                                targetId);
-                            xhelp = xhelp.Replace("#", "%23");
-                            writer.WriteStartElement("a");
-                            writer.WriteAttributeString("href", xhelp);
-                            break;
-                    }
-
-                    // write the link text
-                    if(String.IsNullOrEmpty(link.DisplayTarget))
-                    {
-                        if(link.Contents == null)
                         {
-                            if(target != null)
-                            {
-                                resolver.WriteTarget(target, options, writer);
-                            }
+                            // If the web service failed, report the reason
+                            if(msdnResolver.IsDisabled)
+                                base.WriteMessage(key, MessageLevel.Warn, "MSDN web service failed.  No " +
+                                    "further look ups will be performed for this run.\r\nReason: {0}",
+                                    msdnResolver.DisabledReason);
                             else
-                            {
-                                Reference reference = TextReferenceUtilities.CreateReference(targetId);
+                                base.WriteMessage(key, MessageLevel.Warn, "MSDN URL not found for target '{0}'.",
+                                    targetId);
 
-                                if(reference is InvalidReference)
-                                    base.WriteMessage(key, MessageLevel.Warn, "Invalid reference link target '{0}'.", targetId);
-
-                                resolver.WriteReference(reference, options, writer);
-                            }
+                            type = ReferenceLinkType.None;
                         }
+                    }
+                    else
+                        type = ReferenceLinkType.None;
+
+                // Write opening link tag and target info
+                XmlWriter writer = linkNode.InsertAfter();
+
+                switch(type)
+                {
+                    case ReferenceLinkType.None:
+                        writer.WriteStartElement("span");
+                        writer.WriteAttributeString("class", "nolink");
+                        break;
+
+                    case ReferenceLinkType.Self:
+                        writer.WriteStartElement("span");
+                        writer.WriteAttributeString("class", "selflink");
+                        break;
+
+                    case ReferenceLinkType.Local:
+                        // Format link with prefix and/or postfix
+                        string href = String.Format(CultureInfo.InvariantCulture, hrefFormat, target.File);
+
+                        // Make link relative, if we have a baseUrl
+                        if(baseUrl != null)
+                            href = href.GetRelativePath(document.EvalXPathExpr(baseUrl, "key", key));
+
+                        writer.WriteStartElement("a");
+                        writer.WriteAttributeString("href", href);
+                        break;
+
+                    case ReferenceLinkType.Index:
+                        writer.WriteStartElement("mshelp", "link", "http://msdn.microsoft.com/mshelp");
+                        writer.WriteAttributeString("keywords", targetId);
+                        writer.WriteAttributeString("tabindex", "0");
+                        break;
+
+                    case ReferenceLinkType.Msdn:
+                        writer.WriteStartElement("a");
+                        writer.WriteAttributeString("href", msdnUrl);
+                        writer.WriteAttributeString("target", linkTarget);
+                        break;
+
+                    case ReferenceLinkType.Id:
+                        writer.WriteStartElement("a");
+                        writer.WriteAttributeString("href", ("ms-xhelp:///?Id=" + targetId).Replace("#", "%23"));
+                        break;
+                }
+
+                // Write the link text
+                if(String.IsNullOrEmpty(link.DisplayTarget))
+                {
+                    if(link.Contents == null)
+                    {
+                        if(target != null)
+                            resolver.WriteTarget(target, options, writer);
                         else
                         {
-                            // write contents to writer
-                            link.Contents.WriteSubtree(writer);
+                            Reference reference = TextReferenceUtilities.CreateReference(targetId);
+
+                            if(reference is InvalidReference)
+                                base.WriteMessage(key, MessageLevel.Warn,
+                                    "Invalid reference link target '{0}'.", targetId);
+
+                            resolver.WriteReference(reference, options, writer);
                         }
                     }
                     else
                     {
-                        if(link.DisplayTarget.Equals("content", StringComparison.OrdinalIgnoreCase)  &&
-                          link.Contents != null)
-                        {
-                            // Use the contents as an XML representation of the display target
-                            Reference reference = XmlTargetCollectionUtilities.CreateReference(link.Contents);
-                            resolver.WriteReference(reference, options, writer);
-                        }
+                        // Write contents to writer
+                        link.Contents.WriteSubtree(writer);
+                    }
+                }
+                else
+                {
+                    if(link.DisplayTarget.Equals("content", StringComparison.OrdinalIgnoreCase)  &&
+                        link.Contents != null)
+                    {
+                        // Use the contents as an XML representation of the display target
+                        Reference reference = XmlTargetCollectionUtilities.CreateReference(link.Contents);
+                        resolver.WriteReference(reference, options, writer);
+                    }
 
-                        if(link.DisplayTarget.Equals("format", StringComparison.OrdinalIgnoreCase) &&
-                          link.Contents != null)
-                        {
-                            // Use the contents as a format string for the display target
-                            string format = link.Contents.OuterXml;
+                    if(link.DisplayTarget.Equals("format", StringComparison.OrdinalIgnoreCase) &&
+                        link.Contents != null)
+                    {
+                        // Use the contents as a format string for the display target
+                        string format = link.Contents.OuterXml;
+                        string input = null;
 
-                            string input = null;
-                            StringWriter textStore = new StringWriter(CultureInfo.InvariantCulture);
+                        using(StringWriter textStore = new StringWriter(CultureInfo.InvariantCulture))
+                        {
+                            XmlWriterSettings settings = new XmlWriterSettings();
+                            settings.ConformanceLevel = ConformanceLevel.Fragment;
+
+                            XmlWriter xmlStore = XmlWriter.Create(textStore, settings);
 
                             try
                             {
-                                XmlWriterSettings settings = new XmlWriterSettings();
-                                settings.ConformanceLevel = ConformanceLevel.Fragment;
-
-                                XmlWriter xmlStore = XmlWriter.Create(textStore, settings);
-                                try
+                                if(target != null)
+                                    resolver.WriteTarget(target, options, xmlStore);
+                                else
                                 {
-                                    if(target != null)
-                                    {
-                                        resolver.WriteTarget(target, options, xmlStore);
-                                    }
-                                    else
-                                    {
-                                        Reference reference = TextReferenceUtilities.CreateReference(targetId);
-                                        resolver.WriteReference(reference, options, xmlStore);
-                                    }
+                                    Reference reference = TextReferenceUtilities.CreateReference(targetId);
+                                    resolver.WriteReference(reference, options, xmlStore);
                                 }
-                                finally
-                                {
-                                    xmlStore.Close();
-                                }
-                                input = textStore.ToString();
                             }
                             finally
                             {
-                                textStore.Close();
+                                xmlStore.Close();
                             }
 
-                            string output = String.Format(CultureInfo.InvariantCulture, format, input);
+                            input = textStore.ToString();
+                        }
 
-                            XmlDocumentFragment fragment = document.CreateDocumentFragment();
-                            fragment.InnerXml = output;
-                            fragment.WriteTo(writer);
-                        }
-                        else if(link.DisplayTarget.Equals("extension", StringComparison.OrdinalIgnoreCase) &&
-                          link.Contents != null)
-                        {
-                            Reference extMethodReference = XmlTargetCollectionUtilities.CreateExtensionMethodReference(link.Contents);
-                            resolver.WriteReference(extMethodReference, options, writer);
-                        }
-                        else
-                        {
-                            // Use the display target value as a CER for the display target
-                            TextReferenceUtilities.SetGenericContext(key);
-                            Reference reference = TextReferenceUtilities.CreateReference(link.DisplayTarget);
-                            resolver.WriteReference(reference, options, writer);
-                        }
+                        string output = String.Format(CultureInfo.InvariantCulture, format, input);
+
+                        XmlDocumentFragment fragment = document.CreateDocumentFragment();
+                        fragment.InnerXml = output;
+                        fragment.WriteTo(writer);
                     }
-
-                    // write the closing link tag
-                    writer.WriteEndElement();
-                    writer.Close();
+                    else if(link.DisplayTarget.Equals("extension", StringComparison.OrdinalIgnoreCase) &&
+                        link.Contents != null)
+                    {
+                        Reference extMethodReference = XmlTargetCollectionUtilities.CreateExtensionMethodReference(link.Contents);
+                        resolver.WriteReference(extMethodReference, options, writer);
+                    }
+                    else
+                    {
+                        // Use the display target value as a CER for the display target
+                        TextReferenceUtilities.SetGenericContext(key);
+                        Reference reference = TextReferenceUtilities.CreateReference(link.DisplayTarget);
+                        resolver.WriteReference(reference, options, writer);
+                    }
                 }
 
-                // delete the original tag
+                // Write the closing link tag
+                writer.WriteEndElement();
+                writer.Close();
+
+                // Delete the original tag
                 linkNode.DeleteSelf();
-
-            }
-
-        }
-
-        // msdn resolver
-
-        private MsdnResolver msdn = null;
-
-
-    }
-
-
-    internal class ReferenceLinkInfo2
-    {
-
-        // stored data
-
-        private string target;
-
-        private string displayTarget;
-
-        private DisplayOptions options = DisplayOptions.Default;
-
-        private bool preferOverload = false;
-
-        private XPathNavigator contents;
-
-        // data accessors
-
-        public string Target
-        {
-            get
-            {
-                return (target);
             }
         }
 
-        public string DisplayTarget
+        /// <summary>
+        /// This is overriden to save the updated MSDN URL cache, if used, when disposed
+        /// </summary>
+        /// <param name="disposing">Pass true to dispose of the managed and unmanaged resources or false to just
+        /// dispose of the unmanaged resources.</param>
+        /// <remarks>Derived classes that override <see cref="CreateMsdnResolver"/> should also override this
+        /// method if necessary to persist the cache if it was updated.</remarks>
+        protected override void Dispose(bool disposing)
         {
-            get
+            if(disposing && msdnIdCacheFile != null && msdnResolver != null && msdnResolver.CacheItemsAdded)
             {
-                return (displayTarget);
+                base.WriteMessage(MessageLevel.Info, "MSDN URL cache updated.  Saving new information to " +
+                    msdnIdCacheFile);
+
+                try
+                {
+                    using(FileStream fs = new FileStream(msdnIdCacheFile, FileMode.Create, FileAccess.ReadWrite,
+                      FileShare.None))
+                    {
+                        BinaryFormatter bf = new BinaryFormatter();
+                        bf.Serialize(fs, msdnResolver.MsdnContentIdCache);
+
+                        base.WriteMessage(MessageLevel.Info, "New MSDN URL cache size: {0} entries",
+                            msdnResolver.MsdnContentIdCache.Count);
+                    }
+                }
+                catch(IOException ex)
+                {
+                    // Most likely it couldn't access the file.  We'll issue a warning but will continue with
+                    // the build.
+                    base.WriteMessage(MessageLevel.Warn, "Unable to create MSDN URL cache file.  It will be " +
+                        "created or updated on a subsequent build: " + ex.Message);
+                }
             }
+
+            base.Dispose(disposing);
         }
 
-        public DisplayOptions DisplayOptions
+        #endregion
+
+        #region Helper methods
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to create an MSDN resolver for the reference link to use in looking up MSDN content iDs
+        /// </summary>
+        /// <param name="configuration">The component configuration</param>
+        /// <returns>An MSDN resolver instance</returns>
+        /// <remarks>This can be overridden in derived classes to provide persistent caches with backing stores
+        /// other than the default dictionary serialized to a binary file.  It also allows sharing the cache
+        /// across instances by placing it in the <see cref="BuildComponent.Data"/> dictionary using the key
+        /// name <c>SharedMsdnUrlCacheID</c>.
+        /// 
+        /// <para>If overridden, the <see cref="Dispose"/> method may also need to be overridden to persist
+        /// changes to the cache as needed.</para></remarks>
+        public virtual MsdnResolver CreateMsdnResolver(XPathNavigator configuration)
         {
-            get
+            MsdnResolver resolver;
+            IDictionary<string, string> cache = null;
+
+            if(BuildComponent.Data.ContainsKey(SharedMsdnCacheId))
+                cache = BuildComponent.Data[SharedMsdnCacheId] as IDictionary<string, string>;
+
+            // If the shared cache already exists, return an instance that uses it.  It is assumed that all
+            // subsequent instances will use the same cache.
+            if(cache != null)
+                return new MsdnResolver(cache);
+
+            // If a <cache> element is not specified, we'll use the standard resolver without a persistent cache.
+            // We will share it across all instances though.
+            XPathNavigator node = configuration.SelectSingleNode("msdnUrlCache");
+
+            if(node == null)
+                resolver = new MsdnResolver();
+            else
             {
-                return (options);
-            }
-        }
+                // Keep the filename.  If we own it, we'll update the cache file when disposed.
+                msdnIdCacheFile = node.GetAttribute("path", String.Empty);
 
-        public bool PreferOverload
-        {
-            get
-            {
-                return (preferOverload);
-            }
-        }
+                if(String.IsNullOrWhiteSpace(msdnIdCacheFile))
+                    base.WriteMessage(MessageLevel.Error, "You must specify a path attribute value on the " +
+                        "msdnUrlCache element.");
 
-        public XPathNavigator Contents
-        {
-            get
-            {
-                return (contents);
-            }
-        }
+                // Create the folder if it doesn't exist
+                msdnIdCacheFile = Path.GetFullPath(Environment.ExpandEnvironmentVariables(msdnIdCacheFile));
+                string path = Path.GetDirectoryName(msdnIdCacheFile);
 
-        // creation logic
+                if(!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
 
-        private ReferenceLinkInfo2() { }
+                // Load the cache if it exists
+                if(!File.Exists(msdnIdCacheFile))
+                {
+                    // Logged as a diagnostic message since looking up all IDs can significantly slow the build
+                    base.WriteMessage(MessageLevel.Diagnostic, "The MSDN URL cache '" + msdnIdCacheFile +
+                        "' does not exist yet.  All IDs will be looked up in this build which will slow it down.");
 
-        public static ReferenceLinkInfo2 Create(XPathNavigator element)
-        {
-            bool attrValue;
-
-            if(element == null)
-                throw new ArgumentNullException("element");
-
-            ReferenceLinkInfo2 info = new ReferenceLinkInfo2();
-
-            info.target = element.GetAttribute("target", String.Empty);
-            if(String.IsNullOrEmpty(info.target))
-                return (null);
-
-            info.displayTarget = element.GetAttribute("display-target", String.Empty);
-
-            string showContainer = element.GetAttribute("show-container", String.Empty);
-
-            if(String.IsNullOrEmpty(showContainer))
-                showContainer = element.GetAttribute("qualified", String.Empty);
-
-            if(!String.IsNullOrEmpty(showContainer))
-            {
-                if(!Boolean.TryParse(showContainer, out attrValue))
-                    return null;
-
-                if(attrValue)
-                    info.options = info.options | DisplayOptions.ShowContainer;
+                    resolver = new MsdnResolver();
+                }
                 else
-                    info.options = info.options & ~DisplayOptions.ShowContainer;
+                    using(FileStream fs = new FileStream(msdnIdCacheFile, FileMode.Open, FileAccess.Read,
+                      FileShare.Read))
+                    {
+                        BinaryFormatter bf = new BinaryFormatter();
+                        resolver = new MsdnResolver((IDictionary<string, string>)bf.Deserialize(fs));
+
+                        base.WriteMessage(MessageLevel.Info, "Loaded {0} cached MSDN URL entries",
+                            resolver.MsdnContentIdCache.Count);
+                    }
             }
 
-            string showTemplates = element.GetAttribute("show-templates", String.Empty);
+            BuildComponent.Data[SharedMsdnCacheId] = resolver.MsdnContentIdCache;
 
-            if(!String.IsNullOrEmpty(showTemplates))
-            {
-                if(!Boolean.TryParse(showTemplates, out attrValue))
-                    return null;
-
-                if(attrValue)
-                    info.options = info.options | DisplayOptions.ShowTemplates;
-                else
-                    info.options = info.options & ~DisplayOptions.ShowTemplates;
-            }
-
-            string showParameters = element.GetAttribute("show-parameters", String.Empty);
-
-            if(!String.IsNullOrEmpty(showParameters))
-            {
-                if(!Boolean.TryParse(showParameters, out attrValue))
-                    return null;
-
-                if(attrValue)
-                    info.options = info.options | DisplayOptions.ShowParameters;
-                else
-                    info.options = info.options & ~DisplayOptions.ShowParameters;
-            }
-
-            string preferOverload = element.GetAttribute("prefer-overload", String.Empty);
-
-            if(String.IsNullOrEmpty(preferOverload))
-                preferOverload = element.GetAttribute("auto-upgrade", String.Empty);
-
-            if(!String.IsNullOrEmpty(preferOverload))
-            {
-                if(!Boolean.TryParse(preferOverload, out attrValue))
-                    return null;
-
-                if(attrValue)
-                    info.preferOverload = true;
-                else
-                    info.preferOverload = false;
-            }
-
-            info.contents = element.Clone();
-
-            if(!info.contents.MoveToFirstChild())
-                info.contents = null;
-
-            return info;
+            return resolver;
         }
+        #endregion
     }
 }

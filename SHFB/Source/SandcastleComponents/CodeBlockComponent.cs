@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Components
 // File    : CodeBlockComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/23/2012
+// Updated : 12/24/2012
 // Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -246,7 +246,7 @@ namespace SandcastleBuilder.Components
                     value += @"\";
 
                 if(!Directory.Exists(value))
-                    throw new ConfigurationErrorsException("The output path '" + value + "' must exist");
+                    Directory.CreateDirectory(value);
 
                 outputPaths.Add(value);
             }

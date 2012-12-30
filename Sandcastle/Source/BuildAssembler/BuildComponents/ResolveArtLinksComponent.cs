@@ -3,124 +3,151 @@
 // See http://www.microsoft.com/resources/sharedsource/licensingbasics/sharedsourcelicenses.mspx.
 // All other rights reserved.
 
+// Change History
+// 12/24/2012 - Updated to use the new FileCreatedEventArgs.  Moved ArtTarget out into its own file.  Inlined
+// the add targets method.  Updated it to only copy the image if not already there as it seems redundant to
+// copy it every time the same ID is encountered.  As with the SharedContentComponent, this one doesn't load
+// enough info to warrant trying to share the common data across all instances.
+
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Xml;
 using System.Xml.XPath;
+
+using Microsoft.Ddue.Tools.Targets;
 
 namespace Microsoft.Ddue.Tools
 {
     public class ResolveArtLinksComponent : BuildComponent
     {
+        #region Private data members
+        //=====================================================================
+
+        private static XPathExpression artLinkExpression = XPathExpression.Compile("//artLink");
+
+        // IDs are compared case insensitively
+        private Dictionary<string, ArtTarget> targets = new Dictionary<string, ArtTarget>(
+            StringComparer.OrdinalIgnoreCase);
+
+        #endregion
+
+        #region Constructor
+        //=====================================================================
+
+        /// <inheritdoc />
         public ResolveArtLinksComponent(BuildAssembler assembler, XPathNavigator configuration) :
           base(assembler, configuration)
         {
+            XPathExpression artIdExpression = XPathExpression.Compile("string(@id)"),
+                artFileExpression = XPathExpression.Compile("string(image/@file)"),
+                artTextExpression = XPathExpression.Compile("string(image/altText)");
 
-            XPathNodeIterator targets_nodes = configuration.Select("targets");
-            foreach(XPathNavigator targets_node in targets_nodes)
+            XPathNodeIterator targetsNodes = configuration.Select("targets");
+
+            foreach(XPathNavigator targetsNode in targetsNodes)
             {
+                // Get the configuration values for this target
+                string inputPath = targetsNode.GetAttribute("input", String.Empty);
 
-                string input = targets_node.GetAttribute("input", String.Empty);
-                if(String.IsNullOrEmpty(input))
-                    WriteMessage(MessageLevel.Error, "Each targets element must have an input attribute specifying a directory containing art files.");
-                input = Environment.ExpandEnvironmentVariables(input);
-                if(!Directory.Exists(input))
-                    WriteMessage(MessageLevel.Error, "The art input directory '{0}' does not exist.", input);
+                if(String.IsNullOrEmpty(inputPath))
+                    base.WriteMessage(MessageLevel.Error, "Each targets element must have an input attribute " +
+                        "specifying a directory containing art files.");
 
-                string baseOutputPath = targets_node.GetAttribute("baseOutput", String.Empty);
+                inputPath = Environment.ExpandEnvironmentVariables(inputPath);
+
+                if(!Directory.Exists(inputPath))
+                    base.WriteMessage(MessageLevel.Error, "The art input directory '{0}' does not exist.",
+                        inputPath);
+
+                string baseOutputPath = targetsNode.GetAttribute("baseOutput", String.Empty);
+
                 if(!String.IsNullOrEmpty(baseOutputPath))
-                {
                     baseOutputPath = Path.GetFullPath(Environment.ExpandEnvironmentVariables(baseOutputPath));
-                }
 
-                string outputPath_value = targets_node.GetAttribute("outputPath", string.Empty);
-                if(string.IsNullOrEmpty(outputPath_value))
-                    WriteMessage(MessageLevel.Error, "Each targets element must have an output attribute specifying a directory in which to place referenced art files.");
-                XPathExpression output_XPath = XPathExpression.Compile(outputPath_value);
+                string outputPathValue = targetsNode.GetAttribute("outputPath", string.Empty);
 
-                string linkValue = targets_node.GetAttribute("link", String.Empty);
-                if(String.IsNullOrEmpty(linkValue))
-                    linkValue = "../art";
-                //linkValue = Environment.ExpandEnvironmentVariables(linkValue);
+                if(string.IsNullOrEmpty(outputPathValue))
+                    base.WriteMessage(MessageLevel.Error, "Each targets element must have an output attribute " +
+                        "specifying a directory in which to place referenced art files.");
 
-                string map = targets_node.GetAttribute("map", String.Empty);
+                XPathExpression outputXPath = XPathExpression.Compile(outputPathValue);
+
+                string linkPath = targetsNode.GetAttribute("link", String.Empty);
+
+                if(String.IsNullOrEmpty(linkPath))
+                    linkPath = "../art";
+
+                string map = targetsNode.GetAttribute("map", String.Empty);
+
                 if(String.IsNullOrEmpty(map))
-                    WriteMessage(MessageLevel.Error, "Each targets element must have a map attribute specifying a file that maps art ids to files in the input directory.");
+                    base.WriteMessage(MessageLevel.Error, "Each targets element must have a map attribute " +
+                        "specifying a file that maps art IDs to files in the input directory.");
+
                 map = Environment.ExpandEnvironmentVariables(map);
+
                 if(!File.Exists(map))
-                    WriteMessage(MessageLevel.Error, "The art map file '{0}' does not exist.", map);
+                    base.WriteMessage(MessageLevel.Error, "The art map file '{0}' does not exist.", map);
 
-                string format = targets_node.GetAttribute("format", String.Empty);
-                XPathExpression format_xpath = String.IsNullOrEmpty(format) ? null : XPathExpression.Compile(format);
+                string format = targetsNode.GetAttribute("format", String.Empty);
 
-                string relative_to = targets_node.GetAttribute("relative-to", String.Empty);
-                XPathExpression relative_to_xpath = String.IsNullOrEmpty(relative_to) ? null : XPathExpression.Compile(relative_to);
+                XPathExpression formatXPath = String.IsNullOrEmpty(format) ? null :
+                    XPathExpression.Compile(format);
 
-                AddTargets(map, input, baseOutputPath, output_XPath, linkValue, format_xpath, relative_to_xpath);
+                string relativeTo = targetsNode.GetAttribute("relative-to", String.Empty);
 
+                XPathExpression relativeToXPath = String.IsNullOrEmpty(relativeTo) ? null :
+                    XPathExpression.Compile(relativeTo);
+
+                // Load the content of the media map file
+                XPathDocument mediaMap = new XPathDocument(map);
+                XPathNodeIterator items = mediaMap.CreateNavigator().Select("/*/item");
+
+                foreach(XPathNavigator item in items)
+                {
+                    string id = (string)item.Evaluate(artIdExpression);
+                    string file = (string)item.Evaluate(artFileExpression);
+                    string text = (string)item.Evaluate(artTextExpression);
+                    string name = Path.GetFileName(file);
+
+                    targets[id] = new ArtTarget
+                    {
+                        InputPath = Path.Combine(inputPath, file),
+                        BaseOutputPath = baseOutputPath,
+                        OutputXPath = outputXPath,
+                        LinkPath = String.IsNullOrEmpty(name) ? linkPath : String.Concat(linkPath, "/", name),
+                        Text = text,
+                        Name = name,
+                        FormatXPath = formatXPath,
+                        RelativeToXPath = relativeToXPath
+                    };
+                }
             }
 
-            WriteMessage(MessageLevel.Info, "Indexed {0} art targets.", targets.Count);
+            base.WriteMessage(MessageLevel.Info, "Indexed {0} art targets.", targets.Count);
         }
+        #endregion
 
-        private void AddTargets(string map, string input, string baseOutputPath, XPathExpression outputXPath, string link, XPathExpression formatXPath, XPathExpression relativeToXPath)
-        {
+        #region Method overrides
+        //=====================================================================
 
-            XPathDocument document = new XPathDocument(map);
-
-            XPathNodeIterator items = document.CreateNavigator().Select("/*/item");
-            foreach(XPathNavigator item in items)
-            {
-
-                string id = (string)item.Evaluate(artIdExpression);
-                string file = (string)item.Evaluate(artFileExpression);
-                string text = (string)item.Evaluate(artTextExpression);
-
-                id = id.ToLowerInvariant();
-                string name = Path.GetFileName(file);
-
-                ArtTarget target = new ArtTarget();
-                target.InputPath = Path.Combine(input, file);
-                target.baseOutputPath = baseOutputPath;
-                target.OutputXPath = outputXPath;
-
-                if(string.IsNullOrEmpty(name))
-                    target.LinkPath = link;
-                else
-                    target.LinkPath = String.Format(CultureInfo.InvariantCulture, "{0}/{1}", link, name);
-
-                target.Text = text;
-                target.Name = name;
-                target.FormatXPath = formatXPath;
-                target.RelativeToXPath = relativeToXPath;
-
-                targets[id] = target;
-            }
-        }
-
-        private XPathExpression artIdExpression = XPathExpression.Compile("string(@id)");
-        private XPathExpression artFileExpression = XPathExpression.Compile("string(image/@file)");
-        private XPathExpression artTextExpression = XPathExpression.Compile("string(image/altText)");
-
-        private Dictionary<string, ArtTarget> targets = new Dictionary<string, ArtTarget>();
-
+        /// <inheritdoc />
         public override void Apply(XmlDocument document, string key)
         {
+            ArtTarget target;
+
             foreach(XPathNavigator artLink in document.CreateNavigator().Select(artLinkExpression).ToArray())
             {
-                string name = artLink.GetAttribute("target", String.Empty).ToLowerInvariant();
+                string name = artLink.GetAttribute("target", String.Empty);
 
-                if(targets.ContainsKey(name))
+                if(targets.TryGetValue(name, out target))
                 {
-                    ArtTarget target = targets[name];
-
-                    // evaluate the path
+                    // Evaluate the path
                     string path = document.CreateNavigator().Evaluate(target.OutputXPath).ToString();
 
-                    if(target.baseOutputPath != null)
-                        path = Path.Combine(target.baseOutputPath, path);
+                    if(target.BaseOutputPath != null)
+                        path = Path.Combine(target.BaseOutputPath, path);
+
                     string outputPath = Path.Combine(path, target.Name);
 
                     string targetDirectory = Path.GetDirectoryName(outputPath);
@@ -130,38 +157,32 @@ namespace Microsoft.Ddue.Tools
 
                     if(File.Exists(target.InputPath))
                     {
-
-                        if(File.Exists(outputPath))
+                        if(!File.Exists(outputPath))
                         {
+                            File.Copy(target.InputPath, outputPath, true);
                             File.SetAttributes(outputPath, FileAttributes.Normal);
                         }
-
-                        File.Copy(target.InputPath, outputPath, true);
                     }
                     else
-                    {
-                        base.WriteMessage(key, MessageLevel.Warn, "The file '{0}' for the art target '{1}' was not found.", target.InputPath, name);
-                    }
+                        base.WriteMessage(key, MessageLevel.Warn, "The file '{0}' for the art target '{1}' " +
+                            "was not found.", target.InputPath, name);
 
-                    // Get the relative art path for HXF generation.
-                    int index = target.LinkPath.IndexOf('/');
-                    string artPath = target.LinkPath.Substring(index + 1, target.LinkPath.Length - (index + 1));
-
-                    FileCreatedEventArgs fe = new FileCreatedEventArgs(artPath, Path.GetDirectoryName(path));
-                    OnComponentEvent(fe);
+                    // Raise an event to indicate that a file was created
+                    OnComponentEvent(new FileCreatedEventArgs(outputPath, true));
 
                     XmlWriter writer = artLink.InsertAfter();
 
                     writer.WriteStartElement("img");
+
                     if(!String.IsNullOrEmpty(target.Text))
                         writer.WriteAttributeString("alt", target.Text);
 
                     if(target.FormatXPath == null)
-                    {
                         writer.WriteAttributeString("src", target.LinkPath);
-                    }
                     else
                     {
+                        // Microsoft legacy code.  Probably not needed, but we'll retain it.
+
                         // WebDocs way, which uses the 'format' xpath expression to calculate the target path and
                         // then makes it relative to the current page if the 'relative-to' attribute is used.
                         string src = document.EvalXPathExpr(target.FormatXPath, "key",
@@ -174,7 +195,6 @@ namespace Microsoft.Ddue.Tools
                     }
 
                     writer.WriteEndElement();
-
                     writer.Close();
 
                     artLink.DeleteSelf();
@@ -183,26 +203,6 @@ namespace Microsoft.Ddue.Tools
                     base.WriteMessage(key, MessageLevel.Warn, "Unknown art target '{0}'", name);
             }
         }
-
-        private static XPathExpression artLinkExpression = XPathExpression.Compile("//artLink");
-    }
-
-    internal class ArtTarget
-    {
-        public string InputPath;
-
-        public string baseOutputPath;
-
-        public XPathExpression OutputXPath;
-
-        public string LinkPath;
-
-        public string Text;
-
-        public string Name;
-
-        public XPathExpression FormatXPath;
-
-        public XPathExpression RelativeToXPath;
+        #endregion
     }
 }
