@@ -9,6 +9,7 @@
 // 12/21/2012 - EFW - Removed obsolete ResolveReferenceLinksComponent class
 // 12/28/2012 - EFW - General code clean-up.  Added code to report the reason for MSDN service failures.
 // Exposed the target collection and MSDN resolver via properties.
+// 12/30/2012 - EFW - Reworked to use TargetTypeDictionary and share the target data across instances.
 
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,6 @@ using System.Globalization;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Xml;
-using System.Xml.Schema;
 using System.Xml.XPath;
 
 using Microsoft.Ddue.Tools.Targets;
@@ -32,9 +32,14 @@ namespace Microsoft.Ddue.Tools
         //=====================================================================
 
         /// <summary>
-        /// This is used a the key name when sharing the MSDN content ID cache across instances
+        /// This is used as the key name when sharing the MSDN content ID cache across instances
         /// </summary>
         public const string SharedMsdnCacheId = "SharedMsdnCache";
+
+        /// <summary>
+        /// This is used as the key name when sharing the target dictionaries across instances
+        /// </summary>
+        public const string SharedReferenceTargetsId = "SharedReferenceTargets";
         #endregion
 
         #region Private data members
@@ -42,13 +47,14 @@ namespace Microsoft.Ddue.Tools
 
         private static XPathExpression referenceLinkExpression = XPathExpression.Compile("//referenceLink");
 
-        private string linkTarget, msdnIdCacheFile;
-
-        private TargetCollection targets;
+        private Dictionary<string, TargetDictionary> sharedTargets;
+        private TargetTypeDictionary targets;
 
         private LinkTextResolver resolver;
 
         private MsdnResolver msdnResolver;
+
+        private string linkTarget, msdnIdCacheFile;
 
         // WebDocs target url formatting (legacy Microsoft stuff)
         private XPathExpression baseUrl;
@@ -68,9 +74,9 @@ namespace Microsoft.Ddue.Tools
         }
 
         /// <summary>
-        /// This read-only property returns the target dictionary
+        /// This read-only property returns the target type dictionary
         /// </summary>
-        protected TargetCollection Targets
+        protected TargetTypeDictionary Targets
         {
             get { return targets; }
         }
@@ -83,8 +89,20 @@ namespace Microsoft.Ddue.Tools
         public ResolveReferenceLinksComponent2(BuildAssembler assembler, XPathNavigator configuration) :
           base(assembler, configuration)
         {
+            TargetDictionary newTargets;
             Target target;
             ReferenceLinkType type;
+            string attrValue, id;
+
+            targets = new TargetTypeDictionary();
+            resolver = new LinkTextResolver(targets);
+
+            // Get the shared instances dictionary.  Create it if it doesn't exist.
+            if(BuildComponent.Data.ContainsKey(SharedReferenceTargetsId))
+                sharedTargets = BuildComponent.Data[SharedReferenceTargetsId] as Dictionary<string, TargetDictionary>;
+
+            if(sharedTargets == null)
+                BuildComponent.Data[SharedReferenceTargetsId] = sharedTargets = new Dictionary<string, TargetDictionary>();
 
             // base-url is an xpath expression applied against the current document to pick up the save location of the
             // document. If specified, local links will be made relative to the base-url.
@@ -104,121 +122,63 @@ namespace Microsoft.Ddue.Tools
             string containerValue = configuration.GetAttribute("container", String.Empty);
 
             if(!String.IsNullOrEmpty(containerValue))
-                XmlTargetCollectionUtilities.ContainerExpression = containerValue;
+                XmlTargetDictionaryUtilities.ContainerExpression = containerValue;
 
-            targets = new TargetCollection();
-            resolver = new LinkTextResolver(targets);
-
-            XPathNodeIterator targets_nodes = configuration.Select("targets");
+            XPathNodeIterator targetsNodes = configuration.Select("targets");
 
 #if DEBUG
             base.WriteMessage(MessageLevel.Diagnostic, "Loading reference link target info");
 
             DateTime startLoad = DateTime.Now;
 #endif
-            foreach(XPathNavigator targets_node in targets_nodes)
+            foreach(XPathNavigator targetsNode in targetsNodes)
             {
                 // Get target type
-                string typeValue = targets_node.GetAttribute("type", String.Empty);
+                attrValue = targetsNode.GetAttribute("type", String.Empty);
 
-                if(String.IsNullOrEmpty(typeValue))
+                if(String.IsNullOrEmpty(attrValue))
                     base.WriteMessage(MessageLevel.Error, "Each targets element must have a type attribute " +
                         "that specifies which type of links to create.");
 
-                if(!Enum.TryParse<ReferenceLinkType>(typeValue, true, out type))
-                    base.WriteMessage(MessageLevel.Error, "'{0}' is not a supported reference link type.", typeValue);
+                if(!Enum.TryParse<ReferenceLinkType>(attrValue, true, out type))
+                    base.WriteMessage(MessageLevel.Error, "'{0}' is not a supported reference link type.",
+                        attrValue);
 
-                if(type == ReferenceLinkType.Msdn && msdnResolver == null)
+                // Check for shared instance by ID.  If not there, create it and add it.
+                id = targetsNode.GetAttribute("id", String.Empty);
+
+                if(!sharedTargets.TryGetValue(id, out newTargets))
                 {
-                    base.WriteMessage(MessageLevel.Info, "Creating MSDN URL resolver.");
-                    msdnResolver = this.CreateMsdnResolver(configuration);
+                    this.WriteMessage(MessageLevel.Info, "Loading {0} reference link type targets", type);
+
+                    newTargets = this.CreateTargetDictionary(targetsNode);
+                    sharedTargets[id] = newTargets;
                 }
 
-                // Get base directory
-                string baseValue = targets_node.GetAttribute("base", String.Empty);
-
-                // Get file pattern
-                string filesValue = targets_node.GetAttribute("files", String.Empty);
-
-                if(String.IsNullOrEmpty(filesValue))
-                    base.WriteMessage(MessageLevel.Error, "Each targets element must have a files attribute " +
-                        "specifying which target files to load.");
-
-                // Determine whether to search recursively
-                bool recurse = false;
-                string recurseValue = targets_node.GetAttribute("recurse", String.Empty);
-
-                if(!String.IsNullOrEmpty(recurseValue) && !Boolean.TryParse(recurseValue, out recurse))
-                    base.WriteMessage(MessageLevel.Error, "On the targets element, recurse='{0}' is not an " +
-                        "allowed value.", recurseValue);
-
-                // Turn baseValue and filesValue into directoryPath and filePattern
-                string fullPath;
-
-                if(String.IsNullOrEmpty(baseValue))
-                    fullPath = filesValue;
-                else
-                    fullPath = Path.Combine(baseValue, filesValue);
-
-                fullPath = Environment.ExpandEnvironmentVariables(fullPath);
-
-                string directoryPath = Path.GetDirectoryName(fullPath);
-
-                if(String.IsNullOrEmpty(directoryPath))
-                    directoryPath = Environment.CurrentDirectory;
-
-                string filePattern = Path.GetFileName(fullPath);
-
-                // Verify that the directory exists
-                if(!Directory.Exists(directoryPath))
-                    base.WriteMessage(MessageLevel.Error, "The targets directory '{0}' does not exist.", directoryPath);
-
-                // Add the specified targets from the directory
-                base.WriteMessage(MessageLevel.Info, "Searching directory '{0}' for targets files of the " +
-                    "form '{1}'.", directoryPath, filePattern);
-
-                foreach(string file in Directory.EnumerateFiles(directoryPath, filePattern, recurse ?
-                  SearchOption.AllDirectories : SearchOption.TopDirectoryOnly))
-                {
-                    try
-                    {
-                        XPathDocument document = new XPathDocument(file);
-                        XmlTargetCollectionUtilities.AddTargets(targets, document.CreateNavigator(), type);
-                    }
-                    catch(XmlSchemaException e)
-                    {
-                        base.WriteMessage(MessageLevel.Error, "The reference targets file '{0}' is not valid. " +
-                            "The error message is: {1}", file, e.GetExceptionMessage());
-                    }
-                    catch(XmlException e)
-                    {
-                        base.WriteMessage(MessageLevel.Error, "The reference targets file '{0}' is not " +
-                            "well-formed XML.  The error message is: {1}", file, e.GetExceptionMessage());
-                    }
-                    catch(IOException e)
-                    {
-                        base.WriteMessage(MessageLevel.Error, "An access error occured while opening the " +
-                            "reference targets file '{0}'. The error message is: {1}", file,
-                            e.GetExceptionMessage());
-                    }
-                }
+                targets.Add(type, newTargets);
             }
 
-            // If we have an MSDN resolver with cached entries, update targets with a null content ID to use a
-            // link type of None so that we don't waste time looking them up again.
-            if(msdnResolver != null && msdnResolver.MsdnContentIdCache.Count != 0)
-                foreach(var kv in msdnResolver.MsdnContentIdCache)
-                    if(kv.Value == null && targets.TryGetValue(kv.Key, out target))
-                        target.DefaultLinkType = ReferenceLinkType.None;
+            if(targets.NeedsMsdnResolver)
+            {
+                base.WriteMessage(MessageLevel.Info, "Creating MSDN URL resolver.");
+
+                msdnResolver = this.CreateMsdnResolver(configuration);
+
+                // If we have an MSDN resolver with cached entries, update targets with a null content ID to
+                // indicate that they are invalid so that we don't waste time looking them up again.
+                if(msdnResolver != null && msdnResolver.MsdnContentIdCache.Count != 0)
+                    foreach(var kv in msdnResolver.MsdnContentIdCache)
+                        if(kv.Value == null && targets.TryGetValue(kv.Key, out target))
+                            target.IsInvalidLink = true;
+            }
 
 #if DEBUG
             TimeSpan loadTime = (DateTime.Now - startLoad);
             base.WriteMessage(MessageLevel.Diagnostic, "Load time: {0} seconds", loadTime.TotalSeconds);
 
             // Dump targets for comparison to other versions
-//            targets.DumpTargetCollection(Path.GetFullPath("TargetCollection.xml"));
+//            targets.DumpTargetDictionary(Path.GetFullPath("TargetDictionary.xml"));
 #endif
-
             base.WriteMessage(MessageLevel.Info, "Loaded {0} reference targets.", targets.Count);
 
             string locale_value = configuration.GetAttribute("locale", String.Empty);
@@ -239,7 +199,7 @@ namespace Microsoft.Ddue.Tools
         /// <inheritdoc />
         public override void Apply(XmlDocument document, string key)
         {
-            Target keyTarget;
+            Target target, keyTarget;
             string msdnUrl = null;
 
             foreach(XPathNavigator linkNode in document.CreateNavigator().Select(referenceLinkExpression).ToArray())
@@ -252,12 +212,8 @@ namespace Microsoft.Ddue.Tools
                 DisplayOptions options = link.DisplayOptions;
                 ReferenceLinkType type = ReferenceLinkType.None;
 
-                Target target = targets[targetId];
-
-                if(target == null)
+                if(!targets.TryGetValue(targetId, out target, out type))
                 {
-                    // No such target known; set link type to none and warn
-                    type = ReferenceLinkType.None;
                     base.WriteMessage(key, MessageLevel.Warn, "Unknown reference link target '{0}'.", targetId);
 
                     // !EFW - Turn off the Show Parameters option for unresolved elements except methods.  If
@@ -297,9 +253,6 @@ namespace Microsoft.Ddue.Tools
                         else
                             options = options & ~DisplayOptions.ShowParameters;
                     }
-
-                    // Get stored link type
-                    type = target.DefaultLinkType;
 
                     // If link type is Local or Index, determine which
                     if(type == ReferenceLinkType.LocalOrIndex)
@@ -430,7 +383,7 @@ namespace Microsoft.Ddue.Tools
                         link.Contents != null)
                     {
                         // Use the contents as an XML representation of the display target
-                        Reference reference = XmlTargetCollectionUtilities.CreateReference(link.Contents);
+                        Reference reference = XmlTargetDictionaryUtilities.CreateReference(link.Contents);
                         resolver.WriteReference(reference, options, writer);
                     }
 
@@ -475,7 +428,7 @@ namespace Microsoft.Ddue.Tools
                     else if(link.DisplayTarget.Equals("extension", StringComparison.OrdinalIgnoreCase) &&
                         link.Contents != null)
                     {
-                        Reference extMethodReference = XmlTargetCollectionUtilities.CreateExtensionMethodReference(link.Contents);
+                        Reference extMethodReference = XmlTargetDictionaryUtilities.CreateExtensionMethodReference(link.Contents);
                         resolver.WriteReference(extMethodReference, options, writer);
                     }
                     else
@@ -497,38 +450,16 @@ namespace Microsoft.Ddue.Tools
         }
 
         /// <summary>
-        /// This is overriden to save the updated MSDN URL cache, if used, when disposed
+        /// This is overriden to save the updated cache information and dispose of target information
         /// </summary>
         /// <param name="disposing">Pass true to dispose of the managed and unmanaged resources or false to just
         /// dispose of the unmanaged resources.</param>
-        /// <remarks>Derived classes that override <see cref="CreateMsdnResolver"/> should also override this
-        /// method if necessary to persist the cache if it was updated.</remarks>
         protected override void Dispose(bool disposing)
         {
-            if(disposing && msdnIdCacheFile != null && msdnResolver != null && msdnResolver.CacheItemsAdded)
+            if(disposing)
             {
-                base.WriteMessage(MessageLevel.Info, "MSDN URL cache updated.  Saving new information to " +
-                    msdnIdCacheFile);
-
-                try
-                {
-                    using(FileStream fs = new FileStream(msdnIdCacheFile, FileMode.Create, FileAccess.ReadWrite,
-                      FileShare.None))
-                    {
-                        BinaryFormatter bf = new BinaryFormatter();
-                        bf.Serialize(fs, msdnResolver.MsdnContentIdCache);
-
-                        base.WriteMessage(MessageLevel.Info, "New MSDN URL cache size: {0} entries",
-                            msdnResolver.MsdnContentIdCache.Count);
-                    }
-                }
-                catch(IOException ex)
-                {
-                    // Most likely it couldn't access the file.  We'll issue a warning but will continue with
-                    // the build.
-                    base.WriteMessage(MessageLevel.Warn, "Unable to create MSDN URL cache file.  It will be " +
-                        "created or updated on a subsequent build: " + ex.Message);
-                }
+                this.UpdateMsdnUrlCache();
+                this.DisposeOfTargets();
             }
 
             base.Dispose(disposing);
@@ -549,9 +480,9 @@ namespace Microsoft.Ddue.Tools
         /// across instances by placing it in the <see cref="BuildComponent.Data"/> dictionary using the key
         /// name <c>SharedMsdnUrlCacheID</c>.
         /// 
-        /// <para>If overridden, the <see cref="Dispose"/> method may also need to be overridden to persist
-        /// changes to the cache as needed.</para></remarks>
-        public virtual MsdnResolver CreateMsdnResolver(XPathNavigator configuration)
+        /// <para>If overridden, the <see cref="UpdateMsdnUrlCache"/> method should also be overridden to
+        /// persist changes to the cache as needed.</para></remarks>
+        protected virtual MsdnResolver CreateMsdnResolver(XPathNavigator configuration)
         {
             MsdnResolver resolver;
             IDictionary<string, string> cache = null;
@@ -610,6 +541,72 @@ namespace Microsoft.Ddue.Tools
             BuildComponent.Data[SharedMsdnCacheId] = resolver.MsdnContentIdCache;
 
             return resolver;
+        }
+
+        /// <summary>
+        /// This is used to update the MSDN URL cache file
+        /// </summary>
+        public virtual void UpdateMsdnUrlCache()
+        {
+            if(msdnIdCacheFile != null && msdnResolver != null && msdnResolver.CacheItemsAdded)
+            {
+                base.WriteMessage(MessageLevel.Info, "MSDN URL cache updated.  Saving new information to " +
+                    msdnIdCacheFile);
+
+                try
+                {
+                    using(FileStream fs = new FileStream(msdnIdCacheFile, FileMode.Create, FileAccess.ReadWrite,
+                      FileShare.None))
+                    {
+                        BinaryFormatter bf = new BinaryFormatter();
+                        bf.Serialize(fs, msdnResolver.MsdnContentIdCache);
+
+                        base.WriteMessage(MessageLevel.Info, "New MSDN URL cache size: {0} entries",
+                            msdnResolver.MsdnContentIdCache.Count);
+                    }
+                }
+                catch(IOException ex)
+                {
+                    // Most likely it couldn't access the file.  We'll issue a warning but will continue with
+                    // the build.
+                    base.WriteMessage(MessageLevel.Warn, "Unable to create MSDN URL cache file.  It will be " +
+                        "created or updated on a subsequent build: " + ex.Message);
+                }
+            }
+        }
+
+        /// <summary>
+        /// This is used to create a <see cref="TargetDictionary"/> used to store reference link targets
+        /// </summary>
+        /// <param name="configuration">The configuration element for the target dictionary</param>
+        /// <returns>A default <see cref="TargetDirectory"/> instance containing the reference link targets</returns>
+        /// <remarks>This can be overridden in derived classes to provide persistent caches with backing stores
+        /// other than the default dictionary serialized to a binary file.
+        /// 
+        /// <para>If overridden, the <see cref="DisposeOfTargets"/> method should also be overridden to dispose
+        /// of the target dictionaries as needed.</para></remarks>
+        public virtual TargetDictionary CreateTargetDictionary(XPathNavigator configuration)
+        {
+            TargetDictionary d = null;
+
+            try
+            {
+                d = new TargetDictionary(configuration);
+            }
+            catch(Exception ex)
+            {
+                base.WriteMessage(MessageLevel.Error, BuildComponentUtilities.GetExceptionMessage(ex));
+            }
+
+            return d;
+        }
+
+        /// <summary>
+        /// This is used to dispose of the target dictionaries
+        /// </summary>
+        public virtual void DisposeOfTargets()
+        {
+            // TODO: Implement this once serialization has been implemented
         }
         #endregion
     }

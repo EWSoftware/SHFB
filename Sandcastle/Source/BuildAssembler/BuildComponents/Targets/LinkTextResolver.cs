@@ -5,6 +5,7 @@
 
 // Change History
 // 12/26/2012 - EFW - Moved the classes into the Targets namespace
+// 12/30/2012 - EFW - Updated to use TargetTypeDictionary
 
 using System;
 using System.Collections.Generic;
@@ -18,13 +19,12 @@ namespace Microsoft.Ddue.Tools.Targets
     /// </summary>
     public class LinkTextResolver
     {
+        private TargetTypeDictionary targets;
 
-        public LinkTextResolver(TargetCollection targets)
+        public LinkTextResolver(TargetTypeDictionary targets)
         {
             this.targets = targets;
         }
-
-        private TargetCollection targets;
 
         public void WriteTarget(Target target, DisplayOptions options, XmlWriter writer)
         {
@@ -243,7 +243,7 @@ namespace Microsoft.Ddue.Tools.Targets
             if(writer == null)
                 throw new ArgumentNullException("writer");
 
-            NamespaceTarget spaceTarget = spaceReference.Resolve(targets) as NamespaceTarget;
+            NamespaceTarget spaceTarget = targets[spaceReference.Id] as NamespaceTarget;
 
             if(spaceTarget != null)
                 WriteNamespaceTarget(spaceTarget, writer);
@@ -317,7 +317,7 @@ namespace Microsoft.Ddue.Tools.Targets
 
         private void WriteSimpleType(SimpleTypeReference simple, DisplayOptions options, bool showOuterType, XmlWriter writer)
         {
-            TypeTarget type = simple.Resolve(targets) as TypeTarget;
+            TypeTarget type = targets[simple.Id] as TypeTarget;
             if(type != null)
             {
                 WriteTypeTarget(type, options, showOuterType, writer);
@@ -727,7 +727,7 @@ namespace Microsoft.Ddue.Tools.Targets
 
         private string GetTypeTemplateName(SimpleTypeReference type, int position)
         {
-            TypeTarget target = type.Resolve(targets) as TypeTarget;
+            TypeTarget target = targets[type.Id] as TypeTarget;
             if(target != null)
             {
                 string[] templates = target.Templates;
@@ -826,7 +826,7 @@ namespace Microsoft.Ddue.Tools.Targets
 
         private void WriteSimpleMember(SimpleMemberReference member, DisplayOptions options, XmlWriter writer, Dictionary<IndexedTemplateTypeReference, TypeReference> dictionary)
         {
-            MemberTarget target = member.Resolve(targets) as MemberTarget;
+            MemberTarget target = targets[member.Id] as MemberTarget;
 
             if(target != null)
                 WriteMemberTarget(target, options, writer, dictionary);

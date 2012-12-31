@@ -20,7 +20,7 @@ namespace Microsoft.Ddue.Tools.Targets
             }
         }
 
-        public Target Resolve(TargetCollection targets)
+        public Target Resolve(TargetDictionary targets)
         {
             return (targets[namespaceId]);
         }

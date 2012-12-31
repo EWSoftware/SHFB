@@ -5,6 +5,7 @@
 
 // Change History
 // 12/26/2012 - EFW - Moved the classes into the Targets namespace
+// 12/28/2012 - EFW - Renamed XmlTargetDictionaryUtilities to reflect its usage with TargetDictionary
 
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,7 @@ namespace Microsoft.Ddue.Tools.Targets
     /// Logic to construct Target & Reference objects from XML reflection data.  Anything that depends on
     /// specifics of the XML reflection data format lives here.
     /// </summary>
-    public static class XmlTargetCollectionUtilities
+    public static class XmlTargetDictionaryUtilities
     {
         // XPath expressions for extracting data
 
@@ -72,21 +73,22 @@ namespace Microsoft.Ddue.Tools.Targets
 
         // super factory method
 
-        public static void AddTargets(TargetCollection targets, XPathNavigator topicsNode, ReferenceLinkType type)
+        public static IEnumerable<Target> EnumerateTargets(XPathNavigator topicsNode)
         {
             XPathNodeIterator topicNodes = topicsNode.Select("/*/apis/api[not(topicdata/@notopic)]");
+
             foreach(XPathNavigator topicNode in topicNodes)
             {
-                Target target = CreateTarget(topicNode, type);
+                Target target = CreateTarget(topicNode);
 
                 if(target != null)
-                    target.Add(targets);
+                    yield return target;
             }
         }
 
         // Target factory methods
 
-        public static Target CreateTarget(XPathNavigator topic, ReferenceLinkType type)
+        public static Target CreateTarget(XPathNavigator topic)
         {
             if(topic == null)
                 throw new ArgumentNullException("topic");
@@ -94,14 +96,11 @@ namespace Microsoft.Ddue.Tools.Targets
             bool isApiTarget = (bool)topic.Evaluate("boolean(apidata)");
 
             Target target;
+
             if(isApiTarget)
-            {
-                target = CreateApiTarget(topic, type);
-            }
+                target = CreateApiTarget(topic);
             else
-            {
                 target = new Target();
-            }
 
             if(target == null)
                 throw new XmlSchemaValidationException(String.Format(CultureInfo.InvariantCulture,
@@ -120,12 +119,10 @@ namespace Microsoft.Ddue.Tools.Targets
                 throw new XmlSchemaValidationException(String.Format(CultureInfo.InvariantCulture,
                     "The target file '{0}' is not valid.", topic.BaseURI));
 
-            target.DefaultLinkType = type;
-
             return target;
         }
 
-        private static Target CreateApiTarget(XPathNavigator api, ReferenceLinkType linkType)
+        private static Target CreateApiTarget(XPathNavigator api)
         {
             string subGroup = (string)api.Evaluate(apiGroupExpression);
             if(subGroup == "namespace")
@@ -134,7 +131,7 @@ namespace Microsoft.Ddue.Tools.Targets
             }
             else if(subGroup == "type")
             {
-                return (CreateTypeTarget(api, linkType));
+                return CreateTypeTarget(api);
             }
             else if(subGroup == "member")
             {
@@ -156,19 +153,16 @@ namespace Microsoft.Ddue.Tools.Targets
             return (target);
         }
 
-        private static TypeTarget CreateTypeTarget(XPathNavigator api, ReferenceLinkType linkType)
+        private static TypeTarget CreateTypeTarget(XPathNavigator api)
         {
             string subgroup = (string)api.Evaluate(apiSubgroupExpression);
 
             TypeTarget target;
+
             if(subgroup == "enumeration")
-            {
-                target = CreateEnumerationTarget(api, linkType);
-            }
+                target = CreateEnumerationTarget(api);
             else
-            {
                 target = new TypeTarget();
-            }
 
             target.name = (string)api.Evaluate(apiNameExpression);
 
@@ -179,13 +173,9 @@ namespace Microsoft.Ddue.Tools.Targets
             // containing type, if any
             XPathNavigator typeNode = api.SelectSingleNode(apiContainingTypeExpression);
             if(typeNode == null)
-            {
                 target.containingType = null;
-            }
             else
-            {
                 target.containingType = CreateSimpleTypeReference(typeNode);
-            }
 
             // templates
             target.templates = GetTemplateNames(api);
@@ -204,9 +194,8 @@ namespace Microsoft.Ddue.Tools.Targets
             return (templates.ToArray());
         }
 
-        private static EnumerationTarget CreateEnumerationTarget(XPathNavigator api, ReferenceLinkType linkType)
+        private static EnumerationTarget CreateEnumerationTarget(XPathNavigator api)
         {
-
             EnumerationTarget enumeration = new EnumerationTarget();
 
             string typeId = (string)api.Evaluate(topicIdExpression);
@@ -244,7 +233,6 @@ namespace Microsoft.Ddue.Tools.Targets
 
                 member.Id = memberId; // get Id from element
                 member.File = file; // get file from type file
-                member.DefaultLinkType = linkType;
                 member.name = memberName; // get name from element
                 member.containingType = new SimpleTypeReference(typeId); // get containing type from this type
                 members.Add(member);
