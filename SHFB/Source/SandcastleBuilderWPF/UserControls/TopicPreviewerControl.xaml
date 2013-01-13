@@ -84,7 +84,7 @@
       </Button>
       <Separator />
       <Button Name="btnRefresh" ToolTip="Refresh the previewer content (F5)" Command="NavigationCommands.Refresh"
-        CommandTarget="{Binding ElementName=tvEntities}">
+        CommandTarget="{Binding ElementName=tvContent}">
         <Image Source="{StaticResource Refresh}" />
       </Button>
       <Separator />

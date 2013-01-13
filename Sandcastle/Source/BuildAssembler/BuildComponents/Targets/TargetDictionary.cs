@@ -7,6 +7,8 @@
 // 12/26/2012 - EFW - Moved the classes into the Targets namespace
 // 12/28/2012 - EFW - Made the class derive from IDictionary<TKey, TValue> to make it easier to work with and
 // renamed it TargetDictionary to reflect its true purpose.
+// 12/31/2012 - EFW - Converted to abstract base class to allow for various implementations that utilize
+// different backing stores including those with support for persistence.
 
 using System;
 using System.Collections.Generic;
@@ -35,36 +37,71 @@ namespace Microsoft.Ddue.Tools.Targets
 
     // All arguments of public methods are verified
 
-    // The fact that the creation methods (via XML or CER strings) for references and their rendering methods
-    // are separated from the declarations of the reference types goes against OO principals. (The consequent
-    // absence of virtual methods also makes for a lot of ugly casting to figure out what method to call.)
+    // The fact that the creation methods (via XML or CER (code entity reference) strings) for references and
+    // their rendering methods are separated from the declarations of the reference types goes against OO
+    // principals. (The consequent absence of virtual methods also makes for a lot of ugly casting to figure out
+    // what method to call.)
+
     // But there is a reason for it: I wanted all the code that interpreted XML together, all the code that
     // interpreted CER strings together, and all the code that did link text rendering together, and I wanted
     // them all separate from each other. I belive this is extremely important for maintainability. It may
     // be possible to leverage partial classes to do this in a more OO fashion.
 
     /// <summary>
-    /// This contains a collection of targets indexed by member ID
+    /// This is a base class used for a collection of targets indexed by member ID
     /// </summary>
-    /// <remarks>The behavior of this dictionary is to return null if a target ID is not found and to replace
-    /// existing entries if a duplicate ID is added.</remarks>
-    public class TargetDictionary : IDictionary<string, Target>
+    [Serializable]
+    public abstract class TargetDictionary : IDictionary<string, Target>, IDisposable
     {
         #region Private data members
         //=====================================================================
 
-        private IDictionary<string, Target> index;
-
+        private HashSet<string> namespaceFileFilter;
         #endregion
 
         #region Properties
         //=====================================================================
 
         /// <summary>
+        /// This read-only property returns the build component that owns the target dictionary
+        /// </summary>
+        /// <value>This is useful for logging information during initialization</value>
+        public BuildComponent BuildComponent { get; private set; }
+
+        /// <summary>
         /// This is used to get or set the target dictionary's unique ID
         /// </summary>
         public string DictionaryId { get; protected set; }
 
+        /// <summary>
+        /// This is used to get or set the path to the target files
+        /// </summary>
+        public string DirectoryPath { get; protected set; }
+
+        /// <summary>
+        /// This is used to get or set the file pattern to use when searching for target files
+        /// </summary>
+        public string FilePattern { get; protected set; }
+
+        /// <summary>
+        /// This is used to get or set whether to recurse into subfolders of <see cref="DirectoryPath"/> when
+        /// loading target files.
+        /// </summary>
+        public bool Recurse { get; protected set; }
+
+        /// <summary>
+        /// This read-only property returns any optional namespace files used to filter what gets loaded
+        /// </summary>
+        public HashSet<string> NamespaceFileFilter
+        {
+            get { return namespaceFileFilter; }
+        }
+
+        /// <summary>
+        /// This read-only property can be used to determine whether or not the target dictionary has been
+        /// disposed.
+        /// </summary>
+        public bool IsDisposed { get; protected set; }
         #endregion
 
         #region Constructor
@@ -73,32 +110,17 @@ namespace Microsoft.Ddue.Tools.Targets
         /// <summary>
         /// Constructor
         /// </summary>
+        /// <param name="component">The build component that owns the dictionary.  This is useful for logging
+        /// messages during initialization.</param>
         /// <param name="configuration">The configuration used to create the target dictionary</param>
-        public TargetDictionary(XPathNavigator configuration)
+        /// <remarks>The default implementation always creates a unique ID based on the directory path and file
+        /// pattern if an <c>id</c> attribute is not found in the configuration.  Using a common ID across
+        /// instances allows sharing of the target dicitonary data store.</remarks>
+        protected TargetDictionary(BuildComponent component, XPathNavigator configuration)
         {
-            index = this.CreateTargetDictionary(configuration);
-        }
-        #endregion
-
-        #region Helper methods
-        //=====================================================================
-
-        /// <summary>
-        /// This is used to create a target dictionary from the given configuration information
-        /// </summary>
-        /// <param name="configuration">The target dictionary configuration</param>
-        /// <returns>A target dictionary instance</returns>
-        /// <remarks>This can be overridden in derived classes to provide persistent caches with backing stores
-        /// other than the default in-memory dictionary.  The default implementation always creates a
-        /// unique GUID ID if an <c>id</c> attribute is not found in the configuration.  Using a common ID
-        /// across instances allows sharing of the target dicitonary data store.</remarks>
-        protected virtual IDictionary<string, Target> CreateTargetDictionary(XPathNavigator configuration)
-        {
-            var td = new Dictionary<string, Target>();
+            this.BuildComponent = component;
 
             string id = configuration.GetAttribute("id", String.Empty);
-
-            this.DictionaryId = String.IsNullOrWhiteSpace(id) ? Guid.NewGuid().ToString() : id;
 
             // Get base directory
             string baseValue = configuration.GetAttribute("base", String.Empty);
@@ -118,6 +140,8 @@ namespace Microsoft.Ddue.Tools.Targets
                 throw new ArgumentException(String.Format(CultureInfo.InvariantCulture, "On the targets " +
                     "element, recurse='{0}' is not an allowed value.", recurseValue), "configuration");
 
+            this.Recurse = recurse;
+
             // Turn baseValue and filesValue into directoryPath and filePattern
             string fullPath;
 
@@ -128,28 +152,89 @@ namespace Microsoft.Ddue.Tools.Targets
 
             fullPath = Environment.ExpandEnvironmentVariables(fullPath);
 
-            string directoryPath = Path.GetDirectoryName(fullPath);
+            this.DirectoryPath = Path.GetDirectoryName(fullPath);
 
-            if(String.IsNullOrEmpty(directoryPath))
-                directoryPath = Environment.CurrentDirectory;
+            if(String.IsNullOrEmpty(this.DirectoryPath))
+                this.DirectoryPath = Environment.CurrentDirectory;
 
-            string filePattern = Path.GetFileName(fullPath);
+            this.FilePattern = Path.GetFileName(fullPath);
 
             // Verify that the directory exists
-            if(!Directory.Exists(directoryPath))
+            if(!Directory.Exists(this.DirectoryPath))
                 throw new ArgumentException(String.Format(CultureInfo.InvariantCulture, "The targets " +
-                    "directory '{0}' does not exist.", directoryPath), "configuration");
+                    "directory '{0}' does not exist.", this.DirectoryPath), "configuration");
 
-            foreach(string file in Directory.EnumerateFiles(directoryPath, filePattern, recurse ?
+            if(String.IsNullOrWhiteSpace(id))
+                id = Path.Combine(this.DirectoryPath, this.FilePattern).GetHashCode().ToString("X");
+
+            this.DictionaryId = id;
+
+            namespaceFileFilter = new HashSet<string>();
+
+            foreach(XPathNavigator filter in configuration.Select("namespace/@file"))
+                namespaceFileFilter.Add(filter.Value);
+        }
+        #endregion
+
+        #region IDisposable implementation
+        //=====================================================================
+
+        /// <summary>
+        /// This handles garbage collection to ensure proper disposal of the target dictionary if not done
+        /// explicity with <see cref="Dispose()"/>.
+        /// </summary>
+        ~TargetDictionary()
+        {
+            this.Dispose(false);
+        }
+
+        /// <summary>
+        /// This implements the Dispose() interface to properly dispose of the target dictionary
+        /// </summary>
+        /// <overloads>There are two overloads for this method</overloads>
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// This can be overridden by derived classes to add their own disposal code if necessary.
+        /// </summary>
+        /// <param name="disposing">Pass true to dispose of the managed and unmanaged resources or false to just
+        /// dispose of the unmanaged resources.</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            // Nothing to dispose of in this one
+            this.IsDisposed = true;
+        }
+        #endregion
+
+        #region Helper methods
+        //=====================================================================
+
+        /// <summary>
+        /// This helper method can be called to find all target files and load them into the dictionary
+        /// </summary>
+        protected virtual void LoadTargetDictionary()
+        {
+            foreach(string file in Directory.EnumerateFiles(this.DirectoryPath, this.FilePattern, this.Recurse ?
               SearchOption.AllDirectories : SearchOption.TopDirectoryOnly))
             {
+                // Skip the file if not in a defined filter or if it's already in the dictionary
+                if((namespaceFileFilter.Count != 0 && !namespaceFileFilter.Contains(Path.GetFileName(file))) ||
+                  this.ContainsKey("N:" + Path.GetFileNameWithoutExtension(file)))
+                    continue;
+
+                this.BuildComponent.WriteMessage(MessageLevel.Info, "Indexing targets in {0}", file);
+
                 try
                 {
                     XPathDocument document = new XPathDocument(file);
 
                     // We use the Target.Add() method so that any of its dependencies are added too
                     foreach(var t in XmlTargetDictionaryUtilities.EnumerateTargets(document.CreateNavigator()))
-                        t.Add(td);
+                        t.Add(this);
                 }
                 catch(XmlSchemaException e)
                 {
@@ -170,8 +255,6 @@ namespace Microsoft.Ddue.Tools.Targets
                         "message is: {1}", file, e.GetExceptionMessage()));
                 }
             }
-
-            return td;
         }
         #endregion
 
@@ -180,22 +263,13 @@ namespace Microsoft.Ddue.Tools.Targets
 
         /// <inheritdoc />
         /// <remarks>If the key already exists, the existing value is replaced</remarks>
-        public void Add(string key, Target value)
-        {
-            index[key] = value;
-        }
+        public abstract void Add(string key, Target value);
 
         /// <inheritdoc />
-        public bool ContainsKey(string key)
-        {
-            return index.ContainsKey(key);
-        }
+        public abstract bool ContainsKey(string key);
 
         /// <inheritdoc />
-        public ICollection<string> Keys
-        {
-            get { return index.Keys; }
-        }
+        public abstract ICollection<string> Keys { get; }
 
         /// <inheritdoc />
         /// <remarks>This method is not implemented as targets are never removed</remarks>
@@ -205,34 +279,14 @@ namespace Microsoft.Ddue.Tools.Targets
         }
 
         /// <inheritdoc />
-        public bool TryGetValue(string key, out Target value)
-        {
-            return index.TryGetValue(key, out value);
-        }
+        public abstract bool TryGetValue(string key, out Target value);
 
         /// <inheritdoc />
-        public ICollection<Target> Values
-        {
-            get { return index.Values; }
-        }
+        public abstract ICollection<Target> Values { get; }
 
         /// <inheritdoc />
         /// <returns>If not found, this implementation returns null.</returns>
-        public Target this[string key]
-        {
-            get
-            {
-                Target t;
-
-                index.TryGetValue(key, out t);
-
-                return t;
-            }
-            set
-            {
-                index[key] = value;
-            }
-        }
+        public abstract Target this[string key] { get; set; }
 
         #endregion
 
@@ -241,34 +295,19 @@ namespace Microsoft.Ddue.Tools.Targets
 
         /// <inheritdoc />
         /// <remarks>If the key already exists, the existing value is replaced</remarks>
-        public void Add(KeyValuePair<string, Target> item)
-        {
-            index[item.Key] = item.Value;
-        }
+        public abstract void Add(KeyValuePair<string, Target> item);
 
         /// <inheritdoc />
-        public void Clear()
-        {
-            index.Clear();
-        }
+        public abstract void Clear();
 
         /// <inheritdoc />
-        public bool Contains(KeyValuePair<string, Target> item)
-        {
-            return ((ICollection<KeyValuePair<string, Target>>)index).Contains(item);
-        }
+        public abstract bool Contains(KeyValuePair<string, Target> item);
 
         /// <inheritdoc />
-        public void CopyTo(KeyValuePair<string, Target>[] array, int arrayIndex)
-        {
-            ((ICollection<KeyValuePair<string, Target>>)index).CopyTo(array, arrayIndex);
-        }
+        public abstract void CopyTo(KeyValuePair<string, Target>[] array, int arrayIndex);
 
         /// <inheritdoc />
-        public int Count
-        {
-            get { return index.Count; }
-        }
+        public abstract int Count { get; }
 
         /// <inheritdoc />
         /// <value>This always returns false</value>
@@ -289,10 +328,8 @@ namespace Microsoft.Ddue.Tools.Targets
         //=====================================================================
 
         /// <inheritdoc />
-        public IEnumerator<KeyValuePair<string, Target>> GetEnumerator()
-        {
-            return index.GetEnumerator();
-        }
+        public abstract IEnumerator<KeyValuePair<string, Target>> GetEnumerator();
+
         #endregion
 
         #region IEnumerable Members
@@ -301,7 +338,7 @@ namespace Microsoft.Ddue.Tools.Targets
         /// <inheritdoc />
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return index.GetEnumerator();
+            return this.GetEnumerator();
         }
         #endregion
     }

@@ -183,6 +183,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CodeColorizer\ColorizerLibrary\ColorizerLibrary.csproj">
+      <Project>{72331A21-C452-4BE4-BFDB-B8029A6BC1C0}</Project>
+      <Name>ColorizerLibrary</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SandcastleBuilderUtils\SandcastleBuilderUtils.csproj">
       <Project>{330DADF7-3AB1-49A0-B3C6-A69D2C4F06A6}</Project>
       <Name>SandcastleBuilderUtils</Name>

@@ -1,19 +1,18 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Code Colorizer Library
 // File    : AssemblyInfo.cs
 // Author  : Jonathan de Halleux, (c) 2003
-// Updated : 09/21/2012
+// Updated : 01/10/2013
 // Compiler: Microsoft Visual C#
 //
-// Code colorizer attributes.  The original Code Project article by Jonathan
-// can be found at:
-// http://www.codeproject.com/csharp/highlightcs.asp.
+// Code colorizer attributes.  The original Code Project article by Jonathan can be found at:
+// http://www.codeproject.com/Articles/3767/Multiple-Language-Syntax-Highlighting-Part-2-C-Con.
 //
 // Modifications by Eric Woodruff (Eric@EWoodruff.us) 11/2006:
 //
 //      Added standard set of attributes.
 //
-//=============================================================================
+//===============================================================================================================
 
 using System;
 using System.Reflection;
@@ -24,16 +23,15 @@ using System.Runtime.InteropServices;
 [assembly: NeutralResourcesLanguageAttribute("en")]
 
 //
-// General Information about an assembly is controlled through the following
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
+// General Information about an assembly is controlled through the following set of attributes.  Change these
+// attribute values to modify the information associated with an assembly.
 //
 [assembly: AssemblyProduct("Code Colorizer Library")]
 [assembly: AssemblyTitle("Code Colorizer Library")]
 [assembly: AssemblyDescription("This is used to colorize blocks of code for output as HTML.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Jonathan de Halleux")]
-[assembly: AssemblyCopyright("Copyright \xA9 2003-2012, Jonathan de Halleux, All Rights Reserved")]
+[assembly: AssemblyCopyright("Copyright \xA9 2003-2013, Jonathan de Halleux, All Rights Reserved")]
 [assembly: AssemblyTrademark("Jonathan de Halleux, All Rights Reserved")]
 [assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(true)]
@@ -50,4 +48,4 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Revision and Build Numbers
 // by using the '*' as shown below:
 
-[assembly: AssemblyVersion("2.1.0.15")]
+[assembly: AssemblyVersion("2.1.0.16")]

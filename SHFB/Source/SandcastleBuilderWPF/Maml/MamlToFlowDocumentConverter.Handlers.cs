@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : MamlToFlowDocumentConverter.Handlers.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/02/2012
-// Note    : Copyright 2012, Eric Woodruff, All rights reserved
+// Updated : 01/12/2013
+// Note    : Copyright 2012-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the element handler methods for the MAML to flow document converter class
@@ -17,6 +17,7 @@
 // ==============================================================================================================
 // 1.9.3.4  01/02/2012  EFW  Created the code
 // 1.9.6.0  11/26/2012  EFW  Added support for imported code blocks
+// 1.9.7.0  01/11/2013  EFW  Added support for colorizing code blocks
 //===============================================================================================================
 
 using System;
@@ -29,6 +30,7 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Xml.Linq;
@@ -202,6 +204,51 @@ namespace SandcastleBuilder.WPF.Maml
             // Trim off trailing blank lines too
             return sb.ToString().TrimEnd(new char[] { ' ', '\r', '\n' });
         }
+
+        /// <summary>
+        /// This is used to add a block of colorized code to the flow document
+        /// </summary>
+        /// <param name="code">The code to colorize</param>
+        /// <param name="language">The language to use when colorizing the code</param>
+        /// <param name="numberLines">True to number lines, false if not</param>
+        /// <param name="container">The container for the colorized code elements</param>
+        private static void ColorizeCode(string code, string language, bool numberLines, Paragraph container)
+        {
+            try
+            {
+                // Colorize the code
+                CodeColorizer.NumberLines = numberLines;
+
+                string colorizedContent = CodeColorizer.ColorizePlainText(code, language);
+
+                // Insert the colorized code into the flow document template
+                colorizedContent = flowDocumentContent.Replace("@CONTENT@", colorizedContent);
+
+                // The following steps can take a few seconds for large documents with complex coloring such
+                // as large XML files.
+                var fd = XamlReader.Parse(colorizedContent) as FlowDocument;
+
+                if(fd != null)
+                    using(MemoryStream stream = new MemoryStream())
+                    {
+                        // Flow document elements are attached to their parent document.  To break the bond we
+                        // need to stream it out and then back in again before adding them to the current
+                        // document.  A side effect of this is that it converts the named styles into literal
+                        // style elements so we don't need the named styles added to the end document.
+                        Block b = fd.Blocks.FirstBlock;
+
+                        TextRange range = new TextRange(b.ContentStart, b.ContentEnd);
+                        range.Save(stream, DataFormats.XamlPackage);
+
+                        range = new TextRange(container.ContentEnd, container.ContentEnd);
+                        range.Load(stream, DataFormats.XamlPackage);
+                    }
+            }
+            catch(Exception ex)
+            {
+                container.Inlines.Add(new Run("Unable to colorize code: " + ex.Message));
+            }
+        }
         #endregion
 
         #region General section and formatted block element handlers
@@ -266,7 +313,7 @@ namespace SandcastleBuilder.WPF.Maml
             Section code = new Section();
             props.Converter.AddToBlockContainer(code);
             string language = "none", title, sourceFile, region;
-            bool removeRegionMarkers;
+            bool removeRegionMarkers, numberLines;
 
             if(props.Element.Name.LocalName != "codeReference")
             {
@@ -286,8 +333,8 @@ namespace SandcastleBuilder.WPF.Maml
                 if(attribute != null && attribute.Value.Length != 0)
                     title = attribute.Value;
                 else
-                    if(!LanguageTitles.TryGetValue(language, out title))
-                        title = language;
+                    if(CodeColorizer == null || !CodeColorizer.FriendlyNames.TryGetValue(language, out title))
+                        title = String.Empty;
 
                 // If there are nested code blocks, import the code and replace them with their content
                 foreach(var nestedBlock in props.Element.Descendants(ddue + "code").ToList())
@@ -316,17 +363,49 @@ namespace SandcastleBuilder.WPF.Maml
             else
                 title = "Code Reference";
 
-            Paragraph p = new Paragraph();
-            code.Blocks.Add(p);
-            p.Inlines.Add(new Run(title));
-            p.SetResourceReference(Paragraph.StyleProperty, NamedStyle.CodeTitle);
+            // Create the title and Copy link elements.  These will reside in a grid in a block UI container.
+            Grid g = new Grid();
 
+            g.ColumnDefinitions.Add(new ColumnDefinition());
+            g.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+
+            TextBlock tb = new TextBlock
+            {
+                TextAlignment = TextAlignment.Left,
+                FontWeight = FontWeights.Bold,
+                Text = title
+            };
+            
+            Grid.SetColumn(tb, 0);
+            g.Children.Add(tb);
+
+            Hyperlink l = new Hyperlink(new Run("Copy"))
+            {
+                // The URI signals the generic handler to copy code rather than launch the URL
+                NavigateUri = new Uri("copy://code", UriKind.RelativeOrAbsolute),
+                ToolTip = "Copy Code"
+            };
+
+            tb = new TextBlock(l) { TextAlignment = TextAlignment.Right };
+            Grid.SetColumn(tb, 1);
+            g.Children.Add(tb);
+
+            BlockUIContainer buic = new BlockUIContainer(g) { Margin = new Thickness(0, 3, 0, 3) };
+            code.Blocks.Add(buic);
+
+            // Create the section that will hold the code block
             Section codeBlock = new Section();
             code.Blocks.Add(codeBlock);
             codeBlock.SetResourceReference(Section.StyleProperty, NamedStyle.CodeBlock);
 
-            p = new Paragraph();
+            Paragraph p = new Paragraph();
             codeBlock.Blocks.Add(p);
+
+            // See if lines are to be numbered
+            attribute = props.Element.Attribute("numberLines");
+
+            if(attribute == null || !Boolean.TryParse(attribute.Value, out numberLines))
+                numberLines = false;
 
             // If importing from an external file, include that info in the content
             attribute = props.Element.Attribute("source");
@@ -346,10 +425,16 @@ namespace SandcastleBuilder.WPF.Maml
                 if(attribute == null || !Boolean.TryParse(attribute.Value, out removeRegionMarkers))
                     removeRegionMarkers = false;
 
-                p.Inlines.Add(new Run(LoadCodeBlock(sourceFile, region, removeRegionMarkers)));
+                if(CodeColorizer != null)
+                    ColorizeCode(LoadCodeBlock(sourceFile, region, removeRegionMarkers), language, numberLines, p);
+                else
+                    p.Inlines.Add(new Run(LoadCodeBlock(sourceFile, region, removeRegionMarkers)));
             }
-
-            p.Inlines.Add(new Run(StripLeadingWhitespace(props.Element.Value, 4)));
+            else
+                if(props.Element.Name.LocalName != "codeReference" && CodeColorizer != null)
+                    ColorizeCode(props.Element.Value, language, numberLines, p);
+                else
+                    p.Inlines.Add(new Run(StripLeadingWhitespace(props.Element.Value, 4)));
 
             props.ParseChildren = false;
         }

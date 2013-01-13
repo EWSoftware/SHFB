@@ -28,9 +28,156 @@
     <Module Name="buildcomponents.dll" Analyze="True" AnalyzeAllChildren="False">
      <Namespaces AnalyzeAllChildren="False">
       <Namespace Name="" Analyze="True" AnalyzeAllChildren="True" />
-      <Namespace Name="Microsoft.Ddue.Tools" Analyze="True" AnalyzeAllChildren="True" />
+      <Namespace Name="Microsoft.Ddue.Tools" Analyze="True" AnalyzeAllChildren="False">
+       <Types AnalyzeAllChildren="False">
+        <Type Name="BrandingComponent" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="BrandingComponent+SpecialXmlReader" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="CloneComponent" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="ColorizationRule" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="CopyCommand" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="CopyComponent" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="CopyFromFileCommand" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="CopyFromFileComponent" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="CopyFromFilesCommand" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="CopyFromFilesComponent" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="CopyFromIndexComponent" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="CopySet" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="DisplayComponent" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="ExampleComponent" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="FileCreatedEventArgs" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="ForEachComponent" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="HxfGeneratorComponent" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="IfThenComponent" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="InclusionFilter" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="IndexedDocument" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="IndexedDocumentCache" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="IndexedExample" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="IndexedFile" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="IndexedFileCache" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="InheritDocumentationComponent" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="IntelliSenseComponent" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="Language" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="ManagedSyntaxWriter" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="MemberFilter" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="MsdnResolver" Analyze="True" AnalyzeAllChildren="False">
+         <Members AnalyzeAllChildren="False">
+          <Member Name="#.ctor()" Analyze="True" />
+          <Member Name="#.ctor(System.Collections.Generic.IDictionary`2&lt;System.String,System.String&gt;)" Analyze="True" />
+          <Member Name="#&lt;CacheItemsAdded&gt;k__BackingField" Analyze="True" />
+          <Member Name="#&lt;DisabledReason&gt;k__BackingField" Analyze="True" />
+          <Member Name="#&lt;Locale&gt;k__BackingField" Analyze="True" />
+          <Member Name="#cachedMsdnIds" Analyze="True" />
+          <Member Name="#CacheItemsAdded" Analyze="True" AnalyzeAllChildren="True" />
+          <Member Name="#DisabledReason" Analyze="True" AnalyzeAllChildren="True" />
+          <Member Name="#GetMsdnUrl(System.String)" Analyze="True" />
+          <Member Name="#IsDisabled" Analyze="True" AnalyzeAllChildren="True" />
+          <Member Name="#Locale" Analyze="True" AnalyzeAllChildren="True" />
+          <Member Name="#MsdnContentIdCache" Analyze="True" AnalyzeAllChildren="True" />
+          <Member Name="#msdnService" Analyze="True" />
+         </Members>
+        </Type>
+        <Type Name="MSHCComponent" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="MSHCComponent+ConfigurationAttr" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="MSHCComponent+ConfigurationTag" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="MSHCComponent+Help2Attr" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="MSHCComponent+Help2Namespace" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="MSHCComponent+Help2Value" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="MSHCComponent+Help2XPath" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="MSHCComponent+MHSDefault" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="MSHCComponent+MHSMetaAttr" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="MSHCComponent+MHSMetaName" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="MSHCComponent+MHSTag" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="MSHCComponent+TocAttr" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="MSHCComponent+TocInfo" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="MSHCComponent+TocXPath" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="MSHelpAttrComponent" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="NamespaceFilter" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="OverloadFilter" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="PlatformsComponent" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="Region" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="ResolveArtLinksComponent" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="ResolveConceptualLinksComponent" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="ResolveReferenceLinksComponent2" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="SaveComponent" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="SharedContentComponent" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="ShowMissingComponent" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="Snippet" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="SnippetCache" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="SnippetComponent" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="SnippetIdentifier" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="StoredSnippet" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="SwitchComponent" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="SyntaxComponent" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="SyntaxGenerator" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="SyntaxWriter" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="TaskGrabberComponent" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="Transform" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="TransformComponent" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="TransformedTopicEventArgs" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="TypeFilter" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="ValidateComponent" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="ValidateComponent+&lt;&gt;c__DisplayClass1" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="VersionFilter" Analyze="True" AnalyzeAllChildren="True" />
+       </Types>
+      </Namespace>
       <Namespace Name="Microsoft.Ddue.Tools.Properties" Analyze="True" AnalyzeAllChildren="True" />
-      <Namespace Name="Microsoft.Ddue.Tools.Targets" Analyze="True" AnalyzeAllChildren="True" />
+      <Namespace Name="Microsoft.Ddue.Tools.Targets" Analyze="True" AnalyzeAllChildren="False">
+       <Types AnalyzeAllChildren="False">
+        <Type Name="ArrayTypeReference" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="ArtTarget" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="ConceptualLinkInfo" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="ConceptualLinkType" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="ConstructorTarget" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="DisplayOptions" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="EnumerationTarget" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="EventTarget" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="ExtensionMethodReference" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="IndexedTemplateTypeReference" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="InvalidReference" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="LinkTextResolver" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="MemberReference" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="MemberTarget" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="MethodTarget" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="MethodTemplateTypeReference" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="NamedTemplateTypeReference" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="NamespaceReference" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="NamespaceTarget" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="Parameter" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="PointerTypeReference" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="ProcedureTarget" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="PropertyTarget" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="Reference" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="ReferenceLinkInfo" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="ReferenceLinkType" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="ReferenceTypeReference" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="SharedContentElement" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="SimpleMemberReference" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="SimpleTypeReference" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="Specialization" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="SpecializedMemberReference" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="SpecializedMemberWithParametersReference" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="SpecializedTypeReference" Analyze="True" AnalyzeAllChildren="False">
+         <Members AnalyzeAllChildren="False">
+          <Member Name="#.ctor(System.Collections.Generic.IList`1&lt;Microsoft.Ddue.Tools.Targets.Specialization&gt;)" Analyze="True" />
+          <Member Name="#&lt;Specializations&gt;k__BackingField" Analyze="True" />
+          <Member Name="#Specializations" Analyze="True" AnalyzeAllChildren="True" />
+         </Members>
+        </Type>
+        <Type Name="Target" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="TargetDictionary" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="TargetDirectory" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="TargetDirectoryCollection" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="TargetInfo" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="TargetTypeDictionary" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="TemplateTypeReference" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="TextReferenceUtilities" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="TypeReference" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="TypeTarget" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="TypeTemplateTypeReference" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="XmlTargetDictionaryUtilities" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="XmlTargetDictionaryUtilities+&lt;EnumerateTargets&gt;d__0" Analyze="True" AnalyzeAllChildren="True" />
+       </Types>
+      </Namespace>
       <Namespace Name="Microsoft.Ddue.Tools.UI" Analyze="True" AnalyzeAllChildren="True" />
      </Namespaces>
      <Resources AnalyzeAllChildren="True" />
@@ -715,14 +862,6 @@
           </Members>
          </Type>
          <Type Name="MsdnResolver">
-          <Messages>
-           <Message TypeName="TypesThatOwnDisposableFieldsShouldBeDisposable" Category="Microsoft.Design" CheckId="CA1001" Created="2012-03-10 20:52:03Z" FixCategory="DependsOnFix">
-            <Issue Name="DependsOnFix">
-             <Item>'MsdnResolver'</Item>
-             <Item>'ContentService'</Item>
-            </Issue>
-           </Message>
-          </Messages>
           <Members>
            <Member Name="#GetMsdnUrl(System.String)">
             <Messages>
@@ -881,6 +1020,44 @@
               <Notes>
                <User Name="EWOODRUFF">
                 <Note Id="21" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="ResolveReferenceLinksComponent2">
+          <Members>
+           <Member Name="#.ctor(Microsoft.Ddue.Tools.BuildAssembler,System.Xml.XPath.XPathNavigator)">
+            <Messages>
+             <Message TypeName="DoNotCallOverridableMethodsInConstructors" Category="Microsoft.Usage" CheckId="CA2214" Status="Excluded" Created="2012-12-31 20:50:41Z">
+              <Issue>
+               <Item>'ResolveReferenceLinksComponent2.ResolveReferenceLinksComponent2(BuildAssembler, XPathNavigator)'</Item>
+               <Item>&#xD;&#xA;&#xD;&#xA;ResolveReferenceLinksComponent2..ctor(BuildAssembler, XPathNavigator)&#xD;&#xA;BuildComponent.WriteMessage(MessageLevel, String, Object[]):Void&#xD;&#xA;ResolveReferenceLinksComponent2.CreateMsdnResolver(XPathNavigator):MsdnResolver</Item>
+              </Issue>
+              <Issue>
+               <Item>'ResolveReferenceLinksComponent2.ResolveReferenceLinksComponent2(BuildAssembler, XPathNavigator)'</Item>
+               <Item>&#xD;&#xA;&#xD;&#xA;ResolveReferenceLinksComponent2..ctor(BuildAssembler, XPathNavigator)&#xD;&#xA;BuildComponent.WriteMessage(MessageLevel, String, Object[]):Void&#xD;&#xA;ResolveReferenceLinksComponent2.CreateTargetDictionary(XPathNavigator):TargetDictionary</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="35" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#CreateTargetDictionary(System.Xml.XPath.XPathNavigator)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2012-12-31 20:50:41Z">
+              <Issue>
+               <Item>'ResolveReferenceLinksComponent2.CreateTargetDictionary(XPathNavigator)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="39" />
                </User>
               </Notes>
              </Message>
@@ -1275,123 +1452,18 @@
         <Types>
          <Type Name="ConceptualLinkInfo">
           <Members>
-           <Member Name="#Create(System.Xml.XPath.XPathNavigator)">
+           <Member Name="#.ctor(System.Xml.XPath.XPathNavigator)">
             <Messages>
-             <Message TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308" Status="Excluded" Created="2012-12-27 01:14:32Z">
+             <Message TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308" Status="Excluded" Created="2012-12-31 20:50:41Z">
               <Issue Name="ToUpperInvariant">
-               <Item>'ConceptualLinkInfo.Create(XPathNavigator)'</Item>
+               <Item>'ConceptualLinkInfo.ConceptualLinkInfo(XPathNavigator)'</Item>
                <Item>'string.ToLowerInvariant()'</Item>
               </Issue>
               <Notes>
                <User Name="EWOODRUFF">
-                <Note Id="32" />
+                <Note Id="41" />
                </User>
               </Notes>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="ConstructorTarget">
-          <Members>
-           <Member Name="#Parameters">
-            <Messages>
-             <Message TypeName="PropertiesShouldNotReturnArrays" Category="Microsoft.Performance" CheckId="CA1819" Created="2012-12-27 01:14:32Z">
-              <Issue>
-               <Item>'ConstructorTarget.Parameters'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="ExtensionMethodReference">
-          <Members>
-           <Member Name="#Parameters">
-            <Messages>
-             <Message TypeName="PropertiesShouldNotReturnArrays" Category="Microsoft.Performance" CheckId="CA1819" Created="2012-12-27 01:14:32Z">
-              <Issue>
-               <Item>'ExtensionMethodReference.Parameters'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#TemplateArgs">
-            <Messages>
-             <Message TypeName="PropertiesShouldNotReturnArrays" Category="Microsoft.Performance" CheckId="CA1819" Created="2012-12-27 01:14:32Z">
-              <Issue>
-               <Item>'ExtensionMethodReference.TemplateArgs'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="LinkTextResolver">
-          <Members>
-           <Member Name="#WriteMemberTarget(Microsoft.Ddue.Tools.Targets.MemberTarget,Microsoft.Ddue.Tools.Targets.DisplayOptions,System.Xml.XmlWriter,System.Collections.Generic.Dictionary`2&lt;Microsoft.Ddue.Tools.Targets.IndexedTemplateTypeReference,Microsoft.Ddue.Tools.Targets.TypeReference&gt;)">
-            <Messages>
-             <Message TypeName="DoNotCastUnnecessarily" Category="Microsoft.Performance" CheckId="CA1800" Created="2012-12-27 01:14:32Z">
-              <Issue Name="Parameter">
-               <Item>'target'</Item>
-               <Item>'MethodTarget'</Item>
-               <Item>'LinkTextResolver.WriteMemberTarget(MemberTarget, DisplayOptions, XmlWriter, Dictionary&lt;IndexedTemplateTypeReference, TypeReference&gt;)'</Item>
-               <Item>isint</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#WriteTemplateType(Microsoft.Ddue.Tools.Targets.TemplateTypeReference,Microsoft.Ddue.Tools.Targets.DisplayOptions,System.Xml.XmlWriter)">
-            <Messages>
-             <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Created="2012-12-27 01:14:32Z">
-              <Issue>
-               <Item>'LinkTextResolver.WriteTemplateType(TemplateTypeReference, DisplayOptions, XmlWriter)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="MemberTarget">
-          <Members>
-           <Member Name="#Type">
-            <Messages>
-             <Message TypeName="PropertyNamesShouldNotMatchGetMethods" Category="Microsoft.Naming" CheckId="CA1721" Created="2012-12-27 01:14:32Z">
-              <Issue Name="BaseType">
-               <Item>'MemberTarget.Type'</Item>
-               <Item>'object.GetType()'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="MethodTarget">
-          <Members>
-           <Member Name="#Parameters">
-            <Messages>
-             <Message TypeName="PropertiesShouldNotReturnArrays" Category="Microsoft.Performance" CheckId="CA1819" Created="2012-12-27 01:14:32Z">
-              <Issue>
-               <Item>'MethodTarget.Parameters'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#TemplateArgs">
-            <Messages>
-             <Message TypeName="PropertiesShouldNotReturnArrays" Category="Microsoft.Performance" CheckId="CA1819" Created="2012-12-27 01:14:32Z">
-              <Issue>
-               <Item>'MethodTarget.TemplateArgs'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#Templates">
-            <Messages>
-             <Message TypeName="PropertiesShouldNotReturnArrays" Category="Microsoft.Performance" CheckId="CA1819" Created="2012-12-27 01:14:32Z">
-              <Issue>
-               <Item>'MethodTarget.Templates'</Item>
-              </Issue>
              </Message>
             </Messages>
            </Member>
@@ -1408,101 +1480,52 @@
              </Message>
             </Messages>
            </Member>
+           <Member Name="#Position">
+            <Accessors>
+             <Accessor Name="#set_Position(System.Int32)">
+              <Messages>
+               <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Created="2012-12-31 20:50:41Z">
+                <Issue>
+                 <Item>'MethodTemplateTypeReference.Position.set(int)'</Item>
+                </Issue>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+           <Member Name="#TemplateMethod">
+            <Accessors>
+             <Accessor Name="#set_TemplateMethod(Microsoft.Ddue.Tools.Targets.MemberReference)">
+              <Messages>
+               <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Created="2012-12-31 20:50:41Z">
+                <Issue>
+                 <Item>'MethodTemplateTypeReference.TemplateMethod.set(MemberReference)'</Item>
+                </Issue>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
           </Members>
          </Type>
-         <Type Name="Parameter">
+         <Type Name="TargetDictionary">
           <Members>
-           <Member Name="#Type">
+           <Member Name="#.ctor(System.Xml.XPath.XPathNavigator)">
             <Messages>
-             <Message TypeName="PropertyNamesShouldNotMatchGetMethods" Category="Microsoft.Naming" CheckId="CA1721" Created="2012-12-27 01:14:32Z">
-              <Issue Name="BaseType">
-               <Item>'Parameter.Type'</Item>
-               <Item>'object.GetType()'</Item>
+             <Message TypeName="DoNotCallOverridableMethodsInConstructors" Category="Microsoft.Usage" CheckId="CA2214" Status="Excluded" Created="2012-12-31 20:50:41Z">
+              <Issue>
+               <Item>'TargetDictionary.TargetDictionary(XPathNavigator)'</Item>
+               <Item>&#xD;&#xA;&#xD;&#xA;TargetDictionary..ctor(XPathNavigator)&#xD;&#xA;TargetDictionary.CreateTargetDictionary(XPathNavigator):IDictionary&lt;String, Target&gt;</Item>
               </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="35" />
+               </User>
+              </Notes>
              </Message>
             </Messages>
            </Member>
           </Members>
-         </Type>
-         <Type Name="PropertyTarget">
-          <Members>
-           <Member Name="#Parameters">
-            <Messages>
-             <Message TypeName="PropertiesShouldNotReturnArrays" Category="Microsoft.Performance" CheckId="CA1819" Created="2012-12-27 01:14:32Z">
-              <Issue>
-               <Item>'PropertyTarget.Parameters'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#returnType">
-            <Messages>
-             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Created="2012-12-27 01:14:32Z">
-              <Issue>
-               <Item>'PropertyTarget.returnType'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="Specialization">
-          <Members>
-           <Member Name="#Arguments">
-            <Messages>
-             <Message TypeName="PropertiesShouldNotReturnArrays" Category="Microsoft.Performance" CheckId="CA1819" Created="2012-12-27 01:14:32Z">
-              <Issue>
-               <Item>'Specialization.Arguments'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="SpecializedMemberWithParametersReference">
-          <Members>
-           <Member Name="#ParameterTypes">
-            <Messages>
-             <Message TypeName="PropertiesShouldNotReturnArrays" Category="Microsoft.Performance" CheckId="CA1819" Created="2012-12-27 01:14:32Z">
-              <Issue>
-               <Item>'SpecializedMemberWithParametersReference.ParameterTypes'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="SpecializedTypeReference">
-          <Members>
-           <Member Name="#GetSpecializationDictionary()">
-            <Messages>
-             <Message TypeName="UsePropertiesWhereAppropriate" Category="Microsoft.Design" CheckId="CA1024" Created="2012-12-27 01:14:32Z">
-              <Issue Certainty="50">
-               <Item>'SpecializedTypeReference.GetSpecializationDictionary()'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#Specializations">
-            <Messages>
-             <Message TypeName="PropertiesShouldNotReturnArrays" Category="Microsoft.Performance" CheckId="CA1819" Created="2012-12-27 01:14:32Z">
-              <Issue>
-               <Item>'SpecializedTypeReference.Specializations'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="TargetCollection">
-          <Messages>
-           <Message TypeName="IdentifiersShouldNotHaveIncorrectSuffix" Category="Microsoft.Naming" CheckId="CA1711" Created="2012-12-27 01:14:32Z">
-            <Issue Name="TypeNoAlternate">
-             <Item>'TargetCollection'</Item>
-             <Item>Collection</Item>
-            </Issue>
-           </Message>
-          </Messages>
          </Type>
          <Type Name="TargetInfo">
           <Members>
@@ -1537,38 +1560,37 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="TextReferenceUtilities">
+         <Type Name="TargetTypeDictionary">
           <Members>
-           <Member Name="#.cctor()">
+           <Member Name="#TryGetValue(System.String,Microsoft.Ddue.Tools.Targets.Target&amp;,Microsoft.Ddue.Tools.Targets.ReferenceLinkType&amp;)">
             <Messages>
-             <Message TypeName="InitializeReferenceTypeStaticFieldsInline" Category="Microsoft.Performance" CheckId="CA1810" Created="2012-12-27 01:14:32Z">
+             <Message Id="1#" TypeName="AvoidOutParameters" Category="Microsoft.Design" CheckId="CA1021" Status="Excluded" Created="2012-12-31 20:50:41Z">
               <Issue>
-               <Item>'TextReferenceUtilities'</Item>
+               <Item>'value'</Item>
               </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#SetGenericContext(System.String)">
-            <Messages>
-             <Message Id="cer" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2012-12-27 01:14:32Z">
-              <Issue Name="MemberParameter">
-               <Item>'TextReferenceUtilities.SetGenericContext(string)'</Item>
-               <Item>cer</Item>
-               <Item>'cer'</Item>
-              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="13" />
+               </User>
+              </Notes>
              </Message>
             </Messages>
            </Member>
           </Members>
          </Type>
-         <Type Name="TypeTarget">
+         <Type Name="TextReferenceUtilities">
           <Members>
-           <Member Name="#Templates">
+           <Member Name="#.cctor()">
             <Messages>
-             <Message TypeName="PropertiesShouldNotReturnArrays" Category="Microsoft.Performance" CheckId="CA1819" Created="2012-12-27 01:14:32Z">
+             <Message TypeName="InitializeReferenceTypeStaticFieldsInline" Category="Microsoft.Performance" CheckId="CA1810" Status="Excluded" Created="2012-12-27 01:14:32Z">
               <Issue>
-               <Item>'TypeTarget.Templates'</Item>
+               <Item>'TextReferenceUtilities'</Item>
               </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="40" />
+               </User>
+              </Notes>
              </Message>
             </Messages>
            </Member>
@@ -1584,6 +1606,32 @@
               </Issue>
              </Message>
             </Messages>
+           </Member>
+           <Member Name="#Position">
+            <Accessors>
+             <Accessor Name="#set_Position(System.Int32)">
+              <Messages>
+               <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Created="2012-12-31 20:50:41Z">
+                <Issue>
+                 <Item>'TypeTemplateTypeReference.Position.set(int)'</Item>
+                </Issue>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+           <Member Name="#TemplateType">
+            <Accessors>
+             <Accessor Name="#set_TemplateType(Microsoft.Ddue.Tools.Targets.SimpleTypeReference)">
+              <Messages>
+               <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Created="2012-12-31 20:50:41Z">
+                <Issue>
+                 <Item>'TypeTemplateTypeReference.TemplateType.set(SimpleTypeReference)'</Item>
+                </Issue>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
            </Member>
           </Members>
          </Type>
@@ -3673,6 +3721,7 @@
     <Note Id="10" Modified="2012-12-24 00:53:01Z">The error is reported</Note>
     <Note Id="11" Modified="2012-12-24 18:32:22Z">Okay as is</Note>
     <Note Id="12" Modified="2012-12-24 18:32:57Z">Okay as is</Note>
+    <Note Id="13" Modified="2012-12-31 20:52:53Z">Okay as is</Note>
     <Note Id="14" Modified="2012-12-24 01:03:11Z">The error is reported</Note>
     <Note Id="15" Modified="2012-12-24 01:04:01Z">Lowercase is required</Note>
     <Note Id="16" Modified="2012-12-24 01:05:00Z">Lowercase is required</Note>
@@ -3691,15 +3740,21 @@
     <Note Id="29" Modified="2012-12-24 04:33:40Z">Okay as is</Note>
     <Note Id="30" Modified="2012-12-24 07:00:20Z">Okay as is</Note>
     <Note Id="31" Modified="2012-12-27 01:15:32Z">Okay as is</Note>
-    <Note Id="32" Modified="2012-12-27 01:18:03Z">Lowercase is preferred</Note>
     <Note Id="33" Modified="2012-12-24 07:00:53Z">Okay as is</Note>
     <Note Id="34" Modified="2012-12-24 07:01:09Z">Okay as is</Note>
+    <Note Id="35" Modified="2012-12-31 21:05:26Z">The call chain appears to be safe.</Note>
     <Note Id="36" Modified="2012-12-24 21:31:54Z">Okay as is</Note>
     <Note Id="37" Modified="2012-12-26 03:43:21Z">The error is reported</Note>
     <Note Id="38" Modified="2012-12-27 01:18:53Z">Okay as is</Note>
+    <Note Id="39" Modified="2012-12-31 21:05:45Z">The error is reported</Note>
+    <Note Id="40" Modified="2012-12-31 21:08:18Z">This one is more complete so the constructor is fine</Note>
+    <Note Id="41" Modified="2012-12-31 21:14:03Z">Lowercase is preferred here</Note>
    </User>
   </Notes>
   <Rules>
+   <Rule TypeName="AvoidOutParameters" Category="Microsoft.Design" CheckId="CA1021">
+    <Resolution Name="Default">Consider a design that does not require that {0} be an out parameter.</Resolution>
+   </Rule>
    <Rule TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811">
     <Resolution Name="Default">{0} appears to have no upstream public or protected callers.</Resolution>
    </Rule>
@@ -3715,8 +3770,8 @@
    <Rule TypeName="CompoundWordsShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1702">
     <Resolution Name="MemberShouldBeDiscreteTerm">The compound word '{0}' in member name {1} exists as a discrete term. If your usage is intended to be single word, case it as '{2}' or strip the first token entirely if it represents any sort of Hungarian notation.</Resolution>
    </Rule>
-   <Rule TypeName="DoNotCastUnnecessarily" Category="Microsoft.Performance" CheckId="CA1800">
-    <Resolution Name="Parameter">{0}, a parameter, is cast to type {1} multiple times in method {2}. Cache the result of the 'as' operator or direct cast in order to eliminate the redundant {3} instruction.</Resolution>
+   <Rule TypeName="DoNotCallOverridableMethodsInConstructors" Category="Microsoft.Usage" CheckId="CA2214">
+    <Resolution Name="Default">{0} contains a call chain that results in a call to a virtual method defined by the class. Review the following call stack for unintended consequences: {1}</Resolution>
    </Rule>
    <Rule TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031">
     <Resolution Name="Default">Modify {0} to catch a more specific exception than {1} or rethrow the exception.</Resolution>
@@ -3754,9 +3809,6 @@
    <Rule TypeName="IdentifiersShouldNotHaveIncorrectPrefix" Category="Microsoft.Naming" CheckId="CA1722">
     <Resolution Name="Default">Remove the leading 'C' from type name {0}.</Resolution>
    </Rule>
-   <Rule TypeName="IdentifiersShouldNotHaveIncorrectSuffix" Category="Microsoft.Naming" CheckId="CA1711">
-    <Resolution Name="TypeNoAlternate">Rename type name {0} so that it does not end in '{1}'.</Resolution>
-   </Rule>
    <Rule TypeName="InitializeReferenceTypeStaticFieldsInline" Category="Microsoft.Performance" CheckId="CA1810">
     <Resolution Name="Default">Initialize all static fields in {0} when those fields are declared and remove the explicit static constructor.</Resolution>
    </Rule>
@@ -3772,20 +3824,11 @@
    <Rule TypeName="ParameterNamesShouldMatchBaseDeclaration" Category="Microsoft.Naming" CheckId="CA1725">
     <Resolution Name="Default">In member {0}, change parameter name {1} to {2} in order to match the identifier as it has been declared in {3}.</Resolution>
    </Rule>
-   <Rule TypeName="PropertiesShouldNotReturnArrays" Category="Microsoft.Performance" CheckId="CA1819">
-    <Resolution Name="Default">Change {0} to return a collection or make it a method.</Resolution>
-   </Rule>
-   <Rule TypeName="PropertyNamesShouldNotMatchGetMethods" Category="Microsoft.Naming" CheckId="CA1721">
-    <Resolution Name="BaseType">The property name {0} is confusing given the existence of inherited method {1}. Rename or remove this property.</Resolution>
-   </Rule>
    <Rule TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804">
     <Resolution Name="Default">{0} declares a variable, {1}, of type {2}, which is never used or is only assigned to. Use this variable or remove it.</Resolution>
    </Rule>
    <Rule TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801">
     <Resolution Name="Default">Parameter {0} of {1} is never used. Remove the parameter or use it in the method body.</Resolution>
-   </Rule>
-   <Rule TypeName="TypesThatOwnDisposableFieldsShouldBeDisposable" Category="Microsoft.Design" CheckId="CA1001">
-    <Resolution Name="DependsOnFix">Implement IDisposable on {0} because it creates members of the following IDisposable types: {1}. If {0} has previously shipped, adding new members that implement IDisposable to this type is considered a breaking change to existing consumers.</Resolution>
    </Rule>
    <Rule TypeName="UriParametersShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1054">
     <Resolution Name="Default">Change the type of parameter {0} of method {1} from string to System.Uri, or provide an overload of {1}, that allows {0} to be passed as a System.Uri object.</Resolution>
@@ -3795,9 +3838,6 @@
    </Rule>
    <Rule TypeName="UriReturnValuesShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1055">
     <Resolution Name="Default">Change the return type of {0} from string to System.Uri.</Resolution>
-   </Rule>
-   <Rule TypeName="UsePropertiesWhereAppropriate" Category="Microsoft.Design" CheckId="CA1024">
-    <Resolution Name="Default">Change {0} to a property if appropriate.</Resolution>
    </Rule>
   </Rules>
  </FxCopReport>

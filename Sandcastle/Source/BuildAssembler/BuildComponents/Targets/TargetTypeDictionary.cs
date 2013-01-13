@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Components
 // File    : TargetTypeDictionary.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/30/2012
-// Note    : Copyright 2012, Eric Woodruff, All rights reserved
+// Updated : 01/05/2013
+// Note    : Copyright 2012-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a target type dictionary used to contain common target dictionaries with their associated
@@ -21,7 +21,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Xml;
 
 namespace Microsoft.Ddue.Tools.Targets
@@ -33,7 +36,7 @@ namespace Microsoft.Ddue.Tools.Targets
     /// existing entries if a duplicate ID is added.  The structure allows access to all reference link targets
     /// within a set of multiple target dictionaries, each with a different reference link type.  The target
     /// dictionary instances can be easily shared across multiple instances of the reference link components.</remarks>
-    public class TargetTypeDictionary : IDictionary<string, Target>
+    public sealed class TargetTypeDictionary : IDictionary<string, Target>, IDisposable
     {
         #region Private data members
         //=====================================================================
@@ -51,6 +54,21 @@ namespace Microsoft.Ddue.Tools.Targets
         public TargetTypeDictionary()
         {
             targetDictionaries = new List<KeyValuePair<ReferenceLinkType, TargetDictionary>>();
+        }
+        #endregion
+
+        #region IDisposable implementation
+        //=====================================================================
+
+        /// <summary>
+        /// This implements the Dispose() interface to properly dispose of the target dictionaries
+        /// </summary>
+        public void Dispose()
+        {
+            foreach(var td in targetDictionaries)
+                td.Value.Dispose();
+
+            GC.SuppressFinalize(this);
         }
         #endregion
 
@@ -264,11 +282,13 @@ namespace Microsoft.Ddue.Tools.Targets
         }
         #endregion
 
+        #region Debug methods
+        //=====================================================================
 #if DEBUG
         /// <summary>
         /// Dump the references to an XML file
         /// </summary>
-        /// <param name="targetFile">A targets file to load and from which to generate reference links</param>
+        /// <param name="targetsFile">The file in which to store the targets as XML</param>
         /// <remarks>This is used as a debugging aid to compare the resolved references to prior versions and
         /// ensure that they match.</remarks>
         public void DumpTargetDictionary(string targetsFile)
@@ -280,7 +300,7 @@ namespace Microsoft.Ddue.Tools.Targets
 
             writer.WriteStartDocument();
             writer.WriteStartElement("References");
-            writer.WriteAttributeString("Count", this.Count.ToString());
+            writer.WriteAttributeString("Count", this.Count.ToString(CultureInfo.InvariantCulture));
 
             foreach(var td in targetDictionaries.Reverse<KeyValuePair<ReferenceLinkType, TargetDictionary>>())
                 foreach(var target in td.Value)
@@ -297,6 +317,40 @@ namespace Microsoft.Ddue.Tools.Targets
             writer.WriteEndDocument();
             writer.Close();
         }
+
+        /// <summary>
+        /// Test serialization of the target dictionaries
+        /// </summary>
+        /// <param name="folder">The folder in which to place the serialized files</param>
+        public void SerializeDictionary(string folder)
+        {
+            TargetTypeDictionary tempTD = new TargetTypeDictionary();
+            TargetDictionary targetDictionary;
+            BinaryFormatter bf = new BinaryFormatter();
+            string filename;
+
+            foreach(var td in targetDictionaries.Reverse<KeyValuePair<ReferenceLinkType, TargetDictionary>>())
+            {
+                filename = Path.Combine(folder, td.Value.DictionaryId);
+
+                // Fair warning, this is really slow for the main .NET Framework target dictionary hence the
+                // reason not to offer the option to serialze the SimpleTargetDictionary for a persistent cache.
+                using(FileStream fs = new FileStream(filename, FileMode.Create, FileAccess.ReadWrite, FileShare.None))
+                {
+                    bf.Serialize(fs, td.Value);
+                }
+
+                using(FileStream fs = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.Read))
+                {
+                    targetDictionary = (TargetDictionary)bf.Deserialize(fs);
+                }
+
+                tempTD.Add(ReferenceLinkType.None, targetDictionary);
+            }
+
+            tempTD.DumpTargetDictionary(Path.Combine(folder, "SerializedIn.xml"));
+        }
 #endif
+        #endregion
     }
 }

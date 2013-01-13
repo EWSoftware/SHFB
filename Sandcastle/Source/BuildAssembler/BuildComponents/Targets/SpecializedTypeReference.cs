@@ -5,48 +5,62 @@
 
 // Change History
 // 12/26/2012 - EFW - Moved the classes into the Targets namespace
+// 12/30/2012 - EFW - Cleaned up the code and marked the class as serializable
 
 using System;
 using System.Collections.Generic;
 
 namespace Microsoft.Ddue.Tools.Targets
 {
+    /// <summary>
+    /// This represents a specialized type reference
+    /// </summary>
+    [Serializable]
     public class SpecializedTypeReference : TypeReference
     {
-        private Specialization[] specializations;
+        #region Properties
+        //=====================================================================
 
-        public Specialization[] Specializations
+        /// <summary>
+        /// This read-only property returns the specializations
+        /// </summary>
+        public IList<Specialization> Specializations { get; private set; }
+
+        /// <summary>
+        /// This read-only property is used to create and return a specialization dictionary
+        /// </summary>
+        /// <returns>The specialization dictionary</returns>
+        public Dictionary<IndexedTemplateTypeReference, TypeReference> SpecializationDictionary
         {
             get
             {
-                return (specializations);
+                Dictionary<IndexedTemplateTypeReference, TypeReference> dictionary =
+                    new Dictionary<IndexedTemplateTypeReference, TypeReference>();
+
+                foreach(Specialization specialization in this.Specializations)
+                    for(int index = 0; index < specialization.Arguments.Count; index++)
+                        dictionary.Add(new IndexedTemplateTypeReference(specialization.TemplateType.Id, index),
+                            specialization.Arguments[index]);
+
+                return dictionary;
             }
         }
+        #endregion
 
-        internal SpecializedTypeReference(Specialization[] specializations)
+        #region Constructor
+        //=====================================================================
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="specializations">The specializations</param>
+        internal SpecializedTypeReference(IList<Specialization> specializations)
         {
             if(specializations == null)
                 throw new ArgumentNullException("specializations");
-            this.specializations = specializations;
+
+            this.Specializations = specializations;
         }
-
-        public Dictionary<IndexedTemplateTypeReference, TypeReference> GetSpecializationDictionary()
-        {
-            Dictionary<IndexedTemplateTypeReference, TypeReference> dictionary =
-                new Dictionary<IndexedTemplateTypeReference, TypeReference>();
-
-            foreach(Specialization specialization in specializations)
-            {
-                for(int index = 0; index < specialization.Arguments.Length; index++)
-                {
-                    IndexedTemplateTypeReference template = new IndexedTemplateTypeReference(
-                        specialization.TemplateType.Id, index);
-
-                    dictionary.Add(template, specialization.Arguments[index]);
-                }
-            }
-
-            return dictionary;
-        }
+        #endregion
     }
 }

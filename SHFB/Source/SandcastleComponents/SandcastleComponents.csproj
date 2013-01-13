@@ -63,6 +63,12 @@
       <HintPath>$(DXROOT)\ProductionTools\BuildComponents.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Esent.Collections, Version=1.7.0.0, Culture=neutral, PublicKeyToken=e75931dc3debaf8d, processorArchitecture=MSIL">
+      <HintPath>..\ReferenceAssemblies\Esent.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="Esent.Interop, Version=1.7.0.0, Culture=neutral, PublicKeyToken=e75931dc3debaf8d, processorArchitecture=MSIL">
+      <HintPath>..\ReferenceAssemblies\Esent.Interop.dll</HintPath>
+    </Reference>
     <Reference Include="SyntaxComponents, Version=2.7.0.0, Culture=neutral, PublicKeyToken=c8895f0c125eff20, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>$(DXROOT)\ProductionTools\SyntaxComponents.dll</HintPath>
@@ -94,6 +100,8 @@
     <Compile Include="CodeBlockConfigDlg.Designer.cs">
       <DependentUpon>CodeBlockConfigDlg.cs</DependentUpon>
     </Compile>
+    <Compile Include="ESentResolveReferenceLinksComponent.cs" />
+    <Compile Include="ESentTargetDictionary.cs" />
     <Compile Include="IntelliSenseComponent.cs" />
     <Compile Include="MSHelpAttrComponent.cs" />
     <Compile Include="MultiFormatOutputComponent.cs" />

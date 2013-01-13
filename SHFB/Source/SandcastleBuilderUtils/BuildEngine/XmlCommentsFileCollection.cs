@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : XmlCommentsFileCollection.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/18/2012
-// Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
+// Updated : 01/03/2013
+// Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a collection class used to hold the XML comments files
@@ -19,15 +19,19 @@
 // 1.6.0.2  11/10/2007  EFW  Moved the CommentFileList method from XmlCommentsFileCollection to this class
 // 1.6.0.5  03/02/2008  EFW  Added support for the <inheritdoc /> tag
 // 1.6.0.6  03/08/2008  EFW  Added support for NamespaceDoc classes
+// 1.9.7.0  01/02/2013  EFW  Added method to get referenced namespaces
 //===============================================================================================================
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Web;
 using System.Xml;
+using System.Xml.XPath;
 
 namespace SandcastleBuilder.Utils.BuildEngine
 {
@@ -149,6 +153,56 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         HttpUtility.HtmlEncode(f.SourcePath), dupWarning);
 
             return sb.ToString();
+        }
+
+        /// <summary>
+        /// This is used to get an enumerable list of unique namespaces referenced in the XML comments files
+        /// </summary>
+        /// <param name="validNamespaces">An enumerable list of valid namespaces</param>
+        /// <returns>An enumerable list of unique namespaces referenced in the XML comments files</returns>
+        public IEnumerable<string> GetReferencedNamespaces(IEnumerable<string> validNamespaces)
+        {
+            HashSet<string> seenNamespaces = new HashSet<string>();
+            XPathNavigator nav;
+            string ns;
+
+            foreach(XmlCommentsFile f in this)
+            {
+                nav = f.Members.CreateNavigator();
+
+                // Find all comments elements with a reference
+                var nodes = nav.Select("//event/@cref | //exception/@cref | //inheritdoc/@cref | " +
+                    "@permission/@cref | //see/@cref | //seealso/@cref");
+
+                foreach(XPathNavigator n in nodes)
+                    if(n.Value.Length > 2 && n.Value[1] == ':' && n.Value.IndexOfAny(new[] { '.', '(' }) != -1)
+                    {
+                        ns = n.Value.Trim();
+
+                        // Strip off member name?
+                        if(!ns.StartsWith("R:", StringComparison.OrdinalIgnoreCase) &&
+                          !ns.StartsWith("N:", StringComparison.OrdinalIgnoreCase) &&
+                          !ns.StartsWith("T:", StringComparison.OrdinalIgnoreCase))
+                        {
+                            if(ns.IndexOf('(') != -1)
+                                ns = ns.Substring(0, ns.IndexOf('('));
+
+                            if(ns.IndexOf('.') != -1)
+                                ns = ns.Substring(0, ns.LastIndexOf('.'));
+                        }
+
+                        if(ns.IndexOf('.') != -1)
+                            ns = ns.Substring(2, ns.LastIndexOf('.') - 2);
+                        else
+                            ns = ns.Substring(2);
+
+                        if(validNamespaces.Contains(ns) && !seenNamespaces.Contains(ns))
+                        {
+                            seenNamespaces.Add(ns);
+                            yield return ns;
+                        }
+                    }
+            }
         }
     }
 }

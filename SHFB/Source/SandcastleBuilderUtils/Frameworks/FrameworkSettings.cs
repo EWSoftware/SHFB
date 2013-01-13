@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : FrameworkSettings.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/21/2012
-// Note    : Copyright 2012, Eric Woodruff, All rights reserved
+// Updated : 01/04/2013
+// Note    : Copyright 2012-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class that is used to contain settings information for a specific .NET Framework version
@@ -16,6 +16,7 @@
 // Version     Date     Who  Comments
 // ==============================================================================================================
 // 1.9.5.0  09/09/2012  EFW  Created the code
+// 1.9.7.0  01/03/2013  EFW  Added method to get referenced namespaces
 //===============================================================================================================
 
 using System;
@@ -24,6 +25,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
+using System.Xml.XPath;
 
 namespace SandcastleBuilder.Utils.Frameworks
 {
@@ -284,6 +286,64 @@ namespace SandcastleBuilder.Utils.Frameworks
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// This is used to get an enumerable list of unique namespaces referenced in the XML comments files of
+        /// the given set of namespaces.
+        /// </summary>
+        /// <param name="language">The language to use when locating the XML comments files</param>
+        /// <param name="searchNamespaces">An enumerable list of namespaces to search</param>
+        /// <param name="validNamespaces">An enumerable list of valid namespaces</param>
+        /// <returns>An enumerable list of unique namespaces in the related XML comments files</returns>
+        public IEnumerable<string> GetReferencedNamespaces(CultureInfo language,
+          IEnumerable<string> searchNamespaces, IEnumerable<string> validNamespaces)
+        {
+            HashSet<string> seenNamespaces = new HashSet<string>();
+            XPathDocument doc;
+            XPathNavigator nav;
+            string ns;
+
+            foreach(string path in this.CommentsFileLocations(language))
+                foreach(string file in Directory.EnumerateFiles(Path.GetDirectoryName(path),
+                  Path.GetFileName(path)).Where(f => searchNamespaces.Contains(Path.GetFileNameWithoutExtension(f))))
+                {
+                    doc = new XPathDocument(file);
+                    nav = doc.CreateNavigator();
+
+                    // Find all comments elements with a reference
+                    var nodes = nav.Select("//event/@cref | //exception/@cref | //inheritdoc/@cref | " +
+                        "@permission/@cref | //see/@cref | //seealso/@cref");
+
+                    foreach(XPathNavigator n in nodes)
+                        if(n.Value.Length > 2 && n.Value[1] == ':' && n.Value.IndexOfAny(new[] { '.', '(' }) != -1)
+                        {
+                            ns = n.Value.Trim();
+
+                            // Strip off member name?
+                            if(!ns.StartsWith("R:", StringComparison.OrdinalIgnoreCase) &&
+                              !ns.StartsWith("N:", StringComparison.OrdinalIgnoreCase) &&
+                              !ns.StartsWith("T:", StringComparison.OrdinalIgnoreCase))
+                            {
+                                if(ns.IndexOf('(') != -1)
+                                    ns = ns.Substring(0, ns.IndexOf('('));
+
+                                if(ns.IndexOf('.') != -1)
+                                    ns = ns.Substring(0, ns.LastIndexOf('.'));
+                            }
+
+                            if(ns.IndexOf('.') != -1)
+                                ns = ns.Substring(2, ns.LastIndexOf('.') - 2);
+                            else
+                                ns = ns.Substring(2);
+
+                            if(validNamespaces.Contains(ns) && !seenNamespaces.Contains(ns))
+                            {
+                                seenNamespaces.Add(ns);
+                                yield return ns;
+                            }
+                        }
+                }
         }
         #endregion
     }

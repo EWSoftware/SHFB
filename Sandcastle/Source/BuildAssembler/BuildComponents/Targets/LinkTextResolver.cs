@@ -58,7 +58,7 @@ namespace Microsoft.Ddue.Tools.Targets
                 return;
             }
 
-            if(target.Id.StartsWith("R:", StringComparison.InvariantCultureIgnoreCase))
+            if(target.Id.StartsWith("R:", StringComparison.OrdinalIgnoreCase))
             {
                 WriteInvalid(new InvalidReference(target.Id), writer);
                 return;
@@ -95,14 +95,14 @@ namespace Microsoft.Ddue.Tools.Targets
             // write namespace, if containers are requested
             if((options & DisplayOptions.ShowContainer) > 0)
             {
-                WriteNamespace(type.Namespace, writer);
+                WriteNamespace(type.ContainingNamespace, writer);
                 WriteSeparator(writer);
             }
 
             // write outer type, if one exists
-            if(showOuterType && (type.OuterType != null))
+            if(showOuterType && (type.ContainingType != null))
             {
-                WriteSimpleType(type.OuterType, DisplayOptions.Default, writer);
+                WriteSimpleType(type.ContainingType, DisplayOptions.Default, writer);
                 WriteSeparator(writer);
             }
 
@@ -126,33 +126,23 @@ namespace Microsoft.Ddue.Tools.Targets
         {
             if(target == null)
                 throw new ArgumentNullException("target");
+
             if(writer == null)
                 throw new ArgumentNullException("writer");
 
+            MethodTarget method = target as MethodTarget;
+
             if((options & DisplayOptions.ShowContainer) > 0)
             {
-                TypeReference type = target.Type;
-                WriteType(type, options & ~DisplayOptions.ShowContainer, writer);
-                MethodTarget methodTarget = target as MethodTarget;
-                if(methodTarget != null)
-                {
-                    if(methodTarget.conversionOperator)
-                    {
-                        writer.WriteString(" ");
-                    }
-                    else
-                    {
-                        WriteSeparator(writer);
-                    }
-                }
+                WriteType(target.ContainingType, options & ~DisplayOptions.ShowContainer, writer);
+
+                if(method != null && method.IsConversionOperator)
+                    writer.WriteString(" ");
                 else
-                {
                     WriteSeparator(writer);
-                }
             }
 
             // special logic for writing methods
-            MethodTarget method = target as MethodTarget;
             if(method != null)
             {
                 WriteMethod(method, options, writer, dictionary);
@@ -161,6 +151,7 @@ namespace Microsoft.Ddue.Tools.Targets
 
             // special logic for writing properties
             PropertyTarget property = target as PropertyTarget;
+
             if(property != null)
             {
                 WriteProperty(property, options, writer);
@@ -169,6 +160,7 @@ namespace Microsoft.Ddue.Tools.Targets
 
             // special logic for writing constructors
             ConstructorTarget constructor = target as ConstructorTarget;
+
             if(constructor != null)
             {
                 WriteConstructor(constructor, options, writer);
@@ -192,6 +184,7 @@ namespace Microsoft.Ddue.Tools.Targets
         {
             if(reference == null)
                 throw new ArgumentNullException("reference");
+
             if(writer == null)
                 throw new ArgumentNullException("writer");
 
@@ -204,6 +197,7 @@ namespace Microsoft.Ddue.Tools.Targets
             }
 
             TypeReference type = reference as TypeReference;
+
             if(type != null)
             {
                 WriteType(type, options, writer);
@@ -211,6 +205,7 @@ namespace Microsoft.Ddue.Tools.Targets
             }
 
             MemberReference member = reference as MemberReference;
+
             if(member != null)
             {
                 WriteMember(member, options, writer);
@@ -218,6 +213,7 @@ namespace Microsoft.Ddue.Tools.Targets
             }
 
             ExtensionMethodReference extMethod = reference as ExtensionMethodReference;
+
             if(extMethod != null)
             {
                 WriteExtensionMethod(extMethod, options, writer);
@@ -328,10 +324,10 @@ namespace Microsoft.Ddue.Tools.Targets
             }
         }
 
-        private static void WriteTemplateParameters(string[] templates, XmlWriter writer)
+        private static void WriteTemplateParameters(IList<string> templates, XmlWriter writer)
         {
 
-            if(templates.Length == 0)
+            if(templates.Count == 0)
                 return;
 
             writer.WriteStartElement("span");
@@ -363,7 +359,7 @@ namespace Microsoft.Ddue.Tools.Targets
 
             writer.WriteEndElement();
 
-            for(int i = 0; i < templates.Length; i++)
+            for(int i = 0; i < templates.Count; i++)
             {
                 if(i > 0)
                     writer.WriteString(", ");
@@ -402,22 +398,16 @@ namespace Microsoft.Ddue.Tools.Targets
 
         private void WriteSpecializedType(SpecializedTypeReference special, DisplayOptions options, XmlWriter writer)
         {
+            IList<Specialization> specializations = special.Specializations;
 
-            Specialization[] specializations = special.Specializations;
-            for(int i = 0; i < specializations.Length; i++)
-            {
+            for(int i = 0; i < specializations.Count; i++)
                 if(i == 0)
-                {
                     WriteSpecialization(specializations[0], options, writer);
-                }
                 else
                 {
                     WriteSeparator(writer);
                     WriteSpecialization(specializations[i], options & ~DisplayOptions.ShowContainer, writer);
                 }
-
-            }
-
         }
 
         private void WriteSpecialization(Specialization specialization, DisplayOptions options, XmlWriter writer)
@@ -429,10 +419,10 @@ namespace Microsoft.Ddue.Tools.Targets
             WriteTemplateArguments(specialization.Arguments, writer);
         }
 
-        private void WriteTemplateArguments(TypeReference[] specialization, XmlWriter writer)
+        private void WriteTemplateArguments(IList<TypeReference> specialization, XmlWriter writer)
         {
 
-            if(specialization.Length == 0)
+            if(specialization.Count == 0)
                 return;
 
             writer.WriteStartElement("span");
@@ -464,7 +454,7 @@ namespace Microsoft.Ddue.Tools.Targets
 
             writer.WriteEndElement();
 
-            for(int i = 0; i < specialization.Length; i++)
+            for(int i = 0; i < specialization.Count; i++)
             {
                 if(i > 0)
                     writer.WriteString(", ");
@@ -631,11 +621,6 @@ namespace Microsoft.Ddue.Tools.Targets
             writer.WriteEndElement();
         }
 
-        private void WriteTemplateType(TemplateTypeReference template, DisplayOptions options, XmlWriter writer)
-        {
-            WriteTemplateType(template, options, writer, null);
-        }
-
         private void WriteTemplateType(TemplateTypeReference template, DisplayOptions options, XmlWriter writer, Dictionary<IndexedTemplateTypeReference, TypeReference> dictionary)
         {
             // if we have the name, just write it
@@ -686,75 +671,60 @@ namespace Microsoft.Ddue.Tools.Targets
         {
             Target target = targets[templateId];
 
-            if(target == null)
+            if(target != null)
             {
-                return ("UTT");
-            }
-            else
-            {
-
                 TypeTarget type = target as TypeTarget;
+
                 if(type != null)
                 {
-                    string[] templates = type.Templates;
-                    if(templates.Length > position)
-                    {
-                        return (templates[position]);
-                    }
-                    else
-                    {
-                        return ("UTT");
-                    }
-                }
+                    IList<string> templates = type.Templates;
 
-                MethodTarget method = target as MethodTarget;
-                if(method != null)
+                    if(templates.Count > position)
+                        return templates[position];
+                }
+                else
                 {
-                    string[] templates = method.Templates;
-                    if(templates.Length > position)
+                    MethodTarget method = target as MethodTarget;
+
+                    if(method != null)
                     {
-                        return (templates[position]);
-                    }
-                    else
-                    {
-                        return ("UTT");
+                        IList<string> templates = method.Templates;
+
+                        if(templates.Count > position)
+                            return templates[position];
                     }
                 }
-
-                return ("UTT");
             }
+
+            return "UTT";
         }
 
         private string GetTypeTemplateName(SimpleTypeReference type, int position)
         {
             TypeTarget target = targets[type.Id] as TypeTarget;
+
             if(target != null)
             {
-                string[] templates = target.Templates;
-                if(templates.Length > position)
-                {
-                    return (templates[position]);
-                }
-                else if(target.OuterType != null)
-                {
-                    return (GetTypeTemplateName(target.OuterType, position));
-                }
-                else
-                {
-                    return ("UTT");
-                }
+                IList<string> templates = target.Templates;
+
+                if(templates.Count > position)
+                    return templates[position];
+
+                if(target.ContainingType != null)
+                    return GetTypeTemplateName(target.ContainingType, position);
+
+                return "UTT";
             }
             else
-            {
                 throw new InvalidOperationException(String.Format(CultureInfo.InvariantCulture,
                     "Unknown type reference '{0}'", type.Id));
-            }
         }
 
         public void WriteExtensionMethod(ExtensionMethodReference extMethod, DisplayOptions options, XmlWriter writer)
         {
             if(extMethod == null)
                 throw new ArgumentNullException("extMethod");
+
             if(writer == null)
                 throw new ArgumentNullException("writer");
 
@@ -762,10 +732,8 @@ namespace Microsoft.Ddue.Tools.Targets
             writer.WriteString(extMethod.Name);
 
             // if this is a generic method, write any template params or args
-            if(extMethod.TemplateArgs != null && extMethod.TemplateArgs.Length > 0)
-            {
+            if(extMethod.TemplateArgs != null && extMethod.TemplateArgs.Count > 0)
                 WriteTemplateArguments(extMethod.TemplateArgs, writer);
-            }
 
             // write parameters
             if((options & DisplayOptions.ShowParameters) > 0)
@@ -774,9 +742,9 @@ namespace Microsoft.Ddue.Tools.Targets
 
         public void WriteMember(MemberReference member, DisplayOptions options, XmlWriter writer)
         {
-
             if(member == null)
                 throw new ArgumentNullException("member");
+
             if(writer == null)
                 throw new ArgumentNullException("writer");
 
@@ -807,16 +775,14 @@ namespace Microsoft.Ddue.Tools.Targets
 
         private void WriteSpecializedMember(SpecializedMemberReference member, DisplayOptions options, XmlWriter writer)
         {
-
             if((options & DisplayOptions.ShowContainer) > 0)
             {
                 WriteType(member.SpecializedType, options & ~DisplayOptions.ShowContainer, writer);
                 WriteSeparator(writer);
             }
 
-            Dictionary<IndexedTemplateTypeReference, TypeReference> dictionary = member.SpecializedType.GetSpecializationDictionary();
-            WriteSimpleMember(member.TemplateMember, options & ~DisplayOptions.ShowContainer, writer, dictionary);
-
+            WriteSimpleMember(member.TemplateMember, options & ~DisplayOptions.ShowContainer, writer,
+                member.SpecializedType.SpecializationDictionary);
         }
 
         private void WriteSimpleMember(SimpleMemberReference member, DisplayOptions options, XmlWriter writer)
@@ -840,7 +806,7 @@ namespace Microsoft.Ddue.Tools.Targets
 
             if(implements == null)
             {
-                if(target.conversionOperator)
+                if(target.IsConversionOperator)
                     WriteConversionOperator(target, writer);
                 else
                     writer.WriteString(target.Name);
@@ -856,21 +822,16 @@ namespace Microsoft.Ddue.Tools.Targets
             if((options & DisplayOptions.ShowTemplates) > 0)
             {
                 // if this is a generic method, write any template params or args
-                if(target.TemplateArgs != null && target.TemplateArgs.Length > 0)
+                if(target.TemplateArgs != null && target.TemplateArgs.Count > 0)
                     WriteTemplateArguments(target.TemplateArgs, writer);
             }
 
             if((options & DisplayOptions.ShowParameters) > 0)
             {
-                Parameter[] parameters = target.Parameters;
-
-                if(target.ConversionOperator)
-                {
-                    TypeReference returns = target.returnType;
-                    WriteConversionOperatorParameters(parameters, returns, writer, dictionary);
-                }
+                if(target.IsConversionOperator)
+                    WriteConversionOperatorParameters(target.Parameters, target.ReturnType, writer, dictionary);
                 else
-                    WriteMethodParameters(parameters, writer, dictionary);
+                    WriteMethodParameters(target.Parameters, writer, dictionary);
             }
         }
 
@@ -886,11 +847,11 @@ namespace Microsoft.Ddue.Tools.Targets
 
             writer.WriteStartElement("span");
             writer.WriteAttributeString("class", "vb");
-            if(target.name == "Explicit")
+            if(target.Name == "Explicit")
             {
                 writer.WriteString("Narrowing");
             }
-            else if(target.name == "Implicit")
+            else if(target.Name == "Implicit")
             {
                 writer.WriteString("Widening");
             }
@@ -898,41 +859,43 @@ namespace Microsoft.Ddue.Tools.Targets
 
             writer.WriteStartElement("span");
             writer.WriteAttributeString("class", "cpp");
-            writer.WriteString(target.name);
+            writer.WriteString(target.Name);
             writer.WriteEndElement();
 
             writer.WriteStartElement("span");
             writer.WriteAttributeString("class", "nu");
-            writer.WriteString(target.name);
+            writer.WriteString(target.Name);
             writer.WriteEndElement();
 
             writer.WriteStartElement("span");
             writer.WriteAttributeString("class", "fs");
-            writer.WriteString(target.name);
+            writer.WriteString(target.Name);
             writer.WriteEndElement();
 
             writer.WriteEndElement();
         }
 
-        internal void WriteMethodParameters(Parameter[] parameters, XmlWriter writer)
+        internal void WriteMethodParameters(IList<Parameter> parameters, XmlWriter writer)
         {
             WriteMethodParameters(parameters, writer, null);
         }
 
 
-        private void WriteMethodParameters(Parameter[] parameters, XmlWriter writer, Dictionary<IndexedTemplateTypeReference, TypeReference> dictionary)
+        private void WriteMethodParameters(IList<Parameter> parameters, XmlWriter writer,
+          Dictionary<IndexedTemplateTypeReference, TypeReference> dictionary)
         {
-            if(parameters.Length > 0)
+            if(parameters.Count > 0)
             {
                 writer.WriteString("(");
 
                 // show parameters
                 // we need to deal with type template substitutions!
-                for(int i = 0; i < parameters.Length; i++)
+                for(int i = 0; i < parameters.Count; i++)
                 {
                     if(i > 0)
                         writer.WriteString(", ");
-                    WriteType(parameters[i].Type, DisplayOptions.Default, writer, dictionary);
+
+                    WriteType(parameters[i].ParameterType, DisplayOptions.Default, writer, dictionary);
                 }
 
                 writer.WriteString(")");
@@ -968,24 +931,25 @@ namespace Microsoft.Ddue.Tools.Targets
             }
         }
 
-        private void WriteConversionOperatorParameters(Parameter[] parameters, TypeReference returns, XmlWriter writer, Dictionary<IndexedTemplateTypeReference, TypeReference> dictionary)
+        private void WriteConversionOperatorParameters(IList<Parameter> parameters, TypeReference returns,
+          XmlWriter writer, Dictionary<IndexedTemplateTypeReference, TypeReference> dictionary)
         {
-            if(parameters.Length > 0 || returns != null)
+            if(parameters.Count > 0 || returns != null)
                 writer.WriteString("(");
 
-            if(parameters.Length > 0)
-                WriteType(parameters[0].Type, DisplayOptions.Default, writer, dictionary);
+            if(parameters.Count > 0)
+                WriteType(parameters[0].ParameterType, DisplayOptions.Default, writer, dictionary);
 
-            if(parameters.Length > 0 && returns != null)
+            if(parameters.Count > 0 && returns != null)
                 writer.WriteString(" to ");
 
             if(returns != null)
                 WriteType(returns, DisplayOptions.Default, writer, dictionary);
 
-            if(parameters.Length > 0 || returns != null)
+            if(parameters.Count > 0 || returns != null)
                 writer.WriteString(")");
 
-            if(parameters.Length == 0 && returns == null)
+            if(parameters.Count == 0 && returns == null)
             {
                 writer.WriteStartElement("span");
                 writer.WriteAttributeString("class", "languageSpecificText");
@@ -1021,10 +985,10 @@ namespace Microsoft.Ddue.Tools.Targets
 
             if((options & DisplayOptions.ShowParameters) > 0)
             {
-                Parameter[] parameters = target.Parameters;
+                IList<Parameter> parameters = target.Parameters;
 
                 // VB only shows parenthesis when there are parameters
-                if(parameters.Length > 0)
+                if(parameters.Count > 0)
                 {
                     writer.WriteStartElement("span");
                     writer.WriteAttributeString("class", "languageSpecificText");
@@ -1057,11 +1021,12 @@ namespace Microsoft.Ddue.Tools.Targets
 
                     // show parameters
                     // we need to deal with type template substitutions!
-                    for(int i = 0; i < parameters.Length; i++)
+                    for(int i = 0; i < parameters.Count; i++)
                     {
                         if(i > 0)
                             writer.WriteString(", ");
-                        WriteType(parameters[i].Type, DisplayOptions.Default, writer);
+
+                        WriteType(parameters[i].ParameterType, DisplayOptions.Default, writer);
                     }
 
                     writer.WriteStartElement("span");
@@ -1107,19 +1072,14 @@ namespace Microsoft.Ddue.Tools.Targets
         {
 
 
-            WriteType(constructor.Type, options & ~DisplayOptions.ShowContainer, writer);
+            WriteType(constructor.ContainingType, options & ~DisplayOptions.ShowContainer, writer);
 
             if((options & DisplayOptions.ShowParameters) > 0)
-            {
-                Parameter[] parameters = constructor.Parameters;
-                WriteMethodParameters(parameters, writer);
-            }
-
+                WriteMethodParameters(constructor.Parameters, writer);
         }
 
         private void WriteSpecializedMemberWithParameters(SpecializedMemberWithParametersReference ugly, DisplayOptions options, XmlWriter writer)
         {
-
             if((options & DisplayOptions.ShowContainer) > 0)
             {
                 WriteSpecializedType(ugly.SpecializedType, options & ~DisplayOptions.ShowContainer, writer);
@@ -1130,11 +1090,11 @@ namespace Microsoft.Ddue.Tools.Targets
 
             if((options & DisplayOptions.ShowParameters) > 0)
             {
-
                 writer.WriteString("(");
 
-                TypeReference[] parameterTypes = ugly.ParameterTypes;
-                for(int i = 0; i < parameterTypes.Length; i++)
+                IList<TypeReference> parameterTypes = ugly.ParameterTypes;
+
+                for(int i = 0; i < parameterTypes.Count; i++)
                 {
                     if(i > 0)
                         writer.WriteString(", ");

@@ -1,0 +1,83 @@
+﻿<Window x:Class="FlowDocumentTest.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Syntax Highlighting Example" Height="600" Width="800">
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="*" />
+		</Grid.RowDefinitions>
+		<Grid Grid.Row="0">
+			<Grid.RowDefinitions>
+				<RowDefinition />
+				<RowDefinition />
+				<RowDefinition />
+				<RowDefinition />
+				<RowDefinition />
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition />
+			</Grid.ColumnDefinitions>
+			<TextBlock Grid.Column="0" Grid.Row="0" Text="Language" TextAlignment="Right" Margin="3" />
+			<ComboBox Name="cboLanguage" Grid.Column="1" Grid.Row="0" Margin="3" MinWidth="110">
+				<ComboBoxItem Content="cs" />
+				<ComboBoxItem Content="vbnet" />
+				<ComboBoxItem Content="cpp" />
+				<ComboBoxItem Content="fs" />
+				<ComboBoxItem Content="xml" />
+				<ComboBoxItem Content="javascript" />
+				<ComboBoxItem Content="pshell" />
+				<ComboBoxItem Content="sql" />
+				<ComboBoxItem Content="none" />
+			</ComboBox>
+			<TextBlock Grid.Column="0" Grid.Row="1" Text="Tab Size Override" TextAlignment="Right" Margin="3" />
+			<TextBox Name="txtTabSize" Grid.Column="1" Grid.Row="1" Margin="3" />
+			<CheckBox Name="chkNumberLines" Grid.Column="0" Grid.Row="2" Content="Number Lines" Margin="3" />
+			<TextBox Name="txtSampleText" Grid.Row="3" Grid.ColumnSpan="3" VerticalScrollBarVisibility="Visible"
+        Height="100" Margin="3" AcceptsReturn="True" AcceptsTab="True" />
+			<Button Name="btnColorize" Grid.Row="4" Grid.Column="0" Content="Colorize" Margin="3"
+        Click="btnColorize_Click" />
+		</Grid>
+		<FlowDocumentScrollViewer Grid.Row="1">
+			<FlowDocument PagePadding="10,15,10,15" TextAlignment="Left">
+				<FlowDocument.Resources>
+					<Style TargetType="{x:Type Section}">
+						<Setter Property="FontFamily" Value="Consolas, Courier New, Courier"/>
+						<Setter Property="FontSize" Value="12.0"/>
+						<Setter Property="Background" Value="WhiteSmoke"/>
+						<Setter Property="BorderBrush" Value="Black"/>
+						<Setter Property="BorderThickness" Value="0, 0.5, 0, 0"/>
+						<Setter Property="Margin" Value="0, 0, 0, 10"/>
+						<Setter Property="Padding" Value="5"/>
+						<Style.Resources>
+							<Style TargetType="{x:Type Paragraph}">
+								<Setter Property="Margin" Value="0"/>
+							</Style>
+						</Style.Resources>
+					</Style>
+					<Style x:Key="CopyLink">
+						<Setter Property="TextElement.FontFamily" Value="Verdana" />
+						<Setter Property="TextElement.FontSize" Value="10" />
+					</Style>
+				</FlowDocument.Resources>
+				<BlockUIContainer Style="{DynamicResource CopyLink}" Margin="0,3">
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition />
+							<ColumnDefinition Width="Auto"/>
+						</Grid.ColumnDefinitions>
+						<TextBlock Name="lblTitle" Grid.Column="0" TextAlignment="Left" FontWeight="Bold">Title Goes here</TextBlock>
+						<TextBlock Grid.Column="1" TextAlignment="Right">
+							<Hyperlink NavigateUri="copy://code" Click="hlCopy_Click" ToolTip="Copy Code">Copy</Hyperlink>
+						</TextBlock>
+					</Grid>
+				</BlockUIContainer>
+				<Section>
+					<Paragraph Name="paraContent" />
+				</Section>
+			</FlowDocument>
+		</FlowDocumentScrollViewer>
+	</Grid>
+</Window>

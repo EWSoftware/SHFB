@@ -5,34 +5,42 @@
 
 // Change History
 // 12/26/2012 - EFW - Moved the classes into the Targets namespace
+// 12/30/2012 - EFW - Cleaned up the code and marked the class as serializable
 
 using System;
 
 namespace Microsoft.Ddue.Tools.Targets
 {
+    /// <summary>
+    /// This represents a simple member reference
+    /// </summary>
+    [Serializable]
     public class SimpleMemberReference : MemberReference
     {
-        private string memberId;
+        #region Properties
+        //=====================================================================
 
-        public string Id
-        {
-            get
-            {
-                return (memberId);
-            }
-        }
+        /// <summary>
+        /// This read-only property returns the member ID
+        /// </summary>
+        public string Id { get; private set; }
 
-        public Target Resolve(TargetDictionary targets)
-        {
-            return (targets[memberId]);
-        }
+        #endregion
 
+        #region Constructor
+        //=====================================================================
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="id">The member ID</param>
         internal SimpleMemberReference(string id)
         {
             if(id == null)
                 throw new ArgumentNullException("id");
 
-            this.memberId = id;
+            this.Id = id;
         }
+        #endregion
     }
 }

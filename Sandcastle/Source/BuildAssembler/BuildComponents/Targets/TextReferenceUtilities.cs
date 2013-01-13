@@ -215,7 +215,7 @@ namespace Microsoft.Ddue.Tools.Targets
                 // we simply create a reference to a member whoose identifier we construct in the specialized type
                 if(String.IsNullOrEmpty(arguments))
                 {
-                    string typeId = type.Specializations[type.Specializations.Length - 1].TemplateType.Id;
+                    string typeId = type.Specializations[type.Specializations.Count - 1].TemplateType.Id;
                     string memberId = String.Format(CultureInfo.InvariantCulture, "{0}:{1}.{2}", prefix,
                         typeId.Substring(2), name);
                     SimpleMemberReference member = new SimpleMemberReference(memberId);
@@ -243,13 +243,13 @@ namespace Microsoft.Ddue.Tools.Targets
 
         private static SimpleTypeReference genericTypeContext;
 
-        public static void SetGenericContext(string cer)
+        public static void SetGenericContext(string codeEntityReference)
         {
             // re-set the context
             genericTypeContext = null;
 
             // get the new context
-            Reference context = CreateReference(cer);
+            Reference context = CreateReference(codeEntityReference);
             if(context == null)
                 return;
 

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : MamlToFlowDocumentConverter.Static.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/26/2012
-// Note    : Copyright 2012, Eric Woodruff, All rights reserved
+// Updated : 01/11/2013
+// Note    : Copyright 2012-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the static data definitions used by the MAML to flow document converter class
@@ -201,15 +201,6 @@ namespace SandcastleBuilder.WPF.Maml
             { "textValue", "Text Value" },
             { "whatsNew", "What's New" }
         };
-        #endregion
-
-        #region Code block language ID to display title dictionary
-        //=====================================================================
-
-        // This is used to map code block language IDs to display titles.  These are case-insensitive.  They will
-        // be loaded on first use by the caller using the code colorizer definitions.
-        private static Dictionary<string, string> languageTitles = new Dictionary<string, string>(
-            StringComparer.OrdinalIgnoreCase);
         #endregion
 
         #region MAML element method handler dictionary

@@ -5,41 +5,52 @@
 
 // Change History
 // 12/26/2012 - EFW - Moved the classes into the Targets namespace
+// 12/30/2012 - EFW - Cleaned up the code and marked the class as serializable
 
 using System;
 
 namespace Microsoft.Ddue.Tools.Targets
 {
+    /// <summary>
+    /// This represents a specialized member reference
+    /// </summary>
+    [Serializable]
     public class SpecializedMemberReference : MemberReference
     {
-        private SimpleMemberReference member;
+        #region Properties
+        //=====================================================================
 
-        private SpecializedTypeReference type;
+        /// <summary>
+        /// This read-only property returns the template member
+        /// </summary>
+        public SimpleMemberReference TemplateMember { get; private set; }
 
-        public SimpleMemberReference TemplateMember
+        /// <summary>
+        /// This read-only property returns the specialized type
+        /// </summary>
+        public SpecializedTypeReference SpecializedType { get; private set; }
+        #endregion
+
+        #region Constructor
+        //=====================================================================
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="templateMember"></param>
+        /// <param name="specializedType"></param>
+        internal SpecializedMemberReference(SimpleMemberReference templateMember,
+          SpecializedTypeReference specializedType)
         {
-            get
-            {
-                return (member);
-            }
-        }
+            if(templateMember == null)
+                throw new ArgumentNullException("templateMember");
 
-        public SpecializedTypeReference SpecializedType
-        {
-            get
-            {
-                return (type);
-            }
-        }
+            if(specializedType == null)
+                throw new ArgumentNullException("specializedType");
 
-        internal SpecializedMemberReference(SimpleMemberReference member, SpecializedTypeReference type)
-        {
-            if(member == null)
-                throw new ArgumentNullException("member");
-            if(type == null)
-                throw new ArgumentNullException("type");
-            this.member = member;
-            this.type = type;
+            this.TemplateMember = templateMember;
+            this.SpecializedType = specializedType;
         }
+        #endregion
     }
 }

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : BasePropertyPage.cs
 // Author  : Eric Woodruff
-// Updated : 10/28/2012
-// Note    : Copyright 2012, Eric Woodruff, All rights reserved
+// Updated : 01/09/2013
+// Note    : Copyright 2012-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This user control is used as the base class for standalone GUI property pages
@@ -23,14 +23,11 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
-using SandcastleBuilder.Gui.ContentEditors;
 using SandcastleBuilder.Utils;
 using SandcastleBuilder.Utils.Design;
 
@@ -420,11 +417,9 @@ namespace SandcastleBuilder.Package.PropertyPages
                 if(projProp != null)
                     propValue = projProp.UnevaluatedValue;
 
-                // If null, the property probably doesn't exist so ignore it
-                if(propValue == null)
-                    return;
-
-                if(this.IsEscapedProperty(boundProperty))
+                // If null, we'll assign a default value below so that it doesn't retain a value from a prior
+                // project.
+                if(propValue != null && this.IsEscapedProperty(boundProperty))
                     propValue = EscapeValueAttribute.Unescape(propValue);
 
                 // Set the value based on the type
@@ -432,63 +427,74 @@ namespace SandcastleBuilder.Package.PropertyPages
                 {
                     case TypeCode.Object:
                     case TypeCode.String:
-                        controlValue = propValue;
+                        controlValue = (propValue ?? String.Empty);
                         break;
 
                     case TypeCode.Char:
-                        controlValue = propValue[0];
+                        controlValue = (propValue != null) ? propValue[0] : '\x0';
                         break;
 
                     case TypeCode.Byte:
-                        controlValue = Convert.ToByte(propValue[0]);
+                        controlValue = (propValue != null) ? Convert.ToByte(propValue[0]) : 0;
                         break;
 
                     case TypeCode.SByte:
-                        controlValue = Convert.ToSByte(propValue[0]);
+                        controlValue = (propValue != null) ? Convert.ToSByte(propValue[0]) : 0;
                         break;
 
                     case TypeCode.Decimal:
-                        controlValue = Convert.ToDecimal(propValue, CultureInfo.CurrentCulture);
+                        controlValue = (propValue != null) ? Convert.ToDecimal(propValue,
+                            CultureInfo.CurrentCulture) : 0m;
                         break;
 
                     case TypeCode.Double:
-                        controlValue = Convert.ToDouble(propValue, CultureInfo.CurrentCulture);
+                        controlValue = (propValue != null) ? Convert.ToDouble(propValue,
+                            CultureInfo.CurrentCulture) : 0d;
                         break;
 
                     case TypeCode.Single:
-                        controlValue = Convert.ToSingle(propValue, CultureInfo.CurrentCulture);
+                        controlValue = (propValue != null) ? Convert.ToSingle(propValue,
+                            CultureInfo.CurrentCulture) : 0f;
                         break;
 
                     case TypeCode.Int16:
-                        controlValue = Convert.ToInt16(propValue, CultureInfo.CurrentCulture);
+                        controlValue = (propValue != null) ? Convert.ToInt16(propValue,
+                            CultureInfo.CurrentCulture) : 0;
                         break;
 
                     case TypeCode.Int32:
-                        controlValue = Convert.ToInt32(propValue, CultureInfo.CurrentCulture);
+                        controlValue = (propValue != null) ? Convert.ToInt32(propValue,
+                            CultureInfo.CurrentCulture) : 0;
                         break;
 
                     case TypeCode.Int64:
-                        controlValue = Convert.ToInt64(propValue, CultureInfo.CurrentCulture);
+                        controlValue = (propValue != null) ? Convert.ToInt64(propValue,
+                            CultureInfo.CurrentCulture) : 0;
                         break;
 
                     case TypeCode.UInt16:
-                        controlValue = Convert.ToUInt16(propValue, CultureInfo.CurrentCulture);
+                        controlValue = (propValue != null) ? Convert.ToUInt16(propValue,
+                            CultureInfo.CurrentCulture) : 0;
                         break;
 
                     case TypeCode.UInt32:
-                        controlValue = Convert.ToUInt32(propValue, CultureInfo.CurrentCulture);
+                        controlValue = (propValue != null) ? Convert.ToUInt32(propValue,
+                            CultureInfo.CurrentCulture) : 0;
                         break;
 
                     case TypeCode.UInt64:
-                        controlValue = Convert.ToUInt64(propValue, CultureInfo.CurrentCulture);
+                        controlValue = (propValue != null) ? Convert.ToUInt64(propValue,
+                            CultureInfo.CurrentCulture) : 0;
                         break;
 
                     case TypeCode.Boolean:
-                        controlValue = Convert.ToBoolean(propValue, CultureInfo.CurrentCulture);
+                        controlValue = (propValue != null) ? Convert.ToBoolean(propValue,
+                            CultureInfo.CurrentCulture) : false;
                         break;
 
                     case TypeCode.DateTime:
-                        controlValue = Convert.ToDateTime(propValue, CultureInfo.CurrentCulture);
+                        controlValue = (propValue != null) ? Convert.ToDateTime(propValue,
+                            CultureInfo.CurrentCulture) : DateTime.Today;
                         break;
 
                     default:        // Ignore unknown types
@@ -538,7 +544,9 @@ namespace SandcastleBuilder.Package.PropertyPages
                     pi = t.GetProperty(customControls[typeName], BindingFlags.Public | BindingFlags.Instance);
                 }
                 else if(c is TextBoxBase || c is Label)
+                {
                     pi = t.GetProperty("Text", BindingFlags.Public | BindingFlags.Instance);
+                }
                 else if(c is ComboBox)
                 {
                     if(((ComboBox)c).DataSource != null)
@@ -547,9 +555,13 @@ namespace SandcastleBuilder.Package.PropertyPages
                         pi = t.GetProperty("SelectedItem", BindingFlags.Public | BindingFlags.Instance);
                 }
                 else if(c is CheckBox)
+                {
                     pi = t.GetProperty("Checked", BindingFlags.Public | BindingFlags.Instance);
+                }
                 else if((c is DateTimePicker) || (c is UpDownBase) || (c is TrackBar))
+                {
                     pi = t.GetProperty("Value", BindingFlags.Public | BindingFlags.Instance);
+                }
                 else if(c is ListBox)
                 {
                     if(((ListBox)c).DataSource != null)

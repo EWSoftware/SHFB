@@ -5,35 +5,45 @@
 
 // Change History
 // 12/26/2012 - EFW - Moved the classes into the Targets namespace
+// 12/30/2012 - EFW - Cleaned up the code and marked the class as serializable
+
+using System;
 
 namespace Microsoft.Ddue.Tools.Targets
 {
+    /// <summary>
+    /// This represents a method template type reference
+    /// </summary>
+    [Serializable]
     public class MethodTemplateTypeReference : TemplateTypeReference
     {
-        private MemberReference template;
+        #region Properties
+        //=====================================================================
 
-        private int position;
+        /// <summary>
+        /// This read-only property returns the template method
+        /// </summary>
+        public MemberReference TemplateMethod { get; private set; }
 
-        public MemberReference TemplateMethod
-        {
-            get
-            {
-                return (template);
-            }
-        }
+        /// <summary>
+        /// This read only property returns the position
+        /// </summary>
+        public int Position { get; private set; }
+        #endregion
 
-        public int Position
-        {
-            get
-            {
-                return (position);
-            }
-        }
+        #region Constructor
+        //=====================================================================
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="template">The template method</param>
+        /// <param name="position">The position</param>
         internal MethodTemplateTypeReference(MemberReference template, int position)
         {
-            this.template = template;
-            this.position = position;
+            this.TemplateMethod = template;
+            this.Position = position;
         }
+        #endregion
     }
 }

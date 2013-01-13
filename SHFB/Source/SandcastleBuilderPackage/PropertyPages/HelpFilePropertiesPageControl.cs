@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : HelpFilePropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 11/18/2012
-// Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
+// Updated : 01/09/2013
+// Note    : Copyright 2011-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This user control is used to edit the Help File category properties.
@@ -201,6 +201,9 @@ namespace SandcastleBuilder.Package.PropertyPages
 #endif
                 if(projProp != null)
                     cboLanguage.SelectedItem = this.AddLanguage(projProp.UnevaluatedValue ?? "en-US");
+                else
+                    cboLanguage.SelectedItem = LanguageResourceConverter.StandardValues.First(
+                        c => c.Name.Equals("en-US", StringComparison.OrdinalIgnoreCase));
 
                 return true;
             }

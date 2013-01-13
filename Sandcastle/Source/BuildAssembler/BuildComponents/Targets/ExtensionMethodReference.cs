@@ -5,54 +5,57 @@
 
 // Change History
 // 12/26/2012 - EFW - Moved the classes into the Targets namespace
+// 12/30/2012 - EFW - Cleaned up the code and marked the class as serializable
 
 using System;
+using System.Collections.Generic;
 
 namespace Microsoft.Ddue.Tools.Targets
 {
     /// <summary>
-    /// Contains the information to generate the display string for an extension method link
+    /// This represents and extension method reference
     /// </summary>
+    [Serializable]
     public class ExtensionMethodReference : Reference
     {
-        private string methodName;
+        #region Properties
+        //=====================================================================
 
-        public string Name
-        {
-            get
-            {
-                return (methodName);
-            }
-        }
+        /// <summary>
+        /// This read-only property returns the extension method name
+        /// </summary>
+        public string Name { get; private set; }
 
-        private Parameter[] parameters;
+        /// <summary>
+        /// This read-only property returns the extension method parameters
+        /// </summary>
+        public IList<Parameter> Parameters { get; private set; }
 
-        public Parameter[] Parameters
-        {
-            get
-            {
-                return (parameters);
-            }
-        }
+        /// <summary>
+        /// This read-only property returns the template arguments if any
+        /// </summary>
+        public IList<TypeReference> TemplateArgs { get; private set; }
+        #endregion
 
-        private TypeReference[] templateArgs;
+        #region Constructor
+        //=====================================================================
 
-        public TypeReference[] TemplateArgs
-        {
-            get
-            {
-                return (templateArgs);
-            }
-        }
-
-        internal ExtensionMethodReference(string methodName, Parameter[] parameters, TypeReference[] templateArgs)
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="methodName">The extension method name</param>
+        /// <param name="parameters">The extension method parameters</param>
+        /// <param name="templateArgs">The extension method template arguments if any</param>
+        internal ExtensionMethodReference(string methodName, IList<Parameter> parameters,
+          IList<TypeReference> templateArgs)
         {
             if(methodName == null)
                 throw new ArgumentNullException("methodName");
 
-            this.methodName = methodName;
-            this.parameters = parameters;
-            this.templateArgs = templateArgs;
+            this.Name = methodName;
+            this.Parameters = parameters;
+            this.TemplateArgs = (templateArgs ?? new List<TypeReference>());
         }
+        #endregion
     }
 }

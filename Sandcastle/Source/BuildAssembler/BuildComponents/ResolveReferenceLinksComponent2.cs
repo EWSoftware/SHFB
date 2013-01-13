@@ -34,7 +34,7 @@ namespace Microsoft.Ddue.Tools
         /// <summary>
         /// This is used as the key name when sharing the MSDN content ID cache across instances
         /// </summary>
-        public const string SharedMsdnCacheId = "SharedMsdnCache";
+        public const string SharedMsdnContentIdCacheId = "SharedMsdnContentIdCache";
 
         /// <summary>
         /// This is used as the key name when sharing the target dictionaries across instances
@@ -152,7 +152,7 @@ namespace Microsoft.Ddue.Tools
                     this.WriteMessage(MessageLevel.Info, "Loading {0} reference link type targets", type);
 
                     newTargets = this.CreateTargetDictionary(targetsNode);
-                    sharedTargets[id] = newTargets;
+                    sharedTargets[newTargets.DictionaryId] = newTargets;
                 }
 
                 targets.Add(type, newTargets);
@@ -178,6 +178,9 @@ namespace Microsoft.Ddue.Tools
 
             // Dump targets for comparison to other versions
 //            targets.DumpTargetDictionary(Path.GetFullPath("TargetDictionary.xml"));
+
+            // Serialization test
+//            targets.SerializeDictionary(Directory.GetCurrentDirectory());
 #endif
             base.WriteMessage(MessageLevel.Info, "Loaded {0} reference targets.", targets.Count);
 
@@ -231,7 +234,7 @@ namespace Microsoft.Ddue.Tools
                         MethodTarget method = target as MethodTarget;
 
                         if(method != null)
-                            isConversionOperator = method.conversionOperator;
+                            isConversionOperator = method.IsConversionOperator;
 
                         MemberTarget member = target as MemberTarget;
 
@@ -278,7 +281,7 @@ namespace Microsoft.Ddue.Tools
 
                     if(member != null)
                     {
-                        SimpleTypeReference typeRef = member.Type as SimpleTypeReference;
+                        SimpleTypeReference typeRef = member.ContainingType as SimpleTypeReference;
 
                         if(typeRef != null && targets[typeRef.Id] is EnumerationTarget)
                             targetId = typeRef.Id;
@@ -296,7 +299,7 @@ namespace Microsoft.Ddue.Tools
                             // If the web service failed, report the reason
                             if(msdnResolver.IsDisabled)
                                 base.WriteMessage(key, MessageLevel.Warn, "MSDN web service failed.  No " +
-                                    "further look ups will be performed for this run.\r\nReason: {0}",
+                                    "further look ups will be performed for this build.\r\nReason: {0}",
                                     msdnResolver.DisabledReason);
                             else
                                 base.WriteMessage(key, MessageLevel.Warn, "MSDN URL not found for target '{0}'.",
@@ -456,10 +459,11 @@ namespace Microsoft.Ddue.Tools
         /// dispose of the unmanaged resources.</param>
         protected override void Dispose(bool disposing)
         {
-            if(disposing)
+            if(disposing && msdnResolver != null && !msdnResolver.IsDisposed)
             {
-                this.UpdateMsdnUrlCache();
-                this.DisposeOfTargets();
+                this.UpdateMsdnContentIdCache();
+                msdnResolver.Dispose();
+                targets.Dispose();
             }
 
             base.Dispose(disposing);
@@ -478,17 +482,17 @@ namespace Microsoft.Ddue.Tools
         /// <remarks>This can be overridden in derived classes to provide persistent caches with backing stores
         /// other than the default dictionary serialized to a binary file.  It also allows sharing the cache
         /// across instances by placing it in the <see cref="BuildComponent.Data"/> dictionary using the key
-        /// name <c>SharedMsdnUrlCacheID</c>.
+        /// name <c>SharedMsdnContentIdCacheID</c>.
         /// 
-        /// <para>If overridden, the <see cref="UpdateMsdnUrlCache"/> method should also be overridden to
-        /// persist changes to the cache as needed.</para></remarks>
+        /// <para>If overridden, the <see cref="UpdateMsdnContentIdCache"/> method should also be overridden to
+        /// persist changes to the cache if needed.</para></remarks>
         protected virtual MsdnResolver CreateMsdnResolver(XPathNavigator configuration)
         {
             MsdnResolver resolver;
             IDictionary<string, string> cache = null;
 
-            if(BuildComponent.Data.ContainsKey(SharedMsdnCacheId))
-                cache = BuildComponent.Data[SharedMsdnCacheId] as IDictionary<string, string>;
+            if(BuildComponent.Data.ContainsKey(SharedMsdnContentIdCacheId))
+                cache = BuildComponent.Data[SharedMsdnContentIdCacheId] as IDictionary<string, string>;
 
             // If the shared cache already exists, return an instance that uses it.  It is assumed that all
             // subsequent instances will use the same cache.
@@ -497,7 +501,7 @@ namespace Microsoft.Ddue.Tools
 
             // If a <cache> element is not specified, we'll use the standard resolver without a persistent cache.
             // We will share it across all instances though.
-            XPathNavigator node = configuration.SelectSingleNode("msdnUrlCache");
+            XPathNavigator node = configuration.SelectSingleNode("msdnContentIdCache");
 
             if(node == null)
                 resolver = new MsdnResolver();
@@ -508,7 +512,7 @@ namespace Microsoft.Ddue.Tools
 
                 if(String.IsNullOrWhiteSpace(msdnIdCacheFile))
                     base.WriteMessage(MessageLevel.Error, "You must specify a path attribute value on the " +
-                        "msdnUrlCache element.");
+                        "msdnContentIdCache element.");
 
                 // Create the folder if it doesn't exist
                 msdnIdCacheFile = Path.GetFullPath(Environment.ExpandEnvironmentVariables(msdnIdCacheFile));
@@ -521,7 +525,7 @@ namespace Microsoft.Ddue.Tools
                 if(!File.Exists(msdnIdCacheFile))
                 {
                     // Logged as a diagnostic message since looking up all IDs can significantly slow the build
-                    base.WriteMessage(MessageLevel.Diagnostic, "The MSDN URL cache '" + msdnIdCacheFile +
+                    base.WriteMessage(MessageLevel.Diagnostic, "The MSDN content ID cache '" + msdnIdCacheFile +
                         "' does not exist yet.  All IDs will be looked up in this build which will slow it down.");
 
                     resolver = new MsdnResolver();
@@ -533,24 +537,26 @@ namespace Microsoft.Ddue.Tools
                         BinaryFormatter bf = new BinaryFormatter();
                         resolver = new MsdnResolver((IDictionary<string, string>)bf.Deserialize(fs));
 
-                        base.WriteMessage(MessageLevel.Info, "Loaded {0} cached MSDN URL entries",
+                        base.WriteMessage(MessageLevel.Info, "Loaded {0} cached MSDN content ID entries",
                             resolver.MsdnContentIdCache.Count);
                     }
             }
 
-            BuildComponent.Data[SharedMsdnCacheId] = resolver.MsdnContentIdCache;
+            BuildComponent.Data[SharedMsdnContentIdCacheId] = resolver.MsdnContentIdCache;
 
             return resolver;
         }
 
         /// <summary>
-        /// This is used to update the MSDN URL cache file
+        /// This is used to update the MSDN content ID cache file
         /// </summary>
-        public virtual void UpdateMsdnUrlCache()
+        /// <remarks>The default implementation serializes the standard dictionary to a file using binary
+        /// serialization if new entries were added and it loaded the cache file.</remarks>
+        public virtual void UpdateMsdnContentIdCache()
         {
             if(msdnIdCacheFile != null && msdnResolver != null && msdnResolver.CacheItemsAdded)
             {
-                base.WriteMessage(MessageLevel.Info, "MSDN URL cache updated.  Saving new information to " +
+                base.WriteMessage(MessageLevel.Info, "MSDN content ID cache updated.  Saving new information to " +
                     msdnIdCacheFile);
 
                 try
@@ -561,7 +567,7 @@ namespace Microsoft.Ddue.Tools
                         BinaryFormatter bf = new BinaryFormatter();
                         bf.Serialize(fs, msdnResolver.MsdnContentIdCache);
 
-                        base.WriteMessage(MessageLevel.Info, "New MSDN URL cache size: {0} entries",
+                        base.WriteMessage(MessageLevel.Info, "New MSDN content ID cache size: {0} entries",
                             msdnResolver.MsdnContentIdCache.Count);
                     }
                 }
@@ -569,8 +575,8 @@ namespace Microsoft.Ddue.Tools
                 {
                     // Most likely it couldn't access the file.  We'll issue a warning but will continue with
                     // the build.
-                    base.WriteMessage(MessageLevel.Warn, "Unable to create MSDN URL cache file.  It will be " +
-                        "created or updated on a subsequent build: " + ex.Message);
+                    base.WriteMessage(MessageLevel.Warn, "Unable to create MSDN content ID cache file.  It " +
+                        "will be created or updated on a subsequent build: " + ex.Message);
                 }
             }
         }
@@ -579,19 +585,16 @@ namespace Microsoft.Ddue.Tools
         /// This is used to create a <see cref="TargetDictionary"/> used to store reference link targets
         /// </summary>
         /// <param name="configuration">The configuration element for the target dictionary</param>
-        /// <returns>A default <see cref="TargetDirectory"/> instance containing the reference link targets</returns>
+        /// <returns>A default <see cref="SimpleTargetDirectory"/> instance containing the reference link targets</returns>
         /// <remarks>This can be overridden in derived classes to provide persistent caches with backing stores
-        /// other than the default dictionary serialized to a binary file.
-        /// 
-        /// <para>If overridden, the <see cref="DisposeOfTargets"/> method should also be overridden to dispose
-        /// of the target dictionaries as needed.</para></remarks>
+        /// other than the default <see cref="Dictionary{TKey, TValue}"/>.
         public virtual TargetDictionary CreateTargetDictionary(XPathNavigator configuration)
         {
             TargetDictionary d = null;
 
             try
             {
-                d = new TargetDictionary(configuration);
+                d = new SimpleTargetDictionary(this, configuration);
             }
             catch(Exception ex)
             {
@@ -599,14 +602,6 @@ namespace Microsoft.Ddue.Tools
             }
 
             return d;
-        }
-
-        /// <summary>
-        /// This is used to dispose of the target dictionaries
-        /// </summary>
-        public virtual void DisposeOfTargets()
-        {
-            // TODO: Implement this once serialization has been implemented
         }
         #endregion
     }

@@ -5,42 +5,46 @@
 
 // Change History
 // 12/26/2012 - EFW - Moved the classes into the Targets namespace
+// 12/30/2012 - EFW - Cleaned up the code and marked the class as serializable
+
+using System;
+using System.Collections.Generic;
 
 namespace Microsoft.Ddue.Tools.Targets
 {
+    /// <summary>
+    /// This represents a method target
+    /// </summary>
+    [Serializable]
     public class MethodTarget : ProcedureTarget
     {
-        internal Parameter[] parameters;
+        #region Properties
+        //=====================================================================
 
-        internal TypeReference returnType;
+        public IList<Parameter> Parameters { get; private set; }
 
-        internal string[] templates;
+        public TypeReference ReturnType { get; private set; }
 
-        public Parameter[] Parameters
-        {
-            get
-            {
-                return (parameters);
-            }
-        }
-
-        public string[] Templates
-        {
-            get
-            {
-                return (templates);
-            }
-        }
+        public IList<string> Templates { get; internal set; }
 
         // property to hold specialized template arguments (used with extension methods)
-        internal TypeReference[] templateArgs;
+        public IList<TypeReference> TemplateArgs { get; internal set; }
 
-        public TypeReference[] TemplateArgs
+        #endregion
+
+        #region Constructor
+        //=====================================================================
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="parameters">Method parameters if any</param>
+        /// <param name="returnType">The method return type</param>
+        public MethodTarget(IList<Parameter> parameters, TypeReference returnType)
         {
-            get
-            {
-                return (templateArgs);
-            }
+            this.Parameters = (parameters ?? new List<Parameter>());
+            this.ReturnType = returnType;
         }
+        #endregion
     }
 }

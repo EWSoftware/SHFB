@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : TopicPreviewerControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/05/2012
-// Note    : Copyright 2012, Eric Woodruff, All rights reserved
+// Updated : 01/12/2013
+// Note    : Copyright 2012-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the class used to preview MAML topic files.
@@ -16,6 +16,7 @@
 // Version     Date     Who  Comments
 // ==============================================================================================================
 // 1.9.3.4  01/02/2012  EFW  Created the code
+// 1.9.7.0  01/12/2012  EFW  Added support for colorized code blocks
 //===============================================================================================================
 
 using System;
@@ -23,12 +24,15 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Xml.Linq;
+
+using ColorizerLibrary;
 
 using SandcastleBuilder.Utils;
 using SandcastleBuilder.Utils.BuildComponent;
@@ -52,6 +56,8 @@ namespace SandcastleBuilder.WPF.UserControls
         private List<Uri> browserHistory;
         private int historyLocation;
         private bool isNavigating;
+
+        private static Regex reRemoveLineNumbers = new Regex(@"^\s*\d+\| ", RegexOptions.Multiline);
         #endregion
 
         #region Properties
@@ -129,11 +135,28 @@ namespace SandcastleBuilder.WPF.UserControls
         /// </summary>
         public TopicPreviewerControl()
         {
-            // Load the language block titles on first use
-            if(MamlToFlowDocumentConverter.LanguageTitles.Count == 0)
-                LoadLanguageTitles();
+            if(MamlToFlowDocumentConverter.CodeColorizer == null)
+                try
+                {
+                    string colorizerPath = Path.Combine(BuildComponentManager.HelpFileBuilderFolder, "Colorizer");
+
+                    MamlToFlowDocumentConverter.CodeColorizer = new CodeColorizer(Path.Combine(colorizerPath,
+                      "highlight.xml"), Path.Combine(colorizerPath, "highlight_flowDoc.xsl"))
+                    {
+                        OutputFormat = OutputFormat.FlowDocument
+                    };
+
+                    MamlToFlowDocumentConverter.ColorizerFlowDocumentTemplate = Path.Combine(colorizerPath,
+                        "DocumentTemplate.xaml");
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show("Unable to create code block colorizer.  Reason: " + ex.Message,
+                        Constants.AppName, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                }
 
             converter = new MamlToFlowDocumentConverter();
+
             browserHistory = new List<Uri>();
             historyLocation = -1;
 
@@ -186,48 +209,6 @@ namespace SandcastleBuilder.WPF.UserControls
 
                 if(t != null && !String.IsNullOrEmpty(t.Id))
                     this.NavigateToTopic(new Uri("link://" + t.Id));
-            }
-        }
-
-        /// <summary>
-        /// This is used to load the language block titles on first use
-        /// </summary>
-        private static void LoadLanguageTitles()
-        {
-            try
-            {
-                string highlighterFile = Path.Combine(Environment.ExpandEnvironmentVariables("%SHFBROOT%"),
-                    @"Colorizer\highlight.xml");
-
-                if(File.Exists(highlighterFile))
-                {
-                    XDocument doc = XDocument.Load(highlighterFile);
-                    var langTitles = MamlToFlowDocumentConverter.LanguageTitles;
-
-                    // Get the variations first
-                    foreach(var lang in doc.Descendants("map").Descendants("language"))
-                        langTitles.Add(lang.Attribute("from").Value, lang.Attribute("to").Value);
-
-                    // Get the main language IDs and titles and also assign them to the variations
-                    foreach(var lang in doc.Descendants("languages").Descendants("language"))
-                    {
-                        langTitles.Add(lang.Attribute("id").Value, lang.Attribute("name").Value);
-
-                        var variations = langTitles.Where(kw => kw.Value.Equals(lang.Attribute("id").Value,
-                            StringComparison.OrdinalIgnoreCase)).ToArray();
-
-                        foreach(var v in variations)
-                            langTitles[v.Key] = lang.Attribute("name").Value;
-                    }
-
-                    // Map "none" to an empty title
-                    langTitles["none"] = " ";
-                }
-            }
-            catch(Exception ex)
-            {
-                MessageBox.Show("Unable to load language titles for code blocks.  Reason: " + ex.Message,
-                    Constants.AppName, MessageBoxButton.OK, MessageBoxImage.Exclamation);
             }
         }
 
@@ -511,6 +492,47 @@ namespace SandcastleBuilder.WPF.UserControls
 
             return wasFound;
         }
+
+        /// <summary>
+        /// Copy code from a code block element
+        /// </summary>
+        /// <param name="link">The hyperlink associated with the code block.  Note that this makes an assumption
+        /// about the structure of the document</param>
+        private static void CopyCode(Hyperlink link)
+        {
+            try
+            {
+                var fe = link.Parent as FrameworkElement;
+
+                fe = fe.Parent as FrameworkElement;
+
+                var b = fe.Parent as BlockUIContainer;
+
+                if(b != null)
+                {
+                    var sec = b.NextBlock as Section;
+
+                    if(sec != null)
+                    {
+                        var para = sec.Blocks.FirstBlock as Paragraph;
+
+                        if(para != null)
+                        {
+                            TextRange r = new TextRange(para.ContentStart, para.ContentEnd);
+
+                            // Remove line numbers from the front of each line if present and copy the text
+                            // to the clipboard.
+                            Clipboard.SetText(reRemoveLineNumbers.Replace(r.Text, String.Empty));
+                        }
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("Unable to copy code to clipboard.  Reason: " + ex.Message, Constants.AppName,
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
         #endregion
 
         #region General event handlers
@@ -574,6 +596,8 @@ namespace SandcastleBuilder.WPF.UserControls
             {
                 try
                 {
+                    Mouse.OverrideCursor = Cursors.Wait;
+
                     // If the file is open in an editor, use its current content
                     var args = new TopicContentNeededEventArgs(TopicContentNeededEvent, this, t.SourceFile);
 
@@ -601,6 +625,10 @@ namespace SandcastleBuilder.WPF.UserControls
                     // If we get here, something went really wrong
                     MessageBox.Show("Unable to convert topic.  Possible converter error.  Reason: " +
                         ex.Message, Constants.AppName, MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                finally
+                {
+                    Mouse.OverrideCursor = null;
                 }
 
                 if(!isNavigating && !String.IsNullOrEmpty(t.Id))
@@ -658,6 +686,13 @@ namespace SandcastleBuilder.WPF.UserControls
             {
                 MessageBox.Show("Unknown link target: " + link.NavigateUri.Host, "Topic Previewer",
                     MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                return;
+            }
+
+            // Copy code?
+            if(link.NavigateUri.Scheme.Equals("copy", StringComparison.OrdinalIgnoreCase))
+            {
+                CopyCode(link);
                 return;
             }
 

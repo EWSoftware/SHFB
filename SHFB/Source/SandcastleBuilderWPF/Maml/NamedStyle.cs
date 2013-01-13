@@ -1,24 +1,22 @@
-﻿//=============================================================================
+﻿//===============================================================================================================
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : NamedStyle.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/16/2012
-// Note    : Copyright 2012, Eric Woodruff, All rights reserved
+// Updated : 01/12/2013
+// Note    : Copyright 2012-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains the class used to contain the named styles used in the
-// converted flow document.
+// This file contains the class used to contain the named styles used in the converted flow document
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.  This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.9.3.4  01/02/2012  EFW  Created the code
-//=============================================================================
+//===============================================================================================================
 
 namespace SandcastleBuilder.WPF.Maml
 {
@@ -35,8 +33,6 @@ namespace SandcastleBuilder.WPF.Maml
         public const string CodeBlock = "CodeBlock";
         /// <summary>Code inline style</summary>
         public const string CodeInline = "CodeInline";
-        /// <summary>Code title style</summary>
-        public const string CodeTitle = "CodeTitle";
         /// <summary>Defined term style</summary>
         public const string DefinedTerm = "DefinedTerm";
         /// <summary>Definition style</summary>

@@ -5,41 +5,53 @@
 
 // Change History
 // 12/26/2012 - EFW - Moved the classes into the Targets namespace
+// 12/30/2012 - EFW - Cleaned up the code and marked the class as serializable
 
 using System;
+using System.Collections.Generic;
 
 namespace Microsoft.Ddue.Tools.Targets
 {
+    /// <summary>
+    /// This represents a specialization
+    /// </summary>
+    [Serializable]
     public class Specialization
     {
-        private SimpleTypeReference template;
+        #region Properties
+        //=====================================================================
 
-        private TypeReference[] arguments;
+        /// <summary>
+        /// This read-only property returns the template type
+        /// </summary>
+        public SimpleTypeReference TemplateType { get; private set; }
 
-        public SimpleTypeReference TemplateType
+        /// <summary>
+        /// This read-only property returns the arguments
+        /// </summary>
+        public IList<TypeReference> Arguments { get; private set; }
+
+        #endregion
+
+        #region Constructor
+        //=====================================================================
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="templateType">The template type</param>
+        /// <param name="arguments">The arguments</param>
+        internal Specialization(SimpleTypeReference templateType, IList<TypeReference> arguments)
         {
-            get
-            {
-                return (template);
-            }
-        }
+            if(templateType == null)
+                throw new ArgumentNullException("templateType");
 
-        public TypeReference[] Arguments
-        {
-            get
-            {
-                return arguments;
-            }
-        }
-
-        internal Specialization(SimpleTypeReference template, TypeReference[] arguments)
-        {
-            if(template == null)
-                throw new ArgumentNullException("template");
             if(arguments == null)
                 throw new ArgumentNullException("arguments");
-            this.template = template;
-            this.arguments = arguments;
+
+            this.TemplateType = templateType;
+            this.Arguments = arguments;
         }
+        #endregion
     }
 }

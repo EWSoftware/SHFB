@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : VisibilityPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 10/28/2012
-// Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
+// Updated : 01/09/2013
+// Note    : Copyright 2011-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This user control is used to edit the Visibility category properties
@@ -142,21 +142,22 @@ namespace SandcastleBuilder.Package.PropertyPages
             projProp = this.CurrentProject.MSBuildProject.GetProperty("VisibleItems");
 #endif
             // If not found or not valid, we'll ignore it and use the defaults
-            if(projProp != null && Enum.TryParse<VisibleItems>(projProp.UnevaluatedValue, out items))
-            {
-                chkAttributes.Checked = ((items & VisibleItems.Attributes) != 0);
-                chkExplicitInterfaceImplementations.Checked = ((items & VisibleItems.ExplicitInterfaceImplementations) != 0);
-                chkInheritedFrameworkInternalMembers.Checked = ((items & VisibleItems.InheritedFrameworkInternalMembers) != 0);
-                chkInheritedFrameworkMembers.Checked = ((items & VisibleItems.InheritedFrameworkMembers) != 0);
-                chkInheritedFrameworkPrivateMembers.Checked = ((items & VisibleItems.InheritedFrameworkPrivateMembers) != 0);
-                chkInheritedMembers.Checked = ((items & VisibleItems.InheritedMembers) != 0);
-                chkInternals.Checked = ((items & VisibleItems.Internals) != 0);
-                chkPrivateFields.Checked = ((items & VisibleItems.PrivateFields) != 0);
-                chkPrivates.Checked = ((items & VisibleItems.Privates) != 0);
-                chkProtected.Checked = ((items & VisibleItems.Protected) != 0);
-                chkProtectedInternalAsProtected.Checked = ((items & VisibleItems.ProtectedInternalAsProtected) != 0);
-                chkSealedProtected.Checked = ((items & VisibleItems.SealedProtected) != 0);
-            }
+            if(projProp == null || !Enum.TryParse<VisibleItems>(projProp.UnevaluatedValue, out items))
+                items = VisibleItems.InheritedFrameworkMembers | VisibleItems.InheritedMembers |
+                    VisibleItems.Protected | VisibleItems.SealedProtected;
+
+            chkAttributes.Checked = ((items & VisibleItems.Attributes) != 0);
+            chkExplicitInterfaceImplementations.Checked = ((items & VisibleItems.ExplicitInterfaceImplementations) != 0);
+            chkInheritedFrameworkInternalMembers.Checked = ((items & VisibleItems.InheritedFrameworkInternalMembers) != 0);
+            chkInheritedFrameworkMembers.Checked = ((items & VisibleItems.InheritedFrameworkMembers) != 0);
+            chkInheritedFrameworkPrivateMembers.Checked = ((items & VisibleItems.InheritedFrameworkPrivateMembers) != 0);
+            chkInheritedMembers.Checked = ((items & VisibleItems.InheritedMembers) != 0);
+            chkInternals.Checked = ((items & VisibleItems.Internals) != 0);
+            chkPrivateFields.Checked = ((items & VisibleItems.PrivateFields) != 0);
+            chkPrivates.Checked = ((items & VisibleItems.Privates) != 0);
+            chkProtected.Checked = ((items & VisibleItems.Protected) != 0);
+            chkProtectedInternalAsProtected.Checked = ((items & VisibleItems.ProtectedInternalAsProtected) != 0);
+            chkSealedProtected.Checked = ((items & VisibleItems.SealedProtected) != 0);
 
             return true;
         }

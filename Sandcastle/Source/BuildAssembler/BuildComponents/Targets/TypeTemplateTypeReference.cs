@@ -5,41 +5,52 @@
 
 // Change History
 // 12/26/2012 - EFW - Moved the classes into the Targets namespace
+// 12/30/2012 - EFW - Cleaned up the code and marked the class as serializable
 
 using System;
 
 namespace Microsoft.Ddue.Tools.Targets
 {
+    /// <summary>
+    /// This represents a type template type reference
+    /// </summary>
+    [Serializable]
     public class TypeTemplateTypeReference : TemplateTypeReference
     {
-        private SimpleTypeReference template;
+        #region Properties
+        //=====================================================================
 
-        private int position;
+        /// <summary>
+        /// This read-only property returns the template type
+        /// </summary>
+        public SimpleTypeReference TemplateType { get; private set; }
 
-        public SimpleTypeReference TemplateType
+        /// <summary>
+        /// This read-only property returns the position
+        /// </summary>
+        public int Position { get; private set; }
+
+        #endregion
+
+        #region Constructor
+        //=====================================================================
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="templateType">The template type</param>
+        /// <param name="position">The position</param>
+        internal TypeTemplateTypeReference(SimpleTypeReference templateType, int position)
         {
-            get
-            {
-                return (template);
-            }
-        }
+            if(templateType == null)
+                throw new ArgumentNullException("templateType");
 
-        public int Position
-        {
-            get
-            {
-                return (position);
-            }
-        }
-
-        internal TypeTemplateTypeReference(SimpleTypeReference template, int position)
-        {
-            if(template == null)
-                throw new ArgumentNullException("template");
             if(position < 0)
                 throw new ArgumentOutOfRangeException("position");
-            this.template = template;
-            this.position = position;
+
+            this.TemplateType = templateType;
+            this.Position = position;
         }
+        #endregion
     }
 }

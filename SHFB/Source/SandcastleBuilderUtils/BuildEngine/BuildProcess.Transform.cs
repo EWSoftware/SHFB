@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.Transform.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/17/2012
-// Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
+// Updated : 01/02/2013
+// Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the code used to transform and generate the files used to define and compile the help file.
@@ -54,6 +54,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Xml;
+using System.Xml.XPath;
 
 using Microsoft.Build.Evaluation;
 
@@ -72,8 +73,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         private Stack<string> mergeStack;
 
         // Regular expressions used for encoding detection and parsing
-        private static Regex reXmlEncoding = new Regex(
-            "^<\\?xml.*?encoding\\s*=\\s*\"(?<Encoding>.*?)\".*?\\?>");
+        private static Regex reXmlEncoding = new Regex("^<\\?xml.*?encoding\\s*=\\s*\"(?<Encoding>.*?)\".*?\\?>");
 
         private static Regex reField = new Regex(
             @"{@(?<Field>\w*?)(:(?<Format>.*?))?}");
@@ -948,6 +948,15 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     replaceWith = sb.ToString();
                     break;
 
+                case "referencelinknamespacefiles":
+                    sb = new StringBuilder(1024);
+
+                    foreach(string s in this.ReferencedNamespaces)
+                        sb.AppendFormat("<namespace file=\"{0}.xml\" />\r\n", s);
+
+                    replaceWith = sb.ToString();
+                    break;
+
                 default:
                     // Try for a custom project property.  Use the last one since the original may be
                     // in a parent project file or it may have been overridden from the command line.
@@ -1361,6 +1370,37 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     }
                     break;
             }
+        }
+
+        /// <summary>
+        /// This is used to get an enumerable list of unique namespaces from the given reflection data file
+        /// </summary>
+        /// <param name="reflectionFile">The reflection data file to search for namespaces</param>
+        /// <param name="validNamespaces">An enumerable list of valid namespaces</param>
+        /// <returns>An enumerable list of unique namespaces</returns>
+        public IEnumerable<string> GetReferencedNamespaces(string reflectionFile,
+          IEnumerable<string> validNamespaces)
+        {
+            XPathDocument doc = new XPathDocument(reflectionFile);
+            XPathNavigator nav = doc.CreateNavigator();
+            HashSet<string> seenNamespaces = new HashSet<string>();
+            string ns;
+
+            // Find all type references and extract the namespace from them
+            var nodes = nav.Select("//ancestors/type/@api | //returns/type/@api | //parameter/type/@api | " +
+                "//attributes/attribute/type/@api");
+
+            foreach(XPathNavigator n in nodes)
+                if(n.Value.Length > 2 && n.Value.IndexOf('.') != -1)
+                {
+                    ns = n.Value.Substring(2, n.Value.LastIndexOf('.') - 2);
+
+                    if(validNamespaces.Contains(ns) && !seenNamespaces.Contains(ns))
+                    {
+                        seenNamespaces.Add(ns);
+                        yield return ns;
+                    }
+                }
         }
     }
 }

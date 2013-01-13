@@ -5,29 +5,42 @@
 
 // Change History
 // 12/26/2012 - EFW - Moved the classes into the Targets namespace
+// 12/30/2012 - EFW - Cleaned up the code and marked the class as serializable
+
+using System;
 
 namespace Microsoft.Ddue.Tools.Targets
 {
+    /// <summary>
+    /// This represents a simple type reference
+    /// </summary>
+    [Serializable]
     public class SimpleTypeReference : TypeReference
     {
-        private string typeId;
+        #region Properties
+        //=====================================================================
 
-        public string Id
-        {
-            get
-            {
-                return (typeId);
-            }
-        }
+        /// <summary>
+        /// This read-only property returns the type ID
+        /// </summary>
+        public string Id { get; private set; }
 
-        public Target Resolve(TargetDictionary targets)
-        {
-            return (targets[typeId]);
-        }
+        #endregion
 
+        #region Constructor
+        //=====================================================================
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="id">The type ID</param>
         internal SimpleTypeReference(string id)
         {
-            this.typeId = id;
+            if(id == null)
+                throw new ArgumentNullException("id");
+
+            this.Id = id;
         }
+        #endregion
     }
 }

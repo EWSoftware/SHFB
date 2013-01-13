@@ -288,6 +288,63 @@
 
 	<!-- ****************************************************************** -->
 
+	<component id="Resolve References Links (ESent Persistence)"
+		type="SandcastleBuilder.Components.ESentResolveReferenceLinksComponent"
+		assembly="{@SHFBFolder}SandcastleBuilder.Components.dll"
+		locale="{@Locale}" linkTarget="{@SdkLinkTarget}">
+		<description>This component is used to resolve reference links in topics.  It uses ESent databases to cache MSDN content IDs and also to cache the .NET Framework reference link targets.  This speeds up initialization and conserves memory at the expense of some build time when generating topics.</description>
+
+		<insert placement="replace" type="Microsoft.Ddue.Tools.ResolveReferenceLinksComponent2" />
+		<insertConceptual placement="replace" type="Microsoft.Ddue.Tools.ResolveReferenceLinksComponent2" />
+
+		<!-- Not editable at all -->
+		<configureMethod name="-" />
+
+		<defaultConfiguration>
+			<helpOutput format="HtmlHelp1">
+				<msdnContentIdCache path="{@LocalDataFolder}Cache\MsdnContentId.cache"
+					dbPath="{@LocalDataFolder}Cache\ESentMsdnContentIdCache" />
+				<targets base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" type="{@HtmlSdkLinkType}"
+					id="FrameworkTargets" dbPath="{@LocalDataFolder}Cache\ESentFrameworkTargetCache">
+					{@ReferenceLinkNamespaceFiles}
+				</targets>
+				<targets files="reflection.xml" type="Local" id="ProjectTargets" />
+			</helpOutput>
+
+			<helpOutput format="MSHelp2">
+				<msdnContentIdCache path="{@LocalDataFolder}Cache\MsdnContentId.cache"
+					dbPath="{@LocalDataFolder}Cache\ESentMsdnContentIdCache" />
+				<targets base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" type="{@MSHelp2SdkLinkType}"
+					id="FrameworkTargets" dbPath="{@LocalDataFolder}Cache\ESentFrameworkTargetCache">
+					{@ReferenceLinkNamespaceFiles}
+				</targets>
+				<targets files="reflection.xml" type="Index" id="ProjectTargets" />
+			</helpOutput>
+
+			<helpOutput format="MSHelpViewer">
+				<msdnContentIdCache path="{@LocalDataFolder}Cache\MsdnContentId.cache"
+					dbPath="{@LocalDataFolder}Cache\ESentMsdnContentIdCache" />
+				<targets base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" type="{@MSHelpViewerSdkLinkType}"
+					id="FrameworkTargets" dbPath="{@LocalDataFolder}Cache\ESentFrameworkTargetCache">
+					{@ReferenceLinkNamespaceFiles}
+				</targets>
+				<targets files="reflection.xml" type="Id" id="ProjectTargets" />
+			</helpOutput>
+
+			<helpOutput format="Website">
+				<msdnContentIdCache path="{@LocalDataFolder}Cache\MsdnContentId.cache"
+					dbPath="{@LocalDataFolder}Cache\ESentMsdnContentIdCache" />
+				<targets base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" type="{@WebsiteSdkLinkType}"
+					id="FrameworkTargets" dbPath="{@LocalDataFolder}Cache\ESentFrameworkTargetCache">
+					{@ReferenceLinkNamespaceFiles}
+				</targets>
+				<targets files="reflection.xml" type="Local" id="ProjectTargets" />
+			</helpOutput>
+		</defaultConfiguration>
+	</component>
+
+	<!-- ****************************************************************** -->
+
 	<component id="MS Help 2 Attributes" type="Microsoft.Ddue.Tools.MSHelpAttrComponent"
 		assembly="{@SandcastlePath}ProductionTools\BuildComponents.dll">
 		<description>This build component is used to add additional MS Help 2 attributes to the XML data island in each generated API topic.</description>

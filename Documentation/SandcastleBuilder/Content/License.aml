@@ -87,40 +87,45 @@ warranties of merchantability, fitness for a particular purpose and non-infringe
   <content>
 	<para>The <externalLink><linkText>ICSharpCode.TextEditor</linkText>
 <linkUri>http://www.icsharpcode.net/OpenSource/SD/</linkUri>
-<linkTarget>_blank</linkTarget></externalLink> is Copyright &#169; 2000-2012, IC#Code, All Rights
+<linkTarget>_blank</linkTarget></externalLink> is Copyright &#169; 2000-2013, IC#Code, All Rights
 Reserved.</para>
 
 	<para>The <externalLink><linkText>Weifen Luo DockPanel Suite</linkText>
 <linkUri>http://sourceforge.net/projects/dockpanelsuite/</linkUri>
-<linkTarget>_blank</linkTarget></externalLink> is Copyright &#169; 2007-2012, Weifen Luo, All Rights
+<linkTarget>_blank</linkTarget></externalLink> is Copyright &#169; 2007-2013, Weifen Luo, All Rights
 Reserved.</para>
 
 	<para>The <externalLink><linkText>Ionic.Zip Library</linkText>
 <linkUri>http://DotNetZip.CodePlex.com</linkUri>
-<linkTarget>_blank</linkTarget></externalLink> is Copyright &#169; 2009-2012, Dino Chiesa, All Rights
+<linkTarget>_blank</linkTarget></externalLink> is Copyright &#169; 2009-2013, Dino Chiesa, All Rights
+Reserved.</para>
+
+	<para>The <externalLink><linkText>Managed ESent Library</linkText>
+<linkUri>http://ManagedESent.CodePlex.com</linkUri>
+<linkTarget>_blank</linkTarget></externalLink> is Copyright &#169; 2008-2013, Microsoft Corporation, All Rights
 Reserved.</para>
 
 	<para><externalLink><linkText>AjaxDoc</linkText>
 <linkUri>http://AjaxDoc.codeplex.com</linkUri>
-<linkTarget>_blank</linkTarget></externalLink> is Copyright &#169; 2006-2012, Bertrand Le Roy, All Rights
+<linkTarget>_blank</linkTarget></externalLink> is Copyright &#169; 2006-2013, Bertrand Le Roy, All Rights
 Reserved.</para>
 
 	<para><externalLink><linkText>Script#</linkText>
 <linkUri>http://projects.nikhilk.net/ScriptSharp</linkUri>
-<linkTarget>_blank</linkTarget></externalLink> is Copyright &#169; 2007-2012, Nikhil Kothari, All Rights
+<linkTarget>_blank</linkTarget></externalLink> is Copyright &#169; 2007-2013, Nikhil Kothari, All Rights
 Reserved.</para>
 
 	<para><externalLink><linkText>SBAppLocale</linkText>
 <linkUri>http://www.SteelBytes.com/?mid=45</linkUri>
-<linkTarget>_blank</linkTarget></externalLink> is Copyright &#169; 2005-2012, Steel Bytes, All Rights
+<linkTarget>_blank</linkTarget></externalLink> is Copyright &#169; 2005-2013, Steel Bytes, All Rights
 Reserved.</para>
 
 	<para>The <externalLink><linkText>code colorizer library</linkText>
-<linkUri>http://www.codeproject.com/KB/cs/highlightcs.aspx</linkUri>
-<linkTarget>_blank</linkTarget></externalLink> is Copyright &#169; 2003-2012, Jonathan de Halleux, All Rights
+<linkUri>http://www.codeproject.com/Articles/3767/Multiple-Language-Syntax-Highlighting-Part-2-C-Con</linkUri>
+<linkTarget>_blank</linkTarget></externalLink> is Copyright &#169; 2003-2013, Jonathan de Halleux, All Rights
 Reserved.</para>
 
-	<para>All other code is Copyright &#169; 2006-2012, <externalLink>
+	<para>All other code is Copyright &#169; 2006-2013, <externalLink>
 <linkText>Eric Woodruff</linkText><linkUri>http://www.ewoodruff.us</linkUri>
 <linkTarget>_blank</linkTarget></externalLink>, All Rights Reserved.</para>
 

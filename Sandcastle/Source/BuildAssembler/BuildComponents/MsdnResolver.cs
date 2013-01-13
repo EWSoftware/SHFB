@@ -12,6 +12,7 @@
 // 12/29/2012 - EFW - Change the cache type to IDictionary(string, string) and added a constructor to allow
 // specification of an existing cache.  Added the CacheItemsAdded property to allow the owner to determine if
 // items were added to the cache in the latest run.
+// 12/31/2012 - EFW - Implemented IDisposable
 
 using System;
 using System.Collections.Generic;
@@ -27,18 +28,22 @@ namespace Microsoft.Ddue.Tools
     /// This is used to perform lookups using the Microsoft/TechNet Publishing System (MTPS) content service
     /// on .NET Framework member IDs and return the MSDN URL for them.
     /// </summary>
-    public class MsdnResolver
+    public sealed class MsdnResolver : IDisposable
     {
         #region Private data members
         //=====================================================================
 
         private ContentService msdnService;
-
         private IDictionary<string, string> cachedMsdnIds;
         #endregion
 
         #region Properties
         //=====================================================================
+
+        /// <summary>
+        /// This read-only property can be used to determine whether or not the resolver has been disposed
+        /// </summary>
+        public bool IsDisposed { get; private set;  }
 
         /// <summary>
         /// This read-only property indicates whether or not the MSDN resolver is disabled
@@ -60,7 +65,7 @@ namespace Microsoft.Ddue.Tools
         public string Locale { get; set; }
 
         /// <summary>
-        /// This read-only property returns the MSDN URL cache
+        /// This read-only property returns the MSDN content ID cache
         /// </summary>
         /// <remarks>The key is the member ID, the value is the content ID</remarks>
         public IDictionary<string, string> MsdnContentIdCache
@@ -82,7 +87,7 @@ namespace Microsoft.Ddue.Tools
         /// <summary>
         /// Default constructor
         /// </summary>
-        /// <remarks>The default constructor creates a simple dictionary to hold the cached MSDN URLs</remarks>
+        /// <remarks>The default constructor creates a simple dictionary to hold the cached MSDN content IDs</remarks>
         public MsdnResolver()
         {
             cachedMsdnIds = new Dictionary<string, string>();
@@ -159,6 +164,30 @@ namespace Microsoft.Ddue.Tools
 
             return String.Format(CultureInfo.InvariantCulture, "http://msdn2.microsoft.com/{0}/library/{1}",
                 this.Locale, endPoint);
+        }
+        #endregion
+
+        #region IDisposable members
+        //=====================================================================
+
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            if(!this.IsDisposed)
+            {
+                this.IsDisposed = true;
+
+                if(msdnService != null)
+                    msdnService.Dispose();
+
+                // If the dictionary type implements IDisposable, dispose of it too
+                IDisposable d = cachedMsdnIds as IDisposable;
+
+                if(d != null)
+                    d.Dispose();
+
+                GC.SuppressFinalize(this);
+            }
         }
         #endregion
     }

@@ -1,28 +1,27 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder Utilities
 // File    : TopicCollection.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/03/2012
-// Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
+// Updated : 01/02/2013
+// Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains a collection class used to hold the conceptual content
-// topics for a project.
+// This file contains a collection class used to hold the conceptual content topics for a project.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.6.0.7  04/24/2008  EFW  Created the code
 // 1.8.0.0  08/07/2008  EFW  Modified for use with the new project format
 // 1.9.0.0  06/06/2010  EFW  Added support for multi-format build output
 // 1.9.1.0  07/09/2010  EFW  Updated for use with .NET 4.0 and MSBuild 4.0.
 // 1.9.3.3  12/15/2011  EFW  Updated for use with the new content layout editor
-//=============================================================================
+// 1.9.7.0  01/01/2013  EFW  Added support for getting referenced namespaces from the topics
+//===============================================================================================================
 
 using System;
 using System.Collections.Generic;
@@ -40,11 +39,9 @@ using SandcastleBuilder.Utils.BuildEngine;
 namespace SandcastleBuilder.Utils.ConceptualContent
 {
     /// <summary>
-    /// This collection class is used to hold the conceptual content topics
-    /// for a project.
+    /// This collection class is used to hold the conceptual content topics for a project.
     /// </summary>
-    /// <remarks>This class is serializable so that it can be copied to the
-    /// clipboard.</remarks>
+    /// <remarks>This class is serializable so that it can be copied to the clipboard.</remarks>
     public class TopicCollection : BindingList<Topic>, ITableOfContents
     {
         #region Private data members
@@ -435,10 +432,9 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                 {
                     // If there is an ID with no file, the file is missing
                     if(!t.NoTopicFile)
-                        throw new BuilderException("BE0054", String.Format(
-                            CultureInfo.InvariantCulture, "The conceptual " +
-                            "topic '{0}' (ID: {1}) does not match any file " +
-                            "in the project", t.DisplayTitle, t.ContentId));
+                        throw new BuilderException("BE0054", String.Format(CultureInfo.InvariantCulture,
+                            "The conceptual topic '{0}' (ID: {1}) does not match any file in the project",
+                            t.DisplayTitle, t.ContentId));
 
                     // A file is required if there are no sub-topics
                     if(t.Subtopics.Count == 0)
@@ -477,16 +473,14 @@ namespace SandcastleBuilder.Utils.ConceptualContent
 
                 // It must exist
                 if(t.DocumentType <= DocumentType.NotFound)
-                    throw new BuilderException("BE0056", String.Format(
-                        CultureInfo.InvariantCulture, "The conceptual " +
-                        "content file '{0}' with ID '{1}' does not exist.",
-                        t.TopicFile.FullPath, t.Id));
+                    throw new BuilderException("BE0056", String.Format(CultureInfo.InvariantCulture,
+                        "The conceptual content file '{0}' with ID '{1}' does not exist.", t.TopicFile.FullPath,
+                        t.Id));
 
                 // And it must be valid
                 if(t.DocumentType == DocumentType.Invalid)
-                    throw new BuilderException("BE0057", String.Format(
-                        CultureInfo.InvariantCulture, "The conceptual " +
-                        "content file '{0}' with ID '{1}' is not valid: {2}",
+                    throw new BuilderException("BE0057", String.Format(CultureInfo.InvariantCulture,
+                        "The conceptual content file '{0}' with ID '{1}' is not valid: {2}",
                         t.TopicFile.FullPath, t.Id, t.TopicFile.ErrorMessage));
 
                 if(t.DocumentType != DocumentType.Html)
@@ -496,14 +490,19 @@ namespace SandcastleBuilder.Utils.ConceptualContent
 
                     // The IDs must be unique
                     if(File.Exists(destFile))
-                        throw new BuilderException("BE0058", String.Format(
-                            CultureInfo.InvariantCulture, "Two conceptual " +
-                            "content files have the same ID ({0}).  The file " +
-                            "with the duplicate ID is '{1}'", t.Id,
-                            t.TopicFile.FullPath));
+                        throw new BuilderException("BE0058", String.Format(CultureInfo.InvariantCulture,
+                            "Two conceptual content files have the same ID ({0}).  The file with the " +
+                            "duplicate ID is '{1}'", t.Id, t.TopicFile.FullPath));
 
                     File.Copy(t.TopicFile.FullPath, destFile);
                     File.SetAttributes(destFile, FileAttributes.Normal);
+
+                    // Add referenced namespaces to the build process
+                    var rn = builder.ReferencedNamespaces;
+
+                    foreach(string ns in t.TopicFile.GetReferencedNamespaces(Path.Combine(
+                      builder.SandcastleFolder, @"Data\Reflection")))
+                        rn.Add(ns);
                 }
                 else
                 {

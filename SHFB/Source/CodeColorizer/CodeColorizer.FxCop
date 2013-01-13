@@ -19,7 +19,6 @@
   <SearchGlobalAssemblyCache>False</SearchGlobalAssemblyCache>
   <DeadlockDetectionTimeout>120</DeadlockDetectionTimeout>
   <IgnoreGeneratedCode>False</IgnoreGeneratedCode>
-  <TargetFrameworkVersion>0.0</TargetFrameworkVersion>
  </ProjectOptions>
  <Targets>
   <Target Name="$(ProjectDir)/ColorizerLibrary/bin/Debug/ColorizerLibrary.dll" Analyze="True" AnalyzeAllChildren="True" />
@@ -204,6 +203,56 @@
              </Message>
             </Messages>
            </Member>
+           <Member Name="#ColorizePlainText(System.String,System.String,System.Boolean,System.Nullable`1&lt;System.Int32&gt;)">
+            <Messages>
+             <Message Id="PlainText" TypeName="CompoundWordsShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1702" Status="Excluded" Created="2013-01-11 03:22:49Z">
+              <Issue Name="MemberShouldBeDiscreteTerm">
+               <Item>PlainText</Item>
+               <Item>'CodeColorizer.ColorizePlainText(string, string, bool, int?)'</Item>
+               <Item>Plaintext</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="12" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="plainText" TypeName="CompoundWordsShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1702" Status="Excluded" Created="2013-01-11 03:22:49Z">
+              <Issue Name="MemberParameterShouldBeDiscreteTerm">
+               <Item>'CodeColorizer.ColorizePlainText(string, string, bool, int?)'</Item>
+               <Item>plainText</Item>
+               <Item>'plainText'</Item>
+               <Item>plaintext</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="12" />
+               </User>
+              </Notes>
+             </Message>
+             <Message TypeName="DefaultParametersShouldNotBeUsed" Category="Microsoft.Design" CheckId="CA1026" Status="Excluded" Created="2013-01-11 03:22:49Z">
+              <Issue>
+               <Item>'CodeColorizer.ColorizePlainText(string, string, bool, int?)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="11" />
+               </User>
+              </Notes>
+             </Message>
+             <Message TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308" Status="Excluded" Created="2013-01-11 03:22:49Z">
+              <Issue Name="ToUpperInvariant">
+               <Item>'CodeColorizer.ColorizePlainText(string, string, bool, int?)'</Item>
+               <Item>'string.ToLowerInvariant()'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="10" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
            <Member Name="#CopyImageUrl">
             <Messages>
              <Message TypeName="UriPropertiesShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1056" Status="Excluded" Created="2007-05-02 22:40:41Z">
@@ -255,7 +304,7 @@
              <Message TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308" Status="Excluded" Created="2008-09-19 22:25:52Z">
               <Issue Name="ToUpperInvariant">
                <Item>'CodeColorizer.ReplaceByCode(Match)'</Item>
-               <Item>'string.ToLower(CultureInfo)'</Item>
+               <Item>'string.ToLowerInvariant()'</Item>
               </Issue>
               <Notes>
                <User Name="EWOODRUFF">
@@ -291,7 +340,7 @@
              <Message TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308" Status="Excluded" Created="2008-09-19 22:25:52Z">
               <Issue Name="ToUpperInvariant">
                <Item>'CodeColorizer.CollapsibleRegion.CollapsibleRegion(int, Match, int)'</Item>
-               <Item>'string.ToLower(CultureInfo)'</Item>
+               <Item>'string.ToLowerInvariant()'</Item>
               </Issue>
               <Notes>
                <User Name="EWOODRUFF">
@@ -341,6 +390,9 @@
     <Note Id="7" Modified="2008-09-19 22:26:54Z">Library is in use</Note>
     <Note Id="8" Modified="2008-09-19 22:28:55Z">Okay as is</Note>
     <Note Id="9" Modified="2008-09-19 22:31:03Z">Lowercase is preferred here</Note>
+    <Note Id="10" Modified="2013-01-11 03:24:30Z">Lowercase is required here</Note>
+    <Note Id="11" Modified="2013-01-11 03:25:38Z">The defaults values match the type default values that invoke the default behavior.</Note>
+    <Note Id="12" Modified="2013-01-11 03:26:43Z">Okay as is</Note>
    </User>
   </Notes>
   <Rules>
@@ -348,8 +400,12 @@
     <Resolution Name="Default">Consider merging the types defined in '{0}' with another namespace.</Resolution>
    </Rule>
    <Rule TypeName="CompoundWordsShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1702">
+    <Resolution Name="MemberParameterShouldBeDiscreteTerm">In member {0}, the compound word '{1}' in parameter name {2} exists as a discrete term. If your usage is intended to be single word, case it as '{3}' or strip the first token entirely if it represents any sort of Hungarian notation.</Resolution>
     <Resolution Name="MemberShouldBeDiscreteTerm">The compound word '{0}' in member name {1} exists as a discrete term. If your usage is intended to be single word, case it as '{2}' or strip the first token entirely if it represents any sort of Hungarian notation.</Resolution>
     <Resolution Name="ShouldBeCompoundWord">The discrete term '{0}' in {1} '{2}' should be expressed as a compound term, '{3}'.</Resolution>
+   </Rule>
+   <Rule TypeName="DefaultParametersShouldNotBeUsed" Category="Microsoft.Design" CheckId="CA1026">
+    <Resolution Name="Default">Replace method {0} with an overload that supplies all default arguments.</Resolution>
    </Rule>
    <Rule TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704">
     <Resolution Name="Assembly">Correct the spelling of '{0}' in assembly name {1}.</Resolution>

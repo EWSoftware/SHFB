@@ -5,29 +5,31 @@
 
 // Change History
 // 12/26/2012 - EFW - Moved the classes into the Targets namespace
+// 12/30/2012 - EFW - Cleaned up the code and marked the class as serializable
+
+using System;
 
 namespace Microsoft.Ddue.Tools.Targets
 {
+    /// <summary>
+    /// This represents a procedure target
+    /// </summary>
+    [Serializable]
     public class ProcedureTarget : MemberTarget
     {
-        internal bool conversionOperator;
+        #region Properties
+        //=====================================================================
 
-        internal MemberReference explicitlyImplements = null;
+        /// <summary>
+        /// This is used to get or set whether or not the target is a conversion operator
+        /// </summary>
+        public bool IsConversionOperator { get; internal set; }
 
-        public bool ConversionOperator
-        {
-            get
-            {
-                return (conversionOperator);
-            }
-        }
+        /// <summary>
+        /// This is used to specify the member explicitly implemented if applicable
+        /// </summary>
+        public MemberReference ExplicitlyImplements { get; internal set; }
 
-        public MemberReference ExplicitlyImplements
-        {
-            get
-            {
-                return (explicitlyImplements);
-            }
-        }
+        #endregion
     }
 }

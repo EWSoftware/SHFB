@@ -146,11 +146,12 @@ namespace Microsoft.Ddue.Tools.Targets
 
         private static NamespaceTarget CreateNamespaceTarget(XPathNavigator api)
         {
-            NamespaceTarget target = new NamespaceTarget();
-            target.name = (string)api.Evaluate(apiNameExpression);
-            if(String.IsNullOrEmpty(target.name))
-                target.name = "(Default Namespace)";
-            return (target);
+            string name = (string)api.Evaluate(apiNameExpression);
+
+            if(String.IsNullOrEmpty(name))
+                name = "(Default Namespace)";
+
+            return new NamespaceTarget(name);
         }
 
         private static TypeTarget CreateTypeTarget(XPathNavigator api)
@@ -164,52 +165,54 @@ namespace Microsoft.Ddue.Tools.Targets
             else
                 target = new TypeTarget();
 
-            target.name = (string)api.Evaluate(apiNameExpression);
+            target.Name = (string)api.Evaluate(apiNameExpression);
 
             // containing namespace
             XPathNavigator namespaceNode = api.SelectSingleNode(apiContainingNamespaceExpression);
-            target.containingNamespace = CreateNamespaceReference(namespaceNode);
+            target.ContainingNamespace = CreateNamespaceReference(namespaceNode);
 
             // containing type, if any
             XPathNavigator typeNode = api.SelectSingleNode(apiContainingTypeExpression);
+
             if(typeNode == null)
-                target.containingType = null;
+                target.ContainingType = null;
             else
-                target.containingType = CreateSimpleTypeReference(typeNode);
+                target.ContainingType = CreateSimpleTypeReference(typeNode);
 
             // templates
-            target.templates = GetTemplateNames(api);
+            target.Templates = GetTemplateNames(api);
 
-            return (target);
+            return target;
         }
 
-        private static string[] GetTemplateNames(XPathNavigator api)
+        private static IList<string> GetTemplateNames(XPathNavigator api)
         {
             List<string> templates = new List<string>();
+
             XPathNodeIterator templateNodes = api.Select(apiTemplatesExpression);
+
             foreach(XPathNavigator templateNode in templateNodes)
-            {
                 templates.Add((string)templateNode.Evaluate(templateNameExpression));
-            }
-            return (templates.ToArray());
+
+            return templates;
         }
 
         private static EnumerationTarget CreateEnumerationTarget(XPathNavigator api)
         {
-            EnumerationTarget enumeration = new EnumerationTarget();
-
             string typeId = (string)api.Evaluate(topicIdExpression);
             string file = (string)api.Evaluate(topicFileExpression);
 
-            // Create tar
+            // Create target
             List<MemberTarget> members = new List<MemberTarget>();
             XPathNodeIterator elementNodes = api.Select("elements/element");
+
             foreach(XPathNavigator elementNode in elementNodes)
             {
                 string memberId = elementNode.GetAttribute("api", String.Empty);
 
                 // try to get name from attribute on element node
                 string memberName = elementNode.GetAttribute("name", String.Empty);
+
                 if(String.IsNullOrEmpty(memberName))
                 {
                     // if we can't do that, try to get the name by searching the file for the <api> element of that member
@@ -233,14 +236,12 @@ namespace Microsoft.Ddue.Tools.Targets
 
                 member.Id = memberId; // get Id from element
                 member.File = file; // get file from type file
-                member.name = memberName; // get name from element
-                member.containingType = new SimpleTypeReference(typeId); // get containing type from this type
+                member.Name = memberName; // get name from element
+                member.ContainingType = new SimpleTypeReference(typeId); // get containing type from this type
                 members.Add(member);
             }
 
-            enumeration.elements = members.ToArray();
-
-            return enumeration;
+            return new EnumerationTarget(members);
         }
 
         public static MemberTarget CreateMemberTarget(XPathNavigator api)
@@ -248,103 +249,86 @@ namespace Microsoft.Ddue.Tools.Targets
             string subgroup = (string)api.Evaluate(apiSubgroupExpression);
 
             MemberTarget target;
+
             if(subgroup == "method")
-            {
                 target = CreateMethodTarget(api);
-            }
-            else if(subgroup == "property")
-            {
-                target = CreatePropertyTarget(api);
-            }
-            else if(subgroup == "constructor")
-            {
-                target = CreateConstructorTarget(api);
-            }
-            else if(subgroup == "event")
-            {
-                target = CreateEventTarget(api);
-            }
             else
-            {
-                target = new MemberTarget();
-            }
+                if(subgroup == "property")
+                    target = CreatePropertyTarget(api);
+                else
+                    if(subgroup == "constructor")
+                        target = new ConstructorTarget(CreateParameterList(api));
+                    else
+                        if(subgroup == "event")
+                            target = CreateEventTarget(api);
+                        else
+                            target = new MemberTarget();
 
-            target.name = (string)api.Evaluate(apiNameExpression);
-            target.containingType = CreateSimpleTypeReference(api.SelectSingleNode(apiContainingTypeExpression));
-            target.overload = (string)api.Evaluate(apiOverloadIdExpression);
+            target.Name = (string)api.Evaluate(apiNameExpression);
+            target.ContainingType = CreateSimpleTypeReference(api.SelectSingleNode(apiContainingTypeExpression));
+            target.OverloadId = (string)api.Evaluate(apiOverloadIdExpression);
 
-            return (target);
+            return target;
         }
 
         private static MethodTarget CreateMethodTarget(XPathNavigator api)
         {
-            MethodTarget target = new MethodTarget();
-            target.parameters = CreateParameterList(api);
-            target.returnType = CreateReturnType(api);
+            MethodTarget target = new MethodTarget(CreateParameterList(api), CreateReturnType(api));
 
-            target.conversionOperator = (bool)api.Evaluate(apiIsConversionOperatorExpression);
+            target.IsConversionOperator = (bool)api.Evaluate(apiIsConversionOperatorExpression);
 
             if((bool)api.Evaluate(apiIsExplicitImplementationExpression))
-            {
-                target.explicitlyImplements = CreateMemberReference(api.SelectSingleNode(apiImplementedMembersExpression));
-            }
+                target.ExplicitlyImplements = CreateMemberReference(api.SelectSingleNode(apiImplementedMembersExpression));
 
             // this selects templates/template or templates/type, because extension methods can have a mix of generic and specialization
             XPathNodeIterator templateArgNodes = api.Select(methodTemplateArgsExpression);
             TypeReference[] templateArgumentReferences = null;
+
             if(templateArgNodes != null && templateArgNodes.Count > 0)
             {
                 templateArgumentReferences = new TypeReference[templateArgNodes.Count];
                 int i = 0;
+
                 foreach(XPathNavigator templateArgNode in templateArgNodes)
                 {
                     templateArgumentReferences[i] = CreateTypeReference(templateArgNode);
                     i++;
                 }
             }
-            target.templateArgs = templateArgumentReferences;
+
+            target.TemplateArgs = templateArgumentReferences;
 
             // get the short name of each template param
-            target.templates = GetTemplateNames(api);
+            target.Templates = GetTemplateNames(api);
 
             return (target);
         }
 
         private static PropertyTarget CreatePropertyTarget(XPathNavigator api)
         {
-            PropertyTarget target = new PropertyTarget();
-            target.parameters = CreateParameterList(api);
-            target.returnType = CreateReturnType(api);
+            PropertyTarget target = new PropertyTarget(CreateParameterList(api), CreateReturnType(api));
 
             if((bool)api.Evaluate(apiIsExplicitImplementationExpression))
-            {
-                target.explicitlyImplements = CreateMemberReference(api.SelectSingleNode(apiImplementedMembersExpression));
-            }
+                target.ExplicitlyImplements = CreateMemberReference(api.SelectSingleNode(apiImplementedMembersExpression));
 
-            return (target);
+            return target;
         }
 
         private static EventTarget CreateEventTarget(XPathNavigator api)
         {
             EventTarget target = new EventTarget();
+
             if((bool)api.Evaluate(apiIsExplicitImplementationExpression))
-            {
-                target.explicitlyImplements = CreateMemberReference(api.SelectSingleNode(apiImplementedMembersExpression));
-            }
-            return (target);
+                target.ExplicitlyImplements = CreateMemberReference(api.SelectSingleNode(apiImplementedMembersExpression));
+
+            return target;
         }
 
-        private static ConstructorTarget CreateConstructorTarget(XPathNavigator api)
-        {
-            ConstructorTarget target = new ConstructorTarget();
-            target.parameters = CreateParameterList(api);
-            return (target);
-        }
-
-        private static Parameter[] CreateParameterList(XPathNavigator api)
+        private static IList<Parameter> CreateParameterList(XPathNavigator api)
         {
             List<Parameter> parameters = new List<Parameter>();
             XPathNodeIterator parameterNodes = api.Select("parameters/parameter");
+
             foreach(XPathNavigator parameterNode in parameterNodes)
             {
                 string name = parameterNode.GetAttribute("name", String.Empty);
@@ -352,7 +336,8 @@ namespace Microsoft.Ddue.Tools.Targets
                 Parameter parameter = new Parameter(name, CreateTypeReference(type));
                 parameters.Add(parameter);
             }
-            return (parameters.ToArray());
+
+            return parameters;
         }
 
         private static TypeReference CreateReturnType(XPathNavigator api)
@@ -517,7 +502,7 @@ namespace Microsoft.Ddue.Tools.Targets
         public static ExtensionMethodReference CreateExtensionMethodReference(XPathNavigator node)
         {
             string methodName = (string)node.Evaluate(apiNameExpression);
-            Parameter[] parameters = CreateParameterList(node);
+            IList<Parameter> parameters = CreateParameterList(node);
             TypeReference[] templateArgumentReferences = null;
             // List<TemplateName> templateNames = new List<TemplateName>();
 

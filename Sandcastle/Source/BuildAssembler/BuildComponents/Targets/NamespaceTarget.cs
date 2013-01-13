@@ -5,19 +5,39 @@
 
 // Change History
 // 12/26/2012 - EFW - Moved the classes into the Targets namespace
+// 12/30/2012 - EFW - Cleaned up the code and marked the class as serializable
+
+using System;
 
 namespace Microsoft.Ddue.Tools.Targets
 {
+    /// <summary>
+    /// This represents a namespace target
+    /// </summary>
+    [Serializable]
     public class NamespaceTarget : Target
     {
-        internal string name;
+        #region Properties
+        //=====================================================================
 
-        public string Name
+        /// <summary>
+        /// This read-only property returns the namespace name
+        /// </summary>
+        public string Name { get; private set; }
+
+        #endregion
+
+        #region Constructor
+        //=====================================================================
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="name">The namespace name</param>
+        internal NamespaceTarget(string name)
         {
-            get
-            {
-                return (name);
-            }
+            this.Name = name;
         }
+        #endregion
     }
 }

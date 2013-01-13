@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : MissingTagPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 10/28/2012
-// Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
+// Updated : 01/09/2013
+// Note    : Copyright 2011-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This user control is used to edit the Missing Tags category properties
@@ -84,19 +84,21 @@ namespace SandcastleBuilder.Package.PropertyPages
             var projProp = this.CurrentProject.MSBuildProject.GetProperty("MissingTags");
 #endif
             // If not found or not valid, we'll ignore it and use the defaults
-            if(projProp != null && Enum.TryParse<MissingTags>(projProp.UnevaluatedValue, out tags))
-            {
-                chkAutoDocumentConstructors.Checked = ((tags & MissingTags.AutoDocumentCtors) != 0);
-                chkAutoDocumentDisposeMethods.Checked = ((tags & MissingTags.AutoDocumentDispose) != 0);
-                chkShowMissingIncludeTargets.Checked = ((tags & MissingTags.IncludeTargets) != 0);
-                chkShowMissingNamespaces.Checked = ((tags & MissingTags.Namespace) != 0);
-                chkShowMissingParams.Checked = ((tags & MissingTags.Parameter) != 0);
-                chkShowMissingRemarks.Checked = ((tags & MissingTags.Remarks) != 0);
-                chkShowMissingReturns.Checked = ((tags & MissingTags.Returns) != 0);
-                chkShowMissingSummaries.Checked = ((tags & MissingTags.Summary) != 0);
-                chkShowMissingTypeParams.Checked = ((tags & MissingTags.TypeParameter) != 0);
-                chkShowMissingValues.Checked = ((tags & MissingTags.Value) != 0);
-            }
+            if(projProp == null || !Enum.TryParse<MissingTags>(projProp.UnevaluatedValue, out tags))
+                tags = MissingTags.Summary | MissingTags.Parameter | MissingTags.TypeParameter |
+                    MissingTags.Returns | MissingTags.AutoDocumentCtors | MissingTags.Namespace |
+                    MissingTags.AutoDocumentDispose;
+
+            chkAutoDocumentConstructors.Checked = ((tags & MissingTags.AutoDocumentCtors) != 0);
+            chkAutoDocumentDisposeMethods.Checked = ((tags & MissingTags.AutoDocumentDispose) != 0);
+            chkShowMissingIncludeTargets.Checked = ((tags & MissingTags.IncludeTargets) != 0);
+            chkShowMissingNamespaces.Checked = ((tags & MissingTags.Namespace) != 0);
+            chkShowMissingParams.Checked = ((tags & MissingTags.Parameter) != 0);
+            chkShowMissingRemarks.Checked = ((tags & MissingTags.Remarks) != 0);
+            chkShowMissingReturns.Checked = ((tags & MissingTags.Returns) != 0);
+            chkShowMissingSummaries.Checked = ((tags & MissingTags.Summary) != 0);
+            chkShowMissingTypeParams.Checked = ((tags & MissingTags.TypeParameter) != 0);
+            chkShowMissingValues.Checked = ((tags & MissingTags.Value) != 0);
 
             return true;
         }

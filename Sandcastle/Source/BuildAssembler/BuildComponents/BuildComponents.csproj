@@ -134,6 +134,7 @@
     <Compile Include="SwitchComponent.cs" />
     <Compile Include="SyntaxComponent.cs" />
     <Compile Include="Targets\SimpleMemberReference.cs" />
+    <Compile Include="Targets\SimpleTargetDictionary.cs" />
     <Compile Include="Targets\SimpleTypeReference.cs" />
     <Compile Include="Targets\Specialization.cs" />
     <Compile Include="Targets\SpecializedMemberReference.cs" />

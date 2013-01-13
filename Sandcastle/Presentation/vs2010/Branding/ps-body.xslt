@@ -31,13 +31,15 @@
 
 	<!-- ============================================================================================
 	Generic transforms (see Identity.xslt for others)
+
+    These two appear to be for non-self-branded content and should not really apply to self-branded content.
 	============================================================================================= -->
 
-	<!-- strip style attributes by default -->
+	<!-- strip style attributes by default
 	<xsl:template match="@style[translate(.,' ;','')!='display:none' and translate(.,' ;','')!='display:inline']"
-								name="ps-style"/>
+								name="ps-style"/> -->
 
-	<!-- pass through styles for p and h elements -->
+	<!-- pass through styles for p and h elements
 	<xsl:template match="//xhtml:p[@style]|xhtml:h1[@style]|xhtml:h2[@style]|xhtml:h3[@style]|xhtml:h4[@style]|xhtml:h5[@style]|xhtml:h6[@style]"
 								name="ps-allow-styles">
 		<xsl:copy>
@@ -47,7 +49,7 @@
 			</xsl:attribute>
 			<xsl:apply-templates/>
 		</xsl:copy>
-	</xsl:template>
+	</xsl:template> -->
 
 	<!-- ============================================================================================
 	Specific transforms
@@ -64,7 +66,14 @@
 								<xsl:attribute name="src">
 									<xsl:choose>
 										<xsl:when test="$downscale-browser">
-											<xsl:value-of select="branding:BackslashesToFrontslashes(concat($contentFolder,'/',.))"/>
+											<xsl:choose>
+												<xsl:when test="starts-with(.,'http:') or starts-with(.,'https:') or starts-with(.,'/')">
+													<xsl:value-of select="."/>
+												</xsl:when>
+												<xsl:otherwise>
+													<xsl:value-of select="branding:BackslashesToFrontslashes(concat($contentFolder,'/',.))"/>
+												</xsl:otherwise>
+											</xsl:choose>
 										</xsl:when>
 										<xsl:otherwise>
 											<xsl:value-of select="branding:BuildContentPath($contentFolder,.)"/>

@@ -5,49 +5,41 @@
 
 // Change History
 // 12/26/2012 - EFW - Moved the classes into the Targets namespace
+// 12/30/2012 - EFW - Cleaned up the code and marked the class as serializable
+
+using System;
+using System.Collections.Generic;
 
 namespace Microsoft.Ddue.Tools.Targets
 {
+    /// <summary>
+    /// This represents a type target
+    /// </summary>
+    [Serializable]
     public class TypeTarget : Target
     {
-        internal string name;
+        #region Properties
+        //=====================================================================
 
-        internal NamespaceReference containingNamespace;
+        /// <summary>
+        /// This is used to get or set the name
+        /// </summary>
+        public string Name { get; internal set; }
 
-        internal SimpleTypeReference containingType;
+        /// <summary>
+        /// This is used to get or set the containing namespace
+        /// </summary>
+        public NamespaceReference ContainingNamespace { get; internal set; }
 
-        internal string[] templates;
+        /// <summary>
+        /// This is used to get or set the containing type
+        /// </summary>
+        public SimpleTypeReference ContainingType { get; internal set; }
 
-        public string Name
-        {
-            get
-            {
-                return (name);
-            }
-        }
-
-        public NamespaceReference Namespace
-        {
-            get
-            {
-                return (containingNamespace);
-            }
-        }
-
-        public SimpleTypeReference OuterType
-        {
-            get
-            {
-                return (containingType);
-            }
-        }
-
-        public string[] Templates
-        {
-            get
-            {
-                return (templates);
-            }
-        }
+        /// <summary>
+        /// This is used to get or set the templates
+        /// </summary>
+        public IList<string> Templates { get; internal set; }
+        #endregion
     }
 }

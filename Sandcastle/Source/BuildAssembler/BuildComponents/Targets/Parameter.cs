@@ -5,35 +5,46 @@
 
 // Change History
 // 12/26/2012 - EFW - Moved the classes into the Targets namespace
+// 12/30/2012 - EFW - Cleaned up the code and marked the class as serializable
+
+using System;
 
 namespace Microsoft.Ddue.Tools.Targets
 {
+    /// <summary>
+    /// This represents a parameter
+    /// </summary>
+    [Serializable]
     public class Parameter
     {
-        private string name;
+        #region Properties
+        //=====================================================================
 
-        private TypeReference type;
+        /// <summary>
+        /// This read-only property returns the parameter name
+        /// </summary>
+        public string Name { get; private set; }
 
-        public string Name
-        {
-            get
-            {
-                return (name);
-            }
-        }
+        /// <summary>
+        /// This read-only property returns the paramter type
+        /// </summary>
+        public TypeReference ParameterType { get; private set; }
 
-        public TypeReference Type
-        {
-            get
-            {
-                return (type);
-            }
-        }
+        #endregion
 
+        #region Constructor
+        //=====================================================================
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="name">The parameter name</param>
+        /// <param name="type">The parameter type</param>
         internal Parameter(string name, TypeReference type)
         {
-            this.name = name;
-            this.type = type;
+            this.Name = name;
+            this.ParameterType = type;
         }
+        #endregion
     }
 }

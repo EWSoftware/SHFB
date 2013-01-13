@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/16/2012
-// Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
+// Updated : 01/04/2013
+// Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the thread class that handles all aspects of the build process.
@@ -50,6 +50,7 @@
 // 1.9.4.0  03/25/2012  EFW  Merged changes for VS2010 style from Don Fehr
 // 1.9.5.0  09/10/2012  EFW  Updated to use the new framework definition file for the .NET Framework versions
 // 1.9.6.0  10/25/2012  EFW  Updated to use the new presentation style definition files
+// 1.9.7.0  01/02/2013  EFW  Added method to get referenced namespaces
 //===============================================================================================================
 
 using System;
@@ -69,7 +70,6 @@ using System.Xml.XPath;
 
 using SandcastleBuilder.Utils.BuildComponent;
 using SandcastleBuilder.Utils.ConceptualContent;
-using SandcastleBuilder.Utils.Design;
 using SandcastleBuilder.Utils.Frameworks;
 using SandcastleBuilder.Utils.MSBuild;
 using SandcastleBuilder.Utils.PlugIn;
@@ -94,6 +94,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         private FrameworkSettings frameworkSettings;
         private Collection<string> assembliesList;
         private Dictionary<string, Tuple<string, string, List<KeyValuePair<string, string>>>> referenceDictionary;
+        private HashSet<string> referencedNamespaces;
 
         // Conceptual content settings
         private ConceptualContentSettings conceptualContent;
@@ -434,6 +435,22 @@ namespace SandcastleBuilder.Utils.BuildEngine
         public string ResolvedHtmlHelpName
         {
             get { return this.TransformText(project.HtmlHelpName); }
+        }
+
+        /// <summary>
+        /// This read-only property returns a hash set used to contain a list of namespaces referenced by
+        /// the reflection data files.
+        /// </summary>
+        /// <value>These namespaces are used to limit what the Resolve Reference Links component has to index</value>
+        public HashSet<string> ReferencedNamespaces
+        {
+            get
+            {
+                if(referencedNamespaces == null)
+                    referencedNamespaces = new HashSet<string>();
+
+                return referencedNamespaces;
+            }
         }
         #endregion
 
@@ -922,8 +939,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 // If there is nothing to document, stop the build
                 if(apisNode.ChildNodes.Count == 0)
-                    throw new BuilderException("BE0033", "No APIs found to " +
-                        "document.  See error topic in help file for details.");
+                    throw new BuilderException("BE0033", "No APIs found to document.  See error topic in " +
+                        "help file for details.");
 
                 reflectionInfo = null;
                 apisNode = null;
@@ -1075,6 +1092,31 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 // Create the Sandcastle configuration file
                 this.ReportProgress(BuildStep.CreateBuildAssemblerConfigs, "Creating Sandcastle configuration files...");
+
+                // Add referenced namespaces to the hash set.  These are used to ensure just the needed set of
+                // reflection target files are loaded by BuildAssembler and nothing more to save some time and
+                // memory.
+                var rn = this.ReferencedNamespaces;
+
+                // These are all of the valid namespaces we are interested in.  This prevents the methods below
+                // from returning nested types as potential namespaces since they can't tell the difference.
+                HashSet<string> validNamespaces = new HashSet<string>(Directory.EnumerateFiles(Path.Combine(
+                  sandcastleFolder, @"Data\Reflection"), "*.xml", SearchOption.AllDirectories).Select(
+                  f => Path.GetFileNameWithoutExtension(f)));
+
+                // Get namespaces referenced in the XML comments of the documentation sources
+                foreach(var n in commentsFiles.GetReferencedNamespaces(validNamespaces))
+                    rn.Add(n);
+
+                // Get namespaces referenced in the reflection data (plug-ins are responsible for adding
+                // additional namespaces if they add other reflection data files).
+                foreach(string n in this.GetReferencedNamespaces(reflectionFile, validNamespaces))
+                    rn.Add(n);
+
+                // Get namespaces from the Framework comments files of the referenced namespaces.  This adds
+                // references for stuff like designer and support classes not directly referenced anywhere else.
+                foreach(string n in frameworkSettings.GetReferencedNamespaces(language, rn, validNamespaces).ToList())
+                    rn.Add(n);
 
                 if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
                 {

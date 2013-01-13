@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : MamlToFlowDocumentConverter.Core.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/26/2012
-// Note    : Copyright 2012, Eric Woodruff, All rights reserved
+// Updated : 01/11/2013
+// Note    : Copyright 2012-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the core methods of the class used to convert a MAML topic file to a flow document so that
@@ -18,6 +18,7 @@
 // ==============================================================================================================
 // 1.9.3.4  01/02/2012  EFW  Created the code
 // 1.9.6.0  11/26/2012  EFW  Added support for imported code blocks
+// 1.9.7.0  01/11/2013  EFW  Added support for colorizing code blocks
 //===============================================================================================================
 
 using System;
@@ -29,6 +30,8 @@ using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
 using System.Xml.Linq;
+
+using ColorizerLibrary;
 
 namespace SandcastleBuilder.WPF.Maml
 {
@@ -48,6 +51,8 @@ namespace SandcastleBuilder.WPF.Maml
         private FlowDocument document;
         private TextElement currentBlock;
         private Span currentSpan;
+
+        private static string flowDocumentTemplate, flowDocumentContent;
 
         #endregion
 
@@ -88,6 +93,27 @@ namespace SandcastleBuilder.WPF.Maml
         }
 
         /// <summary>
+        /// This is used to get or set a code colorizer instance used to colorize code blocks
+        /// </summary>
+        /// <value>If null, code blocks will not be colorized</value>
+        public static CodeColorizer CodeColorizer { get; set; }
+
+        /// <summary>
+        /// This is used to set the flow document template used when colorizing code blocks
+        /// </summary>
+        public static string ColorizerFlowDocumentTemplate
+        {
+            get { return flowDocumentTemplate; }
+            set
+            {
+                flowDocumentTemplate = value;
+
+                if(File.Exists(flowDocumentTemplate))
+                    flowDocumentContent = File.ReadAllText(flowDocumentTemplate);
+            }
+        }
+
+        /// <summary>
         /// This is used to map alert classes to their display titles
         /// </summary>
         /// <remarks>The key is the alert class and the value is the display title</remarks>
@@ -112,15 +138,6 @@ namespace SandcastleBuilder.WPF.Maml
         public static Dictionary<string, string> NamedSectionTitles
         {
             get { return namedSectionTitles; }
-        }
-
-        /// <summary>
-        /// This is used to map lanugage IDs to their display titles
-        /// </summary>
-        /// <remarks>The key is the language ID and the value is the display title</remarks>
-        public static Dictionary<string, string> LanguageTitles
-        {
-            get { return languageTitles; }
         }
 
         /// <summary>
@@ -482,10 +499,6 @@ namespace SandcastleBuilder.WPF.Maml
             section.Setters.Add(new Setter(Section.FontFamilyProperty, new FontFamily("Verdana")));
             section.Setters.Add(new Setter(Section.FontSizeProperty, 11.0));
 
-            Style codeTitle = new Style(typeof(Paragraph));
-            codeTitle.Setters.Add(new Setter(Paragraph.FontWeightProperty, FontWeights.Bold));
-            codeTitle.Setters.Add(new Setter(Paragraph.MarginProperty, new Thickness(0)));
-
             Style codeBlock = new Style(typeof(Section));
             codeBlock.Setters.Add(new Setter(Section.FontFamilyProperty,
                 new FontFamily("Consolas, Courier New, Courier")));
@@ -624,7 +637,6 @@ namespace SandcastleBuilder.WPF.Maml
 
             document.Resources.Add(NamedStyle.AlertTitle, alertTitle);
             document.Resources.Add(NamedStyle.AlertBody, alertBody);
-            document.Resources.Add(NamedStyle.CodeTitle, codeTitle);
             document.Resources.Add(NamedStyle.CodeBlock, codeBlock);
             document.Resources.Add(NamedStyle.CodeInline, codeInline);
             document.Resources.Add(NamedStyle.DefinedTerm, definedTerm);

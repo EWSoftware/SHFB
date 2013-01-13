@@ -7,6 +7,8 @@
 // 02/16/2012 - EFW - Added Diagnostic message level type for diagnostic messages.  This allows messages
 // to appear regardless of the verbosity level.
 // 10/14/2012 - EFW - Added support for topic ID and message parameters in the message logging methods.
+// 01/05/2012 - EFW - Made the WriteMessage method public so that subcomponents with a reference to a build
+// component can log messages easily.
 
 using System;
 using System.Collections.Generic;
@@ -131,7 +133,7 @@ namespace Microsoft.Ddue.Tools
         /// <param name="level">The message level</param>
         /// <param name="message">The message to report</param>
         /// <param name="args">An optional list of arguments to format into the message</param>
-        protected void WriteMessage(MessageLevel level, string message, params object[] args)
+        public void WriteMessage(MessageLevel level, string message, params object[] args)
         {
             if(level == MessageLevel.Ignore)
                 return;
@@ -149,7 +151,7 @@ namespace Microsoft.Ddue.Tools
         /// <remarks>This is useful for warning and error messages as the topic ID will be included even when
         /// the message level is set to warnings or higher.  In such cases, the informational messages containing
         /// the "building topic X" messages are suppressed.</remarks>
-        protected void WriteMessage(string key, MessageLevel level, string message, params object[] args)
+        public void WriteMessage(string key, MessageLevel level, string message, params object[] args)
         {
             if(level == MessageLevel.Ignore)
                 return;
