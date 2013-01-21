@@ -12,6 +12,7 @@ namespace Microsoft.Isam.Esent.Collections.Generic
 {
     using System;
     using System.Collections;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Globalization;
     using System.IO;
@@ -77,8 +78,35 @@ namespace Microsoft.Isam.Esent.Collections.Generic
         private readonly string databasePath;
 
         // !EFW - Added support for turning off compression in new databases
-
         private bool compressColumns;
+
+        // !EFW - Added support for local cache to speed up read-only operations
+        private ConcurrentDictionary<TKey, TValue> localCache;
+        private int localCacheSize;
+
+        /// <summary>
+        /// Set this to a non-zero value to enable local caching of values to speed up read-only access
+        /// </summary>
+        /// <value>If set to zero, the default, the local cache will not be used and all values will be retrieved
+        /// from the database.  This is only intended for read-only dictionaries.  The local cache will not be
+        /// updated if the dictionary entries are updated.</value>
+        public int LocalCacheSize
+        {
+            get { return localCacheSize; }
+            set
+            {
+                if(value < 1)
+                {
+                    localCacheSize = 0;
+                    localCache = null;
+                }
+                else
+                {
+                    localCacheSize = value;
+                    localCache = new ConcurrentDictionary<TKey, TValue>();
+                }
+            }
+        }
 
         /// <summary>
         /// Initializes a new instance of the PersistentDictionary class.
@@ -142,7 +170,11 @@ namespace Microsoft.Isam.Esent.Collections.Generic
             this.instance.Parameters.LogFileSize = 1024;    // 1MB logs
             this.instance.Parameters.LogBuffers = 1024;     // buffers = 1/2 of logfile
             this.instance.Parameters.MaxTemporaryTables = 0;
-            this.instance.Parameters.MaxVerPages = 1024;
+
+            // !EFW - Quadrupled MaxVerPages as fast loading of large amounts of data in parallel fills the
+            // version store.
+            this.instance.Parameters.MaxVerPages = 4096;
+
             this.instance.Parameters.NoInformationEvent = true;
             this.instance.Parameters.WaypointLatency = 1;
             this.instance.Parameters.MaxSessions = 256;
@@ -328,13 +360,32 @@ namespace Microsoft.Isam.Esent.Collections.Generic
         {
             get
             {
+                TValue value;
+
+                // !EFW - Added support for local caching of values for read-only access
+                if(localCache != null && localCache.TryGetValue(key, out value))
+                    return value;
+
                 PersistentDictionaryCursor<TKey, TValue> cursor = this.cursors.GetCursor();
+
                 try
                 {
                     using (var transaction = cursor.BeginReadOnlyTransaction())
                     {
                         cursor.SeekWithKeyNotFoundException(key);
-                        var value = cursor.RetrieveCurrentValue();
+                        value = cursor.RetrieveCurrentValue();
+
+                        // !EFW
+                        if(localCache != null)
+                        {
+                            // If the cache is filled, clear it and start over.  Not the most sophisticated
+                            // method, but it works.
+                            if(localCache.Count >= localCacheSize)
+                                localCache.Clear();
+
+                            localCache[key] = value;
+                        }
+
                         return value;
                     }
                 }
@@ -567,7 +618,12 @@ namespace Microsoft.Isam.Esent.Collections.Generic
         /// <param name="key">The key to locate in the <see cref="PersistentDictionary{TKey,TValue}"/>.</param>
         public bool ContainsKey(TKey key)
         {
+            // !EFW - Added support for local caching of values for read-only access
+            if(localCache != null && localCache.ContainsKey(key))
+                return true;
+
             PersistentDictionaryCursor<TKey, TValue> cursor = this.cursors.GetCursor();
+
             try
             {
                 return cursor.TrySeek(key);
@@ -640,7 +696,13 @@ namespace Microsoft.Isam.Esent.Collections.Generic
         public bool TryGetValue(TKey key, out TValue value)
         {
             TValue retrievedValue = default(TValue);
+
+            // !EFW - Added support for local caching of values for read-only access
+            if(localCache != null && localCache.TryGetValue(key, out value))
+                return true;
+
             PersistentDictionaryCursor<TKey, TValue> cursor = this.cursors.GetCursor();
+
             try
             {
                 // Start a transaction so the record can't be deleted after
@@ -652,6 +714,17 @@ namespace Microsoft.Isam.Esent.Collections.Generic
                     {
                         retrievedValue = cursor.RetrieveCurrentValue();
                         isPresent = true;
+
+                        // !EFW
+                        if(localCache != null)
+                        {
+                            // If the cache is filled, clear it and start over.  Not the most sophisticated
+                            // method, but it works.
+                            if(localCache.Count >= localCacheSize)
+                                localCache.Clear();
+
+                            localCache[key] = retrievedValue;
+                        }
                     }
                 }
 

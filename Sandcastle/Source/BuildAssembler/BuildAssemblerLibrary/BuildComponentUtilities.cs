@@ -38,6 +38,9 @@ namespace Microsoft.Ddue.Tools
             if(exception == null)
                 throw new ArgumentNullException("exception");
 
+            if(exception is AggregateException)
+                exception = exception.InnerException;
+
             string message = exception.Message;
 
             XmlException xmlE = exception as XmlException;
@@ -53,7 +56,7 @@ namespace Microsoft.Ddue.Tools
                     "{2}; Source URI: '{3}')", message, xslE.LineNumber, xslE.LinePosition, xslE.SourceUri);
 
             if(exception.InnerException != null)
-                message = String.Format(CultureInfo.CurrentCulture, "{0} {1}", message,
+                message = String.Format(CultureInfo.CurrentCulture, "{0}\r\nInner Exception: {1}", message,
                     exception.InnerException.GetExceptionMessage());
 
             return message;

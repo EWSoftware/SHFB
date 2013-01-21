@@ -9,16 +9,20 @@
 // 10/14/2012 - EFW - Added support for topic ID and message parameters in the message logging methods.
 // 12/23/2012 - EFW - Updated to use and return enumerable lists of components rather than arrays.  Replaced
 // TopicManifest and TopicEnumerator with a private ReadManifest() method.
+// 01/12/2013 - EFW - Added the Execute() method to contain the build process and reworked it to allow for
+// parallel executon of component code.  Components are still initialized and topics built sequentially for now.
+// Converted the message logger to use BlockingCollection<string> to allow for parallel executon of component
+// code without contention for the console.
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.XPath;
-
-using Microsoft.Ddue.Tools.CommandLine;
 
 namespace Microsoft.Ddue.Tools
 {
@@ -34,9 +38,11 @@ namespace Microsoft.Ddue.Tools
 
         private List<BuildComponent> components = new List<BuildComponent>();
 
-        private MessageHandler handler;
-        
-        private static MessageLevel verbosityLevel;
+        private BlockingCollection<string> messageLog = new BlockingCollection<string>();
+
+        private MessageLevel verbosityLevel;
+        private Action<string> messageLogger;
+
         #endregion
 
         #region Properties
@@ -59,21 +65,13 @@ namespace Microsoft.Ddue.Tools
         }
 
         /// <summary>
-        /// This read-only property returns the current message handler
-        /// </summary>
-        public MessageHandler MessageHandler
-        {
-            get { return handler; }
-        }
-
-        /// <summary>
         /// The verbosity level for the message handlers
         /// </summary>
         /// <value>The value can be set to <c>Info</c>, <c>Warn</c>, or <c>Error</c>.  The default level
         /// is <see cref="MessageLevel.Info"/> so that all messages are displayed.  Setting it to a higher
         /// level will suppress messages below the given level.</value>
         /// <remarks>It is up to the message handler to make use of this property</remarks>
-        public static MessageLevel VerbosityLevel
+        public MessageLevel VerbosityLevel
         {
             get { return verbosityLevel; }
             set
@@ -95,21 +93,13 @@ namespace Microsoft.Ddue.Tools
         /// <summary>
         /// Constructor
         /// </summary>
-        public BuildAssembler()
+        /// <param name="messageLogger">The message logger action</param>
+        public BuildAssembler(Action<string> messageLogger)
         {
-            this.handler = BuildAssembler.WriteComponentMessageToConsole;
-        }
+            if(messageLogger == null)
+                throw new ArgumentNullException("messageLogger");
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="messageHandler">A custom message handler delegate</param>
-        public BuildAssembler(MessageHandler messageHandler)
-        {
-            if(messageHandler == null)
-                throw new ArgumentNullException("messageHandler");
-
-            this.handler = messageHandler;
+            this.messageLogger = messageLogger;
         }
         #endregion
 
@@ -131,7 +121,12 @@ namespace Microsoft.Ddue.Tools
         protected virtual void Dispose(bool disposing)
         {
             if(disposing)
+            {
                 this.ClearComponents();
+
+                if(messageLog != null)
+                    messageLog.Dispose();
+            }
         }
         #endregion
 
@@ -160,6 +155,69 @@ namespace Microsoft.Ddue.Tools
 
         #region Operations
         //=====================================================================
+
+        /// <summary>
+        /// This is used to execute the build assembler instance using the specified configuration file and
+        /// manifest file.
+        /// </summary>
+        /// <param name="configuration">The build assembler configuration</param>
+        /// <param name="manifest">The manifest file</param>
+        public virtual void Execute(XPathDocument configuration, string manifest)
+        {
+            Task builder = Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    XPathNavigator configNav = configuration.CreateNavigator();
+
+                    // See if a verbosity level has been specified.  If so, set it.
+                    var verbosity = configNav.SelectSingleNode("/configuration/@verbosity");
+                    MessageLevel level;
+
+                    if(verbosity == null || !Enum.TryParse<MessageLevel>(verbosity.Value, out level))
+                        level = MessageLevel.Info;
+
+                    this.VerbosityLevel = level;
+
+                    if(level > MessageLevel.Info)
+                        messageLog.Add("Info: Loading configuration...");
+
+                    // Load the context
+                    XPathNavigator contextNode = configNav.SelectSingleNode(
+                        "/configuration/dduetools/builder/context");
+
+                    if(contextNode != null)
+                        this.Context.Load(contextNode);
+
+                    // Load the build components
+                    XPathNavigator componentsNode = configNav.SelectSingleNode(
+                        "/configuration/dduetools/builder/components");
+
+                    if(componentsNode != null)
+                        this.AddComponents(componentsNode);
+
+                    // Proceed through the build manifest, processing all topics named there
+                    if(level > MessageLevel.Info)
+                        messageLog.Add("Info: Processing topics...");
+
+                    int count = this.Apply(manifest);
+
+                    messageLog.Add(String.Format(CultureInfo.CurrentCulture, "Info: Processed {0} topics", count));
+                }
+                finally
+                {
+                    messageLog.CompleteAdding();
+                }
+            });
+
+            Task logger = Task.Factory.StartNew(() =>
+            {
+                foreach(string s in messageLog.GetConsumingEnumerable())
+                    messageLogger(s);
+            });
+
+            Task.WaitAll(builder, logger);
+        }
 
         /// <summary>
         /// This is used to read a manifest file to extract topic IDs for processing
@@ -194,7 +252,7 @@ namespace Microsoft.Ddue.Tools
         /// <param name="manifestFile">The manifest file containing the topics to generate</param>
         /// <returns>A count of the number of topics processed</returns>
         /// <overloads>There are two overloads for this method</overloads>
-        public int Apply(string manifestFile)
+        protected int Apply(string manifestFile)
         {
             return this.Apply(this.ReadManifest(manifestFile));
         }
@@ -204,7 +262,7 @@ namespace Microsoft.Ddue.Tools
         /// </summary>
         /// <param name="topics">The enumerable list of topic IDs</param>
         /// <returns>A count of the number of topics processed</returns>
-        public int Apply(IEnumerable<string> topics)
+        protected int Apply(IEnumerable<string> topics)
         {
             int count = 0;
 
@@ -214,7 +272,7 @@ namespace Microsoft.Ddue.Tools
                 XmlDocument document = new XmlDocument();
                 document.PreserveWhitespace = true;
 
-                WriteMessage(MessageLevel.Info, "Building topic {0}", topic);
+                this.WriteMessage(MessageLevel.Info, "Building topic {0}", topic);
 
                 // Apply the component stack
                 foreach(BuildComponent component in components)
@@ -227,7 +285,7 @@ namespace Microsoft.Ddue.Tools
         }
 
         // TODO: This doesn't appear to be used anymore.  Remove?
-        public IEnumerable<BuildContext> GetFileManifestBuildContextEnumerator(string manifestFilename)
+        protected IEnumerable<BuildContext> GetFileManifestBuildContextEnumerator(string manifestFilename)
         {
             using(XmlReader reader = XmlReader.Create(manifestFilename))
             {
@@ -278,13 +336,13 @@ namespace Microsoft.Ddue.Tools
             string assemblyName = configuration.GetAttribute("assembly", String.Empty);
 
             if(String.IsNullOrEmpty(assemblyName))
-                WriteMessage(MessageLevel.Error, "Each component element must have an assembly attribute that " +
-                    "specifies a path to the component assembly.");
+                this.WriteMessage(MessageLevel.Error, "Each component element must have an assembly attribute " +
+                    "that specifies a path to the component assembly.");
 
             string typeName = configuration.GetAttribute("type", String.Empty);
 
             if(String.IsNullOrEmpty(typeName))
-                WriteMessage(MessageLevel.Error, "Each component element must have a type attribute that " +
+                this.WriteMessage(MessageLevel.Error, "Each component element must have a type attribute that " +
                     "specifies the fully qualified name of a component type.");
 
             // Expand environment variables in path of assembly name
@@ -301,39 +359,44 @@ namespace Microsoft.Ddue.Tools
             }
             catch(IOException e)
             {
-                WriteMessage(MessageLevel.Error, "A file access error occured while attempting to load the " +
-                    "build component assembly '{0}'. The error message is: {1}", assemblyName, e.Message);
+                this.WriteMessage(MessageLevel.Error, "A file access error occured while attempting to load " +
+                    "the build component assembly '{0}'. The error message is: {1}", assemblyName, e.Message);
             }
             catch(BadImageFormatException e)
             {
-                WriteMessage(MessageLevel.Error, "The build component assembly '{0}' is not a valid " +
+                this.WriteMessage(MessageLevel.Error, "The build component assembly '{0}' is not a valid " +
                     "managed assembly. The error message is: {1}", assemblyName, e.Message);
             }
             catch(TypeLoadException)
             {
-                WriteMessage(MessageLevel.Error, "The build component '{0}' was not found in the assembly '{1}'.",
-                    typeName, assemblyName);
+                this.WriteMessage(MessageLevel.Error, "The build component '{0}' was not found in the " +
+                    "assembly '{1}'.", typeName, assemblyName);
             }
             catch(MissingMethodException e)
             {
-                WriteMessage(MessageLevel.Error, "No appropriate constructor exists for the build component " +
-                    "'{0}' in the component assembly '{1}'. The error message is: {1}", typeName, assemblyName, e.Message);
+                this.WriteMessage(MessageLevel.Error, "No appropriate constructor exists for the build " +
+                    "component '{0}' in the component assembly '{1}'. The error message is: {1}", typeName,
+                    assemblyName, e.Message);
             }
             catch(TargetInvocationException e)
             {
-                WriteMessage(MessageLevel.Error, "An error occured while initializing the build component " +
+                // Ignore OperationCanceledException as it is the result of logging an error message
+                if(e.InnerException is OperationCanceledException)
+                    throw e.InnerException;
+
+                this.WriteMessage(MessageLevel.Error, "An error occured while initializing the build component " +
                     "'{0}' in the component assembly '{1}'. The error message and stack trace follows: {2}",
                     typeName, assemblyName, e.InnerException.ToString());
             }
             catch(InvalidCastException)
             {
-                WriteMessage(MessageLevel.Error, "The type '{0}' in the component assembly '{1}' is not a " +
+                this.WriteMessage(MessageLevel.Error, "The type '{0}' in the component assembly '{1}' is not a " +
                     "build component.", typeName, assemblyName);
             }
 
             if(component == null)
-                WriteMessage(MessageLevel.Error, "The type '{0}' was not found in the component assembly '{1}'.",
-                    typeName, assemblyName);
+                this.WriteMessage(MessageLevel.Error, "The type '{0}' was not found in the component " +
+                    "assembly '{1}'.", typeName, assemblyName);
 
             return component;
         }
@@ -383,64 +446,67 @@ namespace Microsoft.Ddue.Tools
         //=====================================================================
 
         /// <summary>
-        /// Write a message to the current message handler
+        /// Write a message to the message log
         /// </summary>
         /// <param name="level">The message level</param>
         /// <param name="message">The message to write</param>
         /// <param name="args">An optional list of arguments to format into the message</param>
         private void WriteMessage(MessageLevel level, string message, params object[] args)
         {
-            handler(this.GetType(), level, null, (args.Length == 0) ? message :
+            this.WriteMessage(this.GetType(), level, null, (args.Length == 0) ? message :
                 String.Format(CultureInfo.CurrentCulture, message, args));
         }
 
         /// <summary>
-        /// Write a component message to the console
+        /// Write a component message to the message log
         /// </summary>
         /// <param name="type">The component type making the request</param>
         /// <param name="level">The message level</param>
         /// <param name="key">An optional topic key related to the message or null if there isn't one</param>
         /// <param name="message">The message to write to the console</param>
         /// <remarks>If the message level is below the current verbosity level setting, the message is ignored</remarks>
-        private static void WriteComponentMessageToConsole(Type type, MessageLevel level, string key,
-          string message)
+        public void WriteMessage(Type type, MessageLevel level, string key, string message)
         {
             string text;
 
-            if(level >= VerbosityLevel)
+            if(level >= this.VerbosityLevel)
             {
                 if(String.IsNullOrWhiteSpace(key))
-                    text = String.Format(CultureInfo.CurrentCulture, "{0}: {1}", type.Name, message);
+                    text = String.Format(CultureInfo.CurrentCulture, "{0}: {1}: {2}", level, type.Name, message);
                 else
                 {
                     // The key can contain braces so escape them
                     key = key.Replace("{", "{{").Replace("}", "}}");
 
-                    text = String.Format(CultureInfo.CurrentCulture, "{0}: [{1}] {2}", type.Name, key, message);
+                    text = String.Format(CultureInfo.CurrentCulture, "{0}: {1}: [{2}] {3}", level, type.Name,
+                        key, message);
                 }
 
+                // If the background task has completed, we'll call the message logger action directly
                 switch(level)
                 {
                     case MessageLevel.Info:
-                        ConsoleApplication.WriteMessage(LogLevel.Info, text);
-                        break;
-
                     case MessageLevel.Warn:
-                        ConsoleApplication.WriteMessage(LogLevel.Warn, text);
+                    case MessageLevel.Diagnostic:
+                        if(!messageLog.IsAddingCompleted)
+                            messageLog.Add(text);
+                        else
+                            messageLogger(text);
                         break;
 
                     case MessageLevel.Error:
-                        ConsoleApplication.WriteMessage(LogLevel.Error, text);
+                        text = "\r\n" + text;
+
+                        if(!messageLog.IsAddingCompleted)
+                            messageLog.Add(text);
+                        else
+                            messageLogger(text);
 
                         if(System.Diagnostics.Debugger.IsAttached)
                             System.Diagnostics.Debugger.Break();
 
-                        Environment.Exit(1);
-                        break;
-
-                    case MessageLevel.Diagnostic:
-                        ConsoleApplication.WriteMessage(LogLevel.Diagnostic, text);
-                        break;
+                        // Errors need to terminate the build so we'll throw an exception to terminate the task
+                        throw new OperationCanceledException("See log for details");
 
                     default:    // Ignored
                         break;

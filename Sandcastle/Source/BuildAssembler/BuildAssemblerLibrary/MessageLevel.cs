@@ -12,19 +12,6 @@ using System;
 
 namespace Microsoft.Ddue.Tools
 {
-    #region Message handler delegate
-    //=====================================================================
-
-    /// <summary>
-    /// The message handler delegate
-    /// </summary>
-    /// <param name="component">The component type reporting the message</param>
-    /// <param name="level">The message level</param>
-    /// <param name="key">An optional topic key related to the message or null if there isn't one</param>
-    /// <param name="message">The message to report</param>
-    public delegate void MessageHandler(Type component, MessageLevel level, string key, string message);
-    #endregion
-
     #region Message level enumeration
     //=====================================================================
 

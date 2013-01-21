@@ -35,11 +35,6 @@ namespace Microsoft.Ddue.Tools.Targets
         /// This is used to get or set the target's reference topic filename
         /// </summary>
         public string File { get; internal set; }
-
-        /// <summary>
-        /// This is used to get or set whether or not the target is an invalid link
-        /// </summary>
-        public bool IsInvalidLink { get; set; }
         #endregion
 
         #region Methods

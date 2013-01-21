@@ -1,9 +1,9 @@
 ﻿//===============================================================================================================
 // System  : Sandcastle Help File Builder Components
-// File    : SimpleTargetDictionary.cs
+// File    : InMemoryTargetDictionary.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/31/2012
-// Note    : Copyright 2012, Eric Woodruff, All rights reserved
+// Updated : 01/20/2013
+// Note    : Copyright 2012-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a target dictionary backed by a simple Dictionary<TKey, TValue> instance.
@@ -20,13 +20,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Xml.XPath;
 
 namespace Microsoft.Ddue.Tools.Targets
 {
     /// <summary>
     /// This contains a collection of targets indexed by member ID stored in a simple
-    /// <see cref="Dictionary{TKey, TValue}"/> entirely in memory.
+    /// <see cref="ConcurrentDictionary{TKey, TValue}"/> entirely in memory.
     /// </summary>
     /// <remarks>The behavior of this dictionary is to return null if a target ID is not found and to replace
     /// existing entries if a duplicate ID is added.  All targets are stored in memory.  Since it must load all
@@ -37,12 +38,12 @@ namespace Microsoft.Ddue.Tools.Targets
     /// <para>This implementation does not offer the option for a persistent cache as streaming the entire
     /// dictionary in and out takes several times longer than just loading the source XML data.</para></remarks>
     [Serializable]
-    public sealed class SimpleTargetDictionary : TargetDictionary
+    public sealed class InMemoryTargetDictionary : TargetDictionary
     {
         #region Private data members
         //=====================================================================
 
-        private Dictionary<string, Target> index;
+        private ConcurrentDictionary<string, Target> index;
 
         #endregion
 
@@ -57,10 +58,10 @@ namespace Microsoft.Ddue.Tools.Targets
         /// <param name="configuration">The target dictionary configuration</param>
         /// <returns>A target dictionary instance that uses a simple in-memory
         /// <see cref="Dictionary{TKey, TValue}"/> instance to store the targets.</returns>
-        public SimpleTargetDictionary(BuildComponent component, XPathNavigator configuration) :
+        public InMemoryTargetDictionary(BuildComponent component, XPathNavigator configuration) :
           base(component, configuration)
         {
-            index = new Dictionary<string, Target>();
+            index = new ConcurrentDictionary<string, Target>();
 
             this.LoadTargetDictionary();
         }

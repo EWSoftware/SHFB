@@ -1,4 +1,4 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.PlugIns.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
@@ -6,38 +6,30 @@
 // Note    : Copyright 2007-2008, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains the methods that handle the plug-ins during the build
-// process.
+// This file contains the methods that handle the plug-ins during the build process
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.5.2.0  09/12/2007  EFW  Created the code
 // 1.6.0.6  03/13/2008  EFW  Wrapped plug-in log output in an XML element
 // 1.8.0.1  11/14/2008  EFW  Added execution priority support
-//=============================================================================
+//===============================================================================================================
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Xml;
-using System.Xml.XPath;
 
 using SandcastleBuilder.Utils.PlugIn;
 
 namespace SandcastleBuilder.Utils.BuildEngine
 {
-    /// <summary>
-    /// This class is used to handle all aspects of the build process in a
-    /// separate thread.
-    /// </summary>
     public partial class BuildProcess
     {
         #region Private data members

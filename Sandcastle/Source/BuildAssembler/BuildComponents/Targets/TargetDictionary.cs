@@ -9,11 +9,13 @@
 // renamed it TargetDictionary to reflect its true purpose.
 // 12/31/2012 - EFW - Converted to abstract base class to allow for various implementations that utilize
 // different backing stores including those with support for persistence.
+// 01/13/2013 - EFW - Reworked LoadTargetDictionary() to use Parallel.For() by default to load the targets.
 
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.XPath;
@@ -165,7 +167,8 @@ namespace Microsoft.Ddue.Tools.Targets
                     "directory '{0}' does not exist.", this.DirectoryPath), "configuration");
 
             if(String.IsNullOrWhiteSpace(id))
-                id = Path.Combine(this.DirectoryPath, this.FilePattern).GetHashCode().ToString("X");
+                id = Path.Combine(this.DirectoryPath, this.FilePattern).GetHashCode().ToString("X",
+                    CultureInfo.InvariantCulture);
 
             this.DictionaryId = id;
 
@@ -216,15 +219,21 @@ namespace Microsoft.Ddue.Tools.Targets
         /// <summary>
         /// This helper method can be called to find all target files and load them into the dictionary
         /// </summary>
-        protected virtual void LoadTargetDictionary()
+        /// <param name="maxDegreeOfParallelism">This can be used to override the maximum degree of parallelism.
+        /// By default, it is -1 to allow as many threads as possible.</param>
+        /// <remarks>This method assumes that the dictionary is thread-safe and supports parallel loading of
+        /// target data.  If not, override this method to load the data synchronously.</remarks>
+        protected virtual void LoadTargetDictionary(int maxDegreeOfParallelism = -1)
         {
-            foreach(string file in Directory.EnumerateFiles(this.DirectoryPath, this.FilePattern, this.Recurse ?
-              SearchOption.AllDirectories : SearchOption.TopDirectoryOnly))
+            Parallel.ForEach(Directory.EnumerateFiles(this.DirectoryPath, this.FilePattern, this.Recurse ?
+              SearchOption.AllDirectories : SearchOption.TopDirectoryOnly),
+              new ParallelOptions { MaxDegreeOfParallelism = maxDegreeOfParallelism },
+              file =>
             {
                 // Skip the file if not in a defined filter or if it's already in the dictionary
                 if((namespaceFileFilter.Count != 0 && !namespaceFileFilter.Contains(Path.GetFileName(file))) ||
                   this.ContainsKey("N:" + Path.GetFileNameWithoutExtension(file)))
-                    continue;
+                    return;
 
                 this.BuildComponent.WriteMessage(MessageLevel.Info, "Indexing targets in {0}", file);
 
@@ -254,7 +263,7 @@ namespace Microsoft.Ddue.Tools.Targets
                         "An access error occured while opening the reference targets file '{0}'. The error " +
                         "message is: {1}", file, e.GetExceptionMessage()));
                 }
-            }
+            });
         }
         #endregion
 

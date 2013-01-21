@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Components
 // File    : TargetTypeDictionary.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/05/2013
+// Updated : 01/20/2013
 // Note    : Copyright 2012-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -137,7 +137,7 @@ namespace Microsoft.Ddue.Tools.Targets
             foreach(var kp in targetDictionaries)
                 if(kp.Value.TryGetValue(key, out value))
                 {
-                    linkType = value.IsInvalidLink ? ReferenceLinkType.None : kp.Key;
+                    linkType = kp.Key;
                     return true;
                 }
 
@@ -334,7 +334,7 @@ namespace Microsoft.Ddue.Tools.Targets
                 filename = Path.Combine(folder, td.Value.DictionaryId);
 
                 // Fair warning, this is really slow for the main .NET Framework target dictionary hence the
-                // reason not to offer the option to serialze the SimpleTargetDictionary for a persistent cache.
+                // reason not to offer the option to serialze the InMemoryTargetDictionary to a persistent cache.
                 using(FileStream fs = new FileStream(filename, FileMode.Create, FileAccess.ReadWrite, FileShare.None))
                 {
                     bf.Serialize(fs, td.Value);

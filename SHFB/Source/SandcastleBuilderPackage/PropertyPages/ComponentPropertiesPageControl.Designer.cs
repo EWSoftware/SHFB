@@ -173,18 +173,18 @@
             this.txtComponentCopyright.Name = "txtComponentCopyright";
             this.txtComponentCopyright.ReadOnly = true;
             this.txtComponentCopyright.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtComponentCopyright.Size = new System.Drawing.Size(699, 86);
+            this.txtComponentCopyright.Size = new System.Drawing.Size(699, 56);
             this.txtComponentCopyright.TabIndex = 2;
             // 
             // txtComponentDescription
             // 
             this.txtComponentDescription.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.txtComponentDescription.Location = new System.Drawing.Point(3, 413);
+            this.txtComponentDescription.Location = new System.Drawing.Point(3, 383);
             this.txtComponentDescription.Multiline = true;
             this.txtComponentDescription.Name = "txtComponentDescription";
             this.txtComponentDescription.ReadOnly = true;
             this.txtComponentDescription.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtComponentDescription.Size = new System.Drawing.Size(698, 134);
+            this.txtComponentDescription.Size = new System.Drawing.Size(698, 164);
             this.txtComponentDescription.TabIndex = 3;
             // 
             // ComponentPropertiesPageControl

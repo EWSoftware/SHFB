@@ -4,38 +4,43 @@
 // All other rights reserved.
 
 // Change history:
-// 03/27/2012 - EFW - Added support for suppressing duplicate ID warnings.  This prevents lots of unnecessary
-// warnings about duplicate IDs in comments files.
+// 01/20/2012 - EFW - Reworked the index cache and moved those classes to the Commands namespace and put them
+// in their own files.
 
 using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Globalization;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Xml;
 using System.Xml.XPath;
-using System.Reflection;
+
+using Microsoft.Ddue.Tools.Commands;
 
 namespace Microsoft.Ddue.Tools
 {
+    /// <summary>
+    /// This build component copies elements from an indexed set of XML files into the target document based on
+    /// one or more copy commands that define the elements to copy and where to put them.
+    /// </summary>
     public class CopyFromIndexComponent : BuildComponent
     {
+        #region Private data members
+        //=====================================================================
+
         // List of copy components
         private List<CopyComponent> components = new List<CopyComponent>();
 
-        // what to copy
-        private List<CopyCommand> copy_commands = new List<CopyCommand>();
+        // What to copy
+        private List<CopyFromIndexCommand> copyCommands = new List<CopyFromIndexCommand>();
 
-        // a context in which to evaluate XPath expressions
+        // A context in which to evaluate XPath expressions
         private CustomContext context = new CustomContext();
+        #endregion
 
-        // !EFW - Added to support supression of duplicate ID warnings in comment files
-        /// <summary>
-        /// This is used to get or set whether duplicate IDs in the index files result in a warning
-        /// </summary>
-        /// <value>The default is true to report warnings for duplicate ID values in the index files</value>
-        public bool DuplicateIdWarnings { get; set; }
-        
+        #region Constructor
+        //=====================================================================
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -44,773 +49,211 @@ namespace Microsoft.Ddue.Tools
         public CopyFromIndexComponent(BuildAssembler assembler, XPathNavigator configuration) :
           base(assembler, configuration)
         {
-            this.DuplicateIdWarnings = true;
+            MessageLevel level;
+            bool isAttribute, ignoreCase;
 
-            // set up the context
-            XPathNodeIterator context_nodes = configuration.Select("context");
-            foreach(XPathNavigator context_node in context_nodes)
+            // Set up the context
+            XPathNodeIterator contextNodes = configuration.Select("context");
+
+            foreach(XPathNavigator contextNode in contextNodes)
+                context.AddNamespace(contextNode.GetAttribute("prefix", String.Empty),
+                    contextNode.GetAttribute("name", String.Empty));
+
+            // Set up the indices
+            XPathNodeIterator indexNodes = configuration.Select("index");
+
+            foreach(XPathNavigator indexNode in indexNodes)
             {
-                string prefix = context_node.GetAttribute("prefix", String.Empty);
-                string name = context_node.GetAttribute("name", String.Empty);
-                context.AddNamespace(prefix, name);
+                // Create the index
+                IndexedCache index = new InMemoryIndexedCache(this, context, indexNode);
+#if DEBUG
+                base.WriteMessage(MessageLevel.Diagnostic, "Loading {0} index", index.Name);
+
+                DateTime startLoad = DateTime.Now;
+#endif
+                // Search the data directories for entries
+                XPathNodeIterator dataNodes = indexNode.Select("data");
+
+                foreach(XPathNavigator dataNode in dataNodes)
+                    index.AddDocuments(dataNode);
+
+                base.WriteMessage(MessageLevel.Info, "Indexed {0} elements", index.IndexCount);
+#if DEBUG
+                TimeSpan loadTime = (DateTime.Now - startLoad);
+                base.WriteMessage(MessageLevel.Diagnostic, "Load time: {0} seconds", loadTime.TotalSeconds);
+#endif
+                BuildComponent.Data.Add(index.Name, index);
             }
 
-            // set up the indices
-            XPathNodeIterator index_nodes = configuration.Select("index");
+            // Get the copy commands
+            XPathNodeIterator copyNodes = configuration.Select("copy");
 
-            foreach(XPathNavigator index_node in index_nodes)
+            foreach(XPathNavigator copyNode in copyNodes)
             {
-                // get the name of the index
-                string name = index_node.GetAttribute("name", String.Empty);
-                if(String.IsNullOrEmpty(name))
-                    throw new ConfigurationErrorsException("Each index must have a unique name.");
+                string sourceName = copyNode.GetAttribute("name", String.Empty);
 
-                // get the xpath for value nodes
-                string value_xpath = index_node.GetAttribute("value", String.Empty);
-                if(String.IsNullOrEmpty(value_xpath))
-                    WriteMessage(MessageLevel.Error, "Each index element must have a value attribute containing an XPath that describes index entries.");
+                if(String.IsNullOrWhiteSpace(sourceName))
+                    base.WriteMessage(MessageLevel.Error, "Each copy command must specify an index to copy from");
 
-                // get the xpath for keys (relative to value nodes)
-                string key_xpath = index_node.GetAttribute("key", String.Empty);
-                if(String.IsNullOrEmpty(key_xpath))
-                    WriteMessage(MessageLevel.Error, "Each index element must have a key attribute containing an XPath (relative to the value XPath) that evaluates to the entry key.");
+                string keyXPath = copyNode.GetAttribute("key", String.Empty);
 
-                // get the cache size
-                int cache = 10;
-                string cache_value = index_node.GetAttribute("cache", String.Empty);
+                if(String.IsNullOrWhiteSpace(keyXPath))
+                    keyXPath = "string($key)";
 
-                if(!String.IsNullOrEmpty(cache_value))
-                    cache = Convert.ToInt32(cache_value, CultureInfo.InvariantCulture);
+                string sourceXPath = copyNode.GetAttribute("source", String.Empty);
 
-                // create the index
-                IndexedDocumentCache index = new IndexedDocumentCache(this, key_xpath, value_xpath, context, cache);
+                if(String.IsNullOrWhiteSpace(sourceXPath))
+                    base.WriteMessage(MessageLevel.Error, "When instantiating a CopyFromIndex component, you " +
+                        "must specify a source XPath format using the source attribute");
 
-                // search the data directories for entries
-                XPathNodeIterator data_nodes = index_node.Select("data");
-                foreach(XPathNavigator data_node in data_nodes)
-                {
-                    string base_value = data_node.GetAttribute("base", String.Empty);
+                string targetXPath = copyNode.GetAttribute("target", String.Empty);
 
-                    if(!String.IsNullOrEmpty(base_value))
-                        base_value = Environment.ExpandEnvironmentVariables(base_value);
+                if(String.IsNullOrWhiteSpace(targetXPath))
+                    base.WriteMessage(MessageLevel.Error, "When instantiating a CopyFromIndex component, you " +
+                        "must specify a target XPath format using the target attribute");
 
-                    bool recurse = false;
-                    string recurse_value = data_node.GetAttribute("recurse", String.Empty);
+                isAttribute = ignoreCase = false;
 
-                    if(!String.IsNullOrEmpty(recurse_value))
-                        recurse = Convert.ToBoolean(recurse_value, CultureInfo.InvariantCulture);
+                string boolValue = copyNode.GetAttribute("attribute", String.Empty);
 
-                    // !EFW - Added to support suppression of duplicate warnings on comment files
-                    string duplicateWarning = data_node.GetAttribute("duplicateWarning", String.Empty);
+                if(!String.IsNullOrWhiteSpace(boolValue) && !Boolean.TryParse(boolValue, out isAttribute))
+                    base.WriteMessage(MessageLevel.Error, "The 'attribute' attribute value is not a valid Boolean");
 
-                    if(!String.IsNullOrEmpty(duplicateWarning))
-                        this.DuplicateIdWarnings = Convert.ToBoolean(duplicateWarning, CultureInfo.InvariantCulture);
+                boolValue = copyNode.GetAttribute("ignoreCase", String.Empty);
 
-                    // get the files				
-                    string files = data_node.GetAttribute("files", String.Empty);
+                if(!String.IsNullOrWhiteSpace(boolValue) && !Boolean.TryParse(boolValue, out ignoreCase))
+                    base.WriteMessage(MessageLevel.Error, "The ignoreCase attribute value is not a valid Boolean");
 
-                    if(String.IsNullOrEmpty(files))
-                        WriteMessage(MessageLevel.Error, "Each data element must have a files attribute specifying which files to index.");
+                IndexedCache index = (IndexedCache)BuildComponent.Data[sourceName];
 
-                    files = Environment.ExpandEnvironmentVariables(files);
+                CopyFromIndexCommand copyCommand = new CopyFromIndexCommand(this, index, keyXPath, sourceXPath,
+                    targetXPath, isAttribute, ignoreCase);
 
-                    if(!String.IsNullOrEmpty(base_value))
-                        WriteMessage(MessageLevel.Info, "Searching for files that match '{0}' in '{1}'.", files, base_value);
+                string messageLevel = copyNode.GetAttribute("missing-entry", String.Empty);
+                
+                if(!String.IsNullOrWhiteSpace(messageLevel))
+                    if(Enum.TryParse<MessageLevel>(messageLevel, true, out level))
+                        copyCommand.MissingEntry = level;
                     else
-                        WriteMessage(MessageLevel.Info, "Searching for files that match '{0}'.", files);
+                        base.WriteMessage(MessageLevel.Error, "'{0}' is not a message level.", messageLevel);
 
-                    index.AddDocuments(base_value, files, recurse);
-                }
+                messageLevel = copyNode.GetAttribute("missing-source", String.Empty);
 
-                WriteMessage(MessageLevel.Info, "Indexed {0} elements in {1} files.", index.Count, index.DocumentCount);
+                if(!String.IsNullOrWhiteSpace(messageLevel))
+                    if(Enum.TryParse<MessageLevel>(messageLevel, true, out level))
+                        copyCommand.MissingSource = level;
+                    else
+                        base.WriteMessage(MessageLevel.Error, "'{0}' is not a message level.", messageLevel);
 
-                BuildComponent.Data.Add(name, index);
+                messageLevel = copyNode.GetAttribute("missing-target", String.Empty);
+
+                if(!String.IsNullOrWhiteSpace(messageLevel))
+                    if(Enum.TryParse<MessageLevel>(messageLevel, true, out level))
+                        copyCommand.MissingTarget = level;
+                    else
+                        base.WriteMessage(MessageLevel.Error, "'{0}' is not a message level.", messageLevel);
+
+                copyCommands.Add(copyCommand);
             }
 
-            // get the copy commands
-            XPathNodeIterator copy_nodes = configuration.Select("copy");
+            XPathNodeIterator componentNodes = configuration.Select("components/component");
 
-            foreach(XPathNavigator copy_node in copy_nodes)
+            foreach(XPathNavigator componentNode in componentNodes)
             {
+                // Get the data to load the component
+                string assemblyPath = componentNode.GetAttribute("assembly", String.Empty);
 
-                string source_name = copy_node.GetAttribute("name", String.Empty);
-                if(String.IsNullOrEmpty(source_name))
-                    throw new ConfigurationErrorsException("Each copy command must specify an index to copy from.");
+                if(String.IsNullOrWhiteSpace(assemblyPath))
+                    base.WriteMessage(MessageLevel.Error, "Each component element must have an assembly attribute.");
 
-                string key_xpath = copy_node.GetAttribute("key", String.Empty);
+                string typeName = componentNode.GetAttribute("type", String.Empty);
 
-                string source_xpath = copy_node.GetAttribute("source", String.Empty);
-                if(String.IsNullOrEmpty(source_xpath))
-                    throw new ConfigurationErrorsException("When instantiating a CopyFromDirectory component, you must specify a source xpath format using the source attribute.");
-
-                string target_xpath = copy_node.GetAttribute("target", String.Empty);
-                if(String.IsNullOrEmpty(target_xpath))
-                    throw new ConfigurationErrorsException("When instantiating a CopyFromDirectory component, you must specify a target xpath format using the target attribute.");
-
-                string attribute_value = copy_node.GetAttribute("attribute", String.Empty);
-
-                string ignoreCase_value = copy_node.GetAttribute("ignoreCase", String.Empty);
-
-                string missingEntryValue = copy_node.GetAttribute("missing-entry", String.Empty);
-                string missingSourceValue = copy_node.GetAttribute("missing-source", String.Empty);
-                string missingTargetValue = copy_node.GetAttribute("missing-target", String.Empty);
-
-                IndexedDocumentCache index = (IndexedDocumentCache)Data[source_name];
-
-                CopyCommand copyCommand = new CopyCommand(index, key_xpath, source_xpath, target_xpath, attribute_value, ignoreCase_value);
-                
-                if(!String.IsNullOrEmpty(missingEntryValue))
-                {
-                    try
-                    {
-                        copyCommand.MissingEntry = (MessageLevel)Enum.Parse(typeof(MessageLevel), missingEntryValue, true);
-                    }
-                    catch(ArgumentException)
-                    {
-                        WriteMessage(MessageLevel.Error, "'{0}' is not a message level.", missingEntryValue);
-                    }
-                }
-                
-                if(!String.IsNullOrEmpty(missingSourceValue))
-                {
-                    try
-                    {
-                        copyCommand.MissingSource = (MessageLevel)Enum.Parse(typeof(MessageLevel), missingSourceValue, true);
-                    }
-                    catch(ArgumentException)
-                    {
-                        WriteMessage(MessageLevel.Error, "'{0}' is not a message level.", missingSourceValue);
-                    }
-                }
-                
-                if(!String.IsNullOrEmpty(missingTargetValue))
-                {
-                    try
-                    {
-                        copyCommand.MissingTarget = (MessageLevel)Enum.Parse(typeof(MessageLevel), missingTargetValue, true);
-                    }
-                    catch(ArgumentException)
-                    {
-                        WriteMessage(MessageLevel.Error, "'{0}' is not a message level.", missingTargetValue);
-                    }
-                }
-
-                copy_commands.Add(copyCommand);
-
-
-            }
-
-            XPathNodeIterator component_nodes = configuration.Select("components/component");
-            foreach(XPathNavigator component_node in component_nodes)
-            {
-
-                // get the data to load the component
-                string assembly_path = component_node.GetAttribute("assembly", String.Empty);
-                if(String.IsNullOrEmpty(assembly_path))
-                    WriteMessage(MessageLevel.Error, "Each component element must have an assembly attribute.");
-                string type_name = component_node.GetAttribute("type", String.Empty);
-                if(String.IsNullOrEmpty(type_name))
-                    WriteMessage(MessageLevel.Error, "Each component element must have a type attribute.");
+                if(String.IsNullOrWhiteSpace(typeName))
+                    base.WriteMessage(MessageLevel.Error, "Each component element must have a type attribute.");
 
                 // expand environment variables in the path
-                assembly_path = Environment.ExpandEnvironmentVariables(assembly_path);
+                assemblyPath = Environment.ExpandEnvironmentVariables(assemblyPath);
 
                 try
                 {
-                    Assembly assembly = Assembly.LoadFrom(assembly_path);
+                    Assembly assembly = Assembly.LoadFrom(assemblyPath);
 
-                    CopyComponent component = (CopyComponent)assembly.CreateInstance(type_name, false,
+                    CopyComponent component = (CopyComponent)assembly.CreateInstance(typeName, false,
                         BindingFlags.Public | BindingFlags.Instance, null,
-                        new object[2] { component_node.Clone(), Data }, null, null);
+                        new object[3] { this, componentNode.Clone(), BuildComponent.Data }, null, null);
 
                     if(component == null)
-                    {
-                        WriteMessage(MessageLevel.Error, "The type '{0}' does not exist in the assembly '{1}'.", type_name, assembly_path);
-                    }
+                        base.WriteMessage(MessageLevel.Error, "The type '{0}' does not exist in the assembly '{1}'",
+                            typeName, assemblyPath);
                     else
-                    {
                         components.Add(component);
-                    }
-
                 }
                 catch(IOException e)
                 {
-                    WriteMessage(MessageLevel.Error, "A file access error occured while attempting to load the build component '{0}'. The error message is: {1}", assembly_path, e.Message);
+                    base.WriteMessage(MessageLevel.Error, "A file access error occured while attempting to " +
+                        "load the build component '{0}'. The error message is: {1}", assemblyPath, e.Message);
                 }
                 catch(BadImageFormatException e)
                 {
-                    WriteMessage(MessageLevel.Error, "A syntax generator assembly '{0}' is invalid. The error message is: {1}.", assembly_path, e.Message);
+                    base.WriteMessage(MessageLevel.Error, "A syntax generator assembly '{0}' is invalid. The " +
+                        "error message is: {1}.", assemblyPath, e.Message);
                 }
                 catch(TypeLoadException e)
                 {
-                    WriteMessage(MessageLevel.Error, "The type '{0}' does not exist in the assembly '{1}'. The error message is: {2}", type_name, assembly_path, e.Message);
+                    base.WriteMessage(MessageLevel.Error, "The type '{0}' does not exist in the assembly " +
+                        "'{1}'. The error message is: {2}", typeName, assemblyPath, e.Message);
                 }
                 catch(MissingMethodException e)
                 {
-                    WriteMessage(MessageLevel.Error, "The type '{0}' in the assembly '{1}' does not have an appropriate constructor. The error message is: {2}", type_name, assembly_path, e.Message);
+                    base.WriteMessage(MessageLevel.Error, "The type '{0}' in the assembly '{1}' does not have " +
+                        "an appropriate constructor. The error message is: {2}", typeName, assemblyPath, e.Message);
                 }
                 catch(TargetInvocationException e)
                 {
-                    WriteMessage(MessageLevel.Error, "An error occured while attempting to instantiate the type '{0}' in the assembly '{1}'. The error message is: {2}", type_name, assembly_path, e.InnerException.Message);
+                    base.WriteMessage(MessageLevel.Error, "An error occured while attempting to instantiate " +
+                        "the type '{0}' in the assembly '{1}'. The error message is: {2}", typeName, assemblyPath,
+                        e.InnerException.Message);
                 }
                 catch(InvalidCastException)
                 {
-                    WriteMessage(MessageLevel.Error, "The type '{0}' in the assembly '{1}' is not a SyntaxGenerator.", type_name, assembly_path);
+                    base.WriteMessage(MessageLevel.Error, "The type '{0}' in the assembly '{1}' is not a " +
+                        "CopyComponent", typeName, assemblyPath);
                 }
             }
 
-            WriteMessage(MessageLevel.Info, "Loaded {0} copy components.", components.Count);
+            if(components.Count != 0)
+                base.WriteMessage(MessageLevel.Info, "Loaded {0} copy components", components.Count);
         }
+        #endregion
 
-        // the actual work of the component
+        #region Method overrides
+        //=====================================================================
 
+        /// <inheritdoc />
         public override void Apply(XmlDocument document, string key)
         {
-
-            // set the key in the XPath context
+            // Set the key in the XPath context
             context["key"] = key;
 
-            // perform each copy action
-            foreach(CopyCommand copy_command in copy_commands)
-            {
+            // Perform each copy command
+            foreach(CopyFromIndexCommand copyCommand in copyCommands)
+                copyCommand.Apply(document, context);
 
-                // get the source comment
-                XPathExpression key_expression = copy_command.Key.Clone();
-                key_expression.SetContext(context);
-
-                string key_value = (string)document.CreateNavigator().Evaluate(key_expression);
-
-                XPathNavigator data = copy_command.Index.GetContent(key_value);
-
-                if(data == null && copy_command.IgnoreCase == "true")
-                    data = copy_command.Index.GetContent(key_value.ToLowerInvariant());
-
-                // notify if no entry
-                if(data == null)
-                {
-                    WriteMessage(copy_command.MissingEntry, "No index entry found for key '{0}'.", key_value);
-                    continue;
-                }
-
-                // get the target node
-                String target_xpath = copy_command.Target.Clone().ToString();
-                XPathExpression target_expression = XPathExpression.Compile(String.Format(
-                    CultureInfo.InvariantCulture, target_xpath, key_value));
-                target_expression.SetContext(context);
-
-                XPathNavigator target = document.CreateNavigator().SelectSingleNode(target_expression);
-
-                // notify if no target found
-                if(target == null)
-                {
-                    WriteMessage(copy_command.MissingTarget, "Target node '{0}' not found.", target_expression.Expression);
-                    continue;
-                }
-
-                // get the source nodes
-                XPathExpression source_expression = copy_command.Source.Clone();
-                source_expression.SetContext(context);
-                XPathNodeIterator sources = data.CreateNavigator().Select(source_expression);
-
-                // append the source nodes to the target node
-                int source_count = 0;
-                foreach(XPathNavigator source in sources)
-                {
-                    source_count++;
-
-                    // If attribute=true, add the source attributes to current target. 
-                    // Otherwise append source as a child element to target
-                    if(copy_command.Attribute == "true" && source.HasAttributes)
-                    {
-                        string source_name = source.LocalName;
-                        XmlWriter attributes = target.CreateAttributes();
-
-                        source.MoveToFirstAttribute();
-                        string attrFirst = target.GetAttribute(String.Format(CultureInfo.InvariantCulture,
-                            "{0}_{1}", source_name, source.Name), string.Empty);
-
-                        if(string.IsNullOrEmpty(attrFirst))
-                            attributes.WriteAttributeString(String.Format(CultureInfo.InvariantCulture,
-                                "{0}_{1}", source_name, source.Name), source.Value);
-
-                        while(source.MoveToNextAttribute())
-                        {
-                            string attrNext = target.GetAttribute(String.Format(CultureInfo.InvariantCulture,
-                                "{0}_{1}", source_name, source.Name), string.Empty);
-
-                            if(string.IsNullOrEmpty(attrNext))
-                                attributes.WriteAttributeString(String.Format(CultureInfo.InvariantCulture,
-                                    "{0}_{1}", source_name, source.Name), source.Value);
-                        }
-
-                        attributes.Close();
-                    }
-                    else
-                        target.AppendChild(source);
-                }
-
-                // notify if no source found
-                if(source_count == 0)
-                    WriteMessage(copy_command.MissingSource, "Source node '{0}' not found.", source_expression.Expression);
-
-                foreach(CopyComponent component in components)
-                    component.Apply(document, key);
-            }
+            // Apply changes for each sub-component, if any
+            foreach(CopyComponent component in components)
+                component.Apply(document, key);
         }
 
-        internal void WriteHelperMessage(MessageLevel level, string message, params object[] args)
+        protected override void Dispose(bool disposing)
         {
-            WriteMessage(level, message, args);
+            if(disposing)
+                foreach(var cache in BuildComponent.Data.Values.OfType<IndexedCache>().Where(
+                  c => c.Component == this))
+                    this.WriteMessage(MessageLevel.Diagnostic, "\"{0}\" cache entries used: {1}", cache.Name,
+                        cache.CacheEntriesUsed);
+
+            base.Dispose(disposing);
         }
-    }
-
-    // the storage system
-
-    public class IndexedDocumentCache
-    {
-
-        public IndexedDocumentCache(CopyFromIndexComponent component, string keyXPath, string valueXPath, XmlNamespaceManager context, int cacheSize)
-        {
-
-            if(component == null)
-                throw new ArgumentNullException("component");
-            if(cacheSize < 0)
-                throw new ArgumentOutOfRangeException("cacheSize");
-
-            this.component = component;
-
-            try
-            {
-                keyExpression = XPathExpression.Compile(keyXPath);
-            }
-            catch(XPathException)
-            {
-                component.WriteHelperMessage(MessageLevel.Error, "The key expression '{0}' is not a valid XPath expression.", keyXPath);
-            }
-            keyExpression.SetContext(context);
-
-            try
-            {
-                valueExpression = XPathExpression.Compile(valueXPath);
-            }
-            catch(XPathException)
-            {
-                component.WriteHelperMessage(MessageLevel.Error, "The value expression '{0}' is not a valid XPath expression.", valueXPath);
-            }
-            valueExpression.SetContext(context);
-
-            this.cacheSize = cacheSize;
-
-            // set up the cache
-            cache = new Dictionary<string, IndexedDocument>(cacheSize);
-            queue = new Queue<string>(cacheSize);
-        }
-
-        // index component to which the cache belongs
-        private CopyFromIndexComponent component;
-
-        public CopyFromIndexComponent Component
-        {
-            get
-            {
-                return (component);
-            }
-        }
-
-        // search pattern for index values
-        private XPathExpression valueExpression;
-
-        public XPathExpression ValueExpression
-        {
-            get
-            {
-                return (valueExpression);
-            }
-        }
-
-        // search pattern for the index keys (relative to the index value node)
-        private XPathExpression keyExpression;
-
-        public XPathExpression KeyExpression
-        {
-            get
-            {
-                return (keyExpression);
-            }
-        }
-
-        // a index mapping keys to the files that contain them
-        private Dictionary<string, string> index = new Dictionary<string, string>();
-
-        public void AddDocument(string file)
-        {
-            // load the document
-            IndexedDocument document = new IndexedDocument(this, file);
-
-            // record the keys
-            string[] keys = document.GetKeys();
-
-            foreach(string key in keys)
-            {
-                // !EFW - Only report the warning if wanted
-                if(index.ContainsKey(key) && component.DuplicateIdWarnings)
-                    component.WriteHelperMessage(MessageLevel.Warn, "Entries for the key '{0}' occur in both " +
-                        "'{1}' and '{2}'. The last entry will be used.", key, index[key], file);
-
-                index[key] = file;
-            }
-        }
-
-        public void AddDocuments(string wildcardPath)
-        {
-            string directory_part = Path.GetDirectoryName(wildcardPath);
-            if(String.IsNullOrEmpty(directory_part))
-                directory_part = Environment.CurrentDirectory;
-            directory_part = Path.GetFullPath(directory_part);
-            string file_part = Path.GetFileName(wildcardPath);
-
-            string[] files = Directory.GetFiles(directory_part, file_part);
-
-            foreach(string file in files)
-                AddDocument(file);
-
-            documentCount += files.Length;
-        }
-
-        public void AddDocuments(string baseDirectory, string wildcardPath, bool recurse)
-        {
-            string path;
-
-            if(String.IsNullOrEmpty(baseDirectory))
-                path = wildcardPath;
-            else
-                path = Path.Combine(baseDirectory, wildcardPath);
-
-            AddDocuments(path);
-
-            if(recurse)
-            {
-                string[] subDirectories = Directory.GetDirectories(baseDirectory);
-                foreach(string subDirectory in subDirectories)
-                    AddDocuments(subDirectory, wildcardPath, recurse);
-            }
-        }
-
-        private int documentCount;
-
-        public int DocumentCount
-        {
-            get
-            {
-                return (documentCount);
-            }
-        }
-
-        // a simple caching mechanism
-
-        int cacheSize;
-
-        // an improved cache
-
-        // this cache keeps track of the order that files are loaded in, and always unloads the oldest one
-        // this is better, but a document that is often accessed gets no "points", so it will eventualy be
-        // thrown out even if it is used regularly
-
-        private Dictionary<string, IndexedDocument> cache;
-
-        private Queue<string> queue;
-
-        public IndexedDocument GetDocument(string key)
-        {
-
-            // look up the file corresponding to the key
-            string file;
-            if(index.TryGetValue(key, out file))
-            {
-
-                // now look for that file in the cache
-                IndexedDocument document;
-                if(!cache.TryGetValue(file, out document))
-                {
-
-                    // not in the cache, so load it
-                    document = new IndexedDocument(this, file);
-
-                    // if the cache is full, remove a document
-                    if(cache.Count >= cacheSize)
-                    {
-                        string fileToUnload = queue.Dequeue();
-                        cache.Remove(fileToUnload);
-                    }
-
-                    // add it to the cache
-                    cache.Add(file, document);
-                    queue.Enqueue(file);
-
-                }
-
-                // XPathNavigator content = document.GetContent(key);
-                return (document);
-
-            }
-            else
-            {
-                // there is no such key
-                return (null);
-            }
-
-        }
-
-
-        public XPathNavigator GetContent(string key)
-        {
-
-            IndexedDocument document = GetDocument(key);
-            if(document == null)
-            {
-                return (null);
-            }
-            else
-            {
-                return (document.GetContent(key));
-            }
-
-        }
-
-        public int Count
-        {
-            get
-            {
-                return (index.Count);
-            }
-        }
-
-    }
-
-    // a file that we have indexed
-
-    public class IndexedDocument
-    {
-
-        public IndexedDocument(IndexedDocumentCache cache, string file)
-        {
-            if(cache == null)
-                throw new ArgumentNullException("cache");
-
-            if(file == null)
-                throw new ArgumentNullException("file");
-
-            // remember the file
-            this.file = file;
-
-            // load the document
-            try
-            {
-                //XPathDocument document = new XPathDocument(file, XmlSpace.Preserve);
-                XPathDocument document = new XPathDocument(file);
-
-                // search for value nodes
-                XPathNodeIterator valueNodes = document.CreateNavigator().Select(cache.ValueExpression);
-
-                // get the key string for each value node and record it in the index
-                foreach(XPathNavigator valueNode in valueNodes)
-                {
-                    XPathNavigator keyNode = valueNode.SelectSingleNode(cache.KeyExpression);
-
-                    if(keyNode == null)
-                        continue;
-
-                    string key = keyNode.Value;
-                    index[key] = valueNode;
-                }
-            }
-            catch(IOException e)
-            {
-                cache.Component.WriteHelperMessage(MessageLevel.Error, "An access error occured while attempting to load the file '{0}'. The error message is: {1}", file, e.Message);
-            }
-            catch(XmlException e)
-            {
-                cache.Component.WriteHelperMessage(MessageLevel.Error, "The indexed document '{0}' is not a valid XML document. The error message is: {1}", file, e.Message);
-            }
-        }
-
-        // the indexed file
-
-        private string file;
-
-        // the index that maps keys to positions in the file		
-
-        Dictionary<string, XPathNavigator> index = new Dictionary<string, XPathNavigator>();
-
-        // public methods
-
-        public string File
-        {
-            get
-            {
-                return (file);
-            }
-        }
-
-        public XPathNavigator GetContent(string key)
-        {
-            XPathNavigator value = index[key];
-            if(value == null)
-            {
-                return (null);
-            }
-            else
-            {
-                return (value.Clone());
-            }
-        }
-
-        public string[] GetKeys()
-        {
-            string[] keys = new string[Count];
-            index.Keys.CopyTo(keys, 0);
-            return (keys);
-        }
-
-        public int Count
-        {
-            get
-            {
-                return (index.Count);
-            }
-        }
-
-    }
-
-    internal class CopyCommand
-    {
-
-        public CopyCommand(IndexedDocumentCache source_index, string key_xpath, string source_xpath, string target_xpath, string attribute_value, string ignoreCase_value)
-        {
-            this.cache = source_index;
-
-            if(String.IsNullOrEmpty(key_xpath))
-                key = XPathExpression.Compile("string($key)");
-            else
-                key = XPathExpression.Compile(key_xpath);
-
-            source = XPathExpression.Compile(source_xpath);
-            target = target_xpath;
-            attribute = attribute_value;
-            ignoreCase = ignoreCase_value;
-        }
-
-        private IndexedDocumentCache cache;
-
-        private XPathExpression key;
-
-        private XPathExpression source;
-
-        private String target;
-
-        private String attribute;
-
-        private String ignoreCase;
-
-        private MessageLevel missingEntry = MessageLevel.Ignore;
-
-        private MessageLevel missingSource = MessageLevel.Ignore;
-
-        private MessageLevel missingTarget = MessageLevel.Ignore;
-
-        public IndexedDocumentCache Index
-        {
-            get
-            {
-                return (cache);
-            }
-        }
-
-        public XPathExpression Key
-        {
-            get
-            {
-                return (key);
-            }
-        }
-
-        public XPathExpression Source
-        {
-            get
-            {
-                return (source);
-            }
-        }
-
-        public String Target
-        {
-            get
-            {
-                return (target);
-            }
-        }
-
-        public String Attribute
-        {
-            get
-            {
-                return (attribute);
-            }
-        }
-
-        public String IgnoreCase
-        {
-            get
-            {
-                return (ignoreCase);
-            }
-        }
-
-        public MessageLevel MissingEntry
-        {
-            get
-            {
-                return (missingEntry);
-            }
-            set
-            {
-                missingEntry = value;
-            }
-        }
-
-        public MessageLevel MissingSource
-        {
-            get
-            {
-                return (missingSource);
-            }
-            set
-            {
-                missingSource = value;
-            }
-        }
-
-        public MessageLevel MissingTarget
-        {
-            get
-            {
-                return (missingTarget);
-            }
-            set
-            {
-                missingTarget = value;
-            }
-        }
-
-    }
-
-    // the abstract CopyComponent
-    public abstract class CopyComponent
-    {
-        protected CopyComponent(XPathNavigator configuration, Dictionary<string, object> data)
-        {
-        }
-
-        public abstract void Apply(XmlDocument document, string key);
+        #endregion
     }
 }

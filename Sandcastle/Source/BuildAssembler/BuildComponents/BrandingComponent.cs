@@ -261,7 +261,8 @@ namespace Microsoft.Ddue.Tools
                             }
 
                             RemoveUnusedNamespaces(v_tempDocument);
-                            using(XmlReader v_reader = new SpecialXmlReader(v_tempDocument.OuterXml, BuildAssembler.MessageHandler))
+
+                            using(XmlReader v_reader = new SpecialXmlReader(v_tempDocument.OuterXml, this))
                             {
                                 document.RemoveAll();
                                 document.Load(v_reader);
@@ -589,12 +590,12 @@ namespace Microsoft.Ddue.Tools
         /// </summary>
         private class SpecialXmlReader : XmlTextReader
         {
-            private MessageHandler m_MessageHandler;
+            BuildComponent component;
 
-            public SpecialXmlReader(String fragment, MessageHandler messageHandler)
-                : base(fragment, XmlNodeType.Element, new XmlParserContext(null, null, null, XmlSpace.Default))
+            public SpecialXmlReader(String fragment, BuildComponent component) : base(fragment,
+              XmlNodeType.Element, new XmlParserContext(null, null, null, XmlSpace.Default))
             {
-                m_MessageHandler = messageHandler;
+                this.component = component;
             }
 
             public override bool MoveToFirstAttribute()
@@ -603,7 +604,8 @@ namespace Microsoft.Ddue.Tools
                 if(v_ret && (base.Depth <= 2) && (base.NodeType == XmlNodeType.Attribute) && (base.Name == "xmlns"))
                 {
 #if DEBUG_NOT
-                    m_MessageHandler(GetType(), MessageLevel.Info, "  Skip Attribute [{0}] [{1}] [{2}] [{3}] [{4}]", base.Depth, base.NodeType, base.Name, base.Prefix, base.LocalName);
+                    component.WriteMessage(MessageLevel.Info, "  Skip Attribute [{0}] [{1}] [{2}] [{3}] [{4}]",
+                        base.Depth, base.NodeType, base.Name, base.Prefix, base.LocalName);
 #endif
                     v_ret = base.MoveToNextAttribute();
                 }
@@ -616,7 +618,8 @@ namespace Microsoft.Ddue.Tools
                 if(v_ret && (base.Depth <= 2) && (base.NodeType == XmlNodeType.Attribute) && (base.Name == "xmlns"))
                 {
 #if DEBUG_NOT
-                    m_MessageHandler(GetType(), MessageLevel.Info, "  Skip Attribute [{0}] [{1}] [{2}] [{3}] [{4}]", base.Depth, base.NodeType, base.Name, base.Prefix, base.LocalName);
+                    component.WriteMessage(MessageLevel.Info, "  Skip Attribute [{0}] [{1}] [{2}] [{3}] [{4}]",
+                        base.Depth, base.NodeType, base.Name, base.Prefix, base.LocalName);
 #endif
                     v_ret = base.MoveToNextAttribute();
                 }

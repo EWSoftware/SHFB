@@ -19,6 +19,7 @@
   <SearchGlobalAssemblyCache>False</SearchGlobalAssemblyCache>
   <DeadlockDetectionTimeout>120</DeadlockDetectionTimeout>
   <IgnoreGeneratedCode>False</IgnoreGeneratedCode>
+  <TargetFrameworkVersion>0.0</TargetFrameworkVersion>
  </ProjectOptions>
  <Targets>
   <Target Name="$(ProjectDir)/../../ProductionTools/BuildAssembler.exe" Analyze="True" AnalyzeAllChildren="True" />
@@ -34,11 +35,14 @@
         <Type Name="BrandingComponent+SpecialXmlReader" Analyze="True" AnalyzeAllChildren="True" />
         <Type Name="CloneComponent" Analyze="True" AnalyzeAllChildren="True" />
         <Type Name="ColorizationRule" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="CopyCommand" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="CopyComponent" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="CopyFromFileCommand" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="CopyComponent" Analyze="True" AnalyzeAllChildren="False">
+         <Members AnalyzeAllChildren="False">
+          <Member Name="#&lt;ParentBuildComponent&gt;k__BackingField" Analyze="True" />
+          <Member Name="#Apply(System.Xml.XmlDocument,System.String)" Analyze="True" />
+          <Member Name="#ParentBuildComponent" Analyze="True" AnalyzeAllChildren="True" />
+         </Members>
+        </Type>
         <Type Name="CopyFromFileComponent" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="CopyFromFilesCommand" Analyze="True" AnalyzeAllChildren="True" />
         <Type Name="CopyFromFilesComponent" Analyze="True" AnalyzeAllChildren="True" />
         <Type Name="CopyFromIndexComponent" Analyze="True" AnalyzeAllChildren="True" />
         <Type Name="CopySet" Analyze="True" AnalyzeAllChildren="True" />
@@ -49,33 +53,38 @@
         <Type Name="HxfGeneratorComponent" Analyze="True" AnalyzeAllChildren="True" />
         <Type Name="IfThenComponent" Analyze="True" AnalyzeAllChildren="True" />
         <Type Name="InclusionFilter" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="IndexedDocument" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="IndexedDocumentCache" Analyze="True" AnalyzeAllChildren="True" />
         <Type Name="IndexedExample" Analyze="True" AnalyzeAllChildren="True" />
         <Type Name="IndexedFile" Analyze="True" AnalyzeAllChildren="True" />
         <Type Name="IndexedFileCache" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="InheritDocumentationComponent" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="InheritDocumentationComponent" Analyze="True" AnalyzeAllChildren="False">
+         <Members AnalyzeAllChildren="False">
+          <Member Name="#.cctor()" Analyze="True" />
+          <Member Name="#apiGroupExpression" Analyze="True" />
+          <Member Name="#apiNameExpression" Analyze="True" />
+          <Member Name="#apiSubgroupExpression" Analyze="True" />
+          <Member Name="#Apply(System.Xml.XmlDocument,System.String)" Analyze="True" />
+          <Member Name="#commentsIndex" Analyze="True" />
+          <Member Name="#containerTypeExpression" Analyze="True" />
+          <Member Name="#DeleteNode(System.Xml.XPath.XPathNavigator,System.String)" Analyze="True" />
+          <Member Name="#GetComments(System.Xml.XPath.XPathNodeIterator,System.Xml.XPath.XPathNavigator)" Analyze="True" />
+          <Member Name="#inheritDocExpression" Analyze="True" />
+          <Member Name="#InheritDocumentation(System.String)" Analyze="True" />
+          <Member Name="#interfaceImplementationExpression" Analyze="True" />
+          <Member Name="#interfaceImplementationMemberExpression" Analyze="True" />
+          <Member Name="#overrideMemberExpression" Analyze="True" />
+          <Member Name="#reflectionIndex" Analyze="True" />
+          <Member Name="#sourceDocument" Analyze="True" />
+          <Member Name="#sourceExpression" Analyze="True" />
+          <Member Name="#tagsExpression" Analyze="True" />
+          <Member Name="#typeExpression" Analyze="True" />
+          <Member Name="#UpdateNode(System.Xml.XPath.XPathNavigator,System.Xml.XPath.XPathNavigator)" Analyze="True" />
+         </Members>
+        </Type>
         <Type Name="IntelliSenseComponent" Analyze="True" AnalyzeAllChildren="True" />
         <Type Name="Language" Analyze="True" AnalyzeAllChildren="True" />
         <Type Name="ManagedSyntaxWriter" Analyze="True" AnalyzeAllChildren="True" />
         <Type Name="MemberFilter" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="MsdnResolver" Analyze="True" AnalyzeAllChildren="False">
-         <Members AnalyzeAllChildren="False">
-          <Member Name="#.ctor()" Analyze="True" />
-          <Member Name="#.ctor(System.Collections.Generic.IDictionary`2&lt;System.String,System.String&gt;)" Analyze="True" />
-          <Member Name="#&lt;CacheItemsAdded&gt;k__BackingField" Analyze="True" />
-          <Member Name="#&lt;DisabledReason&gt;k__BackingField" Analyze="True" />
-          <Member Name="#&lt;Locale&gt;k__BackingField" Analyze="True" />
-          <Member Name="#cachedMsdnIds" Analyze="True" />
-          <Member Name="#CacheItemsAdded" Analyze="True" AnalyzeAllChildren="True" />
-          <Member Name="#DisabledReason" Analyze="True" AnalyzeAllChildren="True" />
-          <Member Name="#GetMsdnUrl(System.String)" Analyze="True" />
-          <Member Name="#IsDisabled" Analyze="True" AnalyzeAllChildren="True" />
-          <Member Name="#Locale" Analyze="True" AnalyzeAllChildren="True" />
-          <Member Name="#MsdnContentIdCache" Analyze="True" AnalyzeAllChildren="True" />
-          <Member Name="#msdnService" Analyze="True" />
-         </Members>
-        </Type>
+        <Type Name="MsdnResolver" Analyze="True" AnalyzeAllChildren="True" />
         <Type Name="MSHCComponent" Analyze="True" AnalyzeAllChildren="True" />
         <Type Name="MSHCComponent+ConfigurationAttr" Analyze="True" AnalyzeAllChildren="True" />
         <Type Name="MSHCComponent+ConfigurationTag" Analyze="True" AnalyzeAllChildren="True" />
@@ -120,64 +129,9 @@
         <Type Name="VersionFilter" Analyze="True" AnalyzeAllChildren="True" />
        </Types>
       </Namespace>
+      <Namespace Name="Microsoft.Ddue.Tools.Commands" Analyze="True" AnalyzeAllChildren="True" />
       <Namespace Name="Microsoft.Ddue.Tools.Properties" Analyze="True" AnalyzeAllChildren="True" />
-      <Namespace Name="Microsoft.Ddue.Tools.Targets" Analyze="True" AnalyzeAllChildren="False">
-       <Types AnalyzeAllChildren="False">
-        <Type Name="ArrayTypeReference" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="ArtTarget" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="ConceptualLinkInfo" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="ConceptualLinkType" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="ConstructorTarget" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="DisplayOptions" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="EnumerationTarget" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="EventTarget" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="ExtensionMethodReference" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="IndexedTemplateTypeReference" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="InvalidReference" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="LinkTextResolver" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="MemberReference" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="MemberTarget" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="MethodTarget" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="MethodTemplateTypeReference" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="NamedTemplateTypeReference" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="NamespaceReference" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="NamespaceTarget" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="Parameter" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="PointerTypeReference" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="ProcedureTarget" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="PropertyTarget" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="Reference" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="ReferenceLinkInfo" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="ReferenceLinkType" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="ReferenceTypeReference" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="SharedContentElement" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="SimpleMemberReference" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="SimpleTypeReference" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="Specialization" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="SpecializedMemberReference" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="SpecializedMemberWithParametersReference" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="SpecializedTypeReference" Analyze="True" AnalyzeAllChildren="False">
-         <Members AnalyzeAllChildren="False">
-          <Member Name="#.ctor(System.Collections.Generic.IList`1&lt;Microsoft.Ddue.Tools.Targets.Specialization&gt;)" Analyze="True" />
-          <Member Name="#&lt;Specializations&gt;k__BackingField" Analyze="True" />
-          <Member Name="#Specializations" Analyze="True" AnalyzeAllChildren="True" />
-         </Members>
-        </Type>
-        <Type Name="Target" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="TargetDictionary" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="TargetDirectory" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="TargetDirectoryCollection" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="TargetInfo" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="TargetTypeDictionary" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="TemplateTypeReference" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="TextReferenceUtilities" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="TypeReference" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="TypeTarget" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="TypeTemplateTypeReference" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="XmlTargetDictionaryUtilities" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="XmlTargetDictionaryUtilities+&lt;EnumerateTargets&gt;d__0" Analyze="True" AnalyzeAllChildren="True" />
-       </Types>
-      </Namespace>
+      <Namespace Name="Microsoft.Ddue.Tools.Targets" Analyze="True" AnalyzeAllChildren="True" />
       <Namespace Name="Microsoft.Ddue.Tools.UI" Analyze="True" AnalyzeAllChildren="True" />
      </Namespaces>
      <Resources AnalyzeAllChildren="True" />
@@ -229,6 +183,21 @@
      </Message>
     </Messages>
    </Namespace>
+   <Namespace Name="Microsoft.Ddue.Tools.Commands">
+    <Messages>
+     <Message Id="Ddue" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2013-01-21 02:22:45Z">
+      <Issue Name="Namespace">
+       <Item>Ddue</Item>
+       <Item>Microsoft.Ddue.Tools.Commands</Item>
+      </Issue>
+      <Notes>
+       <User Name="EWOODRUFF">
+        <Note Id="43" />
+       </User>
+      </Notes>
+     </Message>
+    </Messages>
+   </Namespace>
    <Namespace Name="Microsoft.Ddue.Tools.Targets">
     <Messages>
      <Message Id="Ddue" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2012-12-27 01:14:32Z">
@@ -252,6 +221,42 @@
       <Namespaces>
        <Namespace Name="Microsoft.Ddue.Tools">
         <Types>
+         <Type Name="BuildAssembler">
+          <Members>
+           <Member Name="#Execute(System.Xml.XPath.XPathDocument,System.String)">
+            <Messages>
+             <Message Id="System.Xml.XPath.XPathDocument" TypeName="MembersShouldNotExposeCertainConcreteTypes" Category="Microsoft.Design" CheckId="CA1059" Status="Excluded" Created="2013-01-21 02:22:45Z">
+              <Issue Name="Xml">
+               <Item>'BuildAssembler.Execute(XPathDocument, string)'</Item>
+               <Item>'XPathDocument'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="42" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#WriteMessage(System.Type,Microsoft.Ddue.Tools.MessageLevel,System.String,System.String)">
+            <Messages>
+             <Message TypeName="ConsiderPassingBaseTypesAsParameters" Category="Microsoft.Design" CheckId="CA1011" Status="Excluded" Created="2013-01-21 02:22:45Z">
+              <Issue>
+               <Item>'type'</Item>
+               <Item>'BuildAssembler.WriteMessage(Type, MessageLevel, string, string)'</Item>
+               <Item>'Type'</Item>
+               <Item>'MemberInfo'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="32" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
          <Type Name="BuildComponent">
           <Members>
            <Member Name="#.ctor(Microsoft.Ddue.Tools.BuildAssembler,System.Xml.XPath.XPathNavigator)">
@@ -536,11 +541,11 @@
          </Type>
          <Type Name="BrandingComponent+SpecialXmlReader">
           <Members>
-           <Member Name="#m_MessageHandler">
+           <Member Name="#component">
             <Messages>
-             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Created="2012-12-24 00:19:24Z">
+             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Created="2013-01-21 02:22:45Z">
               <Issue>
-               <Item>'BrandingComponent.SpecialXmlReader.m_MessageHandler'</Item>
+               <Item>'BrandingComponent.SpecialXmlReader.component'</Item>
               </Issue>
              </Message>
             </Messages>
@@ -549,22 +554,6 @@
          </Type>
          <Type Name="CopyComponent">
           <Members>
-           <Member Name="#.ctor(System.Xml.XPath.XPathNavigator,System.Collections.Generic.Dictionary`2&lt;System.String,System.Object&gt;)">
-            <Messages>
-             <Message Id="configuration" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Created="2012-12-24 21:43:16Z" FixCategory="DependsOnFix">
-              <Issue>
-               <Item>'configuration'</Item>
-               <Item>'CopyComponent.CopyComponent(XPathNavigator, Dictionary&lt;string, object&gt;)'</Item>
-              </Issue>
-             </Message>
-             <Message Id="data" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Created="2012-12-24 21:43:16Z" FixCategory="DependsOnFix">
-              <Issue>
-               <Item>'data'</Item>
-               <Item>'CopyComponent.CopyComponent(XPathNavigator, Dictionary&lt;string, object&gt;)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
            <Member Name="#Apply(System.Xml.XmlDocument,System.String)">
             <Messages>
              <Message Id="System.Xml.XmlNode" TypeName="MembersShouldNotExposeCertainConcreteTypes" Category="Microsoft.Design" CheckId="CA1059" Status="Excluded" Created="2012-03-10 20:52:03Z">
@@ -814,20 +803,6 @@
             </Issue>
            </Message>
           </Messages>
-         </Type>
-         <Type Name="InheritDocumentationComponent">
-          <Members>
-           <Member Name="#DeleteNode(System.Xml.XPath.XPathNavigator,System.String)">
-            <Messages>
-             <Message Id="key" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Created="2012-12-24 00:19:24Z" FixCategory="DependsOnFix">
-              <Issue>
-               <Item>'key'</Item>
-               <Item>'InheritDocumentationComponent.DeleteNode(XPathNavigator, string)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
          </Type>
          <Type Name="IntelliSenseComponent">
           <Messages>
@@ -1448,6 +1423,101 @@
          </Type>
         </Types>
        </Namespace>
+       <Namespace Name="Microsoft.Ddue.Tools.Commands">
+        <Types>
+         <Type Name="CopyCommand">
+          <Members>
+           <Member Name="#Apply(System.Xml.XmlDocument,System.Xml.IXmlNamespaceResolver)">
+            <Messages>
+             <Message Id="System.Xml.XmlNode" TypeName="MembersShouldNotExposeCertainConcreteTypes" Category="Microsoft.Design" CheckId="CA1059" Status="Excluded" Created="2013-01-21 02:22:45Z">
+              <Issue Name="Xml">
+               <Item>'CopyCommand.Apply(XmlDocument, IXmlNamespaceResolver)'</Item>
+               <Item>'XmlDocument'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="46" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="CopyFromFileCommand">
+          <Members>
+           <Member Name="#.ctor(Microsoft.Ddue.Tools.BuildComponent,System.Xml.XPath.XPathDocument,System.String,System.String)">
+            <Messages>
+             <Message Id="System.Xml.XPath.XPathDocument" TypeName="MembersShouldNotExposeCertainConcreteTypes" Category="Microsoft.Design" CheckId="CA1059" Status="Excluded" Created="2013-01-21 02:22:45Z">
+              <Issue Name="Xml">
+               <Item>'CopyFromFileCommand.CopyFromFileCommand(BuildComponent, XPathDocument, string, string)'</Item>
+               <Item>'XPathDocument'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="46" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#SourceDocument">
+            <Messages>
+             <Message Id="System.Xml.XPath.XPathDocument" TypeName="MembersShouldNotExposeCertainConcreteTypes" Category="Microsoft.Design" CheckId="CA1059" Status="Excluded" Created="2013-01-21 02:22:45Z">
+              <Issue Name="Xml">
+               <Item>'CopyFromFileCommand.SourceDocument'</Item>
+               <Item>'XPathDocument'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="46" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="CopyFromIndexCommand">
+          <Members>
+           <Member Name="#Apply(System.Xml.XmlDocument,System.Xml.IXmlNamespaceResolver)">
+            <Messages>
+             <Message TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308" Status="Excluded" Created="2013-01-21 02:22:45Z">
+              <Issue Name="ToUpperInvariant">
+               <Item>'CopyFromIndexCommand.Apply(XmlDocument, IXmlNamespaceResolver)'</Item>
+               <Item>'string.ToLowerInvariant()'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="47" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="IndexedCache">
+          <Members>
+           <Member Name="#GetValues(System.String)">
+            <Messages>
+             <Message TypeName="DoNotNestGenericTypesInMemberSignatures" Category="Microsoft.Design" CheckId="CA1006" Status="Excluded" Created="2013-01-21 02:22:45Z">
+              <Issue>
+               <Item>'IndexedCache.GetValues(string)'</Item>
+               <Item>'IEnumerable&lt;KeyValuePair&lt;string, XPathNavigator&gt;&gt;'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="45" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
        <Namespace Name="Microsoft.Ddue.Tools.Targets">
         <Types>
          <Type Name="ConceptualLinkInfo">
@@ -1510,16 +1580,15 @@
          </Type>
          <Type Name="TargetDictionary">
           <Members>
-           <Member Name="#.ctor(System.Xml.XPath.XPathNavigator)">
+           <Member Name="#LoadTargetDictionary(System.Int32)">
             <Messages>
-             <Message TypeName="DoNotCallOverridableMethodsInConstructors" Category="Microsoft.Usage" CheckId="CA2214" Status="Excluded" Created="2012-12-31 20:50:41Z">
+             <Message TypeName="DefaultParametersShouldNotBeUsed" Category="Microsoft.Design" CheckId="CA1026" Status="Excluded" Created="2013-01-21 02:22:45Z">
               <Issue>
-               <Item>'TargetDictionary.TargetDictionary(XPathNavigator)'</Item>
-               <Item>&#xD;&#xA;&#xD;&#xA;TargetDictionary..ctor(XPathNavigator)&#xD;&#xA;TargetDictionary.CreateTargetDictionary(XPathNavigator):IDictionary&lt;String, Target&gt;</Item>
+               <Item>'TargetDictionary.LoadTargetDictionary(int)'</Item>
               </Issue>
               <Notes>
                <User Name="EWOODRUFF">
-                <Note Id="35" />
+                <Note Id="44" />
                </User>
               </Notes>
              </Message>
@@ -3740,6 +3809,7 @@
     <Note Id="29" Modified="2012-12-24 04:33:40Z">Okay as is</Note>
     <Note Id="30" Modified="2012-12-24 07:00:20Z">Okay as is</Note>
     <Note Id="31" Modified="2012-12-27 01:15:32Z">Okay as is</Note>
+    <Note Id="32" Modified="2013-01-21 02:26:24Z">Okay as is</Note>
     <Note Id="33" Modified="2012-12-24 07:00:53Z">Okay as is</Note>
     <Note Id="34" Modified="2012-12-24 07:01:09Z">Okay as is</Note>
     <Note Id="35" Modified="2012-12-31 21:05:26Z">The call chain appears to be safe.</Note>
@@ -3749,6 +3819,12 @@
     <Note Id="39" Modified="2012-12-31 21:05:45Z">The error is reported</Note>
     <Note Id="40" Modified="2012-12-31 21:08:18Z">This one is more complete so the constructor is fine</Note>
     <Note Id="41" Modified="2012-12-31 21:14:03Z">Lowercase is preferred here</Note>
+    <Note Id="42" Modified="2013-01-21 02:28:50Z">Okay as is</Note>
+    <Note Id="43" Modified="2013-01-21 02:32:34Z">Okay as is</Note>
+    <Note Id="44" Modified="2013-01-21 02:33:30Z">It's used to set the default value typically used so it's fine.</Note>
+    <Note Id="45" Modified="2013-01-21 02:33:48Z">Okay as is</Note>
+    <Note Id="46" Modified="2013-01-21 02:34:14Z">Okay as is</Note>
+    <Note Id="47" Modified="2013-01-21 02:34:45Z">Lowercase is preferred here</Note>
    </User>
   </Notes>
   <Rules>
@@ -3769,6 +3845,12 @@
    </Rule>
    <Rule TypeName="CompoundWordsShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1702">
     <Resolution Name="MemberShouldBeDiscreteTerm">The compound word '{0}' in member name {1} exists as a discrete term. If your usage is intended to be single word, case it as '{2}' or strip the first token entirely if it represents any sort of Hungarian notation.</Resolution>
+   </Rule>
+   <Rule TypeName="ConsiderPassingBaseTypesAsParameters" Category="Microsoft.Design" CheckId="CA1011">
+    <Resolution Name="Default">Consider changing the type of parameter {0} in {1} from {2} to its base type {3}. This method appears to only require base class members in its implementation. Suppress this violation if there is a compelling reason to require the more derived type in the method signature.</Resolution>
+   </Rule>
+   <Rule TypeName="DefaultParametersShouldNotBeUsed" Category="Microsoft.Design" CheckId="CA1026">
+    <Resolution Name="Default">Replace method {0} with an overload that supplies all default arguments.</Resolution>
    </Rule>
    <Rule TypeName="DoNotCallOverridableMethodsInConstructors" Category="Microsoft.Usage" CheckId="CA2214">
     <Resolution Name="Default">{0} contains a call chain that results in a call to a virtual method defined by the class. Review the following call stack for unintended consequences: {1}</Resolution>

@@ -17,10 +17,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Xml;
 using System.Xml.XPath;
-using System.Configuration;
-using System.Globalization;
+
+using Microsoft.Ddue.Tools.Commands;
 
 namespace Microsoft.Ddue.Tools
 {
@@ -29,122 +30,100 @@ namespace Microsoft.Ddue.Tools
     /// </summary>
     public class InheritDocumentationComponent : CopyComponent
     {
-        #region private members
-        /// <summary>
-        /// XPathExpression for API name.
-        /// </summary>
+        #region Private members
+        //=====================================================================
+
+        // XPathExpression for API name.
         private static XPathExpression apiNameExpression = XPathExpression.Compile("string(apidata/@name)");
 
-        /// <summary>
-        /// XPathExpression for API group.
-        /// </summary>
+        // XPathExpression for API group.
         private static XPathExpression apiGroupExpression = XPathExpression.Compile("string(apidata/@group)");
-        
-        /// <summary>
-        /// XPathExpression for API subgroup.
-        /// </summary>
+
+        // XPathExpression for API subgroup.
         private static XPathExpression apiSubgroupExpression = XPathExpression.Compile("string(apidata/@subgroup)");
 
-        /// <summary>
-        /// XPathExpression for API ancestors.
-        /// </summary>
+        // XPathExpression for API ancestors.
         private static XPathExpression typeExpression = XPathExpression.Compile("family/ancestors/type/@api");
 
-        /// <summary>
-        /// XPathExpression for API type interface implementations.
-        /// </summary>
+        // XPathExpression for API type interface implementations.
         private static XPathExpression interfaceImplementationExpression = XPathExpression.Compile("implements/type/@api");
 
-        /// <summary>
-        /// XPathExpression for API containers.
-        /// </summary>
+        // XPathExpression for API containers.
         private static XPathExpression containerTypeExpression = XPathExpression.Compile("string(containers/type/@api)");
 
-        /// <summary>
-        /// XPathExpression for override members.
-        /// </summary>
+        // XPathExpression for override members.
         private static XPathExpression overrideMemberExpression = XPathExpression.Compile("overrides/member/@api");
 
-        /// <summary>
-        /// XPathExpression for API member interface implementaions.
-        /// </summary>
+        // XPathExpression for API member interface implementaions.
         private static XPathExpression interfaceImplementationMemberExpression = XPathExpression.Compile("implements/member/@api");
 
-        /// <summary>
-        /// XPathExpression for <inheritdoc /> nodes.
-        /// </summary>
+        // XPathExpression for <inheritdoc /> nodes.
         private static XPathExpression inheritDocExpression = XPathExpression.Compile("//inheritdoc");
 
-        /// <summary>
-        /// XPathExpression that looks for example, filterpriority, preliminary, remarks, returns, summary, threadsafety and value nodes.
-        /// </summary>
+        // XPathExpression that looks for example, filterpriority, preliminary, remarks, returns, summary, threadsafety and value nodes.
         private static XPathExpression tagsExpression = XPathExpression.Compile("example|filterpriority|preliminary|remarks|returns|summary|threadsafety|value");
 
-        /// <summary>
-        /// XPathExpression for source nodes.
-        /// </summary>
+        // XPathExpression for source nodes.
         private static XPathExpression sourceExpression;
 
-        /// <summary>
-        /// Document to be parsed.
-        /// </summary>
+        // Document to be parsed.
         private XmlDocument sourceDocument;
 
-        /// <summary>
-        /// A cache for comment files.
-        /// </summary>
-        private IndexedDocumentCache index;
+        // A cache for comment files.
+        private IndexedCache commentsIndex;
 
-        /// <summary>
-        /// A cache for reflection files.
-        /// </summary>
-        private IndexedDocumentCache reflectionIndex;
+        // A cache for reflection files.
+        private IndexedCache reflectionIndex;
         #endregion
 
-        #region constructor
+        #region Constructor
+        //=====================================================================
+
         /// <summary>
         /// Creates an instance of InheritDocumentationComponent class.
         /// </summary>
+        /// <param name="parent">The parent build component</param>
         /// <param name="configuration">Configuration section to be parsed.</param>
         /// <param name="data">A dictionary object with string as key and object as value.</param>
-        public InheritDocumentationComponent(XPathNavigator configuration, Dictionary<string, object> data) :
-          base(configuration, data)
+        public InheritDocumentationComponent(BuildComponent parent, XPathNavigator configuration,
+          IDictionary<string, object> data) : base(parent, configuration, data)
         {
-            // get the copy commands
-            XPathNodeIterator copy_nodes = configuration.Select("copy");
+            // Get the copy command
+            XPathNavigator copyNode = configuration.SelectSingleNode("copy");
 
-            foreach (XPathNavigator copy_node in copy_nodes)
-            {
-                // get the comments info
-                string source_name = copy_node.GetAttribute("name", string.Empty);
+            if(copyNode == null)
+                parent.WriteMessage(MessageLevel.Error, "A copy element is required to define the indexes " +
+                    "from which to obtain comments and reflection information");
 
-		        if (String.IsNullOrEmpty(source_name))
-                {
-                    throw new ConfigurationErrorsException("Each copy command must specify an index to copy from.");
-                }
+            // Get the comments info
+            string sourceName = copyNode.GetAttribute("name", string.Empty);
 
-                // get the reflection info
-                string reflection_name = copy_node.GetAttribute("use", String.Empty);
+            if(String.IsNullOrEmpty(sourceName))
+                parent.WriteMessage(MessageLevel.Error, "Each copy command must specify an index to copy from");
 
-                if (String.IsNullOrEmpty(reflection_name))
-                    throw new ConfigurationErrorsException("Each copy command must specify an index to get reflection information from.");
-                               
-                this.index = (IndexedDocumentCache)data[source_name];
-                this.reflectionIndex = (IndexedDocumentCache)data[reflection_name];
-             }
+            // Get the reflection info
+            string reflectionName = copyNode.GetAttribute("use", String.Empty);
+
+            if(String.IsNullOrEmpty(reflectionName))
+                parent.WriteMessage(MessageLevel.Error, "Each copy command must specify an index to get " +
+                    "reflection information from");
+
+            this.commentsIndex = (IndexedCache)data[sourceName];
+            this.reflectionIndex = (IndexedCache)data[reflectionName];
         }
         #endregion
 
-        #region methods
+        #region Methods
+        //=====================================================================
+
         /// <summary>
         /// Deletes the specified node and logs the message.
         /// </summary>
         /// <param name="inheritDocNodeNavigator">navigator for inheritdoc node</param>
         /// <param name="key">Id of the topic specified</param>
-        public static void DeleteNode(XPathNavigator inheritDocNodeNavigator, string key)
+        public void DeleteNode(XPathNavigator inheritDocNodeNavigator, string key)
         {
-// TODO: This should be able to use the standard BuildAssembler message mechanism
-//            ConsoleApplication.WriteMessage(LogLevel.Info, string.Format(CultureInfo.InvariantCulture, "Comments are not found for topic:{0}", key));
+            base.ParentBuildComponent.WriteMessage(MessageLevel.Info, "Comments not found for topic: {0}", key);
             inheritDocNodeNavigator.DeleteSelf();
         }
 
@@ -153,7 +132,7 @@ namespace Microsoft.Ddue.Tools
         /// </summary>
         /// <param name="document">document to be parsed</param>
         /// <param name="key">Id pf the topic specified</param>
-        public override void Apply(XmlDocument document, string key) 
+        public override void Apply(XmlDocument document, string key)
         {
             // default selection filter set not to inherit <overloads>.
             sourceExpression = XPathExpression.Compile("*[not(local-name()='overloads')]");
@@ -167,120 +146,109 @@ namespace Microsoft.Ddue.Tools
         /// <param name="key">Id of the topic specified</param>
         public void InheritDocumentation(string key)
         {
-            foreach (XPathNavigator inheritDocNodeNavigator in this.sourceDocument.CreateNavigator().Select(inheritDocExpression))
+            foreach(XPathNavigator inheritDocNodeNavigator in this.sourceDocument.CreateNavigator().Select(inheritDocExpression))
             {
                 inheritDocNodeNavigator.MoveToParent();
 
-                XPathNodeIterator iterator = (XPathNodeIterator) inheritDocNodeNavigator.CreateNavigator().Evaluate(tagsExpression);
-                
+                XPathNodeIterator iterator = (XPathNodeIterator)inheritDocNodeNavigator.CreateNavigator().Evaluate(tagsExpression);
+
                 // do not inherit the comments if the tags specified in tagsExpression are already present.
-                if (iterator.Count != 0) 
+                if(iterator.Count != 0)
                 {
                     inheritDocNodeNavigator.MoveTo(this.sourceDocument.CreateNavigator().SelectSingleNode(inheritDocExpression));
                     inheritDocNodeNavigator.DeleteSelf();
-                    continue; 
+                    continue;
                 }
-                     
+
                 inheritDocNodeNavigator.MoveTo(this.sourceDocument.CreateNavigator().SelectSingleNode(inheritDocExpression));
 
                 // Inherit from the specified API [id=cref].
                 string cref = inheritDocNodeNavigator.GetAttribute("cref", string.Empty);
 
-                if (!string.IsNullOrEmpty(cref))
+                if(!string.IsNullOrEmpty(cref))
                 {
-                    XPathNavigator contentNodeNavigator = this.index.GetContent(cref);
+                    XPathNavigator contentNodeNavigator = this.commentsIndex[cref];
 
                     // if no comments were found for the specified api, delete the <inheritdoc /> node,
                     // otherwise update the <inheritdoc /> node with the comments from the specified api.
-                    if (contentNodeNavigator == null)
-                    {
-                        DeleteNode(inheritDocNodeNavigator, cref);
-                    }
+                    if(contentNodeNavigator == null)
+                        this.DeleteNode(inheritDocNodeNavigator, cref);
                     else
                     {
                         this.UpdateNode(inheritDocNodeNavigator, contentNodeNavigator);
-                        if (this.sourceDocument.CreateNavigator().Select(inheritDocExpression).Count != 0)
-                        {
+
+                        if(this.sourceDocument.CreateNavigator().Select(inheritDocExpression).Count != 0)
                             this.InheritDocumentation(cref);
-                        }
                     }
                 }
                 else
                 {
-                    XPathNavigator reflectionNodeNavigator = this.reflectionIndex.GetContent(key);
+                    XPathNavigator reflectionNodeNavigator = this.reflectionIndex[key];
 
                     // no reflection information was found for the api, so delete <inheritdoc /> node.
-                    if (reflectionNodeNavigator == null)
+                    if(reflectionNodeNavigator == null)
                     {
-                        DeleteNode(inheritDocNodeNavigator, key);
+                        this.DeleteNode(inheritDocNodeNavigator, key);
                         continue;
                     }
 
                     string group = (string)reflectionNodeNavigator.Evaluate(apiGroupExpression);
                     string subgroup = (string)reflectionNodeNavigator.Evaluate(apiSubgroupExpression);
-                                     
-                    if (group == "type")
+
+                    if(group == "type")
                     {
                         // Inherit from base types
                         XPathNodeIterator typeNodeIterator = (XPathNodeIterator)reflectionNodeNavigator.Evaluate(typeExpression);
                         this.GetComments(typeNodeIterator, inheritDocNodeNavigator);
 
                         // no <inheritdoc /> nodes were found, so continue with next iteration. Otherwise inherit from interface implementation types.
-                        if (this.sourceDocument.CreateNavigator().Select(inheritDocExpression).Count == 0)
-                        {
+                        if(this.sourceDocument.CreateNavigator().Select(inheritDocExpression).Count == 0)
                             continue;
-                        }
 
                         // Inherit from interface implementation types
                         XPathNodeIterator interfaceNodeIterator = (XPathNodeIterator)reflectionNodeNavigator.Evaluate(interfaceImplementationExpression);
                         this.GetComments(interfaceNodeIterator, inheritDocNodeNavigator);
                     }
-                    else if (group == "member")
+                    else if(group == "member")
                     {
                         // constructors do not have override member information in reflection files, so search all the base types for a matching signature.
-                        if (subgroup == "constructor")
+                        if(subgroup == "constructor")
                         {
                             string name = (string)reflectionNodeNavigator.Evaluate(apiNameExpression);
-                            string typeApi = (string) reflectionNodeNavigator.Evaluate(containerTypeExpression);
+                            string typeApi = (string)reflectionNodeNavigator.Evaluate(containerTypeExpression);
 
                             // no container type api was found, so delete <inheritdoc /> node.
-                            if (string.IsNullOrEmpty(typeApi))
+                            if(string.IsNullOrEmpty(typeApi))
                             {
-                                DeleteNode(inheritDocNodeNavigator, key);
+                                this.DeleteNode(inheritDocNodeNavigator, key);
                                 continue;
                             }
 
-                            reflectionNodeNavigator = this.reflectionIndex.GetContent(typeApi);
-                            
+                            reflectionNodeNavigator = this.reflectionIndex[typeApi];
+
                             // no reflection information for container type api was found, so delete <inheritdoc /> node.
-                            if (reflectionNodeNavigator == null)
+                            if(reflectionNodeNavigator == null)
                             {
-                                DeleteNode(inheritDocNodeNavigator, key);
+                                this.DeleteNode(inheritDocNodeNavigator, key);
                                 continue;
                             }
 
                             XPathNodeIterator containerIterator = reflectionNodeNavigator.Select(typeExpression);
-                                                    
-                            foreach (XPathNavigator containerNavigator in containerIterator)
+
+                            foreach(XPathNavigator containerNavigator in containerIterator)
                             {
                                 string constructorId = string.Format(CultureInfo.InvariantCulture, "M:{0}.{1}", containerNavigator.Value.Substring(2), name.Replace('.', '#'));
-                                XPathNavigator contentNodeNavigator = this.index.GetContent(constructorId);
+                                XPathNavigator contentNodeNavigator = this.commentsIndex[constructorId];
 
-                                if (contentNodeNavigator == null)
-                                {
+                                if(contentNodeNavigator == null)
                                     continue;
-                                }
 
                                 this.UpdateNode(inheritDocNodeNavigator, contentNodeNavigator);
 
-                                if (this.sourceDocument.CreateNavigator().Select(inheritDocExpression).Count == 0)
-                                {
+                                if(this.sourceDocument.CreateNavigator().Select(inheritDocExpression).Count == 0)
                                     break;
-                                }
-                                else
-                                {
-                                    inheritDocNodeNavigator.MoveTo(this.sourceDocument.CreateNavigator().SelectSingleNode(inheritDocExpression));
-                                }
+
+                                inheritDocNodeNavigator.MoveTo(this.sourceDocument.CreateNavigator().SelectSingleNode(inheritDocExpression));
                             }
                         }
                         else
@@ -289,10 +257,8 @@ namespace Microsoft.Ddue.Tools
                             XPathNodeIterator memberNodeIterator = (XPathNodeIterator)reflectionNodeNavigator.Evaluate(overrideMemberExpression);
                             this.GetComments(memberNodeIterator, inheritDocNodeNavigator);
 
-                            if (this.sourceDocument.CreateNavigator().Select(inheritDocExpression).Count == 0)
-                            {
+                            if(this.sourceDocument.CreateNavigator().Select(inheritDocExpression).Count == 0)
                                 continue;
-                            }
 
                             // Inherit from interface implementations members.
                             XPathNodeIterator interfaceNodeIterator = (XPathNodeIterator)reflectionNodeNavigator.Evaluate(interfaceImplementationMemberExpression);
@@ -301,10 +267,8 @@ namespace Microsoft.Ddue.Tools
                     }
 
                     // no comments were found, so delete <iheritdoc /> node.
-                    if (this.sourceDocument.CreateNavigator().Select(inheritDocExpression).Count != 0)
-                    {
-                        DeleteNode(inheritDocNodeNavigator, key);
-                    }
+                    if(this.sourceDocument.CreateNavigator().Select(inheritDocExpression).Count != 0)
+                        this.DeleteNode(inheritDocNodeNavigator, key);
                 }
             }
         }
@@ -318,31 +282,23 @@ namespace Microsoft.Ddue.Tools
         {
             // retrieve the selection filter if specified.
             string selectValue = inheritDocNodeNavigator.GetAttribute("select", string.Empty);
-                        
-            if (!string.IsNullOrEmpty(selectValue))
-            {
+
+            if(!string.IsNullOrEmpty(selectValue))
                 sourceExpression = XPathExpression.Compile(selectValue);
-            }
-            
+
             inheritDocNodeNavigator.MoveToParent();
-                        
-            if (inheritDocNodeNavigator.LocalName != "comments" && inheritDocNodeNavigator.LocalName != "element")
-            {
+
+            if(inheritDocNodeNavigator.LocalName != "comments" && inheritDocNodeNavigator.LocalName != "element")
                 sourceExpression = XPathExpression.Compile(inheritDocNodeNavigator.LocalName);
-            }
-            else 
-            {
-                inheritDocNodeNavigator.MoveTo(this.sourceDocument.CreateNavigator().SelectSingleNode(inheritDocExpression)); 
-            }
-           
-            XPathNodeIterator sources = (XPathNodeIterator) contentNodeNavigator.CreateNavigator().Evaluate(sourceExpression);
+            else
+                inheritDocNodeNavigator.MoveTo(this.sourceDocument.CreateNavigator().SelectSingleNode(inheritDocExpression));
+
+            XPathNodeIterator sources = (XPathNodeIterator)contentNodeNavigator.CreateNavigator().Evaluate(sourceExpression);
             inheritDocNodeNavigator.DeleteSelf();
 
             // append the source nodes to the target node
-            foreach (XPathNavigator source in sources)
-            {
-               inheritDocNodeNavigator.AppendChild(source);
-            }
+            foreach(XPathNavigator source in sources)
+                inheritDocNodeNavigator.AppendChild(source);
         }
 
         /// <summary>
@@ -352,25 +308,19 @@ namespace Microsoft.Ddue.Tools
         /// <param name="inheritDocNodeNavigator">Navigator for inheritdoc node</param>
         public void GetComments(XPathNodeIterator iterator, XPathNavigator inheritDocNodeNavigator)
         {
-            foreach (XPathNavigator navigator in iterator)
+            foreach(XPathNavigator navigator in iterator)
             {
-                XPathNavigator contentNodeNavigator = this.index.GetContent(navigator.Value);
+                XPathNavigator contentNodeNavigator = this.commentsIndex[navigator.Value];
 
-                if (contentNodeNavigator == null)
-                {
+                if(contentNodeNavigator == null)
                     continue;
-                }
 
                 this.UpdateNode(inheritDocNodeNavigator, contentNodeNavigator);
 
-                if (this.sourceDocument.CreateNavigator().Select(inheritDocExpression).Count == 0)
-                {
+                if(this.sourceDocument.CreateNavigator().Select(inheritDocExpression).Count == 0)
                     break;
-                }
-                else
-                {
-                    inheritDocNodeNavigator.MoveTo(this.sourceDocument.CreateNavigator().SelectSingleNode(inheritDocExpression));
-                }
+
+                inheritDocNodeNavigator.MoveTo(this.sourceDocument.CreateNavigator().SelectSingleNode(inheritDocExpression));
             }
         }
         #endregion

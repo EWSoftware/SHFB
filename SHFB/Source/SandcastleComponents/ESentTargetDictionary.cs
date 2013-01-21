@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Components
 // File    : ESentTargetDictionary.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/05/2013
+// Updated : 01/16/2013
 // Note    : Copyright 2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -15,7 +15,7 @@
 //
 // Version     Date     Who  Comments
 // ==============================================================================================================
-// 2.7.3.0  01/01/2012  EFW  Created the code
+// 1.9.7.0  01/01/2013  EFW  Created the code
 //===============================================================================================================
 
 using System;
@@ -32,7 +32,7 @@ namespace SandcastleBuilder.Components
 {
     /// <summary>
     /// This contains a collection of targets indexed by member ID stored in a Managed ESent
-    /// <c>PersistentDictionary{TKey, TValue}</c>.
+    /// <c>PersistentDictionary&lt;TKey, TValue&gt;</c>.
     /// </summary>
     /// <remarks>The behavior of this dictionary is to return null if a target ID is not found and to replace
     /// existing entries if a duplicate ID is added.  All targets are stored in a Managed ESent database.  The
@@ -64,6 +64,7 @@ namespace SandcastleBuilder.Components
           base(component, configuration)
         {
             bool compressColumns = false;
+            int localCacheSize;
 
             string dbPath = configuration.GetAttribute("dbPath", String.Empty);
 
@@ -77,13 +78,19 @@ namespace SandcastleBuilder.Components
               compressColumns)
                 dbPath += "_Compressed";
 
+            string cacheSize = configuration.GetAttribute("localCacheSize", String.Empty);
+
+            if(String.IsNullOrWhiteSpace(cacheSize) || !Int32.TryParse(cacheSize, out localCacheSize))
+                localCacheSize = 1000;
+
             // This is a slightly modified version of Managed ESent that provides the option to serialize
             // reference types.  In this case, we don't care about potential issues of persisted copies not
             // matching the original if modified as they are never updated once written to the cache.  We can
             // also turn off column compression for a slight performance increase.
             PersistentDictionaryFile.AllowReferenceTypeSerialization = true;
 
-            index = new PersistentDictionary<string, Target>(dbPath, compressColumns);
+            index = new PersistentDictionary<string, Target>(dbPath, compressColumns)
+            { LocalCacheSize = localCacheSize };
 
             // Loading new targets can take a while so issue a diagnostic message as an alert
             int filesToLoad = 0;
@@ -96,11 +103,14 @@ namespace SandcastleBuilder.Components
 
             // The time estimate is a ballpark figure and depends on the system
             if(filesToLoad != 0)
+            {
                 component.WriteMessage(MessageLevel.Diagnostic, "{0} target files need to be added to the " +
                     "ESent reflection target cache database.  Indexing them will take about {1:N0} minute(s), " +
                     "please be patient.  Cache location: {2}", filesToLoad, filesToLoad * 10 / 60.0, dbPath);
 
-            this.LoadTargetDictionary();
+                // Limit the degree of parallelism or it overwhelms the ESent version store
+                this.LoadTargetDictionary(3);
+            }
         }
         #endregion
 

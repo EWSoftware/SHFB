@@ -269,6 +269,9 @@ namespace SandcastleBuilder.Package.PropertyPages
                     btnConfigure.Enabled = btnDelete.Enabled = true;
 
                     this.IsDirty = true;
+
+                    // Open the configuration dialog to configure it when first added if needed
+                    btnConfigure_Click(sender, e);
                 }
             }
         }
@@ -314,8 +317,9 @@ namespace SandcastleBuilder.Package.PropertyPages
             // Don't allow editing if set to "-"
             if(info.ConfigureMethod == "-")
             {
-                MessageBox.Show("The selected component contains no editable configuration information",
-                    messageBoxTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                if(sender == btnConfigure)
+                    MessageBox.Show("The selected component contains no editable configuration information",
+                        messageBoxTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 

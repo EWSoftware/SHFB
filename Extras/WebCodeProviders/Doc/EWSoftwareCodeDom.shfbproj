@@ -38,27 +38,19 @@
     <PresentationStyle>vs2005</PresentationStyle>
     <HelpFileVersion>1.1.0.0</HelpFileVersion>
     <ComponentConfigurations>
-      <ComponentConfig id="Cached Framework Comments Index Data" enabled="True">
-        <component id="Cached Framework Comments Index Data" type="SandcastleBuilder.Components.CachedCopyFromIndexComponent" assembly="{@SHFBFolder}SandcastleBuilder.Components.dll">
-          <index name="comments" value="/doc/members/member" key="@name" cache="100">
-				{@CachedFrameworkCommentList}
-				{@CommentFileList}
-			</index>
-          <copy name="comments" source="*" target="/document/comments" />
-        </component>
-      </ComponentConfig>
-<ComponentConfig id="Cached MSDN URL References" enabled="True"><component id="Cached MSDN URL References" type="SandcastleBuilder.Components.CachedResolveReferenceLinksComponent" assembly="{@SHFBFolder}SandcastleBuilder.Components.dll" locale="{@Locale}" linkTarget="{@SdkLinkTarget}"><helpOutput format="HtmlHelp1"><cache filename="{@LocalDataFolder}Cache\MsdnUrl.cache" /><targets base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" type="{@HtmlSdkLinkType}" /><targets files="reflection.xml" type="Local" /></helpOutput><helpOutput format="MSHelp2"><cache filename="{@LocalDataFolder}Cache\MsdnUrl.cache" /><targets base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" type="{@MSHelp2SdkLinkType}" /><targets files="reflection.xml" type="Index" /></helpOutput><helpOutput format="MSHelpViewer"><cache filename="{@LocalDataFolder}Cache\MsdnUrl.cache" /><targets base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" type="{@MSHelpViewerSdkLinkType}" /><targets files="reflection.xml" type="Id" /></helpOutput><helpOutput format="Website"><cache filename="{@LocalDataFolder}Cache\MsdnUrl.cache" /><targets base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" type="{@WebsiteSdkLinkType}" /><targets files="reflection.xml" type="Local" /></helpOutput></component></ComponentConfig>
-<ComponentConfig id="Cached Reflection Index Data" enabled="True"><component id="Cached Reflection Index Data" type="SandcastleBuilder.Components.CachedCopyFromIndexComponent" assembly="{@SHFBFolder}SandcastleBuilder.Components.dll"><index name="reflection" value="/reflection/apis/api" key="@id" cache="10"><cache base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" cacheFile="{@LocalDataFolder}Cache\Reflection.cache" /><data files="reflection.xml" /></index><copy name="reflection" source="*" target="/document/reference" /></component></ComponentConfig></ComponentConfigurations>
+    </ComponentConfigurations>
     <DocumentationSources>
       <DocumentationSource sourceFile="..\WebCodeProviders.sln" />
     </DocumentationSources>
     <HelpAttributes>
       <HelpAttribute name="DocSet" value="{@HtmlHelpName}" />
-<HelpAttribute name="DocSet" value="NetFramework" />
-<HelpAttribute name="TargetOS" value="Windows" /></HelpAttributes>
+      <HelpAttribute name="DocSet" value="NetFramework" />
+      <HelpAttribute name="TargetOS" value="Windows" />
+    </HelpAttributes>
     <NamespaceSummaries>
       <NamespaceSummaryItem name="(global)" isDocumented="False" />
-<NamespaceSummaryItem name="EWSoftware.CodeDom" isDocumented="True">Custom code providers for website projects that can generate XML comments files for all code in the project.</NamespaceSummaryItem></NamespaceSummaries>
+      <NamespaceSummaryItem name="EWSoftware.CodeDom" isDocumented="True">Custom code providers for website projects that can generate XML comments files for all code in the project.</NamespaceSummaryItem>
+    </NamespaceSummaries>
     <ApiFilter />
     <PlugInConfigurations />
     <SyntaxFilters>Standard</SyntaxFilters>
@@ -75,6 +67,10 @@
     <DisableCodeBlockComponent>False</DisableCodeBlockComponent>
     <CppCommentsFixup>False</CppCommentsFixup>
     <CleanIntermediates>True</CleanIntermediates>
+    <SccProjectName>SAK</SccProjectName>
+    <SccProvider>SAK</SccProvider>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccLocalPath>SAK</SccLocalPath>
   </PropertyGroup>
   <!-- There are no properties for these two groups but they need to appear in
        order for Visual Studio to perform the build. -->

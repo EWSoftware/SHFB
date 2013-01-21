@@ -37,10 +37,10 @@
             this.btnAddPlugIn = new System.Windows.Forms.Button();
             this.lbProjectPlugIns = new System.Windows.Forms.CheckedListBox();
             this.gbAvailablePlugIns = new System.Windows.Forms.GroupBox();
+            this.lbAvailablePlugIns = new System.Windows.Forms.ListBox();
             this.txtPlugInVersion = new System.Windows.Forms.TextBox();
             this.txtPlugInCopyright = new System.Windows.Forms.TextBox();
             this.txtPlugInDescription = new System.Windows.Forms.TextBox();
-            this.lbAvailablePlugIns = new System.Windows.Forms.ListBox();
             this.gbProjectAddIns.SuspendLayout();
             this.gbAvailablePlugIns.SuspendLayout();
             this.SuspendLayout();
@@ -141,6 +141,21 @@
             this.gbAvailablePlugIns.TabStop = false;
             this.gbAvailablePlugIns.Text = "A&vailable Plug-Ins";
             // 
+            // lbAvailablePlugIns
+            // 
+            this.lbAvailablePlugIns.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lbAvailablePlugIns.IntegralHeight = false;
+            this.lbAvailablePlugIns.ItemHeight = 20;
+            this.lbAvailablePlugIns.Location = new System.Drawing.Point(6, 21);
+            this.lbAvailablePlugIns.Name = "lbAvailablePlugIns";
+            this.lbAvailablePlugIns.Size = new System.Drawing.Size(334, 249);
+            this.lbAvailablePlugIns.Sorted = true;
+            this.lbAvailablePlugIns.TabIndex = 0;
+            this.lbAvailablePlugIns.SelectedIndexChanged += new System.EventHandler(this.lbAvailablePlugIns_SelectedIndexChanged);
+            this.lbAvailablePlugIns.DoubleClick += new System.EventHandler(this.btnAddPlugIn_Click);
+            // 
             // txtPlugInVersion
             // 
             this.txtPlugInVersion.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -158,34 +173,19 @@
             this.txtPlugInCopyright.Name = "txtPlugInCopyright";
             this.txtPlugInCopyright.ReadOnly = true;
             this.txtPlugInCopyright.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtPlugInCopyright.Size = new System.Drawing.Size(699, 86);
+            this.txtPlugInCopyright.Size = new System.Drawing.Size(699, 56);
             this.txtPlugInCopyright.TabIndex = 2;
             // 
             // txtPlugInDescription
             // 
             this.txtPlugInDescription.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.txtPlugInDescription.Location = new System.Drawing.Point(3, 413);
+            this.txtPlugInDescription.Location = new System.Drawing.Point(3, 383);
             this.txtPlugInDescription.Multiline = true;
             this.txtPlugInDescription.Name = "txtPlugInDescription";
             this.txtPlugInDescription.ReadOnly = true;
             this.txtPlugInDescription.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtPlugInDescription.Size = new System.Drawing.Size(698, 134);
+            this.txtPlugInDescription.Size = new System.Drawing.Size(698, 164);
             this.txtPlugInDescription.TabIndex = 3;
-            // 
-            // lbAvailablePlugIns
-            // 
-            this.lbAvailablePlugIns.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lbAvailablePlugIns.IntegralHeight = false;
-            this.lbAvailablePlugIns.ItemHeight = 20;
-            this.lbAvailablePlugIns.Location = new System.Drawing.Point(6, 21);
-            this.lbAvailablePlugIns.Name = "lbAvailablePlugIns";
-            this.lbAvailablePlugIns.Size = new System.Drawing.Size(334, 249);
-            this.lbAvailablePlugIns.Sorted = true;
-            this.lbAvailablePlugIns.TabIndex = 0;
-            this.lbAvailablePlugIns.SelectedIndexChanged += new System.EventHandler(this.lbAvailablePlugIns_SelectedIndexChanged);
-            this.lbAvailablePlugIns.DoubleClick += new System.EventHandler(this.btnAddPlugIn_Click);
             // 
             // PlugInPropertiesPageControl
             // 

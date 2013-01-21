@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : AdditionalReferenceLinksPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/05/2013
+// Updated : 01/14/2013
 // Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -342,8 +342,8 @@ namespace SandcastleBuilder.PlugIns
 
             // If not found, try for the cached version
             if(matchingComponents.Count == 0)
-                matchingComponents = configFile.SelectNodes("//component[@id='Resolve References Links " +
-                    "(ESent Persistence)']");
+                matchingComponents = configFile.SelectNodes("//component[starts-with(@id, " +
+                    "'Resolve References Links ')]");
 
             if(matchingComponents.Count == 0)
                 throw new BuilderException("ARL0005", "Unable to locate Resolve Reference Links component in " +

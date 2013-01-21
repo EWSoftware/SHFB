@@ -33,16 +33,7 @@
     <CopyrightText>Copyright \xA9 2003-2013, Jonathan de Halleux.  Portions Copyright \xA9 2006-2013, Eric Woodruff.</CopyrightText>
     <PresentationStyle>VS2005</PresentationStyle>
     <ComponentConfigurations>
-      <ComponentConfig id="Cached Framework Comments Index Data" enabled="True">
-        <component id="Cached Framework Comments Index Data" type="SandcastleBuilder.Components.CachedCopyFromIndexComponent" assembly="{@SHFBFolder}SandcastleBuilder.Components.dll">
-          <index name="comments" value="/doc/members/member" key="@name" cache="100">
-				{@CachedFrameworkCommentList}
-				{@CommentFileList}
-			</index>
-          <copy name="comments" source="*" target="/document/comments" />
-        </component>
-      </ComponentConfig>
-<ComponentConfig id="Cached Reflection Index Data" enabled="True"><component id="Cached Reflection Index Data" type="SandcastleBuilder.Components.CachedCopyFromIndexComponent" assembly="{@SHFBFolder}SandcastleBuilder.Components.dll"><index name="reflection" value="/reflection/apis/api" key="@id" cache="10"><cache base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" cacheFile="{@LocalDataFolder}Cache\Reflection.cache" /><data files="reflection.xml" /></index><copy name="reflection" source="*" target="/document/reference" /></component></ComponentConfig></ComponentConfigurations>
+    </ComponentConfigurations>
     <DocumentationSources>
       <DocumentationSource sourceFile="..\ColorizerLibrary\ColorizerLibrary.csproj" />
     </DocumentationSources>

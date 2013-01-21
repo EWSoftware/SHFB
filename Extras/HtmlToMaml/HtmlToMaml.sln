@@ -14,6 +14,17 @@ Project("{7CF6DF6D-3B04-46F8-A40B-537D21BCA0B4}") = "HtmlToMamlDocs", "Doc\HtmlT
 	EndProjectSection
 EndProject
 Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 3
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs01
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = HtmlToMaml.csproj
+		SccLocalPath1 = .
+		SccProjectUniqueName2 = Doc\\HtmlToMamlDocs.shfbproj
+		SccProjectName2 = Doc
+		SccLocalPath2 = Doc
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU

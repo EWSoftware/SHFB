@@ -90,7 +90,6 @@ namespace Microsoft.Ddue.Tools
           base(assembler, configuration)
         {
             TargetDictionary newTargets;
-            Target target;
             ReferenceLinkType type;
             string attrValue, id;
 
@@ -138,10 +137,10 @@ namespace Microsoft.Ddue.Tools
 
                 if(String.IsNullOrEmpty(attrValue))
                     base.WriteMessage(MessageLevel.Error, "Each targets element must have a type attribute " +
-                        "that specifies which type of links to create.");
+                        "that specifies which type of links to create");
 
                 if(!Enum.TryParse<ReferenceLinkType>(attrValue, true, out type))
-                    base.WriteMessage(MessageLevel.Error, "'{0}' is not a supported reference link type.",
+                    base.WriteMessage(MessageLevel.Error, "'{0}' is not a supported reference link type",
                         attrValue);
 
                 // Check for shared instance by ID.  If not there, create it and add it.
@@ -158,20 +157,6 @@ namespace Microsoft.Ddue.Tools
                 targets.Add(type, newTargets);
             }
 
-            if(targets.NeedsMsdnResolver)
-            {
-                base.WriteMessage(MessageLevel.Info, "Creating MSDN URL resolver.");
-
-                msdnResolver = this.CreateMsdnResolver(configuration);
-
-                // If we have an MSDN resolver with cached entries, update targets with a null content ID to
-                // indicate that they are invalid so that we don't waste time looking them up again.
-                if(msdnResolver != null && msdnResolver.MsdnContentIdCache.Count != 0)
-                    foreach(var kv in msdnResolver.MsdnContentIdCache)
-                        if(kv.Value == null && targets.TryGetValue(kv.Key, out target))
-                            target.IsInvalidLink = true;
-            }
-
 #if DEBUG
             TimeSpan loadTime = (DateTime.Now - startLoad);
             base.WriteMessage(MessageLevel.Diagnostic, "Load time: {0} seconds", loadTime.TotalSeconds);
@@ -182,12 +167,19 @@ namespace Microsoft.Ddue.Tools
             // Serialization test
 //            targets.SerializeDictionary(Directory.GetCurrentDirectory());
 #endif
-            base.WriteMessage(MessageLevel.Info, "Loaded {0} reference targets.", targets.Count);
+            base.WriteMessage(MessageLevel.Info, "{0} total reference link targets", targets.Count);
 
-            string locale_value = configuration.GetAttribute("locale", String.Empty);
+            if(targets.NeedsMsdnResolver)
+            {
+                base.WriteMessage(MessageLevel.Info, "Creating MSDN URL resolver");
 
-            if(!String.IsNullOrEmpty(locale_value) && msdnResolver != null)
-                msdnResolver.Locale = locale_value;
+                msdnResolver = this.CreateMsdnResolver(configuration);
+
+                string localeValue = configuration.GetAttribute("locale", String.Empty);
+
+                if(msdnResolver != null && !String.IsNullOrWhiteSpace(localeValue))
+                    msdnResolver.Locale = localeValue;
+            }
 
             linkTarget = configuration.GetAttribute("linkTarget", String.Empty);
 
@@ -594,7 +586,7 @@ namespace Microsoft.Ddue.Tools
 
             try
             {
-                d = new SimpleTargetDictionary(this, configuration);
+                d = new InMemoryTargetDictionary(this, configuration);
             }
             catch(Exception ex)
             {

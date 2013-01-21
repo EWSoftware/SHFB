@@ -70,6 +70,13 @@
     <Compile Include="..\..\MRefBuilder\Properties\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
+    <Compile Include="Commands\CopyCommand.cs" />
+    <Compile Include="Commands\CopyFromFileCommand.cs" />
+    <Compile Include="Commands\CopyFromFilesCommand.cs" />
+    <Compile Include="Commands\CopyFromIndexCommand.cs" />
+    <Compile Include="Commands\IndexedCache.cs" />
+    <Compile Include="Commands\InMemoryIndexedCache.cs" />
+    <Compile Include="CopyComponent.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
@@ -90,7 +97,7 @@
     <Compile Include="ResolveReferenceLinksComponent2.cs" />
     <Compile Include="CloneComponent.cs" />
     <Compile Include="CopyFromFileComponent.cs" />
-    <Compile Include="CopyFromFiles.cs" />
+    <Compile Include="CopyFromFilesComponent.cs" />
     <Compile Include="CopyFromIndexComponent.cs" />
     <Compile Include="DisplayComponent.cs" />
     <Compile Include="ExampleComponent.cs" />
@@ -134,7 +141,7 @@
     <Compile Include="SwitchComponent.cs" />
     <Compile Include="SyntaxComponent.cs" />
     <Compile Include="Targets\SimpleMemberReference.cs" />
-    <Compile Include="Targets\SimpleTargetDictionary.cs" />
+    <Compile Include="Targets\InMemoryTargetDictionary.cs" />
     <Compile Include="Targets\SimpleTypeReference.cs" />
     <Compile Include="Targets\Specialization.cs" />
     <Compile Include="Targets\SpecializedMemberReference.cs" />

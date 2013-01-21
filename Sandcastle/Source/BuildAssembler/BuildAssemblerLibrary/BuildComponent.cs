@@ -135,10 +135,9 @@ namespace Microsoft.Ddue.Tools
         /// <param name="args">An optional list of arguments to format into the message</param>
         public void WriteMessage(MessageLevel level, string message, params object[] args)
         {
-            if(level == MessageLevel.Ignore)
-                return;
-
-            this.WriteMessage(null, level, message, args);
+            if(level != MessageLevel.Ignore)
+                assembler.WriteMessage(this.GetType(), level, null, (args.Length == 0) ? message :
+                    String.Format(CultureInfo.CurrentCulture, message, args));
         }
 
         /// <summary>
@@ -153,13 +152,8 @@ namespace Microsoft.Ddue.Tools
         /// the "building topic X" messages are suppressed.</remarks>
         public void WriteMessage(string key, MessageLevel level, string message, params object[] args)
         {
-            if(level == MessageLevel.Ignore)
-                return;
-
-            MessageHandler handler = assembler.MessageHandler;
-
-            if(handler != null)
-                handler(this.GetType(), level, key, (args.Length == 0) ? message :
+            if(level != MessageLevel.Ignore)
+                assembler.WriteMessage(this.GetType(), level, key, (args.Length == 0) ? message :
                     String.Format(CultureInfo.CurrentCulture, message, args));
         }
         #endregion

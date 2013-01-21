@@ -6,6 +6,7 @@
 // Change history:
 // 02/16/2012 - EFW - Added support for setting a verbosity level.  Messages with a log level below
 // the current verbosity level are ignored.
+// 01/12/2013 - EFW - Moved the execution code into the BuildAssembler class to allow for parallel execution.
 
 using System;
 using System.IO;
@@ -28,6 +29,8 @@ namespace Microsoft.Ddue.Tools
         /// <returns>Zero on success or one on failure</returns>
         public static int Main(string[] args)
         {
+            int exitCode = 0;
+
             ConsoleApplication.WriteBanner();
 
             #region Read command line arguments, and setup config
@@ -88,56 +91,32 @@ namespace Microsoft.Ddue.Tools
             }
             #endregion
 
-            // Create a BuildAssembler instance to do the work
-            BuildAssembler buildAssembler = new BuildAssembler();
+            // Create a BuildAssembler instance to do the work.  Messages are logged to the console.
+            BuildAssembler buildAssembler = new BuildAssembler(s => Console.WriteLine(s));
 
             try
             {
-                XPathNavigator configNav = configuration.CreateNavigator();
-
-                // See if a verbosity level has been specified.  If so, set it.
-                var verbosity = configNav.SelectSingleNode("/configuration/@verbosity");
-                MessageLevel level;
-
-                if(verbosity == null || !Enum.TryParse<MessageLevel>(verbosity.Value, out level))
-                    level = MessageLevel.Info;
-
-                BuildAssembler.VerbosityLevel = level;
-
-                if(level > MessageLevel.Info)
-                    ConsoleApplication.WriteMessage(LogLevel.Info, "Loading configuration...");
-
-                // Load the context
-                XPathNavigator contextNode = configNav.SelectSingleNode("/configuration/dduetools/builder/context");
-
-                if(contextNode != null)
-                    buildAssembler.Context.Load(contextNode);
-
-                // Load the build components
-                XPathNavigator componentsNode = configNav.SelectSingleNode("/configuration/dduetools/builder/components");
-
-                if(componentsNode != null)
-                    buildAssembler.AddComponents(componentsNode);
-
-                // Proceed through the build manifest, processing all topics named there
-                if(level > MessageLevel.Info)
-                    ConsoleApplication.WriteMessage(LogLevel.Info, "Processing topics...");
-
-                int count = buildAssembler.Apply(manifest);
-
-                ConsoleApplication.WriteMessage(LogLevel.Info, "Processed {0} topics", count);
+                // Execute it using the given configuration and manifest
+                buildAssembler.Execute(configuration, manifest);
             }
             catch(Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine(ex);
-                ConsoleApplication.WriteMessage(LogLevel.Error, ex.ToString());
+                // Ignore aggregate exceptions where the inner exception is OperationCanceledException.
+                // These are the result of of logging an error message.
+                if(!(ex is AggregateException) || !(ex.InnerException is OperationCanceledException))
+                {
+                    System.Diagnostics.Debug.WriteLine(ex);
+                    ConsoleApplication.WriteMessage(LogLevel.Error, ex.GetExceptionMessage());
+                }
+
+                exitCode = 1;
             }
             finally
             {
                 buildAssembler.Dispose();
             }
 
-            return 0;
+            return exitCode;
         }
     }
 }

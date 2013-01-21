@@ -204,15 +204,18 @@
 	<component id="Cached Reflection Index Data"
 		type="SandcastleBuilder.Components.CachedCopyFromIndexComponent"
 		assembly="{@SHFBFolder}SandcastleBuilder.Components.dll">
-		<description>This build component is used to load a set of indexed document information from a cache file rather than parsing it from the reflection data files.  This can decrease the initialization time during a build.</description>
+		<description>This component is obsolete and will be removed in a future release.</description>
 
 		<insert placement="replace" instance="1" type="Microsoft.Ddue.Tools.CopyFromIndexComponent" />
 
 		<!-- Not editable at all -->
 		<configureMethod name="-" />
 
+		<!-- This component is obsolete and will be removed in a future release. -->
+		<hidden />
+
 		<defaultConfiguration>
-			<index name="reflection" value="/reflection/apis/api" key="@id" cache="10">
+			<index name="reflection" value="/reflection/apis/api" key="@id" cache="15">
 				<cache base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml"
 					cacheFile="{@LocalDataFolder}Cache\Reflection.cache"/>
 				<data files="reflection.xml" />
@@ -226,15 +229,18 @@
 	<component id="Cached Framework Comments Index Data"
 		type="SandcastleBuilder.Components.CachedCopyFromIndexComponent"
 		assembly="{@SHFBFolder}SandcastleBuilder.Components.dll">
-		<description>This build component is used to load a set of indexed document information from a cache file rather than parsing it from the framework comments files.  This can decrease the initialization time during a build.</description>
+		<description>This component is obsolete and will be removed in a future release.</description>
 
 		<insert placement="replace" instance="3" type="Microsoft.Ddue.Tools.CopyFromIndexComponent" />
 
 		<!-- Not editable at all -->
 		<configureMethod name="-" />
 
+		<!-- This component is obsolete and will be removed in a future release. -->
+		<hidden />
+
 		<defaultConfiguration>
-			<index name="comments" value="/doc/members/member" key="@name" cache="100">
+			<index name="comments" value="/doc/members/member" key="@name" cache="30">
 				{@CachedFrameworkCommentList}
 				{@CommentFileList}
 			</index>
@@ -288,11 +294,13 @@
 
 	<!-- ****************************************************************** -->
 
-	<component id="Resolve References Links (ESent Persistence)"
+	<component id="Resolve References Links (ESent Cache)"
 		type="SandcastleBuilder.Components.ESentResolveReferenceLinksComponent"
 		assembly="{@SHFBFolder}SandcastleBuilder.Components.dll"
 		locale="{@Locale}" linkTarget="{@SdkLinkTarget}">
-		<description>This component is used to resolve reference links in topics.  It uses ESent databases to cache MSDN content IDs and also to cache the .NET Framework reference link targets.  This speeds up initialization and conserves memory at the expense of some build time when generating topics.</description>
+		<description>This component is used to resolve reference links in topics.  It uses ESent databases to cache MSDN content IDs and .NET Framework reference link targets.  This speeds up initialization and conserves memory at the expense of some build time in larger projects.
+
+The ESent database engine is part of every version of Microsoft Windows and no set up is required.</description>
 
 		<insert placement="replace" type="Microsoft.Ddue.Tools.ResolveReferenceLinksComponent2" />
 		<insertConceptual placement="replace" type="Microsoft.Ddue.Tools.ResolveReferenceLinksComponent2" />
@@ -303,9 +311,9 @@
 		<defaultConfiguration>
 			<helpOutput format="HtmlHelp1">
 				<msdnContentIdCache path="{@LocalDataFolder}Cache\MsdnContentId.cache"
-					dbPath="{@LocalDataFolder}Cache\ESentMsdnContentIdCache" />
+					dbPath="{@LocalDataFolder}Cache\ESentMsdnContentIdCache" localCacheSize="2500" />
 				<targets base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" type="{@HtmlSdkLinkType}"
-					id="FrameworkTargets" dbPath="{@LocalDataFolder}Cache\ESentFrameworkTargetCache">
+					id="FrameworkTargets" dbPath="{@LocalDataFolder}Cache\ESentFrameworkTargetCache" localCacheSize="2500">
 					{@ReferenceLinkNamespaceFiles}
 				</targets>
 				<targets files="reflection.xml" type="Local" id="ProjectTargets" />
@@ -313,9 +321,9 @@
 
 			<helpOutput format="MSHelp2">
 				<msdnContentIdCache path="{@LocalDataFolder}Cache\MsdnContentId.cache"
-					dbPath="{@LocalDataFolder}Cache\ESentMsdnContentIdCache" />
+					dbPath="{@LocalDataFolder}Cache\ESentMsdnContentIdCache" localCacheSize="2500" />
 				<targets base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" type="{@MSHelp2SdkLinkType}"
-					id="FrameworkTargets" dbPath="{@LocalDataFolder}Cache\ESentFrameworkTargetCache">
+					id="FrameworkTargets" dbPath="{@LocalDataFolder}Cache\ESentFrameworkTargetCache" localCacheSize="2500">
 					{@ReferenceLinkNamespaceFiles}
 				</targets>
 				<targets files="reflection.xml" type="Index" id="ProjectTargets" />
@@ -323,9 +331,9 @@
 
 			<helpOutput format="MSHelpViewer">
 				<msdnContentIdCache path="{@LocalDataFolder}Cache\MsdnContentId.cache"
-					dbPath="{@LocalDataFolder}Cache\ESentMsdnContentIdCache" />
+					dbPath="{@LocalDataFolder}Cache\ESentMsdnContentIdCache" localCacheSize="2500" />
 				<targets base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" type="{@MSHelpViewerSdkLinkType}"
-					id="FrameworkTargets" dbPath="{@LocalDataFolder}Cache\ESentFrameworkTargetCache">
+					id="FrameworkTargets" dbPath="{@LocalDataFolder}Cache\ESentFrameworkTargetCache" localCacheSize="2500">
 					{@ReferenceLinkNamespaceFiles}
 				</targets>
 				<targets files="reflection.xml" type="Id" id="ProjectTargets" />
@@ -333,9 +341,72 @@
 
 			<helpOutput format="Website">
 				<msdnContentIdCache path="{@LocalDataFolder}Cache\MsdnContentId.cache"
-					dbPath="{@LocalDataFolder}Cache\ESentMsdnContentIdCache" />
+					dbPath="{@LocalDataFolder}Cache\ESentMsdnContentIdCache" localCacheSize="2500" />
 				<targets base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" type="{@WebsiteSdkLinkType}"
-					id="FrameworkTargets" dbPath="{@LocalDataFolder}Cache\ESentFrameworkTargetCache">
+					id="FrameworkTargets" dbPath="{@LocalDataFolder}Cache\ESentFrameworkTargetCache" localCacheSize="2500">
+					{@ReferenceLinkNamespaceFiles}
+				</targets>
+				<targets files="reflection.xml" type="Local" id="ProjectTargets" />
+			</helpOutput>
+		</defaultConfiguration>
+	</component>
+
+	<!-- ****************************************************************** -->
+
+	<component id="Resolve References Links (SQL Server Cache)"
+		type="SandcastleBuilder.Components.SqlResolveReferenceLinksComponent"
+		assembly="{@SHFBFolder}SandcastleBuilder.Components.dll"
+		locale="{@Locale}" linkTarget="{@SdkLinkTarget}">
+		<description>This component is used to resolve reference links in topics.  It uses a SQL Server database to cache MSDN content IDs and .NET Framework reference link targets.  This speeds up initialization and conserves memory at the expense of some build time in larger projects.
+
+This component requires access to a SQL Server instance.  Express and LocalDB versions are supported.  Some initial configuration and set up steps are required.</description>
+
+		<insert placement="replace" type="Microsoft.Ddue.Tools.ResolveReferenceLinksComponent2" />
+		<insertConceptual placement="replace" type="Microsoft.Ddue.Tools.ResolveReferenceLinksComponent2" />
+
+		<!-- Not editable at all -->
+		<configureMethod name="-" />
+
+		<defaultConfiguration>
+			<helpOutput format="HtmlHelp1">
+				<msdnContentIdCache path="{@LocalDataFolder}Cache\MsdnContentId.cache" localCacheSize="2500"
+					connectionString="Data Source=.\SQLEXPRESS;Initial Catalog=Sandcastle;Integrated Security=True;Application Name=&quot;Sandcastle BuildAssembler&quot;" />
+				<targets base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" type="{@HtmlSdkLinkType}"
+					id="FrameworkTargets" localCacheSize="2500"
+					connectionString="Data Source=.\SQLEXPRESS;Initial Catalog=Sandcastle;Integrated Security=True;Application Name=&quot;Sandcastle BuildAssembler&quot;">
+					{@ReferenceLinkNamespaceFiles}
+				</targets>
+				<targets files="reflection.xml" type="Local" id="ProjectTargets" />
+			</helpOutput>
+
+			<helpOutput format="MSHelp2">
+				<msdnContentIdCache path="{@LocalDataFolder}Cache\MsdnContentId.cache" localCacheSize="2500"
+					connectionString="Data Source=.\SQLEXPRESS;Initial Catalog=Sandcastle;Integrated Security=True;Application Name=&quot;Sandcastle BuildAssembler&quot;" />
+				<targets base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" type="{@MSHelp2SdkLinkType}"
+					id="FrameworkTargets" localCacheSize="2500"
+					connectionString="Data Source=.\SQLEXPRESS;Initial Catalog=Sandcastle;Integrated Security=True;Application Name=&quot;Sandcastle BuildAssembler&quot;">
+					{@ReferenceLinkNamespaceFiles}
+				</targets>
+				<targets files="reflection.xml" type="Index" id="ProjectTargets" />
+			</helpOutput>
+
+			<helpOutput format="MSHelpViewer">
+				<msdnContentIdCache path="{@LocalDataFolder}Cache\MsdnContentId.cache" localCacheSize="2500"
+					connectionString="Data Source=.\SQLEXPRESS;Initial Catalog=Sandcastle;Integrated Security=True;Application Name=&quot;Sandcastle BuildAssembler&quot;" />
+				<targets base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" type="{@MSHelpViewerSdkLinkType}"
+					id="FrameworkTargets" localCacheSize="2500"
+					connectionString="Data Source=.\SQLEXPRESS;Initial Catalog=Sandcastle;Integrated Security=True;Application Name=&quot;Sandcastle BuildAssembler&quot;">
+					{@ReferenceLinkNamespaceFiles}
+				</targets>
+				<targets files="reflection.xml" type="Id" id="ProjectTargets" />
+			</helpOutput>
+
+			<helpOutput format="Website">
+				<msdnContentIdCache path="{@LocalDataFolder}Cache\MsdnContentId.cache" localCacheSize="2500"
+					connectionString="Data Source=.\SQLEXPRESS;Initial Catalog=Sandcastle;Integrated Security=True;Application Name=&quot;Sandcastle BuildAssembler&quot;" />
+				<targets base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" type="{@WebsiteSdkLinkType}"
+					id="FrameworkTargets" localCacheSize="2500"
+					connectionString="Data Source=.\SQLEXPRESS;Initial Catalog=Sandcastle;Integrated Security=True;Application Name=&quot;Sandcastle BuildAssembler&quot;">
 					{@ReferenceLinkNamespaceFiles}
 				</targets>
 				<targets files="reflection.xml" type="Local" id="ProjectTargets" />
