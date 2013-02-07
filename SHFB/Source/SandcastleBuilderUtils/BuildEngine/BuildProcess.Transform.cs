@@ -365,7 +365,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 case "frameworkcommentlist":
                 case "cachedframeworkcommentlist":
                 case "importframeworkcommentlist":
-                    replaceWith = this.FrameworkCommentList(match.Groups["Field"].Value.ToLowerInvariant());
+                    replaceWith = this.FrameworkCommentList(fieldName);
                     break;
 
                 case "commentfilelist":
@@ -1002,7 +1002,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
             FrameworkSettings frameworkSettings = FrameworkDictionary.AllFrameworks.GetFrameworkWithRedirect(
                 project.FrameworkVersion);
             StringBuilder sb = new StringBuilder(1024);
-            string folder, wildcard, cacheFilename;
+            string folder, wildcard;
 
             // Build the list based on the type and what actually exists
             foreach(var location in frameworkSettings.CommentsFileLocations(project.Language))
@@ -1019,12 +1019,10 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                     case "cachedframeworkcommentlist":
                         // Files are cached by platform, version, and location
-                        cacheFilename = String.Format(CultureInfo.InvariantCulture, "{0}_{1}_{2:X}",
+                        sb.AppendFormat(CultureInfo.InvariantCulture, "<data base=\"{0}\" files=\"{1}\" " +
+                            "recurse=\"false\" cachePath=\"{{@LocalDataFolder}}Cache\\{2}_{3}_{4:X}\" " +
+                            "localCacheSize=\"2500\" duplicateWarning=\"false\" />\r\n", folder, wildcard,
                             frameworkSettings.Platform, frameworkSettings.Version, location.GetHashCode());
-
-                        sb.AppendFormat(CultureInfo.InvariantCulture, "<cache base=\"{0}\" files=\"{1}\" " +
-                            "recurse=\"false\" cacheFile=\"{{@LocalDataFolder}}Cache\\{2}.cache\" " +
-                            "duplicateWarning=\"false\" />\r\n", folder, wildcard, cacheFilename);
                         break;
 
                     default:    // "frameworkcommentlist"

@@ -95,6 +95,8 @@
     <Compile Include="CodeBlockConfigDlg.Designer.cs">
       <DependentUpon>CodeBlockConfigDlg.cs</DependentUpon>
     </Compile>
+    <Compile Include="ESentCopyFromIndexComponent.cs" />
+    <Compile Include="ESentIndexCache.cs" />
     <Compile Include="ESentResolveReferenceLinksComponent.cs" />
     <Compile Include="ESentTargetDictionary.cs" />
     <Compile Include="IntelliSenseComponent.cs" />

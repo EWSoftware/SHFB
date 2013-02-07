@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : AdditionalReferenceLinksPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/14/2013
+// Updated : 02/05/2013
 // Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -310,17 +310,17 @@ namespace SandcastleBuilder.PlugIns
                 // Add them to the Reflection Index Data component.  There are multiple copies of this component
                 // type but we only need the first one.  This only appears in the reference build's configuration
                 // file.
-                component = configFile.SelectSingleNode("configuration/dduetools/builder/components/component[@type=" +
-                    "'Microsoft.Ddue.Tools.CopyFromIndexComponent']/index");
+                component = configFile.SelectSingleNode("configuration/dduetools/builder/components/component[" +
+                    "@type='Microsoft.Ddue.Tools.CopyFromIndexComponent']/index");
 
                 // If not found, try for the cached version
                 if(component == null)
-                    component = configFile.SelectSingleNode("configuration/dduetools/builder/components/component[" +
-                        "@id='Cached Reflection Index Data']/index");
+                    component = configFile.SelectSingleNode("configuration/dduetools/builder/components/" +
+                        "component[starts-with(@id, 'Reflection Index Data')]/index");
 
                 if(component == null)
-                    throw new BuilderException("ARL0004", "Unable to locate Reflection Index Data " +
-                        "component in " + configFilename);
+                    throw new BuilderException("ARL0004", "Unable to locate Reflection Index Data component in " +
+                        configFilename);
 
                 foreach(ReferenceLinkSettings vs in otherLinks)
                     if(!String.IsNullOrEmpty(vs.ReflectionFilename))
@@ -451,6 +451,10 @@ namespace SandcastleBuilder.PlugIns
                 project.HtmlHelp2xCompilerPath = new FolderPath(builder.Help2CompilerFolder, true, project);
                 project.WorkingPath = new FolderPath(workingPath, true, project);
                 project.OutputPath = new FolderPath(workingPath + @"..\PartialBuildLog\", true, project);
+
+                // Make sure the current configuration and platform are consistent
+                project.Configuration = builder.CurrentProject.Configuration;
+                project.Platform = builder.CurrentProject.Platform;
 
                 // If the current project has defined OutDir, pass it on to the sub-project.
                 string outDir = builder.CurrentProject.MSBuildProject.GetProperty("OutDir").EvaluatedValue;

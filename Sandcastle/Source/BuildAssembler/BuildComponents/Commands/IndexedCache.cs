@@ -5,6 +5,7 @@
 
 // Change History
 // 01/19/2013 - EFW - Created a new abstract base class for indexed cache classes
+// 01/24/2013 - EFW - Added IDisposable implementation
 
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,7 @@ namespace Microsoft.Ddue.Tools.Commands
     /// This abstract base class is used to create indexed caches of information represented by XPathNavigators
     /// such as reflection information and XML comments.
     /// </summary>
-    public abstract class IndexedCache
+    public abstract class IndexedCache : IDisposable
     {
         #region Properties
         //=====================================================================
@@ -43,6 +44,11 @@ namespace Microsoft.Ddue.Tools.Commands
         /// </summary>
         /// <value>The key expression is always relative to the index value node</value>
         public XPathExpression KeyExpression { get; private set; }
+
+        /// <summary>
+        /// This read-only property can be used to determine whether or not the indexed cache has been disposed
+        /// </summary>
+        public bool IsDisposed { get; protected set; }
 
         /// <summary>
         /// This read-only property returns a count of the items in the indexed cache
@@ -126,6 +132,40 @@ namespace Microsoft.Ddue.Tools.Commands
             }
 
             this.ValueExpression.SetContext(context);
+        }
+        #endregion
+
+        #region IDisposable implementation
+        //=====================================================================
+
+        /// <summary>
+        /// This handles garbage collection to ensure proper disposal of the indexed cache if not done
+        /// explicity with <see cref="Dispose()"/>.
+        /// </summary>
+        ~IndexedCache()
+        {
+            this.Dispose(false);
+        }
+
+        /// <summary>
+        /// This implements the Dispose() interface to properly dispose of the indexed cache
+        /// </summary>
+        /// <overloads>There are two overloads for this method</overloads>
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// This can be overridden by derived classes to add their own disposal code if necessary.
+        /// </summary>
+        /// <param name="disposing">Pass true to dispose of the managed and unmanaged resources or false to just
+        /// dispose of the unmanaged resources.</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            // Nothing to dispose of in this one
+            this.IsDisposed = true;
         }
         #endregion
 

@@ -19,7 +19,6 @@
   <SearchGlobalAssemblyCache>False</SearchGlobalAssemblyCache>
   <DeadlockDetectionTimeout>120</DeadlockDetectionTimeout>
   <IgnoreGeneratedCode>False</IgnoreGeneratedCode>
-  <TargetFrameworkVersion>0.0</TargetFrameworkVersion>
  </ProjectOptions>
  <Targets>
   <Target Name="$(ProjectDir)/../../ProductionTools/BuildAssembler.exe" Analyze="True" AnalyzeAllChildren="True" />
@@ -573,6 +572,21 @@
          </Type>
          <Type Name="CopyFromIndexComponent">
           <Members>
+           <Member Name="#.ctor(Microsoft.Ddue.Tools.BuildAssembler,System.Xml.XPath.XPathNavigator)">
+            <Messages>
+             <Message TypeName="DoNotCallOverridableMethodsInConstructors" Category="Microsoft.Usage" CheckId="CA2214" Status="Excluded" Created="2013-01-24 18:43:39Z">
+              <Issue>
+               <Item>'CopyFromIndexComponent.CopyFromIndexComponent(BuildAssembler, XPathNavigator)'</Item>
+               <Item>&#xD;&#xA;&#xD;&#xA;CopyFromIndexComponent..ctor(BuildAssembler, XPathNavigator)&#xD;&#xA;CopyFromIndexComponent.CreateIndex(XPathNavigator):IndexedCache</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="48" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
            <Member Name="#Apply(System.Xml.XmlDocument,System.String)">
             <Messages>
              <Message TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308" Status="Excluded" Created="2012-12-24 21:13:44Z">
@@ -3825,6 +3839,7 @@
     <Note Id="45" Modified="2013-01-21 02:33:48Z">Okay as is</Note>
     <Note Id="46" Modified="2013-01-21 02:34:14Z">Okay as is</Note>
     <Note Id="47" Modified="2013-01-21 02:34:45Z">Lowercase is preferred here</Note>
+    <Note Id="48" Modified="2013-01-24 18:59:39Z">The call chain appears to be safe</Note>
    </User>
   </Notes>
   <Rules>

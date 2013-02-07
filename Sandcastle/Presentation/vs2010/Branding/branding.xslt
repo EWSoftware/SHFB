@@ -186,17 +186,22 @@
 	<xsl:template match="xhtml:base"
 								name="branding-base"/>
 
-	<xsl:template match="xhtml:link[@rel='stylesheet']"
-								name="branding-stylesheet">
+	<xsl:template match="xhtml:link[@rel='stylesheet']" name="branding-stylesheet">
 		<xsl:if test="$self-branded != 'false'">
-			<xsl:element name="link"
-									 namespace="{$xhtml}">
+			<xsl:element name="link" namespace="{$xhtml}">
 				<xsl:attribute name="type">text/css</xsl:attribute>
 				<xsl:attribute name="rel">stylesheet</xsl:attribute>
 				<xsl:attribute name="href">
 					<xsl:choose>
 						<xsl:when test="$downscale-browser">
-							<xsl:value-of select="branding:BackslashesToFrontslashes(concat($contentFolder,'/',@href))"/>
+							<xsl:choose>
+								<xsl:when test="starts-with(@href,'ms-help:')">
+									<xsl:value-of select="@href"/>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:value-of select="branding:BackslashesToFrontslashes(concat($contentFolder,'/',@href))"/>
+								</xsl:otherwise>
+							</xsl:choose>
 						</xsl:when>
 						<xsl:otherwise>
 							<xsl:value-of select="branding:BuildContentPath($contentFolder,@href)"/>

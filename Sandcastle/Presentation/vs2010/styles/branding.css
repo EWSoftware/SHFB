@@ -1656,3 +1656,12 @@ sup.citation a:link a:visited a:active
 {
 	text-decoration: none;
 }
+
+/* Supports XLinks */
+MSHelp\:link
+{
+ 	text-decoration: underline;
+	color: #0000ff;
+	hoverColor: #3366ff;
+	filterString: ;
+}

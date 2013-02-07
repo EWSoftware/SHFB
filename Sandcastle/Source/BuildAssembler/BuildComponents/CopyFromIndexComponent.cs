@@ -6,6 +6,8 @@
 // Change history:
 // 01/20/2012 - EFW - Reworked the index cache and moved those classes to the Commands namespace and put them
 // in their own files.
+// 01/24/2012 - EFW - Added a virtual method to create the index caches, added code to dispose of them when done,
+// and exposed the context via a protected property.
 
 using System;
 using System.Collections.Generic;
@@ -34,8 +36,15 @@ namespace Microsoft.Ddue.Tools
         // What to copy
         private List<CopyFromIndexCommand> copyCommands = new List<CopyFromIndexCommand>();
 
-        // A context in which to evaluate XPath expressions
-        private CustomContext context = new CustomContext();
+        #endregion
+
+        #region Properties
+        //=====================================================================
+
+        /// <summary>
+        /// This read-only property returns the context to use for the index when evaluating XPath expressions
+        /// </summary>
+        protected CustomContext Context { get; private set; }
         #endregion
 
         #region Constructor
@@ -53,10 +62,12 @@ namespace Microsoft.Ddue.Tools
             bool isAttribute, ignoreCase;
 
             // Set up the context
+            this.Context = new CustomContext();
+
             XPathNodeIterator contextNodes = configuration.Select("context");
 
             foreach(XPathNavigator contextNode in contextNodes)
-                context.AddNamespace(contextNode.GetAttribute("prefix", String.Empty),
+                this.Context.AddNamespace(contextNode.GetAttribute("prefix", String.Empty),
                     contextNode.GetAttribute("name", String.Empty));
 
             // Set up the indices
@@ -65,7 +76,7 @@ namespace Microsoft.Ddue.Tools
             foreach(XPathNavigator indexNode in indexNodes)
             {
                 // Create the index
-                IndexedCache index = new InMemoryIndexedCache(this, context, indexNode);
+                IndexedCache index = this.CreateIndex(indexNode);
 #if DEBUG
                 base.WriteMessage(MessageLevel.Diagnostic, "Loading {0} index", index.Name);
 
@@ -226,6 +237,20 @@ namespace Microsoft.Ddue.Tools
         }
         #endregion
 
+        #region Helper methods
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to create the index cache
+        /// </summary>
+        /// <param name="configuration">The index configuration</param>
+        /// <returns>An instance of an <see cref="IndexedCache"/> derived class</returns>
+        protected virtual IndexedCache CreateIndex(XPathNavigator configuration)
+        {
+            return new InMemoryIndexedCache(this, this.Context, configuration);
+        }
+        #endregion
+
         #region Method overrides
         //=====================================================================
 
@@ -233,24 +258,29 @@ namespace Microsoft.Ddue.Tools
         public override void Apply(XmlDocument document, string key)
         {
             // Set the key in the XPath context
-            context["key"] = key;
+            this.Context["key"] = key;
 
             // Perform each copy command
             foreach(CopyFromIndexCommand copyCommand in copyCommands)
-                copyCommand.Apply(document, context);
+                copyCommand.Apply(document, this.Context);
 
             // Apply changes for each sub-component, if any
             foreach(CopyComponent component in components)
                 component.Apply(document, key);
         }
 
+        /// <inheritdoc />
         protected override void Dispose(bool disposing)
         {
+            // Find and dispose of the index caches we own
             if(disposing)
                 foreach(var cache in BuildComponent.Data.Values.OfType<IndexedCache>().Where(
                   c => c.Component == this))
+                {
                     this.WriteMessage(MessageLevel.Diagnostic, "\"{0}\" cache entries used: {1}", cache.Name,
                         cache.CacheEntriesUsed);
+                    cache.Dispose();
+                }
 
             base.Dispose(disposing);
         }

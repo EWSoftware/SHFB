@@ -1604,9 +1604,7 @@
 		</xsl:element>
 	</xsl:template>
 
-	<xsl:template match="text()"
-								mode="markup"
-								name="t_ddue_markup_text">
+	<xsl:template match="text() | comment()" mode="markup" name="t_ddue_markup_text">
 		<xsl:copy-of select="."/>
 	</xsl:template>
 

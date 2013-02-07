@@ -416,6 +416,56 @@ This component requires access to a SQL Server instance.  Express and LocalDB ve
 
 	<!-- ****************************************************************** -->
 
+	<component id="Reflection Index Data (ESent Cache)"
+		type="SandcastleBuilder.Components.ESentCopyFromIndexComponent"
+		assembly="{@SHFBFolder}SandcastleBuilder.Components.dll">
+		<description>This component is used to index reflection data for copying into topics.  It uses an ESent database to cache the .NET Framework reflection data.  This speeds up initialization and conserves memory at the expense of some build time in larger projects.
+
+The ESent database engine is part of every version of Microsoft Windows and no set up is required.</description>
+
+		<insert placement="replace" instance="1" type="Microsoft.Ddue.Tools.CopyFromIndexComponent" />
+
+		<!-- Not editable at all -->
+		<configureMethod name="-" />
+
+		<defaultConfiguration>
+			<index name="reflection" value="/reflection/apis/api" key="@id" cache="15">
+				<data base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" duplicateWarning="false"
+					cachePath="{@LocalDataFolder}Cache\ReflectionIndexCache" localCacheSize="2500">
+					{@ReferenceLinkNamespaceFiles}
+				</data>
+				<data files="reflection.xml" />
+			</index>
+			<copy name="reflection" source="*" target="/document/reference" />
+		</defaultConfiguration>
+	</component>
+
+	<!-- ****************************************************************** -->
+
+	<component id="Comments Index Data (ESent Cache)"
+		type="SandcastleBuilder.Components.ESentCopyFromIndexComponent"
+		assembly="{@SHFBFolder}SandcastleBuilder.Components.dll">
+		<description>This component is used to index framework comments for copying into topics.  It uses an ESent database to cache the .NET Framework comments.  This speeds up initialization and conserves memory at the expense of some build time in larger projects.
+
+The ESent database engine is part of every version of Microsoft Windows and no set up is required.
+		</description>
+
+		<insert placement="replace" instance="3" type="Microsoft.Ddue.Tools.CopyFromIndexComponent" />
+
+		<!-- Not editable at all -->
+		<configureMethod name="-" />
+
+		<defaultConfiguration>
+			<index name="comments" value="/doc/members/member" key="@name" cache="30">
+				{@CachedFrameworkCommentList}
+				{@CommentFileList}
+			</index>
+			<copy name="comments" source="*" target="/document/comments" />
+		</defaultConfiguration>
+	</component>
+
+	<!-- ****************************************************************** -->
+
 	<component id="MS Help 2 Attributes" type="Microsoft.Ddue.Tools.MSHelpAttrComponent"
 		assembly="{@SandcastlePath}ProductionTools\BuildComponents.dll">
 		<description>This build component is used to add additional MS Help 2 attributes to the XML data island in each generated API topic.</description>

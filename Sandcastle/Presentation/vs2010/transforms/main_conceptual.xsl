@@ -66,8 +66,7 @@
 								name="t_document">
 		<html>
 			<head>
-				<meta http-equiv="Content-Type"
-							content="text/html; charset=UTF-8"/>
+				<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 				<xsl:call-template name="t_insertNoIndexNoFollow"/>
 				<title>
 					<xsl:call-template name="t_topicTitlePlain"/>
@@ -75,6 +74,7 @@
 				<xsl:call-template name="t_insertMetadataHelp30"/>
 				<xsl:call-template name="t_insertMetadataHelp20"/>
 				<xsl:call-template name="t_insertMetadata"/>
+				<link rel="stylesheet" type="text/css" href="ms-help://Hx/HxRuntime/HxLink.css" />
 			</head>
 			<body class="primary-mtps-offline-document">
 				<div class="topic">

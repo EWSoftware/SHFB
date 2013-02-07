@@ -28,7 +28,7 @@ namespace Microsoft.Ddue.Tools.Commands
     /// <remarks>This index maps the element keys to the files in which they are found.  As needed, the files
     /// containing the requested keys are loaded and cached in memory.  When the cache fills, the oldest file is
     /// unloaded to make room for a new file.</remarks>
-    public sealed class InMemoryIndexedCache : IndexedCache
+    public class InMemoryIndexedCache : IndexedCache
     {
         #region IndexedDocument
         //=====================================================================

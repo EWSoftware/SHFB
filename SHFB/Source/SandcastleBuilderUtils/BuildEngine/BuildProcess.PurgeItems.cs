@@ -1,30 +1,26 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.PurgeItems.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/09/2012
-// Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
+// Updated : 01/30/2013
+// Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains the code used to purge duplicate topics and other items
-// from the Sandcastle reflection.org file based on the project's Visibility
-// category properties.
+// This file contains the code used to purge duplicate topics and other items from the Sandcastle reflection.org
+// file based on the project's Visibility category properties.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
 // ============================================================================
 // 1.0.0.0  08/05/2006  EFW  Created the code
 // 1.3.1.1  10/05/2006  EFW  Implemented the Visibility category properties
 // 1.3.3.1  12/11/2006  EFW  Added support for <exclude/>
-// 1.5.0.2  07/19/2007  EFW  <exclude/> is now handled by the MRefBuilder
-//                           namespace ripping feature.
-// 1.5.1.0  08/24/2007  EFW  Added support for the inherited private/internal
-//                           framework member flags.
+// 1.5.0.2  07/19/2007  EFW  <exclude/> is now handled by the MRefBuilder namespace ripping feature
+// 1.5.1.0  08/24/2007  EFW  Added support for the inherited private/internal framework member flags
 // 1.5.2.0  09/13/2007  EFW  Added support for calling plug-ins
 // 1.6.0.7  03/24/2008  EFW  Removed the PurgeDuplicateTopics build step
 // 1.8.0.1  12/14/2008  EFW  Added support for ExtensionAttribute
@@ -379,26 +375,21 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     // Only remove inherited Framework members?
                     if(frameworkOnly)
                     {
-                        query = "elements/element[(starts-with(substring-after(" +
-                            "@api,':'),'System.') or starts-with(" +
-                            "substring-after(@api,':'),'Microsoft.'))";
+                        query = "elements/element[(starts-with(substring-after(@api,':'),'System.') or " +
+                            "starts-with(substring-after(@api,':'),'Microsoft.'))";
 
-                        // If just removing privates and/or internals, add the
-                        // necessary additional filter conditions.
+                        // If just removing privates and/or internals, add the necessary additional filter
+                        // conditions.
                         if(frameworkAll)
                             if(!frameworkPrivate && !frameworkInternal)
-                                query += " and (memberdata/@visibility = " +
-                                    "'private' or memberdata/@visibility = " +
-                                    "'assembly' or memberdata/@visibility = " +
-                                    "'family and assembly')";
+                                query += " and (memberdata/@visibility = 'private' or memberdata/@visibility = " +
+                                    "'assembly' or memberdata/@visibility = 'family and assembly')";
                             else
                                 if(!frameworkPrivate)
-                                    query += " and memberdata/@visibility = " +
-                                        "'private'";
+                                    query += " and memberdata/@visibility = 'private'";
                                 else
-                                    query += " and (memberdata/@visibility = " +
-                                        "'assembly' or memberdata/@visibility = " +
-                                        "'family and assembly')";
+                                    query += " and (memberdata/@visibility = 'assembly' or " +
+                                        "memberdata/@visibility = 'family and assembly')";
 
                         query += "]";
 
@@ -406,13 +397,11 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     }
                     else
                     {
-                        // Get rid of any member not starting with this entry's
-                        // type.  This includes all framework members too.
-                        typeName = types[typeIdx].Attributes[
-                            "id"].Value.Substring(2);
-                        elements = types[typeIdx].SelectNodes(
-                            "elements/element[not(starts-with(" +
-                            "substring-after(@api,':'),'" + typeName + "'))]");
+                        // Get rid of any member not starting with this entry's type.  This includes all
+                        // framework members too.
+                        typeName = types[typeIdx].Attributes["id"].Value.Substring(2);
+                        elements = types[typeIdx].SelectNodes("elements/element[not(starts-with(" +
+                            "substring-after(@api,':'),'" + typeName + ".'))]");
                     }
 
                     for(elementIdx = 0; elementIdx < elements.Count; elementIdx++)
@@ -426,8 +415,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
             }
             catch(Exception ex)
             {
-                throw new BuilderException("BE0047",
-                    "Error removing inherited members: " + ex.Message, ex);
+                throw new BuilderException("BE0047", "Error removing inherited members: " + ex.Message, ex);
             }
         }
 
