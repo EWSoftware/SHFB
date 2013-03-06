@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/04/2013
+// Updated : 02/26/2013
 // Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -1946,6 +1946,7 @@ AllDone:
             if(sandcastleFolder.Length == 0)
             {
                 sandcastleFolder = Environment.GetEnvironmentVariable("DXROOT");
+
                 if(String.IsNullOrEmpty(sandcastleFolder) || !sandcastleFolder.Contains(@"\Sandcastle"))
                     sandcastleFolder = String.Empty;
             }
@@ -1963,15 +1964,6 @@ AllDone:
                 {
                     this.ReportProgress("Searching for Sandcastle tools...");
                     sandcastleFolder = BuildProcess.FindOnFixedDrives(@"\Sandcastle");
-
-                    // If not found there, try the VS 2005 SDK folders
-                    if(sandcastleFolder.Length == 0)
-                    {
-                        sandcastleFolder = BuildProcess.FindSdkExecutable("MRefBuilder.exe");
-
-                        if(sandcastleFolder.Length != 0)
-                            sandcastleFolder = sandcastleFolder.Substring(0, sandcastleFolder.LastIndexOf('\\'));
-                    }
                 }
             }
             else
@@ -2088,8 +2080,8 @@ AllDone:
         {
             StringBuilder sb = new StringBuilder(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles));
 
-            // Check for 64-bit Windows.  The tools will be in the x86 folder.
-            if(Directory.Exists(sb.ToString() + " (x86)"))
+            // Check for 64-bit OS.  The tools will be in the x86 folder.
+            if(Environment.Is64BitOperatingSystem)
                 sb.Append(" (x86)");
 
             sb.Append(path);
@@ -2098,6 +2090,7 @@ AllDone:
                 if(di.DriveType == DriveType.Fixed)
                 {
                     sb[0] = di.Name[0];
+
                     if(Directory.Exists(sb.ToString()))
                         return sb.ToString();
                 }
@@ -2110,15 +2103,15 @@ AllDone:
         /// </summary>
         /// <param name="exeName">The name of the executable to find</param>
         /// <returns>The path if found or an empty string if not found</returns>
-        /// <remarks>The search looks in all "Visual*" folders under the
-        /// Program Files special folder on all fixed drives.</remarks>
+        /// <remarks>The search looks in all "*Visual*SDK*" folders under the Program Files special folder on all
+        /// fixed drives.</remarks>
         protected internal static string FindSdkExecutable(string exeName)
         {
             StringBuilder sb = new StringBuilder(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles));
             string folder;
 
-            // Check for 64-bit Windows.  The tools will be in the x86 folder.
-            if(Directory.Exists(sb.ToString() + " (x86)"))
+            // Check for 64-bit OS.  The tools will be in the x86 folder.
+            if(Environment.Is64BitOperatingSystem)
                 sb.Append(" (x86)");
 
             foreach(DriveInfo di in DriveInfo.GetDrives())
@@ -2130,7 +2123,7 @@ AllDone:
                     if(!Directory.Exists(folder))
                         continue;
 
-                    foreach(string dir in Directory.EnumerateDirectories(folder, "Visual*"))
+                    foreach(string dir in Directory.EnumerateDirectories(folder, "*Visual*SDK*"))
                     {
                         // If more than one, sort them and take the last one as it should be the most recent.
                         var file = Directory.EnumerateFiles(dir, exeName, SearchOption.AllDirectories).OrderBy(

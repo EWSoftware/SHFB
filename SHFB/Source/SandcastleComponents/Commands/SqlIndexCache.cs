@@ -1,12 +1,12 @@
 ﻿//===============================================================================================================
 // System  : Sandcastle Help File Builder Components
-// File    : ESentIndexCache.cs
+// File    : SqlIndexCache.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/31/2013
+// Updated : 02/28/2013
 // Compiler: Microsoft Visual C#
 //
-// This is a version of the InMemoryIndexCache that adds the ability to store index information in one or more
-// persistent ESent databases.
+// This is a version of the InMemoryIndexCache that adds the ability to store index information in a persistent
+// SQL database.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
 // distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
@@ -15,11 +15,14 @@
 //
 // Version     Date     Who  Comments
 // ==============================================================================================================
-// 1.9.7.0  01/20/2012  EFW  Created the code
+// 1.9.7.0  02/15/2013  EFW  Created the code
 //===============================================================================================================
 
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -29,20 +32,18 @@ using System.Xml.XPath;
 using Microsoft.Ddue.Tools;
 using Microsoft.Ddue.Tools.Commands;
 
-using Microsoft.Isam.Esent.Collections.Generic;
-
-namespace SandcastleBuilder.Components
+namespace SandcastleBuilder.Components.Commands
 {
     /// <summary>
-    /// This is a version of the <c>InMemoryIndexCache</c> that adds the ability to store index information in
-    /// one or more persistent ESent databases.
+    /// This is a version of the <c>InMemoryIndexCache</c> that adds the ability to store index information in a
+    /// persistent SQL database.
     /// </summary>
-    public class ESentIndexedCache : InMemoryIndexedCache
+    public class SqlIndexedCache : InMemoryIndexedCache
     {
         #region Private data members
         //=====================================================================
 
-        private List<PersistentDictionary<string, string>> esentCaches;
+        private List<SqlDictionary<string>> sqlCaches;
         private XmlReaderSettings settings;
         #endregion
 
@@ -54,7 +55,7 @@ namespace SandcastleBuilder.Components
         {
             get
             {
-                return base.IndexCount + esentCaches.Sum(c => c.Count);
+                return base.IndexCount + sqlCaches.Sum(c => c.Count);
             }
         }
 
@@ -69,8 +70,8 @@ namespace SandcastleBuilder.Components
                 XPathNavigator content = base[key];
 
                 // If not found there, try the database caches if there are any
-                if(content == null && esentCaches.Count != 0)
-                    foreach(var c in esentCaches)
+                if(content == null && sqlCaches.Count != 0)
+                    foreach(var c in sqlCaches)
                         if(c.TryGetValue(key, out xml))
                         {
                             // Convert the XML to an XPath navigator
@@ -96,13 +97,13 @@ namespace SandcastleBuilder.Components
         /// <param name="component">The <see cref="CopyFromIndexComponent"/> to which the indexed cache belongs</param>
         /// <param name="context">A context to use with the key and value XPath expressions</param>
         /// <param name="configuration">The configuration to use</param>
-        public ESentIndexedCache(CopyFromIndexComponent component, XmlNamespaceManager context,
+        public SqlIndexedCache(CopyFromIndexComponent component, XmlNamespaceManager context,
           XPathNavigator configuration) : base(component, context, configuration)
         {
             settings = new XmlReaderSettings();
             settings.ConformanceLevel = ConformanceLevel.Fragment;
 
-            esentCaches = new List<PersistentDictionary<string, string>>();
+            sqlCaches = new List<SqlDictionary<string>>();
         }
         #endregion
 
@@ -110,25 +111,51 @@ namespace SandcastleBuilder.Components
         //=====================================================================
 
         /// <inheritdoc />
-        /// <remarks>If a <c>cachePath</c> attribute is found, the given database cache is used rather than an
+        /// <remarks>If a <c>groupId</c> attribute is found, the given database cache is used rather than an
         /// in-memory cache for the file set.  If not found, the index information is added to the standard
         /// in-memory cache.</remarks>
         public override void AddDocuments(XPathNavigator configuration)
         {
-            string cachePath = configuration.GetAttribute("cachePath", String.Empty);
+            string groupId = configuration.GetAttribute("groupId", String.Empty);
 
-            // ESent caches are inserted in reverse order as later caches take precedence over earlier ones
-            if(String.IsNullOrWhiteSpace(cachePath))
+            // SQL caches are inserted in reverse order as later caches take precedence over earlier ones
+            if(String.IsNullOrWhiteSpace(groupId))
                 base.AddDocuments(configuration);
             else
-                esentCaches.Insert(0, this.CreateCache(configuration));
+                sqlCaches.Insert(0, this.CreateCache(configuration));
+        }
+
+        /// <summary>
+        /// Report the cache usage for the build
+        /// </summary>
+        public override void ReportCacheStatistics()
+        {
+            int flushCount = 0, currentCount = 0, cacheSize = 0;
+
+            // Get the highest local cache flush count and current count
+            foreach(var c in sqlCaches)
+            {
+                cacheSize = c.LocalCacheSize;   // These are all the same
+
+                if(c.LocalCacheFlushCount > flushCount)
+                    flushCount = c.LocalCacheFlushCount;
+
+                if(c.CurrentLocalCacheCount > currentCount)
+                    currentCount = c.CurrentLocalCacheCount;
+            }
+
+            this.Component.WriteMessage(MessageLevel.Diagnostic, "\"{0}\" highest SQL local cache flush " +
+                "count: {1}.  Highest SQL current local cache usage: {2} of {3}.", base.Name, flushCount,
+                currentCount, cacheSize);
+
+            base.ReportCacheStatistics();
         }
 
         /// <inheritdoc />
         protected override void Dispose(bool disposing)
         {
-            if(disposing && esentCaches != null)
-                foreach(var c in esentCaches)
+            if(disposing && sqlCaches != null)
+                foreach(var c in sqlCaches)
                     c.Dispose();
 
             base.Dispose(disposing);
@@ -139,32 +166,38 @@ namespace SandcastleBuilder.Components
         //=====================================================================
 
         /// <summary>
-        /// This is used to create the index cache database
+        /// This is used to create the index cache
         /// </summary>
         /// <param name="configuration">The configuration to use</param>
-        private PersistentDictionary<string, string> CreateCache(XPathNavigator configuration)
+        private SqlDictionary<string> CreateCache(XPathNavigator configuration)
         {
             HashSet<string> namespaceFileFilter = new HashSet<string>();
-            string cachePath, compress, baseDirectory, wildcardPath, recurseValue, dupWarning, fullPath,
+            string connectionString, groupId, baseDirectory, wildcardPath, recurseValue, dupWarning, fullPath,
                 directoryPart, filePart;
-            bool recurse, reportDuplicateIds, compressColumns = false;
+            bool recurse, reportDuplicateIds;
             int localCacheSize, filesToLoad;
 
-            cachePath = configuration.GetAttribute("cachePath", String.Empty);
-            compress = configuration.GetAttribute("compressColumns", String.Empty);
+            var parent = configuration.Clone();
+            parent.MoveToParent();
 
-            // If compressing columns, suffix the folder to allow switching back and forth
-            if(!String.IsNullOrWhiteSpace(compress) && Boolean.TryParse(compress, out compressColumns) &&
-              compressColumns)
-                cachePath += "_Compressed";
+            connectionString = parent.GetAttribute("connectionString", String.Empty);
+
+            if(String.IsNullOrWhiteSpace(connectionString))
+                base.Component.WriteMessage(MessageLevel.Error, "Each data element's parent index element must " +
+                    "have a connectionString attribute specifying which database to use.");
+
+            groupId = configuration.GetAttribute("groupId", String.Empty);
 
             string cacheSize = configuration.GetAttribute("localCacheSize", String.Empty);
 
             if(String.IsNullOrWhiteSpace(cacheSize) || !Int32.TryParse(cacheSize, out localCacheSize))
                 localCacheSize = 1000;
 
-            var cache = new PersistentDictionary<string, string>(cachePath, compressColumns)
-                { LocalCacheSize = localCacheSize };
+            var cache = new SqlDictionary<string>(connectionString, "IndexData", "IndexKey", "IndexValue",
+              "GroupId", groupId)
+            {
+                LocalCacheSize = localCacheSize
+            };
 
             baseDirectory = configuration.GetAttribute("base", String.Empty);
 
@@ -235,31 +268,59 @@ namespace SandcastleBuilder.Components
             if(filesToLoad != 0)
             {
                 // The time estimate is a ballpark figure and depends on the system
-                base.Component.WriteMessage(MessageLevel.Diagnostic, "{0} target files need to be added to the " +
-                    "ESent index cache database.  Indexing them will take about {1:N0} minute(s), please be " +
-                    "patient.  Cache location: {2}", filesToLoad, filesToLoad / 60.0, cachePath);
+                base.Component.WriteMessage(MessageLevel.Diagnostic, "{0} files need to be added to the SQL " +
+                    "index cache database.  Indexing them will take about {1:N0} minute(s), please be " +
+                    "patient.  Group ID: {2}  Cache location: {3}", filesToLoad, Math.Ceiling(filesToLoad / 60.0),
+                    groupId, connectionString);
 
-                // Limit the degree of parallelism or it overwhelms the ESent version store
                 Parallel.ForEach(Directory.EnumerateFiles(directoryPart, filePart,
-                  recurse ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly),
-                  new ParallelOptions { MaxDegreeOfParallelism = 3 },
-                  file =>
-                  {
-                      // Skip the file if not in a defined filter
-                      if(namespaceFileFilter.Count != 0 && !namespaceFileFilter.Contains(Path.GetFileName(file)))
-                          return;
+                    recurse ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly),
+                    file =>
+                    {
+                        // Skip the file if not in a defined filter
+                        if(namespaceFileFilter.Count != 0 && !namespaceFileFilter.Contains(Path.GetFileName(file)))
+                            return;
 
-                      // Get the keys from the file and add them to the index
-                      foreach(var kv in base.GetValues(file))
-                      {
-                          // Only report the warning if wanted
-                          if(cache.ContainsKey(kv.Key) && reportDuplicateIds)
-                              this.Component.WriteMessage(MessageLevel.Warn, "An entry for the key '{0}' " +
-                                  "already exists and will be replaced by the one from '{1}'", kv.Key, file);
+                        base.Component.WriteMessage(MessageLevel.Info, "Indexing targets in {0}", file);
 
-                          cache[kv.Key] = kv.Value.InnerXml;
-                      }
-                  });
+                        using(SqlConnection cn = new SqlConnection(connectionString))
+                        using(SqlCommand cmdSearch = new SqlCommand())
+                        using(SqlCommand cmdAdd = new SqlCommand())
+                        {
+                            cn.Open();
+
+                            cmdSearch.Connection = cmdAdd.Connection = cn;
+
+                            cmdSearch.CommandText = String.Format(CultureInfo.InvariantCulture,
+                                "Select IndexKey From IndexData Where GroupId = '{0}' And IndexKey = @key",
+                                groupId);
+                            cmdSearch.Parameters.Add(new SqlParameter("@key", SqlDbType.VarChar, 768));
+
+                            cmdAdd.CommandText = String.Format(CultureInfo.InvariantCulture,
+                                "IF NOT EXISTS(Select * From IndexData Where GroupId = '{0}' And IndexKey = @key) " +
+                                "Insert IndexData (GroupId, IndexKey, IndexValue) Values('{0}', @key, @value) " +
+                                "ELSE " +
+                                "Update IndexData Set IndexValue = @value Where GroupId = '{0}' And IndexKey = @key",
+                                groupId);
+
+                            cmdAdd.Parameters.Add(new SqlParameter("@key", SqlDbType.VarChar, 768));
+                            cmdAdd.Parameters.Add(new SqlParameter("@value", SqlDbType.Text));
+
+                            // Get the keys from the file and add them to the index
+                            foreach(var kv in base.GetValues(file))
+                            {
+                                cmdSearch.Parameters[0].Value = cmdAdd.Parameters[0].Value = kv.Key;
+
+                                // Only report the warning if wanted
+                                if(cmdSearch.ExecuteScalar() != null && reportDuplicateIds)
+                                    this.Component.WriteMessage(MessageLevel.Warn, "An entry for the key '{0}' " +
+                                        "already exists and will be replaced by the one from '{1}'", kv.Key, file);
+
+                                cmdAdd.Parameters[1].Value = kv.Value.InnerXml;
+                                cmdAdd.ExecuteNonQuery();
+                            }
+                        }
+                    });
             }
 
             return cache;

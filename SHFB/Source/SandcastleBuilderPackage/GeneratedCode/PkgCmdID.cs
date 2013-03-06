@@ -15,7 +15,6 @@ namespace SandcastleBuilder.Package
 		public const uint ViewFaq = 0x0019;
 		public const uint ViewShfbHelp = 0x001A;
 		public const uint OpenInStandaloneGUI = 0x001C;
-		public const uint AboutSHFB = 0x001D;
 		public const uint ViewBuildLog = 0x0020;
 		public const uint EntityReferencesWindow = 0x002A;
 		public const uint TopicPreviewerWindow = 0x0030;

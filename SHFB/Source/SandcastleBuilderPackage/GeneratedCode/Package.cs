@@ -106,10 +106,6 @@ namespace SandcastleBuilder.Package
                 commandId = new CommandID(GuidList.guidSandcastleBuilderPackageCmdSet, (int)PkgCmdIDList.OpenInStandaloneGUI);
                 menuItem = new OleMenuCommand(OpenInStandaloneGUIExecuteHandler, OpenInStandaloneGUIChangeHandler, OpenInStandaloneGUIQueryStatusHandler, commandId);
                 mcs.AddCommand(menuItem);
-				// Create the command for button AboutSHFB
-                commandId = new CommandID(GuidList.guidSandcastleBuilderPackageCmdSet, (int)PkgCmdIDList.AboutSHFB);
-                menuItem = new OleMenuCommand(AboutSHFBExecuteHandler, AboutSHFBChangeHandler, AboutSHFBQueryStatusHandler, commandId);
-                mcs.AddCommand(menuItem);
 				// Create the command for button ViewBuildLog
                 commandId = new CommandID(GuidList.guidSandcastleBuilderPackageCmdSet, (int)PkgCmdIDList.ViewBuildLog);
                 menuItem = new OleMenuCommand(ViewBuildLogExecuteHandler, ViewBuildLogChangeHandler, ViewBuildLogQueryStatusHandler, commandId);
@@ -307,22 +303,6 @@ namespace SandcastleBuilder.Package
 		}
 		
 		protected virtual void OpenInStandaloneGUIQueryStatusHandler(object sender, EventArgs e)
-		{
-		}
-
-		#endregion
-
-		#region Handlers for Button: AboutSHFB
-
-		protected virtual void AboutSHFBExecuteHandler(object sender, EventArgs e)
-		{
-		}
-		
-		protected virtual void AboutSHFBChangeHandler(object sender, EventArgs e)
-		{
-		}
-		
-		protected virtual void AboutSHFBQueryStatusHandler(object sender, EventArgs e)
 		{
 		}
 

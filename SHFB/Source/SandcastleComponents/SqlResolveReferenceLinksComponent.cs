@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Components
 // File    : SqlResolveReferenceLinksComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/16/2013
+// Updated : 02/28/2013
 // Compiler: Microsoft Visual C#
 //
 // This is a version of the ResolveReferenceLinksComponent2 that stores the MSDN content IDs and the framework
@@ -22,12 +22,13 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
-using System.IO;
 using System.Reflection;
 using System.Xml.XPath;
 
 using Microsoft.Ddue.Tools;
 using Microsoft.Ddue.Tools.Targets;
+
+using SandcastleBuilder.Components.Targets;
 
 namespace SandcastleBuilder.Components
 {
@@ -151,6 +152,30 @@ namespace SandcastleBuilder.Components
             }
 
             return td;
+        }
+
+        /// <summary>
+        /// This is overridden to report the persistent cache information
+        /// </summary>
+        public override void UpdateMsdnContentIdCache()
+        {
+            if(base.MsdnResolver != null)
+            {
+                var cache = base.MsdnResolver.MsdnContentIdCache as SqlDictionary<string>;
+
+                if(cache != null)
+                {
+                    if(base.MsdnResolver.CacheItemsAdded)
+                        base.WriteMessage(MessageLevel.Diagnostic, "New MSDN content ID cache size: {0} entries",
+                            cache.Count);
+
+                    base.WriteMessage(MessageLevel.Diagnostic, "MSDN content ID SQL local cache flushed {0} " +
+                        "time(s).  Current SQL local cache usage: {1} of {2}.", cache.LocalCacheFlushCount,
+                        cache.CurrentLocalCacheCount, cache.LocalCacheSize);
+                }
+            }
+
+            base.UpdateMsdnContentIdCache();
         }
         #endregion
     }

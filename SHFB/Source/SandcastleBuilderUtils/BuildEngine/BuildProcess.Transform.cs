@@ -1018,11 +1018,13 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         break;
 
                     case "cachedframeworkcommentlist":
-                        // Files are cached by platform, version, and location
+                        // Files are cached by platform, version, and location.  The cachePath and/or groupId
+                        // attributes can be used by caching components to identify the cache and its location.
                         sb.AppendFormat(CultureInfo.InvariantCulture, "<data base=\"{0}\" files=\"{1}\" " +
                             "recurse=\"false\" cachePath=\"{{@LocalDataFolder}}Cache\\{2}_{3}_{4:X}\" " +
-                            "localCacheSize=\"2500\" duplicateWarning=\"false\" />\r\n", folder, wildcard,
-                            frameworkSettings.Platform, frameworkSettings.Version, location.GetHashCode());
+                            "groupId=\"{2}_{3}_{4:X}\" localCacheSize=\"2500\" duplicateWarning=\"false\" />\r\n",
+                            folder, wildcard, frameworkSettings.Platform, frameworkSettings.Version,
+                            location.GetHashCode());
                         break;
 
                     default:    // "frameworkcommentlist"

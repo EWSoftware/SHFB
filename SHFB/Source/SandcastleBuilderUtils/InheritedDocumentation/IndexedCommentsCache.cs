@@ -1,29 +1,31 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder - Generate Inherited Documentation
 // File    : IndexedCommentsCache.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/09/2011
-// Note    : Copyright 2008-2011, Eric Woodruff, All rights reserved
+// Updated : 03/01/2013
+// Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class that is used to cache indexed XML comments files
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.6.0.5  02/27/2008  EFW  Created the code
-//=============================================================================
+// 1.9.7.0  02/28/2013  EFW  Made updates based on changes in the related Sandcastle index cache classes
+//===============================================================================================================
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
+using System.Threading.Tasks;
+using System.Xml;
 using System.Xml.XPath;
 
 namespace SandcastleBuilder.Utils.InheritedDocumentation
@@ -33,12 +35,61 @@ namespace SandcastleBuilder.Utils.InheritedDocumentation
     /// </summary>
     public class IndexedCommentsCache
     {
+        #region IndexedCommentsFile
+        //=====================================================================
+
+        /// <summary>
+        /// This represents an indexed XML comments file
+        /// </summary>
+        private class IndexedCommentsFile
+        {
+            #region Private data members
+            //=====================================================================
+
+            // The index that maps keys to XPath navigators containing the comments
+            Dictionary<string, XPathNavigator> index = new Dictionary<string, XPathNavigator>();
+            #endregion
+
+            #region Properties
+            //=====================================================================
+
+            /// <summary>
+            /// This read-only property returns the XPath navigator for the specified key
+            /// </summary>
+            /// <param name="key">The key to look up</param>
+            /// <returns>The XPath navigagor associated with the key</returns>
+            public XPathNavigator this[string key]
+            {
+                get { return index[key].Clone(); }
+            }
+            #endregion
+
+            #region Methods, etc.
+            //=====================================================================
+
+            /// <summary>
+            /// Constructor
+            /// </summary>
+            /// <param name="cache">The cache with which this indexed document is associated</param>
+            /// <param name="filename">The name of the XML comments file to index</param>
+            public IndexedCommentsFile(IndexedCommentsCache cache, string filename)
+            {
+                foreach(var kv in cache.GetValues(filename))
+                    index[kv.Key] = kv.Value;
+            }
+            #endregion
+        }
+        #endregion
+
         #region Private data members
         //=====================================================================
 
-        private Dictionary<string, string> index;
+        private XPathExpression memberListExpr;
+        private XPathExpression keyExpr;
+
+        private ConcurrentDictionary<string, string> index;
+        private Queue<string> queue;
         private Dictionary<string, IndexedCommentsFile> cache;
-        private List<string> lruList;
         private int cacheSize, filesIndexed;
         #endregion
 
@@ -54,14 +105,63 @@ namespace SandcastleBuilder.Utils.InheritedDocumentation
         }
 
         /// <summary>
-        /// This read-only property returns the number of comments files
-        /// that were indexed.
+        /// This read-only property returns the number of comments files that were indexed
         /// </summary>
         public int FilesIndexed
         {
             get
             {
                 return filesIndexed;
+            }
+        }
+
+        /// <summary>
+        /// This is used to get or set whether or not duplicate entry warnings are generated
+        /// </summary>
+        public bool ShowDuplicatesWarning { get; set; }
+
+        /// <summary>
+        /// This read-only property returns all keys in the index
+        /// </summary>
+        public IEnumerable<string> AllKeys
+        {
+            get { return index.Keys; }
+        }
+
+        /// <summary>
+        /// This read-only property returns the comments for the specified key
+        /// </summary>
+        /// <param name="key">The key for which to retrieve comments</param>
+        /// <returns>An <see cref="XPathNavigator"/> for the comments or null if not found.</returns>
+        public XPathNavigator this[string key]
+        {
+            get
+            {
+                IndexedCommentsFile document;
+                string file;
+
+                // Look up the file corresponding to the key
+                if(index.TryGetValue(key, out file))
+                {
+                    // Now look for that file in the cache
+                    if(!cache.TryGetValue(file, out document))
+                    {
+                        // Not in the cache, so load it
+                        document = new IndexedCommentsFile(this, file);
+
+                        // If the cache is full, remove a document
+                        if(cache.Count >= cacheSize)
+                            cache.Remove(queue.Dequeue());
+
+                        // Add the new document to the cache
+                        cache.Add(file, document);
+                        queue.Enqueue(file);
+                    }
+
+                    return document[key];
+                }
+
+                return null;
             }
         }
         #endregion
@@ -87,7 +187,7 @@ namespace SandcastleBuilder.Utils.InheritedDocumentation
         }
         #endregion
 
-        #region Methods, etc
+        #region Constructor
         //=====================================================================
 
         /// <summary>
@@ -100,28 +200,31 @@ namespace SandcastleBuilder.Utils.InheritedDocumentation
                 throw new ArgumentOutOfRangeException("size");
 
             cacheSize = size;
-            index = new Dictionary<string, string>();
+            index = new ConcurrentDictionary<string, string>();
+            queue = new Queue<string>(size);
             cache = new Dictionary<string, IndexedCommentsFile>(cacheSize);
-            lruList = new List<string>(cacheSize);
+
+            memberListExpr = XPathExpression.Compile("/doc/members/member");
+            keyExpr = XPathExpression.Compile("@name");
         }
+        #endregion
+
+        #region Methods
+        //=====================================================================
 
         /// <summary>
         /// Index all comments files found in the specified folder.
         /// </summary>
-        /// <param name="path">The path to search.  If null or empty, the
-        /// current directory is assumed.</param>
-        /// <param name="wildcard">The wildcard to use.  If null or empty,
-        /// "*.xml" is assumed.</param>
-        /// <param name="recurse">True to recurse subfolders or false to only
-        /// use the given folder.</param>
-        /// <param name="commentsFiles">Optional.  If not null, an
-        /// <see cref="XPathDocument"/> is added to the collection for each
-        /// file indexed.</param>
-        public void IndexCommentsFiles(string path, string wildcard,
-          bool recurse, Collection<XPathNavigator> commentsFiles)
+        /// <param name="path">The path to search.  If null or empty, the current directory is assumed.</param>
+        /// <param name="wildcard">The wildcard to use.  If null or empty, "*.xml" is assumed.</param>
+        /// <param name="recurse">True to recurse subfolders or false to only use the given folder.</param>
+        /// <param name="commentsFiles">Optional.  If not null, an <see cref="XPathDocument"/> is added to the
+        /// collection for each file indexed.</param>
+        /// <remarks>The files are indexed in parallel.</remarks>
+        public void IndexCommentsFiles(string path, string wildcard, bool recurse,
+          ConcurrentBag<XPathNavigator> commentsFiles)
         {
             XPathDocument xpathDoc;
-            string[] keys;
 
             if(String.IsNullOrEmpty(path))
                 path = Environment.CurrentDirectory;
@@ -131,28 +234,28 @@ namespace SandcastleBuilder.Utils.InheritedDocumentation
             if(String.IsNullOrEmpty(wildcard))
                 wildcard = "*.xml";
 
-            // Index the file
-            foreach(string filename in Directory.EnumerateFiles(path, wildcard))
+            // Index the files
+            Parallel.ForEach(Directory.EnumerateFiles(path, wildcard,
+              recurse ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly), filename =>
             {
                 if(!filename.EndsWith(".xml", StringComparison.OrdinalIgnoreCase))
                 {
                     this.OnReportWarning(new CommentsCacheEventArgs(
                         "SHFB: Warning GID0007: Ignoring non-XML comments file: " + filename));
-                    continue;
+                    return;
                 }
-
-                keys = new IndexedCommentsFile(filename).GetKeys();
 
                 if(commentsFiles != null)
                 {
                     xpathDoc = new XPathDocument(filename);
-                    commentsFiles.Add(xpathDoc.CreateNavigator());
+                        commentsFiles.Add(xpathDoc.CreateNavigator());
                 }
 
-                // Check for duplicates.  If found, the last one in wins.
-                foreach(string key in keys)
+                // Get the keys from the file and add them to the index
+                foreach(string key in this.GetKeys(filename))
                 {
-                    if(index.ContainsKey(key))
+                    // Only report the warning if wanted.  If there are duplicates, the last one found wins.
+                    if(this.ShowDuplicatesWarning && index.ContainsKey(key))
                         this.OnReportWarning(new CommentsCacheEventArgs(String.Format(
                             CultureInfo.InvariantCulture, "SHFB: Warning GID0008: Entries for the key " +
                             "'{0}' occur in both '{1}' and '{2}'.  The entries in '{2}' will be used.", key,
@@ -162,80 +265,98 @@ namespace SandcastleBuilder.Utils.InheritedDocumentation
                 }
 
                 filesIndexed++;
-            }
-
-            if(recurse)
-                foreach(string folder in Directory.EnumerateDirectories(path))
-                    this.IndexCommentsFiles(folder, wildcard, recurse, commentsFiles);
+            });
         }
 
         /// <summary>
-        /// Get the comments for the specified key
+        /// This returns an enumerable list of all key values from the specified XML file based on the
+        /// expressions for this cache.
         /// </summary>
-        /// <param name="key">The key for which to retrieve comments</param>
-        /// <returns>An <see cref="XPathNavigator"/> for the comments or null
-        /// if not found.</returns>
-        public XPathNavigator GetComments(string key)
+        /// <param name="file">The XML file from which to obtain the keys</param>
+        /// <returns>An enumerable list of the key values in the given file</returns>
+        public IEnumerable<string> GetKeys(string file)
         {
-            IndexedCommentsFile document = this.GetCommentsFile(key);
+            XPathDocument document = null;
 
-            if(document == null)
-                return null;
-
-            return document.GetContent(key);
-        }
-
-        /// <summary>
-        /// Get the comments file from the index cache that contains the given
-        /// key.
-        /// </summary>
-        /// <param name="key">The key for which to retrieve the file</param>
-        /// <returns>The indexed comments file or null if not found</returns>
-        public IndexedCommentsFile GetCommentsFile(string key)
-        {
-            IndexedCommentsFile document;
-            string filename;
-
-            if(index.TryGetValue(key, out filename))
+            try
             {
-                if(!cache.TryGetValue(filename, out document))
-                {
-                    document = new IndexedCommentsFile(filename);
-
-                    if(cache.Count >= cacheSize)
-                    {
-                        cache.Remove(lruList[0]);
-                        lruList.RemoveAt(0);
-                    }
-
-                    cache.Add(filename, document);
-                    lruList.Add(filename);
-                }
-                else
-                {
-                    // Since it got used, move it to the end of the list
-                    // so that it stays around longer.  This is a really
-                    // basic Least Recently Used list.
-                    lruList.Remove(filename);
-                    lruList.Add(filename);
-                }
-
-                return document;
+                document = new XPathDocument(file);
+            }
+            catch(IOException e)
+            {
+                throw new InheritedDocsException(String.Format(CultureInfo.InvariantCulture,
+                    "An access error occured while attempting to load the file '{0}'. The error message is: {1}",
+                    file, e.Message), e);
+            }
+            catch(XmlException e)
+            {
+                throw new InheritedDocsException(String.Format(CultureInfo.InvariantCulture,
+                    "The indexed document '{0}' is not a valid XML document. The error message is: {1}", file,
+                    e.Message), e);
             }
 
-            return null;
+            XPathNodeIterator valueNodes = document.CreateNavigator().Select(memberListExpr);
+
+            foreach(XPathNavigator valueNode in valueNodes)
+            {
+                XPathNavigator keyNode = valueNode.SelectSingleNode(keyExpr);
+
+                // Only return found key values
+                if(keyNode != null)
+                {
+                    yield return keyNode.Value;
+
+                    // Also add a namespace entry for NamespaceDoc classes
+                    if(keyNode.Value.EndsWith(".NamespaceDoc", StringComparison.Ordinal))
+                        yield return "N:" + keyNode.Value.Substring(2, keyNode.Value.Length - 15);
+                }
+            }
         }
 
         /// <summary>
-        /// Return all keys in this index
+        /// This returns an enumerable list of all key/value pairs from the specified XML file based on the
+        /// expressions for this cache.
         /// </summary>
-        /// <returns>A string array containing the keys</returns>
-        public string[] GetKeys()
+        /// <param name="file">The XML file from which to obtain the keys</param>
+        /// <returns>An enumerable list of the key/value values in the given file</returns>
+        public IEnumerable<KeyValuePair<string, XPathNavigator>> GetValues(string file)
         {
-            string[] keys = new string[index.Count];
+            XPathDocument document = null;
 
-            index.Keys.CopyTo(keys, 0);
-            return keys;
+            try
+            {
+                document = new XPathDocument(file);
+            }
+            catch(IOException e)
+            {
+                throw new InheritedDocsException(String.Format(CultureInfo.InvariantCulture,
+                    "An access error occured while attempting to load the file '{0}'. The error message is: {1}",
+                    file, e.Message), e);
+            }
+            catch(XmlException e)
+            {
+                throw new InheritedDocsException(String.Format(CultureInfo.InvariantCulture,
+                    "The indexed document '{0}' is not a valid XML document. The error message is: {1}", file,
+                    e.Message), e);
+            }
+
+            XPathNodeIterator valueNodes = document.CreateNavigator().Select(memberListExpr);
+
+            foreach(XPathNavigator valueNode in valueNodes)
+            {
+                XPathNavigator keyNode = valueNode.SelectSingleNode(keyExpr);
+
+                // Only return values that have a key
+                if(keyNode != null)
+                {
+                    yield return new KeyValuePair<string, XPathNavigator>(keyNode.Value, valueNode);
+
+                    // Also add a namespace entry for NamespaceDoc classes
+                    if(keyNode.Value.EndsWith(".NamespaceDoc", StringComparison.Ordinal))
+                        yield return new KeyValuePair<string, XPathNavigator>("N:" + keyNode.Value.Substring(2,
+                            keyNode.Value.Length - 15), valueNode);
+                }
+            }
         }
         #endregion
     }

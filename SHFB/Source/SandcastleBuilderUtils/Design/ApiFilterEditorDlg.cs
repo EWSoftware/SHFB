@@ -1,28 +1,26 @@
-//=============================================================================
+//===============================================================================================================
 // System  : EWSoftware Design Time Attributes and Editors
 // File    : ApiFilterEditorDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/09/2012
-// Note    : Copyright 2007-2012, Eric Woodruff, All rights reserved
+// Updated : 02/15/2013
+// Note    : Copyright 2007-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the form used to edit the API filter items.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.5.1.0  07/20/2007  EFW  Created the code
-// 1.6.0.4  01/17/2008  EFW  Made adjustments to support changes and fixes in
-//                           the Sandcastle namespace ripping feature.
+// 1.6.0.4  01/17/2008  EFW  Made adjustments to support changes and fixes in the Sandcastle namespace ripping
+//                           feature.
 // 1.8.0.0  07/08/2008  EFW  Reworked to support MSBuild project format
-// 1.9.3.3  11/19/2011  EFW  Updated checked state optimization to handle some
-//                           odd edge cases.
-//=============================================================================
+// 1.9.3.3  11/19/2011  EFW  Updated checked state optimization to handle some odd edge cases
+//===============================================================================================================
 
 using System;
 using System.Collections.Generic;
@@ -51,8 +49,7 @@ namespace SandcastleBuilder.Utils.Design
         //=====================================================================
 
         /// <summary>
-        /// This is used to indicate the visibility of a member in the node
-        /// information type below.
+        /// This is used to indicate the visibility of a member in the node information type below
         /// </summary>
         private enum ApiVisibility
         {
@@ -71,8 +68,8 @@ namespace SandcastleBuilder.Utils.Design
         //=====================================================================
 
         /// <summary>
-        /// This is used to associate additional information with each tree
-        /// node to make it easier to look stuff up.
+        /// This is used to associate additional information with each tree node to make it easier to look stuff
+        /// up.
         /// </summary>
         private sealed class NodeInfo
         {
@@ -92,8 +89,7 @@ namespace SandcastleBuilder.Utils.Design
             /// <summary>
             /// Get or set the text to display in the tree view
             /// </summary>
-            /// <value>This will be the full namespace name or the type
-            /// or member name without the namespace.</value>
+            /// <value>This will be the full namespace name or the type or member name without the namespace.</value>
             public string NodeText
             {
                 get { return nodeText; }
@@ -118,25 +114,21 @@ namespace SandcastleBuilder.Utils.Design
                                     nodeText = nodeText.Replace('#', '.');
 
                                 if(nodeText[nodeText.Length - 1] == '.')
-                                    nodeText = nodeText.Substring(0,
-                                        nodeText.Length - 1);
+                                    nodeText = nodeText.Substring(0, nodeText.Length - 1);
 
                                 pos = nodeText.IndexOf('`');
 
                                 if(pos != -1)
                                     nodeText = nodeText.Substring(0, pos);
 
-                                if(nodeText.StartsWith("op_",
-                                  StringComparison.Ordinal))
-                                    nodeText = nodeText.Substring(3) +
-                                        " Operator";
+                                if(nodeText.StartsWith("op_", StringComparison.Ordinal))
+                                    nodeText = nodeText.Substring(3) + " Operator";
                             }
                 }
             }
 
             /// <summary>
-            /// This read-only property is used to get the API ID (the
-            /// namespace, type, or member name).
+            /// This read-only property is used to get the API ID (the namespace, type, or member name)
             /// </summary>
             public string Id
             {
@@ -147,8 +139,8 @@ namespace SandcastleBuilder.Utils.Design
             /// For types, this will be set to the filter name to use if the
             /// class is nested within another class.
             /// </summary>
-            /// <remarks>In such cases, the parent class name(s) must prefix
-            /// the type so that it can be correctly excluded or included.</remarks>
+            /// <remarks>In such cases, the parent class name(s) must prefix the type so that it can be correctly
+            /// excluded or included.</remarks>
             public string FilterName
             {
                 get { return filterName; }
@@ -158,8 +150,8 @@ namespace SandcastleBuilder.Utils.Design
             /// <summary>
             /// Get or set the API node from the reflection information file
             /// </summary>
-            /// <remarks>This will also set the <see cref="EntryType"/>
-            /// based on the reflection information in the node.</remarks>
+            /// <remarks>This will also set the <see cref="EntryType"/> based on the reflection information in
+            /// the node.</remarks>
             public XmlNode ApiNode
             {
                 get { return apiNode; }
@@ -178,8 +170,7 @@ namespace SandcastleBuilder.Utils.Design
             }
 
             /// <summary>
-            /// This read-only property is used to get the API entry type for
-            /// this node.
+            /// This read-only property is used to get the API entry type for this node
             /// </summary>
             public ApiEntryType EntryType
             {
@@ -187,8 +178,7 @@ namespace SandcastleBuilder.Utils.Design
             }
 
             /// <summary>
-            /// This read-only property is used to get the visibility of this
-            /// node.
+            /// This read-only property is used to get the visibility of this node
             /// </summary>
             public ApiVisibility Visibility
             {
@@ -198,11 +188,9 @@ namespace SandcastleBuilder.Utils.Design
             /// <summary>
             /// Get or set whether or not the entry is a project exclude
             /// </summary>
-            /// <remarks>If excluded via the Namespace Comments project option
-            /// or an <code>&lt;exclude /&gt;</code> tag, this property will
-            /// be set to true and the node cannot be marked as exposed.  It
-            /// is also used to disallow changes to some of the fixed and
-            /// inherited API entry nodes.</remarks>
+            /// <remarks>If excluded via the Namespace Comments project option or an <c>&lt;exclude /&gt;</c>
+            /// tag, this property will be set to true and the node cannot be marked as exposed.  It is also
+            /// used to disallow changes to some of the fixed and inherited API entry nodes.</remarks>
             public bool IsProjectExclude
             {
                 get { return isProjectExclude; }
@@ -225,8 +213,8 @@ namespace SandcastleBuilder.Utils.Design
             }
 
             /// <summary>
-            /// This will determine the API entry type and visibility based on
-            /// the information in the reflection information node.
+            /// This will determine the API entry type and visibility based on the information in the reflection
+            /// information node.
             /// </summary>
             private void DetermineApiEntryType()
             {
@@ -275,8 +263,7 @@ namespace SandcastleBuilder.Utils.Design
             }
 
             /// <summary>
-            /// If this API node contains template information, add that
-            /// info to the node's display text.
+            /// If this API node contains template information, add that info to the node's display text
             /// </summary>
             private void AppendTemplatesToNodeText()
             {
@@ -323,15 +310,12 @@ namespace SandcastleBuilder.Utils.Design
             }
 
             /// <summary>
-            /// Determine the API entry type from the ID and possible the
-            /// subgroup.
+            /// Determine the API entry type from the ID and possible the subgroup
             /// </summary>
             /// <param name="apiType">The type character to convert</param>
             /// <param name="subgroup">The subgroup to use</param>
-            /// <returns>An <see cref="ApiEntryType"/> indicating the entry
-            /// type.</returns>
-            internal static ApiEntryType EntryTypeFromId(char apiType,
-              string subgroup)
+            /// <returns>An <see cref="ApiEntryType"/> indicating the entry type</returns>
+            internal static ApiEntryType EntryTypeFromId(char apiType, string subgroup)
             {
                 ApiEntryType entryType;
 
@@ -404,21 +388,17 @@ namespace SandcastleBuilder.Utils.Design
             /// </summary>
             /// <param name="apiType">The API type character from the ID</param>
             /// <param name="node">The API node information</param>
-            /// <returns>An <see cref="ApiVisibility"/> indicating the entry's
-            /// visibility.</returns>
-            internal static ApiVisibility DetermineVisibility(char apiType,
-              XmlNode node)
+            /// <returns>An <see cref="ApiVisibility"/> indicating the entry's visibility</returns>
+            internal static ApiVisibility DetermineVisibility(char apiType, XmlNode node)
             {
                 ApiVisibility visibility;
                 string visText;
 
                 // Determine the visibility of the entry
                 if(apiType == 'T')
-                    visText = node.SelectSingleNode(
-                        "typedata/@visibility").Value;
+                    visText = node.SelectSingleNode("typedata/@visibility").Value;
                 else
-                    visText = node.SelectSingleNode(
-                        "memberdata/@visibility").Value;
+                    visText = node.SelectSingleNode("memberdata/@visibility").Value;
 
                 switch(visText)
                 {
@@ -1662,8 +1642,8 @@ namespace SandcastleBuilder.Utils.Design
         //=====================================================================
 
         /// <summary>
-        /// This is used to load child tree nodes on demand which speeds up
-        /// the initial form load for extremely large projects.
+        /// This is used to load child tree nodes on demand which speeds up the initial form load for extremely
+        /// large projects.
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
@@ -1703,23 +1683,19 @@ namespace SandcastleBuilder.Utils.Design
         }
 
         /// <summary>
-        /// Ignore attempts to uncheck the root nodes, namespace and type nodes
-        /// in the inherited APIs, and nodes that are excluded via other project
-        /// settings (i.e. namespace comments and <code>&lt;exclude/&gt;</code>
+        /// Ignore attempts to uncheck the root nodes, namespace and type nodes in the inherited APIs, and nodes
+        /// that are excluded via other project settings (i.e. namespace comments and <c>&lt;exclude/&gt;</c>
         /// tags.
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        /// <remarks>Unchecking a root node would get rid of everything.
-        /// Unchecking a namespace or type for an inherited API may
-        /// inadvertently get rid of something that is needed.  Project
-        /// excludes will be removed regardless of the API filter setting so
-        /// must remain excluded.</remarks>
+        /// <remarks>Unchecking a root node would get rid of everything.  Unchecking a namespace or type for an
+        /// inherited API may inadvertently get rid of something that is needed.  Project excludes will be
+        /// removed regardless of the API filter setting so must remain excluded.</remarks>
         private void tvApiList_BeforeCheck(object sender, TreeViewCancelEventArgs e)
         {
             if(!changingCheckState)
-                e.Cancel = (e.Node.Parent == null ||
-                    ((NodeInfo)e.Node.Tag).IsProjectExclude);
+                e.Cancel = (e.Node.Parent == null || ((NodeInfo)e.Node.Tag).IsProjectExclude);
         }
 
         /// <summary>

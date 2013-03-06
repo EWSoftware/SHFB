@@ -43,6 +43,7 @@
             this.lblHelp2Viewer = new System.Windows.Forms.Label();
             this.chkUseExternalBrowser = new System.Windows.Forms.CheckBox();
             this.chkOpenLogViewerOnFailure = new System.Windows.Forms.CheckBox();
+            this.lnkSHFBInfo = new System.Windows.Forms.LinkLabel();
             ((System.ComponentModel.ISupportInitialize)(this.epErrors)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.udcASPNetDevServerPort)).BeginInit();
             this.SuspendLayout();
@@ -95,7 +96,7 @@
             this.chkOpenHelpAfterBuild.Location = new System.Drawing.Point(44, 229);
             this.chkOpenHelpAfterBuild.Name = "chkOpenHelpAfterBuild";
             this.chkOpenHelpAfterBuild.Size = new System.Drawing.Size(267, 24);
-            this.chkOpenHelpAfterBuild.TabIndex = 9;
+            this.chkOpenHelpAfterBuild.TabIndex = 10;
             this.chkOpenHelpAfterBuild.Text = "&Open help file after successful build";
             this.chkOpenHelpAfterBuild.UseVisualStyleBackColor = true;
             // 
@@ -163,7 +164,7 @@
             this.chkUseExternalBrowser.Location = new System.Drawing.Point(44, 259);
             this.chkUseExternalBrowser.Name = "chkUseExternalBrowser";
             this.chkUseExternalBrowser.Size = new System.Drawing.Size(347, 24);
-            this.chkUseExternalBrowser.TabIndex = 10;
+            this.chkUseExternalBrowser.TabIndex = 11;
             this.chkUseExternalBrowser.Text = "Use &external web browser to view help websites";
             this.chkUseExternalBrowser.UseVisualStyleBackColor = true;
             // 
@@ -173,9 +174,21 @@
             this.chkOpenLogViewerOnFailure.Location = new System.Drawing.Point(44, 199);
             this.chkOpenLogViewerOnFailure.Name = "chkOpenLogViewerOnFailure";
             this.chkOpenLogViewerOnFailure.Size = new System.Drawing.Size(279, 24);
-            this.chkOpenLogViewerOnFailure.TabIndex = 11;
+            this.chkOpenLogViewerOnFailure.TabIndex = 9;
             this.chkOpenLogViewerOnFailure.Text = "Open b&uild log viewer on failed build";
             this.chkOpenLogViewerOnFailure.UseVisualStyleBackColor = true;
+            // 
+            // lnkSHFBInfo
+            // 
+            this.lnkSHFBInfo.AutoSize = true;
+            this.lnkSHFBInfo.Location = new System.Drawing.Point(14, 300);
+            this.lnkSHFBInfo.Name = "lnkSHFBInfo";
+            this.lnkSHFBInfo.Size = new System.Drawing.Size(239, 20);
+            this.lnkSHFBInfo.TabIndex = 12;
+            this.lnkSHFBInfo.TabStop = true;
+            this.lnkSHFBInfo.Text = "About Sandcastle Help File Builder";
+            this.toolTip1.SetToolTip(this.lnkSHFBInfo, "SHFB version and contact information");
+            this.lnkSHFBInfo.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkSHFBInfo_LinkClicked);
             // 
             // GeneralOptionsControl
             // 
@@ -192,10 +205,11 @@
             this.Controls.Add(this.chkOpenLogViewerOnFailure);
             this.Controls.Add(this.chkOpenHelpAfterBuild);
             this.Controls.Add(this.chkUseExternalBrowser);
+            this.Controls.Add(this.lnkSHFBInfo);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.MinimumSize = new System.Drawing.Size(435, 305);
             this.Name = "GeneralOptionsControl";
-            this.Size = new System.Drawing.Size(435, 305);
+            this.Size = new System.Drawing.Size(435, 335);
             ((System.ComponentModel.ISupportInitialize)(this.epErrors)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.udcASPNetDevServerPort)).EndInit();
             this.ResumeLayout(false);
@@ -219,5 +233,6 @@
         private System.Windows.Forms.Button btnSelectHxSViewer;
         private System.Windows.Forms.CheckBox chkUseExternalBrowser;
         private System.Windows.Forms.CheckBox chkOpenLogViewerOnFailure;
+        private System.Windows.Forms.LinkLabel lnkSHFBInfo;
     }
 }

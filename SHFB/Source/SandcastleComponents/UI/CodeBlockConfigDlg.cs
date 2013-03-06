@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Components
 // File    : CodeBlockConfigDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/21/2012
-// Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
+// Updated : 02/27/2013
+// Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a form that is used to configure the settings for the Code Block Component.
@@ -31,7 +31,7 @@ using System.IO;
 using System.Windows.Forms;
 using System.Xml.Linq;
 
-namespace SandcastleBuilder.Components
+namespace SandcastleBuilder.Components.UI
 {
     /// <summary>
     /// This form is used to configure the settings for the <see cref="CodeBlockComponent"/>

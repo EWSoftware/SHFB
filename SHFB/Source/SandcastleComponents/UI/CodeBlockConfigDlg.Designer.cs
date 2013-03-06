@@ -1,4 +1,4 @@
-namespace SandcastleBuilder.Components
+namespace SandcastleBuilder.Components.UI
 {
     partial class CodeBlockConfigDlg
     {

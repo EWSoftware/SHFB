@@ -97,7 +97,9 @@
 				<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 				<xsl:call-template name="t_insertNoIndexNoFollow"/>
 				<title>
-					<xsl:call-template name="t_topicTitlePlain"/>
+					<xsl:call-template name="t_topicTitlePlain">
+						<xsl:with-param name="p_qualifyMembers" select="true()" />
+					</xsl:call-template>
 				</title>
 				<xsl:call-template name="t_insertMetadataHelp30"/>
 				<xsl:call-template name="t_insertFilename"/>
@@ -132,8 +134,7 @@
 	============================================================================================= -->
 
 	<xsl:template name="t_topicTitlePlain">
-		<xsl:param name="p_qualifyMembers"
-							 select="false()"/>
+		<xsl:param name="p_qualifyMembers" select="false()"/>
 		<include>
 			<xsl:attribute name="item">
 				<xsl:text>topicTitle_</xsl:text>

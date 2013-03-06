@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : MSHelp2PropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 10/28/2012
-// Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
+// Updated : 02/24/2013
+// Note    : Copyright 2011-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This user control is used to edit the MS Help 2 category properties
@@ -26,6 +26,9 @@ using System.Runtime.InteropServices;
 
 using Microsoft.Build.Evaluation;
 
+#if !STANDALONEGUI
+using SandcastleBuilder.Package.Nodes;
+#endif
 using SandcastleBuilder.Utils;
 
 namespace SandcastleBuilder.Package.PropertyPages
@@ -127,12 +130,14 @@ namespace SandcastleBuilder.Package.PropertyPages
 #endif
             if(control.Name == "dgvHelpAttributes")
             {
-                attributes = new MSHelpAttrCollection(null);
                 attributesChanged = false;
 
 #if !STANDALONEGUI
+                attributes = new MSHelpAttrCollection(
+                    ((SandcastleBuilderProjectNode)base.ProjectMgr).SandcastleProject);
                 projProp = this.ProjectMgr.BuildProject.GetProperty("HelpAttributes");
 #else
+                attributes = new MSHelpAttrCollection(this.CurrentProject);
                 projProp = this.CurrentProject.MSBuildProject.GetProperty("HelpAttributes");
 #endif
                 if(projProp != null && !String.IsNullOrEmpty(projProp.UnevaluatedValue))

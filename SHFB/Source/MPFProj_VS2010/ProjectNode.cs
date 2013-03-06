@@ -9,21 +9,21 @@ PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.
 
 ***************************************************************************/
 
-//=============================================================================
+//===============================================================================================================
 // File    : ProjectNode.cs
-// Updated : 12/28/2011
+// Updated : 02/15/2012
 // Modifier: Eric Woodruff  (Eric@EWoodruff.us)
 //
-// This file has been modified to support "Add as Link" and "Show All Files"
-// in the project.  Search for "!EFW" to find the changes.
+// This file has been modified to support "Add as Link" and "Show All Files" in the project.  Search for "!EFW"
+// to find the changes.
 //
 //    Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 06/18/2008  EFW  Added support for linked project files
 // 06/20/2008  EFW  Added support for "Show All Files"
 // 03/20/2011  EFW  Updated to use MPFProj for VS2010
 // 04/17/2011  EFW  Made UpgradeProject() virtual
-//=============================================================================
+//===============================================================================================================
 
 using System;
 using System.CodeDom.Compiler;
@@ -38,13 +38,14 @@ using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Text;
 using System.Xml;
+
 using EnvDTE;
-using Microsoft.Build.BackEnd;
 using Microsoft.Build.Evaluation;
 using Microsoft.Build.Execution;
 using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+
 using IOleServiceProvider = Microsoft.VisualStudio.OLE.Interop.IServiceProvider;
 using IServiceProvider = System.IServiceProvider;
 using MSBuild = Microsoft.Build.Evaluation;
@@ -6657,6 +6658,12 @@ namespace Microsoft.VisualStudio.Project
                 return (int)OleConstants.OLECMDERR_E_NOTSUPPORTED;
 
             this.ShowingAllFiles = !this.ShowingAllFiles;
+
+            // Set the wait cursor as this may take a while if there are a lot of files
+            IVsUIShell shell = (IVsUIShell)((System.IServiceProvider)package).GetService(typeof(SVsUIShell));
+
+            if(shell != null)
+                shell.SetWaitCursor();
 
             if(!this.ShowingAllFiles)
             {

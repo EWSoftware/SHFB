@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Components
 // File    : SqlTargetDictionary.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/16/2013
+// Updated : 02/27/2013
 // Note    : Copyright 2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -34,7 +34,7 @@ using System.Xml.XPath;
 using Microsoft.Ddue.Tools;
 using Microsoft.Ddue.Tools.Targets;
 
-namespace SandcastleBuilder.Components
+namespace SandcastleBuilder.Components.Targets
 {
     /// <summary>
     /// This contains a collection of targets indexed by member ID stored in a <see cref="SqlDictionary{TValue}"/>
@@ -97,9 +97,9 @@ namespace SandcastleBuilder.Components
             // The time estimate is a ballpark figure and depends on the system
             if(filesToLoad != 0)
             {
-                component.WriteMessage(MessageLevel.Diagnostic, "{0} target files need to be added to the " +
-                    "SQL reflection target cache database.  Indexing them will take about {1:N0} minute(s), " +
-                    "please be patient.  Cache location: {2}", filesToLoad, filesToLoad / 60.0,
+                component.WriteMessage(MessageLevel.Diagnostic, "{0} files need to be added to the SQL " +
+                    "reflection target cache database.  Indexing them will take about {1:N0} minute(s), " +
+                    "please be patient.  Cache location: {2}", filesToLoad, Math.Ceiling(filesToLoad / 60.0),
                     connectionString);
 
                 this.LoadTargetDictionary();
@@ -153,7 +153,8 @@ namespace SandcastleBuilder.Components
                         this.BuildComponent.WriteMessage(MessageLevel.Info, "Indexing targets in {0}", file);
 
                         cmd.CommandText = "IF NOT EXISTS(Select * From Targets Where TargetKey = @key) " +
-                            " Insert Targets (TargetKey, TargetValue) Values(@key, @value)";
+                            "Insert Targets (TargetKey, TargetValue) Values (@key, @value) " +
+                            "ELSE Update Targets Set TargetValue = @value Where TargetKey = @key";
 
                         cmd.Parameters.Add(new SqlParameter("@value", SqlDbType.VarBinary));
 

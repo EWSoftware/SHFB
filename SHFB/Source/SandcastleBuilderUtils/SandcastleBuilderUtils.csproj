@@ -229,7 +229,6 @@
     <Compile Include="IBasePathProvider.cs" />
     <Compile Include="InheritedDocumentation\CommentsCacheEventArgs.cs" />
     <Compile Include="InheritedDocumentation\IndexedCommentsCache.cs" />
-    <Compile Include="InheritedDocumentation\IndexedCommentsFile.cs" />
     <Compile Include="InheritedDocumentation\InheritedDocsException.cs" />
     <Compile Include="MSBuild\Build1xHelpFile.cs" />
     <Compile Include="MSBuild\Build2xHelpFile.cs" />

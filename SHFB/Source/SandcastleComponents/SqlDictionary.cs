@@ -2,11 +2,12 @@
 // System  : Sandcastle Help File Builder Components
 // File    : SqlDictionary.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/16/2013
+// Updated : 02/28/2013
 // Note    : Copyright 2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains a dictionary backed by a SQL Server table.
+// This file contains a dictionary backed by a SQL Server table.  An optional group ID can be used to segregate
+// values within the dictionary.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
 // distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
@@ -16,6 +17,7 @@
 // Version     Date     Who  Comments
 // ==============================================================================================================
 // 1.9.7.0  01/14/2013  EFW  Created the code
+// 1.9.7.0  02/15/2013  EFW  Added support for grouping within the dictionary table
 //===============================================================================================================
 
 using System;
@@ -30,13 +32,14 @@ using System.Runtime.Serialization.Formatters.Binary;
 namespace SandcastleBuilder.Components
 {
     /// <summary>
-    /// This is a simple dictionary that stores its data in a SQL Server database table
+    /// This is a simple dictionary that stores its data in a SQL Server database table.  An optional group ID
+    /// can be used to segregate values within the dictionary.
     /// </summary>
     /// <typeparam name="TValue">The type of the value</typeparam>
     /// <remarks>This dictionary is intended for use in Sandcastle build components to store data needed for the
-    /// build.  The key type is always a string.  The value type is indicated using the
-    /// <typeparamref name="TValue"/> type parameter and is assumed to be either a <see cref="String"/> or a
-    /// reference type.</remarks>
+    /// build.  The key type is always a string as is the group ID type if used.  The value type is indicated
+    /// using the <typeparamref name="TValue"/> type parameter and is assumed to be either a <see cref="String"/>
+    /// or a reference type.</remarks>
     /// <threadsafety static="false" instance="false" />
     public sealed class SqlDictionary<TValue> : IDictionary<string, TValue>, IDisposable
     {
@@ -55,7 +58,7 @@ namespace SandcastleBuilder.Components
             private SqlCommand cmd;
             private SqlDataReader rdr;
             private BinaryFormatter bf;
-            private string tableName, keyFieldName, valueFieldName;
+            private string keyFieldName, valueFieldName;
             private bool isReferenceType;
             #endregion
 
@@ -71,13 +74,17 @@ namespace SandcastleBuilder.Components
                 cn = new SqlConnection(owner.connection.ConnectionString);
                 bf = owner.bf;
 
-                tableName = owner.tableName;
                 keyFieldName = owner.keyFieldName;
                 valueFieldName = owner.valueFieldName;
                 isReferenceType = owner.isReferenceType;
 
-                cmd = new SqlCommand(String.Format(CultureInfo.InvariantCulture, "Select {0}, {1} From {2}",
-                    keyFieldName, valueFieldName, tableName), cn);
+                if(owner.groupIdFieldName == null)
+                    cmd = new SqlCommand(String.Format(CultureInfo.InvariantCulture, "Select {0}, {1} From {2}",
+                        keyFieldName, valueFieldName, owner.tableName), cn);
+                else
+                    cmd = new SqlCommand(String.Format(CultureInfo.InvariantCulture, "Select {0}, {1} From {2} " +
+                        "Where {3} = '{4}'", keyFieldName, valueFieldName, owner.tableName, owner.groupIdFieldName,
+                        owner.groupId), cn);
 
                 cn.Open();
 
@@ -158,10 +165,10 @@ namespace SandcastleBuilder.Components
         #region Private data members
         //=====================================================================
 
-        private string connectionString, tableName, keyFieldName, valueFieldName;
+        private string connectionString, tableName, groupIdFieldName, groupId, keyFieldName, valueFieldName;
 
         private Dictionary<string, TValue> localCache;
-        private int localCacheSize;
+        private int localCacheSize, localCacheFlushCount;
 
         private SqlConnection connection;
         private SqlCommand cmdRetrieveValue, cmdInsertUpdateValue;
@@ -192,20 +199,42 @@ namespace SandcastleBuilder.Components
                     localCacheSize = value;
                     localCache = new Dictionary<string, TValue>();
                 }
+
+                localCacheFlushCount = 0;
             }
+        }
+
+        /// <summary>
+        /// This read-only property returns the number of times the local cache was flushed because it filled up
+        /// </summary>
+        /// <value>This can help in figuring out an appropriate local cache size</value>
+        public int LocalCacheFlushCount
+        {
+            get { return localCacheFlushCount; }
+        }
+
+        /// <summary>
+        /// This read-only property returns the current number of local cache entries in use
+        /// </summary>
+        public int CurrentLocalCacheCount
+        {
+            get { return (localCache == null) ? 0 : localCache.Count; }
         }
         #endregion
 
-        #region Constructor
+        #region Constructors
         //=====================================================================
 
         /// <summary>
-        /// Constructor
+        /// Simple dictionary constructor
         /// </summary>
         /// <param name="connectionString">The connection string to the SQL database</param>
         /// <param name="tableName">The table name</param>
         /// <param name="keyFieldName">The key field name</param>
         /// <param name="valueFieldName">The value field name</param>
+        /// <remarks>Values in dictionaries that use this constructor are not grouped.  All values in the
+        /// table are returned.</remarks>
+        /// <overloads>There are two overloads for the constructor</overloads>
         public SqlDictionary(string connectionString, string tableName, string keyFieldName,
           string valueFieldName)
         {
@@ -251,6 +280,43 @@ ELSE
                 SqlDbType.VarBinary : SqlDbType.VarChar));
 
             connection.Open();
+        }
+
+        /// <summary>
+        /// Grouped dictionary constructor
+        /// </summary>
+        /// <param name="connectionString">The connection string to the SQL database</param>
+        /// <param name="tableName">The table name</param>
+        /// <param name="groupId">The group ID field name</param>
+        /// <param name="keyFieldName">The key field name</param>
+        /// <param name="valueFieldName">The value field name</param>
+        /// <param name="groupIdFieldName">The group ID to use</param>
+        /// <remarks>Values in dictionaries that use this constructor are grouped using an additional field.
+        /// This allows multiple related dictionaries to reside within the same table.  Only values from the
+        /// dictionary identified by the group ID are returned.</remarks>
+        public SqlDictionary(string connectionString, string tableName, string keyFieldName,
+          string valueFieldName, string groupIdFieldName, string groupId) :
+          this(connectionString, tableName, keyFieldName, valueFieldName)
+        {
+            if(String.IsNullOrWhiteSpace(groupIdFieldName))
+                throw new ArgumentException("A valid group ID field name is required", groupIdFieldName);
+
+            if(String.IsNullOrWhiteSpace(groupId))
+                throw new ArgumentException("A valid group ID value is required", groupId);
+
+            this.groupIdFieldName = groupIdFieldName;
+            this.groupId = groupId;
+
+            cmdRetrieveValue.CommandText = String.Format(CultureInfo.InvariantCulture, "Select {0} From " +
+                "{1} Where {2} = '{3}' And {4} = @key", valueFieldName, tableName, groupIdFieldName, groupId,
+                keyFieldName);
+
+            cmdInsertUpdateValue.CommandText = String.Format(CultureInfo.InvariantCulture, @"
+IF NOT EXISTS(Select * From {0} Where {1} = '{2}' And {3} = @key)
+    Insert {0} ({1}, {3}, {4}) Values ('{2}', @key, @value)
+ELSE
+    Update {0} Set {4} = @value Where {1} = '{2}' And {3} = @key", tableName, groupIdFieldName, groupId,
+                keyFieldName, valueFieldName);
         }
         #endregion
 
@@ -330,7 +396,10 @@ ELSE
                 // If the cache is filled, clear it and start over.  Not the most sophisticated method, but
                 // it works.
                 if(localCache.Count >= localCacheSize)
+                {
                     localCache.Clear();
+                    localCacheFlushCount++;
+                }
 
                 localCache[key] = value;
             }
@@ -413,11 +482,22 @@ ELSE
         {
             get
             {
-                using(SqlCommand cmd = new SqlCommand(String.Format(CultureInfo.InvariantCulture,
-                    "Select COUNT(*) From {0}", tableName), connection))
+                if(groupIdFieldName == null)
                 {
-                    return (int)cmd.ExecuteScalar();
+                    using(SqlCommand cmd = new SqlCommand(String.Format(CultureInfo.InvariantCulture,
+                      "Select COUNT(*) From {0}", tableName), connection))
+                    {
+                        return (int)cmd.ExecuteScalar();
+                    }
                 }
+                else
+                    using(SqlCommand cmd = new SqlCommand(String.Format(CultureInfo.InvariantCulture,
+                      "Select COUNT(*) From {0} Where {1} = '{2}'", tableName, groupIdFieldName, groupId),
+                      connection))
+                    {
+                        return (int)cmd.ExecuteScalar();
+                    }
+
             }
         }
 

@@ -1,29 +1,26 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder Utilities
 // File    : ApiFilter.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/08/2008
-// Note    : Copyright 2007-2008, Eric Woodruff, All rights reserved
+// Updated : 02/15/2013
+// Note    : Copyright 2007-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains a class representing an API entry that is to be removed
-// from the reflection information using MRefBuilder's namespace ripping
-// feature.
+// This file contains a class representing an API entry that is to be removed from the reflection information
+// using MRefBuilder's namespace ripping feature.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.5.0.2  07/16/2007  EFW  Created the code
 // 1.8.0.0  07/08/2008  EFW  Rewrote to support MSBuild project format
-//=============================================================================
+//===============================================================================================================
 
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using System.Web;
@@ -32,14 +29,13 @@ using System.Xml;
 namespace SandcastleBuilder.Utils
 {
     /// <summary>
-    /// This represents an API entry that is to be removed from the reflection
-    /// information using MRefBuilder's namespace ripping feature.
+    /// This represents an API entry that is to be removed from the reflection information using MRefBuilder's
+    /// namespace ripping feature.
     /// </summary>
     public class ApiFilter : IComparable<ApiFilter>, ICloneable
     {
         #region Private data members
         //=====================================================================
-        // Private data members
 
         private ApiEntryType entryType;
         private string fullName, filterName;
@@ -50,7 +46,6 @@ namespace SandcastleBuilder.Utils
 
         #region Properties
         //=====================================================================
-        // Properties
 
         /// <summary>
         /// This is used to get or set the API entry type
@@ -73,9 +68,8 @@ namespace SandcastleBuilder.Utils
         /// <summary>
         /// This is used to get the API filter name
         /// </summary>
-        /// <value>For API entry types other than namespaces, this is the name
-        /// without the namespace and, for methods properties, etc. the
-        /// type.</value>
+        /// <value>For API entry types other than namespaces, this is the name without the namespace and, for
+        /// methods properties, etc. the type.</value>
         public string FilterName
         {
             get { return filterName; }
@@ -87,12 +81,10 @@ namespace SandcastleBuilder.Utils
                 // For use in the filter, we need to translate some characters
                 filterName = value.Replace('#', '.');
 #if DEBUG
-                // There shouldn't be any parameter info as the ripping
-                // feature doesn't support it.
-                if(filterName.IndexOf('(') != -1 ||
-                  filterName.IndexOf("``", StringComparison.Ordinal) != -1)
-                    throw new ArgumentException("Filter name contains " +
-                        "parameter information which isn't supported", "value");
+                // There shouldn't be any parameter info as the ripping feature doesn't support it
+                if(filterName.IndexOf('(') != -1 || filterName.IndexOf("``", StringComparison.Ordinal) != -1)
+                    throw new ArgumentException("Filter name contains parameter information which isn't supported",
+                        "value");
 #endif
             }
         }
@@ -107,9 +99,8 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get or set whether or not the entry is excluded
-        /// via the project (i.e. via the SHFB Namespaces option or an
-        /// <code>&lt;exclude /&gt;</code> tag.
+        /// This is used to get or set whether or not the entry is excluded via the project (i.e. via the SHFB
+        /// Namespaces option or an <c>&lt;exclude /&gt;</c> tag.
         /// </summary>
         public bool IsProjectExclude
         {
@@ -120,9 +111,8 @@ namespace SandcastleBuilder.Utils
         /// <summary>
         /// This returns the child API filter collection for this entry
         /// </summary>
-        /// <value>For namespaces and types, if there are children, they
-        /// represent the specific entries within the namespace or type
-        /// to hide or expose.</value>
+        /// <value>For namespaces and types, if there are children, they represent the specific entries within
+        /// the namespace or type to hide or expose.</value>
         public ApiFilterCollection Children
         {
             get { return children; }
@@ -130,14 +120,14 @@ namespace SandcastleBuilder.Utils
         #endregion
 
         #region IComparable<ApiFilter> Members
+        //=====================================================================
+
         /// <summary>
-        /// Compares this instance to another instance and returns an
-        /// indication of their relative values.
+        /// Compares this instance to another instance and returns an indication of their relative values
         /// </summary>
         /// <param name="other">An ApiFilter object to compare</param>
-        /// <returns>Returns -1 if this instance is less than the
-        /// value, 0 if they are equal, or 1 if this instance is
-        /// greater than the value or the value is null.</returns>
+        /// <returns>Returns -1 if this instance is less than the value, 0 if they are equal, or 1 if this
+        /// instance is greater than the value or the value is null.</returns>
         /// <remarks>Entries are sorted by API entry type and full name</remarks>
         public int CompareTo(ApiFilter other)
         {
@@ -147,14 +137,12 @@ namespace SandcastleBuilder.Utils
                 return 1;
 
             // For types, treat them as equal and sort by name
-            if(entryType < ApiEntryType.Class || entryType >
-              ApiEntryType.Delegate || other.EntryType < ApiEntryType.Class ||
-              other.EntryType > ApiEntryType.Delegate)
+            if(entryType < ApiEntryType.Class || entryType > ApiEntryType.Delegate ||
+              other.EntryType < ApiEntryType.Class || other.EntryType > ApiEntryType.Delegate)
                 result = (int)entryType - (int)other.EntryType;
 
             if(result == 0)
-                result = String.Compare(fullName, other.FullName,
-                    StringComparison.CurrentCulture);
+                result = String.Compare(fullName, other.FullName, StringComparison.CurrentCulture);
 
             return result;
         }
@@ -162,7 +150,6 @@ namespace SandcastleBuilder.Utils
 
         #region ICloneable Members
         //=====================================================================
-        // ICloneable implementation
 
         /// <summary>
         /// Clone the API filter
@@ -182,12 +169,8 @@ namespace SandcastleBuilder.Utils
         }
         #endregion
 
-        //=====================================================================
-        // Methods, etc.
-
         #region Constructors
         //=====================================================================
-        // Constructors
 
         /// <summary>
         /// Constructor
@@ -206,8 +189,7 @@ namespace SandcastleBuilder.Utils
         /// <param name="apiType">The API entry type</param>
         /// <param name="name">The fully qualified name</param>
         /// <param name="exposed">True to expose it, false to hide it</param>
-        internal ApiFilter(ApiEntryType apiType, string name, bool exposed) :
-          this()
+        internal ApiFilter(ApiEntryType apiType, string name, bool exposed) : this()
         {
             int pos;
 
@@ -218,8 +200,7 @@ namespace SandcastleBuilder.Utils
             fullName = name;
             isExposed = exposed;
 
-            // By default, we'll use the last part as the filter name
-            // unless it's a namespace.
+            // By default, we'll use the last part as the filter name unless it's a namespace
             pos = name.LastIndexOf('.');
 
             if(entryType == ApiEntryType.Namespace || pos == -1)
@@ -231,7 +212,6 @@ namespace SandcastleBuilder.Utils
 
         #region ConvertToString method
         //=====================================================================
-        // ConvertToString and Equals methods
 
         /// <summary>
         /// This is used to convert the entry and its children to a string
@@ -269,9 +249,7 @@ namespace SandcastleBuilder.Utils
 
                 sb.Append(HttpUtility.HtmlEncode(filterName));
 
-                sb.AppendFormat("\" expose=\"{0}\"",
-                    isExposed.ToString(CultureInfo.InvariantCulture).ToLower(
-                        CultureInfo.InvariantCulture));
+                sb.AppendFormat("\" expose=\"{0}\"", isExposed.ToString(CultureInfo.InvariantCulture).ToLowerInvariant());
 
                 if(children.Count == 0)
                     sb.Append("/>\r\n");
@@ -293,18 +271,15 @@ namespace SandcastleBuilder.Utils
         // These are used to read and write the settings to the project file
 
         /// <summary>
-        /// This is used to load the content item information from the project
-        /// file.
+        /// This is used to load the content item information from the project file.
         /// </summary>
-        /// <param name="xr">The XML text reader from which the information
-        /// is loaded.</param>
+        /// <param name="xr">The XML text reader from which the information is loaded.</param>
         internal void FromXml(XmlTextReader xr)
         {
             ApiFilter filter;
             string attrValue;
 
-            this.EntryType = (ApiEntryType)Enum.Parse(typeof(ApiEntryType),
-                xr.GetAttribute("entryType"), true);
+            this.EntryType = (ApiEntryType)Enum.Parse(typeof(ApiEntryType), xr.GetAttribute("entryType"), true);
             this.FullName = xr.GetAttribute("fullName");
 
             attrValue = xr.GetAttribute("filterName");
@@ -314,20 +289,17 @@ namespace SandcastleBuilder.Utils
             else
                 this.FilterName = fullName;
 
-            this.IsExposed = Convert.ToBoolean(xr.GetAttribute(
-                "isExposed"), CultureInfo.InvariantCulture);
+            this.IsExposed = Convert.ToBoolean(xr.GetAttribute("isExposed"), CultureInfo.InvariantCulture);
 
             if(!xr.IsEmptyElement)
                 while(!xr.EOF)
                 {
                     xr.Read();
 
-                    if(xr.NodeType == XmlNodeType.EndElement &&
-                      xr.Name == "Filter")
+                    if(xr.NodeType == XmlNodeType.EndElement && xr.Name == "Filter")
                         break;
 
-                    if(xr.NodeType == XmlNodeType.Element &&
-                      xr.Name == "Filter")
+                    if(xr.NodeType == XmlNodeType.Element && xr.Name == "Filter")
                     {
                         filter = new ApiFilter();
                         filter.FromXml(xr);
@@ -337,11 +309,9 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to save the content item information to the project
-        /// file.
+        /// This is used to save the content item information to the project file.
         /// </summary>
-        /// <param name="xw">The XML text writer to which the information
-        /// is written.</param>
+        /// <param name="xw">The XML text writer to which the information is written.</param>
         internal void ToXml(XmlTextWriter xw)
         {
             xw.WriteStartElement("Filter");
@@ -364,11 +334,9 @@ namespace SandcastleBuilder.Utils
 
         #region Static helper methods
         //=====================================================================
-        // Static helper methods
 
         /// <summary>
-        /// This is used to convert an API type letter to an
-        /// <see cref="ApiEntryType"/> enumerated value.
+        /// This is used to convert an API type letter to an <see cref="ApiEntryType"/> enumerated value.
         /// </summary>
         /// <param name="apiType">The letter to convert</param>
         /// <returns>The <b>ApiEntryType</b> represented by the letter</returns>
@@ -380,8 +348,8 @@ namespace SandcastleBuilder.Utils
                     return ApiEntryType.Namespace;
 
                 case 'T':
-                    // It could be a class, structure, interface, enumeration,
-                    // or a delegate.  They all use "T" so we'll pick Class.
+                    // It could be a class, structure, interface, enumeration, or a delegate.  They all use "T"
+                    // so we'll pick Class.
                     return ApiEntryType.Class;
 
                 case 'M':

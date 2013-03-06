@@ -134,7 +134,7 @@ namespace SandcastleBuilder.Utils.MSBuild
             get
             {
                 ProjectProperty prop;
-                string docFile = null, outputPath = null;
+                string docFile = null, outputPath = null, origDocFile;
 
                 if(properties == null)
                     throw new InvalidOperationException("Configuration has not been set");
@@ -159,6 +159,8 @@ namespace SandcastleBuilder.Utils.MSBuild
 
                             if(!String.IsNullOrEmpty(outputPath))
                             {
+                                origDocFile = docFile;
+
                                 if(Path.IsPathRooted(outputPath))
                                     docFile = Path.Combine(outputPath, Path.GetFileName(docFile));
                                 else
@@ -167,7 +169,7 @@ namespace SandcastleBuilder.Utils.MSBuild
 
                                 // Fall back to the original location if not found
                                 if(!File.Exists(docFile))
-                                    docFile = Path.Combine(Path.GetDirectoryName(msBuildProject.FullPath), docFile);
+                                    docFile = Path.Combine(Path.GetDirectoryName(msBuildProject.FullPath), origDocFile);
                             }
                             else
                                 docFile = Path.Combine(Path.GetDirectoryName(msBuildProject.FullPath), docFile);

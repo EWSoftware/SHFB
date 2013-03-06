@@ -1,44 +1,44 @@
-﻿//=============================================================================
+﻿//===============================================================================================================
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : GeneralOptionsControl.cs
 // Author  : Eric Woodruff
-// Updated : 11/19/2011
-// Note    : Copyright 2011, Eric Woodruff, All rights reserved
+// Updated : 03/04/2013
+// Note    : Copyright 2011-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This user control is used to modify the general help file builder package
-// preferences that are unrelated to individual projects.
+// This user control is used to modify the general help file builder package preferences that are unrelated to
+// individual projects.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.  This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.9.3.0  03/27/2011  EFW  Created the code
-//=============================================================================
+// 1.9.7.0  03/04/2013  EFW  Added link to display the About box
+//===============================================================================================================
 
 using System;
 using System.ComponentModel;
 using System.IO;
 using System.Windows.Forms;
 
+using SandcastleBuilder.Package.UI;
+
 namespace SandcastleBuilder.Package.PropertyPages
 {
     /// <summary>
-    /// This user control is used to modify the general help file builder
-    /// package preferences that are unrelated to individual projects.
+    /// This user control is used to modify the general help file builder package preferences that are unrelated
+    /// to individual projects.
     /// </summary>
-    /// <remarks><b>NOTE:</b> There appears to be a bug in Visual Studio that
-    /// cases the tab order property on the controls to be ignored.  Currently,
-    /// the tab order is determined by the control creation order.  You need to
-    /// manually edit the .Designer.cs file to order the controls.
+    /// <remarks><b>NOTE:</b> There appears to be a bug in Visual Studio that cases the tab order property on the
+    /// controls to be ignored.  Currently, the tab order is determined by the control creation order.  You need
+    /// to manually edit the .Designer.cs file to order the controls.
     /// 
-    /// <p/>Also, the control uses the Segoe UI font whether you want it or not
-    /// so it's best to set it in the designer so that the control size and
-    /// positioning is not thrown off at runtime.</remarks>
+    /// <p/>Also, the control uses the Segoe UI font whether you want it or not so it's best to set it in the
+    /// designer so that the control size and positioning is not thrown off at runtime.</remarks>
     [ToolboxItem(false)]
     public partial class GeneralOptionsControl : UserControl
     {
@@ -119,8 +119,7 @@ namespace SandcastleBuilder.Package.PropertyPages
         }
 
         /// <summary>
-        /// This is called by the owning dialog page to validate the values
-        /// and apply changes to the properties.
+        /// This is called by the owning dialog page to validate the values and apply changes to the properties
         /// </summary>
         /// <param name="optionsPage">The options page</param>
         public void ApplyChanges(SandcastleBuilderOptionsPage optionsPage)
@@ -164,6 +163,19 @@ namespace SandcastleBuilder.Package.PropertyPages
                 // If one is selected, use that file
                 if(dlg.ShowDialog() == DialogResult.OK)
                     tb.Text = dlg.FileName;
+            }
+        }
+
+        /// <summary>
+        /// Show the SHFB About box
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event arguments</param>
+        private void lnkSHFBInfo_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            using(AboutDlg dlg = new AboutDlg())
+            {
+                dlg.ShowDialog();
             }
         }
         #endregion

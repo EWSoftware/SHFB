@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Components
 // File    : CodeBlockComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/24/2012
-// Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
+// Updated : 02/27/2013
+// Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a build component that is used to search for <code> XML comment tags and colorize the code
@@ -54,6 +54,7 @@ using System.Xml.XPath;
 using Microsoft.Ddue.Tools;
 
 using ColorizerLibrary;
+using SandcastleBuilder.Components.UI;
 
 namespace SandcastleBuilder.Components
 {

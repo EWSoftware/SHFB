@@ -417,9 +417,11 @@ namespace SandcastleBuilder.Package.PropertyPages
                 if(projProp != null)
                     propValue = projProp.UnevaluatedValue;
 
-                // If null, we'll assign a default value below so that it doesn't retain a value from a prior
-                // project.
-                if(propValue != null && this.IsEscapedProperty(boundProperty))
+                // If null, the property probably doesn't exist so ignore it
+                if(propValue == null)
+                    return;
+
+                if(this.IsEscapedProperty(boundProperty))
                     propValue = EscapeValueAttribute.Unescape(propValue);
 
                 // Set the value based on the type

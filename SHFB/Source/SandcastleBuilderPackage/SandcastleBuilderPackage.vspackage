@@ -84,9 +84,6 @@
               <groupBaseReferencesButtons Id="71557053-32d5-44bb-b231-eb526fc51a73">
                 <buttonMoniker Id="6e186d77-c919-4ea7-a514-e4ca01e52ae6" />
               </groupBaseReferencesButtons>
-              <groupBaseReferencesButtons Id="0e22660d-5a7f-47c6-be11-872d282fb20a">
-                <buttonMoniker Id="c3186d6b-1b25-48f3-9b71-22b980ff148d" />
-              </groupBaseReferencesButtons>
               <groupBaseReferencesButtons Id="2d49dd8a-1e20-43c7-9023-b9b744821ecb">
                 <buttonMoniker Id="869d455d-931b-4aab-bf64-884bd8ced87e" />
               </groupBaseReferencesButtons>
@@ -133,6 +130,13 @@
               </groupBaseReferencesButtons>
             </buttons>
           </group>
+          <group Id="f9d3e308-e747-4242-980d-586a2e2b9f22" name="ProjectMenuGroup" idNumeric="54" priority="65280">
+            <buttons>
+              <groupBaseReferencesButtons Id="e3fcf17d-94a0-44c3-a74c-8dc72949eb24">
+                <buttonMoniker Id="6e186d77-c919-4ea7-a514-e4ca01e52ae6" />
+              </groupBaseReferencesButtons>
+            </buttons>
+          </group>
         </groups>
         <buttons>
           <commandTableHasButtons Id="7e6fddcd-7e27-45c0-8fa4-199338d4700c">
@@ -167,9 +171,6 @@
           </commandTableHasButtons>
           <commandTableHasButtons Id="84f0050a-08c7-42be-8912-c6150ca48b48">
             <button Id="6e186d77-c919-4ea7-a514-e4ca01e52ae6" name="OpenInStandaloneGUI" idNumeric="28" buttonText="Open Project in Standalone GUI" menuText="Open Project in Standalone GUI" commandName="cmdidOpenInStandaloneGUI" toolTipText="Open Project in Standalone GUI" mod1="0" mod2="0" visibilityConstraints="0" commandFlags="DefaultInvisible, DynamicVisibility" sampleData="false" />
-          </commandTableHasButtons>
-          <commandTableHasButtons Id="2759aded-d62d-4ac3-b026-37b218f9825e">
-            <button Id="c3186d6b-1b25-48f3-9b71-22b980ff148d" name="AboutSHFB" idNumeric="29" buttonText="About Sandcastle Help File Builder" menuText="About Sandcastle Help File Builder" commandName="cmdidAboutSHFB" toolTipText="About Sandcastle Help File Builder" mod1="0" mod2="0" visibilityConstraints="0" priority="258" commandFlags="DefaultInvisible, DynamicVisibility" sampleData="false" />
           </commandTableHasButtons>
           <commandTableHasButtons Id="5d05fd6c-a648-4ca9-bfc4-77004fb5bd13">
             <button Id="869d455d-931b-4aab-bf64-884bd8ced87e" name="ViewBuildLog" idNumeric="32" buttonText="View Build Log Content" menuText="View Build Log Content" commandName="cmdidViewBuildLog" toolTipText="View Build Log Content" mod1="0" mod2="0" visibilityConstraints="0" priority="257" icon="LogFile.bmp" commandFlags="DefaultInvisible, DynamicVisibility" sampleData="false" />
@@ -313,6 +314,15 @@
               <groupBases>
                 <menuBaseReferencesGroupBases Id="cd1dcd3d-dd98-4f01-88cb-4f66e9991fd6">
                   <groupMoniker Id="a6ce26fe-de18-4496-8b5a-309c27d2a9a2" />
+                </menuBaseReferencesGroupBases>
+              </groupBases>
+            </externalMenu>
+          </commandTableHasMenuBases>
+          <commandTableHasMenuBases Id="ce41206e-f33b-4c54-8593-d4a66cdc2c8b">
+            <externalMenu Id="88b9bba3-fcab-4b5a-b126-4e7f269d7fb0" name="Project" idNumeric="55" parentData="guidSHLMainMenu,IDM_VS_MENU_PROJECT,Menu">
+              <groupBases>
+                <menuBaseReferencesGroupBases Id="b0b153b2-08b5-46d2-9cfc-9d73a89f87e9">
+                  <groupMoniker Id="f9d3e308-e747-4242-980d-586a2e2b9f22" />
                 </menuBaseReferencesGroupBases>
               </groupBases>
             </externalMenu>

@@ -9,19 +9,20 @@ PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.
 
 ***************************************************************************/
 
-//=============================================================================
+//===============================================================================================================
 // File    : Utilities.cs
-// Updated : 01/01/2012
+// Updated : 02/15/2013
 // Modifier: Eric Woodruff  (Eric@EWoodruff.us)
 //
-// This file has been modified to fix a bug in RecursivelyCopyDirectory() that
-// allowed a parent folder to be copied to one of its child sub-folders.
-// Search for "!EFW" to find the changes.
-// 
+// This file has been modified to fix a bug in RecursivelyCopyDirectory() that allowed a parent folder to be
+// copied to one of its child sub-folders.  Search for "!EFW" to find the changes.
+//
 //    Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 01/01/2012  EFW  Fixed bug in RecursivelyCopyDirectory()
-//=============================================================================
+// 02/14/2012  EFW  Removed RegexOptions.Compiled as it doesn't make sense to use it here and made the two
+//                  affected expressions static.
+//===============================================================================================================
 
 using System;
 using System.Collections.Generic;
@@ -33,15 +34,15 @@ using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Security.Permissions;
-using System.Security.Policy;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using Microsoft.VisualStudio;
+
 using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.Win32;
+
 using IServiceProvider = System.IServiceProvider;
 using MSBuild = Microsoft.Build.Evaluation;
 using VSRegistry = Microsoft.VisualStudio.Shell.VSRegistry;
@@ -805,65 +806,68 @@ namespace Microsoft.VisualStudio.Project
             return false;
         }
 
+        //!EFW - Made the two regular expression instances that were in IsFilePartInValid static since they never
+        // change.  Also removed the RegexOptions.Compiled flag on them since it doesn't appear to have any
+        // benefit based on how they are used.
+
+        // Define a regular expression that covers all characters that are not in the safe character sets.
+        private const string reservedName = "(\\b(nul|con|aux|prn)\\b)|(\\b((com|lpt)[0-9])\\b)";
+        private const string invalidChars = "([/?:&\\\\*<>|#%\"])";
+
+        private static Regex unsafeCharactersRegex = new Regex(invalidChars, RegexOptions.IgnoreCase |
+            RegexOptions.CultureInvariant);
+        private static Regex unsafeFileNameCharactersRegex = new Regex(reservedName + "|" + invalidChars,
+            RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+
         /// <summary>
-        /// Checks whether a file part contains valid characters. The file part can be any part of a non rooted path.
+        /// Checks whether a file part contains valid characters. The file part can be any part of a non rooted
+        /// path.
         /// </summary>
-        /// <param name="filePart"></param>
-        /// <returns></returns>
+        /// <param name="filePart">The file part to check</param>
+        /// <returns>True if the file part is invalid, false if not</returns>
         private static bool IsFilePartInValid(string filePart)
         {
             if(String.IsNullOrEmpty(filePart))
-            {
                 return true;
-            }
-            String reservedName = "(\\b(nul|con|aux|prn)\\b)|(\\b((com|lpt)[0-9])\\b)";
-            String invalidChars = @"([/?:&\\*<>|#%" + '\"' + "])";
-            String regexToUseForFileName = reservedName + "|" + invalidChars;
-            String fileNameToVerify = filePart;
 
-            // Define a regular expression that covers all characters that are not in the safe character sets.
-            // It is compiled for performance.
+            string fileNameToVerify = filePart;
 
-            // The filePart might still be a file and extension. If it is like that then we must check them separately, since different rules apply
+            // The filePart might still be a file and extension. If it is like that then we must check them
+            // separately, since different rules apply.
             string extension = String.Empty;
+
             try
             {
                 extension = Path.GetExtension(filePart);
             }
-            // We catch the ArgumentException because we want this method to return true if the filename is not valid. FilePart could be for example #¤&%"¤&"% and that would throw ArgumentException on GetExtension
             catch(ArgumentException)
             {
+                // We catch the ArgumentException because we want this method to return true if the filename is
+                // not valid. FilePart could be for example #¤&%"¤&"% and that would throw ArgumentException on
+                // GetExtension.
                 return true;
             }
 
             if(!String.IsNullOrEmpty(extension))
             {
                 // Check the extension first
-                String regexToUseForExtension = invalidChars;
-                Regex unsafeCharactersRegex = new Regex(regexToUseForExtension, RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
-                bool isMatch = unsafeCharactersRegex.IsMatch(extension);
-                if(isMatch)
-                {
-                    return isMatch;
-                }
+                if(unsafeCharactersRegex.IsMatch(extension))
+                    return true;
 
                 // We want to verify here everything but the extension.
-                // We cannot use GetFileNameWithoutExtension because it might be that for example (..\\filename.txt) is passed in asnd that should fail, since that is not a valid filename.
+                // We cannot use GetFileNameWithoutExtension because it might be that for example
+                // (..\\filename.txt) is passed in and that should fail, since that is not a valid filename.
                 fileNameToVerify = filePart.Substring(0, filePart.Length - extension.Length);
 
                 if(String.IsNullOrEmpty(fileNameToVerify))
-                {
                     return true;
-                }
             }
 
-            // We verify CLOCK$ outside the regex since for some reason the regex is not matching the clock\\$ added.
+            // We verify CLOCK$ (a device name) outside the regex since for some reason the regex is not matching
+            // the clock\\$ added.
             if(String.Compare(fileNameToVerify, "CLOCK$", StringComparison.OrdinalIgnoreCase) == 0)
-            {
                 return true;
-            }
 
-            Regex unsafeFileNameCharactersRegex = new Regex(regexToUseForFileName, RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
             return unsafeFileNameCharactersRegex.IsMatch(fileNameToVerify);
         }
 

@@ -26,7 +26,9 @@
 				<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8"/>
 				<META NAME="save" CONTENT="history"/>
 				<title>
-					<xsl:call-template name="topicTitlePlain"/>
+					<xsl:call-template name="topicTitlePlain">
+						<xsl:with-param name="qualifyMembers" select="true()" />
+					</xsl:call-template>
 				</title>
 				<xsl:call-template name="insertStylesheets" />
 				<xsl:call-template name="insertScripts" />

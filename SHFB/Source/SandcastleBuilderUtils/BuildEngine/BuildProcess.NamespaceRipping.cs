@@ -1,27 +1,25 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.NamespaceRipping.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/30/2008
-// Note    : Copyright 2007-2008, Eric Woodruff, All rights reserved
+// Updated : 02/15/2013
+// Note    : Copyright 2007-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains the code used to generate the API filter collection
-// information used by MRefBuilder to exclude API entries while generating the
-// reflection information file.
+// This file contains the code used to generate the API filter collection information used by MRefBuilder to
+// exclude API entries while generating the reflection information file.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.5.0.2  07/16/2007  EFW  Created the code
 // 1.5.2.0  09/13/2007  EFW  Added support for calling plug-ins
 // 1.6.0.6  03/10/2008  EFW  Added support for applying the API filter manually
-//=============================================================================
+//===============================================================================================================
 
 using System;
 using System.Collections.Generic;
@@ -36,18 +34,20 @@ namespace SandcastleBuilder.Utils.BuildEngine
     {
         #region Private data members
         //=====================================================================
-        // Private data members
 
         // The API filter collection
         private ApiFilterCollection apiFilter;
 
+        #endregion
+
+        #region Properties
+        //=====================================================================
+
         /// <summary>
-        /// This read-only property returns the API filter that is used at
-        /// build-time to filter the API elements.
+        /// This read-only property returns the API filter that is used at build-time to filter the API elements
         /// </summary>
-        /// <remarks>This is a combination of the project's API filter,
-        /// namespace exclusions, and <code>&lt;exclude /&gt;</code> tag
-        /// exclusions.</remarks>
+        /// <remarks>This is a combination of the project's API filter, namespace exclusions, and
+        /// <c>&lt;exclude /&gt;</c> tag exclusions.</remarks>
         public ApiFilterCollection BuildApiFilter
         {
             get { return apiFilter; }
@@ -58,14 +58,12 @@ namespace SandcastleBuilder.Utils.BuildEngine
         //=====================================================================
 
         /// <summary>
-        /// This is used to generate the API filter collection used by
-        /// MRefBuilder to exclude items from the reflection information file.
+        /// This is used to generate the API filter collection used by MRefBuilder to exclude items from the
+        /// reflection information file.
         /// </summary>
-        /// <remarks>Namespaces and members with an <code>&lt;exclude /&gt;</code>
-        /// tag in their comments are removed using the ripping feature as it
-        /// is more efficient than searching for and removing them from the
-        /// reflection file after it has been generated especially on large
-        /// projects.</remarks>
+        /// <remarks>Namespaces and members with an <c>&lt;exclude /&gt;</c> tag in their comments are removed
+        /// using the ripping feature as it is more efficient than searching for and removing them from the
+        /// reflection file after it has been generated especially on large projects.</remarks>
         private void GenerateApiFilter()
         {
             XmlNodeList excludes;
@@ -74,8 +72,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
             string nameSpace, memberName, typeName, fullName;
             int pos;
 
-            this.ReportProgress(BuildStep.GenerateApiFilter,
-                "Generating API filter for MRefBuilder...");
+            this.ReportProgress(BuildStep.GenerateApiFilter, "Generating API filter for MRefBuilder...");
 
             if(this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
                 return;
@@ -98,8 +95,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     ripList.Add(memberName);
                 }
 
-            // If the namespace summaries don't contain an explicit entry
-            // for the global namespace, exclude it by default.
+            // If the namespace summaries don't contain an explicit entry for the global namespace, exclude it
+            // by default.
             if(project.NamespaceSummaries[null] == null)
                 ripList.Add("N:");
 
@@ -110,12 +107,12 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 foreach(XmlNode member in excludes)
                 {
-                    // It should appear at the same level as <summary> so that
-                    // we can find the member name in the parent node.
+                    // It should appear at the same level as <summary> so that we can find the member name in the
+                    // parent node.
                     if(member.Attributes["name"] == null)
                     {
-                        this.ReportProgress("    Incorrect placement of " +
-                            "<exclude/> tag.  Unable to locate member name.");
+                        this.ReportProgress("    Incorrect placement of <exclude/> tag.  Unable to locate " +
+                            "member name.");
                         continue;
                     }
 
@@ -126,49 +123,41 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 }
             }
 
-            // Sort by entry type and name so that we create the collection
-            // from the namespace down to the members.
-            ripList.Sort(
-                delegate(string x, string y)
-                {
-                    ApiEntryType xType = ApiFilter.ApiEntryTypeFromLetter(x[0]),
-                        yType = ApiFilter.ApiEntryTypeFromLetter(y[0]);
+            // Sort by entry type and name so that we create the collection from the namespace down to the
+            // members.
+            ripList.Sort((x, y) =>
+            {
+                ApiEntryType xType = ApiFilter.ApiEntryTypeFromLetter(x[0]),
+                    yType = ApiFilter.ApiEntryTypeFromLetter(y[0]);
 
-                    if(xType == yType)
-                        return String.Compare(x, y, false,
-                            CultureInfo.CurrentCulture);
+                if(xType == yType)
+                    return String.Compare(x, y, false, CultureInfo.CurrentCulture);
 
-                    return (int)xType - (int)yType;
-                });
+                return (int)xType - (int)yType;
+            });
 
-            // Clone the project ApiFilter and merge the members from the
-            // rip list.
+            // Clone the project ApiFilter and merge the members from the rip list
             apiFilter = (ApiFilterCollection)project.ApiFilter.Clone();
 
-            // For the API filter to work, we have to nest the entries by
-            // namespace, type, and member.  As such, we have to break apart
-            // what we've got in the list and merge it with the stuff the user
-            // may have specified using the project's API filter property.
+            // For the API filter to work, we have to nest the entries by namespace, type, and member.  As such,
+            // we have to break apart what we've got in the list and merge it with the stuff the user may have
+            // specified using the project's API filter property.
             foreach(string member in ripList)
             {
                 // Namespaces are easy
                 if(member[0] == 'N')
                 {
-                    if(!apiFilter.MergeEntry(ApiEntryType.Namespace,
-                      member.Substring(2), false, true))
-                        this.ReportWarning("BE0008", "Namespace '{0}' " +
-                            "excluded via namespace comments conflicted with " +
-                            "API filter setting.  Exclusion ignored.", member);
+                    if(!apiFilter.MergeEntry(ApiEntryType.Namespace, member.Substring(2), false, true))
+                        this.ReportWarning("BE0008", "Namespace '{0}' excluded via namespace comments " +
+                            "conflicted with API filter setting.  Exclusion ignored.", member);
 
                     continue;
                 }
 
-                // Types and members are a bit tricky.  Since we don't have any
-                // real context, we have to assume that we can remove the last
-                // part and look it up.  If a type entry isn't found, we can
-                // assume it's the namespace.  Where this can fail is on a
-                // nested class where the parent class is lacking XML comments.
-                // Not much we can do about it in that case.
+                // Types and members are a bit tricky.  Since we don't have any real context, we have to assume
+                // that we can remove the last part and look it up.  If a type entry isn't found, we can assume
+                // it's the namespace.  Where this can fail is on a nested class where the parent class is
+                // lacking XML comments.  Not much we can do about it in that case.
                 if(member[0] == 'T')
                 {
                     fullName = nameSpace = member;
@@ -177,9 +166,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 }
                 else
                 {
-                    // Strip parameters.  The ripping feature only goes to
-                    // the name level.  If one overload is ripped, they are
-                    // all ripped.
+                    // Strip parameters.  The ripping feature only goes to the name level.  If one overload is
+                    // ripped, they are all ripped.
                     pos = member.IndexOf('(');
 
                     if(pos != -1)
@@ -201,8 +189,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 for(int idx = 0; idx < commentsFiles.Count; idx++)
                 {
-                    docMember = commentsFiles[idx].Members.SelectSingleNode(
-                        "member[@name='" + nameSpace + "']");
+                    docMember = commentsFiles[idx].Members.SelectSingleNode("member[@name='" + nameSpace + "']");
 
                     if(docMember != null)
                     {
@@ -222,9 +209,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 nameSpace = nameSpace.Substring(2);
 
-                // If the names still match, we probably didn't find comments
-                // for the type so assume the namespace is the part up to
-                // the last period.
+                // If the names still match, we probably didn't find comments for the type so assume the
+                // namespace is the part up to the last period.
                 if(nameSpace == typeName)
                 {
                     pos = nameSpace.LastIndexOf('.');
@@ -235,8 +221,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         nameSpace = "N:";   // Global namespace
                 }
 
-                if(apiFilter.AddNamespaceChild(fullName, nameSpace, typeName,
-                  memberName))
+                if(apiFilter.AddNamespaceChild(fullName, nameSpace, typeName, memberName))
                 {
                     if(fullName.Length > 2)
                     {
@@ -260,9 +245,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     }
                 }
                 else
-                    this.ReportWarning("BE0009", "'{0}' is marked with " +
-                        "<exclude /> but conflicted with the API filter " +
-                        "setting.  Exclusion ignored.", member);
+                    this.ReportWarning("BE0009", "'{0}' is marked with <exclude /> but conflicted with the " +
+                        "API filter setting.  Exclusion ignored.", member);
             }
 
             this.ExecutePlugIns(ExecutionBehaviors.After);
@@ -273,20 +257,15 @@ namespace SandcastleBuilder.Utils.BuildEngine
         //=====================================================================
 
         /// <summary>
-        /// This is used to manually apply the specified API filter to the
-        /// specified reflection information file.
+        /// This is used to manually apply the specified API filter to the specified reflection information file
         /// </summary>
         /// <param name="apiFilter">The API filter to apply</param>
         /// <param name="reflectionFilename">The reflection information file</param>
-        /// <remarks>This can be used by any plug-in that does not produce a
-        /// reflection information file using <b>MRefBuilder.exe</b>.  In such
-        /// cases, the API filter is not applied unless the plug-in uses this
-        /// method.  If the reflection information file is produced by
-        /// <b>MRefBuilder.exe</b>, there is no need to use this method as it
-        /// will apply the API filter automatically to the file that it
-        /// produces.</remarks>
-        public void ApplyManualApiFilter(ApiFilterCollection apiFilter,
-          string reflectionFilename)
+        /// <remarks>This can be used by any plug-in that does not produce a reflection information file using
+        /// <b>MRefBuilder.exe</b>.  In such cases, the API filter is not applied unless the plug-in uses this
+        /// method.  If the reflection information file is produced by <b>MRefBuilder.exe</b>, there is no need
+        /// to use this method as it will apply the API filter automatically to the file that it produces.</remarks>
+        public void ApplyManualApiFilter(ApiFilterCollection apiFilter, string reflectionFilename)
         {
             XmlDocument refInfo;
             XmlNode apis;
@@ -304,8 +283,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     if(!nsFilter.IsExposed)
                     {
                         // Remove all but the indicated types
-                        foreach(XmlNode typeNode in apis.SelectNodes(
-                          "api[starts-with(@id, 'T:') and containers/" +
+                        foreach(XmlNode typeNode in apis.SelectNodes("api[starts-with(@id, 'T:') and containers/" +
                           "namespace/@api='N:" + nsFilter.FullName + "']"))
                         {
                             id = typeNode.Attributes["id"].Value.Substring(2);
@@ -329,8 +307,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         // Remove just the indicated types or their members
                         foreach(ApiFilter typeFilter in nsFilter.Children)
                         {
-                            if(!typeFilter.IsExposed &&
-                              typeFilter.Children.Count == 0)
+                            if(!typeFilter.IsExposed && typeFilter.Children.Count == 0)
                             {
                                 this.RemoveType(apis, typeFilter.FullName);
                                 continue;
@@ -358,8 +335,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
             if(!typeFilter.IsExposed)
             {
                 // Remove all but the indicated members
-                foreach(XmlNode memberNode in apis.SelectNodes(
-                  "api[containers/type/@api='T:" + typeFilter.FullName + "']"))
+                foreach(XmlNode memberNode in apis.SelectNodes("api[containers/type/@api='T:" +
+                  typeFilter.FullName + "']"))
                 {
                     id = memberNode.Attributes["id"].Value.Substring(2);
                     pos = id.IndexOf('(');
@@ -383,8 +360,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         memberNode.ParentNode.RemoveChild(memberNode);
 
                         // Remove the element nodes too
-                        foreach(XmlNode element in apis.SelectNodes(
-                          "api/elements/element[@api='" + id + "']"))
+                        foreach(XmlNode element in apis.SelectNodes("api/elements/element[@api='" + id + "']"))
                             element.ParentNode.RemoveChild(element);
                     }
                 }
@@ -393,8 +369,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
             {
                 // Remove just the indicated members
                 foreach(ApiFilter memberFilter in typeFilter.Children)
-                    foreach(XmlNode memberNode in apis.SelectNodes(
-                      "api[starts-with(substring-after(@id,':'),'" +
+                    foreach(XmlNode memberNode in apis.SelectNodes("api[starts-with(substring-after(@id,':'),'" +
                       memberFilter.FullName + "')]"))
                     {
                         id = memberNode.Attributes["id"].Value.Substring(2);
@@ -407,13 +382,11 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         if(id == memberFilter.FullName)
                         {
                             id = memberNode.Attributes["id"].Value;
-                            this.ReportProgress("    Removing member '{0}'",
-                                id);
+                            this.ReportProgress("    Removing member '{0}'", id);
                             memberNode.ParentNode.RemoveChild(memberNode);
 
                             // Remove the element nodes too
-                            foreach(XmlNode element in apis.SelectNodes(
-                              "api/elements/element[@api='" + id + "']"))
+                            foreach(XmlNode element in apis.SelectNodes("api/elements/element[@api='" + id + "']"))
                                 element.ParentNode.RemoveChild(element);
                         }
                     }
@@ -439,16 +412,14 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 ns.ParentNode.RemoveChild(ns);
 
                 // Remove all of the namespace members
-                foreach(XmlNode xn in apis.SelectNodes(
-                  "api[containers/namespace/@api='N:" + id + "']"))
+                foreach(XmlNode xn in apis.SelectNodes("api[containers/namespace/@api='N:" + id + "']"))
                 {
                     xn.ParentNode.RemoveChild(xn);
 
                     // Remove the element nodes too
                     nodeId = xn.Attributes["id"].Value;
 
-                    foreach(XmlNode element in apis.SelectNodes(
-                      "api/elements/element[@api='" + nodeId + "']"))
+                    foreach(XmlNode element in apis.SelectNodes("api/elements/element[@api='" + nodeId + "']"))
                         element.ParentNode.RemoveChild(element);
                 }
             }
@@ -473,22 +444,19 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 typeNode.ParentNode.RemoveChild(typeNode);
 
                 // Remove all of the type members
-                foreach(XmlNode xn in apis.SelectNodes(
-                  "api[containers/type/@api='T:" + id + "']"))
+                foreach(XmlNode xn in apis.SelectNodes("api[containers/type/@api='T:" + id + "']"))
                 {
                     xn.ParentNode.RemoveChild(xn);
 
                     // Remove the element nodes too
                     nodeId = xn.Attributes["id"].Value;
 
-                    foreach(XmlNode element in apis.SelectNodes(
-                      "api/elements/element[@api='" + nodeId + "']"))
+                    foreach(XmlNode element in apis.SelectNodes("api/elements/element[@api='" + nodeId + "']"))
                         element.ParentNode.RemoveChild(element);
                 }
 
                 // Remove namespace element nodes
-                foreach(XmlNode element in apis.SelectNodes(
-                  "api/elements/element[@api='T:" + id + "']"))
+                foreach(XmlNode element in apis.SelectNodes("api/elements/element[@api='T:" + id + "']"))
                     element.ParentNode.RemoveChild(element);
             }
         }

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Components
 // File    : ESentTargetDictionary.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/16/2013
+// Updated : 02/27/2013
 // Note    : Copyright 2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -28,7 +28,7 @@ using Microsoft.Ddue.Tools.Targets;
 
 using Microsoft.Isam.Esent.Collections.Generic;
 
-namespace SandcastleBuilder.Components
+namespace SandcastleBuilder.Components.Targets
 {
     /// <summary>
     /// This contains a collection of targets indexed by member ID stored in a Managed ESent
@@ -104,9 +104,10 @@ namespace SandcastleBuilder.Components
             // The time estimate is a ballpark figure and depends on the system
             if(filesToLoad != 0)
             {
-                component.WriteMessage(MessageLevel.Diagnostic, "{0} target files need to be added to the " +
-                    "ESent reflection target cache database.  Indexing them will take about {1:N0} minute(s), " +
-                    "please be patient.  Cache location: {2}", filesToLoad, filesToLoad * 10 / 60.0, dbPath);
+                component.WriteMessage(MessageLevel.Diagnostic, "{0} files need to be added to the ESent " +
+                    "reflection target cache database.  Indexing them will take about {1:N0} minute(s), " +
+                    "please be patient.  Cache location: {2}", filesToLoad, Math.Ceiling(filesToLoad * 10 / 60.0),
+                    dbPath);
 
                 // Limit the degree of parallelism or it overwhelms the ESent version store
                 this.LoadTargetDictionary(3);

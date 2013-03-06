@@ -88,7 +88,7 @@ namespace Microsoft.Ddue.Tools.Commands
         // This cache keeps track of the order that files are loaded in and always unloads the oldest one.
         // This is better, but a document that is often accessed gets no "points" so it will eventualy be
         // thrown out even if it is used regularly.
-        int cacheSize;
+        private int cacheSize;
         private Queue<string> queue;
         private Dictionary<string, IndexedDocument> cache;
         #endregion
@@ -100,12 +100,6 @@ namespace Microsoft.Ddue.Tools.Commands
         public override int IndexCount
         {
             get { return index.Count; }
-        }
-
-        /// <inheritdoc />
-        public override int CacheEntriesUsed
-        {
-            get { return cache.Count; }
         }
 
         /// <inheritdoc />
@@ -244,6 +238,15 @@ namespace Microsoft.Ddue.Tools.Commands
                       index[key] = file;
                   }
               });
+        }
+
+        /// <summary>
+        /// Report the cache usage for the build
+        /// </summary>
+        public override void ReportCacheStatistics()
+        {
+            this.Component.WriteMessage(MessageLevel.Diagnostic, "\"{0}\" in-memory cache entries used: " +
+                "{1} of {2}.", base.Name, cache.Count, cacheSize);
         }
         #endregion
     }

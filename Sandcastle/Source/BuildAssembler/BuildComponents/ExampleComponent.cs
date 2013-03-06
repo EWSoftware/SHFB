@@ -3,6 +3,10 @@
 // See http://www.microsoft.com/resources/sharedsource/licensingbasics/sharedsourcelicenses.mspx.
 // All other rights reserved.
 
+// Change History
+// 02/14/2013 - EFW - Removed RegexOptions.Compiled from the Regex instances.  It was causing a significant delay
+// and a huge memory usage increase that isn't justified based on the way the expressions are used here.
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -14,50 +18,47 @@ using System.Xml.XPath;
 
 namespace Microsoft.Ddue.Tools
 {
-
     // a component to replace code references with snippets from a file
-
     public class ExampleComponent : BuildComponent
     {
-
         // instantiation logic
-
-        public ExampleComponent(BuildAssembler assembler, XPathNavigator configuration)
-            : base(assembler, configuration)
+        public ExampleComponent(BuildAssembler assembler, XPathNavigator configuration) :
+          base(assembler, configuration)
         {
-
             XPathNodeIterator contentNodes = configuration.Select("examples");
+
             foreach(XPathNavigator contentNode in contentNodes)
             {
                 string file = contentNode.GetAttribute("file", String.Empty);
                 file = Environment.ExpandEnvironmentVariables(file);
+
                 if(String.IsNullOrEmpty(file))
                     WriteMessage(MessageLevel.Error, "Each examples element must contain a file attribute.");
+
                 LoadContent(file);
             }
 
             WriteMessage(MessageLevel.Info, "Loaded {0} code snippets", snippets.Count);
 
             XPathNodeIterator colorsNodes = configuration.Select("colors");
+
             foreach(XPathNavigator colorsNode in colorsNodes)
             {
                 string language = colorsNode.GetAttribute("language", String.Empty);
                 List<ColorizationRule> rules = new List<ColorizationRule>();
 
                 XPathNodeIterator colorNodes = colorsNode.Select("color");
+
                 foreach(XPathNavigator colorNode in colorNodes)
                 {
                     string pattern = colorNode.GetAttribute("pattern", String.Empty);
                     string region = colorNode.GetAttribute("region", String.Empty);
                     string name = colorNode.GetAttribute("class", String.Empty);
+
                     if(String.IsNullOrEmpty(region))
-                    {
                         rules.Add(new ColorizationRule(pattern, name));
-                    }
                     else
-                    {
                         rules.Add(new ColorizationRule(pattern, region, name));
-                    }
                 }
 
                 colorization[language] = rules;
@@ -74,7 +75,6 @@ namespace Microsoft.Ddue.Tools
 
         private void LoadContent(string file)
         {
-
             SnippetIdentifier key = new SnippetIdentifier();
             string language;
 
@@ -113,17 +113,17 @@ namespace Microsoft.Ddue.Tools
 
                             StoredSnippet snippet = new StoredSnippet(content, language);
                             List<StoredSnippet> values;
+
                             if(!snippets.TryGetValue(key, out values))
                             {
                                 values = new List<StoredSnippet>();
                                 snippets.Add(key, values);
                             }
+
                             values.Add(snippet);
                         }
                         else
-                        {
                             reader.Read();
-                        }
                     }
                 }
                 catch(XmlException e)
@@ -140,15 +140,12 @@ namespace Microsoft.Ddue.Tools
             {
                 WriteMessage(MessageLevel.Error, "An access error occured while attempting to read the snippet file '{0}'. The error message is: {1}", file, e.Message);
             }
-
         }
 
         // the snippet store
-
         private Dictionary<SnippetIdentifier, List<StoredSnippet>> snippets = new Dictionary<SnippetIdentifier, List<StoredSnippet>>();
 
         // the actual work of the component
-
         public override void Apply(XmlDocument document, string key)
         {
             foreach(XPathNavigator node in document.CreateNavigator().Select(selector).ToArray())
@@ -166,6 +163,7 @@ namespace Microsoft.Ddue.Tools
 
                         SnippetIdentifier identifier = identifiers[0];
                         List<StoredSnippet> values;
+
                         if(snippets.TryGetValue(identifier, out values))
                         {
 
@@ -179,26 +177,18 @@ namespace Microsoft.Ddue.Tools
                                 writer.WriteAttributeString("language", value.Language);
 
                                 if(colorization.ContainsKey(value.Language))
-                                {
                                     WriteColorizedSnippet(ColorizeSnippet(value.Text, colorization[value.Language]), writer);
-
-                                }
                                 else
-                                {
                                     writer.WriteString(value.Text);
-                                    //writer.WriteString(System.Web.HttpUtility.HtmlDecode(value.Text));
-                                }
+
                                 writer.WriteEndElement();
                             }
 
                             writer.WriteEndElement();
                             writer.Close();
-
                         }
                         else
-                        {
                             base.WriteMessage(key, MessageLevel.Warn, "No snippet with identifier '{0}' was found.", identifier);
-                        }
                     }
                     else
                     {
@@ -206,9 +196,11 @@ namespace Microsoft.Ddue.Tools
 
                         // create structure that maps language -> snippets
                         Dictionary<string, List<StoredSnippet>> map = new Dictionary<string, List<StoredSnippet>>();
+
                         foreach(SnippetIdentifier identifier in identifiers)
                         {
                             List<StoredSnippet> values;
+
                             if(snippets.TryGetValue(identifier, out values))
                             {
                                 foreach(StoredSnippet value in values)
@@ -238,8 +230,8 @@ namespace Microsoft.Ddue.Tools
                             {
                                 if(i > 0)
                                     writer.WriteString("\n...\n\n\n");
+
                                 writer.WriteString(values[i].Text);
-                                // writer.WriteString(System.Web.HttpUtility.HtmlDecode(values[i].Text));
                             }
 
                             writer.WriteEndElement();
@@ -247,17 +239,12 @@ namespace Microsoft.Ddue.Tools
 
                         writer.WriteEndElement();
                         writer.Close();
-
                     }
-
                 }
                 else
-                {
                     base.WriteMessage(key, MessageLevel.Warn, "The code reference '{0}' is not well-formed", reference);
-                }
 
                 node.DeleteSelf();
-
             }
         }
 
@@ -265,7 +252,7 @@ namespace Microsoft.Ddue.Tools
 
         private XmlNamespaceManager context = new CustomContext();
 
-        private static Regex validSnippetReference = new Regex(@"^[^#\a\b\f\n\r\t\v]+#(\w+,)*\w+$", RegexOptions.Compiled);
+        private static Regex validSnippetReference = new Regex(@"^[^#\a\b\f\n\r\t\v]+#(\w+,)*\w+$");
 
         // colorization logic
 
@@ -280,13 +267,11 @@ namespace Microsoft.Ddue.Tools
             // loop over colorization rules
             foreach(ColorizationRule rule in rules)
             {
-
                 // loop over regions
-
                 LinkedListNode<Region> node = regions.First;
+
                 while(node != null)
                 {
-
                     // only try to colorize uncolored regions
                     if(node.Value.ClassName != null)
                     {
@@ -314,7 +299,6 @@ namespace Microsoft.Ddue.Tools
 
                     foreach(Capture match in matches)
                     {
-
                         // create a leading uncolored region 
                         if(match.Index > index)
                         {
@@ -362,7 +346,6 @@ namespace Microsoft.Ddue.Tools
 
         private static string StripLeadingSpaces(string text)
         {
-
             if(text == null)
                 throw new ArgumentNullException("text");
 
@@ -371,10 +354,11 @@ namespace Microsoft.Ddue.Tools
 
             // no need to do this if there is only one line
             if(lines.Length == 1)
-                return (lines[0]);
+                return lines[0];
 
             // figure out how many leading spaces to delete
             int spaces = Int32.MaxValue;
+
             for(int i = 0; i < lines.Length; i++)
             {
 
@@ -386,10 +370,12 @@ namespace Microsoft.Ddue.Tools
 
                 // determine the number of leading spaces
                 int index = 0;
+
                 while(index < line.Length)
                 {
                     if(line[index] != ' ')
                         break;
+
                     index++;
                 }
 
@@ -416,7 +402,7 @@ namespace Microsoft.Ddue.Tools
                 else
                     result.AppendLine(line.Substring(spaces));
 
-            return (result.ToString());
+            return result.ToString();
         }
     }
 
@@ -462,8 +448,8 @@ namespace Microsoft.Ddue.Tools
 
         public static SnippetIdentifier[] ParseReference(string reference)
         {
-
             int index = reference.IndexOf('#');
+
             if(index < 0)
                 return (new SnippetIdentifier[0]);
 
@@ -471,19 +457,16 @@ namespace Microsoft.Ddue.Tools
             string[] snippets = reference.Substring(index + 1).Split(',');
 
             SnippetIdentifier[] identifiers = new SnippetIdentifier[snippets.Length];
+
             for(int i = 0; i < snippets.Length; i++)
-            {
                 identifiers[i] = new SnippetIdentifier(example, snippets[i]);
-            }
-            return (identifiers);
 
+            return identifiers;
         }
-
     }
 
     internal class StoredSnippet
     {
-
         public StoredSnippet(string text, string language)
         {
             this.text = text;
@@ -513,12 +496,11 @@ namespace Microsoft.Ddue.Tools
 
     internal class ColorizationRule
     {
-
         public ColorizationRule(string pattern, string className) : this(pattern, null, className) { }
 
         public ColorizationRule(string pattern, string region, string className)
         {
-            this.pattern = new Regex(pattern, RegexOptions.Compiled | RegexOptions.Multiline);
+            this.pattern = new Regex(pattern, RegexOptions.Multiline);
             this.region = region;
             this.className = className;
         }
@@ -539,7 +521,6 @@ namespace Microsoft.Ddue.Tools
 
         public Capture[] Apply(string text)
         {
-
             MatchCollection matches = pattern.Matches(text);
             Capture[] captures = new Capture[matches.Count];
 
@@ -551,19 +532,15 @@ namespace Microsoft.Ddue.Tools
             else
             {
                 for(int i = 0; i < captures.Length; i++)
-                {
                     captures[i] = matches[i].Groups[region];
-                }
-                return (captures);
+
+                return captures;
             }
-
         }
-
     }
 
     internal struct Region
     {
-
         public Region(string text) : this(null, text) { }
 
         public Region(string className, string text)
@@ -575,7 +552,6 @@ namespace Microsoft.Ddue.Tools
         private string className;
 
         private string text;
-
 
         public string ClassName
         {
@@ -592,7 +568,5 @@ namespace Microsoft.Ddue.Tools
                 return (text);
             }
         }
-
     }
-
 }

@@ -1,13 +1,13 @@
-﻿//==========================================================================================================
+﻿//===============================================================================================================
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : EntityReferencesControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/08/2012
-// Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
+// Updated : 02/28/2013
+// Note    : Copyright 2011-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains the WPF user control used to look up code entity references, code snippets, tokens,
-// images, and table of content entries and allows them to be dragged and dropped into a topic editor window.
+// This file contains the WPF user control used to look up code entity references, code snippets, tokens, images,
+// and table of content entries and allows them to be dragged and dropped into a topic editor window.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
 // distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.   This
@@ -15,10 +15,10 @@
 // and source files.
 //
 // Version     Date     Who  Comments
-// =========================================================================================================
+// ==============================================================================================================
 // 1.9.3.3  12/04/2011  EFW  Created the code
 // 1.9.6.0  12/08/2012  EFW  Added support for XML comments conceptualLink TOC entry format
-//==========================================================================================================
+//===============================================================================================================
 
 using System;
 using System.Collections.Generic;
@@ -53,7 +53,7 @@ namespace SandcastleBuilder.WPF.UserControls
 
         private List<EntityReference> tokens, images, tableOfContents, codeSnippets;
         private IEnumerator<EntityReference> matchEnumerator;
-        private string[] codeEntities;
+        private List<string> codeEntities;
 
         private CancellationTokenSource indexTokenSource;
         private Task<IndexedCommentsCache> indexTask;
@@ -679,7 +679,7 @@ namespace SandcastleBuilder.WPF.UserControls
 
             spIndexingPanel.Visibility = Visibility.Collapsed;
 
-            codeEntities = cache.GetKeys();
+            codeEntities = new List<string>(cache.AllKeys);
 
             if(cboEntityType.SelectedIndex == (int)EntityType.CodeEntity)
             {

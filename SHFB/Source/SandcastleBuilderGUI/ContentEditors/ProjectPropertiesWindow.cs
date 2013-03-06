@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : ProjectPropertiesWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/23/2012
-// Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
+// Updated : 03/04/2013
+// Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the form used to edit the project properties
@@ -21,6 +21,7 @@
 
 using System;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 
 using SandcastleBuilder.Gui.Properties;
@@ -46,7 +47,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         //=====================================================================
 
         /// <summary>
-        /// This is used to set or get the current project
+        /// This is used to get or set the current project
         /// </summary>
         public SandcastleProject CurrentProject
         {
@@ -54,7 +55,11 @@ namespace SandcastleBuilder.Gui.ContentEditors
             set
             {
                 currentProject = value;
-                tvPropertyPages_AfterSelect(this, new TreeViewEventArgs(tvPropertyPages.SelectedNode));
+
+                if(value == null || pnlPropertyPages.Controls.Count == 0)
+                    this.LoadPropertyPages();
+                else
+                    tvPropertyPages_AfterSelect(this, new TreeViewEventArgs(tvPropertyPages.SelectedNode));
             }
         }
         #endregion
@@ -67,26 +72,6 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// </summary>
         public ProjectPropertiesWindow()
         {
-            BasePropertyPage page;
-            TreeNode node;
-
-            // The property pages will be listed in this order
-            Type[] propertyPages = new[] {
-                typeof(BuildPropertiesPageControl),
-                typeof(HelpFilePropertiesPageControl),
-                typeof(Help1WebsitePropertiesPageControl),
-                typeof(MSHelp2PropertiesPageControl),
-                typeof(MSHelpViewerPropertiesPageControl),
-                typeof(SummaryPropertiesPageControl),
-                typeof(VisibilityPropertiesPageControl),
-                typeof(MissingTagPropertiesPageControl),
-                typeof(PathPropertiesPageControl),
-                typeof(ComponentPropertiesPageControl),
-                typeof(PlugInPropertiesPageControl),
-                typeof(TransformArgumentsPageControl),
-                typeof(UserDefinedPropertiesPageControl)
-            };
-
             InitializeComponent();
 
             // Ensure that the file and folder path user controls are known by the base property page class
@@ -96,36 +81,6 @@ namespace SandcastleBuilder.Gui.ContentEditors
                     "PersistablePath");
                 BasePropertyPage.CustomControls.Add(typeof(SandcastleBuilder.Utils.Controls.FolderPathUserControl).FullName,
                     "PersistablePath");
-            }
-
-            try
-            {
-                tvPropertyPages.BeginUpdate();
-
-                // Create the property pages
-                foreach(Type pageType in propertyPages)
-                {
-                    page = (BasePropertyPage)Activator.CreateInstance(pageType);
-                    page.Visible = false;
-
-                    node = tvPropertyPages.Nodes.Add(page.Title);
-                    node.Tag = page;
-
-                    pnlPropertyPages.Controls.Add(page);
-                }
-
-                if(tvPropertyPages.Nodes.Count != 0)
-                {
-                    if(Settings.Default.LastUsedPropertyPage >=0 &&
-                      Settings.Default.LastUsedPropertyPage < tvPropertyPages.Nodes.Count)
-                        tvPropertyPages.SelectedNode = tvPropertyPages.Nodes[Settings.Default.LastUsedPropertyPage];
-                    else
-                        tvPropertyPages.SelectedNode = tvPropertyPages.Nodes[0];
-                }
-            }
-            finally
-            {
-                tvPropertyPages.EndUpdate();
             }
         }
         #endregion
@@ -319,6 +274,73 @@ namespace SandcastleBuilder.Gui.ContentEditors
         {
             if(currentProject != null)
                 tvPropertyPages_AfterSelect(this, new TreeViewEventArgs(tvPropertyPages.SelectedNode));
+        }
+
+        /// <summary>
+        /// This is used to the load property page controls
+        /// </summary>
+        private void LoadPropertyPages()
+        {
+            BasePropertyPage page;
+            TreeNode node;
+
+            // The property pages will be listed in this order
+            Type[] propertyPages = new[] {
+                typeof(BuildPropertiesPageControl),
+                typeof(HelpFilePropertiesPageControl),
+                typeof(Help1WebsitePropertiesPageControl),
+                typeof(MSHelp2PropertiesPageControl),
+                typeof(MSHelpViewerPropertiesPageControl),
+                typeof(SummaryPropertiesPageControl),
+                typeof(VisibilityPropertiesPageControl),
+                typeof(MissingTagPropertiesPageControl),
+                typeof(PathPropertiesPageControl),
+                typeof(ComponentPropertiesPageControl),
+                typeof(PlugInPropertiesPageControl),
+                typeof(TransformArgumentsPageControl),
+                typeof(UserDefinedPropertiesPageControl)
+            };
+
+            try
+            {
+                tvPropertyPages.BeginUpdate();
+                tvPropertyPages.Nodes.Clear();
+
+                // If pages already exist, dispose of them.  This gives us behavior similar to Visual Studio so
+                // that when a new project is created or another project is loaded, default control values are
+                // used for properties that are not present in the project.
+                if(pnlPropertyPages.Controls.Count != 0)
+                    foreach(Control c in pnlPropertyPages.Controls.Cast<Control>().ToList())
+                    {
+                        c.Dispose();
+                        pnlPropertyPages.Controls.Remove(c);
+                    }
+
+                // Create the property pages
+                foreach(Type pageType in propertyPages)
+                {
+                    page = (BasePropertyPage)Activator.CreateInstance(pageType);
+                    page.Visible = false;
+
+                    node = tvPropertyPages.Nodes.Add(page.Title);
+                    node.Tag = page;
+
+                    pnlPropertyPages.Controls.Add(page);
+                }
+
+                if(tvPropertyPages.Nodes.Count != 0)
+                {
+                    if(Settings.Default.LastUsedPropertyPage >= 0 &&
+                      Settings.Default.LastUsedPropertyPage < tvPropertyPages.Nodes.Count)
+                        tvPropertyPages.SelectedNode = tvPropertyPages.Nodes[Settings.Default.LastUsedPropertyPage];
+                    else
+                        tvPropertyPages.SelectedNode = tvPropertyPages.Nodes[0];
+                }
+            }
+            finally
+            {
+                tvPropertyPages.EndUpdate();
+            }
         }
         #endregion
     }

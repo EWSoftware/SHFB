@@ -1,36 +1,32 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder
 // File    : GenerateInheritedDocs.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/03/2012
-// Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
+// Updated : 03/01/2013
+// Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains the console mode tool that scans XML comments files for
-// <inheritdoc /> tags and produces a new XML comments file containing the
-// inherited documentation for use by Sandcastle.
+// This file contains the console mode tool that scans XML comments files for <inheritdoc /> tags and produces a
+// new XML comments file containing the inherited documentation for use by Sandcastle.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.6.0.5  02/27/2008  EFW  Created the code
 // 1.8.0.0  07/14/2008  EFW  Added support for running as an MSBuild task
-// 1.9.3.4  01/23/2012  EFW  Added support for auto-documenting attached
-//                           properties and events.  Also added support for
-//                           utilizing AttachedPropertyComments and
-//                           AttachedEventComments elements to provide comments
-//                           for attached properties and events that differ
-//                           from the comments on the backing fields.
-//=============================================================================
+// 1.9.3.4  01/23/2012  EFW  Added support for auto-documenting attached properties and events.  Also added
+//                           support for utilizing AttachedPropertyComments and AttachedEventComments elements
+//                           to provide comments for attached properties and events that differ from the
+//                           comments on the backing fields.
+//===============================================================================================================
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Configuration;
 using System.Diagnostics;
 using System.Globalization;
@@ -49,27 +45,19 @@ using SandcastleBuilder.Utils.InheritedDocumentation;
 namespace SandcastleBuilder.InheritedDocumentation
 {
     /// <summary>
-    /// This class represents the tool that scans XML comments files for
-    /// <b>&lt;inheritdoc /&gt;</b> tags and produces a new XML comments
-    /// file containing the inherited documentation for use by Sandcastle.
+    /// This class represents the tool that scans XML comments files for <b>&lt;inheritdoc /&gt;</b> tags and
+    /// produces a new XML comments file containing the inherited documentation for use by Sandcastle.
     /// </summary>
     public class GenerateInheritedDocs : Task
     {
         #region MSBuild task interface
         //=====================================================================
 
-        private string configFile;
-
         /// <summary>
-        /// This is used to set the configuration file to use from the MSBuild
-        /// project file
+        /// This is used to set the configuration file to use from the MSBuild project file
         /// </summary>
         [Required]
-        public string ConfigurationFile
-        {
-            get { return configFile; }
-            set { configFile = value; }
-        }
+        public string ConfigurationFile { get; set; }
 
         /// <summary>
         /// This is used to execute the task and generate the inherited
@@ -78,7 +66,7 @@ namespace SandcastleBuilder.InheritedDocumentation
         /// <returns>True on success or false on failure.</returns>
         public override bool Execute()
         {
-            return (Main(new string[] { configFile }) == 0);
+            return (Main(new string[] { this.ConfigurationFile }) == 0);
         }
         #endregion
 
@@ -89,7 +77,7 @@ namespace SandcastleBuilder.InheritedDocumentation
         private static XPathNavigator apisNode;
         private static string inheritedDocsFilename;
         private static IndexedCommentsCache commentsCache;
-        private static Collection<XPathNavigator> commentsFiles;
+        private static ConcurrentBag<XPathNavigator> commentsFiles;
         private static bool showDupWarning;
 
         private static XmlDocument inheritedDocs;
@@ -103,8 +91,8 @@ namespace SandcastleBuilder.InheritedDocumentation
         /// <summary>
         /// Main program entry point
         /// </summary>
-        /// <param name="args">The command line arguments.  There should be
-        /// single configuration filename specified.</param>
+        /// <param name="args">The command line arguments.  There should be single configuration filename
+        /// specified.</param>
         /// <returns>Zero on success, non-zero on failure</returns>
         public static int Main(string[] args)
         {
@@ -125,7 +113,7 @@ namespace SandcastleBuilder.InheritedDocumentation
 
             try
             {
-                commentsFiles = new Collection<XPathNavigator>();
+                commentsFiles = new ConcurrentBag<XPathNavigator>();
                 inheritedDocs = new XmlDocument();
                 inheritedDocs.PreserveWhitespace = true;
                 inheritedDocs.LoadXml(@"<doc>
@@ -164,21 +152,6 @@ namespace SandcastleBuilder.InheritedDocumentation
         }
         #endregion
 
-        #region Duplicate warning event handler
-        //=====================================================================
-
-        /// <summary>
-        /// Report a duplicate key warning
-        /// </summary>
-        /// <param name="sender">The sender of the event</param>
-        /// <param name="e">The event arguments</param>
-        private static void commentsCache_ReportWarning(object sender, CommentsCacheEventArgs e)
-        {
-            if(showDupWarning)
-                Console.WriteLine(e.Message);
-        }
-        #endregion
-
         #region Load the configuration file
         //=====================================================================
 
@@ -186,10 +159,9 @@ namespace SandcastleBuilder.InheritedDocumentation
         /// Load the configuration file
         /// </summary>
         /// <param name="configFile">The configuration file to load</param>
-        /// <exception cref="ArgumentException">This is thrown if the
-        /// configuration file does not exist.</exception>
-        /// <exception cref="ConfigurationErrorsException">This is thrown if
-        /// the configuration file is not valid.</exception>
+        /// <exception cref="ArgumentException">This is thrown if the configuration file does not exist.</exception>
+        /// <exception cref="ConfigurationErrorsException">This is thrown if the configuration file is not
+        /// valid.</exception>
         private static void LoadConfiguration(string configFile)
         {
             XPathDocument config, xpathDoc;
@@ -236,8 +208,8 @@ namespace SandcastleBuilder.InheritedDocumentation
             if(attrValue.Length != 0)
                 cacheSize = Convert.ToInt32(attrValue, CultureInfo.InvariantCulture);
 
-            commentsCache = new IndexedCommentsCache(cacheSize);
-            commentsCache.ReportWarning += commentsCache_ReportWarning;
+            commentsCache = new IndexedCommentsCache(cacheSize) { ShowDuplicatesWarning = showDupWarning };
+            commentsCache.ReportWarning += (s, e) => Console.WriteLine(e.Message);
 
             foreach(XPathNavigator nav in navComments.Select("*"))
             {
@@ -324,7 +296,7 @@ namespace SandcastleBuilder.InheritedDocumentation
             // Add explicit interface implementations that do not have member comments already
             foreach(XPathNavigator api in apisNode.Select(
               "api[memberdata/@visibility='private' and proceduredata/@virtual='true']/@id"))
-                if(commentsCache.GetComments(api.Value) == null && !members.ContainsKey(api.Value))
+                if(commentsCache[api.Value] == null && !members.ContainsKey(api.Value))
                 {
                     node = inheritedDocs.CreateDocumentFragment();
 
@@ -343,7 +315,7 @@ namespace SandcastleBuilder.InheritedDocumentation
             {
                 apiId = api.SelectSingleNode("@id");
 
-                if(commentsCache.GetComments(apiId.Value) == null && !members.ContainsKey(apiId.Value))
+                if(commentsCache[apiId.Value] == null && !members.ContainsKey(apiId.Value))
                 {
                     if(apiId.Value[0] == 'E')
                         apiField = api.SelectSingleNode("attachedeventdata/field/member/@api");
@@ -352,7 +324,7 @@ namespace SandcastleBuilder.InheritedDocumentation
 
                     if(apiField != null)
                     {
-                        fieldComments = commentsCache.GetComments(apiField.Value);
+                        fieldComments = commentsCache[apiField.Value];
 
                         if(fieldComments == null)
                             attachedComments = null;
@@ -465,7 +437,7 @@ namespace SandcastleBuilder.InheritedDocumentation
                         baseMember = copyMember.CreateNavigator();
                     }
                     else
-                        baseMember = commentsCache.GetComments(cref.Value);
+                        baseMember = commentsCache[cref.Value];
 
                     if(baseMember != null)
                         MergeComments(baseMember, member.CreateNavigator(), (filter == null) ? "*" : filter.Value);
@@ -518,7 +490,7 @@ namespace SandcastleBuilder.InheritedDocumentation
                             baseMemberName = String.Format(CultureInfo.InvariantCulture, "M:{0}.{1}",
                                 baseType.Value.Substring(2), ctorName);
 
-                            if(commentsCache.GetComments(baseMemberName) != null)
+                            if(commentsCache[baseMemberName] != null)
                             {
                                 sources.Add(baseMemberName);
                                 break;
@@ -555,7 +527,7 @@ namespace SandcastleBuilder.InheritedDocumentation
                         baseMember = copyMember.CreateNavigator();
                     }
                     else
-                        baseMember = commentsCache.GetComments(baseName);
+                        baseMember = commentsCache[baseName];
 
                     if(baseMember != null)
                     {
@@ -760,7 +732,7 @@ namespace SandcastleBuilder.InheritedDocumentation
                     baseMember = copyMember.CreateNavigator();
                 }
                 else
-                    baseMember = commentsCache.GetComments(cref);
+                    baseMember = commentsCache[cref];
 
                 return baseMember;
             }
@@ -805,7 +777,7 @@ namespace SandcastleBuilder.InheritedDocumentation
                         baseMemberName = String.Format(CultureInfo.InvariantCulture, "M:{0}.{1}",
                             baseType.Value.Substring(2), ctorName);
 
-                        if(commentsCache.GetComments(baseMemberName) != null)
+                        if(commentsCache[baseMemberName] != null)
                         {
                             sources.Add(baseMemberName);
                             break;
@@ -844,7 +816,7 @@ namespace SandcastleBuilder.InheritedDocumentation
                     baseMember = copyMember.CreateNavigator();
                 }
                 else
-                    baseMember = commentsCache.GetComments(baseName);
+                    baseMember = commentsCache[baseName];
 
                 if(baseMember != null)
                     break;

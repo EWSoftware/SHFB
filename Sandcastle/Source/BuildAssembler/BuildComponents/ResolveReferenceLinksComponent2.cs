@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Xml;
 using System.Xml.XPath;
@@ -455,7 +456,15 @@ namespace Microsoft.Ddue.Tools
             {
                 this.UpdateMsdnContentIdCache();
                 msdnResolver.Dispose();
+            }
+
+            if(targets != null)
+            {
                 targets.Dispose();
+
+                foreach(var td in sharedTargets.Values.ToList())
+                    if(td.IsDisposed)
+                        sharedTargets.Remove(td.DictionaryId);
             }
 
             base.Dispose(disposing);
@@ -558,10 +567,10 @@ namespace Microsoft.Ddue.Tools
                     {
                         BinaryFormatter bf = new BinaryFormatter();
                         bf.Serialize(fs, msdnResolver.MsdnContentIdCache);
-
-                        base.WriteMessage(MessageLevel.Info, "New MSDN content ID cache size: {0} entries",
-                            msdnResolver.MsdnContentIdCache.Count);
                     }
+
+                    base.WriteMessage(MessageLevel.Diagnostic, "New MSDN content ID cache size: {0} entries",
+                        msdnResolver.MsdnContentIdCache.Count);
                 }
                 catch(IOException ex)
                 {

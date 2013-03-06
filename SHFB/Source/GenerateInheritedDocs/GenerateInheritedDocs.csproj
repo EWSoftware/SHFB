@@ -85,9 +85,6 @@
     <Compile Include="..\SandcastleBuilderUtils\InheritedDocumentation\IndexedCommentsCache.cs">
       <Link>IndexedCommentsCache.cs</Link>
     </Compile>
-    <Compile Include="..\SandcastleBuilderUtils\InheritedDocumentation\IndexedCommentsFile.cs">
-      <Link>IndexedCommentsFile.cs</Link>
-    </Compile>
     <Compile Include="..\SandcastleBuilderUtils\InheritedDocumentation\InheritedDocsException.cs">
       <Link>InheritedDocsException.cs</Link>
     </Compile>

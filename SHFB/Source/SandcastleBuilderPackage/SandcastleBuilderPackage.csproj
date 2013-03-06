@@ -328,6 +328,9 @@
   <ItemGroup>
     <!-- Each ZipItem must contain an OutputSubPath element to define the category into which it is grouped
          in the Add New Item dialog box. -->
+    <None Include="SandcastleBuilderPackage.vspackage.diagram">
+      <DependentUpon>SandcastleBuilderPackage.vspackage</DependentUpon>
+    </None>
     <None Include="Templates\ReadMe.txt" />
     <ZipProject Include="Templates\Projects\SandcastleBuilderProject\SandcastleBuilder.shfbproj" />
     <ZipProject Include="Templates\Projects\SandcastleBuilderProject\SandcastleBuilder.vstemplate" />

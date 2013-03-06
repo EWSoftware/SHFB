@@ -13,6 +13,7 @@
 // parallel executon of component code.  Components are still initialized and topics built sequentially for now.
 // Converted the message logger to use BlockingCollection<string> to allow for parallel executon of component
 // code without contention for the console.
+// 03/01/2013 - EFW - Added a warning count
 
 using System;
 using System.Collections.Concurrent;
@@ -20,6 +21,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.XPath;
@@ -42,6 +44,7 @@ namespace Microsoft.Ddue.Tools
 
         private MessageLevel verbosityLevel;
         private Action<string> messageLogger;
+        private int warningCount;
 
         #endregion
 
@@ -202,7 +205,10 @@ namespace Microsoft.Ddue.Tools
 
                     int count = this.Apply(manifest);
 
-                    messageLog.Add(String.Format(CultureInfo.CurrentCulture, "Info: Processed {0} topics", count));
+                    messageLog.Add(String.Format(CultureInfo.CurrentCulture, "Info: Processed {0} topic(s)", count));
+
+                    if(warningCount != 0)
+                        messageLog.Add(String.Format(CultureInfo.CurrentCulture, "Info: {0} warning(s)", warningCount));
                 }
                 finally
                 {
@@ -488,6 +494,9 @@ namespace Microsoft.Ddue.Tools
                     case MessageLevel.Info:
                     case MessageLevel.Warn:
                     case MessageLevel.Diagnostic:
+                        if(level == MessageLevel.Warn)
+                            Interlocked.Add(ref warningCount, 1);
+
                         if(!messageLog.IsAddingCompleted)
                             messageLog.Add(text);
                         else

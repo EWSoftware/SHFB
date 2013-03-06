@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SandcastleBuilderPackage.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/14/2012
-// Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
+// Updated : 03/04/2013
+// Note    : Copyright 2011-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the class that defines the Sancastle Help File Builder Visual Studio package
@@ -433,6 +433,33 @@ namespace SandcastleBuilder.Package
                 Utility.ShowMessageBox(OLEMSGICON.OLEMSGICON_CRITICAL, "Unable to open help file '{0}'\r\nReason: {1}",
                     outputPath, ex.Message);
             }
+        }
+        #endregion
+
+        #region Project event handlers
+        //=====================================================================
+
+        /// <summary>
+        /// Set the state of the open in standalone GUI command
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event arguments</param>
+        protected override void OpenInStandaloneGUIQueryStatusHandler(object sender, EventArgs e)
+        {
+            SetViewHelpCommandState((OleMenuCommand)sender, null);
+        }
+
+        /// <summary>
+        /// Open the current project in the standalone GUI
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event arguments</param>
+        protected override void OpenInStandaloneGUIExecuteHandler(object sender, EventArgs e)
+        {
+            var pn = CurrentProjectNode;
+
+            if(pn != null)
+                pn.OpenInStandaloneGui();
         }
         #endregion
 

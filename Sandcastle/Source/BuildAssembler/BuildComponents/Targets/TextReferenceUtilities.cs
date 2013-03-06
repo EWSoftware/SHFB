@@ -5,6 +5,8 @@
 
 // Change History
 // 12/26/2012 - EFW - Moved the classes into the Targets namespace
+// 02/14/2013 - EFW - Removed RegexOptions.Compiled from the Regex instances as it doesn't appear to make any
+// real differencee in performance.
 
 using System;
 using System.Collections.Generic;
@@ -362,21 +364,21 @@ namespace Microsoft.Ddue.Tools.Targets
 
             // create regexes using this patterns
 
-            ValidNamespace = new Regex(String.Format(CultureInfo.InvariantCulture, @"^N:{0}$", namespacePattern),
-                RegexOptions.Compiled);
+            ValidNamespace = new Regex(String.Format(CultureInfo.InvariantCulture, @"^N:{0}$", namespacePattern));
 
             ValidSimpleType = new Regex(String.Format(CultureInfo.InvariantCulture, @"^T:{0}$",
-                simpleTypePattern), RegexOptions.Compiled);
+                simpleTypePattern));
 
             ValidDecoratedType = new Regex(String.Format(CultureInfo.InvariantCulture, @"^T:{0}$",
-                decoratedTypePattern), RegexOptions.Compiled);
+                decoratedTypePattern));
 
             ValidSpecializedType = new Regex(String.Format(CultureInfo.InvariantCulture, @"^T:{0}$",
-                specializedTypePattern), RegexOptions.Compiled);
+                specializedTypePattern));
 
             ValidSimpleMember = new Regex(String.Format(CultureInfo.InvariantCulture,
                 @"^((M:{0})|(M:{1})|(P:{2})|(F:{3})|(E:{4})|(Overload:{5})|(Overload:{6}))$",
-                simpleMethodPattern, simpleConstructorPattern, simplePropertyPattern, simpleFieldPattern, simpleEventPattern, simpleOverloadPattern, simpleConstructorOverloadPattern));
+                simpleMethodPattern, simpleConstructorPattern, simplePropertyPattern, simpleFieldPattern,
+                simpleEventPattern, simpleOverloadPattern, simpleConstructorOverloadPattern));
 
             ValidSpecializedMember = new Regex(String.Format(CultureInfo.InvariantCulture,
                 @"^((M:{0})|(P:{1})|(F:{2})|(E:{3})|(Overload:{4}))$", specializedMethodPattern,

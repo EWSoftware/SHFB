@@ -56,14 +56,6 @@ namespace Microsoft.Ddue.Tools.Commands
         public abstract int IndexCount { get; }
 
         /// <summary>
-        /// For indexes that cache information in memory, this property can be used to report how many cache
-        /// entries were utilized.
-        /// </summary>
-        /// <value>This can be used to help size a local cache appropriately to conserve memory and/or improve
-        /// performance.</value>
-        public abstract int CacheEntriesUsed { get; }
-
-        /// <summary>
         /// This read-only property returns the value in the indexed cache for the given key
         /// </summary>
         /// <param name="key">The key to look up</param>
@@ -177,6 +169,15 @@ namespace Microsoft.Ddue.Tools.Commands
         /// </summary>
         /// <param name="configuration">The configuration used to add documents</param>
         public abstract void AddDocuments(XPathNavigator configuration);
+
+        /// <summary>
+        /// This can be overridden in derived classes to report cache usage statistics after the build
+        /// </summary>
+        /// <remarks>The default implementation does nothing.  You can override this to provide information that
+        /// can help adjust the cache size to make it more efficient.</remarks>
+        public virtual void ReportCacheStatistics()
+        {
+        }
 
         /// <summary>
         /// This returns an enumerable list of all key values from the specified XML file based on the

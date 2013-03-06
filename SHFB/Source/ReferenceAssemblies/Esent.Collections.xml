@@ -1001,6 +1001,25 @@
             <param name="range">The calculated range.</param>
             <param name="isReversed">True if the range is to be enumerated in reverse order.</param>
         </member>
+        <member name="P:Microsoft.Isam.Esent.Collections.Generic.PersistentDictionary`2.LocalCacheSize">
+            <summary>
+            Set this to a non-zero value to enable local caching of values to speed up read-only access
+            </summary>
+            <value>If set to zero, the default, the local cache will not be used and all values will be retrieved
+            from the database.  This is only intended for read-only dictionaries.  The local cache will not be
+            updated if the dictionary entries are updated.</value>
+        </member>
+        <member name="P:Microsoft.Isam.Esent.Collections.Generic.PersistentDictionary`2.LocalCacheFlushCount">
+            <summary>
+            This read-only property returns the number of times the local cache was flushed because it filled up
+            </summary>
+            <value>This can help in figuring out an appropriate local cache size</value>
+        </member>
+        <member name="P:Microsoft.Isam.Esent.Collections.Generic.PersistentDictionary`2.CurrentLocalCacheCount">
+            <summary>
+            This read-only property returns the current number of local cache entries in use
+            </summary>
+        </member>
         <member name="P:Microsoft.Isam.Esent.Collections.Generic.PersistentDictionary`2.Count">
             <summary>
             Gets the number of elements contained in the <see cref="T:Microsoft.Isam.Esent.Collections.Generic.PersistentDictionary`2"/>.

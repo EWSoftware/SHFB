@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : TopicCollection.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/02/2013
+// Updated : 02/26/2013
 // Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -436,8 +436,8 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                             "The conceptual topic '{0}' (ID: {1}) does not match any file in the project",
                             t.DisplayTitle, t.ContentId));
 
-                    // A file is required if there are no sub-topics
-                    if(t.Subtopics.Count == 0)
+                    // A file is required if there are no sub-topics and it isn't the API content parent
+                    if(t.Subtopics.Count == 0 && t.ApiParentMode != ApiParentMode.InsertAsChild)
                         throw new BuilderException("BE0055", String.Format(CultureInfo.InvariantCulture,
                             "The conceptual topic '{0}' (ID: {1}) must either specify a " +
                             "topic file or it must contains sub-topics", t.DisplayTitle, t.Id));

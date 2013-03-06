@@ -1,28 +1,27 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildComponentManager.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/26/2012
-// Note    : Copyright 2007-2012, Eric Woodruff, All rights reserved
+// Updated : 02/26/2013
+// Note    : Copyright 2007-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains the class that manages the set of third party build
-// components including language syntax filters.
+// This file contains the class that manages the set of third party build components including language syntax
+// filters.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.6.0.2  11/01/2007  EFW  Created the code
 // 1.8.0.0  10/06/2008  EFW  Changed the default location of custom components
 // 1.8.0.3  07/04/2009  EFW  Merged build component and plug-in folder
 // 1.8.0.3  11/10/2009  EFW  Added support for custom syntax filter components
 // 1.8.0.4  03/07/2010  EFW  Added support for SHFBCOMPONENTROOT
-//=============================================================================
+//===============================================================================================================
 
 using System;
 using System.Collections.Generic;
@@ -127,18 +126,7 @@ namespace SandcastleBuilder.Utils.BuildComponent
                         if(m.Success)
                             sandcastlePath = m.Value;
                         else
-                        {
                             sandcastlePath = BuildProcess.FindOnFixedDrives(@"\Sandcastle");
-
-                            // If not found there, try the VS 2005 SDK folders
-                            if(sandcastlePath.Length == 0)
-                            {
-                                sandcastlePath = BuildProcess.FindSdkExecutable("MRefBuilder.exe");
-
-                                if(sandcastlePath.Length != 0)
-                                    sandcastlePath = sandcastlePath.Substring(0, sandcastlePath.LastIndexOf('\\'));
-                            }
-                        }
                     }
                 }
                 else

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Components
 // File    : PostTransformComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/17/2012
-// Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
+// Updated : 02/27/2013
+// Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This component is now obsolete and will be removed in a future release
@@ -42,6 +42,8 @@ using System.Xml;
 using System.Xml.XPath;
 
 using Microsoft.Ddue.Tools;
+
+using SandcastleBuilder.Components.UI;
 
 namespace SandcastleBuilder.Components
 {

@@ -1,42 +1,45 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder - HTML Extract
 // File    : SandcastleHtmlExtract.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/26/2012
-// Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
+// Updated : 03/03/2013
+// Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains the console mode application used to extract title and
-// keyword information from HTML files for use in creating the CHM table of
-// contents and keyword index files.  It can also optionally convert the files
-// to a different encoding in order to build HTML Help 1 (.chm) files that use
-// a different language.
+// This file contains the console mode application used to extract title and keyword information from HTML files
+// for use in creating the CHM table of contents and keyword index files.  It can also optionally convert the
+// files to a different encoding in order to build HTML Help 1 (.chm) files that use a different language.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.6.0.5  02/02/2008  EFW  Created the code
-// 1.6.0.7  04/01/2008  EFW  Merged changes from Ferdinand Prantl to add a
-//                           website keyword index.
+// 1.6.0.7  04/01/2008  EFW  Merged changes from Ferdinand Prantl to add a website keyword index
 // 1.7.0.0  06/14/2008  EFW  Fixed bug in handling of TOC nodes without a file
 // 1.8.0.0  07/14/2008  EFW  Added support for running as an MSBuild task
 // 1.9.0.0  06/12/2010  EFW  Added support for multi-format build output
 // 1.9.5.0  07/26/2012  EFW  Added code to remove Help 2 constructs
-//=============================================================================
+// 1.9.7.0  03/02/2013  EFW  Updated how the keyword index files were created so that each entry has a unique
+//                           title when grouped under a common keyword.  Updated to process the files in
+//                           parallel to improve the performance.
+//===============================================================================================================
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Web;
 using System.Xml;
 using System.Xml.XPath;
@@ -47,11 +50,10 @@ using Microsoft.Build.Utilities;
 namespace SandcastleBuilder.HtmlExtract
 {
     /// <summary>
-    /// This is the console mode application used to extract title and keyword
-    /// information from HTML files for use in creating the CHM table of
-    /// contents and keyword index files.
+    /// This is the console mode application used to extract title and keyword information from HTML files for
+    /// use in creating the CHM table of contents and keyword index files.
     /// </summary>
-    public class SandcastleHtmlExtract : Task
+    public class SandcastleHtmlExtract : Microsoft.Build.Utilities.Task
     {
         #region MSBuild task interface
         //=====================================================================
@@ -81,11 +83,9 @@ namespace SandcastleBuilder.HtmlExtract
         }
 
         /// <summary>
-        /// This is used to set the HTML Help 1 file folder name containing the
-        /// Help 1 files to be processed.
+        /// This is used to set the HTML Help 1 file folder name containing the Help 1 files to be processed.
         /// </summary>
-        /// <value>This is optional.  If not set, no HTML help 1 files will be
-        /// processed.</value>
+        /// <value>This is optional.  If not set, no HTML help 1 files will be processed.</value>
         public string Help1Folder
         {
             get { return help1Folder; }
@@ -97,11 +97,9 @@ namespace SandcastleBuilder.HtmlExtract
         }
 
         /// <summary>
-        /// This is used to set the website file folder name containing the
-        /// website files to be processed.
+        /// This is used to set the website file folder name containing the website files to be processed.
         /// </summary>
-        /// <value>This is optional.  If not set, no HTML help 1 files will be
-        /// processed.</value>
+        /// <value>This is optional.  If not set, no HTML help 1 files will be processed.</value>
         public string WebsiteFolder
         {
             get { return websiteFolder; }
@@ -115,8 +113,7 @@ namespace SandcastleBuilder.HtmlExtract
         /// <summary>
         /// This is used to set the localized output folder name
         /// </summary>
-        /// <value>This is optional.  If not set, the HTML files will not
-        /// be localized.</value>
+        /// <value>This is optional.  If not set, the HTML files will not be localized.</value>
         public string LocalizedFolder
         {
             get { return localizedFolder; }
@@ -130,8 +127,7 @@ namespace SandcastleBuilder.HtmlExtract
         /// <summary>
         /// This is used to set the general output folder name
         /// </summary>
-        /// <value>This is optional.  If not set, it defaults to the current
-        /// working folder.</value>
+        /// <value>This is optional.  If not set, it defaults to the current working folder.</value>
         public string OutputFolder
         {
             get { return outputFolder; }
@@ -145,8 +141,7 @@ namespace SandcastleBuilder.HtmlExtract
         /// <summary>
         /// This is used to set the table of contents XML filename
         /// </summary>
-        /// <value>This is optional.  If not set, it defaults to
-        /// <b>toc.xml</b>.</value>
+        /// <value>This is optional.  If not set, it defaults to <b>toc.xml</b>.</value>
         public string TocFile
         {
             get { return tocFile; }
@@ -158,8 +153,7 @@ namespace SandcastleBuilder.HtmlExtract
         }
 
         /// <summary>
-        /// This is used to execute the task and generate the inherited
-        /// documentation.
+        /// This is used to execute the task and process the HTML files
         /// </summary>
         /// <returns>True on success or false on failure.</returns>
         public override bool Execute()
@@ -177,20 +171,24 @@ namespace SandcastleBuilder.HtmlExtract
         /// </summary>
         private struct TitleInfo
         {
-            /// <summary>The title</summary>
-            public string Title;
+            /// <summary>The topic title</summary>
+            public string TopicTitle { get; set; }
+            /// <summary>The TOC title</summary>
+            public string TocTitle { get; set; }
             /// <summary>The file in which it occurs</summary>
-            public string File;
+            public string File { get; set; }
 
             /// <summary>
             /// Constructor
             /// </summary>
-            /// <param name="topicTitle">The title</param>
+            /// <param name="topicTitle">The topic title</param>
+            /// <param name="tocTitle">The TOC title</param>
             /// <param name="filename">The filename</param>
-            public TitleInfo(string topicTitle, string filename)
+            public TitleInfo(string topicTitle, string tocTitle, string filename) : this()
             {
-                Title = topicTitle;
-                File = filename;
+                this.TopicTitle = topicTitle;
+                this.TocTitle = String.IsNullOrWhiteSpace(tocTitle) ? topicTitle : tocTitle;
+                this.File = filename;
             }
         }
         #endregion
@@ -204,11 +202,11 @@ namespace SandcastleBuilder.HtmlExtract
         private struct KeywordInfo
         {
             /// <summary>The main entry</summary>
-            public string MainEntry;
+            public string MainEntry { get; set; }
             /// <summary>An optional sub-entry</summary>
-            public string SubEntry;
+            public string SubEntry { get; set; }
             /// <summary>The file in which it occurs</summary>
-            public string File;
+            public string File { get; set; }
         }
         #endregion
 
@@ -223,7 +221,8 @@ namespace SandcastleBuilder.HtmlExtract
 
         // Extracted keyword and title information
         private static List<KeywordInfo> keywords;
-        private static Dictionary<string, TitleInfo> titles;
+        private static ConcurrentBag<KeywordInfo> keywordBag;
+        private static ConcurrentDictionary<string, TitleInfo> titles;
 
         // Regular expressions used for title and keyword extraction and element removal
         private static Regex reTitle = new Regex(@"<title>(.*)</title>", RegexOptions.IgnoreCase);
@@ -270,7 +269,8 @@ namespace SandcastleBuilder.HtmlExtract
                 langId = 1033;
 
             keywords = new List<KeywordInfo>();
-            titles = new Dictionary<string, TitleInfo>();
+            keywordBag = new ConcurrentBag<KeywordInfo>();
+            titles = new ConcurrentDictionary<string, TitleInfo>();
 
             Assembly asm = Assembly.GetExecutingAssembly();
 
@@ -493,7 +493,7 @@ namespace SandcastleBuilder.HtmlExtract
         private static void ShowHelp()
         {
             Console.WriteLine(@"Syntax:
-SandcastleHtmlExtract -project=ProjectName [-OtherOptions] ...
+SandcastleHtmlExtract -projectName=ProjectName [-OtherOptions] ...
 
 Prefix options with '-' or '/'.  Names and values are case-insensitive.
 Property values should be enclosed in double quotes if they contain spaces,
@@ -541,42 +541,44 @@ commas, or other special characters.
         private static void ParseFiles(string fileFolder, string localizedOutputFolder)
         {
             KeywordInfo kw;
-            string ext, folder, destFile, mainEntry = String.Empty;
+            string mainEntry = String.Empty;
             int htmlFiles = 0;
 
             keywords.Clear();
+            keywordBag = new ConcurrentBag<KeywordInfo>();
             titles.Clear();
 
             if(fileFolder.Length != 0 && fileFolder[fileFolder.Length - 1] == '\\')
                 fileFolder = fileFolder.Substring(0, fileFolder.Length - 1);
 
             // Process all *.htm and *.html files in the given folder and all of its subfolders.
-            foreach(string file in Directory.EnumerateFiles(fileFolder, "*.*", SearchOption.AllDirectories))
+            Parallel.ForEach(Directory.EnumerateFiles(fileFolder, "*.*", SearchOption.AllDirectories), file =>
             {
-                ext = Path.GetExtension(file).ToLower(CultureInfo.InvariantCulture);
+                string ext = Path.GetExtension(file).ToLower(CultureInfo.InvariantCulture);
 
                 if(ext == ".htm" || ext == ".html")
                 {
                     ProcessFile(fileFolder, file, localizedOutputFolder);
-                    htmlFiles++;
+                    Interlocked.Add(ref htmlFiles, 1);
                 }
                 else
                     if(localizedOutputFolder != null)
                     {
                         // Copy supporting files only if localizing
-                        destFile = Path.Combine(localizedOutputFolder, file.Substring(fileFolder.Length + 1));
-                        folder = Path.GetDirectoryName(destFile);
+                        string destFile = Path.Combine(localizedOutputFolder, file.Substring(fileFolder.Length + 1));
+                        string folder = Path.GetDirectoryName(destFile);
 
                         if(!Directory.Exists(folder))
                             Directory.CreateDirectory(folder);
 
                         File.Copy(file, destFile, true);
                     }
-            }
+            });
 
             Console.WriteLine("Processed {0} HTML files\r\nSorting keywords and generating See Also indices", htmlFiles);
 
             // Sort the keywords
+            keywords.AddRange(keywordBag);
             keywords.Sort((x, y) =>
             {
                 string subX, subY;
@@ -596,7 +598,10 @@ commas, or other special characters.
                 if(subX != subY)
                     return String.Compare(subX, subY, StringComparison.OrdinalIgnoreCase);
 
-                return String.Compare(x.File, y.File, StringComparison.OrdinalIgnoreCase);
+                subX = titles[Path.GetFileNameWithoutExtension(x.File)].TopicTitle;
+                subY = titles[Path.GetFileNameWithoutExtension(y.File)].TopicTitle;
+
+                return String.Compare(subX, subY, StringComparison.OrdinalIgnoreCase);
             });
 
             // Insert the See Also indices for each sub-entry
@@ -621,15 +626,15 @@ commas, or other special characters.
         /// </summary>
         /// <param name="basePath">The base folder path</param>
         /// <param name="sourceFile">The file to parse</param>
-        /// <param name="localizedOutputFolder">The folder in which to store localized
-        /// output or null for no localized output.</param>
+        /// <param name="localizedOutputFolder">The folder in which to store localized output or null for no
+        /// localized output.</param>
         private static void ProcessFile(string basePath, string sourceFile, string localizedOutputFolder)
         {
             Encoding currentEncoding = Encoding.Default;
             MatchCollection matches;
             Match match;
             KeywordInfo keyword;
-            string content, title, term, folder, key;
+            string content, topicTitle, tocTitle, term, folder, key;
             byte[] currentBytes, convertedBytes;
 
             // Read the file in using the proper encoding
@@ -639,19 +644,19 @@ commas, or other special characters.
                 currentEncoding = sr.CurrentEncoding;
             }
 
-            title = String.Empty;
+            topicTitle = tocTitle = String.Empty;
 
-            // Extract the title
+            // Extract the topic title
             match = reTitle.Match(content);
 
             if(match.Success)
-                title = match.Groups[1].Value;
+                topicTitle = match.Groups[1].Value;
 
-            // If a TOC title entry is present, use that instead
+            // If a TOC title entry is present, get that too
             match = reTocTitle.Match(content);
 
             if(match.Success)
-                title = match.Groups[1].Value;
+                tocTitle = match.Groups[1].Value;
 
             key = Path.GetFileNameWithoutExtension(sourceFile);
 
@@ -659,7 +664,8 @@ commas, or other special characters.
                 Console.WriteLine("SHFB: Warning SHE0004: The key '{0}' used for '{1}' is already in use by '{2}'.  " +
                     "'{1}' will be ignored.", key, sourceFile, titles[key].File);
             else
-                titles.Add(key, new TitleInfo(HttpUtility.HtmlDecode(title), sourceFile));
+                titles.TryAdd(key, new TitleInfo(HttpUtility.HtmlDecode(topicTitle),
+                    HttpUtility.HtmlDecode(tocTitle), sourceFile));
 
             // Extract K index keywords
             matches = reKKeyword.Matches(content);
@@ -685,7 +691,7 @@ commas, or other special characters.
                         keyword.MainEntry = term;
 
                     keyword.File = sourceFile;
-                    keywords.Add(keyword);
+                    keywordBag.Add(keyword);
                 }
             }
 
@@ -746,8 +752,8 @@ commas, or other special characters.
             reader = XmlReader.Create(tocFile, settings);
 
             // Write the table of contents using the appropriate encoding
-            using(StreamWriter writer = new StreamWriter(String.Format(CultureInfo.InvariantCulture, @"{0}\{1}.hhc",
-              outputFolder, projectName), false, Encoding.GetEncoding(codePage)))
+            using(StreamWriter writer = new StreamWriter(Path.Combine(outputFolder, projectName + ".hhc"), false,
+              Encoding.GetEncoding(codePage)))
             {
                 writer.WriteLine("<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML/EN\">\r\n");
                 writer.WriteLine("<HTML>");
@@ -764,7 +770,7 @@ commas, or other special characters.
                                 if(!String.IsNullOrEmpty(key) && titles.ContainsKey(key))
                                 {
                                     titleInfo = titles[key];
-                                    title = titleInfo.Title;
+                                    title = titleInfo.TocTitle;
                                     htmlFile = titleInfo.File.Substring(baseFolderLength);
                                 }
                                 else
@@ -840,69 +846,85 @@ commas, or other special characters.
         /// </summary>
         private static void WriteHelp1xKeywordIndex()
         {
-            string mainEntry;
+            KeywordInfo kw;
+            string title;
             int baseFolderLength = help1Folder.Length + 1;
-            bool inSubEntry = false;
 
             Console.WriteLine(@"Saving HTML Help 1 keyword index to {0}\{1}.hhk", outputFolder, projectName);
 
             // Write the keyword index using the appropriate encoding
-            using(StreamWriter writer = new StreamWriter(String.Format(CultureInfo.InvariantCulture, @"{0}\{1}.hhk",
-              outputFolder, projectName), false, Encoding.GetEncoding(codePage)))
+            using(StreamWriter writer = new StreamWriter(Path.Combine(outputFolder, projectName + ".hhk"), false,
+              Encoding.GetEncoding(codePage)))
             {
                 writer.WriteLine("<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML/EN\">");
                 writer.WriteLine("<HTML>");
                 writer.WriteLine("  <BODY>");
-                writer.WriteLine("    <UL>");
+                writer.Write("    <UL>");
 
-                foreach(KeywordInfo info in keywords)
-                {
-                    if(String.IsNullOrEmpty(info.MainEntry))
-                        continue;
-
-                    mainEntry = info.MainEntry;
-
-                    if(!String.IsNullOrEmpty(info.SubEntry))
+                foreach(var group in keywords.Where(k => !String.IsNullOrEmpty(k.MainEntry)).GroupBy(k => k.MainEntry))
+                    if(group.Count() == 1)
                     {
-                        if(!inSubEntry)
-                        {
-                            inSubEntry = true;
-                            writer.WriteLine("    <UL>");
-                        }
+                        kw = group.First();
 
-                        mainEntry = info.SubEntry;
+                        if(!String.IsNullOrEmpty(kw.File))
+                            WriteHelp1IndexEntry(kw.MainEntry, kw.File.Substring(baseFolderLength).Replace(
+                                '\\', '/'), writer, 3);
                     }
                     else
-                        if(inSubEntry)
-                        {
-                            inSubEntry = false;
-                            writer.WriteLine("    </UL>");
-                        }
+                    {
+                        kw = group.First();
+                        WriteHelp1IndexEntry(kw.MainEntry, null, writer, 3);
 
-                    mainEntry = HttpUtility.HtmlEncode(mainEntry);
+                        WriteContentLine(writer, 3, "<UL>");
 
-                    writer.WriteLine("      <LI><OBJECT type=\"text/sitemap\">");
-                    writer.WriteLine(String.Format(CultureInfo.InvariantCulture,
-                        "        <param name=\"Name\" value=\"{0}\">", mainEntry));
+                        foreach(var k in group)
+                            if(!String.IsNullOrEmpty(k.File))
+                                if(String.IsNullOrEmpty(k.SubEntry))
+                                {
+                                    // Use the target page's title as the entry's title as it will be fully
+                                    // qualified if necessary.
+                                    title = titles[Path.GetFileNameWithoutExtension(k.File)].TopicTitle;
 
-                    if(String.IsNullOrEmpty(info.File))
-                        writer.WriteLine(String.Format(CultureInfo.InvariantCulture,
-                            "        <param name=\"See Also\" value=\"{0}\">", mainEntry));
-                    else
-                        writer.WriteLine(String.Format(CultureInfo.InvariantCulture,
-                            "        <param name=\"Local\" value=\"{0}\">", info.File.Substring(baseFolderLength)));
+                                    WriteHelp1IndexEntry(title, k.File.Substring(baseFolderLength).Replace(
+                                        '\\', '/'), writer, 4);
+                                }
+                                else
+                                    WriteHelp1IndexEntry(k.SubEntry, k.File.Substring(baseFolderLength).Replace(
+                                        '\\', '/'), writer, 4);
 
-                    writer.WriteLine("      </OBJECT></LI>");
-                }
+                        WriteContentLine(writer, 3, "</UL>");
+                    }
 
-                // Close the final element if necessary
-                if(inSubEntry)
-                    writer.WriteLine("    </UL>");
-
+                writer.WriteLine();
                 writer.WriteLine("    </UL>");
                 writer.WriteLine("  </BODY>");
                 writer.WriteLine("</HTML>");
             }
+        }
+
+        /// <summary>
+        /// This is used to write out a Help 1 index entry
+        /// </summary>
+        /// <param name="title">The topic title</param>
+        /// <param name="file">The target filename</param>
+        /// <param name="writer">The stream writer to use</param>
+        /// <param name="indent">The indent level</param>
+        private static void WriteHelp1IndexEntry(string title, string file, StreamWriter writer, int indent)
+        {
+            title = HttpUtility.HtmlEncode(title);
+
+            WriteContentLine(writer, indent, "<LI><OBJECT type=\"text/sitemap\">");
+            WriteContentLine(writer, indent + 1, String.Format(CultureInfo.InvariantCulture,
+                "<param name=\"Name\" value=\"{0}\">", title));
+
+            if(String.IsNullOrEmpty(file))
+                WriteContentLine(writer, indent + 1, String.Format(CultureInfo.InvariantCulture,
+                    "<param name=\"See Also\" value=\"{0}\">", title));
+            else
+                WriteContentLine(writer, indent + 1, String.Format(CultureInfo.InvariantCulture,
+                    "<param name=\"Local\" value=\"{0}\">", file));
+
+            WriteContentLine(writer, indent, "</OBJECT></LI>");
         }
         #endregion
 
@@ -929,8 +951,8 @@ commas, or other special characters.
             reader = XmlReader.Create(tocFile, settings);
 
             // Write the table of contents with UTF-8 encoding
-            using(StreamWriter writer = new StreamWriter(String.Format(CultureInfo.InvariantCulture, @"{0}\WebTOC.xml",
-              outputFolder), false, Encoding.UTF8))
+            using(StreamWriter writer = new StreamWriter(Path.Combine(outputFolder, "WebTOC.xml"), false,
+              Encoding.UTF8))
             {
                 writer.WriteLine("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
                 writer.WriteLine("<HelpTOC>");
@@ -946,7 +968,7 @@ commas, or other special characters.
                                 if(!String.IsNullOrEmpty(key) && titles.ContainsKey(key))
                                 {
                                     titleInfo = titles[key];
-                                    title = titleInfo.Title;
+                                    title = titleInfo.TocTitle;
                                     htmlFile = titleInfo.File.Substring(baseFolderLength).Replace('\\', '/');
                                 }
                                 else
@@ -1002,53 +1024,53 @@ commas, or other special characters.
         /// </summary>
         private static void WriteWebsiteKeywordIndex()
         {
-            string mainEntry;
-            int indentCount = 1, baseFolderLength = websiteFolder.Length + 1;
-            bool inSubEntry = false;
+            KeywordInfo kw;
+            string title;
+            int baseFolderLength = websiteFolder.Length + 1;
 
             Console.WriteLine(@"Saving website keyword index to {0}\WebKI.xml", outputFolder);
 
             // Write the keyword index with UTF-8 encoding
-            using(StreamWriter writer = new StreamWriter(String.Format(CultureInfo.InvariantCulture, @"{0}\WebKI.xml",
-              outputFolder), false, Encoding.UTF8))
+            using(StreamWriter writer = new StreamWriter(Path.Combine(outputFolder, "WebKI.xml"), false,
+              Encoding.UTF8))
             {
                 writer.WriteLine("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
-                writer.WriteLine("<HelpKI>");
+                writer.Write("<HelpKI>");
 
-                foreach(KeywordInfo info in keywords)
-                {
-                    if(String.IsNullOrEmpty(info.MainEntry))
-                        continue;
-
-                    mainEntry = info.MainEntry;
-
-                    if(!String.IsNullOrEmpty(info.SubEntry))
+                foreach(var group in keywords.Where(k => !String.IsNullOrEmpty(k.MainEntry)).GroupBy(k => k.MainEntry))
+                    if(group.Count() == 1)
                     {
-                        if(!inSubEntry)
-                        {
-                            inSubEntry = true;
-                            WriteContentLine(writer, indentCount++, String.Format(CultureInfo.InvariantCulture,
-                                 "<HelpKINode Title=\"{0}\">", HttpUtility.HtmlEncode(mainEntry)));
-                        }
+                        kw = group.First();
 
-                        mainEntry = info.SubEntry;
+                        if(!String.IsNullOrEmpty(kw.File))
+                            WriteContentLine(writer, 1, String.Format(CultureInfo.InvariantCulture,
+                                "<HelpKINode Title=\"{0}\" Url=\"{1}\" />", HttpUtility.HtmlEncode(kw.MainEntry),
+                                kw.File.Substring(baseFolderLength).Replace('\\', '/')));
                     }
                     else
-                        if(inSubEntry)
-                        {
-                            inSubEntry = false;
-                            WriteContentLine(writer, --indentCount, "</HelpKINode>");
-                        }
+                    {
+                        WriteContentLine(writer, 1, String.Format(CultureInfo.InvariantCulture,
+                             "<HelpKINode Title=\"{0}\">", HttpUtility.HtmlEncode(group.Key)));
 
-                    if(!String.IsNullOrEmpty(info.File))
-                        WriteContentLine(writer, indentCount, String.Format(CultureInfo.InvariantCulture,
-                            "<HelpKINode Title=\"{0}\" Url=\"{1}\" />", HttpUtility.HtmlEncode(mainEntry),
-                            info.File.Substring(baseFolderLength).Replace('\\', '/')));
-                }
+                        foreach(var k in group)
+                            if(!String.IsNullOrEmpty(k.File))
+                                if(String.IsNullOrEmpty(k.SubEntry))
+                                {
+                                    // Use the target page's title as the entry's title as it will be fully
+                                    // qualified if necessary.
+                                    title = titles[Path.GetFileNameWithoutExtension(k.File)].TopicTitle;
 
-                // Close the final element if necessary
-                if(inSubEntry)
-                    WriteContentLine(writer, --indentCount, "</HelpKINode>");
+                                    WriteContentLine(writer, 2, String.Format(CultureInfo.InvariantCulture,
+                                        "<HelpKINode Title=\"{0}\" Url=\"{1}\" />", HttpUtility.HtmlEncode(title),
+                                        k.File.Substring(baseFolderLength).Replace('\\', '/')));
+                                }
+                                else
+                                    WriteContentLine(writer, 2, String.Format(CultureInfo.InvariantCulture,
+                                        "<HelpKINode Title=\"{0}\" Url=\"{1}\" />", HttpUtility.HtmlEncode(k.SubEntry),
+                                        k.File.Substring(baseFolderLength).Replace('\\', '/')));
+
+                        WriteContentLine(writer, 1, "</HelpKINode>");
+                    }
 
                 writer.WriteLine();
                 writer.WriteLine("</HelpKI>");

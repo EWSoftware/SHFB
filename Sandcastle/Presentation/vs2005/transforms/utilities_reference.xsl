@@ -29,7 +29,9 @@
 				<META NAME="save" CONTENT="history"/>
 				<xsl:call-template name="insertNoIndexNoFollow" />
 				<title>
-					<xsl:call-template name="topicTitlePlain"/>
+					<xsl:call-template name="topicTitlePlain">
+						<xsl:with-param name="qualifyMembers" select="true()" />
+					</xsl:call-template>
 				</title>
 				<xsl:call-template name="insert30Metadata" />
 				<xsl:call-template name="insertStylesheets" />

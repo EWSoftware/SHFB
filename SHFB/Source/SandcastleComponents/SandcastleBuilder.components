@@ -353,7 +353,7 @@ The ESent database engine is part of every version of Microsoft Windows and no s
 
 	<!-- ****************************************************************** -->
 
-	<component id="Resolve References Links (SQL Server Cache)"
+	<component id="Resolve References Links (SQL Cache)"
 		type="SandcastleBuilder.Components.SqlResolveReferenceLinksComponent"
 		assembly="{@SHFBFolder}SandcastleBuilder.Components.dll"
 		locale="{@Locale}" linkTarget="{@SdkLinkTarget}">
@@ -370,10 +370,10 @@ This component requires access to a SQL Server instance.  Express and LocalDB ve
 		<defaultConfiguration>
 			<helpOutput format="HtmlHelp1">
 				<msdnContentIdCache path="{@LocalDataFolder}Cache\MsdnContentId.cache" localCacheSize="2500"
-					connectionString="Data Source=.\SQLEXPRESS;Initial Catalog=Sandcastle;Integrated Security=True;Application Name=&quot;Sandcastle BuildAssembler&quot;" />
+					connectionString="Data Source=(localdb)\v11.0;Initial Catalog=Sandcastle;Integrated Security=True;Application Name=&quot;Sandcastle BuildAssembler&quot;" />
 				<targets base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" type="{@HtmlSdkLinkType}"
 					id="FrameworkTargets" localCacheSize="2500"
-					connectionString="Data Source=.\SQLEXPRESS;Initial Catalog=Sandcastle;Integrated Security=True;Application Name=&quot;Sandcastle BuildAssembler&quot;">
+					connectionString="Data Source=(localdb)\v11.0;Initial Catalog=Sandcastle;Integrated Security=True;Application Name=&quot;Sandcastle BuildAssembler&quot;">
 					{@ReferenceLinkNamespaceFiles}
 				</targets>
 				<targets files="reflection.xml" type="Local" id="ProjectTargets" />
@@ -381,10 +381,10 @@ This component requires access to a SQL Server instance.  Express and LocalDB ve
 
 			<helpOutput format="MSHelp2">
 				<msdnContentIdCache path="{@LocalDataFolder}Cache\MsdnContentId.cache" localCacheSize="2500"
-					connectionString="Data Source=.\SQLEXPRESS;Initial Catalog=Sandcastle;Integrated Security=True;Application Name=&quot;Sandcastle BuildAssembler&quot;" />
+					connectionString="Data Source=(localdb)\v11.0;Initial Catalog=Sandcastle;Integrated Security=True;Application Name=&quot;Sandcastle BuildAssembler&quot;" />
 				<targets base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" type="{@MSHelp2SdkLinkType}"
 					id="FrameworkTargets" localCacheSize="2500"
-					connectionString="Data Source=.\SQLEXPRESS;Initial Catalog=Sandcastle;Integrated Security=True;Application Name=&quot;Sandcastle BuildAssembler&quot;">
+					connectionString="Data Source=(localdb)\v11.0;Initial Catalog=Sandcastle;Integrated Security=True;Application Name=&quot;Sandcastle BuildAssembler&quot;">
 					{@ReferenceLinkNamespaceFiles}
 				</targets>
 				<targets files="reflection.xml" type="Index" id="ProjectTargets" />
@@ -392,10 +392,10 @@ This component requires access to a SQL Server instance.  Express and LocalDB ve
 
 			<helpOutput format="MSHelpViewer">
 				<msdnContentIdCache path="{@LocalDataFolder}Cache\MsdnContentId.cache" localCacheSize="2500"
-					connectionString="Data Source=.\SQLEXPRESS;Initial Catalog=Sandcastle;Integrated Security=True;Application Name=&quot;Sandcastle BuildAssembler&quot;" />
+					connectionString="Data Source=(localdb)\v11.0;Initial Catalog=Sandcastle;Integrated Security=True;Application Name=&quot;Sandcastle BuildAssembler&quot;" />
 				<targets base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" type="{@MSHelpViewerSdkLinkType}"
 					id="FrameworkTargets" localCacheSize="2500"
-					connectionString="Data Source=.\SQLEXPRESS;Initial Catalog=Sandcastle;Integrated Security=True;Application Name=&quot;Sandcastle BuildAssembler&quot;">
+					connectionString="Data Source=(localdb)\v11.0;Initial Catalog=Sandcastle;Integrated Security=True;Application Name=&quot;Sandcastle BuildAssembler&quot;">
 					{@ReferenceLinkNamespaceFiles}
 				</targets>
 				<targets files="reflection.xml" type="Id" id="ProjectTargets" />
@@ -403,10 +403,10 @@ This component requires access to a SQL Server instance.  Express and LocalDB ve
 
 			<helpOutput format="Website">
 				<msdnContentIdCache path="{@LocalDataFolder}Cache\MsdnContentId.cache" localCacheSize="2500"
-					connectionString="Data Source=.\SQLEXPRESS;Initial Catalog=Sandcastle;Integrated Security=True;Application Name=&quot;Sandcastle BuildAssembler&quot;" />
+					connectionString="Data Source=(localdb)\v11.0;Initial Catalog=Sandcastle;Integrated Security=True;Application Name=&quot;Sandcastle BuildAssembler&quot;" />
 				<targets base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" type="{@WebsiteSdkLinkType}"
 					id="FrameworkTargets" localCacheSize="2500"
-					connectionString="Data Source=.\SQLEXPRESS;Initial Catalog=Sandcastle;Integrated Security=True;Application Name=&quot;Sandcastle BuildAssembler&quot;">
+					connectionString="Data Source=(localdb)\v11.0;Initial Catalog=Sandcastle;Integrated Security=True;Application Name=&quot;Sandcastle BuildAssembler&quot;">
 					{@ReferenceLinkNamespaceFiles}
 				</targets>
 				<targets files="reflection.xml" type="Local" id="ProjectTargets" />
@@ -457,6 +457,57 @@ The ESent database engine is part of every version of Microsoft Windows and no s
 
 		<defaultConfiguration>
 			<index name="comments" value="/doc/members/member" key="@name" cache="30">
+				{@CachedFrameworkCommentList}
+				{@CommentFileList}
+			</index>
+			<copy name="comments" source="*" target="/document/comments" />
+		</defaultConfiguration>
+	</component>
+
+	<!-- ****************************************************************** -->
+
+	<component id="Reflection Index Data (SQL Cache)"
+		type="SandcastleBuilder.Components.SqlCopyFromIndexComponent"
+		assembly="{@SHFBFolder}SandcastleBuilder.Components.dll">
+		<description>This component is used to index reflection data for copying into topics.  It uses a SQL database to cache the .NET Framework reflection data.  This speeds up initialization and conserves memory at the expense of some build time in larger projects.
+
+This component requires access to a SQL Server instance.  Express and LocalDB versions are supported.  Some initial configuration and set up steps are required.</description>
+
+		<insert placement="replace" instance="1" type="Microsoft.Ddue.Tools.CopyFromIndexComponent" />
+
+		<!-- Not editable at all -->
+		<configureMethod name="-" />
+
+		<defaultConfiguration>
+			<index name="reflection" value="/reflection/apis/api" key="@id" cache="15"
+				connectionString="Data Source=(localdb)\v11.0;Initial Catalog=Sandcastle;Integrated Security=True;Application Name=&quot;Sandcastle BuildAssembler&quot;">
+				<data base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" duplicateWarning="false"
+					groupId="ReflectionIndexCache" localCacheSize="2500">
+					{@ReferenceLinkNamespaceFiles}
+				</data>
+				<data files="reflection.xml" />
+			</index>
+			<copy name="reflection" source="*" target="/document/reference" />
+		</defaultConfiguration>
+	</component>
+
+	<!-- ****************************************************************** -->
+
+	<component id="Comments Index Data (SQL Cache)"
+		type="SandcastleBuilder.Components.SqlCopyFromIndexComponent"
+		assembly="{@SHFBFolder}SandcastleBuilder.Components.dll">
+		<description>This component is used to index framework comments for copying into topics.  It uses a SQL database to cache the .NET Framework comments.  This speeds up initialization and conserves memory at the expense of some build time in larger projects.
+
+This component requires access to a SQL Server instance.  Express and LocalDB versions are supported.  Some initial configuration and set up steps are required.</description>
+
+		<insert placement="replace" instance="3" type="Microsoft.Ddue.Tools.CopyFromIndexComponent" />
+
+		<!-- Not editable at all -->
+		<configureMethod name="-" />
+
+		<defaultConfiguration>
+			<index name="comments" value="/doc/members/member" key="@name" cache="30"
+				connectionString="Data Source=(localdb)\v11.0;Initial Catalog=Sandcastle;Integrated Security=True;Application Name=&quot;Sandcastle BuildAssembler&quot;">
 				{@CachedFrameworkCommentList}
 				{@CommentFileList}
 			</index>

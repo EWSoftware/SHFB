@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : ComponentPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 11/21/2012
-// Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
+// Updated : 02/24/2013
+// Note    : Copyright 2011-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This user control is used to edit the Components category properties
@@ -30,6 +30,7 @@ using System.Windows.Forms;
 using Microsoft.Build.Evaluation;
 
 #if !STANDALONEGUI
+using SandcastleBuilder.Package.Nodes;
 using SandcastleBuilder.Package.Properties;
 #endif
 
@@ -160,18 +161,20 @@ namespace SandcastleBuilder.Package.PropertyPages
                 }
             }
 
-            currentConfigs = new ComponentConfigurationDictionary(null);
             lbProjectComponents.Items.Clear();
 
 #if !STANDALONEGUI
             if(this.ProjectMgr == null)
                 return false;
 
+            currentConfigs = new ComponentConfigurationDictionary(
+                ((SandcastleBuilderProjectNode)base.ProjectMgr).SandcastleProject);
             projProp = this.ProjectMgr.BuildProject.GetProperty("ComponentConfigurations");
 #else
             if(this.CurrentProject == null)
                 return false;
 
+            currentConfigs = new ComponentConfigurationDictionary(this.CurrentProject);
             projProp = this.CurrentProject.MSBuildProject.GetProperty("ComponentConfigurations");
 #endif
             if(projProp != null && !String.IsNullOrEmpty(projProp.UnevaluatedValue))

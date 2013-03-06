@@ -277,8 +277,7 @@ namespace Microsoft.Ddue.Tools
                 foreach(var cache in BuildComponent.Data.Values.OfType<IndexedCache>().Where(
                   c => c.Component == this))
                 {
-                    this.WriteMessage(MessageLevel.Diagnostic, "\"{0}\" cache entries used: {1}", cache.Name,
-                        cache.CacheEntriesUsed);
+                    cache.ReportCacheStatistics();
                     cache.Dispose();
                 }
 

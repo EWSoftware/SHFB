@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SandcastleBuilderProjectNode.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/14/2012
-// Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
+// Updated : 03/04/2013
+// Note    : Copyright 2011-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the class that represents a project node in a Sandcastle Help File Builder Visual Studio
@@ -235,7 +235,7 @@ namespace SandcastleBuilder.Package.Nodes
         /// <summary>
         /// Open the current project in the standalone SHFB GUI
         /// </summary>
-        private void OpenInStandaloneGui()
+        internal void OpenInStandaloneGui()
         {
             try
             {
@@ -775,12 +775,11 @@ namespace SandcastleBuilder.Package.Nodes
           ref QueryStatusResult result)
         {
             if(cmdGroup == GuidList.guidSandcastleBuilderPackageCmdSet &&
-              (cmd == PkgCmdIDList.OpenInStandaloneGUI || cmd == PkgCmdIDList.AboutSHFB ||
-              cmd == PkgCmdIDList.ViewBuildLog))
+              (cmd == PkgCmdIDList.OpenInStandaloneGUI || cmd == PkgCmdIDList.ViewBuildLog))
             {
                 result |= QueryStatusResult.SUPPORTED;
 
-                if(!base.BuildInProgress || cmd == PkgCmdIDList.AboutSHFB)
+                if(!base.BuildInProgress)
                     result |= QueryStatusResult.ENABLED;
 
                 return VSConstants.S_OK;
@@ -799,13 +798,6 @@ namespace SandcastleBuilder.Package.Nodes
             if(cmdGroup == GuidList.guidSandcastleBuilderPackageCmdSet)
                 switch(cmd)
                 {
-                    case PkgCmdIDList.AboutSHFB:
-                        using(AboutDlg dlg = new AboutDlg())
-                        {
-                            dlg.ShowDialog();
-                        }
-                        return VSConstants.S_OK;
-
                     case PkgCmdIDList.OpenInStandaloneGUI:
                         this.OpenInStandaloneGui();
                         return VSConstants.S_OK;

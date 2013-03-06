@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Components
 // File    : PostTransformConfigDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/17/2012
-// Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
+// Updated : 02/27/2013
+// Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // The post transform component is obsolete and will be removed in a future release.
@@ -29,7 +29,7 @@ using System.IO;
 using System.Windows.Forms;
 using System.Xml;
 
-namespace SandcastleBuilder.Components
+namespace SandcastleBuilder.Components.UI
 {
     /// <summary>
     /// This form is used to configure the settings for the <see cref="PostTransformComponent"/>
