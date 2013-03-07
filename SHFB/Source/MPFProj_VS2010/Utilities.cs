@@ -1,13 +1,50 @@
-/***************************************************************************
+/********************************************************************************************
 
-Copyright (c) Microsoft Corporation. All rights reserved.
-This code is licensed under the Visual Studio SDK license terms.
-THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF
-ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY
-IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR
-PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.
+Copyright (c) Microsoft Corporation 
+All rights reserved. 
 
-***************************************************************************/
+Microsoft Public License: 
+
+This license governs use of the accompanying software. If you use the software, you 
+accept this license. If you do not accept the license, do not use the software. 
+
+1. Definitions 
+The terms "reproduce," "reproduction," "derivative works," and "distribution" have the 
+same meaning here as under U.S. copyright law. 
+A "contribution" is the original software, or any additions or changes to the software. 
+A "contributor" is any person that distributes its contribution under this license. 
+"Licensed patents" are a contributor's patent claims that read directly on its contribution. 
+
+2. Grant of Rights 
+(A) Copyright Grant- Subject to the terms of this license, including the license conditions 
+and limitations in section 3, each contributor grants you a non-exclusive, worldwide, 
+royalty-free copyright license to reproduce its contribution, prepare derivative works of 
+its contribution, and distribute its contribution or any derivative works that you create. 
+(B) Patent Grant- Subject to the terms of this license, including the license conditions 
+and limitations in section 3, each contributor grants you a non-exclusive, worldwide, 
+royalty-free license under its licensed patents to make, have made, use, sell, offer for 
+sale, import, and/or otherwise dispose of its contribution in the software or derivative 
+works of the contribution in the software. 
+
+3. Conditions and Limitations 
+(A) No Trademark License- This license does not grant you rights to use any contributors' 
+name, logo, or trademarks. 
+(B) If you bring a patent claim against any contributor over patents that you claim are 
+infringed by the software, your patent license from such contributor to the software ends 
+automatically. 
+(C) If you distribute any portion of the software, you must retain all copyright, patent, 
+trademark, and attribution notices that are present in the software. 
+(D) If you distribute any portion of the software in source code form, you may do so only 
+under this license by including a complete copy of this license with your distribution. 
+If you distribute any portion of the software in compiled or object code form, you may only 
+do so under a license that complies with this license. 
+(E) The software is licensed "as-is." You bear the risk of using it. The contributors give 
+no express warranties, guarantees or conditions. You may have additional consumer rights 
+under your local laws which this license cannot change. To the extent permitted under your 
+local laws, the contributors exclude the implied warranties of merchantability, fitness for 
+a particular purpose and non-infringement.
+
+********************************************************************************************/
 
 //===============================================================================================================
 // File    : Utilities.cs
@@ -405,7 +442,7 @@ namespace Microsoft.VisualStudio.Project
         /// Gets the active configuration name.
         /// </summary>
         /// <param name="automationObject">The automation object.</param>
-        /// <returns>The name of the active configuartion.</returns>		
+        /// <returns>The name of the active configuartion.</returns>        
         internal static string GetActiveConfigurationName(EnvDTE.Project automationObject)
         {
             if(automationObject == null)
@@ -493,7 +530,7 @@ namespace Microsoft.VisualStudio.Project
                 }
 
                 // We might already have an IUnknown, but if this is an aggregated
-                // object, it may not be THE IUnknown until we QI for it.				
+                // object, it may not be THE IUnknown until we QI for it.                
                 Guid IID_IUnknown = VSConstants.IID_IUnknown;
                 ErrorHandler.ThrowOnFailure(Marshal.QueryInterface(unknown, ref IID_IUnknown, out result));
             }
@@ -765,6 +802,32 @@ namespace Microsoft.VisualStudio.Project
         }
 
         /// <summary>
+        /// Get the outer T implementation
+        /// </summary>
+        internal static T GetOuterAs<T>(object o)
+            where T : class
+        {
+            T hierarchy = null;
+
+            // The hierarchy of a node is its project node hierarchy.
+            IntPtr projectUnknown = Marshal.GetIUnknownForObject(o);
+
+            try
+            {
+                hierarchy = (T)Marshal.GetTypedObjectForIUnknown(projectUnknown, typeof(T));
+            }
+            finally
+            {
+                if (projectUnknown != IntPtr.Zero)
+                {
+                    Marshal.Release(projectUnknown);
+                }
+            }
+
+            return hierarchy;
+        }
+
+        /// <summary>
         /// Gets an instance of an EnumConverter for enums that have PropertyPageTypeConverter attribute
         /// </summary>
         /// <typeparam name="T">The type to search for the PropertyPageTypeConverter attribute.</typeparam>
@@ -959,7 +1022,9 @@ namespace Microsoft.VisualStudio.Project
         /// Retrives the configuration and the platform using the IVsSolutionBuildManager2 interface.
         /// </summary>
         /// <param name="serviceProvider">A service provider.</param>
-        /// <param name="hierarchy">The hierrachy whose configuration is requested.</param>
+        /// <param name="hierarchy">The hierarchy whose configuration is requested.  This method calls into 
+        /// native code and may be called on a background thread, so make sure the IVsHierarchy passed is 
+        /// safe to use for that sort of interop.</param>
         /// <param name="configuration">The name of the active configuration.</param>
         /// <param name="platform">The name of the platform.</param>
         /// <returns>true if successfull.</returns>

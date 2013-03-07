@@ -1,13 +1,50 @@
-/***************************************************************************
+/********************************************************************************************
 
-Copyright (c) Microsoft Corporation. All rights reserved.
-This code is licensed under the Visual Studio SDK license terms.
-THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF
-ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY
-IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR
-PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.
+Copyright (c) Microsoft Corporation 
+All rights reserved. 
 
-***************************************************************************/
+Microsoft Public License: 
+
+This license governs use of the accompanying software. If you use the software, you 
+accept this license. If you do not accept the license, do not use the software. 
+
+1. Definitions 
+The terms "reproduce," "reproduction," "derivative works," and "distribution" have the 
+same meaning here as under U.S. copyright law. 
+A "contribution" is the original software, or any additions or changes to the software. 
+A "contributor" is any person that distributes its contribution under this license. 
+"Licensed patents" are a contributor's patent claims that read directly on its contribution. 
+
+2. Grant of Rights 
+(A) Copyright Grant- Subject to the terms of this license, including the license conditions 
+and limitations in section 3, each contributor grants you a non-exclusive, worldwide, 
+royalty-free copyright license to reproduce its contribution, prepare derivative works of 
+its contribution, and distribute its contribution or any derivative works that you create. 
+(B) Patent Grant- Subject to the terms of this license, including the license conditions 
+and limitations in section 3, each contributor grants you a non-exclusive, worldwide, 
+royalty-free license under its licensed patents to make, have made, use, sell, offer for 
+sale, import, and/or otherwise dispose of its contribution in the software or derivative 
+works of the contribution in the software. 
+
+3. Conditions and Limitations 
+(A) No Trademark License- This license does not grant you rights to use any contributors' 
+name, logo, or trademarks. 
+(B) If you bring a patent claim against any contributor over patents that you claim are 
+infringed by the software, your patent license from such contributor to the software ends 
+automatically. 
+(C) If you distribute any portion of the software, you must retain all copyright, patent, 
+trademark, and attribution notices that are present in the software. 
+(D) If you distribute any portion of the software in source code form, you may do so only 
+under this license by including a complete copy of this license with your distribution. 
+If you distribute any portion of the software in compiled or object code form, you may only 
+do so under a license that complies with this license. 
+(E) The software is licensed "as-is." You bear the risk of using it. The contributors give 
+no express warranties, guarantees or conditions. You may have additional consumer rights 
+under your local laws which this license cannot change. To the extent permitted under your 
+local laws, the contributors exclude the implied warranties of merchantability, fitness for 
+a particular purpose and non-infringement.
+
+********************************************************************************************/
 
 //===============================================================================================================
 // File    : ProjectNode.cs
@@ -799,6 +836,57 @@ namespace Microsoft.VisualStudio.Project
         }
 
         /// <summary>
+        /// Version of this node as an IVsHierarchy that can be safely passed to native code from a background thread. 
+        /// </summary>
+        public IVsHierarchy InteropSafeIVsHierarchy
+        {
+            get;
+            protected set;
+        }
+
+        /// <summary>
+        /// Version of this node as an IVsUIHierarchy that can be safely passed to native code from a background thread. 
+        /// </summary>
+        public IVsUIHierarchy InteropSafeIVsUIHierarchy
+        {
+            get;
+            protected set;
+        }
+
+        /// <summary>
+        /// Version of this node as an IVsProject3 that can be safely passed to native code from a background thread. 
+        /// </summary>
+        public IVsProject3 InteropSafeIVsProject3
+        {
+            get;
+            protected set;
+        }
+
+        /// <summary>
+        /// Version of this node as an IVsSccProject2 that can be safely passed to native code from a background thread. 
+        /// </summary>
+        public IVsSccProject2 InteropSafeIVsSccProject2
+        {
+            get;
+            protected set;
+        }
+
+        /// <summary>
+        /// Version of this node as an IVsUIHierWinClipboardHelperEvents that can be safely passed to native code from a background thread. 
+        /// </summary>
+        public IVsUIHierWinClipboardHelperEvents InteropSafeIVsUIHierWinClipboardHelperEvents
+        {
+            get;
+            protected set;
+        }
+
+        public IVsComponentUser InteropSafeIVsComponentUser
+        {
+            get;
+            protected set;
+        }
+
+        /// <summary>
         /// Gets or sets the flag whether query edit should communicate with the scc manager.
         /// </summary>
         protected bool DisableQueryEdit
@@ -1302,7 +1390,7 @@ namespace Microsoft.VisualStudio.Project
             // Remove the entire project from the solution
             IVsSolution solution = this.Site.GetService(typeof(SVsSolution)) as IVsSolution;
             uint iOption = 1; // SLNSAVEOPT_PromptSave
-            ErrorHandler.ThrowOnFailure(solution.CloseSolutionElement(iOption, this, 0));
+            ErrorHandler.ThrowOnFailure(solution.CloseSolutionElement(iOption, this.InteropSafeIVsHierarchy, 0));
         }
 
         /// <summary>
@@ -1738,7 +1826,7 @@ namespace Microsoft.VisualStudio.Project
                     string browseFilters = "Component Files (*.exe;*.dll)\0*.exe;*.dll\0";
                     ErrorHandler.ThrowOnFailure(componentDialog.ComponentSelectorDlg5(
                         (System.UInt32)(__VSCOMPSELFLAGS.VSCOMSEL_MultiSelectMode | __VSCOMPSELFLAGS.VSCOMSEL_IgnoreMachineName),
-                        (IVsComponentUser)this,
+                        this.InteropSafeIVsComponentUser,
                         0,
                         null,
                         SR.GetString(SR.AddReferenceDialogTitle, CultureInfo.CurrentUICulture),   // Title
@@ -1823,7 +1911,7 @@ namespace Microsoft.VisualStudio.Project
 
                 // based on the passed in flags, this either reloads/loads a project, or tries to create a new one
                 // now we create a new project... we do that by loading the template and then saving under a new name
-                // we also need to copy all the associated files with it.                    
+                // we also need to copy all the associated files with it.					
                 if ((flags & (uint)__VSCREATEPROJFLAGS.CPF_CLONEFILE) == (uint)__VSCREATEPROJFLAGS.CPF_CLONEFILE)
                 {
                     Debug.Assert(!String.IsNullOrEmpty(fileName) && File.Exists(fileName), "Invalid filename passed to load the project. A valid filename is expected");
@@ -2173,8 +2261,25 @@ namespace Microsoft.VisualStudio.Project
                 }
             }
 
+            // Even though the options are the same, when this config was originally set, it may have been before 
+            // the project system was ready to set up its configuration, so go ahead and call through to SetConfiguration 
+            // anyway -- it should do effectively nothing if the config is the same and all the initialization has 
+            // already occurred. 
             if (this.options != null && String.Equals(this.options.Config, config, StringComparison.OrdinalIgnoreCase))
+            {
+                if (config != null)
+                {
+                    // Fancy dance with the options required because SetConfiguration nulls out this.options 
+                    // even if the configuration itself has not changed; whereas we're only calling SetConfiguration 
+                    // for purposes of initializing some other fields here; since we know the config is the same, it
+                    // should be perfectly safe to keep the same options as before.  
+                    ProjectOptions currentOptions = this.options;
+                    this.SetConfiguration(config);
+                    this.options = currentOptions;
+                }
+
                 return this.options;
+            }
 
             ProjectOptions options = CreateProjectOptions();
             options.Config = config;
@@ -2393,11 +2498,11 @@ namespace Microsoft.VisualStudio.Project
             {
                 // Probably in a unit test.
                 ////throw new InvalidOperationException("Unable to acquire the SVsTrackProjectRetargeting service.");
-                Marshal.ThrowExceptionForHR(UpdateTargetFramework(this, currentTargetFramework.FullName, newTargetFramework.FullName));
+                Marshal.ThrowExceptionForHR(UpdateTargetFramework(this.InteropSafeIVsHierarchy, currentTargetFramework.FullName, newTargetFramework.FullName));
             }
             else
             {
-                Marshal.ThrowExceptionForHR(retargetingService.OnSetTargetFramework(this, currentTargetFramework.FullName, newTargetFramework.FullName, this, true));
+                Marshal.ThrowExceptionForHR(retargetingService.OnSetTargetFramework(this.InteropSafeIVsHierarchy, currentTargetFramework.FullName, newTargetFramework.FullName, this, true));
             }
         }
 
@@ -2651,7 +2756,7 @@ namespace Microsoft.VisualStudio.Project
                     if (itemid != VSConstants.VSITEMID_SELECTION)
                     {
                         // This is a single selection. Compare hirarchy with our hierarchy and get node from itemid
-                        if (Utilities.IsSameComObject(this, hierarchy))
+                        if (Utilities.IsSameComObject(this.InteropSafeIVsHierarchy, hierarchy))
                         {
                             HierarchyNode node = this.NodeFromItemId(itemid);
                             if (node != null)
@@ -2679,7 +2784,7 @@ namespace Microsoft.VisualStudio.Project
                         bool isSingleHierarchy = (isSingleHierarchyInt != 0);
 
                         // Now loop all selected items and add to the list only those that are selected within this hierarchy
-                        if (!isSingleHierarchy || (isSingleHierarchy && Utilities.IsSameComObject(this, hierarchy)))
+                        if (!isSingleHierarchy || (isSingleHierarchy && Utilities.IsSameComObject(this.InteropSafeIVsHierarchy, hierarchy)))
                         {
                             Debug.Assert(numberOfSelectedItems > 0, "Bad number of selected itemd");
                             VSITEMSELECTION[] vsItemSelections = new VSITEMSELECTION[numberOfSelectedItems];
@@ -2687,7 +2792,7 @@ namespace Microsoft.VisualStudio.Project
                             ErrorHandler.ThrowOnFailure(multiItemSelect.GetSelectedItems(flags, numberOfSelectedItems, vsItemSelections));
                             foreach (VSITEMSELECTION vsItemSelection in vsItemSelections)
                             {
-                                if (isSingleHierarchy || Utilities.IsSameComObject(this, vsItemSelection.pHier))
+                                if (isSingleHierarchy || Utilities.IsSameComObject(this.InteropSafeIVsHierarchy, vsItemSelection.pHier))
                                 {
                                     HierarchyNode node = this.NodeFromItemId(vsItemSelection.itemid);
                                     if (node != null)
@@ -2831,7 +2936,7 @@ namespace Microsoft.VisualStudio.Project
 
             int canContinue = 0;
             IVsSolution vsSolution = (IVsSolution)this.GetService(typeof(SVsSolution));
-            if (ErrorHandler.Succeeded(vsSolution.QueryRenameProject(this, oldFile, newFile, 0, out canContinue))
+            if (ErrorHandler.Succeeded(vsSolution.QueryRenameProject(this.InteropSafeIVsProject3, oldFile, newFile, 0, out canContinue))
                 && canContinue != 0)
             {
                 bool isFileSame = NativeMethods.IsSamePath(oldFile, newFile);
@@ -2879,7 +2984,7 @@ namespace Microsoft.VisualStudio.Project
                     this.OnPropertyChanged(this, (int)__VSHPROPID.VSHPROPID_Caption, 0);
 
                     // Update solution
-                    ErrorHandler.ThrowOnFailure(vsSolution.OnAfterRenameProject((IVsProject)this, oldFile, newFile, 0));
+                    ErrorHandler.ThrowOnFailure(vsSolution.OnAfterRenameProject(this.InteropSafeIVsProject3, oldFile, newFile, 0));
 
                     ErrorHandler.ThrowOnFailure(shell.RefreshPropertyBrowser(0));
                 }
@@ -3273,7 +3378,7 @@ namespace Microsoft.VisualStudio.Project
             }
 
             int canRenameContinue = 0;
-            ErrorHandler.ThrowOnFailure(solution.QueryRenameProject(this, this.filename, newFileName, 0, out canRenameContinue));
+            ErrorHandler.ThrowOnFailure(solution.QueryRenameProject(this.InteropSafeIVsProject3, this.filename, newFileName, 0, out canRenameContinue));
 
             if (canRenameContinue == 0)
             {
@@ -3295,7 +3400,7 @@ namespace Microsoft.VisualStudio.Project
                 //Redraw.
                 this.OnPropertyChanged(this, (int)__VSHPROPID.VSHPROPID_Caption, 0);
 
-                ErrorHandler.ThrowOnFailure(solution.OnAfterRenameProject(this, oldName, this.filename, 0));
+                ErrorHandler.ThrowOnFailure(solution.OnAfterRenameProject(this.InteropSafeIVsProject3, oldName, this.filename, 0));
 
                 IVsUIShell shell = this.Site.GetService(typeof(SVsUIShell)) as IVsUIShell;
                 Debug.Assert(shell != null, "Could not get the ui shell from the project");
@@ -3342,7 +3447,7 @@ namespace Microsoft.VisualStudio.Project
         /// Adds a file to the msbuild project.
         /// </summary>
         /// <param name="file">The file to be added.</param>
-        /// <returns>A Projectelement describing the newly added file.</returns>
+        /// <returns>A ProjectElement describing the newly added file.</returns>
         [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "ToMs")]
         [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Ms")]
         protected internal virtual ProjectElement AddFileToMsBuild(string file)
@@ -3638,7 +3743,7 @@ namespace Microsoft.VisualStudio.Project
                 return;
 
             // We cannot change properties during the build so if the config
-            // we want to se is the current, we do nothing otherwise we fail.
+            // we want to set is the current, we do nothing otherwise we fail.
             if (this.BuildInProgress)
             {
                 EnvDTE.Project automationObject = this.GetAutomationObject() as EnvDTE.Project;
@@ -3798,7 +3903,7 @@ namespace Microsoft.VisualStudio.Project
         /// </summary>
         protected internal virtual void LoadNonBuildInformation()
         {
-            IPersistXMLFragment outerHierarchy = HierarchyNode.GetOuterHierarchy(this) as IPersistXMLFragment;
+            IPersistXMLFragment outerHierarchy = this.InteropSafeIVsHierarchy as IPersistXMLFragment;
             if (outerHierarchy != null)
             {
                 this.LoadXmlFragment(outerHierarchy, null);
@@ -3847,13 +3952,13 @@ namespace Microsoft.VisualStudio.Project
             // was changed.
             // If it is not null we got the event because a project in teh configuration manager has changed its active configuration.
             // We care only about our project in the default implementation.
-            if (eventArgs == null || eventArgs.Hierarchy == null || !Utilities.IsSameComObject(eventArgs.Hierarchy, this))
+            if (eventArgs == null || eventArgs.Hierarchy == null || !Utilities.IsSameComObject(eventArgs.Hierarchy, this.InteropSafeIVsHierarchy))
             {
                 return;
             }
 
             string name, platform;
-            if (!Utilities.TryGetActiveConfigurationAndPlatform(this.Site, this, out name, out platform))
+            if (!Utilities.TryGetActiveConfigurationAndPlatform(this.Site, this.InteropSafeIVsHierarchy, out name, out platform))
             {
                 throw new InvalidOperationException();
             }
@@ -3872,7 +3977,7 @@ namespace Microsoft.VisualStudio.Project
         /// <summary>
         /// Flush any remaining content from build logger.
         /// This method is called as part of the callback method passed to the buildsubmission during async build
-        /// so that results can be printed the the build is fisinshed.
+        /// so that results can be printed the the build is finished.
         /// </summary>
         protected virtual void FlushBuildLoggerContent()
         {
@@ -4318,7 +4423,7 @@ namespace Microsoft.VisualStudio.Project
 
             if (sccManager != null)
             {
-                ErrorHandler.ThrowOnFailure(sccManager.RegisterSccProject(this, this.sccProjectName, this.sccAuxPath, this.sccLocalPath, this.sccProvider));
+                ErrorHandler.ThrowOnFailure(sccManager.RegisterSccProject(this.InteropSafeIVsSccProject2, this.sccProjectName, this.sccAuxPath, this.sccLocalPath, this.sccProvider));
 
                 this.isRegisteredWithScc = true;
             }
@@ -4340,7 +4445,7 @@ namespace Microsoft.VisualStudio.Project
 
             if (sccManager != null)
             {
-                ErrorHandler.ThrowOnFailure(sccManager.UnregisterSccProject(this));
+                ErrorHandler.ThrowOnFailure(sccManager.UnregisterSccProject(this.InteropSafeIVsSccProject2));
                 this.isRegisteredWithScc = false;
             }
         }
@@ -4482,7 +4587,7 @@ namespace Microsoft.VisualStudio.Project
                 ErrorHandler.ThrowOnFailure(((IVsAggregatableProject)this).GetAggregateProjectTypeGuids(out flavorsGuid));
                 foreach (Guid flavor in Utilities.GuidsArrayFromSemicolonDelimitedStringOfGuids(flavorsGuid))
                 {
-                    IPersistXMLFragment outerHierarchy = HierarchyNode.GetOuterHierarchy(this) as IPersistXMLFragment;
+                    IPersistXMLFragment outerHierarchy = this.InteropSafeIVsHierarchy as IPersistXMLFragment;
                     // First check the project
                     if (outerHierarchy != null)
                     {
@@ -4596,7 +4701,7 @@ namespace Microsoft.VisualStudio.Project
         {
             int isDirty = 0;
             // See if one of our flavor consider us dirty
-            IPersistXMLFragment outerHierarchy = HierarchyNode.GetOuterHierarchy(this) as IPersistXMLFragment;
+            IPersistXMLFragment outerHierarchy = this.InteropSafeIVsHierarchy as IPersistXMLFragment;
             if (outerHierarchy != null)
             {
                 // First check the project
@@ -5734,6 +5839,16 @@ namespace Microsoft.VisualStudio.Project
             canceled = 0;
             projectPointer = IntPtr.Zero;
 
+            // Initialize the interop-safe versions of this node's implementations of various VS interfaces,
+            // which point to the outer object. The project node itself should never be passed to unmanaged 
+            // code -- we should always use these properties instead. 
+            this.InteropSafeIVsHierarchy = Utilities.GetOuterAs<IVsHierarchy>(this);
+            this.InteropSafeIVsUIHierarchy = Utilities.GetOuterAs<IVsUIHierarchy>(this);
+            this.InteropSafeIVsProject3 = Utilities.GetOuterAs<IVsProject3>(this);
+            this.InteropSafeIVsSccProject2 = Utilities.GetOuterAs<IVsSccProject2>(this);
+            this.InteropSafeIVsUIHierWinClipboardHelperEvents = Utilities.GetOuterAs<IVsUIHierWinClipboardHelperEvents>(this);
+            this.InteropSafeIVsComponentUser = Utilities.GetOuterAs<IVsComponentUser>(this);
+
             // Initialize the project
             this.Load(filename, location, name, flags, ref iid, out canceled);
 
@@ -6580,7 +6695,7 @@ namespace Microsoft.VisualStudio.Project
                                 // We surround our batch retargeting request with begin/end because in individual project load
                                 // scenarios the solution load context hasn't done it for us.
                                 Marshal.ThrowExceptionForHR(retargetingService.BeginRetargetingBatch());
-                                Marshal.ThrowExceptionForHR(retargetingService.BatchRetargetProject(this, DefaultTargetFrameworkMoniker.FullName, true));
+                                Marshal.ThrowExceptionForHR(retargetingService.BatchRetargetProject(this.InteropSafeIVsHierarchy, DefaultTargetFrameworkMoniker.FullName, true));
                                 Marshal.ThrowExceptionForHR(retargetingService.EndRetargetingBatch());
                             }
                             else

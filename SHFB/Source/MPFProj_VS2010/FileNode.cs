@@ -1,13 +1,50 @@
-/***************************************************************************
+/********************************************************************************************
 
-Copyright (c) Microsoft Corporation. All rights reserved.
-This code is licensed under the Visual Studio SDK license terms.
-THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF
-ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY
-IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR
-PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.
+Copyright (c) Microsoft Corporation 
+All rights reserved. 
 
-***************************************************************************/
+Microsoft Public License: 
+
+This license governs use of the accompanying software. If you use the software, you 
+accept this license. If you do not accept the license, do not use the software. 
+
+1. Definitions 
+The terms "reproduce," "reproduction," "derivative works," and "distribution" have the 
+same meaning here as under U.S. copyright law. 
+A "contribution" is the original software, or any additions or changes to the software. 
+A "contributor" is any person that distributes its contribution under this license. 
+"Licensed patents" are a contributor's patent claims that read directly on its contribution. 
+
+2. Grant of Rights 
+(A) Copyright Grant- Subject to the terms of this license, including the license conditions 
+and limitations in section 3, each contributor grants you a non-exclusive, worldwide, 
+royalty-free copyright license to reproduce its contribution, prepare derivative works of 
+its contribution, and distribute its contribution or any derivative works that you create. 
+(B) Patent Grant- Subject to the terms of this license, including the license conditions 
+and limitations in section 3, each contributor grants you a non-exclusive, worldwide, 
+royalty-free license under its licensed patents to make, have made, use, sell, offer for 
+sale, import, and/or otherwise dispose of its contribution in the software or derivative 
+works of the contribution in the software. 
+
+3. Conditions and Limitations 
+(A) No Trademark License- This license does not grant you rights to use any contributors' 
+name, logo, or trademarks. 
+(B) If you bring a patent claim against any contributor over patents that you claim are 
+infringed by the software, your patent license from such contributor to the software ends 
+automatically. 
+(C) If you distribute any portion of the software, you must retain all copyright, patent, 
+trademark, and attribution notices that are present in the software. 
+(D) If you distribute any portion of the software in source code form, you may do so only 
+under this license by including a complete copy of this license with your distribution. 
+If you distribute any portion of the software in compiled or object code form, you may only 
+do so under a license that complies with this license. 
+(E) The software is licensed "as-is." You bear the risk of using it. The contributors give 
+no express warranties, guarantees or conditions. You may have additional consumer rights 
+under your local laws which this license cannot change. To the extent permitted under your 
+local laws, the contributors exclude the implied warranties of merchantability, fitness for 
+a particular purpose and non-infringement.
+
+********************************************************************************************/
 
 //=============================================================================
 // File    : FileNode.cs
@@ -86,34 +123,34 @@ namespace Microsoft.VisualStudio.Project
         /// <summary>
         /// Get an index into the icon image list that represents the icon to show for this file.
         /// </summary>
-		public override int ImageIndex
-		{
-			get
-			{
+        public override int ImageIndex
+        {
+            get
+            {
                 // !EFW
                 if(base.IsNonMemberItem)
                     return (int)ProjectNode.ImageName.ExcludedFile;
 
-				// Check if the file is there.
-				if(!this.CanShowDefaultIcon())
-				{
-					return (int) ProjectNode.ImageName.MissingFile;
-				}
+                // Check if the file is there.
+                if(!this.CanShowDefaultIcon())
+                {
+                    return (int) ProjectNode.ImageName.MissingFile;
+                }
 
-				// Check for known extensions
-				int imageIndex;
-				string extension = System.IO.Path.GetExtension(this.FileName);
+                // Check for known extensions
+                int imageIndex;
+                string extension = System.IO.Path.GetExtension(this.FileName);
 
-				if((string.IsNullOrEmpty(extension)) || (!extensionIcons.TryGetValue(extension, out imageIndex)))
-				{
-					// Missing or unknown extension; let the base class handle this case.
-					return base.ImageIndex;
-				}
+                if((string.IsNullOrEmpty(extension)) || (!extensionIcons.TryGetValue(extension, out imageIndex)))
+                {
+                    // Missing or unknown extension; let the base class handle this case.
+                    return base.ImageIndex;
+                }
 
-				// The file type is known and there is an image for it in the image list.
-				return imageIndex;
-			}
-		}
+                // The file type is known and there is an image for it in the image list.
+                return imageIndex;
+            }
+        }
 
         public override Guid ItemTypeGuid
         {
@@ -551,63 +588,63 @@ namespace Microsoft.VisualStudio.Project
             return base.ExecCommandOnNode(cmdGroup, cmd, nCmdexecopt, pvaIn, pvaOut);
         }
 
-		protected override int QueryStatusOnNode(Guid cmdGroup, uint cmd, IntPtr pCmdText, ref QueryStatusResult result)
-		{
-			if (cmdGroup == VsMenus.guidStandardCommandSet97)
-			{
-				switch ((VsCommands)cmd)
-				{
-					case VsCommands.Copy:
-					case VsCommands.Paste:
-					case VsCommands.Cut:
-					case VsCommands.Rename:
-						result |= QueryStatusResult.SUPPORTED | QueryStatusResult.ENABLED;
-						return VSConstants.S_OK;
+        protected override int QueryStatusOnNode(Guid cmdGroup, uint cmd, IntPtr pCmdText, ref QueryStatusResult result)
+        {
+            if (cmdGroup == VsMenus.guidStandardCommandSet97)
+            {
+                switch ((VsCommands)cmd)
+                {
+                    case VsCommands.Copy:
+                    case VsCommands.Paste:
+                    case VsCommands.Cut:
+                    case VsCommands.Rename:
+                        result |= QueryStatusResult.SUPPORTED | QueryStatusResult.ENABLED;
+                        return VSConstants.S_OK;
 
-					case VsCommands.ViewCode:
-					//case VsCommands.Delete: goto case VsCommands.OpenWith;
-					case VsCommands.Open:
-					case VsCommands.OpenWith:
-						result |= QueryStatusResult.SUPPORTED | QueryStatusResult.ENABLED;
+                    case VsCommands.ViewCode:
+                    //case VsCommands.Delete: goto case VsCommands.OpenWith;
+                    case VsCommands.Open:
+                    case VsCommands.OpenWith:
+                        result |= QueryStatusResult.SUPPORTED | QueryStatusResult.ENABLED;
 
                         // !EFW
                         if(base.IsNonMemberItem && (VsCommands)cmd == VsCommands.ViewCode)
                             result |= QueryStatusResult.INVISIBLE;
-						return VSConstants.S_OK;
-				}
-			}
-			else if (cmdGroup == VsMenus.guidStandardCommandSet2K)
-			{
+                        return VSConstants.S_OK;
+                }
+            }
+            else if (cmdGroup == VsMenus.guidStandardCommandSet2K)
+            {
                 // !EFW
                 switch((VsCommands2K)cmd)
                 {
-				    case VsCommands2K.EXCLUDEFROMPROJECT:
+                    case VsCommands2K.EXCLUDEFROMPROJECT:
                         if(!base.IsNonMemberItem)
-					        result |= QueryStatusResult.SUPPORTED | QueryStatusResult.ENABLED;
-					    return VSConstants.S_OK;
+                            result |= QueryStatusResult.SUPPORTED | QueryStatusResult.ENABLED;
+                        return VSConstants.S_OK;
 
                     case VsCommands2K.INCLUDEINPROJECT:
                         if(base.IsNonMemberItem)
                             result |= QueryStatusResult.SUPPORTED | QueryStatusResult.ENABLED;
                         return VSConstants.S_OK;
 
-				    case VsCommands2K.RUNCUSTOMTOOL:
-					    if(string.IsNullOrEmpty(this.ItemNode.GetMetadata(
+                    case VsCommands2K.RUNCUSTOMTOOL:
+                        if(string.IsNullOrEmpty(this.ItemNode.GetMetadata(
                           ProjectFileConstants.DependentUpon)) && (
                           this.NodeProperties is SingleFileGeneratorNodeProperties))
-					    {
-						    result |= QueryStatusResult.SUPPORTED | QueryStatusResult.ENABLED;
-						    return VSConstants.S_OK;
-					    }
+                        {
+                            result |= QueryStatusResult.SUPPORTED | QueryStatusResult.ENABLED;
+                            return VSConstants.S_OK;
+                        }
                         break;
-				}
-			}
-			else
-			{
-				return (int)OleConstants.OLECMDERR_E_UNKNOWNGROUP;
-			}
-			return base.QueryStatusOnNode(cmdGroup, cmd, pCmdText, ref result);
-		}
+                }
+            }
+            else
+            {
+                return (int)OleConstants.OLECMDERR_E_UNKNOWNGROUP;
+            }
+            return base.QueryStatusOnNode(cmdGroup, cmd, pCmdText, ref result);
+        }
 
 
         protected override void DoDefaultAction()
@@ -839,14 +876,14 @@ namespace Microsoft.VisualStudio.Project
 
             //Select the new node in the hierarchy
             IVsUIHierarchyWindow uiWindow = UIHierarchyUtilities.GetUIHierarchyWindow(this.ProjectMgr.Site, SolutionExplorer);
-			// This happens in the context of renaming a file.
-			// Since we are already in solution explorer, it is extremely unlikely that we get a null return.
-			// If we do, the consequences are minimal: the parent node will be selected instead of the
-			// renamed node.
-			if (uiWindow != null)
-			{
-				ErrorHandler.ThrowOnFailure(uiWindow.ExpandItem(this.ProjectMgr, this.ID, EXPANDFLAGS.EXPF_SelectItem));
-			}
+            // This happens in the context of renaming a file.
+            // Since we are already in solution explorer, it is extremely unlikely that we get a null return.
+            // If we do, the consequences are minimal: the parent node will be selected instead of the
+            // renamed node.
+            if (uiWindow != null)
+            {
+                ErrorHandler.ThrowOnFailure(uiWindow.ExpandItem(this.ProjectMgr.InteropSafeIVsUIHierarchy, this.ID, EXPANDFLAGS.EXPF_SelectItem));
+            }
 
             //Update FirstChild
             childAdded.FirstChild = this.FirstChild;
@@ -935,20 +972,20 @@ namespace Microsoft.VisualStudio.Project
             return false;
         }
 
-		/// <summary>
-		/// This should be overriden for nodes that are not saved on disk
-		/// </summary>
-		/// <param name="oldName">Previous name in storage</param>
-		/// <param name="newName">New name in storage</param>
+        /// <summary>
+        /// This should be overriden for nodes that are not saved on disk
+        /// </summary>
+        /// <param name="oldName">Previous name in storage</param>
+        /// <param name="newName">New name in storage</param>
         /// <remarks>For linked files, the file is copied rather than being
         /// moved and the link metadata is removed.  If you do not want this
         /// behavior, add file node properties to the link that suppresses
         /// renaming via the <c>FileName</c> property.</remarks>
-		protected virtual void RenameInStorage(string oldName, string newName)
-		{
+        protected virtual void RenameInStorage(string oldName, string newName)
+        {
             // !EFW
             if(String.IsNullOrEmpty(this.ItemNode.GetMetadata(ProjectFileConstants.Link)))
-			    File.Move(oldName, newName);
+                File.Move(oldName, newName);
             else
             {
                 // If the filenames are the same, the parent folder got renamed
@@ -964,7 +1001,7 @@ namespace Microsoft.VisualStudio.Project
                     this.ItemNode.SetMetadata(ProjectFileConstants.Link, newName);
                 }
             }
-		}
+        }
 
         /// <summary>
         /// factory method for creating single file generators.
@@ -1008,20 +1045,20 @@ namespace Microsoft.VisualStudio.Project
 
         #endregion
 
-		#region Helper methods
+        #region Helper methods
 
-		/// <summary>
-		/// Get's called to rename the eventually running document this hierarchy item points to
-		/// </summary>
-		/// returns FALSE if the doc can not be renamed
-		internal bool RenameDocument(string oldName, string newName)
-		{
-			IVsRunningDocumentTable pRDT = this.GetService(typeof(IVsRunningDocumentTable)) as IVsRunningDocumentTable;
-			if (pRDT == null) return false;
-			IntPtr docData = IntPtr.Zero;
-			IVsHierarchy pIVsHierarchy;
-			uint itemId;
-			uint uiVsDocCookie;
+        /// <summary>
+        /// Get's called to rename the eventually running document this hierarchy item points to
+        /// </summary>
+        /// returns FALSE if the doc can not be renamed
+        internal bool RenameDocument(string oldName, string newName)
+        {
+            IVsRunningDocumentTable pRDT = this.GetService(typeof(IVsRunningDocumentTable)) as IVsRunningDocumentTable;
+            if (pRDT == null) return false;
+            IntPtr docData = IntPtr.Zero;
+            IVsHierarchy pIVsHierarchy;
+            uint itemId;
+            uint uiVsDocCookie;
 
             SuspendFileChanges sfc = new SuspendFileChanges(this.ProjectMgr.Site, oldName);
             sfc.Suspend();
@@ -1042,7 +1079,7 @@ namespace Microsoft.VisualStudio.Project
                     this.ProjectMgr.SuspendMSBuild();
                     ErrorHandler.ThrowOnFailure(pRDT.FindAndLockDocument((uint)_VSRDTFLAGS.RDT_NoLock, oldName, out pIVsHierarchy, out itemId, out docData, out uiVsDocCookie));
 
-                    if(pIVsHierarchy != null && !Utilities.IsSameComObject(pIVsHierarchy, this.ProjectMgr))
+                    if(pIVsHierarchy != null && !Utilities.IsSameComObject(pIVsHierarchy, this.ProjectMgr.InteropSafeIVsHierarchy))
                     {
                         // Don't rename it if it wasn't opened by us.
                         return false;
@@ -1063,29 +1100,29 @@ namespace Microsoft.VisualStudio.Project
                     // !EFW - Ignore if it's a linked file
                     if(String.IsNullOrEmpty(this.ItemNode.GetMetadata(ProjectFileConstants.Link)))
                     {
-					    string newFileName = Path.GetFileName(newName);
-					    DocumentManager.UpdateCaption(this.ProjectMgr.Site, newFileName, docData);
-					    bool caseOnlyChange = NativeMethods.IsSamePath(oldName, newName);
-					    if (!caseOnlyChange)
-					    {
-						    // Check out the project file if necessary.
-						    if (!this.ProjectMgr.QueryEditProjectFile(false))
-						    {
-							    throw Marshal.GetExceptionForHR(VSConstants.OLE_E_PROMPTSAVECANCELLED);
-						    }
+                        string newFileName = Path.GetFileName(newName);
+                        DocumentManager.UpdateCaption(this.ProjectMgr.Site, newFileName, docData);
+                        bool caseOnlyChange = NativeMethods.IsSamePath(oldName, newName);
+                        if (!caseOnlyChange)
+                        {
+                            // Check out the project file if necessary.
+                            if (!this.ProjectMgr.QueryEditProjectFile(false))
+                            {
+                                throw Marshal.GetExceptionForHR(VSConstants.OLE_E_PROMPTSAVECANCELLED);
+                            }
 
-						    this.RenameFileNode(oldName, newName);
-					    }
-					    else
-					    {
-						    this.RenameCaseOnlyChange(newFileName);
-					    }
+                            this.RenameFileNode(oldName, newName);
+                        }
+                        else
+                        {
+                            this.RenameCaseOnlyChange(newFileName);
+                        }
                     }
-				}
-				finally
-				{
-					this.ProjectMgr.ResumeMSBuild(this.ProjectMgr.ReEvaluateProjectFileTargetName);
-				}
+                }
+                finally
+                {
+                    this.ProjectMgr.ResumeMSBuild(this.ProjectMgr.ReEvaluateProjectFileTargetName);
+                }
 
                 this.ProjectMgr.Tracker.OnItemRenamed(oldName, newName, renameflag);
             }
@@ -1143,10 +1180,10 @@ namespace Microsoft.VisualStudio.Project
             IVsUIHierarchyWindow uiWindow = UIHierarchyUtilities.GetUIHierarchyWindow(this.ProjectMgr.Site, SolutionExplorer);
             // This happens in the context of renaming a file by case only (Table.sql -> table.sql)
             // Since we are already in solution explorer, it is extremely unlikely that we get a null return.
-			if (uiWindow != null)
-			{
-				ErrorHandler.ThrowOnFailure(uiWindow.ExpandItem(this.ProjectMgr, this.ID, EXPANDFLAGS.EXPF_SelectItem));
-			}
+            if (uiWindow != null)
+            {
+                ErrorHandler.ThrowOnFailure(uiWindow.ExpandItem(this.ProjectMgr.InteropSafeIVsUIHierarchy, this.ID, EXPANDFLAGS.EXPF_SelectItem));
+            }
         }
 
         #endregion

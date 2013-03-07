@@ -2031,8 +2031,7 @@ AllDone:
                     if(hhcFolder[hhcFolder.Length - 1] != '\\')
                         hhcFolder += @"\";
 
-                    this.ReportProgress("Found HTML Help 1 compiler in '{0}'",
-                        hhcFolder);
+                    this.ReportProgress("Found HTML Help 1 compiler in '{0}'", hhcFolder);
                 }
 
                 if((project.HelpFileFormat & HelpFileFormat.MSHelp2) != 0)
@@ -2080,8 +2079,9 @@ AllDone:
         {
             StringBuilder sb = new StringBuilder(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles));
 
-            // Check for 64-bit OS.  The tools will be in the x86 folder.
-            if(Environment.Is64BitOperatingSystem)
+            // Check for 64-bit process and OS.  The tools will be in the x86 folder.  If running as a 32-bit
+            // process, the folder will contain "(x86)" already if needed.
+            if(Environment.Is64BitProcess && Environment.Is64BitOperatingSystem)
                 sb.Append(" (x86)");
 
             sb.Append(path);
@@ -2110,8 +2110,9 @@ AllDone:
             StringBuilder sb = new StringBuilder(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles));
             string folder;
 
-            // Check for 64-bit OS.  The tools will be in the x86 folder.
-            if(Environment.Is64BitOperatingSystem)
+            // Check for 64-bit process and OS.  The tools will be in the x86 folder.  If running as a 32-bit
+            // process, the folder will contain "(x86)" already if needed.
+            if(Environment.Is64BitProcess && Environment.Is64BitOperatingSystem)
                 sb.Append(" (x86)");
 
             foreach(DriveInfo di in DriveInfo.GetDrives())

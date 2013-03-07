@@ -1,24 +1,24 @@
-﻿//=============================================================================
+﻿//===============================================================================================================
 // System  : Microsoft Managed Package Framework for Projects (MPFProj)
 // File    : AssemblyInfo.cs
 // Author  : Microsoft Corporation
-// Updated : 03/20/2011
-// Note    : Copyright 2009-2011, Microsoft Corporation, All rights reserved
+// Updated : 03/06/2013
+// Note    : Copyright 2009-2013, Microsoft Corporation, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // Managed Package Framework for Projects assembly attributes.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://MPFProj10.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://MPFProj10.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
-// 1.0.0.0  03/20/2011  EFW  Merged project into SHFB project to create a
-//                           package for Visual Studio integration.
-//=============================================================================
+// ==============================================================================================================
+// 1.0.0.0  03/20/2011  EFW  Merged project into SHFB project to create a package for Visual Studio integration
+// 1.1.0.0  03/06/2013  EFW  Merged changes from the MPF 2012 project into this one so that this version can run
+//                           under both VS 2010 and VS 2012.
+//===============================================================================================================
 
 using System;
 using System.Reflection;
@@ -38,7 +38,7 @@ using System.Runtime.InteropServices;
     "Visual Studio Integration")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Microsoft Corporation")]
-[assembly: AssemblyCopyright("Copyright \xA9 2008-2011, Microsoft Corporation, All Rights Reserved")]
+[assembly: AssemblyCopyright("Copyright \xA9 2008-2013, Microsoft Corporation, All Rights Reserved")]
 [assembly: AssemblyTrademark("Microsoft Corporation, All Rights Reserved")]
 [assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(false)]
@@ -46,8 +46,8 @@ using System.Runtime.InteropServices;
 
 [assembly: Guid("084954ec-af04-4ea3-b166-b1fced604dc8")]
 
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.1.0.0")]
+[assembly: AssemblyFileVersion("1.1.0.0")]
 
 // Expose the internal members to the types in the SandcastleBuilder.Package assembly
 [assembly: InternalsVisibleTo("SandcastleBuilder.Package, PublicKey=" +
