@@ -1,26 +1,24 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : CompletionNotificationPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/09/2010
-// Note    : Copyright 2007-2008, Eric Woodruff, All rights reserved
+// Updated : 03/07/2013
+// Note    : Copyright 2007-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains a plug-in designed to run after the build completes to
-// send notification of the completion status via e-mail.  The log file can
-// be sent as an attachment.
+// This file contains a plug-in designed to run after the build completes to send notification of the completion
+// status via e-mail.  The log file can be sent as an attachment.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.5.2.0  09/09/2007  EFW  Created the code
 // 1.6.0.6  03/09/2008  EFW  Added support for log file XSL transform
-//=============================================================================
+//===============================================================================================================
 
 using System;
 using System.Diagnostics;
@@ -117,6 +115,15 @@ namespace SandcastleBuilder.PlugIns
                     "build completion status via e-mail.  The log file can " +
                     "be sent as an attachment.";
             }
+        }
+
+        /// <summary>
+        /// This plug-in supports configuration
+        /// </summary>
+        /// <seealso cref="ConfigurePlugIn"/>
+        public bool SupportsConfiguration
+        {
+            get { return true; }
         }
 
         /// <summary>

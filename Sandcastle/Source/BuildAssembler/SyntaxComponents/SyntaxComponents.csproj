@@ -8,7 +8,7 @@
     <ProjectGuid>{CEAEC85B-973A-4414-8668-723EB65E5088}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SyntaxComponents</RootNamespace>
+    <RootNamespace>Microsoft.Ddue.Tools</RootNamespace>
     <AssemblyName>SyntaxComponents</AssemblyName>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
@@ -73,9 +73,12 @@
     <Compile Include="JavaScriptDeclarationSyntaxGenerator.cs" />
     <Compile Include="JScriptDeclarationSyntax.cs" />
     <Compile Include="JSharpDeclarationSyntax.cs" />
+    <Compile Include="ManagedSyntaxWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScriptSharpDeclarationSyntax.cs" />
+    <Compile Include="SyntaxGenerator.cs" />
     <Compile Include="SyntaxGenerators.cs" />
+    <Compile Include="SyntaxWriter.cs" />
     <Compile Include="VisualBasicDeclarationSyntax.cs" />
     <Compile Include="VisualBasicUsageSyntax.cs" />
     <Compile Include="XamlUsageSyntax.cs" />
@@ -84,10 +87,6 @@
     <ProjectReference Include="..\BuildAssemblerLibrary\BuildAssemblerLibrary.csproj">
       <Project>{399E78F8-4954-409E-991A-37DA9D0579CC}</Project>
       <Name>BuildAssemblerLibrary</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\BuildComponents\BuildComponents.csproj">
-      <Project>{30773718-BC7C-4FCC-A9C2-7EE61DF4EC41}</Project>
-      <Name>BuildComponents</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

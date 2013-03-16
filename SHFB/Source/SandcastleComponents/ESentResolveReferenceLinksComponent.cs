@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Components
 // File    : ESentResolveReferenceLinksComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/28/2013
+// Updated : 03/12/2013
 // Compiler: Microsoft Visual C#
 //
 // This is a version of the ResolveReferenceLinksComponent2 that stores the MSDN content IDs and the framework
@@ -24,6 +24,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
+using System.Windows.Forms;
 using System.Xml.XPath;
 
 using Microsoft.Ddue.Tools;
@@ -32,6 +33,7 @@ using Microsoft.Ddue.Tools.Targets;
 using Microsoft.Isam.Esent.Collections.Generic;
 
 using SandcastleBuilder.Components.Targets;
+using SandcastleBuilder.Components.UI;
 
 namespace SandcastleBuilder.Components
 {
@@ -41,6 +43,12 @@ namespace SandcastleBuilder.Components
     /// </summary>
     public class ESentResolveReferenceLinksComponent : ResolveReferenceLinksComponent2
     {
+        #region Private data members
+        //=====================================================================
+
+        private bool ownsResolverCache;
+        #endregion
+
         #region Constructor
         //=====================================================================
 
@@ -82,35 +90,38 @@ namespace SandcastleBuilder.Components
             // If the shared cache already exists, return an instance that uses it.  It is assumed that all
             // subsequent instances will use the same cache.
             if(cache != null)
-                return new MsdnResolver(cache);
+                return new MsdnResolver(cache, true);
 
             XPathNavigator node = configuration.SelectSingleNode("msdnContentIdCache");
 
-            // If a <cache> element is not specified, use the default resolver
+            // If an <msdnContentIdCache> element is not specified, use the default resolver
             if(node == null)
                 resolver = base.CreateMsdnResolver(configuration);
             else
             {
-                string msdnIdDbPath = node.GetAttribute("dbPath", String.Empty);
+                string msdnIdCachePath = node.GetAttribute("cachePath", String.Empty);
 
-                // If a database path is not defined, use the default resolver
-                if(String.IsNullOrWhiteSpace(msdnIdDbPath))
+                // If a cache path is not defined, use the default resolver
+                if(String.IsNullOrWhiteSpace(msdnIdCachePath))
                     resolver = base.CreateMsdnResolver(configuration);
                 else
                 {
-                    msdnIdDbPath = Path.GetFullPath(Environment.ExpandEnvironmentVariables(msdnIdDbPath));
+                    msdnIdCachePath = Path.GetFullPath(Environment.ExpandEnvironmentVariables(msdnIdCachePath));
 
                     string cacheSize = node.GetAttribute("localCacheSize", String.Empty);
 
                     if(String.IsNullOrWhiteSpace(cacheSize) || !Int32.TryParse(cacheSize, out localCacheSize))
-                        localCacheSize = 1000;
+                        localCacheSize = 2500;
 
                     // Load or create the cache database and the resolver.  The resolver will dispose of the
                     // dictionary when it is disposed of since it implements IDisposable.  We won't compress the
                     // columns as they're typically not that big and there aren't usually that many entries.
                     // This gives a slight performance increase.
-                    resolver = new MsdnResolver(new PersistentDictionary<string, string>(msdnIdDbPath, false)
-                    { LocalCacheSize = localCacheSize });
+                    resolver = new MsdnResolver(new PersistentDictionary<string, string>(msdnIdCachePath, false)
+                        { LocalCacheSize = localCacheSize }, false);
+
+                    // We own the cache and will report statistics when done
+                    ownsResolverCache = true;
 
                     int cacheCount = resolver.MsdnContentIdCache.Count;
 
@@ -118,7 +129,7 @@ namespace SandcastleBuilder.Components
                     {
                         // Log a diagnostic message since looking up all IDs can significantly slow the build
                         base.WriteMessage(MessageLevel.Diagnostic, "The ESent MSDN content ID cache in '" +
-                            msdnIdDbPath + "' does not exist yet.  All IDs will be looked up in this build " +
+                            msdnIdCachePath + "' does not exist yet.  All IDs will be looked up in this build " +
                             "which will slow it down.");
                     }
                     else
@@ -135,16 +146,16 @@ namespace SandcastleBuilder.Components
         /// This is overridden to create a target dictionary that utilizes an ESent database for persistence
         /// </summary>
         /// <param name="configuration">The configuration element for the target dictionary</param>
-        /// <returns>A simple dictionary if no <c>dbPath</c> attribute is found or an ESent backed target
+        /// <returns>A simple dictionary if no <c>cachePath</c> attribute is found or an ESent backed target
         /// dictionary if the attribute is found.</returns>
         public override TargetDictionary CreateTargetDictionary(XPathNavigator configuration)
         {
             TargetDictionary td = null;
 
-            string dbPath = configuration.GetAttribute("dbPath", String.Empty);
+            string cachePath = configuration.GetAttribute("cachePath", String.Empty);
 
             // If no database path is specified, use the simple target dictionary (i.e. project references)
-            if(String.IsNullOrWhiteSpace(dbPath))
+            if(String.IsNullOrWhiteSpace(cachePath))
                 td = base.CreateTargetDictionary(configuration);
             else
             {
@@ -166,7 +177,7 @@ namespace SandcastleBuilder.Components
         /// </summary>
         public override void UpdateMsdnContentIdCache()
         {
-            if(base.MsdnResolver != null)
+            if(ownsResolverCache && base.MsdnResolver != null)
             {
                 var cache = base.MsdnResolver.MsdnContentIdCache as PersistentDictionary<string, string>;
 
@@ -183,6 +194,27 @@ namespace SandcastleBuilder.Components
             }
 
             base.UpdateMsdnContentIdCache();
+        }
+        #endregion
+
+        #region Static configuration method for use with SHFB
+        //=====================================================================
+
+        /// <summary>
+        /// This static method is used by the Sandcastle Help File Builder to let the component perform its own
+        /// configuration.
+        /// </summary>
+        /// <param name="currentConfig">The current configuration XML fragment</param>
+        /// <returns>A string containing the new configuration XML fragment</returns>
+        public static string ConfigureComponent(string currentConfig)
+        {
+            using(var dlg = new ESentResolveReferenceLinksConfigDlg(currentConfig))
+            {
+                if(dlg.ShowDialog() == DialogResult.OK)
+                    currentConfig = dlg.Configuration;
+            }
+
+            return currentConfig;
         }
         #endregion
     }

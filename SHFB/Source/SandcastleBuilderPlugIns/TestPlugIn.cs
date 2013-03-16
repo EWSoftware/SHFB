@@ -105,6 +105,16 @@ namespace Test.PlugIns
         }
 
         /// <summary>
+        /// This plug-in does not support configuration
+        /// </summary>
+        /// <seealso cref="ConfigurePlugIn"/>
+        public bool SupportsConfiguration
+        {
+            // TODO: Return true if your plug-in does support configuration
+            get { return false; }
+        }
+
+        /// <summary>
         /// This read-only property returns true if the plug-in should run in
         /// a partial build or false if it should not.
         /// </summary>

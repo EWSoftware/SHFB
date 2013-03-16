@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Components
 // File    : SqlDictionary.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/28/2013
+// Updated : 03/15/2013
 // Note    : Copyright 2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -173,11 +173,19 @@ namespace SandcastleBuilder.Components
         private SqlConnection connection;
         private SqlCommand cmdRetrieveValue, cmdInsertUpdateValue;
         private BinaryFormatter bf;
-        private bool isReferenceType;
+        private bool isReferenceType, isDisposed;
         #endregion
 
         #region Properties
         //=====================================================================
+
+        /// <summary>
+        /// This read-only property returns the group ID
+        /// </summary>
+        public string GroupId
+        {
+            get { return groupId; }
+        }
 
         /// <summary>
         /// Set this to a non-zero value to enable local caching of values to speed up read-only access
@@ -219,6 +227,14 @@ namespace SandcastleBuilder.Components
         public int CurrentLocalCacheCount
         {
             get { return (localCache == null) ? 0 : localCache.Count; }
+        }
+
+        /// <summary>
+        /// This read-only property returns whether or not the cache has been disposed of
+        /// </summary>
+        public bool IsDisposed
+        {
+            get { return isDisposed; }
         }
         #endregion
 
@@ -320,6 +336,32 @@ ELSE
         }
         #endregion
 
+        #region Helper methods
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to purge all data from the dictionary
+        /// </summary>
+        public void Purge()
+        {
+            if(groupIdFieldName == null)
+            {
+                using(SqlCommand cmd = new SqlCommand(String.Format(CultureInfo.InvariantCulture,
+                  "Truncate Table {0}", tableName), connection))
+                {
+                    cmd.ExecuteScalar();
+                }
+            }
+            else
+                using(SqlCommand cmd = new SqlCommand(String.Format(CultureInfo.InvariantCulture,
+                  "Delete {0} Where {1} = '{2}'", tableName, groupIdFieldName, groupId),
+                  connection))
+                {
+                    cmd.ExecuteScalar();
+                }
+        }
+        #endregion
+
         #region IDisposable Members
         //=====================================================================
 
@@ -328,6 +370,8 @@ ELSE
         /// </summary>
         public void Dispose()
         {
+            isDisposed = true;
+
             if(cmdInsertUpdateValue != null)
                 cmdInsertUpdateValue.Dispose();
 
@@ -497,7 +541,6 @@ ELSE
                     {
                         return (int)cmd.ExecuteScalar();
                     }
-
             }
         }
 

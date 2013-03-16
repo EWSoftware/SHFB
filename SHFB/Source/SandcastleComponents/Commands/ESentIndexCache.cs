@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Components
 // File    : ESentIndexCache.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/28/2013
+// Updated : 03/14/2013
 // Compiler: Microsoft Visual C#
 //
 // This is a version of the InMemoryIndexCache that adds the ability to store index information in one or more
@@ -50,11 +50,11 @@ namespace SandcastleBuilder.Components.Commands
         //=====================================================================
 
         /// <inheritdoc />
-        public override int IndexCount
+        public override int Count
         {
             get
             {
-                return base.IndexCount + esentCaches.Sum(c => c.Count);
+                return base.Count + esentCaches.Sum(c => c.Count);
             }
         }
 
@@ -110,18 +110,18 @@ namespace SandcastleBuilder.Components.Commands
         //=====================================================================
 
         /// <inheritdoc />
-        /// <remarks>If a <c>cachePath</c> attribute is found, the given database cache is used rather than an
-        /// in-memory cache for the file set.  If not found, the index information is added to the standard
-        /// in-memory cache.</remarks>
+        /// <remarks>If a cache path attribute is found and is not empty, the given database cache is used rather
+        /// than an in-memory cache for the file set.  If not found or empty, the index information is added to
+        /// the standard in-memory cache.</remarks>
         public override void AddDocuments(XPathNavigator configuration)
         {
-            string cachePath = configuration.GetAttribute("cachePath", String.Empty);
+            var cache = this.CreateCache(configuration);
 
             // ESent caches are inserted in reverse order as later caches take precedence over earlier ones
-            if(String.IsNullOrWhiteSpace(cachePath))
+            if(cache == null)
                 base.AddDocuments(configuration);
             else
-                esentCaches.Insert(0, this.CreateCache(configuration));
+                esentCaches.Insert(0, cache);
         }
 
         /// <summary>
@@ -170,27 +170,49 @@ namespace SandcastleBuilder.Components.Commands
         /// <param name="configuration">The configuration to use</param>
         private PersistentDictionary<string, string> CreateCache(XPathNavigator configuration)
         {
+            PersistentDictionary<string, string> cache = null;
             HashSet<string> namespaceFileFilter = new HashSet<string>();
-            string cachePath, compress, baseDirectory, wildcardPath, recurseValue, dupWarning, fullPath,
-                directoryPart, filePart;
-            bool recurse, reportDuplicateIds, compressColumns = false;
+            string groupId, cachePathAttrName, cachePath, baseDirectory, wildcardPath, recurseValue, dupWarning,
+                fullPath, directoryPart, filePart;
+            bool recurse, reportDuplicateIds, isProjectData = false;
             int localCacheSize, filesToLoad;
 
-            cachePath = configuration.GetAttribute("cachePath", String.Empty);
-            compress = configuration.GetAttribute("compressColumns", String.Empty);
+            var parent = configuration.Clone();
+            parent.MoveToParent();
 
-            // If compressing columns, suffix the folder to allow switching back and forth
-            if(!String.IsNullOrWhiteSpace(compress) && Boolean.TryParse(compress, out compressColumns) &&
-              compressColumns)
-                cachePath += "_Compressed";
+            groupId = configuration.GetAttribute("groupId", String.Empty);
 
-            string cacheSize = configuration.GetAttribute("localCacheSize", String.Empty);
+            // If caching project data, they will all go into a common index
+            if(groupId.StartsWith("Project_", StringComparison.OrdinalIgnoreCase))
+            {
+                cachePathAttrName = "projectCachePath";
+                isProjectData = true;
+            }
+            else
+                cachePathAttrName = "frameworkCachePath";
 
-            if(String.IsNullOrWhiteSpace(cacheSize) || !Int32.TryParse(cacheSize, out localCacheSize))
-                localCacheSize = 1000;
+            cache = esentCaches.FirstOrDefault(c => c.Database.Contains(groupId));
 
-            var cache = new PersistentDictionary<string, string>(cachePath, compressColumns)
-                { LocalCacheSize = localCacheSize };
+            if(cache != null)
+                cachePath = cache.Database;
+            else
+            {
+                cachePath = parent.GetAttribute(cachePathAttrName, String.Empty);
+
+                if(String.IsNullOrWhiteSpace(cachePath))
+                    return null;
+
+                cachePath = Path.Combine(cachePath, groupId);
+
+                string cacheSize = parent.GetAttribute("localCacheSize", String.Empty);
+
+                if(String.IsNullOrWhiteSpace(cacheSize) || !Int32.TryParse(cacheSize, out localCacheSize))
+                    localCacheSize = 2500;
+
+                // Column compression is left on here as it does benefit the string data
+                cache = new PersistentDictionary<string, string>(cachePath)
+                    { LocalCacheSize = localCacheSize };
+            }
 
             baseDirectory = configuration.GetAttribute("base", String.Empty);
 
@@ -252,8 +274,9 @@ namespace SandcastleBuilder.Components.Commands
             else
             {
                 // Comments files can't be filtered by namespace so we'll assume that if the collection is not
-                // empty, it has already been loaded.
-                if(cache.Count == 0)
+                // empty, it has already been loaded unless it's a project comments file list.  In that case,
+                // we will merge them if necessary.
+                if(isProjectData || cache.Count == 0)
                     filesToLoad = Directory.EnumerateFiles(directoryPart, filePart, recurse ?
                         SearchOption.AllDirectories : SearchOption.TopDirectoryOnly).Count();
             }
@@ -261,7 +284,7 @@ namespace SandcastleBuilder.Components.Commands
             if(filesToLoad != 0)
             {
                 // The time estimate is a ballpark figure and depends on the system
-                base.Component.WriteMessage(MessageLevel.Diagnostic, "{0} files need to be added to the ESent " +
+                base.Component.WriteMessage(MessageLevel.Diagnostic, "{0} file(s) need to be added to the ESent " +
                     "index cache database.  Indexing them will take about {1:N0} minute(s), please be " +
                     "patient.  Cache location: {2}", filesToLoad, Math.Ceiling(filesToLoad / 60.0), cachePath);
 

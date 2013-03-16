@@ -1,27 +1,25 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : DbcsFixPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/12/2010
-// Note    : Copyright 2008-2010, Eric Woodruff, All rights reserved
+// Updated : 03/07/2013
+// Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains a plug-in designed to modify the HTML files and alter the
-// build so as to overcome the encoding issues encountered when building HTML
-// Help 1 (.chm) files for various foreign languages.
+// This file contains a plug-in designed to modify the HTML files and alter the build so as to overcome the
+// encoding issues encountered when building HTML Help 1 (.chm) files for various foreign languages.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.6.0.5  02/18/2008  EFW  Created the code
 // 1.8.0.0  07/15/2008  EFW  Updated for use with MSBuild project format
 // 1.9.0.0  06/07/2010  EFW  Added support for multi-format build output
-//=============================================================================
+//===============================================================================================================
 
 using System;
 using System.Diagnostics;
@@ -113,6 +111,15 @@ namespace SandcastleBuilder.PlugIns
                     "encountered when building HTML Help 1 (.chm) files for " +
                     "various foreign languages.";
             }
+        }
+
+        /// <summary>
+        /// This plug-in supports configuration
+        /// </summary>
+        /// <seealso cref="ConfigurePlugIn"/>
+        public bool SupportsConfiguration
+        {
+            get { return true; }
         }
 
         /// <summary>

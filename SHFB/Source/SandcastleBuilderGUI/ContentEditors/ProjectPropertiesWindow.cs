@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : ProjectPropertiesWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/04/2013
+// Updated : 03/07/2013
 // Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -340,6 +340,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             finally
             {
                 tvPropertyPages.EndUpdate();
+                pnlPropertyPages_SizeChanged(this, EventArgs.Empty);
             }
         }
         #endregion

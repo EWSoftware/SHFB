@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : AdditionalReferenceLinksPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/05/2013
+// Updated : 03/16/2013
 // Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -115,6 +115,15 @@ namespace SandcastleBuilder.PlugIns
                     "third party help in a Help 2 collection, MS Help Viewer collection, or additional online " +
                     "MSDN content.";
             }
+        }
+
+        /// <summary>
+        /// This plug-in supports configuration
+        /// </summary>
+        /// <seealso cref="ConfigurePlugIn"/>
+        public bool SupportsConfiguration
+        {
+            get { return true; }
         }
 
         /// <summary>
@@ -331,6 +340,10 @@ namespace SandcastleBuilder.PlugIns
                         attr.Value = vs.ReflectionFilename;
                         target.Attributes.Append(attr);
 
+                        attr = configFile.CreateAttribute("groupId");
+                        attr.Value = builder.TransformText("Project_Ref_{@UniqueID}");
+                        target.Attributes.Append(attr);
+
                         // Keep the current project's stuff listed last so that it takes precedence
                         component.InsertAfter(target, component.ChildNodes[0]);
                     }
@@ -343,7 +356,7 @@ namespace SandcastleBuilder.PlugIns
             // If not found, try for the cached version
             if(matchingComponents.Count == 0)
                 matchingComponents = configFile.SelectNodes("//component[starts-with(@id, " +
-                    "'Resolve References Links ')]");
+                    "'Resolve Reference Links ')]");
 
             if(matchingComponents.Count == 0)
                 throw new BuilderException("ARL0005", "Unable to locate Resolve Reference Links component in " +
@@ -383,6 +396,10 @@ namespace SandcastleBuilder.PlugIns
                                 break;
                         }
 
+                        target.Attributes.Append(attr);
+
+                        attr = configFile.CreateAttribute("groupId");
+                        attr.Value = builder.TransformText("Project_{@UniqueID}");
                         target.Attributes.Append(attr);
 
                         // Keep the current project's stuff listed last so that it takes precedence

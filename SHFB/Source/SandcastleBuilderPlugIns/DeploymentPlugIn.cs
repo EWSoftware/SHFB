@@ -1,28 +1,26 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : DeploymentPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/06/2012
-// Note    : Copyright 2007-2012, Eric Woodruff, All rights reserved
+// Updated : 03/07/2013
+// Note    : Copyright 2007-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains a plug-in that can be used to deploy the resulting help
-// file output to a location other than the output folder (i.e. a file share,
-// an FTP site, a web server, etc.).
+// This file contains a plug-in that can be used to deploy the resulting help file output to a location other
+// than the output folder (i.e. a file share, an FTP site, a web server, etc.).
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.5.2.0  09/09/2007  EFW  Created the code
 // 1.6.0.5  02/18/2008  EFW  Added support for relative deployment paths
 // 1.8.0.0  08/13/2008  EFW  Updated to support the new project format
 // 1.8.0.3  07/06/2009  EFW  Added support for Help Viewer deployment
-//=============================================================================
+//===============================================================================================================
 
 using System;
 using System.Collections.ObjectModel;
@@ -114,6 +112,15 @@ namespace SandcastleBuilder.PlugIns
                 return "This plug-in is used to deploy the resulting help file output to a location " +
                     "other than the output folder (i.e. a file share, a web server, an FTP site, etc.).";
             }
+        }
+
+        /// <summary>
+        /// This plug-in supports configuration
+        /// </summary>
+        /// <seealso cref="ConfigurePlugIn"/>
+        public bool SupportsConfiguration
+        {
+            get { return true; }
         }
 
         /// <summary>

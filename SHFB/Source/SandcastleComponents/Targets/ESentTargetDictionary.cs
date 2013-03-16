@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Components
 // File    : ESentTargetDictionary.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/27/2013
+// Updated : 03/14/2013
 // Note    : Copyright 2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -63,20 +63,13 @@ namespace SandcastleBuilder.Components.Targets
         public ESentTargetDictionary(BuildComponent component, XPathNavigator configuration) :
           base(component, configuration)
         {
-            bool compressColumns = false;
+            bool noReload = false;
             int localCacheSize;
 
-            string dbPath = configuration.GetAttribute("dbPath", String.Empty);
+            string cachePath = configuration.GetAttribute("cachePath", String.Empty);
 
-            if(String.IsNullOrWhiteSpace(dbPath))
-                throw new ArgumentException("The dbPath attribute must contain a value", "configuration");
-
-            string compress = configuration.GetAttribute("compressColumns", String.Empty);
-
-            // If compressing columns, suffix the folder to allow switching back and forth
-            if(!String.IsNullOrWhiteSpace(compress) && Boolean.TryParse(compress, out compressColumns) &&
-              compressColumns)
-                dbPath += "_Compressed";
+            if(String.IsNullOrWhiteSpace(cachePath))
+                throw new ArgumentException("The cachePath attribute must contain a value", "configuration");
 
             string cacheSize = configuration.GetAttribute("localCacheSize", String.Empty);
 
@@ -86,11 +79,21 @@ namespace SandcastleBuilder.Components.Targets
             // This is a slightly modified version of Managed ESent that provides the option to serialize
             // reference types.  In this case, we don't care about potential issues of persisted copies not
             // matching the original if modified as they are never updated once written to the cache.  We can
-            // also turn off column compression for a slight performance increase.
+            // also turn off column compression for a slight performance increase since it doesn't benefit the
+            // binary data that is serialized.
             PersistentDictionaryFile.AllowReferenceTypeSerialization = true;
 
-            index = new PersistentDictionary<string, Target>(dbPath, compressColumns)
-            { LocalCacheSize = localCacheSize };
+            index = new PersistentDictionary<string, Target>(cachePath, false)
+                { LocalCacheSize = localCacheSize };
+
+            string noReloadValue = configuration.GetAttribute("noReload", String.Empty);
+
+            // If noReload is true, skip reloading the dictionary if it contains any data.  This is used on
+            // project targets to prevent reloading the data in the reference build if already loaded by the
+            // conceptual build.
+            if(!String.IsNullOrWhiteSpace(noReloadValue) && Boolean.TryParse(noReloadValue, out noReload) &&
+              noReload && index.Count != 0)
+                return;
 
             // Loading new targets can take a while so issue a diagnostic message as an alert
             int filesToLoad = 0;
@@ -104,10 +107,10 @@ namespace SandcastleBuilder.Components.Targets
             // The time estimate is a ballpark figure and depends on the system
             if(filesToLoad != 0)
             {
-                component.WriteMessage(MessageLevel.Diagnostic, "{0} files need to be added to the ESent " +
+                component.WriteMessage(MessageLevel.Diagnostic, "{0} file(s) need to be added to the ESent " +
                     "reflection target cache database.  Indexing them will take about {1:N0} minute(s), " +
                     "please be patient.  Cache location: {2}", filesToLoad, Math.Ceiling(filesToLoad * 10 / 60.0),
-                    dbPath);
+                    cachePath);
 
                 // Limit the degree of parallelism or it overwhelms the ESent version store
                 this.LoadTargetDictionary(3);
@@ -126,6 +129,18 @@ namespace SandcastleBuilder.Components.Targets
                 index.Dispose();
                 base.Dispose(disposing);
             }
+        }
+
+        /// <summary>
+        /// Report the cache usage for the build
+        /// </summary>
+        public override void ReportCacheStatistics()
+        {
+            this.BuildComponent.WriteMessage(MessageLevel.Diagnostic, "\"{0}\" ESent local cache flushed {1} " +
+                "time(s).  Current ESent local cache usage: {2} of {3}.", base.DictionaryId,
+                index.LocalCacheFlushCount, index.CurrentLocalCacheCount, index.LocalCacheSize);
+
+            base.ReportCacheStatistics();
         }
         #endregion
 

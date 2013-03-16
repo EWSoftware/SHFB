@@ -17,8 +17,8 @@
   <item id="fb_topic">{0}</item>
 	<item id="fb_text">Отправить отзыв</item>
   <item id="fb_footer_to">{@HtmlEncFeedbackEMailAddress}</item>
-  <item id="fb_footer_text"> об этом топике.</item>
-  <item id="fb_footer_text_to">on this topic to {@HtmlEncFeedbackEMailAddress}.</item>
-	<item id="fb_body">Your feedback is used to improve the documentation and the product. Your e-mail address will not be used for any other purpose and is disposed of after the issue you report is resolved. While working to resolve the issue that you report, you may be contacted via e-mail to get further details or clarification on the feedback you sent. After the issue you report has been addressed, you may receive an e-mail to let you know that your feedback has been addressed.</item>
+  <item id="fb_footer_text"> по этой теме.</item>
+  <item id="fb_footer_text_to">по этой теме в {@HtmlEncFeedbackEMailAddress}.</item>
+	<item id="fb_body">Ваш отзыв будет использован для улучшения качества документации и продукта в целом. Адрес вашей электронной почты не будет использован для других целей и будет удалён, после того как ваш отзыв будет обработан. До окончания работ по обработке вашего отзыва, вы можете связаться с автором для получения дополнительной информации. После его обработки, вы можете получить сообщение об окончании работ по вашему отзыву на указанный адрес электронной почты.</item>
 
 </content>

@@ -1,28 +1,27 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : HierarchicalTocPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/22/2010
-// Note    : Copyright 2008-2010, Eric Woodruff, All rights reserved
+// Updated : 03/07/2013
+// Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains a plug-in that can be used to rearrange the table of
-// contents such that namespaces are nested within their parent namespaces
-// rather than appearing as a flat list of all namespaces at the root level.
+// This file contains a plug-in that can be used to rearrange the table of contents such that namespaces are
+// nested within their parent namespaces rather than appearing as a flat list of all namespaces at the root
+// level.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.6.0.6  03/17/2008  EFW  Created the code
 // 1.8.0.0  07/22/2008  EFW  Fixed bug caused by root namespace container
-// 1.9.0.0  06/22/2010  EFW  Suppressed use in MS Help Viewer output due to
-//                           the way the TOC is generated in those files.
-//=============================================================================
+// 1.9.0.0  06/22/2010  EFW  Suppressed use in MS Help Viewer output due to the way the TOC is generated in
+//                           those files.
+//===============================================================================================================
 
 using System;
 using System.Collections.Generic;
@@ -112,6 +111,15 @@ namespace SandcastleBuilder.PlugIns
                     "parent namespaces rather than appearing as a flat " +
                     "list of all namespaces at the root level.";
             }
+        }
+
+        /// <summary>
+        /// This plug-in supports configuration
+        /// </summary>
+        /// <seealso cref="ConfigurePlugIn"/>
+        public bool SupportsConfiguration
+        {
+            get { return true; }
         }
 
         /// <summary>

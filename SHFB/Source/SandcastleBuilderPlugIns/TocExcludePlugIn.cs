@@ -1,25 +1,24 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : TocExcludePlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/13/2010
-// Note    : Copyright 2008-2010, Eric Woodruff, All rights reserved
+// Updated : 03/07/2013
+// Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains a plug-in that can be used to exclude API members from
-// the table of contents via the <tocexclude /> XML comment tag.  The excluded
-// items are still accessible in the help file via other topic links.
+// This file contains a plug-in that can be used to exclude API members from the table of contents via the
+// <tocexclude /> XML comment tag.  The excluded items are still accessible in the help file via other topic
+// links.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.6.0.6  03/13/2008  EFW  Created the code
-//=============================================================================
+//===============================================================================================================
 
 using System;
 using System.Collections.Generic;
@@ -108,6 +107,15 @@ namespace SandcastleBuilder.PlugIns
                     "comment tag.  The excluded items are still accessible " +
                     "in the help file via other topic links.";
             }
+        }
+
+        /// <summary>
+        /// This plug-in does not support configuration
+        /// </summary>
+        /// <seealso cref="ConfigurePlugIn"/>
+        public bool SupportsConfiguration
+        {
+            get { return false; }
         }
 
         /// <summary>

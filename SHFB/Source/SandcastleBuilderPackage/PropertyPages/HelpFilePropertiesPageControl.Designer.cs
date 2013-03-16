@@ -38,6 +38,7 @@
             this.txtHtmlHelpName = new System.Windows.Forms.TextBox();
             this.cboLanguage = new System.Windows.Forms.ComboBox();
             this.txtRootNamespaceTitle = new System.Windows.Forms.TextBox();
+            this.cboPresentationStyle = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.txtCopyrightHref = new System.Windows.Forms.TextBox();
@@ -55,7 +56,6 @@
             this.cboNamingMethod = new System.Windows.Forms.ComboBox();
             this.label11 = new System.Windows.Forms.Label();
             this.chkPreliminary = new System.Windows.Forms.CheckBox();
-            this.cboPresentationStyle = new System.Windows.Forms.ComboBox();
             this.label12 = new System.Windows.Forms.Label();
             this.chkRootNamespaceContainer = new System.Windows.Forms.CheckBox();
             this.label13 = new System.Windows.Forms.Label();
@@ -126,8 +126,7 @@
             // 
             this.txtHtmlHelpName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.epNotes.SetError(this.txtHtmlHelpName, "Do not include a path or extension.  For MS Help 2 builds, this is also used as\nt" +
-        "he collection namespace name (avoid spaces)");
+            this.epNotes.SetError(this.txtHtmlHelpName, resources.GetString("txtHtmlHelpName.Error"));
             this.epNotes.SetIconPadding(this.txtHtmlHelpName, 5);
             this.txtHtmlHelpName.Location = new System.Drawing.Point(254, 45);
             this.txtHtmlHelpName.Name = "txtHtmlHelpName";
@@ -160,6 +159,19 @@
             this.txtRootNamespaceTitle.Size = new System.Drawing.Size(272, 27);
             this.txtRootNamespaceTitle.TabIndex = 14;
             this.txtRootNamespaceTitle.Tag = "RootNamespaceTitle";
+            // 
+            // cboPresentationStyle
+            // 
+            this.cboPresentationStyle.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboPresentationStyle.FormattingEnabled = true;
+            this.epNotes.SetIconPadding(this.cboPresentationStyle, 5);
+            this.cboPresentationStyle.Location = new System.Drawing.Point(254, 146);
+            this.cboPresentationStyle.MaxDropDownItems = 16;
+            this.cboPresentationStyle.Name = "cboPresentationStyle";
+            this.cboPresentationStyle.Size = new System.Drawing.Size(346, 28);
+            this.cboPresentationStyle.TabIndex = 9;
+            this.cboPresentationStyle.Tag = "PresentationStyle";
+            this.cboPresentationStyle.SelectedIndexChanged += new System.EventHandler(this.cboPresentationStyle_SelectedIndexChanged);
             // 
             // label2
             // 
@@ -322,19 +334,6 @@
             this.chkPreliminary.Tag = "Preliminary";
             this.chkPreliminary.Text = "Include \"preliminary documentation\" warning";
             this.chkPreliminary.UseVisualStyleBackColor = true;
-            // 
-            // cboPresentationStyle
-            // 
-            this.cboPresentationStyle.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboPresentationStyle.FormattingEnabled = true;
-            this.epNotes.SetIconPadding(this.cboPresentationStyle, 5);
-            this.cboPresentationStyle.Location = new System.Drawing.Point(254, 146);
-            this.cboPresentationStyle.MaxDropDownItems = 16;
-            this.cboPresentationStyle.Name = "cboPresentationStyle";
-            this.cboPresentationStyle.Size = new System.Drawing.Size(346, 28);
-            this.cboPresentationStyle.TabIndex = 9;
-            this.cboPresentationStyle.Tag = "PresentationStyle";
-            this.cboPresentationStyle.SelectedIndexChanged += new System.EventHandler(this.cboPresentationStyle_SelectedIndexChanged);
             // 
             // label12
             // 

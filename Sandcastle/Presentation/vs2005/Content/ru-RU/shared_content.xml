@@ -66,7 +66,7 @@
   <item id="XAMLLabel">XAML</item>
 
   <!-- section titles -->
-  <item id="eventsTitle">Events</item>
+  <item id="eventsTitle">События</item>
   <item id="exceptionsTitle">Исключения</item>
   <item id="contractsTitle">Контракты</item>
   <item id="setterTitle">Set</item>
@@ -106,8 +106,8 @@
   <item id="remarksTitle">Заметки</item>
   
   <!-- devlangs filter -->
-  <item id="devlangsDropdown">Синтаксис: {0}</item>
-  <item id="all">Все возможные</item>
+  <item id="devlangsDropdown">Код: {0}</item>
+  <item id="all">Все</item>
   <item id="multiple">Несколько языков</item>
   <item id="VisualBasic">Visual Basic</item>
   <item id="VBScript">Visual Basic Script</item>

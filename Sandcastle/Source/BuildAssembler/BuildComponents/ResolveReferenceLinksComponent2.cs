@@ -168,7 +168,9 @@ namespace Microsoft.Ddue.Tools
             // Serialization test
 //            targets.SerializeDictionary(Directory.GetCurrentDirectory());
 #endif
-            base.WriteMessage(MessageLevel.Info, "{0} total reference link targets", targets.Count);
+            // Getting the count from a database cache can be expensive so only report it if it will be seen
+            if(base.BuildAssembler.VerbosityLevel == MessageLevel.Info)
+                base.WriteMessage(MessageLevel.Info, "{0} total reference link targets", targets.Count);
 
             if(targets.NeedsMsdnResolver)
             {
@@ -498,7 +500,7 @@ namespace Microsoft.Ddue.Tools
             // If the shared cache already exists, return an instance that uses it.  It is assumed that all
             // subsequent instances will use the same cache.
             if(cache != null)
-                return new MsdnResolver(cache);
+                return new MsdnResolver(cache, true);
 
             // If a <cache> element is not specified, we'll use the standard resolver without a persistent cache.
             // We will share it across all instances though.
@@ -536,7 +538,7 @@ namespace Microsoft.Ddue.Tools
                       FileShare.Read))
                     {
                         BinaryFormatter bf = new BinaryFormatter();
-                        resolver = new MsdnResolver((IDictionary<string, string>)bf.Deserialize(fs));
+                        resolver = new MsdnResolver((IDictionary<string, string>)bf.Deserialize(fs), false);
 
                         base.WriteMessage(MessageLevel.Info, "Loaded {0} cached MSDN content ID entries",
                             resolver.MsdnContentIdCache.Count);

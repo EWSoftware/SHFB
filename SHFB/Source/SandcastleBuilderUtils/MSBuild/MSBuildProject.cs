@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : MSBuildProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/22/2012
-// Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
+// Updated : 03/11/2013
+// Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains an MSBuild project wrapper used by the Sandcastle Help File builder during the build
@@ -397,7 +397,18 @@ namespace SandcastleBuilder.Utils.MSBuild
                 msBuildProject.SetGlobalProperty(ProjectElement.Platform, platform);
 
                 if(!String.IsNullOrEmpty(outDir))
+                {
+                    // .NET 4.5 supports a property that tells MSBuild to put the project output into a
+                    // project-specific folder in OutDir.
+                    var projectSpecificFolder = msBuildProject.AllEvaluatedProperties.FirstOrDefault(
+                        p => p.Name == "GenerateProjectSpecificOutputFolder");
+
+                    if(projectSpecificFolder != null && !String.IsNullOrWhiteSpace(projectSpecificFolder.EvaluatedValue) &&
+                      Convert.ToBoolean(projectSpecificFolder.EvaluatedValue))
+                        outDir = Path.Combine(outDir, Path.GetFileNameWithoutExtension(msBuildProject.FullPath));
+
                     msBuildProject.SetGlobalProperty(ProjectElement.OutDir, outDir);
+                }
 
                 msBuildProject.ReevaluateIfNecessary();
             }

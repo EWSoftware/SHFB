@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.Transform.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/02/2013
+// Updated : 03/12/2013
 // Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -363,7 +363,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     break;
 
                 case "frameworkcommentlist":
-                case "cachedframeworkcommentlist":
                 case "importframeworkcommentlist":
                     replaceWith = this.FrameworkCommentList(fieldName);
                     break;
@@ -957,6 +956,16 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     replaceWith = sb.ToString();
                     break;
 
+                case "uniqueid":
+                    // Get a unique ID for the project and current user
+                    replaceWith = Environment.ExpandEnvironmentVariables("%USERNAME%");
+
+                    if(String.IsNullOrEmpty(replaceWith) || replaceWith[0] == '%')
+                        replaceWith = "DefaultUser";
+
+                    replaceWith = (project.Filename + "_" + replaceWith).GetHashCode().ToString("X");
+                    break;
+
                 default:
                     // Try for a custom project property.  Use the last one since the original may be
                     // in a parent project file or it may have been overridden from the command line.
@@ -994,8 +1003,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// This is used to generate an appropriate list of entries that represent .NET Framework comments file
         /// locations for the various configuration files.
         /// </summary>
-        /// <param name="listType">The type of list to generate (frameworkcommentlist,
-        /// importframeworkcommentlist, or cachedframeworkcommentlist)</param>
+        /// <param name="listType">The type of list to generate (frameworkcommentlist or importframeworkcommentlist)</param>
         /// <returns>The list of framework comments file sources in the appropriate format.</returns>
         private string FrameworkCommentList(string listType)
         {
@@ -1010,28 +1018,18 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 folder = Path.GetDirectoryName(location);
                 wildcard = Path.GetFileName(location);
 
-                switch(listType)
+                if(listType == "frameworkcommentlist")
                 {
-                    case "importframeworkcommentlist":
-                        sb.AppendFormat(CultureInfo.InvariantCulture,
-                            "<import path=\"{0}\" file=\"{1}\" recurse=\"false\" />\r\n", folder, wildcard);
-                        break;
-
-                    case "cachedframeworkcommentlist":
-                        // Files are cached by platform, version, and location.  The cachePath and/or groupId
-                        // attributes can be used by caching components to identify the cache and its location.
-                        sb.AppendFormat(CultureInfo.InvariantCulture, "<data base=\"{0}\" files=\"{1}\" " +
-                            "recurse=\"false\" cachePath=\"{{@LocalDataFolder}}Cache\\{2}_{3}_{4:X}\" " +
-                            "groupId=\"{2}_{3}_{4:X}\" localCacheSize=\"2500\" duplicateWarning=\"false\" />\r\n",
-                            folder, wildcard, frameworkSettings.Platform, frameworkSettings.Version,
-                            location.GetHashCode());
-                        break;
-
-                    default:    // "frameworkcommentlist"
-                        sb.AppendFormat(CultureInfo.InvariantCulture, "<data base=\"{0}\" files=\"{1}\" " +
-                            "recurse=\"false\" duplicateWarning=\"false\" />\r\n", folder, wildcard);
-                        break;
+                    // Files are cached by platform, version, and location.  The groupId attribute can be
+                    // used by caching components to identify the cache and its location.
+                    sb.AppendFormat(CultureInfo.InvariantCulture, "<data base=\"{0}\" files=\"{1}\" " +
+                        "recurse=\"false\" duplicateWarning=\"false\" groupId=\"{2}_{3}_{4:X}\" />\r\n",
+                        folder, wildcard, frameworkSettings.Platform, frameworkSettings.Version,
+                        location.GetHashCode());
                 }
+                else    // importframeworkcommentlist
+                    sb.AppendFormat(CultureInfo.InvariantCulture, "<import path=\"{0}\" file=\"{1}\" " +
+                        "recurse=\"false\" />\r\n", folder, wildcard);
             }
 
             return sb.ToString();

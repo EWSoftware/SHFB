@@ -5,6 +5,8 @@
 
 // Change history:
 // 02/14/2012 - EFW - Made the unsafe code checks consistent across all syntax generators
+// 03/08/2013 - EFW - Added configuration option to enable inclusion of the line continuation character.  The
+// default is false to exclude it.
 
 using System;
 using System.Collections.Generic;
@@ -15,8 +17,15 @@ namespace Microsoft.Ddue.Tools
 {
     public sealed class VisualBasicUsageSyntaxGenerator : SyntaxGeneratorTemplate
     {
+        private bool includeLineContinuation;
+
         public VisualBasicUsageSyntaxGenerator(XPathNavigator configuration) : base(configuration)
         {
+            string lineCont = configuration.GetAttribute("includeLineContinuation", String.Empty);
+
+            if(String.IsNullOrWhiteSpace(lineCont) || !Boolean.TryParse(lineCont, out includeLineContinuation))
+                includeLineContinuation = false;
+
             if(String.IsNullOrEmpty(Language))
                 Language = "VisualBasicUsage";
         }
@@ -129,19 +138,13 @@ namespace Microsoft.Ddue.Tools
 
         public override void WriteClassSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
-
             bool isAbstract = (bool)reflection.Evaluate(apiIsAbstractTypeExpression);
             bool isSealed = (bool)reflection.Evaluate(apiIsSealedTypeExpression);
 
             if(isAbstract && isSealed)
-            {
                 writer.WriteMessage("UnsupportedStaticClass_" + Language);
-            }
             else
-            {
                 TypeDeclaration(reflection, writer);
-            }
-
         }
 
         public override void WriteStructureSyntax(XPathNavigator reflection, SyntaxWriter writer)
@@ -559,14 +562,13 @@ namespace Microsoft.Ddue.Tools
                         break;
                 }
             }
+
             if(identifier == null)
-            {
                 writer.WriteMessage("UnsupportedOperator_" + Language);
-            }
             else
             {
-
                 XPathNodeIterator parameters = reflection.Select(apiParametersExpression);
+
                 if(parameters.Count != Math.Abs(type))
                 {
                     writer.WriteMessage("UnsupportedOperator_" + Language);
@@ -729,7 +731,7 @@ namespace Microsoft.Ddue.Tools
             }
         }
 
-        private static void WriteMethodParameters(XPathNavigator reflection, SyntaxWriter writer)
+        private void WriteMethodParameters(XPathNavigator reflection, SyntaxWriter writer)
         {
             XPathNodeIterator parameters = reflection.Select(apiParametersExpression);
 
@@ -741,7 +743,7 @@ namespace Microsoft.Ddue.Tools
             writer.WriteString(")");
         }
 
-        private static void WritePropertyParameters(XPathNavigator reflection, SyntaxWriter writer)
+        private void WritePropertyParameters(XPathNavigator reflection, SyntaxWriter writer)
         {
             XPathNodeIterator parameters = reflection.Select(apiParametersExpression);
 
@@ -753,7 +755,7 @@ namespace Microsoft.Ddue.Tools
             writer.WriteString(")");
         }
 
-        private static void WriteParameters(XPathNodeIterator parameters, SyntaxWriter writer)
+        private void WriteParameters(XPathNodeIterator parameters, SyntaxWriter writer)
         {
             while(parameters.MoveNext())
             {
@@ -764,9 +766,12 @@ namespace Microsoft.Ddue.Tools
                 if(parameters.CurrentPosition < parameters.Count)
                 {
                     writer.WriteString(", ");
+
                     if(writer.Position > maxPosition)
                     {
-                        writer.WriteString("_");
+                        if(includeLineContinuation)
+                            writer.WriteString("_");
+
                         writer.WriteLine();
                         writer.WriteString("\t");
                     }

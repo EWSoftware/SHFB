@@ -35,6 +35,7 @@ namespace Microsoft.Ddue.Tools
 
         private ContentService msdnService;
         private IDictionary<string, string> cachedMsdnIds;
+        private bool isCacheShared;
         #endregion
 
         #region Properties
@@ -104,11 +105,14 @@ namespace Microsoft.Ddue.Tools
         /// This constructor is used to create the MSDN resolver using given existing cache
         /// </summary>
         /// <param name="msdnIdCache">A cache of existing MSDN content IDs</param>
+        /// <param name="isShared">True if the cache is shared, false if not.  If not shared, the cache will
+        /// be disposed of when this instance is disposed of</param>
         /// <remarks>This constructor allows you to pass in a persistent cache with preloaded values that will
         /// save looking up values that have already been determined.</remarks>
-        public MsdnResolver(IDictionary<string, string> msdnIdCache) : this()
+        public MsdnResolver(IDictionary<string, string> msdnIdCache, bool isShared) : this()
         {
             cachedMsdnIds = msdnIdCache;
+            isCacheShared = isShared;
         }
         #endregion
 
@@ -180,11 +184,14 @@ namespace Microsoft.Ddue.Tools
                 if(msdnService != null)
                     msdnService.Dispose();
 
-                // If the dictionary type implements IDisposable, dispose of it too
-                IDisposable d = cachedMsdnIds as IDisposable;
+                // If not shared and the dictionary type implements IDisposable, dispose of it too
+                if(!isCacheShared)
+                {
+                    IDisposable d = cachedMsdnIds as IDisposable;
 
-                if(d != null)
-                    d.Dispose();
+                    if(d != null)
+                        d.Dispose();
+                }
 
                 GC.SuppressFinalize(this);
             }

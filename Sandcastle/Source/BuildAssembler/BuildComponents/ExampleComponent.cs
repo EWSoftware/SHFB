@@ -6,22 +6,51 @@
 // Change History
 // 02/14/2013 - EFW - Removed RegexOptions.Compiled from the Regex instances.  It was causing a significant delay
 // and a huge memory usage increase that isn't justified based on the way the expressions are used here.
+// 03/09/2013 - EFW - Moved the supporting classes to the Snippets namespace
 
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.XPath;
 
+using Microsoft.Ddue.Tools.Snippets;
+
 namespace Microsoft.Ddue.Tools
 {
-    // a component to replace code references with snippets from a file
+    /// <summary>
+    /// This build component is used to replace code references with snippets from a file
+    /// </summary>
     public class ExampleComponent : BuildComponent
     {
-        // instantiation logic
+        #region Private data members
+        //=====================================================================
+
+        // The snippet store
+        private Dictionary<SnippetIdentifier, List<StoredSnippet>> snippets =
+            new Dictionary<SnippetIdentifier, List<StoredSnippet>>();
+
+        private XPathExpression selector;
+        private XmlNamespaceManager context = new CustomContext();
+
+        private static Regex validSnippetReference = new Regex(@"^[^#\a\b\f\n\r\t\v]+#(\w+,)*\w+$");
+
+        private Dictionary<string, List<ColorizationRule>> colorization =
+            new Dictionary<string, List<ColorizationRule>>();
+        #endregion
+
+        #region Constructor
+        //=====================================================================
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="assembler">The build assembler reference</param>
+        /// <param name="configuration">The component configuration</param>
         public ExampleComponent(BuildAssembler assembler, XPathNavigator configuration) :
           base(assembler, configuration)
         {
@@ -70,9 +99,15 @@ namespace Microsoft.Ddue.Tools
             selector = XPathExpression.Compile("//ddue:codeReference");
             selector.SetContext(context);
         }
+        #endregion
 
-        // snippet loading logic
+        #region Helper methods
+        //=====================================================================
 
+        /// <summary>
+        /// Snippet loading logic
+        /// </summary>
+        /// <param name="file">The file from which to load the snippets</param>
         private void LoadContent(string file)
         {
             SnippetIdentifier key = new SnippetIdentifier();
@@ -142,10 +177,174 @@ namespace Microsoft.Ddue.Tools
             }
         }
 
-        // the snippet store
-        private Dictionary<SnippetIdentifier, List<StoredSnippet>> snippets = new Dictionary<SnippetIdentifier, List<StoredSnippet>>();
+        /// <summary>
+        /// Colorization logic
+        /// </summary>
+        /// <param name="text">The text to colorize</param>
+        /// <param name="rules">The colorization rules</param>
+        /// <returns>A collection of colorized code regions</returns>
+        private static ICollection<Region> ColorizeSnippet(string text, List<ColorizationRule> rules)
+        {
+            // create a linked list consiting entirely of one uncolored region
+            LinkedList<Region> regions = new LinkedList<Region>();
+            regions.AddFirst(new Region(text));
 
-        // the actual work of the component
+            // loop over colorization rules
+            foreach(ColorizationRule rule in rules)
+            {
+                // loop over regions
+                LinkedListNode<Region> node = regions.First;
+
+                while(node != null)
+                {
+                    // only try to colorize uncolored regions
+                    if(node.Value.ClassName != null)
+                    {
+                        node = node.Next;
+                        continue;
+                    }
+
+                    // find matches in the region
+                    string regionText = node.Value.Text;
+                    var matches = rule.Apply(regionText);
+
+                    // if no matches were found, continue to the next region
+                    if(matches.Count() == 0)
+                    {
+                        node = node.Next;
+                        continue;
+                    }
+
+                    // we found matches; break the region into colored and uncolored subregions
+
+                    // index is where we are looking from; index-1 is the end of the last match
+                    int index = 0;
+
+                    LinkedListNode<Region> referenceNode = node;
+
+                    foreach(Capture match in matches)
+                    {
+                        // create a leading uncolored region 
+                        if(match.Index > index)
+                        {
+                            Region uncoloredRegion = new Region(regionText.Substring(index, match.Index - index));
+                            referenceNode = regions.AddAfter(referenceNode, uncoloredRegion);
+                        }
+
+                        // create a colored region
+                        Region coloredRegion = new Region(rule.ClassName, regionText.Substring(match.Index, match.Length));
+                        referenceNode = regions.AddAfter(referenceNode, coloredRegion);
+
+                        index = match.Index + match.Length;
+                    }
+
+                    // create a trailing uncolored region
+                    if(index < regionText.Length)
+                    {
+                        Region uncoloredRegion = new Region(regionText.Substring(index));
+                        referenceNode = regions.AddAfter(referenceNode, uncoloredRegion);
+                    }
+
+                    // remove the original node
+                    regions.Remove(node);
+
+                    node = referenceNode.Next;
+                }
+            }
+
+            return (regions);
+        }
+
+        /// <summary>
+        /// Write the colorized code snippet to the output
+        /// </summary>
+        /// <param name="regions">A collection of colorized code regions</param>
+        /// <param name="writer">The XML writer to which the colorized code is written</param>
+        private static void WriteColorizedSnippet(ICollection<Region> regions, XmlWriter writer)
+        {
+            foreach(Region region in regions)
+                if(region.ClassName == null)
+                    writer.WriteString(region.Text);
+                else
+                {
+                    writer.WriteStartElement("span");
+                    writer.WriteAttributeString("class", region.ClassName);
+                    writer.WriteString(region.Text);
+                    writer.WriteEndElement();
+                }
+        }
+
+        /// <summary>
+        /// Strip a common amount of leading whitespace from each line of the given text block
+        /// </summary>
+        /// <param name="text">The text from which to strip leading whitespace</param>
+        /// <returns>The text with the leading whitespace stripped from each line</returns>
+        private static string StripLeadingSpaces(string text)
+        {
+            if(text == null)
+                throw new ArgumentNullException("text");
+
+            // split the text into lines
+            string[] lines = text.Split('\n');
+
+            // no need to do this if there is only one line
+            if(lines.Length == 1)
+                return lines[0];
+
+            // figure out how many leading spaces to delete
+            int spaces = Int32.MaxValue;
+
+            for(int i = 0; i < lines.Length; i++)
+            {
+
+                string line = lines[i];
+
+                // skip empty lines
+                if(line.Length == 0)
+                    continue;
+
+                // determine the number of leading spaces
+                int index = 0;
+
+                while(index < line.Length)
+                {
+                    if(line[index] != ' ')
+                        break;
+
+                    index++;
+                }
+
+                if(index == line.Length)
+                {
+                    // lines that are all spaces should just be treated as empty
+                    lines[i] = String.Empty;
+                }
+                else
+                {
+                    // otherwise, keep track of the minimum number of leading spaces				
+                    if(index < spaces)
+                        spaces = index;
+                }
+
+            }
+
+            // re-form the string with leading spaces deleted
+            StringBuilder result = new StringBuilder();
+
+            foreach(string line in lines)
+                if(line.Length == 0)
+                    result.AppendLine();
+                else
+                    result.AppendLine(line.Substring(spaces));
+
+            return result.ToString();
+        }
+        #endregion
+
+        #region Method overrides
+        //=====================================================================
+
+        /// <inheritdoc />
         public override void Apply(XmlDocument document, string key)
         {
             foreach(XPathNavigator node in document.CreateNavigator().Select(selector).ToArray())
@@ -155,13 +354,13 @@ namespace Microsoft.Ddue.Tools
                 // check for validity of reference
                 if(validSnippetReference.IsMatch(reference))
                 {
-                    SnippetIdentifier[] identifiers = SnippetIdentifier.ParseReference(reference);
+                    var identifiers = SnippetIdentifier.ParseReference(reference);
 
-                    if(identifiers.Length == 1)
+                    if(identifiers.Count() == 1)
                     {
                         // one snippet referenced
 
-                        SnippetIdentifier identifier = identifiers[0];
+                        SnippetIdentifier identifier = identifiers.First();
                         List<StoredSnippet> values;
 
                         if(snippets.TryGetValue(identifier, out values))
@@ -247,326 +446,6 @@ namespace Microsoft.Ddue.Tools
                 node.DeleteSelf();
             }
         }
-
-        private XPathExpression selector;
-
-        private XmlNamespaceManager context = new CustomContext();
-
-        private static Regex validSnippetReference = new Regex(@"^[^#\a\b\f\n\r\t\v]+#(\w+,)*\w+$");
-
-        // colorization logic
-
-        private Dictionary<string, List<ColorizationRule>> colorization = new Dictionary<string, List<ColorizationRule>>();
-
-        private static ICollection<Region> ColorizeSnippet(string text, List<ColorizationRule> rules)
-        {
-            // create a linked list consiting entirely of one uncolored region
-            LinkedList<Region> regions = new LinkedList<Region>();
-            regions.AddFirst(new Region(text));
-
-            // loop over colorization rules
-            foreach(ColorizationRule rule in rules)
-            {
-                // loop over regions
-                LinkedListNode<Region> node = regions.First;
-
-                while(node != null)
-                {
-                    // only try to colorize uncolored regions
-                    if(node.Value.ClassName != null)
-                    {
-                        node = node.Next;
-                        continue;
-                    }
-
-                    // find matches in the region
-                    string regionText = node.Value.Text;
-                    Capture[] matches = rule.Apply(regionText);
-
-                    // if no matches were found, continue to the next region
-                    if(matches.Length == 0)
-                    {
-                        node = node.Next;
-                        continue;
-                    }
-
-                    // we found matches; break the region into colored and uncolered subregions
-
-                    // index is where we are looking from; index-1 is the end of the last match
-                    int index = 0;
-
-                    LinkedListNode<Region> referenceNode = node;
-
-                    foreach(Capture match in matches)
-                    {
-                        // create a leading uncolored region 
-                        if(match.Index > index)
-                        {
-                            Region uncoloredRegion = new Region(regionText.Substring(index, match.Index - index));
-                            referenceNode = regions.AddAfter(referenceNode, uncoloredRegion);
-                        }
-
-                        // create a colored region
-                        Region coloredRegion = new Region(rule.ClassName, regionText.Substring(match.Index, match.Length));
-                        referenceNode = regions.AddAfter(referenceNode, coloredRegion);
-
-                        index = match.Index + match.Length;
-                    }
-
-                    // create a trailing uncolored region
-                    if(index < regionText.Length)
-                    {
-                        Region uncoloredRegion = new Region(regionText.Substring(index));
-                        referenceNode = regions.AddAfter(referenceNode, uncoloredRegion);
-                    }
-
-                    // remove the original node
-                    regions.Remove(node);
-
-                    node = referenceNode.Next;
-                }
-            }
-
-            return (regions);
-        }
-
-        private static void WriteColorizedSnippet(ICollection<Region> regions, XmlWriter writer)
-        {
-            foreach(Region region in regions)
-                if(region.ClassName == null)
-                    writer.WriteString(region.Text);
-                else
-                {
-                    writer.WriteStartElement("span");
-                    writer.WriteAttributeString("class", region.ClassName);
-                    writer.WriteString(region.Text);
-                    writer.WriteEndElement();
-                }
-        }
-
-        private static string StripLeadingSpaces(string text)
-        {
-            if(text == null)
-                throw new ArgumentNullException("text");
-
-            // split the text into lines
-            string[] lines = text.Split('\n');
-
-            // no need to do this if there is only one line
-            if(lines.Length == 1)
-                return lines[0];
-
-            // figure out how many leading spaces to delete
-            int spaces = Int32.MaxValue;
-
-            for(int i = 0; i < lines.Length; i++)
-            {
-
-                string line = lines[i];
-
-                // skip empty lines
-                if(line.Length == 0)
-                    continue;
-
-                // determine the number of leading spaces
-                int index = 0;
-
-                while(index < line.Length)
-                {
-                    if(line[index] != ' ')
-                        break;
-
-                    index++;
-                }
-
-                if(index == line.Length)
-                {
-                    // lines that are all spaces should just be treated as empty
-                    lines[i] = String.Empty;
-                }
-                else
-                {
-                    // otherwise, keep track of the minimum number of leading spaces				
-                    if(index < spaces)
-                        spaces = index;
-                }
-
-            }
-
-            // re-form the string with leading spaces deleted
-            StringBuilder result = new StringBuilder();
-
-            foreach(string line in lines)
-                if(line.Length == 0)
-                    result.AppendLine();
-                else
-                    result.AppendLine(line.Substring(spaces));
-
-            return result.ToString();
-        }
-    }
-
-    internal struct SnippetIdentifier
-    {
-        public SnippetIdentifier(string exampleId, string snippetId)
-        {
-            this.exampleId = exampleId.ToLowerInvariant();
-            this.snippetId = snippetId.ToLowerInvariant();
-        }
-
-        public SnippetIdentifier(string identifier)
-        {
-            int index = identifier.LastIndexOf('#');
-            exampleId = identifier.Substring(0, index).ToLowerInvariant();
-            snippetId = identifier.Substring(index + 1).ToLowerInvariant();
-        }
-
-        private string exampleId;
-
-        private string snippetId;
-
-        public string Example
-        {
-            get
-            {
-                return (exampleId);
-            }
-        }
-
-        public string Snippet
-        {
-            get
-            {
-                return (snippetId);
-            }
-        }
-
-        public override string ToString()
-        {
-            return String.Format(CultureInfo.InvariantCulture, "{0}#{1}", exampleId, snippetId);
-        }
-
-        public static SnippetIdentifier[] ParseReference(string reference)
-        {
-            int index = reference.IndexOf('#');
-
-            if(index < 0)
-                return (new SnippetIdentifier[0]);
-
-            string example = reference.Substring(0, index);
-            string[] snippets = reference.Substring(index + 1).Split(',');
-
-            SnippetIdentifier[] identifiers = new SnippetIdentifier[snippets.Length];
-
-            for(int i = 0; i < snippets.Length; i++)
-                identifiers[i] = new SnippetIdentifier(example, snippets[i]);
-
-            return identifiers;
-        }
-    }
-
-    internal class StoredSnippet
-    {
-        public StoredSnippet(string text, string language)
-        {
-            this.text = text;
-            this.language = language;
-        }
-
-        private string text;
-
-        private string language;
-
-        public string Text
-        {
-            get
-            {
-                return (text);
-            }
-        }
-
-        public string Language
-        {
-            get
-            {
-                return (language);
-            }
-        }
-    }
-
-    internal class ColorizationRule
-    {
-        public ColorizationRule(string pattern, string className) : this(pattern, null, className) { }
-
-        public ColorizationRule(string pattern, string region, string className)
-        {
-            this.pattern = new Regex(pattern, RegexOptions.Multiline);
-            this.region = region;
-            this.className = className;
-        }
-
-        private Regex pattern;
-
-        private string region;
-
-        private string className;
-
-        public string ClassName
-        {
-            get
-            {
-                return (className);
-            }
-        }
-
-        public Capture[] Apply(string text)
-        {
-            MatchCollection matches = pattern.Matches(text);
-            Capture[] captures = new Capture[matches.Count];
-
-            if(region == null)
-            {
-                matches.CopyTo(captures, 0);
-                return (captures);
-            }
-            else
-            {
-                for(int i = 0; i < captures.Length; i++)
-                    captures[i] = matches[i].Groups[region];
-
-                return captures;
-            }
-        }
-    }
-
-    internal struct Region
-    {
-        public Region(string text) : this(null, text) { }
-
-        public Region(string className, string text)
-        {
-            this.className = className;
-            this.text = text;
-        }
-
-        private string className;
-
-        private string text;
-
-        public string ClassName
-        {
-            get
-            {
-                return (className);
-            }
-        }
-
-        public string Text
-        {
-            get
-            {
-                return (text);
-            }
-        }
+        #endregion
     }
 }

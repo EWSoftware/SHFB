@@ -97,7 +97,7 @@ namespace Microsoft.Ddue.Tools.Commands
         //=====================================================================
 
         /// <inheritdoc />
-        public override int IndexCount
+        public override int Count
         {
             get { return index.Count; }
         }

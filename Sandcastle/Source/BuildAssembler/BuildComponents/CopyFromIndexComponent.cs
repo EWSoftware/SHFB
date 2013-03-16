@@ -88,7 +88,9 @@ namespace Microsoft.Ddue.Tools
                 foreach(XPathNavigator dataNode in dataNodes)
                     index.AddDocuments(dataNode);
 
-                base.WriteMessage(MessageLevel.Info, "Indexed {0} elements", index.IndexCount);
+                // Getting the count from a database cache can be expensive so only report it if it will be seen
+                if(base.BuildAssembler.VerbosityLevel == MessageLevel.Info)
+                    base.WriteMessage(MessageLevel.Info, "Indexed {0} elements", index.Count);
 #if DEBUG
                 TimeSpan loadTime = (DateTime.Now - startLoad);
                 base.WriteMessage(MessageLevel.Diagnostic, "Load time: {0} seconds", loadTime.TotalSeconds);

@@ -265,6 +265,15 @@ namespace Microsoft.Ddue.Tools.Targets
                 }
             });
         }
+
+        /// <summary>
+        /// This can be overridden in derived classes to report cache usage statistics after the build
+        /// </summary>
+        /// <remarks>The default implementation does nothing.  You can override this to provide information that
+        /// can help adjust the cache size to make it more efficient.</remarks>
+        public virtual void ReportCacheStatistics()
+        {
+        }
         #endregion
 
         #region IDictionary<string,Target> Members

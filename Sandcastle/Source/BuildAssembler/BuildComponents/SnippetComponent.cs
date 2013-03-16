@@ -8,10 +8,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.XPath;
+
+using Microsoft.Ddue.Tools.Snippets;
 
 namespace Microsoft.Ddue.Tools
 {
@@ -46,7 +49,7 @@ namespace Microsoft.Ddue.Tools
         /// <summary>
         /// Dictionary consisting of exampleName\unitName as key with a null value.
         /// </summary>
-        private Dictionary<string, string> approvedSnippetIndex = new Dictionary<string,string>();
+        private Dictionary<string, string> approvedSnippetIndex = new Dictionary<string, string>();
 
         /// <summary>
         /// Dictionary containing the example name as key and list of rejected language snippets as values.
@@ -100,18 +103,18 @@ namespace Microsoft.Ddue.Tools
             // Get the parsnip examples location.
             XPathNodeIterator examplesNode = configuration.Select("examples/example");
 
-            if (examplesNode.Count == 0)
+            if(examplesNode.Count == 0)
                 WriteMessage(MessageLevel.Error, "Each snippet component element must have a child element named 'examples' containing an element named 'example' with an attribute named 'directory', whose value is a path to the directory containing examples.");
 
-            foreach (XPathNavigator exampleNode in examplesNode)
+            foreach(XPathNavigator exampleNode in examplesNode)
             {
                 string rootDirectory = exampleNode.GetAttribute("directory", string.Empty);
 
-                if (string.IsNullOrEmpty(rootDirectory))
+                if(string.IsNullOrEmpty(rootDirectory))
                     WriteMessage(MessageLevel.Error, "Each examples element must have a directory attribute specifying a directory containing parsnip samples.");
 
                 rootDirectory = Environment.ExpandEnvironmentVariables(rootDirectory);
-                if (!Directory.Exists(rootDirectory))
+                if(!Directory.Exists(rootDirectory))
                     WriteMessage(MessageLevel.Error, "The examples/@directory attribute specified a directory that doesn't exist: '{0}'", rootDirectory);
 
                 // create a dictionary that maps the example names to the example path under the root directory
@@ -121,18 +124,18 @@ namespace Microsoft.Ddue.Tools
             // Get the approved log files location.
             XPathNodeIterator approvedSnippetsNode = configuration.Select("approvalLogs/approvalLog");
 
-            if (approvedSnippetsNode.Count == 0)
+            if(approvedSnippetsNode.Count == 0)
                 WriteMessage(MessageLevel.Warn, "The config did not have an 'approvalLogs' node to specify a snippet approval logs.");
-            
-            foreach (XPathNavigator node in approvedSnippetsNode)
+
+            foreach(XPathNavigator node in approvedSnippetsNode)
             {
                 string approvalLogFile = node.GetAttribute("file", string.Empty);
 
-                if (string.IsNullOrEmpty(approvalLogFile))
+                if(string.IsNullOrEmpty(approvalLogFile))
                     WriteMessage(MessageLevel.Error, "The approvalLog node must have a 'file' attribute specifying the path to a snippet approval log.");
 
                 approvalLogFile = Environment.ExpandEnvironmentVariables(approvalLogFile);
-                if (!File.Exists(approvalLogFile))
+                if(!File.Exists(approvalLogFile))
                     WriteMessage(MessageLevel.Error, "The approvalLog/@file attribute specified a file that doesn't exist: '{0}'", approvalLogFile);
 
                 // load the approval log into the approvedSnippetIndex dictionary
@@ -142,42 +145,42 @@ namespace Microsoft.Ddue.Tools
             // Get the names of the unit directories in the sample tree to exclude from parsing
             //     <excludedUnits><unitFolder name="CPP_OLD" /></excludedUnits>
             XPathNodeIterator excludedUnitNodes = configuration.Select("excludedUnits/unitFolder");
-            foreach (XPathNavigator unitFolder in excludedUnitNodes)
+            foreach(XPathNavigator unitFolder in excludedUnitNodes)
             {
                 string folderName = unitFolder.GetAttribute("name", string.Empty);
 
-                if (string.IsNullOrEmpty(folderName))
+                if(string.IsNullOrEmpty(folderName))
                     WriteMessage(MessageLevel.Error, "Each excludedUnits/unitFolder node must have a 'name' attribute specifying the name of a folder name to exclude.");
 
                 folderName = Environment.ExpandEnvironmentVariables(folderName);
 
                 // add the folderName to the list of names to be excluded
-                this.excludedUnits.Add(folderName.ToLowerInvariant(),null);
+                this.excludedUnits.Add(folderName.ToLowerInvariant(), null);
             }
 
             // Get the languages defined.
             XPathNodeIterator languageNodes = configuration.Select("languages/language");
-            foreach (XPathNavigator languageNode in languageNodes)
+            foreach(XPathNavigator languageNode in languageNodes)
             {
                 // read the @languageId, @unit, and @extension attributes
                 string languageId = languageNode.GetAttribute("languageId", string.Empty);
-                if (string.IsNullOrEmpty(languageId))
+                if(string.IsNullOrEmpty(languageId))
                     WriteMessage(MessageLevel.Error, "Each language node must specify an @languageId attribute.");
 
                 string unit = languageNode.GetAttribute("unit", string.Empty);
 
                 // if both @languageId and @unit are specified, add this language to the language map
-                if (!string.IsNullOrEmpty(unit))
+                if(!string.IsNullOrEmpty(unit))
                     languageMap.Add(unit.ToLowerInvariant(), languageId);
 
                 // add languageId to the languageList for purpose of ordering snippets in the output
-                if (!languageList.Contains(languageId))
+                if(!languageList.Contains(languageId))
                     languageList.Add(languageId.ToLowerInvariant());
 
                 string extension = languageNode.GetAttribute("extension", string.Empty);
-                if (!string.IsNullOrEmpty(extension))
+                if(!string.IsNullOrEmpty(extension))
                 {
-                    if (!extension.Contains("."))
+                    if(!extension.Contains("."))
                     {
                         extension = "." + extension;
                         WriteMessage(MessageLevel.Warn, "The @extension value must begin with a period. Adding a period to the extension value '{0}' of the {1} language.", extension, languageId);
@@ -185,7 +188,7 @@ namespace Microsoft.Ddue.Tools
                     else
                     {
                         int indexOfPeriod = extension.IndexOf('.');
-                        if (indexOfPeriod != 0)
+                        if(indexOfPeriod != 0)
                         {
                             extension = extension.Substring(indexOfPeriod);
                             WriteMessage(MessageLevel.Warn, "The @extension value must begin with a period. Using the substring beginning with the first period of the specified extension value '{0}' of the {1} language.", extension, languageId);
@@ -197,12 +200,12 @@ namespace Microsoft.Ddue.Tools
                 List<ColorizationRule> rules = new List<ColorizationRule>();
 
                 XPathNodeIterator colorNodes = languageNode.Select("color");
-                foreach (XPathNavigator colorNode in colorNodes)
+                foreach(XPathNavigator colorNode in colorNodes)
                 {
                     string pattern = colorNode.GetAttribute("pattern", String.Empty);
                     string region = colorNode.GetAttribute("region", String.Empty);
                     string name = colorNode.GetAttribute("class", String.Empty);
-                    if (String.IsNullOrEmpty(region))
+                    if(String.IsNullOrEmpty(region))
                     {
                         rules.Add(new ColorizationRule(pattern, name));
                     }
@@ -244,42 +247,42 @@ namespace Microsoft.Ddue.Tools
                 string reference = node.Value;
 
                 // check for validity of reference
-                if (!validSnippetReference.IsMatch(reference))
+                if(!validSnippetReference.IsMatch(reference))
                 {
                     base.WriteMessage(key, MessageLevel.Warn, "Skipping invalid snippet reference: " + reference);
                     continue;
                 }
 
                 // get the identifiers from the codeReference
-                SnippetIdentifier[] identifiers = SnippetIdentifier.ParseReference(reference);
+                var identifiers = SnippetIdentifier.ParseReference(reference);
 
                 // load the language-specific snippets for each of the specified identifiers
-                foreach (SnippetIdentifier identifier in identifiers)
+                foreach(SnippetIdentifier identifier in identifiers)
                 {
-                    if (snippets.ContainsKey(identifier))
+                    if(snippets.ContainsKey(identifier))
                         continue;
 
                     // look up the snippets example path
                     string examplePath = string.Empty;
-                    if (!this.exampleIndex.TryGetValue(identifier.Example, out examplePath))
+                    if(!this.exampleIndex.TryGetValue(identifier.ExampleId, out examplePath))
                     {
                         base.WriteMessage(key, MessageLevel.Warn, "Snippet with identifier '{0}' was not found. " +
                             "The '{1}' example was not found in the examples directory.", identifier.ToString(),
-                            identifier.Example);
+                            identifier.ExampleId);
                         continue;
                     }
 
                     // get the snippet from the snippet cache 
                     List<Snippet> snippetList = snippetCache.GetContent(examplePath, identifier);
-                    if (snippetList != null)
+                    if(snippetList != null)
                     {
                         snippets.Add(identifier, snippetList);
                     }
-                    else 
+                    else
                     {
                         // if no approval log was specified in the config, all snippets are treated as approved by default
                         // so show an warning message that the snippet was not found
-                        if (approvedSnippetIndex.Count == 0)
+                        if(approvedSnippetIndex.Count == 0)
                             base.WriteMessage(key, MessageLevel.Warn, "No Snippet with identifier '{0}' was found.",
                                 identifier.ToString());
                         else
@@ -287,10 +290,10 @@ namespace Microsoft.Ddue.Tools
                             // show a warning message: either snippet not found, or snippet not approved.
                             bool isApproved = false;
 
-                            foreach (string snippetIndex in this.approvedSnippetIndex.Keys)
+                            foreach(string snippetIndex in this.approvedSnippetIndex.Keys)
                             {
                                 string[] splitSnippet = snippetIndex.Split('\\');
-                                if (splitSnippet[0] == identifier.Example)
+                                if(splitSnippet[0] == identifier.ExampleId)
                                 {
                                     isApproved = true;
                                     break;
@@ -298,7 +301,7 @@ namespace Microsoft.Ddue.Tools
                             }
 
                             // check whether snippets are present in parsnip approval logs and throw warnings accordingly.
-                            if (!isApproved || !rejectedSnippetIndex.ContainsKey(identifier.Example))
+                            if(!isApproved || !rejectedSnippetIndex.ContainsKey(identifier.ExampleId))
                                 base.WriteMessage(key, MessageLevel.Warn, "The snippet with identifier '{0}' " +
                                     "was omitted because it is not present in parsnip approval logs.",
                                     identifier.ToString());
@@ -312,21 +315,21 @@ namespace Microsoft.Ddue.Tools
 
                     // write warning messages for any rejected units for this example
                     List<string> rejectedUnits;
-                    if (rejectedSnippetIndex.TryGetValue(identifier.Example, out rejectedUnits))
+                    if(rejectedSnippetIndex.TryGetValue(identifier.ExampleId, out rejectedUnits))
                     {
-                        foreach (string rejectedUnit in rejectedUnits)
+                        foreach(string rejectedUnit in rejectedUnits)
                             base.WriteMessage(key, MessageLevel.Warn, "The '{0}' snippet with identifier " +
                                 "'{1}' was omitted because the {2}\\{0} unit did not pass Parsnip testing.",
-                                rejectedUnit, identifier.ToString(), identifier.Example);
+                                rejectedUnit, identifier.ToString(), identifier.ExampleId);
                     }
                 }
 
-                if (identifiers.Length == 1)
+                if(identifiers.Count() == 1)
                 {
                     // one snippet referenced
-                    SnippetIdentifier identifier = identifiers[0];
+                    SnippetIdentifier identifier = identifiers.First();
 
-                    if (snippets.ContainsKey(identifier))
+                    if(snippets.ContainsKey(identifier))
                         WriteSnippetContent(node, snippets[identifier]);
                 }
                 else
@@ -336,15 +339,15 @@ namespace Microsoft.Ddue.Tools
 
                     // create dictionary that maps each language to its set of snippets
                     Dictionary<string, List<Snippet>> map = new Dictionary<string, List<Snippet>>();
-                    foreach (SnippetIdentifier identifier in identifiers)
+                    foreach(SnippetIdentifier identifier in identifiers)
                     {
                         List<Snippet> values;
-                        if (snippets.TryGetValue(identifier, out values))
+                        if(snippets.TryGetValue(identifier, out values))
                         {
-                            foreach (Snippet value in values)
+                            foreach(Snippet value in values)
                             {
                                 List<Snippet> pieces;
-                                if (!map.TryGetValue(value.Language.LanguageId, out pieces))
+                                if(!map.TryGetValue(value.Language.LanguageId, out pieces))
                                 {
                                     pieces = new List<Snippet>();
                                     map.Add(value.Language.LanguageId, pieces);
@@ -360,11 +363,11 @@ namespace Microsoft.Ddue.Tools
                     writer.WriteAttributeString("reference", reference);
 
                     // first write the snippets in the order their language shows up in the language map (if any)
-                    foreach (string devlang in languageList)
+                    foreach(string devlang in languageList)
                     {
-                        foreach (KeyValuePair<string, List<Snippet>> entry in map)
+                        foreach(KeyValuePair<string, List<Snippet>> entry in map)
                         {
-                            if (!(devlang == entry.Key.ToLowerInvariant()))
+                            if(!(devlang == entry.Key.ToLowerInvariant()))
                                 continue;
                             writer.WriteStartElement("snippet");
                             writer.WriteAttributeString("language", entry.Key);
@@ -372,22 +375,22 @@ namespace Microsoft.Ddue.Tools
 
                             // write the set of snippets for this language
                             List<Snippet> values = entry.Value;
-                            for (int i = 0; i < values.Count; i++)
+                            for(int i = 0; i < values.Count; i++)
                             {
-                                if (i > 0)
+                                if(i > 0)
                                     writer.WriteString("\n...\n\n\n");
                                 // write the colorized or plaintext snippet text
                                 WriteSnippetText(values[i], writer);
                             }
-                            
+
                             writer.WriteEndElement();
                         }
                     }
 
                     // now write any snippets whose language isn't in the language map
-                    foreach (KeyValuePair<string, List<Snippet>> entry in map)
+                    foreach(KeyValuePair<string, List<Snippet>> entry in map)
                     {
-                        if (languageList.Contains(entry.Key.ToLowerInvariant()))
+                        if(languageList.Contains(entry.Key.ToLowerInvariant()))
                             continue;
                         writer.WriteStartElement("snippet");
                         writer.WriteAttributeString("language", entry.Key);
@@ -395,17 +398,17 @@ namespace Microsoft.Ddue.Tools
 
                         // write the set of snippets for this language
                         List<Snippet> values = entry.Value;
-                        for (int i = 0; i < values.Count; i++)
+                        for(int i = 0; i < values.Count; i++)
                         {
-                            if (i > 0)
+                            if(i > 0)
                                 writer.WriteString("\n...\n\n\n");
                             // write the colorized or plaintext snippet text
                             WriteSnippetText(values[i], writer);
                         }
-                        
+
                         writer.WriteEndElement();
                     }
-                    
+
                     writer.WriteEndElement();
                     writer.Close();
                 }
@@ -426,21 +429,21 @@ namespace Microsoft.Ddue.Tools
                 DirectoryInfo root = new DirectoryInfo(rootDirectory);
                 DirectoryInfo[] areaDirectories = root.GetDirectories();
 
-                foreach (DirectoryInfo area in areaDirectories)
+                foreach(DirectoryInfo area in areaDirectories)
                 {
                     DirectoryInfo[] exampleDirectories = area.GetDirectories();
 
-                    foreach (DirectoryInfo example in exampleDirectories)
+                    foreach(DirectoryInfo example in exampleDirectories)
                     {
                         string path;
-                        if (this.exampleIndex.TryGetValue(example.Name.ToLowerInvariant(), out path))
+                        if(this.exampleIndex.TryGetValue(example.Name.ToLowerInvariant(), out path))
                             WriteMessage(MessageLevel.Warn, "The example '{0}' under folder '{1}' already exists under '{2}'", example.Name, example.FullName, path);
-                        
+
                         this.exampleIndex[example.Name.ToLowerInvariant()] = example.FullName;
                     }
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 WriteMessage(MessageLevel.Error, "The loading of examples failed:{0}", e.Message);
                 throw;
@@ -456,22 +459,22 @@ namespace Microsoft.Ddue.Tools
             string sampleName = string.Empty;
             string unitName = string.Empty;
             List<string> rejectedUnits = null;
-           
+
             XmlReader reader = XmlReader.Create(file);
             try
             {
-                while (reader.Read())
+                while(reader.Read())
                 {
-                    if (reader.NodeType == XmlNodeType.Element)
+                    if(reader.NodeType == XmlNodeType.Element)
                     {
-                        if (reader.Name == "Sample")
+                        if(reader.Name == "Sample")
                         {
-                           sampleName = reader.GetAttribute("name").ToLowerInvariant();
-                           //create a new rejectedUnits list for this sample
-                           rejectedUnits = null;
+                            sampleName = reader.GetAttribute("name").ToLowerInvariant();
+                            //create a new rejectedUnits list for this sample
+                            rejectedUnits = null;
                         }
 
-                        if (reader.Name == "Unit")
+                        if(reader.Name == "Unit")
                         {
                             unitName = reader.GetAttribute("name").ToLowerInvariant();
 
@@ -480,13 +483,13 @@ namespace Microsoft.Ddue.Tools
 
                             if(include)
                             {
-                               if (this.approvedSnippetIndex.ContainsKey(Path.Combine(sampleName, unitName)))
+                                if(this.approvedSnippetIndex.ContainsKey(Path.Combine(sampleName, unitName)))
                                     WriteMessage(MessageLevel.Warn, "Sample '{0}' already exists in the approval log files.", sampleName);
                                 this.approvedSnippetIndex[Path.Combine(sampleName, unitName)] = null;
                             }
                             else
                             {
-                                if (rejectedUnits == null)
+                                if(rejectedUnits == null)
                                 {
                                     rejectedUnits = new List<string>();
                                     rejectedSnippetIndex[sampleName] = rejectedUnits;
@@ -497,7 +500,7 @@ namespace Microsoft.Ddue.Tools
                     }
                 }
             }
-            catch (XmlException e)
+            catch(XmlException e)
             {
                 WriteMessage(MessageLevel.Error, "The specified approval log file is not well-formed. The error message is: {0}", e.Message);
             }
@@ -514,7 +517,7 @@ namespace Microsoft.Ddue.Tools
         /// <param name="identifier">List of snippets</param>
         private void WriteSnippetContent(XPathNavigator node, List<Snippet> snippetList)
         {
-            if (snippetList == null || snippetList.Count == 0)
+            if(snippetList == null || snippetList.Count == 0)
             {
                 WriteMessage(MessageLevel.Warn, "Empty snippet list past for node " + node.Name);
                 return;
@@ -525,11 +528,11 @@ namespace Microsoft.Ddue.Tools
             writer.WriteAttributeString("reference", node.Value);
 
             // first write the snippets in the order their language shows up in the language map (if any)
-            foreach (string devlang in languageList)
+            foreach(string devlang in languageList)
             {
-                foreach (Snippet snippet in snippetList)
+                foreach(Snippet snippet in snippetList)
                 {
-                    if (!(devlang == snippet.Language.LanguageId.ToLowerInvariant()))
+                    if(!(devlang == snippet.Language.LanguageId.ToLowerInvariant()))
                         continue;
                     writer.WriteStartElement("snippet");
                     writer.WriteAttributeString("language", snippet.Language.LanguageId);
@@ -541,9 +544,9 @@ namespace Microsoft.Ddue.Tools
             }
 
             // now write any snippets whose language isn't in the language map
-            foreach (Snippet snippet in snippetList)
+            foreach(Snippet snippet in snippetList)
             {
-                if (languageList.Contains(snippet.Language.LanguageId.ToLowerInvariant()))
+                if(languageList.Contains(snippet.Language.LanguageId.ToLowerInvariant()))
                     continue;
                 writer.WriteStartElement("snippet");
                 writer.WriteAttributeString("language", snippet.Language.LanguageId);
@@ -552,7 +555,7 @@ namespace Microsoft.Ddue.Tools
                 WriteSnippetText(snippet, writer);
                 writer.WriteEndElement();
             }
-            
+
             writer.WriteEndElement();
             writer.Close();
         }
@@ -573,14 +576,14 @@ namespace Microsoft.Ddue.Tools
             regions.AddFirst(new Region(text));
 
             // loop over colorization rules
-            foreach (ColorizationRule rule in rules)
+            foreach(ColorizationRule rule in rules)
             {
                 // loop over regions
                 LinkedListNode<Region> node = regions.First;
-                while (node != null)
+                while(node != null)
                 {
                     // only try to colorize uncolored regions
-                    if (node.Value.ClassName != null)
+                    if(node.Value.ClassName != null)
                     {
                         node = node.Next;
                         continue;
@@ -588,10 +591,10 @@ namespace Microsoft.Ddue.Tools
 
                     // find matches in the region
                     string regionText = node.Value.Text;
-                    Capture[] matches = rule.Apply(regionText);
+                    var matches = rule.Apply(regionText);
 
                     // if no matches were found, continue to the next region
-                    if (matches.Length == 0)
+                    if(matches.Count() == 0)
                     {
                         node = node.Next;
                         continue;
@@ -603,10 +606,10 @@ namespace Microsoft.Ddue.Tools
 
                     LinkedListNode<Region> referenceNode = node;
 
-                    foreach (Capture match in matches)
+                    foreach(Capture match in matches)
                     {
                         // create a leading uncolored region 
-                        if (match.Index > index)
+                        if(match.Index > index)
                         {
                             Region uncoloredRegion = new Region(regionText.Substring(index, match.Index - index));
                             referenceNode = regions.AddAfter(referenceNode, uncoloredRegion);
@@ -620,7 +623,7 @@ namespace Microsoft.Ddue.Tools
                     }
 
                     // create a trailing uncolored region
-                    if (index < regionText.Length)
+                    if(index < regionText.Length)
                     {
                         Region uncoloredRegion = new Region(regionText.Substring(index));
                         referenceNode = regions.AddAfter(referenceNode, uncoloredRegion);
@@ -636,8 +639,8 @@ namespace Microsoft.Ddue.Tools
 
         private static void WriteColorizedSnippet(ICollection<Region> regions, XmlWriter writer)
         {
-            foreach (Region region in regions)
-                if (region.ClassName == null)
+            foreach(Region region in regions)
+                if(region.ClassName == null)
                     writer.WriteString(region.Text);
                 else
                 {
@@ -731,25 +734,25 @@ namespace Microsoft.Ddue.Tools
         /// <returns>boolean indicating if a language is defined</returns>
         public bool IsMatch(string languageId, string extension)
         {
-            if (this.languageId == languageId)
+            if(this.languageId == languageId)
             {
-                if (this.extension == extension)
+                if(this.extension == extension)
                 {
                     return true;
                 }
-                else if (this.extension == "*")
+                else if(this.extension == "*")
                 {
                     return true;
                 }
             }
-            else if (this.languageId == "*")
+            else if(this.languageId == "*")
             {
-                if (this.extension == extension)
+                if(this.extension == extension)
                 {
                     return true;
                 }
 
-                if (this.extension == "*")
+                if(this.extension == "*")
                 {
                     return true;
                 }
@@ -807,7 +810,7 @@ namespace Microsoft.Ddue.Tools
         /// </summary>
         public Language Language
         {
-            get 
+            get
             {
                 return this.language;
             }
@@ -829,8 +832,8 @@ namespace Microsoft.Ddue.Tools
         private Dictionary<string, Object> _excludedUnits;
 
         public SnippetCache(int cacheSize, Dictionary<string, string> approvalIndex, Dictionary<string, string> languageMap, List<Language> languages, Dictionary<string, Object> excludedUnits)
-		{
-			_cacheSize = cacheSize;
+        {
+            _cacheSize = cacheSize;
             _approvalIndex = approvalIndex;
             _languageMap = languageMap;
             _languages = languages;
@@ -838,25 +841,25 @@ namespace Microsoft.Ddue.Tools
 
             cache = new Dictionary<string, IndexedExample>(_cacheSize);
 
-			lruLinkedList = new LinkedList<string>();
-		}
+            lruLinkedList = new LinkedList<string>();
+        }
 
         public List<Snippet> GetContent(string examplePath, SnippetIdentifier snippetId)
         {
-            
+
             // get the example containing the identifier
             IndexedExample exampleIndex = GetCachedExample(examplePath);
-            if (exampleIndex == null) 
+            if(exampleIndex == null)
                 return (null);
 
             // 
             return exampleIndex.GetContent(snippetId);
         }
-               
+
         private IndexedExample GetCachedExample(string examplePath)
         {
             IndexedExample exampleIndex;
-            if (cache.TryGetValue(examplePath, out exampleIndex))
+            if(cache.TryGetValue(examplePath, out exampleIndex))
             {
                 // move the file from its current position to the head of the lru linked list
                 lruLinkedList.Remove(exampleIndex.ListNode);
@@ -866,11 +869,11 @@ namespace Microsoft.Ddue.Tools
             {
                 // not in the cache, so load and index a new example
                 exampleIndex = new IndexedExample(examplePath, _approvalIndex, _languageMap, _languages, _excludedUnits);
-                if (cache.Count >= _cacheSize)
+                if(cache.Count >= _cacheSize)
                 {
                     // the cache is full
                     // the last node in the linked list has the path of the next file to remove from the cache
-                    if (lruLinkedList.Last != null)
+                    if(lruLinkedList.Last != null)
                     {
                         cache.Remove(lruLinkedList.Last.Value);
                         lruLinkedList.RemoveLast();
@@ -910,12 +913,12 @@ namespace Microsoft.Ddue.Tools
 
         public List<Snippet> GetContent(SnippetIdentifier identifier)
         {
-            if (exampleSnippets.ContainsKey(identifier))
+            if(exampleSnippets.ContainsKey(identifier))
                 return exampleSnippets[identifier];
             else
                 return null;
         }
-                
+
         private LinkedListNode<string> listNode;
         public LinkedListNode<string> ListNode
         {
@@ -940,14 +943,14 @@ namespace Microsoft.Ddue.Tools
             string unitName = unit.Name.ToLowerInvariant();
 
             // return false if the unit name is in the list of names to exclude
-            if (_excludedUnits.ContainsKey(unitName))
+            if(_excludedUnits.ContainsKey(unitName))
                 return false;
 
             // if no approval log is specified, all snippets are approved by default
-            if (_approvalIndex.Count == 0)
+            if(_approvalIndex.Count == 0)
                 return true;
 
-            if (_approvalIndex.ContainsKey(Path.Combine(sampleName, unitName)))
+            if(_approvalIndex.ContainsKey(Path.Combine(sampleName, unitName)))
             {
                 return true;
             }
@@ -964,9 +967,9 @@ namespace Microsoft.Ddue.Tools
             // process the approved language-specific unit directories for this example
             DirectoryInfo[] unitDirectories = exampleDirectory.GetDirectories();
 
-            foreach (DirectoryInfo unit in unitDirectories)
+            foreach(DirectoryInfo unit in unitDirectories)
             {
-                if (this.IsApprovedUnit(unit))
+                if(this.IsApprovedUnit(unit))
                     this.ParseUnit(unit);
             }
         }
@@ -979,7 +982,7 @@ namespace Microsoft.Ddue.Tools
         {
             // the language is the Unit Directory name, or the language id mapped to that name
             string language = unit.Name;
-            if (_languageMap.ContainsKey(language.ToLowerInvariant()))
+            if(_languageMap.ContainsKey(language.ToLowerInvariant()))
                 language = _languageMap[language.ToLowerInvariant()];
 
             ParseDirectory(unit, language, unit.Parent.Name);
@@ -995,12 +998,12 @@ namespace Microsoft.Ddue.Tools
         {
             // parse the files in this directory
             FileInfo[] files = directory.GetFiles();
-            foreach (FileInfo file in files)
+            foreach(FileInfo file in files)
                 ParseFile(file, language, exampleName);
 
             // recurse to get files in any subdirectories
             DirectoryInfo[] subdirectories = directory.GetDirectories();
-            foreach (DirectoryInfo subdirectory in subdirectories)
+            foreach(DirectoryInfo subdirectory in subdirectories)
                 ParseDirectory(subdirectory, language, exampleName);
         }
 
@@ -1040,14 +1043,14 @@ namespace Microsoft.Ddue.Tools
         private void ParseSnippetContent(string text, string language, string extension, string example)
         {
             // parse the text for snippets
-            for (Match match = find.Match(text); match.Success; match = find.Match(text, match.Index + 10))
+            for(Match match = find.Match(text); match.Success; match = find.Match(text, match.Index + 10))
             {
                 string snippetIdentifier = match.Groups["id"].Value;
                 string snippetContent = match.Groups["tx"].Value;
                 snippetContent = clean.Replace(snippetContent, "\n");
 
                 //if necessary, clean one more time to catch snippet comments on consecutive lines
-                if (clean.Match(snippetContent).Success)
+                if(clean.Match(snippetContent).Success)
                 {
                     snippetContent = clean.Replace(snippetContent, "\n");
                 }
@@ -1057,9 +1060,9 @@ namespace Microsoft.Ddue.Tools
 
                 // get the language/extension from our languages List, which may contain colorization rules for the language
                 Language snippetLanguage = new Language(language, extension, null);
-                foreach (Language lang in _languages)
+                foreach(Language lang in _languages)
                 {
-                    if (!lang.IsMatch(language, extension))
+                    if(!lang.IsMatch(language, extension))
                         continue;
                     snippetLanguage = lang;
                     break;
@@ -1080,7 +1083,7 @@ namespace Microsoft.Ddue.Tools
                 Snippet snippet = new Snippet(snippetContent, snippetLanguage);
                 List<Snippet> values;
 
-                if (!this.exampleSnippets.TryGetValue(identifier, out values))
+                if(!this.exampleSnippets.TryGetValue(identifier, out values))
                 {
                     values = new List<Snippet>();
                     this.exampleSnippets.Add(identifier, values);
@@ -1092,7 +1095,8 @@ namespace Microsoft.Ddue.Tools
         private static string StripLeadingSpaces(string text)
         {
 
-            if (text == null) throw new ArgumentNullException("text");
+            if(text == null)
+                throw new ArgumentNullException("text");
 
             // split the text into lines
             string[] stringSeparators = new string[] { "\r\n" };
@@ -1100,23 +1104,25 @@ namespace Microsoft.Ddue.Tools
 
             // figure out how many leading spaces to delete
             int spaces = Int32.MaxValue;
-            for (int i = 0; i < lines.Length; i++)
+            for(int i = 0; i < lines.Length; i++)
             {
 
                 string line = lines[i];
 
                 // skip empty lines
-                if (line.Length == 0) continue;
+                if(line.Length == 0)
+                    continue;
 
                 // determine the number of leading spaces
                 int index = 0;
-                while (index < line.Length)
+                while(index < line.Length)
                 {
-                    if (line[index] != ' ') break;
+                    if(line[index] != ' ')
+                        break;
                     index++;
                 }
 
-                if (index == line.Length)
+                if(index == line.Length)
                 {
                     // lines that are all spaces should just be treated as empty
                     lines[i] = String.Empty;
@@ -1124,7 +1130,8 @@ namespace Microsoft.Ddue.Tools
                 else
                 {
                     // otherwise, keep track of the minimum number of leading spaces				
-                    if (index < spaces) spaces = index;
+                    if(index < spaces)
+                        spaces = index;
                 }
 
             }
@@ -1132,9 +1139,9 @@ namespace Microsoft.Ddue.Tools
             // re-form the string with leading spaces deleted
             StringBuilder result = new StringBuilder();
 
-            foreach (string line in lines)
+            foreach(string line in lines)
             {
-                if (line.Length == 0)
+                if(line.Length == 0)
                 {
                     result.AppendLine();
                 }
@@ -1145,7 +1152,7 @@ namespace Microsoft.Ddue.Tools
             }
 
             return (result.ToString());
-        }		
+        }
 
         /// <summary>
         /// Regex to find the snippet content.

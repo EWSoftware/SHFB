@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Components
 // File    : SqlIndexCache.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/28/2013
+// Updated : 03/15/2013
 // Compiler: Microsoft Visual C#
 //
 // This is a version of the InMemoryIndexCache that adds the ability to store index information in a persistent
@@ -51,11 +51,11 @@ namespace SandcastleBuilder.Components.Commands
         //=====================================================================
 
         /// <inheritdoc />
-        public override int IndexCount
+        public override int Count
         {
             get
             {
-                return base.IndexCount + sqlCaches.Sum(c => c.Count);
+                return base.Count + sqlCaches.Sum(c => c.Count);
             }
         }
 
@@ -116,13 +116,13 @@ namespace SandcastleBuilder.Components.Commands
         /// in-memory cache.</remarks>
         public override void AddDocuments(XPathNavigator configuration)
         {
-            string groupId = configuration.GetAttribute("groupId", String.Empty);
+            var cache = this.CreateCache(configuration);
 
             // SQL caches are inserted in reverse order as later caches take precedence over earlier ones
-            if(String.IsNullOrWhiteSpace(groupId))
+            if(cache == null)
                 base.AddDocuments(configuration);
             else
-                sqlCaches.Insert(0, this.CreateCache(configuration));
+                sqlCaches.Insert(0, cache);
         }
 
         /// <summary>
@@ -171,33 +171,44 @@ namespace SandcastleBuilder.Components.Commands
         /// <param name="configuration">The configuration to use</param>
         private SqlDictionary<string> CreateCache(XPathNavigator configuration)
         {
+            SqlDictionary<string> cache = null;
             HashSet<string> namespaceFileFilter = new HashSet<string>();
-            string connectionString, groupId, baseDirectory, wildcardPath, recurseValue, dupWarning, fullPath,
+            string groupId, connectionString, baseDirectory, wildcardPath, recurseValue, dupWarning, fullPath,
                 directoryPart, filePart;
-            bool recurse, reportDuplicateIds;
+            bool recurse, reportDuplicateIds, cacheProject, isProjectData = false;
             int localCacheSize, filesToLoad;
 
             var parent = configuration.Clone();
             parent.MoveToParent();
 
             connectionString = parent.GetAttribute("connectionString", String.Empty);
-
-            if(String.IsNullOrWhiteSpace(connectionString))
-                base.Component.WriteMessage(MessageLevel.Error, "Each data element's parent index element must " +
-                    "have a connectionString attribute specifying which database to use.");
-
             groupId = configuration.GetAttribute("groupId", String.Empty);
 
-            string cacheSize = configuration.GetAttribute("localCacheSize", String.Empty);
+            // If caching project data, they will all go into a common index
+            if(groupId.StartsWith("Project_", StringComparison.OrdinalIgnoreCase))
+                isProjectData = true;
 
-            if(String.IsNullOrWhiteSpace(cacheSize) || !Int32.TryParse(cacheSize, out localCacheSize))
-                localCacheSize = 1000;
+            cache = sqlCaches.FirstOrDefault(c => c.GroupId == groupId);
 
-            var cache = new SqlDictionary<string>(connectionString, "IndexData", "IndexKey", "IndexValue",
-              "GroupId", groupId)
+            if(cache == null)
             {
-                LocalCacheSize = localCacheSize
-            };
+                if(!Boolean.TryParse(parent.GetAttribute("cacheProject", String.Empty), out cacheProject))
+                    cacheProject = false;
+
+                if((isProjectData && !cacheProject) || String.IsNullOrWhiteSpace(connectionString))
+                    return null;
+
+                string cacheSize = configuration.GetAttribute("localCacheSize", String.Empty);
+
+                if(String.IsNullOrWhiteSpace(cacheSize) || !Int32.TryParse(cacheSize, out localCacheSize))
+                    localCacheSize = 2500;
+
+                cache = new SqlDictionary<string>(connectionString, "IndexData", "IndexKey", "IndexValue",
+                  "GroupId", groupId)
+                {
+                    LocalCacheSize = localCacheSize
+                };
+            }
 
             baseDirectory = configuration.GetAttribute("base", String.Empty);
 
@@ -259,8 +270,9 @@ namespace SandcastleBuilder.Components.Commands
             else
             {
                 // Comments files can't be filtered by namespace so we'll assume that if the collection is not
-                // empty, it has already been loaded.
-                if(cache.Count == 0)
+                // empty, it has already been loaded unless it's a project comments file list.  In that case,
+                // we will merge them if necessary.
+                if(isProjectData || cache.Count == 0)
                     filesToLoad = Directory.EnumerateFiles(directoryPart, filePart, recurse ?
                         SearchOption.AllDirectories : SearchOption.TopDirectoryOnly).Count();
             }
@@ -268,7 +280,7 @@ namespace SandcastleBuilder.Components.Commands
             if(filesToLoad != 0)
             {
                 // The time estimate is a ballpark figure and depends on the system
-                base.Component.WriteMessage(MessageLevel.Diagnostic, "{0} files need to be added to the SQL " +
+                base.Component.WriteMessage(MessageLevel.Diagnostic, "{0} file(s) need to be added to the SQL " +
                     "index cache database.  Indexing them will take about {1:N0} minute(s), please be " +
                     "patient.  Group ID: {2}  Cache location: {3}", filesToLoad, Math.Ceiling(filesToLoad / 60.0),
                     groupId, connectionString);

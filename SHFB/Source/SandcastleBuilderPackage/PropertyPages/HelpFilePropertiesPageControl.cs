@@ -2,17 +2,16 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : HelpFilePropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 01/09/2013
+// Updated : 03/08/2013
 // Note    : Copyright 2011-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This user control is used to edit the Help File category properties.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.  This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
 // ==============================================================================================================
@@ -84,6 +83,19 @@ namespace SandcastleBuilder.Package.PropertyPages
 
             cblSyntaxFilters.Items.AddRange(BuildComponentManager.SyntaxFilters.Select(
                 f => f.Value.Id).OrderBy(f => f).ToArray());
+
+            // Resize the syntax filter columns to the widest entry
+            int width, maxWidth = 0;
+
+            foreach(string s in cblSyntaxFilters.Items)
+            {
+                width = TextRenderer.MeasureText(s, this.Font).Width;
+
+                if(width > maxWidth)
+                    maxWidth = width;
+            }
+
+            cblSyntaxFilters.ColumnWidth = maxWidth + 20;
         }
         #endregion
 

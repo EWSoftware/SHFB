@@ -123,13 +123,13 @@
 
 	<!-- ****************************************************************** -->
 
-	<component id="Show Missing Documentation Component" type="Microsoft.Ddue.Tools.ShowMissingComponent"
-		assembly="{@SandcastlePath}ProductionTools\BuildComponents.dll">
+	<component id="Show Missing Documentation Component" type="SandcastleBuilder.Components.ShowMissingComponent"
+		assembly="{@SHFBFolder}SandcastleBuilder.Components.dll">
 		<description>This build component is used to add "missing" notes for missing summary, parameter, returns, value, and remarks tags.  It can also add default summary documentation for constructors.</description>
 
 		<insert placement="before" type="Microsoft.Ddue.Tools.TransformComponent" />
 
-		<!-- The help file builder project contains properties for this component so we won't show it. -->
+		<!-- This component is obsolete and will be removed in a future release. -->
 		<hidden />
 
 		<!-- Not editable at all -->
@@ -294,26 +294,25 @@
 
 	<!-- ****************************************************************** -->
 
-	<component id="Resolve References Links (ESent Cache)"
+	<component id="Resolve Reference Links (ESent Cache)"
 		type="SandcastleBuilder.Components.ESentResolveReferenceLinksComponent"
 		assembly="{@SHFBFolder}SandcastleBuilder.Components.dll"
 		locale="{@Locale}" linkTarget="{@SdkLinkTarget}">
-		<description>This component is used to resolve reference links in topics.  It uses ESent databases to cache MSDN content IDs and .NET Framework reference link targets.  This speeds up initialization and conserves memory at the expense of some build time in larger projects.
+		<description>This component is used to resolve reference links in topics.  It uses ESent databases to cache MSDN content IDs and .NET Framework reference link targets.  This speeds up initialization and conserves memory at the expense of some build time in larger projects.  For extremely large projects, it is also possible to cache project reference link data to conserve memory.
 
 The ESent database engine is part of every version of Microsoft Windows and no set up is required.</description>
 
 		<insert placement="replace" type="Microsoft.Ddue.Tools.ResolveReferenceLinksComponent2" />
 		<insertConceptual placement="replace" type="Microsoft.Ddue.Tools.ResolveReferenceLinksComponent2" />
 
-		<!-- Not editable at all -->
-		<configureMethod name="-" />
+		<configureMethod name="ConfigureComponent" />
 
 		<defaultConfiguration>
 			<helpOutput format="HtmlHelp1">
 				<msdnContentIdCache path="{@LocalDataFolder}Cache\MsdnContentId.cache"
-					dbPath="{@LocalDataFolder}Cache\ESentMsdnContentIdCache" localCacheSize="2500" />
+					cachePath="{@LocalDataFolder}Cache\ESentMsdnContentIdCache" localCacheSize="2500" />
 				<targets base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" type="{@HtmlSdkLinkType}"
-					id="FrameworkTargets" dbPath="{@LocalDataFolder}Cache\ESentFrameworkTargetCache" localCacheSize="2500">
+					id="FrameworkTargets" cachePath="{@LocalDataFolder}Cache\ESentFrameworkTargetCache" localCacheSize="2500">
 					{@ReferenceLinkNamespaceFiles}
 				</targets>
 				<targets files="reflection.xml" type="Local" id="ProjectTargets" />
@@ -321,9 +320,9 @@ The ESent database engine is part of every version of Microsoft Windows and no s
 
 			<helpOutput format="MSHelp2">
 				<msdnContentIdCache path="{@LocalDataFolder}Cache\MsdnContentId.cache"
-					dbPath="{@LocalDataFolder}Cache\ESentMsdnContentIdCache" localCacheSize="2500" />
+					cachePath="{@LocalDataFolder}Cache\ESentMsdnContentIdCache" localCacheSize="2500" />
 				<targets base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" type="{@MSHelp2SdkLinkType}"
-					id="FrameworkTargets" dbPath="{@LocalDataFolder}Cache\ESentFrameworkTargetCache" localCacheSize="2500">
+					id="FrameworkTargets" cachePath="{@LocalDataFolder}Cache\ESentFrameworkTargetCache" localCacheSize="2500">
 					{@ReferenceLinkNamespaceFiles}
 				</targets>
 				<targets files="reflection.xml" type="Index" id="ProjectTargets" />
@@ -331,9 +330,9 @@ The ESent database engine is part of every version of Microsoft Windows and no s
 
 			<helpOutput format="MSHelpViewer">
 				<msdnContentIdCache path="{@LocalDataFolder}Cache\MsdnContentId.cache"
-					dbPath="{@LocalDataFolder}Cache\ESentMsdnContentIdCache" localCacheSize="2500" />
+					cachePath="{@LocalDataFolder}Cache\ESentMsdnContentIdCache" localCacheSize="2500" />
 				<targets base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" type="{@MSHelpViewerSdkLinkType}"
-					id="FrameworkTargets" dbPath="{@LocalDataFolder}Cache\ESentFrameworkTargetCache" localCacheSize="2500">
+					id="FrameworkTargets" cachePath="{@LocalDataFolder}Cache\ESentFrameworkTargetCache" localCacheSize="2500">
 					{@ReferenceLinkNamespaceFiles}
 				</targets>
 				<targets files="reflection.xml" type="Id" id="ProjectTargets" />
@@ -341,72 +340,9 @@ The ESent database engine is part of every version of Microsoft Windows and no s
 
 			<helpOutput format="Website">
 				<msdnContentIdCache path="{@LocalDataFolder}Cache\MsdnContentId.cache"
-					dbPath="{@LocalDataFolder}Cache\ESentMsdnContentIdCache" localCacheSize="2500" />
+					cachePath="{@LocalDataFolder}Cache\ESentMsdnContentIdCache" localCacheSize="2500" />
 				<targets base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" type="{@WebsiteSdkLinkType}"
-					id="FrameworkTargets" dbPath="{@LocalDataFolder}Cache\ESentFrameworkTargetCache" localCacheSize="2500">
-					{@ReferenceLinkNamespaceFiles}
-				</targets>
-				<targets files="reflection.xml" type="Local" id="ProjectTargets" />
-			</helpOutput>
-		</defaultConfiguration>
-	</component>
-
-	<!-- ****************************************************************** -->
-
-	<component id="Resolve References Links (SQL Cache)"
-		type="SandcastleBuilder.Components.SqlResolveReferenceLinksComponent"
-		assembly="{@SHFBFolder}SandcastleBuilder.Components.dll"
-		locale="{@Locale}" linkTarget="{@SdkLinkTarget}">
-		<description>This component is used to resolve reference links in topics.  It uses a SQL Server database to cache MSDN content IDs and .NET Framework reference link targets.  This speeds up initialization and conserves memory at the expense of some build time in larger projects.
-
-This component requires access to a SQL Server instance.  Express and LocalDB versions are supported.  Some initial configuration and set up steps are required.</description>
-
-		<insert placement="replace" type="Microsoft.Ddue.Tools.ResolveReferenceLinksComponent2" />
-		<insertConceptual placement="replace" type="Microsoft.Ddue.Tools.ResolveReferenceLinksComponent2" />
-
-		<!-- Not editable at all -->
-		<configureMethod name="-" />
-
-		<defaultConfiguration>
-			<helpOutput format="HtmlHelp1">
-				<msdnContentIdCache path="{@LocalDataFolder}Cache\MsdnContentId.cache" localCacheSize="2500"
-					connectionString="Data Source=(localdb)\v11.0;Initial Catalog=Sandcastle;Integrated Security=True;Application Name=&quot;Sandcastle BuildAssembler&quot;" />
-				<targets base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" type="{@HtmlSdkLinkType}"
-					id="FrameworkTargets" localCacheSize="2500"
-					connectionString="Data Source=(localdb)\v11.0;Initial Catalog=Sandcastle;Integrated Security=True;Application Name=&quot;Sandcastle BuildAssembler&quot;">
-					{@ReferenceLinkNamespaceFiles}
-				</targets>
-				<targets files="reflection.xml" type="Local" id="ProjectTargets" />
-			</helpOutput>
-
-			<helpOutput format="MSHelp2">
-				<msdnContentIdCache path="{@LocalDataFolder}Cache\MsdnContentId.cache" localCacheSize="2500"
-					connectionString="Data Source=(localdb)\v11.0;Initial Catalog=Sandcastle;Integrated Security=True;Application Name=&quot;Sandcastle BuildAssembler&quot;" />
-				<targets base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" type="{@MSHelp2SdkLinkType}"
-					id="FrameworkTargets" localCacheSize="2500"
-					connectionString="Data Source=(localdb)\v11.0;Initial Catalog=Sandcastle;Integrated Security=True;Application Name=&quot;Sandcastle BuildAssembler&quot;">
-					{@ReferenceLinkNamespaceFiles}
-				</targets>
-				<targets files="reflection.xml" type="Index" id="ProjectTargets" />
-			</helpOutput>
-
-			<helpOutput format="MSHelpViewer">
-				<msdnContentIdCache path="{@LocalDataFolder}Cache\MsdnContentId.cache" localCacheSize="2500"
-					connectionString="Data Source=(localdb)\v11.0;Initial Catalog=Sandcastle;Integrated Security=True;Application Name=&quot;Sandcastle BuildAssembler&quot;" />
-				<targets base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" type="{@MSHelpViewerSdkLinkType}"
-					id="FrameworkTargets" localCacheSize="2500"
-					connectionString="Data Source=(localdb)\v11.0;Initial Catalog=Sandcastle;Integrated Security=True;Application Name=&quot;Sandcastle BuildAssembler&quot;">
-					{@ReferenceLinkNamespaceFiles}
-				</targets>
-				<targets files="reflection.xml" type="Id" id="ProjectTargets" />
-			</helpOutput>
-
-			<helpOutput format="Website">
-				<msdnContentIdCache path="{@LocalDataFolder}Cache\MsdnContentId.cache" localCacheSize="2500"
-					connectionString="Data Source=(localdb)\v11.0;Initial Catalog=Sandcastle;Integrated Security=True;Application Name=&quot;Sandcastle BuildAssembler&quot;" />
-				<targets base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" type="{@WebsiteSdkLinkType}"
-					id="FrameworkTargets" localCacheSize="2500"
-					connectionString="Data Source=(localdb)\v11.0;Initial Catalog=Sandcastle;Integrated Security=True;Application Name=&quot;Sandcastle BuildAssembler&quot;">
+					id="FrameworkTargets" cachePath="{@LocalDataFolder}Cache\ESentFrameworkTargetCache" localCacheSize="2500">
 					{@ReferenceLinkNamespaceFiles}
 				</targets>
 				<targets files="reflection.xml" type="Local" id="ProjectTargets" />
@@ -419,22 +355,22 @@ This component requires access to a SQL Server instance.  Express and LocalDB ve
 	<component id="Reflection Index Data (ESent Cache)"
 		type="SandcastleBuilder.Components.ESentCopyFromIndexComponent"
 		assembly="{@SHFBFolder}SandcastleBuilder.Components.dll">
-		<description>This component is used to index reflection data for copying into topics.  It uses an ESent database to cache the .NET Framework reflection data.  This speeds up initialization and conserves memory at the expense of some build time in larger projects.
+		<description>This component is used to index reflection data for copying into topics.  It uses an ESent database to cache the .NET Framework reflection data.  This speeds up initialization and conserves memory at the expense of some build time in larger projects.   For extremely large projects, it is also possible to cache project reference index data to conserve memory.
 
 The ESent database engine is part of every version of Microsoft Windows and no set up is required.</description>
 
 		<insert placement="replace" instance="1" type="Microsoft.Ddue.Tools.CopyFromIndexComponent" />
 
-		<!-- Not editable at all -->
-		<configureMethod name="-" />
+		<configureMethod name="ConfigureReflectionIndexCache" />
 
 		<defaultConfiguration>
-			<index name="reflection" value="/reflection/apis/api" key="@id" cache="15">
+			<index name="reflection" value="/reflection/apis/api" key="@id" cache="15" localCacheSize="2500"
+				frameworkCachePath="{@LocalDataFolder}Cache\ReflectionIndexCache" projectCachePath="">
 				<data base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" duplicateWarning="false"
-					cachePath="{@LocalDataFolder}Cache\ReflectionIndexCache" localCacheSize="2500">
+					groupId="ReflectionIndexCache">
 					{@ReferenceLinkNamespaceFiles}
 				</data>
-				<data files="reflection.xml" />
+				<data files="reflection.xml" groupId="Project_Ref_{@UniqueID}" />
 			</index>
 			<copy name="reflection" source="*" target="/document/reference" />
 		</defaultConfiguration>
@@ -445,19 +381,19 @@ The ESent database engine is part of every version of Microsoft Windows and no s
 	<component id="Comments Index Data (ESent Cache)"
 		type="SandcastleBuilder.Components.ESentCopyFromIndexComponent"
 		assembly="{@SHFBFolder}SandcastleBuilder.Components.dll">
-		<description>This component is used to index framework comments for copying into topics.  It uses an ESent database to cache the .NET Framework comments.  This speeds up initialization and conserves memory at the expense of some build time in larger projects.
+		<description>This component is used to index framework comments for copying into topics.  It uses an ESent database to cache the .NET Framework comments.  This speeds up initialization and conserves memory at the expense of some build time in larger projects.  For extremely large projects, it is also possible to cache project comments data to conserve memory.
 
 The ESent database engine is part of every version of Microsoft Windows and no set up is required.
 		</description>
 
 		<insert placement="replace" instance="3" type="Microsoft.Ddue.Tools.CopyFromIndexComponent" />
 
-		<!-- Not editable at all -->
-		<configureMethod name="-" />
+		<configureMethod name="ConfigureCommentsIndexCache" />
 
 		<defaultConfiguration>
-			<index name="comments" value="/doc/members/member" key="@name" cache="30">
-				{@CachedFrameworkCommentList}
+			<index name="comments" value="/doc/members/member" key="@name" cache="30" localCacheSize="2500"
+				frameworkCachePath="{@LocalDataFolder}Cache\CommentsIndexCache" projectCachePath="">
+				{@FrameworkCommentList}
 				{@CommentFileList}
 			</index>
 			<copy name="comments" source="*" target="/document/comments" />
@@ -466,26 +402,88 @@ The ESent database engine is part of every version of Microsoft Windows and no s
 
 	<!-- ****************************************************************** -->
 
+	<component id="Resolve Reference Links (SQL Cache)"
+		type="SandcastleBuilder.Components.SqlResolveReferenceLinksComponent"
+		assembly="{@SHFBFolder}SandcastleBuilder.Components.dll"
+		locale="{@Locale}" linkTarget="{@SdkLinkTarget}">
+		<description>This component is used to resolve reference links in topics.  It uses a Microsoft SQL Server database to cache MSDN content IDs and .NET Framework reference link targets.  This speeds up initialization and conserves memory at the expense of some build time in larger projects.  For extremely large projects, it is also possible to cache project reference link data to conserve memory.
+
+This component requires access to a Microsoft SQL Server instance.  Express and LocalDB versions are supported.  Some initial configuration and set up steps are required.
+		</description>
+
+		<insert placement="replace" type="Microsoft.Ddue.Tools.ResolveReferenceLinksComponent2" />
+		<insertConceptual placement="replace" type="Microsoft.Ddue.Tools.ResolveReferenceLinksComponent2" />
+
+		<configureMethod name="ConfigureComponent" />
+
+		<defaultConfiguration>
+			<helpOutput format="HtmlHelp1">
+				<sqlCache connectionString="" msdnLocalCacheSize="2500" frameworkLocalCacheSize="2500"
+					projectLocalCacheSize="2500" cacheProject="false" />
+				<msdnContentIdCache path="{@LocalDataFolder}Cache\MsdnContentId.cache" />
+				<targets base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" type="{@HtmlSdkLinkType}"
+					groupId="FrameworkTargets">
+					{@ReferenceLinkNamespaceFiles}
+				</targets>
+				<targets files="reflection.xml" type="Local" groupId="Project_{@UniqueID}" />
+			</helpOutput>
+
+			<helpOutput format="MSHelp2">
+				<sqlCache connectionString="" msdnLocalCacheSize="2500" frameworkLocalCacheSize="2500"
+					projectLocalCacheSize="2500" cacheProject="false" />
+				<msdnContentIdCache path="{@LocalDataFolder}Cache\MsdnContentId.cache" />
+				<targets base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" type="{@MSHelp2SdkLinkType}"
+					groupId="FrameworkTargets">
+					{@ReferenceLinkNamespaceFiles}
+				</targets>
+				<targets files="reflection.xml" type="Index" groupId="Project_{@UniqueID}" />
+			</helpOutput>
+
+			<helpOutput format="MSHelpViewer">
+				<sqlCache connectionString="" msdnLocalCacheSize="2500" frameworkLocalCacheSize="2500"
+					projectLocalCacheSize="2500" cacheProject="false" />
+				<msdnContentIdCache path="{@LocalDataFolder}Cache\MsdnContentId.cache" />
+				<targets base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" type="{@MSHelpViewerSdkLinkType}"
+					groupId="FrameworkTargets">
+					{@ReferenceLinkNamespaceFiles}
+				</targets>
+				<targets files="reflection.xml" type="Id" groupId="Project_{@UniqueID}" />
+			</helpOutput>
+
+			<helpOutput format="Website">
+				<sqlCache connectionString="" msdnLocalCacheSize="2500" frameworkLocalCacheSize="2500"
+					projectLocalCacheSize="2500" cacheProject="false" />
+				<msdnContentIdCache path="{@LocalDataFolder}Cache\MsdnContentId.cache" />
+				<targets base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" type="{@WebsiteSdkLinkType}"
+					groupId="FrameworkTargets">
+					{@ReferenceLinkNamespaceFiles}
+				</targets>
+				<targets files="reflection.xml" type="Local" groupId="Project_{@UniqueID}" />
+			</helpOutput>
+		</defaultConfiguration>
+	</component>
+
+	<!-- ****************************************************************** -->
+
 	<component id="Reflection Index Data (SQL Cache)"
 		type="SandcastleBuilder.Components.SqlCopyFromIndexComponent"
 		assembly="{@SHFBFolder}SandcastleBuilder.Components.dll">
-		<description>This component is used to index reflection data for copying into topics.  It uses a SQL database to cache the .NET Framework reflection data.  This speeds up initialization and conserves memory at the expense of some build time in larger projects.
+		<description>This component is used to index reflection data for copying into topics.  It uses a Microsoft SQL Server database to cache the .NET Framework reflection data.  This speeds up initialization and conserves memory at the expense of some build time in larger projects.  For extremely large projects, it is also possible to cache project reference index data to conserve memory.
 
-This component requires access to a SQL Server instance.  Express and LocalDB versions are supported.  Some initial configuration and set up steps are required.</description>
+This component requires access to a Microsoft SQL Server instance.  Express and LocalDB versions are supported.  Some initial configuration and set up steps are required.</description>
 
 		<insert placement="replace" instance="1" type="Microsoft.Ddue.Tools.CopyFromIndexComponent" />
 
-		<!-- Not editable at all -->
-		<configureMethod name="-" />
+		<configureMethod name="ConfigureComponent" />
 
 		<defaultConfiguration>
-			<index name="reflection" value="/reflection/apis/api" key="@id" cache="15"
-				connectionString="Data Source=(localdb)\v11.0;Initial Catalog=Sandcastle;Integrated Security=True;Application Name=&quot;Sandcastle BuildAssembler&quot;">
+			<index name="reflection" value="/reflection/apis/api" key="@id" cache="15" localCacheSize="2500"
+				cacheProject="false" connectionString="">
 				<data base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" duplicateWarning="false"
-					groupId="ReflectionIndexCache" localCacheSize="2500">
+					groupId="ReflectionIndexCache">
 					{@ReferenceLinkNamespaceFiles}
 				</data>
-				<data files="reflection.xml" />
+				<data files="reflection.xml" groupId="Project_Ref_{@UniqueID}" />
 			</index>
 			<copy name="reflection" source="*" target="/document/reference" />
 		</defaultConfiguration>
@@ -496,19 +494,18 @@ This component requires access to a SQL Server instance.  Express and LocalDB ve
 	<component id="Comments Index Data (SQL Cache)"
 		type="SandcastleBuilder.Components.SqlCopyFromIndexComponent"
 		assembly="{@SHFBFolder}SandcastleBuilder.Components.dll">
-		<description>This component is used to index framework comments for copying into topics.  It uses a SQL database to cache the .NET Framework comments.  This speeds up initialization and conserves memory at the expense of some build time in larger projects.
+		<description>This component is used to index framework comments for copying into topics.  It uses a Microsoft SQL Server database to cache the .NET Framework comments.  This speeds up initialization and conserves memory at the expense of some build time in larger projects.  For extremely large projects, it is also possible to cache project comments data to conserve memory.
 
-This component requires access to a SQL Server instance.  Express and LocalDB versions are supported.  Some initial configuration and set up steps are required.</description>
+This component requires access to a Microsoft SQL Server instance.  Express and LocalDB versions are supported.  Some initial configuration and set up steps are required.</description>
 
 		<insert placement="replace" instance="3" type="Microsoft.Ddue.Tools.CopyFromIndexComponent" />
 
-		<!-- Not editable at all -->
-		<configureMethod name="-" />
+		<configureMethod name="ConfigureComponent" />
 
 		<defaultConfiguration>
-			<index name="comments" value="/doc/members/member" key="@name" cache="30"
-				connectionString="Data Source=(localdb)\v11.0;Initial Catalog=Sandcastle;Integrated Security=True;Application Name=&quot;Sandcastle BuildAssembler&quot;">
-				{@CachedFrameworkCommentList}
+			<index name="comments" value="/doc/members/member" key="@name" cache="30" localCacheSize="2500"
+				cacheProject="false" connectionString="">
+				{@FrameworkCommentList}
 				{@CommentFileList}
 			</index>
 			<copy name="comments" source="*" target="/document/comments" />

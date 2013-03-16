@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Components
 // File    : TargetTypeDictionary.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/28/2013
+// Updated : 03/12/2013
 // Note    : Copyright 2012-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -67,7 +67,10 @@ namespace Microsoft.Ddue.Tools.Targets
         {
             foreach(var td in targetDictionaries)
                 if(!td.Value.IsDisposed)
+                {
+                    td.Value.ReportCacheStatistics();
                     td.Value.Dispose();
+                }
 
             GC.SuppressFinalize(this);
         }

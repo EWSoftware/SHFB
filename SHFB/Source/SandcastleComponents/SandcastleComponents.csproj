@@ -83,12 +83,20 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\SandcastleBuilderUtils\Constants.cs">
+      <Link>Constants.cs</Link>
+    </Compile>
     <Compile Include="..\SandcastleBuilderUtils\Properties\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
     <Compile Include="CachedCopyFromIndexComponent.cs" />
     <Compile Include="CachedResolveReferenceLinksComponent.cs" />
     <Compile Include="CodeBlockComponent.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="UI\CodeBlockConfigDlg.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -103,6 +111,24 @@
     <Compile Include="MSHelpAttrComponent.cs" />
     <Compile Include="MultiFormatOutputComponent.cs" />
     <Compile Include="PostTransformComponent.cs" />
+    <Compile Include="UI\ESentCommentsIndexConfigDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ESentCommentsIndexConfigDlg.Designer.cs">
+      <DependentUpon>ESentCommentsIndexConfigDlg.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\ESentReflectionIndexConfigDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ESentReflectionIndexConfigDlg.Designer.cs">
+      <DependentUpon>ESentReflectionIndexConfigDlg.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\ESentResolveReferenceLinksConfigDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ESentResolveReferenceLinksConfigDlg.Designer.cs">
+      <DependentUpon>ESentResolveReferenceLinksConfigDlg.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\PostTransformConfigDlg.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -116,6 +142,24 @@
     <Compile Include="Commands\SqlIndexCache.cs" />
     <Compile Include="SqlResolveReferenceLinksComponent.cs" />
     <Compile Include="Targets\SqlTargetDictionary.cs" />
+    <Compile Include="UI\SqlConnectionDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\SqlConnectionDlg.Designer.cs">
+      <DependentUpon>SqlConnectionDlg.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\SqlCopyFromIndexConfigDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\SqlCopyFromIndexConfigDlg.Designer.cs">
+      <DependentUpon>SqlCopyFromIndexConfigDlg.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\SqlResolveReferenceLinksConfigDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\SqlResolveReferenceLinksConfigDlg.Designer.cs">
+      <DependentUpon>SqlResolveReferenceLinksConfigDlg.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CodeColorizer\ColorizerLibrary\ColorizerLibrary.csproj">
@@ -125,6 +169,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\CreateSandcastleDB.sql" />
     <Content Include="SandcastleBuilder.filters">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -134,13 +179,36 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\CodeBlockConfigDlg.resx">
       <SubType>Designer</SubType>
       <DependentUpon>CodeBlockConfigDlg.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\ESentCommentsIndexConfigDlg.resx">
+      <DependentUpon>ESentCommentsIndexConfigDlg.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ESentReflectionIndexConfigDlg.resx">
+      <DependentUpon>ESentReflectionIndexConfigDlg.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ESentResolveReferenceLinksConfigDlg.resx">
+      <DependentUpon>ESentResolveReferenceLinksConfigDlg.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\PostTransformConfigDlg.resx">
       <DependentUpon>PostTransformConfigDlg.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\SqlConnectionDlg.resx">
+      <DependentUpon>SqlConnectionDlg.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\SqlCopyFromIndexConfigDlg.resx">
+      <DependentUpon>SqlCopyFromIndexConfigDlg.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\SqlResolveReferenceLinksConfigDlg.resx">
+      <DependentUpon>SqlResolveReferenceLinksConfigDlg.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

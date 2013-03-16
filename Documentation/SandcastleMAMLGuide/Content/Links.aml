@@ -39,24 +39,34 @@ is included with Sandcastle as an extra along with this guide.</para>
 <section address="Discussion">
   <title>Discussion Groups, Blogs, Etc.</title>
   <content>
-<list class="bullet">
-	<listItem><para>To discuss Microsoft's Sandcastle, suggest new features, report bugs in it, and request help
-using it, visit the <token>SHFB</token> CodePlex project.</para></listItem>
-    <listItem><para>For discussion and questions about help systems in general,
-visit the <externalLink>
-  <linkText>Microsoft Developer Documentation and Help System forum</linkText>
-  <linkUri>http://social.msdn.microsoft.com/forums/en-US/devdocs/threads/</linkUri>
-  <linkTarget>_blank</linkTarget>
-</externalLink>.</para></listItem>
-    <listItem><para><externalLink>
-  <linkText>The Sandcastle Blog</linkText>
-  <linkUri>http://blogs.msdn.com/sandcastle/default.aspx</linkUri>
-  <linkTarget>_blank</linkTarget>
-</externalLink> provides news about Sandcastle and blog entries describing how
-its various features work.</para></listItem>
-</list>
+		<list class="bullet">
+			<listItem>
+				<para>To discuss Microsoft's Sandcastle, suggest new features, report bugs in it, and request help using
+it, visit the <token>SHFB</token> CodePlex project.</para>
+			</listItem>
+			<listItem>
+				<para>For discussion and questions about help systems in general, visit the <externalLink>
+<linkText>Visual Studio General Questions forum</linkText>
+<linkUri>http://social.msdn.microsoft.com/Forums/en-US/visualstudiogeneral/threads/</linkUri>
+<linkTarget>_blank</linkTarget></externalLink>.</para>
+			</listItem>
+			<listItem>
+				<para>The retired <externalLink>
+<linkText>Microsoft Developer Documentation and Help System forum</linkText>
+<linkUri>http://social.msdn.microsoft.com/forums/en-US/devdocs/threads/</linkUri>
+<linkTarget>_blank</linkTarget>
+</externalLink> may also provide information on older help systems.</para>
+			</listItem>
+			<listItem>
+				<para><externalLink>
+<linkText>The Sandcastle Blog</linkText>
+<linkUri>http://blogs.msdn.com/sandcastle/default.aspx</linkUri>
+<linkTarget>_blank</linkTarget>
+</externalLink> provides news about Sandcastle and blog entries describing how its various features work.</para>
+			</listItem>
+		</list>
 
-  </content>
+	</content>
 </section>
 
 <section address="BuildTools">

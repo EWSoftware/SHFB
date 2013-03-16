@@ -1,26 +1,25 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : ScriptSharpPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/30/2012
-// Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
+// Updated : 03/07/2013
+// Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains a plug-in designed to modify the reflection information
-// file produced after running MRefBuilder on assemblies produced by the
-// Script# compiler so that it is suitable for use in producing a help file.
+// This file contains a plug-in designed to modify the reflection information file produced after running
+// MRefBuilder on assemblies produced by the Script# compiler so that it is suitable for use in producing a help
+// file.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.6.0.5  01/25/2008  EFW  Created the code
 // 1.8.0.0  07/14/2008  EFW  Updated for use with MSBuild project format
-//=============================================================================
+//===============================================================================================================
 
 using System;
 using System.Diagnostics;
@@ -107,6 +106,15 @@ namespace SandcastleBuilder.PlugIns
                     "running MRefBuilder on assemblies produced by the Script# compiler so that it is " +
                     "suitable for use in producing a help file.";
             }
+        }
+
+        /// <summary>
+        /// This plug-in does not support configuration
+        /// </summary>
+        /// <seealso cref="ConfigurePlugIn"/>
+        public bool SupportsConfiguration
+        {
+            get { return false; }
         }
 
         /// <summary>

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Components
 // File    : ESentCopyFromIndexComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/31/2013
+// Updated : 03/12/2013
 // Compiler: Microsoft Visual C#
 //
 // This is a version of the CopyFromIndexComponent that stores the index data in one or more persistent ESent
@@ -22,12 +22,14 @@ using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
+using System.Windows.Forms;
 using System.Xml.XPath;
 
 using Microsoft.Ddue.Tools;
 using Microsoft.Ddue.Tools.Commands;
 
 using SandcastleBuilder.Components.Commands;
+using SandcastleBuilder.Components.UI;
 
 namespace SandcastleBuilder.Components
 {
@@ -65,6 +67,44 @@ namespace SandcastleBuilder.Components
         protected override IndexedCache CreateIndex(XPathNavigator configuration)
         {
             return new ESentIndexedCache(this, base.Context, configuration);
+        }
+        #endregion
+
+        #region Static configuration methods for use with SHFB
+        //=====================================================================
+
+        /// <summary>
+        /// This static method is used by the Sandcastle Help File Builder to let the component perform its own
+        /// configuration (reflection index).
+        /// </summary>
+        /// <param name="currentConfig">The current configuration XML fragment</param>
+        /// <returns>A string containing the new configuration XML fragment</returns>
+        public static string ConfigureReflectionIndexCache(string currentConfig)
+        {
+            using(var dlg = new ESentReflectionIndexConfigDlg(currentConfig))
+            {
+                if(dlg.ShowDialog() == DialogResult.OK)
+                    currentConfig = dlg.Configuration;
+            }
+
+            return currentConfig;
+        }
+
+        /// <summary>
+        /// This static method is used by the Sandcastle Help File Builder to let the component perform its own
+        /// configuration (comments index).
+        /// </summary>
+        /// <param name="currentConfig">The current configuration XML fragment</param>
+        /// <returns>A string containing the new configuration XML fragment</returns>
+        public static string ConfigureCommentsIndexCache(string currentConfig)
+        {
+            using(var dlg = new ESentCommentsIndexConfigDlg(currentConfig))
+            {
+                if(dlg.ShowDialog() == DialogResult.OK)
+                    currentConfig = dlg.Configuration;
+            }
+
+            return currentConfig;
         }
         #endregion
     }

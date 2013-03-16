@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Components
 // File    : SqlResolveReferenceLinksComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/28/2013
+// Updated : 03/14/2013
 // Compiler: Microsoft Visual C#
 //
 // This is a version of the ResolveReferenceLinksComponent2 that stores the MSDN content IDs and the framework
@@ -23,12 +23,14 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
+using System.Windows.Forms;
 using System.Xml.XPath;
 
 using Microsoft.Ddue.Tools;
 using Microsoft.Ddue.Tools.Targets;
 
 using SandcastleBuilder.Components.Targets;
+using SandcastleBuilder.Components.UI;
 
 namespace SandcastleBuilder.Components
 {
@@ -79,7 +81,7 @@ namespace SandcastleBuilder.Components
             // If the shared cache already exists, return an instance that uses it.  It is assumed that all
             // subsequent instances will use the same cache.
             if(cache != null)
-                return new MsdnResolver(cache);
+                return new MsdnResolver(cache, true);
 
             XPathNavigator node = configuration.SelectSingleNode("msdnContentIdCache");
 
@@ -88,22 +90,23 @@ namespace SandcastleBuilder.Components
                 resolver = base.CreateMsdnResolver(configuration);
             else
             {
+                node = configuration.SelectSingleNode("sqlCache");
                 string connectionString = node.GetAttribute("connectionString", String.Empty);
 
-                // If a database path is not defined, use the default resolver
+                // If a connection string is not defined, use the default resolver
                 if(String.IsNullOrWhiteSpace(connectionString))
                     resolver = base.CreateMsdnResolver(configuration);
                 else
                 {
-                    string cacheSize = node.GetAttribute("localCacheSize", String.Empty);
+                    string cacheSize = node.GetAttribute("msdnLocalCacheSize", String.Empty);
 
                     if(String.IsNullOrWhiteSpace(cacheSize) || !Int32.TryParse(cacheSize, out localCacheSize))
-                        localCacheSize = 1000;
+                        localCacheSize = 2500;
 
                     // Load or create the cache database and the resolver.  The resolver will dispose of the
                     // dictionary when it is disposed of since it implements IDisposable.
                     resolver = new MsdnResolver(new SqlDictionary<string>(connectionString, "ContentIds",
-                        "TargetKey", "ContentId") { LocalCacheSize = localCacheSize });
+                        "TargetKey", "ContentId") { LocalCacheSize = localCacheSize }, false);
 
                     int cacheCount = resolver.MsdnContentIdCache.Count;
 
@@ -133,17 +136,39 @@ namespace SandcastleBuilder.Components
         public override TargetDictionary CreateTargetDictionary(XPathNavigator configuration)
         {
             TargetDictionary td = null;
+            string connectionString, groupId, attrValue;
+            int frameworkCacheSize, projectCacheSize;
+            bool cacheProject, isProjectData;
 
-            string connectionString = configuration.GetAttribute("connectionString", String.Empty);
+            var parent = configuration.Clone();
+            parent.MoveToParent();
 
-            // If no connection is specified, use the simple target dictionary (i.e. project references)
-            if(String.IsNullOrWhiteSpace(connectionString))
+            var cache = parent.SelectSingleNode("sqlCache");
+
+            connectionString = cache.GetAttribute("connectionString", String.Empty);
+
+            attrValue = cache.GetAttribute("frameworkLocalCacheSize", String.Empty);
+            frameworkCacheSize = Convert.ToInt32(attrValue);
+
+            attrValue = cache.GetAttribute("projectLocalCacheSize", String.Empty);
+            projectCacheSize = Convert.ToInt32(attrValue);
+
+            attrValue = cache.GetAttribute("cacheProject", String.Empty);
+            cacheProject = Convert.ToBoolean(attrValue);
+
+            groupId = configuration.GetAttribute("groupId", String.Empty);
+            isProjectData = groupId.StartsWith("Project_", StringComparison.OrdinalIgnoreCase);
+
+            // If no connection is specified or if it is project data and we aren't caching it, use the simple
+            // target dictionary.
+            if(String.IsNullOrWhiteSpace(connectionString) || (isProjectData && !cacheProject))
                 td = base.CreateTargetDictionary(configuration);
             else
             {
                 try
                 {
-                    td = new SqlTargetDictionary(this, configuration);
+                    td = new SqlTargetDictionary(this, configuration, connectionString, groupId,
+                        isProjectData ? projectCacheSize : frameworkCacheSize, isProjectData);
                 }
                 catch(Exception ex)
                 {
@@ -163,7 +188,8 @@ namespace SandcastleBuilder.Components
             {
                 var cache = base.MsdnResolver.MsdnContentIdCache as SqlDictionary<string>;
 
-                if(cache != null)
+                // Only report if we own the cache (it won't have been disposed off yet)
+                if(cache != null && !cache.IsDisposed)
                 {
                     if(base.MsdnResolver.CacheItemsAdded)
                         base.WriteMessage(MessageLevel.Diagnostic, "New MSDN content ID cache size: {0} entries",
@@ -176,6 +202,27 @@ namespace SandcastleBuilder.Components
             }
 
             base.UpdateMsdnContentIdCache();
+        }
+        #endregion
+
+        #region Static configuration method for use with SHFB
+        //=====================================================================
+
+        /// <summary>
+        /// This static method is used by the Sandcastle Help File Builder to let the component perform its own
+        /// configuration.
+        /// </summary>
+        /// <param name="currentConfig">The current configuration XML fragment</param>
+        /// <returns>A string containing the new configuration XML fragment</returns>
+        public static string ConfigureComponent(string currentConfig)
+        {
+            using(var dlg = new SqlResolveReferenceLinksConfigDlg(currentConfig))
+            {
+                if(dlg.ShowDialog() == DialogResult.OK)
+                    currentConfig = dlg.Configuration;
+            }
+
+            return currentConfig;
         }
         #endregion
     }

@@ -82,6 +82,10 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Snippets\ColorizationRule.cs" />
+    <Compile Include="Snippets\Region.cs" />
+    <Compile Include="Snippets\SnippetIdentifier.cs" />
+    <Compile Include="Snippets\StoredSnippet.cs" />
     <Compile Include="Targets\ArrayTypeReference.cs" />
     <Compile Include="Targets\ArtTarget.cs" />
     <Compile Include="BrandingComponent.cs" />
@@ -180,6 +184,10 @@
     <ProjectReference Include="..\BuildAssemblerLibrary\BuildAssemblerLibrary.csproj">
       <Project>{399E78F8-4954-409E-991A-37DA9D0579CC}</Project>
       <Name>BuildAssemblerLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SyntaxComponents\SyntaxComponents.csproj">
+      <Project>{CEAEC85B-973A-4414-8668-723EB65E5088}</Project>
+      <Name>SyntaxComponents</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -55,7 +55,7 @@
   <!-- section titles -->
   <item id="title_remarks">Заметки</item>
   <item id="title_changeHistory">История изменений</item>
-  <item id="title_events">Events</item>
+  <item id="title_events">События</item>
   <item id="title_exceptions">Исключения</item>
   <item id="title_contracts">Контракты</item>
   <item id="title_setter">Set</item>

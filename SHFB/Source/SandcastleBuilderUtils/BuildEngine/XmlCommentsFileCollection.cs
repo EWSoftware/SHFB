@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : XmlCommentsFileCollection.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/03/2013
+// Updated : 03/12/2013
 // Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -41,9 +41,9 @@ namespace SandcastleBuilder.Utils.BuildEngine
     public class XmlCommentsFileCollection : BindingList<XmlCommentsFile>
     {
         /// <summary>
-        /// This read-only property returns true if any of the comments files contain an
-        /// <c>inheritdoc</c>, <c>AttachedPropertyComments</c>, or <c>AttachedEventComments</c> tag
-        /// indicating that the Inherited Documentation tool will need to be ran.
+        /// This read-only property returns true if any of the comments files contain an <c>inheritdoc</c>,
+        /// <c>AttachedPropertyComments</c>, or <c>AttachedEventComments</c> tag indicating that the Inherited
+        /// Documentation tool will need to be ran.
         /// </summary>
         public bool ContainsInheritedDocumentation
         {
@@ -68,8 +68,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
         }
 
         /// <summary>
-        /// Search all comments files for the specified member.  If not found,
-        /// add the blank member to the first file.
+        /// Search all comments files for the specified member.  If not found, add the blank member to the first
+        /// file.
         /// </summary>
         /// <param name="memberName">The member name for which to search.</param>
         /// <returns>The XML node of the found or added member</returns>
@@ -79,8 +79,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
             XmlNode member = null;
             XmlAttribute name;
 
-            string xPathQuery = String.Format(CultureInfo.InvariantCulture, "member[@name='{0}']",
-                memberName);
+            string xPathQuery = String.Format(CultureInfo.InvariantCulture, "member[@name='{0}']", memberName);
 
             foreach(XmlCommentsFile f in this)
             {
@@ -107,12 +106,11 @@ namespace SandcastleBuilder.Utils.BuildEngine
         }
 
         /// <summary>
-        /// This will search for all type member comments where the ID
-        /// contains <b>NamespaceDoc</b> and convert them to namespace entries
-        /// for the containing namespace.
+        /// This will search for all type member comments where the ID contains <b>NamespaceDoc</b> and convert
+        /// them to namespace entries for the containing namespace.
         /// </summary>
-        /// <remarks>The converted ID effectively converts the comments into
-        /// comments for the class's containing namespace.</remarks>
+        /// <remarks>The converted ID effectively converts the comments into comments for the class's containing
+        /// namespace.</remarks>
         public void ReplaceNamespaceDocEntries()
         {
             foreach(XmlCommentsFile f in this)
@@ -122,17 +120,17 @@ namespace SandcastleBuilder.Utils.BuildEngine
         }
 
         /// <summary>
-        /// Returns a list of the comment file paths in a format suitable
-        /// for inserting into a Sandcastle Configuration file.
+        /// Returns a list of the comment file paths in a format suitable for inserting into a Sandcastle
+        /// Configuration file.
         /// </summary>
         /// <param name="workingFolder">The working folder path</param>
-        /// <param name="forInheritedDocs">True if generating the list for the
-        /// inherited documentation tool or false for sandcastle.config.</param>
+        /// <param name="forInheritedDocs">True if generating the list for the inherited documentation tool or
+        /// false for sandcastle.config.</param>
         /// <returns>The comment file list XML tags</returns>
         internal string CommentFileList(string workingFolder, bool forInheritedDocs)
         {
             StringBuilder sb = new StringBuilder(2048);
-            string tagName, dupWarning = String.Empty;
+            string tagName, dupWarning = String.Empty, groupId = String.Empty;
 
             if(forInheritedDocs)
                 tagName = "scan file";
@@ -140,17 +138,23 @@ namespace SandcastleBuilder.Utils.BuildEngine
             {
                 tagName = "data files";
                 dupWarning = " duplicateWarning=\"false\" ";
+                groupId = " groupId=\"Project_Comments_{@UniqueId}\" ";
             }
 
-            // The path is not altered if the file is already in or under the working folder (i.e.
-            // files added by plug-ins).
+            // The path is not altered if the file is already in or under the working folder (i.e. files added
+            // by plug-ins).
             foreach(XmlCommentsFile f in this)
                 if(!f.SourcePath.StartsWith(workingFolder, StringComparison.OrdinalIgnoreCase))
-                    sb.AppendFormat(CultureInfo.InvariantCulture, "            <{0}=\"{1}{2}\"{3} />\r\n", tagName,
-                        HttpUtility.HtmlEncode(workingFolder), Path.GetFileName(f.SourcePath), dupWarning);
+                {
+                    sb.AppendFormat(CultureInfo.InvariantCulture, "            <{0}=\"{1}{2}\"{3}{4} />\r\n",
+                        tagName, HttpUtility.HtmlEncode(workingFolder), Path.GetFileName(f.SourcePath),
+                        dupWarning, groupId);
+                }
                 else
-                    sb.AppendFormat(CultureInfo.InvariantCulture, "            <{0}=\"{1}\"{2} />\r\n", tagName,
-                        HttpUtility.HtmlEncode(f.SourcePath), dupWarning);
+                {
+                    sb.AppendFormat(CultureInfo.InvariantCulture, "            <{0}=\"{1}\"{2}{3} />\r\n",
+                        tagName, HttpUtility.HtmlEncode(f.SourcePath), dupWarning, groupId);
+                }
 
             return sb.ToString();
         }

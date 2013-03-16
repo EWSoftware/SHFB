@@ -1,27 +1,25 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : VersionBuilderPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/23/2010
-// Note    : Copyright 2007-2010, Eric Woodruff, All rights reserved
+// Updated : 03/07/2013
+// Note    : Copyright 2007-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains a plug-in designed to generate version information for
-// assemblies in the current project and others related to the same product
-// that can be merged into the current project's help file topics.
+// This file contains a plug-in designed to generate version information for assemblies in the current project
+// and others related to the same product that can be merged into the current project's help file topics.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.6.0.3  12/01/2007  EFW  Created the code
 // 1.8.0.0  08/13/2008  EFW  Updated to support the new project format
 // 1.9.0.0  06/27/2010  EFW  Added support for /rip option
-//=============================================================================
+//===============================================================================================================
 
 using System;
 using System.Collections.Generic;
@@ -118,6 +116,15 @@ namespace SandcastleBuilder.PlugIns
                     "product and merge that information into a single help " +
                     "file for all of them.";
             }
+        }
+
+        /// <summary>
+        /// This plug-in supports configuration
+        /// </summary>
+        /// <seealso cref="ConfigurePlugIn"/>
+        public bool SupportsConfiguration
+        {
+            get { return true; }
         }
 
         /// <summary>

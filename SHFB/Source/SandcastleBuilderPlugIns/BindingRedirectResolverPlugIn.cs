@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : BindingRedirectResolverPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/25/2012
-// Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
+// Updated : 03/07/2013
+// Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a plug-in that is used to add assembly binding redirection support to the MRefBuilder
@@ -104,6 +104,15 @@ namespace SandcastleBuilder.PlugIns
                 return "This plug in is used to add assembly binding redirection support to the " +
                     "MRefBuilder configuration file.";
             }
+        }
+
+        /// <summary>
+        /// This plug-in supports configuration
+        /// </summary>
+        /// <seealso cref="ConfigurePlugIn"/>
+        public bool SupportsConfiguration
+        {
+            get { return true; }
         }
 
         /// <summary>

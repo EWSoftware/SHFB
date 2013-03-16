@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : PlugInPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 02/24/2013
+// Updated : 03/07/2013
 // Note    : Copyright 2011-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -219,6 +219,9 @@ namespace SandcastleBuilder.Package.PropertyPages
                         btnConfigure.Enabled = btnDelete.Enabled = true;
 
                         this.IsDirty = true;
+
+                        // Open the configuration dialog to configure it when first added if needed
+                        btnConfigure_Click(sender, e);
                     }
                 }
                 else
@@ -240,6 +243,14 @@ namespace SandcastleBuilder.Package.PropertyPages
             if(PlugInManager.IsSupported(key))
             {
                 PlugInInfo info = PlugInManager.PlugIns[key];
+
+                if(!info.SupportsConfiguration)
+                {
+                    if(sender == btnConfigure)
+                        MessageBox.Show("The selected plug-in contains no editable configuration information",
+                            messageBoxTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
 
                 using(IPlugIn plugIn = info.NewInstance())
                 {

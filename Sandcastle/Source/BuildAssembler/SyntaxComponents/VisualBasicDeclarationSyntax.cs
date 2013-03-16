@@ -7,6 +7,8 @@
 // 01/30/2012 - EFW - Fixed WriteValue() so that it outputs numeric attribute values.
 // 02/09/2012 - EFW - Added support for optional parameters and property getter/setter attributes.
 // 02/14/2012 - EFW - Made the unsafe code checks consistent across all syntax generators
+// 03/08/2013 - EFW - Added configuration option to enable inclusion of the line continuation character.  The
+// default is false to exclude it.
 
 using System;
 using System.Globalization;
@@ -16,8 +18,15 @@ namespace Microsoft.Ddue.Tools
 {
     public sealed class VisualBasicDeclarationSyntaxGenerator : SyntaxGeneratorTemplate
     {
+        private bool includeLineContinuation;
+
         public VisualBasicDeclarationSyntaxGenerator(XPathNavigator configuration) : base(configuration)
         {
+            string lineCont = configuration.GetAttribute("includeLineContinuation", String.Empty);
+
+            if(String.IsNullOrWhiteSpace(lineCont) || !Boolean.TryParse(lineCont, out includeLineContinuation))
+                includeLineContinuation = false;
+
             if(String.IsNullOrEmpty(Language))
                 Language = "VisualBasic";
         }
@@ -371,7 +380,9 @@ namespace Microsoft.Ddue.Tools
                 writer.WriteMessage("UnsupportedOperator_" + Language);
                 return;
             }
+
             WriteProcedureModifiers(reflection, writer);
+
             if(name == "Implicit")
             {
                 writer.WriteKeyword("Widening");
@@ -382,6 +393,7 @@ namespace Microsoft.Ddue.Tools
                 writer.WriteKeyword("Narrowing");
                 writer.WriteString(" ");
             }
+
             writer.WriteKeyword("Operator");
             writer.WriteString(" ");
             writer.WriteIdentifier(identifier);
@@ -701,12 +713,12 @@ namespace Microsoft.Ddue.Tools
 
         // Attributes
 
-        private static void WriteAttribute(string reference, SyntaxWriter writer)
+        private void WriteAttribute(string reference, SyntaxWriter writer)
         {
             WriteAttribute(reference, true, writer);
         }
 
-        private static void WriteAttribute(string reference, bool newLine, SyntaxWriter writer)
+        private void WriteAttribute(string reference, bool newLine, SyntaxWriter writer)
         {
             writer.WriteString("<");
             writer.WriteReferenceLink(reference);
@@ -714,7 +726,9 @@ namespace Microsoft.Ddue.Tools
 
             if(newLine)
             {
-                writer.WriteString(" _");
+                if(includeLineContinuation)
+                    writer.WriteString(" _");
+
                 writer.WriteLine();
             }
         }
@@ -749,7 +763,9 @@ namespace Microsoft.Ddue.Tools
                             writer.WriteString(", ");
                             if(writer.Position > maxPosition)
                             {
-                                writer.WriteString(" _");
+                                if(includeLineContinuation)
+                                    writer.WriteString(" _");
+
                                 writer.WriteLine();
 
                                 if(!String.IsNullOrEmpty(indent))
@@ -770,7 +786,9 @@ namespace Microsoft.Ddue.Tools
                             writer.WriteString(", ");
                             if(writer.Position > maxPosition)
                             {
-                                writer.WriteString(" _");
+                                if(includeLineContinuation)
+                                    writer.WriteString(" _");
+
                                 writer.WriteLine();
 
                                 if(!String.IsNullOrEmpty(indent))
@@ -788,7 +806,10 @@ namespace Microsoft.Ddue.Tools
                 }
 
                 writer.WriteString("> ");
-                writer.WriteString("_");
+
+                if(includeLineContinuation)
+                    writer.WriteString("_");
+
                 writer.WriteLine();
             }
 
@@ -891,54 +912,62 @@ namespace Microsoft.Ddue.Tools
         // Interfaces
         private void WriteBaseClass(XPathNavigator reflection, SyntaxWriter writer)
         {
-
             XPathNavigator baseClass = reflection.SelectSingleNode(apiBaseClassExpression);
 
             if((baseClass != null) && !((bool)baseClass.Evaluate(typeIsObjectExpression)))
             {
-                writer.WriteString(" _");
+                if(includeLineContinuation)
+                    writer.WriteString(" _");
+
                 writer.WriteLine();
                 writer.WriteString("\t");
                 writer.WriteKeyword("Inherits");
                 writer.WriteString(" ");
                 WriteTypeReference(baseClass, writer);
             }
-
         }
 
         private void WriteImplementedInterfaces(XPathNavigator reflection, SyntaxWriter writer)
         {
-
             XPathNodeIterator implements = reflection.Select(apiImplementedInterfacesExpression);
 
             if(implements.Count == 0)
                 return;
 
-            writer.WriteString(" _");
+            if(includeLineContinuation)
+                writer.WriteString(" _");
+
             writer.WriteLine();
             writer.WriteString("\t");
+
             string subgroup = (string)reflection.Evaluate(apiSubgroupExpression);
+
             if(subgroup == "interface")
                 writer.WriteKeyword("Inherits");
             else
                 writer.WriteKeyword("Implements");
+
             writer.WriteString(" ");
+
             while(implements.MoveNext())
             {
                 XPathNavigator implement = implements.Current;
                 if(implements.CurrentPosition > 1)
                 {
                     writer.WriteString(", ");
+
                     if(writer.Position > maxPosition)
                     {
-                        writer.WriteString(" _");
+                        if(includeLineContinuation)
+                            writer.WriteString(" _");
+
                         writer.WriteLine();
                         writer.WriteString("\t");
                     }
                 }
+
                 WriteTypeReference(implement, writer);
             }
-
         }
 
         // Generics
@@ -1057,7 +1086,11 @@ namespace Microsoft.Ddue.Tools
             if(parameters.Count == 0)
                 return;
 
-            writer.WriteString(" ( _");
+            writer.WriteString(" ( ");
+
+            if(includeLineContinuation)
+                writer.WriteString("_");
+
             writer.WriteLine();
 
             while(parameters.MoveNext())
@@ -1121,7 +1154,9 @@ namespace Microsoft.Ddue.Tools
                 if(parameters.CurrentPosition < parameters.Count)
                     writer.WriteString(",");
 
-                writer.WriteString(" _");
+                if(includeLineContinuation)
+                    writer.WriteString(" _");
+
                 writer.WriteLine();
             }
 

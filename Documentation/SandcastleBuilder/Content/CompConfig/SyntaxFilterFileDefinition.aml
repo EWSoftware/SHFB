@@ -94,7 +94,8 @@ located in any other location.  Just be sure that the path is correct.</para>
 </list>
 
 	<para>The <codeInline>generator</codeInline> element will be copied into the BuildAssembler configuration file
-along with any nested child elements that it contains.</para>
+along with any nested child elements that it contains.  Additional attributes can be added to the element to
+pass simple configuration options to the syntax generator instance.</para>
   </content>
 </section>
 
@@ -125,6 +126,37 @@ the associated language is show by itself.  It should be set to one of the follo
   
 </section>
 
+		<section address="CustomExample">
+			<title>Enabling the Line Continuation Character in the VB.NET Syntax Generators</title>
+			<content>
+				<para>By default, the VB.NET syntax generators omit the line continuation characters in the syntax
+they generate as it is no longer required in newer versions of the language.  If you are documenting older
+versions that require it or would prefer to include it, you can use the following custom syntax generator
+configuration file to add versions of the generators that will include it.  These definitions reuse the existing
+syntax generators but give them a new ID and pass in the necessary configuration option to enable the line
+continuation character.</para>
+
+<code language="xml" title="VB.NET Syntax with Line Continuation">
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;syntaxFilters&gt;
+	&lt;filter id="VisualBasicWithLC" sortOrder="20" alternateNames="vblc, vb#lc, vbnetlc, vb.netlc"&gt;
+		&lt;generator type="Microsoft.Ddue.Tools.VisualBasicDeclarationSyntaxGenerator"
+			assembly="{@SandcastlePath}ProductionTools\SyntaxComponents.dll"
+			includeLineContinuation="true" /&gt;
+		&lt;language label="VisualBasic" name="VisualBasic" style="vb" /&gt;
+	&lt;/filter&gt;
+
+	&lt;filter id="VisualBasicUsageWithLC" sortOrder="30" alternateNames="vbusagelc, vbnetusagelc"&gt;
+		&lt;generator type="Microsoft.Ddue.Tools.VisualBasicUsageSyntaxGenerator"
+			assembly="{@SandcastlePath}ProductionTools\SyntaxComponents.dll"
+			includeLineContinuation="true" /&gt;
+		&lt;language label="VisualBasicUsage" name="VisualBasicUsage" style="vb" /&gt;
+	&lt;/filter&gt;
+&lt;/syntaxFilters&gt;
+</code>
+			</content>
+		</section>		
+		
 		<relatedTopics>
 			<link xlink:href="8dcbb69b-7a1a-4049-8e6b-2bf344efbbc9" />
 		</relatedTopics>

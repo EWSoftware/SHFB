@@ -1,29 +1,27 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : AdditionalContentOnlyPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/30/2010
-// Note    : Copyright 2007-2010, Eric Woodruff, All rights reserved
+// Updated : 03/07/2013
+// Note    : Copyright 2007-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains a plug-in that can be used to build a help file
-// consisting of nothing but additional content items.  It is also useful for
-// proofreading your additional content without having to build all the API
-// topics.
+// This file contains a plug-in that can be used to build a help file consisting of nothing but additional
+// content items.  It is also useful for proofreading your additional content without having to build all the
+// API topics.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.5.2.0  09/13/2007  EFW  Created the code
 // 1.6.0.7  05/27/2008  EFW  Modified to support use in conceptual preview
 // 1.8.0.0  08/05/2008  EFW  Modified to support the new project format
 // 1.9.0.0  06/07/2010  EFW  Added support for multi-format build output
-//=============================================================================
+//===============================================================================================================
 
 using System;
 using System.Collections.Generic;
@@ -114,6 +112,15 @@ namespace SandcastleBuilder.PlugIns
                     "proofreading your conceptual and/or additional content " +
                     "without having to build all the API topics.";
             }
+        }
+
+        /// <summary>
+        /// This plug-in does not support configuration
+        /// </summary>
+        /// <seealso cref="ConfigurePlugIn"/>
+        public bool SupportsConfiguration
+        {
+            get { return false; }
         }
 
         /// <summary>

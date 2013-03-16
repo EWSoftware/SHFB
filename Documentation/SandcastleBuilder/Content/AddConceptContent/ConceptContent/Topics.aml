@@ -225,10 +225,10 @@ will be added automatically to each topic at build time and do not need to be ad
 you can arrange them on disk to match the layout in the table of contents and give them meaningful names to aid
 in managing them outside of the project and the designer.  When the help file is built, all topic files are
 copied to the help file's <localUri>.\html</localUri> folder and are named using their unique ID with a
-<localUri>.htm</localUri> extension.  You can use that name to link to the topic from other HTML pages or the XML
-comments on API members.  For example:</para>
+<localUri>.htm</localUri> extension.  You can use that name to link to the topic from other HTML pages.  For
+example:</para>
 
-<code language="xml" title="Link Examples">
+<code language="xml" title="HTML Link Examples">
 Link to a topic from an HTML file in the .\html folder:
 &lt;a href="303c996a-2911-4c08-b492-6496c82b3edb.htm"&gt;Test Topic&lt;/a&gt;
 
@@ -239,6 +239,27 @@ Link to a topic from another folder:
 &lt;a href="../html/303c996a-2911-4c08-b492-6496c82b3edb.htm"&gt;Test Topic&lt;/a&gt;
 </code>
 
+		<para>For XML comments, the preferred approach is to use the <codeInline>conceptualLink</codeInline> element
+to link to the topic ID.  When used inline within another element, it creates an inline link.  When used at the
+top-level like a summary or remarks element, it adds an entry to the See Also section of the API topic.  For
+example:</para>
+		
+<code language="xml" title="XML Comments Examples">
+/// &lt;remarks&gt;
+/// See the &lt;conceptualLink target="303c996a-2911-4c08-b492-6496c82b3edb" /&gt; topic for more information.
+/// &lt;/remarks&gt;
+
+/// &lt;remarks&gt;
+/// More information can be found &lt;conceptualLink
+/// target="303c996a-2911-4c08-b492-6496c82b3edb"&gt;in this topic&lt;/conceptualLink&gt;
+/// &lt;/remarks&gt;
+
+/// &lt;remarks&gt;
+/// This example adds an entry to the See Also section of the topic
+/// &lt;/remarks&gt;
+/// &lt;conceptualLink target="303c996a-2911-4c08-b492-6496c82b3edb" /&gt;
+</code>
+		
   </content>
 </section>
 

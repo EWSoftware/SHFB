@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/26/2013
+// Updated : 03/07/2013
 // Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -641,6 +641,11 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 if((project.HelpFileFormat & HelpFileFormat.MSHelp2) != 0 && this.ResolvedHtmlHelpName.IndexOf(' ') != -1)
                     throw new BuilderException("BE0031", "For MS Help 2 builds, the HtmlHelpName property " +
                         "cannot contain spaces as they are not valid in the collection name.");
+
+                // For MS Help Viewer, the HTML Help Name cannot contain periods
+                if((project.HelpFileFormat & HelpFileFormat.MSHelpViewer) != 0 && this.ResolvedHtmlHelpName.IndexOf('.') != -1)
+                    throw new BuilderException("BE0075", "For MS Help Viewer builds, the HtmlHelpName property " +
+                        "cannot contain periods as they are not valid in the help file name.");
 
                 // Make sure we can find the tools
                 this.FindTools();

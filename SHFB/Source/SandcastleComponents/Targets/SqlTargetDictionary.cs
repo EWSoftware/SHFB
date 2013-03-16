@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Components
 // File    : SqlTargetDictionary.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/27/2013
+// Updated : 03/12/2013
 // Note    : Copyright 2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -24,6 +24,7 @@ using System.Globalization;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading.Tasks;
@@ -65,39 +66,45 @@ namespace SandcastleBuilder.Components.Targets
         /// <param name="component">The build component that owns the dictionary.  This is useful for logging
         /// messages during initialization.</param>
         /// <param name="configuration">The target dictionary configuration</param>
+        /// <param name="connectionString">The connection string to use</param>
+        /// <param name="groupId">The group ID to use</param>
+        /// <param name="localCacheSize">The local cache size to use</param>
+        /// <param name="reload">True to reload the cache or false to leave it alone.  This is used to reload
+        /// project data so that it is always current.</param>
         /// <returns>A target dictionary instance that uses a simple in-memory
         /// <see cref="Dictionary{TKey, TValue}"/> instance to store the targets.</returns>
-        public SqlTargetDictionary(BuildComponent component, XPathNavigator configuration) :
+        public SqlTargetDictionary(BuildComponent component, XPathNavigator configuration,
+          string connectionString, string groupId, int localCacheSize, bool reload) :
           base(component, configuration)
         {
-            int localCacheSize;
+            this.connectionString = connectionString;
+            base.DictionaryId = groupId;
 
-            connectionString = configuration.GetAttribute("connectionString", String.Empty);
+            index = new SqlDictionary<Target>(connectionString, "Targets", "TargetKey", "TargetValue",
+              "GroupId", groupId)
+            {
+                LocalCacheSize = localCacheSize
+            };
 
-            if(String.IsNullOrWhiteSpace(connectionString))
-                throw new ArgumentException("The connectionString attribute must contain a value", "configuration");
-
-            string cacheSize = configuration.GetAttribute("localCacheSize", String.Empty);
-
-            if(String.IsNullOrWhiteSpace(cacheSize) || !Int32.TryParse(cacheSize, out localCacheSize))
-                localCacheSize = 1000;
-
-            index = new SqlDictionary<Target>(connectionString, "Targets", "TargetKey", "TargetValue")
-                { LocalCacheSize = localCacheSize };
-
-            // Loading new targets can take a while so issue a diagnostic message as an alert
             int filesToLoad = 0;
 
-            foreach(string file in Directory.EnumerateFiles(this.DirectoryPath, this.FilePattern, this.Recurse ?
-              SearchOption.AllDirectories : SearchOption.TopDirectoryOnly))
-                if((this.NamespaceFileFilter.Count == 0 || this.NamespaceFileFilter.Contains(
-                  Path.GetFileName(file))) && !this.ContainsKey("N:" + Path.GetFileNameWithoutExtension(file)))
-                    filesToLoad++;
+            if(reload)
+            {
+                filesToLoad = Directory.EnumerateFiles(this.DirectoryPath, this.FilePattern, this.Recurse ?
+                  SearchOption.AllDirectories : SearchOption.TopDirectoryOnly).Count();
+            }
+            else
+                foreach(string file in Directory.EnumerateFiles(this.DirectoryPath, this.FilePattern, this.Recurse ?
+                  SearchOption.AllDirectories : SearchOption.TopDirectoryOnly))
+                    if((this.NamespaceFileFilter.Count == 0 || this.NamespaceFileFilter.Contains(
+                      Path.GetFileName(file))) && !this.ContainsKey("N:" + Path.GetFileNameWithoutExtension(file)))
+                        filesToLoad++;
 
-            // The time estimate is a ballpark figure and depends on the system
+            // Loading new targets can take a while so issue a diagnostic message as an alert.  The time estimate
+            // is a ballpark figure and depends on the system.
             if(filesToLoad != 0)
             {
-                component.WriteMessage(MessageLevel.Diagnostic, "{0} files need to be added to the SQL " +
+                component.WriteMessage(MessageLevel.Diagnostic, "{0} file(s) need to be added to the SQL " +
                     "reflection target cache database.  Indexing them will take about {1:N0} minute(s), " +
                     "please be patient.  Cache location: {2}", filesToLoad, Math.Ceiling(filesToLoad / 60.0),
                     connectionString);
@@ -142,7 +149,9 @@ namespace SandcastleBuilder.Components.Targets
                         cmd.Connection = cn;
                         cmd.Parameters.Add(new SqlParameter("@key", SqlDbType.VarChar, 768));
 
-                        cmd.CommandText = "Select TargetKey From Targets Where TargetKey = @key";
+                        cmd.CommandText = String.Format(CultureInfo.InvariantCulture,
+                            "Select TargetKey From Targets Where GroupId = '{0}' And TargetKey = @key",
+                            base.DictionaryId);
                         cmd.Parameters[0].Value = "N:" + Path.GetFileNameWithoutExtension(file);
 
                         // Skip the file if not in a defined filter or if it's already in the dictionary
@@ -152,9 +161,11 @@ namespace SandcastleBuilder.Components.Targets
 
                         this.BuildComponent.WriteMessage(MessageLevel.Info, "Indexing targets in {0}", file);
 
-                        cmd.CommandText = "IF NOT EXISTS(Select * From Targets Where TargetKey = @key) " +
-                            "Insert Targets (TargetKey, TargetValue) Values (@key, @value) " +
-                            "ELSE Update Targets Set TargetValue = @value Where TargetKey = @key";
+                        cmd.CommandText = String.Format(CultureInfo.InvariantCulture,
+                            "IF NOT EXISTS(Select * From Targets Where GroupId = '{0}' And TargetKey = @key) " +
+                            "Insert Targets (GroupId, TargetKey, TargetValue) Values ('{0}', @key, @value) " +
+                            "ELSE Update Targets Set TargetValue = @value Where GroupId = '{0}' " +
+                            "And TargetKey = @key", base.DictionaryId);
 
                         cmd.Parameters.Add(new SqlParameter("@value", SqlDbType.VarBinary));
 
@@ -216,6 +227,18 @@ namespace SandcastleBuilder.Components.Targets
                         }
                     }
                 });
+        }
+
+        /// <summary>
+        /// Report the cache usage for the build
+        /// </summary>
+        public override void ReportCacheStatistics()
+        {
+            this.BuildComponent.WriteMessage(MessageLevel.Diagnostic, "\"{0}\" SQL local cache flushed {1} " +
+                "time(s).  Current SQL local cache usage: {2} of {3}.", base.DictionaryId,
+                index.LocalCacheFlushCount, index.CurrentLocalCacheCount, index.LocalCacheSize);
+
+            base.ReportCacheStatistics();
         }
         #endregion
 

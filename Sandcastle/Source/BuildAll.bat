@@ -10,8 +10,7 @@ DEL /Q %OUTDIR%
 "%WINDIR%\Microsoft.Net\Framework\v4.0.30319\msbuild.exe" "XslTransform\XslTransform.csproj" /t:Clean;Build /p:Configuration=Release;Platform=AnyCPU;OutDir=%OUTDIR%
 "%WINDIR%\Microsoft.Net\Framework\v4.0.30319\msbuild.exe" "VersionBuilder\VersionBuilder.csproj" /t:Clean;Build /p:Configuration=Release;Platform=AnyCPU;OutDir=%OUTDIR%
 "%WINDIR%\Microsoft.Net\Framework\v4.0.30319\msbuild.exe" "BuildAssembler\BuildAssemblerLibrary\BuildAssemblerLibrary.csproj" /t:Clean;Build /p:Configuration=Release;Platform=AnyCPU;OutDir=%OUTDIR%
-"%WINDIR%\Microsoft.Net\Framework\v4.0.30319\msbuild.exe" "BuildAssembler\BuildComponents.csproj" /t:Clean;Build /p:Configuration=Release;Platform=AnyCPU;OutDir=%OUTDIR%
-"%WINDIR%\Microsoft.Net\Framework\v4.0.30319\msbuild.exe" "BuildAssembler\CopyComponents\CopyComponents.csproj" /t:Clean;Build /p:Configuration=Release;Platform=AnyCPU;OutDir=%OUTDIR%
+"%WINDIR%\Microsoft.Net\Framework\v4.0.30319\msbuild.exe" "BuildAssembler\BuildComponents\BuildComponents.csproj" /t:Clean;Build /p:Configuration=Release;Platform=AnyCPU;OutDir=%OUTDIR%
 "%WINDIR%\Microsoft.Net\Framework\v4.0.30319\msbuild.exe" "BuildAssembler\SyntaxComponents\SyntaxComponents.csproj" /t:Clean;Build /p:Configuration=Release;Platform=AnyCPU;OutDir=%OUTDIR%
 "%WINDIR%\Microsoft.Net\Framework\v4.0.30319\msbuild.exe" "BuildAssembler\BuildAssembler\BuildAssembler.csproj" /t:Clean;Build /p:Configuration=Release;Platform=AnyCPU;OutDir=%OUTDIR%
 "%WINDIR%\Microsoft.Net\Framework\v4.0.30319\msbuild.exe" "ChmBuilder\ChmBuilder.csproj" /t:Clean;Build /p:Configuration=Release;Platform=AnyCPU;OutDir=%OUTDIR%

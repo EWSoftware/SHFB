@@ -9,12 +9,9 @@ silently.</para>
 				<para>Please note that this information was supplied by an end user and diagnosing any problems that
 you may encounter is outside the scope of the Sandcastle Help File Builder project.  If you have issues, the best
 course of action is to post a message asking for help with signing content on the <externalLink>
-	<linkText>MSDN Developer Documentation and Help System</linkText>
-	<linkAlternateText>MSDN Dev Doc and Help</linkAlternateText>
-	<linkUri>http://social.msdn.microsoft.com/forums/en-US/devdocs/threads/</linkUri>
-	<linkTarget>_blank</linkTarget>
-</externalLink> forum.
-			</para>
+<linkText>Visual Studio General Questions</linkText>
+<linkUri>http://social.msdn.microsoft.com/Forums/en-US/visualstudiogeneral/threads/</linkUri>
+<linkTarget>_blank</linkTarget></externalLink> forum.</para>
 			</alert>
     </introduction>
 

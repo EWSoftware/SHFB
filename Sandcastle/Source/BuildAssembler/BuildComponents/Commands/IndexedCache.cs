@@ -53,7 +53,7 @@ namespace Microsoft.Ddue.Tools.Commands
         /// <summary>
         /// This read-only property returns a count of the items in the indexed cache
         /// </summary>
-        public abstract int IndexCount { get; }
+        public abstract int Count { get; }
 
         /// <summary>
         /// This read-only property returns the value in the indexed cache for the given key
