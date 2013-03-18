@@ -184,25 +184,47 @@
 		</div>
 	</xsl:template>
 
-	<xsl:template match="value"
-								name="t_value">
+	<xsl:template match="value" name="t_value">
 		<xsl:call-template name="t_putSubSection">
 			<xsl:with-param name="p_title">
-				<include item="title_fieldValue"/>
+				<xsl:choose>
+					<xsl:when test="/document/reference/apidata[@subgroup='property']">
+						<include item="title_propertyValue" />
+					</xsl:when>
+					<xsl:otherwise>
+						<include item="title_fieldValue"/>
+					</xsl:otherwise>
+				</xsl:choose>
 			</xsl:with-param>
+
 			<xsl:with-param name="p_content">
+				<include item="typeLink">
+					<parameter>
+						<xsl:apply-templates select="/document/reference/returns/type" mode="link">
+							<xsl:with-param name="qualified" select="true()" />
+						</xsl:apply-templates>
+					</parameter>
+				</include>
+				<br />
 				<xsl:apply-templates/>
 			</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
 
-	<xsl:template match="returns"
-								name="t_returns">
+	<xsl:template match="returns" name="t_returns">
 		<xsl:call-template name="t_putSubSection">
 			<xsl:with-param name="p_title">
 				<include item="title_methodValue"/>
 			</xsl:with-param>
 			<xsl:with-param name="p_content">
+				<include item="typeLink">
+					<parameter>
+						<xsl:apply-templates select="/document/reference/returns/type" mode="link">
+							<xsl:with-param name="qualified" select="true()" />
+						</xsl:apply-templates>
+					</parameter>
+				</include>
+				<br />
 				<xsl:apply-templates/>
 			</xsl:with-param>
 		</xsl:call-template>
@@ -280,29 +302,32 @@
 
 	<!-- ======================================================================================== -->
 
-	<xsl:template match="syntax"
-								name="t_syntax">
+	<xsl:template match="syntax" name="t_syntax">
 		<xsl:if test="count(*) > 0">
 			<xsl:call-template name="t_putSectionInclude">
-				<xsl:with-param name="p_titleInclude"
-												select="'title_syntax'"/>
+				<xsl:with-param name="p_titleInclude" select="'title_syntax'"/>
 				<xsl:with-param name="p_content">
-					<div id="snippetGroup_Syntax"
-							 class="code">
+					<div id="snippetGroup_Syntax" class="code">
 						<xsl:call-template name="t_putCodeSections">
-							<xsl:with-param name="p_codeNodes"
-															select="./div[@codeLanguage]"/>
-							<xsl:with-param name="p_nodeCount"
-															select="count(./div[@codeLanguage])"/>
-							<xsl:with-param name="p_codeLangAttr"
-															select="'codeLanguage'"/>
+							<xsl:with-param name="p_codeNodes" select="./div[@codeLanguage]"/>
+							<xsl:with-param name="p_nodeCount" select="count(./div[@codeLanguage])"/>
+							<xsl:with-param name="p_codeLangAttr" select="'codeLanguage'"/>
 						</xsl:call-template>
 					</div>
 					<!-- parameters & return value -->
 					<xsl:apply-templates select="/document/reference/parameters"/>
 					<xsl:apply-templates select="/document/reference/templates"/>
-					<xsl:apply-templates select="/document/comments/value"/>
-					<xsl:apply-templates select="/document/comments/returns"/>
+					<xsl:choose>
+						<xsl:when test="/document/comments/value | /document/comments/returns">
+							<xsl:apply-templates select="/document/comments/value" />
+							<xsl:apply-templates select="/document/comments/returns" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:if test="/document/reference/returns/type | /document/reference/eventhandler/type">
+								<xsl:call-template name="defaultReturnSection" />
+							</xsl:if>
+						</xsl:otherwise>
+					</xsl:choose>
 					<xsl:apply-templates select="/document/reference/implements"/>
 					<!-- usage note for extension methods -->
 					<xsl:if test="/document/reference/attributes/attribute/type[@api='T:System.Runtime.CompilerServices.ExtensionAttribute'] and boolean($g_apiSubGroup='method')">
@@ -313,8 +338,7 @@
 							<xsl:with-param name="p_content">
 								<include item="text_extensionUsage">
 									<parameter>
-										<xsl:apply-templates select="/document/reference/parameters/parameter[1]/type"
-																				 mode="link"/>
+										<xsl:apply-templates select="/document/reference/parameters/parameter[1]/type" mode="link"/>
 									</parameter>
 								</include>
 							</xsl:with-param>
@@ -323,6 +347,50 @@
 				</xsl:with-param>
 			</xsl:call-template>
 		</xsl:if>
+	</xsl:template>
+
+	<xsl:template name="defaultReturnSection">
+		<xsl:call-template name="t_putSubSection">
+			<xsl:with-param name="p_title">
+				<xsl:choose>
+					<xsl:when test="/document/reference/apidata[@subgroup='property']">
+						<include item="title_propertyValue" />
+					</xsl:when>
+					<xsl:when test="/document/reference/apidata[@subgroup='field']">
+						<include item="title_fieldValue" />
+					</xsl:when>
+					<xsl:when test="/document/reference/apidata[@subgroup='event']">
+						<include item="title_value" />
+					</xsl:when>
+					<xsl:otherwise>
+						<include item="title_methodValue" />
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:with-param>
+			<xsl:with-param name="p_content">
+				<include item="typeLink">
+					<parameter>
+						<xsl:choose>
+							<xsl:when test="/document/reference/attributes/attribute/type[@api='T:System.Runtime.CompilerServices.FixedBufferAttribute']">
+								<xsl:apply-templates select="/document/reference/attributes/attribute/type[@api='T:System.Runtime.CompilerServices.FixedBufferAttribute']/../argument/typeValue/type" mode="link">
+									<xsl:with-param name="qualified" select="true()" />
+								</xsl:apply-templates>
+							</xsl:when>
+							<xsl:when test="/document/reference/apidata[@subgroup='event']">
+								<xsl:apply-templates select="/document/reference/eventhandler/type" mode="link">
+									<xsl:with-param name="qualified" select="true()" />
+								</xsl:apply-templates>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:apply-templates select="/document/reference/returns/type" mode="link">
+									<xsl:with-param name="qualified" select="true()" />
+								</xsl:apply-templates>
+							</xsl:otherwise>
+						</xsl:choose>
+					</parameter>
+				</include>
+			</xsl:with-param>
+		</xsl:call-template>
 	</xsl:template>
 
 	<!-- ======================================================================================== -->

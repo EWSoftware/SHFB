@@ -5,6 +5,8 @@
 
 // Change History
 // 03/09/2013 - EFW - Moved the supporting syntax writer classes to the SyntaxComponents assembly project
+// 03/17/2013 - EFW - Added support for the syntax writer RenderReferenceLinks property.  Added a condition to
+// the Apply method to skip group, project, and namespace pages in which a syntax section is of no use.
 
 using System;
 using System.Collections.Generic;
@@ -25,7 +27,7 @@ namespace Microsoft.Ddue.Tools
         //=====================================================================
 
         private XPathExpression syntax_input, syntax_output;
-        private Type writerType;
+        private bool renderReferenceLinks;
         private List<SyntaxGenerator> generators = new List<SyntaxGenerator>();
         #endregion
 
@@ -38,7 +40,7 @@ namespace Microsoft.Ddue.Tools
         /// <param name="assembler">The build assembler reference</param>
         /// <param name="configuration">The component configuration</param>
         public SyntaxComponent(BuildAssembler assembler, XPathNavigator configuration) :
-            base(assembler, configuration)
+          base(assembler, configuration)
         {
             XPathNavigator syntax_node = configuration.SelectSingleNode("syntax");
             string syntax_input_xpath = syntax_node.GetAttribute("input", String.Empty);
@@ -47,6 +49,7 @@ namespace Microsoft.Ddue.Tools
                 throw new ConfigurationErrorsException("You must specify an XPath for input in the syntax element.");
 
             syntax_input = XPathExpression.Compile(syntax_input_xpath);
+
             string syntax_output_xpath = syntax_node.GetAttribute("output", String.Empty);
 
             if(String.IsNullOrEmpty(syntax_output_xpath))
@@ -54,13 +57,15 @@ namespace Microsoft.Ddue.Tools
 
             syntax_output = XPathExpression.Compile(syntax_output_xpath);
 
-            writerType = typeof(ManagedSyntaxWriter);
+            string renderLinks = syntax_node.GetAttribute("renderReferenceLinks", String.Empty);
+
+            if(String.IsNullOrWhiteSpace(renderLinks) || !Boolean.TryParse(renderLinks, out renderReferenceLinks))
+                renderReferenceLinks = false;
 
             XPathNodeIterator generator_nodes = configuration.Select("generators/generator");
 
             foreach(XPathNavigator generator_node in generator_nodes)
             {
-
                 // get the data to load the generator
                 string assembly_path = generator_node.GetAttribute("assembly", String.Empty);
                 if(String.IsNullOrEmpty(assembly_path))
@@ -118,13 +123,16 @@ namespace Microsoft.Ddue.Tools
         /// <inheritdoc />
         public override void Apply(XmlDocument document, string key)
         {
-            XPathNavigator input = document.CreateNavigator().SelectSingleNode(syntax_input);
-            XPathNavigator output = document.CreateNavigator().SelectSingleNode(syntax_output);
+            // Don't bother if there is nothing to add (group, namespace, and project topics)
+            if(key[1] == ':' && key[0] != 'N' && key[0] != 'R')
+            {
+                XPathNavigator input = document.CreateNavigator().SelectSingleNode(syntax_input);
+                XPathNavigator output = document.CreateNavigator().SelectSingleNode(syntax_output);
+                SyntaxWriter writer = new ManagedSyntaxWriter(output) { RenderReferenceLinks = renderReferenceLinks };
 
-            SyntaxWriter writer = (SyntaxWriter)Activator.CreateInstance(writerType, new Object[1] { output });
-
-            foreach(SyntaxGenerator generator in generators)
-                generator.WriteSyntax(input, writer);
+                foreach(SyntaxGenerator generator in generators)
+                    generator.WriteSyntax(input, writer);
+            }
         }
         #endregion
     }

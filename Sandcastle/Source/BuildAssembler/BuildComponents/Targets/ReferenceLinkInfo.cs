@@ -13,6 +13,7 @@
 // Change History
 // 12/28/2012 - EFW - Moved the class into the Targets namespace.  Removed the static Create() method and moved
 // the code it contained into the constructor and made it public.
+// 03/17/2013 - EFW - Added support for the syntax writer renderAsLink attribute
 //===============================================================================================================
 
 using System;
@@ -40,6 +41,12 @@ namespace Microsoft.Ddue.Tools.Targets
 
         /// <summary>This read-only property indicates whether or not to prefer the overload topic</summary>
         public bool PreferOverload { get; private set; }
+
+        /// <summary>
+        /// This read-only property indicates whether or not to render the element as an actual link
+        /// </summary>
+        /// <value>If true, it is rendered as a link.  If false, it will be rendered as an identifier.</value>
+        public bool RenderAsLink { get; private set; }
 
         /// <summary>This read-only property returns the contents of the link</summary>
         public XPathNavigator Contents { get; private set; }
@@ -131,6 +138,13 @@ namespace Microsoft.Ddue.Tools.Targets
                 else
                     this.PreferOverload = false;
             }
+
+            string renderAsLink = element.GetAttribute("renderAsLink", String.Empty);
+
+            if(String.IsNullOrWhiteSpace(renderAsLink) || !Boolean.TryParse(renderAsLink, out attrValue))
+                this.RenderAsLink = true;
+            else
+                this.RenderAsLink = attrValue;
 
             this.Contents = element.Clone();
 

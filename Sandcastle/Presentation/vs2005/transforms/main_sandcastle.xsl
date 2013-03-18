@@ -149,9 +149,24 @@
 	<xsl:template match="value">
 		<xsl:call-template name="subSection">
 			<xsl:with-param name="title">
-				<include item="fieldValueTitle" />
+				<xsl:choose>
+					<xsl:when test="/document/reference/apidata[@subgroup='property']">
+						<include item="propertyValueTitle" />
+					</xsl:when>
+					<xsl:otherwise>
+						<include item="fieldValueTitle" />
+					</xsl:otherwise>
+				</xsl:choose>
 			</xsl:with-param>
 			<xsl:with-param name="content">
+				<include item="typeLink">
+					<parameter>
+						<xsl:apply-templates select="/document/reference/returns/type" mode="link">
+							<xsl:with-param name="qualified" select="true()" />
+						</xsl:apply-templates>
+					</parameter>
+				</include>
+				<br />
 				<xsl:apply-templates />
 			</xsl:with-param>
 		</xsl:call-template>
@@ -163,6 +178,14 @@
 				<include item="methodValueTitle" />
 			</xsl:with-param>
 			<xsl:with-param name="content">
+				<include item="typeLink">
+					<parameter>
+						<xsl:apply-templates select="/document/reference/returns/type" mode="link">
+							<xsl:with-param name="qualified" select="true()" />
+						</xsl:apply-templates>
+					</parameter>
+				</include>
+				<br />
 				<xsl:apply-templates />
 			</xsl:with-param>
 		</xsl:call-template>
@@ -910,8 +933,17 @@
 					<!-- parameters & return value -->
 					<xsl:apply-templates select="/document/reference/parameters" />
 					<xsl:apply-templates select="/document/reference/templates" />
-					<xsl:apply-templates select="/document/comments/value" />
-					<xsl:apply-templates select="/document/comments/returns" />
+					<xsl:choose>
+						<xsl:when test="/document/comments/value | /document/comments/returns">
+							<xsl:apply-templates select="/document/comments/value" />
+							<xsl:apply-templates select="/document/comments/returns" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:if test="/document/reference/returns/type | /document/reference/eventhandler/type">
+								<xsl:call-template name="defaultReturnSection" />
+							</xsl:if>
+						</xsl:otherwise>
+					</xsl:choose>
 					<xsl:apply-templates select="/document/reference/implements" />
 					<!-- usage note for extension methods -->
 					<xsl:if test="/document/reference/attributes/attribute/type[@api='T:System.Runtime.CompilerServices.ExtensionAttribute'] and boolean($api-subgroup='method')">
@@ -931,6 +963,50 @@
 				</xsl:with-param>
 			</xsl:call-template>
 		</xsl:if>
+	</xsl:template>
+
+	<xsl:template name="defaultReturnSection">
+		<xsl:call-template name="subSection">
+			<xsl:with-param name="title">
+				<xsl:choose>
+					<xsl:when test="/document/reference/apidata[@subgroup='property']">
+						<include item="propertyValueTitle" />
+					</xsl:when>
+					<xsl:when test="/document/reference/apidata[@subgroup='field']">
+						<include item="fieldValueTitle" />
+					</xsl:when>
+					<xsl:when test="/document/reference/apidata[@subgroup='event']">
+						<include item="valueTitle" />
+					</xsl:when>
+					<xsl:otherwise>
+						<include item="methodValueTitle" />
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:with-param>
+			<xsl:with-param name="content">
+				<include item="typeLink">
+					<parameter>
+						<xsl:choose>
+							<xsl:when test="/document/reference/attributes/attribute/type[@api='T:System.Runtime.CompilerServices.FixedBufferAttribute']">
+								<xsl:apply-templates select="/document/reference/attributes/attribute/type[@api='T:System.Runtime.CompilerServices.FixedBufferAttribute']/../argument/typeValue/type" mode="link">
+									<xsl:with-param name="qualified" select="true()" />
+								</xsl:apply-templates>
+							</xsl:when>
+							<xsl:when test="/document/reference/apidata[@subgroup='event']">
+								<xsl:apply-templates select="/document/reference/eventhandler/type" mode="link">
+									<xsl:with-param name="qualified" select="true()" />
+								</xsl:apply-templates>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:apply-templates select="/document/reference/returns/type" mode="link">
+									<xsl:with-param name="qualified" select="true()" />
+								</xsl:apply-templates>
+							</xsl:otherwise>
+						</xsl:choose>
+					</parameter>
+				</include>
+			</xsl:with-param>
+		</xsl:call-template>
 	</xsl:template>
 
 	<xsl:template name="runningHeader">

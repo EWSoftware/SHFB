@@ -5,6 +5,7 @@
 
 // Change History
 // 03/09/2013 - EFW - Moved the supporting syntax writer classes to the SyntaxComponents assembly project
+// 03/17/2013 - EFW - Added support for the RenderReferenceLinks property
 
 using System;
 using System.Collections.Generic;
@@ -18,12 +19,34 @@ namespace Microsoft.Ddue.Tools
     /// </summary>
     public class ManagedSyntaxWriter : SyntaxWriter
     {
-        XPathNavigator location;
-        XmlWriter writer;
+        #region Private data members
+        //=====================================================================
+
+        private XPathNavigator location;
+        private XmlWriter writer;
 
         // position along the line
-        int position = 0;
+        private int position;
 
+        #endregion
+
+        #region Properties
+        //=====================================================================
+
+        /// <inheritdoc />
+        public override int Position
+        {
+            get { return position; }
+        }
+        #endregion
+
+        #region Constructor
+        //=====================================================================
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="location">The location in which to write the output</param>
         public ManagedSyntaxWriter(XPathNavigator location) : base(location)
         {
             if(location == null)
@@ -31,12 +54,12 @@ namespace Microsoft.Ddue.Tools
 
             this.location = location;
         }
+        #endregion
 
-        public override int Position
-        {
-            get { return position; }
-        }
+        #region Abstract method implementation
+        //=====================================================================
 
+        /// <inheritdoc />
         public override void WriteStartBlock(string language)
         {
             writer = location.AppendChild();
@@ -45,6 +68,7 @@ namespace Microsoft.Ddue.Tools
             position = 0;
         }
 
+        /// <inheritdoc />
         public override void WriteStartSubBlock(string classId)
         {
             writer.WriteStartElement("div");
@@ -52,24 +76,36 @@ namespace Microsoft.Ddue.Tools
             position = 0;
         }
 
+        /// <inheritdoc />
+        public override void WriteEndBlock()
+        {
+            writer.WriteEndElement();
+            writer.Close();
+            position = 0;
+        }
+
+        /// <inheritdoc />
         public override void WriteEndSubBlock()
         {
             writer.WriteEndElement();
             position = 0;
         }
 
+        /// <inheritdoc />
         public override void WriteLine()
         {
             base.WriteLine();
             position = 0;
         }
 
+        /// <inheritdoc />
         public override void WriteString(string text)
         {
             writer.WriteString(text);
             position += text.Length;
         }
 
+        /// <inheritdoc />
         public override void WriteStringWithStyle(string text, string style)
         {
             writer.WriteStartElement("span");
@@ -79,6 +115,7 @@ namespace Microsoft.Ddue.Tools
             position += text.Length;
         }
 
+        /// <inheritdoc />
         public override void WriteReferenceLink(string reference)
         {
             writer.WriteStartElement("referenceLink");
@@ -87,30 +124,37 @@ namespace Microsoft.Ddue.Tools
             writer.WriteAttributeString("show-container", "false");
             writer.WriteAttributeString("show-templates", "false");
             writer.WriteAttributeString("show-parameters", "false");
+
+            // Since we have no inner text, it will be up to the reference link component to render the link
+            // accordingly.
+            if(!base.RenderReferenceLinks)
+                writer.WriteAttributeString("renderAsLink", "false");
+
             writer.WriteEndElement();
             position += 10; // approximate
         }
 
+        /// <inheritdoc />
         public override void WriteReferenceLink(string reference, string text)
         {
-            writer.WriteStartElement("referenceLink");
-            writer.WriteAttributeString("target", reference);
-            writer.WriteAttributeString("prefer-overload", "false");
-            writer.WriteAttributeString("show-container", "false");
-            writer.WriteAttributeString("show-templates", "false");
-            writer.WriteAttributeString("show-parameters", "false");
-            writer.WriteString(text);
-            writer.WriteEndElement();
-            position += text.Length;
+            if(base.RenderReferenceLinks)
+            {
+                writer.WriteStartElement("referenceLink");
+                writer.WriteAttributeString("target", reference);
+                writer.WriteAttributeString("prefer-overload", "false");
+                writer.WriteAttributeString("show-container", "false");
+                writer.WriteAttributeString("show-templates", "false");
+                writer.WriteAttributeString("show-parameters", "false");
+                writer.WriteString(text);
+                writer.WriteEndElement();
+
+                position += text.Length;
+            }
+            else
+                base.WriteIdentifier(text);
         }
 
-        public override void WriteEndBlock()
-        {
-            writer.WriteEndElement();
-            writer.Close();
-            position = 0;
-        }
-
+        /// <inheritdoc />
         public override void WriteMessage(string message, IEnumerable<string> parameters)
         {
             writer.WriteStartElement("span");
@@ -129,5 +173,6 @@ namespace Microsoft.Ddue.Tools
             writer.WriteEndElement();
             writer.WriteEndElement();
         }
+        #endregion
     }
 }

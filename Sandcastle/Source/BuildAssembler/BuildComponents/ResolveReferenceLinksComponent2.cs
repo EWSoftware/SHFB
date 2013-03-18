@@ -10,6 +10,7 @@
 // 12/28/2012 - EFW - General code clean-up.  Added code to report the reason for MSDN service failures.
 // Exposed the target collection and MSDN resolver via properties.
 // 12/30/2012 - EFW - Reworked to use TargetTypeDictionary and share the target data across instances.
+// 03/17/2013 - EFW - Added support for the ReferenceLink.RenderAsLink property
 
 using System;
 using System.Collections.Generic;
@@ -197,7 +198,7 @@ namespace Microsoft.Ddue.Tools
         /// <inheritdoc />
         public override void Apply(XmlDocument document, string key)
         {
-            Target target, keyTarget;
+            Target target = null, keyTarget;
             string msdnUrl = null;
 
             foreach(XPathNavigator linkNode in document.CreateNavigator().Select(referenceLinkExpression).ToArray())
@@ -260,12 +261,15 @@ namespace Microsoft.Ddue.Tools
                             type = ReferenceLinkType.Index;
                 }
 
-                // Links to this page are not live
-                if(targetId == key)
-                    type = ReferenceLinkType.Self;
+                // Suppress the link if so requested.  Links to this page are not live.
+                if(!link.RenderAsLink)
+                    type = ReferenceLinkType.None;
                 else
-                    if(target != null && targets.TryGetValue(key, out keyTarget) && target.File == keyTarget.File)
+                    if(targetId == key)
                         type = ReferenceLinkType.Self;
+                    else
+                        if(target != null && targets.TryGetValue(key, out keyTarget) && target.File == keyTarget.File)
+                            type = ReferenceLinkType.Self;
 
                 // !EFW - Redirect enumeration fields to the containing enumerated type so that we
                 // get a valid link target.  Enum fields don't have a topic to themselves.
@@ -313,7 +317,13 @@ namespace Microsoft.Ddue.Tools
                 {
                     case ReferenceLinkType.None:
                         writer.WriteStartElement("span");
-                        writer.WriteAttributeString("class", "nolink");
+
+                        // If the link was intentionally suppressed, write it out as an identifier (i.e. links
+                        // in the syntax section).
+                        if(link.RenderAsLink)
+                            writer.WriteAttributeString("class", "nolink");
+                        else
+                            writer.WriteAttributeString("class", "identifier");
                         break;
 
                     case ReferenceLinkType.Self:

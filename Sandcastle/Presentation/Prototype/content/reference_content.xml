@@ -52,8 +52,8 @@
 	<item id="valueTitle">Value</item>
 	<item id="delegateValueTitle">Return Value</item>
 	<item id="methodValueTitle">Return Value</item>
-	<item id="propertyValueTitle">Value</item>
-	<item id="fieldValueTitle">Value</item>
+	<item id="propertyValueTitle">Property Value</item>
+	<item id="fieldValueTitle">Field Value</item>
 	<item id="remarksTitle">Remarks</item>
 	<item id="examplesTitle">Examples</item>
 	<item id="threadSafetyTitle">Thread Safety</item>
