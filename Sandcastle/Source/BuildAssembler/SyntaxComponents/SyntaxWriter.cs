@@ -24,8 +24,7 @@ namespace Microsoft.Ddue.Tools
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="location">The location in which to write the output</param>
-        protected SyntaxWriter(XPathNavigator location)
+        protected SyntaxWriter()
         {
         }
         #endregion

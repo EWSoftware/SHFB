@@ -291,7 +291,7 @@
             this.Name = "ESentReflectionIndexConfigDlg";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Configure ESent Copy From Index Component (Reflection Index)";
+            this.Text = "Configure ESENT Copy From Index Component (Reflection Index)";
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.udcLocalCacheSize)).EndInit();

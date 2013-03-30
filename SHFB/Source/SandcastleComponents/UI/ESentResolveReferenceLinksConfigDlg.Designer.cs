@@ -403,7 +403,7 @@
             this.Name = "ESentResolveReferenceLinksConfigDlg";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Configure ESent Resolve Reference Links Component";
+            this.Text = "Configure ESENT Resolve Reference Links Component";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.udcContentIdLocalCacheSize)).EndInit();

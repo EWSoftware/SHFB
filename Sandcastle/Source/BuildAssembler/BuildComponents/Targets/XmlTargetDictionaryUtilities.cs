@@ -16,7 +16,7 @@ using System.Xml.XPath;
 namespace Microsoft.Ddue.Tools.Targets
 {
     /// <summary>
-    /// Logic to construct Target & Reference objects from XML reflection data.  Anything that depends on
+    /// The logic to construct Target and Reference objects from XML reflection data.  Anything that depends on
     /// specifics of the XML reflection data format lives here.
     /// </summary>
     public static class XmlTargetDictionaryUtilities
@@ -59,6 +59,9 @@ namespace Microsoft.Ddue.Tools.Targets
 
         // Change the container
 
+        /// <summary>
+        /// This is used to get or set the container expression
+        /// </summary>
         public static string ContainerExpression
         {
             get
@@ -73,6 +76,11 @@ namespace Microsoft.Ddue.Tools.Targets
 
         // super factory method
 
+        /// <summary>
+        /// This is used to enumerate targets
+        /// </summary>
+        /// <param name="topicsNode">The topics node from which to get the target information</param>
+        /// <returns>An enumerable list of targets</returns>
         public static IEnumerable<Target> EnumerateTargets(XPathNavigator topicsNode)
         {
             XPathNodeIterator topicNodes = topicsNode.Select("/*/apis/api[not(topicdata/@notopic)]");
@@ -88,6 +96,11 @@ namespace Microsoft.Ddue.Tools.Targets
 
         // Target factory methods
 
+        /// <summary>
+        /// Create a target
+        /// </summary>
+        /// <param name="topic">The topic from which to get the target information</param>
+        /// <returns>The target</returns>
         public static Target CreateTarget(XPathNavigator topic)
         {
             if(topic == null)
@@ -244,6 +257,11 @@ namespace Microsoft.Ddue.Tools.Targets
             return new EnumerationTarget(members);
         }
 
+        /// <summary>
+        /// Create a member target
+        /// </summary>
+        /// <param name="api">The node from which to get the target information</param>
+        /// <returns>The member target</returns>
         public static MemberTarget CreateMemberTarget(XPathNavigator api)
         {
             string subgroup = (string)api.Evaluate(apiSubgroupExpression);
@@ -355,6 +373,11 @@ namespace Microsoft.Ddue.Tools.Targets
 
         // reference factory
 
+        /// <summary>
+        /// Create a reference
+        /// </summary>
+        /// <param name="node">The node from which to get the target information</param>
+        /// <returns>The reference</returns>
         public static Reference CreateReference(XPathNavigator node)
         {
             if(node == null)
@@ -374,6 +397,11 @@ namespace Microsoft.Ddue.Tools.Targets
             }
         }
 
+        /// <summary>
+        /// Create a namespace reference
+        /// </summary>
+        /// <param name="namespaceElement">The namespace element from which to get the target information</param>
+        /// <returns>The namespace reference</returns>
         public static NamespaceReference CreateNamespaceReference(XPathNavigator namespaceElement)
         {
             if(namespaceElement == null)
@@ -383,6 +411,11 @@ namespace Microsoft.Ddue.Tools.Targets
             return (reference);
         }
 
+        /// <summary>
+        /// Create a type reference
+        /// </summary>
+        /// <param name="node">The node from which to get the target information</param>
+        /// <returns>The type reference</returns>
         public static TypeReference CreateTypeReference(XPathNavigator node)
         {
             if(node == null)
@@ -436,15 +469,20 @@ namespace Microsoft.Ddue.Tools.Targets
             throw new InvalidOperationException(String.Format(CultureInfo.InvariantCulture, "INVALID '{0}'", tag));
         }
 
+        /// <summary>
+        /// Create a simple type reference
+        /// </summary>
+        /// <param name="node">The node from which to get the target information</param>
+        /// <returns>The simple type reference</returns>
         public static SimpleTypeReference CreateSimpleTypeReference(XPathNavigator node)
         {
             if(node == null)
                 throw new ArgumentNullException("node");
+
             string api = node.GetAttribute("api", String.Empty);
             SimpleTypeReference reference = new SimpleTypeReference(api);
             return (reference);
         }
-
 
         private static SpecializedTypeReference CreateSpecializedTypeReference(XPathNavigator node)
         {
@@ -474,31 +512,34 @@ namespace Microsoft.Ddue.Tools.Targets
             return (specialization);
         }
 
-
+        /// <summary>
+        /// Create a member reference
+        /// </summary>
+        /// <param name="node">The node from which to get the target information</param>
+        /// <returns>The member reference</returns>
         public static MemberReference CreateMemberReference(XPathNavigator node)
         {
             string api = node.GetAttribute("api", String.Empty);
             SimpleMemberReference member = new SimpleMemberReference(api);
 
             bool isSpecialized = (bool)node.Evaluate("boolean(./type//specialization)");
+
             if(isSpecialized)
             {
                 XPathNavigator typeNode = node.SelectSingleNode("type");
                 SpecializedTypeReference type = CreateSpecializedTypeReference(typeNode);
-                return (new SpecializedMemberReference(member, type));
-            }
-            else
-            {
-                return (member);
+
+                return new SpecializedMemberReference(member, type);
             }
 
+            return member;
         }
 
         /// <summary>
         /// Create an object to store the information to generate the display string for an extension method
         /// </summary>
         /// <param name="node">xml node containing the extension method data</param>
-        /// <returns></returns>
+        /// <returns>The extension method reference</returns>
         public static ExtensionMethodReference CreateExtensionMethodReference(XPathNavigator node)
         {
             string methodName = (string)node.Evaluate(apiNameExpression);

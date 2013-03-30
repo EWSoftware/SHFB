@@ -52,7 +52,7 @@ namespace Test.PlugIns
         /// </summary>
         public string Name
         {
-            get { return "TODO: Add your plug-in name here"; }
+            get { return "ZZZ - TODO: Add your plug-in name here"; }
         }
 
         /// <summary>

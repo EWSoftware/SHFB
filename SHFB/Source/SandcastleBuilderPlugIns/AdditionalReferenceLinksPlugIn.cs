@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : AdditionalReferenceLinksPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/16/2013
+// Updated : 03/29/2013
 // Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -20,7 +20,8 @@
 // 1.6.0.5  02/25/2008  EFW  Created the code
 // 1.8.0.0  08/13/2008  EFW  Updated to support the new project format
 // 1.9.0.0  06/07/2010  EFW  Added support for multi-format build output
-// 1.9.7.0  01/01/2013  EFW  Updated for use with the new cached build components
+// 1.9.7.0  01/01/2013  EFW  Updated for use with the new cached build components.  Added code to insert the
+//                           reflection file names into the GenerateInheritedDocs tool configuration file.
 //===============================================================================================================
 
 using System;
@@ -87,8 +88,7 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This read-only property returns the copyright information for the
-        /// plug-in.
+        /// This read-only property returns the copyright information for the plug-in
         /// </summary>
         public string Copyright
         {
@@ -146,6 +146,7 @@ namespace SandcastleBuilder.PlugIns
                     executionPoints = new ExecutionPointCollection
                     {
                         new ExecutionPoint(BuildStep.ApplyVisibilityProperties, ExecutionBehaviors.After),
+                        new ExecutionPoint(BuildStep.GenerateInheritedDocumentation, ExecutionBehaviors.Before),
                         new ExecutionPoint(BuildStep.CreateBuildAssemblerConfigs, ExecutionBehaviors.Before),
                         new ExecutionPoint(BuildStep.MergeCustomConfigs, ExecutionBehaviors.After),
                     };
@@ -264,6 +265,12 @@ namespace SandcastleBuilder.PlugIns
                 return;
             }
 
+            if(context.BuildStep == BuildStep.GenerateInheritedDocumentation)
+            {
+                this.MergeInheritedDocConfig();
+                return;
+            }
+
             if(context.BuildStep == BuildStep.CreateBuildAssemblerConfigs)
             {
                 builder.ReportProgress("Adding additional reference link namespaces...");
@@ -273,7 +280,6 @@ namespace SandcastleBuilder.PlugIns
                 HashSet<string> validNamespaces = new HashSet<string>(Directory.EnumerateFiles(Path.Combine(
                   builder.SandcastleFolder, @"Data\Reflection"), "*.xml", SearchOption.AllDirectories).Select(
                   f => Path.GetFileNameWithoutExtension(f)));
-
 
                 foreach(ReferenceLinkSettings vs in otherLinks)
                     if(!String.IsNullOrEmpty(vs.ReflectionFilename))
@@ -294,6 +300,39 @@ namespace SandcastleBuilder.PlugIns
 
             if(File.Exists(configFilename))
                 this.MergeReflectionInfo(configFilename, false);
+        }
+
+        /// <summary>
+        /// This is used to merge the reflection file names into the inherited documentation tool's configuration
+        /// file.
+        /// </summary>
+        private void MergeInheritedDocConfig()
+        {
+            XmlDocument configFile;
+            XmlNode config, reflectionInfo;
+            XmlAttribute attr;
+
+            string configFilename = builder.WorkingFolder + "GenerateInheritedDocs.config";
+
+            builder.ReportProgress("Adding references to {0}...", configFilename);
+            configFile = new XmlDocument();
+            configFile.Load(configFilename);
+
+            config = configFile.SelectSingleNode("configuration");
+
+            foreach(ReferenceLinkSettings vs in otherLinks)
+                if(!String.IsNullOrEmpty(vs.ReflectionFilename))
+                {
+                    reflectionInfo = configFile.CreateElement("reflectionInfo");
+
+                    attr = configFile.CreateAttribute("file");
+                    attr.Value = vs.ReflectionFilename;
+                    reflectionInfo.Attributes.Append(attr);
+
+                    config.AppendChild(reflectionInfo);
+                }
+
+            configFile.Save(configFilename);
         }
 
         /// <summary>

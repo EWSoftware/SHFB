@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : GenerateInheritedDocs.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/01/2013
+// Updated : 03/27/2013
 // Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -74,7 +74,7 @@ namespace SandcastleBuilder.InheritedDocumentation
         //=====================================================================
 
         // Configuration stuff
-        private static XPathNavigator apisNode;
+        private static ReflectionFiles reflectionFiles;
         private static string inheritedDocsFilename;
         private static IndexedCommentsCache commentsCache;
         private static ConcurrentBag<XPathNavigator> commentsFiles;
@@ -164,8 +164,8 @@ namespace SandcastleBuilder.InheritedDocumentation
         /// valid.</exception>
         private static void LoadConfiguration(string configFile)
         {
-            XPathDocument config, xpathDoc;
-            XPathNavigator navConfig, navComments, element, refInfo;
+            XPathDocument config;
+            XPathNavigator navConfig, navComments, element;
             string path, wildcard, attrValue;
             bool recurse;
             int cacheSize = 100;
@@ -179,17 +179,21 @@ namespace SandcastleBuilder.InheritedDocumentation
             // Show duplicate key warnings?
             showDupWarning = (navConfig.SelectSingleNode("configuration/showDuplicateWarning") != null);
 
-            // Get the reflection information file
-            element = navConfig.SelectSingleNode("configuration/reflectionInfo/@file");
+            // Get the reflection information files
+            reflectionFiles = new ReflectionFiles();
 
-            if(element == null || !File.Exists(element.Value))
-                throw new ConfigurationErrorsException("The reflectionFile element is missing or the " +
-                    "specified file does not exist");
+            foreach(XPathNavigator refFile in navConfig.Select("configuration/reflectionInfo/@file"))
+            {
+                if(!File.Exists(refFile.Value))
+                    throw new ConfigurationErrorsException("The reflectionFile element's target file '" +
+                        refFile.Value + "' does not exist");
 
-            Console.WriteLine("Reflection information will be retrieved from '{0}'", element.Value);
-            xpathDoc = new XPathDocument(element.Value);
-            refInfo = xpathDoc.CreateNavigator();
-            apisNode = refInfo.SelectSingleNode("reflection/apis");
+                Console.WriteLine("Reflection information will be retrieved from '{0}'", refFile.Value);
+                reflectionFiles.AddReflectionFile(refFile.Value);
+            }
+
+            if(reflectionFiles.Count == 0)
+                throw new ConfigurationErrorsException("At least one reflectionFile element is required");
 
             // Get the inherited documentation filename
             element = navConfig.SelectSingleNode("configuration/inheritedDocs/@file");
@@ -256,8 +260,7 @@ namespace SandcastleBuilder.InheritedDocumentation
         //=====================================================================
 
         /// <summary>
-        /// This scans the XML comments files for &lt;inheritdoc /&gt; tags and
-        /// adds the inherited documentation.
+        /// This scans the XML comments files for &lt;inheritdoc /&gt; tags and adds the inherited documentation
         /// </summary>
         private static void ScanCommentsFiles()
         {
@@ -266,9 +269,9 @@ namespace SandcastleBuilder.InheritedDocumentation
             Dictionary<string, XPathNavigator> members = new Dictionary<string, XPathNavigator>();
             string name;
 
-            // Get a list of all unique members containing an <inheritdoc /> tag.  This will include
-            // entries with occurrences at the root level as well as those nested within other tags.
-            // Root level stuff will get handled first followed by any nested tags.
+            // Get a list of all unique members containing an <inheritdoc /> tag.  This will include entries with
+            // occurrences at the root level as well as those nested within other tags.  Root level stuff will
+            // get handled first followed by any nested tags.
             foreach(XPathNavigator file in commentsFiles)
                 foreach(XPathNavigator tag in file.Select("//inheritdoc"))
                 {
@@ -277,9 +280,9 @@ namespace SandcastleBuilder.InheritedDocumentation
 
                     name = tag.GetAttribute("name", String.Empty);
 
-                    // Don't bother if it's not going to be documented.  This avoids a lot of GID0003
-                    // warnings for missing comments on undocumented members.
-                    apiId = apisNode.SelectSingleNode("api[@id='" + name + "']");
+                    // Ignore members that are not going to be documented.  This avoids a lot of GID0003 warnings
+                    // for missing comments on undocumented members.
+                    apiId = reflectionFiles.SelectSingleNode("api[@id='" + name + "']");
 
                     if(apiId != null && !members.ContainsKey(name))
                         members.Add(name, tag);
@@ -294,7 +297,7 @@ namespace SandcastleBuilder.InheritedDocumentation
             }
 
             // Add explicit interface implementations that do not have member comments already
-            foreach(XPathNavigator api in apisNode.Select(
+            foreach(XPathNavigator api in reflectionFiles.Select(
               "api[memberdata/@visibility='private' and proceduredata/@virtual='true']/@id"))
                 if(commentsCache[api.Value] == null && !members.ContainsKey(api.Value))
                 {
@@ -310,7 +313,7 @@ namespace SandcastleBuilder.InheritedDocumentation
 
             // Add attached property and attached event entries that inherit comments from their
             // related fields that do not have member comments already.
-            foreach(XPathNavigator api in apisNode.Select(
+            foreach(XPathNavigator api in reflectionFiles.Select(
               "api[apidata/@subsubgroup='attachedEvent' or apidata/@subsubgroup='attachedProperty']"))
             {
                 apiId = api.SelectSingleNode("@id");
@@ -351,8 +354,7 @@ namespace SandcastleBuilder.InheritedDocumentation
                             // Create an entry for the field comments without the attached comments
                             node = inheritedDocs.CreateDocumentFragment();
                             node.InnerXml = String.Format(CultureInfo.InvariantCulture,
-                                "<member name=\"{0}\">{1}</member>", apiField.Value,
-                                fieldComments.InnerXml);
+                                "<member name=\"{0}\">{1}</member>", apiField.Value, fieldComments.InnerXml);
                             node.SelectSingleNode("member").RemoveChild(
                                 node.SelectSingleNode("member/" + attachedComments.Name));
                             docMemberList.AppendChild(node);
@@ -360,8 +362,7 @@ namespace SandcastleBuilder.InheritedDocumentation
                             // Add the comments for the attached member
                             node = inheritedDocs.CreateDocumentFragment();
                             node.InnerXml = String.Format(CultureInfo.InvariantCulture,
-                                "<member name=\"{0}\">{1}</member>", apiId.Value,
-                                attachedComments.InnerXml);
+                                "<member name=\"{0}\">{1}</member>", apiId.Value, attachedComments.InnerXml);
                             docMemberList.AppendChild(node);
                         }
                     }
@@ -376,12 +377,12 @@ namespace SandcastleBuilder.InheritedDocumentation
         }
 
         /// <summary>
-        /// This is used to generate the inherited documentation for the
-        /// given member.  Only tags at the root level are processed here.
+        /// This is used to generate the inherited documentation for the given member.  Only tags at the root
+        /// level are processed here.
         /// </summary>
         /// <param name="member">The member for which to inherit documentation</param>
-        /// <remarks>This will recursively expand documentation if a base
-        /// member's comments are present in the generation list.</remarks>
+        /// <remarks>This will recursively expand documentation if a base member's comments are present in the
+        /// generation list.</remarks>
         private static void InheritDocumentation(XmlNode member)
         {
             List<string> sources = new List<string>();
@@ -425,12 +426,10 @@ namespace SandcastleBuilder.InheritedDocumentation
                 // Is the base explicitly specified?
                 if(cref != null)
                 {
-                    // Is it in the list of members for which to generate
-                    // documentation?
+                    // Is it in the list of members for which to generate documentation?
                     copyMember = docMemberList.SelectSingleNode("member[@name='" + cref.Value + "']");
 
-                    // If so, expand its tags now and use it.  If not, try
-                    // to get it from the comments cache.
+                    // If so, expand its tags now and use it.  If not, try to get it from the comments cache.
                     if(copyMember != null)
                     {
                         InheritDocumentation(copyMember);
@@ -451,7 +450,7 @@ namespace SandcastleBuilder.InheritedDocumentation
                 // Get a list of sources from which to merge comments
                 commentsFound = false;
                 sources.Clear();
-                apiNode = apisNode.SelectSingleNode("api[@id='" + name + "']");
+                apiNode = reflectionFiles.SelectSingleNode("api[@id='" + name + "']");
 
                 if(apiNode == null)
                 {
@@ -483,7 +482,7 @@ namespace SandcastleBuilder.InheritedDocumentation
                             ctorName = name.Substring(name.IndexOf("#cctor", StringComparison.Ordinal));
 
                         baseMember = apiNode.SelectSingleNode("containers/type/@api");
-                        apiNode = apisNode.SelectSingleNode("api[@id='" + baseMember.Value + "']");
+                        apiNode = reflectionFiles.SelectSingleNode("api[@id='" + baseMember.Value + "']");
 
                         foreach(XPathNavigator baseType in apiNode.Select("family/ancestors/type/@api"))
                         {
@@ -505,8 +504,7 @@ namespace SandcastleBuilder.InheritedDocumentation
                         if(baseMember != null)
                             sources.Add(baseMember.Value);
 
-                        // Then hit implementations.  There should only be one
-                        // but just in case, look for more.
+                        // Then hit implementations.  There should only be one but just in case, look for more.
                         foreach(XPathNavigator baseType in apiNode.Select("implements/member/@api"))
                             sources.Add(baseType.Value);
                     }
@@ -515,12 +513,10 @@ namespace SandcastleBuilder.InheritedDocumentation
                 // Inherit documentation from each base member
                 foreach(string baseName in sources)
                 {
-                    // Is it in the list of members for which to generate
-                    // documentation?
+                    // Is it in the list of members for which to generate documentation?
                     copyMember = docMemberList.SelectSingleNode("member[@name='" + baseName + "']");
 
-                    // If so, expand its tags now and use it.  If not, try
-                    // to get it from the comments cache.
+                    // If so, expand its tags now and use it.  If not, try to get it from the comments cache.
                     if(copyMember != null)
                     {
                         InheritDocumentation(copyMember);
@@ -694,6 +690,12 @@ namespace SandcastleBuilder.InheritedDocumentation
                 {
                     inheritTag.ParentNode.RemoveChild(inheritTag);
 
+                    // If this is empty, we've just tried to inherit documentation from a base member in a
+                    // reference assembly that wasn't included for documentation.  The Additional Reference
+                    // Links plug-in can help resolve this issue.
+                    if(sb.Length == 0)
+                        sb.Append("[Base member from reference assembly not included for documentation]");
+
                     if(cref != null)
                         Console.WriteLine("SHFB: Warning GID0005: No comments found for cref '{0}' on member " +
                             "'{1}' in '{2}'", cref.Value, name, sb);
@@ -738,7 +740,7 @@ namespace SandcastleBuilder.InheritedDocumentation
             }
 
             // Get a list of sources from which to merge comments
-            apiNode = apisNode.SelectSingleNode("api[@id='" + name + "']");
+            apiNode = reflectionFiles.SelectSingleNode("api[@id='" + name + "']");
 
             if(apiNode == null)
             {
@@ -770,7 +772,7 @@ namespace SandcastleBuilder.InheritedDocumentation
                         ctorName = name.Substring(name.IndexOf("#cctor", StringComparison.Ordinal));
 
                     baseMember = apiNode.SelectSingleNode("containers/type/@api");
-                    apiNode = apisNode.SelectSingleNode("api[@id='" + baseMember.Value + "']");
+                    apiNode = reflectionFiles.SelectSingleNode("api[@id='" + baseMember.Value + "']");
 
                     foreach(XPathNavigator baseType in apiNode.Select("family/ancestors/type/@api"))
                     {

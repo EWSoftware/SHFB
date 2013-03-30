@@ -17,8 +17,15 @@ using System.Xml.XPath;
 
 namespace Microsoft.Ddue.Tools
 {
+    /// <summary>
+    /// This class generates usage syntax sections for XAML
+    /// </summary>
     public sealed class XamlUsageSyntaxGenerator : SyntaxGeneratorTemplate
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="configuration">The syntax generator configuration</param>
         public XamlUsageSyntaxGenerator(XPathNavigator configuration) : base(configuration)
         {
             LoadConfigNode(configuration);
@@ -27,6 +34,7 @@ namespace Microsoft.Ddue.Tools
                 Language = "XAML";
         }
 
+        /// <inheritdoc />
         public override void WriteSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             writer.WriteStartBlock(Language);
@@ -156,6 +164,10 @@ namespace Microsoft.Ddue.Tools
             }
         }
 
+        /// <summary>
+        /// This is used to parse configuration files
+        /// </summary>
+        /// <param name="wildcardPath">The path used to find the configuration files</param>
         public void ParseDocuments(string wildcardPath)
         {
             string filterFiles = Environment.ExpandEnvironmentVariables(wildcardPath);
@@ -170,9 +182,8 @@ namespace Microsoft.Ddue.Tools
 
             directoryPart = Path.GetFullPath(directoryPart);
             string filePart = Path.GetFileName(filterFiles);
-            string[] files = Directory.GetFiles(directoryPart, filePart);
 
-            foreach(string file in files)
+            foreach(string file in Directory.EnumerateFiles(directoryPart, filePart))
                 ParseDocument(file);
         }
 
@@ -193,6 +204,7 @@ namespace Microsoft.Ddue.Tools
             }
         }
 
+        /// <inheritdoc />
         public override void WriteNamespaceSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             // empty xaml syntax for namespace topics
@@ -215,6 +227,7 @@ namespace Microsoft.Ddue.Tools
             }
         }
 
+        /// <inheritdoc />
         public override void WriteClassSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             bool isAbstract = (bool)reflection.Evaluate(apiIsAbstractTypeExpression);
@@ -314,6 +327,7 @@ namespace Microsoft.Ddue.Tools
             writer.WriteEndSubBlock();
         }
 
+        /// <inheritdoc />
         public override void WriteStructureSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             bool notWriteable = (bool)reflection.Evaluate(noSettablePropertiesExpression);
@@ -336,31 +350,37 @@ namespace Microsoft.Ddue.Tools
             }
         }
 
+        /// <inheritdoc />
         public override void WriteInterfaceSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             WriteXamlBoilerplate(XamlBoilerplateID.interfaceOverviewXamlSyntax, writer);
         }
 
+        /// <inheritdoc />
         public override void WriteDelegateSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             WriteXamlBoilerplate(XamlBoilerplateID.delegateOverviewXamlSyntax, writer);
         }
 
+        /// <inheritdoc />
         public override void WriteEnumerationSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             WriteXamlBoilerplate(XamlBoilerplateID.enumerationOverviewXamlSyntax, writer);
         }
 
+        /// <inheritdoc />
         public override void WriteConstructorSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             WriteXamlBoilerplate(XamlBoilerplateID.constructorOverviewXamlSyntax, writer);
         }
 
+        /// <inheritdoc />
         public override void WriteMethodSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             WriteXamlBoilerplate(XamlBoilerplateID.methodOverviewXamlSyntax, writer);
         }
 
+        /// <inheritdoc />
         public override void WriteAttachedPropertySyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             string propertyName = (string)reflection.Evaluate(apiNameExpression);
@@ -387,6 +407,7 @@ namespace Microsoft.Ddue.Tools
             }
         }
 
+        /// <inheritdoc />
         public override void WritePropertySyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             bool isSettable = (bool)reflection.Evaluate(apiIsWritePropertyExpression);
@@ -583,6 +604,7 @@ namespace Microsoft.Ddue.Tools
             writer.WriteEndSubBlock();
         }
 
+        /// <inheritdoc />
         public override void WriteEventSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             string eventName = (string)reflection.Evaluate(apiNameExpression);
@@ -641,6 +663,7 @@ namespace Microsoft.Ddue.Tools
             }
         }
 
+        /// <inheritdoc />
         public override void WriteAttachedEventSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             string eventName = (string)reflection.Evaluate(apiNameExpression);
@@ -662,6 +685,7 @@ namespace Microsoft.Ddue.Tools
             writer.WriteEndSubBlock();
         }
 
+        /// <inheritdoc />
         public override void WriteFieldSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             WriteXamlBoilerplate(XamlBoilerplateID.fieldOverviewXamlSyntax, writer);
@@ -793,7 +817,6 @@ namespace Microsoft.Ddue.Tools
 
         // utility routines
 
-
         // A default constructor is a a parameterless, public constructor method
         // This is called for:
         //  a class
@@ -916,7 +939,10 @@ namespace Microsoft.Ddue.Tools
         private XPathExpression apiIsSetterPublicExpression = XPathExpression.Compile("boolean((memberdata[@visibility='public'] and not(propertydata[@set-visibility!='public'])) or propertydata[@set-visibility='public'])");
     }
 
-    public enum XamlBoilerplateID
+    /// <summary>
+    /// This enumerated type defines XAML boilerplate resource item IDs
+    /// </summary>
+    internal enum XamlBoilerplateID
     {
         // boilerplate for classes in xaml assemblies
         classXamlSyntax_abstract,
@@ -954,8 +980,10 @@ namespace Microsoft.Ddue.Tools
         nonXamlAssemblyBoilerplate
     }
 
-    // XAML headings
-    public enum XamlHeadingID
+    /// <summary>
+    /// This enumerated type defines XAML heading resource item IDs
+    /// </summary>
+    internal enum XamlHeadingID
     {
         xamlAttributeUsageHeading,
         xamlObjectElementUsageHeading,
@@ -963,6 +991,4 @@ namespace Microsoft.Ddue.Tools
         xamlContentElementUsageHeading,
         xamlSyntaxBoilerplateHeading
     }
-
-
 }

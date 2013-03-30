@@ -5,7 +5,7 @@
 // Updated : 03/12/2013
 // Compiler: Microsoft Visual C#
 //
-// This is a version of the CopyFromIndexComponent that stores the index data in one or more persistent ESent
+// This is a version of the CopyFromIndexComponent that stores the index data in one or more persistent ESENT
 // databases.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
@@ -35,7 +35,7 @@ namespace SandcastleBuilder.Components
 {
     /// <summary>
     /// This is a version of the <c>CopyFromIndexComponent</c> that stores the index data in one or more
-    /// persistent ESent databases.
+    /// persistent ESENT databases.
     /// </summary>
     public class ESentCopyFromIndexComponent : CopyFromIndexComponent
     {
@@ -55,7 +55,7 @@ namespace SandcastleBuilder.Components
             FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(asm.Location);
 
             base.WriteMessage(MessageLevel.Info, String.Format(CultureInfo.InvariantCulture,
-                "\r\n    [{0}, version {1}]\r\n    ESent Copy From Index Component.  {2}\r\n" +
+                "\r\n    [{0}, version {1}]\r\n    ESENT Copy From Index Component.  {2}\r\n" +
                 "    http://SHFB.CodePlex.com", fvi.ProductName, fvi.ProductVersion, fvi.LegalCopyright));
         }
         #endregion

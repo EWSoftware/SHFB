@@ -21,13 +21,7 @@ you in its configuration file templates:</para>
 						<para><link xlink:href="7f03ba39-09f8-4320-bdbd-ed31a3bd885f" /></para>
 					</listItem>
 					<listItem>
-						<para><link xlink:href="85c08740-1190-471c-8fea-360a4a8e4612" /></para>
-					</listItem>
-					<listItem>
 						<para><link xlink:href="92a6e678-48fb-4e6c-a7e5-34f264b01212" /></para>
-					</listItem>
-					<listItem>
-						<para><link xlink:href="7e6e0e96-36cd-4541-9477-2657b98661f5" /></para>
 					</listItem>
 				</list>
 
@@ -48,9 +42,10 @@ use them.</para>
 						<para><link xlink:href="5d546511-6aec-455a-ba09-9daffb124c6d" /></para>
 					</listItem>
 					<listItem>
-						<para>A set of <link xlink:href="3a1c4bf1-8ecf-4ab3-8010-277bed8d3819">cached build data components</link>
-that cache key information such as comment, reflection index information, and MSDN URLs across builds in order to
-speed them up.</para>
+						<para>Two sets of <link xlink:href="3a1c4bf1-8ecf-4ab3-8010-277bed8d3819">cached build data components</link>
+(one for ESENT databases and one for SQL Server databases) that cache key information such as comments index,
+reflection index, reflection target, and MSDN content IDs across builds.  These are used primarily for large
+projects that run out of memory during the build.</para>
 					</listItem>
 				</list>
 			</content>

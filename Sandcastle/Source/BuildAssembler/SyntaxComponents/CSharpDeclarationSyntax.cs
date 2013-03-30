@@ -14,15 +14,22 @@ using System.Xml.XPath;
 
 namespace Microsoft.Ddue.Tools
 {
+    /// <summary>
+    /// This class generates declaration syntax sections for C#
+    /// </summary>
     public sealed class CSharpDeclarationSyntaxGenerator : SyntaxGeneratorTemplate
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="configuration">The configuration for the syntax generator</param>
         public CSharpDeclarationSyntaxGenerator(XPathNavigator configuration) : base(configuration)
         {
             if(String.IsNullOrEmpty(Language))
                 Language = "CSharp";
         }
 
-        // namespace: done
+        /// <inheritdoc />
         public override void WriteNamespaceSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             string name = reflection.Evaluate(apiNameExpression).ToString();
@@ -32,7 +39,7 @@ namespace Microsoft.Ddue.Tools
             writer.WriteIdentifier(name);
         }
 
-        // class: done
+        /// <inheritdoc />
         public override void WriteClassSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
 
@@ -75,8 +82,7 @@ namespace Microsoft.Ddue.Tools
 
         }
 
-
-        // structure: done
+        /// <inheritdoc />
         public override void WriteStructureSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
 
@@ -97,7 +103,7 @@ namespace Microsoft.Ddue.Tools
 
         }
 
-        // interface: done
+        /// <inheritdoc />
         public override void WriteInterfaceSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
 
@@ -115,7 +121,7 @@ namespace Microsoft.Ddue.Tools
 
         }
 
-        // delegate: done
+        /// <inheritdoc />
         public override void WriteDelegateSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
 
@@ -139,14 +145,16 @@ namespace Microsoft.Ddue.Tools
         }
 
         // enumeration: still need to handle non-standard base
+        /// <inheritdoc />
         public override void WriteEnumerationSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
-
             string name = (string)reflection.Evaluate(apiNameExpression);
+
             bool isSerializable = (bool)reflection.Evaluate(apiIsSerializableTypeExpression);
 
             if(isSerializable)
                 WriteAttribute("T:System.SerializableAttribute", true, writer);
+
             WriteAttributes(reflection, writer);
             WriteVisibility(reflection, writer);
             writer.WriteString(" ");
@@ -155,7 +163,7 @@ namespace Microsoft.Ddue.Tools
             writer.WriteIdentifier(name);
         }
 
-        // constructor: done
+        /// <inheritdoc />
         public override void WriteConstructorSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
 
@@ -177,7 +185,7 @@ namespace Microsoft.Ddue.Tools
 
         }
 
-        // normal method: done
+        /// <inheritdoc />
         public override void WriteNormalMethodSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             if(IsUnsupportedVarargs(reflection, writer))
@@ -214,7 +222,7 @@ namespace Microsoft.Ddue.Tools
 
         }
 
-        // operator: done
+        /// <inheritdoc />
         public override void WriteOperatorSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             string name = (string)reflection.Evaluate(apiNameExpression);
@@ -327,7 +335,7 @@ namespace Microsoft.Ddue.Tools
             }
         }
 
-        // cast: done
+        /// <inheritdoc />
         public override void WriteCastSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
 
@@ -353,6 +361,7 @@ namespace Microsoft.Ddue.Tools
 
         }
 
+        /// <inheritdoc />
         public override void WritePropertySyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             string name = (string)reflection.Evaluate(apiNameExpression);
@@ -463,6 +472,7 @@ namespace Microsoft.Ddue.Tools
             writer.WriteString(" }");
         }
 
+        /// <inheritdoc />
         public override void WriteEventSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             string name = (string)reflection.Evaluate(apiNameExpression);
@@ -547,6 +557,7 @@ namespace Microsoft.Ddue.Tools
             }
         }
 
+        /// <inheritdoc />
         public override void WriteFieldSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             string name = (string)reflection.Evaluate(apiNameExpression);
@@ -691,7 +702,7 @@ namespace Microsoft.Ddue.Tools
                         {
                             writer.WriteString(", ");
 
-                            if(writer.Position > maxPosition)
+                            if(writer.Position > MaxPosition)
                             {
                                 writer.WriteLine();
 
@@ -713,7 +724,7 @@ namespace Microsoft.Ddue.Tools
                         {
                             writer.WriteString(", ");
 
-                            if(writer.Position > maxPosition)
+                            if(writer.Position > MaxPosition)
                             {
                                 writer.WriteLine();
 
@@ -844,7 +855,7 @@ namespace Microsoft.Ddue.Tools
                 if(implements.CurrentPosition < implements.Count)
                 {
                     writer.WriteString(", ");
-                    if(writer.Position > maxPosition)
+                    if(writer.Position > MaxPosition)
                     {
                         writer.WriteLine();
                         writer.WriteString("\t");
@@ -856,7 +867,6 @@ namespace Microsoft.Ddue.Tools
 
         private void WriteBaseClassAndImplementedInterfaces(XPathNavigator reflection, SyntaxWriter writer)
         {
-
             XPathNavigator baseClass = reflection.SelectSingleNode(apiBaseClassExpression);
             XPathNodeIterator implements = reflection.Select(apiImplementedInterfacesExpression);
 
@@ -873,7 +883,7 @@ namespace Microsoft.Ddue.Tools
                     if(hasImplementedInterfaces)
                     {
                         writer.WriteString(", ");
-                        if(writer.Position > maxPosition)
+                        if(writer.Position > MaxPosition)
                         {
                             writer.WriteLine();
                             writer.WriteString("\t");
@@ -888,7 +898,7 @@ namespace Microsoft.Ddue.Tools
                     if(implements.CurrentPosition < implements.Count)
                     {
                         writer.WriteString(", ");
-                        if(writer.Position > maxPosition)
+                        if(writer.Position > MaxPosition)
                         {
                             writer.WriteLine();
                             writer.WriteString("\t");

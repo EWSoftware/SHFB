@@ -15,10 +15,11 @@ using System.IO;
 
 namespace Microsoft.Ddue.Tools
 {
-
+    /// <summary>
+    /// Task grabber component
+    /// </summary>
     public class TaskGrabberComponent : BuildComponent
     {
-
         private XmlNamespaceManager nsManager = new XmlNamespaceManager(new NameTable());
 
         private XPathExpression valueQuery = null;
@@ -33,6 +34,11 @@ namespace Microsoft.Ddue.Tools
         // what to copy
         private List<CopySet> copySets = new List<CopySet>();
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="assembler">The build assembler instance</param>
+        /// <param name="configuration">The component configuration</param>
         public TaskGrabberComponent(BuildAssembler assembler, XPathNavigator configuration)
             : base(assembler, configuration)
         {
@@ -140,6 +146,7 @@ namespace Microsoft.Ddue.Tools
 
         private string currentKey = string.Empty;
 
+        /// <inheritdoc />
         public override void Apply(XmlDocument document, string key)
         {
             currentKey = key;
@@ -220,7 +227,12 @@ namespace Microsoft.Ddue.Tools
             }
         }
 
-        public int ParseDocuments(string wildcardPath)
+        /// <summary>
+        /// Parse task grabber files
+        /// </summary>
+        /// <param name="wildcardPath">The path to the files</param>
+        /// <returns>The count of how many documents were parsed</returns>
+        protected int ParseDocuments(string wildcardPath)
         {
             string directoryPart = Path.GetDirectoryName(wildcardPath);
             if(String.IsNullOrEmpty(directoryPart))
@@ -228,8 +240,10 @@ namespace Microsoft.Ddue.Tools
             directoryPart = Path.GetFullPath(directoryPart);
             string filePart = Path.GetFileName(wildcardPath);
             string[] files = Directory.GetFiles(directoryPart, filePart);
+
             foreach(string file in files)
                 ParseDocument(file);
+
             return (files.Length);
         }
 
@@ -295,7 +309,15 @@ namespace Microsoft.Ddue.Tools
             }
         }
 
-        public static void AddValueToListDictionary<K, V>(Dictionary<K, List<V>> dict, K key, V value)
+        /// <summary>
+        /// Add a value to the list dictionary
+        /// </summary>
+        /// <typeparam name="K">The key type</typeparam>
+        /// <typeparam name="V">The value type</typeparam>
+        /// <param name="dict">The dictionary to which the item is added</param>
+        /// <param name="key">The key value</param>
+        /// <param name="value">The value</param>
+        protected static void AddValueToListDictionary<K, V>(Dictionary<K, List<V>> dict, K key, V value)
         {
             List<V> list;
             try
@@ -313,7 +335,6 @@ namespace Microsoft.Ddue.Tools
                     "Exception adding to dictionary {0}", key), e);
             }
         }
-
     }
 
     internal class CopySet

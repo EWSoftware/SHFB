@@ -85,8 +85,12 @@ the referenced API member topic.</para>
 			</listItem>
 
 			<listItem>
-				<para>Code blocks will have leading whitespace and tab character spacing normalized but they will not be
-colorized.  If the code block imports code from an external file, the matching code will be imported if possible.
+				<para>Code blocks will have leading whitespace and tab character spacing normalized and will be
+colorized.  Line numbering is supported but collapsible sections are not.</para>
+			</listItem>
+
+			<listItem>
+				<para>If a code block imports code from an external file, the matching code will be imported if possible.
 However, you may notice differences in the spacing due to the way the previewer treats whitespace ahead of the
 code element.</para>
 			</listItem>

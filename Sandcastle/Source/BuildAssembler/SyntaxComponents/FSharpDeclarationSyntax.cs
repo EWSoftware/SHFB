@@ -15,8 +15,15 @@ using System.Xml.XPath;
 
 namespace Microsoft.Ddue.Tools
 {
+    /// <summary>
+    /// This class generates declaration syntax sections for F#
+    /// </summary>
     public sealed class FSharpDeclarationSyntaxGenerator : SyntaxGeneratorTemplate
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="configuration">The syntax generator configuration</param>
         public FSharpDeclarationSyntaxGenerator(XPathNavigator configuration) : base(configuration)
         {
             if(String.IsNullOrEmpty(Language))
@@ -24,6 +31,8 @@ namespace Microsoft.Ddue.Tools
         }
 
         // namespace: done
+
+        /// <inheritdoc />
         public override void WriteNamespaceSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             string name = reflection.Evaluate(apiNameExpression).ToString();
@@ -33,6 +42,7 @@ namespace Microsoft.Ddue.Tools
             writer.WriteIdentifier(name);
         }
 
+        /// <inheritdoc />
         public override void WriteClassSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
 
@@ -40,17 +50,19 @@ namespace Microsoft.Ddue.Tools
         }
 
         // TODO: Use apiContainingTypeSubgroupExpression instead of passing in class, struct, interface
+        /// <inheritdoc />
         public override void WriteStructureSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             WriteDotNetObject(reflection, writer, "struct");
         }
 
+        /// <inheritdoc />
         public override void WriteInterfaceSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             WriteDotNetObject(reflection, writer, "interface");
         }
 
-
+        /// <inheritdoc />
         public override void WriteDelegateSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             // !EFW - Added unsafe check
@@ -84,6 +96,7 @@ namespace Microsoft.Ddue.Tools
 
         }
 
+        /// <inheritdoc />
         public override void WriteEnumerationSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
 
@@ -99,6 +112,7 @@ namespace Microsoft.Ddue.Tools
             writer.WriteIdentifier(name);
         }
 
+        /// <inheritdoc />
         public override void WriteConstructorSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             // !EFW - Added unsafe check
@@ -118,6 +132,7 @@ namespace Microsoft.Ddue.Tools
 
         }
 
+        /// <inheritdoc />
         public override void WriteNormalMethodSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             // !EFW - Added unsafe check
@@ -175,6 +190,7 @@ namespace Microsoft.Ddue.Tools
             }
         }
 
+        /// <inheritdoc />
         public override void WriteOperatorSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             string name = (string)reflection.Evaluate(apiNameExpression);
@@ -301,12 +317,13 @@ namespace Microsoft.Ddue.Tools
             }
         }
 
+        /// <inheritdoc />
         public override void WriteCastSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             writer.WriteMessage("UnsupportedCast_" + Language);
         }
 
-        // DONE
+        /// <inheritdoc />
         public override void WritePropertySyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             // !EFW - Added unsafe check
@@ -410,6 +427,7 @@ namespace Microsoft.Ddue.Tools
             }
         }
 
+        /// <inheritdoc />
         public override void WriteEventSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             // !EFW - Added unsafe check
@@ -464,7 +482,7 @@ namespace Microsoft.Ddue.Tools
             }
         }
 
-
+        /// <inheritdoc />
         public override void WriteFieldSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             // !EFW - Added unsafe check
@@ -505,9 +523,7 @@ namespace Microsoft.Ddue.Tools
 
         }
 
-
-        private void WriteDotNetObject(XPathNavigator reflection, SyntaxWriter writer,
-            string kind)
+        private void WriteDotNetObject(XPathNavigator reflection, SyntaxWriter writer, string kind)
         {
             string name = reflection.Evaluate(apiNameExpression).ToString();
             bool isSerializable = (bool)reflection.Evaluate(apiIsSerializableTypeExpression);
@@ -597,7 +613,6 @@ namespace Microsoft.Ddue.Tools
             { "private", "private" },
         };
 
-        // DONE
         private static void WriteVisibility(string visibility, SyntaxWriter writer)
         {
             if(visibilityDictionary.ContainsKey(visibility) && visibilityDictionary[visibility] != null)
@@ -667,7 +682,7 @@ namespace Microsoft.Ddue.Tools
                         if(arguments.CurrentPosition > 1)
                         {
                             writer.WriteString(", ");
-                            if(writer.Position > maxPosition)
+                            if(writer.Position > MaxPosition)
                             {
                                 writer.WriteLine();
 
@@ -687,7 +702,7 @@ namespace Microsoft.Ddue.Tools
                         if(assignments.CurrentPosition > 1)
                         {
                             writer.WriteString(", ");
-                            if(writer.Position > maxPosition)
+                            if(writer.Position > MaxPosition)
                             {
                                 writer.WriteLine();
 
@@ -1122,8 +1137,5 @@ namespace Microsoft.Ddue.Tools
                     break;
             }
         }
-
-
     }
-
 }

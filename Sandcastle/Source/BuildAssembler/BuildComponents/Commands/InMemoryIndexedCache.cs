@@ -144,6 +144,7 @@ namespace Microsoft.Ddue.Tools.Commands
         /// </summary>
         /// <param name="component">The <see cref="CopyFromIndexComponent"/> to which the indexed cache belongs</param>
         /// <param name="context">A context to use with the key and value XPath expressions</param>
+        /// <param name="configuration">The indexed cache configuration</param>
         public InMemoryIndexedCache(CopyFromIndexComponent component, XmlNamespaceManager context,
           XPathNavigator configuration) : base(component, context, configuration)
         {

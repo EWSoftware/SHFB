@@ -117,8 +117,8 @@ namespace Microsoft.Ddue.Tools
         //=====================================================================
 
         /// <summary>
-        /// This can be used to raise the <see cref="BuildAssembler.Component"/> event with the specified event
-        /// arguments.
+        /// This can be used to raise the <see cref="Microsoft.Ddue.Tools.BuildAssembler.ComponentEvent"/> event
+        /// with the specified event arguments.
         /// </summary>
         /// <param name="e">The event arguments.  This can be <see cref="EventArgs.Empty"/> or a derived event
         /// arguments class containing information to pass to the event handlers.</param>

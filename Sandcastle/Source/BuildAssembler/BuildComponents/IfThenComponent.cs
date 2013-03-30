@@ -11,19 +11,32 @@ using System.Xml.XPath;
 
 namespace Microsoft.Ddue.Tools
 {
+    /// <summary>
+    /// This component is used to conditionally execute a set of components based on an XPath condition
+    /// </summary>
     public class IfThenComponent : BuildComponent
     {
+        #region Private data members
+        //=====================================================================
+
         private XPathExpression condition;
-
         private IEnumerable<BuildComponent> true_branch = new List<BuildComponent>();
-
         private IEnumerable<BuildComponent> false_branch = new List<BuildComponent>();
+        private BuildContext context;
+        #endregion
 
+        #region Constructor
+        //=====================================================================
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="assembler">The build assembler reference</param>
+        /// <param name="configuration">The component configuration</param>
         public IfThenComponent(BuildAssembler assembler, XPathNavigator configuration) :
           base(assembler, configuration)
         {
-
-            // get the condition
+            // Get the condition
             XPathNavigator if_node = configuration.SelectSingleNode("if");
 
             if(if_node == null)
@@ -36,35 +49,38 @@ namespace Microsoft.Ddue.Tools
 
             condition = XPathExpression.Compile(condition_xpath);
 
-            // construct the true branch
+            // Construct the true branch
             XPathNavigator then_node = configuration.SelectSingleNode("then");
 
             if(then_node != null)
                 true_branch = BuildAssembler.LoadComponents(then_node);
 
-            // construct the false branch
+            // Construct the false branch
             XPathNavigator else_node = configuration.SelectSingleNode("else");
 
             if(else_node != null)
                 false_branch = BuildAssembler.LoadComponents(else_node);
 
-            // keep a pointer to the context for future use
+            // Keep a pointer to the context for future use
             context = assembler.Context;
         }
+        #endregion
 
-        private BuildContext context;
+        #region Method overrides
+        //=====================================================================
 
+        /// <inheritdoc />
         public override void Apply(XmlDocument document, string key)
         {
-            // set up the test
+            // Set up the test
             context["key"] = key;
             XPathExpression test = condition.Clone();
             test.SetContext(context.XsltContext);
 
-            // evaluate the condition
+            // Evaluate the condition
             bool result = (bool)document.CreateNavigator().Evaluate(test);
 
-            // on the basis of the condition, execute either the true or the false branch
+            // On the basis of the condition, execute either the true or the false branch
             if(result)
             {
                 foreach(BuildComponent component in true_branch)
@@ -75,9 +91,9 @@ namespace Microsoft.Ddue.Tools
                 foreach(BuildComponent component in false_branch)
                     component.Apply(document, key);
             }
-
         }
 
+        /// <inheritdoc />
         protected override void Dispose(bool disposing)
         {
             if(disposing)
@@ -91,5 +107,6 @@ namespace Microsoft.Ddue.Tools
 
             base.Dispose(disposing);
         }
+        #endregion
     }
 }

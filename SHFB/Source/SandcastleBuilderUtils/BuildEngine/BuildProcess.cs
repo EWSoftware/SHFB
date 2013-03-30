@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/07/2013
+// Updated : 03/29/2013
 // Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -1123,6 +1123,11 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 foreach(string n in frameworkSettings.GetReferencedNamespaces(language, rn, validNamespaces).ToList())
                     rn.Add(n);
 
+                // If there are no referenced namespaces, add System as a default to prevent the build components
+                // from loading the entire set.
+                if(rn.Count == 0)
+                    rn.Add("System");
+
                 if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
                 {
                     this.ExecutePlugIns(ExecutionBehaviors.Before);
@@ -1993,7 +1998,7 @@ AllDone:
             Version fileVersion = new Version(fvi.FileMajorPart, fvi.FileMinorPart, fvi.FileBuildPart,
                 fvi.FilePrivatePart);
 
-            Version expectedVersion = new Version("2.7.2.0");
+            Version expectedVersion = new Version("2.7.3.0");
 
             if(fileVersion < expectedVersion)
                 throw new BuilderException("BE0036", String.Format(CultureInfo.InvariantCulture,

@@ -514,7 +514,7 @@ namespace Microsoft.Ddue.Tools
         /// Write the snippet content to output files.
         /// </summary>
         /// <param name="node">code reference node</param>
-        /// <param name="identifier">List of snippets</param>
+        /// <param name="snippetList">List of snippets</param>
         private void WriteSnippetContent(XPathNavigator node, List<Snippet> snippetList)
         {
             if(snippetList == null || snippetList.Count == 0)
@@ -961,7 +961,7 @@ namespace Microsoft.Ddue.Tools
         /// <summary>
         /// Parse the example directory.
         /// </summary>
-        /// <param name="unit">unit directory</param>
+        /// <param name="exampleDirectory">The example directory</param>
         private void ParseExample(DirectoryInfo exampleDirectory)
         {
             // process the approved language-specific unit directories for this example
@@ -1010,9 +1010,9 @@ namespace Microsoft.Ddue.Tools
         /// <summary>
         /// Parse the language files to retrieve the snippet content.
         /// </summary>
-        /// <param name="file">snippet file</param>
-        /// <param name="language">snippet language</param>
-        /// <param name="example">name of the example that contains this file</param>
+        /// <param name="file">The snippet file</param>
+        /// <param name="language">The snippet language</param>
+        /// <param name="exampleName">The name of the example that contains this file</param>
         private void ParseFile(FileInfo file, string language, string exampleName)
         {
             string snippetLanguage = string.Empty;

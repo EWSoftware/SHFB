@@ -6,7 +6,7 @@
 // Compiler: Microsoft Visual C#
 //
 // This is a version of the ResolveReferenceLinksComponent2 that stores the MSDN content IDs and the framework
-// targets in persistent ESent databases.
+// targets in persistent ESENT databases.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
 // distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
@@ -39,7 +39,7 @@ namespace SandcastleBuilder.Components
 {
     /// <summary>
     /// This is a version of the <c>ResolveReferenceLinksComponent2</c> that stores the MSDN content IDs and the
-    /// framework targets in persistent ESent databases.
+    /// framework targets in persistent ESENT databases.
     /// </summary>
     public class ESentResolveReferenceLinksComponent : ResolveReferenceLinksComponent2
     {
@@ -65,7 +65,7 @@ namespace SandcastleBuilder.Components
             FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(asm.Location);
 
             base.WriteMessage(MessageLevel.Info, String.Format(CultureInfo.InvariantCulture,
-                "\r\n    [{0}, version {1}]\r\n    ESent Resolve Reference Links Component.  {2}\r\n" +
+                "\r\n    [{0}, version {1}]\r\n    ESENT Resolve Reference Links Component.  {2}\r\n" +
                 "    http://SHFB.CodePlex.com", fvi.ProductName, fvi.ProductVersion, fvi.LegalCopyright));
         }
         #endregion
@@ -74,7 +74,7 @@ namespace SandcastleBuilder.Components
         //=====================================================================
 
         /// <summary>
-        /// This is overridden to allow use of an ESent backed MSDN content ID cache
+        /// This is overridden to allow use of an ESENT backed MSDN content ID cache
         /// </summary>
         /// <param name="configuration">The component configuration</param>
         /// <returns>An MSDN resolver instance</returns>
@@ -128,7 +128,7 @@ namespace SandcastleBuilder.Components
                     if(cacheCount == 0)
                     {
                         // Log a diagnostic message since looking up all IDs can significantly slow the build
-                        base.WriteMessage(MessageLevel.Diagnostic, "The ESent MSDN content ID cache in '" +
+                        base.WriteMessage(MessageLevel.Diagnostic, "The ESENT MSDN content ID cache in '" +
                             msdnIdCachePath + "' does not exist yet.  All IDs will be looked up in this build " +
                             "which will slow it down.");
                     }
@@ -143,10 +143,10 @@ namespace SandcastleBuilder.Components
         }
 
         /// <summary>
-        /// This is overridden to create a target dictionary that utilizes an ESent database for persistence
+        /// This is overridden to create a target dictionary that utilizes an ESENT database for persistence
         /// </summary>
         /// <param name="configuration">The configuration element for the target dictionary</param>
-        /// <returns>A simple dictionary if no <c>cachePath</c> attribute is found or an ESent backed target
+        /// <returns>A simple dictionary if no <c>cachePath</c> attribute is found or an ESENT backed target
         /// dictionary if the attribute is found.</returns>
         public override TargetDictionary CreateTargetDictionary(XPathNavigator configuration)
         {
@@ -187,8 +187,8 @@ namespace SandcastleBuilder.Components
                         base.WriteMessage(MessageLevel.Diagnostic, "New MSDN content ID cache size: {0} entries",
                             cache.Count);
 
-                    base.WriteMessage(MessageLevel.Diagnostic, "MSDN content ID ESent local cache flushed {0} " +
-                        "time(s).  Current ESent local cache usage: {1} of {2}.", cache.LocalCacheFlushCount,
+                    base.WriteMessage(MessageLevel.Diagnostic, "MSDN content ID ESENT local cache flushed {0} " +
+                        "time(s).  Current ESENT local cache usage: {1} of {2}.", cache.LocalCacheFlushCount,
                         cache.CurrentLocalCacheCount, cache.LocalCacheSize);
                 }
             }

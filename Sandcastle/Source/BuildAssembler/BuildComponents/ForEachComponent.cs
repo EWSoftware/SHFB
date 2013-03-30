@@ -12,8 +12,16 @@ using System.Xml.XPath;
 
 namespace Microsoft.Ddue.Tools
 {
+    /// <summary>
+    /// This component is used to execute a set of components on the topic
+    /// </summary>
     public class ForEachComponent : BuildComponent
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="assembler">The build assembler instance</param>
+        /// <param name="configuration">The component configuration</param>
         public ForEachComponent(BuildAssembler assembler, XPathNavigator configuration) :
           base(assembler, configuration)
         {
@@ -63,6 +71,7 @@ namespace Microsoft.Ddue.Tools
 
         // the work of the component
 
+        /// <inheritdoc />
         public override void Apply(XmlDocument document, string key)
         {
             // adjust the context
@@ -90,12 +99,18 @@ namespace Microsoft.Ddue.Tools
             }
         }
 
+        /// <summary>
+        /// Apply the components to the document
+        /// </summary>
+        /// <param name="document">The document to which the topics are applied</param>
+        /// <param name="key">The document key</param>
         private void ApplyComponents(XmlDocument document, string key)
         {
             foreach(BuildComponent component in components)
                 component.Apply(document, key);
         }
 
+        /// <inheritdoc />
         protected override void Dispose(bool disposing)
         {
             if(disposing)

@@ -21,6 +21,9 @@ namespace Microsoft.Ddue.Tools.Targets
         #region Properties
         //=====================================================================
 
+        /// <summary>
+        /// This read-only property returns an enumerable list of parameters if any
+        /// </summary>
         public IList<Parameter> Parameters { get; private set; }
         #endregion
 

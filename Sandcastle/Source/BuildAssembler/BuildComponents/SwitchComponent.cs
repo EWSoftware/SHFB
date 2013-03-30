@@ -11,8 +11,17 @@ using System.Xml.XPath;
 
 namespace Microsoft.Ddue.Tools
 {
+    /// <summary>
+    /// This build component executes a set of build components on the topic based on the result of an XPath
+    /// expression.
+    /// </summary>
     public class SwitchComponent : BuildComponent
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="assembler">The build assembler reference</param>
+        /// <param name="configuration">The component configuration</param>
         public SwitchComponent(BuildAssembler assembler, XPathNavigator configuration) :
           base(assembler, configuration)
         {
@@ -48,6 +57,7 @@ namespace Microsoft.Ddue.Tools
 
         // the action of the component
 
+        /// <inheritdoc />
         public override void Apply(XmlDocument document, string key)
         {
             // evaluate the condition
@@ -64,6 +74,7 @@ namespace Microsoft.Ddue.Tools
             }
         }
 
+        /// <inheritdoc />
         protected override void Dispose(bool disposing)
         {
             if(disposing)

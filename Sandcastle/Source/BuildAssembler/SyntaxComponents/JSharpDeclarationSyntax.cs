@@ -16,8 +16,15 @@ using System.Xml.XPath;
 
 namespace Microsoft.Ddue.Tools
 {
+    /// <summary>
+    /// This class generates declaration syntax sections for J#
+    /// </summary>
     public sealed class JSharpDeclarationSyntaxGenerator : SyntaxGeneratorTemplate
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="configuration">The syntax generator configuration</param>
         public JSharpDeclarationSyntaxGenerator(XPathNavigator configuration) : base(configuration)
         {
             if(String.IsNullOrEmpty(Language))
@@ -26,6 +33,7 @@ namespace Microsoft.Ddue.Tools
 
         // private static string unsupportedGeneric = "UnsupportedGeneric_JSharp";
 
+        /// <inheritdoc />
         public override void WriteNamespaceSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             string name = reflection.Evaluate(apiNameExpression).ToString();
@@ -35,9 +43,9 @@ namespace Microsoft.Ddue.Tools
             writer.WriteIdentifier(name);
         }
 
+        /// <inheritdoc />
         public override void WriteClassSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
-
             if(IsUnsupportedGeneric(reflection, writer))
                 return;
 
@@ -78,7 +86,7 @@ namespace Microsoft.Ddue.Tools
 
         }
 
-
+        /// <inheritdoc />
         public override void WriteStructureSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
 
@@ -107,6 +115,7 @@ namespace Microsoft.Ddue.Tools
             WriteImplementedInterfaces(reflection, writer);
         }
 
+        /// <inheritdoc />
         public override void WriteInterfaceSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
 
@@ -124,6 +133,7 @@ namespace Microsoft.Ddue.Tools
             WriteImplementedInterfaces("extends", reflection, writer);
         }
 
+        /// <inheritdoc />
         public override void WriteDelegateSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             if(IsUnsupportedUnsafe(reflection, writer))
@@ -151,6 +161,7 @@ namespace Microsoft.Ddue.Tools
 
         }
 
+        /// <inheritdoc />
         public override void WriteEnumerationSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
 
@@ -167,6 +178,7 @@ namespace Microsoft.Ddue.Tools
             writer.WriteIdentifier(name);
         }
 
+        /// <inheritdoc />
         public override void WriteConstructorSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             if(IsUnsupportedUnsafe(reflection, writer))
@@ -190,6 +202,7 @@ namespace Microsoft.Ddue.Tools
 
         }
 
+        /// <inheritdoc />
         public override void WriteMethodSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             bool isSpecialName = (bool)reflection.Evaluate(apiIsSpecialExpression);
@@ -204,6 +217,7 @@ namespace Microsoft.Ddue.Tools
             }
         }
 
+        /// <inheritdoc />
         public override void WriteNormalMethodSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             if(IsUnsupportedUnsafe(reflection, writer))
@@ -223,6 +237,7 @@ namespace Microsoft.Ddue.Tools
             WriteMethodParameters(reflection, writer);
         }
 
+        /// <inheritdoc />
         public override void WritePropertySyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             if(IsUnsupportedUnsafe(reflection, writer))
@@ -286,6 +301,7 @@ namespace Microsoft.Ddue.Tools
             }
         }
 
+        /// <inheritdoc />
         public override void WriteEventSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             if(IsUnsupportedUnsafe(reflection, writer))
@@ -365,6 +381,7 @@ namespace Microsoft.Ddue.Tools
             }
         }
 
+        /// <inheritdoc />
         public override void WriteFieldSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             // !EFW - Added unsafe check
@@ -472,7 +489,7 @@ namespace Microsoft.Ddue.Tools
                             writer.WriteString(", ");
 
                             // !EFW - Update.  Added this to wrap the lines
-                            if(writer.Position > maxPosition)
+                            if(writer.Position > MaxPosition)
                             {
                                 writer.WriteLine();
                                 writer.WriteString("\t");
@@ -491,7 +508,7 @@ namespace Microsoft.Ddue.Tools
                             writer.WriteString(", ");
 
                             // !EFW - Update.  Added this to wrap the lines
-                            if(writer.Position > maxPosition)
+                            if(writer.Position > MaxPosition)
                             {
                                 writer.WriteLine();
                                 writer.WriteString("\t");
@@ -627,7 +644,7 @@ namespace Microsoft.Ddue.Tools
                 if(implements.CurrentPosition < implements.Count)
                 {
                     writer.WriteString(", ");
-                    if(writer.Position > maxPosition)
+                    if(writer.Position > MaxPosition)
                     {
                         writer.WriteLine();
                         writer.WriteString("\t");
@@ -816,8 +833,5 @@ namespace Microsoft.Ddue.Tools
                     break;
             }
         }
-
-
     }
-
 }

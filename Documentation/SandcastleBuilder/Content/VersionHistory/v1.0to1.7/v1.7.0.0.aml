@@ -1,530 +1,640 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <topic id="a44fe561-efb9-40ac-84eb-b1a00a4a9596" revisionNumber="1">
-  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <introduction>
-      <autoOutline lead="Version 1.7.0.0 was released on June 2nd, 2008."
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<autoOutline lead="Version 1.7.0.0 was released on June 2nd, 2008."
         excludeRelatedTopics="true" />
-    </introduction>
+		</introduction>
 
-<section address="BreakingChanges">
-  <title>Potential Breaking Changes</title>
-  <content>
-<list class="bullet">
-    <listItem>The default configuration for all cached build components has changed.
-They no longer store their cache files in the help file builder folder.
-Instead, they store them in the <localUri>%APPDATA%\EWSoftware\Sandcastle Help File
-Builder\Cache</localUri> folder.  This removes the need to run the help file builder as an
-administrator under Vista x64 when using the cached build components.  If you
-are using them, you <legacyUnderline><legacyBold>must</legacyBold></legacyUnderline> remove them from the project and re-add
-them so that they pick up the new default configuration.  You can also delete
-the cache files from the old location.  You can find them in the
-<legacyBold>.\BuildComponents\Cache</legacyBold> folder under the main help file builder
-installation folder.</listItem>
+		<section address="BreakingChanges">
+			<title>Potential Breaking Changes</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>The default configuration for all cached build components has changed.  They no longer store
+their cache files in the help file builder folder.  Instead, they store them in the
+<localUri>%APPDATA%\EWSoftware\Sandcastle Help File Builder\Cache</localUri> folder.  This removes the need to
+run the help file builder as an administrator under Vista x64 when using the cached build components.  If you
+are using them, you <legacyUnderline><legacyBold>must</legacyBold></legacyUnderline> remove them from the project
+and re-add them so that they pick up the new default configuration.  You can also delete the cache files from the
+old location.  You can find them in the <legacyBold>.\BuildComponents\Cache</legacyBold> folder under the main
+help file builder installation folder.</para>
+					</listItem>
 
-    <listItem>The default configuration for the <legacyBold>Cached Framework Comments Index
-Data</legacyBold> custom build component has changed.  If you are using it, you
-<legacyUnderline><legacyBold>must</legacyBold></legacyUnderline> remove it from the project and re-add it so that it picks
-up the new default configuration.  You can also delete the
-<legacyBold>Comments.cache</legacyBold> file as the naming method has changed and the old
-version is obsolete.  You can find it in the <legacyBold>.\BuildComponents\Cache</legacyBold>
-folder under the main help file builder installation folder or in the new
-folder noted above if you moved the cache files.</listItem>
+					<listItem>
+						<para>The default configuration for the <legacyBold>Cached Framework Comments Index Data</legacyBold>
+custom build component has changed.  If you are using it, you <legacyUnderline><legacyBold>must</legacyBold></legacyUnderline>
+remove it from the project and re-add it so that it picks up the new default configuration.  You can also delete
+the <legacyBold>Comments.cache</legacyBold> file as the naming method has changed and the old version is
+obsolete.  You can find it in the <legacyBold>.\BuildComponents\Cache</legacyBold> folder under the main help
+file builder installation folder or in the new folder noted above if you moved the cache files.</para>
+					</listItem>
 
-    <listItem>A new <codeInline>insertConceptual</codeInline> configuration option was added
-to the build component definition configuration file.  It is used to define
-a build component's placement within the <legacyBold>conceptual.config</legacyBold> file.  The
-existing <codeInline>insert</codeInline> option will continue to be used for the reference
-build configuration file (<legacyBold>sandcastle.config</legacyBold>).  If either element is
-omitted from a component's definition, it will not be merged into the given
-configuration file.  This is a change from prior behavior which inserted the
-component at the start of the configuration file if a placement option was not
-specified</listItem>
+					<listItem>
+						<para>A new <codeInline>insertConceptual</codeInline> configuration option was added to the build
+component definition configuration file.  It is used to define a build component's placement within the
+<legacyBold>conceptual.config</legacyBold> file.  The existing <codeInline>insert</codeInline> option will
+continue to be used for the reference build configuration file (<legacyBold>sandcastle.config</legacyBold>).  If
+either element is omitted from a component's definition, it will not be merged into the given configuration file.
+This is a change from prior behavior which inserted the component at the start of the configuration file if a
+placement option was not specified.</para>
+					</listItem>
 
-    <listItem>Components defined in the project's <codeInline>ComponentConfigurations</codeInline>
-property will be merged into the appropriate configuration files based on
-the presence of the <codeInline>insert</codeInline> and <codeInline>insertConceptual</codeInline>
-configuration elements.  As such, the settings will be shared and the
-conceptual content will match the reference content in appearance.</listItem>
+					<listItem>
+						<para>Components defined in the project's <codeInline>ComponentConfigurations</codeInline> property
+will be merged into the appropriate configuration files based on the presence of the <codeInline>insert</codeInline>
+and <codeInline>insertConceptual</codeInline> configuration elements.  As such, the settings will be shared and
+the conceptual content will match the reference content in appearance.</para>
+					</listItem>
 
-    <listItem>A distinction is now made between JScript and JavaScript in the code
-colorizer to match the usage in Sandcastle.  JScript now has its own rule set
-and is considered to be JScript.NET.  JavaScript is regular JavaScript.  Code
-examples using "JScript" or one of its variants as the language will be
-connected to the JScript language filter.  Code examples using "JavaScript" or
-one of its variants as the language will be connected to the JavaScript
-language filter.</listItem>
+					<listItem>
+						<para>A distinction is now made between JScript and JavaScript in the code colorizer to match the
+usage in Sandcastle.  JScript now has its own rule set and is considered to be JScript.NET.  JavaScript is
+regular JavaScript.  Code examples using "JScript" or one of its variants as the language will be connected to
+the JScript language filter.  Code examples using "JavaScript" or one of its variants as the language will be
+connected to the JavaScript language filter.</para>
+					</listItem>
 
-    <listItem>"XAML" has been added as a separate language in the code colorizer
-rules so that it can be correctly connected to the XAML language filter.</listItem>
+					<listItem>
+						<para>"XAML" has been added as a separate language in the code colorizer rules so that it can be
+correctly connected to the XAML language filter.</para>
+					</listItem>
 
-    <listItem>To support conceptual content, the following changes have been made
-to the build steps:
-    <list class="bullet">
-        <listItem>The <codeInline>CreateConfig</codeInline> build step has been renamed
-<codeInline>CreateBuildAssemblerConfigs</codeInline>.  This step will now create the
-<legacyBold>conceptual.config</legacyBold> file as well.</listItem>
+					<listItem>
+						<para>To support conceptual content, the following changes have been made to the build steps:</para>
 
-        <listItem>The <codeInline>BuildHelpTopics</codeInline> build step has been renamed
-<codeInline>BuildReferenceTopics</codeInline>.  This builds the reference (API) help
-topics.</listItem>
+						<list class="bullet">
+							<listItem>
+								<para>The <codeInline>CreateConfig</codeInline> build step has been renamed
+<codeInline>CreateBuildAssemblerConfigs</codeInline>.  This step will now create the <legacyBold>conceptual.config</legacyBold>
+file as well.</para>
+							</listItem>
 
-        <listItem>Added the build steps
-<codeInline>CopyConceptualContent</codeInline>,
-<codeInline>CreateConceptualTopicConfigs</codeInline>,
-<codeInline>MergeTablesOfContents</codeInline>, and
-<codeInline>BuildConceptualTopics</codeInline>.</listItem>
+							<listItem>
+								<para>The <codeInline>BuildHelpTopics</codeInline> build step has been renamed
+<codeInline>BuildReferenceTopics</codeInline>.  This builds the reference (API) help topics.</para>
+							</listItem>
 
-        <listItem>The <legacyBold>BuildHelpTopics.bat</legacyBold> script file has been renamed
-<legacyBold>BuildReferenceTopics.bat</legacyBold>.  A new script file,
- <legacyBold>BuildConceptualTopics.bat</legacyBold>, was added to build the conceptual help
-topics.</listItem>
+							<listItem>
+								<para>Added the build steps <codeInline>CopyConceptualContent</codeInline>,
+<codeInline>CreateConceptualTopicConfigs</codeInline>, <codeInline>MergeTablesOfContents</codeInline>, and
+<codeInline>BuildConceptualTopics</codeInline>.</para>
+							</listItem>
 
-        <listItem>If both conceptual content and additional content are included in
-a project, conceptual content will take precedence.  Any additional content
-will appear after the conceptual content in the table of contents.  Likewise,
-if specified, the default topic and split TOC topic in the conceptual content
-will take precedence.  The equivalent settings in the additional content
-will only be used if not specified in the conceptual content.</listItem>
-    </list></listItem>
-    
-    <listItem>A bug in the standard <codeInline>ResolveConceptualLinksComponent</codeInline>
-causes any specified inner text on <codeInline>&lt;link&gt;</codeInline> tags to be
-ignored and instead it always uses the title.  I have reimplemented the
-component to fix that bug and added a couple of new features (see below).  As
-such, any links you may have in your conceptual content files will start
-showing the inner text when built with the help file builder.  You may need to
-review your documentation and either remove or update the inner text to
-something more appropriate on your links.</listItem>
-</list>
+							<listItem>
+								<para>The <legacyBold>BuildHelpTopics.bat</legacyBold> script file has been renamed
+<legacyBold>BuildReferenceTopics.bat</legacyBold>.  A new script file, <legacyBold>BuildConceptualTopics.bat</legacyBold>,
+was added to build the conceptual help topics.</para>
+							</listItem>
 
-  </content>
-</section>
+							<listItem>
+								<para>If both conceptual content and additional content are included in a project, conceptual
+content will take precedence.  Any additional content will appear after the conceptual content in the table of
+contents.  Likewise, if specified, the default topic and split TOC topic in the conceptual content will take
+precedence.  The equivalent settings in the additional content will only be used if not specified in the
+conceptual content.</para>
+							</listItem>
+						</list>
+					</listItem>
 
-<section address="NonBreaking">
-  <title>Non-breaking Changes in Behavior</title>
-  <content>
+					<listItem>
+						<para>A bug in the standard <codeInline>ResolveConceptualLinksComponent</codeInline> causes any
+specified inner text on <codeInline>&lt;link&gt;</codeInline> tags to be ignored and instead it always uses the
+title.  I have reimplemented the component to fix that bug and added a couple of new features (see below).  As
+such, any links you may have in your conceptual content files will start showing the inner text when built with
+the help file builder.  You may need to review your documentation and either remove or update the inner text to
+something more appropriate on your links.</para>
+					</listItem>
+				</list>
 
-<list class="bullet">
-    <listItem>The requirement that an XML comments file be associated with an
-assembly has been removed and the build behavior has changed for cases where
-the XML comments file for an assembly is blank.  In such cases, the XML
-comments file is ignored and no comments will be associated with the assembly.
-This allows you to build a help file for an assembly without a comments file
-and is useful in a couple of the new plug-ins.</listItem>
+			</content>
+		</section>
 
-    <listItem>Wildcards are now supported in the <codeInline>AssemblyPath</codeInline> and
-<codeInline>XmlCommentsPath</codeInline> properties on each of the documented assemblies.
-This allows you to add one entry that will include multiple assemblies and/or
-comments files for documenting.  This is also useful for documenting website
-projects in which the last part of the assembly names and comments files can
-change each time the website is published.</listItem>
+		<section address="NonBreaking">
+			<title>Non-breaking Changes in Behavior</title>
+			<content>
 
-    <listItem>The behavior of the console mode builder's <codeInline>-assembly</codeInline> and
-<codeInline>-comments</codeInline> command line options has been adjusted accordingly
-to account for the new wildcard support.</listItem>
+				<list class="bullet">
+					<listItem>
+						<para>The requirement that an XML comments file be associated with an assembly has been removed and
+the build behavior has changed for cases where the XML comments file for an assembly is blank.  In such cases,
+the XML comments file is ignored and no comments will be associated with the assembly.  This allows you to build
+a help file for an assembly without a comments file and is useful in a couple of the new plug-ins.</para>
+					</listItem>
 
-    <listItem>The log file will list all assemblies and XML comments files copied
-during the <codeInline>ValidatingAssemblies</codeInline> build step so that you can verify
-it found the correct files.  Warnings are also issued if duplicate files are
-copied that overwrite previously copied files in the working folder.</listItem>
+					<listItem>
+						<para>Wildcards are now supported in the <codeInline>AssemblyPath</codeInline> and
+<codeInline>XmlCommentsPath</codeInline> properties on each of the documented assemblies.  This allows you to add
+one entry that will include multiple assemblies and/or comments files for documenting.  This is also useful for
+documenting website projects in which the last part of the assembly names and comments files can change each time
+the website is published.</para>
+					</listItem>
 
-    <listItem>The <codeInline>PurgeDuplicateTopics</codeInline> project property has been
-removed as duplicates are now handled via the <legacyBold>MergeDuplicates.xsl</legacyBold>
-Sandcastle transformation immediately after <legacyBold>MRefBuilder</legacyBold> has been
-executed.</listItem>
+					<listItem>
+						<para>The behavior of the console mode builder's <codeInline>-assembly</codeInline> and
+<codeInline>-comments</codeInline> command line options has been adjusted accordingly to account for the new
+wildcard support.</para>
+					</listItem>
 
-    <listItem>The <legacyBold>Additional Content</legacyBold> property category is now called
-<legacyBold>Additional and Conceptual Content</legacyBold>.</listItem>
+					<listItem>
+						<para>The log file will list all assemblies and XML comments files copied during the
+<codeInline>ValidatingAssemblies</codeInline> build step so that you can verify it found the correct files.
+Warnings are also issued if duplicate files are copied that overwrite previously copied files in the working
+folder.</para>
+					</listItem>
 
-    <listItem>The <codeInline>ContentSiteMap</codeInline> and <codeInline>TopicFileTransform</codeInline>
-properties are now sub-properties of the <codeInline>AdditionalContent</codeInline>
-property.  You must expand it to see them.  This change was made to make their
-association with the additional content clear and to avoid incorrectly
-associating them with the new <codeInline>ConceptualContent</codeInline> property which
-does not make use of them.</listItem>
+					<listItem>
+						<para>The <codeInline>PurgeDuplicateTopics</codeInline> project property has been removed as
+duplicates are now handled via the <legacyBold>MergeDuplicates.xsl</legacyBold> Sandcastle transformation
+immediately after <legacyBold>MRefBuilder</legacyBold> has been executed.</para>
+					</listItem>
 
-    <listItem>The <codeInline>AdditonalContent</codeInline> and <codeInline>ContentSiteMap</codeInline>
-properites now share a common property editor to make it easier to edit their
-settings together and to make their association more apparent.</listItem>
+					<listItem>
+						<para>The <legacyBold>Additional Content</legacyBold> property category is now called
+<legacyBold>Additional and Conceptual Content</legacyBold>.</para>
+					</listItem>
 
-    <listItem>The help file builder will now include the necessary .NET Framework
-comments files based on the setting of the <codeInline>FrameworkVersion</codeInline>
-property.  This ensures that all of the necessary comments files are included
-when using the .NET 3.0 and .NET 3.5 Frameworks.</listItem>
+					<listItem>
+						<para>The <codeInline>ContentSiteMap</codeInline> and <codeInline>TopicFileTransform</codeInline>
+properties are now sub-properties of the <codeInline>AdditionalContent</codeInline> property.  You must expand it
+to see them.  This change was made to make their association with the additional content clear and to avoid
+incorrectly associating them with the new <codeInline>ConceptualContent</codeInline> property which does not make
+use of them.</para>
+					</listItem>
 
-    <listItem>The <codeInline>CachedCopyFromIndexComponent</codeInline> used for the comments
-index now names its cache files after the language and framework version.</listItem>
+					<listItem>
+						<para>The <codeInline>AdditonalContent</codeInline> and <codeInline>ContentSiteMap</codeInline>
+properites now share a common property editor to make it easier to edit their settings together and to make their
+association more apparent.</para>
+					</listItem>
 
-    <listItem>Renamed the <codeInline>SyntaxFilters.ScriptSharp</codeInline> value to
-<codeInline>JavaScript</codeInline> as that is what it renders and this makes it more
-apparent that it can be used for other projects such as those that use the
-AjaxDoc plug-in.  The old value will be translated to the new value
-automatically when an older project that contains it is loaded.</listItem>
+					<listItem>
+						<para>The help file builder will now include the necessary .NET Framework comments files based on the
+setting of the <codeInline>FrameworkVersion</codeInline> property.  This ensures that all of the necessary
+comments files are included when using the .NET 3.0 and .NET 3.5 Frameworks.</para>
+					</listItem>
 
-    <listItem>Added a customized version of the JavaScript declaration syntax
-generator component that will correctly document normal JavaScript.  It will
-only convert the first letter of each member name to lowercase when
-documenting a Script# project.</listItem>
+					<listItem>
+						<para>The <codeInline>CachedCopyFromIndexComponent</codeInline> used for the comments index now names
+its cache files after the language and framework version.</para>
+					</listItem>
 
-    <listItem>The <codeInline>ShowMissingComponent</codeInline> messages are now localized.  The
-messages appear in each of the <legacyBold>SharedBuilderContent_[lang].xml</legacyBold> files
-in the help file builder's <legacyBold>.\SharedContent</legacyBold> folder.  The component also
-inserts the "missing namespace" message as well rather than the build
-process.  A <codeInline>contentFile</codeInline> configuration option was added to the
-component that is used to specify the file containing the localized messages.
-If omitted, it defaults to using the English message text.</listItem>
+					<listItem>
+						<para>Renamed the <codeInline>SyntaxFilters.ScriptSharp</codeInline> value to <codeInline>JavaScript</codeInline>
+as that is what it renders and this makes it more apparent that it can be used for other projects such as those
+that use the AjaxDoc plug-in.  The old value will be translated to the new value automatically when an older
+project that contains it is loaded.</para>
+					</listItem>
 
-    <listItem>Due to a significant change in the way the language filters work in
-the Hana and Prototype presentation styles, the
-<codeInline>PostTransformComponent</codeInline> no longer connects examlpe code blocks to
-the language filter in those presentation styles.  Given the way they are
-implemented, this feature would be better handled in the transformations and
-script files themselves.</listItem>
+					<listItem>
+						<para>Added a customized version of the JavaScript declaration syntax generator component that will
+correctly document normal JavaScript.  It will only convert the first letter of each member name to lowercase
+when documenting a Script# project.</para>
+					</listItem>
 
-    <listItem>The default topic transformation files now contain a default set of
-<codeInline>MSHelp:Attr</codeInline> elements for (name/value)
-<codeInline>DocSet/NetFramework</codeInline>, <codeInline>DocSet/{@HtmlHelpName}</codeInline>,
-<codeInline>Locale/{@Locale}</codeInline>, and <codeInline>TargetOS/Windows</codeInline> where the
-replacement tags will be replaced with the appropriate project option at build
-time.  Any additional XML data island elements from the transformed topics
-will be merged with the default set.</listItem>
+					<listItem>
+						<para>The <codeInline>ShowMissingComponent</codeInline> messages are now localized.  The messages
+appear in each of the <legacyBold>SharedBuilderContent_[lang].xml</legacyBold> files in the help file builder's
+<legacyBold>.\SharedContent</legacyBold> folder.  The component also inserts the "missing namespace" message as
+well rather than the build process.  A <codeInline>contentFile</codeInline> configuration option was added to the
+component that is used to specify the file containing the localized messages.  If omitted, it defaults to using
+the English message text.</para>
+					</listItem>
 
-    <listItem><legacyBold>Generate1xIndex.bat</legacyBold>, <legacyBold>Generate1xTOC.bat</legacyBold>,
+					<listItem>
+						<para>Due to a significant change in the way the language filters work in the Hana and Prototype
+presentation styles, the <codeInline>PostTransformComponent</codeInline> no longer connects examlpe code blocks
+to the language filter in those presentation styles.  Given the way they are implemented, this feature would be
+better handled in the transformations and script files themselves.</para>
+					</listItem>
+
+					<listItem>
+						<para>The default topic transformation files now contain a default set of <codeInline>MSHelp:Attr</codeInline>
+elements for (name/value) <codeInline>DocSet/NetFramework</codeInline>, <codeInline>DocSet/{@HtmlHelpName}</codeInline>,
+<codeInline>Locale/{@Locale}</codeInline>, and <codeInline>TargetOS/Windows</codeInline> where the replacement
+tags will be replaced with the appropriate project option at build time.  Any additional XML data island elements
+from the transformed topics will be merged with the default set.</para>
+					</listItem>
+
+					<listItem>
+						<para><legacyBold>Generate1xIndex.bat</legacyBold>, <legacyBold>Generate1xTOC.bat</legacyBold>,
 <legacyBold>GenerateWebsiteTOC.bat</legacyBold>, and <legacyBold>TocToWebContents.xsl</legacyBold> have been
-removed.  In their place is a new script template, <legacyBold>ExtractHtmlInfo.bat</legacyBold>,
-that runs a new tool that extracts TOC and keyword information from the HTML
-files to produce a better index and TOC with proper encoding support for
-foreign languages for the HTML Help 1 file and a TOC for websites.</listItem>
-
-    <listItem>If a new project is created from a Visual Studio 2008 solution or
-project, the <codeInline>FrameworkVersion</codeInline> property will be set based on the
-highest target framework specified within the Visual Studio project.  This also
-applies to Visual Studio projects imported by the console mode builder.</listItem>
-</list>
-
-  </content>
-</section>
-
-
-<section address="Conceptual">
-  <title>Conceptual Content Support</title>
-  <content>
-
-<list class="bullet">
-    <listItem>Support for building conceptual content in addition to reference (API)
-content has been fully integrated into the build process.  The new
-<codeInline>ConceptualContent</codeInline> property in the <legacyBold>Additional and Conceptual
-Content</legacyBold> property category allows you to manage the conceptual
-content.</listItem>
-
-    <listItem>The current conceptual content editor allows you to add, edit, and
-delete tokens, images, and conceptual topics in the project.  The layout of
-the conceptual topics in the editor will determine their layout in the table
-of contents when built similar to how the site map works for additional
-content.  Enhanced design support will be added in a later release.</listItem>
-
-    <listItem>Full support for colorized code blocks is included.  Simply specify
-the <codeInline>code</codeInline> elements as you would in XML comments using all of the
-same options.  This include support for imported code blocks.</listItem>
-
-    <listItem>The post-transform component is also supported and thus logos can be
-added to the conceptual topic headers.  The conceptual build shares the same
-component configurations as the reference build so they will maintain the same
-look.</listItem>
-
-    <listItem>Documentation for conceptual content and its use with the help file
-builder is rather sparse at the moment.  This will also be addressed in a
-future release.</listItem>
-
-    <listItem>An improved version of the <codeInline>ResolveConceptualLinksComponent</codeInline>
-has been added with the following features and fixes:
-    <list class="bullet">
-        <listItem>Broken links use the <legacyBold>None</legacyBold> style rather than the
-<legacyBold>Index</legacyBold> style so that it is apparant that they do not work.</listItem>
-
-        <listItem>The inner text from the conceptual link is used if specified. See
-the <legacyBold>Potential Breaking Changes</legacyBold> section above as this may affect any
-existing conceptual content that you have.</listItem>
-
-        <listItem>On broken links, when the <codeInline>showBrokenLinkText</codeInline> option
-is true and there is no inner text, the target value is displayed.</listItem>
-
-        <listItem>Conceptual link targets can include an optional anchor name from
-within the target such as "#Name" (i.e.
-<codeInline>&lt;link xlink:href="3bdb6eb5-5e23-51c2-0051-3e224f82c201#Section2" /&gt;</codeInline>).</listItem>
-
-        <listItem>Unnecessary whitespace is removed from the link text.</listItem>
-        
-        <listItem>If the companion file contains a <codeInline>&lt;linkText&gt;</codeInline>
-element and no inner text is specified, its value will be used for the link
-text rather than the title.  This allows for a shorter title or description to
-use as the default link text.</listItem>
-    </list></listItem>
-</list>
-  </content>
-</section>
-
-<section address="Deprecated">
-  <title>Additional Content Models Deprecated</title>
-  <content>
-    <para>See the <link xlink:href="5292ce5c-fda1-4a77-9155-a11755ef1730"/>
-topic for details.</para>
-  </content>
-</section>
-
-
-<section address="OtherChanges">
-  <title>Other Changes in This Release</title>
-  <content>
-
-<list class="bullet">
-    <listItem>Added support for the <codeInline>&lt;inheritdoc /&gt;</codeInline> XML comments
-tag. See the <link xlink:href="79897974-ffc9-4b84-91a5-e50c66a0221d" /> topic in the help file for details.</listItem>
-
-    <listItem>Added the <codeInline>GenerateInheritedDocumentation</codeInline> build step to
-handle generation of inherited documentation.</listItem>
-
-    <listItem>Added the <codeInline>FeedbackEMailLinkText</codeInline> project property.  If
-specified with a feedback e-mail address, the text in this property will be
-used as the link text.  If left blank, the e-mail address will be used.</listItem>
-
-    <listItem>The <codeInline>BinaryTOC</codeInline> and <codeInline>IncludeFavorites</codeInline>
-properties are now found in their own category in the property grid (<legacyBold>HTML
-Help 1</legacyBold>).</listItem>
-
-    <listItem>Added the <legacyBold>MS Help 2</legacyBold> property category containing the
-following new project properties:
-<list class="bullet">
-
-    <listItem><codeInline>CollectionTocStyle</codeInline> - This defines the
-collection table of contents style used when plugged into an MS Help 2
-collection.</listItem>
-
-    <listItem><codeInline>HelpAttributes</codeInline> - A collection of additional help
-attributes to add to the XML data island in each generated API topic.</listItem>
-
-    <listItem><codeInline>HelpFileVersion</codeInline> - Specify the version number that should
-be applied to the help file.</listItem>
-
-    <listItem><codeInline>IncludeStopWordList</codeInline> - Indicate whether or not to include
-the stop word list used to identify words to omit from Help 2 full text
-search index.</listItem>
-
-    <listItem><codeInline>PlugInNamespaces</codeInline> - Specify a comma-separated list of
-namespaces that the collection will be plugged into when deployed using
-<legacyBold>H2Reg.exe</legacyBold>.</listItem>
-</list></listItem>
-
-    <listItem>When performing a build that includes producing an MS Help 2 file, a
-valid set of collection files and a configuration file for <legacyBold>H2Reg.exe</legacyBold>
-are now produced as well.  They are located in the output folder with the
-help file.</listItem>
-
-    <listItem>Added the project property <codeInline>BuildLogFile</codeInline> that allows you
-to specify an alternate location and name for the build log file.  If not set,
-it defaults to the filename <legacyBold>LastBuild.log</legacyBold> and stores it in the output
-folder identified by the <codeInline>OutputPath</codeInline> project property.</listItem>
-
-    <listItem>The log file is now in XML format to allow for running it through
-an XSL transform to make it more readable.  A default XSL transform is supplied
-with the GUI (<legacyBold>Templates\TransformBuildLog.xsl</legacyBold>) and it is used in the
-GUI's log viewer dialog.</listItem>
-
-    <listItem>Added the <codeInline>IndentHtml</codeInline> project property as a debugging aid.
-When set to true, the HTML rendered by <legacyBold>BuildAssembler</legacyBold> is indented to
-make it more readable.  Leave it set to false to produce more compact
-HTML.</listItem>
-
-    <listItem>Added a <legacyBold>"-vsimport=solution|project,configName"</legacyBold> option to the
-console mode builder that lets you specify a Visual Studio solution or project
-file from which to import the assemblies and XML comments files to document
-for the named configuration.</listItem>
-
-    <listItem>Added a <legacyBold>"-helpattr=name,value"</legacyBold> option to the console mode
-builder that lets you specify additional MS Help 2 help attribute
-name/value pairs to add to the XML data island in each API topic.</listItem>
-
-    <listItem>The <legacyBold>Namespace Summaries</legacyBold> dialog box has been completely
-reworked. It now uses a partial build to gather the namespace information
-which will prevent the "assembly not found" errors that could occur due to
-nested dependencies that could not always be properly detected.  In addition,
-namespaces can now be filtered by assembly and/or by some search text or a
-regular expression.  A list of assemblies in which the selected namespace
-appears is also shown.</listItem>
-
-    <listItem>If comments for a class called <codeInline>NamespaceDoc</codeInline> within a
-namespace appear in the XML comments files, those comments will be used as the
-namespace comments.  To keep the class from being included in the help file,
-leave off the <codeInline>public</codeInline> keyword and mark it with a
-<codeInline>CompilerGenerated</codeInline> attribute.  See the
-<link xlink:href="48f5a893-acde-4e50-8c17-72b83d9c3f9d" /> help topic for
-details.</listItem>
-
-    <listItem>Added a new <codeInline>keepSeeTags</codeInline> option to the <legacyBold>Code Block
-Component</legacyBold> that allows <codeInline>&lt;see&gt;</codeInline> tags that appear within the
-code to be passed through as-is so that they are rendered as clickable links
-to the referenced help topic (project topics or online MSDN topics). This
-option is also supported in additional content files on colorized
-<codeInline>&lt;pre&gt;</codeInline> tags but will only resolve links to project help
-topics.</listItem>
-
-    <listItem>Added a new <codeInline>filter</codeInline> option to the <legacyBold>Code Block
-Component</legacyBold> that allows you to specify whether or not a code block is
-connected to the appropriate language filter.  If omitted or set to true,
-it will be connected.  If set to false, it will not be connected.</listItem>
-
-    <listItem>The attribute name <codeInline>language</codeInline> is now recognized by the
-colorizer and the code block component as an acceptable alternative for the
-<codeInline>lang</codeInline> attribute name.</listItem>
-
-    <listItem>The <codeInline>CodeBlockComponent</codeInline> and <codeInline>PostTransformComponent</codeInline>
-where reworked to allow their use in conceptual content builds.  This allows
-code blocks in conceptual content files to be colorized using the same options
-as in reference content builds.</listItem>
-
-    <listItem>Added the <link xlink:href="85c08740-1190-471c-8fea-360a4a8e4612" />
-which is used to insert additional help attributes into the XML data island in
-each generated API topic.  Support for this component is built into the help
-file builder via the <codeInline>HelpAttributes</codeInline> project property.</listItem>
-
-    <listItem>Abstract classes that implement the <codeInline>IPlugIn</codeInline> interface are
-now ignored when looking for plug-ins to load.</listItem>
-
-    <listItem>Added the following new plug-ins:
-<list class="bullet">
-    <listItem><link xlink:href="15b6b7be-3778-4487-b524-d558d02e6460" /> - This is used to add additional reference link targets to the
-<legacyBold>Reflection Index Data</legacyBold> and <legacyBold>Resolve Reference Links</legacyBold> build
-components so that links can be created to other third party help in a Help 2
-collection or to other online MSDN content.</listItem>
-
-    <listItem><link xlink:href="31696f39-8f4e-4c4d-ab08-41a40793df03" /> -
-This is designed to modify the HTML files and alter the build so as to
-overcome the encoding issues encountered when building HTML Help 1 (.chm) files
-for various foreign languages.</listItem>
-
-    <listItem><link xlink:href="aa7bcd07-1a86-42dc-9f1d-49bd4afeb5d2" /> -
-This is used to rearrange the table of contents such that namespaces are nested
-within their parent namespaces rather than appearing as a flat list of all
-namespaces at the root level.</listItem>
-
-    <listItem><link xlink:href="93c452fd-71d4-470e-8d27-ec3d979679a4" /> - This is used to fix up the reflection file produced from
-assemblies created by the <legacyBold>Script#</legacyBold> compiler so that they are documented
-correctly.</listItem>
-
-    <listItem><link xlink:href="d0e91b66-135e-446b-9239-c02fcafabd09" /> -
-This is used to exclude API members from the table of contents via the
-<codeInline>&lt;tocexclude /&gt;</codeInline> XML comment tag.</listItem>
-</list></listItem>
-
-    <listItem>The <legacyBold>AjaxDoc Plug-In</legacyBold> now supports the <codeInline>ApiFilter</codeInline>
-property.  Other plug-ins like it that generate their own reflection
-information can also apply the API filter manually by using the new
-<codeInline>ApplyManualApiFilter</codeInline> method on the <codeInline>BuildProcess</codeInline>
-object.</listItem>
-
-    <listItem>The <legacyBold>Completion Notification</legacyBold> plug-in now supports an optional
-XSL transform filename option.  If specified and the log file is to be
-attached to the e-mail, the log file is ran through the transform and the
-resulting HTML file is attached in its place.  If not specified, the raw log
-file is attached.  The default transform can be used by specifying
-<legacyBold>{@SHFBFolder}Templates\TransformBuildLog.xsl</legacyBold>.</listItem>
-
-    <listItem>The <legacyBold>Output Deployment</legacyBold> plug-in now correctly supports relative
-file paths for the deployment locations.  Relative file paths will be relative
-to the project file folder.</listItem>
-
-    <listItem>The table of contents entries for additional content items can
-now be split such that some appear before and some after the API topics.  The
-<codeInline>ContentPlacement</codeInline> property's setting will be ignored
-if the table of contents is split via a
-<link xlink:href="54de66c4-a57a-4bfc-9eb6-bd9e6fb56589">custom tag</link> in
-one of the additional content files or a
-<link xlink:href="3dd5fe3b-1bc3-42e5-8900-56165e3f9aed">site map</link> is
-defined that specifies a split table of contents.  In such cases, items prior
-to the entry with the "split" option will appear before the API content.  The
-item with the "split" option and all items after it will appear below the API
-content.</listItem>
-
-    <listItem>Fixed a bug in the component configuration merging code that could
-cause the wrong component configuration to be replaced when more than one
-instance of the same component appeared in the project configuration.</listItem>
-
-    <listItem>Fixed a bug in <codeInline>ShowMissingComponent</codeInline> that caused the link
-in auto-documented constructors to point to the constructor topic rather than
-the class topic.</listItem>
-
-    <listItem>Updated the <codeInline>ShowMissingComponent</codeInline> so that it
-auto-documents constructors on the class's member and overloads list pages as
-well.</listItem>
-
-    <listItem>Added the <codeInline>ShowMissingTypeParams</codeInline> project property.  When
-set to true (the default), it will show a "missing" message if generic type or
-method type parameter documentation is missing.  This maps to the equivalent
-parameter added to the <codeInline>ShowMissingComponent</codeInline>.</listItem>
-
-    <listItem>The <codeInline>IntelliSenseComponent</codeInline>, <codeInline>PostTransformComponent</codeInline>,
-and <codeInline>VersionInfoComponent</codeInline> were updated to handle multiple
-assembly references in an API topic.</listItem>
-
-    <listItem>Fixed a bug in the <codeInline>PostTransformComponent</codeInline> that caused the
-VS2005 member list pages to be layed out incorrectly when using a logo and
-the version builder's framework menu was present.</listItem>
-
-    <listItem>Fixed a bug in the code colorizer rules for "//" style line comments
-that contained a "/*" which was incorrectly interpretted as the start of a
-block comment.</listItem>
-
-    <listItem>Fixed the XML colorizer rules so that they recognize string literals
-that span lines.</listItem>
-
-    <listItem>The code block component and additional content files can now extract
-commented regions from within XML, XAML, and SQL scripts.  Just surround the
-snippet with comment lines containing <codeInline>#region</codeInline> and
-<codeInline>#endregion</codeInline> markers.</listItem>
-
-    <listItem>All logo placement options are now supported by the default topic
-transformation files.</listItem>
-
-    <listItem>If <codeInline>&lt;MSHelp:Keyword Index="K" Term="[term]" /&gt;</codeInline> tags
-exist in the XML data island in additional content files, the terms will now
-appear in the CHM file's index.  The SHFB help file's additional content is
-now indexed using this method.</listItem>
-
-    <listItem>Fixed a JavaScript error in the website output that occurred if the
-full text search did not find any results.</listItem>
-
-    <listItem>The <legacyBold>Index.aspx</legacyBold> page now supports a <codeInline>topic</codeInline> query
-string parameter.  If set to the path of a page in the website, it will display
-that page instead of the normal default topic page.</listItem>
-
-    <listItem>Thanks to Ferdinand Prantl for supplying the code necessary to add a
-keyword index pane to the ASP.NET index page.</listItem>
-
-    <listItem>Thanks to TimerLandChapel for providing additional translations for
-the Japanese content files.</listItem>
-
-    <listItem>Added some more common problems and solutions to the FAQ.</listItem>
-    
-    <listItem>The entire project is now licensed using the
+removed.  In their place is a new script template, <legacyBold>ExtractHtmlInfo.bat</legacyBold>, that runs a new
+tool that extracts TOC and keyword information from the HTML files to produce a better index and TOC with proper
+encoding support for foreign languages for the HTML Help 1 file and a TOC for websites.</para>
+					</listItem>
+
+					<listItem>
+						<para>If a new project is created from a Visual Studio 2008 solution or project, the
+<codeInline>FrameworkVersion</codeInline> property will be set based on the highest target framework specified
+within the Visual Studio project.  This also applies to Visual Studio projects imported by the console mode
+builder.</para>
+					</listItem>
+				</list>
+
+			</content>
+		</section>
+
+		<section address="Conceptual">
+			<title>Conceptual Content Support</title>
+			<content>
+
+				<list class="bullet">
+					<listItem>
+						<para>Support for building conceptual content in addition to reference (API) content has been fully
+integrated into the build process.  The new <codeInline>ConceptualContent</codeInline> property in the
+<legacyBold>Additional and Conceptual Content </legacyBold> property category allows you to manage the conceptual
+content.</para>
+					</listItem>
+
+					<listItem>
+						<para>The current conceptual content editor allows you to add, edit, and delete tokens, images, and
+conceptual topics in the project.  The layout of the conceptual topics in the editor will determine their layout
+in the table of contents when built similar to how the site map works for additional content.  Enhanced design
+support will be added in a later release.</para>
+					</listItem>
+
+					<listItem>
+						<para>Full support for colorized code blocks is included.  Simply specify the <codeInline>code</codeInline>
+elements as you would in XML comments using all of the same options.  This include support for imported code
+blocks.</para>
+					</listItem>
+
+					<listItem>
+						<para>The post-transform component is also supported and thus logos can be added to the conceptual
+topic headers.  The conceptual build shares the same component configurations as the reference build so they will
+maintain the same look.</para>
+					</listItem>
+
+					<listItem>
+						<para>Documentation for conceptual content and its use with the help file builder is rather sparse at
+the moment.  This will also be addressed in a future release.</para>
+					</listItem>
+
+					<listItem>
+						<para>An improved version of the <codeInline>ResolveConceptualLinksComponent</codeInline> has been
+added with the following features and fixes:</para>
+
+						<list class="bullet">
+							<listItem>
+								<para>Broken links use the <legacyBold>None</legacyBold> style rather than the <legacyBold>Index</legacyBold>
+style so that it is apparant that they do not work.</para>
+							</listItem>
+
+							<listItem>
+								<para>The inner text from the conceptual link is used if specified. See the <legacyBold>Potential
+Breaking Changes</legacyBold> section above as this may affect any existing conceptual content that you have.</para>
+							</listItem>
+
+							<listItem>
+								<para>On broken links, when the <codeInline>showBrokenLinkText</codeInline> option is true and
+there is no inner text, the target value is displayed.</para>
+							</listItem>
+
+							<listItem>
+								<para>Conceptual link targets can include an optional anchor name from within the target such as
+"#Name" (i.e. <codeInline>&lt;link xlink:href="3bdb6eb5-5e23-51c2-0051-3e224f82c201#Section2" /&gt;</codeInline>).</para>
+							</listItem>
+
+							<listItem>
+								<para>Unnecessary whitespace is removed from the link text.</para>
+							</listItem>
+
+							<listItem>
+								<para>If the companion file contains a <codeInline>&lt;linkText&gt;</codeInline> element and no
+inner text is specified, its value will be used for the link text rather than the title.  This allows for a
+shorter title or description to use as the default link text.</para>
+							</listItem>
+						</list>
+					</listItem>
+				</list>
+			</content>
+		</section>
+
+		<section address="Deprecated">
+			<title>Additional Content Models Deprecated</title>
+			<content>
+				<para>See the <link xlink:href="5292ce5c-fda1-4a77-9155-a11755ef1730"/> topic for details.</para>
+			</content>
+		</section>
+
+		<section address="OtherChanges">
+			<title>Other Changes in This Release</title>
+			<content>
+
+				<list class="bullet">
+					<listItem>
+						<para>Added support for the <codeInline>&lt;inheritdoc /&gt;</codeInline> XML comments tag. See the
+<link xlink:href="79897974-ffc9-4b84-91a5-e50c66a0221d" /> topic in the help file for details.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added the <codeInline>GenerateInheritedDocumentation</codeInline> build step to handle
+generation of inherited documentation.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added the <codeInline>FeedbackEMailLinkText</codeInline> project property.  If specified with a
+feedback e-mail address, the text in this property will be used as the link text.  If left blank, the e-mail
+address will be used.</para>
+					</listItem>
+
+					<listItem>
+						<para>The <codeInline>BinaryTOC</codeInline> and <codeInline>IncludeFavorites</codeInline> properties
+are now found in their own category in the property grid (<legacyBold>HTML Help 1</legacyBold>).</para>
+					</listItem>
+
+					<listItem>
+						<para>Added the <legacyBold>MS Help 2</legacyBold> property category containing the following new
+project properties:</para>
+
+						<list class="bullet">
+							<listItem>
+								<para><codeInline>CollectionTocStyle</codeInline> - This defines the collection table of contents
+style used when plugged into an MS Help 2 collection.</para>
+							</listItem>
+
+							<listItem>
+								<para><codeInline>HelpAttributes</codeInline> - A collection of additional help attributes to add
+to the XML data island in each generated API topic.</para>
+							</listItem>
+
+							<listItem>
+								<para><codeInline>HelpFileVersion</codeInline> - Specify the version number that should be
+applied to the help file.</para>
+							</listItem>
+
+							<listItem>
+								<para><codeInline>IncludeStopWordList</codeInline> - Indicate whether or not to include the stop
+word list used to identify words to omit from Help 2 full text search index.</para>
+							</listItem>
+
+							<listItem>
+								<para><codeInline>PlugInNamespaces</codeInline> - Specify a comma-separated list of namespaces
+that the collection will be plugged into when deployed using <legacyBold>H2Reg.exe</legacyBold>.</para>
+							</listItem>
+						</list>
+					</listItem>
+
+					<listItem>
+						<para>When performing a build that includes producing an MS Help 2 file, a valid set of collection
+files and a configuration file for <legacyBold>H2Reg.exe</legacyBold> are now produced as well.  They are located
+in the output folder with the help file.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added the project property <codeInline>BuildLogFile</codeInline> that allows you to specify an
+alternate location and name for the build log file.  If not set, it defaults to the filename
+<legacyBold>LastBuild.log</legacyBold> and stores it in the output folder identified by the
+<codeInline>OutputPath</codeInline> project property.</para>
+					</listItem>
+
+					<listItem>
+						<para>The log file is now in XML format to allow for running it through an XSL transform to make it
+more readable.  A default XSL transform is supplied with the GUI (<legacyBold>Templates\TransformBuildLog.xsl</legacyBold>)
+and it is used in the GUI's log viewer dialog.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added the <codeInline>IndentHtml</codeInline> project property as a debugging aid.  When set to
+true, the HTML rendered by <legacyBold>BuildAssembler</legacyBold> is indented to make it more readable.  Leave
+it set to false to produce more compact HTML.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added a <legacyBold>"-vsimport=solution|project,configName"</legacyBold> option to the console
+mode builder that lets you specify a Visual Studio solution or project file from which to import the assemblies
+and XML comments files to document for the named configuration.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added a <legacyBold>"-helpattr=name,value"</legacyBold> option to the console mode builder that
+lets you specify additional MS Help 2 help attribute name/value pairs to add to the XML data island in each API
+topic.</para>
+					</listItem>
+
+					<listItem>
+						<para>The <legacyBold>Namespace Summaries</legacyBold> dialog box has been completely reworked.  It
+now uses a partial build to gather the namespace information which will prevent the "assembly not found" errors
+that could occur due to nested dependencies that could not always be properly detected.  In addition, namespaces
+can now be filtered by assembly and/or by some search text or a regular expression.  A list of assemblies in
+which the selected namespace appears is also shown.</para>
+					</listItem>
+
+					<listItem>
+						<para>If comments for a class called <codeInline>NamespaceDoc</codeInline> within a namespace appear
+in the XML comments files, those comments will be used as the namespace comments.  To keep the class from being
+included in the help file, leave off the <codeInline>public</codeInline> keyword and mark it with a
+<codeInline>CompilerGenerated</codeInline> attribute.  See the <link xlink:href="48f5a893-acde-4e50-8c17-72b83d9c3f9d" />
+help topic for details.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added a new <codeInline>keepSeeTags</codeInline> option to the <legacyBold>Code Block Component</legacyBold>
+that allows <codeInline>&lt;see&gt;</codeInline> tags that appear within the code to be passed through as-is so
+that they are rendered as clickable links to the referenced help topic (project topics or online MSDN topics).
+This option is also supported in additional content files on colorized <codeInline>&lt;pre&gt;</codeInline> tags
+but will only resolve links to project help topics.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added a new <codeInline>filter</codeInline> option to the <legacyBold>Code Block Component</legacyBold>
+that allows you to specify whether or not a code block is connected to the appropriate language filter.  If
+omitted or set to true, it will be connected.  If set to false, it will not be connected.</para>
+					</listItem>
+
+					<listItem>
+						<para>The attribute name <codeInline>language</codeInline> is now recognized by the colorizer and the
+code block component as an acceptable alternative for the <codeInline>lang</codeInline> attribute name.</para>
+					</listItem>
+
+					<listItem>
+						<para>The <codeInline>CodeBlockComponent</codeInline> and <codeInline>PostTransformComponent</codeInline>
+where reworked to allow their use in conceptual content builds.  This allows code blocks in conceptual content
+files to be colorized using the same options as in reference content builds.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added the <legacyBold>MS Help 2 Attributes</legacyBold> component which is used to insert
+additional help attributes into the XML data island in each generated API topic.  Support for this component is
+built into the help file builder via the <codeInline>HelpAttributes</codeInline> project property.</para>
+					</listItem>
+
+					<listItem>
+						<para>Abstract classes that implement the <codeInline>IPlugIn</codeInline> interface are now ignored
+when looking for plug-ins to load.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added the following new plug-ins:</para>
+
+						<list class="bullet">
+							<listItem>
+								<para><link xlink:href="15b6b7be-3778-4487-b524-d558d02e6460" /> - This is used to add additional
+reference link targets to the <legacyBold>Reflection Index Data</legacyBold> and <legacyBold>Resolve Reference
+Links</legacyBold> build components so that links can be created to other third party help in a Help 2 collection
+or to other online MSDN content.</para>
+							</listItem>
+
+							<listItem>
+								<para><link xlink:href="31696f39-8f4e-4c4d-ab08-41a40793df03" /> - This is designed to modify the
+HTML files and alter the build so as to overcome the encoding issues encountered when building HTML Help 1 (.chm)
+files for various foreign languages.</para>
+							</listItem>
+
+							<listItem>
+								<para><link xlink:href="aa7bcd07-1a86-42dc-9f1d-49bd4afeb5d2" /> - This is used to rearrange the
+table of contents such that namespaces are nested within their parent namespaces rather than appearing as a flat
+list of all namespaces at the root level.</para>
+							</listItem>
+
+							<listItem>
+								<para><link xlink:href="93c452fd-71d4-470e-8d27-ec3d979679a4" /> - This is used to fix up the
+reflection file produced from assemblies created by the <legacyBold>Script#</legacyBold> compiler so that they
+are documented correctly.</para>
+							</listItem>
+
+							<listItem>
+								<para><link xlink:href="d0e91b66-135e-446b-9239-c02fcafabd09" /> - This is used to exclude API
+members from the table of contents via the <codeInline>&lt;tocexclude /&gt;</codeInline> XML comment tag.</para>
+							</listItem>
+						</list>
+					</listItem>
+
+					<listItem>
+						<para>The <legacyBold>AjaxDoc Plug-In</legacyBold> now supports the <codeInline>ApiFilter</codeInline>
+property.  Other plug-ins like it that generate their own reflection information can also apply the API filter
+manually by using the new <codeInline>ApplyManualApiFilter</codeInline> method on the <codeInline>BuildProcess</codeInline>
+object.</para>
+					</listItem>
+
+					<listItem>
+						<para>The <legacyBold>Completion Notification</legacyBold> plug-in now supports an optional XSL
+transform filename option.  If specified and the log file is to be attached to the e-mail, the log file is ran
+through the transform and the resulting HTML file is attached in its place.  If not specified, the raw log file
+is attached.  The default transform can be used by specifying <legacyBold>{@SHFBFolder}Templates\TransformBuildLog.xsl</legacyBold>.</para>
+					</listItem>
+
+					<listItem>
+						<para>The <legacyBold>Output Deployment</legacyBold> plug-in now correctly supports relative file
+paths for the deployment locations.  Relative file paths will be relative to the project file folder.</para>
+					</listItem>
+
+					<listItem>
+						<para>The table of contents entries for additional content items can now be split such that some
+appear before and some after the API topics.  The <codeInline>ContentPlacement</codeInline> property's setting
+will be ignored if the table of contents is split via a <link xlink:href="54de66c4-a57a-4bfc-9eb6-bd9e6fb56589">custom tag</link>
+in one of the additional content files or a <link xlink:href="3dd5fe3b-1bc3-42e5-8900-56165e3f9aed">site map</link>
+is defined that specifies a split table of contents.  In such cases, items prior to the entry with the "split"
+option will appear before the API content.  The item with the "split" option and all items after it will appear
+below the API content.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed a bug in the component configuration merging code that could cause the wrong component
+configuration to be replaced when more than one instance of the same component appeared in the project
+configuration.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed a bug in <codeInline>ShowMissingComponent</codeInline> that caused the link in
+auto-documented constructors to point to the constructor topic rather than the class topic.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated the <codeInline>ShowMissingComponent</codeInline> so that it auto-documents
+constructors on the class's member and overloads list pages as well.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added the <codeInline>ShowMissingTypeParams</codeInline> project property.  When set to true
+(the default), it will show a "missing" message if generic type or method type parameter documentation is
+missing.  This maps to the equivalent parameter added to the <codeInline>ShowMissingComponent</codeInline>.</para>
+					</listItem>
+
+					<listItem>
+						<para>The <codeInline>IntelliSenseComponent</codeInline>, <codeInline>PostTransformComponent</codeInline>,
+and <codeInline>VersionInfoComponent</codeInline> were updated to handle multiple assembly references in an API
+topic.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed a bug in the <codeInline>PostTransformComponent</codeInline> that caused the VS2005
+member list pages to be layed out incorrectly when using a logo and the version builder's framework menu was
+present.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed a bug in the code colorizer rules for "//" style line comments that contained a "/*"
+which was incorrectly interpretted as the start of a block comment.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the XML colorizer rules so that they recognize string literals that span lines.</para>
+					</listItem>
+
+					<listItem>
+						<para>The code block component and additional content files can now extract commented regions from
+within XML, XAML, and SQL scripts.  Just surround the snippet with comment lines containing
+<codeInline>#region</codeInline> and <codeInline>#endregion</codeInline> markers.</para>
+					</listItem>
+
+					<listItem>
+						<para>All logo placement options are now supported by the default topic transformation files.</para>
+					</listItem>
+
+					<listItem>
+						<para>If <codeInline>&lt;MSHelp:Keyword Index="K" Term="[term]" /&gt;</codeInline> tags exist in the
+XML data island in additional content files, the terms will now appear in the CHM file's index.  The SHFB help
+file's additional content is now indexed using this method.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed a JavaScript error in the website output that occurred if the full text search did not
+find any results.</para>
+					</listItem>
+
+					<listItem>
+						<para>The <legacyBold>Index.aspx</legacyBold> page now supports a <codeInline>topic</codeInline>
+query string parameter.  If set to the path of a page in the website, it will display that page instead of the
+normal default topic page.</para>
+					</listItem>
+
+					<listItem>
+						<para>Thanks to Ferdinand Prantl for supplying the code necessary to add a keyword index pane to the
+ASP.NET index page.</para>
+					</listItem>
+
+					<listItem>
+						<para>Thanks to TimerLandChapel for providing additional translations for the Japanese content files.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added some more common problems and solutions to the FAQ.</para>
+					</listItem>
+
+					<listItem>
+						<para>The entire project is now licensed using the
 <link xlink:href="24504fda-d3ef-4dd9-8335-6db8b25d00f2">Microsoft Public License (Ms-PL)</link> to match the
-license used by Sandcastle itself.</listItem>
-</list>
+license used by Sandcastle itself.</para>
+					</listItem>
+				</list>
 
-  </content>
-</section>
+			</content>
+		</section>
 
-<section address="DocWebSites">
-  <title>Documenting Website Projects</title>
-  <content><para>A set of custom code providers is now available that
-simplifies obtaining XML comments files for C# and VB.NET website projects.  In
-combination with the new wildcard support in the help file builder's Assemblies
-to Document list, producing a help file for websites is now a much simpler
-task. Use the custom code providers available as part of the Sandcastle tools installer.</para>
-  </content>
-</section>
+		<section address="DocWebSites">
+			<title>Documenting Website Projects</title>
+			<content>
+				<para>A set of custom code providers is now available that simplifies obtaining XML comments files for C#
+and VB.NET website projects.  In combination with the new wildcard support in the help file builder's Assemblies
+to Document list, producing a help file for websites is now a much simpler task. Use the custom code providers
+available as part of the Sandcastle tools installer.</para>
+			</content>
+		</section>
 
-    <relatedTopics>
-    <link xlink:href="6110ac54-04d8-4624-8a2b-2a58af63c20d" />
-    </relatedTopics>
-  </developerConceptualDocument>
+		<relatedTopics>
+			<link xlink:href="6110ac54-04d8-4624-8a2b-2a58af63c20d" />
+		</relatedTopics>
+	</developerConceptualDocument>
 </topic>

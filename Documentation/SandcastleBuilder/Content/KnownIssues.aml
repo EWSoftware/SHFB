@@ -72,14 +72,6 @@ release.  As it is a brand new style, it has not been fully tested so expect to 
 be resolved as they are found.</para>
 					</listItem>
 
-					<listItem>
-						<para>Due to the help formats each loading their own copies of several of the build components and
-outputing a separate copy of the HTML output file, there can be a significant increase in the amount of memory
-and disk space used during a build that generates more than one output format. If this is an issue, you may need
-to build each help format separately. This issue may be addressed in a future release of the help file builder
-with components that are format aware and only need to be loaded once.</para>
-					</listItem>
-
 				</list>
       </content>
     </section>
@@ -119,32 +111,34 @@ documentation sources.</para>
 
 					<listItem>
 						<para>The display of editor windows, the Properties window, or the Preview window sometimes gets
-corrupted such that the content area disappears or is not sized correctly in the tabbed area of the UI. Selecting
-a different file tab and switching back to the affected tab, closing and reopening the affected file/window, or
-resizing the width of a docked window to force a repaint will work around the issue.</para>
+corrupted such that the content area disappears or is not sized correctly in the tabbed area of the standalone
+GUI.  Selecting a different file tab and switching back to the affected tab, closing and reopening the affected
+file/window, or resizing the width of a docked window to force a repaint will work around the issue.</para>
 					</listItem>
 
 					<listItem>
-						<para>Renaming a folder or file in the Project Explorer will not rename any open document editors
-associated with the renamed folder or file.  If necessary, do a <ui>File | Save As</ui> to save it in the right
-location or just close and reopen the file if it has not been changed.</para>
+						<para>Renaming a folder or file in the Project Explorer in the standalone GUI will not rename any
+open document editors associated with the renamed folder or file.  If necessary, do a <ui>File | Save As</ui> to
+save it in the right location or just close and reopen the file if it has not been changed.</para>
 					</listItem>
 
 					<listItem>
-						<para>A standard tree control is used in the Project Explorer window and does not allow selection of
-multiple tree nodes.  As such, all operations within it only affect the currently selected node.</para>
+						<para>A standard tree control is used in the Project Explorer window in the standalone GUI and does
+not allow selection of multiple tree nodes.  As such, all operations within it only affect the currently selected
+node.</para>
 					</listItem>
 
 					<listItem>
-						<para>When doing search and replace in a text editor window, the highlight on the found text is not
-always retained when doing a subsequent search/replace.  The cursor is positioned correctly though.</para>
+						<para>When doing search and replace in a text editor window in the standalone GUI, the highlight on
+the found text is not always retained when doing a subsequent search/replace.  The cursor is positioned correctly
+though.</para>
 					</listItem>
 
 					<listItem>
-						<para>When using the dropdown on the editor window's "various elements" toolbar button (shows
-<ui>alert</ui> as the default action when first opened), the cursor occassionally disappears from the editor
-window after the dropdown closes even though it has the focus and text can be entered.  Change the focus to
-another window and back to restore it.</para>
+						<para>In the standlone GUI, when using the dropdown on the editor window's "various elements" toolbar
+button (shows <ui>alert</ui> as the default action when first opened), the cursor occassionally disappears from
+the editor window after the dropdown closes even though it has the focus and text can be entered.  Change the
+focus to another window and back to restore it.</para>
 					</listItem>
 
 				</list>

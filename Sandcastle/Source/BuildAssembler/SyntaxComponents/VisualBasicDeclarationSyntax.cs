@@ -16,10 +16,17 @@ using System.Xml.XPath;
 
 namespace Microsoft.Ddue.Tools
 {
+    /// <summary>
+    /// This class generates declaration syntax sections for Visual Basic
+    /// </summary>
     public sealed class VisualBasicDeclarationSyntaxGenerator : SyntaxGeneratorTemplate
     {
         private bool includeLineContinuation;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="configuration">The syntax generator configuration</param>
         public VisualBasicDeclarationSyntaxGenerator(XPathNavigator configuration) : base(configuration)
         {
             string lineCont = configuration.GetAttribute("includeLineContinuation", String.Empty);
@@ -31,7 +38,7 @@ namespace Microsoft.Ddue.Tools
                 Language = "VisualBasic";
         }
 
-        // namespace: done
+        /// <inheritdoc />
         public override void WriteNamespaceSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             string name = (string)reflection.Evaluate(apiNameExpression);
@@ -41,7 +48,7 @@ namespace Microsoft.Ddue.Tools
             writer.WriteIdentifier(name);
         }
 
-        // class: done
+        /// <inheritdoc />
         public override void WriteClassSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
 
@@ -82,7 +89,7 @@ namespace Microsoft.Ddue.Tools
             WriteImplementedInterfaces(reflection, writer);
         }
 
-        // structure: add base type
+        /// <inheritdoc />
         public override void WriteStructureSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
 
@@ -101,7 +108,7 @@ namespace Microsoft.Ddue.Tools
             WriteImplementedInterfaces(reflection, writer);
         }
 
-        // interface: done
+        /// <inheritdoc />
         public override void WriteInterfaceSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
 
@@ -117,7 +124,7 @@ namespace Microsoft.Ddue.Tools
             WriteImplementedInterfaces(reflection, writer);
         }
 
-        // delegate: done
+        /// <inheritdoc />
         public override void WriteDelegateSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             if(IsUnsupportedUnsafe(reflection, writer))
@@ -156,15 +163,15 @@ namespace Microsoft.Ddue.Tools
 
         }
 
-        // enumeration: done
+        /// <inheritdoc />
         public override void WriteEnumerationSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
-
             string name = (string)reflection.Evaluate(apiNameExpression);
             bool isSerializable = (bool)reflection.Evaluate(apiIsSerializableTypeExpression);
 
             if(isSerializable)
                 WriteAttribute("T:System.SerializableAttribute", writer);
+
             WriteAttributes(reflection, writer);
             WriteVisibility(reflection, writer);
             writer.WriteString(" ");
@@ -173,7 +180,7 @@ namespace Microsoft.Ddue.Tools
             writer.WriteIdentifier(name);
         }
 
-        // constructor: done
+        /// <inheritdoc />
         public override void WriteConstructorSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             if(IsUnsupportedUnsafe(reflection, writer))
@@ -195,10 +202,9 @@ namespace Microsoft.Ddue.Tools
             writer.WriteString(" ");
             writer.WriteIdentifier("New");
             WriteParameters(reflection, writer);
-
         }
 
-
+        /// <inheritdoc />
         public override void WriteNormalMethodSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             // !EFW - Added unsafe check
@@ -235,7 +241,7 @@ namespace Microsoft.Ddue.Tools
             }
             if(isExplicit)
             {
-                if(writer.Position > maxPosition)
+                if(writer.Position > MaxPosition)
                 {
                     writer.WriteLine();
                     writer.WriteString("\t");
@@ -262,6 +268,7 @@ namespace Microsoft.Ddue.Tools
 
         }
 
+        /// <inheritdoc />
         public override void WriteOperatorSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
 
@@ -404,11 +411,13 @@ namespace Microsoft.Ddue.Tools
             WriteTypeReference(type, writer);
         }
 
+        /// <inheritdoc />
         public override void WriteCastSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             WriteOperatorSyntax(reflection, writer);
         }
 
+        /// <inheritdoc />
         public override void WritePropertySyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             if(IsUnsupportedUnsafe(reflection, writer))
@@ -452,7 +461,7 @@ namespace Microsoft.Ddue.Tools
 
             if(isExplicit)
             {
-                if(writer.Position > maxPosition)
+                if(writer.Position > MaxPosition)
                 {
                     writer.WriteLine();
                     writer.WriteString("\t");
@@ -531,6 +540,7 @@ namespace Microsoft.Ddue.Tools
             }
         }
 
+        /// <inheritdoc />
         public override void WriteEventSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             // !EFW - Added unsafe check
@@ -557,7 +567,7 @@ namespace Microsoft.Ddue.Tools
             bool isExplicit = (bool)reflection.Evaluate(apiIsExplicitImplementationExpression);
             if(isExplicit)
             {
-                if(writer.Position > maxPosition)
+                if(writer.Position > MaxPosition)
                 {
                     writer.WriteLine();
                     writer.WriteString("\t");
@@ -586,7 +596,6 @@ namespace Microsoft.Ddue.Tools
 
         private static void WriteProcedureModifiers(XPathNavigator reflection, SyntaxWriter writer)
         {
-
             // interface members don't get modified
             string typeSubgroup = (string)reflection.Evaluate(apiContainingTypeSubgroupExpression);
             if(typeSubgroup == "interface")
@@ -637,6 +646,7 @@ namespace Microsoft.Ddue.Tools
 
         }
 
+        /// <inheritdoc />
         public override void WriteFieldSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             if(IsUnsupportedUnsafe(reflection, writer))
@@ -761,7 +771,7 @@ namespace Microsoft.Ddue.Tools
                         if(arguments.CurrentPosition > 1)
                         {
                             writer.WriteString(", ");
-                            if(writer.Position > maxPosition)
+                            if(writer.Position > MaxPosition)
                             {
                                 if(includeLineContinuation)
                                     writer.WriteString(" _");
@@ -784,7 +794,7 @@ namespace Microsoft.Ddue.Tools
                         if(assignments.CurrentPosition > 1)
                         {
                             writer.WriteString(", ");
-                            if(writer.Position > maxPosition)
+                            if(writer.Position > MaxPosition)
                             {
                                 if(includeLineContinuation)
                                     writer.WriteString(" _");
@@ -956,7 +966,7 @@ namespace Microsoft.Ddue.Tools
                 {
                     writer.WriteString(", ");
 
-                    if(writer.Position > maxPosition)
+                    if(writer.Position > MaxPosition)
                     {
                         if(includeLineContinuation)
                             writer.WriteString(" _");

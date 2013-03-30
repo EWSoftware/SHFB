@@ -200,9 +200,14 @@ specified, a default priority of 1,000 is used.</para>
 </section>
 
 <section address="ConfigurePlugIn">
-  <title>ConfigurePlugIn</title>
+  <title>SupportsConfiguration and ConfigurePlugIn</title>
   <content>
-		<para>The <codeEntityReference qualifyHint="false" autoUpgrade="true">M:SandcastleBuilder.Utils.PlugIn.IPlugIn.ConfigurePlugIn(SandcastleBuilder.Utils.SandcastleProject,System.String)</codeEntityReference>
+		<para>The <codeEntityReference qualifyHint="false" autoUpgrade="true">P:SandcastleBuilder.Utils.PlugIn.IPlugIn.SupportsConfiguration</codeEntityReference>
+property is used to indicate whether or not your plug-in supports editing of its configuration information.
+Return true to allow configuration or false if it does not support configuration.</para>
+		
+		<para>If it supports configuration, the
+<codeEntityReference qualifyHint="false" autoUpgrade="true">M:SandcastleBuilder.Utils.PlugIn.IPlugIn.ConfigurePlugIn(SandcastleBuilder.Utils.SandcastleProject,System.String)</codeEntityReference>
 method is used to configure the plug-in interactively from within the help file builder.  The method is passed a
 string containing the XML fragment that defines the current configuration. It should return a copy of the edited
 configuration.</para>

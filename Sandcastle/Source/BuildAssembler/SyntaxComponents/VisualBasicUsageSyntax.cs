@@ -15,10 +15,17 @@ using System.Xml.XPath;
 
 namespace Microsoft.Ddue.Tools
 {
+    /// <summary>
+    /// This class generates usage syntax sections for Visual Basic
+    /// </summary>
     public sealed class VisualBasicUsageSyntaxGenerator : SyntaxGeneratorTemplate
     {
         private bool includeLineContinuation;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="configuration">The configuration for the syntax generator</param>
         public VisualBasicUsageSyntaxGenerator(XPathNavigator configuration) : base(configuration)
         {
             string lineCont = configuration.GetAttribute("includeLineContinuation", String.Empty);
@@ -30,6 +37,7 @@ namespace Microsoft.Ddue.Tools
                 Language = "VisualBasicUsage";
         }
 
+        /// <inheritdoc />
         public override void WriteNamespaceSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             string name = (string)reflection.Evaluate(apiNameExpression);
@@ -136,6 +144,7 @@ namespace Microsoft.Ddue.Tools
             writer.WriteLine();
         }
 
+        /// <inheritdoc />
         public override void WriteClassSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             bool isAbstract = (bool)reflection.Evaluate(apiIsAbstractTypeExpression);
@@ -147,16 +156,19 @@ namespace Microsoft.Ddue.Tools
                 TypeDeclaration(reflection, writer);
         }
 
+        /// <inheritdoc />
         public override void WriteStructureSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             TypeDeclaration(reflection, writer);
         }
 
+        /// <inheritdoc />
         public override void WriteInterfaceSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             TypeDeclaration(reflection, writer, true);  // Need to write variance info for interfaces and delegates
         }
 
+        /// <inheritdoc />
         public override void WriteDelegateSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             if(IsUnsupportedUnsafe(reflection, writer))
@@ -190,11 +202,13 @@ namespace Microsoft.Ddue.Tools
             writer.WriteString(" HandlerMethod)");
         }
 
+        /// <inheritdoc />
         public override void WriteEnumerationSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             TypeDeclaration(reflection, writer);
         }
 
+        /// <inheritdoc />
         public override void WriteFieldSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             if(IsUnsupportedUnsafe(reflection, writer))
@@ -261,6 +275,7 @@ namespace Microsoft.Ddue.Tools
 
         }
 
+        /// <inheritdoc />
         public override void WriteConstructorSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             if(IsUnsupportedUnsafe(reflection, writer))
@@ -295,6 +310,7 @@ namespace Microsoft.Ddue.Tools
             WriteMethodParameters(reflection, writer);
         }
 
+        /// <inheritdoc />
         public override void WriteMethodSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             if(IsUnsupportedUnsafe(reflection, writer))
@@ -304,6 +320,7 @@ namespace Microsoft.Ddue.Tools
             base.WriteMethodSyntax(reflection, writer);
         }
 
+        /// <inheritdoc />
         public override void WriteNormalMethodSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             bool isExtension = (bool)reflection.Evaluate(apiIsExtensionMethod);
@@ -421,6 +438,7 @@ namespace Microsoft.Ddue.Tools
 
         }
 
+        /// <inheritdoc />
         public override void WriteOperatorSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             string name = (string)reflection.Evaluate(apiNameExpression);
@@ -614,6 +632,7 @@ namespace Microsoft.Ddue.Tools
 
         }
 
+        /// <inheritdoc />
         public override void WriteCastSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             XPathNavigator parameter = reflection.SelectSingleNode(apiParametersExpression);
@@ -637,6 +656,7 @@ namespace Microsoft.Ddue.Tools
             writer.WriteString(")");
         }
 
+        /// <inheritdoc />
         public override void WritePropertySyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             if(IsUnsupportedUnsafe(reflection, writer))
@@ -687,6 +707,7 @@ namespace Microsoft.Ddue.Tools
 
         }
 
+        /// <inheritdoc />
         public override void WriteEventSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             // !EFW - Added unsafe check
@@ -767,7 +788,7 @@ namespace Microsoft.Ddue.Tools
                 {
                     writer.WriteString(", ");
 
-                    if(writer.Position > maxPosition)
+                    if(writer.Position > MaxPosition)
                     {
                         if(includeLineContinuation)
                             writer.WriteString("_");

@@ -432,9 +432,6 @@
             <Component Id="cmpAAC328CE8B0DEBCF56433ABBF3230051" Guid="{AC35CB55-1389-4B10-A05D-AC5A6D11F4F9}">
               <File Id="filB2FC33CAD90DAF2637190E21636BDB42" KeyPath="yes" Source="$(var.RootFolder)\Presentation\hana\transforms\main_conceptual.xsl" />
             </Component>
-            <Component Id="cmp074D4EFC45A7317E8C148F95B14E319F" Guid="{6FBCD657-B555-4727-A0D3-7B21AD91F517}">
-              <File Id="fil472AB21F2BE593DF5CEAEF6E97EA8C38" KeyPath="yes" Source="$(var.RootFolder)\Presentation\hana\transforms\main_reference.xsl" />
-            </Component>
             <Component Id="cmpD858F0C0D5F1D221D000CAFFF3976425" Guid="{522F2F95-9565-46A1-BDBC-38FA5AD33A42}">
               <File Id="filFF743C45BB5A77DF1AA143D1837BAC44" KeyPath="yes" Source="$(var.RootFolder)\Presentation\hana\transforms\main_sandcastle.xsl" />
             </Component>
@@ -475,20 +472,11 @@
             <Component Id="cmp4B6EFCDD8D4D8FDDC0EF09E64DFF6AA9" Guid="{354F0EB3-8881-4B76-AAE0-53A27B75F49A}">
               <File Id="fil84284506CDCC54587AEE74E87BF1EE76" KeyPath="yes" Source="$(var.RootFolder)\Presentation\Prototype\configuration\conceptual.config" />
             </Component>
-            <Component Id="cmp9F97CAA0FF2918A708EFEA1D44384E06" Guid="{71AA5179-2A66-495F-8B7C-69FD9227E075}">
-              <File Id="fil6463C2C6199F2659E032753843ABD105" KeyPath="yes" Source="$(var.RootFolder)\Presentation\Prototype\configuration\reference-core.config" />
-            </Component>
-            <Component Id="cmp1BEE7337D9D10FD150040120E888BD0A" Guid="{40A3FC9B-686D-4145-B1C8-467026E1729F}">
-              <File Id="fil98E2C07F114F7A5AC93D516FAAEE9405" KeyPath="yes" Source="$(var.RootFolder)\Presentation\Prototype\configuration\reference.config" />
-            </Component>
             <Component Id="cmp4E56D92AE5827A0B01529D7C1FEBA7BA" Guid="{A42B40E5-7636-4854-BB91-56A775E93D4A}">
               <File Id="fil78D9BAC6E959F9E9B678FD9D85CFB878" KeyPath="yes" Source="$(var.RootFolder)\Presentation\Prototype\configuration\sandcastle-scbuild.config" />
             </Component>
             <Component Id="cmp4CC43A7AFABEC7A5F35B1E1EA5252B92" Guid="{825B7FBB-AC43-4D61-971E-9EA35D8AFF8A}">
               <File Id="filE799170970D8F2C5BA6347EC87A71EFE" KeyPath="yes" Source="$(var.RootFolder)\Presentation\Prototype\configuration\sandcastle.config" />
-            </Component>
-            <Component Id="cmp32C4B9AA7393448E414B57B620649B5D" Guid="{1E654D96-4AFE-4ECA-9D99-8FBAFF3B0A99}">
-              <File Id="filF329621F9893099D7F9D111CA88B50F4" KeyPath="yes" Source="$(var.RootFolder)\Presentation\Prototype\configuration\schema.config" />
             </Component>
           </Directory>
           <Directory Id="dir0014F1771379AB14F8DE9AC43660AC70" Name="content">
@@ -682,14 +670,8 @@
             <Component Id="cmp6BD86D1A3870A8DC157EF69D6F2739B8" Guid="{B74B1885-E122-4738-AF9E-3DB2CE93DC33}">
               <File Id="fil31F80F09761A378E148A9E057F2D1BA8" KeyPath="yes" Source="$(var.RootFolder)\Presentation\Prototype\transforms\main_conceptual.xsl" />
             </Component>
-            <Component Id="cmp1342BF3C326EFE36FDF17F3EB5C1AE5E" Guid="{2EBF78F6-122F-437F-A7BE-A201CBC47D73}">
-              <File Id="fil8C1D204560F31FA469D50A0CEFAD517B" KeyPath="yes" Source="$(var.RootFolder)\Presentation\Prototype\transforms\main_reference.xsl" />
-            </Component>
             <Component Id="cmp0108A5E6C56C2DA5DBE45CEA02F181C6" Guid="{D583390B-D7ED-479F-9B21-D1E6F8A726C2}">
               <File Id="fil85EF388AA308A26F2C714F9793F61622" KeyPath="yes" Source="$(var.RootFolder)\Presentation\Prototype\transforms\main_sandcastle.xsl" />
-            </Component>
-            <Component Id="cmpEB1F6A71C54F52AECA41CF87DF4870C6" Guid="{45ED42B2-64A9-4392-B637-9A39B2F7370B}">
-              <File Id="fil81A2A4C2ABABC5A838B50B24979D3E9A" KeyPath="yes" Source="$(var.RootFolder)\Presentation\Prototype\transforms\main_schema.xsl" />
             </Component>
             <Component Id="cmpCD39D37287930AA22FC44061316563C9" Guid="{84EDC972-5B27-4571-A0B8-1EAD47768EE4}">
               <File Id="fil0AA575C571259B356B8E4EB472B74D9E" KeyPath="yes" Source="$(var.RootFolder)\Presentation\Prototype\transforms\reference_common.xsl" />
@@ -763,15 +745,6 @@
           <Directory Id="dir659BD9252C5AE2899715268DB8FEFA3C" Name="configuration">
             <Component Id="cmp59093854D00452EF5BEEBEEB04A2E5E8" Guid="{30BC136A-8B76-4D00-ADC9-A659DB7D72BC}">
               <File Id="filDEC1D77E0EC83B7E3F034C4D7F4067C9" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2005\configuration\conceptual.config" />
-            </Component>
-            <Component Id="cmp39B7ACAC9F1965B9FC03CDBD9AA5C92D" Guid="{65C562AB-D69C-409F-A0D9-2E52E48952B2}">
-              <File Id="filB03E185A7C552A67A5EAE20C24758B18" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2005\configuration\reference-core-componentized.config" />
-            </Component>
-            <Component Id="cmp879BD416AB7002282A4C97191415CEF3" Guid="{EF4E5567-3C6A-4A44-844B-910F0CB53E18}">
-              <File Id="fil762FDA5C3841ECB5290FD6C1A576022B" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2005\configuration\reference-core.config" />
-            </Component>
-            <Component Id="cmpAA56DF58FDFD6A1BD9949A5992F5C427" Guid="{C35FE4F7-6148-4371-8C76-C4A354437943}">
-              <File Id="filF497571DBB2966158705167B84BD0A2B" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2005\configuration\reference.config" />
             </Component>
             <Component Id="cmp40957E9F8E4E4D4530793CE9097F80CC" Guid="{03EA91B5-FB0F-4EDC-9AC5-C938F314EF3C}">
               <File Id="filCD306E2576CF2DD23A23C4279ABBCA09" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2005\configuration\sandcastle-mshc.config" />
@@ -1214,9 +1187,6 @@
             <Component Id="cmpFBAF1ADFDDF4BD5D8EC74020F6E6DEC0" Guid="{F1A312EB-7CCD-4A63-BC71-40C50D951BA4}">
               <File Id="filBB9FBBA1CFD89B104C4F39B1EC382B2F" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2005\transforms\main_conceptual.xsl" />
             </Component>
-            <Component Id="cmp2BE2472BD2387AFF36AFF3C0E4471648" Guid="{CEE3B5C6-4A99-410E-8E98-CDC0125ECCFD}">
-              <File Id="fil60FD29F491568EF7DA39B5940DE864B4" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2005\transforms\main_reference.xsl" />
-            </Component>
             <Component Id="cmp51925A396C963D078BB88EE9DB057189" Guid="{9B3B2E04-1D37-4511-BD6F-E6ED8AB6CD04}">
               <File Id="fil97272528CA71C3DE1753860E9FE1B90A" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2005\transforms\main_sandcastle.xsl" />
             </Component>
@@ -1377,15 +1347,6 @@
           <Directory Id="dir1B1FFF20F08F93FBA5E51F05D01B1FA2" Name="configuration">
             <Component Id="cmp72A1CAB3212B66B5E445B66C751EFD8D" Guid="{396DA892-C19C-4EA3-BCEE-DA94476ABF4F}">
               <File Id="fil236C486F7855E50F4BD9E077B998DCE0" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2010\configuration\conceptual.config" />
-            </Component>
-            <Component Id="cmp689904FA94C25DB03C97FF3C7CF1123A" Guid="{AD0C4693-94E5-4F65-9C35-B994D6340FEB}">
-              <File Id="fil771B88859DF8E62CBFAEB82005C2FAD5" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2010\configuration\reference-core-componentized.config" />
-            </Component>
-            <Component Id="cmpDB5A5601E43CAE02ADFAA31D6B7B6003" Guid="{FA7DA6CE-2E8F-441D-8157-0D06EB9C6A1C}">
-              <File Id="fil98104C9CE54FD3E0E7B48A609B3AB77E" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2010\configuration\reference-core.config" />
-            </Component>
-            <Component Id="cmp5CA0672A6D44A9EEF55E8C2236B42413" Guid="{36931A46-3332-4759-8776-19A8BEB3FB67}">
-              <File Id="filC80929F78E849D40CE90F22A0E287E08" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2010\configuration\reference.config" />
             </Component>
             <Component Id="cmp29E84C223259250DE06F9620625DD2AF" Guid="{6CFF53C1-68B1-4F42-8100-618FCD13D503}">
               <File Id="filB37F757AFBBCB6D90CD47E8A5157F9DD" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2010\configuration\sandcastle-mshc.config" />
@@ -1692,9 +1653,6 @@
             <Component Id="cmpE007977BCA9A4A41F3D1007BF31F2F8D" Guid="{9C99346E-B48F-4514-92C3-A467742D8CD9}">
               <File Id="filB0B829994C4B69AE2204FCC872FE0853" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2010\transforms\main_conceptual.xsl" />
             </Component>
-            <Component Id="cmp91CEFD9B21B8A8D80F247F7237BD07CA" Guid="{DCD5B6C4-019A-4C63-93AF-A4BD7B7CCB4C}">
-              <File Id="filD007024021D1700D9B79B58E064E8FC4" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2010\transforms\main_reference.xsl" />
-            </Component>
             <Component Id="cmpDE5201AB1FC26616212A85E39A4D166D" Guid="{6F1EF5EA-5BE4-471B-B45D-A354CF45152B}">
               <File Id="fil0A81910C492AD82E1BAC886A3D29A74F" KeyPath="yes" Source="$(var.RootFolder)\Presentation\vs2010\transforms\main_sandcastle.xsl" />
             </Component>
@@ -1895,7 +1853,6 @@
       <ComponentRef Id="cmpD60735D5F11187ED083F88265F4C3615" />
       <ComponentRef Id="cmpF1B7CFE5AC85EB5EE2DD929D7199802E" />
       <ComponentRef Id="cmpAAC328CE8B0DEBCF56433ABBF3230051" />
-      <ComponentRef Id="cmp074D4EFC45A7317E8C148F95B14E319F" />
       <ComponentRef Id="cmpD858F0C0D5F1D221D000CAFFF3976425" />
       <ComponentRef Id="cmpC84E7F991E9541EA6A34352C87303B0C" />
       <ComponentRef Id="cmp7D96902DDFC1624D455FCD088EA0BB4E" />
@@ -1908,11 +1865,8 @@
       <ComponentRef Id="cmp2623A10B0BCFCA283B391FF96F3254BB" />
       <ComponentRef Id="cmp6FB2DB95474AB71B6420D81D3FBBD42C" />
       <ComponentRef Id="cmp4B6EFCDD8D4D8FDDC0EF09E64DFF6AA9" />
-      <ComponentRef Id="cmp9F97CAA0FF2918A708EFEA1D44384E06" />
-      <ComponentRef Id="cmp1BEE7337D9D10FD150040120E888BD0A" />
       <ComponentRef Id="cmp4E56D92AE5827A0B01529D7C1FEBA7BA" />
       <ComponentRef Id="cmp4CC43A7AFABEC7A5F35B1E1EA5252B92" />
-      <ComponentRef Id="cmp32C4B9AA7393448E414B57B620649B5D" />
       <ComponentRef Id="cmpB2C8DE6893A2B28BDA061FFD2E8E985C" />
       <ComponentRef Id="cmp0FF5BB66D35E5650BBD799E8DA4F218A" />
       <ComponentRef Id="cmp1B1C19D74C544353D68943C9D71E12E8" />
@@ -1973,9 +1927,7 @@
       <ComponentRef Id="cmp10BC870C446B93B27BDF852BFA7FE022" />
       <ComponentRef Id="cmpD7A498FBCC661C1952C8FCDA6AC7C1DB" />
       <ComponentRef Id="cmp6BD86D1A3870A8DC157EF69D6F2739B8" />
-      <ComponentRef Id="cmp1342BF3C326EFE36FDF17F3EB5C1AE5E" />
       <ComponentRef Id="cmp0108A5E6C56C2DA5DBE45CEA02F181C6" />
-      <ComponentRef Id="cmpEB1F6A71C54F52AECA41CF87DF4870C6" />
       <ComponentRef Id="cmpCD39D37287930AA22FC44061316563C9" />
       <ComponentRef Id="cmp0893A0D7A1561C29E52D8C22CCEE4810" />
       <ComponentRef Id="cmp8CC48A612A033680829F8B21E25E863B" />
@@ -1997,9 +1949,6 @@
       <ComponentRef Id="cmpCE0DAC66103330E326A6DB3F3F2AF237" />
       <ComponentRef Id="cmpC9268EBECD5A7876C8359CC971CF25B9" />
       <ComponentRef Id="cmp59093854D00452EF5BEEBEEB04A2E5E8" />
-      <ComponentRef Id="cmp39B7ACAC9F1965B9FC03CDBD9AA5C92D" />
-      <ComponentRef Id="cmp879BD416AB7002282A4C97191415CEF3" />
-      <ComponentRef Id="cmpAA56DF58FDFD6A1BD9949A5992F5C427" />
       <ComponentRef Id="cmp40957E9F8E4E4D4530793CE9097F80CC" />
       <ComponentRef Id="cmp2D8958B8C941C7717012E94FE0E9D16C" />
       <ComponentRef Id="cmp18AC2AB62603B96502B1D885FD6E1CD9" />
@@ -2141,7 +2090,6 @@
       <ComponentRef Id="cmp78EAF8CF349377E4D264DF115AEC0C95" />
       <ComponentRef Id="cmp34E1B2FF28F77F4006363BA897EE1D13" />
       <ComponentRef Id="cmpFBAF1ADFDDF4BD5D8EC74020F6E6DEC0" />
-      <ComponentRef Id="cmp2BE2472BD2387AFF36AFF3C0E4471648" />
       <ComponentRef Id="cmp51925A396C963D078BB88EE9DB057189" />
       <ComponentRef Id="cmp40B6A8E6CDBF6870B0AE90208471538E" />
       <ComponentRef Id="cmp869586CB097C0E436587A351EEE5B0FF" />
@@ -2193,9 +2141,6 @@
       <ComponentRef Id="cmp173B5EBA89497E54514ED00908890041" />
       <ComponentRef Id="cmpFA5AB6F6C081AC61A8AE2DBB3E97E80B" />
       <ComponentRef Id="cmp72A1CAB3212B66B5E445B66C751EFD8D" />
-      <ComponentRef Id="cmp689904FA94C25DB03C97FF3C7CF1123A" />
-      <ComponentRef Id="cmpDB5A5601E43CAE02ADFAA31D6B7B6003" />
-      <ComponentRef Id="cmp5CA0672A6D44A9EEF55E8C2236B42413" />
       <ComponentRef Id="cmp29E84C223259250DE06F9620625DD2AF" />
       <ComponentRef Id="cmp5E2A85F89C4720AD2C9A9D90FE22A593" />
       <ComponentRef Id="cmpE1E46D2DE5414CF636302B64B7BBB12F" />
@@ -2293,7 +2238,6 @@
       <ComponentRef Id="cmp7273F179DDD48E28E699E11CF21E64ED" />
       <ComponentRef Id="cmpC0F9B87524908DFE8E78F9B8FA556FA0" />
       <ComponentRef Id="cmpE007977BCA9A4A41F3D1007BF31F2F8D" />
-      <ComponentRef Id="cmp91CEFD9B21B8A8D80F247F7237BD07CA" />
       <ComponentRef Id="cmpDE5201AB1FC26616212A85E39A4D166D" />
       <ComponentRef Id="cmpC436931DD404D56845DB2258D680E274" />
       <ComponentRef Id="cmpB7BC49144642BA26C2F59F8A0C482214" />

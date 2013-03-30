@@ -5,168 +5,121 @@
     xmlns:xlink="http://www.w3.org/1999/xlink">
 
 		<introduction>
-			<para>There are three custom build components that can be used to cache some key information and
-potentially speed up the <codeInline>BuildAssembler</codeInline> build step.</para>
+			<para>The <application>BuildAssembler</application> step of the build process typically takes the most time
+and consumes the most memory.  Slow build times in this step are typically the result of the <legacyBold>Resolve
+Reference Links</legacyBold> component when using MSDN style SDK links.  In such cases, the component has to
+contact the MSDN web service to resolve the reference link to an online content ID.  In addition, it has to load
+a large amount of information about the underlying .NET framework.  The <legacyBold>Copy From Index</legacyBold>
+component instances that load reflection index data and XML comments index data can also consume a large amount
+of memory.  In earlier versions of the Sandcastle tools, the data set for the entire framework was loaded which
+slowed down component initialization and wasted memory.</para>
 
-			<list class="bullet">
-				<listItem>
-					<para><legacyBold>Cached Framework Comments Index Data</legacyBold> - Caches index file information
-about the location of the framework member comments.  Comment file caches are language and version specific so
-multiple copies may be created based on the project language and framework version settings.  The name of the
-cache file is related to the language and framework version.</para>
-				</listItem>
+			<para>Earlier versions of the Sandcastle Help File Builder mitigated these issues somewhat by providing
+versions of the build components that cached the processed data to disk and reloaded it on subsequent builds.
+While this helped speed up initialization and improved build times by caching the MSDN content IDs, it did not
+help reduce memory usage.  Building multiple help file formats also increased memory usage significantly because
+multiple instances of the build components used for each format did not share common data between them.</para>
 
-				<listItem>
-					<para><legacyBold>Cached Reflection Index Data</legacyBold> - Caches index file information about the
-location of the base .NET Framework members in the reflection data files.</para>
-				</listItem>
-
-				<listItem>
-					<para><legacyBold>Cached MSDN URL References</legacyBold> - Caches resolved MSDN URLs for the
-<legacyBold>Resolve Reference Links</legacyBold> build component when any of the <codeInline>*SdkLinkType</codeInline>
-properties are set to <codeInline>MSDN</codeInline>. This saves it having to hit the web service in every build
-to get the same information.</para>
-				</listItem>
-
-			</list>
 		</introduction>
 
 		<section>
-			<title>Component Usage</title>
 			<content>
-				<para>To use these components, select the <codeInline>Components</codeInline> property category in
-the project properties and add the three components noted above to your project.  The components contain no
-editable configuration options.  If using the build components in your own build scripts or with other build
-tools, see the configuration template files included with the help file builder for an example of how to add
-the components to your configuration file.</para>
-
-				<alert class="note">
-					<para>You must perform at least one build with any project to create the comments and reflection data
-cache files. The MSDN URL cache is cumulative so you must perform at least one build with each project to which
-you add it so as to ensure that all URLs for the given project are in the cache.  Once built, you can find the
-cache files in the <localUri>.\Cache</localUri> folder located in the <localUri>EWSoftware\Sandcastle Help File
-Builder</localUri> folder in the <localUri>Local Application Data</localUri> folder.  Under Windows Vista and
-later, the local application data folder is usually equivalent to the value of the
-<environmentVariable>%LOCALAPPDATA%</environmentVariable> environment variable value.  Under Windows XP, the
-equivalent is usually <environmentVariable>%USERPROFILE%\Local Settings\Application Data</environmentVariable>.
-To rebuild the cache files, simply delete them from that location.</para>
-				</alert>
-
-			</content>
-		</section>
-
-		<section>
-			<title>Usage Benefits</title>
-			<content>
-				<para>These are some observations made by using the three components in various projects:</para>
+				<para>Starting with version 2.7.3.0 of the Sandcastle tools deployed with version 1.9.7.0 of the
+Sandcastle Help File Builder, the <legacyBold>Resolve Reference Links</legacyBold> and <legacyBold>Copy From
+Index</legacyBold> build components have been reworked to improve their performance and support data caching by
+default:</para>
 
 				<list class="bullet">
 					<listItem>
-						<para>The first two provide the least benefit and are fairly consistent in the amount of time saved.
-They benefit small projects with shorter build times the most and, to a certain extent, can be used to offset the
-rather lengthy initialization time of the Resolve Reference Links component.  Nothing could be done to shorten
-its startup time unfortunately (see below).</para>
+						<para>The components have been updated to support filtering by namespace when loading reflection
+data.  This helps to reduce the amount of framework information that needs to be loaded by as much as 75%.</para>
 					</listItem>
 
 					<listItem>
-						<para>The cached MSDN URL component can provide a huge performance increase.  This will be most
-evident in control libraries in which the classes are derived from Windows Forms or web controls which have a
-large number of inherited members thus causing a spike in the number of MSDN lookups that occur.  Non-UI projects
-with base classes that are simpler result in fewer lookups and benefit less.</para>
+						<para>The reflection data and XML comments files are loaded in parallel.  Combined with the reduced
+set of files, this can improve component initialization time by as much as 50% or more on multi-core machines.</para>
 					</listItem>
 
 					<listItem>
-						<para>Using the cached MSDN URL component is, after the initial build, almost equivalent to setting
-the <codeInline>*SdkLinkType</codeInline> property to
-<codeInline>None</codeInline>/<codeInline>Index</codeInline>/<codeInline>Id</codeInline> in regards to build time
-but adds the benefit of keeping the actual online links in place.</para>
+						<para>The common data is shared amongst all instances of the components.  As such, building multiple
+help file formats in one build does not consume that much more memory than building a single help file format.</para>
 					</listItem>
 
 					<listItem>
-						<para>That said, the larger the project the less benefit you may see.  For example, if your project
-contains 10,000+ topics, it is already going to run pretty long and the few minutes saved by the cached URLs may
-end up making little difference in the end.</para>
+						<para>The <legacyBold>Resolve Reference Links</legacyBold> component contains built-in support for
+saving resolved MSDN content IDs to a cache file.  This information can be reloaded on subsequent builds thus
+saving the time required to look up the IDs.  On machines with a slow internet connection, this can reduce the
+build time by 70% or more.</para>
+					</listItem>
+
+					<listItem>
+						<para>The API for the two build components was also revised to allow for derived build components
+that implement alternate caching mechanisms for MSDN content IDs, reflection target data, reflection index data,
+and XML comments index data.  The help file builder contains alternate implementations of the components that
+allow caching the framework data to ESENT or SQL Server databases.  These further reduce the memory requirements
+but can add to the build time in larger projects.</para>
 					</listItem>
 				</list>
 
-				<para>An attempt was made to try to cache the index information generated when the Resolve Reference
-Links component initializes but in that case, the information is much more complex and there is so much of it
-that there was a negative impact on performance.  As such, it must still load the index information in the normal
-fashion when it starts.  As noted, you can use the first two cached build components to offset that somewhat.</para>
-
 			</content>
 		</section>
-
+		
 		<section>
-			<title>Example Configurations</title>
+			<title>Component Usage</title>
 			<content>
-				<para>The examples given below are taken from the Sandcastle Help File Builder's configuration file
-templates.  When used with it, you may specify various replacement tags such as <codeInline>{@SHFBFolder}</codeInline>,
-and <codeInline>{@LocalDataFolder}</codeInline> to insert special folder and project option values into the
-configuration at build time. If using the component in your own build scripts, replace the tags with an actual
-absolute or relative path or an appropriate option value.  The <codeInline>{@ProjectLinks}</codeInline> option
-should be replaced with <codeInline>None</codeInline>, <codeInline>Local</codeInline>, or
-<codeInline>Index</codeInline> based on your preferred link type and help file format.  The
-<codeInline>{@SdkLinkType}</codeInline> option should be replaced with <codeInline>None</codeInline>,
-<codeInline>Index</codeInline>, <codeInline>Id</codeInline>, or <codeInline>Msdn</codeInline> based on your
-preferred link type and help file format.</para>
+				<para>For most projects, the default component configurations defined in the Sandcastle Help File
+Builder's template files should prove to be sufficient.  They will filter the reflection data by namespace and
+enable MSDN content ID caching by default.</para>
 
-				<para>When documenting a .NET 3.0 or later assembly, there are several framework comments files.  You can
-add additional <codeInline>cache</codeInline> elements specifying the additional framework comments files.  Be
-sure to give each <codeInline>cacheFile</codeInline> attribute a unique name.</para>
+				<alert class="note">
+					<para>The MSDN URL cache is cumulative so you must perform at least one build with each project so as
+to ensure that all URLs for the given project are in the cache.  To rebuild the cache file, simply delete it and
+rebuild your project files.  See the <link xlink:href="a24489fb-45d6-46f4-9eaa-9a9c4e0919b2#BuildSettings" />
+topic for the location of the cache files.</para>
+				</alert>
 
-<code language="xml" title="Cached Reflection Index Data Example">
-&lt;!-- Cached Reflection Index Data component.  This should replace
-     the first instance of the CopyFromIndexComponent. --&gt;
-&lt;component id="Cached Reflection Index Data"
-  type="SandcastleBuilder.Components.CachedCopyFromIndexComponent"
-  assembly="{@SHFBFolder}SandcastleBuilder.Components.dll"&gt;
-    &lt;index name="reflection" value="/reflection/apis/api"
-       key="@id" cache="10"&gt;
-        &lt;cache base="{@SandcastlePath}Data\Reflection"
-            recurse="true" files="*.xml"
-            cacheFile="{@LocalDataFolder}Cache\Reflection.cache"/&gt;
-        &lt;data files="reflection.xml" /&gt;
-    &lt;/index&gt;
-    &lt;copy name="reflection" source="*" target="/document/reference" /&gt;
-&lt;/component&gt;
-</code>
+				<para>Caching the MSDN content IDs provides the largest performance increase.  This will be most evident
+in control libraries in which the classes are derived from Windows Forms, WPF, or web controls which have a large
+number of inherited members thus causing a spike in the number of web service lookups that occur.  Non-UI
+projects with base classes that are simpler result in fewer lookups and benefit less.</para>
+				
+						<para>After the initial build, using cached MSDN content IDs is almost equivalent to setting the
+<codeInline>*SdkLinkType</codeInline> property to <codeInline>None</codeInline> / <codeInline>Index</codeInline>
+/ <codeInline>Id</codeInline> in regards to build time but adds the benefit of keeping the actual online links in
+place.  That said, the larger the project the less benefit you may see.  For example, if your project contains
+10,000+ topics, it is already going to run pretty long and the few minutes saved by the cached IDs and faster
+initialization time may end up making little difference in the end.</para>
+				
+				<para>For very large projects or for machines that do not have enough memory, the alternate ESENT or
+SQL Server implementations can be used.  In extreme cases, the project data can also be cached to provide the
+maximum amount of memory to the build process.  To use the ESENT or SQL Server versions of the components, select
+the <codeInline>Components</codeInline> property category in the project properties window.  Each version has a
+matched set of three components with an "<link xlink:href="2e8fa0c8-d7ec-4f7e-b42f-ac2718312ffc">(ESENT Cache)</link>"
+or "<link xlink:href="0f0cc654-6ddf-4673-a001-b29885ca0310">(SQL Cache)</link>" suffix in its name:</para>
 
-<code language="xml" title="Cached Framework Comments Index Data Example">
-&lt;!-- Cached Framework Comments Index Data component.  This should
-     replace the third instance of the CopyFromIndexComponent. --&gt;
-&lt;component id="Cached Framework Comments Index Data"
-  type="SandcastleBuilder.Components.CachedCopyFromIndexComponent"
-  assembly="{@SHFBFolder}SandcastleBuilder.Components.dll"&gt;
-    &lt;index name="comments" value="/doc/members/member"
-      key="@name" cache="100"&gt;
-      &lt;cache files="%SystemRoot%\Microsoft.NET\Framework\v2.0.50727\en\*.xml"
-        cacheFile="{@LocalDataFolder}Cache\en_2.0.50727.cache" /&gt;
-      &lt;data files="ExtraComments.xml" /&gt;
-      &lt;data files="TestDoc.xml" /&gt;
-      &lt;data files="_InheritedDocs_.xml" /&gt;
-    &lt;/index&gt;
-    &lt;copy name="comments" source="*" target="/document/comments" /&gt;
-&lt;/component&gt;
-</code>
+				<list class="bullet">
+					<listItem>
+						<para>Comments Index Data</para>
+					</listItem>
+					<listItem>
+						<para>Reflection Index Data</para>
+					</listItem>
+					<listItem>
+						<para>Resolve Reference Links</para>
+					</listItem>
+				</list>
 
-<code language="xml" title="Cached MSDN URL References Example">
-&lt;!-- Cached MSDN URL references component.  This should replace
-     the standard ResolveReferenceLinksComponent2 build component. --&gt;
-&lt;component id="Cached MSDN URL References"
-  type="SandcastleBuilder.Components.CachedResolveReferenceLinksComponent"
-  assembly="{@SHFBFolder}SandcastleBuilder.Components.dll"
-  locale="{@Locale}" linkTarget="{@SdkLinkTarget}"&gt;
-    &lt;cache filename="{@LocalDataFolder}Cache\MsdnUrl.cache" /&gt;
-    &lt;targets base="{@SandcastlePath}Data\Reflection" recurse="true"
-        files="*.xml" type="{@SDKLinkType}" /&gt;
-    &lt;targets files="reflection.xml" type="{@ProjectLinkType}" /&gt;
-&lt;/component&gt;
-</code>
+				<para>Add the three matched components noted above to your project.  The configuration dialog will appear
+for each as you add it to let you adjust its settings if necessary.  If using the build components in your own
+build scripts or with other build tools, see the configuration template files included with the help file builder
+for an example of how to add the components to your configuration file.</para>
+
 			</content>
 		</section>
 
 		<relatedTopics>
+			<link xlink:href="2e8fa0c8-d7ec-4f7e-b42f-ac2718312ffc" />
+			<link xlink:href="0f0cc654-6ddf-4673-a001-b29885ca0310" />
 			<link xlink:href="8dcbb69b-7a1a-4049-8e6b-2bf344efbbc9" />
 		</relatedTopics>
 

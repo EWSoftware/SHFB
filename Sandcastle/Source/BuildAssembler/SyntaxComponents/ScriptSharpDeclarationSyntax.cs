@@ -21,9 +21,8 @@ namespace Microsoft.Ddue.Tools
         /// <summary>
         /// Initializes a new instance of the <c>ScriptSharpDeclarationSyntaxGenerator</c> class.
         /// </summary>
-        /// <param name="configuration"></param>
-        public ScriptSharpDeclarationSyntaxGenerator(XPathNavigator configuration)
-            : base(configuration)
+        /// <param name="configuration">The configuration for the syntax generator</param>
+        public ScriptSharpDeclarationSyntaxGenerator(XPathNavigator configuration) : base(configuration)
         {
             if(String.IsNullOrEmpty(Language))
                 Language = "JavaScript";
@@ -129,7 +128,7 @@ namespace Microsoft.Ddue.Tools
             return false;
         }
 
-        public static string CreateCamelCaseName(string name)
+        private static string CreateCamelCaseName(string name)
         {
             if(String.IsNullOrEmpty(name))
                 return name;
@@ -338,6 +337,7 @@ namespace Microsoft.Ddue.Tools
             writer.WriteString(";");
         }
 
+        /// <inheritdoc />
         public override void WriteClassSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             if(IsUnsupported(reflection, writer))
@@ -403,6 +403,7 @@ namespace Microsoft.Ddue.Tools
             writer.WriteString(");");
         }
 
+        /// <inheritdoc />
         public override void WriteConstructorSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             if(IsUnsupported(reflection, writer))
@@ -427,6 +428,7 @@ namespace Microsoft.Ddue.Tools
             writer.WriteString(";");
         }
 
+        /// <inheritdoc />
         public override void WriteNormalMethodSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             if(IsUnsupported(reflection, writer))
@@ -462,6 +464,7 @@ namespace Microsoft.Ddue.Tools
             writer.WriteString(";");
         }
 
+        /// <inheritdoc />
         public override void WriteDelegateSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             writer.WriteKeyword("function");
@@ -469,6 +472,7 @@ namespace Microsoft.Ddue.Tools
             writer.WriteString(";");
         }
 
+        /// <inheritdoc />
         public override void WriteEnumerationSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             string typeName = ReadFullTypeName(reflection);
@@ -488,6 +492,7 @@ namespace Microsoft.Ddue.Tools
             writer.WriteString(");");
         }
 
+        /// <inheritdoc />
         public override void WriteEventSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             if(IsUnsupported(reflection, writer))
@@ -518,6 +523,7 @@ namespace Microsoft.Ddue.Tools
             writer.WriteString(");");
         }
 
+        /// <inheritdoc />
         public override void WriteFieldSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             if(IsUnsupported(reflection, writer))
@@ -539,6 +545,7 @@ namespace Microsoft.Ddue.Tools
             writer.WriteIdentifier(memberName);
         }
 
+        /// <inheritdoc />
         public override void WriteInterfaceSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             if(IsUnsupported(reflection, writer))
@@ -559,11 +566,13 @@ namespace Microsoft.Ddue.Tools
             writer.WriteString("');");
         }
 
+        /// <inheritdoc />
         public override void WriteAttachedEventSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             // Not supported
         }
 
+        /// <inheritdoc />
         public override void WriteAttachedPropertySyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             string typeName = ReadContainingTypeName(reflection);
@@ -588,16 +597,19 @@ namespace Microsoft.Ddue.Tools
             }
         }
 
+        /// <inheritdoc />
         public override void WriteOperatorSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             writer.WriteMessage("UnsupportedOperator_" + Language);
         }
 
+        /// <inheritdoc />
         public override void WriteCastSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             writer.WriteMessage("UnsupportedCast_" + Language);
         }
 
+        /// <inheritdoc />
         public override void WriteNamespaceSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             string name = reflection.Evaluate(apiNameExpression).ToString();
@@ -607,6 +619,7 @@ namespace Microsoft.Ddue.Tools
             writer.WriteString("');");
         }
 
+        /// <inheritdoc />
         public override void WritePropertySyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             if(IsUnsupported(reflection, writer))
@@ -678,6 +691,7 @@ namespace Microsoft.Ddue.Tools
             }
         }
 
+        /// <inheritdoc />
         public override void WriteStructureSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             if(IsUnsupported(reflection, writer))

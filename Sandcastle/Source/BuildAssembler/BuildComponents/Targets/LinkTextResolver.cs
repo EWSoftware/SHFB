@@ -21,11 +21,21 @@ namespace Microsoft.Ddue.Tools.Targets
     {
         private TargetTypeDictionary targets;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="targets">The target dictionary used to resolve links</param>
         public LinkTextResolver(TargetTypeDictionary targets)
         {
             this.targets = targets;
         }
 
+        /// <summary>
+        /// Write out the target link information
+        /// </summary>
+        /// <param name="target">The target for which to write link information</param>
+        /// <param name="options">The link display options</param>
+        /// <param name="writer">The write to which the information is written</param>
         public void WriteTarget(Target target, DisplayOptions options, XmlWriter writer)
         {
             if(target == null)
@@ -67,6 +77,11 @@ namespace Microsoft.Ddue.Tools.Targets
             throw new InvalidOperationException();
         }
 
+        /// <summary>
+        /// Write out a namespace target
+        /// </summary>
+        /// <param name="space">The namespace target information</param>
+        /// <param name="writer">The write to which the information is written</param>
         public static void WriteNamespaceTarget(NamespaceTarget space, XmlWriter writer)
         {
             if(space == null)
@@ -78,6 +93,12 @@ namespace Microsoft.Ddue.Tools.Targets
             writer.WriteString(space.Name);
         }
 
+        /// <summary>
+        /// Write out a type target
+        /// </summary>
+        /// <param name="type">The type target information</param>
+        /// <param name="options">The link display options</param>
+        /// <param name="writer">The write to which the information is written</param>
         public void WriteTypeTarget(TypeTarget type, DisplayOptions options, XmlWriter writer)
         {
             if(type == null)
@@ -89,6 +110,13 @@ namespace Microsoft.Ddue.Tools.Targets
             WriteTypeTarget(type, options, true, writer);
         }
 
+        /// <summary>
+        /// Write out a type target
+        /// </summary>
+        /// <param name="type">The type target information</param>
+        /// <param name="options">The link display options</param>
+        /// <param name="showOuterType">True to show the outer type, false if not</param>
+        /// <param name="writer">The write to which the information is written</param>
         private void WriteTypeTarget(TypeTarget type, DisplayOptions options, bool showOuterType, XmlWriter writer)
         {
 
@@ -116,11 +144,16 @@ namespace Microsoft.Ddue.Tools.Targets
             }
         }
 
+        /// <summary>
+        /// Write out a member target
+        /// </summary>
+        /// <param name="target">The member target information</param>
+        /// <param name="options">The link display options</param>
+        /// <param name="writer">The write to which the information is written</param>
         public void WriteMemberTarget(MemberTarget target, DisplayOptions options, XmlWriter writer)
         {
             WriteMemberTarget(target, options, writer, null);
         }
-
 
         private void WriteMemberTarget(MemberTarget target, DisplayOptions options, XmlWriter writer, Dictionary<IndexedTemplateTypeReference, TypeReference> dictionary)
         {
@@ -180,6 +213,12 @@ namespace Microsoft.Ddue.Tools.Targets
             writer.WriteString(target.Name);
         }
 
+        /// <summary>
+        /// Write out a reference
+        /// </summary>
+        /// <param name="reference">The reference information</param>
+        /// <param name="options">The link display options</param>
+        /// <param name="writer">The write to which the information is written</param>
         public void WriteReference(Reference reference, DisplayOptions options, XmlWriter writer)
         {
             if(reference == null)
@@ -231,6 +270,11 @@ namespace Microsoft.Ddue.Tools.Targets
             throw new InvalidOperationException();
         }
 
+        /// <summary>
+        /// Write out a namespace reference
+        /// </summary>
+        /// <param name="spaceReference">The namespace reference information</param>
+        /// <param name="writer">The write to which the information is written</param>
         public void WriteNamespace(NamespaceReference spaceReference, XmlWriter writer)
         {
             if(spaceReference == null)
@@ -247,14 +291,26 @@ namespace Microsoft.Ddue.Tools.Targets
                 TextReferenceUtilities.WriteNamespaceReference(spaceReference, writer);
         }
 
+        /// <summary>
+        /// Write out a type reference
+        /// </summary>
+        /// <param name="type">The type reference information</param>
+        /// <param name="options">The link display options</param>
+        /// <param name="writer">The write to which the information is written</param>
         public void WriteType(TypeReference type, DisplayOptions options, XmlWriter writer)
         {
             WriteType(type, options, writer, null);
         }
 
+        /// <summary>
+        /// Write out a type reference
+        /// </summary>
+        /// <param name="type">The type reference information</param>
+        /// <param name="options">The link display options</param>
+        /// <param name="writer">The write to which the information is written</param>
+        /// <param name="dictionary">The template type dictionary</param>
         private void WriteType(TypeReference type, DisplayOptions options, XmlWriter writer, Dictionary<IndexedTemplateTypeReference, TypeReference> dictionary)
         {
-
             if(type == null)
                 throw new ArgumentNullException("type");
             if(writer == null)
@@ -303,9 +359,14 @@ namespace Microsoft.Ddue.Tools.Targets
             }
 
             throw new InvalidOperationException("Unknown type reference type");
-
         }
 
+        /// <summary>
+        /// Write out a simple type reference
+        /// </summary>
+        /// <param name="simple">The simple type reference information</param>
+        /// <param name="options">The link display options</param>
+        /// <param name="writer">The write to which the information is written</param>
         public void WriteSimpleType(SimpleTypeReference simple, DisplayOptions options, XmlWriter writer)
         {
             WriteSimpleType(simple, options, true, writer);
@@ -326,7 +387,6 @@ namespace Microsoft.Ddue.Tools.Targets
 
         private static void WriteTemplateParameters(IList<string> templates, XmlWriter writer)
         {
-
             if(templates.Count == 0)
                 return;
 
@@ -720,6 +780,12 @@ namespace Microsoft.Ddue.Tools.Targets
                     "Unknown type reference '{0}'", type.Id));
         }
 
+        /// <summary>
+        /// Write out an extension method reference
+        /// </summary>
+        /// <param name="extMethod">The extension method reference information</param>
+        /// <param name="options">The link display options</param>
+        /// <param name="writer">The write to which the information is written</param>
         public void WriteExtensionMethod(ExtensionMethodReference extMethod, DisplayOptions options, XmlWriter writer)
         {
             if(extMethod == null)
@@ -740,6 +806,12 @@ namespace Microsoft.Ddue.Tools.Targets
                 WriteMethodParameters(extMethod.Parameters, writer);
         }
 
+        /// <summary>
+        /// Write out a member reference
+        /// </summary>
+        /// <param name="member">The member reference information</param>
+        /// <param name="options">The link display options</param>
+        /// <param name="writer">The write to which the information is written</param>
         public void WriteMember(MemberReference member, DisplayOptions options, XmlWriter writer)
         {
             if(member == null)
@@ -879,7 +951,6 @@ namespace Microsoft.Ddue.Tools.Targets
         {
             WriteMethodParameters(parameters, writer, null);
         }
-
 
         private void WriteMethodParameters(IList<Parameter> parameters, XmlWriter writer,
           Dictionary<IndexedTemplateTypeReference, TypeReference> dictionary)
@@ -1058,9 +1129,7 @@ namespace Microsoft.Ddue.Tools.Targets
 
                     writer.WriteEndElement();
                 }
-
             }
-
         }
 
         private void WriteEvent(EventTarget trigger, XmlWriter writer)
@@ -1070,8 +1139,6 @@ namespace Microsoft.Ddue.Tools.Targets
 
         private void WriteConstructor(ConstructorTarget constructor, DisplayOptions options, XmlWriter writer)
         {
-
-
             WriteType(constructor.ContainingType, options & ~DisplayOptions.ShowContainer, writer);
 
             if((options & DisplayOptions.ShowParameters) > 0)

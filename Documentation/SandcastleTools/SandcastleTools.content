@@ -10,7 +10,7 @@
       <HelpKeyword index="K" term="License agreement" />
     </HelpKeywords>
   </Topic>
-  <Topic id="6D925E85-3DEA-422D-8F4B-F5995C33BD0F" visible="True" isExpanded="true" isSelected="true" title="Getting Started">
+  <Topic id="6D925E85-3DEA-422D-8F4B-F5995C33BD0F" visible="True" isExpanded="true" title="Getting Started">
     <HelpKeywords>
       <HelpKeyword index="K" term="Getting Started" />
     </HelpKeywords>
@@ -69,10 +69,15 @@
       <HelpKeyword index="K" term="support, donate" />
     </HelpKeywords>
   </Topic>
-  <Topic id="e0636c2c-3da0-4d5e-9e86-6fb3f0c83eef" visible="True" isExpanded="true" title="Version History">
+  <Topic id="e0636c2c-3da0-4d5e-9e86-6fb3f0c83eef" visible="True" isExpanded="true" isSelected="true" title="Version History">
     <HelpKeywords>
       <HelpKeyword index="K" term="version history" />
     </HelpKeywords>
+    <Topic id="dacbe260-df28-4ad6-b0ec-b2f6711c6b2d" visible="True" title="Version 2.7.3.0, March 2013">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 2.7.3.0" />
+      </HelpKeywords>
+    </Topic>
     <Topic id="2df020c8-13c1-46d0-82c3-69b57fd9c484" visible="True" title="Version 2.7.2.0, December 2012">
       <HelpKeywords>
         <HelpKeyword index="K" term="versions, 2.7.2.0" />

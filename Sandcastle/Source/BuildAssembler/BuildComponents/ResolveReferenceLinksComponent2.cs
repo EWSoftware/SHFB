@@ -598,9 +598,10 @@ namespace Microsoft.Ddue.Tools
         /// This is used to create a <see cref="TargetDictionary"/> used to store reference link targets
         /// </summary>
         /// <param name="configuration">The configuration element for the target dictionary</param>
-        /// <returns>A default <see cref="SimpleTargetDirectory"/> instance containing the reference link targets</returns>
+        /// <returns>A default <see cref="InMemoryTargetDictionary"/> instance containing the reference link
+        /// targets</returns>
         /// <remarks>This can be overridden in derived classes to provide persistent caches with backing stores
-        /// other than the default <see cref="Dictionary{TKey, TValue}"/>.
+        /// other than the default <see cref="Dictionary{TKey, TValue}"/></remarks>.
         public virtual TargetDictionary CreateTargetDictionary(XPathNavigator configuration)
         {
             TargetDictionary d = null;

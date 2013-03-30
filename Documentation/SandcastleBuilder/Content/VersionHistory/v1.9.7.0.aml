@@ -1,0 +1,183 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="fef9e0ed-864b-42f9-8747-af4d156a7c0e" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<autoOutline excludeRelatedTopics="true" lead="Version 1.9.7.0 was released on March 30th, 2013." />
+		</introduction>
+
+		<section address="BreakingChanges">
+			<title>Breaking Changes</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>With changes to the core Sandcastle build components, the following cached build components
+have been rendered obsolete and must be removed from your projects if you are using them:</para>
+
+						<list class="bullet">
+							<listItem>
+								<para>Cached Framework Comments Index Data</para>
+							</listItem>
+							<listItem>
+								<para>Cached Reflection Index Data</para>
+							</listItem>
+							<listItem>
+								<para>Cached MSDN URL References</para>
+							</listItem>
+						</list>
+
+						<para>Disk-based caching of MSDN content IDs has been built into the core Sandcastle build component
+and is enabled by default in all help file builder projects.  Changes made to enable namespace filtering and
+loading data in parallel made loading the index data from a serialized cache file slighlty less efficient than
+just indexing the required data files in each build.  As such, reflection and comments index data is no longer
+cached to disk for re-use.  Common data is also shared across multiple instances of the build components when
+possible to significantly reduce the amount of memory required by BuildAssembler when building multiple help
+file formats.</para>
+
+						<para>To further help with memory constraints in very large projects, new caching build components
+have been added to store reference link target, MSDN content ID, reflection index, and XML comments index data
+in either an ESENT or a SQL Server database.  These help save memory at the expense of some build time.  In
+extreme cases, project data can also be indexed and cached in a database thus freeing up more memory to the topic
+build process.  See the <link xlink:href="3a1c4bf1-8ecf-4ab3-8010-277bed8d3819" /> topic for more information.</para>
+
+					</listItem>
+
+					<listItem>
+						<para>The IntelliSense Component and its configuration dialog, the MS Help Attributes Component, and
+the Show Missing Documentation Component and its resource items have been moved into the Sandcastle Build
+Components assembly.  If you are using the IntelliSense Component in your project, you must delete and re-add it
+in order to get the latest configuration containing the proper assembly reference.  The other two components are
+handled by the help file builder and no action is required.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added the <codeInline>SupportsConfiguration</codeInline> property to the <codeInline>IPlugIn</codeInline>
+interface.  This is used to indicate whether or not the plug-in supports configuration when added to the project.
+If you have developed your own custom plug-ins for the help file builder, you will need to add this property to
+your plug-ins.</para>
+					</listItem>
+				</list>
+				
+			</content>
+		</section>
+		
+		<section address="OtherChanges">
+			<title>Other Changes in This Release</title>
+			<content>
+
+				<list class="bullet">
+					<listItem>
+						<para>Fixed a bug in the removal of inherited members so that it only removes members of classes
+matching the parent class and not those of other classes starting with the same name.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed a bug that caused the plug-in and components property pages to not pass a project
+reference to the component configuration dialogs.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed a bug in the Output window that could cause it to crash under certain circumstances when
+the standalone GUI was closed.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed a bug in the Topic Previewer window that prevented multiple tokens from being rendered
+properly when they appeared in the Related Topics section.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the BuildAssembler configuration template files so that they use the
+<codeInline>HtmlEncVendorName</codeInline> tag to properly encode vendor names containing restricted characters.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the standalone GUI so that the property pages contain proper default values for new
+projects and for properties not present in existing projects when they are loaded. This matches the behavior of
+the property pages in Visual Studio.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the Solution Explorer context menu items in the VSPackage so that they are hidden when a
+SHFB project is unloaded in Visual Studio.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed an odd bug in the MPF project related to adding new items to deeply nested collapsed
+nodes.</para>
+					</listItem>
+
+					<listItem>
+						<para>Merged the changes from the MPF 2012 project's code base into the help file builder's copy of
+the MPF 2010 project.  These changes let the project system handle the multi-threaded parts of VS 2012 without
+causing crashes (i.e. opening the VS 2012 Test Explorer window with a SHFB project loaded). The code is
+compatible with VS 2010 so one version of the package will still work in both versions of Visual Studio.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added a check to abort the build if <codeInline>HtmlHelpName</codeInline> contains a period and
+MS Help Viewer output is being generated. Microsoft Help Viewer does not support periods in the base filename.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added code to the build engine to adjust the search location for the assembly and XML comments
+file if the <codeInline>GenerateProjectSpecificOutputFolder</codeInline> MSBuild variable is set to true.</para>
+					</listItem>
+
+					<listItem>
+						<para>Modified the build engine to get a list of all possible namespaces referenced by the project.
+This list is passed to the reference link and copy from index build components to reduce the amount of
+information they have to load.  This reduces memory usage and provides a small reduction in the build time.</para>
+					</listItem>
+
+					<listItem>
+						<para>Reworked how the Help 1 and website keyword index files were generated by the HTML extract tool
+to provide qualified class names in the titles of common entries (i.e. operators).</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated the HTML extract tool to process the files in parallel to improve performance.</para>
+					</listItem>
+
+					<listItem>
+						<para>Applied changes from the related comments indexing classes in BuildAssembler to the comments
+indexing classes in SandcastleUtils to improve their performance when used by the Entity References window and
+the GenerateInheritedDocs tool.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated the Additional Reference Links Plug-In to set the <codeInline>Configuration</codeInline>
+and <codeInline>Platform</codeInline> properties on the reference projects.  It was also updated to add the
+additional reflection information files to the GenerateInheritedDocs tool's configuration file.
+						</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated the GenerateInheritedDocs tool to support loading multiple reflection information
+files.  This allows additional reflection information to be included for undocumented reference assemblies and
+enables inheriting documentation from members within them.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added code colorization support to the code blocks rendered in the topic previewer.  This helps
+identify problems with the code such as incorrect comment markers or incorrect language IDs. A Copy link was also
+added to allow copying the code blocks in the topic previewer to the clipboard. Line numbering is supported but
+collapsible sections are not.</para>
+					</listItem>
+
+					<listItem>
+						<para>If they support configuration, build components and plug-ins will now automatically show their
+configuration dialog when first added to a project.  This prevents builds from failing due to missing
+configuration data in newly added components.</para>
+					</listItem>
+
+				</list>
+
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="078cc1c7-7995-431e-bf9c-8813becbe8df" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

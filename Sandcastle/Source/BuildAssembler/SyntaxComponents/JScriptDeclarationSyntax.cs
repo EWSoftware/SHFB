@@ -9,14 +9,22 @@ using System.Xml.XPath;
 
 namespace Microsoft.Ddue.Tools
 {
+    /// <summary>
+    /// This class generates declaration syntax sections for JScript
+    /// </summary>
     public sealed class JScriptDeclarationSyntaxGenerator : SyntaxGeneratorTemplate
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="configuration">The syntax generator configuration</param>
         public JScriptDeclarationSyntaxGenerator(XPathNavigator configuration) : base(configuration)
         {
             if(String.IsNullOrEmpty(Language))
                 Language = "JScript";
         }
 
+        /// <inheritdoc />
         public override void WriteNamespaceSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             string name = (string)reflection.Evaluate(apiNameExpression);
@@ -26,6 +34,7 @@ namespace Microsoft.Ddue.Tools
             writer.WriteIdentifier(name);
         }
 
+        /// <inheritdoc />
         public override void WriteClassSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             if(IsUnsupportedGeneric(reflection, writer))
@@ -54,6 +63,7 @@ namespace Microsoft.Ddue.Tools
             WriteInterfaceList(reflection, writer);
         }
 
+        /// <inheritdoc />
         public override void WriteStructureSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             if(IsUnsupportedGeneric(reflection, writer))
@@ -61,6 +71,7 @@ namespace Microsoft.Ddue.Tools
             writer.WriteMessage("UnsupportedStructure_" + Language);
         }
 
+        /// <inheritdoc />
         public override void WriteInterfaceSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             if(IsUnsupportedGeneric(reflection, writer))
@@ -76,6 +87,7 @@ namespace Microsoft.Ddue.Tools
             WriteInterfaceList("extends", reflection, writer);
         }
 
+        /// <inheritdoc />
         public override void WriteDelegateSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             if(IsUnsupportedGeneric(reflection, writer))
@@ -83,6 +95,7 @@ namespace Microsoft.Ddue.Tools
             writer.WriteMessage("UnsupportedDelegate_" + Language);
         }
 
+        /// <inheritdoc />
         public override void WriteEnumerationSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             string name = (string)reflection.Evaluate(apiNameExpression);
@@ -95,6 +108,7 @@ namespace Microsoft.Ddue.Tools
             // no JScript support for underlying types
         }
 
+        /// <inheritdoc />
         public override void WriteConstructorSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             bool isStatic = (bool)reflection.Evaluate(apiIsStaticExpression);
@@ -117,6 +131,7 @@ namespace Microsoft.Ddue.Tools
             }
         }
 
+        /// <inheritdoc />
         public override void WriteNormalMethodSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             if(IsUnsupportedUnsafe(reflection, writer))
@@ -144,6 +159,7 @@ namespace Microsoft.Ddue.Tools
             }
         }
 
+        /// <inheritdoc />
         public override void WritePropertySyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             if(IsUnsupportedUnsafe(reflection, writer))
@@ -206,6 +222,7 @@ namespace Microsoft.Ddue.Tools
 
         }
 
+        /// <inheritdoc />
         public override void WriteFieldSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             if(IsUnsupportedUnsafe(reflection, writer))
@@ -243,16 +260,19 @@ namespace Microsoft.Ddue.Tools
             WriteTypeReference(type, writer);
         }
 
+        /// <inheritdoc />
         public override void WriteOperatorSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             writer.WriteMessage("UnsupportedOperator_" + Language);
         }
 
+        /// <inheritdoc />
         public override void WriteCastSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             writer.WriteMessage("UnsupportedCast_" + Language);
         }
 
+        /// <inheritdoc />
         public override void WriteEventSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             writer.WriteMessage("UnsupportedEvent_" + Language);

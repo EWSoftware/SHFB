@@ -31,7 +31,7 @@ namespace SandcastleBuilder.Components.UI
     /// <summary>
     /// This form is used to configure the SQL Resolve Reference Links component
     /// </summary>
-    public partial class SqlCopyFromIndexConfigDlg : Form
+    internal partial class SqlCopyFromIndexConfigDlg : Form
     {
         #region Private data members
         //=====================================================================

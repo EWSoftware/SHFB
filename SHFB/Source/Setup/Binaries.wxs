@@ -140,17 +140,24 @@
 			</Component>
 
 			<!-- 3rd party libraries -->
+			<Component Id="ESent.Collections.dll" Guid="{937BCFCA-1832-4B2E-98C3-1501836342B5}">
+				<File Id="ESent.Collections.dll" KeyPath="yes" Source="$(var.BinFolder)ESent.Collections.dll" />
+			</Component>
+
+			<Component Id="ESent.Interop.dll" Guid="{E960C0E0-9773-4239-9D89-99BB0C231ED9}">
+				<File Id="ESent.Interop.dll" KeyPath="yes" Source="$(var.BinFolder)ESent.Interop.dll" />
+			</Component>
 
 			<Component Id="ICSharpCode.TextEditor.dll" Guid="{894A10C4-6152-45BB-93B4-96C0830134D4}">
 				<File Id="ICSharpCode.TextEditor.dll" KeyPath="yes" Source="$(var.BinFolder)ICSharpCode.TextEditor.dll" />
 			</Component>
 
-			<Component Id="WeifenLuo.WinFormsUI.Docking.dll" Guid="{7F3E99BC-DEAB-4752-9ED0-414EFF3ADCFA}">
-				<File Id="WeifenLuo.WinFormsUI.Docking.dll" KeyPath="yes" Source="$(var.BinFolder)WeifenLuo.WinFormsUI.Docking.dll" />
-			</Component>
-
 			<Component Id="Ionic.Zip.Reduced.dll" Guid="{93981174-57F0-467C-937B-F59C79D65FAD}">
 				<File Id="Ionic.Zip.Reduced.dll" KeyPath="yes" Source="$(var.BinFolder)Ionic.Zip.Reduced.dll" />
+			</Component>
+
+			<Component Id="WeifenLuo.WinFormsUI.Docking.dll" Guid="{7F3E99BC-DEAB-4752-9ED0-414EFF3ADCFA}">
+				<File Id="WeifenLuo.WinFormsUI.Docking.dll" KeyPath="yes" Source="$(var.BinFolder)WeifenLuo.WinFormsUI.Docking.dll" />
 			</Component>
 		</DirectoryRef>
 
@@ -189,9 +196,11 @@
 			<ComponentRef Id="SHFB.url" />
 
 			<!-- 3rd party libraries -->
+			<ComponentRef Id="ESent.Collections.dll" />
+			<ComponentRef Id="ESent.Interop.dll" />
 			<ComponentRef Id="ICSharpCode.TextEditor.dll" />
-			<ComponentRef Id="WeifenLuo.WinFormsUI.Docking.dll" />
 			<ComponentRef Id="Ionic.Zip.Reduced.dll" />
+			<ComponentRef Id="WeifenLuo.WinFormsUI.Docking.dll" />
 		</ComponentGroup>
 	</Fragment>
 </Wix>

@@ -6,7 +6,7 @@
 // Note    : Copyright 2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains a form that is used to configure the settings for the ESent Resolve Reference Links
+// This file contains a form that is used to configure the settings for the ESENT Resolve Reference Links
 // component.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
@@ -30,9 +30,9 @@ using SandcastleBuilder.Utils;
 namespace SandcastleBuilder.Components.UI
 {
     /// <summary>
-    /// This form is used to configure the ESent Resolve Reference Links component
+    /// This form is used to configure the ESENT Resolve Reference Links component
     /// </summary>
-    public partial class ESentResolveReferenceLinksConfigDlg : Form
+    internal partial class ESentResolveReferenceLinksConfigDlg : Form
     {
         #region Private data members
         //=====================================================================
@@ -293,7 +293,7 @@ namespace SandcastleBuilder.Components.UI
                 txtProjectTargetsCachePath.Text };
             string resolvedPath = null;
 
-            if(MessageBox.Show("WARNING: This will delete all of the current ESent reference link target " +
+            if(MessageBox.Show("WARNING: This will delete all of the current ESENT reference link target " +
               "cache folders.  The information will need to be created the next time this project is built.  " +
               "Are you sure you want to delete them?", Constants.AppName, MessageBoxButtons.YesNo,
               MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.No)

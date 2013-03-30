@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Project Launcher
 // File    : AssemblyInfo.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/15/2012
-// Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
+// Updated : 03/28/2013
+// Note    : Copyright 2011-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // Sandcastle Help File Builder project launcher attributes.
@@ -37,7 +37,7 @@ using System.Runtime.InteropServices;
     "using either the standalone GUI or Visual Studio.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Eric Woodruff")]
-[assembly: AssemblyCopyright("Copyright \xA9 2011-2012, Eric Woodruff, All Rights Reserved")]
+[assembly: AssemblyCopyright("Copyright \xA9 2011-2013, Eric Woodruff, All Rights Reserved")]
 [assembly: AssemblyTrademark("Eric Woodruff, All Rights Reserved")]
 [assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(true)]
@@ -57,4 +57,4 @@ using System.Runtime.InteropServices;
 // NOTE: This version number will control the version number in the installer.  This allows the build engine
 //       to use a different version number so that plug-ins and other components will continue to work with the
 //       latest official production release as well as a development release using an older version number.
-[assembly: AssemblyVersion("1.9.6.0")]
+[assembly: AssemblyVersion("1.9.7.0")]

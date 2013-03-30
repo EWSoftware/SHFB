@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="2e8fa0c8-d7ec-4f7e-b42f-ac2718312ffc" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>This set of components uses ESENT databases to cache MSDN content IDs, .NET Framework reference link
+targets, .NET Framework reflection data, and .NET Framework comments.  This speeds up initialization and
+conserves memory at the expense of some build time in larger projects.  For extremely large projects, it is also
+possible to cache the related project data to conserve memory.</para>
+		</introduction>
+
+		<section>
+			<title>Set Up and Configuration</title>
+			<content>
+				<para>The ESENT database engine (Extensible Storage Engine) is part of every version of Microsoft Windows
+and no set up is required.  The build components use a slightly modified version of the
+<externalLink>
+	<linkText>Managed ESENT</linkText>
+	<linkAlternateText>Managed ESENT</linkAlternateText>
+	<linkUri>http://ManagedESENT.CodePlex.com</linkUri>
+	<linkTarget>_blank</linkTarget>
+</externalLink> library to store the cached information in a series of ESENT databases accessed using a
+persistent dictionary instance.  The database files are created on first use during the build based on the
+component configuration settings.</para>
+
+				<para>The Resolve Reference Links component allows you to configure the location and local cache size for
+the MSDN content IDs, the framework reflection data, and the project data if enabled.  The Comments Index and
+Reflection Index components allow you to specify the location of the framework data and the project data if
+enabled along with the local cache size and the maximum number of uncached project data files to keep in memory
+during the build.  In all cases, the local cache size determines how many items are cached in memory after being
+retrieved from the database.  This gives a slight performance increase over having to read the common items
+repeatedly from the database.  If a local cache size is set to zero, the local cache is disabled.  This will
+save additional memory at the expense of build time.  If the local cache fills up, it is flushed and will start
+being filled again as items are requested.</para>
+
+				<para>The default configurations should be sufficient for most builds.  The framework data caches default
+to being stored in the local application data folder.  The project data, if cached, is stored in the working
+folder so that it is rebuilt whenever the project is built to ensure that it contains current information.
+You can typically leave the project data caching option disabled unless the build runs out of memory while
+generating the topics as you will get better performance by loading the project data into memory.  The cache
+usage is reported at the end of the build in a series of diagnostic messages.  You can use this information to
+increase the local cache sizes if necessary if they are being flushed very often or shrink them to conserve more
+memory.</para>
+
+				<para>Each configuration dialog contains a <ui>Purge</ui> button that can be clicked to purge the current
+cache database files.  They will be recreated on the next build.</para>
+
+			</content>
+		</section>
+
+		<section>
+			<title>Example Configurations</title>
+			<content>
+				<para>The examples given below are taken from the Sandcastle Help File Builder's configuration file
+templates.  When used with it, you may specify various replacement tags such as <codeInline>{@SHFBFolder}</codeInline>,
+and <codeInline>{@LocalDataFolder}</codeInline> to insert special folder and project option values into the
+configuration at build time. If using the component in your own build scripts, replace the tags with an actual
+absolute or relative path or an appropriate option value.  The <codeInline>{@ProjectLinks}</codeInline> option
+should be replaced with <codeInline>None</codeInline>, <codeInline>Local</codeInline>, or
+<codeInline>Index</codeInline> based on your preferred link type and help file format.  The
+<codeInline>{@SdkLinkType}</codeInline> option should be replaced with <codeInline>None</codeInline>,
+<codeInline>Index</codeInline>, <codeInline>Id</codeInline>, or <codeInline>Msdn</codeInline> based on your
+preferred link type and help file format.</para>
+
+				<para>The <codeInline>id</codeInline> and <codeInline>groupId</codeInline> attributes on the
+<codeInline>data</codeInline> and <codeInline>targets</codeInline> elements can be used to group common sets of
+files so that their information is cached in the same database.</para>
+
+<code language="xml" title="Comments Index Data">
+&lt;!-- This should replace the third instance of the CopyFromIndexComponent. --&gt;
+&lt;component id="Comments Index Data (ESENT Cache)"
+	type="SandcastleBuilder.Components.ESentCopyFromIndexComponent"
+	assembly="{@SHFBFolder}SandcastleBuilder.Components.dll"&gt;
+  &lt;index name="comments" value="/doc/members/member" key="@name" cache="30" localCacheSize="2500"
+    frameworkCachePath="{@LocalDataFolder}Cache\CommentsIndexCache" projectCachePath=""&gt;
+    &lt;data base="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0"
+      files="*.xml" recurse="false" duplicateWarning="false" groupId=".NETFramework_4.0.30319_F0754620" /&gt;
+    &lt;data base="C:\Program Files (x86)\Reference Assemblies\Microsoft\FSharp\2.0\Runtime\v4.0"
+      files="*.xml" recurse="false" duplicateWarning="false" groupId=".NETFramework_4.0.30319_8010FBEB" /&gt;
+    &lt;data files="C:\CP\TFS01\SHFB\TestCaseProject\Doc\Help\Working\comments.xml" duplicateWarning="false"
+      groupId="Project_Comments_{@UniqueID}" /&gt;
+    &lt;data files="C:\CP\TFS01\SHFB\TestCaseProject\Doc\Help\Working\TestDoc.XML" duplicateWarning="false"
+      groupId="Project_Comments_{@UniqueID}" /&gt;
+    &lt;data files="C:\CP\TFS01\SHFB\TestCaseProject\Doc\Help\Working\_InheritedDocs_.xml"
+      duplicateWarning="false" groupId="Project_Comments_{@UniqueID}" /&gt;
+  &lt;/index&gt;
+  &lt;copy name="comments" source="*" target="/document/comments" /&gt;
+&lt;/component&gt;
+</code>
+
+<code language="xml" title="Reflection Index Data">
+&lt;!-- This should replace the first instance of the CopyFromIndexComponent. --&gt;
+&lt;component id="Reflection Index Data (ESENT Cache)"
+	type="SandcastleBuilder.Components.ESentCopyFromIndexComponent"
+	assembly="{@SHFBFolder}SandcastleBuilder.Components.dll"&gt;
+  &lt;index name="reflection" value="/reflection/apis/api" key="@id" cache="15" localCacheSize="2500"
+    frameworkCachePath="{@LocalDataFolder}Cache\ReflectionIndexCache" projectCachePath=""&gt;
+    &lt;data base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" duplicateWarning="false"
+      groupId="ReflectionIndexCache"&gt;
+      &lt;!-- A list of namespace elements can be specified here to limit what data is loaded
+      &lt;namespace file="System.xml" /&gt;
+      &lt;namespace file="System.IO.xml" /&gt;
+      etc. --&gt;
+    &lt;/data&gt;
+    &lt;data files="reflection.xml" groupId="Project_Ref_{@UniqueID}" /&gt;
+  &lt;/index&gt;
+  &lt;copy name="reflection" source="*" target="/document/reference" /&gt;
+&lt;/component&gt;
+</code>
+
+<code language="xml" title="Resolve Reference Links">
+&lt;!-- This should replace the standard ResolveReferenceLinksComponent2 build
+     component. --&gt;
+&lt;component id="Resolve Reference Links (ESENT Cache)"
+	type="SandcastleBuilder.Components.ESentResolveReferenceLinksComponent"
+	assembly="{@SHFBFolder}SandcastleBuilder.Components.dll"
+	locale="{@Locale}" linkTarget="{@SdkLinkTarget}"&gt;
+  &lt;msdnContentIdCache path="{@LocalDataFolder}Cache\MsdnContentId.cache"
+    cachePath="{@LocalDataFolder}Cache\ESentMsdnContentIdCache" localCacheSize="2500" /&gt;
+  &lt;targets base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" type="{@SdkLinkType}"
+    id="FrameworkTargets" cachePath="{@LocalDataFolder}Cache\ESentFrameworkTargetCache" localCacheSize="2500"&gt;
+    &lt;!-- A list of namespace elements can be specified here to limit what data is loaded
+    &lt;namespace file="System.xml" /&gt;
+    &lt;namespace file="System.IO.xml" /&gt;
+    etc. --&gt;
+  &lt;/targets&gt;
+  &lt;targets files="reflection.xml" type="Local" id="ProjectTargets" /&gt;
+&lt;/component&gt;
+</code>
+			</content>
+		</section>
+		
+		<relatedTopics>
+			<link xlink:href="3a1c4bf1-8ecf-4ab3-8010-277bed8d3819" />
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

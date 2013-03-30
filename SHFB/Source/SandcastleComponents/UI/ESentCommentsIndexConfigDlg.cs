@@ -6,7 +6,7 @@
 // Note    : Copyright 2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains a form that is used to configure the settings for the ESent Copy From Index component
+// This file contains a form that is used to configure the settings for the ESENT Copy From Index component
 // (Comments Index Data).
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
@@ -30,9 +30,9 @@ using SandcastleBuilder.Utils;
 namespace SandcastleBuilder.Components.UI
 {
     /// <summary>
-    /// This form is used to configure the ESent Copy From Index component (Comments Index Data)
+    /// This form is used to configure the ESENT Copy From Index component (Comments Index Data)
     /// </summary>
-    public partial class ESentCommentsIndexConfigDlg : Form
+    internal partial class ESentCommentsIndexConfigDlg : Form
     {
         #region Private data members
         //=====================================================================
@@ -250,7 +250,7 @@ namespace SandcastleBuilder.Components.UI
             string[] allPaths = new[] { txtFrameworkIndexCachePath.Text, txtProjectIndexCachePath.Text };
             string resolvedPath = null;
 
-            if(MessageBox.Show("WARNING: This will delete all of the current ESent comments index cache " +
+            if(MessageBox.Show("WARNING: This will delete all of the current ESENT comments index cache " +
               "folders.  The information will need to be created the next time this project is built.  " +
               "Are you sure you want to delete them?", Constants.AppName, MessageBoxButtons.YesNo,
               MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.No)

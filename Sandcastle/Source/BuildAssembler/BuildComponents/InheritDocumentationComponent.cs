@@ -86,7 +86,7 @@ namespace Microsoft.Ddue.Tools
         /// <param name="configuration">Configuration section to be parsed.</param>
         /// <param name="data">A dictionary object with string as key and object as value.</param>
         public InheritDocumentationComponent(BuildComponent parent, XPathNavigator configuration,
-          IDictionary<string, object> data) : base(parent, configuration, data)
+          IDictionary<string, object> data) : base(parent)
         {
             // Get the copy command
             XPathNavigator copyNode = configuration.SelectSingleNode("copy");

@@ -71,7 +71,7 @@ Rights Reserved.
 
 The Ionic.Zip Library is Copyright (c) 2009-2013 Dino Chiesa, All Rights Reserved.
 
-The Managed ESent library is Copyright (c) 2008-2013 Microsoft Corporation, All Rights Reserved.
+The Managed ESENT library is Copyright (c) 2008-2013 Microsoft Corporation, All Rights Reserved.
 
 AjaxDoc is Copyright (c) 2006-2013 Bertrand Le Roy, All Rights Reserved.
 

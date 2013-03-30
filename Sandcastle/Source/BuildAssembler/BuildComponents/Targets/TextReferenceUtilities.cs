@@ -22,6 +22,11 @@ namespace Microsoft.Ddue.Tools.Targets
     /// </summary>
     public static class TextReferenceUtilities
     {
+        /// <summary>
+        /// Create a reference
+        /// </summary>
+        /// <param name="api">The member ID for which to create a reference</param>
+        /// <returns>The reference</returns>
         public static Reference CreateReference(string api)
         {
             if(String.IsNullOrEmpty(api))
@@ -48,6 +53,11 @@ namespace Microsoft.Ddue.Tools.Targets
             return (reference);
         }
 
+        /// <summary>
+        /// Create a namespace reference
+        /// </summary>
+        /// <param name="api">The member ID for which to create a reference</param>
+        /// <returns>The namespace reference</returns>
         public static NamespaceReference CreateNamespaceReference(string api)
         {
             if(ValidNamespace.IsMatch(api))
@@ -60,6 +70,11 @@ namespace Microsoft.Ddue.Tools.Targets
             }
         }
 
+        /// <summary>
+        /// Create a type reference
+        /// </summary>
+        /// <param name="api">The member ID for which to create a reference</param>
+        /// <returns>The type reference</returns>
         public static TypeReference CreateTypeReference(string api)
         {
             if(ValidSimpleType.IsMatch(api))
@@ -123,12 +138,9 @@ namespace Microsoft.Ddue.Tools.Targets
 
                 // we shouldn't get here, because one of those test should have been satisfied if the regex matched
                 throw new InvalidOperationException("Could not parse valid type expression");
-
             }
             else
-            {
-                return (null);
-            }
+                return null;
         }
 
         private static SimpleTypeReference CreateSimpleTypeReference(string api)
@@ -167,6 +179,11 @@ namespace Microsoft.Ddue.Tools.Targets
             return (new SpecializedTypeReference(specializations.ToArray()));
         }
 
+        /// <summary>
+        /// Create a member reference
+        /// </summary>
+        /// <param name="api">The member ID for which to create a reference</param>
+        /// <returns>The member reference</returns>
         public static MemberReference CreateMemberReference(string api)
         {
             if(ValidSimpleMember.IsMatch(api))
@@ -245,6 +262,10 @@ namespace Microsoft.Ddue.Tools.Targets
 
         private static SimpleTypeReference genericTypeContext;
 
+        /// <summary>
+        /// Set the generic context
+        /// </summary>
+        /// <param name="codeEntityReference">The member ID for which to set the context</param>
         public static void SetGenericContext(string codeEntityReference)
         {
             // re-set the context
@@ -272,9 +293,11 @@ namespace Microsoft.Ddue.Tools.Targets
                 genericTypeContext = CreateSimpleTypeReference(typeId);
                 return;
             }
-
         }
 
+        /// <summary>
+        /// This read-only property returns the generic context
+        /// </summary>
         public static SimpleTypeReference GenericContext
         {
             get

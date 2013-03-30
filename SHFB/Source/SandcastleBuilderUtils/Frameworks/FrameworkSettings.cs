@@ -200,24 +200,26 @@ namespace SandcastleBuilder.Utils.Frameworks
                         yield return Path.Combine(path, "*.xml");
                 }
                 else
-                {
-                    // The .NET Portable Library Framework 4.0 duplicates most of its comments files across all
-                    // of the profile folders.  To minimize the duplication, we'll find the folder with the most
-                    // files and return it followed by an entry for each unique file in subsequent folders.
-                    var commentGroups = Directory.EnumerateFiles(l.Path, "*.xml",
-                        SearchOption.AllDirectories).Where(d => File.Exists(
-                            Path.ChangeExtension(d, ".dll"))).GroupBy(d =>
-                                Path.GetDirectoryName(d)).OrderByDescending(d => d.Count());
+                    if(Directory.Exists(l.Path))
+                    {
+                        // The .NET Portable Library Framework 4.0 duplicates most of its comments files across
+                        // all of the profile folders.  To minimize the duplication, we'll find the folder with
+                        // the most files and return it followed by an entry for each unique file in subsequent
+                        // folders.
+                        var commentGroups = Directory.EnumerateFiles(l.Path, "*.xml",
+                            SearchOption.AllDirectories).Where(d => File.Exists(
+                                Path.ChangeExtension(d, ".dll"))).GroupBy(d =>
+                                    Path.GetDirectoryName(d)).OrderByDescending(d => d.Count());
 
-                    HashSet<string> commentsFiles = new HashSet<string>(commentGroups.First().Select(
-                        f => Path.GetFileName(f)));
+                        HashSet<string> commentsFiles = new HashSet<string>(commentGroups.First().Select(
+                            f => Path.GetFileName(f)));
 
-                    yield return Path.Combine(commentGroups.First().Key, "*.xml");
+                        yield return Path.Combine(commentGroups.First().Key, "*.xml");
 
-                    foreach(var g in commentGroups)
-                        foreach(var f in g.Where(f => !commentsFiles.Contains(Path.GetFileName(f))).ToList())
-                            yield return Path.Combine(g.Key, Path.GetFileName(f));
-                }
+                        foreach(var g in commentGroups)
+                            foreach(var f in g.Where(f => !commentsFiles.Contains(Path.GetFileName(f))).ToList())
+                                yield return Path.Combine(g.Key, Path.GetFileName(f));
+                    }
         }
 
         /// <summary>

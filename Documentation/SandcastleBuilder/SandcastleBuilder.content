@@ -147,7 +147,7 @@
       </HelpKeywords>
     </Topic>
   </Topic>
-  <Topic id="b128ad2a-787e-48c7-b946-f6953080c386" visible="True" isExpanded="true" title="Visual Studio Integration Package">
+  <Topic id="b128ad2a-787e-48c7-b946-f6953080c386" visible="True" title="Visual Studio Integration Package">
     <HelpKeywords>
       <HelpKeyword index="K" term="Visual Studio, package" />
     </HelpKeywords>
@@ -163,7 +163,7 @@
         <HelpKeyword index="K" term="Visual Studio, item file templates" />
       </HelpKeywords>
     </Topic>
-    <Topic id="7cbf7f9b-d456-430a-8f85-9e30ed250cfa" visible="True" isSelected="true" title="Visual Studio Text Editor">
+    <Topic id="7cbf7f9b-d456-430a-8f85-9e30ed250cfa" visible="True" title="Visual Studio Text Editor">
       <HelpKeywords>
         <HelpKeyword index="K" term="Visual Studio, text editor" />
         <HelpKeyword index="K" term="Visual Studio, IntelliSense" />
@@ -613,7 +613,7 @@
       </HelpKeywords>
     </Topic>
   </Topic>
-  <Topic id="8dcbb69b-7a1a-4049-8e6b-2bf344efbbc9" visible="True" title="Custom Build Components">
+  <Topic id="8dcbb69b-7a1a-4049-8e6b-2bf344efbbc9" visible="True" isExpanded="true" title="Custom Build Components">
     <HelpKeywords>
       <HelpKeyword index="K" term="build components, configuring" />
       <HelpKeyword index="K" term="build components, overview" />
@@ -625,23 +625,10 @@
         <HelpKeyword index="K" term="build components, API token resolution" />
       </HelpKeywords>
     </Topic>
-    <Topic id="3a1c4bf1-8ecf-4ab3-8010-277bed8d3819" visible="True" title="Cached Build Components">
-      <HelpKeywords>
-        <HelpKeyword index="K" term="build components, cached build components" />
-        <HelpKeyword index="K" term="CachedCopyFromIndexComponent, configuration options" />
-        <HelpKeyword index="K" term="CachedResolveReferenceLinksComponent, configuration options" />
-      </HelpKeywords>
-    </Topic>
     <Topic id="7f03ba39-09f8-4320-bdbd-ed31a3bd885f" visible="True" title="Code Block Component">
       <HelpKeywords>
         <HelpKeyword index="K" term="build components, code block component" />
         <HelpKeyword index="K" term="CodeBlockComponent, configuration options" />
-      </HelpKeywords>
-    </Topic>
-    <Topic id="85c08740-1190-471c-8fea-360a4a8e4612" visible="True" title="Help Attributes Component">
-      <HelpKeywords>
-        <HelpKeyword index="K" term="build components, help attributes component" />
-        <HelpKeyword index="K" term="MSHelpAttrComponent, configuration options" />
       </HelpKeywords>
     </Topic>
     <Topic id="5d546511-6aec-455a-ba09-9daffb124c6d" visible="True" title="IntelliSense Component">
@@ -656,11 +643,24 @@
         <HelpKeyword index="K" term="MultiFormatOutputComponent, configuration options" />
       </HelpKeywords>
     </Topic>
-    <Topic id="7e6e0e96-36cd-4541-9477-2657b98661f5" visible="True" title="Show Missing Documentation Component">
+    <Topic id="3a1c4bf1-8ecf-4ab3-8010-277bed8d3819" visible="True" isExpanded="true" title="Data Caching Build Components">
       <HelpKeywords>
-        <HelpKeyword index="K" term="build components, show missing documentation component" />
-        <HelpKeyword index="K" term="ShowMissingComponent, configuration options" />
+        <HelpKeyword index="K" term="build components, data caching" />
       </HelpKeywords>
+      <Topic id="2e8fa0c8-d7ec-4f7e-b42f-ac2718312ffc" visible="True" isSelected="true" title="ESENT Caching Components">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="build components, ESENT caching" />
+          <HelpKeyword index="K" term="ESentCopyFromIndexComponent, configuration options" />
+          <HelpKeyword index="K" term="ESentResolveReferenceLinksComponent, configuration options" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="0f0cc654-6ddf-4673-a001-b29885ca0310" visible="True" title="SQL Server Caching Component">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="build components, SQL caching" />
+          <HelpKeyword index="K" term="SqlCopyFromIndexComponent, configuration options" />
+          <HelpKeyword index="K" term="SqlResolveReferenceLinksComponent, configuration options" />
+        </HelpKeywords>
+      </Topic>
     </Topic>
     <Topic id="e6d18448-2459-46f1-bbdc-a7db415f2bda" visible="True" title="Creating a Component Configuration File">
       <HelpKeywords>
@@ -680,7 +680,7 @@
       <HelpKeyword index="K" term="error list" />
       <HelpKeyword index="K" term="warning list" />
     </HelpKeywords>
-    <Topic id="b8d73995-2acc-446b-92b7-1ac8884a1424" visible="True" noFile="true" title="Build Engine">
+    <Topic id="b8d73995-2acc-446b-92b7-1ac8884a1424" visible="True" noFile="true" isExpanded="true" title="Build Engine">
       <Topic id="13bf1e14-bf8f-478b-8fe6-932d18922a85" visible="True" title="BE0001: The PresentationStyle property value of 'XXXX' is not recognized">
         <HelpKeywords>
           <HelpKeyword index="K" term="error, BE0001" />
@@ -1053,6 +1053,11 @@
           <HelpKeyword index="K" term="errors, BE0074" />
         </HelpKeywords>
       </Topic>
+      <Topic id="ba99021c-60e7-4cb6-a3cf-f2e825431701" visible="True" title="BE0075: For MS Help Viewer builds, the HtmlHelpName property cannot contain periods">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BE0075" />
+        </HelpKeywords>
+      </Topic>
     </Topic>
     <Topic id="5d721885-2307-4df0-a0d5-1bd332ccfeae" visible="True" noFile="true" title="Generate Inherited Documentation">
       <Topic id="ceaee6cc-6393-40c6-bca4-869b0553f2b3" visible="True" title="GID0001: Unexpected error while generating inherited documentation">
@@ -1369,11 +1374,16 @@
       <HelpKeyword index="K" term="support, donate" />
     </HelpKeywords>
   </Topic>
-  <Topic id="078cc1c7-7995-431e-bf9c-8813becbe8df" visible="True" isExpanded="true" title="Version History">
+  <Topic id="078cc1c7-7995-431e-bf9c-8813becbe8df" visible="True" title="Version History">
     <HelpKeywords>
       <HelpKeyword index="K" term="History" />
       <HelpKeyword index="K" term="Version History" />
     </HelpKeywords>
+    <Topic id="fef9e0ed-864b-42f9-8747-af4d156a7c0e" visible="True" title="Version 1.9.7.0">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 1.9.7.0" />
+      </HelpKeywords>
+    </Topic>
     <Topic id="4bc61ac3-ac19-4c8b-9ff9-95aaefa0b18e" visible="True" title="Version 1.9.6.0">
       <HelpKeywords>
         <HelpKeyword index="K" term="versions, 1.9.6.0" />

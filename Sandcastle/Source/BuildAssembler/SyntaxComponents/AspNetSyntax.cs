@@ -8,9 +8,16 @@ using System.Xml.XPath;
 
 namespace Microsoft.Ddue.Tools
 {
+    /// <summary>
+    /// This class generates declaration syntax sections for ASP.NET
+    /// </summary>
     public sealed class AspNetSyntaxGenerator : SyntaxGenerator
     {
-        public AspNetSyntaxGenerator(XPathNavigator configuration) : base(configuration)
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="configuration">The syntax generator configuration</param>
+        public AspNetSyntaxGenerator(XPathNavigator configuration)
         {
         }
 
@@ -32,6 +39,7 @@ namespace Microsoft.Ddue.Tools
 
         private const string Language = "AspNet";
 
+        /// <inheritdoc />
         public override void WriteSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             string group = (string)reflection.Evaluate(groupExpression);
@@ -47,7 +55,6 @@ namespace Microsoft.Ddue.Tools
 
             if(group == "member")
             {
-
                 string prefix = null;
                 XPathNavigator containingType = reflection.SelectSingleNode(containingTypeExpression);
 

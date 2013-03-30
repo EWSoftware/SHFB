@@ -32,3 +32,4 @@ CD %OUTDIR%..\Source
 COPY scbuild.ps1 %OUTDIR%
 
 DEL /Q %OUTDIR%\*.pdb
+ENDLOCAL

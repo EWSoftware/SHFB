@@ -47,7 +47,7 @@ namespace Microsoft.Ddue.Tools
         /// Constructor
         /// </summary>
         /// <param name="location">The location in which to write the output</param>
-        public ManagedSyntaxWriter(XPathNavigator location) : base(location)
+        public ManagedSyntaxWriter(XPathNavigator location)
         {
             if(location == null)
                 throw new ArgumentNullException("location");

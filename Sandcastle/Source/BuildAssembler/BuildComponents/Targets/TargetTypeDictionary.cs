@@ -80,7 +80,7 @@ namespace Microsoft.Ddue.Tools.Targets
         //=====================================================================
 
         /// <inheritdoc />
-        /// <remarks>This method is not implemented.  Use <see cref="Add(ReferenceLinkType, TargetDictionary"/>
+        /// <remarks>This method is not implemented.  Use <see cref="Add(ReferenceLinkType, TargetDictionary)"/>
         /// to add target dictionaries and their associated reference link type</remarks>
         public void Add(string key, Target value)
         {
@@ -182,7 +182,7 @@ namespace Microsoft.Ddue.Tools.Targets
         //=====================================================================
 
         /// <inheritdoc />
-        /// <remarks>This method is not implemented.  Use <see cref="Add(ReferenceLinkType, TargetDictionary"/>
+        /// <remarks>This method is not implemented.  Use <see cref="Add(ReferenceLinkType, TargetDictionary)"/>
         /// to add target dictionaries and their associated reference link type</remarks>
         public void Add(KeyValuePair<string, Target> item)
         {

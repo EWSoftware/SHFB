@@ -16,7 +16,9 @@ using System.Text;
 
 namespace Microsoft.Ddue.Tools
 {
-
+    /// <summary>
+    /// This component is used to insert platform information into the topics
+    /// </summary>
     public class PlatformsComponent : BuildComponent
     {
         private Dictionary<string, Dictionary<string, VersionFilter>> versionFilters = new Dictionary<string, Dictionary<string, VersionFilter>>();
@@ -33,6 +35,11 @@ namespace Microsoft.Ddue.Tools
 
         private XPathExpression listTopicElementNodesExpression = XPathExpression.Compile("elements//element");
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="assembler">The build assembler instance</param>
+        /// <param name="configuration">The component configuration</param>
         public PlatformsComponent(BuildAssembler assembler, XPathNavigator configuration) :
           base(assembler, configuration)
         {
@@ -47,7 +54,11 @@ namespace Microsoft.Ddue.Tools
             }
         }
 
-        public void ParseDocuments(string wildcardPath)
+        /// <summary>
+        /// Parse platform information
+        /// </summary>
+        /// <param name="wildcardPath">The path to the platform information files</param>
+        protected void ParseDocuments(string wildcardPath)
         {
             string filterFiles = Environment.ExpandEnvironmentVariables(wildcardPath);
             if ((filterFiles == null) || (filterFiles.Length == 0))
@@ -129,6 +140,7 @@ namespace Microsoft.Ddue.Tools
             }
         }
 
+        /// <inheritdoc />
         public override void Apply(XmlDocument document, string key)
         {
             XPathNavigator targetDoc = document.CreateNavigator();
@@ -203,6 +215,9 @@ namespace Microsoft.Ddue.Tools
         }
 
     }
+
+// I can't be bothered to document all these right now so just ignore the warnings
+#pragma warning disable 1591
 
     public abstract class InclusionFilter
     {
@@ -298,8 +313,9 @@ namespace Microsoft.Ddue.Tools
         /// If we get here, we know that the platform supports this version, and the api is included in this version.
         /// So returns true unless the type or its namespace are explicitly excluded by this version filter.
         /// </summary>
-        /// <param name="referenceNode">The type's reflection data.</param>
-        /// <returns></returns>
+        /// <param name="referenceNode">The type's reflection data</param>
+        /// <param name="topicNamespaceName">The topic namespace name</param>
+        /// <returns>True if it is an included type, false if not</returns>
         public bool IsIncludedType(XPathNavigator referenceNode, string topicNamespaceName)
         {
             // if we have a filter for the topic's namespace, check it
@@ -322,7 +338,6 @@ namespace Microsoft.Ddue.Tools
             return included;
         }
     }
-
 
     public class NamespaceFilter : InclusionFilter
     {
@@ -671,4 +686,5 @@ namespace Microsoft.Ddue.Tools
 
     }
 
+#pragma warning restore 1591
 }

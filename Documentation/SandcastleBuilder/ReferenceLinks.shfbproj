@@ -19,13 +19,10 @@
     <HtmlHelpName>Documentation</HtmlHelpName>
     <DocumentationSources>
       <DocumentationSource sourceFile="$(DXROOT)\ProductionTools\BuildAssemblerLibrary.dll" />
-      <DocumentationSource sourceFile="$(DXROOT)\ProductionTools\BuildComponents.dll" />
-      <DocumentationSource sourceFile="..\..\SHFB\Source\ReferenceAssemblies\ICSharpCode.TextEditor.dll" />
-      <DocumentationSource sourceFile="..\..\SHFB\Source\ReferenceAssemblies\Ionic.Zip.Reduced.dll" />
-      <DocumentationSource sourceFile="$(DXROOT)\ProductionTools\MrefBuilder.exe" />
-      <DocumentationSource sourceFile="$(DXROOT)\ProductionTools\SyntaxComponents.dll" />
-      <DocumentationSource sourceFile="..\..\SHFB\Source\ReferenceAssemblies\WeifenLuo.WinFormsUI.Docking.dll" />
-    </DocumentationSources>
+<DocumentationSource sourceFile="$(DXROOT)\ProductionTools\BuildComponents.dll" />
+<DocumentationSource sourceFile="..\..\SHFB\Source\ReferenceAssemblies\ICSharpCode.TextEditor.dll" />
+<DocumentationSource sourceFile="$(SHFBROOT)\ColorizerLibrary.dll" />
+<DocumentationSource sourceFile="..\..\SHFB\Source\ReferenceAssemblies\WeifenLuo.WinFormsUI.Docking.dll" /></DocumentationSources>
     <CppCommentsFixup>False</CppCommentsFixup>
     <FrameworkVersion>.NET Framework 4.0</FrameworkVersion>
     <SccProjectName>SAK</SccProjectName>

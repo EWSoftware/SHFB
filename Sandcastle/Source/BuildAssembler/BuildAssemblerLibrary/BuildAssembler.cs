@@ -291,7 +291,7 @@ namespace Microsoft.Ddue.Tools
         }
 
         // TODO: This doesn't appear to be used anymore.  Remove?
-        protected IEnumerable<BuildContext> GetFileManifestBuildContextEnumerator(string manifestFilename)
+/*        protected IEnumerable<BuildContext> GetFileManifestBuildContextEnumerator(string manifestFilename)
         {
             using(XmlReader reader = XmlReader.Create(manifestFilename))
             {
@@ -325,7 +325,7 @@ namespace Microsoft.Ddue.Tools
                     }
                 }
             }
-        }
+        }*/
 
         /// <summary>
         /// This is used to create a component based on the given configuration

@@ -12,7 +12,10 @@ using System.Xml.XPath;
 
 namespace Microsoft.Ddue.Tools
 {
-
+    /// <summary>
+    /// This build component is used to clone the topic for each set of build components and execute them
+    /// on the cloned topic.
+    /// </summary>
     public class CloneComponent : BuildComponent
     {
         #region Private data members
@@ -46,6 +49,7 @@ namespace Microsoft.Ddue.Tools
         #region Method overrides
         //=====================================================================
 
+        /// <inheritdoc />
         public override void Apply(XmlDocument document, string key)
         {
             foreach(IEnumerable<BuildComponent> branch in branches)
@@ -57,6 +61,7 @@ namespace Microsoft.Ddue.Tools
             }
         }
 
+        /// <inheritdoc />
         protected override void Dispose(bool disposing)
         {
             if(disposing)
@@ -66,9 +71,6 @@ namespace Microsoft.Ddue.Tools
 
             base.Dispose(disposing);
         }
-
         #endregion
-
     }
-
 }

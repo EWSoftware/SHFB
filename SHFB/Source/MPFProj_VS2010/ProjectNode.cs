@@ -60,6 +60,7 @@ a particular purpose and non-infringement.
 // 06/20/2008  EFW  Added support for "Show All Files"
 // 03/20/2011  EFW  Updated to use MPFProj for VS2010
 // 04/17/2011  EFW  Made UpgradeProject() virtual
+// 03/20/2012  EFW  Fixed odd bug related to adding new items to deeply nested collapsed nodes.
 //===============================================================================================================
 
 using System;
@@ -5064,8 +5065,20 @@ namespace Microsoft.VisualStudio.Project
             }
 
             // Notify listeners that items were appended.
-            if (actualFilesAddedIndex > 0)
+            if(actualFilesAddedIndex > 0)
+            {
+                // !EFW - Really odd bug.  In release builds, if the new item is added to a collapsed node and
+                // is nested deeply enough, the OnItemsAppended call will fail somewhere and kill Visual Studio.
+                // Expanding the parent nodes first appears to work around the issue.
+                IVsUIHierarchyWindow uiWindow = UIHierarchyUtilities.GetUIHierarchyWindow(this.ProjectMgr.Site,
+                    SolutionExplorer);
+
+                if(uiWindow != null)
+                    ErrorHandler.ThrowOnFailure(uiWindow.ExpandItem(this.ProjectMgr.InteropSafeIVsUIHierarchy,
+                        n.ID, EXPANDFLAGS.EXPF_ExpandParentsToShowItem));
+
                 n.OnItemsAppended(n);
+            }
 
             //Open files if this was requested through the editorFlags
             bool openFiles = (editorFlags & (uint)__VSSPECIFICEDITORFLAGS.VSSPECIFICEDITOR_DoOpen) != 0;

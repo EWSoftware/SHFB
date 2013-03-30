@@ -6,7 +6,7 @@
 // Compiler: Microsoft Visual C#
 //
 // This is a version of the InMemoryIndexCache that adds the ability to store index information in one or more
-// persistent ESent databases.
+// persistent ESENT databases.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
 // distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
@@ -35,7 +35,7 @@ namespace SandcastleBuilder.Components.Commands
 {
     /// <summary>
     /// This is a version of the <c>InMemoryIndexCache</c> that adds the ability to store index information in
-    /// one or more persistent ESent databases.
+    /// one or more persistent ESENT databases.
     /// </summary>
     public class ESentIndexedCache : InMemoryIndexedCache
     {
@@ -117,7 +117,7 @@ namespace SandcastleBuilder.Components.Commands
         {
             var cache = this.CreateCache(configuration);
 
-            // ESent caches are inserted in reverse order as later caches take precedence over earlier ones
+            // ESENT caches are inserted in reverse order as later caches take precedence over earlier ones
             if(cache == null)
                 base.AddDocuments(configuration);
             else
@@ -143,8 +143,8 @@ namespace SandcastleBuilder.Components.Commands
                     currentCount = c.CurrentLocalCacheCount;
             }
 
-            this.Component.WriteMessage(MessageLevel.Diagnostic, "\"{0}\" highest ESent local cache flush " +
-                "count: {1}.  Highest ESent current local cache usage: {2} of {3}.", base.Name, flushCount,
+            this.Component.WriteMessage(MessageLevel.Diagnostic, "\"{0}\" highest ESENT local cache flush " +
+                "count: {1}.  Highest ESENT current local cache usage: {2} of {3}.", base.Name, flushCount,
                 currentCount, cacheSize);
 
             base.ReportCacheStatistics();
@@ -284,11 +284,11 @@ namespace SandcastleBuilder.Components.Commands
             if(filesToLoad != 0)
             {
                 // The time estimate is a ballpark figure and depends on the system
-                base.Component.WriteMessage(MessageLevel.Diagnostic, "{0} file(s) need to be added to the ESent " +
-                    "index cache database.  Indexing them will take about {1:N0} minute(s), please be " +
+                base.Component.WriteMessage(MessageLevel.Diagnostic, "{0} file(s) need to be added to the " +
+                    "ESENT index cache database.  Indexing them will take about {1:N0} minute(s), please be " +
                     "patient.  Cache location: {2}", filesToLoad, Math.Ceiling(filesToLoad / 60.0), cachePath);
 
-                // Limit the degree of parallelism or it overwhelms the ESent version store
+                // Limit the degree of parallelism or it overwhelms the ESENT version store
                 Parallel.ForEach(Directory.EnumerateFiles(directoryPart, filePart,
                   recurse ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly),
                   new ParallelOptions { MaxDegreeOfParallelism = 3 },

@@ -18,32 +18,33 @@ using System.Xml.XPath;
 
 namespace Microsoft.Ddue.Tools
 {
+    /// <summary>
+    /// This abstract class is used as the base class for syntax generators
+    /// </summary>
     public abstract class SyntaxGeneratorTemplate : SyntaxGenerator
     {
-        protected SyntaxGeneratorTemplate(XPathNavigator configuration) : base(configuration)
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="configuration">The syntax generator configuration</param>
+        protected SyntaxGeneratorTemplate(XPathNavigator configuration)
         {
             string nameValue = configuration.GetAttribute("name", String.Empty);
-            language = nameValue;
+            this.Language = nameValue;
         }
 
-        // A maximum width setting
-        protected static int maxPosition = 60;
+        /// <summary>
+        /// The maximum line width for the generated syntax
+        /// </summary>
+        protected const int MaxPosition = 60;
 
-        // The language itentifier
-        private string language;
+        /// <summary>
+        /// This is used to get or set the language identifier
+        /// </summary>
+        public string Language { get; protected set; }
 
-        public string Language
-        {
-            get
-            {
-                return (language);
-            }
-            protected set
-            {
-                language = value;
-            }
-        }
-
+// I can't be bothered to document all these right now so just ignore the warnings
+#pragma warning disable 1591
         // Where data is stored
 
         // api data
@@ -185,12 +186,18 @@ namespace Microsoft.Ddue.Tools
         protected static XPathExpression attachedPropertyGetterExpression = XPathExpression.Compile("string(attachedpropertydata/getter/member/@api)");
         protected static XPathExpression attachedPropertySetterExpression = XPathExpression.Compile("string(attachedpropertydata/setter/member/@api)");
 
+#pragma warning restore 1591
+
         // Methods to write syntax for different kinds of APIs
 
+        /// <summary>
+        /// This is the main syntax writing method
+        /// </summary>
+        /// <param name="reflection">The reflection data used to produce the syntax</param>
+        /// <param name="writer">The writer to which the syntax is written</param>
         public override void WriteSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
-
-            writer.WriteStartBlock(Language);
+            writer.WriteStartBlock(this.Language);
 
             string group = (string)reflection.Evaluate(apiGroupExpression);
 
@@ -199,21 +206,26 @@ namespace Microsoft.Ddue.Tools
                 case "namespace":
                     WriteNamespaceSyntax(reflection, writer);
                     break;
+
                 case "type":
                     WriteTypeSyntax(reflection, writer);
                     break;
+
                 case "member":
                     WriteMemberSyntax(reflection, writer);
                     break;
             }
 
             writer.WriteEndBlock();
-
         }
 
+        /// <summary>
+        /// Write type syntax
+        /// </summary>
+        /// <param name="reflection">The reflection data used to produce the syntax</param>
+        /// <param name="writer">The writer to which the syntax is written</param>
         public virtual void WriteTypeSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
-
             string subgroup = (string)reflection.Evaluate(apiSubgroupExpression);
 
             switch(subgroup)
@@ -234,12 +246,15 @@ namespace Microsoft.Ddue.Tools
                     WriteEnumerationSyntax(reflection, writer);
                     break;
             }
-
         }
 
+        /// <summary>
+        /// Write member syntax
+        /// </summary>
+        /// <param name="reflection">The reflection data used to produce the syntax</param>
+        /// <param name="writer">The writer to which the syntax is written</param>
         public virtual void WriteMemberSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
-
             string subgroup = (string)reflection.Evaluate(apiSubgroupExpression);
             string subsubgroup = (string)reflection.Evaluate(apiSubsubgroupExpression);
 
@@ -267,23 +282,62 @@ namespace Microsoft.Ddue.Tools
                     WriteFieldSyntax(reflection, writer);
                     break;
             }
-
         }
 
+        /// <summary>
+        /// Write namespace syntax
+        /// </summary>
+        /// <param name="reflection">The reflection data used to produce the syntax</param>
+        /// <param name="writer">The writer to which the syntax is written</param>
         public abstract void WriteNamespaceSyntax(XPathNavigator reflection, SyntaxWriter writer);
 
+        /// <summary>
+        /// Write class syntax
+        /// </summary>
+        /// <param name="reflection">The reflection data used to produce the syntax</param>
+        /// <param name="writer">The writer to which the syntax is written</param>
         public abstract void WriteClassSyntax(XPathNavigator reflection, SyntaxWriter writer);
 
+        /// <summary>
+        /// Write structure syntax
+        /// </summary>
+        /// <param name="reflection">The reflection data used to produce the syntax</param>
+        /// <param name="writer">The writer to which the syntax is written</param>
         public abstract void WriteStructureSyntax(XPathNavigator reflection, SyntaxWriter writer);
 
+        /// <summary>
+        /// Write interface syntax
+        /// </summary>
+        /// <param name="reflection">The reflection data used to produce the syntax</param>
+        /// <param name="writer">The writer to which the syntax is written</param>
         public abstract void WriteInterfaceSyntax(XPathNavigator reflection, SyntaxWriter writer);
 
+        /// <summary>
+        /// Write delegate syntax
+        /// </summary>
+        /// <param name="reflection">The reflection data used to produce the syntax</param>
+        /// <param name="writer">The writer to which the syntax is written</param>
         public abstract void WriteDelegateSyntax(XPathNavigator reflection, SyntaxWriter writer);
 
+        /// <summary>
+        /// Write enumeration syntax
+        /// </summary>
+        /// <param name="reflection">The reflection data used to produce the syntax</param>
+        /// <param name="writer">The writer to which the syntax is written</param>
         public abstract void WriteEnumerationSyntax(XPathNavigator reflection, SyntaxWriter writer);
 
+        /// <summary>
+        /// Write constructor syntax
+        /// </summary>
+        /// <param name="reflection">The reflection data used to produce the syntax</param>
+        /// <param name="writer">The writer to which the syntax is written</param>
         public abstract void WriteConstructorSyntax(XPathNavigator reflection, SyntaxWriter writer);
 
+        /// <summary>
+        /// Write method syntax
+        /// </summary>
+        /// <param name="reflection">The reflection data used to produce the syntax</param>
+        /// <param name="writer">The writer to which the syntax is written</param>
         public virtual void WriteMethodSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             bool isSpecialName = (bool)reflection.Evaluate(apiIsSpecialExpression);
@@ -307,18 +361,53 @@ namespace Microsoft.Ddue.Tools
                 WriteNormalMethodSyntax(reflection, writer);
         }
 
+        /// <summary>
+        /// Write property syntax
+        /// </summary>
+        /// <param name="reflection">The reflection data used to produce the syntax</param>
+        /// <param name="writer">The writer to which the syntax is written</param>
         public abstract void WritePropertySyntax(XPathNavigator reflection, SyntaxWriter writer);
 
+        /// <summary>
+        /// Write field syntax
+        /// </summary>
+        /// <param name="reflection">The reflection data used to produce the syntax</param>
+        /// <param name="writer">The writer to which the syntax is written</param>
         public abstract void WriteFieldSyntax(XPathNavigator reflection, SyntaxWriter writer);
 
+        /// <summary>
+        /// Write event syntax
+        /// </summary>
+        /// <param name="reflection">The reflection data used to produce the syntax</param>
+        /// <param name="writer">The writer to which the syntax is written</param>
         public abstract void WriteEventSyntax(XPathNavigator reflection, SyntaxWriter writer);
 
+        /// <summary>
+        /// Write normal method syntax
+        /// </summary>
+        /// <param name="reflection">The reflection data used to produce the syntax</param>
+        /// <param name="writer">The writer to which the syntax is written</param>
         public virtual void WriteNormalMethodSyntax(XPathNavigator reflection, SyntaxWriter writer) { }
 
+        /// <summary>
+        /// Write operator syntax
+        /// </summary>
+        /// <param name="reflection">The reflection data used to produce the syntax</param>
+        /// <param name="writer">The writer to which the syntax is written</param>
         public virtual void WriteOperatorSyntax(XPathNavigator reflection, SyntaxWriter writer) { }
 
+        /// <summary>
+        /// Write cast syntax
+        /// </summary>
+        /// <param name="reflection">The reflection data used to produce the syntax</param>
+        /// <param name="writer">The writer to which the syntax is written</param>
         public virtual void WriteCastSyntax(XPathNavigator reflection, SyntaxWriter writer) { }
 
+        /// <summary>
+        /// Write attached property syntax
+        /// </summary>
+        /// <param name="reflection">The reflection data used to produce the syntax</param>
+        /// <param name="writer">The writer to which the syntax is written</param>
         public virtual void WriteAttachedPropertySyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             string getterId = (string)reflection.Evaluate(attachedPropertyGetterExpression);
@@ -336,6 +425,11 @@ namespace Microsoft.Ddue.Tools
             }
         }
 
+        /// <summary>
+        /// Write attached event syntax
+        /// </summary>
+        /// <param name="reflection">The reflection data used to produce the syntax</param>
+        /// <param name="writer">The writer to which the syntax is written</param>
         public virtual void WriteAttachedEventSyntax(XPathNavigator reflection, SyntaxWriter writer)
         {
             string adderId = (string)reflection.Evaluate(attachedEventAdderExpression);
@@ -349,55 +443,68 @@ namespace Microsoft.Ddue.Tools
             }
         }
 
+        /// <summary>
+        /// Write unsupported variable arguments syntax
+        /// </summary>
+        /// <param name="reflection">The reflection data used to produce the syntax</param>
+        /// <param name="writer">The writer to which the syntax is written</param>
+        /// <returns>True if unsupported, false if it is supported</returns>
         protected virtual bool IsUnsupportedVarargs(XPathNavigator reflection, SyntaxWriter writer)
         {
             bool isVarargs = (bool)reflection.Evaluate(apiIsVarargsExpression);
 
             if(isVarargs)
-                writer.WriteMessage("UnsupportedVarargs_" + Language);
+                writer.WriteMessage("UnsupportedVarargs_" + this.Language);
 
-            return (isVarargs);
+            return isVarargs;
         }
 
+        /// <summary>
+        /// Write unsupported unsafe code syntax
+        /// </summary>
+        /// <param name="reflection">The reflection data used to produce the syntax</param>
+        /// <param name="writer">The writer to which the syntax is written</param>
+        /// <returns>True if unsupported, false if it is supported</returns>
         protected virtual bool IsUnsupportedUnsafe(XPathNavigator reflection, SyntaxWriter writer)
         {
             bool isUnsafe = (bool)reflection.Evaluate(apiIsUnsafeExpression);
 
             if(isUnsafe)
-            {
-                writer.WriteMessage("UnsupportedUnsafe_" + Language);
-            }
+                writer.WriteMessage("UnsupportedUnsafe_" + this.Language);
 
-            return (isUnsafe);
+            return isUnsafe;
         }
 
+        /// <summary>
+        /// Write unsupported generic types syntax
+        /// </summary>
+        /// <param name="reflection">The reflection data used to produce the syntax</param>
+        /// <param name="writer">The writer to which the syntax is written</param>
+        /// <returns>True if unsupported, false if it is supported</returns>
         protected virtual bool IsUnsupportedGeneric(XPathNavigator reflection, SyntaxWriter writer)
         {
-
             bool isGeneric = (bool)reflection.Evaluate(apiIsGenericExpression);
 
             if(isGeneric)
-            {
-                writer.WriteMessage("UnsupportedGeneric_" + Language);
-            }
+                writer.WriteMessage("UnsupportedGeneric_" + this.Language);
 
-            return (isGeneric);
-
+            return isGeneric;
         }
 
+        /// <summary>
+        /// Write unsupported explicit implementation syntax
+        /// </summary>
+        /// <param name="reflection">The reflection data used to produce the syntax</param>
+        /// <param name="writer">The writer to which the syntax is written</param>
+        /// <returns>True if unsupported, false if it is supported</returns>
         protected virtual bool IsUnsupportedExplicit(XPathNavigator reflection, SyntaxWriter writer)
         {
-
             bool isExplicit = (bool)reflection.Evaluate(apiIsExplicitImplementationExpression);
 
             if(isExplicit)
-            {
-                writer.WriteMessage("UnsupportedExplicit_" + Language);
-            }
+                writer.WriteMessage("UnsupportedExplicit_" + this.Language);
 
-            return (isExplicit);
-
+            return isExplicit;
         }
-
     }
 }

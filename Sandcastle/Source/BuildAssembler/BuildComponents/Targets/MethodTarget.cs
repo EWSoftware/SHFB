@@ -21,13 +21,24 @@ namespace Microsoft.Ddue.Tools.Targets
         #region Properties
         //=====================================================================
 
+        /// <summary>
+        /// This read-only property returns an enumerable list of parameters if any
+        /// </summary>
         public IList<Parameter> Parameters { get; private set; }
 
+        /// <summary>
+        /// This read-only property returns the return type
+        /// </summary>
         public TypeReference ReturnType { get; private set; }
 
+        /// <summary>
+        /// This read-only property returns an enumerable list of the template types if any
+        /// </summary>
         public IList<string> Templates { get; internal set; }
 
-        // property to hold specialized template arguments (used with extension methods)
+        /// <summary>
+        /// This read-only property returns specialized template arguments if any (used with extension methods)
+        /// </summary>
         public IList<TypeReference> TemplateArgs { get; internal set; }
 
         #endregion

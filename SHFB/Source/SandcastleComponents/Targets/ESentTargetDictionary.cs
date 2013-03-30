@@ -6,7 +6,7 @@
 // Note    : Copyright 2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains a target dictionary backed by a Managed ESent PersistentDictionary<TKey, TValue> instance.
+// This file contains a target dictionary backed by a Managed ESENT PersistentDictionary<TKey, TValue> instance.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
 // distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
@@ -31,11 +31,11 @@ using Microsoft.Isam.Esent.Collections.Generic;
 namespace SandcastleBuilder.Components.Targets
 {
     /// <summary>
-    /// This contains a collection of targets indexed by member ID stored in a Managed ESent
+    /// This contains a collection of targets indexed by member ID stored in a Managed ESENT
     /// <c>PersistentDictionary&lt;TKey, TValue&gt;</c>.
     /// </summary>
     /// <remarks>The behavior of this dictionary is to return null if a target ID is not found and to replace
-    /// existing entries if a duplicate ID is added.  All targets are stored in a Managed ESent database.  The
+    /// existing entries if a duplicate ID is added.  All targets are stored in a Managed ESENT database.  The
     /// initial use will create the database slowing down initialization on first use.  Subsequent uses will not
     /// need to recreate it.  The trade off is that it can use much less memory at the expense of some build
     /// speed for each topic.  The speed difference is offset somewhat by the shorter initialization time.</remarks>
@@ -76,7 +76,7 @@ namespace SandcastleBuilder.Components.Targets
             if(String.IsNullOrWhiteSpace(cacheSize) || !Int32.TryParse(cacheSize, out localCacheSize))
                 localCacheSize = 1000;
 
-            // This is a slightly modified version of Managed ESent that provides the option to serialize
+            // This is a slightly modified version of Managed ESENT that provides the option to serialize
             // reference types.  In this case, we don't care about potential issues of persisted copies not
             // matching the original if modified as they are never updated once written to the cache.  We can
             // also turn off column compression for a slight performance increase since it doesn't benefit the
@@ -107,12 +107,12 @@ namespace SandcastleBuilder.Components.Targets
             // The time estimate is a ballpark figure and depends on the system
             if(filesToLoad != 0)
             {
-                component.WriteMessage(MessageLevel.Diagnostic, "{0} file(s) need to be added to the ESent " +
+                component.WriteMessage(MessageLevel.Diagnostic, "{0} file(s) need to be added to the ESENT " +
                     "reflection target cache database.  Indexing them will take about {1:N0} minute(s), " +
                     "please be patient.  Cache location: {2}", filesToLoad, Math.Ceiling(filesToLoad * 10 / 60.0),
                     cachePath);
 
-                // Limit the degree of parallelism or it overwhelms the ESent version store
+                // Limit the degree of parallelism or it overwhelms the ESENT version store
                 this.LoadTargetDictionary(3);
             }
         }
@@ -136,8 +136,8 @@ namespace SandcastleBuilder.Components.Targets
         /// </summary>
         public override void ReportCacheStatistics()
         {
-            this.BuildComponent.WriteMessage(MessageLevel.Diagnostic, "\"{0}\" ESent local cache flushed {1} " +
-                "time(s).  Current ESent local cache usage: {2} of {3}.", base.DictionaryId,
+            this.BuildComponent.WriteMessage(MessageLevel.Diagnostic, "\"{0}\" ESENT local cache flushed {1} " +
+                "time(s).  Current ESENT local cache usage: {2} of {3}.", base.DictionaryId,
                 index.LocalCacheFlushCount, index.CurrentLocalCacheCount, index.LocalCacheSize);
 
             base.ReportCacheStatistics();

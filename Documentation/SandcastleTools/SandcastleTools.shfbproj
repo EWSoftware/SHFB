@@ -48,7 +48,7 @@
     <MSHelpViewerSdkLinkType>Msdn</MSHelpViewerSdkLinkType>
     <CatalogVersion>100</CatalogVersion>
     <CatalogProductId>VS</CatalogProductId>
-    <HelpFileVersion>2.7.2.0</HelpFileVersion>
+    <HelpFileVersion>2.7.3.0</HelpFileVersion>
     <PlugInNamespaces>ms.vsipcc+, ms.vsexpresscc+</PlugInNamespaces>
     <CollectionTocStyle>Hierarchical</CollectionTocStyle>
     <MSHelp2SdkLinkType>Msdn</MSHelp2SdkLinkType>
@@ -75,7 +75,15 @@
     <KeepLogFile>True</KeepLogFile>
     <DisableCodeBlockComponent>False</DisableCodeBlockComponent>
     <CppCommentsFixup>False</CppCommentsFixup>
-    <CleanIntermediates>True</CleanIntermediates>
+    <CleanIntermediates>False</CleanIntermediates>
+    <TransformComponentArguments>
+      <Argument Key="logoFile" Value="Sandcastle.jpg" xmlns="" />
+      <Argument Key="logoHeight" Value="" xmlns="" />
+      <Argument Key="logoWidth" Value="" xmlns="" />
+      <Argument Key="logoAltText" Value="Sandcastle Tools" xmlns="" />
+      <Argument Key="logoPlacement" Value="left" xmlns="" />
+      <Argument Key="logoAlignment" Value="left" xmlns="" />
+    </TransformComponentArguments>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in
        order for Visual Studio to perform the build.  The others are optional
@@ -101,6 +109,7 @@
     <Folder Include="Content\GettingStarted" />
     <Folder Include="Content\SandcastleTools" />
     <Folder Include="Content\VersionHistory" />
+    <Folder Include="Icons\" />
     <Folder Include="Media" />
   </ItemGroup>
   <ItemGroup>
@@ -122,6 +131,7 @@
     <None Include="Content\VersionHistory\v2.7.0.0.aml" />
     <None Include="Content\VersionHistory\v2.7.1.0.aml" />
     <None Include="Content\VersionHistory\v2.7.2.0.aml" />
+    <None Include="Content\VersionHistory\v2.7.3.0.aml" />
     <None Include="Content\VersionHistory\VersionHistory.aml" />
     <None Include="Content\Welcome.aml" />
   </ItemGroup>
@@ -130,6 +140,10 @@
       <ImageId>PayPal</ImageId>
       <AlternateText>Pay Pal</AlternateText>
       <CopyToMedia>True</CopyToMedia>
+    </Content>
+    <Content Include="Icons\Sandcastle.jpg">
+      <ImageId>Sandcastle</ImageId>
+      <AlternateText>Sandcastle</AlternateText>
     </Content>
     <Image Include="Media\SandcastleLayers.jpg">
       <ImageId>SandcastleLayers</ImageId>

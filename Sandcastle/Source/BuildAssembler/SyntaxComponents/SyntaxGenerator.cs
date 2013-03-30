@@ -15,13 +15,19 @@ namespace Microsoft.Ddue.Tools
     /// </summary>
     public abstract class SyntaxGenerator
     {
+        #region Constructor
+        //=====================================================================
+
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="configuration">The syntax generator configuration</param>
-        protected SyntaxGenerator(XPathNavigator configuration)
+        protected SyntaxGenerator()
         {
         }
+        #endregion
+
+        #region Abstract methods
+        //=====================================================================
 
         /// <summary>
         /// This is implemented to write the syntax
@@ -29,5 +35,6 @@ namespace Microsoft.Ddue.Tools
         /// <param name="reflection">The reflection data used to generate the syntax</param>
         /// <param name="writer">The writer to which the syntax information is written</param>
         public abstract void WriteSyntax(XPathNavigator reflection, SyntaxWriter writer);
+        #endregion
     }
 }

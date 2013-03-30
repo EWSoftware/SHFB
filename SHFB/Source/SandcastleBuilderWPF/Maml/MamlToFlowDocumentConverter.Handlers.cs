@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : MamlToFlowDocumentConverter.Handlers.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/12/2013
+// Updated : 03/21/2013
 // Note    : Copyright 2012-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -626,7 +626,7 @@ namespace SandcastleBuilder.WPF.Maml
 
             // Expand tokens first
             foreach(var link in props.Element.Nodes().OfType<XElement>().Where(n => n.Name.LocalName == "token"))
-                if(props.Converter.Tokens.TryGetValue(props.Element.Value.Trim(), out token))
+                if(props.Converter.Tokens.TryGetValue(link.Value.Trim(), out token))
                     tokenContent.AddRange(token.Nodes().OfType<XElement>());
 
             // Group the elements by type or topic ID

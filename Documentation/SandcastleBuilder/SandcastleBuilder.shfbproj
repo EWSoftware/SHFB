@@ -37,15 +37,17 @@
     <FeedbackEMailAddress>Eric%40EWoodruff.us</FeedbackEMailAddress>
     <PresentationStyle>VS2005</PresentationStyle>
     <SyntaxFilters>CSharp, VisualBasic</SyntaxFilters>
-    <HelpFileVersion>1.9.6.0</HelpFileVersion>
+    <HelpFileVersion>1.9.7.0</HelpFileVersion>
     <ComponentConfigurations>
     </ComponentConfigurations>
     <DocumentationSources>
+      <DocumentationSource sourceFile="$(DXROOT)\ProductionTools\BuildAssemblerLibrary.xml" />
+      <DocumentationSource sourceFile="$(DXROOT)\ProductionTools\BuildComponents.xml" />
       <DocumentationSource sourceFile="..\..\SHFB\Source\SandcastleBuilder.sln" />
     </DocumentationSources>
     <NamespaceSummaries>
       <NamespaceSummaryItem name="(global)" isDocumented="False" />
-      <NamespaceSummaryItem name="SandcastleBuilder.Components" isDocumented="True">This namespace contains custom build components used by the Sandcastle tools &lt;b&gt;MRefBuilder&lt;/b&gt; and &lt;b&gt;BuildAssembler&lt;/b&gt;.  The &lt;b&gt;MRefBuilder&lt;/b&gt; components are used to add features such as assembly binding redirection when generating reflection information.  The &lt;b&gt;BuildAssembler&lt;/b&gt; components are used to add additional features to the help topics such as a logo, code colorization, warnings that indicate missing documentation elements, etc.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SandcastleBuilder.Components" isDocumented="True">This namespace contains custom build components used by the Sandcastle &lt;b&gt;BuildAssembler&lt;/b&gt; tool.  The components are used to add additional features to the help topics such as a code colorization, alternate framework data caching implementations, etc.</NamespaceSummaryItem>
       <NamespaceSummaryItem name="SandcastleBuilder.PlugIns" isDocumented="True">This namespace contains the plug-ins supplied with the Sandcastle Help File Builder.  These can be used in a project to extend or alter the build process in various ways such as supporting build completion notification, deployment, and generating documentation with AjaxDoc.</NamespaceSummaryItem>
       <NamespaceSummaryItem name="SandcastleBuilder.Utils" isDocumented="True">This namespace contains various utility classes and the help file builder project classes.</NamespaceSummaryItem>
       <NamespaceSummaryItem name="SandcastleBuilder.Utils.BuildComponent" isDocumented="True">This namespace contains the classes used to manage the configurations for third-party build components that can be merged into the sandcastle.config configuration file.</NamespaceSummaryItem>
@@ -74,6 +76,8 @@
       <NamespaceSummaryItem name="SandcastleBuilder.WPF.Maml" isDocumented="True">This namespace contains various classes used to convert MAML topics to WPF flow documents for previewing.</NamespaceSummaryItem>
       <NamespaceSummaryItem name="SandcastleBuilder.Package.PropertyPages" isDocumented="True">This namespace contains property pages for the Visual Studio package.  The property pages are also used by the standalone GUI.</NamespaceSummaryItem>
       <NamespaceSummaryItem name="SandcastleBuilder.Utils.PresentationStyle" isDocumented="True">This namespace contains classes used to load and work with the presentation style configuration files that define the supported presentation styles used for the build.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SandcastleBuilder.Components.Commands" isDocumented="True">This namespace contains command classes used by the &lt;b&gt;BuildAssembler&lt;/b&gt; component &lt;b&gt;CopyFromIndexComponent&lt;/b&gt;.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SandcastleBuilder.Components.Targets" isDocumented="True">This namespace contains target data classes used by the &lt;b&gt;BuildAssembler&lt;/b&gt; component &lt;b&gt;ResolveReferenceLinksComponent2&lt;/b&gt;.</NamespaceSummaryItem>
     </NamespaceSummaries>
     <CleanIntermediates>True</CleanIntermediates>
     <ApiFilter>
@@ -178,11 +182,14 @@
   <ItemGroup>
     <None Include="Content\BenefitsAndFeatures.aml" />
     <None Include="Content\CompConfig\APITokenResolution.aml" />
+    <None Include="Content\CompConfig\ESentCachingComponents.aml" />
+    <None Include="Content\CompConfig\SQLCachingComponents.aml" />
     <None Include="Content\CustomPresentationStyle.aml" />
     <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0071.aml" />
     <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0072.aml" />
     <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0073.aml" />
     <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0074.aml" />
+    <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0075.aml" />
     <None Include="Content\GettingStarted\AttachedPropsEvents.aml" />
     <None Include="Content\PresentationStyleWalkthrough.aml" />
     <None Include="Content\PropertiesWindow\ComponentConfigs.aml" />
@@ -198,6 +205,7 @@
     <None Include="Content\VersionHistory\v1.9.4.0.aml" />
     <None Include="Content\VersionHistory\v1.9.5.0.aml" />
     <None Include="Content\VersionHistory\v1.9.6.0.aml" />
+    <None Include="Content\VersionHistory\v1.9.7.0.aml" />
     <None Include="Content\VisualStudio\ItemFileTemplates.aml" />
     <None Include="Content\VisualStudio\FeatureComparison.aml" />
     <None Include="Content\VisualStudio\VisualStudioTextEditor.aml" />
@@ -361,8 +369,6 @@
     <None Include="Content\CompConfig\CompConfig.aml" />
     <None Include="Content\CompConfig\CompConfigFile.aml" />
     <None Include="Content\CompConfig\IntelliSenseComponent.aml" />
-    <None Include="Content\CompConfig\MSHelpAttrComponent.aml" />
-    <None Include="Content\CompConfig\ShowMissingComponent.aml" />
     <None Include="Content\GettingStarted\CreateProject.aml" />
     <None Include="Content\GettingStarted\InheritDoc.aml" />
     <None Include="Content\GettingStarted\Overview.aml" />

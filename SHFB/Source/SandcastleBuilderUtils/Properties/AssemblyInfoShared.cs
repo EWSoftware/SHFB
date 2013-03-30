@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : AssemblyInfoShared.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/15/2012
-// Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
+// Updated : 03/28/2013
+// Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // Sandcastle Help File Builder common assembly attributes.
@@ -45,7 +45,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyProduct("Sandcastle Help File Builder")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Eric Woodruff")]
-[assembly: AssemblyCopyright("Copyright \xA9 2006-2012, Eric Woodruff, All Rights Reserved")]
+[assembly: AssemblyCopyright("Copyright \xA9 2006-2013, Eric Woodruff, All Rights Reserved")]
 [assembly: AssemblyTrademark("Eric Woodruff, All Rights Reserved")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
@@ -65,6 +65,6 @@ using System.Runtime.InteropServices;
 // and plug-in developers to use the same major, minor, and build numbers
 // as the Sandcastle Help File Builder to indicate with which version their
 // components are compatible.
-[assembly: AssemblyVersion("1.9.6.0")]
+[assembly: AssemblyVersion("1.9.7.0")]
 
 // See AssemblyInfo.cs for project-specific assembly attributes

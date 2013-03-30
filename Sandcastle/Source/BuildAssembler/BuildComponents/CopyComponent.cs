@@ -28,10 +28,7 @@ namespace Microsoft.Ddue.Tools
         /// Constructor
         /// </summary>
         /// <param name="parent">The parent build component</param>
-        /// <param name="configuration">The copy component configuration</param>
-        /// <param name="data">A dictionary interface providing access to the shared build component data</param>
-        protected CopyComponent(BuildComponent parent, XPathNavigator configuration,
-          IDictionary<string, object> data)
+        protected CopyComponent(BuildComponent parent)
         {
             this.ParentBuildComponent = parent;
         }

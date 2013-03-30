@@ -19,6 +19,9 @@ using Microsoft.Ddue.Tools.Targets;
 
 namespace Microsoft.Ddue.Tools
 {
+    /// <summary>
+    /// This component is used to resolve links to media files (i.e images)
+    /// </summary>
     public class ResolveArtLinksComponent : BuildComponent
     {
         #region Private data members

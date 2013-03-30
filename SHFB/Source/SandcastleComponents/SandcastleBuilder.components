@@ -294,13 +294,13 @@
 
 	<!-- ****************************************************************** -->
 
-	<component id="Resolve Reference Links (ESent Cache)"
+	<component id="Resolve Reference Links (ESENT Cache)"
 		type="SandcastleBuilder.Components.ESentResolveReferenceLinksComponent"
 		assembly="{@SHFBFolder}SandcastleBuilder.Components.dll"
 		locale="{@Locale}" linkTarget="{@SdkLinkTarget}">
-		<description>This component is used to resolve reference links in topics.  It uses ESent databases to cache MSDN content IDs and .NET Framework reference link targets.  This speeds up initialization and conserves memory at the expense of some build time in larger projects.  For extremely large projects, it is also possible to cache project reference link data to conserve memory.
+		<description>This component is used to resolve reference links in topics.  It uses ESENT databases to cache MSDN content IDs and .NET Framework reference link targets.  This speeds up initialization and conserves memory at the expense of some build time in larger projects.  For extremely large projects, it is also possible to cache project reference link data to conserve memory.
 
-The ESent database engine is part of every version of Microsoft Windows and no set up is required.</description>
+The ESENT database engine is part of every version of Microsoft Windows and no set up is required.</description>
 
 		<insert placement="replace" type="Microsoft.Ddue.Tools.ResolveReferenceLinksComponent2" />
 		<insertConceptual placement="replace" type="Microsoft.Ddue.Tools.ResolveReferenceLinksComponent2" />
@@ -352,12 +352,12 @@ The ESent database engine is part of every version of Microsoft Windows and no s
 
 	<!-- ****************************************************************** -->
 
-	<component id="Reflection Index Data (ESent Cache)"
+	<component id="Reflection Index Data (ESENT Cache)"
 		type="SandcastleBuilder.Components.ESentCopyFromIndexComponent"
 		assembly="{@SHFBFolder}SandcastleBuilder.Components.dll">
-		<description>This component is used to index reflection data for copying into topics.  It uses an ESent database to cache the .NET Framework reflection data.  This speeds up initialization and conserves memory at the expense of some build time in larger projects.   For extremely large projects, it is also possible to cache project reference index data to conserve memory.
+		<description>This component is used to index reflection data for copying into topics.  It uses an ESENT database to cache the .NET Framework reflection data.  This speeds up initialization and conserves memory at the expense of some build time in larger projects.   For extremely large projects, it is also possible to cache project reference index data to conserve memory.
 
-The ESent database engine is part of every version of Microsoft Windows and no set up is required.</description>
+The ESENT database engine is part of every version of Microsoft Windows and no set up is required.</description>
 
 		<insert placement="replace" instance="1" type="Microsoft.Ddue.Tools.CopyFromIndexComponent" />
 
@@ -378,12 +378,12 @@ The ESent database engine is part of every version of Microsoft Windows and no s
 
 	<!-- ****************************************************************** -->
 
-	<component id="Comments Index Data (ESent Cache)"
+	<component id="Comments Index Data (ESENT Cache)"
 		type="SandcastleBuilder.Components.ESentCopyFromIndexComponent"
 		assembly="{@SHFBFolder}SandcastleBuilder.Components.dll">
-		<description>This component is used to index framework comments for copying into topics.  It uses an ESent database to cache the .NET Framework comments.  This speeds up initialization and conserves memory at the expense of some build time in larger projects.  For extremely large projects, it is also possible to cache project comments data to conserve memory.
+		<description>This component is used to index framework comments for copying into topics.  It uses an ESENT database to cache the .NET Framework comments.  This speeds up initialization and conserves memory at the expense of some build time in larger projects.  For extremely large projects, it is also possible to cache project comments data to conserve memory.
 
-The ESent database engine is part of every version of Microsoft Windows and no set up is required.
+The ESENT database engine is part of every version of Microsoft Windows and no set up is required.
 		</description>
 
 		<insert placement="replace" instance="3" type="Microsoft.Ddue.Tools.CopyFromIndexComponent" />

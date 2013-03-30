@@ -31,7 +31,7 @@ namespace SandcastleBuilder.Components.UI
     /// <summary>
     /// This form is used to enter the SQL Server connection string and set up the database
     /// </summary>
-    public partial class SqlConnectionDlg : Form
+    internal partial class SqlConnectionDlg : Form
     {
         #region Private data members
         //=====================================================================

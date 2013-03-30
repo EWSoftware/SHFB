@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="dacbe260-df28-4ad6-b0ec-b2f6711c6b2d" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+			<autoOutline excludeRelatedTopics="true" lead="Version 2.7.3.0 was released on March 30th, 2013." />
+		</introduction>
+
+		<section address="MRefBuilder">
+			<title>MRefBuilder Tools</title>
+			<content>
+				<para>Added the Windows Phone 8.0 framework to the framework definition file.</para>
+			</content>
+		</section>
+
+		<section address="BuildAssembler">
+			<title>BuildAssembler Tools</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Reworked the BuildAssembler execution process to allow for parallel executon of component code.
+Components are still initialized and topics built sequentially for the time being but parallelism can be utilized
+now and is used in certain components when they are initialized.</para>
+					</listItem>
+
+					<listItem>
+						<para>Reworked the BuildAssembler message logger to allow for parallel executon of component code
+without contention for the console when logging messages.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added a warning count to BuildAssembler which is displayed at the end of the build.</para>
+					</listItem>
+
+				</list>
+			</content>
+		</section>
+
+		<section address="BuildComponents">
+			<title>Build Components</title>
+			<content>
+				<alert class="note">
+					<para>A number of these are breaking changes.  However, most people will be unaffected unless they have
+created custom build components or syntax generators.  These changes were necessary in order to make the API more
+accessible and to make it easier to derive build components from existing ones without having to reimplement a
+lot of the internal supporting classes.</para>
+				</alert>
+
+				<list class="bullet">
+					<listItem>
+						<para>Deleted <codeInline>CodeReference</codeInline>, <codeInline>LiveExampleComponent</codeInline>,
+and <codeInline>WdxResolveConceptualLinksComponent</codeInline> as they appear to be for internal Microsoft use
+and do not appear to have much use for non-Microsoft users.</para>
+					</listItem>
+
+					<listItem>
+						<para>Deleted the classes in the <codeInline>BuildComponents</codeInline> namespace from the
+BuildComponents project as they were unused.  These were replaced by the like-named classes in the
+<codeInline>Microsoft.Ddue.Tools</codeInline> namespace.</para>
+					</listItem>
+
+					<listItem>
+						<para>Deleted <codeInline>IntellisenseComponent2</codeInline> and replaced
+<codeInline>IntellisenseComponent</codeInline> with the version from the Sandcastle Help File Builder.  Added the
+<codeInline>IntelliSenseComponent</codeInline> configuration dialog which can be used by front end tools such as
+the Sandcastle Help File Builder to edit the component's configuration.
+						</para>
+					</listItem>
+
+					<listItem>
+						<para>Moved <codeInline>InheritDocumentationComponent</codeInline> into the main BuildComponents
+project and deleted the CopyComponents assembly as it was the only one in it.</para>
+					</listItem>
+
+					<listItem>
+						<para>Moved the syntax writer classes into the SyntaxComponents assembly with their related classes.</para>
+					</listItem>
+
+					<listItem>
+						<para>Moved all of the snippet related classes into their own namespace.</para>
+					</listItem>
+
+					<listItem>
+						<para>Moved all of the target related classes into their own namespace.</para>
+					</listItem>
+
+					<listItem>
+						<para>Moved all of the command related classes into their own namespace.</para>
+					</listItem>
+
+					<listItem>
+						<para>Made all of the supporting classes public.</para>
+					</listItem>
+
+					<listItem>
+						<para>Made all reference link target classes serializable.</para>
+					</listItem>
+
+					<listItem>
+						<para>Cleaned up and refactored the code where necessary in almost all of build components.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added a new <codeInline>CopyCommand</codeInline> abstract base class in BuildAssembler to make
+creating new copy commands possible.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added a new <codeInline>IndexedCache</codeInline> abstract base class for use by the
+<codeInline>CopyFromIndexComponent</codeInline> and its subcomponents for the index data.  This also allows
+derived components to implement alternate caching mechanisms.</para>
+					</listItem>
+
+					<listItem>
+						<para>Made <codeInline>TargetDictionary</codeInline> an abstract base class and added
+<codeInline>InMemoryTargetDictionary</codeInline> as the basic implementation.  This allows alternate
+implementations that use a different storage mechanism for the target data.</para>
+					</listItem>
+
+					<listItem>
+						<para>Reimplemented how reference link targets are loaded and stored.  This allows for sharing target
+data independent of link type across multiple instances of <codeInline>ResolveReferenceLinksComponent2</codeInline>
+reducing memory requirements and initialization time when building multiple output formats.  The new
+implementation also allows caching of the information.</para>
+					</listItem>
+
+					<listItem>
+						<para>Reworked the target dictionaries to allow for loading of target information in parallel to
+speed initialization up a bit.</para>
+					</listItem>
+
+					<listItem>
+						<para>Renamed the <codeInline>IndexedDocumentCache</codeInline> to <codeInline>InMemoryIndexedCache</codeInline>
+and reworked it to support filtering by namespace to reduce the amount of reflection data that it needs to load
+and also added support for loading the index files in parallel.</para>
+					</listItem>
+
+					<listItem>
+						<para>In <codeInline>CopyFromIndexComponent</codeInline>, added a virtual method to create the index
+caches, added code to dispose of them when done, and exposed the context via a protected property.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added a <codeInline>Dispose</codeInline> method to <codeInline>CloneComponent</codeInline> to
+properly dispose of all components in each branch.</para>
+					</listItem>
+
+					<listItem>
+						<para>Simplified the <codeInline>FileCreatedEventArgs</codeInline> and updated the
+<codeInline>HxFGeneraterComponent</codeInline> to make it responsible for figuring out where to put its files.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added support for MSDN content ID caching to the <codeInline>ResolveReferenceLinksComponent2</codeInline>.
+The implementation allows derived classes to utilize backing stores other than the serialized binary file used by
+default as long as the cache type implements <codeInline>IDictionary&lt;string, string&gt;</codeInline>. It also
+allows sharing the cache across multiple instances of the component.</para>
+					</listItem>
+
+					<listItem>
+						<para>Regenerated the MTPS Content Service classes.  A decision was made to stay with the web service
+as the authentication issues have well-known solutions (see <localUri>BuildAssembler.exe.config</localUri>).
+Switching to a service type may introduce other authentication issues and since the web service works well
+enough, it was left as-is.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added support for defining which namespace targets to load in <codeInline>ResolveReferenceLinksComponent2</codeInline>.
+This prevents loading unnecessary namespaces saving some memory and initialization time.</para>
+					</listItem>
+
+					<listItem>
+						<para><codeInline>ReferenceLinkComponent2</codeInline> and <codeInline>CopyFromIndexComponent</codeInline>
+now report cache usage at the end of the build with diagnostic messages.  These can be used to help tune the
+cache sizes if necessary especially in derived caching components.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added support for a <codeInline>renderReferenceLinks</codeInline> attribute to the
+<codeInline>SyntaxComponent</codeInline> configuration's syntax element. By default the syntax component will not
+render links to types in the syntax section (this is not supported anymore by MS Help Viewer 2.0).  By adding
+this attribute to the configuration and setting it to true, you can turn them back on again if wanted.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added a condition to the <codeInline>SyntaxComponent</codeInline>'s <codeInline>Apply</codeInline>
+method to skip group, project, and namespace pages in which a syntax section is of no use.  This allows removal
+of the <codeInline>IfThenComponent</codeInline> wrapper around it in the configuration files which wasn't using
+an up-to-date condition anyway.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated the Visual Basic and Visual Basic Usage syntax generators to omit the line continuation
+character by default.  It can be enabled by adding the <codeInline>includeLineContinuation</codeInline> attribute
+to the generator element and setting it to true.</para>
+					</listItem>
+
+					<listItem>
+						<para>Removed the use of <codeInline>RegexOptions.Compiled</codeInline> in <codeInline>ExampleComponent</codeInline>
+which greatly improves its overall performance. The significant time and increased memory penalties outweighed
+any performance benefits over the course of the build.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated <codeInline>DisplayComponent</codeInline> to output the content as a diagnostic message
+using the <codeInline>WriteMessage</codeInline> method rather than just dumping it to the console.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated <codeInline>ValidateComponent</codeInline> to include the key in its warning messages.</para>
+					</listItem>
+
+					<listItem>
+						<para>Moved the <codeInline>MSHelpAttrComponent</codeInline> and <codeInline>ShowMissingComponent</codeInline>
+from the Sandcastle Help File Builder into the Sandcastle BuildComponents project.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed up various issues in the BuildAssembler projects found by FxCop (too many to list).</para>
+					</listItem>
+
+				</list>
+			</content>
+		</section>
+
+		<section address="PresentationStyles">
+			<title>Presentation Styles</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Changed the <codeInline>title</codeInline> element in the presentation styles so that it shows
+the qualified member name. This is required to provide unique titles for index entries. This does have the
+side-effect of causing member titles in the MS Help Viewer TOC to be qualified with the class name as Help Viewer
+no longer supports a <codeInline>TOCTitle</codeInline> metadata attribute like Help 2 did. Help for base
+framework classes exhibits the same behavior so this appears to be by design.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the VS2010 style so that links work properly in Help 2.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed <localUri>VS2010\Branding\ps-body.xslt</localUri> so that it doesn't add a "./" relative
+URL prefix to non-relative image URLs.</para>
+					</listItem>
+
+					<listItem>
+						<para>Commented out the templates in <localUri>VS2010\Branding\ps-body.xslt</localUri> that were
+stripping style attributes. These appear to be for use with non-self-branded content which doesn't apply anymore.
+Allowing the style attributes through fixes the problem of the "nobullet" list style not working.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated all presentation styles so that fields, properties, events, and methods include a
+return type link even if no <codeInline>returns</codeInline> or <codeInline>value</codeInline> XML comments
+element is present. This makes it consistent with MSDN and allows for the removal of the type links within the
+Syntax section itself as the type links for the return value and parameter values are available elsewhere on the
+page.</para>
+					</listItem>
+
+					<listItem>
+						<para>Deleted the unused reference and schema build configuration and XSL transformation files from
+all presentation styles.</para>
+					</listItem>
+
+					<listItem>
+						<para>Removed the duplicate items from <localUri>shared_content_mshc.xml</localUri> leaving only the
+overridden path elements. The MS Help Viewer configuration files where updated to include the
+<localUri>shared_content.xml</localUri> file ahead of it.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated the example and presentation style configuration files to reference
+<codeInline>InheritDocumentationComponent</codeInline> in the BuildComponents assembly.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added the <codeInline>ShowMissingComponent</codeInline> resource items to the
+<localUri>reference_content.xml</localUri> file in each presentation style.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added support for the <codeInline>markup</codeInline> element in
+<localUri>main_sandcastle.xsl</localUri> in each presentation style.  This allows a block of HTML or other
+elements such as <codeInline>include</codeInline> to pass through as-is to the topic.  This allows build
+components to insert content before the <codeInline>TransformComponent</codeInline> runs and prevents it being
+removed as unrecognized content by the XSL transformations. The conceptual transformations already allow this so
+this makes the conceptual and reference builds consistent in supporting a <codeInline>markup</codeInline> element.</para>
+					</listItem>
+
+				</list>
+			</content>
+		</section>
+
+    <relatedTopics>
+			<link xlink:href="e0636c2c-3da0-4d5e-9e86-6fb3f0c83eef" />
+		</relatedTopics>
+
+  </developerConceptualDocument>
+</topic>

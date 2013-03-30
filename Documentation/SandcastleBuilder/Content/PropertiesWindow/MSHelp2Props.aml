@@ -89,9 +89,8 @@ to the right of the property when it is selected to open the editor.  In it, you
 each additional attribute.  Click the <ui>Default</ui> button to add a default set of attributes
 (<codeInline>DocSet/NETFramework</codeInline>, <codeInline>DocSet/{@HtmlHelpName}</codeInline>, and
 <codeInline>TargetOS/Windows</codeInline>).  If producing an MS Help 2 file, you should at least add the default
-attributes so that filtering is supported.  When attributes exist in this property, the
-<link xlink:href="85c08740-1190-471c-8fea-360a4a8e4612" /> is automatically added to the Sandcastle configuration
-file at build time.</para>
+attributes so that filtering is supported.  When attributes exist in this property, the <legacyBold>MS Help 2
+Attributes</legacyBold> component is automatically added to the Sandcastle configuration file at build time.</para>
 		
 		<para>For the attribute value, you can specify any of the
 <link xlink:href="69d998a7-1af5-4bf5-889b-59cd00b64000">replacement tags</link>

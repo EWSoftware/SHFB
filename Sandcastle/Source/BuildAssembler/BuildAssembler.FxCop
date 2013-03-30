@@ -33,7 +33,6 @@
         <Type Name="BrandingComponent" Analyze="True" AnalyzeAllChildren="True" />
         <Type Name="BrandingComponent+SpecialXmlReader" Analyze="True" AnalyzeAllChildren="True" />
         <Type Name="CloneComponent" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="ColorizationRule" Analyze="True" AnalyzeAllChildren="True" />
         <Type Name="CopyComponent" Analyze="True" AnalyzeAllChildren="False">
          <Members AnalyzeAllChildren="False">
           <Member Name="#&lt;ParentBuildComponent&gt;k__BackingField" Analyze="True" />
@@ -55,33 +54,9 @@
         <Type Name="IndexedExample" Analyze="True" AnalyzeAllChildren="True" />
         <Type Name="IndexedFile" Analyze="True" AnalyzeAllChildren="True" />
         <Type Name="IndexedFileCache" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="InheritDocumentationComponent" Analyze="True" AnalyzeAllChildren="False">
-         <Members AnalyzeAllChildren="False">
-          <Member Name="#.cctor()" Analyze="True" />
-          <Member Name="#apiGroupExpression" Analyze="True" />
-          <Member Name="#apiNameExpression" Analyze="True" />
-          <Member Name="#apiSubgroupExpression" Analyze="True" />
-          <Member Name="#Apply(System.Xml.XmlDocument,System.String)" Analyze="True" />
-          <Member Name="#commentsIndex" Analyze="True" />
-          <Member Name="#containerTypeExpression" Analyze="True" />
-          <Member Name="#DeleteNode(System.Xml.XPath.XPathNavigator,System.String)" Analyze="True" />
-          <Member Name="#GetComments(System.Xml.XPath.XPathNodeIterator,System.Xml.XPath.XPathNavigator)" Analyze="True" />
-          <Member Name="#inheritDocExpression" Analyze="True" />
-          <Member Name="#InheritDocumentation(System.String)" Analyze="True" />
-          <Member Name="#interfaceImplementationExpression" Analyze="True" />
-          <Member Name="#interfaceImplementationMemberExpression" Analyze="True" />
-          <Member Name="#overrideMemberExpression" Analyze="True" />
-          <Member Name="#reflectionIndex" Analyze="True" />
-          <Member Name="#sourceDocument" Analyze="True" />
-          <Member Name="#sourceExpression" Analyze="True" />
-          <Member Name="#tagsExpression" Analyze="True" />
-          <Member Name="#typeExpression" Analyze="True" />
-          <Member Name="#UpdateNode(System.Xml.XPath.XPathNavigator,System.Xml.XPath.XPathNavigator)" Analyze="True" />
-         </Members>
-        </Type>
+        <Type Name="InheritDocumentationComponent" Analyze="True" AnalyzeAllChildren="True" />
         <Type Name="IntelliSenseComponent" Analyze="True" AnalyzeAllChildren="True" />
         <Type Name="Language" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="ManagedSyntaxWriter" Analyze="True" AnalyzeAllChildren="True" />
         <Type Name="MemberFilter" Analyze="True" AnalyzeAllChildren="True" />
         <Type Name="MsdnResolver" Analyze="True" AnalyzeAllChildren="True" />
         <Type Name="MSHCComponent" Analyze="True" AnalyzeAllChildren="True" />
@@ -102,7 +77,6 @@
         <Type Name="NamespaceFilter" Analyze="True" AnalyzeAllChildren="True" />
         <Type Name="OverloadFilter" Analyze="True" AnalyzeAllChildren="True" />
         <Type Name="PlatformsComponent" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="Region" Analyze="True" AnalyzeAllChildren="True" />
         <Type Name="ResolveArtLinksComponent" Analyze="True" AnalyzeAllChildren="True" />
         <Type Name="ResolveConceptualLinksComponent" Analyze="True" AnalyzeAllChildren="True" />
         <Type Name="ResolveReferenceLinksComponent2" Analyze="True" AnalyzeAllChildren="True" />
@@ -112,12 +86,8 @@
         <Type Name="Snippet" Analyze="True" AnalyzeAllChildren="True" />
         <Type Name="SnippetCache" Analyze="True" AnalyzeAllChildren="True" />
         <Type Name="SnippetComponent" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="SnippetIdentifier" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="StoredSnippet" Analyze="True" AnalyzeAllChildren="True" />
         <Type Name="SwitchComponent" Analyze="True" AnalyzeAllChildren="True" />
         <Type Name="SyntaxComponent" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="SyntaxGenerator" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="SyntaxWriter" Analyze="True" AnalyzeAllChildren="True" />
         <Type Name="TaskGrabberComponent" Analyze="True" AnalyzeAllChildren="True" />
         <Type Name="Transform" Analyze="True" AnalyzeAllChildren="True" />
         <Type Name="TransformComponent" Analyze="True" AnalyzeAllChildren="True" />
@@ -130,6 +100,7 @@
       </Namespace>
       <Namespace Name="Microsoft.Ddue.Tools.Commands" Analyze="True" AnalyzeAllChildren="True" />
       <Namespace Name="Microsoft.Ddue.Tools.Properties" Analyze="True" AnalyzeAllChildren="True" />
+      <Namespace Name="Microsoft.Ddue.Tools.Snippets" Analyze="True" AnalyzeAllChildren="True" />
       <Namespace Name="Microsoft.Ddue.Tools.Targets" Analyze="True" AnalyzeAllChildren="True" />
       <Namespace Name="Microsoft.Ddue.Tools.UI" Analyze="True" AnalyzeAllChildren="True" />
      </Namespaces>
@@ -192,6 +163,31 @@
       <Notes>
        <User Name="EWOODRUFF">
         <Note Id="43" />
+       </User>
+      </Notes>
+     </Message>
+    </Messages>
+   </Namespace>
+   <Namespace Name="Microsoft.Ddue.Tools.Snippets">
+    <Messages>
+     <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Status="Excluded" Created="2013-03-18 20:34:36Z">
+      <Issue>
+       <Item>Microsoft.Ddue.Tools.Snippets</Item>
+      </Issue>
+      <Notes>
+       <User Name="EWOODRUFF">
+        <Note Id="49" />
+       </User>
+      </Notes>
+     </Message>
+     <Message Id="Ddue" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2013-03-18 20:34:36Z">
+      <Issue Name="Namespace">
+       <Item>Ddue</Item>
+       <Item>Microsoft.Ddue.Tools.Snippets</Item>
+      </Issue>
+      <Notes>
+       <User Name="EWOODRUFF">
+        <Note Id="50" />
        </User>
       </Notes>
      </Message>
@@ -1023,7 +1019,7 @@
              <Message TypeName="DoNotCallOverridableMethodsInConstructors" Category="Microsoft.Usage" CheckId="CA2214" Status="Excluded" Created="2012-12-31 20:50:41Z">
               <Issue>
                <Item>'ResolveReferenceLinksComponent2.ResolveReferenceLinksComponent2(BuildAssembler, XPathNavigator)'</Item>
-               <Item>&#xD;&#xA;&#xD;&#xA;ResolveReferenceLinksComponent2..ctor(BuildAssembler, XPathNavigator)&#xD;&#xA;BuildComponent.WriteMessage(MessageLevel, String, Object[]):Void&#xD;&#xA;ResolveReferenceLinksComponent2.CreateMsdnResolver(XPathNavigator):MsdnResolver</Item>
+               <Item>&#xD;&#xA;&#xD;&#xA;ResolveReferenceLinksComponent2..ctor(BuildAssembler, XPathNavigator)&#xD;&#xA;BuildComponent.WriteMessage(MessageLevel, String, Object[]):Void&#xD;&#xA;BuildComponent.get_BuildAssembler():BuildAssembler&#xD;&#xA;ResolveReferenceLinksComponent2.CreateMsdnResolver(XPathNavigator):MsdnResolver</Item>
               </Issue>
               <Issue>
                <Item>'ResolveReferenceLinksComponent2.ResolveReferenceLinksComponent2(BuildAssembler, XPathNavigator)'</Item>
@@ -1218,89 +1214,6 @@
                 <Note Id="21" />
                </User>
               </Notes>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="SnippetIdentifier">
-          <Members>
-           <Member Name="#.ctor(System.String)">
-            <Messages>
-             <Message TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308" Status="Excluded" Created="2012-12-24 21:13:44Z">
-              <Issue Name="ToUpperInvariant">
-               <Item>'SnippetIdentifier.SnippetIdentifier(string)'</Item>
-               <Item>'string.ToLowerInvariant()'</Item>
-              </Issue>
-              <Issue Name="ToUpperInvariant">
-               <Item>'SnippetIdentifier.SnippetIdentifier(string)'</Item>
-               <Item>'string.ToLowerInvariant()'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="22" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#.ctor(System.String,System.String)">
-            <Messages>
-             <Message TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308" Status="Excluded" Created="2012-12-24 21:13:44Z">
-              <Issue Name="ToUpperInvariant">
-               <Item>'SnippetIdentifier.SnippetIdentifier(string, string)'</Item>
-               <Item>'string.ToLowerInvariant()'</Item>
-              </Issue>
-              <Issue Name="ToUpperInvariant">
-               <Item>'SnippetIdentifier.SnippetIdentifier(string, string)'</Item>
-               <Item>'string.ToLowerInvariant()'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="22" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#Snippet">
-            <Accessors>
-             <Accessor Name="#get_Snippet()">
-              <Messages>
-               <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Created="2012-03-10 20:52:03Z">
-                <Issue>
-                 <Item>'SnippetIdentifier.Snippet.get()'</Item>
-                </Issue>
-               </Message>
-              </Messages>
-             </Accessor>
-            </Accessors>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="SyntaxGenerator">
-          <Members>
-           <Member Name="#.ctor(System.Xml.XPath.XPathNavigator)">
-            <Messages>
-             <Message Id="configuration" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Created="2012-03-10 20:52:03Z" FixCategory="DependsOnFix">
-              <Issue>
-               <Item>'configuration'</Item>
-               <Item>'SyntaxGenerator.SyntaxGenerator(XPathNavigator)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="SyntaxWriter">
-          <Members>
-           <Member Name="#.ctor(System.Xml.XPath.XPathNavigator)">
-            <Messages>
-             <Message Id="location" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Created="2012-03-10 20:52:03Z" FixCategory="DependsOnFix">
-              <Issue>
-               <Item>'location'</Item>
-               <Item>'SyntaxWriter.SyntaxWriter(XPathNavigator)'</Item>
-              </Issue>
              </Message>
             </Messages>
            </Member>
@@ -1523,6 +1436,74 @@
               <Notes>
                <User Name="EWOODRUFF">
                 <Note Id="45" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+       <Namespace Name="Microsoft.Ddue.Tools.Snippets">
+        <Types>
+         <Type Name="Region">
+          <Messages>
+           <Message TypeName="OverrideEqualsAndOperatorEqualsOnValueTypes" Category="Microsoft.Performance" CheckId="CA1815" Created="2013-03-18 20:34:36Z">
+            <Issue Name="Equals">
+             <Item>'Region'</Item>
+            </Issue>
+            <Issue Name="op_Equality">
+             <Item>'Region'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="SnippetIdentifier">
+          <Messages>
+           <Message TypeName="OverrideEqualsAndOperatorEqualsOnValueTypes" Category="Microsoft.Performance" CheckId="CA1815" Created="2013-03-18 20:34:36Z">
+            <Issue Name="Equals">
+             <Item>'SnippetIdentifier'</Item>
+            </Issue>
+            <Issue Name="op_Equality">
+             <Item>'SnippetIdentifier'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+          <Members>
+           <Member Name="#.ctor(System.String)">
+            <Messages>
+             <Message TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308" Status="Excluded" Created="2013-03-18 20:34:36Z">
+              <Issue Name="ToUpperInvariant">
+               <Item>'SnippetIdentifier.SnippetIdentifier(string)'</Item>
+               <Item>'string.ToLowerInvariant()'</Item>
+              </Issue>
+              <Issue Name="ToUpperInvariant">
+               <Item>'SnippetIdentifier.SnippetIdentifier(string)'</Item>
+               <Item>'string.ToLowerInvariant()'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="51" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#.ctor(System.String,System.String)">
+            <Messages>
+             <Message TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308" Status="Excluded" Created="2013-03-18 20:34:36Z">
+              <Issue Name="ToUpperInvariant">
+               <Item>'SnippetIdentifier.SnippetIdentifier(string, string)'</Item>
+               <Item>'string.ToLowerInvariant()'</Item>
+              </Issue>
+              <Issue Name="ToUpperInvariant">
+               <Item>'SnippetIdentifier.SnippetIdentifier(string, string)'</Item>
+               <Item>'string.ToLowerInvariant()'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="51" />
                </User>
               </Notes>
              </Message>
@@ -1768,6 +1749,20 @@
       <Namespaces>
        <Namespace Name="Microsoft.Ddue.Tools">
         <Types>
+         <Type Name="AspNetSyntaxGenerator">
+          <Members>
+           <Member Name="#.ctor(System.Xml.XPath.XPathNavigator)">
+            <Messages>
+             <Message Id="configuration" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Created="2013-03-18 20:34:36Z" FixCategory="DependsOnFix">
+              <Issue>
+               <Item>'configuration'</Item>
+               <Item>'AspNetSyntaxGenerator.AspNetSyntaxGenerator(XPathNavigator)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
          <Type Name="CPlusPlusDeclarationSyntaxGenerator">
           <Messages>
            <Message TypeName="IdentifiersShouldNotHaveIncorrectPrefix" Category="Microsoft.Naming" CheckId="CA1722" Status="Excluded" Created="2012-12-24 04:29:28Z">
@@ -3840,9 +3835,15 @@
     <Note Id="46" Modified="2013-01-21 02:34:14Z">Okay as is</Note>
     <Note Id="47" Modified="2013-01-21 02:34:45Z">Lowercase is preferred here</Note>
     <Note Id="48" Modified="2013-01-24 18:59:39Z">The call chain appears to be safe</Note>
+    <Note Id="49" Modified="2013-03-18 21:08:53Z">Okay as is</Note>
+    <Note Id="50" Modified="2013-03-18 21:09:06Z">Okay as is</Note>
+    <Note Id="51" Modified="2013-03-18 21:09:44Z">Lowercase is preferred</Note>
    </User>
   </Notes>
   <Rules>
+   <Rule TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020">
+    <Resolution Name="Default">Consider merging the types defined in '{0}' with another namespace.</Resolution>
+   </Rule>
    <Rule TypeName="AvoidOutParameters" Category="Microsoft.Design" CheckId="CA1021">
     <Resolution Name="Default">Consider a design that does not require that {0} be an out parameter.</Resolution>
    </Rule>
@@ -3917,6 +3918,10 @@
    </Rule>
    <Rule TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308">
     <Resolution Name="ToUpperInvariant">In method {0}, replace the call to {1} with String.ToUpperInvariant().</Resolution>
+   </Rule>
+   <Rule TypeName="OverrideEqualsAndOperatorEqualsOnValueTypes" Category="Microsoft.Performance" CheckId="CA1815">
+    <Resolution Name="Equals">{0} should override Equals.</Resolution>
+    <Resolution Name="op_Equality">{0} should override the equality (==) and inequality (!=) operators.</Resolution>
    </Rule>
    <Rule TypeName="ParameterNamesShouldMatchBaseDeclaration" Category="Microsoft.Naming" CheckId="CA1725">
     <Resolution Name="Default">In member {0}, change parameter name {1} to {2} in order to match the identifier as it has been declared in {3}.</Resolution>
