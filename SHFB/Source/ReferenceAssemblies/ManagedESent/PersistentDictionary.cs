@@ -82,8 +82,9 @@ namespace Microsoft.Isam.Esent.Collections.Generic
 
         // !EFW - Added support for local cache to speed up read-only operations
         private ConcurrentDictionary<TKey, TValue> localCache;
-        private int localCacheSize;
+        private int localCacheSize, localCacheFlushCount;
 
+        // !EFW
         /// <summary>
         /// Set this to a non-zero value to enable local caching of values to speed up read-only access
         /// </summary>
@@ -105,7 +106,28 @@ namespace Microsoft.Isam.Esent.Collections.Generic
                     localCacheSize = value;
                     localCache = new ConcurrentDictionary<TKey, TValue>();
                 }
+
+                localCacheFlushCount = 0;
             }
+        }
+
+        // !EFW
+        /// <summary>
+        /// This read-only property returns the number of times the local cache was flushed because it filled up
+        /// </summary>
+        /// <value>This can help in figuring out an appropriate local cache size</value>
+        public int LocalCacheFlushCount
+        {
+            get { return localCacheFlushCount; }
+        }
+
+        // !EFW
+        /// <summary>
+        /// This read-only property returns the current number of local cache entries in use
+        /// </summary>
+        public int CurrentLocalCacheCount
+        {
+            get { return (localCache == null) ? 0 : localCache.Count; }
         }
 
         /// <summary>
@@ -381,7 +403,10 @@ namespace Microsoft.Isam.Esent.Collections.Generic
                             // If the cache is filled, clear it and start over.  Not the most sophisticated
                             // method, but it works.
                             if(localCache.Count >= localCacheSize)
+                            {
                                 localCache.Clear();
+                                localCacheFlushCount++;
+                            }
 
                             localCache[key] = value;
                         }
@@ -721,7 +746,10 @@ namespace Microsoft.Isam.Esent.Collections.Generic
                             // If the cache is filled, clear it and start over.  Not the most sophisticated
                             // method, but it works.
                             if(localCache.Count >= localCacheSize)
+                            {
                                 localCache.Clear();
+                                localCacheFlushCount++;
+                            }
 
                             localCache[key] = retrievedValue;
                         }
