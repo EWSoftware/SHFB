@@ -12,19 +12,18 @@ using System;
 namespace Microsoft.Ddue.Tools.Targets
 {
     /// <summary>
-    /// This represents an invalid reference
+    /// This represents a reference type reference
     /// </summary>
     [Serializable]
-    public class InvalidReference : Reference
+    public sealed class ReferenceTypeReference : TypeReference
     {
         #region Properties
         //=====================================================================
 
         /// <summary>
-        /// This read-only property returns the ID
+        /// This read-only property returns the referred to type
         /// </summary>
-        public string Id { get; private set; }
-
+        public TypeReference ReferredToType { get; private set; }
         #endregion
 
         #region Constructor
@@ -33,10 +32,13 @@ namespace Microsoft.Ddue.Tools.Targets
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="id">The invalid reference ID</param>
-        internal InvalidReference(string id)
+        /// <param name="referredToType">The referred to type</param>
+        public ReferenceTypeReference(TypeReference referredToType)
         {
-            this.Id = id;
+            if(referredToType == null)
+                throw new ArgumentNullException("referredToType");
+
+            this.ReferredToType = referredToType;
         }
         #endregion
     }

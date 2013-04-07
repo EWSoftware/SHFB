@@ -16,7 +16,7 @@ namespace Microsoft.Ddue.Tools.Targets
     /// This represents a method target
     /// </summary>
     [Serializable]
-    public class MethodTarget : ProcedureTarget
+    public sealed class MethodTarget : ProcedureTarget
     {
         #region Properties
         //=====================================================================
@@ -32,14 +32,14 @@ namespace Microsoft.Ddue.Tools.Targets
         public TypeReference ReturnType { get; private set; }
 
         /// <summary>
-        /// This read-only property returns an enumerable list of the template types if any
+        /// This is used to get or set an enumerable list of the template types if any
         /// </summary>
-        public IList<string> Templates { get; internal set; }
+        public IList<string> Templates { get; set; }
 
         /// <summary>
-        /// This read-only property returns specialized template arguments if any (used with extension methods)
+        /// This is used to get or set specialized template arguments if any (used with extension methods)
         /// </summary>
-        public IList<TypeReference> TemplateArgs { get; internal set; }
+        public IList<TypeReference> TemplateArgs { get; set; }
 
         #endregion
 

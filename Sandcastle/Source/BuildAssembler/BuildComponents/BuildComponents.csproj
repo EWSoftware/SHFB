@@ -90,7 +90,6 @@
     <Compile Include="Snippets\Region.cs" />
     <Compile Include="Snippets\SnippetIdentifier.cs" />
     <Compile Include="Snippets\StoredSnippet.cs" />
-    <Compile Include="Targets\ArrayTypeReference.cs" />
     <Compile Include="Targets\ArtTarget.cs" />
     <Compile Include="BrandingComponent.cs" />
     <Compile Include="Targets\ConceptualLinkInfo.cs" />
@@ -118,54 +117,22 @@
     <Compile Include="SaveComponent.cs" />
     <Compile Include="SharedContentComponent.cs" />
     <Compile Include="Targets\ConceptualLinkType.cs" />
-    <Compile Include="Targets\ConstructorTarget.cs" />
     <Compile Include="Targets\DisplayOptions.cs" />
-    <Compile Include="Targets\EnumerationTarget.cs" />
-    <Compile Include="Targets\EventTarget.cs" />
-    <Compile Include="Targets\ExtensionMethodReference.cs" />
-    <Compile Include="Targets\IndexedTemplateTypeReference.cs" />
-    <Compile Include="Targets\InvalidReference.cs" />
     <Compile Include="Targets\LinkTextResolver.cs" />
-    <Compile Include="Targets\MemberReference.cs" />
-    <Compile Include="Targets\MemberTarget.cs" />
-    <Compile Include="Targets\MethodTarget.cs" />
-    <Compile Include="Targets\MethodTemplateTypeReference.cs" />
-    <Compile Include="Targets\NamedTemplateTypeReference.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Targets\NamespaceReference.cs" />
-    <Compile Include="Targets\NamespaceTarget.cs" />
-    <Compile Include="Targets\Parameter.cs" />
-    <Compile Include="Targets\PointerTypeReference.cs" />
-    <Compile Include="Targets\ProcedureTarget.cs" />
-    <Compile Include="Targets\PropertyTarget.cs" />
-    <Compile Include="Targets\Reference.cs" />
     <Compile Include="Targets\ReferenceLinkInfo.cs" />
     <Compile Include="Targets\ReferenceLinkType.cs" />
-    <Compile Include="Targets\ReferenceTypeReference.cs" />
     <Compile Include="Targets\SharedContentElement.cs" />
     <Compile Include="ShowMissingComponent.cs" />
     <Compile Include="SnippetComponent.cs" />
     <Compile Include="SwitchComponent.cs" />
     <Compile Include="SyntaxComponent.cs" />
-    <Compile Include="Targets\SimpleMemberReference.cs" />
     <Compile Include="Targets\InMemoryTargetDictionary.cs" />
-    <Compile Include="Targets\SimpleTypeReference.cs" />
-    <Compile Include="Targets\Specialization.cs" />
-    <Compile Include="Targets\SpecializedMemberReference.cs" />
-    <Compile Include="Targets\SpecializedMemberWithParametersReference.cs" />
-    <Compile Include="Targets\SpecializedTypeReference.cs" />
-    <Compile Include="Targets\Target.cs" />
     <Compile Include="Targets\TargetDictionary.cs" />
     <Compile Include="Targets\TargetDirectory.cs" />
     <Compile Include="Targets\TargetDirectoryCollection.cs" />
     <Compile Include="Targets\TargetInfo.cs" />
     <Compile Include="Targets\TargetTypeDictionary.cs" />
-    <Compile Include="Targets\TemplateTypeReference.cs" />
     <Compile Include="Targets\TextReferenceUtilities.cs" />
-    <Compile Include="Targets\TypeReference.cs" />
-    <Compile Include="Targets\TypeTarget.cs" />
-    <Compile Include="Targets\TypeTemplateTypeReference.cs" />
     <Compile Include="Targets\XmlTargetDictionaryUtilities.cs" />
     <Compile Include="TaskGrabberComponent.cs" />
     <Compile Include="Transform.cs" />
@@ -188,6 +155,10 @@
     <ProjectReference Include="..\BuildAssemblerLibrary\BuildAssemblerLibrary.csproj">
       <Project>{399E78F8-4954-409E-991A-37DA9D0579CC}</Project>
       <Name>BuildAssemblerLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BuildComponentTargets\BuildComponentTargets.csproj">
+      <Project>{84F8BE08-B5A3-4E5E-BC99-8E5C2351EF62}</Project>
+      <Name>BuildComponentTargets</Name>
     </ProjectReference>
     <ProjectReference Include="..\SyntaxComponents\SyntaxComponents.csproj">
       <Project>{CEAEC85B-973A-4414-8668-723EB65E5088}</Project>

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/29/2013
+// Updated : 04/03/2013
 // Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -314,11 +314,16 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// <summary>
         /// This is used to get the conceptual content settings in effect for the build
         /// </summary>
-        /// <remarks>This will not return a useable value until after the <b>CopyStandardContent</b>
-        /// <see cref="BuildStep" />.</remarks>
         public ConceptualContentSettings ConceptualContent
         {
-            get { return conceptualContent; }
+            get
+            {
+                // Create on first use.  Plug-ins may want to add stuff earlier than we need it.
+                if(conceptualContent == null)
+                    conceptualContent = new ConceptualContentSettings(project);
+
+                return conceptualContent;
+            }
         }
 
         /// <summary>
@@ -1021,7 +1026,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 // Copy conceptual content files if there are topics or tokens.  Tokens can be replaced in
                 // XML comments files so we check for them too.
-                conceptualContent = new ConceptualContentSettings(project);
+                if(conceptualContent == null)
+                    conceptualContent = new ConceptualContentSettings(project);
 
                 if(conceptualContent.ContentLayoutFiles.Count != 0 || conceptualContent.TokenFiles.Count != 0)
                 {
@@ -1044,7 +1050,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         this.ExecutePlugIns(ExecutionBehaviors.After);
                     }
                 }
-                else    // Create an empy xmlComp folder required by the build configuration
+                else    // Create an empty xmlComp folder required by the build configuration
                     Directory.CreateDirectory(Path.Combine(workingFolder, "xmlComp"));
 
                 // Copy the additional content

@@ -13,30 +13,41 @@ using System.Collections.Generic;
 namespace Microsoft.Ddue.Tools.Targets
 {
     /// <summary>
-    /// This represents a constructor target
+    /// This is the base class for all other target types
     /// </summary>
     [Serializable]
-    public class ConstructorTarget : MemberTarget
+    public class Target
     {
         #region Properties
         //=====================================================================
 
         /// <summary>
-        /// This read-only property returns an enumerable list of parameters if any
+        /// This is used to get or set the target's member ID
         /// </summary>
-        public IList<Parameter> Parameters { get; private set; }
+        public string Id { get; set; }
+
+        /// <summary>
+        /// This is used to get or set the target's container
+        /// </summary>
+        public string Container { get; set; }
+
+        /// <summary>
+        /// This is used to get or set the target's reference topic filename
+        /// </summary>
+        public string File { get; set; }
         #endregion
 
-        #region Constructor
+        #region Methods
         //=====================================================================
 
         /// <summary>
-        /// Constructor
+        /// Add the target to the given collection
         /// </summary>
-        /// <param name="parameters">The list of constructor parameters if any</param>
-        internal ConstructorTarget(IList<Parameter> parameters)
+        /// <param name="targets">The targets dictionary to which this target is added</param>
+        /// <remarks>This can be overridden to add dependent targets to the dictionary as well</remarks>
+        public virtual void Add(IDictionary<string, Target> targets)
         {
-            this.Parameters = (parameters ?? new List<Parameter>());
+            targets[this.Id] = this;
         }
         #endregion
     }

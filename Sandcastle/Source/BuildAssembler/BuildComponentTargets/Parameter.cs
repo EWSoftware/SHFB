@@ -12,18 +12,23 @@ using System;
 namespace Microsoft.Ddue.Tools.Targets
 {
     /// <summary>
-    /// This represents a namespace target
+    /// This represents a parameter
     /// </summary>
     [Serializable]
-    public class NamespaceTarget : Target
+    public sealed class Parameter
     {
         #region Properties
         //=====================================================================
 
         /// <summary>
-        /// This read-only property returns the namespace name
+        /// This read-only property returns the parameter name
         /// </summary>
         public string Name { get; private set; }
+
+        /// <summary>
+        /// This read-only property returns the paramter type
+        /// </summary>
+        public TypeReference ParameterType { get; private set; }
 
         #endregion
 
@@ -33,10 +38,12 @@ namespace Microsoft.Ddue.Tools.Targets
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="name">The namespace name</param>
-        internal NamespaceTarget(string name)
+        /// <param name="name">The parameter name</param>
+        /// <param name="type">The parameter type</param>
+        public Parameter(string name, TypeReference type)
         {
             this.Name = name;
+            this.ParameterType = type;
         }
         #endregion
     }

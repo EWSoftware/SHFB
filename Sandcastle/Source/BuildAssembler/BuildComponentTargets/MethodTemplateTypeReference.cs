@@ -12,24 +12,23 @@ using System;
 namespace Microsoft.Ddue.Tools.Targets
 {
     /// <summary>
-    /// This represents a parameter
+    /// This represents a method template type reference
     /// </summary>
     [Serializable]
-    public class Parameter
+    public sealed class MethodTemplateTypeReference : TemplateTypeReference
     {
         #region Properties
         //=====================================================================
 
         /// <summary>
-        /// This read-only property returns the parameter name
+        /// This read-only property returns the template method
         /// </summary>
-        public string Name { get; private set; }
+        public MemberReference TemplateMethod { get; private set; }
 
         /// <summary>
-        /// This read-only property returns the paramter type
+        /// This read only property returns the position
         /// </summary>
-        public TypeReference ParameterType { get; private set; }
-
+        public int Position { get; private set; }
         #endregion
 
         #region Constructor
@@ -38,12 +37,12 @@ namespace Microsoft.Ddue.Tools.Targets
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="name">The parameter name</param>
-        /// <param name="type">The parameter type</param>
-        internal Parameter(string name, TypeReference type)
+        /// <param name="template">The template method</param>
+        /// <param name="position">The position</param>
+        public MethodTemplateTypeReference(MemberReference template, int position)
         {
-            this.Name = name;
-            this.ParameterType = type;
+            this.TemplateMethod = template;
+            this.Position = position;
         }
         #endregion
     }

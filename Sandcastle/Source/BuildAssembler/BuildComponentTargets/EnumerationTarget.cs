@@ -16,7 +16,7 @@ namespace Microsoft.Ddue.Tools.Targets
     /// This represents an enumeration target
     /// </summary>
     [Serializable]
-    public class EnumerationTarget : TypeTarget
+    public sealed class EnumerationTarget : TypeTarget
     {
         #region Properties
         //=====================================================================
@@ -34,7 +34,7 @@ namespace Microsoft.Ddue.Tools.Targets
         /// Constructor
         /// </summary>
         /// <param name="elements">The list of enumeration members</param>
-        internal EnumerationTarget(IList<MemberTarget> elements)
+        public EnumerationTarget(IList<MemberTarget> elements)
         {
             this.Elements = elements;
         }

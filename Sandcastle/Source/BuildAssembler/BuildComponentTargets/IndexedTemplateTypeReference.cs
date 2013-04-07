@@ -16,7 +16,7 @@ namespace Microsoft.Ddue.Tools.Targets
     /// This represents an indexed template type reference
     /// </summary>
     [Serializable]
-    public class IndexedTemplateTypeReference : TemplateTypeReference
+    public sealed class IndexedTemplateTypeReference : TemplateTypeReference
     {
         #region Properties
         //=====================================================================
@@ -41,7 +41,7 @@ namespace Microsoft.Ddue.Tools.Targets
         /// </summary>
         /// <param name="templateId">The template ID</param>
         /// <param name="index">The index</param>
-        internal IndexedTemplateTypeReference(string templateId, int index)
+        public IndexedTemplateTypeReference(string templateId, int index)
         {
             if(templateId == null)
                 throw new ArgumentNullException("templateId");

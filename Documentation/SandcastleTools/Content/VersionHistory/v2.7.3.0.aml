@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <topic id="dacbe260-df28-4ad6-b0ec-b2f6711c6b2d" revisionNumber="1">
-  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <introduction>
-			<autoOutline excludeRelatedTopics="true" lead="Version 2.7.3.0 was released on March 30th, 2013." />
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<autoOutline excludeRelatedTopics="true" lead="Version 2.7.3.0 was released on April 7th, 2013." />
 		</introduction>
 
 		<section address="MRefBuilder">
@@ -83,6 +83,12 @@ project and deleted the CopyComponents assembly as it was the only one in it.</p
 						<para>Moved all of the target related classes into their own namespace.</para>
 					</listItem>
 
+					<listItem>
+						<para>The reference link target classes were moved into their own assembly
+(<localUri>BuildComponents.Targets.dll</localUri>).  This assembly is versioned independently of the other
+Sandcastle assemblies so that reference target caches do not have to be rebuilt with each new release of the
+Sandcastle tools.</para>
+					</listItem>
 					<listItem>
 						<para>Moved all of the command related classes into their own namespace.</para>
 					</listItem>
@@ -295,5 +301,5 @@ this makes the conceptual and reference builds consistent in supporting a <codeI
 			<link xlink:href="e0636c2c-3da0-4d5e-9e86-6fb3f0c83eef" />
 		</relatedTopics>
 
-  </developerConceptualDocument>
+	</developerConceptualDocument>
 </topic>

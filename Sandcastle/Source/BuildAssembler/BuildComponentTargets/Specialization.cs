@@ -13,33 +13,44 @@ using System.Collections.Generic;
 namespace Microsoft.Ddue.Tools.Targets
 {
     /// <summary>
-    /// This represents a property target
+    /// This represents a specialization
     /// </summary>
     [Serializable]
-    public class PropertyTarget : ProcedureTarget
+    public sealed class Specialization
     {
         #region Properties
         //=====================================================================
 
         /// <summary>
-        /// This read-only property returns an enumerable list of parameters if any
+        /// This read-only property returns the template type
         /// </summary>
-        public IList<Parameter> Parameters { get; private set; }
+        public SimpleTypeReference TemplateType { get; private set; }
 
         /// <summary>
-        /// This read-only property returns the return type
+        /// This read-only property returns the arguments
         /// </summary>
-        public TypeReference ReturnType { get; private set; }
+        public IList<TypeReference> Arguments { get; private set; }
 
         #endregion
 
         #region Constructor
         //=====================================================================
 
-        internal PropertyTarget(IList<Parameter> parameters, TypeReference returnType)
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="templateType">The template type</param>
+        /// <param name="arguments">The arguments</param>
+        public Specialization(SimpleTypeReference templateType, IList<TypeReference> arguments)
         {
-            this.Parameters = parameters;
-            this.ReturnType = returnType;
+            if(templateType == null)
+                throw new ArgumentNullException("templateType");
+
+            if(arguments == null)
+                throw new ArgumentNullException("arguments");
+
+            this.TemplateType = templateType;
+            this.Arguments = arguments;
         }
         #endregion
     }

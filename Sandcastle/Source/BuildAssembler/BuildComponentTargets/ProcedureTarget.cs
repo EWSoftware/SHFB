@@ -12,35 +12,24 @@ using System;
 namespace Microsoft.Ddue.Tools.Targets
 {
     /// <summary>
-    /// This represents a simple type reference
+    /// This represents a procedure target
     /// </summary>
     [Serializable]
-    public class SimpleTypeReference : TypeReference
+    public class ProcedureTarget : MemberTarget
     {
         #region Properties
         //=====================================================================
 
         /// <summary>
-        /// This read-only property returns the type ID
+        /// This is used to get or set whether or not the target is a conversion operator
         /// </summary>
-        public string Id { get; private set; }
-
-        #endregion
-
-        #region Constructor
-        //=====================================================================
+        public bool IsConversionOperator { get; set; }
 
         /// <summary>
-        /// Constructor
+        /// This is used to specify the member explicitly implemented if applicable
         /// </summary>
-        /// <param name="id">The type ID</param>
-        internal SimpleTypeReference(string id)
-        {
-            if(id == null)
-                throw new ArgumentNullException("id");
+        public MemberReference ExplicitlyImplements { get; set; }
 
-            this.Id = id;
-        }
         #endregion
     }
 }

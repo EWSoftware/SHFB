@@ -12,23 +12,19 @@ using System;
 namespace Microsoft.Ddue.Tools.Targets
 {
     /// <summary>
-    /// This represents a method template type reference
+    /// This represents an invalid reference
     /// </summary>
     [Serializable]
-    public class MethodTemplateTypeReference : TemplateTypeReference
+    public sealed class InvalidReference : Reference
     {
         #region Properties
         //=====================================================================
 
         /// <summary>
-        /// This read-only property returns the template method
+        /// This read-only property returns the ID
         /// </summary>
-        public MemberReference TemplateMethod { get; private set; }
+        public string Id { get; private set; }
 
-        /// <summary>
-        /// This read only property returns the position
-        /// </summary>
-        public int Position { get; private set; }
         #endregion
 
         #region Constructor
@@ -37,12 +33,10 @@ namespace Microsoft.Ddue.Tools.Targets
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="template">The template method</param>
-        /// <param name="position">The position</param>
-        internal MethodTemplateTypeReference(MemberReference template, int position)
+        /// <param name="id">The invalid reference ID</param>
+        public InvalidReference(string id)
         {
-            this.TemplateMethod = template;
-            this.Position = position;
+            this.Id = id;
         }
         #endregion
     }

@@ -8,33 +8,36 @@
 // 12/30/2012 - EFW - Cleaned up the code and marked the class as serializable
 
 using System;
+using System.Collections.Generic;
 
 namespace Microsoft.Ddue.Tools.Targets
 {
     /// <summary>
-    /// This represents a member target
+    /// This represents a constructor target
     /// </summary>
     [Serializable]
-    public class MemberTarget : Target
+    public sealed class ConstructorTarget : MemberTarget
     {
         #region Properties
         //=====================================================================
 
         /// <summary>
-        /// This is used to get or set the name
+        /// This read-only property returns an enumerable list of parameters if any
         /// </summary>
-        public string Name { get; internal set; }
+        public IList<Parameter> Parameters { get; private set; }
+        #endregion
+
+        #region Constructor
+        //=====================================================================
 
         /// <summary>
-        /// This is used to get or set the containing type
+        /// Constructor
         /// </summary>
-        public TypeReference ContainingType { get; internal set; }
-
-        /// <summary>
-        /// This is used to get or set the overload ID if applicable
-        /// </summary>
-        public string OverloadId { get; internal set; }
-
+        /// <param name="parameters">The list of constructor parameters if any</param>
+        public ConstructorTarget(IList<Parameter> parameters)
+        {
+            this.Parameters = (parameters ?? new List<Parameter>());
+        }
         #endregion
     }
 }

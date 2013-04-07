@@ -8,38 +8,39 @@
 // 12/30/2012 - EFW - Cleaned up the code and marked the class as serializable
 
 using System;
-using System.Collections.Generic;
 
 namespace Microsoft.Ddue.Tools.Targets
 {
     /// <summary>
-    /// This represents a type target
+    /// This represents a simple member reference
     /// </summary>
     [Serializable]
-    public class TypeTarget : Target
+    public sealed class SimpleMemberReference : MemberReference
     {
         #region Properties
         //=====================================================================
 
         /// <summary>
-        /// This is used to get or set the name
+        /// This read-only property returns the member ID
         /// </summary>
-        public string Name { get; internal set; }
+        public string Id { get; private set; }
+
+        #endregion
+
+        #region Constructor
+        //=====================================================================
 
         /// <summary>
-        /// This is used to get or set the containing namespace
+        /// Constructor
         /// </summary>
-        public NamespaceReference ContainingNamespace { get; internal set; }
+        /// <param name="id">The member ID</param>
+        public SimpleMemberReference(string id)
+        {
+            if(id == null)
+                throw new ArgumentNullException("id");
 
-        /// <summary>
-        /// This is used to get or set the containing type
-        /// </summary>
-        public SimpleTypeReference ContainingType { get; internal set; }
-
-        /// <summary>
-        /// This is used to get or set the templates
-        /// </summary>
-        public IList<string> Templates { get; internal set; }
+            this.Id = id;
+        }
         #endregion
     }
 }

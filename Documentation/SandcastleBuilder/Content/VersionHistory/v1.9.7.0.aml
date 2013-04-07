@@ -2,7 +2,7 @@
 <topic id="fef9e0ed-864b-42f9-8747-af4d156a7c0e" revisionNumber="1">
 	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
 		<introduction>
-			<autoOutline excludeRelatedTopics="true" lead="Version 1.9.7.0 was released on March 30th, 2013." />
+			<autoOutline excludeRelatedTopics="true" lead="Version 1.9.7.0 was released on April 7th, 2013." />
 		</introduction>
 
 		<section address="BreakingChanges">
@@ -107,6 +107,11 @@ nodes.</para>
 					</listItem>
 
 					<listItem>
+						<para>Fixed the presentation style configuration files so that family data is copied in as part of
+the container data so that the ASP.NET and XAML syntax writers include or exclude syntax sections correctly.</para>
+					</listItem>
+
+					<listItem>
 						<para>Merged the changes from the MPF 2012 project's code base into the help file builder's copy of
 the MPF 2010 project.  These changes let the project system handle the multi-threaded parts of VS 2012 without
 causing crashes (i.e. opening the VS 2012 Test Explorer window with a SHFB project loaded). The code is
@@ -170,6 +175,11 @@ configuration dialog when first added to a project.  This prevents builds from f
 configuration data in newly added components.</para>
 					</listItem>
 
+					<listItem>
+						<para>Added the <codeInline>CopyContentFrom</codeInline> member to the <codeInline>ConceptualContentSettings</codeInline>
+class to allow plug-ins to add content from a temporary project for inclusion in the current build.  This
+prevents the temporary items from getting added to the project being built which is not wanted.</para>
+					</listItem>
 				</list>
 
 			</content>

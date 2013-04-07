@@ -12,18 +12,24 @@ using System;
 namespace Microsoft.Ddue.Tools.Targets
 {
     /// <summary>
-    /// This represents a reference type reference
+    /// This represents an array type reference
     /// </summary>
     [Serializable]
-    public class ReferenceTypeReference : TypeReference
+    public sealed class ArrayTypeReference : TypeReference
     {
         #region Properties
         //=====================================================================
 
         /// <summary>
-        /// This read-only property returns the referred to type
+        /// This read-only property returns the element type
         /// </summary>
-        public TypeReference ReferredToType { get; private set; }
+        public TypeReference ElementType { get; private set; }
+
+        /// <summary>
+        /// This read-only property returns the array rank
+        /// </summary>
+        public int Rank { get; private set; }
+
         #endregion
 
         #region Constructor
@@ -32,13 +38,18 @@ namespace Microsoft.Ddue.Tools.Targets
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="referredToType">The referred to type</param>
-        internal ReferenceTypeReference(TypeReference referredToType)
+        /// <param name="elementType">The element type</param>
+        /// <param name="rank">The array rank</param>
+        public ArrayTypeReference(TypeReference elementType, int rank)
         {
-            if(referredToType == null)
-                throw new ArgumentNullException("referredToType");
+            if(elementType == null)
+                throw new ArgumentNullException("elementType");
 
-            this.ReferredToType = referredToType;
+            if(rank <= 0)
+                throw new ArgumentOutOfRangeException("rank");
+
+            this.ElementType = elementType;
+            this.Rank = rank;
         }
         #endregion
     }

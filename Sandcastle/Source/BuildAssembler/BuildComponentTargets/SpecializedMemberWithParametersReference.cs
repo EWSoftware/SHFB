@@ -16,7 +16,7 @@ namespace Microsoft.Ddue.Tools.Targets
     /// This represents a specialized member with paramters reference
     /// </summary>
     [Serializable]
-    public class SpecializedMemberWithParametersReference : MemberReference
+    public sealed class SpecializedMemberWithParametersReference : MemberReference
     {
         #region Properties
         //=====================================================================
@@ -52,7 +52,7 @@ namespace Microsoft.Ddue.Tools.Targets
         /// <param name="specializedType">The specialized type</param>
         /// <param name="memberName">The member name</param>
         /// <param name="parameters">The parameters</param>
-        internal SpecializedMemberWithParametersReference(string prefix, SpecializedTypeReference specializedType,
+        public SpecializedMemberWithParametersReference(string prefix, SpecializedTypeReference specializedType,
           string memberName, IList<TypeReference> parameters)
         {
             if(specializedType == null)

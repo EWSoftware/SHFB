@@ -16,7 +16,7 @@ namespace Microsoft.Ddue.Tools.Targets
     /// This represents and extension method reference
     /// </summary>
     [Serializable]
-    public class ExtensionMethodReference : Reference
+    public sealed class ExtensionMethodReference : Reference
     {
         #region Properties
         //=====================================================================
@@ -46,7 +46,7 @@ namespace Microsoft.Ddue.Tools.Targets
         /// <param name="methodName">The extension method name</param>
         /// <param name="parameters">The extension method parameters</param>
         /// <param name="templateArgs">The extension method template arguments if any</param>
-        internal ExtensionMethodReference(string methodName, IList<Parameter> parameters,
+        public ExtensionMethodReference(string methodName, IList<Parameter> parameters,
           IList<TypeReference> templateArgs)
         {
             if(methodName == null)

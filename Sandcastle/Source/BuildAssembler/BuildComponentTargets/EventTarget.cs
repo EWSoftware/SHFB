@@ -15,7 +15,7 @@ namespace Microsoft.Ddue.Tools.Targets
     /// This represents an event target
     /// </summary>
     [Serializable]
-    public class EventTarget : ProcedureTarget
+    public sealed class EventTarget : ProcedureTarget
     {
     }
 }

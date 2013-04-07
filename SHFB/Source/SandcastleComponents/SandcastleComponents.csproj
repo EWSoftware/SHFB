@@ -53,14 +53,19 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BuildAssemblerLibrary, Version=2.7.0.0, Culture=neutral, PublicKeyToken=c8895f0c125eff20, processorArchitecture=MSIL">
+    <Reference Include="BuildAssemblerLibrary, Version=2.7.3.0, Culture=neutral, PublicKeyToken=c8895f0c125eff20, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>$(DXROOT)\ProductionTools\BuildAssemblerLibrary.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="BuildComponents, Version=2.7.0.0, Culture=neutral, PublicKeyToken=c8895f0c125eff20, processorArchitecture=MSIL">
+    <Reference Include="BuildComponents, Version=2.7.3.0, Culture=neutral, PublicKeyToken=c8895f0c125eff20, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>$(DXROOT)\ProductionTools\BuildComponents.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="BuildComponents.Targets, Version=2.7.3.0, Culture=neutral, PublicKeyToken=c8895f0c125eff20, processorArchitecture=MSIL">
+      <HintPath>$(DXROOT)\ProductionTools\BuildComponents.Targets.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
     <Reference Include="Esent.Collections, Version=1.7.0.0, Culture=neutral, PublicKeyToken=e75931dc3debaf8d, processorArchitecture=MSIL">

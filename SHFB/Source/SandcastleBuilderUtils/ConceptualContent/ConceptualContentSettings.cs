@@ -1,25 +1,24 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder Utilities
 // File    : ConceptualContent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/13/2010
-// Note    : Copyright 2008-2010, Eric Woodruff, All rights reserved
+// Updated : 04/03/2013
+// Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains the class used to hold the conceptual content for a
-// project during a build and for editing.
+// This file contains the class used to hold the conceptual content for a project during a build
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.6.0.7  04/24/2008  EFW  Created the code
 // 1.9.0.0  06/06/2010  EFW  Added support for multi-format build output
-//=============================================================================
+// 1.9.7.0  04/03/2013  EFW  Added support for merging content from another project (plug-in support)
+//===============================================================================================================
 
 using System.Collections.ObjectModel;
 using System.IO;
@@ -30,8 +29,7 @@ using SandcastleBuilder.Utils.BuildEngine;
 namespace SandcastleBuilder.Utils.ConceptualContent
 {
     /// <summary>
-    /// This class is used to hold the conceptual content settings for a
-    /// project during a build and for editing.
+    /// This class is used to hold the conceptual content settings for a project during a build
     /// </summary>
     public class ConceptualContentSettings
     {
@@ -39,8 +37,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         //=====================================================================
 
         private ImageReferenceCollection imageFiles;
-        private FileItemCollection codeSnippetFiles, tokenFiles,
-            contentLayoutFiles;
+        private FileItemCollection codeSnippetFiles, tokenFiles, contentLayoutFiles;
         private Collection<TopicCollection> topics;
         #endregion
 
@@ -82,8 +79,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <summary>
         /// This is used to get a collection of the conceptual content topics
         /// </summary>
-        /// <remarks>Each item in the collection represents one content layout
-        /// file from the project.</remarks>
+        /// <remarks>Each item in the collection represents one content layout file from the project</remarks>
         public Collection<TopicCollection> Topics
         {
             get { return topics; }
@@ -114,19 +110,15 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         //=====================================================================
 
         /// <summary>
-        /// This is used to copy the additional content token, image, and
-        /// topic files to the build folder.
+        /// This is used to copy the additional content token, image, and topic files to the build folder
         /// </summary>
         /// <param name="builder">The build process</param>
-        /// <remarks>This will copy the code snippet file if specified, save
-        /// token information to a shared content file called <b>_Tokens_.xml</b>
-        /// in the build process's working folder, copy the image files to the
-        /// <b>.\media</b> folder in the build process's working folder, save
-        /// the media map to a file called <b>_MediaContent_.xml</b> in the
-        /// build process's working folder, and save the topic files to the
-        /// <b>.\ddueXml</b> folder in the build process's working folder.
-        /// The topic files will have their content wrapped in a
-        /// <c>&lt;topic&gt;</c> tag if needed and will be named using their
+        /// <remarks>This will copy the code snippet file if specified, save token information to a shared
+        /// content file called <b>_Tokens_.xml</b> in the build process's working folder, copy the image files
+        /// to the <b>.\media</b> folder in the build process's working folder, save the media map to a file
+        /// called <b>_MediaContent_.xml</b> in the build process's working folder, and save the topic files to
+        /// the <b>.\ddueXml</b> folder in the build process's working folder.  The topic files will have their
+        /// content wrapped in a <c>&lt;topic&gt;</c> tag if needed and will be named using their
         /// <see cref="Topic.Id" /> value.</remarks>
         public void CopyContentFiles(BuildProcess builder)
         {
@@ -134,8 +126,8 @@ namespace SandcastleBuilder.Utils.ConceptualContent
             bool missingFile = false;
 
             builder.ReportProgress("Copying standard token shared content file...");
-            builder.TransformTemplate("HelpFileBuilderTokens.tokens",
-                builder.TemplateFolder, builder.WorkingFolder);
+            builder.TransformTemplate("HelpFileBuilderTokens.tokens", builder.TemplateFolder,
+                builder.WorkingFolder);
 
             builder.ReportProgress("Checking for other token files...");
 
@@ -202,13 +194,11 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         }
 
         /// <summary>
-        /// This is used to create the conceptual content build configuration
-        /// files.
+        /// This is used to create the conceptual content build configuration files
         /// </summary>
         /// <param name="builder">The build process</param>
-        /// <remarks>This will create the companion files used to resolve
-        /// conceptual links and the <b>_ContentMetadata_.xml</b> and
-        /// <b>ConceptualManifest.xml</b> configuration files.</remarks>
+        /// <remarks>This will create the companion files used to resolve conceptual links and the
+        /// <b>_ContentMetadata_.xml</b> and <b>ConceptualManifest.xml</b> configuration files.</remarks>
         public void CreateConfigurationFiles(BuildProcess builder)
         {
             this.CreateCompanionFiles(builder);
@@ -217,8 +207,35 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         }
 
         /// <summary>
-        /// This is used to create the companion files used to resolve
-        /// conceptual links.
+        /// This method can be used by plug-ins to merge content from another Sandcastle Help File Builder
+        /// project file.
+        /// </summary>
+        /// <param name="project">The project file from which to merge content</param>
+        /// <remarks>Auto-generated content can be added to a temporary SHFB project and then added to the
+        /// current project's content at build time using this method.  Such content cannot always be added to
+        /// the project being built as it may alter the underlying MSBuild project which is not wanted.</remarks>
+        public void MergeContentFrom(SandcastleProject project)
+        {
+            var otherImageFiles = new ImageReferenceCollection(project);
+            var otherCodeSnippetFiles = new FileItemCollection(project, BuildAction.CodeSnippets);
+            var otherTokenFiles = new FileItemCollection(project, BuildAction.Tokens);
+            var otherContentLayoutFiles = new FileItemCollection(project, BuildAction.ContentLayout);
+
+            foreach(var image in otherImageFiles)
+                imageFiles.Add(image);
+
+            foreach(var snippets in otherCodeSnippetFiles)
+                codeSnippetFiles.Add(snippets);
+
+            foreach(var tokens in otherTokenFiles)
+                tokenFiles.Add(tokens);
+
+            foreach(FileItem file in otherContentLayoutFiles)
+                topics.Add(new TopicCollection(file));
+        }
+
+        /// <summary>
+        /// This is used to create the companion files used to resolve conceptual links
         /// </summary>
         /// <param name="builder">The build process</param>
         private void CreateCompanionFiles(BuildProcess builder)
@@ -239,21 +256,17 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// Create the content metadata file
         /// </summary>
         /// <param name="builder">The build process</param>
-        /// <remarks>The content metadata file contains metadata information
-        /// for each topic such as its title, table of contents title, help
-        /// attributes, and index keywords.  Help attributes are a combination
-        /// of the project-level help attributes and any parsed from the topic
-        /// file.  Any replacement tags in the token values will be replaced
-        /// with the appropriate project values.
-        /// <p/>A true MAML version of this file contains several extra
-        /// attributes.  Since Sandcastle doesn't use them, I'm not going to
-        /// waste time adding them.  The only stuff written is what is required
-        /// by Sandcastle.  In addition, I'm putting the <c>title</c> and
-        /// <c>PBM_FileVersion</c> item elements in here rather than use the
-        /// separate companion files.  They all end up in the metadata section
-        /// of the topic being built so this saves having two extra components
-        /// in the configuration that do the same thing with different files.
-        /// </remarks>
+        /// <remarks>The content metadata file contains metadata information for each topic such as its title,
+        /// table of contents title, help attributes, and index keywords.  Help attributes are a combination
+        /// of the project-level help attributes and any parsed from the topic file.  Any replacement tags in
+        /// the token values will be replaced with the appropriate project values.
+        /// 
+        /// <p/>A true MAML version of this file contains several extra attributes.  Since Sandcastle doesn't use
+        /// them, I'm not going to waste time adding them.  The only stuff written is what is required by
+        /// Sandcastle.  In addition, I'm putting the <c>title</c> and <c>PBM_FileVersion</c> item elements in
+        /// here rather than use the separate companion files.  They all end up in the metadata section of the
+        /// topic being built so this saves having two extra components in the configuration that do the same
+        /// thing with different files.</remarks>
         private void CreateContentMetadata(BuildProcess builder)
         {
             XmlWriterSettings settings = new XmlWriterSettings();
@@ -289,12 +302,10 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// Create the content metadata file
         /// </summary>
         /// <param name="builder">The build process</param>
-        /// <remarks>The content metadata file contains metadata information
-        /// for each topic such as its title, table of contents title, help
-        /// attributes, and index keywords.  Help attributes are a combination
-        /// of the project-level help attributes and any parsed from the topic
-        /// file.  Any replacement tags in the token values will be replaced
-        /// with the appropriate project values.</remarks>
+        /// <remarks>The content metadata file contains metadata information for each topic such as its title,
+        /// table of contents title, help attributes, and index keywords.  Help attributes are a combination of
+        /// the project-level help attributes and any parsed from the topic file.  Any replacement tags in the
+        /// token values will be replaced with the appropriate project values.</remarks>
         private void CreateConceptualManifest(BuildProcess builder)
         {
             XmlWriterSettings settings = new XmlWriterSettings();

@@ -108,6 +108,7 @@
     </Module>
    </Modules>
   </Target>
+  <Target Name="$(ProjectDir)/../../ProductionTools/BuildComponents.Targets.dll" Analyze="True" AnalyzeAllChildren="True" />
   <Target Name="$(ProjectDir)/../../ProductionTools/SyntaxComponents.dll" Analyze="True" AnalyzeAllChildren="True" />
  </Targets>
  <Rules>
@@ -1534,45 +1535,6 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="MethodTemplateTypeReference">
-          <Members>
-           <Member Name="#.ctor(Microsoft.Ddue.Tools.Targets.MemberReference,System.Int32)">
-            <Messages>
-             <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Created="2012-12-27 01:14:32Z">
-              <Issue>
-               <Item>'MethodTemplateTypeReference.MethodTemplateTypeReference(MemberReference, int)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#Position">
-            <Accessors>
-             <Accessor Name="#set_Position(System.Int32)">
-              <Messages>
-               <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Created="2012-12-31 20:50:41Z">
-                <Issue>
-                 <Item>'MethodTemplateTypeReference.Position.set(int)'</Item>
-                </Issue>
-               </Message>
-              </Messages>
-             </Accessor>
-            </Accessors>
-           </Member>
-           <Member Name="#TemplateMethod">
-            <Accessors>
-             <Accessor Name="#set_TemplateMethod(Microsoft.Ddue.Tools.Targets.MemberReference)">
-              <Messages>
-               <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Created="2012-12-31 20:50:41Z">
-                <Issue>
-                 <Item>'MethodTemplateTypeReference.TemplateMethod.set(MemberReference)'</Item>
-                </Issue>
-               </Message>
-              </Messages>
-             </Accessor>
-            </Accessors>
-           </Member>
-          </Members>
-         </Type>
          <Type Name="TargetDictionary">
           <Members>
            <Member Name="#LoadTargetDictionary(System.Int32)">
@@ -1660,45 +1622,6 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="TypeTemplateTypeReference">
-          <Members>
-           <Member Name="#.ctor(Microsoft.Ddue.Tools.Targets.SimpleTypeReference,System.Int32)">
-            <Messages>
-             <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Created="2012-12-27 01:14:32Z">
-              <Issue>
-               <Item>'TypeTemplateTypeReference.TypeTemplateTypeReference(SimpleTypeReference, int)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#Position">
-            <Accessors>
-             <Accessor Name="#set_Position(System.Int32)">
-              <Messages>
-               <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Created="2012-12-31 20:50:41Z">
-                <Issue>
-                 <Item>'TypeTemplateTypeReference.Position.set(int)'</Item>
-                </Issue>
-               </Message>
-              </Messages>
-             </Accessor>
-            </Accessors>
-           </Member>
-           <Member Name="#TemplateType">
-            <Accessors>
-             <Accessor Name="#set_TemplateType(Microsoft.Ddue.Tools.Targets.SimpleTypeReference)">
-              <Messages>
-               <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Created="2012-12-31 20:50:41Z">
-                <Issue>
-                 <Item>'TypeTemplateTypeReference.TemplateType.set(SimpleTypeReference)'</Item>
-                </Issue>
-               </Message>
-              </Messages>
-             </Accessor>
-            </Accessors>
-           </Member>
-          </Members>
-         </Type>
         </Types>
        </Namespace>
        <Namespace Name="Microsoft.Ddue.Tools.UI">
@@ -1730,6 +1653,68 @@
               <Notes>
                <User Name="EWOODRUFF">
                 <Note Id="10" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+      </Namespaces>
+     </Module>
+    </Modules>
+   </Target>
+   <Target Name="$(ProjectDir)/../../ProductionTools/BuildComponents.Targets.dll">
+    <Modules>
+     <Module Name="buildcomponents.targets.dll">
+      <Namespaces>
+       <Namespace Name="Microsoft.Ddue.Tools.Targets">
+        <Types>
+         <Type Name="MethodTarget">
+          <Members>
+           <Member Name="#TemplateArgs">
+            <Messages>
+             <Message TypeName="CollectionPropertiesShouldBeReadOnly" Category="Microsoft.Usage" CheckId="CA2227" Status="Excluded" Created="2013-04-01 15:31:26Z">
+              <Issue>
+               <Item>'MethodTarget.TemplateArgs'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="52" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Templates">
+            <Messages>
+             <Message TypeName="CollectionPropertiesShouldBeReadOnly" Category="Microsoft.Usage" CheckId="CA2227" Status="Excluded" Created="2013-04-01 15:31:26Z">
+              <Issue>
+               <Item>'MethodTarget.Templates'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="52" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="TypeTarget">
+          <Members>
+           <Member Name="#Templates">
+            <Messages>
+             <Message TypeName="CollectionPropertiesShouldBeReadOnly" Category="Microsoft.Usage" CheckId="CA2227" Status="Excluded" Created="2013-04-01 15:31:26Z">
+              <Issue>
+               <Item>'TypeTarget.Templates'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="52" />
                </User>
               </Notes>
              </Message>
@@ -2446,15 +2431,6 @@
                 <Note Id="28" />
                </User>
               </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#maxPosition">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.maxPosition'</Item>
-              </Issue>
              </Message>
             </Messages>
            </Member>
@@ -3838,6 +3814,7 @@
     <Note Id="49" Modified="2013-03-18 21:08:53Z">Okay as is</Note>
     <Note Id="50" Modified="2013-03-18 21:09:06Z">Okay as is</Note>
     <Note Id="51" Modified="2013-03-18 21:09:44Z">Lowercase is preferred</Note>
+    <Note Id="52" Modified="2013-04-01 16:36:13Z">Leaving it as is to keep things simple in this case.</Note>
    </User>
   </Notes>
   <Rules>
@@ -3855,6 +3832,9 @@
    </Rule>
    <Rule TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823">
     <Resolution Name="Default">It appears that field {0} is never used or is only ever assigned to. Use this field or remove it.</Resolution>
+   </Rule>
+   <Rule TypeName="CollectionPropertiesShouldBeReadOnly" Category="Microsoft.Usage" CheckId="CA2227">
+    <Resolution Name="Default">Change {0} to be read-only by removing the property setter.</Resolution>
    </Rule>
    <Rule TypeName="CollectionsShouldImplementGenericInterface" Category="Microsoft.Design" CheckId="CA1010">
     <Resolution Name="Default">{0} appears to be a non-generic, strongly typed collection. Add an implementation to the instance of {1}&lt;T&gt; where T is the underlying element type of {0}.</Resolution>

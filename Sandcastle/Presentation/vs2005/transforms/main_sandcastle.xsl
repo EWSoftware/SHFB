@@ -161,7 +161,7 @@
 			<xsl:with-param name="content">
 				<include item="typeLink">
 					<parameter>
-						<xsl:apply-templates select="/document/reference/returns/type" mode="link">
+						<xsl:apply-templates select="/document/reference/returns[1]" mode="link">
 							<xsl:with-param name="qualified" select="true()" />
 						</xsl:apply-templates>
 					</parameter>
@@ -180,7 +180,7 @@
 			<xsl:with-param name="content">
 				<include item="typeLink">
 					<parameter>
-						<xsl:apply-templates select="/document/reference/returns/type" mode="link">
+						<xsl:apply-templates select="/document/reference/returns[1]" mode="link">
 							<xsl:with-param name="qualified" select="true()" />
 						</xsl:apply-templates>
 					</parameter>
@@ -939,7 +939,7 @@
 							<xsl:apply-templates select="/document/comments/returns" />
 						</xsl:when>
 						<xsl:otherwise>
-							<xsl:if test="/document/reference/returns/type | /document/reference/eventhandler/type">
+							<xsl:if test="/document/reference/returns[1] | /document/reference/eventhandler/type">
 								<xsl:call-template name="defaultReturnSection" />
 							</xsl:if>
 						</xsl:otherwise>
@@ -998,7 +998,7 @@
 								</xsl:apply-templates>
 							</xsl:when>
 							<xsl:otherwise>
-								<xsl:apply-templates select="/document/reference/returns/type" mode="link">
+								<xsl:apply-templates select="/document/reference/returns[1]" mode="link">
 									<xsl:with-param name="qualified" select="true()" />
 								</xsl:apply-templates>
 							</xsl:otherwise>

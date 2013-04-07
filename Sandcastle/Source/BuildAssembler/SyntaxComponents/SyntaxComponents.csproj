@@ -90,6 +90,10 @@
       <Project>{399E78F8-4954-409E-991A-37DA9D0579CC}</Project>
       <Name>BuildAssemblerLibrary</Name>
     </ProjectReference>
+    <ProjectReference Include="..\BuildComponentTargets\BuildComponentTargets.csproj">
+      <Project>{84F8BE08-B5A3-4E5E-BC99-8E5C2351EF62}</Project>
+      <Name>BuildComponentTargets</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

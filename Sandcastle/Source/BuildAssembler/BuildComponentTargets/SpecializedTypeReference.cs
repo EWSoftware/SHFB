@@ -16,7 +16,7 @@ namespace Microsoft.Ddue.Tools.Targets
     /// This represents a specialized type reference
     /// </summary>
     [Serializable]
-    public class SpecializedTypeReference : TypeReference
+    public sealed class SpecializedTypeReference : TypeReference
     {
         #region Properties
         //=====================================================================
@@ -54,7 +54,7 @@ namespace Microsoft.Ddue.Tools.Targets
         /// Constructor
         /// </summary>
         /// <param name="specializations">The specializations</param>
-        internal SpecializedTypeReference(IList<Specialization> specializations)
+        public SpecializedTypeReference(IList<Specialization> specializations)
         {
             if(specializations == null)
                 throw new ArgumentNullException("specializations");

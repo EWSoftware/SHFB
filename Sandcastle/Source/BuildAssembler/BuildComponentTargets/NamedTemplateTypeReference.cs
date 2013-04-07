@@ -12,18 +12,18 @@ using System;
 namespace Microsoft.Ddue.Tools.Targets
 {
     /// <summary>
-    /// This represents a pointer type reference
+    /// This represents a named template type reference
     /// </summary>
     [Serializable]
-    public class PointerTypeReference : TypeReference
+    public sealed class NamedTemplateTypeReference : TemplateTypeReference
     {
         #region Properties
         //=====================================================================
 
         /// <summary>
-        /// This read-only property returns the pointed to type
+        /// This read-only property returns the name
         /// </summary>
-        public TypeReference PointedToType { get; private set; }
+        public string Name { get; private set; }
         #endregion
 
         #region Constructor
@@ -32,13 +32,10 @@ namespace Microsoft.Ddue.Tools.Targets
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="pointedToType">The pointed to type</param>
-        internal PointerTypeReference(TypeReference pointedToType)
+        /// <param name="name">The template type reference name</param>
+        public NamedTemplateTypeReference(string name)
         {
-            if(pointedToType == null)
-                throw new ArgumentNullException("pointedToType");
-
-            this.PointedToType = pointedToType;
+            this.Name = name;
         }
         #endregion
     }

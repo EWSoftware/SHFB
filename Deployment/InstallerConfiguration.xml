@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <configuration>
 	<!-- This indicates the release date and version of Sandcastle with which this installer is associated.-->
-	<sandcastle date="March 2013" version="v2.7.3.0" />
+	<sandcastle date="April 2013" version="v2.7.3.0" />
 
 	<!-- Define the installer pages.  Third-party build tool and component providers can add new pages that
 			 they have created to install their own products as well. -->

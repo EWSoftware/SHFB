@@ -8,29 +8,22 @@
 // 12/30/2012 - EFW - Cleaned up the code and marked the class as serializable
 
 using System;
-using System.Collections.Generic;
 
 namespace Microsoft.Ddue.Tools.Targets
 {
     /// <summary>
-    /// This represents a specialization
+    /// This represents a pointer type reference
     /// </summary>
     [Serializable]
-    public class Specialization
+    public sealed class PointerTypeReference : TypeReference
     {
         #region Properties
         //=====================================================================
 
         /// <summary>
-        /// This read-only property returns the template type
+        /// This read-only property returns the pointed to type
         /// </summary>
-        public SimpleTypeReference TemplateType { get; private set; }
-
-        /// <summary>
-        /// This read-only property returns the arguments
-        /// </summary>
-        public IList<TypeReference> Arguments { get; private set; }
-
+        public TypeReference PointedToType { get; private set; }
         #endregion
 
         #region Constructor
@@ -39,18 +32,13 @@ namespace Microsoft.Ddue.Tools.Targets
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="templateType">The template type</param>
-        /// <param name="arguments">The arguments</param>
-        internal Specialization(SimpleTypeReference templateType, IList<TypeReference> arguments)
+        /// <param name="pointedToType">The pointed to type</param>
+        public PointerTypeReference(TypeReference pointedToType)
         {
-            if(templateType == null)
-                throw new ArgumentNullException("templateType");
+            if(pointedToType == null)
+                throw new ArgumentNullException("pointedToType");
 
-            if(arguments == null)
-                throw new ArgumentNullException("arguments");
-
-            this.TemplateType = templateType;
-            this.Arguments = arguments;
+            this.PointedToType = pointedToType;
         }
         #endregion
     }

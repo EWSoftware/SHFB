@@ -25,6 +25,9 @@
         <Component Id="cmpAEF376A4939D621115ADE8A951A94292" Guid="{BBDFBB7C-9C77-47EC-876F-1A865AE5DA71}">
           <File Id="filB31BF8E6EE9DB00F505B51451A2B37DB" KeyPath="yes" Source="$(var.RootFolder)\ProductionTools\BuildComponents.dll" />
         </Component>
+        <Component Id="cmp7A2098534241D4EA08DFC5AB35D0EE5E" Guid="{7C802EE5-99CB-4A10-B4C8-3B46D9A83EA7}">
+          <File Id="filDE03730DE6F257994E2D0FEB2182DC70" KeyPath="yes" Source="$(var.RootFolder)\ProductionTools\BuildComponents.Targets.dll" />
+        </Component>
         <Component Id="cmp29D2CA420F4FE40B8D767E966F861B31" Guid="{E56818FB-CB5D-4A7B-BD56-07C800DB7B5E}">
           <File Id="fil8AE8F3F38FA8D72D15ACF66FF1DA1A24" KeyPath="yes" Source="$(var.RootFolder)\ProductionTools\BuildComponents.xml" />
         </Component>
@@ -96,6 +99,7 @@
       <ComponentRef Id="cmpE8ED341C64626D16D900A5A538740137" />
       <ComponentRef Id="cmpFE778590223460A3F9AFA7568F99A512" />
       <ComponentRef Id="cmpAEF376A4939D621115ADE8A951A94292" />
+      <ComponentRef Id="cmp7A2098534241D4EA08DFC5AB35D0EE5E" />
       <ComponentRef Id="cmp29D2CA420F4FE40B8D767E966F861B31" />
       <ComponentRef Id="cmp5ACF10FFB27DBF3F18986D6257C3F0C2" />
       <ComponentRef Id="cmp4924071CDE57A8CFA28454954F9B9609" />

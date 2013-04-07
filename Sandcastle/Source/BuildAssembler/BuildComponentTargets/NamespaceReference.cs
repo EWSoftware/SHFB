@@ -12,18 +12,19 @@ using System;
 namespace Microsoft.Ddue.Tools.Targets
 {
     /// <summary>
-    /// This represents a named template type reference
+    /// This represents a namespace reference
     /// </summary>
     [Serializable]
-    public class NamedTemplateTypeReference : TemplateTypeReference
+    public sealed class NamespaceReference : Reference
     {
         #region Properties
         //=====================================================================
 
         /// <summary>
-        /// This read-only property returns the name
+        /// This read-only property returns the namespace ID
         /// </summary>
-        public string Name { get; private set; }
+        public string Id { get; private set; }
+
         #endregion
 
         #region Constructor
@@ -32,10 +33,10 @@ namespace Microsoft.Ddue.Tools.Targets
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="name">The template type reference name</param>
-        public NamedTemplateTypeReference(string name)
+        /// <param name="id">The namespace ID</param>
+        public NamespaceReference(string id)
         {
-            this.Name = name;
+            this.Id = id;
         }
         #endregion
     }

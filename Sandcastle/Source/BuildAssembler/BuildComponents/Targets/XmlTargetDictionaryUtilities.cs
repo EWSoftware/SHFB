@@ -23,17 +23,17 @@ namespace Microsoft.Ddue.Tools.Targets
     {
         // XPath expressions for extracting data
 
-        // topic data
+        // Topic data
         private static XPathExpression topicIdExpression = XPathExpression.Compile("string(@id)");
         private static XPathExpression topicContainerExpression = XPathExpression.Compile("string(containers/library/@assembly)");
         private static XPathExpression topicFileExpression = XPathExpression.Compile("string(file/@name)");
 
-        // api data
+        // API data
         private static XPathExpression apiNameExpression = XPathExpression.Compile("string(apidata/@name)");
         private static XPathExpression apiGroupExpression = XPathExpression.Compile("string(apidata/@group)");
         private static XPathExpression apiSubgroupExpression = XPathExpression.Compile("string(apidata/@subgroup)");
 
-        // member data
+        // Member data
         private static XPathExpression apiOverloadIdExpression = XPathExpression.Compile("string(overload/@api | memberdata/@overload)");
 
         // explicit implmentation data
@@ -43,18 +43,18 @@ namespace Microsoft.Ddue.Tools.Targets
         // op_explicit and op_implicit data
         private static XPathExpression apiIsConversionOperatorExpression = XPathExpression.Compile("boolean((apidata/@subsubgroup='operator') and (apidata/@name='Explicit' or apidata/@name='Implicit'))");
 
-        // container data
+        // Container data
         private static XPathExpression apiContainingNamespaceExpression = XPathExpression.Compile("(containers/namespace)[1]");
         private static XPathExpression apiContainingTypeExpression = XPathExpression.Compile("(containers/type)[1]");
 
-        // reference data
+        // Reference data
         private static XPathExpression referenceApiExpression = XPathExpression.Compile("string(@api)");
 
-        // template data
+        // Template data
         private static XPathExpression apiTemplatesExpression = XPathExpression.Compile("templates/template");
         private static XPathExpression templateNameExpression = XPathExpression.Compile("string(@name)");
 
-        // extension method template data
+        // Extension method template data
         private static XPathExpression methodTemplateArgsExpression = XPathExpression.Compile("templates/*");
 
         // Change the container
@@ -66,7 +66,7 @@ namespace Microsoft.Ddue.Tools.Targets
         {
             get
             {
-                return (topicContainerExpression.Expression);
+                return topicContainerExpression.Expression;
             }
             set
             {
@@ -120,6 +120,7 @@ namespace Microsoft.Ddue.Tools.Targets
                     "The target file '{0}' is not valid.", topic.BaseURI));
 
             target.Id = (string)topic.Evaluate(topicIdExpression);
+
             if(String.IsNullOrEmpty(target.Id))
                 throw new XmlSchemaValidationException(String.Format(CultureInfo.InvariantCulture,
                     "The target file '{0}' is not valid.", topic.BaseURI));
@@ -138,23 +139,17 @@ namespace Microsoft.Ddue.Tools.Targets
         private static Target CreateApiTarget(XPathNavigator api)
         {
             string subGroup = (string)api.Evaluate(apiGroupExpression);
-            if(subGroup == "namespace")
-            {
-                return (CreateNamespaceTarget(api));
-            }
-            else if(subGroup == "type")
-            {
-                return CreateTypeTarget(api);
-            }
-            else if(subGroup == "member")
-            {
-                return (CreateMemberTarget(api));
-            }
-            else
-            {
-                return (null);
-            }
 
+            if(subGroup == "namespace")
+                return CreateNamespaceTarget(api);
+
+            if(subGroup == "type")
+                return CreateTypeTarget(api);
+
+            if(subGroup == "member")
+                return CreateMemberTarget(api);
+
+            return null;
         }
 
         private static NamespaceTarget CreateNamespaceTarget(XPathNavigator api)
@@ -180,11 +175,11 @@ namespace Microsoft.Ddue.Tools.Targets
 
             target.Name = (string)api.Evaluate(apiNameExpression);
 
-            // containing namespace
+            // Containing namespace
             XPathNavigator namespaceNode = api.SelectSingleNode(apiContainingNamespaceExpression);
             target.ContainingNamespace = CreateNamespaceReference(namespaceNode);
 
-            // containing type, if any
+            // Containing type, if any
             XPathNavigator typeNode = api.SelectSingleNode(apiContainingTypeExpression);
 
             if(typeNode == null)
@@ -192,7 +187,7 @@ namespace Microsoft.Ddue.Tools.Targets
             else
                 target.ContainingType = CreateSimpleTypeReference(typeNode);
 
-            // templates
+            // Templates
             target.Templates = GetTemplateNames(api);
 
             return target;
@@ -223,34 +218,35 @@ namespace Microsoft.Ddue.Tools.Targets
             {
                 string memberId = elementNode.GetAttribute("api", String.Empty);
 
-                // try to get name from attribute on element node
+                // Try to get name from attribute on element node
                 string memberName = elementNode.GetAttribute("name", String.Empty);
 
                 if(String.IsNullOrEmpty(memberName))
                 {
-                    // if we can't do that, try to get the name by searching the file for the <api> element of that member
+                    // If we can't do that, try to get the name by searching the file for the <api> element of
+                    // that member.
                     XPathNavigator memberApi = api.SelectSingleNode(String.Format(CultureInfo.InvariantCulture,
                         "following-sibling::api[@id='{0}']", memberId));
 
                     if(memberApi != null)
-                    {
                         memberName = (string)memberApi.Evaluate(apiNameExpression);
-                    }
                     else
                     {
-                        // if all else fails, get the name by parsing the identifier
+                        // If all else fails, get the name by parsing the identifier
                         string arguments;
                         string type;
-                        TextReferenceUtilities.DecomposeMemberIdentifier(memberId, out type, out memberName, out arguments);
+
+                        TextReferenceUtilities.DecomposeMemberIdentifier(memberId, out type, out memberName,
+                            out arguments);
                     }
                 }
 
                 MemberTarget member = new MemberTarget();
 
-                member.Id = memberId; // get Id from element
-                member.File = file; // get file from type file
-                member.Name = memberName; // get name from element
-                member.ContainingType = new SimpleTypeReference(typeId); // get containing type from this type
+                member.Id = memberId;       // Get Id from element
+                member.File = file;         // Get file from type file
+                member.Name = memberName;   // Get name from element
+                member.ContainingType = new SimpleTypeReference(typeId); // Get containing type from this type
                 members.Add(member);
             }
 
@@ -298,7 +294,8 @@ namespace Microsoft.Ddue.Tools.Targets
             if((bool)api.Evaluate(apiIsExplicitImplementationExpression))
                 target.ExplicitlyImplements = CreateMemberReference(api.SelectSingleNode(apiImplementedMembersExpression));
 
-            // this selects templates/template or templates/type, because extension methods can have a mix of generic and specialization
+            // This selects templates/template or templates/type, because extension methods can have a mix of
+            // generic and specialization.
             XPathNodeIterator templateArgNodes = api.Select(methodTemplateArgsExpression);
             TypeReference[] templateArgumentReferences = null;
 
@@ -316,10 +313,10 @@ namespace Microsoft.Ddue.Tools.Targets
 
             target.TemplateArgs = templateArgumentReferences;
 
-            // get the short name of each template param
+            // Get the short name of each template param
             target.Templates = GetTemplateNames(api);
 
-            return (target);
+            return target;
         }
 
         private static PropertyTarget CreatePropertyTarget(XPathNavigator api)
@@ -361,14 +358,11 @@ namespace Microsoft.Ddue.Tools.Targets
         private static TypeReference CreateReturnType(XPathNavigator api)
         {
             XPathNavigator returnTypeNode = api.SelectSingleNode("returns/*[1]");
+
             if(returnTypeNode == null)
-            {
-                return (null);
-            }
-            else
-            {
-                return (CreateTypeReference(returnTypeNode));
-            }
+                return null;
+
+            return CreateTypeReference(returnTypeNode);
         }
 
         // reference factory
@@ -382,19 +376,21 @@ namespace Microsoft.Ddue.Tools.Targets
         {
             if(node == null)
                 throw new ArgumentNullException("node");
+
             if(node.NodeType == XPathNodeType.Element)
             {
                 string tag = node.LocalName;
+
                 if(tag == "namespace")
-                    return (CreateNamespaceReference(node));
+                    return CreateNamespaceReference(node);
+
                 if(tag == "member")
-                    return (CreateMemberReference(node));
-                return (CreateTypeReference(node));
+                    return CreateMemberReference(node);
+
+                return CreateTypeReference(node);
             }
-            else
-            {
-                return (null);
-            }
+
+            return null;
         }
 
         /// <summary>
@@ -406,9 +402,10 @@ namespace Microsoft.Ddue.Tools.Targets
         {
             if(namespaceElement == null)
                 throw new ArgumentNullException("namespaceElement");
+
             string api = (string)namespaceElement.Evaluate(referenceApiExpression);
-            NamespaceReference reference = new NamespaceReference(api);
-            return (reference);
+
+            return new NamespaceReference(api);
         }
 
         /// <summary>
@@ -426,42 +423,43 @@ namespace Microsoft.Ddue.Tools.Targets
             if(tag == "type")
             {
                 bool isSpecialized = (bool)node.Evaluate("boolean(.//specialization)");
+
                 if(isSpecialized)
-                {
-                    return (CreateSpecializedTypeReference(node));
-                }
-                else
-                {
-                    return (CreateSimpleTypeReference(node));
-                }
+                    return CreateSpecializedTypeReference(node);
+
+                return CreateSimpleTypeReference(node);
             }
-            else if(tag == "arrayOf")
+
+            if(tag == "arrayOf")
             {
                 string rankValue = node.GetAttribute("rank", String.Empty);
                 XPathNavigator elementNode = node.SelectSingleNode("*[1]");
 
-                return (new ArrayTypeReference(CreateTypeReference(elementNode),
-                    Convert.ToInt32(rankValue, CultureInfo.InvariantCulture)));
+                return new ArrayTypeReference(CreateTypeReference(elementNode),
+                    Convert.ToInt32(rankValue, CultureInfo.InvariantCulture));
             }
-            else if(tag == "referenceTo")
+            
+            if(tag == "referenceTo")
             {
                 XPathNavigator referedToNode = node.SelectSingleNode("*[1]");
-                return (new ReferenceTypeReference(CreateTypeReference(referedToNode)));
+                return new ReferenceTypeReference(CreateTypeReference(referedToNode));
             }
-            else if(tag == "pointerTo")
+
+            if(tag == "pointerTo")
             {
                 XPathNavigator pointedToNode = node.SelectSingleNode("*[1]");
-                return (new PointerTypeReference(CreateTypeReference(pointedToNode)));
+                return new PointerTypeReference(CreateTypeReference(pointedToNode));
             }
-            else if(tag == "template")
+
+            if(tag == "template")
             {
                 string nameValue = node.GetAttribute("name", String.Empty);
                 string indexValue = node.GetAttribute("index", String.Empty);
                 string apiValue = node.GetAttribute("api", String.Empty);
 
                 if(!String.IsNullOrEmpty(apiValue) && !String.IsNullOrEmpty(indexValue))
-                    return (new IndexedTemplateTypeReference(apiValue, Convert.ToInt32(indexValue,
-                        CultureInfo.InvariantCulture)));
+                    return new IndexedTemplateTypeReference(apiValue, Convert.ToInt32(indexValue,
+                        CultureInfo.InvariantCulture));
 
                 return new NamedTemplateTypeReference(nameValue);
             }
@@ -480,21 +478,22 @@ namespace Microsoft.Ddue.Tools.Targets
                 throw new ArgumentNullException("node");
 
             string api = node.GetAttribute("api", String.Empty);
-            SimpleTypeReference reference = new SimpleTypeReference(api);
-            return (reference);
+
+            return new SimpleTypeReference(api);
         }
 
         private static SpecializedTypeReference CreateSpecializedTypeReference(XPathNavigator node)
         {
             Stack<Specialization> specializations = new Stack<Specialization>();
             XPathNavigator typeNode = node.Clone();
+
             while(typeNode != null)
             {
                 specializations.Push(CreateSpecialization(typeNode));
                 typeNode = typeNode.SelectSingleNode("type");
             }
-            SpecializedTypeReference reference = new SpecializedTypeReference(specializations.ToArray());
-            return (reference);
+
+            return new SpecializedTypeReference(specializations.ToArray());
         }
 
         private static Specialization CreateSpecialization(XPathNavigator node)
@@ -503,13 +502,11 @@ namespace Microsoft.Ddue.Tools.Targets
 
             List<TypeReference> arguments = new List<TypeReference>();
             XPathNodeIterator specializationNodes = node.Select("specialization/*");
-            foreach(XPathNavigator specializationNode in specializationNodes)
-            {
-                arguments.Add(CreateTypeReference(specializationNode));
-            }
 
-            Specialization specialization = new Specialization(template, arguments.ToArray());
-            return (specialization);
+            foreach(XPathNavigator specializationNode in specializationNodes)
+                arguments.Add(CreateTypeReference(specializationNode));
+
+            return new Specialization(template, arguments);
         }
 
         /// <summary>
@@ -545,23 +542,24 @@ namespace Microsoft.Ddue.Tools.Targets
             string methodName = (string)node.Evaluate(apiNameExpression);
             IList<Parameter> parameters = CreateParameterList(node);
             TypeReference[] templateArgumentReferences = null;
-            // List<TemplateName> templateNames = new List<TemplateName>();
 
-            // this selects templates/template or templates/type, because extension methods can have a mix of generic and specialization
-            // get the short name of each template param or template arg
+            // This selects templates/template or templates/type, because extension methods can have a mix of
+            // generic and specialization.  Get the short name of each template param or template arg.
             XPathNodeIterator templateNodes = node.Select(methodTemplateArgsExpression);
+
             if(templateNodes != null && templateNodes.Count > 0)
             {
                 templateArgumentReferences = new TypeReference[templateNodes.Count];
                 int i = 0;
+
                 foreach(XPathNavigator templateNode in templateNodes)
                 {
                     templateArgumentReferences[i] = CreateTypeReference(templateNode);
                     i++;
                 }
             }
-            ExtensionMethodReference extMethod = new ExtensionMethodReference(methodName, parameters, templateArgumentReferences);
-            return extMethod;
+
+            return new ExtensionMethodReference(methodName, parameters, templateArgumentReferences);
         }
     }
 }

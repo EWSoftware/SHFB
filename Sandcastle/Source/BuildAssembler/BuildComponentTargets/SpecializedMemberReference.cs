@@ -12,24 +12,23 @@ using System;
 namespace Microsoft.Ddue.Tools.Targets
 {
     /// <summary>
-    /// This represents an array type reference
+    /// This represents a specialized member reference
     /// </summary>
     [Serializable]
-    public class ArrayTypeReference : TypeReference
+    public sealed class SpecializedMemberReference : MemberReference
     {
         #region Properties
         //=====================================================================
 
         /// <summary>
-        /// This read-only property returns the element type
+        /// This read-only property returns the template member
         /// </summary>
-        public TypeReference ElementType { get; private set; }
+        public SimpleMemberReference TemplateMember { get; private set; }
 
         /// <summary>
-        /// This read-only property returns the array rank
+        /// This read-only property returns the specialized type
         /// </summary>
-        public int Rank { get; private set; }
-
+        public SpecializedTypeReference SpecializedType { get; private set; }
         #endregion
 
         #region Constructor
@@ -38,18 +37,19 @@ namespace Microsoft.Ddue.Tools.Targets
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="elementType">The element type</param>
-        /// <param name="rank">The array rank</param>
-        internal ArrayTypeReference(TypeReference elementType, int rank)
+        /// <param name="templateMember"></param>
+        /// <param name="specializedType"></param>
+        public SpecializedMemberReference(SimpleMemberReference templateMember,
+          SpecializedTypeReference specializedType)
         {
-            if(elementType == null)
-                throw new ArgumentNullException("elementType");
+            if(templateMember == null)
+                throw new ArgumentNullException("templateMember");
 
-            if(rank <= 0)
-                throw new ArgumentOutOfRangeException("rank");
+            if(specializedType == null)
+                throw new ArgumentNullException("specializedType");
 
-            this.ElementType = elementType;
-            this.Rank = rank;
+            this.TemplateMember = templateMember;
+            this.SpecializedType = specializedType;
         }
         #endregion
     }

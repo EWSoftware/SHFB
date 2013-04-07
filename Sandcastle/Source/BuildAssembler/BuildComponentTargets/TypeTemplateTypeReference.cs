@@ -15,7 +15,7 @@ namespace Microsoft.Ddue.Tools.Targets
     /// This represents a type template type reference
     /// </summary>
     [Serializable]
-    public class TypeTemplateTypeReference : TemplateTypeReference
+    public sealed class TypeTemplateTypeReference : TemplateTypeReference
     {
         #region Properties
         //=====================================================================
@@ -40,7 +40,7 @@ namespace Microsoft.Ddue.Tools.Targets
         /// </summary>
         /// <param name="templateType">The template type</param>
         /// <param name="position">The position</param>
-        internal TypeTemplateTypeReference(SimpleTypeReference templateType, int position)
+        public TypeTemplateTypeReference(SimpleTypeReference templateType, int position)
         {
             if(templateType == null)
                 throw new ArgumentNullException("templateType");

@@ -154,7 +154,7 @@
 				</xsl:choose>
 			</xsl:with-param>
 			<xsl:with-param name="content">
-				<xsl:apply-templates select="/document/reference/returns/type" mode="link" />
+				<xsl:apply-templates select="/document/reference/returns[1]" mode="link" />
 				<br />
 				<xsl:apply-templates />
 			</xsl:with-param>
@@ -167,7 +167,7 @@
 				<include item="methodValueTitle" />
 			</xsl:with-param>
 			<xsl:with-param name="content">
-				<xsl:apply-templates select="/document/reference/returns/type" mode="link" />
+				<xsl:apply-templates select="/document/reference/returns[1]" mode="link" />
 				<br />
 				<xsl:apply-templates />
 			</xsl:with-param>
@@ -666,7 +666,7 @@
 							<xsl:apply-templates select="/document/comments/returns" />
 						</xsl:when>
 						<xsl:otherwise>
-							<xsl:if test="/document/reference/returns/type | /document/reference/eventhandler/type">
+							<xsl:if test="/document/reference/returns[1] | /document/reference/eventhandler/type">
 								<xsl:call-template name="defaultReturnSection" />
 							</xsl:if>
 						</xsl:otherwise>
@@ -719,7 +719,7 @@
 						<xsl:apply-templates select="/document/reference/eventhandler/type" mode="link" />
 					</xsl:when>
 					<xsl:otherwise>
-						<xsl:apply-templates select="/document/reference/returns/type" mode="link" />
+						<xsl:apply-templates select="/document/reference/returns[1]" mode="link" />
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:with-param>

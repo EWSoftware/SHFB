@@ -18,7 +18,7 @@ namespace Microsoft.Ddue.Tools.Targets
 {
     /// <summary>
     /// Logic for constructing references from code entity reference strings.  Anything that depends on the
-    /// specific form the ID strings lives here.
+    /// specific form of the ID strings lives here.
     /// </summary>
     public static class TextReferenceUtilities
     {
@@ -37,20 +37,14 @@ namespace Microsoft.Ddue.Tools.Targets
             char start = api[0];
 
             if(start == 'N')
-            {
                 reference = CreateNamespaceReference(api);
-            }
-            else if(start == 'T')
-            {
-                reference = CreateTypeReference(api);
-            }
             else
-                reference = CreateMemberReference(api);
+                if(start == 'T')
+                    reference = CreateTypeReference(api);
+                else
+                    reference = CreateMemberReference(api);
 
-            if(reference == null)
-                return (new InvalidReference(api));
-
-            return (reference);
+            return (reference ?? new InvalidReference(api));
         }
 
         /// <summary>
@@ -61,13 +55,9 @@ namespace Microsoft.Ddue.Tools.Targets
         public static NamespaceReference CreateNamespaceReference(string api)
         {
             if(ValidNamespace.IsMatch(api))
-            {
-                return (new NamespaceReference(api));
-            }
-            else
-            {
-                return (null);
-            }
+                return new NamespaceReference(api);
+
+            return null;
         }
 
         /// <summary>
@@ -79,104 +69,108 @@ namespace Microsoft.Ddue.Tools.Targets
         {
             if(ValidSimpleType.IsMatch(api))
             {
-                // this is a reference to a "normal" simple type
-                return (CreateSimpleTypeReference(api));
+                // This is a reference to a "normal" simple type
+                return CreateSimpleTypeReference(api);
             }
-            else if(ValidSpecializedType.IsMatch(api))
+
+            if(ValidSpecializedType.IsMatch(api))
             {
-                // this is a reference to a specialized type
-                return (CreateSpecializedTypeReference(api));
+                // This is a reference to a specialized type
+                return CreateSpecializedTypeReference(api);
             }
-            else if(ValidDecoratedType.IsMatch(api))
+
+            if(ValidDecoratedType.IsMatch(api))
             {
-                // this is a reference to a type that is decorated or is a template
-                // process array, reference, and pointer decorations
+                // This is a reference to a type that is decorated or is a template process array, reference,
+                // and pointer decorations.
                 char lastCharacter = api[api.Length - 1];
+
                 if(lastCharacter == ']')
                 {
-                    // arrays
+                    // Arrays
                     int lastBracketPosition = api.LastIndexOf('[');
                     int rank = api.Length - lastBracketPosition - 1;
                     string elementApi = api.Substring(0, lastBracketPosition);
                     TypeReference elementReference = CreateTypeReference(elementApi);
-                    return (new ArrayTypeReference(elementReference, rank));
-                }
-                else if(lastCharacter == '@')
-                {
-                    // references
-                    string referedApi = api.Substring(0, api.Length - 1);
-                    TypeReference referedReference = CreateTypeReference(referedApi);
-                    return (new ReferenceTypeReference(referedReference));
-                }
-                else if(lastCharacter == '*')
-                {
-                    // pointers
-                    string pointedApi = api.Substring(0, api.Length - 1);
-                    TypeReference pointedReference = CreateTypeReference(pointedApi);
-                    return (new PointerTypeReference(pointedReference));
+                    return new ArrayTypeReference(elementReference, rank);
                 }
 
-                // process templates
+                if(lastCharacter == '@')
+                {
+                    // References
+                    string referedApi = api.Substring(0, api.Length - 1);
+                    TypeReference referedReference = CreateTypeReference(referedApi);
+                    return new ReferenceTypeReference(referedReference);
+                }
+
+                if(lastCharacter == '*')
+                {
+                    // Pointers
+                    string pointedApi = api.Substring(0, api.Length - 1);
+                    TypeReference pointedReference = CreateTypeReference(pointedApi);
+                    return new PointerTypeReference(pointedReference);
+                }
+
+                // Process templates
                 if(api.StartsWith("T:``", StringComparison.OrdinalIgnoreCase))
                 {
                     int position = Convert.ToInt32(api.Substring(4), CultureInfo.InvariantCulture);
 
                     if(genericTypeContext == null)
-                        return (new NamedTemplateTypeReference("UMP"));
+                        return new NamedTemplateTypeReference("UMP");
 
-                    return (new IndexedTemplateTypeReference(genericTypeContext.Id, position));
+                    return new IndexedTemplateTypeReference(genericTypeContext.Id, position);
                 }
-                else if(api.StartsWith("T:`", StringComparison.OrdinalIgnoreCase))
+
+                if(api.StartsWith("T:`", StringComparison.OrdinalIgnoreCase))
                 {
                     int position = Convert.ToInt32(api.Substring(3), CultureInfo.InvariantCulture);
 
                     if(genericTypeContext == null)
                         return (new NamedTemplateTypeReference("UTP"));
 
-                    return (new IndexedTemplateTypeReference(genericTypeContext.Id, position));
+                    return new IndexedTemplateTypeReference(genericTypeContext.Id, position);
                 }
 
-                // we shouldn't get here, because one of those test should have been satisfied if the regex matched
+                // We shouldn't get here, because one of those test should have been satisfied if the regex matched
                 throw new InvalidOperationException("Could not parse valid type expression");
             }
-            else
-                return null;
+
+            return null;
         }
 
         private static SimpleTypeReference CreateSimpleTypeReference(string api)
         {
-            return (new SimpleTypeReference(api));
+            return new SimpleTypeReference(api);
         }
 
         private static SpecializedTypeReference CreateSpecializedTypeReference(string api)
         {
-
             List<Specialization> specializations = new List<Specialization>();
 
             string text = String.Copy(api);
 
-            // at the moment we are only handling one specialization; need to iterate
-
+            // At the moment we are only handling one specialization; need to iterate
             int specializationStart = text.IndexOf('{');
             int specializationEnd = FindMatchingEndBracket(text, specializationStart);
             string list = text.Substring(specializationStart + 1, specializationEnd - specializationStart - 1);
-            string[] types = SeparateTypes(list);
+            IList<string> types = SeparateTypes(list);
             string template = text.Substring(0, specializationStart) + String.Format(CultureInfo.InvariantCulture,
-                "`{0}", types.Length);
+                "`{0}", types.Count);
 
             SimpleTypeReference templateReference = CreateSimpleTypeReference(template);
-            TypeReference[] argumentReferences = new TypeReference[types.Length];
-            for(int i = 0; i < types.Length; i++)
-            {
+            TypeReference[] argumentReferences = new TypeReference[types.Count];
+
+            for(int i = 0; i < types.Count; i++)
                 argumentReferences[i] = CreateTypeReference(types[i]);
-            }
+
             Specialization specialization = new Specialization(templateReference, argumentReferences);
 
             specializations.Add(specialization);
 
             // end iteration
 
-            return (new SpecializedTypeReference(specializations.ToArray()));
+            return new SpecializedTypeReference(specializations);
         }
 
         /// <summary>
@@ -188,22 +182,24 @@ namespace Microsoft.Ddue.Tools.Targets
         {
             if(ValidSimpleMember.IsMatch(api))
             {
-                // this is just a normal member of a simple type
-                return (new SimpleMemberReference(api));
+                // This is just a normal member of a simple type
+                return new SimpleMemberReference(api);
             }
-            else if(ValidSpecializedMember.IsMatch(api))
+
+            if(ValidSpecializedMember.IsMatch(api))
             {
-                // this is a member of a specialized type; we need to extract:
+                // This is a member of a specialized type; we need to extract:
                 // (1) the underlying specialized type, (2) the member name, (3) the arguments
 
-                // separate the member prefix
+                // Separate the member prefix
                 int colonPosition = api.IndexOf(':');
                 string prefix = api.Substring(0, colonPosition);
                 string text = api.Substring(colonPosition + 1);
 
-                // get the arguments
+                // Get the arguments
                 string arguments = String.Empty;
                 int startParenthesisPosition = text.IndexOf('(');
+
                 if(startParenthesisPosition > 0)
                 {
                     int endParenthesisPosition = text.LastIndexOf(')');
@@ -211,51 +207,52 @@ namespace Microsoft.Ddue.Tools.Targets
                     text = text.Substring(0, startParenthesisPosition);
                 }
 
-                // separate the type and member name
+                // Separate the type and member name
                 int lastDotPosition;
                 int firstHashPosition = text.IndexOf('#');
+
                 if(firstHashPosition > 0)
                 {
-                    // if this is an EII, the boundry is at the last dot before the hash
+                    // If this is an EII, the boundary is at the last dot before the hash
                     lastDotPosition = text.LastIndexOf('.', firstHashPosition);
                 }
                 else
                 {
-                    // otherwise, the boundry is at the last dot
+                    // Otherwise, the boundary is at the last dot
                     lastDotPosition = text.LastIndexOf('.');
                 }
+
                 string name = text.Substring(lastDotPosition + 1);
                 text = text.Substring(0, lastDotPosition);
 
-                // text now contains a specialized generic type; use it to create a reference
+                // Text now contains a specialized generic type; use it to create a reference
                 SpecializedTypeReference type = CreateSpecializedTypeReference("T:" + text);
 
-                // If there are no arguments...
-                // we simply create a reference to a member whoose identifier we construct in the specialized type
+                // If there are no arguments, we simply create a reference to a member whose identifier we
+                // construct in the specialized type.
                 if(String.IsNullOrEmpty(arguments))
                 {
                     string typeId = type.Specializations[type.Specializations.Count - 1].TemplateType.Id;
                     string memberId = String.Format(CultureInfo.InvariantCulture, "{0}:{1}.{2}", prefix,
                         typeId.Substring(2), name);
                     SimpleMemberReference member = new SimpleMemberReference(memberId);
-                    return (new SpecializedMemberReference(member, type));
+                    return new SpecializedMemberReference(member, type);
                 }
 
-                // If there are arguments... life is not so simple. We can't be sure we can identify the
+                // If there are arguments, life is not so simple.  We can't be sure we can identify the
                 // corresponding member of the template type because any particular type that appears in
                 // the argument might have come from the template or it might have come from the specialization.
                 // We need to create a special kind of reference to handle this situation.
-                string[] parameterTypeCers = SeparateTypes(arguments);
-                TypeReference[] parameterTypes = new TypeReference[parameterTypeCers.Length];
-                for(int i = 0; i < parameterTypeCers.Length; i++)
-                {
-                    parameterTypes[i] = CreateTypeReference(parameterTypeCers[i]);
-                }
-                return (new SpecializedMemberWithParametersReference(prefix, type, name, parameterTypes));
+                IList<string> parameterTypeCers = SeparateTypes(arguments);
+                TypeReference[] parameterTypes = new TypeReference[parameterTypeCers.Count];
 
+                for(int i = 0; i < parameterTypeCers.Count; i++)
+                    parameterTypes[i] = CreateTypeReference(parameterTypeCers[i]);
+
+                return new SpecializedMemberWithParametersReference(prefix, type, name, parameterTypes);
             }
-            else
-                return null;
+
+            return null;
         }
 
         // Template context logic
@@ -268,24 +265,27 @@ namespace Microsoft.Ddue.Tools.Targets
         /// <param name="codeEntityReference">The member ID for which to set the context</param>
         public static void SetGenericContext(string codeEntityReference)
         {
-            // re-set the context
+            // Reset the context
             genericTypeContext = null;
 
-            // get the new context
+            // Get the new context
             Reference context = CreateReference(codeEntityReference);
+
             if(context == null)
                 return;
 
-            // if it is a type context, set it to be the type context
+            // If it is a type context, set it to be the type context
             SimpleTypeReference typeContext = context as SimpleTypeReference;
+
             if(typeContext != null)
             {
                 genericTypeContext = typeContext;
                 return;
             }
 
-            // if it is a member context, set it to be the member context and use it to obtain a type context, too
+            // If it is a member context, set it to be the member context and use it to obtain a type context, too
             SimpleMemberReference memberContext = context as SimpleMemberReference;
+
             if(memberContext != null)
             {
                 string typeId, memberName, arguments;
@@ -313,17 +313,14 @@ namespace Microsoft.Ddue.Tools.Targets
 
         static TextReferenceUtilities()
         {
-
             string namePattern = @"[_a-zA-Z0-9]+";
 
-            // namespace patterns
-
+            // Namespace patterns
             string namespacePattern = String.Format(CultureInfo.InvariantCulture, @"({0}\.)*({0})?", namePattern);
 
             string optionalNamespacePattern = String.Format(CultureInfo.InvariantCulture, @"({0}\.)*", namePattern);
 
-            // type patterns
-
+            // Type patterns
             string simpleTypePattern = String.Format(CultureInfo.InvariantCulture, @"{0}({1}(`\d+)?\.)*{1}(`\d+)?",
                 optionalNamespacePattern, namePattern);
 
@@ -342,8 +339,7 @@ namespace Microsoft.Ddue.Tools.Targets
             string explicitInterfacePattern = String.Format(CultureInfo.InvariantCulture,
                 @"({0}(\{{[^\.]+\}})?#)*", namePattern);
 
-            // members of non-specialized types
-
+            // Members of non-specialized types
             string simpleFieldPattern = String.Format(CultureInfo.InvariantCulture, @"{0}\.{1}",
                 simpleTypePattern, namePattern);
 
@@ -366,8 +362,7 @@ namespace Microsoft.Ddue.Tools.Targets
             string simpleConstructorOverloadPattern = String.Format(CultureInfo.InvariantCulture, @"{0}\.#ctor",
                 simpleTypePattern);
 
-            // members of specialized types
-
+            // Members of specialized types
             string specializedFieldPattern = String.Format(CultureInfo.InvariantCulture, @"{0}\.{1}",
                 specializedTypePattern, namePattern);
 
@@ -385,8 +380,7 @@ namespace Microsoft.Ddue.Tools.Targets
             string specializedOverloadPattern = String.Format(CultureInfo.InvariantCulture, @"{0}\.{1}{2}",
                 specializedTypePattern, explicitInterfacePattern, namePattern);
 
-            // create regexes using this patterns
-
+            // Create regexes using this patterns
             ValidNamespace = new Regex(String.Format(CultureInfo.InvariantCulture, @"^N:{0}$", namespacePattern));
 
             ValidSimpleType = new Regex(String.Format(CultureInfo.InvariantCulture, @"^T:{0}$",
@@ -423,24 +417,26 @@ namespace Microsoft.Ddue.Tools.Targets
 
         // Code entity reference string manipulation utilities
 
-        internal static string[] SeparateTypes(string typelist)
+        internal static IList<string> SeparateTypes(string typelist)
         {
             List<string> types = new List<string>();
 
             int start = 0;
             int specializationCount = 0;
+
             for(int index = 0; index < typelist.Length; index++)
-            {
                 switch(typelist[index])
                 {
                     case '{':
                     case '[':
                         specializationCount++;
                         break;
+
                     case '}':
                     case ']':
                         specializationCount--;
                         break;
+
                     case ',':
                         if(specializationCount == 0)
                         {
@@ -449,21 +445,22 @@ namespace Microsoft.Ddue.Tools.Targets
                         }
                         break;
                 }
-            }
+
             types.Add("T:" + typelist.Substring(start).Trim());
-            return (types.ToArray());
+
+            return types;
         }
 
         internal static void DecomposeMemberIdentifier(string memberCer, out string typeCer, out string memberName, out string arguments)
         {
-
-            // drop the member prefix
+            // Drop the member prefix
             int colonPosition = memberCer.IndexOf(':');
             string text = memberCer.Substring(colonPosition + 1);
 
-            // get the arguments
+            // Get the arguments
             arguments = String.Empty;
             int startParenthesisPosition = text.IndexOf('(');
+
             if(startParenthesisPosition > 0)
             {
                 int endParenthesisPosition = text.LastIndexOf(')');
@@ -471,17 +468,18 @@ namespace Microsoft.Ddue.Tools.Targets
                 text = text.Substring(0, startParenthesisPosition);
             }
 
-            // separate the type and member name
+            // Separate the type and member name
             int lastDotPosition;
             int firstHashPosition = text.IndexOf('#');
+
             if(firstHashPosition > 0)
             {
-                // if this is an EII, the boundry is at the last dot before the hash
+                // If this is an EII, the boundary is at the last dot before the hash
                 lastDotPosition = text.LastIndexOf('.', firstHashPosition);
             }
             else
             {
-                // otherwise, the boundry is at the last dot
+                // Otherwise, the boundary is at the last dot
                 lastDotPosition = text.LastIndexOf('.');
             }
 
@@ -491,11 +489,10 @@ namespace Microsoft.Ddue.Tools.Targets
 
         private static int FindMatchingEndBracket(string text, int position)
         {
-
             if(text == null)
                 throw new ArgumentNullException("text");
 
-            if((position < 0) || (position >= text.Length))
+            if(position < 0 || position >= text.Length)
                 throw new ArgumentOutOfRangeException("position", String.Format(CultureInfo.InvariantCulture,
                     "The position {0} is not within the given text string.", position));
 
@@ -504,23 +501,20 @@ namespace Microsoft.Ddue.Tools.Targets
                     "of the string '{1}' does not contain and ending curly bracket.", position, text));
 
             int count = 1;
+
             for(int index = position + 1; index < text.Length; index++)
             {
                 if(text[index] == '{')
-                {
                     count++;
-                }
-                else if(text[index] == '}')
-                {
-                    count--;
-                }
+                else
+                    if(text[index] == '}')
+                        count--;
 
                 if(count == 0)
-                    return (index);
+                    return index;
             }
 
             throw new FormatException("No opening brace matches the closing brace.");
-
         }
 
         // Writing link text for unresolved simple references
@@ -532,28 +526,29 @@ namespace Microsoft.Ddue.Tools.Targets
 
         internal static void WriteSimpleTypeReference(SimpleTypeReference type, DisplayOptions options, XmlWriter writer)
         {
-
-            // this logic won't correctly deal with nested types, but type cer strings simply don't include that
-            // infomation, so this is out best guess under the assumption of a non-nested type
-
+            // This logic won't correctly deal with nested types, but type CER strings simply don't include that
+            // infomation, so this is our best guess under the assumption of a non-nested type
             string cer = type.Id;
 
-            // get the name
+            // Get the name
             string name;
             int lastDotPosition = cer.LastIndexOf('.');
+
             if(lastDotPosition > 0)
             {
-                // usually, the name will start after the last dot
+                // Usually, the name will start after the last dot
                 name = cer.Substring(lastDotPosition + 1);
             }
             else
             {
-                // but if there is no dot, this is a type in the default namespace and the name is everything after the colon
+                // But if there is no dot, this is a type in the default namespace and the name is everything
+                // after the colon.
                 name = cer.Substring(2);
             }
 
-            // remove any generic tics from the name
+            // Remove any generic tics from the name
             int tickPosition = name.IndexOf('`');
+
             if(tickPosition > 0)
                 name = name.Substring(0, tickPosition);
 
@@ -568,12 +563,10 @@ namespace Microsoft.Ddue.Tools.Targets
             {
                 // work out templates
             }
-
         }
 
         internal static void WriteSimpleMemberReference(SimpleMemberReference member, DisplayOptions options, XmlWriter writer, LinkTextResolver resolver)
         {
-
             string cer = member.Id;
 
             string typeCer, memberName, arguments;
@@ -585,12 +578,11 @@ namespace Microsoft.Ddue.Tools.Targets
                 WriteSimpleTypeReference(type, options & ~DisplayOptions.ShowContainer, writer);
             }
 
-            // change this so that we deal with EII names correctly, too
+            // Change this so that we deal with EII names correctly, too
             writer.WriteString(memberName);
 
             if((options & DisplayOptions.ShowParameters) > 0)
             {
-                string[] parameterTypeCers;
                 if(String.IsNullOrEmpty(arguments))
                 {
                     Parameter[] parameters = new Parameter[0];
@@ -598,17 +590,19 @@ namespace Microsoft.Ddue.Tools.Targets
                 }
                 else
                 {
-                    parameterTypeCers = SeparateTypes(arguments);
-                    Parameter[] parameters = new Parameter[parameterTypeCers.Length];
-                    for(int i = 0; i < parameterTypeCers.Length; i++)
+                    IList<string> parameterTypeCers = SeparateTypes(arguments);
+                    Parameter[] parameters = new Parameter[parameterTypeCers.Count];
+
+                    for(int i = 0; i < parameterTypeCers.Count; i++)
                     {
                         TypeReference parameterType = CreateTypeReference(parameterTypeCers[i]);
+
                         if(parameterType == null)
-                        {
                             parameterType = new NamedTemplateTypeReference("UAT");
-                        }
+
                         parameters[i] = new Parameter(String.Empty, parameterType);
                     }
+
                     resolver.WriteMethodParameters(parameters, writer);
                 }
             }
