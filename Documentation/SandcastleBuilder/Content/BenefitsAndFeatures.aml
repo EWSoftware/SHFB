@@ -139,7 +139,7 @@ using Microsoft Assistance Markup Language (MAML).</para>
 					</listItem>
 
 					<listItem>
-						<para>For backward compatability, standard HTML files can also be included and merged with the table
+						<para>For backward compatibility, standard HTML files can also be included and merged with the table
 of contents.  A site map file can be used to define the layout.  However, note that these features have been
 deprecated and MAML is the preferred method of adding conceptual content to the help files.</para>
 					</listItem>

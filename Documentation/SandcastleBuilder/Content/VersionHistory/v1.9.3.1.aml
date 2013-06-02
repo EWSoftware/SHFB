@@ -12,7 +12,7 @@
 allows you to create, manage, and build help file builder projects completely from within Visual Studio.
 In this first release, most of the common project management features have been implemented but support
 for several of the custom file type editors and tool windows is still not done (editors for content layout
-files, token files, resource item files, and sitemap files, the entity references tool window, preview topic
+files, token files, resource item files, and site map files, the entity references tool window, preview topic
 tool window, and creation of new projects from other file formats).  These features will be added in
 future releases.</para>
 
@@ -21,7 +21,7 @@ retain the current version number of the latest production release that does not
 (v1.9.3.0 as of this release).  This will ensure that third-party plug-ins and other components will continue
 to work with both the release build and the alpha builds without the third-party component vendors having to
 provide versions specific to the production and alpha release versions.  Apart from a few minor changes and
-internal refactoring, the standalone GUI and core build engine are idenitical in functionality to the current
+internal refactoring, the standalone GUI and core build engine are identical in functionality to the current
 release build.</para>
 
 	<para>Project files created with either release are compatible with one another.  In the event of

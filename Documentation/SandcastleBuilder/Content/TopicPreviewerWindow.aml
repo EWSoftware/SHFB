@@ -71,7 +71,7 @@ the presentation style applied.</para>
 
 			<listItem>
 				<para>Flow documents do not size table columns the same way that HTML does.  By default, space is
-distributed evenly across all columns rather than alloting more space to columns containing wider content.
+distributed evenly across all columns rather than allotting more space to columns containing wider content.
 To remedy this, the parser uses a simple algorithm to adjust the column widths based on the maximum width of the
 content in each table cell across all rows.  While it does not result in an exact match to the table column
 widths seen in the built topics, it is fairly close and should be fine for almost all cases.  You will see that
@@ -131,7 +131,7 @@ errors such as ill-formed content, the error will most likely refer to a missing
 a block or inline element.  The content that could be parsed will appear below the error to help you locate the
 point at which the problem occurred.  Using Visual Studio with the MAML schemas installed will help identify
 problems as the IntelliSense will point out invalid markup and help you correct it via the information in the
-error tooltip.</para>
+error tool tip.</para>
 			</listItem>
 		</list>
 	</content>

@@ -17,13 +17,13 @@
 			<content>
 				<list class="bullet">
 					<listItem>
-						<para>Reworked the BuildAssembler execution process to allow for parallel executon of component code.
+						<para>Reworked the BuildAssembler execution process to allow for parallel execution of component code.
 Components are still initialized and topics built sequentially for the time being but parallelism can be utilized
 now and is used in certain components when they are initialized.</para>
 					</listItem>
 
 					<listItem>
-						<para>Reworked the BuildAssembler message logger to allow for parallel executon of component code
+						<para>Reworked the BuildAssembler message logger to allow for parallel execution of component code
 without contention for the console when logging messages.</para>
 					</listItem>
 
@@ -41,7 +41,7 @@ without contention for the console when logging messages.</para>
 				<alert class="note">
 					<para>A number of these are breaking changes.  However, most people will be unaffected unless they have
 created custom build components or syntax generators.  These changes were necessary in order to make the API more
-accessible and to make it easier to derive build components from existing ones without having to reimplement a
+accessible and to make it easier to derive build components from existing ones without having to re-implement a
 lot of the internal supporting classes.</para>
 				</alert>
 
@@ -252,7 +252,8 @@ URL prefix to non-relative image URLs.</para>
 					<listItem>
 						<para>Commented out the templates in <localUri>VS2010\Branding\ps-body.xslt</localUri> that were
 stripping style attributes. These appear to be for use with non-self-branded content which doesn't apply anymore.
-Allowing the style attributes through fixes the problem of the "nobullet" list style not working.</para>
+Allowing the style attributes through fixes the problem of the <codeInline>nobullet</codeInline> list style not
+working.</para>
 					</listItem>
 
 					<listItem>

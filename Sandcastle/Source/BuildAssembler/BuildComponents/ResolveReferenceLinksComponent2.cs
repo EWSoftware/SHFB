@@ -211,6 +211,14 @@ namespace Microsoft.Ddue.Tools
                 DisplayOptions options = link.DisplayOptions;
                 ReferenceLinkType type = ReferenceLinkType.None;
 
+                if(String.IsNullOrWhiteSpace(targetId))
+                {
+                    this.WriteMessage(key, MessageLevel.Warn, "The target attribute is missing or has no " +
+                        "value.  You have most likely omitted a cref attribute or left it blank on an XML " +
+                        "comments element such as see, seealso, or exception.");
+                    continue;
+                }
+
                 if(!targets.TryGetValue(targetId, out target, out type))
                 {
                     base.WriteMessage(key, MessageLevel.Warn, "Unknown reference link target '{0}'.", targetId);

@@ -1,27 +1,23 @@
-﻿//=============================================================================
+﻿//===============================================================================================================
 // System  : Sandcastle Guided Installation
 // File    : Utility.cs
 // Author  : Eric Woodruff
-// Updated : 03/05/2012
+// Updated : 05/10/2013
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class with utility and extension methods.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice and
-// all copyright notices must remain intact in all applications, documentation,
-// and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice and all copyright notices must remain intact in all applications, documentation, and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.0.0.0  02/06/2011  EFW  Created the code
-// 1.0.0.1  04/23/2011  EFW  Updated Utility.RunInstaller() to accept an
-//                           arguments parameter and have the afterInstall
-//                           action take an integer parameter representing the
-//                           process exit code.
+// 1.0.0.1  04/23/2011  EFW  Updated Utility.RunInstaller() to accept an arguments parameter and have the
+//                           afterInstall action take an integer parameter representing the process exit code.
 // 1.1.0.0  03/05/2012  EFW  Converted to use WPF
-//=============================================================================
+//===============================================================================================================
 
 using System;
 using System.Diagnostics;
@@ -59,8 +55,7 @@ namespace Sandcastle.Installer.InstallerPages
         //=====================================================================
 
         /// <summary>
-        /// This read-only property returns the base path from which the
-        /// installer is running.
+        /// This read-only property returns the base path from which the installer is running
         /// </summary>
         public static string BasePath
         {
@@ -68,14 +63,12 @@ namespace Sandcastle.Installer.InstallerPages
         }
 
         /// <summary>
-        /// For testing, this returns a relative path offset to the install
-        /// resource files.
+        /// For testing, this returns a relative path offset to the install resource files
         /// </summary>
         public static string PathOffset { get; set; }
 
         /// <summary>
-        /// This read-only property returns the path to the additional install
-        /// file resources.
+        /// This read-only property returns the path to the additional install file resources
         /// </summary>
         public static string InstallResourcesPath
         {
@@ -93,18 +86,16 @@ namespace Sandcastle.Installer.InstallerPages
         //=====================================================================
 
         /// <summary>
-        /// Find a folder by searching the Program Files folders on all fixed
-        /// drives.
+        /// Find a folder by searching the Program Files folders on all fixed drives
         /// </summary>
         /// <param name="path">The path for which to search</param>
         /// <returns>The path if found or an empty string if not found</returns>
         public static string FindOnFixedDrives(string path)
         {
-            StringBuilder sb = new StringBuilder(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles));
-
-            // Check for 64-bit Windows.  The tools will be in the x86 folder.
-            if(Directory.Exists(sb.ToString() + " (x86)"))
-                sb.Append(" (x86)");
+            // Check for a 64-bit process.  The tools will be in the x86 folder.  If running as a 32-bit process,
+            // the folder will contain "(x86)" already if on a 64-bit OS.
+            StringBuilder sb = new StringBuilder(Environment.GetFolderPath(Environment.Is64BitProcess ?
+                Environment.SpecialFolder.ProgramFilesX86 : Environment.SpecialFolder.ProgramFiles));
 
             sb.Append(path);
 
@@ -121,21 +112,19 @@ namespace Sandcastle.Installer.InstallerPages
         }
 
         /// <summary>
-        /// This is used to find the named executable in one of the Visual
-        /// Studio SDK installation folders.
+        /// This is used to find the named executable in one of the Visual Studio SDK installation folders
         /// </summary>
         /// <param name="exeName">The name of the executable to find</param>
         /// <returns>The path if found or an empty string if not found</returns>
-        /// <remarks>The search looks in all "Visual*" folders under the
-        /// Program Files special folder on all fixed drives.</remarks>
+        /// <remarks>The search looks in all "Visual*" folders under the Program Files special folder on all
+        /// fixed drives.</remarks>
         public static string FindSdkExecutable(string exeName)
         {
-            StringBuilder sb = new StringBuilder(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles));
+            // Check for a 64-bit process.  The tools will be in the x86 folder.  If running as a 32-bit process,
+            // the folder will contain "(x86)" already if on a 64-bit OS.
+            StringBuilder sb = new StringBuilder(Environment.GetFolderPath(Environment.Is64BitProcess ?
+                Environment.SpecialFolder.ProgramFilesX86 : Environment.SpecialFolder.ProgramFiles));
             string folder;
-
-            // Check for 64-bit Windows.  The tools will be in the x86 folder.
-            if(Directory.Exists(sb.ToString() + " (x86)"))
-                sb.Append(" (x86)");
 
             foreach(DriveInfo di in DriveInfo.GetDrives())
                 if(di.DriveType == DriveType.Fixed)
@@ -169,10 +158,8 @@ namespace Sandcastle.Installer.InstallerPages
         /// </summary>
         /// <param name="installer">The installer to run</param>
         /// <param name="arguments">An optional list of arguments or null if there are none</param>
-        /// <param name="afterInstallFinishes">The action to perform after the
-        /// install finishes.</param>
-        /// <param name="installerFailed">The action to perform if running the
-        /// installer fails with an exception.</param>
+        /// <param name="afterInstallFinishes">The action to perform after the install finishes</param>
+        /// <param name="installerFailed">The action to perform if running the installer fails with an exception</param>
         /// <returns>True if the installer was launched, false if not</returns>
         public static bool RunInstaller(string installer, string arguments, Action<int> afterInstallFinishes,
           Action<Exception> installerFailed)

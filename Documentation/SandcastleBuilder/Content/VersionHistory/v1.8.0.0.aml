@@ -39,7 +39,7 @@ builder tools.</para>
 				<para>With the use of an MSBuild project file format, <localUri>SandcastleBuilderConsole.exe</localUri>
 was rendered obsolete and has been removed.  Use <link xlink:href="8ffc0d37-0215-4609-b6f8-dba53a6c5063">MSBuild</link>,
 <link xlink:href="ec822059-b179-4add-984d-485580050ffb">Team Build</link>, or another such tool to build a help
-file project from the command line or in automtated scripts.</para>
+file project from the command line or in automated scripts.</para>
 			</listItem>
 
 			<listItem>
@@ -75,7 +75,7 @@ Preferences</legacyBold> menu option.</para>
 
 				<alert class="note">
 					<para>It is no longer necessary to define external editors in the <legacyBold>User Preferences</legacyBold>
-dialog to edit files such as XML files, stylesheets, HTML files, etc.  Common text-based file types recognized
+dialog to edit files such as XML files, style sheets, HTML files, etc.  Common text-based file types recognized
 by filename extension will be edited within the GUI by default.  As such, you do not need to add any custom
 editor associations for them in your user preferences.</para>
 				</alert>
@@ -221,7 +221,7 @@ new version of the help file builder.</para>
 				<para>With the use of an MSBuild project file format, <localUri>SandcastleBuilderConsole.exe</localUri>
 was rendered obsolete and has been removed.  Use <link xlink:href="8ffc0d37-0215-4609-b6f8-dba53a6c5063">MSBuild</link>,
 <link xlink:href="ec822059-b179-4add-984d-485580050ffb">Team Build</link>, or another such tool to build a help
-file project from the command line or in automtated scripts.</para>
+file project from the command line or in automated scripts.</para>
 			</definition>
 
 			<definedTerm>Assemblies to Document</definedTerm>

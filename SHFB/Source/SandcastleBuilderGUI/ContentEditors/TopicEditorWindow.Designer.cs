@@ -76,6 +76,8 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbUndo = new System.Windows.Forms.ToolStripButton();
             this.tsbRedo = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsbSpellCheck = new System.Windows.Forms.ToolStripButton();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -114,7 +116,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.tsbPasteText,
             this.toolStripSeparator5,
             this.tsbUndo,
-            this.tsbRedo});
+            this.tsbRedo,
+            this.toolStripSeparator8,
+            this.tsbSpellCheck});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(530, 27);
@@ -519,6 +523,21 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.tsbRedo.ToolTipText = "Redo (Ctrl+Y)";
             this.tsbRedo.Click += new System.EventHandler(this.tsbRedo_Click);
             // 
+            // toolStripSeparator8
+            // 
+            this.toolStripSeparator8.Name = "toolStripSeparator8";
+            this.toolStripSeparator8.Size = new System.Drawing.Size(6, 27);
+            // 
+            // tsbSpellCheck
+            // 
+            this.tsbSpellCheck.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbSpellCheck.Image = global::SandcastleBuilder.Gui.Properties.Resources.SpellCheck;
+            this.tsbSpellCheck.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbSpellCheck.Name = "tsbSpellCheck";
+            this.tsbSpellCheck.Size = new System.Drawing.Size(23, 24);
+            this.tsbSpellCheck.ToolTipText = "Spell Check (Ctrl+Shift+K)";
+            this.tsbSpellCheck.Click += new System.EventHandler(this.tsbSpellCheck_Click);
+            // 
             // TopicEditorWindow
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
@@ -585,5 +604,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         private System.Windows.Forms.ToolStripMenuItem miUI;
         private System.Windows.Forms.ToolStripMenuItem miUserInput;
         private System.Windows.Forms.ToolStripMenuItem miAlert;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
+        private System.Windows.Forms.ToolStripButton tsbSpellCheck;
     }
 }

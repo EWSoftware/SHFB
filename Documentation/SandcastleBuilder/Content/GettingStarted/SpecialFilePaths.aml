@@ -284,7 +284,7 @@ system:</para>
 				</table>
 
 				<para>Use the <localUri>Item Templates</localUri> folder to store custom templates for project files such
-as images, HTML files, stylesheets, script files, tokens, code snippets, or XML files.  Use the
+as images, HTML files, style sheets, script files, tokens, code snippets, or XML files.  Use the
 <localUri>Conceptual Templates</localUri> folder to store custom MAML topic template files.  These template files
 appear on the <ui>Custom Templates</ui> submenus within the project explorer, site map editor, and content layout
 file editor.</para>

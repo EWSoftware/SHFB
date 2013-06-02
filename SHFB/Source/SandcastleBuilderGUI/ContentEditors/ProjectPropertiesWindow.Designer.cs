@@ -39,6 +39,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // 
             this.tvPropertyPages.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
+            this.tvPropertyPages.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tvPropertyPages.FullRowSelect = true;
             this.tvPropertyPages.HideSelection = false;
             this.tvPropertyPages.Location = new System.Drawing.Point(12, 12);

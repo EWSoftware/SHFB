@@ -11,7 +11,7 @@ skip forward to the step that installs the schemas if necessary.</para>
 			</alert>
 
       <para>The general text editor window is used for editing various file types such as MAML topics, HTML
-files, stylesheets, XML files, etc.  It provides various features that make editing the files easier such as
+files, style sheets, XML files, etc.  It provides various features that make editing the files easier such as
 color syntax highlighting, automatic closing tag insertion, matching character insertion for quotes and
 parentheses, and various options to perform common actions such as HTML encoding text and inserting common MAML
 elements.</para>

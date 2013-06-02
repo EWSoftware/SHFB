@@ -135,8 +135,8 @@ though.</para>
 					</listItem>
 
 					<listItem>
-						<para>In the standlone GUI, when using the dropdown on the editor window's "various elements" toolbar
-button (shows <ui>alert</ui> as the default action when first opened), the cursor occassionally disappears from
+						<para>In the standalone GUI, when using the dropdown on the editor window's "various elements" toolbar
+button (shows <ui>alert</ui> as the default action when first opened), the cursor occasionally disappears from
 the editor window after the dropdown closes even though it has the focus and text can be entered.  Change the
 focus to another window and back to restore it.</para>
 					</listItem>

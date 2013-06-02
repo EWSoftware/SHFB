@@ -16,7 +16,7 @@ build task inside another project file.</listItem>
     <listItem>Fixed up XML encoding issues on property values in the
 <application>MSBuild</application> project template files.</listItem>
 
-    <listItem>Fixed project documenation sources so that the assembly name can
+    <listItem>Fixed project documentation sources so that the assembly name can
 be determined regardless of the case of the <codeInline>OutputType</codeInline>
 property value.</listItem>
 

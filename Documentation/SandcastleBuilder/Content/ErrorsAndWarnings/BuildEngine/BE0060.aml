@@ -21,7 +21,7 @@ errors reporting that the content files are invalid.</para>
     <section>
       <title>Solution</title>
       <content>
-        <para>The HTML Help 1 compiler has problems interpretting paths
+        <para>The HTML Help 1 compiler has problems interpreting paths
 and filenames that end with something equal to or starting with ".help" or
 ".hlp" or that contain ".h" in general (i.e.
 <localUri>C:\Project.Help\</localUri>).  Rename the offending folder or

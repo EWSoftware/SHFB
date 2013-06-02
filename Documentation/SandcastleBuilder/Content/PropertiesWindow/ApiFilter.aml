@@ -31,7 +31,7 @@ will appear on the member list pages for each of the documented classes.  By unc
 classes, you can remove unwanted members that may otherwise clutter the member list pages.</para>
 
 		<para>You will notice that some tree nodes are in <legacyItalic>italic</legacyItalic> text.  This indicates
-that the node cannot be unchecked by you.  Hovering the mouse over the node will show a tooltip describing why it
+that the node cannot be unchecked by you.  Hovering the mouse over the node will show a tool tip describing why it
 cannot be unchecked.  The reasons include:
 		</para>
 

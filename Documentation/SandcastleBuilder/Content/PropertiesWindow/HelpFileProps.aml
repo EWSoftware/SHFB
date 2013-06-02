@@ -470,7 +470,7 @@ This property has no effect if the SDK link type property for a particular help 
 value.  The default value is <codeInline>Blank</codeInline> to open MSDN links in a new window.  It can also be
 set to <codeInline>Self</codeInline>, <codeInline>Parent</codeInline>, or <codeInline>Top</codeInline> which have
 the same effect of replacing the current window's content with the content of the MSDN topic. The last two are
-useful when producing web output as they will cause the MSDN links to replace the frameset with the MSDN topic
+useful when producing web output as they will cause the MSDN links to replace the frame set with the MSDN topic
 page.</para>
 
   </content>

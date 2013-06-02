@@ -15,7 +15,7 @@ text.</para>
       <title>Example</title>
       <content>
         <code language="xml" title=" ">
-Sandcastle is installed in the &lt;localUri&gt;C:\Program Files\Sancastle&lt;/localUri&gt;
+Sandcastle is installed in the &lt;localUri&gt;C:\Program Files\Sandcastle&lt;/localUri&gt;
 folder by default.
 </code>
       </content>
@@ -24,7 +24,7 @@ folder by default.
       <title>Example Output</title>
       <content>
         <para>Sandcastle is installed in the <localUri>C:\Program
-Files\Sancastle</localUri> folder by default.</para>
+Files\Sandcastle</localUri> folder by default.</para>
       </content>
     </section>
 

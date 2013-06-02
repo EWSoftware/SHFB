@@ -156,7 +156,7 @@ for use with <application>BuildAssembler</application> in order to generate topi
 <codeInline>File</codeInline> attribute specifies the path to the XSL transformation.</para>
 
 						<para>The document model XSL transformation typically has parameters that can be passed to it to
-modify how it works.  You can define these paramters with appropriate defaults or substitution tags that will be
+modify how it works.  You can define these parameters with appropriate defaults or substitution tags that will be
 filled in at build time using optional <codeInline>Parameter</codeInline> elements nested within the
 <codeInline>DocumentModelTransformation</codeInline> element.  The parameter elements have a required
 <codeInline>Name</codeInline> and <codeInline>Value</codeInline> attribute that define the parameter's name and

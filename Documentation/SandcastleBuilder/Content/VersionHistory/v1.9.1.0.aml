@@ -33,7 +33,7 @@ configuration options needed to support multiple output formats in a single buil
 	<listItem>
 		<para>The <legacyBold>Post Transform Component</legacyBold>'s <codeInline>outputPath</codeInline> element has
 been replaced with an <codeInline>outputPaths</codeInline> element containing one or more path elements that
-define the output paths to which the code colorizer stylesheet, script, and image files should be copied.  The
+define the output paths to which the code colorizer style sheet, script, and image files should be copied.  The
 configuration dialog will auto-correct the configuration the next time it is saved (see the item above).</para>
 	</listItem>
 
@@ -79,7 +79,7 @@ types).  If you have written custom build components or plug-ins, you will need 
 they work correctly when used with multiple output formats in a single build.</para>
 
 <alert class="note">
-  <para>Due to the help formats each loading their own copies of several of the build components and outputing a
+  <para>Due to the help formats each loading their own copies of several of the build components and outputting a
 separate copy of the HTML output file, there can be a significant increase in the amount of memory and disk space
 usage during a build that generates more than one output format.  If this is an issue, you may need to build each
 help format separately.  This issue may be addressed in a future release.</para>
@@ -223,10 +223,10 @@ components and plug-ins easier.</para>
 		</listItem>
 
 		<listItem>
-			<para>In solution file documenation sources, the defined configuration and platform values (either on the
+			<para>In solution file documentation sources, the defined configuration and platform values (either on the
 documentation source or the SHFB project) are now used to determine which projects to include from it.  If a
 project is excluded from the build in the solution file based on the defined configuration and platform, it is
-now ignored and will not be included in the documenation.  In addition, when a project is loaded as part of a
+now ignored and will not be included in the documentation.  In addition, when a project is loaded as part of a
 solution file, the configuration and platform settings defined in the solution file for the project now take
 precedence.</para>
 		</listItem>
@@ -249,7 +249,7 @@ possible to generate multiple help file output formats in one build each with di
 		</listItem>
 
 		<listItem>
-			<para>Added the <legacyBold>MSHCComponent</legacyBold> which is a slightly modifed version of the standard
+			<para>Added the <legacyBold>MSHCComponent</legacyBold> which is a slightly modified version of the standard
 Sandcastle component of the same name.  This version supports a <codeInline>sortOrder</codeInline> attribute on
 the table of contents topic items that lets you specify the sort order for the topics.  The help file builder
 uses this to arrange the table of contents based on the project settings.</para>

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : EditorActions.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/23/2012
-// Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
+// Updated : 05/11/2013
+// Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains various custom actions for the topic editor
@@ -17,6 +17,7 @@
 // ==============================================================================================================
 // 1.6.0.7  05/24/2008  EFW  Created the code
 // 1.9.6.0  11/23/2012  EFW  Changed HTML encoding action so that it doesn't encode single and double quotes
+// 1.9.8.0  05/11/2013  EFW  Added support for spell checking
 //===============================================================================================================
 
 using System;
@@ -112,6 +113,36 @@ namespace SandcastleBuilder.Gui.ContentEditors
         public override void Execute(TextArea textArea)
         {
             editor.OnPerformReplaceText(EventArgs.Empty);
+        }
+    }
+    #endregion
+
+    #region Fire the spell check event
+    //=====================================================================
+
+    /// <summary>
+    /// Fire the SpellCheck event
+    /// </summary>
+    internal sealed class SpellCheck : AbstractEditAction
+    {
+        private ContentEditorControl editor;
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="parent">The parent editor control</param>
+        public SpellCheck(ContentEditorControl parent)
+        {
+            editor = parent;
+        }
+
+        /// <summary>
+        /// Execute the Spell Check action
+        /// </summary>
+        /// <param name="textArea">The text area in which to perform the action</param>
+        public override void Execute(TextArea textArea)
+        {
+            editor.OnPerformSpellCheck(EventArgs.Empty);
         }
     }
     #endregion

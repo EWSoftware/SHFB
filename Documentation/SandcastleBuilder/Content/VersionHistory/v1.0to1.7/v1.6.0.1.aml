@@ -40,7 +40,7 @@ map).</listItem>
 problems with end of line detection.  Added support for handling "&lt;! &gt;"
 entries such as those for DOCTYPE in the XML colorizer rules.</listItem>
 
-    <listItem>For consistency, the code colorizer scripts and stylesheets are now
+    <listItem>For consistency, the code colorizer scripts and style sheets are now
 copied to the Scripts and Styles folders rather than the HTML folder. The
 <codeInline>outputPath</codeInline> property of the <codeInline>PostTransformComponent</codeInline>
 should now point to "Output" rather than "Output\html".  The component will

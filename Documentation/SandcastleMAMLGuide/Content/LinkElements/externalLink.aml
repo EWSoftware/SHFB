@@ -29,7 +29,7 @@ will be displayed when the mouse hovers over it.</para></entry>
           <row>
             <entry><para>linkUri</para></entry>
             <entry><para>This is a required element and is used to specify the URL to which the link refers.
-This can be any sort of link (http, ftp, mail, etc).</para></entry>
+This can be any sort of link (HTTP, FTP, mail, etc).</para></entry>
           </row>
           <row>
             <entry><para>linkTarget</para></entry>

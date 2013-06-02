@@ -77,8 +77,8 @@ used to force the content to be displayed in the parent frame or full window if 
 one of those manners.</para>
 
 						<para>The optional <codeInline>alt</codeInline> attribute can be used to specify alternate text to
-display for the link's tooltip when the mouse hovers over it.  If not specified, no alternate text is added for
-the tooltip.</para>
+display for the link's tool tip when the mouse hovers over it.  If not specified, no alternate text is added for
+the tool tip.</para>
 
 					</content>
 				</section>

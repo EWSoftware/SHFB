@@ -23,7 +23,7 @@ themselves will be replaced with hyperlinks to corresponding bookmarked entries 
 
 			<para>To use citations, a bibliography XML file must be created to store the identifiers and entries.  A
 default bibliography file named, <localUri>bibliography.xml</localUri> can be found in each presentation style's
-<localUri>.\Data</localUri> folder.  The presenation styles are located in the main Sandcastle installation
+<localUri>.\Data</localUri> folder.  The presentation styles are located in the main Sandcastle installation
 folder in the <localUri>.\Presentation</localUri> folder.  An example file is also shown below.</para>
 
 			<procedure>

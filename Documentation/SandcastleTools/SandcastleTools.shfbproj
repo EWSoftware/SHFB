@@ -75,7 +75,7 @@
     <KeepLogFile>True</KeepLogFile>
     <DisableCodeBlockComponent>False</DisableCodeBlockComponent>
     <CppCommentsFixup>False</CppCommentsFixup>
-    <CleanIntermediates>False</CleanIntermediates>
+    <CleanIntermediates>True</CleanIntermediates>
     <TransformComponentArguments>
       <Argument Key="logoFile" Value="Sandcastle.jpg" xmlns="" />
       <Argument Key="logoHeight" Value="" xmlns="" />

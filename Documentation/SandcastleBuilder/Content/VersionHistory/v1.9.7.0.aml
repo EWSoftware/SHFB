@@ -27,7 +27,7 @@ have been rendered obsolete and must be removed from your projects if you are us
 
 						<para>Disk-based caching of MSDN content IDs has been built into the core Sandcastle build component
 and is enabled by default in all help file builder projects.  Changes made to enable namespace filtering and
-loading data in parallel made loading the index data from a serialized cache file slighlty less efficient than
+loading data in parallel made loading the index data from a serialized cache file slightly less efficient than
 just indexing the required data files in each build.  As such, reflection and comments index data is no longer
 cached to disk for re-use.  Common data is also shared across multiple instances of the build components when
 possible to significantly reduce the amount of memory required by BuildAssembler when building multiple help

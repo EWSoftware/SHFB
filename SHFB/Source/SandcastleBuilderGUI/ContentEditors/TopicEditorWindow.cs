@@ -1,31 +1,32 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder
 // File    : TopicEditorWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/08/2012
-// Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
+// Updated : 05/12/2013
+// Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the form used to edit the conceptual topic files.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.6.0.7  05/10/2008  EFW  Created the code
 // 1.8.0.0  07/26/2008  EFW  Reworked for use with the new project format
-// 1.9.3.3  12/11/2011  EFW  Simplified the drag and drop code to work with
-//                           the new Entity References WPF user control.
+// 1.9.3.3  12/11/2011  EFW  Simplified the drag and drop code to work with the new Entity References WPF user
+//                           control.
 // 1.9.3.4  01/20/2012  EFW  Added property to allow retrieval of the text
-//=============================================================================
+// 1.9.8.0  05/11/2013  EFW  Added support for spell checking
+//===============================================================================================================
 
 using System;
 using System.ComponentModel;
 using System.Globalization;
+using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
@@ -91,6 +92,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             area.DragDrop += editor_DragDrop;
             editor.PerformFindText += editor_PerformFindText;
             editor.PerformReplaceText += editor_PerformReplaceText;
+            editor.PerformSpellCheck += editor_PerformSpellCheck;
 
             editor.TextEditorProperties.Font = Settings.Default.TextEditorFont;
             editor.TextEditorProperties.ShowLineNumbers = Settings.Default.ShowLineNumbers;
@@ -101,9 +103,22 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
                 ext = Path.GetExtension(filename).ToLowerInvariant();
 
-                if(ext == ".aml" || ext == ".topic" || ext == ".snippets" || ext == ".tokens" ||
-                  ext == ".content" || ext == ".xamlcfg")
-                    editor.SetHighlighting("XML");
+                switch(ext)
+                {
+                    case ".aml":
+                    case ".content":
+                    case ".items":
+                    case ".sitemap":
+                    case ".snippets":
+                    case ".tokens":
+                    case ".topic":
+                    case ".xamlcfg":
+                        editor.SetHighlighting("XML");
+                        break;
+
+                    default:
+                        break;
+                }
 
                 editor.TextChanged += editor_TextChanged;
 
@@ -272,11 +287,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
                 selectedText = String.Empty;
 
             if(extension == ".htm" || extension == ".html")
-                ContentEditorControl.InsertString(textArea,
-                    topic.ToAnchor(selectedText));
+                ContentEditorControl.InsertString(textArea, topic.ToAnchor(selectedText));
             else
-                ContentEditorControl.InsertString(textArea,
-                    topic.ToLink(selectedText));
+                ContentEditorControl.InsertString(textArea, topic.ToLink(selectedText));
         }
 
         /// <summary>
@@ -300,11 +313,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
                 selectedText = String.Empty;
 
             if(extension == ".htm" || extension == ".html")
-                ContentEditorControl.InsertString(textArea,
-                    tocEntry.ToAnchor(selectedText));
+                ContentEditorControl.InsertString(textArea, tocEntry.ToAnchor(selectedText));
             else
-                ContentEditorControl.InsertString(textArea,
-                    tocEntry.Title);    // Not supported in MAML topics
+                ContentEditorControl.InsertString(textArea, tocEntry.Title);    // Not supported in MAML topics
         }
 
         /// <summary>
@@ -327,6 +338,68 @@ namespace SandcastleBuilder.Gui.ContentEditors
         public void PasteFromClipboard()
         {
             editor.Execute(new PasteSpecial(editor));
+        }
+
+        /// <summary>
+        /// This is used to get the current text from the editor
+        /// </summary>
+        /// <returns></returns>
+        public string GetAllText()
+        {
+            return editor.Text;
+        }
+
+        /// <summary>
+        /// Move to the specified position and highlight the text for the given length
+        /// </summary>
+        /// <param name="p">The location to which to move</param>
+        /// <param name="length">The length of the highlighted text</param>
+        public void MoveToPositionAndHighlightText(Point p, int length)
+        {
+            TextLocation start, end;
+            TextArea textArea = editor.ActiveTextAreaControl.TextArea;
+
+            start = new TextLocation(p.X - 1, p.Y - 1);
+            end = new TextLocation(p.X + length - 1, p.Y - 1);
+
+            textArea.Caret.Position = start;
+            textArea.SelectionManager.SetSelection(start, end);
+        }
+
+        /// <summary>
+        /// Replace text at the given location with the new text
+        /// </summary>
+        /// <param name="p">The location at which to replace text</param>
+        /// <param name="length">The length of the text to replace</param>
+        /// <param name="text">The replacement text</param>
+        /// <returns>The length of the text that was replaced (includes trailing spaces if the word was removed</returns>
+        public int ReplaceTextAt(Point p, int length, string text)
+        {
+            TextArea textArea = editor.ActiveTextAreaControl.TextArea;
+            TextLocation start = new TextLocation(p.X - 1, p.Y - 1);
+            int endPos, offset = textArea.Document.PositionToOffset(start);
+            string currentText = " ";
+
+            // If deleting the text, delete trailing spaces as well
+            if(text.Length == 0 && offset + length + 1 < textArea.Document.TextLength)
+            {
+                endPos = offset + length;
+
+                while(endPos < textArea.Document.TextLength && (currentText[0] == ' ' ||
+                  currentText[0] == '\t'))
+                {
+                    currentText = textArea.Document.GetText(endPos, 1);
+                    length++;
+                    endPos++;
+                }
+
+                length--;
+            }
+
+            textArea.Document.Replace(offset, length, text);
+            textArea.SelectionManager.ClearSelection();
+
+            return length;
         }
         #endregion
 
@@ -670,6 +743,17 @@ namespace SandcastleBuilder.Gui.ContentEditors
             editor.Redo();
             editor.Focus();
         }
+
+        /// <summary>
+        /// Spell check the editor content
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event arguments</param>
+        private void tsbSpellCheck_Click(object sender, EventArgs e)
+        {
+            editor.Focus();
+            editor.OnPerformSpellCheck(EventArgs.Empty);
+        }
         #endregion
 
         #region Find and Replace methods
@@ -759,8 +843,8 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// Find the specified text in the editor
         /// </summary>
         /// <param name="textToFind">The text to find</param>
-        /// <param name="caseSensitive">True to do a case-sensitive search
-        /// or false to do a case-insensitive search</param>
+        /// <param name="caseSensitive">True to do a case-sensitive search or false to do a case-insensitive
+        /// search</param>
         /// <returns>True if the text is found, false if not</returns>
         public bool FindText(string textToFind, bool caseSensitive)
         {
@@ -793,8 +877,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         }
 
         /// <summary>
-        /// Find and replace the next occurrence of the specified text in the
-        /// editor.
+        /// Find and replace the next occurrence of the specified text in the editor
         /// </summary>
         /// <param name="textToFind">The text to find</param>
         /// <param name="replaceWith">The replacement text</param>
@@ -858,6 +941,36 @@ namespace SandcastleBuilder.Gui.ContentEditors
             } while(offset < textArea.Caret.Offset && nextFound);
 
             return true;
+        }
+        #endregion
+
+        #region Spell check methods
+        //=====================================================================
+
+        /// <summary>
+        /// This handles the Perform Spell Check event
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event arguments</param>
+        private void editor_PerformSpellCheck(object sender, EventArgs e)
+        {
+            SpellCheckWindow spellCheckWindow = null;
+
+            foreach(IDockContent content in this.DockPanel.Contents)
+            {
+                spellCheckWindow = content as SpellCheckWindow;
+
+                if(spellCheckWindow != null)
+                    break;
+            }
+
+            if(spellCheckWindow != null)
+                spellCheckWindow.Activate();
+            else
+            {
+                spellCheckWindow = new SpellCheckWindow();
+                spellCheckWindow.Show(this.DockPanel);
+            }
         }
         #endregion
     }

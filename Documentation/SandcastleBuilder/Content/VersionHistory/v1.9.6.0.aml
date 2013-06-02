@@ -72,7 +72,7 @@ to the preview documents which was preventing them from being updated in the pro
 
 					<listItem>
 						<para>Fixed the XML comments file search so that the local system language does not override the
-lanuage defined in the project when searching for localized versions of the .NET Framework XML comments files.</para>
+language defined in the project when searching for localized versions of the .NET Framework XML comments files.</para>
 					</listItem>
 
 					<listItem>

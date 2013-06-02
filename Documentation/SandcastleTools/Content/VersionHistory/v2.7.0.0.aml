@@ -49,7 +49,7 @@ Warnings still exist in several projects and have been left for review until lat
 					</listItem>
 
 					<listItem>
-						<para>Updated the XSL stylesheet version number to 2.0 in all XSL transformations. A bug in .NET 4.0
+						<para>Updated the XSL style sheet version number to 2.0 in all XSL transformations. A bug in .NET 4.0
 prevents the <codeInline>&lt;xsl:sort&gt;</codeInline> function from working when using XSL version 1.1.</para>
 					</listItem>
 
@@ -302,7 +302,7 @@ generates syntax for properties with abstract return types as long as there is a
 the data elements of the index element on the <codeInline>CopyFromIndexComponent</codeInline>.  When set to
 false, it suppresses duplicate index key warnings.  This is useful for comments files where there can be
 duplicate keys but it isn't an issue.  The default is true if not specified to maintain the behavior from past
-releases and report the warnings (Sancastle work item #11844).</para>
+releases and report the warnings (Sandcastle work item #11844).</para>
 					</listItem>
 
 					<listItem>
@@ -310,7 +310,7 @@ releases and report the warnings (Sancastle work item #11844).</para>
 components. I did not enclose them in brackets as it looked rather odd when attributes were present and the
 assignment is a dead giveaway that it is an optional parameter.  As such, it uses the standard syntax but I did
 update the XSL transformations to include "(Optional") after the parameter name in the Parameters section of the
-topic (Sancastle work item #9627).</para>
+topic (Sandcastle work item #9627).</para>
 					</listItem>
 
 					<listItem>
@@ -331,7 +331,7 @@ expression.</para>
 
 					<listItem>
 						<para>Added <codeInline>interior_ptr&lt;&gt;</codeInline> support to the C++ syntax generator.  Added
-a fixup regular expression to the Sandcastle help file builder too so that the comments are included in the
+a fix-up regular expression to the Sandcastle help file builder too so that the comments are included in the
 member page (Sandcastle work item #2299).</para>
 					</listItem>
 
@@ -532,7 +532,7 @@ are not rendered</para>
 
 					<listItem>
 						<para>Sandcastle work item #2421 and #2435: Case of Presentation.css is not consistent in
-transformations.  This causes case-sensitive web servers to miss the stylesheet.</para>
+transformations.  This causes case-sensitive web servers to miss the style sheet.</para>
 					</listItem>
 
 					<listItem>
@@ -695,7 +695,7 @@ Sandcastle work item #933</para>
 					</listItem>
 
 					<listItem>
-						<para>Sandcastle work item #2947: Stylesheet updates needed to correct spacing and alignment</para>
+						<para>Sandcastle work item #2947: style sheet updates needed to correct spacing and alignment</para>
 					</listItem>
 
 					<listItem>
@@ -707,7 +707,7 @@ Sandcastle work item #933</para>
 					</listItem>
 
 					<listItem>
-						<para>Ureported feature request: Replace conceptualLink elements in the reference content with anchor
+						<para>Unreported feature request: Replace conceptualLink elements in the reference content with anchor
 links to the actual MSDN pages</para>
 					</listItem>
 

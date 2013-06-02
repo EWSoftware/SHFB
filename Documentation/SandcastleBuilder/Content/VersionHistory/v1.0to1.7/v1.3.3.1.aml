@@ -45,8 +45,8 @@ code samples in the XML comments and include files.</listItem>
     <listItem>Implemented a post-transform custom build component with the following
 features:
     <list class="bullet">
-        <listItem>Companion to the Code Block Component to add the supporing
-links for the colorizer script and stylesheet.</listItem>
+        <listItem>Companion to the Code Block Component to add the supporting
+links for the colorizer script and style sheet.</listItem>
 
         <listItem>It can insert a logo image at the top of each help topic.</listItem>
 

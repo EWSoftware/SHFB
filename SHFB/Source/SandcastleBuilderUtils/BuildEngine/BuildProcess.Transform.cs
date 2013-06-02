@@ -706,13 +706,13 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 case "projectnodeidoptional":
                     if(project.RootNamespaceContainer)
-                        replaceWith = "Project_" + project.HtmlHelpName.Replace(" ", "_");
+                        replaceWith = "Project_" + project.HtmlHelpName.Replace(" ", "_").Replace("&", "_");
                     else
                         replaceWith = String.Empty;
                     break;
 
                 case "projectnodeidrequired":
-                    replaceWith = "Project_" + project.HtmlHelpName.Replace(" ", "_");
+                    replaceWith = "Project_" + project.HtmlHelpName.Replace(" ", "_").Replace("&", "_");
                     break;
 
                 case "help1folder":

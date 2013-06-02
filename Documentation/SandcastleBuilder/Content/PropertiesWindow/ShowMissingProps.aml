@@ -122,7 +122,7 @@ ignore items with missing or empty <codeInline>&lt;remarks&gt;</codeInline> tags
 </section>
 
 <section address="MissingIncTargets">
-	<title>Show mising &lt;include&gt; element targets (ShowMissingIncludeTargets)</title>
+	<title>Show missing &lt;include&gt; element targets (ShowMissingIncludeTargets)</title>
 	<content>
 		<para>This property lets you indicate whether or not a red "missing" message is inserted into each topic in
 which an <codeInline>include</codeInline> tag is found.  This indicates that the target of the include (either

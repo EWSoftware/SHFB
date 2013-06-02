@@ -46,7 +46,7 @@ option will cause the build component to output project summary and namespace su
 identified by the <codeInline>namespacesFile</codeInline> attribute in the given output folder.  If specified,
 you should enter only the name and omit any file path and extension.  The namespaces file is not used for
 IntelliSense but can be added to one or more help file builder projects as a common documentation source to share
-project and namespace summary information betwen projects.</para>
+project and namespace summary information between projects.</para>
 
 			</content>
 		</section>

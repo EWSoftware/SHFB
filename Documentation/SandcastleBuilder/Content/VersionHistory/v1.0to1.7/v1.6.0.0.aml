@@ -26,7 +26,7 @@ the additional content items (documentation assemblies are excluded).</listItem>
 optionally attaching the log file.</listItem>
     </list></listItem>
 
-    <listItem>Added support for runing *.topic additional content files through
+    <listItem>Added support for running *.topic additional content files through
 an XSL transform so that they can match the appearance of the API topic
 pages. Basic transforms for the Hana, Prototype, and VS2005 styles are
 supplied. The <codeInline>TopicFileTransform</codeInline> property can be used to
@@ -44,7 +44,7 @@ information, the build is stopped with an error stating the problem.</listItem>
     <listItem>Added a <legacyBold>Content File Editors</legacyBold> tab to the <legacyBold>User
 Preferences</legacyBold> dialog box. This allows you to associate non-default
 editors with content file extensions such as those for HTML files,
-stylesheets, images, etc.</listItem>
+style sheets, images, etc.</listItem>
 
     <listItem>Added an <legacyBold>Edit</legacyBold> button to the <legacyBold>Additional Content Editor</legacyBold>
 dialog box. When clicked on an entry representing a single file, the

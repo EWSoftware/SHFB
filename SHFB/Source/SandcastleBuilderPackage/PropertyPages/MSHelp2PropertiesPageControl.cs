@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : MSHelp2PropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 02/24/2013
+// Updated : 04/28/2013
 // Note    : Copyright 2011-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -234,7 +234,7 @@ namespace SandcastleBuilder.Package.PropertyPages
             dgvHelpAttributes.DataSource = null;
 
             attributes.Add("DocSet", "NetFramework");
-            attributes.Add("DocSet", "{@HtmlHelpName}");
+            attributes.Add("DocSet", "{@HtmlEncHelpName}");
             attributes.Add("TargetOS", "Windows");
             attributes.Sort();
 

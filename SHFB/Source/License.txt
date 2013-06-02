@@ -66,12 +66,17 @@ Copyright Notices
 The ICSharpCode.TextEditor is Copyright (c) 2000-2013 IC#Code, All Rights
 Reserved.
 
-The Weifen Luo DockPanel Suite is Copyright (c) 2007-2013 Weifen Luo, All
+The Weifen Luo DockPanel Suite is Copyright (c) 2007-2013 Weifen Luo and other
+contributors, All Rights Reserved.
+
+The NHunspell library is Copyright (c) 2009-2013 Maierhofer Software, All
 Rights Reserved.
 
-The Ionic.Zip Library is Copyright (c) 2009-2013 Dino Chiesa, All Rights Reserved.
+The Ionic.Zip Library is Copyright (c) 2009-2013 Dino Chiesa, All Rights
+Reserved.
 
-The Managed ESENT library is Copyright (c) 2008-2013 Microsoft Corporation, All Rights Reserved.
+The Managed ESENT library is Copyright (c) 2008-2013 Microsoft Corporation, All
+Rights Reserved.
 
 AjaxDoc is Copyright (c) 2006-2013 Bertrand Le Roy, All Rights Reserved.
 
@@ -83,3 +88,9 @@ The code colorizer library is Copyright (c) 2003-2013, Jonathan de Halleux,
 All Rights Reserved.
 
 All other code is Copyright (c) 2006-2013, Eric Woodruff, All Rights Reserved.
+
+The English US dictionary is based on a subset of the original English wordlist
+created by Kevin Atkinson for Pspell and Aspell and thus is covered by his
+original LGPL license.  The affix file is a heavily modified version of the
+original english.aff file which was released as part of Geoff Kuenning's Ispell
+and as such is covered by his BSD license.

@@ -152,7 +152,7 @@ default title is based on the language specified.</para>
 					</listItem>
 
 					<listItem>
-						<para>Modified the the C++ comments fixup code so that it only strips out the unnecessary characters
+						<para>Modified the the C++ comments fix-up code so that it only strips out the unnecessary characters
 if they appear in a declaration involving the <codeInline>System.Collections.Generic</codeInline> namespace.</para>
 					</listItem>
 

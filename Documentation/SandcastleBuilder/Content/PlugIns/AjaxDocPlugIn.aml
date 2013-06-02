@@ -141,7 +141,7 @@ property so that the declarations in the syntax section of each API topic are re
 and/or members from the help file.  See the <link xlink:href="7df16a60-f718-4b8f-bfa2-88c42906070c" /> topic for
 details on how it can be used.  Be aware that since the API filter is generated prior to the XML comments file
 being downloaded, any members with <codeInline>&lt;exclude /&gt;</codeInline> tags will not be removed unless you
-have opened the API filter editor and let it create a filter that includesthem.</para>
+have opened the API filter editor and let it create a filter that includes them.</para>
 
 			</content>
 		</section>

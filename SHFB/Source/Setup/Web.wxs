@@ -36,8 +36,8 @@
 				<Component Id="Index.gif" Guid="{B305FE6B-81EE-4376-8F7B-1167BEF7EC50}">
 					<File Id="Index.gif" KeyPath="yes" Source="$(var.BinFolder)Web\Index.gif" />
 				</Component>
-				<Component Id="Index.html" Guid="{2F4DD12B-5062-4425-83FB-7D5960E9F100}">
-					<File Id="Index.html" KeyPath="yes" Source="$(var.BinFolder)Web\Index.html" />
+				<Component Id="index.html" Guid="{2F4DD12B-5062-4425-83FB-7D5960E9F100}">
+					<File Id="index.html" KeyPath="yes" Source="$(var.BinFolder)Web\index.html" />
 				</Component>
 				<Component Id="index.php" Guid="{2CD6ADC3-167F-4EFF-8308-675888AE1DEF}">
 					<File Id="index.php" KeyPath="yes" Source="$(var.BinFolder)Web\index.php" />
@@ -92,7 +92,7 @@
 			<ComponentRef Id="FillNode.php" />
 			<ComponentRef Id="Index.aspx" />
 			<ComponentRef Id="Index.gif" />
-			<ComponentRef Id="Index.html" />
+			<ComponentRef Id="index.html" />
 			<ComponentRef Id="index.php" />
 			<ComponentRef Id="Item.gif" />
 			<ComponentRef Id="LoadIndexKeywords.aspx" />

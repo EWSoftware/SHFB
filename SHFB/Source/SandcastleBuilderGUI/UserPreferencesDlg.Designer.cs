@@ -60,6 +60,28 @@ namespace SandcastleBuilder.Gui
             this.label6 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.pgSpellChecking = new System.Windows.Forms.TabPage();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.btnDefaultAttributes = new System.Windows.Forms.Button();
+            this.btnRemoveAttribute = new System.Windows.Forms.Button();
+            this.lbSpellCheckedAttributes = new System.Windows.Forms.ListBox();
+            this.btnAddAttribute = new System.Windows.Forms.Button();
+            this.txtAttributeName = new System.Windows.Forms.TextBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnDefaultIgnored = new System.Windows.Forms.Button();
+            this.btnRemoveIgnored = new System.Windows.Forms.Button();
+            this.lbIgnoredXmlElements = new System.Windows.Forms.ListBox();
+            this.btnAddIgnored = new System.Windows.Forms.Button();
+            this.txtIgnoredElement = new System.Windows.Forms.TextBox();
+            this.dividerLabel2 = new SandcastleBuilder.Utils.Controls.DividerLabel();
+            this.dividerLabel1 = new SandcastleBuilder.Utils.Controls.DividerLabel();
+            this.label9 = new System.Windows.Forms.Label();
+            this.cboDefaultLanguage = new System.Windows.Forms.ComboBox();
+            this.chkTreatUnderscoresAsSeparators = new System.Windows.Forms.CheckBox();
+            this.chkIgnoreXmlInText = new System.Windows.Forms.CheckBox();
+            this.chkIgnoreFilenamesAndEMail = new System.Windows.Forms.CheckBox();
+            this.chkIgnoreAllUppercase = new System.Windows.Forms.CheckBox();
+            this.chkIgnoreWordsWithDigits = new System.Windows.Forms.CheckBox();
             this.pgContentEditors = new System.Windows.Forms.TabPage();
             this.btnDelete = new System.Windows.Forms.Button();
             this.ilButton = new System.Windows.Forms.ImageList(this.components);
@@ -68,9 +90,15 @@ namespace SandcastleBuilder.Gui
             this.lbContentEditors = new SandcastleBuilder.Utils.Controls.RefreshableItemListBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.epErrors = new System.Windows.Forms.ErrorProvider(this.components);
+            this.lbUserDictionary = new System.Windows.Forms.ListBox();
+            this.btnRemoveWord = new System.Windows.Forms.Button();
+            this.label10 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.udcASPNetDevServerPort)).BeginInit();
             this.tabPreferences.SuspendLayout();
             this.pgGeneral.SuspendLayout();
+            this.pgSpellChecking.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.pgContentEditors.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.epErrors)).BeginInit();
             this.SuspendLayout();
@@ -108,7 +136,7 @@ namespace SandcastleBuilder.Gui
             this.chkVerboseLogging.Size = new System.Drawing.Size(292, 24);
             this.statusBarTextProvider1.SetStatusBarText(this.chkVerboseLogging, "Verbose Logging: Check this box to display all output messages.  Uncheck to displ" +
         "ay summary messages only.");
-            this.chkVerboseLogging.TabIndex = 10;
+            this.chkVerboseLogging.TabIndex = 11;
             this.chkVerboseLogging.Text = "&Build output verbose logging enabled";
             this.chkVerboseLogging.UseVisualStyleBackColor = true;
             // 
@@ -116,7 +144,7 @@ namespace SandcastleBuilder.Gui
             // 
             this.txtHTMLHelp2ViewerPath.Location = new System.Drawing.Point(262, 18);
             this.txtHTMLHelp2ViewerPath.Name = "txtHTMLHelp2ViewerPath";
-            this.txtHTMLHelp2ViewerPath.Size = new System.Drawing.Size(358, 22);
+            this.txtHTMLHelp2ViewerPath.Size = new System.Drawing.Size(358, 23);
             this.statusBarTextProvider1.SetStatusBarText(this.txtHTMLHelp2ViewerPath, "MS Help 2 (.HxS) Viewer: Enter the path and filename of the application used to v" +
         "iew MS Help 2 files");
             this.txtHTMLHelp2ViewerPath.TabIndex = 1;
@@ -147,7 +175,7 @@ namespace SandcastleBuilder.Gui
             0,
             0});
             this.udcASPNetDevServerPort.Name = "udcASPNetDevServerPort";
-            this.udcASPNetDevServerPort.Size = new System.Drawing.Size(70, 22);
+            this.udcASPNetDevServerPort.Size = new System.Drawing.Size(70, 23);
             this.statusBarTextProvider1.SetStatusBarText(this.udcASPNetDevServerPort, "Server Port: Select the port to use when launching the ASP.NET Development Web Se" +
         "rver");
             this.udcASPNetDevServerPort.TabIndex = 7;
@@ -161,7 +189,9 @@ namespace SandcastleBuilder.Gui
             // tabPreferences
             // 
             this.tabPreferences.Controls.Add(this.pgGeneral);
+            this.tabPreferences.Controls.Add(this.pgSpellChecking);
             this.tabPreferences.Controls.Add(this.pgContentEditors);
+            this.tabPreferences.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F);
             this.tabPreferences.Location = new System.Drawing.Point(12, 12);
             this.tabPreferences.Name = "tabPreferences";
             this.tabPreferences.SelectedIndex = 0;
@@ -212,7 +242,7 @@ namespace SandcastleBuilder.Gui
             this.chkPerUserProjectState.Size = new System.Drawing.Size(320, 24);
             this.statusBarTextProvider1.SetStatusBarText(this.chkPerUserProjectState, "Save Project State: Check this box to save the window layout for each project per" +
         " user");
-            this.chkPerUserProjectState.TabIndex = 24;
+            this.chkPerUserProjectState.TabIndex = 8;
             this.chkPerUserProjectState.Text = "&Save window state per project for each user";
             this.chkPerUserProjectState.UseVisualStyleBackColor = true;
             // 
@@ -220,7 +250,7 @@ namespace SandcastleBuilder.Gui
             // 
             this.txtMSHelpViewerPath.Location = new System.Drawing.Point(262, 46);
             this.txtMSHelpViewerPath.Name = "txtMSHelpViewerPath";
-            this.txtMSHelpViewerPath.Size = new System.Drawing.Size(358, 22);
+            this.txtMSHelpViewerPath.Size = new System.Drawing.Size(358, 23);
             this.statusBarTextProvider1.SetStatusBarText(this.txtMSHelpViewerPath, "MS Help Viewer (.mshc) Viewer: Enter the path and filename of the application use" +
         "d to view MS Help Viewer files");
             this.txtMSHelpViewerPath.TabIndex = 4;
@@ -254,7 +284,7 @@ namespace SandcastleBuilder.Gui
             this.chkEnterMatching.Size = new System.Drawing.Size(349, 21);
             this.statusBarTextProvider1.SetStatusBarText(this.chkEnterMatching, "Enter Matching: When checked, matching brackets, parentheses, and quotes will be " +
         "entered automatically in the text editor");
-            this.chkEnterMatching.TabIndex = 23;
+            this.chkEnterMatching.TabIndex = 24;
             this.chkEnterMatching.Text = "E&nter matching brackets, parentheses, and quotes";
             this.chkEnterMatching.UseVisualStyleBackColor = true;
             // 
@@ -265,7 +295,7 @@ namespace SandcastleBuilder.Gui
             this.chkShowLineNumbers.Name = "chkShowLineNumbers";
             this.chkShowLineNumbers.Size = new System.Drawing.Size(230, 21);
             this.statusBarTextProvider1.SetStatusBarText(this.chkShowLineNumbers, "Show Line Numbers: Check this box to show line numbers in the text editor");
-            this.chkShowLineNumbers.TabIndex = 19;
+            this.chkShowLineNumbers.TabIndex = 20;
             this.chkShowLineNumbers.Text = "Sho&w line numbers in text editor";
             this.chkShowLineNumbers.UseVisualStyleBackColor = true;
             // 
@@ -275,7 +305,7 @@ namespace SandcastleBuilder.Gui
             this.chkOpenHelp.Name = "chkOpenHelp";
             this.chkOpenHelp.Size = new System.Drawing.Size(292, 24);
             this.statusBarTextProvider1.SetStatusBarText(this.chkOpenHelp, "Open Help: Check this to open the help file after a successful build");
-            this.chkOpenHelp.TabIndex = 11;
+            this.chkOpenHelp.TabIndex = 12;
             this.chkOpenHelp.Text = "&Open help file after successful build";
             this.chkOpenHelp.UseVisualStyleBackColor = true;
             // 
@@ -292,14 +322,14 @@ namespace SandcastleBuilder.Gui
             this.cboBeforeBuildAction.Name = "cboBeforeBuildAction";
             this.cboBeforeBuildAction.Size = new System.Drawing.Size(292, 24);
             this.statusBarTextProvider1.SetStatusBarText(this.cboBeforeBuildAction, "Before Build: Select the action to take before performing a build");
-            this.cboBeforeBuildAction.TabIndex = 9;
+            this.cboBeforeBuildAction.TabIndex = 10;
             // 
             // label7
             // 
             this.label7.Location = new System.Drawing.Point(135, 174);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(121, 23);
-            this.label7.TabIndex = 8;
+            this.label7.TabIndex = 9;
             this.label7.Text = "B&efore Building";
             this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
@@ -308,7 +338,7 @@ namespace SandcastleBuilder.Gui
             this.btnEditorFont.Location = new System.Drawing.Point(487, 396);
             this.btnEditorFont.Name = "btnEditorFont";
             this.btnEditorFont.Size = new System.Drawing.Size(32, 25);
-            this.btnEditorFont.TabIndex = 21;
+            this.btnEditorFont.TabIndex = 22;
             this.btnEditorFont.Text = "...";
             this.btnEditorFont.UseVisualStyleBackColor = true;
             this.btnEditorFont.Click += new System.EventHandler(this.btnFont_Click);
@@ -318,7 +348,7 @@ namespace SandcastleBuilder.Gui
             this.label3.Location = new System.Drawing.Point(352, 397);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(129, 23);
-            this.label3.TabIndex = 20;
+            this.label3.TabIndex = 21;
             this.label3.Text = "&Text Editor Font";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
@@ -331,7 +361,7 @@ namespace SandcastleBuilder.Gui
             this.lblEditorExample.Location = new System.Drawing.Point(525, 371);
             this.lblEditorExample.Name = "lblEditorExample";
             this.lblEditorExample.Size = new System.Drawing.Size(128, 75);
-            this.lblEditorExample.TabIndex = 22;
+            this.lblEditorExample.TabIndex = 23;
             this.lblEditorExample.Text = "Example Text";
             this.lblEditorExample.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -340,7 +370,7 @@ namespace SandcastleBuilder.Gui
             this.btnBuildFont.Location = new System.Drawing.Point(487, 306);
             this.btnBuildFont.Name = "btnBuildFont";
             this.btnBuildFont.Size = new System.Drawing.Size(32, 25);
-            this.btnBuildFont.TabIndex = 17;
+            this.btnBuildFont.TabIndex = 18;
             this.btnBuildFont.Text = "...";
             this.btnBuildFont.UseVisualStyleBackColor = true;
             this.btnBuildFont.Click += new System.EventHandler(this.btnFont_Click);
@@ -350,7 +380,7 @@ namespace SandcastleBuilder.Gui
             this.label4.Location = new System.Drawing.Point(435, 307);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(46, 23);
-            this.label4.TabIndex = 16;
+            this.label4.TabIndex = 17;
             this.label4.Text = "Font";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
@@ -359,7 +389,7 @@ namespace SandcastleBuilder.Gui
             this.btnBuildForeground.Location = new System.Drawing.Point(397, 306);
             this.btnBuildForeground.Name = "btnBuildForeground";
             this.btnBuildForeground.Size = new System.Drawing.Size(32, 25);
-            this.btnBuildForeground.TabIndex = 15;
+            this.btnBuildForeground.TabIndex = 16;
             this.btnBuildForeground.Text = "...";
             this.btnBuildForeground.UseVisualStyleBackColor = true;
             this.btnBuildForeground.Click += new System.EventHandler(this.btnColor_Click);
@@ -369,7 +399,7 @@ namespace SandcastleBuilder.Gui
             this.btnBuildBackground.Location = new System.Drawing.Point(262, 306);
             this.btnBuildBackground.Name = "btnBuildBackground";
             this.btnBuildBackground.Size = new System.Drawing.Size(32, 25);
-            this.btnBuildBackground.TabIndex = 13;
+            this.btnBuildBackground.TabIndex = 14;
             this.btnBuildBackground.Text = "...";
             this.btnBuildBackground.UseVisualStyleBackColor = true;
             this.btnBuildBackground.Click += new System.EventHandler(this.btnColor_Click);
@@ -379,7 +409,7 @@ namespace SandcastleBuilder.Gui
             this.label5.Location = new System.Drawing.Point(300, 307);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(91, 23);
-            this.label5.TabIndex = 14;
+            this.label5.TabIndex = 15;
             this.label5.Text = "Foreground";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
@@ -392,7 +422,7 @@ namespace SandcastleBuilder.Gui
             this.lblBuildExample.Location = new System.Drawing.Point(525, 281);
             this.lblBuildExample.Name = "lblBuildExample";
             this.lblBuildExample.Size = new System.Drawing.Size(128, 75);
-            this.lblBuildExample.TabIndex = 18;
+            this.lblBuildExample.TabIndex = 19;
             this.lblBuildExample.Text = "Example Text";
             this.lblBuildExample.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -401,7 +431,7 @@ namespace SandcastleBuilder.Gui
             this.label6.Location = new System.Drawing.Point(82, 307);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(174, 23);
-            this.label6.TabIndex = 12;
+            this.label6.TabIndex = 13;
             this.label6.Text = "B&uild Output Background";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
@@ -422,6 +452,271 @@ namespace SandcastleBuilder.Gui
             this.label1.TabIndex = 0;
             this.label1.Text = "MS &Help 2 (.HxS) Viewer Path";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // pgSpellChecking
+            // 
+            this.pgSpellChecking.Controls.Add(this.label10);
+            this.pgSpellChecking.Controls.Add(this.btnRemoveWord);
+            this.pgSpellChecking.Controls.Add(this.lbUserDictionary);
+            this.pgSpellChecking.Controls.Add(this.groupBox2);
+            this.pgSpellChecking.Controls.Add(this.groupBox1);
+            this.pgSpellChecking.Controls.Add(this.dividerLabel2);
+            this.pgSpellChecking.Controls.Add(this.dividerLabel1);
+            this.pgSpellChecking.Controls.Add(this.label9);
+            this.pgSpellChecking.Controls.Add(this.cboDefaultLanguage);
+            this.pgSpellChecking.Controls.Add(this.chkTreatUnderscoresAsSeparators);
+            this.pgSpellChecking.Controls.Add(this.chkIgnoreXmlInText);
+            this.pgSpellChecking.Controls.Add(this.chkIgnoreFilenamesAndEMail);
+            this.pgSpellChecking.Controls.Add(this.chkIgnoreAllUppercase);
+            this.pgSpellChecking.Controls.Add(this.chkIgnoreWordsWithDigits);
+            this.pgSpellChecking.Location = new System.Drawing.Point(4, 25);
+            this.pgSpellChecking.Name = "pgSpellChecking";
+            this.pgSpellChecking.Padding = new System.Windows.Forms.Padding(3);
+            this.pgSpellChecking.Size = new System.Drawing.Size(688, 475);
+            this.statusBarTextProvider1.SetStatusBarText(this.pgSpellChecking, "Spell checking options");
+            this.pgSpellChecking.TabIndex = 2;
+            this.pgSpellChecking.Text = "Spell Checking";
+            this.pgSpellChecking.UseVisualStyleBackColor = true;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.btnDefaultAttributes);
+            this.groupBox2.Controls.Add(this.btnRemoveAttribute);
+            this.groupBox2.Controls.Add(this.lbSpellCheckedAttributes);
+            this.groupBox2.Controls.Add(this.btnAddAttribute);
+            this.groupBox2.Controls.Add(this.txtAttributeName);
+            this.groupBox2.Location = new System.Drawing.Point(357, 260);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(310, 209);
+            this.groupBox2.TabIndex = 13;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Spell Checked &Attributes";
+            // 
+            // btnDefaultAttributes
+            // 
+            this.btnDefaultAttributes.Location = new System.Drawing.Point(87, 179);
+            this.btnDefaultAttributes.Name = "btnDefaultAttributes";
+            this.btnDefaultAttributes.Size = new System.Drawing.Size(75, 24);
+            this.statusBarTextProvider1.SetStatusBarText(this.btnDefaultAttributes, "Default: Reset the list to the default spell checked attributes");
+            this.btnDefaultAttributes.TabIndex = 4;
+            this.btnDefaultAttributes.Text = "Default";
+            this.toolTip1.SetToolTip(this.btnDefaultAttributes, "Reset to default list of spell checked attributes");
+            this.btnDefaultAttributes.UseVisualStyleBackColor = true;
+            this.btnDefaultAttributes.Click += new System.EventHandler(this.btnDefaultAttributes_Click);
+            // 
+            // btnRemoveAttribute
+            // 
+            this.btnRemoveAttribute.Location = new System.Drawing.Point(6, 179);
+            this.btnRemoveAttribute.Name = "btnRemoveAttribute";
+            this.btnRemoveAttribute.Size = new System.Drawing.Size(75, 24);
+            this.statusBarTextProvider1.SetStatusBarText(this.btnRemoveAttribute, "Remove Attribute: Remove the selected XML attribute from the list");
+            this.btnRemoveAttribute.TabIndex = 3;
+            this.btnRemoveAttribute.Text = "Remove";
+            this.toolTip1.SetToolTip(this.btnRemoveAttribute, "Remove the selected spell checked attribute");
+            this.btnRemoveAttribute.UseVisualStyleBackColor = true;
+            this.btnRemoveAttribute.Click += new System.EventHandler(this.btnRemoveAttribute_Click);
+            // 
+            // lbSpellCheckedAttributes
+            // 
+            this.lbSpellCheckedAttributes.FormattingEnabled = true;
+            this.lbSpellCheckedAttributes.IntegralHeight = false;
+            this.lbSpellCheckedAttributes.ItemHeight = 16;
+            this.lbSpellCheckedAttributes.Location = new System.Drawing.Point(6, 49);
+            this.lbSpellCheckedAttributes.Name = "lbSpellCheckedAttributes";
+            this.lbSpellCheckedAttributes.Size = new System.Drawing.Size(298, 124);
+            this.lbSpellCheckedAttributes.Sorted = true;
+            this.statusBarTextProvider1.SetStatusBarText(this.lbSpellCheckedAttributes, "Spell Checked Attributes: The values of these attributes will be spell checked wh" +
+        "en an XML file is spell checked");
+            this.lbSpellCheckedAttributes.TabIndex = 2;
+            // 
+            // btnAddAttribute
+            // 
+            this.btnAddAttribute.Location = new System.Drawing.Point(229, 20);
+            this.btnAddAttribute.Name = "btnAddAttribute";
+            this.btnAddAttribute.Size = new System.Drawing.Size(75, 24);
+            this.statusBarTextProvider1.SetStatusBarText(this.btnAddAttribute, "Add Spell Checked Attribute: Click this to add the XML attribute name to the list" +
+        " of spell checked attributes");
+            this.btnAddAttribute.TabIndex = 1;
+            this.btnAddAttribute.Text = "Add";
+            this.toolTip1.SetToolTip(this.btnAddAttribute, "Add new spell checked attribute");
+            this.btnAddAttribute.UseVisualStyleBackColor = true;
+            this.btnAddAttribute.Click += new System.EventHandler(this.btnAddAttribute_Click);
+            // 
+            // txtAttributeName
+            // 
+            this.txtAttributeName.Location = new System.Drawing.Point(6, 21);
+            this.txtAttributeName.Name = "txtAttributeName";
+            this.txtAttributeName.Size = new System.Drawing.Size(219, 23);
+            this.statusBarTextProvider1.SetStatusBarText(this.txtAttributeName, "Attribute Name: Enter the name of an XML attribute that should be spell checked");
+            this.txtAttributeName.TabIndex = 0;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.btnDefaultIgnored);
+            this.groupBox1.Controls.Add(this.btnRemoveIgnored);
+            this.groupBox1.Controls.Add(this.lbIgnoredXmlElements);
+            this.groupBox1.Controls.Add(this.btnAddIgnored);
+            this.groupBox1.Controls.Add(this.txtIgnoredElement);
+            this.groupBox1.Location = new System.Drawing.Point(29, 260);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(310, 209);
+            this.groupBox1.TabIndex = 12;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Ignored XML &Elements";
+            // 
+            // btnDefaultIgnored
+            // 
+            this.btnDefaultIgnored.Location = new System.Drawing.Point(87, 179);
+            this.btnDefaultIgnored.Name = "btnDefaultIgnored";
+            this.btnDefaultIgnored.Size = new System.Drawing.Size(75, 24);
+            this.statusBarTextProvider1.SetStatusBarText(this.btnDefaultIgnored, "Default: Reset the list to the default ignored XML elements");
+            this.btnDefaultIgnored.TabIndex = 4;
+            this.btnDefaultIgnored.Text = "Default";
+            this.toolTip1.SetToolTip(this.btnDefaultIgnored, "Reset to default list of ignored XML elements");
+            this.btnDefaultIgnored.UseVisualStyleBackColor = true;
+            this.btnDefaultIgnored.Click += new System.EventHandler(this.btnDefaultIgnored_Click);
+            // 
+            // btnRemoveIgnored
+            // 
+            this.btnRemoveIgnored.Location = new System.Drawing.Point(6, 179);
+            this.btnRemoveIgnored.Name = "btnRemoveIgnored";
+            this.btnRemoveIgnored.Size = new System.Drawing.Size(75, 24);
+            this.statusBarTextProvider1.SetStatusBarText(this.btnRemoveIgnored, "Remove Element: Remove the selected XML element from the list");
+            this.btnRemoveIgnored.TabIndex = 3;
+            this.btnRemoveIgnored.Text = "Remove";
+            this.toolTip1.SetToolTip(this.btnRemoveIgnored, "Remove selected ignored XML element");
+            this.btnRemoveIgnored.UseVisualStyleBackColor = true;
+            this.btnRemoveIgnored.Click += new System.EventHandler(this.btnRemoveIgnored_Click);
+            // 
+            // lbIgnoredXmlElements
+            // 
+            this.lbIgnoredXmlElements.FormattingEnabled = true;
+            this.lbIgnoredXmlElements.IntegralHeight = false;
+            this.lbIgnoredXmlElements.ItemHeight = 16;
+            this.lbIgnoredXmlElements.Location = new System.Drawing.Point(6, 49);
+            this.lbIgnoredXmlElements.Name = "lbIgnoredXmlElements";
+            this.lbIgnoredXmlElements.Size = new System.Drawing.Size(298, 124);
+            this.lbIgnoredXmlElements.Sorted = true;
+            this.statusBarTextProvider1.SetStatusBarText(this.lbIgnoredXmlElements, "Ignored XML Elements: The content of these elements will be ignored when an XML f" +
+        "ile is spell checked");
+            this.lbIgnoredXmlElements.TabIndex = 2;
+            // 
+            // btnAddIgnored
+            // 
+            this.btnAddIgnored.Location = new System.Drawing.Point(229, 20);
+            this.btnAddIgnored.Name = "btnAddIgnored";
+            this.btnAddIgnored.Size = new System.Drawing.Size(75, 24);
+            this.statusBarTextProvider1.SetStatusBarText(this.btnAddIgnored, "Add Ignored XML Element: Click this to add the XML element name to the list of ig" +
+        "nored elements");
+            this.btnAddIgnored.TabIndex = 1;
+            this.btnAddIgnored.Text = "Add";
+            this.toolTip1.SetToolTip(this.btnAddIgnored, "Add new ignored XML element");
+            this.btnAddIgnored.UseVisualStyleBackColor = true;
+            this.btnAddIgnored.Click += new System.EventHandler(this.btnAddIgnored_Click);
+            // 
+            // txtIgnoredElement
+            // 
+            this.txtIgnoredElement.Location = new System.Drawing.Point(6, 21);
+            this.txtIgnoredElement.Name = "txtIgnoredElement";
+            this.txtIgnoredElement.Size = new System.Drawing.Size(219, 23);
+            this.statusBarTextProvider1.SetStatusBarText(this.txtIgnoredElement, "Ignored XML Element: Enter the name of an XML element whose content should be ign" +
+        "ored when spell checking");
+            this.txtIgnoredElement.TabIndex = 0;
+            // 
+            // dividerLabel2
+            // 
+            this.dividerLabel2.Location = new System.Drawing.Point(3, 11);
+            this.dividerLabel2.Name = "dividerLabel2";
+            this.dividerLabel2.Size = new System.Drawing.Size(676, 23);
+            this.dividerLabel2.TabIndex = 0;
+            this.dividerLabel2.Text = "General Options";
+            // 
+            // dividerLabel1
+            // 
+            this.dividerLabel1.Location = new System.Drawing.Point(6, 230);
+            this.dividerLabel1.Name = "dividerLabel1";
+            this.dividerLabel1.Size = new System.Drawing.Size(676, 23);
+            this.dividerLabel1.TabIndex = 11;
+            this.dividerLabel1.Text = "XML File Options";
+            // 
+            // label9
+            // 
+            this.label9.Location = new System.Drawing.Point(9, 44);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(446, 23);
+            this.label9.TabIndex = 1;
+            this.label9.Text = "&Default language if dictionary for project language is not available";
+            this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // cboDefaultLanguage
+            // 
+            this.cboDefaultLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboDefaultLanguage.FormattingEnabled = true;
+            this.cboDefaultLanguage.Location = new System.Drawing.Point(461, 44);
+            this.cboDefaultLanguage.Name = "cboDefaultLanguage";
+            this.cboDefaultLanguage.Size = new System.Drawing.Size(79, 24);
+            this.statusBarTextProvider1.SetStatusBarText(this.cboDefaultLanguage, "Default Language: Select the default language to use when a dictionary for the pr" +
+        "oject language is not available");
+            this.cboDefaultLanguage.TabIndex = 2;
+            this.cboDefaultLanguage.SelectedIndexChanged += new System.EventHandler(this.cboDefaultLanguage_SelectedIndexChanged);
+            // 
+            // chkTreatUnderscoresAsSeparators
+            // 
+            this.chkTreatUnderscoresAsSeparators.AutoSize = true;
+            this.chkTreatUnderscoresAsSeparators.Location = new System.Drawing.Point(35, 191);
+            this.chkTreatUnderscoresAsSeparators.Name = "chkTreatUnderscoresAsSeparators";
+            this.chkTreatUnderscoresAsSeparators.Size = new System.Drawing.Size(238, 21);
+            this.statusBarTextProvider1.SetStatusBarText(this.chkTreatUnderscoresAsSeparators, "Treat Underscores as Separators: Check this option to treat underscores as word s" +
+        "eparators");
+            this.chkTreatUnderscoresAsSeparators.TabIndex = 7;
+            this.chkTreatUnderscoresAsSeparators.Text = "Treat underscores as separators";
+            this.chkTreatUnderscoresAsSeparators.UseVisualStyleBackColor = true;
+            // 
+            // chkIgnoreXmlInText
+            // 
+            this.chkIgnoreXmlInText.AutoSize = true;
+            this.chkIgnoreXmlInText.Location = new System.Drawing.Point(35, 164);
+            this.chkIgnoreXmlInText.Name = "chkIgnoreXmlInText";
+            this.chkIgnoreXmlInText.Size = new System.Drawing.Size(418, 21);
+            this.statusBarTextProvider1.SetStatusBarText(this.chkIgnoreXmlInText, "Ignore XML in Text: Check this option to ignore words that look like XML elements" +
+        " in spell checked text");
+            this.chkIgnoreXmlInText.TabIndex = 6;
+            this.chkIgnoreXmlInText.Text = "Ignore words that look like XML elements in spell checked text";
+            this.chkIgnoreXmlInText.UseVisualStyleBackColor = true;
+            // 
+            // chkIgnoreFilenamesAndEMail
+            // 
+            this.chkIgnoreFilenamesAndEMail.AutoSize = true;
+            this.chkIgnoreFilenamesAndEMail.Location = new System.Drawing.Point(35, 137);
+            this.chkIgnoreFilenamesAndEMail.Name = "chkIgnoreFilenamesAndEMail";
+            this.chkIgnoreFilenamesAndEMail.Size = new System.Drawing.Size(398, 21);
+            this.statusBarTextProvider1.SetStatusBarText(this.chkIgnoreFilenamesAndEMail, "Ignore Filenames and E-Mail: Check this option to ignore words that look like fil" +
+        "enames and e-mail addresses");
+            this.chkIgnoreFilenamesAndEMail.TabIndex = 5;
+            this.chkIgnoreFilenamesAndEMail.Text = "Ignore words that look like filenames and e-mail addresses";
+            this.chkIgnoreFilenamesAndEMail.UseVisualStyleBackColor = true;
+            // 
+            // chkIgnoreAllUppercase
+            // 
+            this.chkIgnoreAllUppercase.AutoSize = true;
+            this.chkIgnoreAllUppercase.Location = new System.Drawing.Point(35, 110);
+            this.chkIgnoreAllUppercase.Name = "chkIgnoreAllUppercase";
+            this.chkIgnoreAllUppercase.Size = new System.Drawing.Size(215, 21);
+            this.statusBarTextProvider1.SetStatusBarText(this.chkIgnoreAllUppercase, "Ignore All Uppercase: Check this option to ignore words in all uppercase");
+            this.chkIgnoreAllUppercase.TabIndex = 4;
+            this.chkIgnoreAllUppercase.Text = "Ignore words in all uppercase";
+            this.chkIgnoreAllUppercase.UseVisualStyleBackColor = true;
+            // 
+            // chkIgnoreWordsWithDigits
+            // 
+            this.chkIgnoreWordsWithDigits.AutoSize = true;
+            this.chkIgnoreWordsWithDigits.Location = new System.Drawing.Point(35, 83);
+            this.chkIgnoreWordsWithDigits.Name = "chkIgnoreWordsWithDigits";
+            this.chkIgnoreWordsWithDigits.Size = new System.Drawing.Size(176, 21);
+            this.statusBarTextProvider1.SetStatusBarText(this.chkIgnoreWordsWithDigits, "Ignore Words With Digits: Check this option to ignore words that contain digits");
+            this.chkIgnoreWordsWithDigits.TabIndex = 3;
+            this.chkIgnoreWordsWithDigits.Text = "&Ignore words with digits";
+            this.chkIgnoreWordsWithDigits.UseVisualStyleBackColor = true;
             // 
             // pgContentEditors
             // 
@@ -504,6 +799,39 @@ namespace SandcastleBuilder.Gui
             // 
             this.epErrors.ContainerControl = this;
             // 
+            // lbUserDictionary
+            // 
+            this.lbUserDictionary.FormattingEnabled = true;
+            this.lbUserDictionary.IntegralHeight = false;
+            this.lbUserDictionary.ItemHeight = 16;
+            this.lbUserDictionary.Location = new System.Drawing.Point(461, 99);
+            this.lbUserDictionary.Name = "lbUserDictionary";
+            this.lbUserDictionary.Size = new System.Drawing.Size(216, 108);
+            this.lbUserDictionary.Sorted = true;
+            this.statusBarTextProvider1.SetStatusBarText(this.lbUserDictionary, "User Dictionary: Ignored words in the user dictionary file");
+            this.lbUserDictionary.TabIndex = 9;
+            // 
+            // btnRemoveWord
+            // 
+            this.btnRemoveWord.Location = new System.Drawing.Point(461, 213);
+            this.btnRemoveWord.Name = "btnRemoveWord";
+            this.btnRemoveWord.Size = new System.Drawing.Size(75, 24);
+            this.statusBarTextProvider1.SetStatusBarText(this.btnRemoveWord, "Remove Word: Remove the selected word from the user dictionary");
+            this.btnRemoveWord.TabIndex = 10;
+            this.btnRemoveWord.Text = "Remove";
+            this.toolTip1.SetToolTip(this.btnRemoveWord, "Remove selected word from user dictionary");
+            this.btnRemoveWord.UseVisualStyleBackColor = true;
+            this.btnRemoveWord.Click += new System.EventHandler(this.btnRemoveWord_Click);
+            // 
+            // label10
+            // 
+            this.label10.Location = new System.Drawing.Point(461, 73);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(206, 23);
+            this.label10.TabIndex = 8;
+            this.label10.Text = "User Dictionary for Language";
+            this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // UserPreferencesDlg
             // 
             this.AcceptButton = this.btnOK;
@@ -525,6 +853,12 @@ namespace SandcastleBuilder.Gui
             this.tabPreferences.ResumeLayout(false);
             this.pgGeneral.ResumeLayout(false);
             this.pgGeneral.PerformLayout();
+            this.pgSpellChecking.ResumeLayout(false);
+            this.pgSpellChecking.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.pgContentEditors.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.epErrors)).EndInit();
             this.ResumeLayout(false);
@@ -571,5 +905,30 @@ namespace SandcastleBuilder.Gui
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Button btnSelectMSHCViewer;
         private System.Windows.Forms.CheckBox chkPerUserProjectState;
+        private System.Windows.Forms.TabPage pgSpellChecking;
+        private Utils.Controls.DividerLabel dividerLabel2;
+        private Utils.Controls.DividerLabel dividerLabel1;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.ComboBox cboDefaultLanguage;
+        private System.Windows.Forms.CheckBox chkTreatUnderscoresAsSeparators;
+        private System.Windows.Forms.CheckBox chkIgnoreXmlInText;
+        private System.Windows.Forms.CheckBox chkIgnoreFilenamesAndEMail;
+        private System.Windows.Forms.CheckBox chkIgnoreAllUppercase;
+        private System.Windows.Forms.CheckBox chkIgnoreWordsWithDigits;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Button btnRemoveAttribute;
+        private System.Windows.Forms.ListBox lbSpellCheckedAttributes;
+        private System.Windows.Forms.Button btnAddAttribute;
+        private System.Windows.Forms.TextBox txtAttributeName;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Button btnRemoveIgnored;
+        private System.Windows.Forms.ListBox lbIgnoredXmlElements;
+        private System.Windows.Forms.Button btnAddIgnored;
+        private System.Windows.Forms.TextBox txtIgnoredElement;
+        private System.Windows.Forms.Button btnDefaultAttributes;
+        private System.Windows.Forms.Button btnDefaultIgnored;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Button btnRemoveWord;
+        private System.Windows.Forms.ListBox lbUserDictionary;
     }
 }

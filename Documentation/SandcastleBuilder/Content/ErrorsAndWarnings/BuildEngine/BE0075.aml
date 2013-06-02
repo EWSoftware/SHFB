@@ -2,25 +2,24 @@
 <topic id="ba99021c-60e7-4cb6-a3cf-f2e825431701" revisionNumber="1">
   <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
 		<introduction>
-			<para>Error BE0075: For MS Help Viewer builds, the HtmlHelpName property cannot contain periods as they are
-not valid in the help file name.
-			</para>
+			<para>Error BE0075: For MS Help Viewer builds, the HtmlHelpName property cannot contain periods,
+ampersands, or pound signs as they are not valid in the help file name.</para>
 		</introduction>
 
 		<section>
 			<title>Cause</title>
 			<content>
-				<para>This error occurs if there are periods in the <codeInline>HtmlHelpName</codeInline> project
-property value.</para>
+				<para>This error occurs if there are periods, ampersands, or pound signs in the
+<codeInline>HtmlHelpName</codeInline> project property value.</para>
 			</content>
 		</section>
 
 		<section>
 			<title>Solution</title>
 			<content>
-				<para>The <codeInline>HtmlHelpName</codeInline> value is used as the MS Help Viewer help file name when
-building an MS Help Viewer file.  Periods are not valid in MS Help Viewer filenames apart from the one used to
-separate the filename and the extension and must be removed from the property value.</para>
+				<para>The <codeInline>HtmlHelpName</codeInline> value is used as the MS Help Viewer help file name
+when building an MS Help Viewer file.  Periods, ampersands, and pound signs are not valid in MS Help Viewer filenames
+apart from the period used to separate the filename and the extension and must be removed from the property value.</para>
 			</content>
 		</section>
 

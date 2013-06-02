@@ -30,7 +30,7 @@ copied recursively to like-named subfolders in the compiled help file.</para>
 				<para>By adding a file to the project with a name that matches a stock content file in a folder that
 matches the folder of the stock content file, you can replace that stock content file.  For example, by adding a
 folder called <localUri>styles\</localUri> to the project and placing a file in that folder called
-<localUri>Presentation.css</localUri>, you can replace the default stylesheet used by the selected presentation
+<localUri>Presentation.css</localUri>, you can replace the default style sheet used by the selected presentation
 style.</para>
 			</listItem>
 

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : ProjectExplorerWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/28/2012
-// Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
+// Updated : 05/13/2013
+// Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the form used to manage the project items and files.
@@ -30,6 +30,7 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.XPath;
@@ -54,6 +55,10 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
         private SandcastleProject currentProject;
         private FileTree fileTree;
+
+        // This is used to search for a few common binary characters in the range \x00 to \x1F which should be
+        // sufficient.  Note that \x1A (Ctrl+Z) is excluded as that's a common End of File marker.
+        private static Regex reBinary = new Regex(@"[\x00-\x08\x0C\x0E-\x19\x1B-\x1F]");
         #endregion
 
         #region Properties
@@ -259,12 +264,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
                         case ".css":
                         case ".htm":
                         case ".html":
-                        case ".items":
                         case ".js":
                         case ".log":
-                        case ".snippets":
                         case ".topic":
-                        case ".tokens":
                         case ".txt":
                         case ".xml":
                             editor = new TopicEditorWindow(fullName);
@@ -328,6 +330,18 @@ namespace SandcastleBuilder.Gui.ContentEditors
                 default:    // No association, the caller may try to launch an external editor
                     break;
             }
+
+            // If we couldn't create one and it looks like a text file, use the topic editor
+            if(editor == null)
+                try
+                {
+                    if(!reBinary.IsMatch(File.ReadAllText(fullName)))
+                        editor = new TopicEditorWindow(fullName);
+                }
+                catch(Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine(ex);
+                }
 
             return editor;
         }
@@ -624,6 +638,52 @@ namespace SandcastleBuilder.Gui.ContentEditors
                         "Unable to launch '{0}' for editing.  Reason: {1}", fullName,
                         ContentFileEditorCollection.GlobalEditors.LastError.Message),
                         Constants.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
+        /// <summary>
+        /// This is used to determine whether or not the Open with Text Editor context menu option is shown
+        /// </summary>
+        /// <param name="fullName">The full path to the file</param>
+        /// <returns>True if it should be shown, or false if not (not supported or it's the default editor</returns>
+        private static bool ShowOpenWithTextEditor(string fullName)
+        {
+            string ext = Path.GetExtension(fullName).ToLower(CultureInfo.InvariantCulture);
+
+            switch(SandcastleProject.DefaultBuildAction(fullName))
+            {
+                case BuildAction.None:
+                case BuildAction.Content:
+                    switch(ext)
+                    {
+                        case ".aml":
+                        case ".asp":
+                        case ".aspx":
+                        case ".ascx":
+                        case ".cmp":
+                        case ".config":
+                        case ".css":
+                        case ".htm":
+                        case ".html":
+                        case ".js":
+                        case ".log":
+                        case ".topic":
+                        case ".txt":
+                        case ".xml":
+                            return false;
+
+                        default:
+                            return true;
+                    }
+
+                case BuildAction.CodeSnippets:
+                case BuildAction.Image:
+                case BuildAction.TopicTransform:
+                case BuildAction.XamlConfiguration:
+                    return false;
+
+                default:
+                    return true;
+            }
         }
         #endregion
 
@@ -1193,25 +1253,79 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
             miOpen.Visible = miOpenSeparator.Visible = (nodeData != null &&
                 nodeData.BuildAction < BuildAction.Folder);
-            miDelete.Visible = (fileItem != null &&
-                !fileItem.ProjectElement.HasMetadata(ProjectElement.LinkPath));
-            miExcludeFromProject.Enabled = miCut.Enabled = miCopy.Enabled =
-                miRename.Enabled = (nodeData != null && nodeData.BuildAction <=
-                BuildAction.Folder);
-            miPaste.Enabled = (Clipboard.GetDataObject().GetDataPresent(
-                DataFormats.FileDrop) && Clipboard.GetDataObject().GetDataPresent(
-                "Preferred DropEffect") && nodeData != null &&
+            miOpenWithTextEditor.Visible = miOpenWithSeparator.Visible = (nodeData != null &&
+                nodeData.BuildAction < BuildAction.Folder && fileItem != null &&
+                ShowOpenWithTextEditor(fileItem.Include)); 
+            miDelete.Visible = (fileItem != null && !fileItem.ProjectElement.HasMetadata(ProjectElement.LinkPath));
+            miExcludeFromProject.Enabled = miCut.Enabled = miCopy.Enabled = miRename.Enabled =
+                (nodeData != null && nodeData.BuildAction <= BuildAction.Folder);
+            miPaste.Enabled = (Clipboard.GetDataObject().GetDataPresent(DataFormats.FileDrop) &&
+                Clipboard.GetDataObject().GetDataPresent("Preferred DropEffect") && nodeData != null &&
                 nodeData.BuildAction <= BuildAction.Project);
         }
 
         /// <summary>
-        /// Open the selected file for editing
+        /// Open the selected file for editing using the default editor
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
         private void miOpen_Click(object sender, EventArgs e)
         {
             this.EditNodeFile(tvProjectFiles.SelectedNode);
+        }
+
+        /// <summary>
+        /// Open the file for editing using the text editor if possible
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event arguments</param>
+        private void miOpenWithTextEditor_Click(object sender, EventArgs e)
+        {
+            NodeData nodeData = (NodeData)tvProjectFiles.SelectedNode.Tag;
+            DockContent editor;
+            FileItem fileItem;
+            string fullName, ext;
+
+            if(nodeData.BuildAction >= BuildAction.Folder)
+                return;
+
+            fileItem = (FileItem)nodeData.Item;
+            fullName = fileItem.Include;
+            ext = Path.GetExtension(fullName).ToLower(CultureInfo.InvariantCulture);
+
+            // If the document is already open, just activate it
+            foreach(IDockContent content in this.DockPanel.Contents)
+                if(String.Compare(content.DockHandler.ToolTipText, fullName, true, CultureInfo.CurrentCulture) == 0)
+                {
+                    content.DockHandler.Activate();
+                    return;
+                }
+
+            if(!File.Exists(fullName))
+            {
+                MessageBox.Show("File does not exist: " + fullName, Constants.AppName, MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+                return;
+            }
+
+            try
+            {
+                if(!reBinary.IsMatch(File.ReadAllText(fullName)))
+                {
+                    editor = new TopicEditorWindow(fullName);
+                    editor.Show(this.DockPanel);
+                }
+                else
+                    MessageBox.Show("The selected file does not appear to be a text file.  Use the Open " +
+                        "option instead to open the default editor", Constants.AppName, MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+            }
+            catch(Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex);
+                MessageBox.Show("Unable to create text editor: " + ex.Message, Constants.AppName,
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         /// <summary>
@@ -1246,8 +1360,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             }
             catch(Exception ex)
             {
-                MessageBox.Show("Error removing item: " + ex.Message,
-                    Constants.AppName, MessageBoxButtons.OK,
+                MessageBox.Show("Error removing item: " + ex.Message, Constants.AppName, MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
             }
             finally

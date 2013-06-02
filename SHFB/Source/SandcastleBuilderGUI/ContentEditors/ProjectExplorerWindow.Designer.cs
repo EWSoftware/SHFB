@@ -64,6 +64,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.miOpenSeparator = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.miOpenWithSeparator = new System.Windows.Forms.ToolStripSeparator();
+            this.miOpenWithTextEditor = new System.Windows.Forms.ToolStripMenuItem();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -88,17 +91,17 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.tvProjectFiles.Size = new System.Drawing.Size(371, 363);
             this.sbStatusBarText.SetStatusBarText(this.tvProjectFiles, "Project items");
             this.tvProjectFiles.TabIndex = 0;
-            this.tvProjectFiles.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvProjectFiles_NodeMouseDoubleClick);
+            this.tvProjectFiles.BeforeLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.tvProjectFiles_BeforeLabelEdit);
             this.tvProjectFiles.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.tvProjectFiles_AfterLabelEdit);
             this.tvProjectFiles.BeforeCollapse += new System.Windows.Forms.TreeViewCancelEventHandler(this.tvProjectFiles_BeforeCollapse);
-            this.tvProjectFiles.DragDrop += new System.Windows.Forms.DragEventHandler(this.tvProjectFiles_DragDrop);
-            this.tvProjectFiles.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvProjectFiles_AfterSelect);
-            this.tvProjectFiles.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tvProjectFiles_MouseDown);
-            this.tvProjectFiles.DragEnter += new System.Windows.Forms.DragEventHandler(this.tvProjectFiles_DragOver);
-            this.tvProjectFiles.BeforeLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.tvProjectFiles_BeforeLabelEdit);
-            this.tvProjectFiles.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tvProjectFiles_KeyDown);
             this.tvProjectFiles.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.tvProjectFiles_ItemDrag);
+            this.tvProjectFiles.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvProjectFiles_AfterSelect);
+            this.tvProjectFiles.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvProjectFiles_NodeMouseDoubleClick);
+            this.tvProjectFiles.DragDrop += new System.Windows.Forms.DragEventHandler(this.tvProjectFiles_DragDrop);
+            this.tvProjectFiles.DragEnter += new System.Windows.Forms.DragEventHandler(this.tvProjectFiles_DragOver);
             this.tvProjectFiles.DragOver += new System.Windows.Forms.DragEventHandler(this.tvProjectFiles_DragOver);
+            this.tvProjectFiles.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tvProjectFiles_KeyDown);
+            this.tvProjectFiles.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tvProjectFiles_MouseDown);
             // 
             // ilImages
             // 
@@ -133,7 +136,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // miAddDocSource
             // 
             this.miAddDocSource.Name = "miAddDocSource";
-            this.miAddDocSource.Size = new System.Drawing.Size(283, 22);
+            this.miAddDocSource.Size = new System.Drawing.Size(271, 24);
             this.sbStatusBarText.SetStatusBarText(this.miAddDocSource, "Add a new documentation source");
             this.miAddDocSource.Text = "&Add Documentation Source...";
             this.miAddDocSource.Click += new System.EventHandler(this.miAddDocSource_Click);
@@ -143,7 +146,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.miRemoveDocSource.Image = global::SandcastleBuilder.Gui.Properties.Resources.Delete;
             this.miRemoveDocSource.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.miRemoveDocSource.Name = "miRemoveDocSource";
-            this.miRemoveDocSource.Size = new System.Drawing.Size(283, 22);
+            this.miRemoveDocSource.Size = new System.Drawing.Size(271, 24);
             this.sbStatusBarText.SetStatusBarText(this.miRemoveDocSource, "Remove the selected documentation source");
             this.miRemoveDocSource.Text = "&Remove";
             this.miRemoveDocSource.Click += new System.EventHandler(this.miRemoveDocSource_Click);
@@ -151,7 +154,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // miAddReference
             // 
             this.miAddReference.Name = "miAddReference";
-            this.miAddReference.Size = new System.Drawing.Size(278, 22);
+            this.miAddReference.Size = new System.Drawing.Size(264, 24);
             this.sbStatusBarText.SetStatusBarText(this.miAddReference, "Add a new reference (dependency)");
             this.miAddReference.Text = "&Add File/Project Reference...";
             this.miAddReference.Click += new System.EventHandler(this.miAddReference_Click);
@@ -161,7 +164,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.miRemoveReference.Image = global::SandcastleBuilder.Gui.Properties.Resources.Delete;
             this.miRemoveReference.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.miRemoveReference.Name = "miRemoveReference";
-            this.miRemoveReference.Size = new System.Drawing.Size(278, 22);
+            this.miRemoveReference.Size = new System.Drawing.Size(264, 24);
             this.sbStatusBarText.SetStatusBarText(this.miRemoveReference, "Remove the selected reference");
             this.miRemoveReference.Text = "&Remove";
             this.miRemoveReference.Click += new System.EventHandler(this.miRemoveReference_Click);
@@ -169,8 +172,8 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // miOpen
             // 
             this.miOpen.Name = "miOpen";
-            this.miOpen.Size = new System.Drawing.Size(226, 22);
-            this.sbStatusBarText.SetStatusBarText(this.miOpen, "Open the file for editing");
+            this.miOpen.Size = new System.Drawing.Size(222, 24);
+            this.sbStatusBarText.SetStatusBarText(this.miOpen, "Open the file for editing using the default editor");
             this.miOpen.Text = "&Open";
             this.miOpen.Click += new System.EventHandler(this.miOpen_Click);
             // 
@@ -179,7 +182,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.miExcludeFromProject.Image = global::SandcastleBuilder.Gui.Properties.Resources.Delete;
             this.miExcludeFromProject.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.miExcludeFromProject.Name = "miExcludeFromProject";
-            this.miExcludeFromProject.Size = new System.Drawing.Size(226, 22);
+            this.miExcludeFromProject.Size = new System.Drawing.Size(222, 24);
             this.sbStatusBarText.SetStatusBarText(this.miExcludeFromProject, "Exclude the selected item from the project");
             this.miExcludeFromProject.Text = "&Exclude from Project";
             this.miExcludeFromProject.Click += new System.EventHandler(this.miExcludeFromProject_Click);
@@ -189,7 +192,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.miDelete.Image = global::SandcastleBuilder.Gui.Properties.Resources.Delete;
             this.miDelete.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.miDelete.Name = "miDelete";
-            this.miDelete.Size = new System.Drawing.Size(226, 22);
+            this.miDelete.Size = new System.Drawing.Size(222, 24);
             this.sbStatusBarText.SetStatusBarText(this.miDelete, "Delete the selected item");
             this.miDelete.Text = "&Delete";
             this.miDelete.Click += new System.EventHandler(this.miDelete_Click);
@@ -197,7 +200,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // miAddGacReference
             // 
             this.miAddGacReference.Name = "miAddGacReference";
-            this.miAddGacReference.Size = new System.Drawing.Size(278, 22);
+            this.miAddGacReference.Size = new System.Drawing.Size(264, 24);
             this.sbStatusBarText.SetStatusBarText(this.miAddGacReference, "Add a reference from the Global Assembly Cache");
             this.miAddGacReference.Text = "Add &GAC Reference...";
             this.miAddGacReference.Click += new System.EventHandler(this.miAddGacReference_Click);
@@ -207,7 +210,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.miPaste.Image = global::SandcastleBuilder.Gui.Properties.Resources.Paste;
             this.miPaste.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.miPaste.Name = "miPaste";
-            this.miPaste.Size = new System.Drawing.Size(226, 22);
+            this.miPaste.Size = new System.Drawing.Size(222, 24);
             this.sbStatusBarText.SetStatusBarText(this.miPaste, "Paste the item in the clipboard into the project");
             this.miPaste.Text = "P&aste";
             this.miPaste.Click += new System.EventHandler(this.miPaste_Click);
@@ -217,7 +220,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.miCopy.Image = global::SandcastleBuilder.Gui.Properties.Resources.Copy;
             this.miCopy.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.miCopy.Name = "miCopy";
-            this.miCopy.Size = new System.Drawing.Size(226, 22);
+            this.miCopy.Size = new System.Drawing.Size(222, 24);
             this.sbStatusBarText.SetStatusBarText(this.miCopy, "Copy the selected item to the clipboard");
             this.miCopy.Text = "Co&py";
             this.miCopy.Click += new System.EventHandler(this.miCutCopy_Click);
@@ -227,7 +230,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.miCut.Image = global::SandcastleBuilder.Gui.Properties.Resources.Cut;
             this.miCut.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.miCut.Name = "miCut";
-            this.miCut.Size = new System.Drawing.Size(226, 22);
+            this.miCut.Size = new System.Drawing.Size(222, 24);
             this.sbStatusBarText.SetStatusBarText(this.miCut, "Cut the selected item to the clipboard");
             this.miCut.Text = "&Cut";
             this.miCut.Click += new System.EventHandler(this.miCutCopy_Click);
@@ -235,7 +238,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // miRename
             // 
             this.miRename.Name = "miRename";
-            this.miRename.Size = new System.Drawing.Size(226, 22);
+            this.miRename.Size = new System.Drawing.Size(222, 24);
             this.sbStatusBarText.SetStatusBarText(this.miRename, "Rename the selected item");
             this.miRename.Text = "&Rename";
             this.miRename.Click += new System.EventHandler(this.miRename_Click);
@@ -250,7 +253,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.miAddExistingItem,
             this.miImportMediaFile});
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(226, 22);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(222, 24);
             this.sbStatusBarText.SetStatusBarText(this.toolStripMenuItem1, "Add new/existing item");
             this.toolStripMenuItem1.Text = "&Add";
             // 
@@ -261,33 +264,33 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.miConceptualTemplates,
             this.miCustomTemplates});
             this.miNewItem.Name = "miNewItem";
-            this.miNewItem.Size = new System.Drawing.Size(311, 22);
+            this.miNewItem.Size = new System.Drawing.Size(297, 24);
             this.sbStatusBarText.SetStatusBarText(this.miNewItem, "Add a new project item from a template");
             this.miNewItem.Text = "New Item";
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(215, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(206, 6);
             // 
             // miConceptualTemplates
             // 
             this.miConceptualTemplates.Name = "miConceptualTemplates";
-            this.miConceptualTemplates.Size = new System.Drawing.Size(218, 22);
+            this.miConceptualTemplates.Size = new System.Drawing.Size(209, 24);
             this.sbStatusBarText.SetStatusBarText(this.miConceptualTemplates, "Add a conceptual content topic");
             this.miConceptualTemplates.Text = "Conceptual Content";
             // 
             // miCustomTemplates
             // 
             this.miCustomTemplates.Name = "miCustomTemplates";
-            this.miCustomTemplates.Size = new System.Drawing.Size(218, 22);
+            this.miCustomTemplates.Size = new System.Drawing.Size(209, 24);
             this.sbStatusBarText.SetStatusBarText(this.miCustomTemplates, "Add a user-defined template item");
             this.miCustomTemplates.Text = "Custom Templates";
             // 
             // miNewFolder
             // 
             this.miNewFolder.Name = "miNewFolder";
-            this.miNewFolder.Size = new System.Drawing.Size(311, 22);
+            this.miNewFolder.Size = new System.Drawing.Size(297, 24);
             this.sbStatusBarText.SetStatusBarText(this.miNewFolder, "Add a new folder to the project");
             this.miNewFolder.Text = "New &Folder";
             this.miNewFolder.Click += new System.EventHandler(this.miNewFolder_Click);
@@ -295,7 +298,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // miAddExistingFolder
             // 
             this.miAddExistingFolder.Name = "miAddExistingFolder";
-            this.miAddExistingFolder.Size = new System.Drawing.Size(311, 22);
+            this.miAddExistingFolder.Size = new System.Drawing.Size(297, 24);
             this.sbStatusBarText.SetStatusBarText(this.miAddExistingFolder, "Add an existing folder to the project");
             this.miAddExistingFolder.Text = "&Existing Folder...";
             this.miAddExistingFolder.Click += new System.EventHandler(this.miAddExistingFolder_Click);
@@ -303,12 +306,12 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(308, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(294, 6);
             // 
             // miAddExistingItem
             // 
             this.miAddExistingItem.Name = "miAddExistingItem";
-            this.miAddExistingItem.Size = new System.Drawing.Size(311, 22);
+            this.miAddExistingItem.Size = new System.Drawing.Size(297, 24);
             this.sbStatusBarText.SetStatusBarText(this.miAddExistingItem, "Add an existing item");
             this.miAddExistingItem.Text = "Existing &Item...";
             this.miAddExistingItem.Click += new System.EventHandler(this.miAddExistingItem_Click);
@@ -316,7 +319,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // miImportMediaFile
             // 
             this.miImportMediaFile.Name = "miImportMediaFile";
-            this.miImportMediaFile.Size = new System.Drawing.Size(311, 22);
+            this.miImportMediaFile.Size = new System.Drawing.Size(297, 24);
             this.sbStatusBarText.SetStatusBarText(this.miImportMediaFile, "Import image file information from a media content file");
             this.miImportMediaFile.Text = "Import from Media Content File...";
             this.miImportMediaFile.Click += new System.EventHandler(this.miImportMediaFile_Click);
@@ -346,7 +349,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.miAddDocSource,
             this.miRemoveDocSource});
             this.cmsDocSource.Name = "cmsDocSource";
-            this.cmsDocSource.Size = new System.Drawing.Size(284, 48);
+            this.cmsDocSource.Size = new System.Drawing.Size(272, 52);
             this.cmsDocSource.Opening += new System.ComponentModel.CancelEventHandler(this.cmsDocSource_Opening);
             // 
             // cmsReference
@@ -356,7 +359,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.miAddGacReference,
             this.miRemoveReference});
             this.cmsReference.Name = "cmsReference";
-            this.cmsReference.Size = new System.Drawing.Size(279, 70);
+            this.cmsReference.Size = new System.Drawing.Size(265, 76);
             this.cmsReference.Opening += new System.ComponentModel.CancelEventHandler(this.cmsReference_Opening);
             // 
             // cmsFile
@@ -366,6 +369,8 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.toolStripSeparator4,
             this.miOpen,
             this.miOpenSeparator,
+            this.miOpenWithTextEditor,
+            this.miOpenWithSeparator,
             this.miCut,
             this.miCopy,
             this.miPaste,
@@ -375,38 +380,52 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.toolStripSeparator3,
             this.miRename});
             this.cmsFile.Name = "cmsFile";
-            this.cmsFile.Size = new System.Drawing.Size(227, 204);
+            this.cmsFile.Size = new System.Drawing.Size(223, 272);
             this.cmsFile.Opening += new System.ComponentModel.CancelEventHandler(this.cmsFile_Opening);
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(223, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(219, 6);
             // 
             // miOpenSeparator
             // 
             this.miOpenSeparator.Name = "miOpenSeparator";
-            this.miOpenSeparator.Size = new System.Drawing.Size(223, 6);
+            this.miOpenSeparator.Size = new System.Drawing.Size(219, 6);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(223, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(219, 6);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(223, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(219, 6);
+            // 
+            // miOpenWithSeparator
+            // 
+            this.miOpenWithSeparator.Name = "miOpenWithSeparator";
+            this.miOpenWithSeparator.Size = new System.Drawing.Size(219, 6);
+            // 
+            // miOpenWithTextEditor
+            // 
+            this.miOpenWithTextEditor.Name = "miOpenWithTextEditor";
+            this.miOpenWithTextEditor.Size = new System.Drawing.Size(222, 24);
+            this.sbStatusBarText.SetStatusBarText(this.miOpenWithTextEditor, "Open the file for editing with the text editor");
+            this.miOpenWithTextEditor.Text = "Open with Te&xt Editor";
+            this.miOpenWithTextEditor.Click += new System.EventHandler(this.miOpenWithTextEditor_Click);
             // 
             // ProjectExplorerWindow
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.ClientSize = new System.Drawing.Size(371, 565);
             this.Controls.Add(this.splitContainer1);
-            this.DockAreas = ((WeifenLuo.WinFormsUI.Docking.DockAreas)(((((WeifenLuo.WinFormsUI.Docking.DockAreas.Float | WeifenLuo.WinFormsUI.Docking.DockAreas.DockLeft)
-                        | WeifenLuo.WinFormsUI.Docking.DockAreas.DockRight)
-                        | WeifenLuo.WinFormsUI.Docking.DockAreas.DockTop)
-                        | WeifenLuo.WinFormsUI.Docking.DockAreas.DockBottom)));
+            this.DockAreas = ((WeifenLuo.WinFormsUI.Docking.DockAreas)(((((WeifenLuo.WinFormsUI.Docking.DockAreas.Float | WeifenLuo.WinFormsUI.Docking.DockAreas.DockLeft) 
+            | WeifenLuo.WinFormsUI.Docking.DockAreas.DockRight) 
+            | WeifenLuo.WinFormsUI.Docking.DockAreas.DockTop) 
+            | WeifenLuo.WinFormsUI.Docking.DockAreas.DockBottom)));
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.HideOnClose = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimizeBox = false;
@@ -417,6 +436,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.Text = "Project Explorer";
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.cmsDocSource.ResumeLayout(false);
             this.cmsReference.ResumeLayout(false);
@@ -461,5 +481,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
         private System.Windows.Forms.ToolStripMenuItem miConceptualTemplates;
         private System.Windows.Forms.ToolStripMenuItem miCustomTemplates;
+        private System.Windows.Forms.ToolStripMenuItem miOpenWithTextEditor;
+        private System.Windows.Forms.ToolStripSeparator miOpenWithSeparator;
     }
 }

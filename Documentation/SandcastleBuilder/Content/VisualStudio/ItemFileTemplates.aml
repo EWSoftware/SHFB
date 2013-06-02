@@ -80,7 +80,7 @@ This will cause Visual Studio to automatically insert a new GUID value in the to
 				<para>In order for Visual Studio to know how to display and use your template file, you must create a
 VSTemplate file to accompany it.  This is an XML file with a <localUri>.vstemplate</localUri> extension.  The base
 filename should match the base filename of your template file (i.e. <localUri>BlankTopic.vstemplate</localUri> for the
-<localUri>BlankTopic.aml</localUri> template file).  An exampe is shown below:</para>
+<localUri>BlankTopic.aml</localUri> template file).  An example is shown below:</para>
 
 <code language="xml" title="Example VSTemplate File: BlankTopic.vstemplate">
 &lt;VSTemplate Version="3.0.0" Type="Item"

@@ -215,7 +215,7 @@ comments (i.e. <codeInline>select="/summary/node()"</codeInline>).</para>
 			<content>
 				<para>In the Sandcastle Help File Builder, additional sources of inherited documentation (i.e. comments
 from third party class libraries) can be added to the <ui>Documentation Sources</ui> project node.  This allows
-you to inherit documentation from base class libraries without having to add them as documentated assemblies in
+you to inherit documentation from base class libraries without having to add them as documented assemblies in
 your project.</para>
 
 				<para>Since the XML comments produced by the compiler are incomplete when using <codeInline>inheritdoc</codeInline>,

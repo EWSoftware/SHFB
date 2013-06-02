@@ -43,7 +43,7 @@ preserve the character encodings within the files.</listItem>
     <listItem>The table of contents file for HTML Help 1 files is now saved
 using the default encoding based on the system's code page rather than
 UTF-8 encoding to ensure that the character encodings are correctly
-interpretted by the help compiler and viewer.</listItem>
+interpreted by the help compiler and viewer.</listItem>
 
     <listItem>Some additional notes regarding encoding have been added to the
 information on how to create language resource files for other languages.</listItem>

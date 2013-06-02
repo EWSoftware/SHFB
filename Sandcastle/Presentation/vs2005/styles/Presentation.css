@@ -757,7 +757,7 @@ pre.viewCode
 	padding-bottom: 4px;
 	padding-left: 4px;
 	padding-right:8px;
-	font-size: 70%;
+	font-size: 100%;
 }
 
 div.OH_outerContent #devlangsMenu {
@@ -775,7 +775,7 @@ div.OH_outerContent #devlangsMenu {
 	padding-bottom: 4px;
 	padding-left: 4px;
 	padding-right:8px;
-	font-size: 70%;
+	font-size: 100%;
 }
 
 div.OH_outerContent #memberOptionsMenu {
@@ -793,7 +793,7 @@ div.OH_outerContent #memberOptionsMenu {
 	padding-bottom: 4px;
 	padding-left: 4px;
 	padding-right:8px;
-	font-size: 70%;
+	font-size: 100%;
 }
 
 div.OH_outerContent #memberFrameworksMenu {

@@ -51,7 +51,7 @@ following configuration options:</para>
 							<para>This option allows you to specify a configuration file from which the binding redirection
 settings are imported.  This should be an application or web configuration file (i.e. <localUri>App.exe.config</localUri>
 or <localUri>Web.config</localUri>) that contains an <codeInline>assemblyBinding</codeInline> section that
-defines the dependent assemblies and how they should be redirected.  If specifed, all other configuration options
+defines the dependent assemblies and how they should be redirected.  If specified, all other configuration options
 are ignored.  The value can contain replacement tags to specify the path to the file (i.e.
 <localUri>{@ProjectFolder}..\bin\MyApp.exe.config</localUri>).</para>
 						</entry>
@@ -130,7 +130,7 @@ button to add it to the list.  Select an entry and click the <ui>Delete</ui> but
 				<alert class="caution">
 					<para>This option is only to be used in the event that you do no have the named assembly and do not
 care about missing information for it in your help file.  It is always better to find the reference assembly and
-add it as a reference in the documentation project rather than to ignore it althogether.  Doing so may result in
+add it as a reference in the documentation project rather than to ignore it altogether.  Doing so may result in
 missing information in the help file.  This option is truly a last resort if there is no possible way to obtain
 a copy of the missing reference assembly.</para>
 				</alert>

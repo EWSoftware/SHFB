@@ -40,6 +40,8 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -70,11 +72,14 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ICSharpCode.TextEditor, Version=3.0.0.2970, Culture=neutral, PublicKeyToken=4d61825e8dd49f1a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\ReferenceAssemblies\ICSharpCode.TextEditor.dll</HintPath>
+    <Reference Include="ICSharpCode.TextEditor, Version=3.2.1.6466, Culture=neutral, PublicKeyToken=4d61825e8dd49f1a, processorArchitecture=MSIL">
+      <HintPath>..\packages\ICSharpCode.TextEditor.3.2.1.6466\lib\Net20\ICSharpCode.TextEditor.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Build" />
+    <Reference Include="NHunspell, Version=1.1.1.0, Culture=neutral, PublicKeyToken=1ac793ea843b4366, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\NHunspell.1.1.1\lib\net\NHunspell.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -294,6 +299,12 @@
     <Compile Include="ContentEditors\SiteMapEditorWindow.Designer.cs">
       <DependentUpon>SiteMapEditorWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="ContentEditors\SpellCheckWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ContentEditors\SpellCheckWindow.Designer.cs">
+      <DependentUpon>SpellCheckWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="ContentEditors\TokenEditorWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -330,6 +341,11 @@
     <Compile Include="PropertyPages\BasePropertyPage.designer.cs">
       <DependentUpon>BasePropertyPage.cs</DependentUpon>
     </Compile>
+    <Compile Include="Spelling\FileSpellChecker.cs" />
+    <Compile Include="Spelling\GlobalDictionary.cs" />
+    <Compile Include="Spelling\SpellCheckerConfiguration.cs" />
+    <Compile Include="Spelling\SpellingEventArgs.cs" />
+    <Compile Include="Spelling\TextLocation.cs" />
     <Compile Include="StartUp.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="..\SandcastleBuilderPackage\PropertyPages\BuildPropertiesPageControl.resx">
@@ -433,6 +449,9 @@
       <DependentUpon>SiteMapEditorWindow.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="ContentEditors\SpellCheckWindow.resx">
+      <DependentUpon>SpellCheckWindow.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ContentEditors\TokenEditorWindow.resx">
       <DependentUpon>TokenEditorWindow.cs</DependentUpon>
     </EmbeddedResource>
@@ -479,15 +498,32 @@
       <Link>Colorizer\highlight_flowDoc.xsl</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="..\packages\NHunspell.1.1.1\native\Hunspellx64.dll">
+      <Link>Spelling\Hunspellx64.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\packages\NHunspell.1.1.1\native\Hunspellx86.dll">
+      <Link>Spelling\Hunspellx86.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Colorizer\highlight.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Colorizer\highlight_ac.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\SpellCheck.ico" />
     <Content Include="ItemTemplates\XAML Syntax.xamlcfg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\SpellCheck.png" />
+    <Content Include="Spelling\en_US.aff">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Spelling\en_US.dic">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -1055,7 +1091,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>ASPXCodeBehind</SubType>
     </Content>
-    <Content Include="Web\Index.html">
+    <Content Include="Web\index.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Web\Item.gif">
@@ -1124,4 +1160,5 @@
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
 </Project>

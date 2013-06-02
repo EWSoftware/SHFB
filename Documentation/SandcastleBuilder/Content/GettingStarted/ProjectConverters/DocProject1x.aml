@@ -10,7 +10,7 @@ Visual Studio add-in to the help file builder project file format.</para>
 			<title>Post-Conversion Review</title>
 			<content>
 				<para>There are several significant differences between DocProject and help file builder project files.
-However, the conversion process should give you a jumpstart and get you on your way to producing a help file with
+However, the conversion process should give you a jump start and get you on your way to producing a help file with
 the new project.  The following are some issues that you may encounter:</para>
 
 				<list class="bullet">

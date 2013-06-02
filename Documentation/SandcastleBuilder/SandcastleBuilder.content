@@ -463,7 +463,7 @@
       <Topic id="77d2d693-db84-4ae3-a84c-e33c71f92e9a" visible="True" title="Replacing Stock Content">
         <HelpKeywords>
           <HelpKeyword index="K" term="additional content, replace stock content" />
-          <HelpKeyword index="K" term="additional content, stylesheet" />
+          <HelpKeyword index="K" term="additional content, style sheet" />
           <HelpKeyword index="K" term="change style" />
         </HelpKeywords>
       </Topic>

@@ -16,7 +16,7 @@ file builder project properties.
 
 				<list class="bullet">
 					<listItem>
-						<para><codeInline>Name</codeInline> - The name of the project propety.  This cannot match the name of
+						<para><codeInline>Name</codeInline> - The name of the project property.  This cannot match the name of
 an existing help file builder project property, certain reserved MSBuild property names, or the name of an existing
 user-defined property.</para>
 					</listItem>

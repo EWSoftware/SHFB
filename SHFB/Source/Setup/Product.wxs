@@ -65,6 +65,7 @@
 			<ComponentGroupRef Id="Binaries" />
 			<ComponentGroupRef Id="Colorizer" />
 			<ComponentGroupRef Id="SharedContent"/>
+			<ComponentGroupRef Id="Spelling" />
 			<ComponentGroupRef Id="Templates" />
 			<ComponentGroupRef Id="Web" />
 		</Feature>

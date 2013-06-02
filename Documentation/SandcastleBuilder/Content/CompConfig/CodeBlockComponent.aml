@@ -54,7 +54,7 @@ snippets into a single code example.</para>
 				<para>Syntax highlighting of code blocks in <codeInline>&lt;code&gt;</codeInline> tags.  Languages
 supported include C#, VB.NET, JScript.NET, C++, J#, C, JavaScript, VBScript, XAML, XML, HTML, SQL script,
 PowerShell script, and Python.  An external configuration file is used so that it is possible to extend the
-colorizer to support other languages. The stylesheet is also replaceable. All of the features noted above are
+colorizer to support other languages. The style sheet is also replaceable. All of the features noted above are
 available whether or not you enable the colorizing feature.  The code colorizer is a modified and extended
 version of the one written by Jonathan de Halleux in the Code Project article <externalLink><linkText>Multiple
 Language Syntax Highlighting, Part 2: C# Control</linkText>
@@ -406,7 +406,7 @@ tag as shown so that the leading whitespace can be normalized correctly.</para>
 				<alert class="note">
 					<para>The inclusion of a <codeInline>CDATA</codeInline> tag anywhere in the code comments can cause
 Visual Studio 2005 to lock up when you type an angle bracket within a comment block.  If you are affected by this
-issue, there is a hotfix available at: <externalLink>
+issue, there is a hot fix available at: <externalLink>
 <linkText>https://connect.microsoft.com/VisualStudio/Downloads/DownloadDetails.aspx?DownloadID=9646</linkText>
 <linkUri>https://connect.microsoft.com/VisualStudio/Downloads/DownloadDetails.aspx?DownloadID=9646</linkUri>
 <linkTarget>_blank</linkTarget>
@@ -495,8 +495,8 @@ are case-sensitive.</para>
     &lt;!-- Code colorizer options (required).
          Attributes:
            Language syntax configuration file (required)
-           XSLT stylesheet file (required)
-           CSS stylesheet file (required)
+           XSLT style sheet file (required)
+           CSS style sheet file (required)
            Script file (required)
            Disabled (optional, leading whitespace normalization only)
            Default language (optional)
@@ -507,7 +507,7 @@ are case-sensitive.</para>
            Use language name as default title (optional) --&gt;
     &lt;colorizer syntaxFile="{@SHFBFolder}Colorizer\highlight.xml"
       styleFile="{@SHFBFolder}Colorizer\highlight.xsl"
-      stylesheet="{@SHFBFolder}Colorizer\highlight.css"
+      style sheet="{@SHFBFolder}Colorizer\highlight.css"
       scriptFile="{@SHFBFolder}Colorizer\highlight.js"
       disabled="{@DisableCodeBlockComponent}" language="cs" numberLines="false"
       outlining="false" keepSeeTags="false" tabSize="0" defaultTitle="true" /&gt;
@@ -527,7 +527,7 @@ use for relative paths in the <codeInline>source</codeInline> attributes of code
 blank, the current folder at build time is assumed to be the base path.</para>
 
 		<para>The <codeInline>outputPaths</codeInline> element is required.  It defines the output paths to use for
-each help file format in the build.  These will be used when copying the colorizer script and stylesheet files.
+each help file format in the build.  These will be used when copying the colorizer script and style sheet files.
 The help file builder will fill these in automatically.  If using this with your own build scripts, specify
 one <codeInline>path</codeInline> element for each help file output format being generated with a
 <codeInline>value</codeInline> attribute set to the relative path of the format's output folder (i.e.
@@ -552,7 +552,7 @@ snippet examples.  This setting can be overridden by specifying the attribute on
 		<para>The <codeInline>colorizer</codeInline> element is required along with the <codeInline>syntaxFile</codeInline>,
 <codeInline>styleFile</codeInline>, <codeInline>stylesheet</codeInline>, and <codeInline>scriptFile</codeInline>
 attributes which define the default syntax definition file, the transformation file used by the colorizer,
-the stylesheet to use for the colorized code, and the colorized code script file.  The supplied
+the style sheet to use for the colorized code, and the colorized code script file.  The supplied
 <localUri>highlight.xml</localUri> file contains the syntax definitions for the languages supported by the
 colorizer.  The supplied <localUri>highlight.xsl</localUri> file defines the XSLT transformation used to convert
 the parsed code block into the colorized HTML.  The supplied <localUri>highlight.css</localUri> and

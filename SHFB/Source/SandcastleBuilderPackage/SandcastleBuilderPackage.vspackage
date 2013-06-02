@@ -185,7 +185,7 @@
             <button Id="98ef1de5-0d65-4901-a7d5-b2f4daa6563e" name="LaunchContentMgr" idNumeric="49" buttonText="Lau&amp;nch Help Viewer 2.0 Content Manager" menuText="Lau&amp;nch Help Viewer 2.0 Content Manager" commandName="cmdidLaunchContentMgr" toolTipText="Lau&amp;nch Help Viewer 2.0 Content Manager" mod1="0" mod2="0" visibilityConstraints="0" priority="258" icon="HelpContentManager.bmp" commandFlags="DefaultInvisible, DynamicVisibility" sampleData="false" />
           </commandTableHasButtons>
           <commandTableHasButtons Id="165c2b93-c4b7-4ca5-89f1-a62ab5a2de23">
-            <button Id="9bf37359-0e7b-4b4a-a241-046935d2c5f7" name="HtmlEncode" idNumeric="50" buttonText="HTML Encode Selected Text" menuText="HTML Encode Selected Text" commandName="cmdidHtmlEncode" toolTipText="HTML encode the selected text" mod1="0" mod2="0" visibilityConstraints="0" icon="HtmlEncode.bmp" commandFlags="0" sampleData="false" />
+            <button Id="9bf37359-0e7b-4b4a-a241-046935d2c5f7" name="HtmlEncode" idNumeric="50" buttonText="HTML Encode Selected Text" menuText="HTML Encode Selected Text" commandName="cmdidHtmlEncode" toolTipText="HTML encode the selected text" mod1="0" mod2="0" visibilityConstraints="0" icon="HtmlEncode.bmp" commandFlags="DefaultDisabled, DefaultInvisible, DynamicVisibility" sampleData="false" />
           </commandTableHasButtons>
         </buttons>
         <menuBases>

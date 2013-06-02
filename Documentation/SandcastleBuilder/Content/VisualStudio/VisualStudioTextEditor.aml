@@ -82,7 +82,7 @@ it with the mouse.</para>
 
 				<para>Certain snippets such as <codeInline>externalLink</codeInline> have replacement parameters.  In
 such cases, you will be placed on the first parameter and can type over its default value.  Press the Tab key to
-move between any subsequent parameters.  Hovering the mouse over a parameter location will give you a tooltip
+move between any subsequent parameters.  Hovering the mouse over a parameter location will give you a tool tip
 describing the parameter.  Press Enter when done to complete the process.</para>
 
 				<para>Refer to the Visual Studio documentation for information on adding your own custom snippets.</para>

@@ -39,7 +39,7 @@ IDs to be generated incorrectly which caused missing documentation issues.</para
         <listItem><para>Fixed a bug in <codeInline>PostTranformComponent</codeInline> that caused an exception when
 trying to place the logo if no syntax filters where defined.  However, be aware that turning off all syntax filters
 will cause several API member elements to be omitted as they are rendered as part of the syntax section by the
-Sandcastle XSL transformation (parameters, type paramters, returns, etc.).</para></listItem>
+Sandcastle XSL transformation (parameters, type parameters, returns, etc.).</para></listItem>
 
 		<listItem><para>Fixed a bug in <codeInline>ShowMissingComponent</codeInline> that caused it to miss
 the auto-documented comments on the Member List page when the constructor was overloaded.</para></listItem>
@@ -59,7 +59,7 @@ the information from both projects into one help file if necessary.</para>
 </alert></listItem>
 
         <listItem><para>For Silverlight projects where the assemblies are added directly as documentation sources
-rather than their Visual Studio project, the build engine will now automatically include all known Silverlight Framwork
+rather than their Visual Studio project, the build engine will now automatically include all known Silverlight Framework
 assemblies as references.  This frees you from having to manually add the Silverlight Framework assemblies as
 references.  However, a large number of references will be added, many of which are not needed.  If you have a choice,
 using the Visual Studio solution or project file as the documentation source is preferred as it will only include the

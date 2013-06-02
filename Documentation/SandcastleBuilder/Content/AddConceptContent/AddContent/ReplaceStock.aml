@@ -30,14 +30,14 @@ method icons, etc).</para>
 
 				<alert class="note">
 					<para>The VS2005 style folder contains an additional <localUri>.\Whidbey</localUri> sub-folder that
-contains an alternate stylesheet for the VS2005 presentation style.  It can be ignored unless you want to make
+contains an alternate style sheet for the VS2005 presentation style.  It can be ignored unless you want to make
 use of it.</para>
 				</alert>
 			</listItem>
 		</list>
 
 		<para>Modifying the Sandcastle copy of the presentation files directly will affect all help files that you
-build with the help file builder.  For example, if you want to modify the stylesheet for all projects you create
+build with the help file builder.  For example, if you want to modify the style sheet for all projects you create
 with the help file builder, edit the <localUri>Presentation.css</localUri> files in the <localUri>.\styles</localUri>
 folders.  The files do not need to be added to your project in that case.</para>
 

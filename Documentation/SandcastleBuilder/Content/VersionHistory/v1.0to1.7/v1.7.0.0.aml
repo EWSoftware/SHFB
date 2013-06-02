@@ -164,7 +164,7 @@ use of them.</para>
 
 					<listItem>
 						<para>The <codeInline>AdditonalContent</codeInline> and <codeInline>ContentSiteMap</codeInline>
-properites now share a common property editor to make it easier to edit their settings together and to make their
+properties now share a common property editor to make it easier to edit their settings together and to make their
 association more apparent.</para>
 					</listItem>
 
@@ -203,7 +203,7 @@ the English message text.</para>
 
 					<listItem>
 						<para>Due to a significant change in the way the language filters work in the Hana and Prototype
-presentation styles, the <codeInline>PostTransformComponent</codeInline> no longer connects examlpe code blocks
+presentation styles, the <codeInline>PostTransformComponent</codeInline> no longer connects example code blocks
 to the language filter in those presentation styles.  Given the way they are implemented, this feature would be
 better handled in the transformations and script files themselves.</para>
 					</listItem>
@@ -278,7 +278,7 @@ added with the following features and fixes:</para>
 						<list class="bullet">
 							<listItem>
 								<para>Broken links use the <legacyBold>None</legacyBold> style rather than the <legacyBold>Index</legacyBold>
-style so that it is apparant that they do not work.</para>
+style so that it is apparent that they do not work.</para>
 							</listItem>
 
 							<listItem>
@@ -560,13 +560,13 @@ topic.</para>
 
 					<listItem>
 						<para>Fixed a bug in the <codeInline>PostTransformComponent</codeInline> that caused the VS2005
-member list pages to be layed out incorrectly when using a logo and the version builder's framework menu was
+member list pages to be laid out incorrectly when using a logo and the version builder's framework menu was
 present.</para>
 					</listItem>
 
 					<listItem>
 						<para>Fixed a bug in the code colorizer rules for "//" style line comments that contained a "/*"
-which was incorrectly interpretted as the start of a block comment.</para>
+which was incorrectly interpreted as the start of a block comment.</para>
 					</listItem>
 
 					<listItem>

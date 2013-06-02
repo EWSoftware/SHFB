@@ -1,0 +1,109 @@
+<content xml:space="preserve">
+	<!-- Translations provided by Michael Buchner -->
+
+  <!-- Language independent -->
+  <item id="UnsupportedVarargs">unterstützt keine Methoden mit variabler Argumentanzahl (varargs).
+Der Compiler löst automatisch alle Aufrufe dieser Methode zur selben Methode mit Parameter-Array auf.</item>
+
+  <!-- C# messages -->
+  <item id="UnsupportedOperator_CSharp">C# unterstützt diesen Operator nicht.</item>
+  <item id="UnsupportedVarargs_CSharp">C# <include item="UnsupportedVarargs" /></item>
+
+  <!-- C++ messages -->
+  <item id="UnsupportedOperator_ManagedCPlusPlus">Visual C++ unterstützt diesen Operator nicht.</item>
+
+  <!-- F# messages -->
+  <item id="UnsupportedUnsafe_FSharp">F# unterstützt keine APIs, die unsichere Typen akzeptieren oder zurückgeben.</item>
+  <item id="UnsupportedOperator_FSharp">F# unterstützt diesen Operator nicht.</item>
+  <item id="UnsupportedCast_FSharp">F# unterstützt keine Deklaration von neuen Cast-Operatoren.</item>
+  <item id="UnsupportedVarargs_FSharp">F# <include item="UnsupportedVarargs" /></item>
+
+  <!-- VB messages -->
+	<item id="UnsupportedUnsafe_VisualBasic">Visual Basic unterstützt keine APIs, die unsichere Typen akzeptieren oder zurückgeben.</item>
+  <item id="UnsupportedOperator_VisualBasic">Visual Basic unterstützt diesen Operator nicht.</item>
+  <item id="UnsupportedStaticClass_VisualBasic">Visual Basic unterstützt keine Deklaration von statischen Klassen.</item>
+  <item id="UnsupportedVarargs_VisualBasic">Visual Basic <include item="UnsupportedVarargs" /></item>
+  <item id="UnsupportedVarargs_VisualBasicUsage">Visual Basic <include item="UnsupportedVarargs" /></item>
+  
+  <!-- J# messages -->
+	<item id="UnsupportedUnsafe_JSharp">J# unterstützt keine APIs, die unsichere Typen akzeptieren oder zurückgeben.</item>
+	<item id="UnsupportedGeneric_JSharp">J# unterstützt den Gebrauch von generischen APIs aber nicht die Deklaration von neuen APIs.</item>
+	<item id="UnsupportedOperator_JSharp">J# unterstützt keine überladenen Operatoren.</item>
+	<item id="UnsupportedStaticConstructor_JSharp">J# unterstützt keine statischen Konstruktoren.</item>
+	<item id="UnsupportedExplicit_JSharp">J# unterstützt den Gebrauch von expliziten Schnittstellenimplementierungen aber nicht die Deklaration von neuen Schnittstellenimplementierungen.</item>
+  
+  <!-- JScript messages -->
+  <item id="UnsupportedUnsafe_JScript">JScript unterstützt keine APIs, die unsichere Typen akzeptieren oder zurückgeben.</item>
+  <item id="UnsupportedGeneric_JScript">JScript unterstützt keine generischen Typen oder Methoden.</item>
+  <item id="UnsupportedExplicit_Jscript">JScript unterstützt keine expliziten Schnittstellenimplementierungen.</item>
+  <item id="UnsupportedOperator_JScript">JScript unterstützt keine überladenen Operatoren.</item>
+  <item id="UnsupportedEvent_JScript">JScript unterstützt keine Ereignisse.</item>
+  <item id="UnsupportedDelegate_JScript">JScript unterstützt keine Delegaten.</item>
+  <item id="UnsupportedStructure_JScript">JScript unterstützt den Gebrauch von Strukturen aber nicht die Definition von neuen Strukturen.</item>
+  <item id="UnsupportedIndex_JScript">JScript unterstützt keine indizierten Eigenschaften.</item>
+  <item id="UnsupportedCast_JScript">JScript unterstützt keine Deklaration von neuen Cast-Operatoren.</item>
+  <item id="UnsupportedStaticConstructor_JScript">JScript unterstützt keine statischen Konstruktoren.</item>
+  <item id="UnsupportedVarargs_JScript">JScript <include item="UnsupportedVarargs" /></item>
+  
+  <!-- JavaScript(Script#) messages-->
+  <item id="UnsupportedType_ScriptSharp">Dieser Typ unterstützt die Script# Infrastruktur und kann von JavaScript nicht direkt verwendet werden.</item>
+  <item id="UnsupportedUnsafe_JavaScript">JavaScript unterstützt keine APIs, die unsichere Typen akzeptieren oder zurückgeben.</item>
+  <item id="UnsupportedGeneric_JavaScript">JavaScript unterstützt keine generischen Typen oder Methoden.</item>
+  <item id="UnsupportedExplicit_JavaScript">JavaScript unterstützt keine expliziten Schnittstellenimplementierungen.</item>
+  <item id="UnsupportedOperator_JavaScript">JavaScript unterstützt keine überladenen Operatoren.</item>
+  <item id="UnsupportedStructure_JavaScript">JavaScript unterstützt den Gebrauch von Strukturen aber nicht die Definition von neuen Strukturen.</item>
+  <item id="UnsupportedIndex_JavaScript">JavaScript unterstützt keine indizierten Eigenschaften.</item>
+  <item id="UnsupportedCast_JavaScript">JavaScript unterstützt keine Deklaration von neuen Cast-Operatoren.</item>
+  <!-- VB usages message -->
+  <item id="UnsupportedUnsafe_VisualBasicUsage">Visual Basic unterstützt keine APIs, die unsichere Typen akzeptieren oder zurückgeben.</item>
+  <item id="UnsupportedOperator_VisualBasicUsage">Visual Basic unterstützt diesen Operator nicht.</item>
+  <item id="UnsupportedStaticClass_VisualBasicUsage">Sie müssen keine Instanz einer statischen Klasse deklarieren, um auf seine Member zugreifen zu können.</item>
+ 
+    	<!-- XAML Syntax Boilerplate -->
+	<item id="classXamlSyntax_abstract">Diese Klasse ist abstrakt; siehe <a href="#familyToggle" onclick="OpenSection(familyToggle)"><include item="familyTitle"/></a> für abgeleitete, nicht abstrakte Klassen, verwendbar in XAML.</item>
+	<item id="classXamlSyntax_excludedSubClass">Diese verwaltete Klasse wird typischerweise nicht in XAML verwendet.</item>
+	<item id="classXamlSyntax_noDefaultCtor">Sie können im XAML nicht direkt eine Instanz dieser Klasse erzeugen.</item>
+	<item id="classXamlSyntax_noDefaultCtorWithTypeConverter"></item>  <!-- this item intentionally empty, per spec -->
+
+	<item id="structXamlSyntax_nonXaml">Sie können diese verwaltete Struktur in XAML nicht verwenden.</item>
+	<item id="structXamlSyntax_attributeUsage"></item>  <!-- this item intentionally empty, per spec -->
+
+	<item id="eventXamlSyntax_parentIsExcludedSubClass">Member dieser Klasse werden typischerweise in XAML nicht verwendet oder können nicht verwendet werden.</item>
+	<item id="eventXamlSyntax_noXamlSyntaxForInterfaceMembers">Sie können dieses Ereignis in XAML nicht verwenden.</item>
+	<item id="eventXamlSyntax_nonXamlParent">Sie können dieses Ereignis in XAML nicht verwenden.</item>
+	<item id="eventXamlSyntax_notPublic">Sie können dieses Ereignis in XAML nicht verwenden.</item>
+	<item id="eventXamlSyntax_abstract">Sie können dieses Ereignis in XAML nicht verwenden.</item>
+	<item id="eventXamlSyntax_nonXaml">Sie können dieses Ereignis in XAML nicht verwenden.</item>  <!-- this id is not currently output by SyntaxBuilder -->
+
+	<item id="propertyXamlSyntax_parentIsExcludedSubClass">Member dieser Klasse werden typischerweise in XAML nicht verwendet oder können nicht verwendet werden.</item>
+	<item id="propertyXamlSyntax_noXamlSyntaxForInterfaceMembers">Sie können diese Eigenschaft in XAML nicht setzen.</item>
+	<item id="propertyXamlSyntax_nonXamlParent">Sie können diese Eigenschaft in XAML nicht setzen.</item>
+	<item id="propertyXamlSyntax_notPublic">Sie können diese Eigenschaft in XAML nicht setzen.</item>
+	<item id="propertyXamlSyntax_abstract">Sie können diese Eigenschaft in XAML nicht setzen.</item>
+	<item id="propertyXamlSyntax_readOnly">Sie können diese Eigenschaft in XAML nicht setzen.</item>
+	<item id="propertyXamlSyntax_abstractType">Für Informationen über XAML siehe Typ {0}.</item>
+	<item id="propertyXamlSyntax_nonXaml">Sie können diese Eigenschaft in XAML nicht setzen.</item>
+
+	<!-- syntax used with all enums in xaml assemblies -->
+	<item id="enumerationOverviewXamlSyntax"><span>&lt;<i>object property</i>="<i>enumerationMemberName</i>" .../&gt;</span></item>
+
+	<!-- boilerplate used with all method, field, etc. in xaml assemblies -->
+	<item id="constructorOverviewXamlSyntax">Sie können in XAML keine Konstruktoren verwenden.</item>
+	<item id="methodOverviewXamlSyntax">Sie können in XAML keine Methoden verwenden.</item>
+	<item id="fieldOverviewXamlSyntax">Sie können in XAML keine Felder verwenden</item>
+	<item id="delegateOverviewXamlSyntax">In XAML können Sie Delegaten verwenden aber keine neuen definieren.</item>
+	<item id="interfaceOverviewXamlSyntax">Schnittstellen können in XAML nicht direkt verwendet werden; siehe Typen, die diese Schnittstelle implementieren.</item>
+
+	<!-- boilerplate used with all types and members in all non-xaml assemblies -->
+	<item id="nonXamlAssemblyBoilerplate">Nicht anwendbar.</item>
+
+	<!-- XAML Section Headings -->
+	<item id="xamlAttributeUsageHeading">XAML Attribut Gebrauch</item>
+	<item id="xamlObjectElementUsageHeading">XAML Object Element Gebrauch</item>
+	<item id="xamlImplicitCollectionUsageHeading">XAML Implicit Collection Gebrauch</item>
+	<item id="xamlPropertyElementUsageHeading">XAML Property Element Gebrauch</item>
+	<item id="xamlContentElementUsageHeading">XAML Content Element Gebrauch</item>
+	<item id="xamlValuesSectionHeading">XAML Values</item>
+	<item id="xamlSyntaxBoilerplateHeading">XAML</item>
+  
+</content>

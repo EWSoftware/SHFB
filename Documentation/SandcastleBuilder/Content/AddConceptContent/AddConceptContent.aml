@@ -8,7 +8,7 @@
       <para>In versions of the help file builder prior to version 1.7.0.0,
 the additional content properties were used to add files to the project to
 define additional help content that would appear in the table of contents and
-to add other items such as image files and additional stylesheets.  As an
+to add other items such as image files and additional style sheets.  As an
 alternative to basic HTML files, you could also create XML files with a
 <localUri>.topic</localUri> extension that would be ran through an XSL
 transformation to give them the basic look and feel of the presentation style

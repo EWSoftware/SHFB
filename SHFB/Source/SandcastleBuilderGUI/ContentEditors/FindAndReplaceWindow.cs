@@ -1,36 +1,26 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder
 // File    : FindAndReplaceWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/10/2008
-// Note    : Copyright 2008, Eric Woodruff, All rights reserved
+// Updated : 05/11/2013
+// Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains the form used to handle search and replace in the text
-// editor windows.
+// This file contains the form used to handle search and replace in the text editor windows
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.8.0.0  10/09/2008  EFW  Created the code
-//=============================================================================
+//===============================================================================================================
 
 using System;
-using System.Globalization;
-using System.IO;
-using System.Reflection;
-using System.Text;
 using System.Windows.Forms;
-using System.Web;
-using System.Xml;
-using System.Xml.Xsl;
 
-using SandcastleBuilder.Gui.Properties;
 using SandcastleBuilder.Utils;
 
 using WeifenLuo.WinFormsUI.Docking;
@@ -38,12 +28,10 @@ using WeifenLuo.WinFormsUI.Docking;
 namespace SandcastleBuilder.Gui.ContentEditors
 {
     /// <summary>
-    /// This form is used to handle search and replace in the text editor
-    /// windows.
+    /// This form is used to handle search and replace in the text editor windows
     /// </summary>
-    /// <remarks>This is rather crude but it works.  It's the best I could
-    /// do after poking around in the editor code.  It will do for the time
-    /// being even if it isn't the most efficient way of doing it.</remarks>
+    /// <remarks>This is rather crude but it works.  It's the best I could do after poking around in the editor
+    /// code.  It will do for the time being even if it isn't the most efficient way of doing it.</remarks>
     public partial class FindAndReplaceWindow : BaseContentEditor
     {
         #region Constructor
@@ -98,8 +86,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// <returns>The active topic editor window or null if not found</returns>
         private TopicEditorWindow FindActiveDocumentWindow()
         {
-            TopicEditorWindow topicWindow =
-                this.DockPanel.ActiveDocument as TopicEditorWindow;
+            TopicEditorWindow topicWindow = this.DockPanel.ActiveDocument as TopicEditorWindow;
 
             if(topicWindow == null)
                 foreach(IDockContent content in this.DockPanel.Documents)
@@ -123,8 +110,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         {
             bool priorState = lblReplaceWith.Visible;
 
-            lblReplaceWith.Visible = txtReplaceWith.Visible =
-                btnReplace.Visible = btnReplaceAll.Visible = show;
+            lblReplaceWith.Visible = txtReplaceWith.Visible = btnReplace.Visible = btnReplaceAll.Visible = show;
 
             txtFindText.Focus();
             txtFindText.SelectAll();
@@ -145,7 +131,6 @@ namespace SandcastleBuilder.Gui.ContentEditors
             TopicEditorWindow topicWindow = this.FindActiveDocumentWindow();
 
             epErrors.Clear();
-            this.FindActiveDocumentWindow();
 
             if(txtFindText.Text.Length == 0)
             {
@@ -154,10 +139,8 @@ namespace SandcastleBuilder.Gui.ContentEditors
             }
 
             if(topicWindow != null)
-                if(!topicWindow.FindText(txtFindText.Text,
-                  chkCaseSensitive.Checked))
-                    MessageBox.Show("The specified text was not found",
-                        Constants.AppName, MessageBoxButtons.OK,
+                if(!topicWindow.FindText(txtFindText.Text, chkCaseSensitive.Checked))
+                    MessageBox.Show("The specified text was not found", Constants.AppName, MessageBoxButtons.OK,
                         MessageBoxIcon.Exclamation);
         }
 
@@ -171,7 +154,6 @@ namespace SandcastleBuilder.Gui.ContentEditors
             TopicEditorWindow topicWindow = this.FindActiveDocumentWindow();
 
             epErrors.Clear();
-            this.FindActiveDocumentWindow();
 
             if(txtFindText.Text.Length == 0)
             {
@@ -180,10 +162,8 @@ namespace SandcastleBuilder.Gui.ContentEditors
             }
 
             if(topicWindow != null)
-                if(!topicWindow.ReplaceText(txtFindText.Text,
-                  txtReplaceWith.Text, chkCaseSensitive.Checked))
-                    MessageBox.Show("The specified text was not found",
-                        Constants.AppName, MessageBoxButtons.OK,
+                if(!topicWindow.ReplaceText(txtFindText.Text, txtReplaceWith.Text, chkCaseSensitive.Checked))
+                    MessageBox.Show("The specified text was not found", Constants.AppName, MessageBoxButtons.OK,
                         MessageBoxIcon.Exclamation);
         }
 
@@ -197,7 +177,6 @@ namespace SandcastleBuilder.Gui.ContentEditors
             TopicEditorWindow topicWindow = this.FindActiveDocumentWindow();
 
             epErrors.Clear();
-            this.FindActiveDocumentWindow();
 
             if(txtFindText.Text.Length == 0)
             {
@@ -206,10 +185,8 @@ namespace SandcastleBuilder.Gui.ContentEditors
             }
 
             if(topicWindow != null)
-                if(!topicWindow.ReplaceAll(txtFindText.Text,
-                  txtReplaceWith.Text, chkCaseSensitive.Checked))
-                    MessageBox.Show("The specified text was not found",
-                        Constants.AppName, MessageBoxButtons.OK,
+                if(!topicWindow.ReplaceAll(txtFindText.Text, txtReplaceWith.Text, chkCaseSensitive.Checked))
+                    MessageBox.Show("The specified text was not found", Constants.AppName, MessageBoxButtons.OK,
                         MessageBoxIcon.Exclamation);
         }
         #endregion

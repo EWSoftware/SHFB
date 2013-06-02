@@ -503,7 +503,7 @@ documents the internal/private members, or you need to include at least one
 assembly and at least one namespace to document.  There should be at least one
 assembly, solution, or project file listed in the <ui>Documentation Sources</ui>
 node in the Project Explorer window.  Use the <codeInline>NamespacesSummaries</codeInline>
-or <codeInline>ApiFilter</codeInline> project propery editor to be sure that
+or <codeInline>ApiFilter</codeInline> project property editor to be sure that
 you have at least one valid item that is checked and thus included.  If you are
 using the <codeInline>ApiFilter</codeInline> property, check it to make sure
 you have not accidentally excluded everything.</definition>
@@ -725,7 +725,7 @@ triple slash for C# code (///) or a triple quote for VB.NET (''').</para></defin
 "missing documentation" messages.  How do I get rid of them?</definedTerm>
     <definition>The project properties in the
 <link xlink:href="5a2ab898-7161-454d-b5d3-959df0de0e36">Show Missing Tags</link>
-category control which types of "missing documentation" messages appear in thehelp
+category control which types of "missing documentation" messages appear in the help
 file.  These can help you locate help topics that need attention to provide
 better documentation.  Adding the missing tags to your code is one way to get
 rid of the message.  You can search the help file for the text "missing

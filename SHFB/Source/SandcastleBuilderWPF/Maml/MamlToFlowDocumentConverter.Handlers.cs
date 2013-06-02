@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : MamlToFlowDocumentConverter.Handlers.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/21/2013
+// Updated : 04/28/2013
 // Note    : Copyright 2012-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -1130,6 +1130,7 @@ namespace SandcastleBuilder.WPF.Maml
                 linkAltTextElement = props.Element.Descendants(ddue + "linkAlternateText").FirstOrDefault(),
                 linkUriElement = props.Element.Descendants(ddue + "linkUri").FirstOrDefault(),
                 linkTargetElement = props.Element.Descendants(ddue + "linkTarget").FirstOrDefault();
+            Hyperlink l;
             string linkText, linkUri;
 
             if(linkUriElement != null)
@@ -1142,7 +1143,15 @@ namespace SandcastleBuilder.WPF.Maml
             else
                 linkText = linkUri;
 
-            Hyperlink l = new Hyperlink { NavigateUri = new Uri(linkUri, UriKind.RelativeOrAbsolute) };
+            try
+            {
+                l = new Hyperlink { NavigateUri = new Uri(linkUri, UriKind.RelativeOrAbsolute) };
+            }
+            catch(UriFormatException )
+            {
+                l = new Hyperlink { NavigateUri = new Uri("none://UNABLE_TO_CONVERT_URL_TO_URI",
+                    UriKind.RelativeOrAbsolute) };
+            }
 
             if(linkAltTextElement != null)
                 l.ToolTip = linkAltTextElement.Value;

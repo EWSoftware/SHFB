@@ -29,6 +29,7 @@
     <Compile Include="Colorizer.wxs" />
     <Compile Include="Product.wxs" />
     <Compile Include="SharedContent.wxs" />
+    <Compile Include="Spelling.wxs" />
     <Compile Include="Templates.wxs" />
     <Compile Include="Web.wxs" />
   </ItemGroup>

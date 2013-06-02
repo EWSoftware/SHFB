@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/03/2013
+// Updated : 05/10/2013
 // Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -647,10 +647,12 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     throw new BuilderException("BE0031", "For MS Help 2 builds, the HtmlHelpName property " +
                         "cannot contain spaces as they are not valid in the collection name.");
 
-                // For MS Help Viewer, the HTML Help Name cannot contain periods
-                if((project.HelpFileFormat & HelpFileFormat.MSHelpViewer) != 0 && this.ResolvedHtmlHelpName.IndexOf('.') != -1)
+                // For MS Help Viewer, the HTML Help Name cannot contain periods, ampersands, or pound signs
+                if((project.HelpFileFormat & HelpFileFormat.MSHelpViewer) != 0 &&
+                  this.ResolvedHtmlHelpName.IndexOfAny(new[] { '.', '#', '&' }) != -1)
                     throw new BuilderException("BE0075", "For MS Help Viewer builds, the HtmlHelpName property " +
-                        "cannot contain periods as they are not valid in the help file name.");
+                        "cannot contain periods, ampersands, or pound signs as they are not valid in the " +
+                        "help file name.");
 
                 // Make sure we can find the tools
                 this.FindTools();
@@ -1761,24 +1763,21 @@ AllDone:
         }
 
         /// <summary>
-        /// Make sure the path isn't one the user would regret having nuked
-        /// without warning.
+        /// Make sure the path isn't one the user would regret having nuked without warning
         /// </summary>
         /// <param name="propertyName">The name of the path property</param>
         /// <param name="propertyValue">It's current value</param>
         /// <param name="projectPath">The path to the current project</param>
-        /// <remarks>Since most people don't read the help file and also ignore
-        /// the warning in the property grid description pane, we'll take some
-        /// steps to idiot-proof the dangerous path properties.  I'm starting
-        /// to lose count of the number of people that point WorkingPath at the
-        /// root of their C:\ drive and wonder why all their files disappear.
-        /// <p/>Paths checked for include root references to hard drives and
-        /// network shares, most common well-known folders, and the project's
-        /// root folder.</remarks>
-        /// <exception cref="BuilderException">This is thrown if the path is
-        /// one of the ones that probably should not be used.</exception>
-        public static void VerifySafePath(string propertyName,
-          string propertyValue, string projectPath)
+        /// <remarks>Since most people don't read the help file and also ignore the warning in the property grid
+        /// description pane, we'll take some steps to idiot-proof the dangerous path properties.  I'm starting
+        /// to lose count of the number of people that point WorkingPath at the root of their C:\ drive and
+        /// wonder why all their files disappear.
+        /// 
+        /// <p/>Paths checked for include root references to hard drives and network shares, most common
+        /// well-known folders, and the project's root folder.</remarks>
+        /// <exception cref="BuilderException">This is thrown if the path is one of the ones that probably should
+        /// not be used.</exception>
+        public static void VerifySafePath(string propertyName, string propertyValue, string projectPath)
         {
             List<string> specialPaths = new List<string>();
             string tempPath = Path.GetFullPath(propertyValue);
@@ -1793,16 +1792,15 @@ AllDone:
 
             if(tempPath.Length > 2)
             {
-                // While the path can be under the project path, it shouldn't
-                // match the project path or be its parent.
-                if(FolderPath.TerminatePath(projectPath).StartsWith(
-                  FolderPath.TerminatePath(tempPath), StringComparison.OrdinalIgnoreCase))
+                // While the path can be under the project path, it shouldn't match the project path or be its
+                // parent.
+                if(FolderPath.TerminatePath(projectPath).StartsWith(FolderPath.TerminatePath(tempPath),
+                  StringComparison.OrdinalIgnoreCase))
                     isBadPath = true;
 
                 if(tempPath[0] == '\\' && tempPath[1] == '\\')
                 {
-                    // UNC path.  Make sure it has more than just a share
-                    // after the server name.
+                    // UNC path.  Make sure it has more than just a share after the server name.
                     tempPath = tempPath.Substring(2);
 
                     pos = tempPath.IndexOf('\\');
@@ -1810,32 +1808,21 @@ AllDone:
                     if(pos != -1)
                         pos = tempPath.IndexOf('\\', pos + 1);
 
-                    // This isn't perfect as the actual root of the share
-                    // may be several folders down.  You can't have it all.
+                    // This isn't perfect as the actual root of the share may be several folders down.  You
+                    // can't have it all.
                     if(pos == -1)
                         isBadPath = true;
                 }
                 else
                 {
-                    // Fixed drive.  Make sure it isn't one of the well-known
-                    // folders.  Some of these contain the same folders but
-                    // we'll err on the side of caution and check them anyway.
-                    specialPaths.Add(Environment.GetFolderPath(
-                        Environment.SpecialFolder.CommonApplicationData));
-                    specialPaths.Add(Environment.GetFolderPath(
-                        Environment.SpecialFolder.CommonProgramFiles));
-                    specialPaths.Add(Environment.GetFolderPath(
-                        Environment.SpecialFolder.Desktop));
-                    specialPaths.Add(Environment.GetFolderPath(
-                        Environment.SpecialFolder.DesktopDirectory));
-                    specialPaths.Add(Environment.GetFolderPath(
-                        Environment.SpecialFolder.MyComputer));
-                    specialPaths.Add(Environment.GetFolderPath(
-                        Environment.SpecialFolder.ProgramFiles));
-                    specialPaths.Add(Environment.GetFolderPath(
-                        Environment.SpecialFolder.Programs));
-                    specialPaths.Add(Environment.GetFolderPath(
-                        Environment.SpecialFolder.System));
+                    // Fixed drive.  Make sure it isn't one of the well-known folders.  Some of these contain
+                    // the same folders but we'll err on the side of caution and check them anyway.
+                    specialPaths.Add(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData));
+                    specialPaths.Add(Environment.GetFolderPath(Environment.SpecialFolder.CommonProgramFiles));
+                    specialPaths.Add(Environment.GetFolderPath(Environment.SpecialFolder.MyComputer));
+                    specialPaths.Add(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles));
+                    specialPaths.Add(Environment.GetFolderPath(Environment.SpecialFolder.Programs));
+                    specialPaths.Add(Environment.GetFolderPath(Environment.SpecialFolder.System));
 
                     // Don't allow the folder, a subfolder, or parent
                     foreach(string path in specialPaths)
@@ -1847,18 +1834,15 @@ AllDone:
                             break;
                         }
 
-                    // We'll allow subfolders under My Documents, Personal,
-                    // Application Data, and Local Application Data folders as
-                    // that's a common occurrence.  Again, not perfect but...
+                    // We'll allow subfolders under Desktop, My Documents, Personal, Application Data, and Local
+                    // Application Data folders as that's a common occurrence.  Again, not perfect but...
                     specialPaths.Clear();
-                    specialPaths.Add(Environment.GetFolderPath(
-                        Environment.SpecialFolder.MyDocuments));
-                    specialPaths.Add(Environment.GetFolderPath(
-                        Environment.SpecialFolder.Personal));
-                    specialPaths.Add(Environment.GetFolderPath(
-                        Environment.SpecialFolder.ApplicationData));
-                    specialPaths.Add(Environment.GetFolderPath(
-                        Environment.SpecialFolder.LocalApplicationData));
+                    specialPaths.Add(Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
+                    specialPaths.Add(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory));
+                    specialPaths.Add(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
+                    specialPaths.Add(Environment.GetFolderPath(Environment.SpecialFolder.Personal));
+                    specialPaths.Add(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData));
+                    specialPaths.Add(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData));
 
                     foreach(string path in specialPaths)
                         if(!String.IsNullOrEmpty(path) &&
@@ -1871,11 +1855,10 @@ AllDone:
             }
 
             if(isBadPath)
-                throw new BuilderException("BE0034", String.Format(
-                    CultureInfo.InvariantCulture, "The '{0}' property " +
-                    "resolved to '{1}' which is a reserved folder name.  " +
-                    "See error or property topic in help file for details.",
-                    propertyName, propertyValue));
+                throw new BuilderException("BE0034", String.Format(CultureInfo.InvariantCulture,
+                    "The '{0}' property resolved to '{1}' which is a reserved folder name that cannot be used " +
+                    "for build output or as the working files folder.  See the error or property topic in the " +
+                    "help file for more details.", propertyName, propertyValue));
         }
 
         /// <summary>
@@ -2093,12 +2076,10 @@ AllDone:
         /// <returns>The path if found or an empty string if not found</returns>
         protected internal static string FindOnFixedDrives(string path)
         {
-            StringBuilder sb = new StringBuilder(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles));
-
-            // Check for 64-bit process and OS.  The tools will be in the x86 folder.  If running as a 32-bit
-            // process, the folder will contain "(x86)" already if needed.
-            if(Environment.Is64BitProcess && Environment.Is64BitOperatingSystem)
-                sb.Append(" (x86)");
+            // Check for a 64-bit process.  The tools will be in the x86 folder.  If running as a 32-bit process,
+            // the folder will contain "(x86)" already if on a 64-bit OS.
+            StringBuilder sb = new StringBuilder(Environment.GetFolderPath(Environment.Is64BitProcess ?
+                Environment.SpecialFolder.ProgramFilesX86 : Environment.SpecialFolder.ProgramFiles));
 
             sb.Append(path);
 
@@ -2123,13 +2104,11 @@ AllDone:
         /// fixed drives.</remarks>
         protected internal static string FindSdkExecutable(string exeName)
         {
-            StringBuilder sb = new StringBuilder(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles));
+            // Check for a 64-bit process.  The tools will be in the x86 folder.  If running as a 32-bit process,
+            // the folder will contain "(x86)" already if on a 64-bit OS.
+            StringBuilder sb = new StringBuilder(Environment.GetFolderPath(Environment.Is64BitProcess ?
+                Environment.SpecialFolder.ProgramFilesX86 : Environment.SpecialFolder.ProgramFiles));
             string folder;
-
-            // Check for 64-bit process and OS.  The tools will be in the x86 folder.  If running as a 32-bit
-            // process, the folder will contain "(x86)" already if needed.
-            if(Environment.Is64BitProcess && Environment.Is64BitOperatingSystem)
-                sb.Append(" (x86)");
 
             foreach(DriveInfo di in DriveInfo.GetDrives())
                 if(di.DriveType == DriveType.Fixed)

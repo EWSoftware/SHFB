@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SandcastleProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/15/2012
-// Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
+// Updated : 04/28/2013
+// Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the project class.
@@ -119,7 +119,7 @@ namespace SandcastleBuilder.Utils
             "TransformComponentArguments" };
 
         // Bad characters for the vendor name property
-        private static Regex reBadVendorNameChars = new Regex(@"[:\\/\.,#]");
+        private static Regex reBadVendorNameChars = new Regex(@"[:\\/\.,#&]");
         #endregion
 
         #region Private data members
@@ -1551,7 +1551,7 @@ namespace SandcastleBuilder.Utils
         /// This is used to get or set the vendor name for the help viewer file
         /// </summary>
         /// <remarks>The default if not specified will be "Vendor Name".  The value must not contain the ':',
-        /// '\', '/', '.', ',', or '#' characters.</remarks>
+        /// '\', '/', '.', ',', '#', or '&amp;' characters.</remarks>
         [Category("MS Help Viewer"), Description("Specify the vendor name for the help file.  If not set, " +
           "'Vendor Name' will be used at build time."), DefaultValue(""), EscapeValue]
         public string VendorName

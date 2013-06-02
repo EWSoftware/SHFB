@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+	<?include Product.wxi ?>
+
+	<Fragment Id="Spelling">
+		<DirectoryRef Id="INSTALLDIR">
+			<Directory Id="Spelling" Name="Spelling">
+				<Component Id="en_US.aff" Guid="{AD2E8241-7DCF-4F15-84A7-74DF0F9079F7}">
+					<File Id="en_US.aff" KeyPath="yes" Source="$(var.BinFolder)Spelling\en_US.aff" />
+				</Component>
+				<Component Id="en_US.dic" Guid="{54B41005-C015-48FC-BA40-A8736160AB23}">
+					<File Id="en_US.dic" KeyPath="yes" Source="$(var.BinFolder)Spelling\en_US.dic" />
+				</Component>
+				<Component Id="Hunspellx64.dll" Guid="{118C7888-16B0-414C-A145-DDFB61E6F8B3}">
+					<File Id="Hunspellx64.dll" KeyPath="yes" Source="$(var.BinFolder)Spelling\Hunspellx64.dll" />
+				</Component>
+				<Component Id="Hunspellx86.dll" Guid="{3D77C82C-0035-498A-92E5-DC034E04A8BA}">
+					<File Id="Hunspellx64.dll" KeyPath="yes" Source="$(var.BinFolder)Spelling\Hunspellx86.dll" />
+				</Component>
+			</Directory>
+		</DirectoryRef>
+
+		<ComponentGroup Id="Spelling">
+			<ComponentRef Id="en_US.aff" />
+			<ComponentRef Id="en_US.dic" />
+			<ComponentRef Id="Hunspellx64.dll" />
+			<ComponentRef Id="Hunspellx86.dll" />
+		</ComponentGroup>
+	</Fragment>
+</Wix>

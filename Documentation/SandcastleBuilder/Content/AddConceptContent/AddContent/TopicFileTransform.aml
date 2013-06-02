@@ -103,11 +103,11 @@ the <codeInline>alignment</codeInline> attribute specifies how the image is alig
 			<para>styleSheet</para>
 		</entry>
     <entry>
-			<para>This element can be used to define an additional stylesheet to include in the transformed topic.
+			<para>This element can be used to define an additional style sheet to include in the transformed topic.
 This is useful for adding styles for HTML tags that are not present in the selected presentation style's default
-stylesheet such as <codeInline>h1</codeInline>, <codeInline>h2</codeInline>, etc.  The <codeInline>filename</codeInline>
-attribute identifies the stylesheet and the same comments above regarding the logo file's path and inclusion as
-additional content apply here as well.  If no additional stylesheet is needed, you can omit this element.</para>
+style sheet such as <codeInline>h1</codeInline>, <codeInline>h2</codeInline>, etc.  The <codeInline>filename</codeInline>
+attribute identifies the style sheet and the same comments above regarding the logo file's path and inclusion as
+additional content apply here as well.  If no additional style sheet is needed, you can omit this element.</para>
 		</entry>
   </row>
   <row>
@@ -146,7 +146,7 @@ transformations:</para>
     &lt;!-- Add a logo --&gt;
     &lt;logoFile filename="images/Sandcastle.jpg" altText="Test logo"
         placement="left" alignment="left" /&gt;
-    &lt;!-- Include an additional stylesheet --&gt;
+    &lt;!-- Include an additional style sheet --&gt;
     &lt;styleSheet filename="Styles/Styles.css" /&gt;
     &lt;!-- MS Help 2 data island --&gt;
     &lt;xml xmlns:msxsl="urn:schemas-microsoft-com:xslt"&gt;
@@ -177,12 +177,12 @@ that contains the unknown entities.</para>
 <section>
   <title>The pathToRoot Variable</title>
   <content><para>The XSL transformation will be passed a variable called <codeInline>pathToRoot</codeInline> that
-defines the path to the help file's root folder.  This allows you to add script, stylesheet, and image tags that
+defines the path to the help file's root folder.  This allows you to add script, style sheet, and image tags that
 prefix the filename in the tag's attributes with the <codeInline>pathToRoot</codeInline> variables during the
 transformation.  For example:</para>
 
 <code language="xml" title="Example use of pathToRoot">
-&lt;link rel="stylesheet" type="text/css"
+&lt;link rel="style sheet" type="text/css"
     href="{$pathToRoot}styles/presentation.css" /&gt;
 
 &lt;img&gt;

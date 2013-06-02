@@ -1,25 +1,24 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder
 // File    : ContentEditorControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/12/2010
-// Note    : Copyright 2008-2010, Eric Woodruff, All rights reserved
+// Updated : 05/11/2013
+// Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains the derived editor control used to edit conceptual
-// content.
+// This file contains the derived editor control used to edit conceptual content
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.6.0.7  05/10/2008  EFW  Created the code
 // 1.8.0.0  07/26/2008  EFW  Reworked for use with the new project format
-//=============================================================================
+// 1.9.8.0  05/11/2013  EFW  Added support for spell checking
+//===============================================================================================================
 
 using System;
 using System.Drawing;
@@ -63,9 +62,8 @@ namespace SandcastleBuilder.Gui.ContentEditors
                 editactions[UnsafeNativeMethods.CharToKeys('{')] = new InsertMatchingCharacter("{}");
             }
 
-            // By default, Ctrl+B does bracket matching.  I want Ctrl+B for
-            // legacy bold.  Move bracket matching to Ctrl + ] to match
-            // Visual Studio.
+            // By default, Ctrl+B does bracket matching.  I want Ctrl+B for legacy bold.  Move bracket matching
+            // to Ctrl + ] to match Visual Studio.
             if(editactions.TryGetValue(Keys.Control | Keys.B, out oldAction))
                 editactions[Keys.Control | UnsafeNativeMethods.CharToKeys(']')] = oldAction;
 
@@ -77,6 +75,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             editactions[Keys.Control | Keys.K] = new InsertElement("codeInline");
             editactions[Keys.Control | Keys.U] = new InsertElement("legacyUnderline");
             editactions[Keys.Control | Keys.V] = new PasteSpecial(this);
+            editactions[Keys.Control | Keys.Shift | Keys.K] = new SpellCheck(this);
             editactions[Keys.Shift | Keys.Insert] = new PasteSpecial(this);
         }
         #endregion
@@ -113,6 +112,23 @@ namespace SandcastleBuilder.Gui.ContentEditors
         internal void OnPerformReplaceText(EventArgs e)
         {
             var handler = PerformReplaceText;
+
+            if(handler != null)
+                handler(this, e);
+        }
+
+        /// <summary>
+        /// This event is raised when Ctrl+Shift+K is hit to spell check the text
+        /// </summary>
+        internal event EventHandler PerformSpellCheck;
+
+        /// <summary>
+        /// This raises the <see cref="PerformSpellCheck" /> event
+        /// </summary>
+        /// <param name="e">The event arguments</param>
+        internal void OnPerformSpellCheck(EventArgs e)
+        {
+            var handler = PerformSpellCheck;
 
             if(handler != null)
                 handler(this, e);

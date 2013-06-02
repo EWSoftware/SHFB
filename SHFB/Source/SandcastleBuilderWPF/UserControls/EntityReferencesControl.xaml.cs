@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : EntityReferencesControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/28/2013
+// Updated : 05/10/2013
 // Note    : Copyright 2011-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -684,6 +684,8 @@ namespace SandcastleBuilder.WPF.UserControls
             if(cboEntityType.SelectedIndex == (int)EntityType.CodeEntity)
             {
                 txtFindName.IsReadOnly = false;
+                txtFindName.Text = "<Enter text or reg ex to find here, then click Go>";
+                txtFindName.SelectAll();
                 tvEntities.IsEnabled = btnGo.IsEnabled = true;
             }
         }

@@ -32,7 +32,7 @@ tag to fail if used in a template file.</listItem>
 "none" language code blocks in API topics to always be hidden.</listItem>
 
     <listItem>Fixed a bug in the default topic file transforms that caused it to not
-find the code colorizer script and stylesheet if the topic was not in the root
+find the code colorizer script and style sheet if the topic was not in the root
 folder.</listItem>
 
     <listItem>Fixed issues caused by characters such as ampersand in the table
@@ -43,7 +43,7 @@ items, blocks of code that need colorizing, or include code tags, they are now
 processed after the transform has occurred as well.</listItem>
 
     <listItem>Added the <codeInline>map</codeInline> and <codeInline>area</codeInline> tags to the HTML
-passthrough section of the default transform files so that image maps can be
+pass-through section of the default transform files so that image maps can be
 used in additional content topics.</listItem>
 
     <listItem>Added support for the Script# syntax generator to the

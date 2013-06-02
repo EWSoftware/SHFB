@@ -187,7 +187,7 @@ property is probably the most important member of the interface.  It returns a c
 <codeEntityReference qualifyHint="false">T:SandcastleBuilder.Utils.PlugIn.ExecutionPoint</codeEntityReference>
 objects that define at which steps in the build process the plug-in should be ran. Execution points can be set to
 run before and/or after a build step to supplement the default processing or they can be set to run instead of
-the build step to completely supress or replace the default processing.  See the
+the build step to completely suppress or replace the default processing.  See the
 <codeEntityReference qualifyHint="false">T:SandcastleBuilder.Utils.BuildEngine.BuildStep</codeEntityReference>
 enumeration for a list of the defined build steps.</para>
 

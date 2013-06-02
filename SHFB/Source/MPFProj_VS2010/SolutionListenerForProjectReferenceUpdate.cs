@@ -46,6 +46,16 @@ a particular purpose and non-infringement.
 
 ********************************************************************************************/
 
+//===============================================================================================================
+// File    : SolutionListenerForProjectReferenceUpdate.cs
+// Updated : 05/10/2013
+// Modifier: Eric Woodruff  (Eric@EWoodruff.us)
+//
+//    Date     Who  Comments
+// ==============================================================================================================
+// 05/10/2013  EFW  Added code to ignore closed files not hosted within a project in the solution
+//===============================================================================================================
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -60,7 +70,6 @@ namespace Microsoft.VisualStudio.Project
     [CLSCompliant(false)]
     public class SolutionListenerForProjectReferenceUpdate : SolutionListener
     {
-
         #region ctor
         public SolutionListenerForProjectReferenceUpdate(IServiceProvider serviceProvider)
             : base(serviceProvider)
@@ -237,35 +246,37 @@ namespace Microsoft.VisualStudio.Project
         private static ProjectReferenceNode GetProjectReferenceOnNodeForHierarchy(IList<ReferenceNode> references, IVsHierarchy inputHierarchy)
         {
             if(references == null)
-            {
                 return null;
-            }
 
             Guid projectGuid;
-            ErrorHandler.ThrowOnFailure(inputHierarchy.GetGuidProperty(VSConstants.VSITEMID_ROOT, (int)__VSHPROPID.VSHPROPID_ProjectIDGuid, out projectGuid));
+
+            // !EFW - This is an odd one.  Open a file not contained within a project in the active solution and
+            // then close it.  When you do, this method is called and it fails here.  The file is hosted in the
+            // Miscellaneous Files hierarchy.  In such cases, we'll just ignore it and return null.
+            if(inputHierarchy.GetGuidProperty(VSConstants.VSITEMID_ROOT,
+              (int)__VSHPROPID.VSHPROPID_ProjectIDGuid, out projectGuid) != VSConstants.S_OK)
+                return null;
 
             string canonicalName;
             ErrorHandler.ThrowOnFailure(inputHierarchy.GetCanonicalName(VSConstants.VSITEMID_ROOT, out canonicalName));
+
             foreach(ReferenceNode refNode in references)
             {
                 ProjectReferenceNode projRefNode = refNode as ProjectReferenceNode;
+
                 if(projRefNode != null)
                 {
                     if(projRefNode.ReferencedProjectGuid == projectGuid)
-                    {
                         return projRefNode;
-                    }
 
-                    // Try with canonical names, if the project that is removed is an unloaded project than the above criteria will not pass.
+                    // Try with canonical names, if the project that is removed is an unloaded project that the
+                    // above criteria will not pass.
                     if(!String.IsNullOrEmpty(projRefNode.Url) && NativeMethods.IsSamePath(projRefNode.Url, canonicalName))
-                    {
                         return projRefNode;
-                    }
                 }
             }
 
             return null;
-
         }
         #endregion
     }

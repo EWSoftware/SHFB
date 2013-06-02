@@ -27,7 +27,7 @@ preceding the items.</para></listItem>
 
 	<alert class="note">
 		<para>The class attribute value is case-sensitive.  Unrecognized values
-will default to the "nobullet" list style.</para>
+will default to the <codeInline>nobullet</codeInline> list style.</para>
 	</alert>
 
 	<alert class="tip">

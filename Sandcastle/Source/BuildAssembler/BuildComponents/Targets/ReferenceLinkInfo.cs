@@ -71,10 +71,6 @@ namespace Microsoft.Ddue.Tools.Targets
 
             this.DisplayOptions = DisplayOptions.Default;
             this.Target = element.GetAttribute("target", String.Empty);
-
-            if(String.IsNullOrWhiteSpace(this.Target))
-                throw new InvalidOperationException("The target attribute is missing or has no value");
-
             this.DisplayTarget = element.GetAttribute("display-target", String.Empty);
 
             string showContainer = element.GetAttribute("show-container", String.Empty);

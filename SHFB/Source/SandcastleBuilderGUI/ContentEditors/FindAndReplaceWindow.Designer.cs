@@ -46,8 +46,8 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // 
             // txtFindText
             // 
-            this.txtFindText.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtFindText.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtFindText.Location = new System.Drawing.Point(118, 9);
             this.txtFindText.Name = "txtFindText";
             this.txtFindText.Size = new System.Drawing.Size(127, 22);
@@ -56,7 +56,6 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // 
             // btnFind
             // 
-            this.btnFind.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnFind.Location = new System.Drawing.Point(12, 103);
             this.btnFind.Name = "btnFind";
             this.btnFind.Size = new System.Drawing.Size(100, 32);
@@ -79,8 +78,8 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // 
             // txtReplaceWith
             // 
-            this.txtReplaceWith.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtReplaceWith.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtReplaceWith.Location = new System.Drawing.Point(118, 37);
             this.txtReplaceWith.Name = "txtReplaceWith";
             this.txtReplaceWith.Size = new System.Drawing.Size(127, 22);
@@ -90,7 +89,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // 
             // btnReplace
             // 
-            this.btnReplace.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnReplace.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnReplace.Location = new System.Drawing.Point(155, 103);
             this.btnReplace.Name = "btnReplace";
             this.btnReplace.Size = new System.Drawing.Size(100, 32);
@@ -104,7 +103,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             // 
             // btnReplaceAll
             // 
-            this.btnReplaceAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnReplaceAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnReplaceAll.Location = new System.Drawing.Point(155, 141);
             this.btnReplaceAll.Name = "btnReplaceAll";
             this.btnReplaceAll.Size = new System.Drawing.Size(100, 32);
@@ -152,14 +151,14 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.Controls.Add(this.btnFind);
             this.Controls.Add(this.txtFindText);
             this.Controls.Add(this.label1);
-            this.DockAreas = ((WeifenLuo.WinFormsUI.Docking.DockAreas)(((((WeifenLuo.WinFormsUI.Docking.DockAreas.Float | WeifenLuo.WinFormsUI.Docking.DockAreas.DockLeft)
-                        | WeifenLuo.WinFormsUI.Docking.DockAreas.DockRight)
-                        | WeifenLuo.WinFormsUI.Docking.DockAreas.DockTop)
-                        | WeifenLuo.WinFormsUI.Docking.DockAreas.DockBottom)));
+            this.DockAreas = ((WeifenLuo.WinFormsUI.Docking.DockAreas)(((((WeifenLuo.WinFormsUI.Docking.DockAreas.Float | WeifenLuo.WinFormsUI.Docking.DockAreas.DockLeft) 
+            | WeifenLuo.WinFormsUI.Docking.DockAreas.DockRight) 
+            | WeifenLuo.WinFormsUI.Docking.DockAreas.DockTop) 
+            | WeifenLuo.WinFormsUI.Docking.DockAreas.DockBottom)));
             this.HideOnClose = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(275, 225);
+            this.MinimumSize = new System.Drawing.Size(285, 232);
             this.Name = "FindAndReplaceWindow";
             this.ShowHint = WeifenLuo.WinFormsUI.Docking.DockState.Float;
             this.ShowInTaskbar = false;

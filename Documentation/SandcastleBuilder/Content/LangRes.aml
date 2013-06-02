@@ -77,12 +77,12 @@ change the name to use the culture name's ID as described above.  If you are not
 filename, go to the <externalLink><linkText>Locale Identifier Constants and Strings</linkText>
 <linkUri>http://msdn.microsoft.com/en-us/library/dd318693.aspx</linkUri><linkTarget>_blank</linkTarget>
 </externalLink> MSDN topic and locate the locale that you need.  The primary language and sublanguage columns
-contain the ID values in parentheses.  Combine the two values in parenthese from those columns separated by an
+contain the ID values in parentheses.  Combine the two values in parentheses from those columns separated by an
 underscore for the ID to use in the filename.  Edit the new file and translate the text to the selected language.
 If people are kind enough to supply additional translated files, they will be added to later releases.</para>
 
 				<para>Due to the number of presentation styles and the number of files that would be created, it is not
-possible to provice a matching set of Sandcastle's content files for each language.  You will need to create
+possible to provide a matching set of Sandcastle's content files for each language.  You will need to create
 localized copies of them for each language that you want.  As above, if people are kind enough to supply
 additional translated files, they will be added to later releases.  The standard files in the noted
 <localUri>.\Content</localUri> folders will always be used when English (en-US) is used as the selected language

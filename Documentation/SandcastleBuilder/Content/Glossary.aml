@@ -9,7 +9,7 @@
         </terms>
         <definition>
           <para>An extra file included in the help file used to define extra content or used as a supporting
-file.  This can be an HTML topic, an image, script, stylesheet, etc.  In earlier releases of the help file
+file.  This can be an HTML topic, an image, script, style sheet, etc.  In earlier releases of the help file
 builder, this was the way non-API content was included in the help file.  The preferred method of including such
 content now is to use conceptual content.  Although still supported, the additional content features of the help
 file builder are now considered deprecated.</para>

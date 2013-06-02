@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : MSHelpViewerPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 11/25/2012
-// Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
+// Updated : 04/28/2013
+// Note    : Copyright 2011-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This user control is used to edit the MS Help Viewer category properties.
@@ -39,7 +39,7 @@ namespace SandcastleBuilder.Package.PropertyPages
         //=====================================================================
 
         // Bad characters for the vendor name property
-        private static Regex reBadVendorNameChars = new Regex(@"[:\\/\.,#]");
+        private static Regex reBadVendorNameChars = new Regex(@"[:\\/\.,#&]");
         #endregion
 
         #region Constructor

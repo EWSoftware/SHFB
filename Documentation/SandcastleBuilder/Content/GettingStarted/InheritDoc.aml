@@ -206,7 +206,7 @@ from where to obtain the comments (i.e. <codeInline>select="/summary/node()"</co
   <content>
 		<para>Additional sources of inherited documentation (i.e. comments from third party class libraries) can be
 added to the <ui>Documentation Sources</ui> project node.  This allows you to inherit documentation from base
-class libraries without having to add them as documentated assemblies in your project.</para>
+class libraries without having to add them as documentation assemblies in your project.</para>
 
 	<para>Since the XML comments produced by the compiler are incomplete, it is recommended that you make use of
 the <link xlink:href="5d546511-6aec-455a-ba09-9daffb124c6d" /> to produce an IntelliSense XML comments file.  It

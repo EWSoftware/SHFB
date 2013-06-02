@@ -72,7 +72,7 @@ tag as shown so that the leading whitespace can be normalized correctly.</para>
 						<alert class="note">
 							<para>The inclusion of a <codeInline>CDATA</codeInline> tag anywhere in the code comments can cause
 Visual Studio 2005 to lock up when you type an angle bracket within a comment block.  If you are affected by this
-issue, there is a hotfix available at: <externalLink>
+issue, there is a hot fix available at: <externalLink>
 <linkText>https://connect.microsoft.com/VisualStudio/Downloads/DownloadDetails.aspx?DownloadID=9646</linkText>
 <linkUri>https://connect.microsoft.com/VisualStudio/Downloads/DownloadDetails.aspx?DownloadID=9646</linkUri>
 <linkTarget>_blank</linkTarget></externalLink>.</para>

@@ -44,7 +44,7 @@ DLLs should be added to the project's
 	  <content><para>When selected, each documentation source has the following
 properties that can be edited in the property grid at the bottom of the Project
 Explorer window.  Some of the properties will only apply to certain types of
-documenation source as indicated.</para>
+documentation source as indicated.</para>
 
 <list class="bullet">
   <listItem><codeInline>SourceFile</codeInline> - This can be an individual

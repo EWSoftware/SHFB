@@ -32,7 +32,7 @@ Internet Explorer 10.</para>
 
 			<listItem>
 				<para>Updated the <application>SandcastleHtmlExtract</application> tool to remove the Help 2 XML data
-island and the related stylesheet link from all topics which were causing security issues in Internet Explorer
+island and the related style sheet link from all topics which were causing security issues in Internet Explorer
 10 and when using HTTPS.</para>
 			</listItem>
 
