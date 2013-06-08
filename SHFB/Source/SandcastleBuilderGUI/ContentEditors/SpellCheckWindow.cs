@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : SpellCheckWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/01/2013
+// Updated : 06/07/2013
 // Note    : Copyright 2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -280,6 +280,23 @@ namespace SandcastleBuilder.Gui.ContentEditors
                         this.UpdateState();
                 }
             }
+        }
+
+        /// <summary>
+        /// When an item is double clicked, handle it as a request to replace the misspelling with the selected
+        /// word.  If Ctrl is held down, replace all occurrences of the misspelled word.
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event arguments</param>
+        private void lbSuggestions_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            int idx = lbSuggestions.IndexFromPoint(e.Location);
+
+            if(idx != -1)
+                if((Control.ModifierKeys & Keys.Control) == 0)
+                    btnReplace_Click(sender, e);
+                else
+                    btnReplaceAll_Click(sender, e);
         }
 
         /// <summary>

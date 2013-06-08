@@ -107,7 +107,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             this.lbSuggestions.Size = new System.Drawing.Size(232, 196);
             this.statusBarTextProvider1.SetStatusBarText(this.lbSuggestions, "Replace With: Select the word to replace the misspelled word");
             this.lbSuggestions.TabIndex = 3;
-            this.lbSuggestions.DoubleClick += new System.EventHandler(this.btnReplace_Click);
+            this.lbSuggestions.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.lbSuggestions_MouseDoubleClick);
             // 
             // btnIgnoreAll
             // 

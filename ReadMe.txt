@@ -1,6 +1,6 @@
 System Requirements
 -------------------
-In order to use Sandcastle and the Sandcastle Help File Builder (SHFB), you will need the following tools:
+In order to use Sandcastle and the Sandcastle Help File Builder (SHFB) you will need the following tools:
 
     Required:
         - .NET Framework 4.0 (Needed to run the Sandcastle and SHFB tools)
@@ -9,10 +9,11 @@ In order to use Sandcastle and the Sandcastle Help File Builder (SHFB), you will
         - HTML Help Workshop (Used for building Help 1 CHM files)
         - HTML Help 2 Compiler from the Visual Studio 2005 or 2008 SDK (Used for building Help 2 HxS files)
 
-In order to build the source code, you will need the following tools:
+In order to build the source code you will need the following tools:
 
     Required:
         - Visual Studio 2010 SP1 (Used to build the C# projects for the tools)
+        - NuGet Package Manager Extension (Required to download the NuGet packages used by the main projects)
 
     Optional:
         - Visual Studio 2010 SDK SP1 (Required for VSPackage development)

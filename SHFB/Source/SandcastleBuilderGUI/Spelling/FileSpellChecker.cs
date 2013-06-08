@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : FileSpellChecker.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/12/2013
+// Updated : 06/04/2013
 // Note    : Copyright 2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -318,8 +318,11 @@ namespace SandcastleBuilder.Gui.Spelling
                 if(IsWordBreakCharacter(text[i]))
                 {
                     // Skip escape sequences.  If not, they can end up as part of the word or cause words to be
-                    // missed.  For example, "This\r\nis\ta\ttest \x22missing\x22" would incorrectly yield
-                    // "r", "nis", "ta", and "ttest" and incorrectly exclude "missing").
+                    // missed.  For example, "This\r\nis\ta\ttest \x22missing\x22" would incorrectly yield "r",
+                    // "nis", "ta", and "ttest" and incorrectly exclude "missing").  This can cause the
+                    // occasional false positive in file paths (i.e. \Folder\transform\File.txt flags "ransform"
+                    // as a misspelled word because of the lowercase "t" following the backslash) but I can live
+                    // with that.
                     if(text[i] == '\\' && i + 1 < text.Length)
                         switch(text[i + 1])
                         {
@@ -381,10 +384,11 @@ namespace SandcastleBuilder.Gui.Spelling
                         end--;
 
                     // Ignore anything less than two characters
-                    if(end <= i || end - i < 2)
+                    if(end <= i)
                         end++;
                     else
-                        yield return new TextLocation { Start = i, Length = end - i };
+                        if(end - i > 1)
+                            yield return new TextLocation { Start = i, Length = end - i };
                 }
 
                 i = end - 1;
