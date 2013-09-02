@@ -1,27 +1,26 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder Utilities
 // File    : XmlCommentsFile.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/30/2012
-// Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
+// Updated : 09/02/2013
+// Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains a class representing an XML comment file and is used
-// when searching for and adding missing documentation tag information.
+// This file contains a class representing an XML comment file and is used when searching for and adding missing
+// documentation tag information.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.3.1.0  09/26/2006  EFW  Created the code
-// 1.3.3.1  12/07/2006  EFW  Added C++ comments fixup
+// 1.3.3.1  12/07/2006  EFW  Added C++ comments fix-up
 // 1.6.0.1  10/25/2007  EFW  Made the first fix-up more generic, added another
-// 1.9.4.0  03/30/2012  EFW  Added interior_ptr<T> fixup
-//=============================================================================
+// 1.9.4.0  03/30/2012  EFW  Added interior_ptr<T> fix-up
+//===============================================================================================================
 
 using System;
 using System.IO;
@@ -32,8 +31,8 @@ using System.Xml;
 namespace SandcastleBuilder.Utils.BuildEngine
 {
     /// <summary>
-    /// This represents an XML comment file and is used when searching for and
-    /// adding missing documentation tag information.
+    /// This represents an XML comment file and is used when searching for and adding missing documentation tag
+    /// information.
     /// </summary>
     public class XmlCommentsFile
     {
@@ -96,8 +95,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         {
                             sourcePath = Environment.ExpandEnvironmentVariables(node.Value);
 
-                            // Some may contain %CORSYSDIR% which may not be defined.  If so, use an
-                            // appropriate default.
+                            // Some may contain %CORSYSDIR% which may not be defined.  If so, use an appropriate
+                            // default.
                             if(sourcePath.IndexOf("%CORSYSDIR%", StringComparison.Ordinal) != -1)
                             {
                                 sourcePath = sourcePath.Replace("%CORSYSDIR%",
@@ -108,8 +107,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                     } while(node != null);
 
-                    // If redirected, point back to the temporary copy and make sure it gets saved to keep
-                    // the comments for the builds.
+                    // If redirected, point back to the temporary copy and make sure it gets saved to keep the
+                    // comments for the builds.
                     if(sourcePath != origPath)
                     {
                         sourcePath = origPath;
@@ -118,20 +117,11 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                     comments.NodeChanged += comments_NodeChanged;
                     comments.NodeInserted += comments_NodeChanged;
+                    comments.NodeRemoved += comments_NodeChanged;
                 }
 
                 return comments;
             }
-        }
-
-        /// <summary>
-        /// Mark the file as modified if a node is changed
-        /// </summary>
-        /// <param name="sender">The sender of the event</param>
-        /// <param name="e">The event arguments</param>
-        void comments_NodeChanged(object sender, XmlNodeChangedEventArgs e)
-        {
-            wasModified = true;
         }
 
         /// <summary>
@@ -146,8 +136,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     members = this.Comments.SelectSingleNode("doc/members");
 
                     if(members == null)
-                        throw new InvalidOperationException(sourcePath +
-                            " does not contain a 'doc/members' node");
+                        throw new InvalidOperationException(sourcePath + " does not contain a 'doc/members' node");
                 }
 
                 return members;
@@ -162,14 +151,27 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// Constructor
         /// </summary>
         /// <param name="filename">The XML comments filename</param>
-        /// <exception cref="ArgumentNullException">This is thrown if the filename is null or an
-        /// empty string.</exception>
+        /// <exception cref="ArgumentNullException">This is thrown if the filename is null or an empty string</exception>
         public XmlCommentsFile(string filename)
         {
             if(String.IsNullOrEmpty(filename))
                 throw new ArgumentException("filename cannot be null", "filename");
 
             sourcePath = filename;
+        }
+        #endregion
+
+        #region Event handlers
+        //=====================================================================
+
+        /// <summary>
+        /// Mark the file as modified if a node is changed
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event arguments</param>
+        private void comments_NodeChanged(object sender, XmlNodeChangedEventArgs e)
+        {
+            wasModified = true;
         }
         #endregion
 
@@ -194,16 +196,15 @@ namespace SandcastleBuilder.Utils.BuildEngine
         }
 
         /// <summary>
-        /// This is called to fixup the comments for C++ compiler generated XML comments files.
+        /// This is called to fix-up the comments for C++ compiler generated XML comments files.
         /// </summary>
-        /// <remarks>The C++ compiler generates method signatures that differ from the other .NET compilers
-        /// for methods that take generics as parameters.  These methods fail to get documented as they do
-        /// not match the output of <b>MRefBuilder</b>.  The C# and VB.NET compilers generate names that do
-        /// match it and this option is not needed for comments files generated by them.  The C++ compiler
-        /// also has problems resolving references to some members if it hasn't seen them yet.  These are
-        /// prefixed with "!:" which is removed by the fix-up code.  Parameters that use
-        /// interior_ptr&lt;T&gt; also do not match the reflection output and need to be converted to
-        /// the explicit dereference syntax.</remarks>
+        /// <remarks>The C++ compiler generates method signatures that differ from the other .NET compilers for
+        /// methods that take generics as parameters.  These methods fail to get documented as they do not match
+        /// the output of <b>MRefBuilder</b>.  The C# and VB.NET compilers generate names that do match it and
+        /// this option is not needed for comments files generated by them.  The C++ compiler also has problems
+        /// resolving references to some members if it hasn't seen them yet.  These are prefixed with "!:" which
+        /// is removed by the fix-up code.  Parameters that use interior_ptr&lt;T&gt; also do not match the
+        /// reflection output and need to be converted to the explicit dereference syntax.</remarks>
         public void FixupComments()
         {
             this.Save();
@@ -214,8 +215,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
             // Read it from the XML document as it handles redirection
             string content = this.Comments.OuterXml;
 
-            // Strip out "`" followed by digits and "^" in member names and fix-up cref attributes that
-            // the compiler couldn't figure out.  Also convert interior_ptr<T> to explicit dereferences.
+            // Strip out "`" followed by digits and "^" in member names and fix-up cref attributes that the
+            // compiler couldn't figure out.  Also convert interior_ptr<T> to explicit dereferences.
             content = reFixupComments1.Replace(content, "$1");
             content = reFixupComments2.Replace(content, "$1");
             content = reFixupComments3.Replace(content, "cref=\"$1:");

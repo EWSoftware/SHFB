@@ -75,7 +75,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             InitializeComponent();
 
             // Ensure that the file and folder path user controls are known by the base property page class
-            if(!BasePropertyPage.CustomControls.ContainsKey(typeof(SandcastleBuilder.Utils.Controls.FilePathUserControl).Name))
+            if(!BasePropertyPage.CustomControls.ContainsKey(typeof(SandcastleBuilder.Utils.Controls.FilePathUserControl).FullName))
             {
                 BasePropertyPage.CustomControls.Add(typeof(SandcastleBuilder.Utils.Controls.FilePathUserControl).FullName,
                     "PersistablePath");

@@ -1347,15 +1347,6 @@
 
 	<!-- ======================================================================================== -->
 
-	<xsl:template name="t_putMemberIntro">
-		<xsl:if test="$g_apiTopicSubGroup='members'">
-			<p>
-				<xsl:apply-templates select="/document/reference/containers/summary"/>
-			</p>
-		</xsl:if>
-		<xsl:call-template name="t_memberIntroBoilerplate"/>
-	</xsl:template>
-
 	<xsl:template name="t_codelangAttributes">
 		<xsl:call-template name="t_mshelpCodelangAttributes">
 			<xsl:with-param name="snippets"

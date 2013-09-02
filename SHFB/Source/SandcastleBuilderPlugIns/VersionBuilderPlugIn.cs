@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : VersionBuilderPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/07/2013
+// Updated : 06/18/2013
 // Note    : Copyright 2007-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -39,9 +39,8 @@ using SandcastleBuilder.Utils.PlugIn;
 namespace SandcastleBuilder.PlugIns
 {
     /// <summary>
-    /// This plug-in class is designed to generate version information for
-    /// assemblies in the current project and others related to the same
-    /// product that can be merged into the current project's help file topics.
+    /// This plug-in class is designed to generate version information for assemblies in the current project and
+    /// others related to the same product that can be merged into the current project's help file topics.
     /// </summary>
     public class VersionBuilderPlugIn : IPlugIn
     {
@@ -88,8 +87,7 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This read-only property returns the copyright information for the
-        /// plug-in.
+        /// This read-only property returns the copyright information for the plug-in
         /// </summary>
         public string Copyright
         {
@@ -111,10 +109,9 @@ namespace SandcastleBuilder.PlugIns
         {
             get
             {
-                return "This plug-in is used to generate version information " +
-                    "for the current project and others related to the same " +
-                    "product and merge that information into a single help " +
-                    "file for all of them.";
+                return "This plug-in is used to generate version information for the current project and " +
+                    "others related to the same product and merge that information into a single help file " +
+                    "for all of them.";
             }
         }
 
@@ -136,9 +133,8 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This read-only property returns a collection of execution points
-        /// that define when the plug-in should be invoked during the build
-        /// process.
+        /// This read-only property returns a collection of execution points that define when the plug-in should
+        /// be invoked during the build process.
         /// </summary>
         public ExecutionPointCollection ExecutionPoints
         {
@@ -156,14 +152,13 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This method is used by the Sandcastle Help File Builder to let the
-        /// plug-in perform its own configuration.
+        /// This method is used by the Sandcastle Help File Builder to let the plug-in perform its own
+        /// configuration.
         /// </summary>
         /// <param name="project">A reference to the active project</param>
         /// <param name="currentConfig">The current configuration XML fragment</param>
         /// <returns>A string containing the new configuration XML fragment</returns>
-        /// <remarks>The configuration data will be stored in the help file
-        /// builder project.</remarks>
+        /// <remarks>The configuration data will be stored in the help file builder project</remarks>
         public string ConfigurePlugIn(SandcastleProject project, string currentConfig)
         {
             using(VersionBuilderConfigDlg dlg = new VersionBuilderConfigDlg(project, currentConfig))
@@ -176,15 +171,11 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This method is used to initialize the plug-in at the start of the
-        /// build process.
+        /// This method is used to initialize the plug-in at the start of the build process
         /// </summary>
-        /// <param name="buildProcess">A reference to the current build
-        /// process.</param>
-        /// <param name="configuration">The configuration data that the plug-in
-        /// should use to initialize itself.</param>
-        /// <exception cref="BuilderException">This is thrown if the plug-in
-        /// configuration is not valid.</exception>
+        /// <param name="buildProcess">A reference to the current build process</param>
+        /// <param name="configuration">The configuration data that the plug-in should use to initialize itself</param>
+        /// <exception cref="BuilderException">This is thrown if the plug-in configuration is not valid</exception>
         public void Initialize(BuildProcess buildProcess, XPathNavigator configuration)
         {
             XPathNavigator root, node;
@@ -201,8 +192,7 @@ namespace SandcastleBuilder.PlugIns
             if(root.IsEmptyElement)
                 throw new BuilderException("VBP0002", "The Version Builder plug-in has not been configured yet");
 
-            // Add an element for the current project.  This one won't have
-            // a project to build.
+            // Add an element for the current project.  This one won't have a project to build.
             currentVersion = new VersionSettings();
             allVersions.Add(currentVersion);
 
@@ -221,14 +211,13 @@ namespace SandcastleBuilder.PlugIns
 
             allVersions.FromXml(builder.CurrentProject, root);
 
-            // An empty label messes up the HTML so use a single space
-            // if it's blank.
+            // An empty label messes up the HTML so use a single space if it's blank
             if(String.IsNullOrEmpty(currentVersion.FrameworkLabel))
                 currentVersion.FrameworkLabel = " ";
 
             if(node == null || allVersions.Count == 1)
-                throw new BuilderException("VBP0003", "A version value and at least one prior version " +
-                    "are required for the Version Builder plug-in.");
+                throw new BuilderException("VBP0003", "A version value and at least one prior version are " +
+                    "required for the Version Builder plug-in.");
 
             foreach(VersionSettings vs in allVersions)
                 if(!uniqueLabels.Contains(vs.FrameworkLabel))
@@ -253,8 +242,8 @@ namespace SandcastleBuilder.PlugIns
                 return;
             }
 
-            // Set the current version's reflection info filename and sort the
-            // collection so that the versions are in ascending order.
+            // Set the current version's reflection info filename and sort the collection so that the versions
+            // are in ascending order.
             currentVersion.ReflectionFilename = builder.ReflectionInfoFilename;
             allVersions.Sort();
 
@@ -301,8 +290,8 @@ namespace SandcastleBuilder.PlugIns
         //=====================================================================
 
         /// <summary>
-        /// This handles garbage collection to ensure proper disposal of the
-        /// plug-in if not done explicity with <see cref="Dispose()"/>.
+        /// This handles garbage collection to ensure proper disposal of the plug-in if not done explicitly with
+        /// <see cref="Dispose()"/>.
         /// </summary>
         ~VersionBuilderPlugIn()
         {
@@ -310,10 +299,9 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This implements the Dispose() interface to properly dispose of
-        /// the plug-in object.
+        /// This implements the Dispose() interface to properly dispose of the plug-in object
         /// </summary>
-        /// <overloads>There are two overloads for this method.</overloads>
+        /// <overloads>There are two overloads for this method</overloads>
         public void Dispose()
         {
             this.Dispose(true);
@@ -321,12 +309,10 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This can be overridden by derived classes to add their own
-        /// disposal code if necessary.
+        /// This can be overridden by derived classes to add their own disposal code if necessary
         /// </summary>
-        /// <param name="disposing">Pass true to dispose of the managed
-        /// and unmanaged resources or false to just dispose of the
-        /// unmanaged resources.</param>
+        /// <param name="disposing">Pass true to dispose of the managed and unmanaged resources or false to just
+        /// dispose of the unmanaged resources.</param>
         protected virtual void Dispose(bool disposing)
         {
             // Nothing to dispose of in this one
@@ -337,15 +323,11 @@ namespace SandcastleBuilder.PlugIns
         //=====================================================================
 
         /// <summary>
-        /// Update the version information items in the shared builder content
-        /// file.
+        /// Update the version information items in the shared builder content file
         /// </summary>
-        /// <remarks>
-        /// Remove the standard version information items from the shared
-        /// content file as the version builder information will take its
-        /// place in the topics.  New items are added for each version of
-        /// the project defined in the configuration settings.
-        /// </remarks>
+        /// <remarks>Remove the standard version information items from the shared content file as the version
+        /// builder information will take its place in the topics.  New items are added for each version of the
+        /// project defined in the configuration settings.</remarks>
         private void UpdateVersionItems()
         {
             XmlAttribute attr;
@@ -473,8 +455,7 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This is called by the build process thread to update the
-        /// application with the current build step.
+        /// This is called by the build process thread to update the application with the current build step
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
@@ -496,13 +477,13 @@ namespace SandcastleBuilder.PlugIns
             config.Append("<versions>\r\n");
             script.Append("@ECHO OFF\r\n\r\n");
 
-            // Make sure the script is ran from the correct location.  There was one report
-            // were it wasn't running from the correct folder for some reason.
+            // Make sure the script is ran from the correct location.  There was one report were it wasn't
+            // running from the correct folder for some reason.
             script.AppendFormat("CD {0}\r\n\r\n", builder.WorkingFolder);
 
-            // Write out a <versions> element for each unique label that contains info for each related
-            // version.  We also copy the reflection files to unique names as we will create a new
-            // reflection.org file that contains everything.
+            // Write out a <versions> element for each unique label that contains info for each related version.
+            // We also copy the reflection files to unique names as we will create a new reflection.org file that
+            // contains everything.
             foreach(string label in uniqueLabels)
             {
                 config.AppendFormat("  <versions name=\"SHFB_VBPI_Lbl_{0:X}\">\r\n", label.GetHashCode());

@@ -25,7 +25,7 @@ namespace Microsoft.Ddue.Tools
             options.Add(new SwitchOption("?", "Show this help page."));
             options.Add(new ListOption("xsl", "Specify one or more XSL transform files.", "xsltPath") {
                 RequiredMessage = "Specify at least one XSL transform file" });
-            options.Add(new ListOption("arg", "Sepcify arguments.", "name=value"));
+            options.Add(new ListOption("arg", "Specify arguments.", "name=value"));
             options.Add(new StringOption("out", "Specify an output file. If unspecified, output goes to the " +
                 "console.", "outputFilePath"));
             options.Add(new SwitchOption("w", "Do not ignore insignificant whitespace. By default " +
@@ -148,7 +148,7 @@ namespace Microsoft.Ddue.Tools
                     catch(IOException e)
                     {
                         ConsoleApplication.WriteMessage(LogLevel.Error, String.Format(CultureInfo.CurrentCulture,
-                            "An error occured while attempting to create a temporary file. The error message is: {0}", e.Message));
+                            "An error occurred while attempting to create a temporary file. The error message is: {0}", e.Message));
                         return (1);
                     }
                 }
@@ -221,7 +221,7 @@ namespace Microsoft.Ddue.Tools
                         catch(XsltException e)
                         {
                             ConsoleApplication.WriteMessage(LogLevel.Error, String.Format(CultureInfo.CurrentCulture,
-                                "An error occured during the transformation. The error message is: {0}",
+                                "An error occurred during the transformation. The error message is: {0}",
                                 (e.InnerException == null) ? e.Message : e.InnerException.Message));
                             return (1);
                         }
@@ -259,7 +259,6 @@ namespace Microsoft.Ddue.Tools
 
                 // the last output file is the next input file
                 input = output;
-
             }
 
             return (0);

@@ -10,8 +10,8 @@
 // 12/23/2012 - EFW - Updated to use and return enumerable lists of components rather than arrays.  Replaced
 // TopicManifest and TopicEnumerator with a private ReadManifest() method.
 // 01/12/2013 - EFW - Added the Execute() method to contain the build process and reworked it to allow for
-// parallel executon of component code.  Components are still initialized and topics built sequentially for now.
-// Converted the message logger to use BlockingCollection<string> to allow for parallel executon of component
+// parallel execution of component code.  Components are still initialized and topics built sequentially for now.
+// Converted the message logger to use BlockingCollection<string> to allow for parallel execution of component
 // code without contention for the console.
 // 03/01/2013 - EFW - Added a warning count
 
@@ -365,7 +365,7 @@ namespace Microsoft.Ddue.Tools
             }
             catch(IOException e)
             {
-                this.WriteMessage(MessageLevel.Error, "A file access error occured while attempting to load " +
+                this.WriteMessage(MessageLevel.Error, "A file access error occurred while attempting to load " +
                     "the build component assembly '{0}'. The error message is: {1}", assemblyName, e.Message);
             }
             catch(BadImageFormatException e)
@@ -390,7 +390,7 @@ namespace Microsoft.Ddue.Tools
                 if(e.InnerException is OperationCanceledException)
                     throw e.InnerException;
 
-                this.WriteMessage(MessageLevel.Error, "An error occured while initializing the build component " +
+                this.WriteMessage(MessageLevel.Error, "An error occurred while initializing the build component " +
                     "'{0}' in the component assembly '{1}'. The error message and stack trace follows: {2}",
                     typeName, assemblyName, e.InnerException.ToString());
             }
@@ -480,13 +480,8 @@ namespace Microsoft.Ddue.Tools
                 if(String.IsNullOrWhiteSpace(key))
                     text = String.Format(CultureInfo.CurrentCulture, "{0}: {1}: {2}", level, type.Name, message);
                 else
-                {
-                    // The key can contain braces so escape them
-                    key = key.Replace("{", "{{").Replace("}", "}}");
-
                     text = String.Format(CultureInfo.CurrentCulture, "{0}: {1}: [{2}] {3}", level, type.Name,
                         key, message);
-                }
 
                 // If the background task has completed, we'll call the message logger action directly
                 switch(level)

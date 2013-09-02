@@ -1,0 +1,26 @@
+﻿<sci:BasePage x:Class="Sandcastle.Installer.InstallerPages.VisualStudioSpellCheckerPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:sci="clr-namespace:Sandcastle.Installer.InstallerPages"
+      mc:Ignorable="d"
+      d:DesignHeight="325" d:DesignWidth="500">
+	<FlowDocumentScrollViewer>
+		<FlowDocument Name="fdDocument" FontFamily="Verdana" FontSize="11" PagePadding="10,15" TextAlignment="Left">
+			<Paragraph><Bold FontSize="16">Visual Studio Spell Checker</Bold></Paragraph>
+
+			<Paragraph>If you need a spell checker for Visual Studio, the
+<Hyperlink NavigateUri="http://visualstudiogallery.msdn.microsoft.com/a23de100-31a1-405c-b4b7-d6be40c3dfff">Visual
+Studio Spell Checker</Hyperlink> can be downloaded and installed from the <Bold>Visual Studio Gallery</Bold>.  It
+is an editor extension that checks the spelling of comments, strings, and plain text as you type or interactively
+with a tool window.  Support is included for spell checking source code, XML files, and MAML topic files.</Paragraph>
+
+			<Paragraph>The project is hosted on <Hyperlink NavigateUri="http://VSSpellChecker.CodePlex.com">CodePlex</Hyperlink>.
+Information on its available features and instructions on adding custom dictionaries can be found there.  The
+CodePlex site is also the place to ask questions and make feature requests for it.</Paragraph>
+
+			<Paragraph>Click the <Bold>Next</Bold> button to continue.</Paragraph>
+		</FlowDocument>
+	</FlowDocumentScrollViewer>
+</sci:BasePage>

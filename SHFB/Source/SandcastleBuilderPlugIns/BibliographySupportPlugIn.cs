@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : BibliographySupportPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/07/2013
+// Updated : 06/18/2013
 // Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -38,6 +38,8 @@ namespace SandcastleBuilder.PlugIns
     public class BibliographySupportPlugIn : SandcastleBuilder.Utils.PlugIn.IPlugIn
     {
         #region Private data members
+        //=====================================================================
+
         private ExecutionPointCollection executionPoints;
         private BuildProcess builder;
 
@@ -46,7 +48,6 @@ namespace SandcastleBuilder.PlugIns
 
         #region IPlugIn implementation
         //=====================================================================
-        // IPlugIn implementation
 
         /// <summary>
         /// This read-only property returns a friendly name for the plug-in
@@ -65,16 +66,14 @@ namespace SandcastleBuilder.PlugIns
             {
                 // Use the assembly version
                 Assembly asm = Assembly.GetExecutingAssembly();
-                FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(
-                    asm.Location);
+                FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(asm.Location);
 
                 return new Version(fvi.ProductVersion);
             }
         }
 
         /// <summary>
-        /// This read-only property returns the copyright information for the
-        /// plug-in.
+        /// This read-only property returns the copyright information for the plug-in
         /// </summary>
         public string Copyright
         {
@@ -82,9 +81,8 @@ namespace SandcastleBuilder.PlugIns
             {
                 // Use the assembly copyright
                 Assembly asm = Assembly.GetExecutingAssembly();
-                AssemblyCopyrightAttribute copyright =
-                    (AssemblyCopyrightAttribute)Attribute.GetCustomAttribute(
-                        asm, typeof(AssemblyCopyrightAttribute));
+                AssemblyCopyrightAttribute copyright = (AssemblyCopyrightAttribute)Attribute.GetCustomAttribute(
+                    asm, typeof(AssemblyCopyrightAttribute));
 
                 return copyright.Copyright;
             }
@@ -97,8 +95,7 @@ namespace SandcastleBuilder.PlugIns
         {
             get
             {
-                return "This plug in is used to add bibliography support " +
-                    "to the help file topics.";
+                return "This plug in is used to add bibliography support to the help file topics.";
             }
         }
 
@@ -112,7 +109,7 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This plug-in runs in partial builds
+        /// This plug-in does not run in partial builds
         /// </summary>
         public bool RunsInPartialBuild
         {
@@ -120,9 +117,8 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This read-only property returns a collection of execution points
-        /// that define when the plug-in should be invoked during the build
-        /// process.
+        /// This read-only property returns a collection of execution points that define when the plug-in should
+        /// be invoked during the build process.
         /// </summary>
         public ExecutionPointCollection ExecutionPoints
         {
@@ -132,9 +128,7 @@ namespace SandcastleBuilder.PlugIns
                 {
                     executionPoints = new ExecutionPointCollection();
 
-                    executionPoints.Add(new ExecutionPoint(
-                        BuildStep.MergeCustomConfigs,
-                        ExecutionBehaviors.After));
+                    executionPoints.Add(new ExecutionPoint(BuildStep.MergeCustomConfigs, ExecutionBehaviors.After));
                 }
 
                 return executionPoints;
@@ -142,19 +136,17 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This method is used by the Sandcastle Help File Builder to let the
-        /// plug-in perform its own configuration.
+        /// This method is used by the Sandcastle Help File Builder to let the plug-in perform its own
+        /// configuration.
         /// </summary>
         /// <param name="project">A reference to the active project</param>
         /// <param name="currentConfig">The current configuration XML fragment</param>
         /// <returns>A string containing the new configuration XML fragment</returns>
-        /// <remarks>The configuration data will be stored in the help file
-        /// builder project.</remarks>
+        /// <remarks>The configuration data will be stored in the help file builder project.</remarks>
         public string ConfigurePlugIn(SandcastleProject project,
           string currentConfig)
         {
-            using(BibliographySupportConfigDlg dlg =
-              new BibliographySupportConfigDlg(currentConfig))
+            using(BibliographySupportConfigDlg dlg = new BibliographySupportConfigDlg(currentConfig))
             {
                 if(dlg.ShowDialog() == DialogResult.OK)
                     currentConfig = dlg.Configuration;
@@ -164,13 +156,10 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This method is used to initialize the plug-in at the start of the
-        /// build process.
+        /// This method is used to initialize the plug-in at the start of the build process
         /// </summary>
-        /// <param name="buildProcess">A reference to the current build
-        /// process.</param>
-        /// <param name="configuration">The configuration data that the plug-in
-        /// should use to initialize itself.</param>
+        /// <param name="buildProcess">A reference to the current build process</param>
+        /// <param name="configuration">The configuration data that the plug-in should use to initialize itself</param>
         public void Initialize(BuildProcess buildProcess,
           XPathNavigator configuration)
         {
@@ -178,30 +167,28 @@ namespace SandcastleBuilder.PlugIns
 
             builder = buildProcess;
 
-            builder.ReportProgress("{0} Version {1}\r\n{2}\r\n",
-                this.Name, this.Version, this.Copyright);
+            builder.ReportProgress("{0} Version {1}\r\n{2}\r\n", this.Name, this.Version, this.Copyright);
 
             root = configuration.SelectSingleNode("configuration");
 
             if(root.IsEmptyElement)
-                throw new BuilderException("BIB0001", "The Bibliography " +
-                    "support plug-in has not been configured yet");
+                throw new BuilderException("BIB0001", "The Bibliography support plug-in has not been " +
+                    "configured yet");
 
             node = root.SelectSingleNode("bibliography");
+
             if(node != null)
                 bibliographyFile = node.GetAttribute("path", String.Empty).Trim();
 
             if(String.IsNullOrEmpty(bibliographyFile))
-                throw new BuilderException("BIB0002", "A path to the " +
-                    "bibliography file is required");
+                throw new BuilderException("BIB0002", "A path to the bibliography file is required");
 
             // If relative, the path is relative to the project folder
-            bibliographyFile = FilePath.RelativeToAbsolutePath(
-                builder.ProjectFolder, builder.TransformText(bibliographyFile));
+            bibliographyFile = FilePath.RelativeToAbsolutePath(builder.ProjectFolder,
+                builder.TransformText(bibliographyFile));
 
             if(!File.Exists(bibliographyFile))
-                throw new BuilderException("BIB0003", "Unable to locate " +
-                    "bibliography file at " + bibliographyFile);
+                throw new BuilderException("BIB0003", "Unable to locate bibliography file at " + bibliographyFile);
         }
 
         /// <summary>
@@ -230,36 +217,31 @@ namespace SandcastleBuilder.PlugIns
         //=====================================================================
 
         /// <summary>
-        /// Add the bibliography file parameter to the TransformComponent
-        /// configuration.
+        /// Add the bibliography file parameter to the TransformComponent configuration
         /// </summary>
-        /// <param name="configFilename">The BuildAssembler configuration file
-        /// to modify</param>
+        /// <param name="configFilename">The BuildAssembler configuration file to modify</param>
         private void AddBibliographyParameter(string configFilename)
         {
             XmlDocument configFile;
             XmlAttribute attr;
             XmlNode transform, argument;
 
-            builder.ReportProgress("\r\nAdding bibliography parameter to {0}...",
-                configFilename);
+            builder.ReportProgress("\r\nAdding bibliography parameter to {0}...", configFilename);
             configFile = new XmlDocument();
             configFile.Load(configFilename);
 
 
-            // To configure Sandcastle, find the main XSLT component
-            // (Microsoft.Ddue.Tools.TransformComponent) in the configuration
-            // file and add a new argument to it:
+            // To configure Sandcastle, find the main XSLT component (Microsoft.Ddue.Tools.TransformComponent) in
+            // the configuration file and add a new argument to it:
             // <argument key='bibliographyData' value='../Data/bibliography.xml' />
             // Update sandcastle.config and conceptual.config if it exists.
 
-            transform = configFile.SelectSingleNode(
-                "configuration/dduetools/builder/components/component[" +
+            transform = configFile.SelectSingleNode("configuration/dduetools/builder/components/component[" +
                 "@type='Microsoft.Ddue.Tools.TransformComponent']/transform");
 
             if(transform == null)
-                throw new BuilderException("BIB0004", "Unable to locate " +
-                    "TransformComponent configuration in " + configFilename);
+                throw new BuilderException("BIB0004", "Unable to locate TransformComponent configuration in " +
+                    configFilename);
 
             argument = configFile.CreateElement("argument");
 
@@ -277,14 +259,12 @@ namespace SandcastleBuilder.PlugIns
         }
         #endregion
 
-
         #region IDisposable implementation
         //=====================================================================
-        // IDisposable implementation
 
         /// <summary>
-        /// This handles garbage collection to ensure proper disposal of the
-        /// plug-in if not done explicity with <see cref="Dispose()"/>.
+        /// This handles garbage collection to ensure proper disposal of the plug-in if not done explicitly with
+        /// <see cref="Dispose()"/>.
         /// </summary>
         ~BibliographySupportPlugIn()
         {
@@ -292,10 +272,9 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This implements the Dispose() interface to properly dispose of
-        /// the plug-in object.
+        /// This implements the Dispose() interface to properly dispose of the plug-in object
         /// </summary>
-        /// <overloads>There are two overloads for this method.</overloads>
+        /// <overloads>There are two overloads for this method</overloads>
         public void Dispose()
         {
             this.Dispose(true);
@@ -303,12 +282,10 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This can be overridden by derived classes to add their own
-        /// disposal code if necessary.
+        /// This can be overridden by derived classes to add their own disposal code if necessary
         /// </summary>
-        /// <param name="disposing">Pass true to dispose of the managed
-        /// and unmanaged resources or false to just dispose of the
-        /// unmanaged resources.</param>
+        /// <param name="disposing">Pass true to dispose of the managed and unmanaged resources or false to just
+        /// dispose of the unmanaged resources</param>
         protected virtual void Dispose(bool disposing)
         {
             // Nothing to dispose of in this one

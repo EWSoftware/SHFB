@@ -773,7 +773,7 @@
 		<xsl:variable name="filteredOverloadElements"
 									select="element[starts-with(@api, 'Overload:')]/element | element[not(starts-with(@api, 'Overload:'))]"/>
 
-		<xsl:call-template name="t_putMemberIntro"/>
+		<xsl:call-template name="t_memberIntroBoilerplate"/>
 
 		<!-- TODO: factor out these duplicated Xpaths by a new conditional in t_putMemberListSection:
          count($members) &gt; 0 -->

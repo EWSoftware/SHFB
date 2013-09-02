@@ -2,11 +2,11 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SandcastleBuilderPackage.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/04/2013
+// Updated : 08/01/2013
 // Note    : Copyright 2011-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains the class that defines the Sancastle Help File Builder Visual Studio package
+// This file contains the class that defines the Sandcastle Help File Builder Visual Studio package
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
 // distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
@@ -409,6 +409,25 @@ namespace SandcastleBuilder.Package
                 }
                 else
                     outputPath += "Index.html";
+
+            // If there are substitution tags present, have a go at resolving them
+            if(outputPath.IndexOf("{@", StringComparison.Ordinal) != -1)
+            {
+                try
+                {
+                    var bp = new SandcastleBuilder.Utils.BuildEngine.BuildProcess(project);
+                    outputPath = bp.TransformText(outputPath);
+                }
+                catch
+                {
+                    // Ignore errors
+                    Utility.ShowMessageBox(OLEMSGICON.OLEMSGICON_WARNING, "The help filename appears to " +
+                        "contain substitution tags but they could not be resolved to determine the actual " +
+                        "file to open for viewing.  Building website output and viewing it can be used to " +
+                        "work around this issue.");
+                    return;
+                }
+            }
 
             if(!File.Exists(outputPath))
             {

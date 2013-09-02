@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : BuildPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 12/15/2012
-// Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
+// Updated : 06/21/2013
+// Note    : Copyright 2011-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This user control is used to edit the Build category properties.
@@ -187,9 +187,6 @@ namespace SandcastleBuilder.Package.PropertyPages
             // Get the selected help file formats
             if(control.Name == "cblHelpFileFormat")
             {
-                for(idx = 0; idx < cblHelpFileFormat.Items.Count; idx++)
-                    cblHelpFileFormat.SetItemChecked(idx, false);
-
                 List<string> allFormats = cblHelpFileFormat.Items.OfType<HelpFileFormatItem>().Select(
                     f => f.Format.ToString()).ToList();
 
@@ -201,6 +198,9 @@ namespace SandcastleBuilder.Package.PropertyPages
 
                 if(projProp == null || !Enum.TryParse<HelpFileFormat>(projProp.UnevaluatedValue, out format))
                     format = HelpFileFormat.HtmlHelp1;
+
+                for(idx = 0; idx < cblHelpFileFormat.Items.Count; idx++)
+                    cblHelpFileFormat.SetItemChecked(idx, false);
 
                 foreach(string s in format.ToString().Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
                 {

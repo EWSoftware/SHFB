@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : AdditionalContentOnlyPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/07/2013
+// Updated : 06/18/2013
 // Note    : Copyright 2007-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -40,10 +40,8 @@ using SandcastleBuilder.Utils.PlugIn;
 namespace SandcastleBuilder.PlugIns
 {
     /// <summary>
-    /// This plug-in class can be used to build a help file consisting of
-    /// nothing but additional content items.  It is also useful for
-    /// proofreading your additional content without having to build all the
-    /// API topics.
+    /// This plug-in class can be used to build a help file consisting of nothing but additional content items.
+    /// It is also useful for proofreading your additional content without having to build all the API topics.
     /// </summary>
     public class AdditionalContentOnlyPlugIn : IPlugIn
     {
@@ -83,8 +81,7 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This read-only property returns the copyright information for the
-        /// plug-in.
+        /// This read-only property returns the copyright information for the plug-in
         /// </summary>
         public string Copyright
         {
@@ -106,11 +103,9 @@ namespace SandcastleBuilder.PlugIns
         {
             get
             {
-                return "This plug-in can be used to build a help file " +
-                    "consisting of nothing but conceptual content and/or " +
-                    "additional content items.  It is also useful for " +
-                    "proofreading your conceptual and/or additional content " +
-                    "without having to build all the API topics.";
+                return "This plug-in can be used to build a help file consisting of nothing but conceptual " +
+                    "content and/or additional content items.  It is also useful for proofreading your " +
+                    "conceptual and/or additional content without having to build all the API topics.";
             }
         }
 
@@ -132,9 +127,8 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This read-only property returns a collection of execution points
-        /// that define when the plug-in should be invoked during the build
-        /// process.
+        /// This read-only property returns a collection of execution points that define when the plug-in should
+        /// be invoked during the build process.
         /// </summary>
         public ExecutionPointCollection ExecutionPoints
         {
@@ -160,14 +154,13 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This method is used by the Sandcastle Help File Builder to let the
-        /// plug-in perform its own configuration.
+        /// This method is used by the Sandcastle Help File Builder to let the plug-in perform its own
+        /// configuration.
         /// </summary>
         /// <param name="project">A reference to the active project</param>
         /// <param name="currentConfig">The current configuration XML fragment</param>
         /// <returns>A string containing the new configuration XML fragment</returns>
-        /// <remarks>The configuration data will be stored in the help file
-        /// builder project.</remarks>
+        /// <remarks>The configuration data will be stored in the help file builder project</remarks>
         public string ConfigurePlugIn(SandcastleProject project, string currentConfig)
         {
             MessageBox.Show("This plug-in has no configurable settings", "Additional Content Only Plug-In",
@@ -177,29 +170,26 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This method is used to initialize the plug-in at the start of the
-        /// build process.
+        /// This method is used to initialize the plug-in at the start of the build process
         /// </summary>
-        /// <param name="buildProcess">A reference to the current build
-        /// process.</param>
-        /// <param name="configuration">The configuration data that the plug-in
-        /// should use to initialize itself.</param>
+        /// <param name="buildProcess">A reference to the current build process</param>
+        /// <param name="configuration">The configuration data that the plug-in should use to initialize itself</param>
         public void Initialize(BuildProcess buildProcess, XPathNavigator configuration)
         {
             builder = buildProcess;
 
-            builder.ReportProgress("{0} Version {1}\r\n{2}\r\n    This build will only include " +
-                "additional content items.", this.Name, this.Version, this.Copyright);
+            builder.ReportProgress("{0} Version {1}\r\n{2}\r\n    This build will only include additional " +
+                "content items.", this.Name, this.Version, this.Copyright);
 
             if(!builder.CurrentProject.HasItems(BuildAction.ContentLayout) &&
               !builder.CurrentProject.HasItems(BuildAction.SiteMap) &&
               !builder.CurrentProject.HasItems(BuildAction.Content))
-                throw new BuilderException("ACP0001", "The Additional Content " +
-                    "Only plug-in requires a conceptual content layout file, " +
-                    "a site map file, or content items in the project.");
+                throw new BuilderException("ACP0001", "The Additional Content Only plug-in requires a " +
+                    "conceptual content layout file, a site map file, or content items in the project.");
 
-            // If doing a preview for conceptual content, suppress all the
-            // steps that actually build the help file too.
+            // If doing a preview for conceptual content, suppress all the steps that actually build the help
+            // file too.  Not used anymore since the topic previewer control was created.  May support for this
+            // option remove later.
             configuration.MoveToChild(XPathNodeType.All);
 
             if(configuration.GetAttribute("previewBuild", String.Empty) == "true")
@@ -246,8 +236,8 @@ namespace SandcastleBuilder.PlugIns
                     sw.WriteLine("</reflection>");
                 }
 
-                File.Copy(builder.ReflectionInfoFilename,
-                    Path.ChangeExtension(builder.ReflectionInfoFilename, ".xml"), true);
+                File.Copy(builder.ReflectionInfoFilename, Path.ChangeExtension(builder.ReflectionInfoFilename,
+                    ".xml"), true);
 
                 // Allow After step plug-ins to run
                 builder.ExecuteAfterStepPlugIns();
@@ -256,8 +246,7 @@ namespace SandcastleBuilder.PlugIns
                 if(context.BuildStep == BuildStep.MergeCustomConfigs &&
                   builder.CurrentProject.HasItems(BuildAction.ContentLayout))
                 {
-                    // Remove the reflection.xml file from the conceptual
-                    // configuration file since it isn't valid.
+                    // Remove the reflection.xml file from the conceptual configuration file since it isn't valid
                     config = new XmlDocument();
                     config.Load(builder.WorkingFolder + "conceptual.config");
                     navConfig = config.CreateNavigator();
@@ -267,8 +256,8 @@ namespace SandcastleBuilder.PlugIns
                     foreach(XPathNavigator target in allTargets)
                         deleteTargets.Add(target);
 
-                    // Get rid of the framework targets too in preview build.
-                    // This can knock about 20 seconds off the build time.
+                    // Get rid of the framework targets too in preview build.  This can knock about 20 seconds
+                    // off the build time.
                     if(isPreviewBuild)
                     {
                         allTargets = navConfig.Select("//targets[contains(@base, 'Data\\Reflection')]");
@@ -291,8 +280,8 @@ namespace SandcastleBuilder.PlugIns
         //=====================================================================
 
         /// <summary>
-        /// This handles garbage collection to ensure proper disposal of the
-        /// plug-in if not done explicity with <see cref="Dispose()"/>.
+        /// This handles garbage collection to ensure proper disposal of the plug-in if not done explicitly with
+        /// <see cref="Dispose()"/>.
         /// </summary>
         ~AdditionalContentOnlyPlugIn()
         {
@@ -300,8 +289,7 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This implements the Dispose() interface to properly dispose of
-        /// the plug-in object.
+        /// This implements the Dispose() interface to properly dispose of the plug-in object
         /// </summary>
         /// <overloads>There are two overloads for this method.</overloads>
         public void Dispose()
@@ -311,12 +299,10 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This can be overridden by derived classes to add their own
-        /// disposal code if necessary.
+        /// This can be overridden by derived classes to add their own disposal code if necessary
         /// </summary>
-        /// <param name="disposing">Pass true to dispose of the managed
-        /// and unmanaged resources or false to just dispose of the
-        /// unmanaged resources.</param>
+        /// <param name="disposing">Pass true to dispose of the managed and unmanaged resources or false to just
+        /// dispose of the unmanaged resources.</param>
         protected virtual void Dispose(bool disposing)
         {
             // Nothing to dispose of in this one

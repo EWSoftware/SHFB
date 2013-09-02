@@ -121,7 +121,7 @@
             this.cboFrameworkVersion.Location = new System.Drawing.Point(431, 12);
             this.cboFrameworkVersion.MaxDropDownItems = 16;
             this.cboFrameworkVersion.Name = "cboFrameworkVersion";
-            this.cboFrameworkVersion.Size = new System.Drawing.Size(280, 28);
+            this.cboFrameworkVersion.Size = new System.Drawing.Size(330, 28);
             this.cboFrameworkVersion.TabIndex = 3;
             this.cboFrameworkVersion.Tag = "FrameworkVersion";
             // 

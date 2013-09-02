@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : AdditionalReferenceLinksPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/29/2013
+// Updated : 06/18/2013
 // Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -453,7 +453,7 @@ namespace SandcastleBuilder.PlugIns
         //=====================================================================
 
         /// <summary>
-        /// This handles garbage collection to ensure proper disposal of the plug-in if not done explicity with
+        /// This handles garbage collection to ensure proper disposal of the plug-in if not done explicitly with
         /// <see cref="Dispose()"/>.
         /// </summary>
         ~AdditionalReferenceLinksPlugIn()

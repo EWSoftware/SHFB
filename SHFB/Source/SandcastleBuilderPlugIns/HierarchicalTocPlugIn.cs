@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : HierarchicalTocPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/07/2013
+// Updated : 06/18/2013
 // Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -39,9 +39,8 @@ using SandcastleBuilder.Utils.PlugIn;
 namespace SandcastleBuilder.PlugIns
 {
     /// <summary>
-    /// This plug-in class can be used to rearrange the table of contents such
-    /// that namespaces are nested within their parent namespaces rather than
-    /// appearing as a flat list of all namespaces at the root level.
+    /// This plug-in class can be used to rearrange the table of contents such that namespaces are nested within
+    /// their parent namespaces rather than appearing as a flat list of all namespaces at the root level.
     /// </summary>
     public class HierarchicalTocPlugIn : IPlugIn
     {
@@ -83,8 +82,7 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This read-only property returns the copyright information for the
-        /// plug-in.
+        /// This read-only property returns the copyright information for the plug-in
         /// </summary>
         public string Copyright
         {
@@ -106,10 +104,9 @@ namespace SandcastleBuilder.PlugIns
         {
             get
             {
-                return "This plug-in can be used to rearrange the table of " +
-                    "contents such that namespaces are nested within their " +
-                    "parent namespaces rather than appearing as a flat " +
-                    "list of all namespaces at the root level.";
+                return "This plug-in can be used to rearrange the table of contents such that namespaces are " +
+                    "nested within their parent namespaces rather than appearing as a flat list of all " +
+                    "namespaces at the root level.";
             }
         }
 
@@ -131,9 +128,8 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This read-only property returns a collection of execution points
-        /// that define when the plug-in should be invoked during the build
-        /// process.
+        /// This read-only property returns a collection of execution points that define when the plug-in should
+        /// be invoked during the build process.
         /// </summary>
         public ExecutionPointCollection ExecutionPoints
         {
@@ -150,14 +146,13 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This method is used by the Sandcastle Help File Builder to let the
-        /// plug-in perform its own configuration.
+        /// This method is used by the Sandcastle Help File Builder to let the plug-in perform its own
+        /// configuration.
         /// </summary>
         /// <param name="project">A reference to the active project</param>
         /// <param name="currentConfig">The current configuration XML fragment</param>
         /// <returns>A string containing the new configuration XML fragment</returns>
-        /// <remarks>The configuration data will be stored in the help file
-        /// builder project.</remarks>
+        /// <remarks>The configuration data will be stored in the help file builder project</remarks>
         public string ConfigurePlugIn(SandcastleProject project, string currentConfig)
         {
             using(HierarchicalTocConfigDlg dlg = new HierarchicalTocConfigDlg(currentConfig))
@@ -170,13 +165,10 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This method is used to initialize the plug-in at the start of the
-        /// build process.
+        /// This method is used to initialize the plug-in at the start of the build process
         /// </summary>
-        /// <param name="buildProcess">A reference to the current build
-        /// process.</param>
-        /// <param name="configuration">The configuration data that the plug-in
-        /// should use to initialize itself.</param>
+        /// <param name="buildProcess">A reference to the current build process</param>
+        /// <param name="configuration">The configuration data that the plug-in should use to initialize itself</param>
         public void Initialize(BuildProcess buildProcess, XPathNavigator configuration)
         {
             XPathNavigator root;
@@ -186,15 +178,13 @@ namespace SandcastleBuilder.PlugIns
 
             builder.ReportProgress("{0} Version {1}\r\n{2}", this.Name, this.Version, this.Copyright);
 
-            // The Hierarchical TOC plug-in is not compatible with MS Help Viewer output
-            // and there is currently no fix available.  The problem is that the table of
-            // contents is generated off of the help topics when the help viewer file is
-            // installed and, since there are no physical topics for the namespace nodes
-            // added to the intermediate TOC file by the plug-in, they do not appear in the
-            // help file.  Updating the plug-in to support help viewer output would have
-            // required more work than time would allow for this release.    If building
-            // other output formats in which you want to use the plug-in, build them
-            // separately from the MS Help Viewer output.
+            // The Hierarchical TOC plug-in is not compatible with MS Help Viewer output and there is currently
+            // no fix available.  The problem is that the table of contents is generated off of the help topics
+            // when the help viewer file is installed and, since there are no physical topics for the namespace
+            // nodes added to the intermediate TOC file by the plug-in, they do not appear in the help file.
+            // Updating the plug-in to support help viewer output would have required more work than time would
+            // allow for this release.  If building other output formats in which you want to use the plug-in,
+            // build them separately from the MS Help Viewer output.
             if((builder.CurrentProject.HelpFileFormat & HelpFileFormat.MSHelpViewer) != 0)
             {
                 this.ExecutionPoints.Clear();
@@ -251,8 +241,8 @@ namespace SandcastleBuilder.PlugIns
                 topicTitle = tocEntry.InnerText;
             else
             {
-                builder.ReportWarning("HTP0001", "Unable to locate namespace " +
-                    "topic title in reference content file.  Using default.");
+                builder.ReportWarning("HTP0001", "Unable to locate namespace topic title in reference " +
+                    "content file.  Using default.");
                 topicTitle = "{0} Namespace";
             }
 
@@ -262,9 +252,8 @@ namespace SandcastleBuilder.PlugIns
             toc.Load(builder.WorkingFolder + "toc.xml");
             navToc = toc.CreateNavigator();
 
-            // Get a list of the namespaces.  If a root namespace container
-            // node is present, we need to look in it rather than the document
-            // root node.
+            // Get a list of the namespaces.  If a root namespace container node is present, we need to look in
+            // it rather than the document root node.
             root = navToc.SelectSingleNode("topics/topic[starts-with(@id, 'R:')]");
 
             if(root == null)
@@ -277,8 +266,7 @@ namespace SandcastleBuilder.PlugIns
                 namespaceNodes.Add(name, ((IHasXmlNode)ns).GetNode());
             }
 
-            // See if any container nodes need to be created for namespaces
-            // with a common root name.
+            // See if any container nodes need to be created for namespaces with a common root name
             for(parentIdx = 0; parentIdx < namespaceList.Count; parentIdx++)
             {
                 parts = namespaceList[parentIdx].Split('.');
@@ -295,8 +283,7 @@ namespace SandcastleBuilder.PlugIns
                             if(namespaceList.FindAll(
                               ns => ns.StartsWith(name + ".", StringComparison.Ordinal)).Count > 0)
                             {
-                                // The nodes will be created later once
-                                // we know where to insert them.
+                                // The nodes will be created later once we know where to insert them
                                 namespaceList.Add(name);
                                 namespaceNodes.Add(name, null);
                             }
@@ -308,16 +295,16 @@ namespace SandcastleBuilder.PlugIns
             // Sort them in reverse order
             namespaceList.Sort((n1, n2) => String.Compare(n2, n1, StringComparison.Ordinal));
 
-            // If any container namespaces were added, create nodes for them
-            // and insert them before the namespace ahead of them in the list.
+            // If any container namespaces were added, create nodes for them and insert them before the namespace
+            // ahead of them in the list.
             foreach(string key in namespaceList)
                 if(namespaceNodes[key] == null)
                 {
                     tocEntry = toc.CreateElement("topic");
                     attr = toc.CreateAttribute("id");
 
-                    attr.Value = String.Format(CultureInfo.InvariantCulture,
-                        topicTitle, (key.Length > 2) ? key.Substring(2) : "Global");
+                    attr.Value = String.Format(CultureInfo.InvariantCulture, topicTitle,
+                        (key.Length > 2) ? key.Substring(2) : "Global");
                     tocEntry.Attributes.Append(attr);
 
                     parentIdx = namespaceList.IndexOf(key);
@@ -331,8 +318,8 @@ namespace SandcastleBuilder.PlugIns
                 parent = namespaceList[parentIdx];
                 entriesAdded = 0;
 
-                // Check each preceding namespace.  If it starts with the
-                // parent's name, insert it as a child of that one.
+                // Check each preceding namespace.  If it starts with the parent's name, insert it as a child of
+                // that one.
                 for(childIdx = 0; childIdx < parentIdx; childIdx++)
                 {
                     name = namespaceList[childIdx];
@@ -364,8 +351,8 @@ namespace SandcastleBuilder.PlugIns
         //=====================================================================
 
         /// <summary>
-        /// This handles garbage collection to ensure proper disposal of the
-        /// plug-in if not done explicity with <see cref="Dispose()"/>.
+        /// This handles garbage collection to ensure proper disposal of the plug-in if not done explicitly with
+        /// <see cref="Dispose()"/>.
         /// </summary>
         ~HierarchicalTocPlugIn()
         {
@@ -373,8 +360,7 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This implements the Dispose() interface to properly dispose of
-        /// the plug-in object.
+        /// This implements the Dispose() interface to properly dispose of the plug-in object
         /// </summary>
         /// <overloads>There are two overloads for this method.</overloads>
         public void Dispose()
@@ -384,12 +370,10 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This can be overridden by derived classes to add their own
-        /// disposal code if necessary.
+        /// This can be overridden by derived classes to add their own disposal code if necessary
         /// </summary>
-        /// <param name="disposing">Pass true to dispose of the managed
-        /// and unmanaged resources or false to just dispose of the
-        /// unmanaged resources.</param>
+        /// <param name="disposing">Pass true to dispose of the managed and unmanaged resources or false to just
+        /// dispose of the unmanaged resources.</param>
         protected virtual void Dispose(bool disposing)
         {
             // Nothing to dispose of in this one

@@ -1086,6 +1086,7 @@
     </Content>
     <Content Include="Web\FillNode.aspx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>ASPXCodeBehind</SubType>
     </Content>
     <Content Include="Web\Index.aspx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

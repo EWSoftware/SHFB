@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : PresentationStyleSettings.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/15/2012
-// Note    : Copyright 2012, Eric Woodruff, All rights reserved
+// Updated : 06/22/2013
+// Note    : Copyright 2012-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class that is used to contain settings information for a specific presentation style
@@ -16,6 +16,7 @@
 // Version     Date     Who  Comments
 // ==============================================================================================================
 // 1.9.6.0  10/24/2012  EFW  Created the code
+// 1.9.8.0  06/21/2013  EFW  Added support for format-specific help content files
 //===============================================================================================================
 
 using System;
@@ -192,8 +193,19 @@ namespace SandcastleBuilder.Utils.PresentationStyle
                     format.Attribute("Type").Value, true);
 
             foreach(var content in style.Descendants("HelpContent").Descendants("Files"))
-                pss.contentFiles.Add(new ContentFiles(content.Attribute("Source").Value,
-                    (string)content.Attribute("Destination")));
+            {
+                HelpFileFormat formats = 0;
+
+                if(content.Attribute("Formats") == null || !Enum.TryParse<HelpFileFormat>(
+                  content.Attribute("Formats").Value, out formats))
+                    foreach(var f in Enum.GetValues(typeof(HelpFileFormat)))
+                        formats |= (HelpFileFormat)f;
+
+                pss.contentFiles.Add(new ContentFiles(formats, (string)content.Attribute("BasePath"),
+                    content.Attribute("Source").Value, (string)content.Attribute("Destination"),
+                    ((string)content.Attribute("TemplateFiles") ?? String.Empty).Split(new[] { ';' },
+                    StringSplitOptions.RemoveEmptyEntries)));
+            }
 
             foreach(var arg in style.Descendants("TransformComponentArguments").Descendants("Argument"))
                 pss.transformComponentArgs.Add(new TransformComponentArgument(arg));
@@ -259,26 +271,37 @@ namespace SandcastleBuilder.Utils.PresentationStyle
         /// <summary>
         /// This is used to copy the presentation style help file content to the given destination folder
         /// </summary>
+        /// <param name="format">The help file format for which to copy files</param>
         /// <param name="destinationBasePath">The destination base path to which the files are copied</param>
         /// <param name="progressReporter">An optional action delegate used to report progress</param>
-        public void CopyHelpContent(string destinationBasePath, Action<string, object[]> progressReporter)
+        /// <param name="transformTemplate">A action delegate used to transform a template file (file, source
+        /// folder, destination folder)</param>
+        public void CopyHelpContent(HelpFileFormat format, string destinationBasePath,
+          Action<string, object[]> progressReporter, Action<string, string, string> transformTemplate)
         {
             string sourcePath, destPath;
 
             foreach(var content in contentFiles)
             {
-                sourcePath = this.ResolvePath(content.SourcePathWildcard);
-
-                if(content.DestinationFolder == null)
-                    destPath = Path.Combine(destinationBasePath,
-                        Path.GetFileName(Path.GetDirectoryName(content.SourcePathWildcard)));
-                else
-                    if(content.DestinationFolder.Length == 0)
-                        destPath = destinationBasePath;
+                if((content.HelpFileFormats & format) != 0)
+                {
+                    if(content.BasePath == null)
+                        sourcePath = this.ResolvePath(content.SourcePathWildcard);
                     else
-                        destPath = Path.Combine(destinationBasePath, content.DestinationFolder);
+                        sourcePath = this.ResolvePath(Path.Combine(content.BasePath, content.SourcePathWildcard));
 
-                RecursiveCopy(sourcePath, destPath, progressReporter);
+                    if(content.DestinationFolder == null)
+                        destPath = Path.Combine(destinationBasePath,
+                            Path.GetFileName(Path.GetDirectoryName(content.SourcePathWildcard)));
+                    else
+                        if(content.DestinationFolder.Length == 0)
+                            destPath = destinationBasePath;
+                        else
+                            destPath = Path.Combine(destinationBasePath, content.DestinationFolder);
+
+                    RecursiveCopy(sourcePath, destPath, progressReporter, content.TemplateFileExtensions,
+                        transformTemplate);
+                }
             }
         }
 
@@ -290,7 +313,13 @@ namespace SandcastleBuilder.Utils.PresentationStyle
         /// <param name="sourcePath">The source path from which to copy</param>
         /// <param name="destPath">The destination path to which to copy</param>
         /// <param name="progressReporter">An optional action delegate used to report progress</param>
-        private static void RecursiveCopy(string sourcePath, string destPath, Action<string, object[]> progressReporter)
+        /// <param name="templateFileExtensions">An enumerable list of file extensions that will be treated like
+        /// template files and will have substitution tags replaced.</param>
+        /// <param name="transformTemplate">A action delegate used to transform a template file (file, source
+        /// folder, destination folder)</param>
+        private static void RecursiveCopy(string sourcePath, string destPath,
+          Action<string, object[]> progressReporter, IEnumerable<string> templateFileExtensions,
+          Action<string, string, string> transformTemplate)
         {
             if(sourcePath == null)
                 throw new ArgumentNullException("sourcePath");
@@ -309,15 +338,27 @@ namespace SandcastleBuilder.Utils.PresentationStyle
             {
                 filename = destPath + Path.GetFileName(name);
 
-                if(!Directory.Exists(destPath))
-                    Directory.CreateDirectory(destPath);
+                // Don't overwrite content that was copied from the project or by a plug-in.  This allows project
+                // content to override the standard content.
+                if(!File.Exists(filename))
+                {
+                    if(!Directory.Exists(destPath))
+                        Directory.CreateDirectory(destPath);
 
-                // All attributes are turned off so that we can delete it later
-                File.Copy(name, filename, true);
-                File.SetAttributes(filename, FileAttributes.Normal);
+                    // Copy as-is or perform tag substitution
+                    if(templateFileExtensions.Any(e => e.Equals(Path.GetExtension(name))))
+                        transformTemplate(Path.GetFileName(name), Path.GetDirectoryName(name), destPath);
+                    else
+                    {
+                        File.Copy(name, filename, true);
 
-                if(progressReporter != null)
-                    progressReporter("{0} -> {1}", new[] { name, filename});
+                        // All attributes are turned off so that we can delete it later
+                        File.SetAttributes(filename, FileAttributes.Normal);
+                    }
+
+                    if(progressReporter != null)
+                        progressReporter("{0} -> {1}", new[] { name, filename});
+                }
             }
 
             // For "*.*", copy subfolders too
@@ -327,7 +368,7 @@ namespace SandcastleBuilder.Utils.PresentationStyle
                 foreach(string folder in Directory.EnumerateDirectories(dirName))
                     if((File.GetAttributes(folder) & FileAttributes.Hidden) != FileAttributes.Hidden)
                         RecursiveCopy(folder + @"\*.*", destPath + folder.Substring(dirName.Length + 1) + @"\",
-                            progressReporter);
+                            progressReporter, templateFileExtensions, transformTemplate);
             }
         }
         #endregion

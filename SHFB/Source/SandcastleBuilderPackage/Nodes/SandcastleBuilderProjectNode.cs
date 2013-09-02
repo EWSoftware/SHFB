@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SandcastleBuilderProjectNode.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/04/2013
+// Updated : 07/17/2013
 // Note    : Copyright 2011-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -44,7 +44,6 @@ using VsMenus = Microsoft.VisualStudio.Project.VsMenus;
 using SandcastleBuilder.Package.Automation;
 using SandcastleBuilder.Package.Properties;
 using SandcastleBuilder.Package.PropertyPages;
-using SandcastleBuilder.Package.UI;
 
 using SandcastleProject = SandcastleBuilder.Utils.SandcastleProject;
 using SandcastleBuildAction = SandcastleBuilder.Utils.BuildAction;
@@ -322,26 +321,27 @@ namespace SandcastleBuilder.Package.Nodes
 
                     if(Directory.Exists(path))
                     {
-                        webServerPath.Path = Directory.EnumerateFiles(path, "WebDev.WebServer20.exe",
+                        webServerPath.Path = Directory.EnumerateFiles(path, "WebDev.WebServer40.exe",
                             SearchOption.AllDirectories).FirstOrDefault();
 
+                        // Fall back to the .NET 2.0/3.5 version?
                         if(!File.Exists(webServerPath))
-                            webServerPath.Path = Directory.EnumerateFiles(path, "WebDev.WebServer40.exe",
+                            webServerPath.Path = Directory.EnumerateFiles(path, "WebDev.WebServer20.exe",
                                 SearchOption.AllDirectories).FirstOrDefault();
                     }
 
                     if(!File.Exists(webServerPath))
                     {
-                        path = Environment.ExpandEnvironmentVariables(@"%ProgramFiles(x86)%\" +
-                            @"Common Files\Microsoft Shared\DevServer");
+                        path = Environment.ExpandEnvironmentVariables(@"%ProgramFiles(x86)%\Common Files\" +
+                            @"Microsoft Shared\DevServer");
 
                         if(Directory.Exists(path))
                         {
-                            webServerPath.Path = Directory.EnumerateFiles(path, "WebDev.WebServer20.exe",
+                            webServerPath.Path = Directory.EnumerateFiles(path, "WebDev.WebServer40.exe",
                                  SearchOption.AllDirectories).LastOrDefault();
 
                             if(!File.Exists(webServerPath))
-                                webServerPath.Path = Directory.EnumerateFiles(path, "WebDev.WebServer40.exe",
+                                webServerPath.Path = Directory.EnumerateFiles(path, "WebDev.WebServer20.exe",
                                     SearchOption.AllDirectories).FirstOrDefault();
                         }
                     }
@@ -850,7 +850,7 @@ namespace SandcastleBuilder.Package.Nodes
             if(rgpcsdComponents == null || pResult == null)
                 return VSConstants.E_FAIL;
 
-            // Initalize the out parameter
+            // Initialize the out parameter
             pResult[0] = VSADDCOMPRESULT.ADDCOMPRESULT_Success;
 
             IReferenceContainer references = GetReferenceContainer();
@@ -872,7 +872,7 @@ namespace SandcastleBuilder.Package.Nodes
 
                 if(node == null)
                 {
-                    //Skip further proccessing since a reference has to be added
+                    // Skip further processing since a reference has to be added
                     pResult[0] = VSADDCOMPRESULT.ADDCOMPRESULT_Failure;
                     return VSConstants.S_OK;
                 }

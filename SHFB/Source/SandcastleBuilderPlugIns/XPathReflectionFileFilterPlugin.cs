@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : XPathReflectionFileFilterPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)  Based on code by Eyal Post
-// Updated : 03/07/2013
+// Updated : 06/18/2013
 // Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -34,12 +34,14 @@ using SandcastleBuilder.Utils.PlugIn;
 namespace SandcastleBuilder.PlugIns
 {
     /// <summary>
-    /// This plug-in class is used to filter out unwanted information from the
-    /// reflection information file using XPath queries.
+    /// This plug-in class is used to filter out unwanted information from the reflection information file using
+    /// XPath queries.
     /// </summary>
     public class XPathReflectionFileFilterPlugIn : SandcastleBuilder.Utils.PlugIn.IPlugIn
     {
         #region Private data members
+        //=====================================================================
+
         private ExecutionPointCollection executionPoints;
         private BuildProcess builder;
 
@@ -48,7 +50,6 @@ namespace SandcastleBuilder.PlugIns
 
         #region IPlugIn implementation
         //=====================================================================
-        // IPlugIn implementation
 
         /// <summary>
         /// This read-only property returns a friendly name for the plug-in
@@ -67,16 +68,14 @@ namespace SandcastleBuilder.PlugIns
             {
                 // Use the assembly version
                 Assembly asm = Assembly.GetExecutingAssembly();
-                FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(
-                    asm.Location);
+                FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(asm.Location);
 
                 return new Version(fvi.ProductVersion);
             }
         }
 
         /// <summary>
-        /// This read-only property returns the copyright information for the
-        /// plug-in.
+        /// This read-only property returns the copyright information for the plug-in
         /// </summary>
         public string Copyright
         {
@@ -84,12 +83,10 @@ namespace SandcastleBuilder.PlugIns
             {
                 // Use the assembly copyright
                 Assembly asm = Assembly.GetExecutingAssembly();
-                AssemblyCopyrightAttribute copyright =
-                    (AssemblyCopyrightAttribute)Attribute.GetCustomAttribute(
-                        asm, typeof(AssemblyCopyrightAttribute));
+                AssemblyCopyrightAttribute copyright = (AssemblyCopyrightAttribute)Attribute.GetCustomAttribute(
+                    asm, typeof(AssemblyCopyrightAttribute));
 
-                return copyright.Copyright + "\r\nBased on code submitted " +
-                    "by Eyal Post";
+                return copyright.Copyright + "\r\nBased on code submitted by Eyal Post";
             }
         }
 
@@ -100,8 +97,8 @@ namespace SandcastleBuilder.PlugIns
         {
             get
             {
-                return "This plug in is used to remove unwanted items from " +
-                    "the reflection information file using XPath queries.";
+                return "This plug in is used to remove unwanted items from the reflection information file " +
+                    "using XPath queries.";
             }
         }
 
@@ -123,9 +120,8 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This read-only property returns a collection of execution points
-        /// that define when the plug-in should be invoked during the build
-        /// process.
+        /// This read-only property returns a collection of execution points that define when the plug-in should
+        /// be invoked during the build process.
         /// </summary>
         public ExecutionPointCollection ExecutionPoints
         {
@@ -135,10 +131,9 @@ namespace SandcastleBuilder.PlugIns
                 {
                     executionPoints = new ExecutionPointCollection();
 
-                    // This one has a slightly higher priority as it removes
-                    // stuff that the other plug-ins don't need to see.
-                    executionPoints.Add(new ExecutionPoint(
-                        BuildStep.ApplyVisibilityProperties,
+                    // This one has a slightly higher priority as it removes stuff that the other plug-ins don't
+                    // need to see.
+                    executionPoints.Add(new ExecutionPoint(BuildStep.ApplyVisibilityProperties,
                         ExecutionBehaviors.After, 1100));
                 }
 
@@ -147,19 +142,16 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This method is used by the Sandcastle Help File Builder to let the
-        /// plug-in perform its own configuration.
+        /// This method is used by the Sandcastle Help File Builder to let the plug-in perform its own
+        /// configuration.
         /// </summary>
         /// <param name="project">A reference to the active project</param>
         /// <param name="currentConfig">The current configuration XML fragment</param>
         /// <returns>A string containing the new configuration XML fragment</returns>
-        /// <remarks>The configuration data will be stored in the help file
-        /// builder project.</remarks>
-        public string ConfigurePlugIn(SandcastleProject project,
-          string currentConfig)
+        /// <remarks>The configuration data will be stored in the help file builder project</remarks>
+        public string ConfigurePlugIn(SandcastleProject project, string currentConfig)
         {
-            using(XPathReflectionFileFilterConfigDlg dlg =
-              new XPathReflectionFileFilterConfigDlg(currentConfig))
+            using(XPathReflectionFileFilterConfigDlg dlg = new XPathReflectionFileFilterConfigDlg(currentConfig))
             {
                 if(dlg.ShowDialog() == DialogResult.OK)
                     currentConfig = dlg.Configuration;
@@ -169,30 +161,24 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This method is used to initialize the plug-in at the start of the
-        /// build process.
+        /// This method is used to initialize the plug-in at the start of the build process
         /// </summary>
-        /// <param name="buildProcess">A reference to the current build
-        /// process.</param>
-        /// <param name="configuration">The configuration data that the plug-in
-        /// should use to initialize itself.</param>
-        public void Initialize(BuildProcess buildProcess,
-          XPathNavigator configuration)
+        /// <param name="buildProcess">A reference to the current build process</param>
+        /// <param name="configuration">The configuration data that the plug-in should use to initialize itself</param>
+        public void Initialize(BuildProcess buildProcess, XPathNavigator configuration)
         {
             builder = buildProcess;
 
-            builder.ReportProgress("{0} Version {1}\r\n{2}\r\n",
-                this.Name, this.Version, this.Copyright);
+            builder.ReportProgress("{0} Version {1}\r\n{2}\r\n", this.Name, this.Version, this.Copyright);
 
             expressions = new List<string>();
 
-            foreach(XPathNavigator nav in configuration.Select(
-              "configuration/expressions/expression"))
+            foreach(XPathNavigator nav in configuration.Select("configuration/expressions/expression"))
                 expressions.Add(nav.InnerXml);
 
             if(expressions.Count == 0)
-                throw new BuilderException("XRF0001", "No queries have been " +
-                    "defined for the XPath Reflection File Filter plug-in");
+                throw new BuilderException("XRF0001", "No queries have been defined for the XPath Reflection " +
+                    "File Filter plug-in");
         }
 
         /// <summary>
@@ -208,8 +194,7 @@ namespace SandcastleBuilder.PlugIns
 
             foreach(string expression in expressions)
             {
-                builder.ReportProgress("Removing items matching '{0}'",
-                    expression);
+                builder.ReportProgress("Removing items matching '{0}'", expression);
 
                 nodes = refInfo.SelectNodes(expression);
 
@@ -225,11 +210,10 @@ namespace SandcastleBuilder.PlugIns
 
         #region IDisposable implementation
         //=====================================================================
-        // IDisposable implementation
 
         /// <summary>
-        /// This handles garbage collection to ensure proper disposal of the
-        /// plug-in if not done explicity with <see cref="Dispose()"/>.
+        /// This handles garbage collection to ensure proper disposal of the plug-in if not done explicitly with
+        /// <see cref="Dispose()"/>.
         /// </summary>
         ~XPathReflectionFileFilterPlugIn()
         {
@@ -237,10 +221,9 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This implements the Dispose() interface to properly dispose of
-        /// the plug-in object.
+        /// This implements the Dispose() interface to properly dispose of the plug-in object
         /// </summary>
-        /// <overloads>There are two overloads for this method.</overloads>
+        /// <overloads>There are two overloads for this method</overloads>
         public void Dispose()
         {
             this.Dispose(true);
@@ -248,12 +231,10 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This can be overridden by derived classes to add their own
-        /// disposal code if necessary.
+        /// This can be overridden by derived classes to add their own disposal code if necessary
         /// </summary>
-        /// <param name="disposing">Pass true to dispose of the managed
-        /// and unmanaged resources or false to just dispose of the
-        /// unmanaged resources.</param>
+        /// <param name="disposing">Pass true to dispose of the managed and unmanaged resources or false to just
+        /// dispose of the unmanaged resources.</param>
         protected virtual void Dispose(bool disposing)
         {
             // Nothing to dispose of in this one

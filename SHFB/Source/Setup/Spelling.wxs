@@ -16,7 +16,7 @@
 					<File Id="Hunspellx64.dll" KeyPath="yes" Source="$(var.BinFolder)Spelling\Hunspellx64.dll" />
 				</Component>
 				<Component Id="Hunspellx86.dll" Guid="{3D77C82C-0035-498A-92E5-DC034E04A8BA}">
-					<File Id="Hunspellx64.dll" KeyPath="yes" Source="$(var.BinFolder)Spelling\Hunspellx86.dll" />
+					<File Id="Hunspellx86.dll" KeyPath="yes" Source="$(var.BinFolder)Spelling\Hunspellx86.dll" />
 				</Component>
 			</Directory>
 		</DirectoryRef>

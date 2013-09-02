@@ -1,7 +1,7 @@
 #if DEBUG
 
-// This is the example used in the help file.  It's here so that we can
-// maintain it if the interface changes but it's only in the debug build.
+// This is the example used in the help file.  It's here so that we can maintain it if the interface changes but
+// it's only in the debug build.
 
 #region Help File Plug-in Example
 //=============================================================================
@@ -206,7 +206,7 @@ namespace Test.PlugIns
 
         /// <summary>
         /// This handles garbage collection to ensure proper disposal of the
-        /// plug-in if not done explicity with <see cref="Dispose()"/>.
+        /// plug-in if not done explicitly with <see cref="Dispose()"/>.
         /// </summary>
         ~TestPlugIn()
         {
@@ -215,8 +215,8 @@ namespace Test.PlugIns
         }
 
         /// <summary>
-        /// This implements the Dispose() interface to properly dispose of
-        /// the plug-in object.
+        /// This implements the Dispose() interface to properly dispose of the
+        /// plug-in object.
         /// </summary>
         /// <overloads>There are two overloads for this method.</overloads>
         public void Dispose()
@@ -226,8 +226,8 @@ namespace Test.PlugIns
         }
 
         /// <summary>
-        /// This can be overridden by derived classes to add their own
-        /// disposal code if necessary.
+        /// This can be overridden by derived classes to add their own disposal
+        /// code if necessary.
         /// </summary>
         /// <param name="disposing">Pass true to dispose of the managed
         /// and unmanaged resources or false to just dispose of the

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : DeploymentPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/07/2013
+// Updated : 06/18/2013
 // Note    : Copyright 2007-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -85,8 +85,7 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This read-only property returns the copyright information for the
-        /// plug-in.
+        /// This read-only property returns the copyright information for the plug-in
         /// </summary>
         public string Copyright
         {
@@ -94,9 +93,8 @@ namespace SandcastleBuilder.PlugIns
             {
                 // Use the assembly copyright
                 Assembly asm = Assembly.GetExecutingAssembly();
-                AssemblyCopyrightAttribute copyright =
-                    (AssemblyCopyrightAttribute)Attribute.GetCustomAttribute(asm,
-                        typeof(AssemblyCopyrightAttribute));
+                AssemblyCopyrightAttribute copyright = (AssemblyCopyrightAttribute)Attribute.GetCustomAttribute(
+                    asm, typeof(AssemblyCopyrightAttribute));
 
                 return copyright.Copyright;
             }
@@ -109,8 +107,8 @@ namespace SandcastleBuilder.PlugIns
         {
             get
             {
-                return "This plug-in is used to deploy the resulting help file output to a location " +
-                    "other than the output folder (i.e. a file share, a web server, an FTP site, etc.).";
+                return "This plug-in is used to deploy the resulting help file output to a location other than " +
+                    "the output folder (i.e. a file share, a web server, an FTP site, etc.).";
             }
         }
 
@@ -132,9 +130,8 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This read-only property returns a collection of execution points
-        /// that define when the plug-in should be invoked during the build
-        /// process.
+        /// This read-only property returns a collection of execution points that define when the plug-in should
+        /// be invoked during the build process.
         /// </summary>
         public ExecutionPointCollection ExecutionPoints
         {
@@ -144,9 +141,8 @@ namespace SandcastleBuilder.PlugIns
                 {
                     executionPoints = new ExecutionPointCollection();
 
-                    // This plug-in has a lower priority as it should execute
-                    // after all other plug-ins in case they add other files
-                    // to the set.
+                    // This plug-in has a lower priority as it should execute after all other plug-ins in case
+                    // they add other files to the set.
                     executionPoints.Add(new ExecutionPoint(BuildStep.CompilingHelpFile,
                         ExecutionBehaviors.After, 200));
                     executionPoints.Add(new ExecutionPoint(BuildStep.CopyingWebsiteFiles,
@@ -158,14 +154,13 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This method is used by the Sandcastle Help File Builder to let the
-        /// plug-in perform its own configuration.
+        /// This method is used by the Sandcastle Help File Builder to let the plug-in perform its own
+        /// configuration.
         /// </summary>
         /// <param name="project">A reference to the active project</param>
         /// <param name="currentConfig">The current configuration XML fragment</param>
         /// <returns>A string containing the new configuration XML fragment</returns>
-        /// <remarks>The configuration data will be stored in the help file
-        /// builder project.</remarks>
+        /// <remarks>The configuration data will be stored in the help file builder project</remarks>
         public string ConfigurePlugIn(SandcastleProject project, string currentConfig)
         {
             using(DeploymentConfigDlg dlg = new DeploymentConfigDlg(currentConfig))
@@ -178,15 +173,11 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This method is used to initialize the plug-in at the start of the
-        /// build process.
+        /// This method is used to initialize the plug-in at the start of the build process
         /// </summary>
-        /// <param name="buildProcess">A reference to the current build
-        /// process.</param>
-        /// <param name="configuration">The configuration data that the plug-in
-        /// should use to initialize itself.</param>
-        /// <exception cref="BuilderException">This is thrown if the plug-in
-        /// configuration is not valid.</exception>
+        /// <param name="buildProcess">A reference to the current build process</param>
+        /// <param name="configuration">The configuration data that the plug-in should use to initialize itself</param>
+        /// <exception cref="BuilderException">This is thrown if the plug-in configuration is not valid</exception>
         public void Initialize(BuildProcess buildProcess, XPathNavigator configuration)
         {
             XPathNavigator root, msHelpViewer;
@@ -213,8 +204,8 @@ namespace SandcastleBuilder.PlugIns
 
             msHelpViewer = root.SelectSingleNode("deploymentLocation[@id='helpViewer']");
 
-            if(msHelpViewer == null || !Boolean.TryParse(
-              msHelpViewer.GetAttribute("renameMSHA", String.Empty).Trim(), out renameMSHA))
+            if(msHelpViewer == null || !Boolean.TryParse(msHelpViewer.GetAttribute("renameMSHA",
+              String.Empty).Trim(), out renameMSHA))
                 renameMSHA = false;
 
             // At least one deployment location must be defined
@@ -280,6 +271,8 @@ namespace SandcastleBuilder.PlugIns
         #endregion
 
         #region Deploy project output
+        //=====================================================================
+
         /// <summary>
         /// Deploy the given list of files to the specified location
         /// </summary>
@@ -320,8 +313,7 @@ namespace SandcastleBuilder.PlugIns
 
                         // Initialize the web client
                         if(!location.UserCredentials.UseDefaultCredentials)
-                            webClient.Credentials = new NetworkCredential(
-                                location.UserCredentials.UserName,
+                            webClient.Credentials = new NetworkCredential(location.UserCredentials.UserName,
                                 location.UserCredentials.Password);
 
                         webClient.CachePolicy = new RequestCachePolicy(RequestCacheLevel.NoCacheNoStore);
@@ -381,11 +373,10 @@ namespace SandcastleBuilder.PlugIns
 
         #region IDisposable implementation
         //=====================================================================
-        // IDisposable implementation
 
         /// <summary>
-        /// This handles garbage collection to ensure proper disposal of the
-        /// plug-in if not done explicity with <see cref="Dispose()"/>.
+        /// This handles garbage collection to ensure proper disposal of the plug-in if not done explicitly with
+        /// <see cref="Dispose()"/>.
         /// </summary>
         ~DeploymentPlugIn()
         {
@@ -393,8 +384,7 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This implements the Dispose() interface to properly dispose of
-        /// the plug-in object.
+        /// This implements the Dispose() interface to properly dispose of the plug-in object
         /// </summary>
         /// <overloads>There are two overloads for this method.</overloads>
         public void Dispose()
@@ -404,12 +394,10 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This can be overridden by derived classes to add their own
-        /// disposal code if necessary.
+        /// This can be overridden by derived classes to add their own disposal code if necessary
         /// </summary>
-        /// <param name="disposing">Pass true to dispose of the managed
-        /// and unmanaged resources or false to just dispose of the
-        /// unmanaged resources.</param>
+        /// <param name="disposing">Pass true to dispose of the managed and unmanaged resources or false to just
+        /// dispose of the unmanaged resources.</param>
         protected virtual void Dispose(bool disposing)
         {
             // Nothing to dispose of in this one

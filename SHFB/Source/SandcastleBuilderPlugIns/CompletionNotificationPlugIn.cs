@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : CompletionNotificationPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/07/2013
+// Updated : 06/18/2013
 // Note    : Copyright 2007-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -41,26 +41,26 @@ using SandcastleBuilder.Utils.PlugIn;
 namespace SandcastleBuilder.PlugIns
 {
     /// <summary>
-    /// This plug-in class is designed to run after the build completes to
-    /// send notification of the completion status via e-mail.  The log file
-    /// can be sent as an attachment.
+    /// This plug-in class is designed to run after the build completes to send notification of the completion
+    /// status via e-mail.  The log file can be sent as an attachment.
     /// </summary>
     public class CompletionNotificationPlugIn : IPlugIn
     {
         #region Private data members
+        //=====================================================================
+
         private ExecutionPointCollection executionPoints;
 
         private BuildProcess builder;
         private bool attachLogOnSuccess, attachLogOnFailure;
-        private string smtpServer, fromEMailAddress, successEMailAddress,
-            failureEMailAddress, xslTransformFile;
+        private string smtpServer, fromEMailAddress, successEMailAddress, failureEMailAddress, xslTransformFile;
         private UserCredentials credentials;
         private int smtpPort;
+
         #endregion
 
         #region IPlugIn implementation
         //=====================================================================
-        // IPlugIn implementation
 
         /// <summary>
         /// This read-only property returns a friendly name for the plug-in
@@ -79,16 +79,14 @@ namespace SandcastleBuilder.PlugIns
             {
                 // Use the assembly version
                 Assembly asm = Assembly.GetExecutingAssembly();
-                FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(
-                    asm.Location);
+                FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(asm.Location);
 
                 return new Version(fvi.ProductVersion);
             }
         }
 
         /// <summary>
-        /// This read-only property returns the copyright information for the
-        /// plug-in.
+        /// This read-only property returns the copyright information for the plug-in
         /// </summary>
         public string Copyright
         {
@@ -96,9 +94,8 @@ namespace SandcastleBuilder.PlugIns
             {
                 // Use the assembly copyright
                 Assembly asm = Assembly.GetExecutingAssembly();
-                AssemblyCopyrightAttribute copyright =
-                    (AssemblyCopyrightAttribute)Attribute.GetCustomAttribute(
-                        asm, typeof(AssemblyCopyrightAttribute));
+                AssemblyCopyrightAttribute copyright = (AssemblyCopyrightAttribute)Attribute.GetCustomAttribute(
+                    asm, typeof(AssemblyCopyrightAttribute));
 
                 return copyright.Copyright;
             }
@@ -111,9 +108,8 @@ namespace SandcastleBuilder.PlugIns
         {
             get
             {
-                return "This plug-in is used to send notification of the " +
-                    "build completion status via e-mail.  The log file can " +
-                    "be sent as an attachment.";
+                return "This plug-in is used to send notification of the build completion status via e-mail.  " +
+                    "The log file can be sent as an attachment.";
             }
         }
 
@@ -135,9 +131,8 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This read-only property returns a collection of execution points
-        /// that define when the plug-in should be invoked during the build
-        /// process.
+        /// This read-only property returns a collection of execution points that define when the plug-in should
+        /// be invoked during the build process.
         /// </summary>
         public ExecutionPointCollection ExecutionPoints
         {
@@ -147,12 +142,9 @@ namespace SandcastleBuilder.PlugIns
                 {
                     executionPoints = new ExecutionPointCollection();
 
-                    executionPoints.Add(new ExecutionPoint(
-                        BuildStep.Completed, ExecutionBehaviors.After));
-                    executionPoints.Add(new ExecutionPoint(
-                        BuildStep.Canceled, ExecutionBehaviors.After));
-                    executionPoints.Add(new ExecutionPoint(
-                        BuildStep.Failed, ExecutionBehaviors.After));
+                    executionPoints.Add(new ExecutionPoint(BuildStep.Completed, ExecutionBehaviors.After));
+                    executionPoints.Add(new ExecutionPoint(BuildStep.Canceled, ExecutionBehaviors.After));
+                    executionPoints.Add(new ExecutionPoint(BuildStep.Failed, ExecutionBehaviors.After));
                 }
 
                 return executionPoints;
@@ -160,19 +152,16 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This method is used by the Sandcastle Help File Builder to let the
-        /// plug-in perform its own configuration.
+        /// This method is used by the Sandcastle Help File Builder to let the plug-in perform its own
+        /// configuration.
         /// </summary>
         /// <param name="project">A reference to the active project</param>
         /// <param name="currentConfig">The current configuration XML fragment</param>
         /// <returns>A string containing the new configuration XML fragment</returns>
-        /// <remarks>The configuration data will be stored in the help file
-        /// builder project.</remarks>
-        public string ConfigurePlugIn(SandcastleProject project,
-          string currentConfig)
+        /// <remarks>The configuration data will be stored in the help file builder project</remarks>
+        public string ConfigurePlugIn(SandcastleProject project, string currentConfig)
         {
-            using(CompletionNotificationConfigDlg dlg =
-              new CompletionNotificationConfigDlg(currentConfig))
+            using(CompletionNotificationConfigDlg dlg = new CompletionNotificationConfigDlg(currentConfig))
             {
                 if(dlg.ShowDialog() == DialogResult.OK)
                     currentConfig = dlg.Configuration;
@@ -182,17 +171,12 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This method is used to initialize the plug-in at the start of the
-        /// build process.
+        /// This method is used to initialize the plug-in at the start of the build process
         /// </summary>
-        /// <param name="buildProcess">A reference to the current build
-        /// process.</param>
-        /// <param name="configuration">The configuration data that the plug-in
-        /// should use to initialize itself.</param>
-        /// <exception cref="BuilderException">This is thrown if the plug-in
-        /// configuration is not valid.</exception>
-        public void Initialize(BuildProcess buildProcess,
-          XPathNavigator configuration)
+        /// <param name="buildProcess">A reference to the current build process</param>
+        /// <param name="configuration">The configuration data that the plug-in should use to initialize itself</param>
+        /// <exception cref="BuilderException">This is thrown if the plug-in configuration is not valid</exception>
+        public void Initialize(BuildProcess buildProcess, XPathNavigator configuration)
         {
             XPathNavigator root, node;
             string value;
@@ -200,21 +184,20 @@ namespace SandcastleBuilder.PlugIns
             builder = buildProcess;
             attachLogOnSuccess = false;
             attachLogOnFailure = true;
-            smtpServer = successEMailAddress = failureEMailAddress =
-                xslTransformFile = String.Empty;
+            smtpServer = successEMailAddress = failureEMailAddress = xslTransformFile = String.Empty;
             credentials = new UserCredentials();
             smtpPort = 25;
 
-            builder.ReportProgress("{0} Version {1}\r\n{2}",
-                this.Name, this.Version, this.Copyright);
+            builder.ReportProgress("{0} Version {1}\r\n{2}", this.Name, this.Version, this.Copyright);
 
             root = configuration.SelectSingleNode("configuration");
 
             if(root.IsEmptyElement)
-                throw new BuilderException("CNP0001", "The Completion " +
-                    "Notification plug-in has not been configured yet");
+                throw new BuilderException("CNP0001", "The Completion Notification plug-in has not been " +
+                    "configured yet");
 
             node = root.SelectSingleNode("smtpServer");
+
             if(node != null)
             {
                 smtpServer = node.GetAttribute("host", String.Empty).Trim();
@@ -227,57 +210,52 @@ namespace SandcastleBuilder.PlugIns
             credentials = UserCredentials.FromXPathNavigator(root);
 
             node = root.SelectSingleNode("fromEMail");
+
             if(node != null)
-                fromEMailAddress = node.GetAttribute("address",
-                    String.Empty).Trim();
+                fromEMailAddress = node.GetAttribute("address", String.Empty).Trim();
 
             node = root.SelectSingleNode("successEMail");
+
             if(node != null)
             {
-                successEMailAddress = node.GetAttribute("address",
-                    String.Empty).Trim();
-                attachLogOnSuccess = Convert.ToBoolean(node.GetAttribute(
-                    "attachLog", String.Empty), CultureInfo.InvariantCulture);
+                successEMailAddress = node.GetAttribute("address", String.Empty).Trim();
+                attachLogOnSuccess = Convert.ToBoolean(node.GetAttribute("attachLog", String.Empty),
+                    CultureInfo.InvariantCulture);
             }
 
             node = root.SelectSingleNode("failureEMail");
+
             if(node != null)
             {
-                failureEMailAddress = node.GetAttribute("address",
-                    String.Empty).Trim();
-                attachLogOnFailure = Convert.ToBoolean(node.GetAttribute(
-                    "attachLog", String.Empty), CultureInfo.InvariantCulture);
+                failureEMailAddress = node.GetAttribute("address", String.Empty).Trim();
+                attachLogOnFailure = Convert.ToBoolean(node.GetAttribute("attachLog", String.Empty),
+                    CultureInfo.InvariantCulture);
             }
 
             node = root.SelectSingleNode("xslTransform");
-            if(node != null)
-                xslTransformFile = builder.TransformText(
-                    node.GetAttribute("filename", String.Empty).Trim());
 
-            if((!credentials.UseDefaultCredentials &&
-              (credentials.UserName.Length == 0 ||
-              credentials.Password.Length == 0)) ||
-              failureEMailAddress.Length == 0)
-                throw new BuilderException("CNP0002", "The Completion " +
-                    "Notification plug-in has an invalid configuration");
+            if(node != null)
+                xslTransformFile = builder.TransformText(node.GetAttribute("filename", String.Empty).Trim());
+
+            if((!credentials.UseDefaultCredentials && (credentials.UserName.Length == 0 ||
+              credentials.Password.Length == 0)) || failureEMailAddress.Length == 0)
+                throw new BuilderException("CNP0002", "The Completion Notification plug-in has an invalid " +
+                    "configuration");
         }
 
         /// <summary>
         /// This method is used to execute the plug-in during the build process
         /// </summary>
         /// <param name="context">The current execution context</param>
-        /// <remarks>Since this runs after completion of the build and the
-        /// log file is closed, any progress messages reported here will not
-        /// appear in it, just in the output window on the main form.</remarks>
+        /// <remarks>Since this runs after completion of the build and the log file is closed, any progress
+        /// messages reported here will not appear in it, just in the output window on the main form.</remarks>
         public void Execute(ExecutionContext context)
         {
             MailMessage msg = null;
             string logFilename = null;
 
-            // There is nothing to do on completion if there is no success
-            // e-mail address.
-            if(context.BuildStep == BuildStep.Completed &&
-              successEMailAddress.Length == 0)
+            // There is nothing to do on completion if there is no success e-mail address
+            if(context.BuildStep == BuildStep.Completed && successEMailAddress.Length == 0)
             {
                 context.Executed = false;
                 return;
@@ -288,15 +266,13 @@ namespace SandcastleBuilder.PlugIns
                 logFilename = builder.LogFilename;
 
                 // Run the log file through an XSL transform first?
-                if(!String.IsNullOrEmpty(xslTransformFile) &&
-                  File.Exists(logFilename))
+                if(!String.IsNullOrEmpty(xslTransformFile) && File.Exists(logFilename))
                     logFilename = this.TransformLogFile();
 
                 msg = new MailMessage();
 
                 msg.IsBodyHtml = false;
-                msg.Subject = String.Format(CultureInfo.InvariantCulture,
-                    "Build {0}: {1}", context.BuildStep,
+                msg.Subject = String.Format(CultureInfo.InvariantCulture, "Build {0}: {1}", context.BuildStep,
                     builder.ProjectFilename);
 
                 if(fromEMailAddress.Length != 0)
@@ -320,14 +296,11 @@ namespace SandcastleBuilder.PlugIns
                 }
 
                 msg.Body = String.Format(CultureInfo.InvariantCulture,
-                    "Build {0}: {1}{2}\r\nBuild output is located at {3}\r\n",
-                    context.BuildStep, builder.ProjectFolder,
-                    builder.ProjectFilename, builder.OutputFolder);
+                    "Build {0}: {1}{2}\r\nBuild output is located at {3}\r\n", context.BuildStep,
+                    builder.ProjectFolder, builder.ProjectFilename, builder.OutputFolder);
 
-                if(context.BuildStep != BuildStep.Completed ||
-                  builder.CurrentProject.KeepLogFile)
-                    msg.Body += "Build details can be found in the log file " +
-                        builder.LogFilename + "\r\n";
+                if(context.BuildStep != BuildStep.Completed || builder.CurrentProject.KeepLogFile)
+                    msg.Body += "Build details can be found in the log file " + builder.LogFilename + "\r\n";
 
                 SmtpClient smtp = new SmtpClient();
 
@@ -338,34 +311,29 @@ namespace SandcastleBuilder.PlugIns
                 }
 
                 if(!credentials.UseDefaultCredentials)
-                    smtp.Credentials = new NetworkCredential(
-                        credentials.UserName, credentials.Password);
+                    smtp.Credentials = new NetworkCredential(credentials.UserName, credentials.Password);
 
                 smtp.Send(msg);
 
-                builder.ReportProgress("The build notification e-mail was " +
-                    "sent successfully to {0}", msg.To[0].Address);
+                builder.ReportProgress("The build notification e-mail was sent successfully to {0}",
+                    msg.To[0].Address);
             }
             catch(FormatException)
             {
-                builder.ReportProgress("Failed to send build notification " +
-                    "e-mail!  The e-mail addresses '{0}' appears to be " +
-                    "invalid.", msg.To[0]);
+                builder.ReportProgress("Failed to send build notification e-mail!  The e-mail addresses " +
+                    "'{0}' appears to be invalid.", msg.To[0]);
             }
             catch(SmtpFailedRecipientException recipEx)
             {
-                builder.ReportProgress("Failed to send build notification " +
-                    "e-mail!  A problem occurred trying to send the e-mail " +
-                    "to the recipient '{0}': {1}", recipEx.FailedRecipient,
-                    recipEx.Message);
+                builder.ReportProgress("Failed to send build notification e-mail!  A problem occurred trying " +
+                    "to send the e-mail to the recipient '{0}': {1}", recipEx.FailedRecipient, recipEx.Message);
             }
             catch(SmtpException smtpEx)
             {
                 System.Diagnostics.Debug.WriteLine(smtpEx.ToString());
 
-                builder.ReportProgress("Failed to send build notification " +
-                    "e-mail!  A problem occurred trying to connect to the " +
-                    "e-mail server.  Details:\r\n{0}\r\n", smtpEx.ToString());
+                builder.ReportProgress("Failed to send build notification e-mail!  A problem occurred trying " +
+                    "to connect to the e-mail server.  Details:\r\n{0}\r\n", smtpEx.ToString());
             }
             finally
             {
@@ -373,8 +341,8 @@ namespace SandcastleBuilder.PlugIns
                     msg.Dispose();
 
                 // Delete the transformed log file if it exists
-                if(!String.IsNullOrEmpty(logFilename) &&
-                  logFilename.EndsWith(".html", StringComparison.OrdinalIgnoreCase))
+                if(!String.IsNullOrEmpty(logFilename) && logFilename.EndsWith(".html",
+                  StringComparison.OrdinalIgnoreCase))
                     File.Delete(logFilename);
             }
         }
@@ -382,11 +350,10 @@ namespace SandcastleBuilder.PlugIns
 
         #region IDisposable implementation
         //=====================================================================
-        // IDisposable implementation
 
         /// <summary>
-        /// This handles garbage collection to ensure proper disposal of the
-        /// plug-in if not done explicity with <see cref="Dispose()"/>.
+        /// This handles garbage collection to ensure proper disposal of the plug-in if not done explicitly with
+        /// <see cref="Dispose()"/>.
         /// </summary>
         ~CompletionNotificationPlugIn()
         {
@@ -394,10 +361,9 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This implements the Dispose() interface to properly dispose of
-        /// the plug-in object.
+        /// This implements the Dispose() interface to properly dispose of the plug-in object
         /// </summary>
-        /// <overloads>There are two overloads for this method.</overloads>
+        /// <overloads>There are two overloads for this method</overloads>
         public void Dispose()
         {
             this.Dispose(true);
@@ -405,12 +371,10 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This can be overridden by derived classes to add their own
-        /// disposal code if necessary.
+        /// This can be overridden by derived classes to add their own disposal code if necessary
         /// </summary>
-        /// <param name="disposing">Pass true to dispose of the managed
-        /// and unmanaged resources or false to just dispose of the
-        /// unmanaged resources.</param>
+        /// <param name="disposing">Pass true to dispose of the managed and unmanaged resources or false to just
+        /// dispose of the unmanaged resources.</param>
         protected virtual void Dispose(bool disposing)
         {
             // Nothing to dispose of in this one
@@ -421,8 +385,7 @@ namespace SandcastleBuilder.PlugIns
         //=====================================================================
 
         /// <summary>
-        /// This is used to run the log file through an XSL transform so that
-        /// it is more readable.
+        /// This is used to run the log file through an XSL transform so that it is more readable
         /// </summary>
         /// <returns>The transformed log filename</returns>
         private string TransformLogFile()
@@ -435,13 +398,11 @@ namespace SandcastleBuilder.PlugIns
             XmlWriter writer = null;
             StringReader sr = null;
             StringBuilder sb = null;
-            string html = null, logFile = Path.ChangeExtension(
-                builder.LogFilename, ".html");
+            string html = null, logFile = Path.ChangeExtension(builder.LogFilename, ".html");
 
             try
             {
-                // Read in the log text we'll prefix it it with the error
-                // message if the transform fails.
+                // Read in the log text we'll prefix it it with the error message if the transform fails
                 using(StreamReader srdr = new StreamReader(builder.LogFilename))
                 {
                     html = srdr.ReadToEnd();
@@ -454,8 +415,8 @@ namespace SandcastleBuilder.PlugIns
                 xslTransform = new XslCompiledTransform();
                 settings = new XsltSettings(true, true);
 
-                xslTransform.Load(XmlReader.Create(xslTransformFile,
-                    readerSettings), settings, new XmlUrlResolver());
+                xslTransform.Load(XmlReader.Create(xslTransformFile, readerSettings), settings,
+                    new XmlUrlResolver());
 
                 sr = new StringReader(html);
                 reader = XmlReader.Create(sr, readerSettings);
@@ -475,11 +436,9 @@ namespace SandcastleBuilder.PlugIns
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
 
                 // Just use the raw data prefixed with the error message
-                html = String.Format(CultureInfo.CurrentCulture,
-                    "<pre><b>An error occurred trying to transform the log " +
-                    "file '{0}'</b>:\r\n{1}\r\n\r\n<b>Log Content:</b>\r\n" +
-                    "{2}</pre>", builder.LogFilename, ex.Message,
-                    HttpUtility.HtmlEncode(html));
+                html = String.Format(CultureInfo.CurrentCulture, "<pre><b>An error occurred trying to " +
+                    "transform the log file '{0}'</b>:\r\n{1}\r\n\r\n<b>Log Content:</b>\r\n{2}</pre>",
+                    builder.LogFilename, ex.Message, HttpUtility.HtmlEncode(html));
             }
             finally
             {
@@ -493,8 +452,7 @@ namespace SandcastleBuilder.PlugIns
                     sr.Close();
             }
 
-            using(StreamWriter sw = new StreamWriter(logFile, false,
-              Encoding.UTF8))
+            using(StreamWriter sw = new StreamWriter(logFile, false, Encoding.UTF8))
             {
                 sw.Write(html);
             }

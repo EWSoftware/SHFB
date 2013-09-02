@@ -127,6 +127,7 @@ namespace Microsoft.Ddue.Tools
         public string GetMsdnUrl(string id)
         {
             string endPoint = null;
+            bool success = false;
 
             if(msdnService != null && !cachedMsdnIds.TryGetValue(id, out endPoint))
             {
@@ -138,6 +139,7 @@ namespace Microsoft.Ddue.Tools
                 {
                     getContentResponse msdnResponse = msdnService.GetContent(msdnRequest);
                     endPoint = msdnResponse.contentId;
+                    success = true;
                 }
                 catch(WebException ex)
                 {
@@ -153,14 +155,22 @@ namespace Microsoft.Ddue.Tools
                         this.DisabledReason += "\r\n" + innerEx.Message;
                         innerEx = innerEx.InnerException;
                     }
+
+                    // Don't save changes to the cache
+                    this.CacheItemsAdded = false;
                 }
                 catch(SoapException)
                 {
-                    // Lookup failed (ID not found)
+                    // Lookup failed (ID not found).  Cache the result though since it isn't there.
+                    success = true;
                 }
 
+                // We'll cache the result but will only mark the cache as changed if successful so as not to
+                // save null results from failures caused by issues other than not being found.
                 cachedMsdnIds[id] = endPoint;
-                this.CacheItemsAdded = true;
+
+                if(success)
+                    this.CacheItemsAdded = true;
             }
 
             if(String.IsNullOrEmpty(endPoint))

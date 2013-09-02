@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : ScriptSharpPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/07/2013
+// Updated : 06/18/2013
 // Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -77,8 +77,7 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This read-only property returns the copyright information for the
-        /// plug-in.
+        /// This read-only property returns the copyright information for the plug-in
         /// </summary>
         public string Copyright
         {
@@ -86,9 +85,8 @@ namespace SandcastleBuilder.PlugIns
             {
                 // Use the assembly copyright
                 Assembly asm = Assembly.GetExecutingAssembly();
-                AssemblyCopyrightAttribute copyright =
-                    (AssemblyCopyrightAttribute)Attribute.GetCustomAttribute(asm,
-                    typeof(AssemblyCopyrightAttribute));
+                AssemblyCopyrightAttribute copyright = (AssemblyCopyrightAttribute)Attribute.GetCustomAttribute(
+                    asm, typeof(AssemblyCopyrightAttribute));
 
                 return copyright.Copyright + "\r\nScript# is Copyright \xA9 2007-2009 Nikhil Kothari, " +
                     "All Rights Reserved";
@@ -126,8 +124,8 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This read-only property returns a collection of execution points that define when the plug-in
-        /// should be invoked during the build process.
+        /// This read-only property returns a collection of execution points that define when the plug-in should
+        /// be invoked during the build process.
         /// </summary>
         public ExecutionPointCollection ExecutionPoints
         {
@@ -164,12 +162,9 @@ namespace SandcastleBuilder.PlugIns
         /// <summary>
         /// This method is used to initialize the plug-in at the start of the build process
         /// </summary>
-        /// <param name="buildProcess">A reference to the current build
-        /// process.</param>
-        /// <param name="configuration">The configuration data that the plug-in should use to initialize
-        /// itself.</param>
-        public void Initialize(BuildProcess buildProcess,
-          XPathNavigator configuration)
+        /// <param name="buildProcess">A reference to the current build process</param>
+        /// <param name="configuration">The configuration data that the plug-in should use to initialize itself</param>
+        public void Initialize(BuildProcess buildProcess, XPathNavigator configuration)
         {
             builder = buildProcess;
 
@@ -190,21 +185,20 @@ namespace SandcastleBuilder.PlugIns
 
             projectFile = builder.WorkingFolder + "GenerateRefInfo.proj";
 
-            // If the project doesn't exist we have nothing to do.  However, it could be that some other
-            // plug-in has bypassed it so only issue a warning.
+            // If the project doesn't exist we have nothing to do.  However, it could be that some other plug-in
+            // has bypassed it so only issue a warning.
             if(!File.Exists(projectFile))
             {
-                builder.ReportWarning("SSP0002", "The reflection information generation project '{0}' " +
-                    "could not be found.  The Script# plug-in did not run.", projectFile);
+                builder.ReportWarning("SSP0002", "The reflection information generation project '{0}' could " +
+                    "not be found.  The Script# plug-in did not run.", projectFile);
                 return;
             }
 
             builder.ReportProgress("Adding Script# AfterGenerateRefInfo tasks");
 
-            // Add the transform that fixes up the Script# elements to the AfterGenerateRefInfo project
-            // target.  Note that we use a customized version that adds a <scriptSharp /> element to each
-            // API node so that our custom JavaScript syntax generator applies the casing rules to the
-            // member names.
+            // Add the transform that fixes up the Script# elements to the AfterGenerateRefInfo project target.
+            // Note that we use a customized version that adds a <scriptSharp /> element to each API node so that
+            // our custom JavaScript syntax generator applies the casing rules to the member names.
             project = new XmlDocument();
             project.Load(projectFile);
             nsm = new XmlNamespaceManager(project.NameTable);
@@ -263,8 +257,8 @@ namespace SandcastleBuilder.PlugIns
         //=====================================================================
 
         /// <summary>
-        /// This handles garbage collection to ensure proper disposal of the plug-in if not done explicity
-        /// with <see cref="Dispose()"/>.
+        /// This handles garbage collection to ensure proper disposal of the plug-in if not done explicit with
+        /// <see cref="Dispose()"/>.
         /// </summary>
         ~ScriptSharpPlugIn()
         {
@@ -284,8 +278,8 @@ namespace SandcastleBuilder.PlugIns
         /// <summary>
         /// This can be overridden by derived classes to add their own disposal code if necessary
         /// </summary>
-        /// <param name="disposing">Pass true to dispose of the managed and unmanaged resources or false
-        /// to just dispose of the unmanaged resources.</param>
+        /// <param name="disposing">Pass true to dispose of the managed and unmanaged resources or false to just
+        /// dispose of the unmanaged resources.</param>
         protected virtual void Dispose(bool disposing)
         {
             // Nothing to dispose of in this one

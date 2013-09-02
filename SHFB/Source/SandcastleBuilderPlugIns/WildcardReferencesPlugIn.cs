@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : WildcardReferencesPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/07/2013
+// Updated : 06/18/2013
 // Note    : Copyright 2011-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -37,8 +37,8 @@ using Microsoft.Build.Evaluation;
 namespace SandcastleBuilder.PlugIns
 {
     /// <summary>
-    /// This plug-in class is designed to modify the MRefBuilder project
-    /// file by adding in reference assemblies matching wildcard search paths.
+    /// This plug-in class is designed to modify the MRefBuilder project file by adding in reference assemblies
+    /// matching wildcard search paths.
     /// </summary>
     public class WildcardReferencesPlugIn : IPlugIn
     {
@@ -80,8 +80,7 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This read-only property returns the copyright information for the
-        /// plug-in.
+        /// This read-only property returns the copyright information for the plug-in
         /// </summary>
         public string Copyright
         {
@@ -103,7 +102,7 @@ namespace SandcastleBuilder.PlugIns
         {
             get
             {
-                return "This plug-in is used to modify the Generate Refelection Information build step by " +
+                return "This plug-in is used to modify the Generate Reflection Information build step by " +
                     "adding assembly references found in one or more wildcard search paths.";
             }
         }
@@ -126,9 +125,8 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This read-only property returns a collection of execution points
-        /// that define when the plug-in should be invoked during the build
-        /// process.
+        /// This read-only property returns a collection of execution points that define when the plug-in should
+        /// be invoked during the build process.
         /// </summary>
         public ExecutionPointCollection ExecutionPoints
         {
@@ -147,14 +145,13 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This method is used by the Sandcastle Help File Builder to let the
-        /// plug-in perform its own configuration.
+        /// This method is used by the Sandcastle Help File Builder to let the plug-in perform its own
+        /// configuration.
         /// </summary>
         /// <param name="project">A reference to the active project</param>
         /// <param name="currentConfig">The current configuration XML fragment</param>
         /// <returns>A string containing the new configuration XML fragment</returns>
-        /// <remarks>The configuration data will be stored in the help file
-        /// builder project.</remarks>
+        /// <remarks>The configuration data will be stored in the help file builder project</remarks>
         public string ConfigurePlugIn(SandcastleProject project, string currentConfig)
         {
             using(WildcardReferencesConfigDlg dlg = new WildcardReferencesConfigDlg(project, currentConfig))
@@ -167,13 +164,10 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This method is used to initialize the plug-in at the start of the
-        /// build process.
+        /// This method is used to initialize the plug-in at the start of the build process
         /// </summary>
-        /// <param name="buildProcess">A reference to the current build
-        /// process.</param>
-        /// <param name="configuration">The configuration data that the plug-in
-        /// should use to initialize itself.</param>
+        /// <param name="buildProcess">A reference to the current build process</param>
+        /// <param name="configuration">The configuration data that the plug-in should use to initialize itself</param>
         public void Initialize(BuildProcess buildProcess, XPathNavigator configuration)
         {
             builder = buildProcess;
@@ -206,8 +200,8 @@ namespace SandcastleBuilder.PlugIns
 
             string filename, projectFile = builder.WorkingFolder + "GenerateRefInfo.proj";
 
-            // If the project doesn't exist we have nothing to do.  However, it could be that some other
-            // plug-in has bypassed it so only issue a warning.
+            // If the project doesn't exist we have nothing to do.  However, it could be that some other plug-in
+            // has bypassed it so only issue a warning.
             if(!File.Exists(projectFile))
             {
                 builder.ReportWarning("WRP0003", "The reflection information generation project '{0}' could " +
@@ -270,8 +264,8 @@ namespace SandcastleBuilder.PlugIns
         //=====================================================================
 
         /// <summary>
-        /// This handles garbage collection to ensure proper disposal of the
-        /// plug-in if not done explicity with <see cref="Dispose()"/>.
+        /// This handles garbage collection to ensure proper disposal of the plug-in if not done explicitly with
+        /// <see cref="Dispose()"/>.
         /// </summary>
         ~WildcardReferencesPlugIn()
         {
@@ -279,10 +273,9 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This implements the Dispose() interface to properly dispose of
-        /// the plug-in object.
+        /// This implements the Dispose() interface to properly dispose of the plug-in object
         /// </summary>
-        /// <overloads>There are two overloads for this method.</overloads>
+        /// <overloads>There are two overloads for this method</overloads>
         public void Dispose()
         {
             this.Dispose(true);
@@ -290,12 +283,10 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This can be overridden by derived classes to add their own
-        /// disposal code if necessary.
+        /// This can be overridden by derived classes to add their own disposal code if necessary
         /// </summary>
-        /// <param name="disposing">Pass true to dispose of the managed
-        /// and unmanaged resources or false to just dispose of the
-        /// unmanaged resources.</param>
+        /// <param name="disposing">Pass true to dispose of the managed and unmanaged resources or false to just
+        /// dispose of the unmanaged resources.</param>
         protected virtual void Dispose(bool disposing)
         {
             // Nothing to dispose of in this one

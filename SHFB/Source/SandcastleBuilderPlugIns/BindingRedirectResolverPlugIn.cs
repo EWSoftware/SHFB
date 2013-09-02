@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : BindingRedirectResolverPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/07/2013
+// Updated : 06/18/2013
 // Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -17,7 +17,7 @@
 // Version     Date     Who  Comments
 // ==============================================================================================================
 // 1.8.0.1  11/07/2008  EFW  Created the code
-// 1.9.6.0  11/25/2012  EFW  Added support for the ignoreIfUnresolved configuraiton element
+// 1.9.6.0  11/25/2012  EFW  Added support for the ignoreIfUnresolved configuration element
 //===============================================================================================================
 
 using System;
@@ -35,8 +35,8 @@ using SandcastleBuilder.Utils.PlugIn;
 namespace SandcastleBuilder.PlugIns
 {
     /// <summary>
-    /// This plug-in class is used to add assembly binding redirection support to the MRefBuilder
-    /// configuration file.
+    /// This plug-in class is used to add assembly binding redirection support to the MRefBuilder configuration
+    /// file.
     /// </summary>
     public class BindingRedirectResolverPlugIn : SandcastleBuilder.Utils.PlugIn.IPlugIn
     {
@@ -86,9 +86,8 @@ namespace SandcastleBuilder.PlugIns
             {
                 // Use the assembly copyright
                 Assembly asm = Assembly.GetExecutingAssembly();
-                AssemblyCopyrightAttribute copyright =
-                    (AssemblyCopyrightAttribute)Attribute.GetCustomAttribute(asm,
-                        typeof(AssemblyCopyrightAttribute));
+                AssemblyCopyrightAttribute copyright = (AssemblyCopyrightAttribute)Attribute.GetCustomAttribute(
+                    asm, typeof(AssemblyCopyrightAttribute));
 
                 return copyright.Copyright;
             }
@@ -120,12 +119,12 @@ namespace SandcastleBuilder.PlugIns
         /// </summary>
         public bool RunsInPartialBuild
         {
-            get { return false; }
+            get { return true; }
         }
 
         /// <summary>
-        /// This read-only property returns a collection of execution points that define when the plug-in
-        /// should be invoked during the build process.
+        /// This read-only property returns a collection of execution points that define when the plug-in should
+        /// be invoked during the build process.
         /// </summary>
         public ExecutionPointCollection ExecutionPoints
         {
@@ -153,8 +152,8 @@ namespace SandcastleBuilder.PlugIns
         /// <remarks>The configuration data will be stored in the help file builder project</remarks>
         public string ConfigurePlugIn(SandcastleProject project, string currentConfig)
         {
-            using(BindingRedirectResolverConfigDlg dlg = new BindingRedirectResolverConfigDlg(
-              project, currentConfig))
+            using(BindingRedirectResolverConfigDlg dlg = new BindingRedirectResolverConfigDlg(project,
+              currentConfig))
             {
                 if(dlg.ShowDialog() == DialogResult.OK)
                     currentConfig = dlg.Configuration;
@@ -166,9 +165,8 @@ namespace SandcastleBuilder.PlugIns
         /// <summary>
         /// This method is used to initialize the plug-in at the start of the build process
         /// </summary>
-        /// <param name="buildProcess">A reference to the current build process.</param>
-        /// <param name="configuration">The configuration data that the plug-in should use to initialize
-        /// itself.</param>
+        /// <param name="buildProcess">A reference to the current build process</param>
+        /// <param name="configuration">The configuration data that the plug-in should use to initialize itself</param>
         public void Initialize(BuildProcess buildProcess, XPathNavigator configuration)
         {
             XPathNavigator root;
@@ -216,8 +214,8 @@ namespace SandcastleBuilder.PlugIns
                 ddue = config.SelectSingleNode("configuration/dduetools");
 
                 if(ddue == null)
-                    throw new BuilderException("ABR0002", "Unable to locate configuration/dduetools " +
-                        "or its child resolver element in MRefBuilder.config");
+                    throw new BuilderException("ABR0002", "Unable to locate configuration/dduetools or its " +
+                        "child resolver element in MRefBuilder.config");
 
                 builder.ReportProgress("Default resolver element not found, adding new element");
                 resolver = config.CreateNode(XmlNodeType.Element, "resolver", null);
@@ -284,7 +282,7 @@ namespace SandcastleBuilder.PlugIns
         //=====================================================================
 
         /// <summary>
-        /// This handles garbage collection to ensure proper disposal of the plug-in if not done explicity
+        /// This handles garbage collection to ensure proper disposal of the plug-in if not done explicitly
         /// with <see cref="Dispose()"/>.
         /// </summary>
         ~BindingRedirectResolverPlugIn()
@@ -295,7 +293,7 @@ namespace SandcastleBuilder.PlugIns
         /// <summary>
         /// This implements the Dispose() interface to properly dispose of the plug-in object
         /// </summary>
-        /// <overloads>There are two overloads for this method.</overloads>
+        /// <overloads>There are two overloads for this method</overloads>
         public void Dispose()
         {
             this.Dispose(true);
@@ -305,8 +303,8 @@ namespace SandcastleBuilder.PlugIns
         /// <summary>
         /// This can be overridden by derived classes to add their own disposal code if necessary
         /// </summary>
-        /// <param name="disposing">Pass true to dispose of the managed and unmanaged resources or false to
-        /// just dispose of the unmanaged resources.</param>
+        /// <param name="disposing">Pass true to dispose of the managed and unmanaged resources or false to just
+        /// dispose of the unmanaged resources.</param>
         protected virtual void Dispose(bool disposing)
         {
             // Nothing to dispose of in this one

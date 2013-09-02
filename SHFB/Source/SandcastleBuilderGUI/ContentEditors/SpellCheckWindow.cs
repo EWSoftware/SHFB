@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : SpellCheckWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/07/2013
+// Updated : 06/10/2013
 // Note    : Copyright 2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -344,7 +344,8 @@ namespace SandcastleBuilder.Gui.ContentEditors
             foreach(var issue in issues.Where(i => i.Word.Equals(word, StringComparison.OrdinalIgnoreCase)).ToList())
             {
                 // Match the case of the first letter if necessary
-                if(replacement.Length > 1 && Char.IsUpper(replacement[0]) != Char.IsUpper(replacement[1]))
+                if(replacement.Length > 1 && (Char.IsUpper(replacement[0]) != Char.IsUpper(replacement[1]) ||
+                  (Char.IsLower(replacement[0]) && Char.IsLower(replacement[1]))))
                     if(Char.IsUpper(issue.Word[0]) && !Char.IsUpper(replacement[0]))
                     {
                         replacement = replacement.Substring(0, 1).ToUpper(

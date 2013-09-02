@@ -40,6 +40,17 @@
 			<Files Source="icons\*.*" Destination="icons" />
 			<Files Source="scripts\*.*" />
 			<Files Source="styles\*.*" />
+
+			<!-- The Formats attribute can be used to limit which help file formats the files apply to.  Specify one or
+					 more of the help file formats above separated by commas.  If omitted, the files will apply to all help
+					 file formats.  The BasePath attribute can be used to override the presentation style base path and
+					 copy the files from a different location.  The TemplateFiles attribute can be used to have the
+					 Sandcastle Help File builder resolve substitution tags within files ending with on of the given
+					 extensions.  The extensions should be separated by semi-colons.  If omitted, the files are copied to
+					 the destination as-is.  This entry copies the help file builder version of the website template files
+					 when building website output. -->
+			<Files Formats="Website" BasePath="%SHFBROOT%" Source="Web\*.*" Destination=".\"
+				TemplateFiles=".aspx;.html;.htm;.php" />
 		</HelpContent>
 
 		<!-- This defines the path to the shared content resource items. -->
@@ -122,6 +133,8 @@
 			<Files Source="icons\*.*" />
 			<Files Source="scripts\*.*" />
 			<Files Source="styles\*.*" />
+			<Files Formats="Website" BasePath="%SHFBROOT%" Source="Web\*.*" Destination=".\"
+				TemplateFiles=".aspx;.html;.htm;.php" />
 		</HelpContent>
 
 		<ResourceItems Path="Content">
@@ -170,6 +183,8 @@
 			<Files Source="icons\*.*" />
 			<Files Source="scripts\*.*" />
 			<Files Source="styles\*.*" />
+			<Files Formats="Website" BasePath="%SHFBROOT%" Source="Web\*.*" Destination=".\"
+				TemplateFiles=".aspx;.html;.htm;.php" />
 		</HelpContent>
 
 		<ResourceItems Path="Content">
@@ -218,6 +233,8 @@
 			<Files Source="icons\*.*" />
 			<Files Source="scripts\*.*" />
 			<Files Source="styles\*.*" />
+			<Files Formats="Website" BasePath="%SHFBROOT%" Source="Web\*.*" Destination=".\"
+				TemplateFiles=".aspx;.html;.htm;.php" />
 		</HelpContent>
 
 		<ResourceItems Path="Content">

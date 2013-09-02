@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : LaunchMSHelpViewDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/08/2012
-// Note    : Copyright 2010-2012, Eric Woodruff, All rights reserved
+// Updated : 08/01/2013
+// Note    : Copyright 2010-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This form is used to determine the state of the current MS Help Viewer content and offer options to install,
@@ -329,11 +329,31 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
         {
             txtInfo.Text = null;
 
+            grpOptions.Enabled = rbInstall.Enabled = true;
             lastVersionSelected = cboHelpViewerVersion.SelectedIndex;
 
-            if(!File.Exists(helpFilePath) || !File.Exists(setupFile))
+            // If there are substitution tags present, have a go at resolving them
+            if(helpFilePath.IndexOf("{@", StringComparison.Ordinal) != -1)
             {
-                txtInfo.AppendText("A copy of the help file does not appear to exist yet.  It may need to be built.\r\n");
+                try
+                {
+                    var bp = new SandcastleBuilder.Utils.BuildEngine.BuildProcess(project);
+                    helpFilePath = bp.TransformText(helpFilePath);
+                    setupFile = Path.ChangeExtension(helpFilePath, ".msha");
+                }
+                catch
+                {
+                    // Ignore errors
+                    txtInfo.AppendText("The help filename appears to contain substitution tags but they could " +
+                        "not be resolved to determine the actual file to use for installation.  Building " +
+                        "website output and viewing it can be used to work around this issue.\r\n\r\n");
+                    rbInstall.Enabled = false;
+                }
+            }
+
+            if(rbInstall.Enabled && (!File.Exists(helpFilePath) || !File.Exists(setupFile)))
+            {
+                txtInfo.AppendText("A copy of the help file does not appear to exist yet.  It may need to be built.\r\n\r\n");
                 rbInstall.Enabled = false;
             }
 
@@ -365,8 +385,6 @@ namespace SandcastleBuilder.MicrosoftHelpViewer
                     txtInfo.AppendText("The help file does not appear to be installed yet.\r\n");
                     rbOpenCurrent.Enabled = rbRemove.Enabled = false;
                 }
-
-                grpOptions.Enabled = true;
 
                 if(rbOpenCurrent.Enabled)
                     rbOpenCurrent.Checked = true;

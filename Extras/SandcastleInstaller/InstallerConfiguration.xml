@@ -32,6 +32,7 @@
 			<visualStudio version="Visual Studio 2008" location="%VS90COMNTOOLS%\..\..\Xml\Schemas" />
 			<visualStudio version="Visual Studio 2010" location="%VS100COMNTOOLS%\..\..\Xml\Schemas" />
 			<visualStudio version="Visual Studio 2012" location="%VS110COMNTOOLS%\..\..\Xml\Schemas" />
+			<visualStudio version="Visual Studio 2013" location="%VS120COMNTOOLS%\..\..\Xml\Schemas" />
 		</page>
 		<page type="Sandcastle.Installer.InstallerPages.MamlSnippetsPage">
 			<!-- These paths can be adjusted if your snippets are in a non-standard location.  Typically they are
@@ -39,6 +40,7 @@
 			<visualStudio version="Visual Studio 2008" location="Visual Studio 2008\Code Snippets\Xml\My Xml Snippets" />
 			<visualStudio version="Visual Studio 2010" location="Visual Studio 2010\Code Snippets\Xml\My Xml Snippets" />
 			<visualStudio version="Visual Studio 2012" location="Visual Studio 2012\Code Snippets\Xml\My Xml Snippets" />
+			<visualStudio version="Visual Studio 2013" location="Visual Studio 2013\Code Snippets\Xml\My Xml Snippets" />
 		</page>
 
 		<!-- Sandcastle Help File Builder installer pages -->
@@ -53,8 +55,11 @@
 				location="%VS100COMNTOOLS%\..\IDE" />
 			<visualStudio version="11.0" name="Visual Studio 2012 Professional/Premium/Ultimate"
 				location="%VS110COMNTOOLS%\..\IDE" />
+			<visualStudio version="12.0" name="Visual Studio 2013 Professional/Premium/Ultimate"
+				location="%VS120COMNTOOLS%\..\IDE" />
 		</page>
 
+		<page type="Sandcastle.Installer.InstallerPages.VisualStudioSpellCheckerPage" />
 		<page type="Sandcastle.Installer.InstallerPages.CompletionPage" />
 	</pages>
 </configuration>

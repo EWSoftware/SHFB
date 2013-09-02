@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : TocExcludePlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/07/2013
+// Updated : 06/21/2013
 // Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -35,10 +35,9 @@ using SandcastleBuilder.Utils.PlugIn;
 namespace SandcastleBuilder.PlugIns
 {
     /// <summary>
-    /// This plug-in class can be used to exclude API members from the table
-    /// of contents via the <c>&lt;tocexclude /&gt;</c> XML comment tag.  The
-    /// excluded items are still accessible in the help file via other topic
-    /// links.
+    /// This plug-in class can be used to exclude API members from the table of contents via the
+    /// <c>&lt;tocexclude /&gt;</c> XML comment tag.  The excluded items are still accessible in the help file
+    /// via other topic links.
     /// </summary>
     public class TocExcludePlugIn : IPlugIn
     {
@@ -79,8 +78,7 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This read-only property returns the copyright information for the
-        /// plug-in.
+        /// This read-only property returns the copyright information for the plug-in
         /// </summary>
         public string Copyright
         {
@@ -102,10 +100,9 @@ namespace SandcastleBuilder.PlugIns
         {
             get
             {
-                return "This plug-in can be used to exclude API members " +
-                    "from the table of contents via the <tocexclude /> XML " +
-                    "comment tag.  The excluded items are still accessible " +
-                    "in the help file via other topic links.";
+                return "This plug-in can be used to exclude API members from the table of contents via the " +
+                    "<tocexclude /> XML comment tag.  The excluded items are still accessible in the help " +
+                    "file via other topic links.";
             }
         }
 
@@ -127,9 +124,8 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This read-only property returns a collection of execution points
-        /// that define when the plug-in should be invoked during the build
-        /// process.
+        /// This read-only property returns a collection of execution points that define when the plug-in should
+        /// be invoked during the build process.
         /// </summary>
         public ExecutionPointCollection ExecutionPoints
         {
@@ -138,10 +134,10 @@ namespace SandcastleBuilder.PlugIns
                 if(executionPoints == null)
                     executionPoints = new ExecutionPointCollection
                     {
-                        new ExecutionPoint(BuildStep.CopyStandardContent, ExecutionBehaviors.After),
+                        new ExecutionPoint(BuildStep.MergeCustomConfigs, ExecutionBehaviors.After),
 
-                        // This one has a slightly higher priority as it removes
-                        // stuff that the other plug-ins don't need to see.
+                        // This one has a slightly higher priority as it removes stuff that the other plug-ins
+                        // don't need to see.
                         new ExecutionPoint(BuildStep.GenerateIntermediateTableOfContents, ExecutionBehaviors.After, 1500)
                     };
 
@@ -150,31 +146,26 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This method is used by the Sandcastle Help File Builder to let the
-        /// plug-in perform its own configuration.
+        /// This method is used by the Sandcastle Help File Builder to let the plug-in perform its own
+        /// configuration.
         /// </summary>
         /// <param name="project">A reference to the active project</param>
         /// <param name="currentConfig">The current configuration XML fragment</param>
         /// <returns>A string containing the new configuration XML fragment</returns>
-        /// <remarks>The configuration data will be stored in the help file
-        /// builder project.</remarks>
+        /// <remarks>The configuration data will be stored in the help file builder project</remarks>
         public string ConfigurePlugIn(SandcastleProject project, string currentConfig)
         {
             MessageBox.Show("This plug-in has no configurable settings",
-                "Table of Contents Exclusion Plug-In", MessageBoxButtons.OK,
-                MessageBoxIcon.Information);
+                "Table of Contents Exclusion Plug-In", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             return currentConfig;
         }
 
         /// <summary>
-        /// This method is used to initialize the plug-in at the start of the
-        /// build process.
+        /// This method is used to initialize the plug-in at the start of the build process
         /// </summary>
-        /// <param name="buildProcess">A reference to the current build
-        /// process.</param>
-        /// <param name="configuration">The configuration data that the plug-in
-        /// should use to initialize itself.</param>
+        /// <param name="buildProcess">A reference to the current build process</param>
+        /// <param name="configuration">The configuration data that the plug-in should use to initialize itself</param>
         public void Initialize(BuildProcess buildProcess, XPathNavigator configuration)
         {
             builder = buildProcess;
@@ -194,10 +185,9 @@ namespace SandcastleBuilder.PlugIns
             XPathNavigator root, navToc, tocEntry, tocParent;
             bool hasParent;
 
-            // Scan the XML comments files.  The files aren't available soon
-            // after this step and by now everything that other plug-ins may
-            // have added to the collection should be there.
-            if(context.BuildStep == BuildStep.CopyStandardContent)
+            // Scan the XML comments files.  The files aren't available soon after this step and by now
+            // everything that other plug-ins may have added to the collection should be there.
+            if(context.BuildStep == BuildStep.MergeCustomConfigs)
             {
                 builder.ReportProgress("Searching for comment members containing <tocexclude />...");
 
@@ -221,8 +211,8 @@ namespace SandcastleBuilder.PlugIns
             toc.Load(builder.WorkingFolder + "toc.xml");
             navToc = toc.CreateNavigator();
 
-            // If a root namespace container node is present, we need to look
-            // in it rather than the document root node.
+            // If a root namespace container node is present, we need to look in it rather than the document root
+            // node.
             root = navToc.SelectSingleNode("topics/topic[starts-with(@id, 'R:')]");
 
             if(root == null)
@@ -235,8 +225,7 @@ namespace SandcastleBuilder.PlugIns
                 // Ignore if null, it was probably excluded by the API filter
                 if(tocEntry != null)
                 {
-                    // Remove the entry.  If this results in the parent
-                    // being an empty node, remove it too.
+                    // Remove the entry.  If this results in the parent being an empty node, remove it too.
                     do
                     {
                         tocParent = tocEntry.Clone();
@@ -257,8 +246,8 @@ namespace SandcastleBuilder.PlugIns
         //=====================================================================
 
         /// <summary>
-        /// This handles garbage collection to ensure proper disposal of the
-        /// plug-in if not done explicity with <see cref="Dispose()"/>.
+        /// This handles garbage collection to ensure proper disposal of the plug-in if not done explicitly with
+        /// <see cref="Dispose()"/>.
         /// </summary>
         ~TocExcludePlugIn()
         {
@@ -266,10 +255,9 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This implements the Dispose() interface to properly dispose of
-        /// the plug-in object.
+        /// This implements the Dispose() interface to properly dispose of the plug-in object
         /// </summary>
-        /// <overloads>There are two overloads for this method.</overloads>
+        /// <overloads>There are two overloads for this method</overloads>
         public void Dispose()
         {
             this.Dispose(true);
@@ -277,12 +265,10 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This can be overridden by derived classes to add their own
-        /// disposal code if necessary.
+        /// This can be overridden by derived classes to add their own disposal code if necessary
         /// </summary>
-        /// <param name="disposing">Pass true to dispose of the managed
-        /// and unmanaged resources or false to just dispose of the
-        /// unmanaged resources.</param>
+        /// <param name="disposing">Pass true to dispose of the managed and unmanaged resources or false to just
+        /// dispose of the unmanaged resources.</param>
         protected virtual void Dispose(bool disposing)
         {
             // Nothing to dispose of in this one

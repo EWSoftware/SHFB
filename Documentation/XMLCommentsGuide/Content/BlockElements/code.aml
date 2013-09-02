@@ -274,7 +274,10 @@ used, it is assumed that there is no code within the code element itself and thu
 Here are some examples:</para>
 
 						<para>Retrieve all code from an external file and use the VB.NET syntax to color it.  The path is
-relative to the code block component's <codeInline>basePath</codeInline> configuration element.</para>
+relative to the code block component's <codeInline>basePath</codeInline> configuration element.  Typically, the
+base path is the path of the documentation project file.  So, if your documentation project is in a subfolder and
+the code is in the parent folder in an <localUri>Examples</localUri> subfolder, the path would look like the
+following example.</para>
 
 <code language="xml" title=" ">
 &lt;code source="..\Examples\WholeDemo.vb" language="vbnet" /&gt;
@@ -296,7 +299,7 @@ it and extract the region.</para>
 <code language="none" title="Commented Region Examples">
 <b><u>VB.NET Example</u></b>
 Public Sub SomeMethod()
-    ' #Region VB.NET Snippet
+    ' #Region "VB.NET Snippet"
     Dim x As Integer
 
     For x = 1 To 10

@@ -2,18 +2,17 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.HelpFileUtils.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/16/2012
-// Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
+// Updated : 06/22/2013
+// Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains the code used to modify the help file project files to
-// create a better table of contents and find the default help file page
+// This file contains the code used to modify the help file project files to create a better table of contents
+// and find the default help file page
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
 // ==============================================================================================================
@@ -31,6 +30,7 @@
 //                           all formats.
 // 1.9.4.0  02/19/2012  EFW  Added support for PHP website files.  Merged changes for VS2010 style from Don Fehr.
 // 1.9.6.0  10/25/2012  EFW  Updated to use the new presentation style definition files
+// 1.9.8.0  06/21/2013  EFW  Added support for format-specific help content files
 //===============================================================================================================
 
 using System;
@@ -44,7 +44,6 @@ using System.Xml;
 using System.Xml.XPath;
 using System.Web;
 
-using SandcastleBuilder.MicrosoftHelpViewer;
 using SandcastleBuilder.Utils.PlugIn;
 using SandcastleBuilder.Utils.ConceptualContent;
 
@@ -57,7 +56,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
         private static Regex reInvalidChars = new Regex("[ :.`#<>*?]");
 
-        // Branding manifest property constaants
+        // Branding manifest property constants
         private const string ManifestPropertyHelpOutput = "helpOutput";
         private const string ManifestPropertyPreBranding = "preBranding";
         private const string ManifestPropertyNoTransforms = "noTransforms";
@@ -70,8 +69,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         //=====================================================================
 
         /// <summary>
-        /// This is used to determine the best placement for the API content
-        /// based on the project settings.
+        /// This is used to determine the best placement for the API content based on the project settings
         /// </summary>
         private void DetermineApiContentPlacement()
         {
@@ -200,9 +198,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
         }
 
         /// <summary>
-        /// This combines the conceptual and API intermediate TOC files into
-        /// one file ready for transformation to the help format-specific
-        /// TOC file formats.
+        /// This combines the conceptual and API intermediate TOC files into one file ready for transformation to
+        /// the help format-specific TOC file formats.
         /// </summary>
         private void CombineIntermediateTocFiles()
         {
@@ -328,7 +325,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
             }
 
             // Determine the default topic for Help 1 and website output if one
-            // was not specified in a sitemap or content layout file.
+            // was not specified in a site map or content layout file.
             if(defaultTopic == null)
             {
                 node = tocXml.SelectSingleNode("topics/topic");
@@ -373,15 +370,17 @@ namespace SandcastleBuilder.Utils.BuildEngine
         //=====================================================================
 
         /// <summary>
-        /// This is called to create the help project output folder and copy the standard content files (icons,
-        /// scripts, and stylesheets) to the help project folders.
+        /// This is called to copy the standard content files (icons, scripts, style sheets, and other standard
+        /// presentation style content) to the help output folders.
         /// </summary>
         /// <remarks>This creates the base folder <b>Output\</b>, one folder for each help file format, and an
-        /// <b>.\html</b> folder under each of those.  It then copies the stock icon, script, and stylesheet
+        /// <b>.\html</b> folder under each of those.  It then copies the stock icon, script, and style sheet
         /// files from the defined presentation style help content folders.</remarks>
         private void CopyStandardHelpContent()
         {
-            this.ReportProgress(BuildStep.CopyStandardContent, "Copying standard help content...");
+            int idx = 0;
+
+            this.ReportProgress(BuildStep.CopyStandardHelpContent, "Copying standard help content...");
 
             if(this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
                 return;
@@ -389,13 +388,15 @@ namespace SandcastleBuilder.Utils.BuildEngine
             this.ExecutePlugIns(ExecutionBehaviors.Before);
             this.EnsureOutputFoldersExist("html");
 
-            foreach(string baseFolder in this.HelpFormatOutputFolders)
-            {
-                presentationStyle.CopyHelpContent(baseFolder, this.ReportProgress);
-
-                // Add the branding folder if present.  This will eventually go away.
-                this.CopyHelpBranding(baseFolder);
-            }
+            foreach(HelpFileFormat value in Enum.GetValues(typeof(HelpFileFormat)))
+                if((project.HelpFileFormat & value) != 0)
+                {
+                    // EnsureOutputFoldersExist adds the folders to HelpFormatOutputFolders in the same order as
+                    // the values so we can index it here.
+                    presentationStyle.CopyHelpContent(value, this.HelpFormatOutputFolders[idx],
+                        this.ReportProgress, (name, source, dest) => this.TransformTemplate(name, source, dest));
+                    idx++;
+                }
 
             this.ExecutePlugIns(ExecutionBehaviors.After);
         }
@@ -426,7 +427,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     brandingIconsTarget = Path.Combine(helpFormatOutputFolder, "icons"),
                     brandingManifest = Path.Combine(brandingSource, "branding.manifest");
 
-                this.ReportProgress(BuildStep.CopyStandardContent, "Copying help branding...");
+                this.ReportProgress("Copying help branding files...");
 
                 if(!File.Exists(brandingManifest))
                     throw (new BuilderException(String.Format(CultureInfo.InvariantCulture,
@@ -582,18 +583,15 @@ namespace SandcastleBuilder.Utils.BuildEngine
         //=====================================================================
 
         /// <summary>
-        /// This returns a complete list of files for inclusion in the
-        /// compiled help file.
+        /// This returns a complete list of files for inclusion in the compiled help file
         /// </summary>
         /// <param name="folder">The folder to expand</param>
         /// <param name="format">The HTML help file format</param>
         /// <returns>The full list of all files for the help project</returns>
-        /// <remarks>The help file list is expanded to ensure that we get
-        /// all additional content including all nested subfolders.  The
-        /// <b>format</b> parameter determines the format of the returned
-        /// file list.  For HTML Help 1, it returns a list of the filenames.
-        /// For MS Help 2, it returns the list formatted with the necessary
-        /// XML markup.</remarks>
+        /// <remarks>The help file list is expanded to ensure that we get all additional content including all
+        /// nested subfolders.  The <b>format</b> parameter determines the format of the returned file list.  For
+        /// HTML Help 1, it returns a list of the filenames.  For MS Help 2, it returns the list formatted with
+        /// the necessary XML markup.</remarks>
         private string HelpProjectFileList(string folder, HelpFileFormat format)
         {
             StringBuilder sb = new StringBuilder(10240);
@@ -651,13 +649,13 @@ namespace SandcastleBuilder.Utils.BuildEngine
         }
 
         /// <summary>
-        /// This is used to generate the website helper files and copy the
-        /// output to the project output folder ready for use as a website.
+        /// This is used to generate the website helper files and copy the output to the project output folder
+        /// ready for use as a website.
         /// </summary>
         private void GenerateWebsite()
         {
-            string destFile, webWorkingFolder = String.Format(CultureInfo.InvariantCulture,
-                "{0}Output\\{1}", workingFolder, HelpFileFormat.Website);
+            string webWorkingFolder = String.Format(CultureInfo.InvariantCulture, "{0}Output\\{1}",
+                workingFolder, HelpFileFormat.Website);
             int fileCount = 0;
 
             // Generate the full-text index for the ASP.NET search option
@@ -685,18 +683,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
             File.Copy(workingFolder + "WebTOC.xml", outputFolder + "WebTOC.xml");
             File.Copy(workingFolder + "WebKI.xml", outputFolder + "WebKI.xml");
 
-            foreach(string file in Directory.EnumerateFiles(webFolder))
-                if(file.EndsWith("html", StringComparison.OrdinalIgnoreCase) ||
-                  file.EndsWith("aspx", StringComparison.OrdinalIgnoreCase) ||
-                  file.EndsWith("php", StringComparison.OrdinalIgnoreCase))
-                    this.TransformTemplate(Path.GetFileName(file), webFolder, outputFolder);
-                else
-                {
-                    destFile = outputFolder + Path.GetFileName(file);
-                    File.Copy(file, destFile, true);
-                    File.SetAttributes(destFile, FileAttributes.Normal);
-                }
-
             // Copy the help pages and related content
             this.RecursiveCopy(webWorkingFolder + @"\*.*", outputFolder, false, ref fileCount);
             this.ReportProgress("Copied {0} files for the website content", fileCount);
@@ -706,10 +692,9 @@ namespace SandcastleBuilder.Utils.BuildEngine
         }
 
         /// <summary>
-        /// This is called to generate the HTML table of contents when creating
-        /// the website output.
+        /// This is called to generate the HTML table of contents when creating the website output
         /// </summary>
-        /// <returns>The HTML to insert for the table of contents.</returns>
+        /// <returns>The HTML to insert for the table of contents</returns>
         private string GenerateHtmlToc()
         {
             XPathDocument toc;
@@ -740,13 +725,11 @@ namespace SandcastleBuilder.Utils.BuildEngine
         }
 
         /// <summary>
-        /// This is called to recursively append the child nodes to the
-        /// HTML table of contents in the specified string builder.
+        /// This is called to recursively append the child nodes to the HTML table of contents in the specified
+        /// string builder.
         /// </summary>
-        /// <param name="entries">The list over which to iterate
-        /// recursively.</param>
-        /// <param name="sb">The string builder to which the entries are
-        /// appended.</param>
+        /// <param name="entries">The list over which to iterate recursively.</param>
+        /// <param name="sb">The string builder to which the entries are appended.</param>
         private void AppendTocEntry(XPathNodeIterator entries, StringBuilder sb)
         {
             string url, target, title;
@@ -799,8 +782,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         }
 
         /// <summary>
-        /// This is used to change the filenames assigned to each member
-        /// in the reflection information file.
+        /// This is used to change the filenames assigned to each member in the reflection information file
         /// </summary>
         private void ModifyHelpTopicFilenames()
         {
@@ -906,13 +888,11 @@ namespace SandcastleBuilder.Utils.BuildEngine
         }
 
         /// <summary>
-        /// This is used to ensure that all output folders exist based on the
-        /// selected help file format(s).
+        /// This is used to ensure that all output folders exist based on the selected help file format(s)
         /// </summary>
-        /// <param name="subFolder">The subfolder name or null to ensure that
-        /// the base folders exist</param>
-        /// <remarks>This creates the named folder under the help format
-        /// specific folder beneath the <b>.\Output</b> folder.</remarks>
+        /// <param name="subFolder">The subfolder name or null to ensure that the base folders exist.</param>
+        /// <remarks>This creates the named folder under the help format specific folder beneath the
+        /// <b>.\Output</b> folder.</remarks>
         public void EnsureOutputFoldersExist(string subFolder)
         {
             if(this.HelpFormatOutputFolders.Count == 0)

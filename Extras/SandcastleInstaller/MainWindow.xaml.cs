@@ -5,7 +5,7 @@
 // Updated : 04/16/2012
 // Compiler: Microsoft Visual C#
 //
-// This is the main form for the Sandcaste Guided Installer.
+// This is the main form for the Sandcastle Guided Installer.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy
 // of the license should be distributed with the code.  It can also be found
