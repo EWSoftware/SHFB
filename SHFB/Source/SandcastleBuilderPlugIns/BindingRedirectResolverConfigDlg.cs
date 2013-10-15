@@ -2,8 +2,8 @@
 // System  : EWSoftware Design Time Attributes and Editors
 // File    : BindingRedirectResolverConfigDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/25/2012
-// Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
+// Updated : 09/04/2013
+// Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the form used to edit the assembly binding redirection resolver plug-in configuration
@@ -153,7 +153,7 @@ namespace SandcastleBuilder.PlugIns
             foreach(BindingRedirectSettings brs in lbRedirects.Items)
                 items.Add(brs);
 
-            items.ToXml(config, root);
+            items.ToXml(config, root, true);
 
             node = root.SelectSingleNode("ignoreIfUnresolved");
 

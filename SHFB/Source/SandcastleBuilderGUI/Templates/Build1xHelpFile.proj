@@ -43,7 +43,7 @@
       HelpCompilerFolder="$(HelpCompilerFolder)"
       HelpProjectName="$(HelpProjectName)"
       LocalizeApp="$(LocalizeApp)"
-      LanguageId="$(LangId)" />
+      LanguageId="$(LanguageId)" />
 
     <!-- Delete the old version if it is there -->
     <Delete Files="$(OutputFolder)\$(HtmlHelpName).chm" />

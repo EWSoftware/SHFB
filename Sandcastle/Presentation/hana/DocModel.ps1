@@ -7,9 +7,10 @@ function PostProcessReflectionData($sourceFile, $targetFile) {
 	WriteInfo "Post processing reflection data."
     &$XslTransform $sourceFile `
         /xsl:$DxRoot\ProductionTransforms\ApplyVSDocModel.xsl `
-        /xsl:$DxRoot\ProductionTransforms\AddFriendlyFilenames.xsl `
+        /xsl:$DxRoot\ProductionTransforms\AddFilenames.xsl `
         /arg:IncludeAllMembersTopic=false `
         /arg:IncludeInheritedOverloadTopics=false `
+        /arg:namingMethod=MemberName `
         /out:$targetFile
 }
 

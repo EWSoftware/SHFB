@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : TopicEditorWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/12/2013
+// Updated : 10/11/2013
 // Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -343,7 +343,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// <summary>
         /// This is used to get the current text from the editor
         /// </summary>
-        /// <returns></returns>
+        /// <returns>All of the text currently in the editor</returns>
         public string GetAllText()
         {
             return editor.Text;

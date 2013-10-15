@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : MainForm.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/01/2013
+// Updated : 09/27/2013
 // Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -540,14 +540,23 @@ namespace SandcastleBuilder.Gui
         /// <param name="enabled">True to enable the UI, false to disable it</param>
         private void SetUIEnabledState(bool enabled)
         {
+            // These are always enabled even when building
+            HashSet<string> alwaysEnabledIds = new HashSet<string>(new[] { miExit.Name,
+                miViewProjectExplorer.Name, miViewProjectProperties.Name, miViewOutput.Name, miHelp.Name,
+                miFaq.Name, miAbout.Name, tsbProjectExplorer.Name, tsbProjectProperties.Name, tsbViewOutput.Name,
+                tsbFaq.Name });
+
             foreach(ToolStripMenuItem item in mnuMain.Items)
                 foreach(ToolStripItem subItem in item.DropDownItems)
-                    subItem.Enabled = enabled;
+                    if(!alwaysEnabledIds.Contains(subItem.Name))
+                        subItem.Enabled = enabled;
 
             foreach(ToolStripItem item in tsbMain.Items)
-                item.Enabled = enabled;
+                if(!alwaysEnabledIds.Contains(item.Name))
+                    item.Enabled = enabled;
 
-            projectExplorer.Enabled = projectProperties.Enabled = enabled;
+            projectExplorer.Enabled = enabled;
+            projectProperties.SetEnabledState(enabled);
 
             if(outputWindow == null)
                 miClearOutput_Click(miClearOutput, EventArgs.Empty);
@@ -556,10 +565,6 @@ namespace SandcastleBuilder.Gui
 
             // The Cancel Build options are the inverse of the value
             miCancelBuild.Enabled = tsbCancelBuild.Enabled = !enabled;
-
-            // These are always enabled even when building
-            miHelp.Enabled = miFaq.Enabled = miAbout.Enabled = miExit.Enabled =
-                tsbFaq.Enabled = tsbAbout.Enabled = true;
         }
 
         /// <summary>

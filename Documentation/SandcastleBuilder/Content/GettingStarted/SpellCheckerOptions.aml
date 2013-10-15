@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="836847bc-d780-468b-ae23-f014f0829a0f" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<autoOutline excludeRelatedTopics="true" lead="This tab contains settings for the spell checker." />
+		</introduction>
+
+		<section address="GeneralOptions">
+			<title>General Options</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para><ui>Default Language</ui> - This option defines the default language to use for spell checking.
+The package comes with an English (en-US) dictionary. Custom dictionaries can also be added and will be
+selectable here once installed.</para>
+					</listItem>
+
+					<listItem>
+						<para><ui>Ignore words with digits</ui> - This will cause the spell checker to ignore any words
+containing digits. The default is enabled.</para>
+					</listItem>
+
+					<listItem>
+						<para><ui>Ignore words in all uppercase</ui> - This will cause the spell checker to ignore any words
+consisting of all uppercase letters. The default is enabled.</para>
+					</listItem>
+
+					<listItem>
+						<para><ui>Ignore words that look like filenames and e-mail addresses</ui> - This will cause the spell
+checker to ignore words that contain periods and at signs with no intervening whitespace (i.e.
+<localUri>Userinfo.config</localUri> or <fictitiousUri>auser@mydomain.com</fictitiousUri>). This option can
+occasionally cause a misspelled word to be missed such as when a space is missing following the period in a
+sentence. However, it excludes far more false reports and is enabled by default.</para>
+					</listItem>
+
+					<listItem>
+						<para><ui>Ignore words that look like XML elements in spell checked text</ui> - This will cause the
+spell checker to ignore words within angle brackets in spell checked text (i.e. "The &lt;para&gt; element creates
+a paragraph"). This option can occasionally cause a misspelled word to be missed such as when a space is missing
+following the opening angle bracket. However, it excludes far more false reports and is enabled by default.</para>
+					</listItem>
+
+					<listItem>
+						<para><ui>Treat underscores as separators</ui> - This option is disabled by default and all words
+containing underscores will be ignored. Enabling this option will treat the underscore as a word separator and
+each word separated by the underscores will be spell checked along with all the other text.</para>
+					</listItem>
+
+					<listItem>
+						<para><ui>User Dictionary for Language</ui> - This lists the words added to the user dictionary for
+the selected language.  Selecting a word in the list box and clicking the <ui>Remove</ui> button will remove the
+selected word from the user dictionary.</para>
+					</listItem>
+				</list>
+			</content>
+		</section>
+
+		<section address="XMLFileOptions">
+			<title>XML File Options</title>
+			<content>
+				<para>XML files are given special handling to ignore the content of certain elements entirely and to
+include the values of certain attributes when spell checking is performed. This can greatly reduce the number of
+false reports when working with XML files. The options are divided into two sections on this tab.</para>
+
+				<list class="bullet">
+					<listItem>
+						<para><ui>Ignored XML Elements</ui> - This section lets you manage the list of ignored XML elements.
+If an element name appears in this list, its inner text will be ignored when spell checking is performed. All
+other elements not in the list will have their inner text spell checked.</para>
+					</listItem>
+
+					<listItem>
+						<para>
+							<ui>Spell Checked Attributes</ui> - This section lets you manage the list of attribute names that
+will have their values spell checked. The values for all other attributes not in the list will be ignored.</para>
+					</listItem>
+
+				</list>
+
+				<para>Each section contains a text box in which you can enter the element or attribute name. Click the
+<ui>Add</ui> button to add the name to the list.  XML is case sensitive so enter the names exactly as they appear
+in the files. The list box shows the current entries in each section. Select an entry and click the <ui>Remove</ui>
+button to remove it.  Clicking the <ui>Default</ui> button will reset the associated list to the default set of
+elements or attributes.</para>
+	
+			</content>
+		</section>
+
+		<section address="CustomDictionaries">
+			<title>Adding Custom Dictionaries</title>
+			<content>
+				<para>The standalone GUI uses NHunspell to perform spell checking and comes with an English (en-US)
+dictionary by default. Since NHunspell makes use of Open Office dictionaries, you can download additional
+dictionaries for other languages. To make them available to the spell checker, do the following:</para>
+
+				<list class="bullet">
+					<listItem>
+						<para>Go to the Open Office Extensions <externalLink>
+							<linkText>dictionary page</linkText>
+							<linkAlternateText>dictionary page</linkAlternateText>
+							<linkUri>http://extensions.services.openoffice.org/dictionary</linkUri>
+							<linkTarget>_blank</linkTarget>
+						</externalLink> and download the dictionaries for the languages you need.</para>
+					</listItem>
+
+					<listItem>
+						<para>If the downloaded file has a <localUri>.oxt</localUri> extension, rename it to have a .zip
+extension.</para>
+					</listItem>
+
+					<listItem>
+						<para>Extract the content of the file and locate the <localUri>.aff</localUri> and <localUri>.dic</localUri>
+dictionary files.  These will need to be copied into the local application data folder which equates to one of
+the following folders based on your operating system:</para>
+
+						<list class="bullet">
+							<listItem>
+								<para>Windows Vista or later: <localUri>%LOCALAPPDATA%\EWSoftware\Sandcastle Help File
+Builder</localUri></para>
+							</listItem>
+
+							<listItem>
+								<para>Windows XP: <localUri>%USERPROFILE%\Local Settings\Application Data\EWSoftware\Sandcastle
+Help File Builder</localUri></para>
+							</listItem>
+
+						</list>
+					</listItem>
+
+					<listItem>
+						<para>Note that the <localUri>.aff</localUri> and <localUri>.dic</localUri> files must be named after
+the language they represent with no other text in the filename and the language parts must be separated with an
+underscore. If necessary rename the files to match the required format. For example:</para>
+
+						<list class="bullet">
+							<listItem>
+								<para><localUri>de_DE.aff</localUri> and <localUri>de_DE.dic</localUri> for German.</para>
+							</listItem>
+
+							<listItem>
+								<para><localUri>fr_FR.aff</localUri> and <localUri>fr_FR.dic</localUri> for French.</para>
+							</listItem>
+
+						</list>
+					</listItem>
+
+					<listItem>
+						<para>Adding English dictionary files (<localUri>en_US.aff</localUri> and <localUri>en_US.dic</localUri>)
+to the local application data folder will effectively replace the default English dictionary supplied with the
+standalone GUI.</para>
+					</listItem>
+
+					<listItem>
+						<para>Once the files are in the local application data folder and are named correctly, you will be
+able to select the related language on the Spell Checking tab of the User Preferences dialog box.</para>
+					</listItem>
+				</list>
+			</content>
+		</section>
+		
+		<relatedTopics>
+			<link xlink:href="2152ed96-bf69-4b9b-b1a7-4fffc71b3095" />
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

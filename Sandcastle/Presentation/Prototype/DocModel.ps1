@@ -7,7 +7,7 @@ function PostProcessReflectionData($sourceFile, $targetFile) {
 	WriteInfo "Post processing reflection data."
     &$XslTransform $sourceFile `
         /xsl:$DxRoot\ProductionTransforms\ApplyPrototypeDocModel.xsl `
-        /xsl:$DxRoot\ProductionTransforms\AddGuidFilenames.xsl `
+        /xsl:$DxRoot\ProductionTransforms\AddFilenames.xsl `
         /out:$targetFile
 }
 

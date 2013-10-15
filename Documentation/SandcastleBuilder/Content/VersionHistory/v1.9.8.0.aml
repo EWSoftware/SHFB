@@ -1,0 +1,177 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="f4c5d176-8da1-4500-b070-e3b1e9e2c65c" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<autoOutline excludeRelatedTopics="true" lead="Version 1.9.8.0 was released on October 14th, 2013." />
+		</introduction>
+
+		<section address="BreakingChanges">
+			<title>Breaking Changes</title>
+			<content>
+
+				<list class="bullet">
+					<listItem>
+						<para>Removed the <codeInline>ModifyHelpTopicFilenames</codeInline> build step as API topic file
+naming is now handled entirely by the new <localUri>AddFilenames.xsl</localUri> transformation in Sandcastle.  If
+you have plug-ins that rely on the removed build step, they will need to be updated.</para>
+					</listItem>
+
+					<listItem>
+						<para>Renamed the <codeInline>CopyStandardContent</codeInline> build step to
+<codeInline>CopyStandardHelpContent</codeInline> and moved it to run after the <codeInline>ExtractingHtmlInfo</codeInline>
+build step.  This allows for standard content (presentation style images, scripts, style sheets, etc.) to be
+defined in the presentation style definition files and allows templates within those content files to have
+substitution tags replaced properly.  This should only affect plug-ins that used the
+<codeInline>CopyStandardContent</codeInline> build step as an execution point.  Update them to use the new build
+step and make other adjustments if the plug-ins or build components expect the content to be there earlier in the
+build.</para>
+					</listItem>
+
+					<listItem>
+						<para>The presentation style definition file has been updated to include an entry to copy the website
+content files from the help file builder.  If you have created custom presentation style files and generate
+website output, update your definition files accordingly.  This allows for presentation styles to contain
+modified versions of the default help file builder website files or they can completely replace them with
+something else.</para>
+					</listItem>
+				</list>
+
+			</content>
+		</section>
+
+		<section address="OtherChanges">
+			<title>Other Changes in This Release</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Fixed the topic previewer to prevent parser failures on invalid/unrecognized URL values.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed up the code used to find tools in the Program Files folder so that it works regardless of
+OS type and special folder name.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed a bug in the VSPackage that caused a crash after opening and closing a file that was not
+a member of any project in the active solution.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the Assembly Binding Redirection plug-in so that it runs in partial builds and fully
+qualifies redirection configuration filenames when written to <localUri>MRefBuilder.config</localUri>.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed a bug in the XML comments file class reported by AMainka so that it detects when nodes
+are removed.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the determination of the default topic so that it searches for a file in nested topics
+when the parent topic is an empty container node.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed documentation source project file handling so that it favors the <codeInline>TargetName</codeInline>
+property over the <codeInline>AssemblyName</codeInline> property so that it works with C++ projects that have a
+different assembly name from the project filename.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed documentation source project file handling to account for the
+<codeInline>GenerateProjectSpecificOutputFolder</codeInline> property being set to true which modifies how the
+<codeInline>OutDir</codeInline> property is set for the build.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the Additional Reference Links and Version Builder plug-ins so that they correctly clone
+the subprojects to avoid modifying the underlying MSBuild project which may be loaded in Visual Studio.  This
+prevents the changes they make to the subprojects from propagating to the Visual Studio copy.</para>
+					</listItem>
+					
+					<listItem>
+						<para>Added code to check for additional issues with invalid characters in the MS Help Viewer help
+title and vendor name.</para>
+					</listItem>
+
+					<listItem>
+						<para>Relaxed the reserved folder restriction to allow project output and working folders to reside
+in subfolders beneath the Desktop folder.</para>
+					</listItem>
+
+					<listItem>
+						<para>Reworked the file system watcher in the standalone GUI to ignore changed files in the output
+path and working folder of the current project.  This greatly reduces the number of files to check if a build is
+in progress when the GUI regains the focus.</para>
+					</listItem>
+
+					<listItem>
+						<para>Merged a patch from Seng Lin to convert <localUri>GenerateRefInfo.proj</localUri> hint paths to
+relative paths if the fully qualified path length exceeds the system maximums.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added support for spell checking files in the text editor window in the standalone GUI.  Use
+the new tool bar button or Ctrl+Shift+K to invoke the spell checker tool window.  A separate package is available
+to spell check projects in Visual Studio (see the guided installer for details).</para>
+					</listItem>
+
+					<listItem>
+						<para>Added an <ui>Open with Text Editor</ui> context menu option in the Project Explorer window to
+allow opening files such as content layout files with the text editor so that they can be spell checked.</para>
+					</listItem>
+
+					<listItem>
+						<para>Renamed <localUri>Index.html</localUri> to <localUri>index.html</localUri> so that it can be
+found by case-sensitive Unix web servers.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added code to <localUri>TOC.js</localUri> to prevent it showing pages outside of the current
+site's folder when using the topic query string option.</para>
+					</listItem>
+
+					<listItem>
+						<para>Merged changes from Dave Dansey into <localUri>TOC.js</localUri> to sync to TOC when the topic
+URL parameter is used.</para>
+					</listItem>
+
+					<listItem>
+						<para>Merged code contributed by Procomp Solutions Oy that improves performance for large tables of
+content in <localUri>FillNode.aspx</localUri> by using XML serialization and caching.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added code to the standalone GUI to allow saving project state when the user file is marked as
+hidden.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated the VSPackage installer to support installation in Visual Studio 2013.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added support for the .NETFramework 4.5.1, .NETCore 4.5.1, and .NETPortable 4.6 frameworks.</para>
+					</listItem>
+
+					<listItem>
+						<para>Adjusted how child processes are killed when a build is aborted to try and prevent killing
+unrelated processes from a separate, concurrent build.</para>
+					</listItem>
+
+					<listItem>
+						<para>Enabled window selection commands for use during a build in the standalone GUI.  Also enabled
+switching between project property categories in the Properties window during a build to allow seeing what values
+are in effect.</para>
+					</listItem>
+
+				</list>
+			</content>
+		</section>
+		<relatedTopics>
+			<link xlink:href="078cc1c7-7995-431e-bf9c-8813becbe8df" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

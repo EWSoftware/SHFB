@@ -48,7 +48,7 @@
     <MSHelpViewerSdkLinkType>Msdn</MSHelpViewerSdkLinkType>
     <CatalogVersion>100</CatalogVersion>
     <CatalogProductId>VS</CatalogProductId>
-    <HelpFileVersion>2.7.3.0</HelpFileVersion>
+    <HelpFileVersion>2.7.4.0</HelpFileVersion>
     <PlugInNamespaces>ms.vsipcc+, ms.vsexpresscc+</PlugInNamespaces>
     <CollectionTocStyle>Hierarchical</CollectionTocStyle>
     <MSHelp2SdkLinkType>Msdn</MSHelp2SdkLinkType>
@@ -132,6 +132,7 @@
     <None Include="Content\VersionHistory\v2.7.1.0.aml" />
     <None Include="Content\VersionHistory\v2.7.2.0.aml" />
     <None Include="Content\VersionHistory\v2.7.3.0.aml" />
+    <None Include="Content\VersionHistory\v2.7.4.0.aml" />
     <None Include="Content\VersionHistory\VersionHistory.aml" />
     <None Include="Content\Welcome.aml" />
   </ItemGroup>

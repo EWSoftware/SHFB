@@ -7,11 +7,8 @@
 	<Fragment>
     <DirectoryRef Id="INSTALLDIR">
       <Directory Id="dirFE6F88A55D8515C0975BF70A9B134EBF" Name="ProductionTransforms">
-        <Component Id="cmpBCCDB4154609BA35007897D3A7A02867" Guid="{4533AD47-4FEC-4BF0-8982-F5AA9CA807F4}">
-          <File Id="filF5C40946F18721A42D3E1EBB946D72F4" KeyPath="yes" Source="$(var.RootFolder)\ProductionTransforms\AddFriendlyFilenames.xsl" />
-        </Component>
         <Component Id="cmpAD4C9E620A8D76A7E9C1214AC235964C" Guid="{9019FE41-3B51-4C94-A32B-8F186FA6929D}">
-          <File Id="fil590764EDB94893ECFF710943137F49EC" KeyPath="yes" Source="$(var.RootFolder)\ProductionTransforms\AddGuidFilenames.xsl" />
+          <File Id="fil590764EDB94893ECFF710943137F49EC" KeyPath="yes" Source="$(var.RootFolder)\ProductionTransforms\AddFilenames.xsl" />
         </Component>
         <Component Id="cmpA3E277CE69530A3BEB198DDBF4A1894E" Guid="{5324461F-8465-4CDD-BEE5-2E45A5AD1446}">
           <File Id="fil3F9B6BCD1C3D5342D3EAFB9C33A0C61C" KeyPath="yes" Source="$(var.RootFolder)\ProductionTransforms\AddXamlSyntaxData.xsl" />
@@ -81,7 +78,6 @@
   </Fragment>
   <Fragment>
     <ComponentGroup Id="ProductionTransforms">
-      <ComponentRef Id="cmpBCCDB4154609BA35007897D3A7A02867" />
       <ComponentRef Id="cmpAD4C9E620A8D76A7E9C1214AC235964C" />
       <ComponentRef Id="cmpA3E277CE69530A3BEB198DDBF4A1894E" />
       <ComponentRef Id="cmpAAFD5AD9E7728F1C9041B1FE4DB2722E" />

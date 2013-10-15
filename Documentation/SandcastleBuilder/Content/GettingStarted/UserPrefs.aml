@@ -5,203 +5,35 @@
     xmlns:xlink="http://www.w3.org/1999/xlink">
 
     <introduction>
-		<para>The following user preferences allow you to customize the behavior of certain options in the help
-file builder that apply to all projects and the environment in general.  Most are common to both the standalone
-GUI and the Visual Studio extension package.  Options that only apply to one or the other are noted in that
-option's comments.</para>
-
-		<para>The <ui>User Preferences</ui> option can be found in the standalone GUI on the <ui>File</ui> menu.
-The dialog box that it opens contains two tabs.  The first is for general preferences and the second is for
-defining custom content editors for project files.  In the Visual Studio extension package, only the general
-options apply and they can be found by opening the <ui>Tools</ui> | <ui>Options</ui> dialog and selecting the
-<ui>Sandcastle Help File Builder</ui> category.  The Visual Studio shell handles opening files with an appropriate
-editor.  Custom editors are defined using the <ui>Open With</ui> context menu item on project files in the
-<ui>Solution Explorer</ui> should any be needed.</para>
+		<para>The user preferences allow you to customize the behavior of certain options in the help file builder
+that apply to all projects and the environment in general.  The <ui>User Preferences</ui> option can be found in
+the standalone GUI on the <ui>File</ui> menu.  In the Visual Studio extension package, only the general options
+apply and they can be found by opening the <ui>Tools</ui> | <ui>Options</ui> dialog and selecting the
+<ui>Sandcastle Help File Builder</ui> category.</para>
     </introduction>
 
-<section>
-  <title>General Preferences</title>
-  <content><para>The general preferences are as follows:</para>
+		<section>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para><link xlink:href="6a35198a-3713-4eb7-929d-555fddc0ccb6" /> - Standalone GUI and Visual Studio
+package.</para>
+					</listItem>
 
-<list class="bullet">
-    <listItem>
-		<para><ui>MS Help 2 (.HxS) Viewer Path</ui> - This allows you to specify the path to an external
-application that can be used to view MS Help 2 (.HxS) files.  If you need one, see the
-<link xlink:href="8c0c97d0-c968-4c15-9fe9-e8f3a443c50a" /> for the download location of the
-<application>H2 Viewer</application>.</para>
-	</listItem>
+					<listItem>
+						<para><link xlink:href="836847bc-d780-468b-ae23-f014f0829a0f" /> - Standalone GUI only.  A separate
+spell checker package is available for Visual Studio.  See the page in the guided installer for details.</para>
+					</listItem>
 
-    <listItem>
-		<para><ui>Alternate MS Help Viewer (.mshc) Viewer Path</ui> - This allows you to specify the path to an
-external application that can be used to view MS Help Viewer (.mshc) files.  If you need one, see the
-<link xlink:href="8c0c97d0-c968-4c15-9fe9-e8f3a443c50a" /> for the download location of the
-<application>H3 Viewer</application>.  If you want to use the default MS Help Viewer, you should leave this value
-blank.  The help content will be opened using the <localUri>ms-xhelp:///</localUri> protocol.</para>
-	</listItem>
+					<listItem>
+						<para><link xlink:href="2e4f207e-45d1-411b-83b1-24965d8eef2c" /> -  Standalone GUI only.  The Visual
+Studio shell handles opening files with an appropriate editor.  Custom editors are defined using the
+<ui>Open With</ui> context menu item on project files in the <ui>Solution Explorer</ui> should any be needed.</para>
+					</listItem>
 
-    <listItem>
-		<para><ui>ASP.NET Development Web Server Port</ui> - This allows you to specify the port number to use
-when starting the built-in .NET development web server to view website output using the <localUri>Index.aspx</localUri>
-page.  By default, it is set to port 12345.  You can alter this if it conflicts with something on your system.</para>
-	</listItem>
-
-	<listItem>
-		<para><ui>Save window state per project for each user</ui> - (Standalone GUI only)  This allows you to
-save the current window layout and currently open file editors when a project is closed.  The window state is
-saved to the same folder as the project using the project filename with a "<localUri>_[USERNAME]</localUri>"
-suffix where <codeInline>USERNAME</codeInline> is the user ID of the currently logged in user.  If turned off,
-only the location of the Project Explorer and Project Properties window are saved in the general user
-preferences.  The Visual Studio shell handles this automatically for the extension package.</para>
-	</listItem>
-
-	<listItem>
-		<para><ui>Before Building</ui> - (Standalone GUI only)  This lets you specify whether or not the help file
-builder should save the project and/or modified document windows prior to performing a build or previewing a topic.
-The options are:</para>
-
-	<list class="bullet">
-		<listItem>
-			<para>Save all changes - Save the project and any modified document editors.</para>
-		</listItem>
-		<listItem>
-			<para>Save changes to open documents only - Only open, modified document editors are saved.  Changes
-to the project file are not saved.</para>
-		</listItem>
-		<listItem>
-			<para>Prompt to save all changes - You will be asked to save all changes.  If documents are not
-saved, the resulting help file may not contain current information.</para>
-		</listItem>
-		<listItem>
-			<para>Don't save any changes - Nothing is saved.  The resulting help file may not contain current
-information if there are unsaved documents.</para>
-		</listItem>
-	</list>
-
-		<para>The Visual Studio shell will save files for the extension package according to the <ui>Before
-building</ui> option in the <ui>Tools</ui> | <ui>Options</ui> | <ui>Projects and Solutions</ui> | <ui>Build and
-Run</ui> category.</para>
-	</listItem>
-
-    <listItem>
-		<para><ui>Build output verbose logging enabled</ui> - This allows you to specify whether or not full
-logging information is displayed in the output window during a build.  In the standalone GUI, it is checked by
-default.  In the Visual Studio extension package, it is unchecked by default.  When unchecked, only build step
-messages are reported during the build.  All messages are still written to the log file.  This is useful for very
-large projects where the generated output can consume large quantities of memory.</para>
-	</listItem>
-
-	<listItem>
-		<para><ui>Open build log viewer on failed build</ui> - (Visual Studio extension package only)  If enabled,
-the build log viewer tool window will be opened after a failed build to display the full log content so that you
-can diagnose the problem.</para>
-	</listItem>
-
-	<listItem>
-		<para><ui>Open help file after successful build</ui> - If enabled, the help file will be opened after
-a successful build.  The format opened will depend on the format chosen in the <codeInline>Help File Format</codeInline>
-project property.  Preference is given to Help 1, then Help 2, then MS Help Viewer, and finally website output.
-In the standalone GUI, this option can also be toggled on and off via the <ui>Documentation | View Help File</ui>
-menu.</para>
-	</listItem>
-
-	<listItem>
-		<para><ui>Use external browser to view help websites</ui> - (Visual Studio extension package only)  If
-checked, the default external web browser will be used to open help website output.  If left unchecked, help
-website output will be opened in a tabbed document window within Visual Studio.</para>
-	</listItem>
-
-	<listItem>
-		<para><ui>Build Output Background/Foreground/Font</ui> - (Standalone GUI only)  These options let you
-specify the background color, foreground color, and font used in the output window for the build output (the text
-shown during the build).</para>
-	</listItem>
-
-	<listItem>
-		<para><ui>Text Editor Font</ui> - (Standalone GUI only)  This option lets you set the font used in the
-text editor windows.  The syntax highlighter controls the colors and they are not editable.</para>
-	</listItem>
-
-	<listItem>
-		<para><ui>Show line numbers in text editor</ui> - (Standalone GUI only)  If enabled, all text editor
-windows will show line numbers down the left side.  If not enabled, no line numbers are shown within the text
-editor windows.</para>
-	</listItem>
-
-	<listItem>
-		<para><ui>Enter matching brackets, parentheses, and quotes</ui> - (Standalone GUI only)  If enabled, all
-editor windows will automatically insert the matching closing character when an opening bracket, parentheses, or
-double quote is entered.  If not enabled, the matching character is not entered automatically.</para>
-	</listItem>
-
-</list>
-
-  </content>
-</section>
-
-<section>
-  <title>Content File Editors</title>
-  <content><para>(Standalone GUI only)  This tab allows you to define custom editors for project files that are
-not recognized by the standalone GUI as being editable text files based on their filename extension.  In such
-cases, the standalone GUI will look for a custom editor definition and, if found, will launch the associated
-application.  If no custom editor definition is found, the GUI attempts to launch the file using the shell to let
-it decide how the file should be edited.</para>
-
-	<para>To add a new content file editor, click the <ui>Add</ui> button located next to the upper right corner
-of the editor list.  Select the new entry in the list and use the property grid at the bottom of the tab to alter
-its settings.</para>
-
-<list class="bullet">
-    <listItem>
-		<para><ui>Description</ui> - Enter a description for the editor.</para>
-	</listItem>
-
-    <listItem>
-		<para><ui>Extensions</ui> - Enter a list of filename extensions with which this editor will be
-associated.  If specifying multiple extensions, separate them with a space, semi-colon, period, or a comma.</para>
-	</listItem>
-
-    <listItem>
-		<para><ui>ApplicationPath</ui> - Enter the path to the editor application.  As with other project
-properties, this can be an absolute or a relative path and can contain environment variable references for
-expansion when actually invoked.</para>
-	</listItem>
-
-    <listItem><para><ui>Arguments</ui> - Specify any necessary command line arguments.  At the minimum, the
-<codeInline>$ContentItem</codeInline> macro should be specified so that the file to edit is passed to the
-application.  Enclose arguments in quote marks if the value will contain spaces.  Macros that you can use are as
-follows:</para>
-
-    <list class="bullet">
-        <listItem>
-			<para><codeInline>$ContentItem</codeInline> - This expands to the full path and filename of the item
-to be edited.</para>
-		</listItem>
-        <listItem>
-			<para><codeInline>$ProjectFile</codeInline> - This expands to the full path and filename of the
-current project.</para>
-		</listItem>
-        <listItem>
-			<para><codeInline>$ProjectFolder</codeInline> - This expands to the full path of the current project
-without the filename.</para>
-		</listItem>
-    </list>
-
-	<para>Macro names are case-insensitive.</para></listItem>
-
-    <listItem>
-		<para><ui>StartupFolder</ui> - An optional folder name in which the application is started.  If left
-blank, the current project's folder is used.  As with the application path, this can be an absolute or relative
-path and can contain environment variable references for expansion when actually invoked.</para>
-	</listItem>
-
-</list>
-
-	<para>To delete an editor definition, select it in the list and click the <ui>Delete</ui> button located next
-to the bottom right corner of the editor list.</para>
-
-  </content>
-</section>
-
+				</list>
+			</content>
+		</section>
     <relatedTopics>
 		<link xlink:href="b772e00e-1705-4062-adb6-774826ce6700" />
 		<link xlink:href="8e3f8757-0ef3-4772-bb2f-5d7ae57e50da" />

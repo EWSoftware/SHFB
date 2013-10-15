@@ -28,8 +28,8 @@
 		<SandcastleBuilder.Utils.MSBuild.XslTransform
 			SandcastlePath="$(SandcastlePath)"
 			WorkingFolder="$(WorkingFolder)"
-			Transformations="$(ManifestTransformation);ProductionTransforms\AddGuidFilenames.xsl"
-			Arguments="$(ManifestTransformParameters)"
+			Transformations="$(ManifestTransformation);ProductionTransforms\AddFilenames.xsl"
+			Arguments="$(ManifestTransformParameters);namingMethod={@NamingMethod}"
 			InputFile="reflection.org"
 			OutputFile="reflection.xml" />
 

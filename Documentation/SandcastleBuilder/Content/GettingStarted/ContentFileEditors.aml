@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="2e4f207e-45d1-411b-83b1-24965d8eef2c" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>This topic describes the content file editor preferences (standalone GUI only).</para>
+		</introduction>
+
+		<section>
+			<content>
+				<para>This tab allows you to define custom editors for project files that are not recognized by the
+standalone GUI as being editable text files based on their filename extension.  In such cases, the standalone GUI
+will look for a custom editor definition and, if found, will launch the associated application.  If no custom
+editor definition is found, the GUI attempts to launch the file using the shell to let it decide how the file
+should be edited.</para>
+
+				<para>To add a new content file editor, click the <ui>Add</ui> button located next to the upper right
+corner of the editor list.  Select the new entry in the list and use the property grid at the bottom of the tab
+to alter its settings.</para>
+
+				<list class="bullet">
+					<listItem>
+						<para><ui>Description</ui> - Enter a description for the editor.</para>
+					</listItem>
+
+					<listItem>
+						<para><ui>Extensions</ui> - Enter a list of filename extensions with which this editor will be
+associated.  If specifying multiple extensions, separate them with a space, semi-colon, period, or a comma.</para>
+					</listItem>
+
+					<listItem>
+						<para><ui>ApplicationPath</ui> - Enter the path to the editor application.  As with other project
+properties, this can be an absolute or a relative path and can contain environment variable references for
+expansion when actually invoked.</para>
+					</listItem>
+
+					<listItem>
+						<para><ui>Arguments</ui> - Specify any necessary command line arguments.  At the minimum, the
+<codeInline>$ContentItem</codeInline> macro should be specified so that the file to edit is passed to the
+application.  Enclose arguments in quote marks if the value will contain spaces.  Macros that you can use are as
+follows:</para>
+
+						<list class="bullet">
+							<listItem>
+								<para><codeInline>$ContentItem</codeInline> - This expands to the full path and filename of the
+item to be edited.</para>
+							</listItem>
+							<listItem>
+								<para><codeInline>$ProjectFile</codeInline> - This expands to the full path and filename of the
+current project.</para>
+							</listItem>
+							<listItem>
+								<para><codeInline>$ProjectFolder</codeInline> - This expands to the full path of the current
+project without the filename.</para>
+							</listItem>
+						</list>
+
+						<para>Macro names are case-insensitive.</para>
+					</listItem>
+
+					<listItem>
+						<para><ui>StartupFolder</ui> - An optional folder name in which the application is started.  If left
+blank, the current project's folder is used.  As with the application path, this can be an absolute or relative
+path and can contain environment variable references for expansion when actually invoked.</para>
+					</listItem>
+
+				</list>
+
+				<para>To delete an editor definition, select it in the list and click the <ui>Delete</ui> button located
+next to the bottom right corner of the editor list.</para>
+
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="2152ed96-bf69-4b9b-b1a7-4fffc71b3095" />
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

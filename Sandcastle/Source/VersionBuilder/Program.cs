@@ -1,4 +1,13 @@
-﻿using System;
+﻿// Copyright © Microsoft Corporation.
+// This source file is subject to the Microsoft Permissive License.
+// See http://www.microsoft.com/resources/sharedsource/licensingbasics/sharedsourcelicenses.mspx.
+// All other rights reserved.
+
+// Change history:
+// 10/12/2013 - Added changes from Stazzz to merge information about additional extension methods even when the
+// type and method are defined in different assemblies.
+
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -119,11 +128,18 @@ namespace VersionBuilder
             };
             Dictionary<string, List<KeyValuePair<string, string>>> versionIndex = new Dictionary<string, List<KeyValuePair<string, string>>>();
             Dictionary<string, Dictionary<string, ElementInfo>> dictionary2 = new Dictionary<string, Dictionary<string, ElementInfo>>();
+            Dictionary<string, Dictionary<String, XPathNavigator>> extensionMethods = new Dictionary<string, Dictionary<String, XPathNavigator>>();
             XPathExpression expression2 = XPathExpression.Compile("string(/api/@id)");
             XPathExpression expression3 = XPathExpression.Compile("string(/api/containers/library/@assembly)");
             XPathExpression expression4 = XPathExpression.Compile("/api/elements/element");
             XPathExpression expression = XPathExpression.Compile("/api/attributes/attribute[type[@api='T:System.ObsoleteAttribute']]");
+            XPathExpression extensionAttributeExpression = XPathExpression.Compile("/api/attributes/attribute[type[@api='T:System.Runtime.CompilerServices.ExtensionAttribute']]");
+            XPathExpression extensionFirstParameterExpression = XPathExpression.Compile("/api/parameters/parameter[1]/*");
+            XPathExpression specialization = XPathExpression.Compile("./specialization");
+            XPathExpression templates = XPathExpression.Compile("./template[boolean(@index) and starts-with(@api, 'M:')]");
+            XPathExpression skipFirstParam = XPathExpression.Compile("./parameter[position()>1]" );
             XPathExpression expression6 = XPathExpression.Compile("boolean(argument[type[@api='T:System.Boolean'] and value[.='True']])");
+            XPathExpression apiChild = XPathExpression.Compile("./api");
             foreach(VersionInfo info3 in list)
             {
                 ConsoleApplication.WriteMessage(LogLevel.Info, String.Format(CultureInfo.CurrentCulture,
@@ -183,6 +199,45 @@ namespace VersionBuilder
                                 {
                                     str7 = ((bool)navigator6.Evaluate(expression6)) ? "error" : "warning";
                                 }
+
+                                if(key.StartsWith("M:", StringComparison.Ordinal))
+                                {
+                                    // Only check for extension methods when this is actually a method in question
+                                    var navigator7 = navigator3.SelectSingleNode(extensionAttributeExpression);
+                                    if(navigator7 != null)
+                                    {
+                                        // Check first parameter
+                                        var navigator8 = navigator3.SelectSingleNode(extensionFirstParameterExpression);
+                                        if(navigator8 != null)
+                                        {
+                                            // Get type node
+                                            var typeID = navigator8.GetAttribute("api", String.Empty);
+                                            if(navigator8.LocalName == "type")
+                                            {
+                                                var specNode = navigator8.SelectSingleNode(specialization);
+                                                if(specNode == null || specNode.SelectChildren(XPathNodeType.Element).Count == specNode.Select(templates).Count)
+                                                {
+                                                    // Either non-generic type or all type parameters are from within this method
+                                                    Dictionary<String, XPathNavigator> extMethods;
+                                                    if(!extensionMethods.TryGetValue(typeID, out extMethods))
+                                                    {
+                                                        extMethods = new Dictionary<String, XPathNavigator>();
+                                                        extensionMethods.Add(typeID, extMethods);
+                                                    }
+                                                    if(!extMethods.ContainsKey(key))
+                                                    {
+                                                        extMethods.Add(key, navigator3.SelectSingleNode(apiChild));
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                // TODO extension methods for generic parameters...
+                                            }
+                                        }
+                                    }
+                                }
+
                                 list3.Add(new KeyValuePair<string, string>(info3.Name, str7));
                                 str7 = String.Empty;
                                 reader2.Close();
@@ -255,6 +310,7 @@ namespace VersionBuilder
                     }
                     writer.WriteEndElement();
                     writer.WriteStartElement("apis");
+                    var readElements = new HashSet<String>();
                     foreach(VersionInfo info6 in list)
                     {
                         XmlReader reader5 = XmlReader.Create(info6.File, settings);
@@ -275,6 +331,13 @@ namespace VersionBuilder
                                         XmlReader reader6 = reader5.ReadSubtree();
                                         reader6.MoveToContent();
                                         reader6.ReadStartElement();
+                                        Dictionary<String, XPathNavigator> eElems;
+                                        var hasExtensionMethods = extensionMethods.TryGetValue(str10, out eElems);
+                                        if(hasExtensionMethods)
+                                        {
+                                            readElements.Clear();
+                                            readElements.UnionWith(extensionMethods[str10].Keys);
+                                        }
                                         while(!reader6.EOF)
                                         {
                                             if((reader6.NodeType == XmlNodeType.Element) && (reader6.LocalName == "elements"))
@@ -289,6 +352,10 @@ namespace VersionBuilder
                                                     dictionary6[str11] = null;
                                                     writer.WriteStartElement("element");
                                                     writer.WriteAttributeString("api", str11);
+                                                    if(hasExtensionMethods)
+                                                    {
+                                                        readElements.Remove(str11);
+                                                    }
                                                     foreach(string str12 in dictionary5[str11].Versions.Keys)
                                                     {
                                                         writer.WriteAttributeString(str12, dictionary5[str11].Versions[str12]);
@@ -317,6 +384,10 @@ namespace VersionBuilder
                                                         }
                                                         writer.WriteStartElement("element");
                                                         writer.WriteAttributeString("api", str13);
+                                                        if(hasExtensionMethods)
+                                                        {
+                                                            readElements.Remove(str13);
+                                                        }
                                                         foreach(string str14 in dictionary5[str13].Versions.Keys)
                                                         {
                                                             writer.WriteAttributeString(str14, dictionary5[str13].Versions[str14]);
@@ -338,6 +409,73 @@ namespace VersionBuilder
                                                         writer.WriteEndElement();
                                                     }
                                                 }
+
+                                                if(hasExtensionMethods)
+                                                {
+                                                    foreach(var eMethodID in readElements)
+                                                    {
+                                                        writer.WriteStartElement("element");
+                                                        writer.WriteAttributeString("api", eMethodID);
+                                                        writer.WriteAttributeString("source", "extension");
+                                                        foreach(XPathNavigator extMember in eElems[eMethodID].SelectChildren(XPathNodeType.Element))
+                                                        {
+                                                            switch(extMember.LocalName)
+                                                            {
+                                                                case "apidata":
+                                                                    writer.WriteStartElement("apidata");
+                                                                    foreach(XPathNavigator apidataAttr in extMember.Select("@*"))
+                                                                    {
+                                                                        writer.WriteAttributeString(apidataAttr.LocalName, apidataAttr.Value);
+                                                                    }
+                                                                    writer.WriteAttributeString("subsubgroup", "extension");
+                                                                    foreach(XPathNavigator child in extMember.SelectChildren(XPathNodeType.All & ~XPathNodeType.Attribute))
+                                                                    {
+                                                                        writer.WriteNode(child, false);
+                                                                    }
+                                                                    writer.WriteEndElement();
+                                                                    break;
+                                                                case "parameters":
+                                                                    var noParamsWritten = true;
+                                                                    foreach(XPathNavigator eParam in extMember.Select(skipFirstParam))
+                                                                    {
+                                                                        if(noParamsWritten)
+                                                                        {
+                                                                            writer.WriteStartElement("parameters");
+                                                                            noParamsWritten = false;
+                                                                        }
+                                                                        writer.WriteNode(eParam, false);
+                                                                    }
+                                                                    if(!noParamsWritten)
+                                                                    {
+                                                                        writer.WriteEndElement();
+                                                                    }
+                                                                    break;
+                                                                case "memberdata":
+                                                                    writer.WriteStartElement("memberdata");
+                                                                    foreach(XPathNavigator mDataAttr in extMember.Select("@*"))
+                                                                    {
+                                                                        if(mDataAttr.LocalName != "static")
+                                                                        {
+                                                                            writer.WriteAttributeString(mDataAttr.LocalName, mDataAttr.Value);
+                                                                        }
+                                                                    }
+                                                                    foreach(XPathNavigator child in extMember.SelectChildren(XPathNodeType.All & ~XPathNodeType.Attribute))
+                                                                    {
+                                                                        writer.WriteNode(child, false);
+                                                                    }
+                                                                    writer.WriteEndElement();
+                                                                    break;
+                                                                case "attributes":
+                                                                    break;
+                                                                default:
+                                                                    writer.WriteNode(extMember, false);
+                                                                    break;
+                                                            }
+                                                        }
+                                                        writer.WriteEndElement();
+                                                    }
+                                                }
+
                                                 writer.WriteEndElement();
                                                 reader6.Read();
                                             }

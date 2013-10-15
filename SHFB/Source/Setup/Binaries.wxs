@@ -156,6 +156,10 @@
 				<File Id="Ionic.Zip.Reduced.dll" KeyPath="yes" Source="$(var.BinFolder)Ionic.Zip.Reduced.dll" />
 			</Component>
 
+			<Component Id="NHunSpell.dll" Guid="{20CEFA6B-B3BC-4F01-91C4-9A7CAC3AD5EA}">
+				<File Id="NHunSpell.dll.dll" KeyPath="yes" Source="$(var.BinFolder)NHunSpell.dll" />
+			</Component>
+
 			<Component Id="WeifenLuo.WinFormsUI.Docking.dll" Guid="{7F3E99BC-DEAB-4752-9ED0-414EFF3ADCFA}">
 				<File Id="WeifenLuo.WinFormsUI.Docking.dll" KeyPath="yes" Source="$(var.BinFolder)WeifenLuo.WinFormsUI.Docking.dll" />
 			</Component>
@@ -200,6 +204,7 @@
 			<ComponentRef Id="ESent.Interop.dll" />
 			<ComponentRef Id="ICSharpCode.TextEditor.dll" />
 			<ComponentRef Id="Ionic.Zip.Reduced.dll" />
+			<ComponentRef Id="NHunSpell.dll" />
 			<ComponentRef Id="WeifenLuo.WinFormsUI.Docking.dll" />
 		</ComponentGroup>
 	</Fragment>

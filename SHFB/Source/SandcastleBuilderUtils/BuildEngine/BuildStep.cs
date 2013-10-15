@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildStep.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/21/2013
+// Updated : 10/02/2013
 // Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -26,7 +26,8 @@
 // 1.9.6.0  10/26/2012  EFW  Removed the FindingTools step and made the processing part of the Initializing step
 //                           due to the need to locate configuration files during initialization.
 // 1.9.8.0  06/21/2013  EFW  Moved CopyStandardContent build step to allow for standard content defined in a
-//                           presentation style definition file.
+//                           presentation style definition file.  Removed ModifyHelpTopicFilenames as naming is
+//                           now handled entirely by AddFilenames.xsl.
 //===============================================================================================================
 
 using System;
@@ -62,8 +63,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
         GenerateInheritedDocumentation,
         /// <summary>The reflection information is being transformed by <b>XslTransform</b>.</summary>
         TransformReflectionInfo,
-        /// <summary>Help topic filenames are being altered.</summary>
-        ModifyHelpTopicFilenames,
         /// <summary>The conceptual content files are being copied to the working and output folders.</summary>
         CopyConceptualContent,
         /// <summary>The conceptual content topic configuration files are being generated.</summary>

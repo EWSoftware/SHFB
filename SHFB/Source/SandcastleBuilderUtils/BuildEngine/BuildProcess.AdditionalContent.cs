@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.AdditionalContent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/15/2012
-// Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
+// Updated : 10/11/2013
+// Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the code used to merge the additional content into the working folder and build the table
@@ -127,7 +127,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// This is called to copy the additional content files and build a
         /// list of them for the help file project.
         /// </summary>
-        /// <remarks>Note that for wilcard content items, the folders are
+        /// <remarks>Note that for wildcard content items, the folders are
         /// copied recursively.</remarks>
         private void CopyAdditionalContent()
         {
@@ -474,7 +474,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
             string content, script, syntaxFile;
             int pos;
 
-            // For topics, change the extenstion back to ".topic".  It's
+            // For topics, change the extension back to ".topic".  It's
             // ".html" in the TOC as that's what it ends up as after
             // transformation.
             if(sourceFile.EndsWith(".topic", StringComparison.OrdinalIgnoreCase))
@@ -508,9 +508,9 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     "<include item=\"copyCode\"/></span");
                 entry.HasProjectTags = true;
 
-                // Add the links to the colorizer stylesheet and script files
+                // Add the links to the colorizer style sheet and script files
                 // unless it's going to be transformed.  In which case, the
-                // links should be in the XSL stylesheet.
+                // links should be in the XSL style sheet.
                 if(!sourceFile.EndsWith(".topic", StringComparison.OrdinalIgnoreCase) &&
                   !sourceFile.EndsWith(".xsl", StringComparison.OrdinalIgnoreCase))
                 {
@@ -902,7 +902,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     xslStylesheet = workingFolder + Path.GetFileName(sourceStylesheet);
                     tocInfo = BuildProcess.GetTocInfo(sourceStylesheet);
 
-                    // The stylesheet may contain shared content items so we
+                    // The style sheet may contain shared content items so we
                     // must resolve it this way rather than using
                     // TransformTemplate.
                     this.ResolveLinksAndCopy(sourceStylesheet, xslStylesheet, tocInfo);

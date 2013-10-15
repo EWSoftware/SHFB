@@ -1,7 +1,7 @@
 //===============================================================================================================
 // System  : Sandcastle Build Components
 // File    : ResolveConceptualLinksComponent.cs
-// Note    : Copyright 2010-2012 Microsoft Corporation
+// Note    : Copyright 2010-2013 Microsoft Corporation
 //
 // This file contains a modified version of the original ResolveConceptualLinksComponent that allows the use of
 // inner text from the <link> tag and also allows the use of anchor references (#anchorName) in the link target.
@@ -14,6 +14,9 @@
 // 02/16/2012 - EFW - Merged my changes into the code
 // 12/26/2012 - EFW - Minor updates to processing.  As with the SharedContentComponent, this one doesn't load
 // enough info to warrant trying to share the common data across all instances.
+// 10/03/2013 - EFW - Applied patch from gfraiteur to remove the GUID topic ID requirement.  Bear in mind that
+// GUIDs are still preferred as they are guaranteed to be unique which is important for Help 2 and MS Help
+// Viewer content.  Duplicate IDs across multiple sets of content would cause linking issues in the collections.
 //===============================================================================================================
 
 using System;
@@ -78,9 +81,6 @@ namespace Microsoft.Ddue.Tools
         private bool showBrokenLinkText;
 
         private static XPathExpression conceptualLinks = XPathExpression.Compile("//conceptualLink");
-
-        private static Regex validGuid = new Regex(
-            "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$");
 
         private const int CacheSize = 1000;
         #endregion
@@ -185,38 +185,29 @@ namespace Microsoft.Ddue.Tools
                 url = text = null;
                 linkType = ConceptualLinkType.None;
 
-                if(validGuid.IsMatch(info.Target))
-                {
-                    targetInfo = this.GetTargetInfoFromCache(info.Target);
+                targetInfo = this.GetTargetInfoFromCache(info.Target);
 
-                    if(targetInfo == null)
-                    {
-                        // EFW - Removed linkType = Index, broken links should use the None style.
-                        text = this.BrokenLinkDisplayText(info.Target, info.Text);
-                        base.WriteMessage(key, MessageLevel.Warn, "Unknown conceptual link target '{0}'.", info.Target);
-                    }
-                    else
-                    {
-                        url = targetInfo.Url;
-
-                        // EFW - Append the anchor if one was specified
-                        if(!String.IsNullOrEmpty(info.Anchor))
-                            url += info.Anchor;
-
-                        // EFW - Use the link text if specified
-                        if(!String.IsNullOrEmpty(info.Text))
-                            text = info.Text;
-                        else
-                            text = targetInfo.Text;
-
-                        linkType = targetInfo.LinkType;
-                    }
-                }
-                else
+                if(targetInfo == null)
                 {
                     // EFW - Removed linkType = Index, broken links should use the None style.
                     text = this.BrokenLinkDisplayText(info.Target, info.Text);
-                    base.WriteMessage(key, MessageLevel.Warn, "Invalid conceptual link target '{0}'.", info.Target);
+                    base.WriteMessage(key, MessageLevel.Warn, "Unknown conceptual link target '{0}'.", info.Target);
+                }
+                else
+                {
+                    url = targetInfo.Url;
+
+                    // EFW - Append the anchor if one was specified
+                    if(!String.IsNullOrEmpty(info.Anchor))
+                        url += info.Anchor;
+
+                    // EFW - Use the link text if specified
+                    if(!String.IsNullOrEmpty(info.Text))
+                        text = info.Text;
+                    else
+                        text = targetInfo.Text;
+
+                    linkType = targetInfo.LinkType;
                 }
 
                 XmlWriter writer = navigator.InsertAfter();

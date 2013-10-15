@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="655dc2f6-9e3c-45b1-8d7f-472ddd6eac1f" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<autoOutline excludeRelatedTopics="true" lead="Version 2.7.4.0 was released on October 14th, 2013" />
+		</introduction>
+
+		<section address="ProductionTransformations">
+			<title>Production Transformations</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Deleted <localUri>AddGuidFilenames.xsl</localUri> and <localUri>AddFriendlyFilenames.xsl</localUri>
+transformations as their functionality is now handled by a new transformation file called <localUri>AddFilenames.xsl</localUri>.</para>
+					</listItem>
+
+					<listItem>
+						<para>Moved the <codeInline>MemberName</codeInline> and <codeInline>HashedMemberName</codeInline>
+naming method code from the Sandcastle Help File Builder into the new <localUri>AddFilenames.xsl</localUri>
+transformation file along with the GUID naming method code.  Use the transformation argument
+<system>/arg:namingMethod=MemberName</system> or <system>/arg:namingMethod=HashedMemberName</system> to use the
+new naming methods.  If not specified, the default naming method is GUID.</para>
+
+						<alert class="note">
+							<para>The <codeInline>MemberName</codeInline> naming method differs from the old Sandcastle
+"friendly names" naming method.  The new method brings it in line with how the Sandcastle Help File Builder has
+always worked.  It will only affect people that used the Sandcastle tools directly and only then if they used the
+friendly naming method and relied on direct links to the previously generated names.</para>
+						</alert>
+					</listItem>
+				</list>
+			</content>
+		</section>
+
+		<section address="MRefBuilder">
+			<title>MRefBuilder</title>
+			<content>
+				<para>Added support for the .NETFramework 4.5.1, .NETCore 4.5.1, and .NETPortable 4.6 frameworks to the
+<localUri>Frameworks.xml</localUri> file.</para>
+			</content>
+		</section>
+
+		<section address="BuildAssembler">
+			<title>BuildAssembler and Build Components</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Moved the <codeInline>configSections</codeInline> section of the <localUri>BuildAssembler.exe.config</localUri>
+to the top of the file to prevent problems when one of the proxy sections is uncommented and used.</para>
+					</listItem>
+
+					<listItem>
+						<para>Modified <codeInline>ResolveReferenceLinksComponent2</codeInline> so that it issues a warning
+if a target attribute value is missing rather than throwing an exception and halting the build.  This makes it
+work like prior releases but it will display a better message to describe the cause of the warning.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the MSDN resolver so that if it fails it will not write null entries to the cache.</para>
+					</listItem>
+
+					<listItem>
+						<para>Applied a patch from gfraiteur to remove the GUID topic ID requirement in
+<codeInline>ResolveConceptualLinksComponent</codeInline>.</para>
+
+						<alert class="note">
+							<para>GUIDs are still preferred for topic IDs as they are guaranteed to be unique which is
+important for Help 2 and MS Help Viewer content which are merged into a collection.  Duplicate IDs across
+multiple sets of content would cause linking issues in the collections.</para>
+						</alert>
+					</listItem>
+
+				</list>
+			</content>
+		</section>
+
+		<section address="VersionBuilder">
+			<title>Version Builder</title>
+			<content>
+				<para>Added changes from Stazzz to the Version Builder tool to merge information about additional
+extension methods even when the type and method are defined in different assemblies.</para>
+			</content>
+		</section>
+
+		<section address="PresentationStyles">
+			<title>Presentation Styles</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Fixed the VS2010 style so that it does not output parent class summary comments on nested class
+member list pages.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added German resource item translations provided by Michael Buchner to the VS2010 style.</para>
+					</listItem>
+
+					<listItem>
+						<para>Adjusted the font size of the <codeInline>devlangsMenu</codeInline>,
+<codeInline>memberOptionsMenu</codeInline>, and <codeInline>memberFrameworksMenu</codeInline> CSS styles to 100%
+to make them more readable in web output.</para>
+					</listItem>
+				</list>
+			</content>
+		</section>
+
+		<section address="Extras">
+			<title>Extras</title>
+			<content>
+				<para>Moved the <codeInline>para</codeInline> snippet from the inline elements category to the block
+elements category.</para>
+			</content>
+		</section>
+		
+		<relatedTopics>
+			<link xlink:href="e0636c2c-3da0-4d5e-9e86-6fb3f0c83eef" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

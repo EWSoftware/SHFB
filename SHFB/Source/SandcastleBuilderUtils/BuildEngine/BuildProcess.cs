@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/17/2013
+// Updated : 10/12/2013
 // Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -43,15 +43,16 @@
 //                           honor solution-level per-project configuration and platform settings.  Added
 //                           support for multi-format build output. Moved GenerateIntermediateTableOfContents
 //                           so that it occurs right after MergeTablesOfContents.
-#endregion
 // 1.9.1.0  07/09/2010  EFW  Updated for use with .NET 4.0 and MSBuild 4.0.
 // 1.9.2.0  01/16/2011  EFW  Updated to support selection of Silverlight Framework versions
 // 1.9.3.2  08/20/2011  EFW  Updated to support selection of .NET Portable Framework versions
+#endregion
 // 1.9.4.0  03/25/2012  EFW  Merged changes for VS2010 style from Don Fehr
 // 1.9.5.0  09/10/2012  EFW  Updated to use the new framework definition file for the .NET Framework versions
 // 1.9.6.0  10/25/2012  EFW  Updated to use the new presentation style definition files
 // 1.9.7.0  01/02/2013  EFW  Added method to get referenced namespaces
-// 1.9.8.0  06/21/2013  EFW  Added support for format-specific help content files
+// 1.9.8.0  06/21/2013  EFW  Added support for format-specific help content files.  Removed the
+//                           ModifyHelpTopicFilenames build step.
 //===============================================================================================================
 
 using System;
@@ -443,8 +444,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
         }
 
         /// <summary>
-        /// This read-only property returns a hash set used to contain a list of namespaces referenced by
-        /// the reflection data files.
+        /// This read-only property returns a hash set used to contain a list of namespaces referenced by the
+        /// project reflection data files, project XML comments files, and base framework XML comments files.
         /// </summary>
         /// <value>These namespaces are used to limit what the Resolve Reference Links component has to index</value>
         public HashSet<string> ReferencedNamespaces
@@ -1019,13 +1020,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 reflectionInfo.Load(reflectionFile);
                 apisNode = reflectionInfo.SelectSingleNode("reflection/apis");
 
-                // Alter the help topic filenames if necessary
-                this.ModifyHelpTopicFilenames();
-
-                // Backup the original reflection file for reference and save the changed file
-                File.Copy(reflectionFile, Path.ChangeExtension(reflectionFile, ".bak"), true);
-
-                reflectionInfo.Save(reflectionFile);
                 commentsFiles.Save();
 
                 this.EnsureOutputFoldersExist("html");
@@ -1515,17 +1509,40 @@ AllDone:
             }
             catch(ThreadAbortException )
             {
-                // Kill off the process, known child processes and the STDOUT
-                // and STDERR threads too if necessary.
+                // Kill off the process, known child processes, and the STDOUT and STDERR threads too if
+                // necessary.
                 if(currentProcess != null && !currentProcess.HasExited)
                 {
-                    currentProcess.Kill();
+                    DateTime procStart;
+
+                    // Only kill potential matches started after the current process's start time.  It's not
+                    // perfect if you've got two or more SHFB builds running concurrently but it's the best
+                    // we can do without getting really complicated which I'm not prepared to do since this is
+                    // an extremely low occurrence issue.
+                    try
+                    {
+                        procStart = currentProcess.StartTime;
+                        currentProcess.Kill();
+                    }
+                    catch
+                    {
+                        // If we can't get the start time, assume the build start time
+                        procStart = buildStart;
+                    }
 
                     foreach(Process p in Process.GetProcesses())
-                        if(reKillProcess.IsMatch(p.ProcessName) && !p.HasExited)
+                        try
                         {
-                            System.Diagnostics.Debug.WriteLine("Killing " + p.ProcessName);
-                            p.Kill();
+                            if(reKillProcess.IsMatch(p.ProcessName) && !p.HasExited && p.StartTime > procStart)
+                            {
+                                System.Diagnostics.Debug.WriteLine("Killing " + p.ProcessName);
+                            
+                                p.Kill();
+                            }
+                        }
+                        catch
+                        {
+                            // Ignore exceptions, the process had probably already exited
                         }
                 }
 
@@ -1567,8 +1584,7 @@ AllDone:
 
                 } while(ex != null);
 
-                // NOTE: Message may contain format markers so pass it as a
-                // format argument.
+                // NOTE: Message may contain format markers so pass it as a format argument
                 if(bex != null)
                     this.ReportError(BuildStep.Failed, bex.ErrorCode, "{0}", message);
                 else
@@ -2000,7 +2016,7 @@ AllDone:
             Version fileVersion = new Version(fvi.FileMajorPart, fvi.FileMinorPart, fvi.FileBuildPart,
                 fvi.FilePrivatePart);
 
-            Version expectedVersion = new Version("2.7.3.0");
+            Version expectedVersion = new Version("2.7.4.0");
 
             if(fileVersion < expectedVersion)
                 throw new BuilderException("BE0036", String.Format(CultureInfo.InvariantCulture,

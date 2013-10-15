@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : ProjectExplorerWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/13/2013
+// Updated : 10/03/2013
 // Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -234,7 +234,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         public DockContent CreateFileEditor(string fullName, FileItem fileItem)
         {
             DockContent editor = null;
-            string ext = Path.GetExtension(fullName).ToLower(CultureInfo.InvariantCulture);
+            string ext = Path.GetExtension(fullName).ToLowerInvariant();
 
             if(fileItem == null)
             {
@@ -604,7 +604,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
             fileItem = (FileItem)nodeData.Item;
             fullName = fileItem.Include;
-            ext = Path.GetExtension(fullName).ToLower(CultureInfo.InvariantCulture);
+            ext = Path.GetExtension(fullName);
 
             // If the document is already open, just activate it
             foreach(IDockContent content in this.DockPanel.Contents)
@@ -647,7 +647,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// <returns>True if it should be shown, or false if not (not supported or it's the default editor</returns>
         private static bool ShowOpenWithTextEditor(string fullName)
         {
-            string ext = Path.GetExtension(fullName).ToLower(CultureInfo.InvariantCulture);
+            string ext = Path.GetExtension(fullName).ToLowerInvariant();
 
             switch(SandcastleProject.DefaultBuildAction(fullName))
             {
@@ -977,8 +977,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
                 nodeData = (NodeData)tvProjectFiles.SelectedNode.Tag;
 
             miRemoveDocSource.Visible = (nodeData != null &&
-                nodeData.BuildAction == BuildAction.DocumentationSource &&
-                nodeData.Item != null);
+                nodeData.BuildAction == BuildAction.DocumentationSource && nodeData.Item != null);
         }
 
         /// <summary>
@@ -988,16 +987,14 @@ namespace SandcastleBuilder.Gui.ContentEditors
         /// <param name="e">The event arguments</param>
         private void miAddDocSource_Click(object sender, EventArgs e)
         {
-            DocumentationSourceCollection docSources =
-                currentProject.DocumentationSources;
+            DocumentationSourceCollection docSources = currentProject.DocumentationSources;
             string ext, otherFile;
 
             using(OpenFileDialog dlg = new OpenFileDialog())
             {
                 dlg.Title = "Select the documentation source(s)";
-                dlg.Filter = "Assemblies, Comments Files, and Projects"  +
-                    "(*.dll, *.exe, *.winmd, *.xml, *.sln, *.*proj)|" +
-                    "*.dll;*.exe;*.winmd;*.xml;*.sln;*.*proj|" +
+                dlg.Filter = "Assemblies, Comments Files, and Projects (*.dll, *.exe, *.winmd, *.xml, " +
+                    "*.sln, *.*proj)|*.dll;*.exe;*.winmd;*.xml;*.sln;*.*proj|" +
                     "Library Files (*.dll, *.winmd)|*.dll;*.winmd|" +
                     "Executable Files (*.exe)|*.exe|" +
                     "XML Comments Files (*.xml)|*.xml|" +
@@ -1018,11 +1015,9 @@ namespace SandcastleBuilder.Gui.ContentEditors
                         {
                             docSources.Add(file, null, null, false);
 
-                            ext = Path.GetExtension(file).ToLower(
-                                CultureInfo.InvariantCulture);
+                            ext = Path.GetExtension(file).ToLowerInvariant();
 
-                            // If there's a match for a comments file or an
-                            // assembly, add it too.
+                            // If there's a match for a comments file or an assembly, add it too
                             if(ext == ".xml")
                             {
                                 otherFile = Path.ChangeExtension(file, ".dll");
@@ -1123,8 +1118,8 @@ namespace SandcastleBuilder.Gui.ContentEditors
                 using(OpenFileDialog dlg = new OpenFileDialog())
                 {
                     dlg.Title = "Select the reference file(s)";
-                    dlg.Filter = "Library, Executable, and Project Files " +
-                        "(*.dll, *.exe, *.winmd, *.*proj)|*.dll;*.exe;*.winmd;*.*proj|" +
+                    dlg.Filter = "Library, Executable, and Project Files (*.dll, *.exe, *.winmd, *.*proj)|" +
+                        "*.dll;*.exe;*.winmd;*.*proj|" +
                         "Library Files (*.dll, *.winmd)|*.dll;*.winmd|" +
                         "Executable Files (*.exe)|*.exe|" +
                         "Visual Studio Project Files (*.*proj)|*.*proj|" +
@@ -1141,8 +1136,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
 
                             foreach(string file in dlg.FileNames)
                             {
-                                extension = Path.GetExtension(file).ToLower(
-                                    CultureInfo.InvariantCulture);
+                                extension = Path.GetExtension(file).ToLowerInvariant();
 
                                 if(extension == ".exe" || extension == ".dll" || extension == ".winmd")
                                     references.AddReference(Path.GetFileNameWithoutExtension(file), file);
@@ -1284,14 +1278,13 @@ namespace SandcastleBuilder.Gui.ContentEditors
             NodeData nodeData = (NodeData)tvProjectFiles.SelectedNode.Tag;
             DockContent editor;
             FileItem fileItem;
-            string fullName, ext;
+            string fullName;
 
             if(nodeData.BuildAction >= BuildAction.Folder)
                 return;
 
             fileItem = (FileItem)nodeData.Item;
             fullName = fileItem.Include;
-            ext = Path.GetExtension(fullName).ToLower(CultureInfo.InvariantCulture);
 
             // If the document is already open, just activate it
             foreach(IDockContent content in this.DockPanel.Contents)

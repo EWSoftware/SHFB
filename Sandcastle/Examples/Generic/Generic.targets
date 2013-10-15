@@ -37,7 +37,7 @@
     <Exec Command="copy &quot;%(Dependents.FullPath)&quot; &quot;$(DependencyDir)\%(Dependents.Filename)%(Dependents.Extension)&quot;" 
           Condition="@(Dependents)!=''"/>
   </Target>
-  
+
   <!--Deleting and Creating Directories...-->
   <Target Name="CreateDirectories" >
     <Message Text="Deleting Directories..." />
@@ -76,12 +76,12 @@
 
     <Exec Command='"$(ProductionTools)\MRefBuilder" &quot;$(DllDir)\*.dll&quot; &quot;$(DllDir)\*.exe&quot; /out:&quot;$(TopicStyleDir)\reflection.org&quot; /dep:&quot;$(DependencyDir)\*.dll&quot;,&quot;$(DependencyDir)\*.exe&quot; /internal+' Condition="$(Internal)=='true'" />
 
-    <Exec Condition="'$(TopicStyle)' == 'prototype'" Command='"$(ProductionTools)\XslTransform.exe" /xsl:"$(ProductionTransforms)\ApplyPrototypeDocModel.xsl" /xsl:"$(ProductionTransforms)\AddGuidFilenames.xsl" "$(TopicStyleDir)\reflection.org" /out:"$(TopicStyleDir)\reflection.xml" /arg:project=Project' />
-    <Exec Condition="'$(TopicStyle)' == 'vs2005'" Command='"$(ProductionTools)\XslTransform.exe" /xsl:"$(ProductionTransforms)\ApplyVSDocModel.xsl" /xsl:"$(ProductionTransforms)\AddFriendlyFilenames.xsl" "$(TopicStyleDir)\reflection.org" /out:"$(TopicStyleDir)\reflection.xml" /arg:IncludeAllMembersTopic=true /arg:IncludeInheritedOverloadTopics=false /arg:project=Project' />
-    <Exec Condition="'$(TopicStyle)' == 'vs2010'" Command='"$(ProductionTools)\XslTransform.exe" /xsl:"$(ProductionTransforms)\ApplyVSDocModel.xsl" /xsl:"$(ProductionTransforms)\AddFriendlyFilenames.xsl" "$(TopicStyleDir)\reflection.org" /out:"$(TopicStyleDir)\reflection.xml" /arg:IncludeAllMembersTopic=true /arg:IncludeInheritedOverloadTopics=false /arg:project=Project' />
-    <Exec Condition="'$(TopicStyle)' == 'hana'" Command='"$(ProductionTools)\XslTransform.exe" /xsl:"$(ProductionTransforms)\ApplyVSDocModel.xsl" /xsl:"$(ProductionTransforms)\AddFriendlyFilenames.xsl" "$(TopicStyleDir)\reflection.org" /out:"$(TopicStyleDir)\reflection.xml" /arg:IncludeAllMembersTopic=false /arg:IncludeInheritedOverloadTopics=false /arg:project=Project' />
+    <Exec Condition="'$(TopicStyle)' == 'prototype'" Command='"$(ProductionTools)\XslTransform.exe" /xsl:"$(ProductionTransforms)\ApplyPrototypeDocModel.xsl" /xsl:"$(ProductionTransforms)\AddFilenames.xsl" "$(TopicStyleDir)\reflection.org" /out:"$(TopicStyleDir)\reflection.xml" /arg:project=Project' />
+    <Exec Condition="'$(TopicStyle)' == 'vs2005'" Command='"$(ProductionTools)\XslTransform.exe" /xsl:"$(ProductionTransforms)\ApplyVSDocModel.xsl" /xsl:"$(ProductionTransforms)\AddFilenames.xsl" "$(TopicStyleDir)\reflection.org" /out:"$(TopicStyleDir)\reflection.xml" /arg:IncludeAllMembersTopic=true /arg:IncludeInheritedOverloadTopics=false /arg:project=Project /arg:namingMethod=MemberName' />
+    <Exec Condition="'$(TopicStyle)' == 'vs2010'" Command='"$(ProductionTools)\XslTransform.exe" /xsl:"$(ProductionTransforms)\ApplyVSDocModel.xsl" /xsl:"$(ProductionTransforms)\AddFilenames.xsl" "$(TopicStyleDir)\reflection.org" /out:"$(TopicStyleDir)\reflection.xml" /arg:IncludeAllMembersTopic=true /arg:IncludeInheritedOverloadTopics=false /arg:project=Project /arg:namingMethod=MemberName' />
+    <Exec Condition="'$(TopicStyle)' == 'hana'" Command='"$(ProductionTools)\XslTransform.exe" /xsl:"$(ProductionTransforms)\ApplyVSDocModel.xsl" /xsl:"$(ProductionTransforms)\AddFilenames.xsl" "$(TopicStyleDir)\reflection.org" /out:"$(TopicStyleDir)\reflection.xml" /arg:IncludeAllMembersTopic=false /arg:IncludeInheritedOverloadTopics=false /arg:project=Project /arg:namingMethod=MemberName' />
   </Target>
-  
+
   <!--Copy icons,styles and scripts to output-->
   <Target Name="CopyOutput" DependsOnTargets="Reflection">
     <Message Text="Copy icons, styles and scripts to Output..." />
@@ -118,7 +118,7 @@
     <Exec Command='"$(ProductionTools)\XslTransform"  /xsl:"%DXROOT%\ProductionTransforms\ReflectionToManifest.xsl"  reflection.xml /out:manifest.xml'
          WorkingDirectory="$(TopicStyleDir)" />
   </Target>
-  
+
   <!--Generate an intermediate Toc file that simulates the Whidbey TOC format-->
   <Target Name="Toc" DependsOnTargets="Manifest;CopyOutput;CreateWebDirs">
     <Message Text="Generate an intermediate Toc file that simulates the Whidbey TOC format...." />
@@ -155,7 +155,7 @@
     <Exec Command='"$(ToolsPath)\HTML Help Workshop\hhc.exe" "$(TopicStyleDir)\chm\$(Name).hhp"' IgnoreExitCode="true" />
     <!--<Exec Command='sbapplocale $(LanguageId) "$(ProgramFiles)\HTML Help Workshop\hhc.exe" "$(TopicStyleDir)\chm\$(Name).hhp"' IgnoreExitCode="true" />-->
   </Target>
-  
+
   <!-- Generate HxS help project -->
   <Target Name="Hxs" DependsOnTargets="Html">
     <Message Text="Generate HxS help project...." />

@@ -21,9 +21,9 @@ elements.</para>
     </introduction>
 
 <section address="ToolbarOpts">
-  <title>Toolbar Options</title>
+  <title>Tool bar Options</title>
   <content>
-    <para>The toolbar at the top of the window provides access to some of the
+    <para>The tool bar at the top of the window provides access to some of the
 most common options.  They are (from left to right):</para>
 
   	<mediaLink><image xlink:href="TextEditorWindow" placement="center"/></mediaLink>
@@ -73,7 +73,7 @@ outside target such as a website.</para>
 			<listItem>
 				<para><ui>Various elements dropdown</ui> - The dropdown will allow you to insert various other common
 MAML elements.  The ones above the divider are block elements.  The rest below it are inline elements.  If the
-toolbar button is clicked, the default action is to insert the last selected element from the dropdown.  By
+tool bar button is clicked, the default action is to insert the last selected element from the dropdown.  By
 default, it inserts an <codeInline>alert</codeInline> element.</para>
 			</listItem>
 
@@ -90,10 +90,15 @@ ampersands.</para>
 			<listItem>
 				<para><ui>Undo and Redo</ui> - Undo and redo edits.</para>
 			</listItem>
+
+			<listItem>
+				<para><ui>Spell Check</ui> - Spell check the current document.  A spell check tool window will open and
+will reposition the cursor to the first misspelled word if there is one.</para>
+			</listItem>
 		</list>
 
 		<alert class="tip">
-			<para>For most commands that insert MAML elements in the standalone GUI, both from the toolbar and the
+			<para>For most commands that insert MAML elements in the standalone GUI, both from the tool bar and the
 keyboard shortcuts, if any text is currently highlighted when the command is executed, the selected text will be
 wrapped in the inserted element.  This also applies when a topic is dragged and dropped from the content layout
 editor onto selected text to create a link.  The selected text will become the link's inner text.</para>
@@ -139,6 +144,11 @@ is still on it and finds the next occurrence of the search text.</para>
 			<listItem>
 				<para><ui>Ctrl+G</ui> - This opens the <ui>Goto Line</ui> tool window.  Enter a line number and click
 <ui>OK</ui> to jump to the specified line number in the document.</para>
+			</listItem>
+
+			<listItem>
+				<para><ui>Ctrl+Shift+K</ui> - Spell check the current document.  A spell check tool window will open
+and will reposition the cursor to the first misspelled word if there is one.</para>
 			</listItem>
 
 			<listItem>

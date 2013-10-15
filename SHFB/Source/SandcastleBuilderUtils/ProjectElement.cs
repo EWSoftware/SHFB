@@ -1,24 +1,23 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder Utilities
 // File    : ProjectElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/09/2010
-// Note    : Copyright 2008-2010, Eric Woodruff, All rights reserved
+// Updated : 09/27/2013
+// Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a wrapper class for build items in the project.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.8.0.0  06/23/2008  EFW  Created the code
 // 1.9.1.0  07/09/2010  EFW  Updated for use with .NET 4.0 and MSBuild 4.0.
-//=============================================================================
+//===============================================================================================================
 
 using System;
 using System.ComponentModel;
@@ -65,6 +64,8 @@ namespace SandcastleBuilder.Utils
         public const string Platform = "Platform";
         /// <summary>Output directory setting</summary>
         public const string OutDir = "OutDir";
+        /// <summary>Project name setting</summary>
+        public const string ProjectName = "ProjectName";
 
         /// <summary>Image ID</summary>
         public const string ImageId = "ImageId";

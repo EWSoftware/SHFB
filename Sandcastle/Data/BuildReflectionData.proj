@@ -32,7 +32,7 @@
     <Exec ContinueOnError="false" IgnoreExitCode="true"
       Command="&quot;$(ProductionTools)\MRefBuilder.exe&quot; @MRefBuilder.rsp /out:&quot;$(TmpPath)\Reflection.org&quot;" />
     <Exec ContinueOnError="true" IgnoreExitCode="true"
-      Command="&quot;$(ProductionTools)\XslTransform.exe&quot; /xsl:&quot;$(ProductionTransforms)\ApplyVSDocModel.xsl&quot; /xsl:&quot;$(ProductionTransforms)\AddGuidFilenames.xsl&quot; &quot;$(TmpPath)\Reflection.org&quot; /out:&quot;$(TmpPath)\Reflection.xml&quot; /arg:IncludeAllMembersTopic=true /arg:IncludeInheritedOverloadTopics=false" />
+      Command="&quot;$(ProductionTools)\XslTransform.exe&quot; /xsl:&quot;$(ProductionTransforms)\ApplyVSDocModel.xsl&quot; /xsl:&quot;$(ProductionTransforms)\AddFilenames.xsl&quot; &quot;$(TmpPath)\Reflection.org&quot; /out:&quot;$(TmpPath)\Reflection.xml&quot; /arg:IncludeAllMembersTopic=true /arg:IncludeInheritedOverloadTopics=false" />
 
     <!-- Segregate the reflection data by namespace -->
     <Exec ContinueOnError="false" IgnoreExitCode="true"

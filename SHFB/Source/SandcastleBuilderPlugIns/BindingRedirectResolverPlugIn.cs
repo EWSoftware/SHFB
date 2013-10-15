@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : BindingRedirectResolverPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/18/2013
+// Updated : 09/04/2013
 // Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -244,7 +244,7 @@ namespace SandcastleBuilder.PlugIns
                 foreach(BindingRedirectSettings brs in redirects)
                     builder.ReportProgress("    {0}", brs);
 
-                redirects.ToXml(config, resolver);
+                redirects.ToXml(config, resolver, false);
             }
 
             if(ignoreIfUnresolved.Count != 0)

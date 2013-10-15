@@ -323,6 +323,10 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         String.Format(CultureInfo.InvariantCulture, "{0}={1}", p.Key, p.Value)));
                     break;
 
+                case "namingmethod":
+                    replaceWith = project.NamingMethod.ToString();
+                    break;
+
                 case "toctransformation":
                     replaceWith = presentationStyle.ResolvePath(
                         presentationStyle.IntermediateTocTransformation.TransformationFilename);
@@ -963,7 +967,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     if(String.IsNullOrEmpty(replaceWith) || replaceWith[0] == '%')
                         replaceWith = "DefaultUser";
 
-                    replaceWith = (project.Filename + "_" + replaceWith).GetHashCode().ToString("X");
+                    replaceWith = (project.Filename + "_" + replaceWith).GetHashCode().ToString("X",
+                        CultureInfo.InvariantCulture);
                     break;
 
                 default:

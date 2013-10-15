@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Project Launcher
 // File    : AssemblyInfo.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/28/2013
+// Updated : 10/12/2013
 // Note    : Copyright 2011-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -57,4 +57,4 @@ using System.Runtime.InteropServices;
 // NOTE: This version number will control the version number in the installer.  This allows the build engine
 //       to use a different version number so that plug-ins and other components will continue to work with the
 //       latest official production release as well as a development release using an older version number.
-[assembly: AssemblyVersion("1.9.7.0")]
+[assembly: AssemblyVersion("1.9.8.0")]

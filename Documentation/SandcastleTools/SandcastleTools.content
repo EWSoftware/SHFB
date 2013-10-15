@@ -69,10 +69,15 @@
       <HelpKeyword index="K" term="support, donate" />
     </HelpKeywords>
   </Topic>
-  <Topic id="e0636c2c-3da0-4d5e-9e86-6fb3f0c83eef" visible="True" isExpanded="true" isSelected="true" title="Version History">
+  <Topic id="e0636c2c-3da0-4d5e-9e86-6fb3f0c83eef" visible="True" isExpanded="true" title="Version History">
     <HelpKeywords>
       <HelpKeyword index="K" term="version history" />
     </HelpKeywords>
+    <Topic id="655dc2f6-9e3c-45b1-8d7f-472ddd6eac1f" visible="True" isSelected="true" title="Version 2.7.4.0, October 2013">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 2.7.4.0" />
+      </HelpKeywords>
+    </Topic>
     <Topic id="dacbe260-df28-4ad6-b0ec-b2f6711c6b2d" visible="True" title="Version 2.7.3.0, April 2013">
       <HelpKeywords>
         <HelpKeyword index="K" term="versions, 2.7.3.0" />

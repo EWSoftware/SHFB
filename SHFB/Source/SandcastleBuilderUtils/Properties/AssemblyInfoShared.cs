@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : AssemblyInfoShared.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/28/2013
+// Updated : 10/12/2013
 // Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -38,9 +38,8 @@ using System.Runtime.InteropServices;
 [assembly: NeutralResourcesLanguageAttribute("en")]
 
 //
-// General Information about an assembly is controlled through the following
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
+// General Information about an assembly is controlled through the following set of attributes. Change these
+// attribute values to modify the information associated with an assembly.
 //
 [assembly: AssemblyProduct("Sandcastle Help File Builder")]
 [assembly: AssemblyConfiguration("")]
@@ -58,13 +57,12 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-// You can specify all the values or you can default the Revision and Build Numbers
-// by using the '*' as shown below:
+// You can specify all the values or you can default the Revision and Build Numbers by using the '*' as shown
+// below:
 
-// NOTE: Revision number should always be zero.  This allows build component
-// and plug-in developers to use the same major, minor, and build numbers
-// as the Sandcastle Help File Builder to indicate with which version their
+// NOTE: Revision number should always be zero.  This allows build component and plug-in developers to use the
+// same major, minor, and build numbers as the Sandcastle Help File Builder to indicate with which version their
 // components are compatible.
-[assembly: AssemblyVersion("1.9.7.0")]
+[assembly: AssemblyVersion("1.9.8.0")]
 
 // See AssemblyInfo.cs for project-specific assembly attributes

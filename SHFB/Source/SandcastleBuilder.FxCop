@@ -19,7 +19,6 @@
   <SearchGlobalAssemblyCache>False</SearchGlobalAssemblyCache>
   <DeadlockDetectionTimeout>120</DeadlockDetectionTimeout>
   <IgnoreGeneratedCode>False</IgnoreGeneratedCode>
-  <TargetFrameworkVersion>0.0</TargetFrameworkVersion>
  </ProjectOptions>
  <Targets>
   <AssemblyReferenceDirectories>
@@ -309,38 +308,60 @@
     <Modules>
      <Module Name="generateinheriteddocs.exe">
       <Namespaces>
-       <Namespace Name="SandcastleBuilder.Utils.InheritedDocumentation">
+       <Namespace Name="SandcastleBuilder.InheritedDocumentation">
         <Types>
-         <Type Name="IndexedCommentsFile">
+         <Type Name="ReflectionFiles">
           <Members>
-           <Member Name="#.ctor(System.String)">
+           <Member Name="#Select(System.String)">
             <Messages>
-             <Message Id="filename" TypeName="CompoundWordsShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1702" Status="Excluded" Created="2008-06-01 22:46:21Z">
-              <Issue Name="MemberParameterShouldBeCompoundWord">
-               <Item>'IndexedCommentsFile.IndexedCommentsFile(string)'</Item>
-               <Item>filename</Item>
-               <Item>'filename'</Item>
-               <Item>fileName</Item>
+             <Message Id="xpath" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2013-10-03 21:40:41Z">
+              <Issue Name="MemberParameter">
+               <Item>'ReflectionFiles.Select(string)'</Item>
+               <Item>xpath</Item>
+               <Item>'xpath'</Item>
               </Issue>
               <Notes>
                <User Name="EWOODRUFF">
-                <Note Id="46" />
+                <Note Id="168" />
                </User>
               </Notes>
              </Message>
             </Messages>
            </Member>
-           <Member Name="#Filename">
+           <Member Name="#SelectSingleNode(System.String)">
             <Messages>
-             <Message Id="Filename" TypeName="CompoundWordsShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1702" Status="Excluded" Created="2008-06-01 22:46:21Z">
-              <Issue Name="MemberShouldBeCompoundWord">
-               <Item>Filename</Item>
-               <Item>'IndexedCommentsFile.Filename'</Item>
-               <Item>FileName</Item>
+             <Message Id="xpath" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2013-10-03 21:40:41Z">
+              <Issue Name="MemberParameter">
+               <Item>'ReflectionFiles.SelectSingleNode(string)'</Item>
+               <Item>xpath</Item>
+               <Item>'xpath'</Item>
               </Issue>
               <Notes>
                <User Name="EWOODRUFF">
-                <Note Id="46" />
+                <Note Id="168" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+       <Namespace Name="SandcastleBuilder.Utils.InheritedDocumentation">
+        <Types>
+         <Type Name="IndexedCommentsCache">
+          <Members>
+           <Member Name="#GetValues(System.String)">
+            <Messages>
+             <Message TypeName="DoNotNestGenericTypesInMemberSignatures" Category="Microsoft.Design" CheckId="CA1006" Status="Excluded" Created="2013-10-03 21:40:41Z">
+              <Issue>
+               <Item>'IndexedCommentsCache.GetValues(string)'</Item>
+               <Item>'IEnumerable&lt;KeyValuePair&lt;string, XPathNavigator&gt;&gt;'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="167" />
                </User>
               </Notes>
              </Message>
@@ -623,7 +644,7 @@
              <Message TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308" Status="Excluded" Created="2008-09-18 23:42:29Z">
               <Issue Name="ToUpperInvariant">
                <Item>'ApiFilter.ConvertToString(StringBuilder)'</Item>
-               <Item>'string.ToLower(CultureInfo)'</Item>
+               <Item>'string.ToLowerInvariant()'</Item>
               </Issue>
               <Notes>
                <User Name="EWOODRUFF">
@@ -1646,6 +1667,14 @@
                <Item>'BuildProcess.Build()'</Item>
                <Item>'Exception'</Item>
               </Issue>
+              <Issue>
+               <Item>'BuildProcess.Build()'</Item>
+               <Item>'object'</Item>
+              </Issue>
+              <Issue>
+               <Item>'BuildProcess.Build()'</Item>
+               <Item>'object'</Item>
+              </Issue>
               <Notes>
                <User Name="EWOODRUFF">
                 <Note Id="15" />
@@ -1751,29 +1780,9 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="#ModifyHelpTopicFilenames()">
-            <Messages>
-             <Message Id="Filenames" TypeName="CompoundWordsShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1702" Status="Excluded" Created="2008-09-20 02:05:27Z">
-              <Issue Name="MemberShouldBeCompoundWord">
-               <Item>Filenames</Item>
-               <Item>'BuildProcess.ModifyHelpTopicFilenames()'</Item>
-               <Item>FileNames</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="32" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
            <Member Name="#OnFieldMatch(System.Text.RegularExpressions.Match)">
             <Messages>
              <Message TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308" Status="Excluded" Created="2008-09-18 23:42:29Z">
-              <Issue Name="ToUpperInvariant">
-               <Item>'BuildProcess.OnFieldMatch(Match)'</Item>
-               <Item>'string.ToLowerInvariant()'</Item>
-              </Issue>
               <Issue Name="ToUpperInvariant">
                <Item>'BuildProcess.OnFieldMatch(Match)'</Item>
                <Item>'string.ToLowerInvariant()'</Item>
@@ -1943,6 +1952,21 @@
              </Message>
             </Messages>
            </Member>
+           <Member Name="#ReferencedNamespaces">
+            <Messages>
+             <Message TypeName="PropertyNamesShouldNotMatchGetMethods" Category="Microsoft.Naming" CheckId="CA1721" Status="Excluded" Created="2013-10-03 21:40:41Z">
+              <Issue Name="SameType">
+               <Item>'BuildProcess.ReferencedNamespaces'</Item>
+               <Item>'BuildProcess.GetReferencedNamespaces(string, IEnumerable&lt;string&gt;)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="173" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
            <Member Name="#ReflectionInfoFilename">
             <Messages>
              <Message Id="Filename" TypeName="CompoundWordsShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1702" Status="Excluded" Created="2008-09-20 02:05:27Z">
@@ -1989,22 +2013,6 @@
               <Notes>
                <User Name="EWOODRUFF">
                 <Note Id="62" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#ModifyHelpTopicFilenames">
-            <Messages>
-             <Message Id="Filenames" TypeName="CompoundWordsShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1702" Status="Excluded" Created="2008-09-20 02:05:27Z">
-              <Issue Name="MemberShouldBeCompoundWord">
-               <Item>Filenames</Item>
-               <Item>'BuildStep.ModifyHelpTopicFilenames'</Item>
-               <Item>FileNames</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="32" />
                </User>
               </Notes>
              </Message>
@@ -2957,7 +2965,7 @@
              <Message TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308" Status="Excluded" Created="2008-09-18 23:42:29Z">
               <Issue Name="ToUpperInvariant">
                <Item>'TopicFile.ParseContent(bool)'</Item>
-               <Item>'string.ToLower(CultureInfo)'</Item>
+               <Item>'string.ToLowerInvariant()'</Item>
               </Issue>
               <Notes>
                <User Name="EWOODRUFF">
@@ -3944,36 +3952,18 @@
        </Namespace>
        <Namespace Name="SandcastleBuilder.Utils.InheritedDocumentation">
         <Types>
-         <Type Name="IndexedCommentsFile">
+         <Type Name="IndexedCommentsCache">
           <Members>
-           <Member Name="#.ctor(System.String)">
+           <Member Name="#GetValues(System.String)">
             <Messages>
-             <Message Id="filename" TypeName="CompoundWordsShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1702" Status="Excluded" Created="2008-06-01 22:46:21Z">
-              <Issue Name="MemberParameterShouldBeCompoundWord">
-               <Item>'IndexedCommentsFile.IndexedCommentsFile(string)'</Item>
-               <Item>filename</Item>
-               <Item>'filename'</Item>
-               <Item>fileName</Item>
+             <Message TypeName="DoNotNestGenericTypesInMemberSignatures" Category="Microsoft.Design" CheckId="CA1006" Status="Excluded" Created="2013-10-03 21:40:41Z">
+              <Issue>
+               <Item>'IndexedCommentsCache.GetValues(string)'</Item>
+               <Item>'IEnumerable&lt;KeyValuePair&lt;string, XPathNavigator&gt;&gt;'</Item>
               </Issue>
               <Notes>
                <User Name="EWOODRUFF">
-                <Note Id="46" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#Filename">
-            <Messages>
-             <Message Id="Filename" TypeName="CompoundWordsShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1702" Status="Excluded" Created="2008-06-01 22:46:21Z">
-              <Issue Name="MemberShouldBeCompoundWord">
-               <Item>Filename</Item>
-               <Item>'IndexedCommentsFile.Filename'</Item>
-               <Item>FileName</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="46" />
+                <Note Id="167" />
                </User>
               </Notes>
              </Message>
@@ -4436,6 +4426,51 @@
               <Notes>
                <User Name="EWOODRUFF">
                 <Note Id="147" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#CodeColorizer">
+            <Messages>
+             <Message Id="Colorizer" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2013-10-03 21:40:41Z">
+              <Issue Name="Member">
+               <Item>Colorizer</Item>
+               <Item>'MamlToFlowDocumentConverter.CodeColorizer'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="168" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#ColorizeCode(System.String,System.String,System.Boolean,System.Windows.Documents.Paragraph)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2013-10-03 21:40:41Z">
+              <Issue>
+               <Item>'MamlToFlowDocumentConverter.ColorizeCode(string, string, bool, Paragraph)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="166" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#ColorizerFlowDocumentTemplate">
+            <Messages>
+             <Message Id="Colorizer" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2013-10-03 21:40:41Z">
+              <Issue Name="Member">
+               <Item>Colorizer</Item>
+               <Item>'MamlToFlowDocumentConverter.ColorizerFlowDocumentTemplate'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="168" />
                </User>
               </Notes>
              </Message>
@@ -5497,6 +5532,12 @@
               </Issue>
               <Issue Name="Parameter">
                <Item>'target'</Item>
+               <Item>'RadioButton'</Item>
+               <Item>'EntityReferencesControl.IComponentConnector.Connect(int, object)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'target'</Item>
                <Item>'StackPanel'</Item>
                <Item>'EntityReferencesControl.IComponentConnector.Connect(int, object)'</Item>
                <Item>castclass</Item>
@@ -6383,6 +6424,21 @@
          </Type>
          <Type Name="TopicPreviewerControl">
           <Members>
+           <Member Name="#.ctor()">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2013-10-03 21:40:41Z">
+              <Issue>
+               <Item>'TopicPreviewerControl.TopicPreviewerControl()'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="166" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
            <Member Name="#btnBrowseBack">
             <Messages>
              <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="Excluded" Created="2012-11-18 23:04:29Z">
@@ -6467,6 +6523,21 @@
              </Message>
             </Messages>
            </Member>
+           <Member Name="#CopyCode(System.Windows.Documents.Hyperlink)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2013-10-03 21:40:41Z">
+              <Issue>
+               <Item>'TopicPreviewerControl.CopyCode(Hyperlink)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="166" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
            <Member Name="#fdViewer_LinkClicked(System.Object,System.Windows.RoutedEventArgs)">
             <Messages>
              <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2012-11-18 23:04:29Z">
@@ -6474,19 +6545,8 @@
                <Item>'TopicPreviewerControl.fdViewer_LinkClicked(object, RoutedEventArgs)'</Item>
                <Item>'Exception'</Item>
               </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="148" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#LoadLanguageTitles()">
-            <Messages>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2012-11-18 23:04:29Z">
               <Issue>
-               <Item>'TopicPreviewerControl.LoadLanguageTitles()'</Item>
+               <Item>'TopicPreviewerControl.fdViewer_LinkClicked(object, RoutedEventArgs)'</Item>
                <Item>'Exception'</Item>
               </Issue>
               <Notes>
@@ -6515,6 +6575,21 @@
               <Notes>
                <User Name="EWOODRUFF">
                 <Note Id="148" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#SetImportedCodeBasePath()">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2013-10-03 21:40:41Z">
+              <Issue>
+               <Item>'TopicPreviewerControl.SetImportedCodeBasePath()'</Item>
+               <Item>'object'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="52" />
                </User>
               </Notes>
              </Message>
@@ -6824,6 +6899,21 @@
              </Message>
             </Messages>
            </Member>
+           <Member Name="#MainForm_Deactivate(System.Object,System.EventArgs)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2013-10-03 21:40:41Z">
+              <Issue>
+               <Item>'MainForm.MainForm_Deactivate(object, EventArgs)'</Item>
+               <Item>'object'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="165" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
            <Member Name="#MainForm_Load(System.Object,System.EventArgs)">
             <Messages>
              <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2008-09-27 02:21:01Z">
@@ -6997,6 +7087,10 @@
                <Item>'MainForm.miViewBuiltHelpFile_Click(object, EventArgs)'</Item>
                <Item>'Exception'</Item>
               </Issue>
+              <Issue>
+               <Item>'MainForm.miViewBuiltHelpFile_Click(object, EventArgs)'</Item>
+               <Item>'object'</Item>
+              </Issue>
               <Notes>
                <User Name="EWOODRUFF">
                 <Note Id="106" />
@@ -7062,6 +7156,40 @@
               <Notes>
                <User Name="EWOODRUFF">
                 <Note Id="116" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="UserPreferencesDlg">
+          <Members>
+           <Member Name="#btnRemoveWord_Click(System.Object,System.EventArgs)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2013-10-03 21:40:41Z">
+              <Issue>
+               <Item>'UserPreferencesDlg.btnRemoveWord_Click(object, EventArgs)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="166" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#cboDefaultLanguage_SelectedIndexChanged(System.Object,System.EventArgs)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2013-10-03 21:40:41Z">
+              <Issue>
+               <Item>'UserPreferencesDlg.cboDefaultLanguage_SelectedIndexChanged(object, EventArgs)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="166" />
                </User>
               </Notes>
              </Message>
@@ -7350,6 +7478,10 @@
                <Item>'ProjectExplorerWindow.CreateFileEditor(string, FileItem)'</Item>
                <Item>'Exception'</Item>
               </Issue>
+              <Issue>
+               <Item>'ProjectExplorerWindow.CreateFileEditor(string, FileItem)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
               <Notes>
                <User Name="EWOODRUFF">
                 <Note Id="74" />
@@ -7359,7 +7491,7 @@
              <Message TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308" Status="Excluded" Created="2011-03-07 01:02:32Z">
               <Issue Name="ToUpperInvariant">
                <Item>'ProjectExplorerWindow.CreateFileEditor(string, FileItem)'</Item>
-               <Item>'string.ToLower(CultureInfo)'</Item>
+               <Item>'string.ToLowerInvariant()'</Item>
               </Issue>
               <Notes>
                <User Name="EWOODRUFF">
@@ -7404,7 +7536,7 @@
              <Message TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308" Status="Excluded" Created="2008-09-27 02:21:01Z">
               <Issue Name="ToUpperInvariant">
                <Item>'ProjectExplorerWindow.miAddDocSource_Click(object, EventArgs)'</Item>
-               <Item>'string.ToLower(CultureInfo)'</Item>
+               <Item>'string.ToLowerInvariant()'</Item>
               </Issue>
               <Notes>
                <User Name="EWOODRUFF">
@@ -7460,7 +7592,7 @@
              <Message TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308" Status="Excluded" Created="2008-09-27 02:21:01Z">
               <Issue Name="ToUpperInvariant">
                <Item>'ProjectExplorerWindow.miAddReference_Click(object, EventArgs)'</Item>
-               <Item>'string.ToLower(CultureInfo)'</Item>
+               <Item>'string.ToLowerInvariant()'</Item>
               </Issue>
               <Notes>
                <User Name="EWOODRUFF">
@@ -7500,6 +7632,21 @@
              </Message>
             </Messages>
            </Member>
+           <Member Name="#miOpenWithTextEditor_Click(System.Object,System.EventArgs)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2013-10-03 21:40:41Z">
+              <Issue>
+               <Item>'ProjectExplorerWindow.miOpenWithTextEditor_Click(object, EventArgs)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="166" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
            <Member Name="#miPaste_Click(System.Object,System.EventArgs)">
             <Messages>
              <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2008-09-27 02:21:01Z">
@@ -7525,6 +7672,21 @@
               <Notes>
                <User Name="EWOODRUFF">
                 <Note Id="106" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#ShowOpenWithTextEditor(System.String)">
+            <Messages>
+             <Message TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308" Status="Excluded" Created="2013-10-03 21:40:41Z">
+              <Issue Name="ToUpperInvariant">
+               <Item>'ProjectExplorerWindow.ShowOpenWithTextEditor(string)'</Item>
+               <Item>'string.ToLowerInvariant()'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="171" />
                </User>
               </Notes>
              </Message>
@@ -7634,6 +7796,36 @@
            </Member>
           </Members>
          </Type>
+         <Type Name="SpellCheckWindow">
+          <Members>
+           <Member Name="#SpellCheckCurrentDocument()">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2013-10-03 21:40:41Z">
+              <Issue>
+               <Item>'SpellCheckWindow.SpellCheckCurrentDocument()'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="166" />
+               </User>
+              </Notes>
+             </Message>
+             <Message TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308" Status="Excluded" Created="2013-10-03 21:40:41Z">
+              <Issue Name="ToUpperInvariant">
+               <Item>'SpellCheckWindow.SpellCheckCurrentDocument()'</Item>
+               <Item>'string.ToLowerInvariant()'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="171" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
          <Type Name="TokenEditorWindow">
           <Members>
            <Member Name="#Save()">
@@ -7696,6 +7888,72 @@
              </Message>
             </Messages>
            </Member>
+           <Member Name="#GetAllText()">
+            <Messages>
+             <Message TypeName="UsePropertiesWhereAppropriate" Category="Microsoft.Design" CheckId="CA1024" Status="Excluded" Created="2013-10-03 21:40:41Z">
+              <Issue Certainty="50">
+               <Item>'TopicEditorWindow.GetAllText()'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="176" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#MoveToPositionAndHighlightText(System.Drawing.Point,System.Int32)">
+            <Messages>
+             <Message Id="p" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2013-10-03 21:40:41Z">
+              <Issue Name="MemberParameterMoreMeaningfulName">
+               <Item>'TopicEditorWindow.MoveToPositionAndHighlightText(Point, int)'</Item>
+               <Item>'p'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="168" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#ReplaceTextAt(System.Drawing.Point,System.Int32,System.String)">
+            <Messages>
+             <Message Id="p" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2013-10-03 21:40:41Z">
+              <Issue Name="MemberParameterMoreMeaningfulName">
+               <Item>'TopicEditorWindow.ReplaceTextAt(Point, int, string)'</Item>
+               <Item>'p'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="168" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="length+1" TypeName="OperationsShouldNotOverflow" Category="Microsoft.Usage" CheckId="CA2233" Status="Excluded" Created="2013-10-03 21:40:41Z">
+              <Issue>
+               <Item>length+1</Item>
+               <Item>'TopicEditorWindow.ReplaceTextAt(Point, int, string)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="172" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="length-1" TypeName="OperationsShouldNotOverflow" Category="Microsoft.Usage" CheckId="CA2233" Status="Excluded" Created="2013-10-03 21:40:41Z">
+              <Issue>
+               <Item>length-1</Item>
+               <Item>'TopicEditorWindow.ReplaceTextAt(Point, int, string)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="172" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
            <Member Name="#Save()">
             <Messages>
              <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2008-09-27 02:21:01Z">
@@ -7706,6 +7964,262 @@
               <Notes>
                <User Name="EWOODRUFF">
                 <Note Id="106" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+       <Namespace Name="SandcastleBuilder.Gui.Spelling">
+        <Types>
+         <Type Name="FileSpellChecker">
+          <Members>
+           <Member Name="#SpellCheckPlainTextFile(System.String)">
+            <Messages>
+             <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Created="2013-10-03 21:40:41Z">
+              <Issue>
+               <Item>'FileSpellChecker.SpellCheckPlainTextFile(string)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#SpellCheckXmlFile(System.String)">
+            <Messages>
+             <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Created="2013-10-03 21:40:41Z">
+              <Issue>
+               <Item>'FileSpellChecker.SpellCheckXmlFile(string)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#SpellCheckXmlReader(System.Xml.XmlReader)">
+            <Messages>
+             <Message TypeName="DoNotCastUnnecessarily" Category="Microsoft.Performance" CheckId="CA1800" Created="2013-10-03 21:40:41Z">
+              <Issue Name="Parameter">
+               <Item>'reader'</Item>
+               <Item>'IXmlLineInfo'</Item>
+               <Item>'FileSpellChecker.SpellCheckXmlReader(XmlReader)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'reader'</Item>
+               <Item>'IXmlLineInfo'</Item>
+               <Item>'FileSpellChecker.SpellCheckXmlReader(XmlReader)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'reader'</Item>
+               <Item>'IXmlLineInfo'</Item>
+               <Item>'FileSpellChecker.SpellCheckXmlReader(XmlReader)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'reader'</Item>
+               <Item>'IXmlLineInfo'</Item>
+               <Item>'FileSpellChecker.SpellCheckXmlReader(XmlReader)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'reader'</Item>
+               <Item>'IXmlLineInfo'</Item>
+               <Item>'FileSpellChecker.SpellCheckXmlReader(XmlReader)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'reader'</Item>
+               <Item>'IXmlLineInfo'</Item>
+               <Item>'FileSpellChecker.SpellCheckXmlReader(XmlReader)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'reader'</Item>
+               <Item>'IXmlLineInfo'</Item>
+               <Item>'FileSpellChecker.SpellCheckXmlReader(XmlReader)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="GlobalDictionary">
+          <Members>
+           <Member Name="#.ctor(System.Globalization.CultureInfo,NHunspell.SpellFactory)">
+            <Messages>
+             <Message Id="SandcastleBuilder.Gui.Spelling.GlobalDictionary.LoadIgnoredWordsFile" TypeName="SpecifyCultureInfo" Category="Microsoft.Globalization" CheckId="CA1304" Status="Excluded" Created="2013-10-03 21:40:41Z">
+              <Issue>
+               <Item>'GlobalDictionary.LoadIgnoredWordsFile()'</Item>
+               <Item>'GlobalDictionary.GlobalDictionary(CultureInfo, SpellFactory)'</Item>
+               <Item>'GlobalDictionary.LoadIgnoredWordsFile(CultureInfo)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="174" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="System.Collections.Generic.HashSet`1&lt;System.String&gt;.#ctor(System.Collections.Generic.IEqualityComparer`1&lt;System.String&gt;)" TypeName="UseOrdinalStringComparison" Category="Microsoft.Globalization" CheckId="CA1309" Status="Excluded" Created="2013-10-03 21:40:41Z">
+              <Issue Name="StringComparer">
+               <Item>'GlobalDictionary.GlobalDictionary(CultureInfo, SpellFactory)'</Item>
+               <Item>StringComparer.InvariantCultureIgnoreCase</Item>
+               <Item>'HashSet&lt;string&gt;.HashSet(IEqualityComparer&lt;string&gt;)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="175" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#CreateGlobalDictionary(System.Globalization.CultureInfo)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2013-10-03 21:40:41Z">
+              <Issue>
+               <Item>'GlobalDictionary.CreateGlobalDictionary(CultureInfo)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="161" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#IsSpelledCorrectly(System.String)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2013-10-03 21:40:41Z">
+              <Issue>
+               <Item>'GlobalDictionary.IsSpelledCorrectly(string)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="114" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#LoadIgnoredWordsFile()">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2013-10-03 21:40:41Z">
+              <Issue>
+               <Item>'GlobalDictionary.LoadIgnoredWordsFile()'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="86" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#LoadIgnoredWordsFile(System.Globalization.CultureInfo)">
+            <Messages>
+             <Message Id="SandcastleBuilder.Gui.Spelling.GlobalDictionary.LoadIgnoredWordsFile" TypeName="SpecifyCultureInfo" Category="Microsoft.Globalization" CheckId="CA1304" Status="Excluded" Created="2013-10-03 21:40:41Z">
+              <Issue>
+               <Item>'GlobalDictionary.LoadIgnoredWordsFile()'</Item>
+               <Item>'GlobalDictionary.LoadIgnoredWordsFile(CultureInfo)'</Item>
+               <Item>'GlobalDictionary.LoadIgnoredWordsFile(CultureInfo)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="174" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#ReplaceAllOccurrences(System.String,System.String)">
+            <Messages>
+             <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Created="2013-10-03 21:40:41Z">
+              <Issue>
+               <Item>'GlobalDictionary.ReplaceAllOccurrences(string, string)'</Item>
+              </Issue>
+             </Message>
+             <Message TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Created="2013-10-03 21:40:41Z" FixCategory="NonBreaking">
+              <Issue>
+               <Item>'GlobalDictionary.ReplaceAllOccurrences(string, string)'</Item>
+              </Issue>
+             </Message>
+             <Message Id="replacement" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Created="2013-10-03 21:40:41Z" FixCategory="NonBreaking">
+              <Issue>
+               <Item>'replacement'</Item>
+               <Item>'GlobalDictionary.ReplaceAllOccurrences(string, string)'</Item>
+              </Issue>
+             </Message>
+             <Message Id="word" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Created="2013-10-03 21:40:41Z" FixCategory="NonBreaking">
+              <Issue>
+               <Item>'word'</Item>
+               <Item>'GlobalDictionary.ReplaceAllOccurrences(string, string)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#SuggestCorrections(System.String)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2013-10-03 21:40:41Z">
+              <Issue>
+               <Item>'GlobalDictionary.SuggestCorrections(string)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="162" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="SpellCheckerConfiguration">
+          <Members>
+           <Member Name="#.cctor()">
+            <Messages>
+             <Message TypeName="InitializeReferenceTypeStaticFieldsInline" Category="Microsoft.Performance" CheckId="CA1810" Status="Excluded" Created="2013-10-03 21:40:41Z">
+              <Issue>
+               <Item>'SpellCheckerConfiguration'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="169" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#LoadConfiguration()">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2013-10-03 21:40:41Z">
+              <Issue>
+               <Item>'SpellCheckerConfiguration.LoadConfiguration()'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="163" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#SaveConfiguration()">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2013-10-03 21:40:41Z">
+              <Issue>
+               <Item>'SpellCheckerConfiguration.SaveConfiguration()'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="164" />
                </User>
               </Notes>
              </Message>
@@ -7740,6 +8254,10 @@
               <Issue>
                <Item>'LaunchMSHelpViewerDlg.cboHelpViewerVersion_SelectedIndexChanged(object, EventArgs)'</Item>
                <Item>'Exception'</Item>
+              </Issue>
+              <Issue>
+               <Item>'LaunchMSHelpViewerDlg.cboHelpViewerVersion_SelectedIndexChanged(object, EventArgs)'</Item>
+               <Item>'object'</Item>
               </Issue>
               <Notes>
                <User Name="EWOODRUFF">
@@ -8194,24 +8712,24 @@
          </Type>
          <Type Name="BindingRedirectSettings">
           <Members>
-           <Member Name="#ToXml(System.Xml.XmlDocument,System.Xml.XmlNode)">
+           <Member Name="#ToXml(System.Xml.XmlDocument,System.Xml.XmlNode,System.Boolean)">
             <Messages>
-             <Message Id="System.Xml.XmlNode" TypeName="MembersShouldNotExposeCertainConcreteTypes" Category="Microsoft.Design" CheckId="CA1059" Status="Excluded" Created="2008-11-19 16:38:33Z">
+             <Message Id="System.Xml.XmlNode" TypeName="MembersShouldNotExposeCertainConcreteTypes" Category="Microsoft.Design" CheckId="CA1059" Status="Excluded" Created="2013-10-03 21:40:41Z">
               <Issue Name="Xml">
-               <Item>'BindingRedirectSettings.ToXml(XmlDocument, XmlNode)'</Item>
+               <Item>'BindingRedirectSettings.ToXml(XmlDocument, XmlNode, bool)'</Item>
                <Item>'XmlDocument'</Item>
               </Issue>
               <Issue Name="Xml">
-               <Item>'BindingRedirectSettings.ToXml(XmlDocument, XmlNode)'</Item>
+               <Item>'BindingRedirectSettings.ToXml(XmlDocument, XmlNode, bool)'</Item>
                <Item>'XmlNode'</Item>
               </Issue>
               <Issue Name="Xml">
-               <Item>'BindingRedirectSettings.ToXml(XmlDocument, XmlNode)'</Item>
+               <Item>'BindingRedirectSettings.ToXml(XmlDocument, XmlNode, bool)'</Item>
                <Item>'XmlNode'</Item>
               </Issue>
               <Notes>
                <User Name="EWOODRUFF">
-                <Note Id="30" />
+                <Note Id="170" />
                </User>
               </Notes>
              </Message>
@@ -8221,20 +8739,20 @@
          </Type>
          <Type Name="BindingRedirectSettingsCollection">
           <Members>
-           <Member Name="#ToXml(System.Xml.XmlDocument,System.Xml.XmlNode)">
+           <Member Name="#ToXml(System.Xml.XmlDocument,System.Xml.XmlNode,System.Boolean)">
             <Messages>
-             <Message Id="System.Xml.XmlNode" TypeName="MembersShouldNotExposeCertainConcreteTypes" Category="Microsoft.Design" CheckId="CA1059" Status="Excluded" Created="2008-11-19 16:38:33Z">
+             <Message Id="System.Xml.XmlNode" TypeName="MembersShouldNotExposeCertainConcreteTypes" Category="Microsoft.Design" CheckId="CA1059" Status="Excluded" Created="2013-10-03 21:40:41Z">
               <Issue Name="Xml">
-               <Item>'BindingRedirectSettingsCollection.ToXml(XmlDocument, XmlNode)'</Item>
+               <Item>'BindingRedirectSettingsCollection.ToXml(XmlDocument, XmlNode, bool)'</Item>
                <Item>'XmlDocument'</Item>
               </Issue>
               <Issue Name="Xml">
-               <Item>'BindingRedirectSettingsCollection.ToXml(XmlDocument, XmlNode)'</Item>
+               <Item>'BindingRedirectSettingsCollection.ToXml(XmlDocument, XmlNode, bool)'</Item>
                <Item>'XmlNode'</Item>
               </Issue>
               <Notes>
                <User Name="EWOODRUFF">
-                <Note Id="30" />
+                <Note Id="170" />
                </User>
               </Notes>
              </Message>
@@ -9023,7 +9541,6 @@
     <Note Id="27" Modified="2011-01-10 02:12:40Z">The indicated members are initialized and disposed of within try/catch/finally blocks as needed so there is no need to implement IDisposable.</Note>
     <Note Id="28" Modified="2006-09-29 21:44:00Z">They are fine as they are</Note>
     <Note Id="29" Modified="2008-09-19 23:52:09Z">These are the MSBuild task interface properties and must remain instance-based.</Note>
-    <Note Id="30" Modified="2008-11-19 16:43:29Z">We're only dealing with XML nodes here so it's okay</Note>
     <Note Id="31" Modified="2008-02-20 17:09:38Z">Okay as is</Note>
     <Note Id="32" Modified="2008-09-20 02:07:56Z">I like it the way it is</Note>
     <Note Id="33" Modified="2006-12-04 21:57:14Z">The error is being reported</Note>
@@ -9045,6 +9562,7 @@
     <Note Id="49" Modified="2008-02-29 20:38:41Z">Okay as is</Note>
     <Note Id="50" Modified="2011-02-28 00:42:44Z">This should only receive XElement objects.</Note>
     <Note Id="51" Modified="2011-02-28 01:05:23Z">Okay as is</Note>
+    <Note Id="52" Modified="2013-10-03 21:46:01Z">The exception is intentionally ignored.</Note>
     <Note Id="53" Modified="2008-09-20 02:53:16Z">Lowercase is preferred</Note>
     <Note Id="54" Modified="2008-09-20 02:53:55Z">Lowercase is preferred</Note>
     <Note Id="55" Modified="2008-09-20 02:55:19Z">Lowercase is preferred</Note>
@@ -9078,6 +9596,7 @@
     <Note Id="83" Modified="2008-03-24 05:13:47Z">Okay as is</Note>
     <Note Id="84" Modified="2008-09-20 03:09:01Z">Lowercase is preferred</Note>
     <Note Id="85" Modified="2008-03-24 05:21:26Z">Allow in this case to avoid any potential problems with null values.</Note>
+    <Note Id="86" Modified="2013-10-03 21:46:37Z">The exception is intentionally ignored.</Note>
     <Note Id="87" Modified="2008-04-01 21:23:02Z">The error is reported</Note>
     <Note Id="88" Modified="2008-04-01 21:24:09Z">Okay as is.  Spelling out "Attribute" gives the wrong impression about what it is for.  It's not an attribute class in the normal sense.</Note>
     <Note Id="89" Modified="2008-09-20 03:18:12Z">Lowercase is preferred</Note>
@@ -9105,6 +9624,7 @@
     <Note Id="111" Modified="2008-09-27 02:25:07Z">Okay as is</Note>
     <Note Id="112" Modified="2008-09-27 02:29:07Z">It's only used to store user window placement settings</Note>
     <Note Id="113" Modified="2008-05-08 20:08:51Z">It's named after the document type</Note>
+    <Note Id="114" Modified="2013-10-03 21:46:46Z">The exception is intentionally ignored.</Note>
     <Note Id="115" Modified="2008-05-28 16:14:17Z">It's a reference to the topic's parent.</Note>
     <Note Id="116" Modified="2008-09-27 02:30:17Z">No security issues found</Note>
     <Note Id="117" Modified="2008-05-28 16:15:28Z">The error is reported</Note>
@@ -9151,6 +9671,22 @@
     <Note Id="158" Modified="2012-11-18 23:25:04Z">Lowercase is required in this case</Note>
     <Note Id="159" Modified="2012-11-18 23:28:15Z">No security issues found</Note>
     <Note Id="160" Modified="2012-11-18 23:29:04Z">The parameter is used when compiled for use in the VSPackage.</Note>
+    <Note Id="161" Modified="2013-10-03 21:47:08Z">The exception is intentionally ignored.</Note>
+    <Note Id="162" Modified="2013-10-03 21:47:18Z">The exception is intentionally ignored.</Note>
+    <Note Id="163" Modified="2013-10-03 21:47:47Z">The exception is intentionally ignored.</Note>
+    <Note Id="164" Modified="2013-10-03 21:47:59Z">The exception is intentionally ignored.</Note>
+    <Note Id="165" Modified="2013-10-03 21:48:34Z">The exception is intentionally ignored.</Note>
+    <Note Id="166" Modified="2013-10-03 21:48:42Z">The error is reported</Note>
+    <Note Id="167" Modified="2013-10-03 21:49:02Z">Okay as is</Note>
+    <Note Id="168" Modified="2013-10-03 21:49:44Z">Okay as is</Note>
+    <Note Id="169" Modified="2013-10-03 21:50:29Z">This loads a configuration file if one exists and uses default if there isn't one.</Note>
+    <Note Id="170" Modified="2013-10-03 21:54:08Z">Okay as is</Note>
+    <Note Id="171" Modified="2013-10-03 22:05:09Z">Lowercase is preferred.</Note>
+    <Note Id="172" Modified="2013-10-03 22:08:13Z">There doesn't appear to be a chance of an overflow.</Note>
+    <Note Id="173" Modified="2013-10-03 22:17:59Z">I'm going to ignore this one for now.</Note>
+    <Note Id="174" Modified="2013-10-03 22:22:52Z">The correct culture will be used since it uses the filename determined in the constructor.</Note>
+    <Note Id="175" Modified="2013-10-03 22:27:12Z">I think the chosen comparer is correct in this case.</Note>
+    <Note Id="176" Modified="2013-10-03 22:27:28Z">Okay as is.</Note>
    </User>
   </Notes>
   <Rules>
@@ -9222,6 +9758,7 @@
    <Rule TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704">
     <Resolution Name="Member">Correct the spelling of '{0}' in member name {1} or remove it entirely if it represents any sort of Hungarian notation.</Resolution>
     <Resolution Name="MemberParameter">In method {0}, correct the spelling of '{1}' in parameter name {2} or remove it entirely if it represents any sort of Hungarian notation.</Resolution>
+    <Resolution Name="MemberParameterMoreMeaningfulName">In method {0}, consider providing a more meaningful name than parameter name {1}.</Resolution>
     <Resolution Name="Namespace">Correct the spelling of '{0}' in namespace name '{1}'.</Resolution>
     <Resolution Name="Parameter" />
     <Resolution Name="Type">Correct the spelling of '{0}' in type name {1}.</Resolution>
@@ -9237,6 +9774,9 @@
    </Rule>
    <Rule TypeName="ImplementStandardExceptionConstructors" Category="Microsoft.Design" CheckId="CA1032">
     <Resolution Name="MissingConstructor">Add the following constructor to {0}: {1}.</Resolution>
+   </Rule>
+   <Rule TypeName="InitializeReferenceTypeStaticFieldsInline" Category="Microsoft.Performance" CheckId="CA1810">
+    <Resolution Name="Default">Initialize all static fields in {0} when those fields are declared and remove the explicit static constructor.</Resolution>
    </Rule>
    <Rule TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033">
     <Resolution Name="Default">Make {0} sealed (a breaking change if this class has previously shipped), implement the method non-explicitly, or implement a new method that exposes the functionality of {1} and is visible to derived classes.</Resolution>
@@ -9255,6 +9795,9 @@
    </Rule>
    <Rule TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308">
     <Resolution Name="ToUpperInvariant">In method {0}, replace the call to {1} with String.ToUpperInvariant().</Resolution>
+   </Rule>
+   <Rule TypeName="OperationsShouldNotOverflow" Category="Microsoft.Usage" CheckId="CA2233">
+    <Resolution Name="Default">Correct the potential overflow in the operation '{0}' in {1}.</Resolution>
    </Rule>
    <Rule TypeName="OverrideEqualsAndOperatorEqualsOnValueTypes" Category="Microsoft.Performance" CheckId="CA1815">
     <Resolution Name="Equals">{0} should override Equals.</Resolution>
@@ -9290,6 +9833,9 @@
    </Rule>
    <Rule TypeName="TypesThatOwnDisposableFieldsShouldBeDisposable" Category="Microsoft.Design" CheckId="CA1001">
     <Resolution Name="DependsOnFix">Implement IDisposable on {0} because it creates members of the following IDisposable types: {1}. If {0} has previously shipped, adding new members that implement IDisposable to this type is considered a breaking change to existing consumers.</Resolution>
+   </Rule>
+   <Rule TypeName="UseOrdinalStringComparison" Category="Microsoft.Globalization" CheckId="CA1309">
+    <Resolution Name="StringComparer">{0} passes '{1}' as the 'StringComparer' parameter to {2}. To perform a non-linguistic comparison, specify 'StringComparer.Ordinal' or 'StringComparer.OrdinalIgnoreCase' instead.</Resolution>
    </Rule>
    <Rule TypeName="UsePreferredTerms" Category="Microsoft.Naming" CheckId="CA1726">
     <Resolution Name="MemberNoAlternate">Replace the term '{0}' in member name {1} with an appropriate alternate or remove it entirely.</Resolution>

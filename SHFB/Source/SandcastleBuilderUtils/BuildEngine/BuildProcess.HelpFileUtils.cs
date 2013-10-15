@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.HelpFileUtils.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/22/2013
+// Updated : 10/02/2013
 // Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -30,16 +30,15 @@
 //                           all formats.
 // 1.9.4.0  02/19/2012  EFW  Added support for PHP website files.  Merged changes for VS2010 style from Don Fehr.
 // 1.9.6.0  10/25/2012  EFW  Updated to use the new presentation style definition files
-// 1.9.8.0  06/21/2013  EFW  Added support for format-specific help content files
+// 1.9.8.0  06/21/2013  EFW  Added support for format-specific help content files.  Removed
+//                           ModifyHelpTopicFilenames() as naming is now handled entirely by AddFilenames.xsl.
 //===============================================================================================================
 
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.XPath;
 using System.Web;
@@ -53,8 +52,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
     {
         #region Private data members
         //=====================================================================
-
-        private static Regex reInvalidChars = new Regex("[ :.`#<>*?]");
 
         // Branding manifest property constants
         private const string ManifestPropertyHelpOutput = "helpOutput";
@@ -232,8 +229,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
             // Merge the conceptual and API TOCs into one?
             if(conceptualXml != null)
             {
-                // Remove the root content container if present as we don't need
-                // it for the other formats.
+                // Remove the root content container if present as we don't need it for the other formats
                 if((project.HelpFileFormat & HelpFileFormat.MSHelpViewer) != 0 &&
                   !String.IsNullOrEmpty(this.RootContentContainerId))
                 {
@@ -252,8 +248,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 if(String.IsNullOrEmpty(this.ApiTocParentId))
                 {
-                    // If not parented, the API content is placed above or below the conceptual
-                    // content based on the project's ContentPlacement setting.
+                    // If not parented, the API content is placed above or below the conceptual content based on
+                    // the project's ContentPlacement setting.
                     if(project.ContentPlacement == ContentPlacement.AboveNamespaces)
                     {
                         docElement = conceptualXml.DocumentElement;
@@ -306,8 +302,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     tocXml = conceptualXml;
                 }
 
-                // Fix up empty container nodes by removing the file attribute and setting
-                // the ID attribute to the title attribute value.
+                // Fix up empty container nodes by removing the file attribute and setting the ID attribute to
+                // the title attribute value.
                 foreach(XmlNode n in tocXml.SelectNodes("//topic[@title]"))
                 {
                     attr = n.Attributes["file"];
@@ -324,8 +320,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 wasModified = true;
             }
 
-            // Determine the default topic for Help 1 and website output if one
-            // was not specified in a site map or content layout file.
+            // Determine the default topic for Help 1 and website output if one was not specified in a site map
+            // or content layout file.
             if(defaultTopic == null)
             {
                 node = tocXml.SelectSingleNode("topics/topic");
@@ -335,8 +331,14 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     if(node.Attributes["file"] != null)
                         defaultTopic = node.Attributes["file"].Value + ".htm?";
                     else
+                    {
+                        // Find the first node with a topic file, it may be nested
+                        while(node.FirstChild != null && node.FirstChild.Attributes["file"] == null)
+                            node = node.FirstChild;
+
                         if(node.FirstChild != null && node.FirstChild.Attributes["file"] != null)
                             defaultTopic = node.FirstChild.Attributes["file"].Value + ".htm?";
+                    }
 
                     if(defaultTopic != null)
                     {
@@ -779,112 +781,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         "href=\"{0}\" target=\"TopicContent\">{1}</a>\r\n" +
                         "</div>\r\n", url, HttpUtility.HtmlEncode(title));
                 }
-        }
-
-        /// <summary>
-        /// This is used to change the filenames assigned to each member in the reflection information file
-        /// </summary>
-        private void ModifyHelpTopicFilenames()
-        {
-            XmlNodeList elements;
-            string originalName, memberName, newName;
-            bool duplicate, overloadBugWorkaround;
-            int idx;
-
-            this.ReportProgress(BuildStep.ModifyHelpTopicFilenames,
-                "Modifying help topic filenames in reflection information file");
-
-            if(this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
-                return;
-
-            // It's possible a plug-in might want to change the naming method
-            // so run them first.
-            this.ExecutePlugIns(ExecutionBehaviors.Before);
-
-            if(project.NamingMethod == NamingMethod.Guid)
-            {
-                this.ReportProgress("    No changes required");
-
-                // We still run the After behavior as some plug-ins may still
-                // need to do something.
-                this.ExecutePlugIns(ExecutionBehaviors.After);
-                return;
-            }
-
-            // The reflection file can contain tens of thousands of entries for large assemblies.
-            // HashSet<T> is much faster at lookups than List<T>.
-            HashSet<string> filenames = new HashSet<string>();
-
-            try
-            {
-                // Find the API node list
-                elements = apisNode.SelectNodes("api/file");
-
-                foreach(XmlNode file in elements)
-                {
-                    originalName = memberName = file.ParentNode.Attributes["id"].Value;
-
-                    // Remove parameters
-                    idx = memberName.IndexOf('(');
-
-                    if(idx != -1)
-                        memberName = memberName.Substring(0, idx);
-
-                    // Replace invalid filename characters with an underscore
-                    // if member names are used as the filenames.
-                    if(project.NamingMethod == NamingMethod.MemberName)
-                        newName = memberName = reInvalidChars.Replace(memberName, "_");
-                    else
-                        newName = memberName;
-
-                    idx = 0;
-                    overloadBugWorkaround = false;
-
-                    do
-                    {
-                        // Hash codes can be used to shorten extremely long type and member names
-                        if(project.NamingMethod == NamingMethod.HashedMemberName)
-                            newName = String.Format(CultureInfo.InvariantCulture, "{0:X}",
-                                newName.GetHashCode());
-
-                        // Check for a duplicate (i.e. an overloaded member).  These will be made
-                        // unique by adding a counter to the end of the name.
-                        duplicate = filenames.Contains(newName);
-
-                        // VS2005/Hana style bug as of Sept 2007 CTP.  Overloads pages sometimes result
-                        // in a duplicate reflection file entry but we need to ignore it.
-                        if(duplicate && originalName.StartsWith("Overload:", StringComparison.Ordinal))
-                        {
-                            duplicate = false;
-                            overloadBugWorkaround = true;
-                        }
-
-                        if(duplicate)
-                        {
-                            idx++;
-                            newName = String.Format(CultureInfo.InvariantCulture, "{0}_{1}",
-                                memberName, idx);
-                        }
-
-                    } while(duplicate);
-
-                    // Log duplicates that had unique names created
-                    if(idx != 0)
-                        this.ReportProgress("    Unique name {0} generated for {1}", newName, originalName);
-
-                    file.Attributes["name"].Value = newName;
-
-                    if(!overloadBugWorkaround)
-                        filenames.Add(newName);
-                }
-            }
-            catch(Exception ex)
-            {
-                throw new BuilderException("BE0027", "Error modifying help " +
-                    "topic filenames: " + ex.Message, ex);
-            }
-
-            this.ExecutePlugIns(ExecutionBehaviors.After);
         }
 
         /// <summary>

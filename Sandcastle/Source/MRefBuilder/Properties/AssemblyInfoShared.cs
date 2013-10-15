@@ -1,7 +1,7 @@
 //===============================================================================================================
 // System  : Sandcastle Tools
 // File    : AssemblyInfoShared.cs
-// Updated : 03/28/2013
+// Updated : 10/12/2013
 // Note    : Copyright 2006-2013, Microsoft Corporation, All rights reserved
 //
 // Sandcastle tools common assembly attributes.
@@ -48,6 +48,6 @@ using System.Runtime.InteropServices;
 // and plug-in developers to use the same major, minor, and build numbers
 // as the Sandcastle tools to indicate with which version their components are
 // compatible.
-[assembly: AssemblyVersion("2.7.3.0")]
+[assembly: AssemblyVersion("2.7.4.0")]
 
 // See AssemblyInfo.cs for project-specific assembly attributes

@@ -1,43 +1,78 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <topic id="6110ac54-04d8-4624-8a2b-2a58af63c20d" revisionNumber="1">
-  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <introduction>
-      <para>The topics in this section describe the various changes made to the
-Sandcastle Help File Builder for versions 1.0.0.0 through 1.7.0.0 which used
-a different project file format.</para>
-    </introduction>
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>The topics in this section describe the various changes made to the Sandcastle Help File Builder for
+versions 1.0.0.0 through 1.7.0.0 which used a different project file format.</para>
+		</introduction>
 
-    <section>
-      <title>Version History</title>
-      <content>
-        <para>Select a version below to see a description of its changes.</para>
+		<section>
+			<title>Version History</title>
+			<content>
+				<para>Select a version below to see a description of its changes.</para>
 
-<list class="bullet">
-  <listItem><link xlink:href="a44fe561-efb9-40ac-84eb-b1a00a4a9596" /></listItem>
-  <listItem><link xlink:href="90e889f7-194b-411e-a376-8e0d91b1f6fd" /></listItem>
-  <listItem><link xlink:href="540d2250-8823-4028-b147-98192837002b" /></listItem>
-  <listItem><link xlink:href="f8a3ab8c-1ccb-4108-8953-c613af46ee12" /></listItem>
-  <listItem><link xlink:href="a96e26f7-7a2c-475f-9733-4936609f5791" /></listItem>
-  <listItem><link xlink:href="86677ca7-1132-4718-8bf1-c9bd03377089" /></listItem>
-  <listItem><link xlink:href="658e9623-a4a1-442c-8e50-74cec804784e" /></listItem>
-  <listItem><link xlink:href="c7cc3fb1-60cf-4cfe-9728-eb571524b4c7" /></listItem>
-  <listItem><link xlink:href="b3d3c9d4-34ff-4f48-b6e5-98b8095eb347" /></listItem>
-  <listItem><link xlink:href="b6429b69-6364-4efe-9306-9b647e9e26b0" /></listItem>
-  <listItem><link xlink:href="e95d1fff-4a68-4e78-b854-270993088f66" /></listItem>
-  <listItem><link xlink:href="bd8fb1cd-b913-4cb4-afb4-8cf2260cf634" /></listItem>
-  <listItem><link xlink:href="c3177693-041c-455e-9c13-08d473006f14" /></listItem>
-  <listItem><link xlink:href="b63812cf-9caa-4e79-9c68-661d0ef9f660" /></listItem>
-  <listItem><link xlink:href="7421d29a-7df1-4e59-b6b6-ad24904cca17" /></listItem>
-  <listItem><link xlink:href="21cf9c3e-ae15-44e0-a68e-7afe730097c3" /></listItem>
-  <listItem><link xlink:href="b4dafbd0-e5fa-449e-a16d-e832e68d7bc6" /></listItem>
-  <listItem><link xlink:href="936bc328-bcbf-4e5b-91fd-8d81bdf9e928" /></listItem>
-</list>
+				<list class="bullet">
+					<listItem>
+						<para><link xlink:href="a44fe561-efb9-40ac-84eb-b1a00a4a9596" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="90e889f7-194b-411e-a376-8e0d91b1f6fd" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="540d2250-8823-4028-b147-98192837002b" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="f8a3ab8c-1ccb-4108-8953-c613af46ee12" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="a96e26f7-7a2c-475f-9733-4936609f5791" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="86677ca7-1132-4718-8bf1-c9bd03377089" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="658e9623-a4a1-442c-8e50-74cec804784e" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="c7cc3fb1-60cf-4cfe-9728-eb571524b4c7" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="b3d3c9d4-34ff-4f48-b6e5-98b8095eb347" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="b6429b69-6364-4efe-9306-9b647e9e26b0" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="e95d1fff-4a68-4e78-b854-270993088f66" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="bd8fb1cd-b913-4cb4-afb4-8cf2260cf634" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="c3177693-041c-455e-9c13-08d473006f14" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="b63812cf-9caa-4e79-9c68-661d0ef9f660" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="7421d29a-7df1-4e59-b6b6-ad24904cca17" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="21cf9c3e-ae15-44e0-a68e-7afe730097c3" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="b4dafbd0-e5fa-449e-a16d-e832e68d7bc6" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="936bc328-bcbf-4e5b-91fd-8d81bdf9e928" /></para>
+					</listItem>
+				</list>
 
-      </content>
-    </section>
+			</content>
+		</section>
 
-    <relatedTopics>
-    <link xlink:href="078cc1c7-7995-431e-bf9c-8813becbe8df" />
-    </relatedTopics>
-  </developerConceptualDocument>
+		<relatedTopics>
+			<link xlink:href="078cc1c7-7995-431e-bf9c-8813becbe8df" />
+		</relatedTopics>
+	</developerConceptualDocument>
 </topic>

@@ -518,7 +518,7 @@ namespace SandcastleBuilder.Utils.MSBuild
         /// <summary>
         /// Cancel the build
         /// </summary>
-        /// <remarks>The build will be cancelled as soo as the next message arrives from the build process</remarks>
+        /// <remarks>The build will be cancelled as soon as the next message arrives from the build process</remarks>
         public void Cancel()
         {
             buildCancelled = true;

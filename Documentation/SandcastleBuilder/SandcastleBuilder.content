@@ -103,6 +103,21 @@
       <HelpKeywords>
         <HelpKeyword index="K" term="Getting started, user preferences" />
       </HelpKeywords>
+      <Topic id="6a35198a-3713-4eb7-929d-555fddc0ccb6" visible="True" title="General Preferences">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="Getting started, user preferences - general" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="836847bc-d780-468b-ae23-f014f0829a0f" visible="True" title="Spell Checking Options">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="Getting started, user preferences - spell checking" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="2e4f207e-45d1-411b-83b1-24965d8eef2c" visible="True" title="Content File Editors">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="Getting started, user preferences - content file editors" />
+        </HelpKeywords>
+      </Topic>
     </Topic>
     <Topic id="a24489fb-45d6-46f4-9eaa-9a9c4e0919b2" visible="True" title="Special Folder Locations">
       <HelpKeywords>
@@ -613,7 +628,7 @@
       </HelpKeywords>
     </Topic>
   </Topic>
-  <Topic id="8dcbb69b-7a1a-4049-8e6b-2bf344efbbc9" visible="True" isExpanded="true" title="Custom Build Components">
+  <Topic id="8dcbb69b-7a1a-4049-8e6b-2bf344efbbc9" visible="True" title="Custom Build Components">
     <HelpKeywords>
       <HelpKeyword index="K" term="build components, configuring" />
       <HelpKeyword index="K" term="build components, overview" />
@@ -647,7 +662,7 @@
       <HelpKeywords>
         <HelpKeyword index="K" term="build components, data caching" />
       </HelpKeywords>
-      <Topic id="2e8fa0c8-d7ec-4f7e-b42f-ac2718312ffc" visible="True" isSelected="true" title="ESENT Caching Components">
+      <Topic id="2e8fa0c8-d7ec-4f7e-b42f-ac2718312ffc" visible="True" title="ESENT Caching Components">
         <HelpKeywords>
           <HelpKeyword index="K" term="build components, ESENT caching" />
           <HelpKeyword index="K" term="ESentCopyFromIndexComponent, configuration options" />
@@ -680,7 +695,7 @@
       <HelpKeyword index="K" term="error list" />
       <HelpKeyword index="K" term="warning list" />
     </HelpKeywords>
-    <Topic id="b8d73995-2acc-446b-92b7-1ac8884a1424" visible="True" noFile="true" isExpanded="true" title="Build Engine">
+    <Topic id="b8d73995-2acc-446b-92b7-1ac8884a1424" visible="True" noFile="true" title="Build Engine">
       <Topic id="13bf1e14-bf8f-478b-8fe6-932d18922a85" visible="True" title="BE0001: The PresentationStyle property value of 'XXXX' is not recognized">
         <HelpKeywords>
           <HelpKeyword index="K" term="error, BE0001" />
@@ -809,11 +824,6 @@
       <Topic id="e91ccee4-4e65-4e41-9d15-88cc327b370b" visible="True" title="BE0026: Unable to determine default topic in '[tocFile]'.">
         <HelpKeywords>
           <HelpKeyword index="K" term="errors, BE0026" />
-        </HelpKeywords>
-      </Topic>
-      <Topic id="d78a99d7-248c-4711-8967-096b8e936cb4" visible="True" title="BE0027: Error modifying help topic filenames: [error]">
-        <HelpKeywords>
-          <HelpKeyword index="K" term="errors, BE0027" />
         </HelpKeywords>
       </Topic>
       <Topic id="25036a28-bd82-4032-8108-ac614423a2cf" visible="True" title="BE0028: [Plug-in loading error]">
@@ -1374,11 +1384,16 @@
       <HelpKeyword index="K" term="support, donate" />
     </HelpKeywords>
   </Topic>
-  <Topic id="078cc1c7-7995-431e-bf9c-8813becbe8df" visible="True" title="Version History">
+  <Topic id="078cc1c7-7995-431e-bf9c-8813becbe8df" visible="True" isExpanded="true" title="Version History">
     <HelpKeywords>
       <HelpKeyword index="K" term="History" />
       <HelpKeyword index="K" term="Version History" />
     </HelpKeywords>
+    <Topic id="f4c5d176-8da1-4500-b070-e3b1e9e2c65c" visible="True" isSelected="true" title="Version 1.9.8.0">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 1.9.8.0" />
+      </HelpKeywords>
+    </Topic>
     <Topic id="fef9e0ed-864b-42f9-8747-af4d156a7c0e" visible="True" title="Version 1.9.7.0">
       <HelpKeywords>
         <HelpKeyword index="K" term="versions, 1.9.7.0" />
@@ -1399,59 +1414,64 @@
         <HelpKeyword index="K" term="versions, 1.9.4.0" />
       </HelpKeywords>
     </Topic>
-    <Topic id="8c11654c-f6f5-4cd3-acd0-86890ecb242d" visible="True" title="Version 1.9.3.4 (Beta 2)">
+    <Topic id="22c82423-a322-4857-9bf8-6d1f1c2fba68" visible="True" title="Versions 1.8.0.0 through 1.9.3.4">
       <HelpKeywords>
-        <HelpKeyword index="K" term="versions, 1.9.3.4" />
+        <HelpKeyword index="K" term="prior versions, v1.8 to v1.9.3.4" />
       </HelpKeywords>
-    </Topic>
-    <Topic id="54250029-bcfa-4c03-8cf0-b230867a8613" visible="True" title="Version 1.9.3.3 (Beta 1)">
-      <HelpKeywords>
-        <HelpKeyword index="K" term="versions, 1.9.3.3" />
-      </HelpKeywords>
-    </Topic>
-    <Topic id="e6285aea-8caa-4ff3-86d2-d9623dcc8a49" visible="True" title="Version 1.9.3.2 (Alpha 2)">
-      <HelpKeywords>
-        <HelpKeyword index="K" term="versions, 1.9.3.2" />
-      </HelpKeywords>
-    </Topic>
-    <Topic id="798c4fef-9162-4fe6-98ca-02ee4aa7f6bc" visible="True" title="Version 1.9.3.1 (Alpha 1)">
-      <HelpKeywords>
-        <HelpKeyword index="K" term="versions, 1.9.3.1" />
-      </HelpKeywords>
-    </Topic>
-    <Topic id="230a8032-011a-4a61-b2a4-2b644018986c" visible="True" title="Version 1.9.3.0">
-      <HelpKeywords>
-        <HelpKeyword index="K" term="versions, 1.9.3.0" />
-      </HelpKeywords>
-    </Topic>
-    <Topic id="ef1dba5d-bb3b-4d27-9ccf-6f1ec8d1e793" visible="True" title="Version 1.9.1.0">
-      <HelpKeywords>
-        <HelpKeyword index="K" term="versions, 1.9.1.0" />
-      </HelpKeywords>
-    </Topic>
-    <Topic id="2bba4e09-e9bd-4ef4-9bf4-800af246e97d" visible="True" title="Version 1.8.0.3">
-      <HelpKeywords>
-        <HelpKeyword index="K" term="versions, 1.8.0.3" />
-      </HelpKeywords>
-    </Topic>
-    <Topic id="9f1a5c32-7c10-47e1-bbea-319ee0866e3d" visible="True" title="Version 1.8.0.2 (Beta 2)">
-      <HelpKeywords>
-        <HelpKeyword index="K" term="versions, 1.8.0.2" />
-      </HelpKeywords>
-    </Topic>
-    <Topic id="95c85ec6-9f23-426a-b0ad-6b10a0453eaf" visible="True" title="Version 1.8.0.1 (Beta 1)">
-      <HelpKeywords>
-        <HelpKeyword index="K" term="versions, 1.8.0.1" />
-      </HelpKeywords>
-    </Topic>
-    <Topic id="5a484e94-6940-4c97-940c-3f46fb8736d2" visible="True" title="Version 1.8.0.0 (Alpha)">
-      <HelpKeywords>
-        <HelpKeyword index="K" term="versions, 1.8.0.0" />
-      </HelpKeywords>
+      <Topic id="8c11654c-f6f5-4cd3-acd0-86890ecb242d" visible="True" title="Version 1.9.3.4 (Beta 2)">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="versions, 1.9.3.4" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="54250029-bcfa-4c03-8cf0-b230867a8613" visible="True" title="Version 1.9.3.3 (Beta 1)">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="versions, 1.9.3.3" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="e6285aea-8caa-4ff3-86d2-d9623dcc8a49" visible="True" title="Version 1.9.3.2 (Alpha 2)">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="versions, 1.9.3.2" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="798c4fef-9162-4fe6-98ca-02ee4aa7f6bc" visible="True" title="Version 1.9.3.1 (Alpha 1)">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="versions, 1.9.3.1" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="230a8032-011a-4a61-b2a4-2b644018986c" visible="True" title="Version 1.9.3.0">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="versions, 1.9.3.0" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="ef1dba5d-bb3b-4d27-9ccf-6f1ec8d1e793" visible="True" title="Version 1.9.1.0">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="versions, 1.9.1.0" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="2bba4e09-e9bd-4ef4-9bf4-800af246e97d" visible="True" title="Version 1.8.0.3">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="versions, 1.8.0.3" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="9f1a5c32-7c10-47e1-bbea-319ee0866e3d" visible="True" title="Version 1.8.0.2 (Beta 2)">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="versions, 1.8.0.2" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="95c85ec6-9f23-426a-b0ad-6b10a0453eaf" visible="True" title="Version 1.8.0.1 (Beta 1)">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="versions, 1.8.0.1" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="5a484e94-6940-4c97-940c-3f46fb8736d2" visible="True" title="Version 1.8.0.0 (Alpha)">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="versions, 1.8.0.0" />
+        </HelpKeywords>
+      </Topic>
     </Topic>
     <Topic id="6110ac54-04d8-4624-8a2b-2a58af63c20d" visible="True" title="Versions 1.0.0.0 through 1.7.0.0">
       <HelpKeywords>
-        <HelpKeyword index="K" term="prior versions" />
+        <HelpKeyword index="K" term="prior versions, v1.0 to v1.7" />
       </HelpKeywords>
       <Topic id="a44fe561-efb9-40ac-84eb-b1a00a4a9596" visible="True" title="Version 1.7.0.0">
         <HelpKeywords>

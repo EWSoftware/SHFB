@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : MSBuildProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/11/2013
+// Updated : 09/04/2013
 // Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -25,6 +25,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -81,9 +82,37 @@ namespace SandcastleBuilder.Utils.MSBuild
                 if(properties.TryGetValue(ProjectElement.OutDir, out prop))
                 {
                     outputPath = prop.EvaluatedValue;
-
+                  
                     if(outputPath == @".\")
                         outputPath = null;
+                    else
+                    {
+                        // As of .NET 4.5, the GenerateProjectSpecificOutputFolder property can be used to make
+                        // MSBuild set project-specific output folders.  The problem is that it also tries to
+                        // apply that to the SHFB project which masks the output folder of the actual project for
+                        // which we are trying to get the output folder.  Make an assumption here that if the
+                        // folder doesn't exist, we need to look for a project-specific output folder.
+                        if(!Directory.Exists(outputPath))
+                        {
+                            outputPath = outputPath.Substring(0, outputPath.Length - 1);
+
+                            if(outputPath.LastIndexOf('\\') != -1)
+                            {
+                                outputPath = outputPath.Substring(0, outputPath.LastIndexOf('\\'));
+
+                                // The ProjectName property can override the actual project name
+                                if(properties.TryGetValue(ProjectElement.ProjectName, out prop))
+                                    outputPath = Path.Combine(outputPath, prop.EvaluatedValue);
+                                else
+                                    outputPath = Path.Combine(outputPath, Path.GetFileNameWithoutExtension(
+                                        msBuildProject.FullPath));
+
+                                // If still not there, give up and go for the default
+                                if(!Directory.Exists(outputPath))
+                                    outputPath = null;
+                            }
+                        }
+                    }
                 }
 
                 if(String.IsNullOrEmpty(outputPath) && properties.TryGetValue("OutputPath", out prop))
@@ -91,7 +120,11 @@ namespace SandcastleBuilder.Utils.MSBuild
 
                 if(!String.IsNullOrEmpty(outputPath))
                 {
-                    if(properties.TryGetValue("AssemblyName", out prop))
+                    // Give precedence to TargetName as it may differ in C++ projects
+                    if(properties.TryGetValue("TargetName", out prop))
+                        assemblyName = prop.EvaluatedValue;
+
+                    if(String.IsNullOrEmpty(assemblyName) && properties.TryGetValue("AssemblyName", out prop))
                         assemblyName = prop.EvaluatedValue;
 
                     if(properties.TryGetValue("OutputType", out prop))
@@ -404,7 +437,7 @@ namespace SandcastleBuilder.Utils.MSBuild
                         p => p.Name == "GenerateProjectSpecificOutputFolder");
 
                     if(projectSpecificFolder != null && !String.IsNullOrWhiteSpace(projectSpecificFolder.EvaluatedValue) &&
-                      Convert.ToBoolean(projectSpecificFolder.EvaluatedValue))
+                      Convert.ToBoolean(projectSpecificFolder.EvaluatedValue, CultureInfo.InvariantCulture))
                         outDir = Path.Combine(outDir, Path.GetFileNameWithoutExtension(msBuildProject.FullPath));
 
                     msBuildProject.SetGlobalProperty(ProjectElement.OutDir, outDir);

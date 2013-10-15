@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : AdditionalContentOnlyPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/18/2013
+// Updated : 10/02/2013
 // Note    : Copyright 2007-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -144,7 +144,6 @@ namespace SandcastleBuilder.PlugIns
                         new ExecutionPoint(BuildStep.ApplyVisibilityProperties, ExecutionBehaviors.InsteadOf),
                         new ExecutionPoint(BuildStep.GenerateInheritedDocumentation, ExecutionBehaviors.InsteadOf),
                         new ExecutionPoint(BuildStep.TransformReflectionInfo, ExecutionBehaviors.InsteadOf),
-                        new ExecutionPoint(BuildStep.ModifyHelpTopicFilenames, ExecutionBehaviors.InsteadOf),
                         new ExecutionPoint(BuildStep.MergeCustomConfigs, ExecutionBehaviors.After),
                         new ExecutionPoint(BuildStep.BuildReferenceTopics, ExecutionBehaviors.InsteadOf),
                     };

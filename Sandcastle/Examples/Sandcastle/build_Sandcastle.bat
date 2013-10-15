@@ -49,11 +49,11 @@ MRefBuilder %2.dll /out:reflection.org
 REM ********** Apply Transforms ****************************
 
 if {%1} == {prototype} (
-XslTransform /xsl:"%DXROOT%\ProductionTransforms\ApplyPrototypeDocModel.xsl" reflection.org /xsl:"%DXROOT%\ProductionTransforms\AddGuidFilenames.xsl" /out:reflection.xml 
+XslTransform /xsl:"%DXROOT%\ProductionTransforms\ApplyPrototypeDocModel.xsl" reflection.org /xsl:"%DXROOT%\ProductionTransforms\AddFilenames.xsl" /out:reflection.xml
 ) else if {%1} == {hana} (
-XslTransform /xsl:"%DXROOT%\ProductionTransforms\ApplyVSDocModel.xsl" reflection.org /xsl:"%DXROOT%\ProductionTransforms\AddFriendlyFilenames.xsl" /out:reflection.xml /arg:IncludeAllMembersTopic=false /arg:IncludeInheritedOverloadTopics=false
+XslTransform /xsl:"%DXROOT%\ProductionTransforms\ApplyVSDocModel.xsl" reflection.org /xsl:"%DXROOT%\ProductionTransforms\AddFilenames.xsl" /out:reflection.xml /arg:IncludeAllMembersTopic=false /arg:IncludeInheritedOverloadTopics=false /arg:namingMethod=MemberName
 ) else (
-XslTransform /xsl:"%DXROOT%\ProductionTransforms\ApplyVSDocModel.xsl" reflection.org /xsl:"%DXROOT%\ProductionTransforms\AddFriendlyFilenames.xsl" /out:reflection.xml /arg:IncludeAllMembersTopic=true /arg:IncludeInheritedOverloadTopics=false
+XslTransform /xsl:"%DXROOT%\ProductionTransforms\ApplyVSDocModel.xsl" reflection.org /xsl:"%DXROOT%\ProductionTransforms\AddFilenames.xsl" /out:reflection.xml /arg:IncludeAllMembersTopic=true /arg:IncludeInheritedOverloadTopics=false /arg:namingMethod=MemberName
 )
 
 XslTransform /xsl:"%DXROOT%\ProductionTransforms\ReflectionToManifest.xsl"  reflection.xml /out:manifest.xml
@@ -69,9 +69,9 @@ call "%DXROOT%\Presentation\%1\copyBranding.bat"
 REM **************Generate an intermediate Toc file that simulates the Whidbey TOC format.
 
 if {%1} == {prototype} (
-XslTransform /xsl:"%DXROOT%\ProductionTransforms\createPrototypetoc.xsl" reflection.xml /out:toc.xml 
+XslTransform /xsl:"%DXROOT%\ProductionTransforms\createPrototypetoc.xsl" reflection.xml /out:toc.xml
 ) else (
-XslTransform /xsl:"%DXROOT%\ProductionTransforms\createvstoc.xsl" reflection.xml /out:toc.xml 
+XslTransform /xsl:"%DXROOT%\ProductionTransforms\createvstoc.xsl" reflection.xml /out:toc.xml
 )
 
 REM ********** Call BuildAssembler ****************************

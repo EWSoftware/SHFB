@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : UserDefinedPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 11/21/2012
-// Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
+// Updated : 09/27/2013
+// Note    : Copyright 2011-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This user control is used to edit the User Defined category properties
@@ -99,11 +99,13 @@ namespace SandcastleBuilder.Package.PropertyPages
                 {
                     this.Owner.CheckProjectIsEditable(true);
 
-                    if(String.IsNullOrEmpty(value))
+                    if(String.IsNullOrWhiteSpace(value))
                         throw new ArgumentException("Name cannot be null or blank");
 
                     if(projProp == null)
                     {
+                        value = value.Trim();
+
                         if(!this.Owner.Project.IsValidUserDefinedPropertyName(value))
                             throw new ArgumentException("The entered name matches an existing project or " +
                                 "reserved property name");
