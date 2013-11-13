@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder - HTML Extract
 // File    : SandcastleHtmlExtract.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/03/2013
+// Updated : 10/23/2013
 // Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -233,8 +233,8 @@ namespace SandcastleBuilder.HtmlExtract
         private static Regex reSubEntry = new Regex(@",([^\)\>]+|([^\<\>]*" +
             @"\<[^\<\>]*\>[^\<\>]*)?|([^\(\)]*\([^\(\)]*\)[^\(\)]*)?)$");
         private static Regex reXmlIsland = new Regex("<xml>.*?</xml>", RegexOptions.Singleline);
-        private static Regex reHxLinkCss = new Regex("<link\\s+rel=\"stylesheet\"\\s+type=\"text/css\"\\s+" +
-            "href=\"ms-help://Hx/HxRuntime/HxLink.css\"\\s+/>", RegexOptions.IgnoreCase);
+        private static Regex reHxLinkCss = new Regex("<link[^>]*?href=\"ms-help://Hx/HxRuntime/HxLink\\.css\".*?/>",
+            RegexOptions.IgnoreCase);
 
         // Localization support members
         private static Dictionary<Regex, string> patterns;

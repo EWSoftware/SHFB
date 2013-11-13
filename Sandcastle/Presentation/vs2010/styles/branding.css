@@ -842,13 +842,13 @@ pre.ideCScode
 
 .OH_CodeSnippetContainerTabLeftActive, .OH_CodeSnippetContainerTabLeft, .OH_CodeSnippetContainerTabLeftDisabled
 {
-	/*  background-image: url(tabLeftBG.gif); generated from XSLT */
+	/*  background-image: url(tabLeftBG.gif); Added by script */
 	background-repeat: no-repeat;
 }
 
 .OH_CodeSnippetContainerTabRightActive, .OH_CodeSnippetContainerTabRight, .OH_CodeSnippetContainerTabRightDisabled
 {
-	/*  background-image: url(tabRightBG.gif); generated from XSLT */
+	/*  background-image: url(tabRightBG.gif); Added by script */
 	background-repeat: no-repeat;
 }
 
@@ -1184,6 +1184,9 @@ span.OH_mtps-th
 	clear: both;
 	border-top: solid 1px #bbb;
 	padding: 0px 10px 5px 10px;
+	/*  background-image: url(footer_slice.gif); Added by script */
+	background-position: top;
+	background-repeat: repeat-x;
 }
 .OH_feedbacklink
 {

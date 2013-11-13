@@ -20,70 +20,102 @@ function onLoad()
 
     try
     {
-        var linkEnum = new Enumerator(document.getElementsByTagName('link'));
+        var linkEnum = document.getElementsByTagName("link");
         var link;
 
-        for (linkEnum.moveFirst(); !linkEnum.atEnd(); linkEnum.moveNext())
+        for(var idx = 0; idx < linkEnum.length; idx++)
         {
-            link = linkEnum.item();
-            if (link.rel.toLowerCase() == 'shortcut icon')
+            link = linkEnum[idx];
+
+            if(link.rel.toLowerCase() == "shortcut icon")
                 iconPath = link.href.toString();
         }
     }
-    catch (e) {}
+    catch (e) { }
     finally {}
 
     if(iconPath)
     {
         try
         {
-            var styleSheetEnum = new Enumerator(document.styleSheets);
+            var styleSheetEnum = document.styleSheets;
             var styleSheet;
             var ruleNdx;
             var rule;
 
-            for(styleSheetEnum.moveFirst(); !styleSheetEnum.atEnd(); styleSheetEnum.moveNext())
+            for(var idx = 0; idx < styleSheetEnum.length; idx++)
             {
-                styleSheet = styleSheetEnum.item();
+                styleSheet = styleSheetEnum[idx];
 
-                if(styleSheet.rules)
-                    if(styleSheet.rules.length != 0)
-                        for(ruleNdx = 0; ruleNdx != styleSheet.rules.length; ruleNdx++)
-                        {
-                            rule = styleSheet.rules.item(ruleNdx);
+                // Ignore sheets at ms-help Urls
+                if(styleSheet.href != null && styleSheet.href.substr(0,8) == "ms-help:")
+                    continue;
 
-                            var bgUrl = rule.style.backgroundImageName;
+                // Ignore errors (Help Viewer 2).  styleSheet.rules is inaccessible due to security restrictions
+                // for all stylesheets not defined within the page.
+                try
+                {
+                    // Get sheet rules
+                    var rules = styleSheet.rules;
 
-                            if(typeof(bgUrl) != "undefined")
-                                rule.style.backgroundImage = "url(" + iconPath.replace("favicon.ico", bgUrl) + ")";
-                        }
+                    if(rules == null)
+                        rules = styleSheet.cssRules;
+
+                    if(rules != null)
+                        if(rules.length != 0)
+                            for(ruleNdx = 0; ruleNdx != rules.length; ruleNdx++)
+                            {
+                                rule = rules.item(ruleNdx);
+
+                                var selectorText = rule.selectorText.toLowerCase();
+
+                                // The selector text may show up grouped or individually for these
+                                if(selectorText == ".oh_codesnippetcontainertableftactive, .oh_codesnippetcontainertableft, .oh_codesnippetcontainertableftdisabled" ||
+                                  selectorText == ".oh_codesnippetcontainertableftactive" ||
+                                  selectorText == ".oh_codesnippetcontainertableft" ||
+                                  selectorText == ".oh_codesnippetcontainertableftdisabled")
+                                {
+                                    rule.style.backgroundImage = "url(" + iconPath.replace("favicon.ico", "tabLeftBG.gif") + ")";
+                                }
+
+                                if(selectorText == ".oh_codesnippetcontainertabrightactive, .oh_codesnippetcontainertabright, .oh_codesnippetcontainertabrightdisabled" ||
+                                  selectorText == ".oh_codesnippetcontainertabrightactive" ||
+                                  selectorText == ".oh_codesnippetcontainertabright" ||
+                                  selectorText == ".oh_codesnippetcontainertabrightdisabled")
+                                {
+                                    rule.style.backgroundImage = "url(" + iconPath.replace("favicon.ico", "tabRightBG.gif") + ")";
+                                }
+
+                                if(selectorText == ".oh_footer")
+                                {
+                                    rule.style.backgroundImage = "url(" + iconPath.replace("favicon.ico", "footer_slice.gif") + ")";
+                                }
+                            }
+                }
+                catch (e) { }
+                finally {}
             }
         }
-        catch (e) {}
+        catch (e) { }
         finally {}
     }
 
     // This compensates for a bug in the default transforms that changes <br/> to <br></br> in SelfBranded content
     try
     {
-        var brTags = document.all.tags("br");
+        var brTags = document.getElementsByTagName("br")
 
-        if(brTags)
+        for(var idx = 0; idx < brTags.length; idx++)
         {
-            var brEnum = new Enumerator(brTags);
+            var brTag = brTags[idx];
+            var brNext = brTag.nextSibling;
 
-            for(brEnum.moveFirst(); !brEnum.atEnd(); brEnum.moveNext())
-            {
-                var brTag = brEnum.item();
-                var brNext = brTag.nextSibling;
-
-                if(brNext)
-                    if(brNext.tagName.toLowerCase() == "br")
-                        brNext.parentElement.removeChild (brNext);
-            }
+            if(brNext)
+                if(brNext.tagName != undefined && brNext.tagName.toLowerCase() == "br")
+                    brNext.parentElement.removeChild (brNext);
         }
     }
-    catch (e) {}
+    catch (e) { }
     finally {}
 
   var lang = GetCookie("CodeSnippetContainerLang", "C#");
@@ -91,7 +123,7 @@ function onLoad()
 
   // if LST exists on the page, then set the LST to show the user selected programming language.
   updateLST(currentLang);
- 
+
   // if codesnippet exists
   if (snippetIdSets.length > 0)
   {

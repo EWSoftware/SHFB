@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/12/2013
+// Updated : 10/23/2013
 // Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -1975,7 +1975,8 @@ AllDone:
             {
                 sandcastleFolder = Environment.GetEnvironmentVariable("DXROOT");
 
-                if(String.IsNullOrEmpty(sandcastleFolder) || !sandcastleFolder.Contains(@"\Sandcastle"))
+                if(String.IsNullOrEmpty(sandcastleFolder) || sandcastleFolder.IndexOf(@"\Sandcastle",
+                  StringComparison.OrdinalIgnoreCase) == -1)
                     sandcastleFolder = String.Empty;
             }
 

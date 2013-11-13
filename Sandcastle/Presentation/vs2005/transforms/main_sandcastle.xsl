@@ -722,7 +722,7 @@
 			</xsl:when>
 			<xsl:when test="normalize-space(.)">
 				<referenceLink target="{@cref}">
-					<xsl:value-of select="." />
+					<xsl:apply-templates />
 				</referenceLink>
 			</xsl:when>
 			<xsl:otherwise>
@@ -879,7 +879,7 @@
 					<referenceLink target="{concat('Overload:',substring(@cref,3))}" display-target="format" show-parameters="false">
 						<xsl:choose>
 							<xsl:when test="normalize-space(.)">
-								<xsl:value-of select="." />
+								<xsl:apply-templates />
 							</xsl:when>
 							<xsl:otherwise>
 								<include item="SeeAlsoOverloadLinkText">
@@ -891,7 +891,7 @@
 				</xsl:when>
 				<xsl:when test="normalize-space(.)">
 					<referenceLink target="{@cref}" qualified="true">
-						<xsl:value-of select="." />
+						<xsl:apply-templates />
 					</referenceLink>
 				</xsl:when>
 				<xsl:otherwise>

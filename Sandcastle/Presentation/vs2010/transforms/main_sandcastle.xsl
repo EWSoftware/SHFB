@@ -1227,10 +1227,8 @@
 		</xsl:if>
 	</xsl:template>
 
-	<xsl:template match="seealso"
-								name="t_seealso">
-		<xsl:param name="displaySeeAlso"
-							 select="false()"/>
+	<xsl:template match="seealso" name="t_seealso">
+		<xsl:param name="displaySeeAlso" select="false()"/>
 		<xsl:if test="$displaySeeAlso">
 			<xsl:choose>
 				<xsl:when test="starts-with(@cref,'O:')">
@@ -1240,7 +1238,7 @@
 												 class="mtps-internal-link">
 						<xsl:choose>
 							<xsl:when test="normalize-space(.)">
-								<xsl:value-of select="." />
+								<xsl:apply-templates />
 							</xsl:when>
 							<xsl:otherwise>
 								<include item="boilerplate_seeAlsoOverloadLink">
@@ -1251,14 +1249,12 @@
 					</referenceLink>
 				</xsl:when>
 				<xsl:when test="normalize-space(.)">
-					<referenceLink target="{@cref}"
-												 qualified="true">
-						<xsl:value-of select="."/>
+					<referenceLink target="{@cref}" qualified="true">
+						<xsl:apply-templates />
 					</referenceLink>
 				</xsl:when>
 				<xsl:otherwise>
-					<referenceLink target="{@cref}"
-												 qualified="true"/>
+					<referenceLink target="{@cref}" qualified="true"/>
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:if>

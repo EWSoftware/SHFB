@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : MSBuildProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/04/2013
+// Updated : 11/08/2013
 // Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -92,7 +92,7 @@ namespace SandcastleBuilder.Utils.MSBuild
                         // apply that to the SHFB project which masks the output folder of the actual project for
                         // which we are trying to get the output folder.  Make an assumption here that if the
                         // folder doesn't exist, we need to look for a project-specific output folder.
-                        if(!Directory.Exists(outputPath))
+                        if(Path.IsPathRooted(outputPath) && !Directory.Exists(outputPath))
                         {
                             outputPath = outputPath.Substring(0, outputPath.Length - 1);
 
@@ -188,6 +188,35 @@ namespace SandcastleBuilder.Utils.MSBuild
 
                                 if(outputPath == @".\")
                                     outputPath = null;
+                                else
+                                {
+                                    // As of .NET 4.5, the GenerateProjectSpecificOutputFolder property can be
+                                    // used to make MSBuild set project-specific output folders.  The problem is
+                                    // that it also tries to apply that to the SHFB project which masks the
+                                    // output folder of the actual project for which we are trying to get the
+                                    // output folder.  Make an assumption here that if the folder doesn't exist,
+                                    // we need to look for a project-specific output folder.
+                                    if(Path.IsPathRooted(outputPath) && !Directory.Exists(outputPath))
+                                    {
+                                        outputPath = outputPath.Substring(0, outputPath.Length - 1);
+
+                                        if(outputPath.LastIndexOf('\\') != -1)
+                                        {
+                                            outputPath = outputPath.Substring(0, outputPath.LastIndexOf('\\'));
+
+                                            // The ProjectName property can override the actual project name
+                                            if(properties.TryGetValue(ProjectElement.ProjectName, out prop))
+                                                outputPath = Path.Combine(outputPath, prop.EvaluatedValue);
+                                            else
+                                                outputPath = Path.Combine(outputPath, Path.GetFileNameWithoutExtension(
+                                                    msBuildProject.FullPath));
+
+                                            // If still not there, give up and go for the default
+                                            if(!Directory.Exists(outputPath))
+                                                outputPath = null;
+                                        }
+                                    }
+                                }
                             }
 
                             if(!String.IsNullOrEmpty(outputPath))

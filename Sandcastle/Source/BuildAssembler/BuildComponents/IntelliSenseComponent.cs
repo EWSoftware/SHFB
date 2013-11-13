@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Components
 // File    : IntelliSenseComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/21/2012
-// Note    : Copyright 2007-2012, Eric Woodruff, All rights reserved
+// Updated : 11/12/2013
+// Note    : Copyright 2007-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a build component that is used to extract the XML comments into files that can be used for
@@ -21,6 +21,7 @@
 // 1.6.0.7  03/24/2008  EFW  Updated it to handle multiple assembly references
 // 1.8.0.3  07/04/2009  EFW  Add parameter to Dispose() to match base class
 // 2.7.3.0  12/21/2012  EFW  Replaced the Microsoft IntelliSense build component with my version
+// 2.7.5.0  11/12/2013  EFW  Added support for exporting code contracts XML comments elements
 //===============================================================================================================
 
 using System;
@@ -68,15 +69,10 @@ namespace Microsoft.Ddue.Tools
         private bool includeNamespaces;
         private string outputFolder, namespacesFilename;
 
-        private XPathExpression assemblyExpression;
-        private XPathExpression subgroupExpression;
-        private XPathExpression elementsExpression;
+        private XPathExpression assemblyExpression, subgroupExpression, elementsExpression;
 
-        private XPathExpression summaryExpression;
-        private XPathExpression paramExpression;
-        private XPathExpression typeparamExpression;
-        private XPathExpression returnsExpression;
-        private XPathExpression exceptionExpression;
+        private XPathExpression summaryExpression, paramExpression, typeparamExpression, returnsExpression,
+            exceptionExpression, codeContractsExpression;
 
         private Dictionary<string, XmlWriter> writers;
         #endregion
@@ -117,6 +113,8 @@ namespace Microsoft.Ddue.Tools
             typeparamExpression = XPathExpression.Compile("typeparam");
             returnsExpression = XPathExpression.Compile("returns");
             exceptionExpression = XPathExpression.Compile("exception");
+            codeContractsExpression = XPathExpression.Compile("requires|ensures|ensuresOnThrow|pure|invariant|" +
+                "getter|setter");
 
             nav = configuration.SelectSingleNode("output");
 
@@ -203,7 +201,7 @@ namespace Microsoft.Ddue.Tools
                     }
                     catch(IOException ioEx)
                     {
-                        base.WriteMessage(key, MessageLevel.Error, "An access error occured while attempting " +
+                        base.WriteMessage(key, MessageLevel.Error, "An access error occurred while attempting " +
                             "to create the IntelliSense output file '{0}'. The error message is: {1}", fullPath,
                             ioEx.Message);
                     }
@@ -246,6 +244,11 @@ namespace Microsoft.Ddue.Tools
                 foreach(XPathNavigator nav in iterator)
                     writer.WriteNode(nav, true);
 
+                iterator = navComments.Select(codeContractsExpression);
+
+                foreach(XPathNavigator nav in iterator)
+                    writer.WriteNode(nav, true);
+
                 writer.WriteFullEndElement();
 
                 // Write out enumeration members?
@@ -270,7 +273,7 @@ namespace Microsoft.Ddue.Tools
             }
             catch(IOException ioEx)
             {
-                base.WriteMessage(key, MessageLevel.Error, "An access error occured while attempting to write " +
+                base.WriteMessage(key, MessageLevel.Error, "An access error occurred while attempting to write " +
                     "IntelliSense data. The error message is: {0}", ioEx.Message);
             }
             catch(XmlException xmlEx)

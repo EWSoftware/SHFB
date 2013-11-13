@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : MainForm.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/27/2013
+// Updated : 11/08/2013
 // Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -223,14 +223,20 @@ namespace SandcastleBuilder.Gui
 
             if(persistString == typeof(OutputWindow).FullName)
             {
-                outputWindow = new OutputWindow();
+                if(outputWindow == null)
+                    outputWindow = new OutputWindow();
+
                 return outputWindow;
             }
 
             if(persistString == typeof(EntityReferenceWindow).FullName)
             {
-                entityReferencesWindow = new EntityReferenceWindow();
-                entityReferencesWindow.CurrentProject = project;
+                if(entityReferencesWindow == null)
+                {
+                    entityReferencesWindow = new EntityReferenceWindow();
+                    entityReferencesWindow.CurrentProject = project;
+                }
+
                 return entityReferencesWindow;
             }
 
@@ -251,8 +257,7 @@ namespace SandcastleBuilder.Gui
         /// Create a new project instance and connect it to the UI
         /// </summary>
         /// <param name="projectName">The project filename</param>
-        /// <param name="mustExist">True if it must exist or false if it is
-        /// a new, unnamed project</param>
+        /// <param name="mustExist">True if it must exist or false if it is a new, unnamed project</param>
         private void CreateProject(string projectName, bool mustExist)
         {
             List<string> values;
@@ -316,17 +321,20 @@ namespace SandcastleBuilder.Gui
                     Cursor.Current = Cursors.WaitCursor;
                     dockPanel.SuspendLayout(true);
 
-                    projectExplorer.Hide();
-                    projectProperties.Hide();
+                    projectExplorer.DockPanel = null;
+                    projectProperties.DockPanel = null;
 
                     if(outputWindow != null)
-                        outputWindow.Hide();
+                        outputWindow.DockPanel = null;
 
                     if(entityReferencesWindow != null)
-                        entityReferencesWindow.Hide();
+                        entityReferencesWindow.DockPanel = null;
 
                     if(previewWindow != null)
-                        previewWindow.Hide();
+                    {
+                        previewWindow.Dispose();
+                        previewWindow = null;
+                    }
 
                     dockPanel.LoadFromXml(project.Filename + WindowStateSuffix, DeserializeState);
                 }
@@ -438,8 +446,7 @@ namespace SandcastleBuilder.Gui
                 miClearOutput_Click(this, EventArgs.Empty);
                 this.KillWebServer();
 
-                // Dispose of the preview window to get rid of its temporary project and build files.
-                // It also doesn't make much sense to save its state.
+                // Dispose of the preview window as it doesn't make much sense to save its state
                 if(previewWindow != null)
                 {
                     previewWindow.Dispose();
@@ -783,9 +790,6 @@ namespace SandcastleBuilder.Gui
                         break;
                     }
                 }
-
-            if(!e.Cancel && previewWindow != null)
-                e.Cancel = !previewWindow.CanClose;
 
             if(!e.Cancel)
             {
@@ -1966,8 +1970,8 @@ namespace SandcastleBuilder.Gui
                 previewWindow.PreviewTopic(project, (fileItem == null) ? null : fileItem.FullPath);
                 previewWindow.Activate();
 
-                // When the state is restored and it's a document pane, it
-                // doesn't always become the active pane unless this is called.
+                // When the state is restored and it's a document pane, it doesn't always become the active pane
+                // unless this is called.
                 previewWindow.Show(dockPanel, previewWindow.DockState);
             }
             finally

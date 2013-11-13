@@ -108,14 +108,14 @@
 		</xsl:element>
 	</xsl:template>
 
-	<!-- Hack to fix up the background image URLs.  See onLoad() in Branding.js.
+	<!-- Hack to fix up the background image URLs in Help Viewer 2.  See onLoad() in Branding.js.
  	     NOTE: These MUST appear INLINE and BEFORE the Branding.css file or the script will not find them. -->
 	<xsl:template name="head-style-urls">
 		<xsl:element name="style" namespace="{$xhtml}">
 			<xsl:attribute name="type">text/css</xsl:attribute>
-			<xsl:text>.OH_CodeSnippetContainerTabLeftActive, .OH_CodeSnippetContainerTabLeft,.OH_CodeSnippetContainerTabLeftDisabled { backgroundImageName: tabLeftBG.gif; }</xsl:text>
-			<xsl:text>.OH_CodeSnippetContainerTabRightActive, .OH_CodeSnippetContainerTabRight,.OH_CodeSnippetContainerTabRightDisabled { backgroundImageName: tabRightBG.gif; }</xsl:text>
-			<xsl:text>.OH_footer { backgroundImageName: footer_slice.gif; background-position: top; background-repeat: repeat-x; }</xsl:text>
+			<xsl:text>.OH_CodeSnippetContainerTabLeftActive, .OH_CodeSnippetContainerTabLeft,.OH_CodeSnippetContainerTabLeftDisabled { }</xsl:text>
+			<xsl:text>.OH_CodeSnippetContainerTabRightActive, .OH_CodeSnippetContainerTabRight,.OH_CodeSnippetContainerTabRightDisabled { }</xsl:text>
+			<xsl:text>.OH_footer { }</xsl:text>
 		</xsl:element>
 	</xsl:template>
 

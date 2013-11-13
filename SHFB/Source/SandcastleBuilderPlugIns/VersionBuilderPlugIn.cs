@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : VersionBuilderPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/11/2013
+// Updated : 11/08/2013
 // Note    : Copyright 2007-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -434,6 +434,8 @@ namespace SandcastleBuilder.PlugIns
                 project.HtmlHelp2xCompilerPath = new FolderPath(builder.Help2CompilerFolder, true, project);
                 project.WorkingPath = new FolderPath(workingPath, true, project);
                 project.OutputPath = new FolderPath(workingPath + @"..\PartialBuildLog\", true, project);
+                project.Configuration = builder.CurrentProject.Configuration;
+                project.Platform = builder.CurrentProject.Platform;
 
                 // If the current project has defined OutDir, pass it on to the sub-project.
                 string outDir = builder.CurrentProject.MSBuildProject.GetProperty("OutDir").EvaluatedValue;

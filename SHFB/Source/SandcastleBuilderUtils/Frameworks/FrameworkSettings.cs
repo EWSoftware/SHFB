@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : FrameworkSettings.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/04/2013
+// Updated : 10/17/2013
 // Note    : Copyright 2012-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -211,14 +211,19 @@ namespace SandcastleBuilder.Utils.Frameworks
                                 Path.ChangeExtension(d, ".dll"))).GroupBy(d =>
                                     Path.GetDirectoryName(d)).OrderByDescending(d => d.Count());
 
-                        HashSet<string> commentsFiles = new HashSet<string>(commentGroups.First().Select(
-                            f => Path.GetFileName(f)));
+                        // Odd case but it appears that the folder does exist in some cases with no comments
+                        // files in it for the assemblies.
+                        if(commentGroups.Count() != 0)
+                        {
+                            HashSet<string> commentsFiles = new HashSet<string>(commentGroups.First().Select(
+                                f => Path.GetFileName(f)));
 
-                        yield return Path.Combine(commentGroups.First().Key, "*.xml");
+                            yield return Path.Combine(commentGroups.First().Key, "*.xml");
 
-                        foreach(var g in commentGroups)
-                            foreach(var f in g.Where(f => !commentsFiles.Contains(Path.GetFileName(f))).ToList())
-                                yield return Path.Combine(g.Key, Path.GetFileName(f));
+                            foreach(var g in commentGroups)
+                                foreach(var f in g.Where(f => !commentsFiles.Contains(Path.GetFileName(f))))
+                                    yield return Path.Combine(g.Key, Path.GetFileName(f));
+                        }
                     }
         }
 

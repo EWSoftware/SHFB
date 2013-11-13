@@ -11,6 +11,7 @@
 // Exposed the target collection and MSDN resolver via properties.
 // 12/30/2012 - EFW - Reworked to use TargetTypeDictionary and share the target data across instances.
 // 03/17/2013 - EFW - Added support for the ReferenceLink.RenderAsLink property
+// 11/08/2013 - EFW - Applied patch from Stazzz to write out nested XML elements within the link inner text
 
 using System;
 using System.Collections.Generic;
@@ -58,7 +59,7 @@ namespace Microsoft.Ddue.Tools
 
         private string linkTarget, msdnIdCacheFile;
 
-        // WebDocs target url formatting (legacy Microsoft stuff)
+        // WebDocs target URL formatting (legacy Microsoft stuff)
         private XPathExpression baseUrl;
         private string hrefFormat;
 
@@ -230,7 +231,7 @@ namespace Microsoft.Ddue.Tools
                 }
                 else
                 {
-                    // If overload is prefered and found, change targetId and make link options hide parameters
+                    // If overload is preferred and found, change targetId and make link options hide parameters
                     if(link.PreferOverload)
                     {
                         bool isConversionOperator = false;
@@ -389,8 +390,11 @@ namespace Microsoft.Ddue.Tools
                     }
                     else
                     {
-                        // Write contents to writer
-                        link.Contents.WriteSubtree(writer);
+                        do
+                        {
+                            link.Contents.WriteSubtree(writer);
+
+                        } while(link.Contents.MoveToNext());
                     }
                 }
                 else
@@ -466,7 +470,7 @@ namespace Microsoft.Ddue.Tools
         }
 
         /// <summary>
-        /// This is overriden to save the updated cache information and dispose of target information
+        /// This is overridden to save the updated cache information and dispose of target information
         /// </summary>
         /// <param name="disposing">Pass true to dispose of the managed and unmanaged resources or false to just
         /// dispose of the unmanaged resources.</param>
