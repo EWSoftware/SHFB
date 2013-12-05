@@ -1,27 +1,26 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder Utilities
 // File    : NamespaceSummaryItemCollection.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/09/2011
-// Note    : Copyright 2006-2011, Eric Woodruff, All rights reserved
+// Updated : 11/30/2013
+// Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains a collection class used to hold the namespace summary
-// item information.
+// This file contains a collection class used to hold the namespace summary item information
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.2.0.0  09/04/2006  EFW  Created the code
 // 1.8.0.0  06/30/2008  EFW  Rewrote to support MSBuild project format
-// 1.9.3.0  04/07/2011  EFW  Made the constructor and from/to XML members
-//                           public so that it can be used from the VSPackage.
-//=============================================================================
+// 1.9.3.0  04/07/2011  EFW  Made the constructor and from/to XML members public so that it can be used from the
+//                           VSPackage.
+// 1.9.9.0  11/30/2013  EFW  Merged changes from Stazzz to support namespace grouping
+//===============================================================================================================
 
 using System;
 using System.Collections.Generic;
@@ -37,12 +36,10 @@ using SandcastleBuilder.Utils.Design;
 namespace SandcastleBuilder.Utils
 {
     /// <summary>
-    /// This collection class is used to hold the namespace summary items
-    /// for a project.
+    /// This collection class is used to hold the namespace summary items for a project
     /// </summary>
-    /// <remarks>Namespaces that appear in the assemblies but not in this
-    /// list are documented by default and will appear without a namespace
-    /// summary.</remarks>
+    /// <remarks>Namespaces that appear in the assemblies but not in this list are documented by default and
+    /// will appear without a namespace summary.</remarks>
     [TypeConverter(typeof(NamespaceSummaryItemCollectionTypeConverter)),
       Editor(typeof(NamespaceSummaryItemEditor), typeof(UITypeEditor))]
     public class NamespaceSummaryItemCollection : BindingList<NamespaceSummaryItem>
@@ -58,8 +55,7 @@ namespace SandcastleBuilder.Utils
         //=====================================================================
 
         /// <summary>
-        /// This is used to get a reference to the project that owns the
-        /// collection.
+        /// This is used to get a reference to the project that owns the collection
         /// </summary>
         public SandcastleProject Project
         {
@@ -89,12 +85,10 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// Indexer.  This can be used to retrieve the summary information
-        /// for the specified namespace.
+        /// Indexer.  This can be used to retrieve the summary information for the specified namespace
         /// </summary>
         /// <param name="name">The namespace for which to search</param>
-        /// <returns>The namespace summary information if found or null if
-        /// not found.</returns>
+        /// <returns>The namespace summary information if found or null if not found</returns>
         public NamespaceSummaryItem this[string name]
         {
             get
@@ -133,10 +127,7 @@ namespace SandcastleBuilder.Utils
         public void Sort()
         {
             ((List<NamespaceSummaryItem>)this.Items).Sort(
-                delegate(NamespaceSummaryItem x, NamespaceSummaryItem y)
-                {
-                    return Comparer<string>.Default.Compare(x.Name, y.Name);
-                });
+                (x, y) => Comparer<string>.Default.Compare(x.Name, y.Name) );
         }
         #endregion
 
@@ -144,16 +135,15 @@ namespace SandcastleBuilder.Utils
         //=====================================================================
 
         /// <summary>
-        /// This is used to load existing namespace summary items from the
-        /// project file.
+        /// This is used to load existing namespace summary items from the project file
         /// </summary>
         /// <param name="namespaceSummaries">The namespace summary items</param>
         /// <remarks>The information is stored as an XML fragment</remarks>
         public void FromXml(string namespaceSummaries)
         {
             XmlTextReader xr = null;
-            string name;
-            bool isDocumented;
+            string name, groupValue;
+            bool isDocumented, isGroup;
 
             try
             {
@@ -163,13 +153,17 @@ namespace SandcastleBuilder.Utils
 
                 while(!xr.EOF)
                 {
-                    if(xr.NodeType == XmlNodeType.Element &&
-                      xr.Name == "NamespaceSummaryItem")
+                    if(xr.NodeType == XmlNodeType.Element && xr.Name == "NamespaceSummaryItem")
                     {
                         name = xr.GetAttribute("name");
-                        isDocumented = Convert.ToBoolean(xr.GetAttribute(
-                            "isDocumented"), CultureInfo.InvariantCulture);
-                        this.Add(name, isDocumented, xr.ReadString());
+                        isDocumented = Convert.ToBoolean(xr.GetAttribute("isDocumented"),
+                            CultureInfo.InvariantCulture);
+
+                        groupValue = xr.GetAttribute("isGroup");
+                        isGroup = !String.IsNullOrWhiteSpace(groupValue) && Convert.ToBoolean(groupValue,
+                           CultureInfo.InvariantCulture);
+
+                        this.Add(name, isGroup, isDocumented, xr.ReadString());
                     }
 
                     xr.Read();
@@ -185,8 +179,8 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to write the namespace summary info to an XML
-        /// fragment ready for storing in the project file.
+        /// This is used to write the namespace summary info to an XML fragment ready for storing in the project
+        /// file.
         /// </summary>
         /// <returns>The XML fragment containing the namespace summary info</returns>
         public string ToXml()
@@ -203,13 +197,17 @@ namespace SandcastleBuilder.Utils
                 {
                     xw.WriteStartElement("NamespaceSummaryItem");
                     xw.WriteAttributeString("name", nsi.Name);
-                    xw.WriteAttributeString("isDocumented",
-                        nsi.IsDocumented.ToString());
+
+                    if(nsi.IsGroup)
+                        xw.WriteAttributeString("isGroup", nsi.IsGroup.ToString());
+
+                    xw.WriteAttributeString("isDocumented", nsi.IsDocumented.ToString());
                     xw.WriteString(nsi.Summary);
                     xw.WriteEndElement();
                 }
 
                 xw.Flush();
+
                 return Encoding.UTF8.GetString(ms.ToArray());
             }
             finally
@@ -229,24 +227,20 @@ namespace SandcastleBuilder.Utils
         /// Add a new item to the collection
         /// </summary>
         /// <param name="name">The namespace name</param>
-        /// <param name="isDocumented">True for documented, false for not
-        /// documented</param>
+        /// <param name="isGroup">True if this is a grouping namespace, false if this is normal namespace</param>
+        /// <param name="isDocumented">True for documented, false for not documented</param>
         /// <param name="summary">The summary text</param>
-        /// <returns>The <see cref="NamespaceSummaryItem" /> added to the
-        /// project.  If the namespace already exists in the collection,
-        /// the existing item is returned.</returns>
-        /// <remarks>The <see cref="NamespaceSummaryItem" /> constructor is
-        /// internal so that we control creation of the items and can
-        /// associate them with the project.</remarks>
-        public NamespaceSummaryItem Add(string name, bool isDocumented,
-          string summary)
+        /// <returns>The <see cref="NamespaceSummaryItem" /> added to the project.  If the namespace already
+        /// exists in the collection, the existing item is returned.</returns>
+        /// <remarks>The <see cref="NamespaceSummaryItem" /> constructor is internal so that we control creation
+        /// of the items and can associate them with the project.</remarks>
+        public NamespaceSummaryItem Add(string name, bool isGroup, bool isDocumented, string summary)
         {
             NamespaceSummaryItem item = this[name];
 
             if(item == null)
             {
-                item = new NamespaceSummaryItem(name, isDocumented, summary,
-                    projectFile);
+                item = new NamespaceSummaryItem(name, isGroup, isDocumented, summary, projectFile);
                 base.Add(item);
             }
 
@@ -257,21 +251,19 @@ namespace SandcastleBuilder.Utils
         /// Create a temporary item that isn't part of the project
         /// </summary>
         /// <param name="name">The namespace name</param>
-        /// <returns>The <see cref="NamespaceSummaryItem" /> that can later
-        /// be added to the project if necessary.</returns>
-        /// <exception cref="ArgumentException">This is thrown if the given
-        /// namespace already exists in the collection.</exception>
-        public NamespaceSummaryItem CreateTemporaryItem(string name)
+        /// <param name="isGroup">True if this is a grouping namespace, false if this is normal namespace</param>
+        /// <returns>The <see cref="NamespaceSummaryItem" /> that can later be added to the project if necessary</returns>
+        /// <exception cref="ArgumentException">This is thrown if the given namespace already exists in the
+        /// collection.</exception>
+        public NamespaceSummaryItem CreateTemporaryItem(string name, bool isGroup)
         {
             NamespaceSummaryItem item = this[name];
 
             if(item != null)
-                throw new ArgumentException("The given namespace exists " +
-                    "in the collection and cannot be a temporary item",
-                    "name");
+                throw new ArgumentException("The given namespace exists in the collection and cannot be a " +
+                    "temporary item", "name");
 
-            item = new NamespaceSummaryItem(name, !String.IsNullOrEmpty(name),
-                String.Empty, projectFile);
+            item = new NamespaceSummaryItem(name, isGroup, !String.IsNullOrEmpty(name), String.Empty, projectFile);
 
             return item;
         }

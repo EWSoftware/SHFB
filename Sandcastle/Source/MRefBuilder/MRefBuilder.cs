@@ -8,9 +8,13 @@
 // and version in order to correctly document other frameworks such as Silverlight and the Portable Library
 // frameworks.  Added support for expanding environment variables in dependency and assembly name command line
 // values.
+// 11/20/2013 - EFW - Deprecated support for /internal command line option as the new visibility settings in the
+// configuration file provide finer grained control over the members included in the output.  Merged code from
+// Stazzz to implement namespace grouping support
 
 using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Xml;
@@ -22,8 +26,16 @@ using Microsoft.Ddue.Tools.Reflection;
 
 namespace Microsoft.Ddue.Tools
 {
-    public class MRefBuilder
+    /// <summary>
+    /// This parses assemblies and outputs an XML file containing reflection data about the API members
+    /// </summary>
+    public static class MRefBuilder
     {
+        /// <summary>
+        /// Main program entry point
+        /// </summary>
+        /// <param name="args">Command line arguments</param>
+        /// <returns>Zero on success or non-zero on failure</returns>
         public static int Main(string[] args)
         {
             string path, version, framework, assemblyPath, typeName;
@@ -38,10 +50,15 @@ namespace Microsoft.Ddue.Tools
                 "console.", "outputFilePath"));
             options.Add(new StringOption("config", "Specify a configuration file. If unspecified, " +
                 "MRefBuilder.config is used", "configFilePath"));
-            options.Add(new ListOption("dep", "Speficy assemblies to load for dependencies.",
+            options.Add(new ListOption("dep", "Specify assemblies to load for dependencies.",
                 "dependencyAssembly"));
             options.Add(new BooleanOption("internal", "Specify whether to document internal as well as " +
-                "externally exposed APIs."));
+                "externally exposed APIs.  *** DEPRECATED:  Use the visibility settings in the MRefBuilder.config " +
+                "file instead which provide finer grained control over the exposed API members."));
+            options.Add(new BooleanOption("groupNamespaces", "Specify whether to add special 'grouping' " +
+                "namespaces to group logically nested namespaces.  The default is false."));
+// TODO: Remove?            options.Add(new StringOption( "groupingNSSeparator", "Specify a string separating logically nested" +
+//               " namespace components. The default is \"" + NSGrouping.NSGroupingAlgorithms.DEFAULT_GROUPING_SEPARATOR + "\"." ) );
 
             // Process options
             ParseArgumentsResult results = options.ParseArguments(args);
@@ -50,21 +67,21 @@ namespace Microsoft.Ddue.Tools
             {
                 Console.WriteLine("MRefBuilder [options] assemblies");
                 options.WriteOptionSummary(Console.Out);
-                return (0);
+                return 0;
             }
 
             // Check for invalid options
             if(!results.Success)
             {
                 results.WriteParseErrors(Console.Out);
-                return (1);
+                return 1;
             }
 
             // Check for missing or extra assembly directories
             if(results.UnusedArguments.Count < 1)
             {
                 Console.WriteLine("Specify at least one assembly to reflect.");
-                return (1);
+                return 1;
             }
 
             // Load the configuration file
@@ -84,23 +101,21 @@ namespace Microsoft.Ddue.Tools
             }
             catch(IOException e)
             {
-                ConsoleApplication.WriteMessage(LogLevel.Error, String.Format("An error occured while " +
-                    "attempting to read the configuration file '{0}'. The error message is: {1}", configFile,
-                    e.Message));
-                return (1);
+                ConsoleApplication.WriteMessage(LogLevel.Error, "An error occurred while attempting to read " +
+                    "the configuration file '{0}'. The error message is: {1}", configFile, e.Message);
+                return 1;
             }
             catch(UnauthorizedAccessException e)
             {
-                ConsoleApplication.WriteMessage(LogLevel.Error, String.Format("An error occured while " +
-                    "attempting to read the configuration file '{0}'. The error message is: {1}", configFile,
-                    e.Message));
-                return (1);
+                ConsoleApplication.WriteMessage(LogLevel.Error, "An error occurred while attempting to read " +
+                    "the configuration file '{0}'. The error message is: {1}", configFile, e.Message);
+                return 1;
             }
             catch(XmlException e)
             {
-                ConsoleApplication.WriteMessage(LogLevel.Error, String.Format("The configuration file '{0}' " +
-                    "is not well-formed. The error message is: {1}", configFile, e.Message));
-                return (1);
+                ConsoleApplication.WriteMessage(LogLevel.Error, "The configuration file '{0}' is not " +
+                    "well-formed. The error message is: {1}", configFile, e.Message);
+                return 1;
             }
 
             // Adjust the target platform
@@ -122,7 +137,7 @@ namespace Microsoft.Ddue.Tools
                 
                     if(!Directory.Exists(path))
                     {
-                        ConsoleApplication.WriteMessage(LogLevel.Error, "The specifed target platform " +
+                        ConsoleApplication.WriteMessage(LogLevel.Error, "The specified target platform " +
                             "directory '{0}' does not exist.", path);
                         return 1;
                     }
@@ -158,7 +173,7 @@ namespace Microsoft.Ddue.Tools
                 }
             }
 
-            // Create a namer
+            // Create an API member namer
             ApiNamer namer = new OrcasNamer();
             XPathNavigator namerNode = config.CreateNavigator().SelectSingleNode("/configuration/dduetools/namer");
 
@@ -174,51 +189,60 @@ namespace Microsoft.Ddue.Tools
 
                 try
                 {
-
                     Assembly assembly = Assembly.LoadFrom(assemblyPath);
                     namer = (ApiNamer)assembly.CreateInstance(typeName);
 
                     if(namer == null)
                     {
-                        ConsoleApplication.WriteMessage(LogLevel.Error, String.Format("The type '{0}' was not found in the component assembly '{1}'.", typeName, assemblyPath));
-                        return (1);
+                        ConsoleApplication.WriteMessage(LogLevel.Error, "The type '{0}' was not found in the " +
+                            "component assembly '{1}'.", typeName, assemblyPath);
+                        return 1;
                     }
-
                 }
                 catch(IOException e)
                 {
-                    ConsoleApplication.WriteMessage(LogLevel.Error, String.Format("A file access error occured while attempting to load the component assembly '{0}'. The error message is: {1}", assemblyPath, e.Message));
-                    return (1);
+                    ConsoleApplication.WriteMessage(LogLevel.Error, "A file access error occurred while " +
+                        "attempting to load the component assembly '{0}'. The error message is: {1}",
+                        assemblyPath, e.Message);
+                    return 1;
                 }
                 catch(UnauthorizedAccessException e)
                 {
-                    ConsoleApplication.WriteMessage(LogLevel.Error, String.Format("A file access error occured while attempting to load the component assembly '{0}'. The error message is: {1}", assemblyPath, e.Message));
-                    return (1);
+                    ConsoleApplication.WriteMessage(LogLevel.Error, "A file access error occurred while " +
+                        "attempting to load the component assembly '{0}'. The error message is: {1}",
+                        assemblyPath, e.Message);
+                    return 1;
                 }
                 catch(BadImageFormatException)
                 {
-                    ConsoleApplication.WriteMessage(LogLevel.Error, String.Format("The component assembly '{0}' is not a valid managed assembly.", assemblyPath));
-                    return (1);
+                    ConsoleApplication.WriteMessage(LogLevel.Error, "The component assembly '{0}' is not a " +
+                        "valid managed assembly.", assemblyPath);
+                    return 1;
                 }
                 catch(TypeLoadException)
                 {
-                    ConsoleApplication.WriteMessage(LogLevel.Error, String.Format("The type '{0}' was not found in the component assembly '{1}'.", typeName, assemblyPath));
-                    return (1);
+                    ConsoleApplication.WriteMessage(LogLevel.Error, "The type '{0}' was not found in the " +
+                        "component assembly '{1}'.", typeName, assemblyPath);
+                    return 1;
                 }
                 catch(MissingMethodException)
                 {
-                    ConsoleApplication.WriteMessage(LogLevel.Error, String.Format("No appropriate constructor exists for the type'{0}' in the component assembly '{1}'.", typeName, assemblyPath));
-                    return (1);
+                    ConsoleApplication.WriteMessage(LogLevel.Error, "No appropriate constructor exists for " +
+                        "the type'{0}' in the component assembly '{1}'.", typeName, assemblyPath);
+                    return 1;
                 }
                 catch(TargetInvocationException e)
                 {
-                    ConsoleApplication.WriteMessage(LogLevel.Error, String.Format("An error occured while initializing the type '{0}' in the component assembly '{1}'. The error message and stack trace follows: {2}", typeName, assemblyPath, e.InnerException.ToString()));
-                    return (1);
+                    ConsoleApplication.WriteMessage(LogLevel.Error, "An error occurred while initializing the " +
+                        "type '{0}' in the component assembly '{1}'. The error message and stack trace " +
+                        "follows: {2}", typeName, assemblyPath, e.InnerException);
+                    return 1;
                 }
                 catch(InvalidCastException)
                 {
-                    ConsoleApplication.WriteMessage(LogLevel.Error, String.Format("The type '{0}' in the component assembly '{1}' is not a component type.", typeName, assemblyPath));
-                    return (1);
+                    ConsoleApplication.WriteMessage(LogLevel.Error, "The type '{0}' in the component assembly " +
+                        "'{1}' is not a component type.", typeName, assemblyPath);
+                    return 1;
                 }
             }
 
@@ -238,54 +262,66 @@ namespace Microsoft.Ddue.Tools
                 try
                 {
                     Assembly assembly = Assembly.LoadFrom(assemblyPath);
-                    resolver = (AssemblyResolver)assembly.CreateInstance(typeName, false, BindingFlags.Public | BindingFlags.Instance, null, new Object[1] { resolverNode }, null, null);
+                    resolver = (AssemblyResolver)assembly.CreateInstance(typeName, false, BindingFlags.Public |
+                        BindingFlags.Instance, null, new object[1] { resolverNode }, null, null);
 
                     if(resolver == null)
                     {
-                        ConsoleApplication.WriteMessage(LogLevel.Error, String.Format("The type '{0}' was not found in the component assembly '{1}'.", typeName, assemblyPath));
-                        return (1);
+                        ConsoleApplication.WriteMessage(LogLevel.Error, "The type '{0}' was not found in the " +
+                            "component assembly '{1}'.", typeName, assemblyPath);
+                        return 1;
                     }
                 }
                 catch(IOException e)
                 {
-                    ConsoleApplication.WriteMessage(LogLevel.Error, String.Format("A file access error occured while attempting to load the component assembly '{0}'. The error message is: {1}", assemblyPath, e.Message));
-                    return (1);
+                    ConsoleApplication.WriteMessage(LogLevel.Error, "A file access error occurred while " +
+                        "attempting to load the component assembly '{0}'. The error message is: {1}",
+                        assemblyPath, e.Message);
+                    return 1;
                 }
                 catch(UnauthorizedAccessException e)
                 {
-                    ConsoleApplication.WriteMessage(LogLevel.Error, String.Format("A file access error occured while attempting to load the component assembly '{0}'. The error message is: {1}", assemblyPath, e.Message));
-                    return (1);
+                    ConsoleApplication.WriteMessage(LogLevel.Error, "A file access error occurred while " +
+                        "attempting to load the component assembly '{0}'. The error message is: {1}",
+                        assemblyPath, e.Message);
+                    return 1;
                 }
                 catch(BadImageFormatException)
                 {
-                    ConsoleApplication.WriteMessage(LogLevel.Error, String.Format("The component assembly '{0}' is not a valid managed assembly.", assemblyPath));
-                    return (1);
+                    ConsoleApplication.WriteMessage(LogLevel.Error, "The component assembly '{0}' is not a " +
+                        "valid managed assembly.", assemblyPath);
+                    return 1;
                 }
                 catch(TypeLoadException)
                 {
-                    ConsoleApplication.WriteMessage(LogLevel.Error, String.Format("The type '{0}' was not found in the component assembly '{1}'.", typeName, assemblyPath));
-                    return (1);
+                    ConsoleApplication.WriteMessage(LogLevel.Error, "The type '{0}' was not found in the " +
+                        "component assembly '{1}'.", typeName, assemblyPath);
+                    return 1;
                 }
                 catch(MissingMethodException)
                 {
-                    ConsoleApplication.WriteMessage(LogLevel.Error, String.Format("No appropriate constructor exists for the type'{0}' in the component assembly '{1}'.", typeName, assemblyPath));
-                    return (1);
+                    ConsoleApplication.WriteMessage(LogLevel.Error, "No appropriate constructor exists for " +
+                        "the type'{0}' in the component assembly '{1}'.", typeName, assemblyPath);
+                    return 1;
                 }
                 catch(TargetInvocationException e)
                 {
-                    ConsoleApplication.WriteMessage(LogLevel.Error, String.Format("An error occured while initializing the type '{0}' in the component assembly '{1}'. The error message and stack trace follows: {2}", typeName, assemblyPath, e.InnerException.ToString()));
-                    return (1);
+                    ConsoleApplication.WriteMessage(LogLevel.Error, "An error occurred while initializing the " +
+                        "type '{0}' in the component assembly '{1}'. The error message and stack trace " +
+                        "follows: {2}", typeName, assemblyPath, e.InnerException);
+                    return 1;
                 }
                 catch(InvalidCastException)
                 {
-                    ConsoleApplication.WriteMessage(LogLevel.Error, String.Format("The type '{0}' in the component assembly '{1}' is not a component type.", typeName, assemblyPath));
-                    return (1);
+                    ConsoleApplication.WriteMessage(LogLevel.Error, "The type '{0}' in the component assembly " +
+                        "'{1}' is not a component type.", typeName, assemblyPath);
+                    return 1;
                 }
             }
 
-            resolver.UnresolvedAssemblyReference += new EventHandler<AssemblyReferenceEventArgs>(UnresolvedAssemblyReferenceHandler);
+            resolver.UnresolvedAssemblyReference += UnresolvedAssemblyReferenceHandler;
 
-            // Get a textwriter for output
+            // Get a text writer for output
             TextWriter output = Console.Out;
 
             if(results.Options["out"].IsPresent)
@@ -298,13 +334,15 @@ namespace Microsoft.Ddue.Tools
                 }
                 catch(IOException e)
                 {
-                    ConsoleApplication.WriteMessage(LogLevel.Error, String.Format("An error occured while attempting to create an output file. The error message is: {0}", e.Message));
-                    return (1);
+                    ConsoleApplication.WriteMessage(LogLevel.Error, "An error occurred while attempting to " +
+                        "create an output file. The error message is: {0}", e.Message);
+                    return 1;
                 }
                 catch(UnauthorizedAccessException e)
                 {
-                    ConsoleApplication.WriteMessage(LogLevel.Error, String.Format("An error occured while attempting to create an output file. The error message is: {0}", e.Message));
-                    return (1);
+                    ConsoleApplication.WriteMessage(LogLevel.Error, "An error occurred while attempting to " +
+                        "create an output file. The error message is: {0}", e.Message);
+                    return 1;
                 }
             }
 
@@ -317,22 +355,28 @@ namespace Microsoft.Ddue.Tools
             try
             {
                 // Create a builder
-                ManagedReflectionWriter builder = new ManagedReflectionWriter(output, namer);
+                ManagedReflectionWriter builder = new ManagedReflectionWriter(output, namer, resolver,
+                    new ApiFilter(config.CreateNavigator().SelectSingleNode("/configuration/dduetools")));
 
-                // Specify the resolver for the builder
-                builder.Resolver = resolver;
+// TODO: Add                builder.GroupNamespaces = (results.Options["groupNamespaces"].IsPresent && (bool)results.Options["groupNamespaces"].Value);
+// TODO: Remove?                builder.GroupingNamespaceSeparater = (results.Options["groupingNSSeparator"].IsPresent ?
+//                    (string)results.Options["groupingNSSeparator"].Value : null);
 
-                // builder.ApiFilter = new ExternalDocumentedFilter(config.CreateNavigator().SelectSingleNode("/configuration/dduetools"));
-
-                // Specify the filter for the builder
+                // If the deprecated /internal+ option is used, expose everything via the filter to mimic the
+                // behavior of prior versions.
                 if(results.Options["internal"].IsPresent && (bool)results.Options["internal"].Value)
-                {
-                    builder.ApiFilter = new AllDocumentedFilter(config.CreateNavigator().SelectSingleNode("/configuration/dduetools"));
-                }
-                else
-                {
-                    builder.ApiFilter = new ExternalDocumentedFilter(config.CreateNavigator().SelectSingleNode("/configuration/dduetools"));
-                }
+                    builder.ApiFilter.IncludeAttributes =
+                        builder.ApiFilter.IncludeExplicitInterfaceImplementations =
+                        builder.ApiFilter.IncludePrivates =
+                        builder.ApiFilter.IncludePrivateFields =
+                        builder.ApiFilter.IncludeInternals =
+                        builder.ApiFilter.IncludeProtected =
+                        builder.ApiFilter.IncludeSealedProtected =
+                        builder.ApiFilter.IncludeInheritedMembers =
+                        builder.ApiFilter.IncludeInheritedFrameworkMembers =
+                        builder.ApiFilter.IncludeInheritedFrameworkPrivateMembers =
+                        builder.ApiFilter.IncludeInheritedFrameworkInternalMembers =
+                        builder.ApiFilter.IncludeNoPIATypes = true;
 
                 // Register add-ins to the builder
                 XPathNodeIterator addinNodes = config.CreateNavigator().Select("/configuration/dduetools/addins/addin");
@@ -350,52 +394,60 @@ namespace Microsoft.Ddue.Tools
                     try
                     {
                         Assembly assembly = Assembly.LoadFrom(assemblyPath);
-                        MRefBuilderAddIn addin = (MRefBuilderAddIn)assembly.CreateInstance(typeName, false, BindingFlags.Public | BindingFlags.Instance, null, new Object[2] { builder, addinNode }, null, null);
+                        MRefBuilderAddIn addin = (MRefBuilderAddIn)assembly.CreateInstance(typeName, false,
+                            BindingFlags.Public | BindingFlags.Instance, null,
+                            new object[2] { builder, addinNode }, null, null);
 
-                        if(namer == null)
+                        if(addin == null)
                         {
-                            ConsoleApplication.WriteMessage(LogLevel.Error, String.Format("The type '{0}' was not found in the addin assembly '{1}'.", typeName, assemblyPath));
-                            return (1);
+                            ConsoleApplication.WriteMessage(LogLevel.Error, "The type '{0}' was not found in " +
+                                "the add-in assembly '{1}'.", typeName, assemblyPath);
+                            return 1;
                         }
                     }
                     catch(IOException e)
                     {
-                        ConsoleApplication.WriteMessage(LogLevel.Error, String.Format("A file access error occured while attempting to load the addin assembly '{0}'. The error message is: {1}", assemblyPath, e.Message));
-                        return (1);
+                        ConsoleApplication.WriteMessage(LogLevel.Error, "A file access error occurred while " +
+                            "attempting to load the add-in assembly '{0}'. The error message is: {1}",
+                            assemblyPath, e.Message);
+                        return 1;
                     }
                     catch(BadImageFormatException)
                     {
-                        ConsoleApplication.WriteMessage(LogLevel.Error, String.Format("The addin assembly '{0}' is not a valid managed assembly.", assemblyPath));
-                        return (1);
+                        ConsoleApplication.WriteMessage(LogLevel.Error, "The add-in assembly '{0}' is not a " +
+                            "valid managed assembly.", assemblyPath);
+                        return 1;
                     }
                     catch(TypeLoadException)
                     {
-                        ConsoleApplication.WriteMessage(LogLevel.Error, String.Format("The type '{0}' was not found in the addin assembly '{1}'.", typeName, assemblyPath));
-                        return (1);
+                        ConsoleApplication.WriteMessage(LogLevel.Error, "The type '{0}' was not found in the " +
+                            "add-in assembly '{1}'.", typeName, assemblyPath);
+                        return 1;
                     }
                     catch(MissingMethodException)
                     {
-                        ConsoleApplication.WriteMessage(LogLevel.Error, String.Format("No appropriate constructor exists for the type '{0}' in the addin assembly '{1}'.", typeName, assemblyPath));
-                        return (1);
+                        ConsoleApplication.WriteMessage(LogLevel.Error, "No appropriate constructor exists " +
+                            "for the type '{0}' in the add-in assembly '{1}'.", typeName, assemblyPath);
+                        return 1;
                     }
                     catch(TargetInvocationException e)
                     {
-                        ConsoleApplication.WriteMessage(LogLevel.Error, String.Format("An error occured while initializing the type '{0}' in the addin assembly '{1}'. The error message and stack trace follows: {2}", typeName, assemblyPath, e.InnerException.ToString()));
-                        return (1);
+                        ConsoleApplication.WriteMessage(LogLevel.Error, "An error occurred while initializing " +
+                            "the type '{0}' in the add-in assembly '{1}'. The error message and stack trace " +
+                            "follows: {2}", typeName, assemblyPath, e.InnerException);
+                        return 1;
                     }
                     catch(InvalidCastException)
                     {
-                        ConsoleApplication.WriteMessage(LogLevel.Error, String.Format("The type '{0}' in the addin assembly '{1}' is not an MRefBuilderAddIn type.", typeName, assemblyPath));
-                        return (1);
+                        ConsoleApplication.WriteMessage(LogLevel.Error, "The type '{0}' in the add-in " +
+                            "assembly '{1}' is not an MRefBuilderAddIn type.", typeName, assemblyPath);
+                        return 1;
                     }
                 }
 
                 try
                 {
-                    // add a handler for unresolved assembly references
-                    //builder.UnresolvedModuleHandler = new System.Compiler.Module.AssemblyReferenceResolver(AssemblyNotFound);
-
-                    // Load dependent bits
+                    // Load dependencies
                     foreach(string dependency in dependencies)
                     {
                         try
@@ -411,12 +463,13 @@ namespace Microsoft.Ddue.Tools
                         }
                         catch(IOException e)
                         {
-                            ConsoleApplication.WriteMessage(LogLevel.Error, String.Format("An error occured while loading dependency assemblies. The error message is: {0}", e.Message));
-                            return (1);
+                            ConsoleApplication.WriteMessage(LogLevel.Error, "An error occurred while loading " +
+                                "dependency assemblies. The error message is: {0}", e.Message);
+                            return 1;
                         }
                     }
 
-                    // Parse the bits
+                    // Parse the assemblies
                     foreach(string dllPath in results.UnusedArguments)
                     {
                         try
@@ -432,22 +485,21 @@ namespace Microsoft.Ddue.Tools
                         }
                         catch(IOException e)
                         {
-                            ConsoleApplication.WriteMessage(LogLevel.Error, String.Format("An error occured while loading assemblies for reflection. The error message is: {0}", e.Message));
-                            return (1);
+                            ConsoleApplication.WriteMessage(LogLevel.Error, "An error occurred while loading " +
+                                "assemblies for reflection. The error message is: {0}", e.Message);
+                            return 1;
                         }
                     }
 
-                    ConsoleApplication.WriteMessage(LogLevel.Info, String.Format("Loaded {0} assemblies for reflection and {1} dependency assemblies.", builder.Assemblies.Length, builder.AccessoryAssemblies.Length));
-
-                    // register callbacks
-
-                    //builder.RegisterStartTagCallback("apis", new MRefBuilderCallback(startTestCallback));
-
-                    //MRefBuilderAddIn addin = new XamlAttachedMembersAddIn(builder, null);
+                    ConsoleApplication.WriteMessage(LogLevel.Info, "Loaded {0} assemblies for reflection and " +
+                        "{1} dependency assemblies.", builder.Assemblies.Count(),
+                        builder.AccessoryAssemblies.Count());
 
                     builder.VisitApis();
 
-                    ConsoleApplication.WriteMessage(LogLevel.Info, String.Format("Wrote information on {0} namespaces, {1} types, and {2} members", builder.Namespaces.Length, builder.Types.Length, builder.Members.Length));
+                    ConsoleApplication.WriteMessage(LogLevel.Info, "Wrote information on {0} namespaces, " +
+                        "{1} types, and {2} members", builder.Namespaces.Count(), builder.Types.Count(),
+                        builder.Members.Count());
                 }
                 finally
                 {
@@ -456,29 +508,23 @@ namespace Microsoft.Ddue.Tools
             }
             finally
             {
-                // output.Close();
+                if(results.Options["out"].IsPresent)
+                    output.Close();
             }
 
-            return (0);
+            return 0;
         }
 
-        private static AssemblyNode AssemblyNotFound(AssemblyReference reference, System.Compiler.Module module)
+        /// <summary>
+        /// This is used to report unresolved assembly information
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event arguments</param>
+        /// <remarks>An unresolved assembly reference will terminate the application</remarks>
+        private static void UnresolvedAssemblyReferenceHandler(object sender, AssemblyReferenceEventArgs e)
         {
-            ConsoleApplication.WriteMessage(LogLevel.Error, String.Format("Unresolved assembly reference: " +
-                "{0} ({1}) required by {2}", reference.Name, reference.StrongName, module.Name));
-
-            // If in the debugger, break so that we can see what was missed
-            if(System.Diagnostics.Debugger.IsAttached)
-                System.Diagnostics.Debugger.Break();
-
-            Environment.Exit(1);
-            return (null);
-        }
-
-        private static void UnresolvedAssemblyReferenceHandler(Object o, AssemblyReferenceEventArgs e)
-        {
-            ConsoleApplication.WriteMessage(LogLevel.Error, String.Format("Unresolved assembly reference: " +
-                "{0} ({1}) required by {2}", e.Reference.Name, e.Reference.StrongName, e.Referrer.Name));
+            ConsoleApplication.WriteMessage(LogLevel.Error, "Unresolved assembly reference: {0} ({1}) " +
+                "required by {2}", e.Reference.Name, e.Reference.StrongName, e.Referrer.Name);
 
             // If in the debugger, break so that we can see what was missed
             if(System.Diagnostics.Debugger.IsAttached)

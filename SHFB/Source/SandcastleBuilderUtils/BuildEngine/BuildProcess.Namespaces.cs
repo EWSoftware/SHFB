@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.Namespaces.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/16/2012
-// Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
+// Updated : 12/02/2013
+// Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the code used to generate the namespace summary file and to purge the unwanted namespaces
@@ -117,13 +117,16 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 }
 
                 // Get all the namespace nodes
-                nsElements = apisNode.SelectNodes("api[starts-with(@id, 'N:')]");
+                nsElements = apisNode.SelectNodes("api[starts-with(@id, 'N:') or (starts-with(@id, 'G:') and " +
+                    "not(apidata/@subgroup='rootGroup'))]");
 
                 // Add the namespace summaries
                 foreach(XmlNode n in nsElements)
                 {
                     nsName = n.Attributes["id"].Value;
-                    nsi = project.NamespaceSummaries[nsName.Substring(2)];
+
+                    nsi = project.NamespaceSummaries[nsName.StartsWith("N:") ? nsName.Substring(2) :
+                        nsName.Substring(2) + " (Group)"];
 
                     if(nsi != null)
                     {

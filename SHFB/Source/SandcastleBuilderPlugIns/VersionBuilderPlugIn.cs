@@ -144,7 +144,7 @@ namespace SandcastleBuilder.PlugIns
                     executionPoints = new ExecutionPointCollection
                     {
                         new ExecutionPoint(BuildStep.GenerateSharedContent, ExecutionBehaviors.After),
-                        new ExecutionPoint(BuildStep.ApplyVisibilityProperties, ExecutionBehaviors.After)
+                        new ExecutionPoint(BuildStep.GenerateNamespaceSummaries, ExecutionBehaviors.Before)
                     };
 
                 return executionPoints;

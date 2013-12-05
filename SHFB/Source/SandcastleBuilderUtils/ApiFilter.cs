@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : ApiFilter.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/15/2013
+// Updated : 11/30/2013
 // Note    : Copyright 2007-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -214,11 +214,10 @@ namespace SandcastleBuilder.Utils
         //=====================================================================
 
         /// <summary>
-        /// This is used to convert the entry and its children to a string
-        /// ready for use in the MRefBuilder config file.
+        /// This is used to convert the entry and its children to a string ready for use in the MRefBuilder
+        /// configuration file.
         /// </summary>
-        /// <param name="sb">The string builder to which the information is
-        /// appended.</param>
+        /// <param name="sb">The string builder to which the information is appended.</param>
         internal void ConvertToString(StringBuilder sb)
         {
             string endTag = null;
@@ -228,6 +227,11 @@ namespace SandcastleBuilder.Utils
             {
                 switch(entryType)
                 {
+                    case ApiEntryType.NamespaceGroup:
+                        sb.Append("  <namespaceGroup name=\"");
+                        endTag = "  </namespaceGroup>\r\n";
+                        break;
+
                     case ApiEntryType.Namespace:
                         sb.Append("  <namespace name=\"");
                         endTag = "  </namespace>\r\n";

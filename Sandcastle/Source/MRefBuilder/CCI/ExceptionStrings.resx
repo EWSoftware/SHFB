@@ -1,18 +1,96 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
@@ -27,202 +105,196 @@
       </xsd:complexType>
     </xsd:element>
   </xsd:schema>
-  <resheader name="ResMimeType">
+  <resheader name="resmimetype">
     <value>text/microsoft-resx</value>
   </resheader>
-  <resheader name="Version">
-    <value>1.0.0.0</value>
+  <resheader name="version">
+    <value>2.0</value>
   </resheader>
-  <resheader name="Reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <resheader name="Writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BadBlobHeapIndex">
+  <data name="BadBlobHeapIndex" xml:space="preserve">
     <value>Bad blob heap index.</value>
   </data>
-  <data name="BadTargetPlatformLocation">
+  <data name="BadTargetPlatformLocation" xml:space="preserve">
     <value>Assembly {0} at platform assembly location {1} has version {2} which does not match the target platform version {3}.</value>
   </data>
-  <data name="UnknownVirtualAddress">
+  <data name="UnknownVirtualAddress" xml:space="preserve">
     <value>Unknown virtual address {0}.</value>
   </data>
-  <data name="UnknownConstantType">
+  <data name="UnknownConstantType" xml:space="preserve">
     <value>Unknown constant type.</value>
   </data>
-  <data name="BadGuidHeapIndex">
+  <data name="BadGuidHeapIndex" xml:space="preserve">
     <value>Bad guid heap index.</value>
   </data>
-  <data name="BadStringHeapIndex">
+  <data name="BadStringHeapIndex" xml:space="preserve">
     <value>Bad string heap index.</value>
   </data>
-  <data name="BadUserStringHeapIndex">
+  <data name="BadUserStringHeapIndex" xml:space="preserve">
     <value>Bad user string heap index.</value>
   </data>
-  <data name="NoMetadataStream">
+  <data name="NoMetadataStream" xml:space="preserve">
     <value>No metadata stream.</value>
   </data>
-  <data name="ENCLogTableEncountered">
+  <data name="ENCLogTableEncountered" xml:space="preserve">
     <value>ENCLog Table encountered.</value>
   </data>
-  <data name="ENCMapTableEncountered">
+  <data name="ENCMapTableEncountered" xml:space="preserve">
     <value>ENCMap Table encountered.</value>
   </data>
-  <data name="UnsupportedTableEncountered">
+  <data name="UnsupportedTableEncountered" xml:space="preserve">
     <value>Unsupported table encountered.</value>
   </data>
-  <data name="BadCLIHeader">
+  <data name="BadCLIHeader" xml:space="preserve">
     <value>Bad CLI header.</value>
   </data>
-  <data name="BadMagicNumber">
+  <data name="BadMagicNumber" xml:space="preserve">
     <value>Bad magic number.</value>
   </data>
-  <data name="BadMetadataHeaderSignature">
+  <data name="BadMetadataHeaderSignature" xml:space="preserve">
     <value>Bad metadata header signature.</value>
   </data>
-  <data name="BadCOFFHeaderSignature">
+  <data name="BadCOFFHeaderSignature" xml:space="preserve">
     <value>Bad COFF header signature.</value>
   </data>
-  <data name="BadPEHeaderMagicNumber">
+  <data name="BadPEHeaderMagicNumber" xml:space="preserve">
     <value>Bad PE header magic number.</value>
   </data>
-  <data name="FileTooBig">
+  <data name="FileTooBig" xml:space="preserve">
     <value>File too big.</value>
   </data>
-  <data name="CreateFileMappingReturnedErrorCode">
+  <data name="CreateFileMappingReturnedErrorCode" xml:space="preserve">
     <value>CreateFileMapping returned error code {0}.</value>
   </data>
-  <data name="MapViewOfFileReturnedErrorCode">
+  <data name="MapViewOfFileReturnedErrorCode" xml:space="preserve">
     <value>MapViewOfFile returned error code {0}.</value>
   </data>
-  <data name="PdbAssociatedWithFileIsOutOfDate">
+  <data name="PdbAssociatedWithFileIsOutOfDate" xml:space="preserve">
     <value>The pdb associated with {0} is out of date.</value>
   </data>
-  <data name="GetReaderForFileReturnedUnexpectedHResult">
+  <data name="GetReaderForFileReturnedUnexpectedHResult" xml:space="preserve">
     <value>GetReaderForFile returned an unexpected HResult: 0x{0}.</value>
   </data>
-  <data name="InvalidModuleTable">
+  <data name="InvalidModuleTable" xml:space="preserve">
     <value>Invalid module table.</value>
   </data>
-  <data name="ModuleOrAssemblyDependsOnMoreRecentVersionOfCoreLibrary">
+  <data name="ModuleOrAssemblyDependsOnMoreRecentVersionOfCoreLibrary" xml:space="preserve">
     <value>Module or assembly depends on a version of core library that is newer than the one the Reader uses to resolve system types.</value>
   </data>
-  <data name="BadTypeDefOrRef">
+  <data name="BadTypeDefOrRef" xml:space="preserve">
     <value>Bad TypeDefOrRef.</value>
   </data>
-  <data name="AssemblyReferenceNotResolved">
+  <data name="AssemblyReferenceNotResolved" xml:space="preserve">
     <value>Assembly reference not resolved: {0}.</value>
   </data>
-  <data name="MalformedSignature">
+  <data name="MalformedSignature" xml:space="preserve">
     <value>Malformed signature.</value>
   </data>
-  <data name="BadSecurityPermissionSetBlob">
+  <data name="BadSecurityPermissionSetBlob" xml:space="preserve">
     <value>Bad security permission set blob.</value>
   </data>
-  <data name="CouldNotResolveType">
+  <data name="CouldNotResolveType" xml:space="preserve">
     <value>Could not resolve type: {0}.</value>
   </data>
-  <data name="SecurityAttributeTypeDoesNotHaveADefaultConstructor">
+  <data name="SecurityAttributeTypeDoesNotHaveADefaultConstructor" xml:space="preserve">
     <value>Security attribute type does not have a default constructor: {0}.</value>
   </data>
-  <data name="UnexpectedTypeInCustomAttribute">
+  <data name="UnexpectedTypeInCustomAttribute" xml:space="preserve">
     <value>Unexpected type in custom attribute.</value>
   </data>
-  <data name="BadSerializedTypeName">
+  <data name="BadSerializedTypeName" xml:space="preserve">
     <value>Bad serialized type name.</value>
   </data>
-  <data name="BadConstantParentIndex">
+  <data name="BadConstantParentIndex" xml:space="preserve">
     <value>Bad constant parent index.</value>
   </data>
-  <data name="InvalidLocalSignature">
+  <data name="InvalidLocalSignature" xml:space="preserve">
     <value>Invalid local signature.</value>
   </data>
-  <data name="BadCustomAttributeTypeEncodedToken">
+  <data name="BadCustomAttributeTypeEncodedToken" xml:space="preserve">
     <value>Bad CustomAttributeType encoded token.</value>
   </data>
-  <data name="BadMemberToken">
+  <data name="BadMemberToken" xml:space="preserve">
     <value>Bad member token.</value>
   </data>
-  <data name="CouldNotResolveMemberReference">
+  <data name="CouldNotResolveMemberReference" xml:space="preserve">
     <value>Could not resolve member reference: {0}.</value>
   </data>
-  <data name="InvalidBaseClass">
+  <data name="InvalidBaseClass" xml:space="preserve">
     <value>Invalid base class.</value>
   </data>
-  <data name="CannotLoadTypeExtension">
+  <data name="CannotLoadTypeExtension" xml:space="preserve">
     <value>Can't load type extension for {0}. Assembly {1} not found.</value>
   </data>
-  <data name="CollectionIsReadOnlye">
+  <data name="CollectionIsReadOnlye" xml:space="preserve">
     <value>Collection is read-only.</value>
   </data>
-  <data name="CouldNotResolveTypeReference">
+  <data name="CouldNotResolveTypeReference" xml:space="preserve">
     <value>Could not resolve type reference: {0}.</value>
   </data>
-  <data name="CouldNotFindReferencedModule">
+  <data name="CouldNotFindReferencedModule" xml:space="preserve">
     <value>Could not find referenced module: {0}.</value>
   </data>
-  <data name="CouldNotFindExportedTypeInModule">
+  <data name="CouldNotFindExportedTypeInModule" xml:space="preserve">
     <value>Could not find exported type: {0} in module {1}.</value>
   </data>
-  <data name="BadMetadataInExportTypeTableNoSuchAssemblyReference">
+  <data name="BadMetadataInExportTypeTableNoSuchAssemblyReference" xml:space="preserve">
     <value>Bad metadata in export type table: no such assembly reference.</value>
   </data>
-  <data name="CouldNotFindExportedTypeInAssembly">
+  <data name="CouldNotFindExportedTypeInAssembly" xml:space="preserve">
     <value>Could not find exported type: {0} in assembly.</value>
   </data>
-  <data name="BadMetadataInExportTypeTableNoSuchParentType">
+  <data name="BadMetadataInExportTypeTableNoSuchParentType" xml:space="preserve">
     <value>Bad metadata in export type table: no such parent type.</value>
   </data>
-  <data name="CouldNotFindExportedNestedTypeInType">
+  <data name="CouldNotFindExportedNestedTypeInType" xml:space="preserve">
     <value>Could not find exported nested type: {0} in type {1}.</value>
   </data>
-  <data name="InvalidTypeTableIndex">
+  <data name="InvalidTypeTableIndex" xml:space="preserve">
     <value>Invalid type table index.</value>
   </data>
-  <data name="BadTypeParameterInPositionForType">
+  <data name="BadTypeParameterInPositionForType" xml:space="preserve">
     <value>Bad type parameter in position {0} for type</value>
   </data>
-  <data name="BadMethodTypeParameterInPosition">
+  <data name="BadMethodTypeParameterInPosition" xml:space="preserve">
     <value>Bad method type parameter in position {0}.</value>
   </data>
-  <data name="InvalidFatMethodHeader">
+  <data name="InvalidFatMethodHeader" xml:space="preserve">
     <value>Invalid fat method header.</value>
   </data>
-  <data name="BadMethodHeaderSection">
+  <data name="BadMethodHeaderSection" xml:space="preserve">
     <value>Bad method header section.</value>
   </data>
-  <data name="TooManyMethodHeaderSections">
+  <data name="TooManyMethodHeaderSections" xml:space="preserve">
     <value>Too many method header sections.</value>
   </data>
-  <data name="BadExceptionHandlerType">
+  <data name="BadExceptionHandlerType" xml:space="preserve">
     <value>Bad exception handler type.</value>
   </data>
-  <data name="BaddCalliSignature">
+  <data name="BadCalliSignature" xml:space="preserve">
     <value>Bad calli signature.</value>
   </data>
-  <data name="UnknownOpCode">
+  <data name="UnknownOpCode" xml:space="preserve">
     <value>Unknown opcode.</value>
   </data>
-  <data name="UnknownOpCodeEncountered">
+  <data name="UnknownOpCodeEncountered" xml:space="preserve">
     <value>Unknown opCode encountered: {0}.</value>
   </data>
-  <data name="InternalCompilerError">
+  <data name="InternalCompilerError" xml:space="preserve">
     <value>Internal compiler error.</value>
   </data>
-  <data name="UnresolvedAssemblyReferenceNotAllowed">
-    <value>Unresolved assembly reference not allowed: {0}.</value>
-  </data>
-  <data name="UnresolvedModuleReferenceNotAllowed">
-    <value>Unresolved module reference not allowed.</value>
-  </data>
-  <data name="InvalidAssemblyStrongName">
+  <data name="InvalidAssemblyStrongName" xml:space="preserve">
     <value>Invalid assembly strong name: {0}.</value>
   </data>
-  <data name="KeyNeedsToBeGreaterThanZero">
+  <data name="KeyNeedsToBeGreaterThanZero" xml:space="preserve">
     <value>Key needs to be greater than 0.</value>
   </data>
-  <data name="ModuleError">
+  <data name="ModuleError" xml:space="preserve">
     <value>The following error was encountered while reading module '{0}': {1}</value>
   </data>
 </root>

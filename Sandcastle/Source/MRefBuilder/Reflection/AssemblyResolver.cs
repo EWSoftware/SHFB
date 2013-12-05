@@ -22,6 +22,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Xml.XPath;
 
 using System.Compiler;
@@ -168,13 +169,13 @@ namespace Microsoft.Ddue.Tools.Reflection
         /// This raises the <see cref="UnresolvedAssemblyReference" event/>
         /// </summary>
         /// <param name="reference">The assembly reference</param>
-        /// <param name="module">The module</param>
-        protected virtual void OnUnresolvedAssemblyReference(AssemblyReference reference, Module module)
+        /// <param name="referrer">The module requiring the reference</param>
+        protected virtual void OnUnresolvedAssemblyReference(AssemblyReference reference, Module referrer)
         {
             var handler = UnresolvedAssemblyReference;
 
             if(handler != null)
-                handler(this, new AssemblyReferenceEventArgs(reference, module));
+                handler(this, new AssemblyReferenceEventArgs(reference, referrer));
         }
         #endregion
 
@@ -205,7 +206,7 @@ namespace Microsoft.Ddue.Tools.Reflection
             string useGacValue = configuration.GetAttribute("use-gac", String.Empty);
 
             if(!String.IsNullOrEmpty(useGacValue))
-                this.UseGac = Convert.ToBoolean(useGacValue);
+                this.UseGac = Convert.ToBoolean(useGacValue, CultureInfo.InvariantCulture);
 
             // Load assembly binding redirects if specified
             foreach(XPathNavigator nav in configuration.Select("assemblyBinding/dependentAssembly"))
@@ -267,9 +268,9 @@ namespace Microsoft.Ddue.Tools.Reflection
         /// This is used to try and resolve an assembly reference
         /// </summary>
         /// <param name="reference">The assembly reference</param>
-        /// <param name="module">The module</param>
+        /// <param name="referrer">The module requiring the reference</param>
         /// <returns>The assembly node if resolved or null if not resolved</returns>
-        public virtual AssemblyNode ResolveReference(AssemblyReference reference, Module module)
+        public virtual AssemblyNode ResolveReference(AssemblyReference reference, Module referrer)
         {
             AssemblyNode assembly;
 
@@ -282,7 +283,7 @@ namespace Microsoft.Ddue.Tools.Reflection
             if(cache.ContainsKey(name))
                 return cache[name];
 
-            // Try to get it from the gac if so indicated
+            // Try to get it from the GAC if so indicated
             if(this.UseGac)
             {
                 string location = GlobalAssemblyCache.GetLocation(reference);

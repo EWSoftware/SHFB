@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SandcastleProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/28/2013
+// Updated : 12/04/2013
 // Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -64,6 +64,7 @@
 //                           Added the CatalogName property for Help Viewer 2.0 support.
 // 1.9.6.0  10/13/2012  EFW  Removed the BrandingPackageName and SelfBranded properties.  Added support for
 //                           transform component arguments.
+// 1.9.9.0  11/30/2013  EFW  Merged changes from Stazzz to support namespace grouping.
 //===============================================================================================================
 
 using System;
@@ -91,8 +92,7 @@ using SandcastleBuilder.Utils.PresentationStyle;
 namespace SandcastleBuilder.Utils
 {
     /// <summary>
-    /// This class represents all of the properties that make up a Sandcastle
-    /// Help File Builder project.
+    /// This class represents all of the properties that make up a Sandcastle Help File Builder project
     /// </summary>
     [DefaultProperty("HtmlHelpName")]
     public class SandcastleProject : IBasePathProvider, IDisposable
@@ -100,11 +100,12 @@ namespace SandcastleBuilder.Utils
         #region Constants
         //=====================================================================
 
-        // NOTE: When this changes, update the version in Resources\ProjectTemplate.txt
+        // NOTE: When this changes, update the version in Resources\ProjectTemplate.txt and in the
+        //       SancastleBuilderPackage project templates.
         /// <summary>
         /// The schema version used in the saved project files
         /// </summary>
-        public static readonly Version SchemaVersion = new Version(1, 9, 5, 0);
+        public static readonly Version SchemaVersion = new Version(1, 9, 9, 0);
 
         /// <summary>The default configuration</summary>
         public const string DefaultConfiguration = "Debug";
@@ -159,7 +160,8 @@ namespace SandcastleBuilder.Utils
         private FolderPath hhcPath, hxcompPath, sandcastlePath, workingPath;
         private FilePath buildLogFile;
         private string outputPath, frameworkVersion;
-        private bool cleanIntermediates, keepLogFile, cppCommentsFixup, disableCodeBlockComponent;
+        private bool cleanIntermediates, keepLogFile, cppCommentsFixup, disableCodeBlockComponent,
+            namespaceGrouping;
         private HelpFileFormat helpFileFormat;
         private BuildAssemblerVerbosity buildAssemblerVerbosity;
 
@@ -980,6 +982,26 @@ namespace SandcastleBuilder.Utils
 
                 this.SetProjectProperty("RootNamespaceTitle", value);
                 rootNSTitle = value;
+            }
+        }
+
+        /// <summary>
+        /// This is used to get or set whether namespace grouping is enabled.  The presentation style must have
+        /// support for namespace grouping in order for the feature to work.
+        /// </summary>
+        /// <value>If <c>true</c>, namespace grouping is enabled. Otherwise, namespace grouping is not enabled.</value>
+        /// <remarks>Namespace groups are determined automatically and they are part of API filter and may be
+        /// documented as well.</remarks>
+        [Category("Help file"), Description("If true, and if the presentation style supports it, this enables " +
+          "the namespace grouping feature.  The namespace groups behave like normal namespaces but they may " +
+          "not contain types or anything else.  Each group is determined automatically."), DefaultValue(false)]
+        public bool NamespaceGrouping
+        {
+            get { return namespaceGrouping; }
+            set
+            {
+                this.SetProjectProperty("NamespaceGrouping", value);
+                namespaceGrouping = value;
             }
         }
 
@@ -1957,13 +1979,12 @@ namespace SandcastleBuilder.Utils
         //=====================================================================
 
         /// <summary>
-        /// This is used to get or set whether or not attributes on types and
-        /// members are documented in the syntax portion of the help file.
+        /// This is used to get or set whether or not attributes on types and members are documented in the
+        /// syntax portion of the help file.
         /// </summary>
         /// <value>Set to true to document attributes or false to hide them</value>
-        [Category("Visibility"), Description("If set to true, attributes on " +
-          "types and members are documented in the syntax portion of the " +
-          "help pages.  If set to false, they are not."), DefaultValue(false),
+        [Category("Visibility"), Description("If set to true, attributes on types and members are documented " +
+          "in the syntax portion of the help pages.  If set to false, they are not."), DefaultValue(false),
           XmlIgnore]
         public bool DocumentAttributes
         {
@@ -1978,14 +1999,11 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get or set whether or not explicit interface
-        /// implementations are documented.
+        /// This is used to get or set whether or not explicit interface implementations are documented
         /// </summary>
-        /// <value>Set to true to document explicit interface implementations
-        /// or false to hide them.</value>
-        [Category("Visibility"), Description("If set to true, explicit " +
-          "interface implementations are documented.  If set to false, " +
-          "they are not."), DefaultValue(false), XmlIgnore]
+        /// <value>Set to true to document explicit interface implementations or false to hide them</value>
+        [Category("Visibility"), Description("If set to true, explicit interface implementations are " +
+          "documented.  If set to false, they are not."), DefaultValue(false), XmlIgnore]
         public bool DocumentExplicitInterfaceImplementations
         {
             get { return ((visibleItems & VisibleItems.ExplicitInterfaceImplementations) != 0); }
@@ -1999,15 +2017,11 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get or set whether or not inherited members
-        /// are documented.
+        /// This is used to get or set whether or not inherited members are documented
         /// </summary>
-        /// <value>Set to true to document inherited members or false to
-        /// hide them.</value>
-        [Category("Visibility"), Description("If set to true, inherited " +
-          "members are documented.  If set to false, they are not."),
-          DefaultValue(true), RefreshProperties(RefreshProperties.All),
-          XmlIgnore]
+        /// <value>Set to true to document inherited members or false to hide them</value>
+        [Category("Visibility"), Description("If set to true, inherited members are documented.  If set to " +
+          "false, they are not."), DefaultValue(true), RefreshProperties(RefreshProperties.All), XmlIgnore]
         public bool DocumentInheritedMembers
         {
             get { return ((visibleItems & VisibleItems.InheritedMembers) != 0); }
@@ -2024,17 +2038,13 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get or set whether or not inherited framework
-        /// members are documented.
+        /// This is used to get or set whether or not inherited framework members are documented
         /// </summary>
-        /// <value>Set to true to document inherited framework members or
-        /// false to hide them.  For this to work,
+        /// <value>Set to true to document inherited framework members or false to hide them.  For this to work,
         /// <see cref="DocumentInheritedMembers"/> must also be enabled.</value>
-        [Category("Visibility"), Description("If set to true, inherited " +
-          "framework members are documented.  If set to false, they are " +
-          "not.  NOTE: To work, DocumentInheritedMembers must also be set " +
-          "to True."), DefaultValue(true), XmlIgnore,
-          RefreshProperties(RefreshProperties.All)]
+        [Category("Visibility"), Description("If set to true, inherited framework members are documented.  If " +
+          "set to false, they are not.  NOTE: To work, DocumentInheritedMembers must also be set to True."),
+          DefaultValue(true), XmlIgnore, RefreshProperties(RefreshProperties.All)]
         public bool DocumentInheritedFrameworkMembers
         {
             get { return ((visibleItems & VisibleItems.InheritedFrameworkMembers) != 0); }
@@ -2051,48 +2061,15 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get or set whether or not inherited private
-        /// framework members are documented.
+        /// This is used to get or set whether or not inherited internal framework members are documented
         /// </summary>
-        /// <value>Set to true to document inherited private framework members
-        /// or false to hide them.  For this to work,
-        /// <see cref="DocumentInheritedFrameworkMembers"/> and
-        /// <see cref="DocumentPrivates"/> must also be enabled.</value>
-        [Category("Visibility"), Description("If set to true, inherited " +
-          "private framework members are documented.  If set to false, they " +
-          "are not.  NOTE: To work, DocumentInheritedFrameworkMembers and " +
-          "DocumentPrivates also be set to True."), DefaultValue(false),
-          XmlIgnore, RefreshProperties(RefreshProperties.All)]
-        public bool DocumentInheritedFrameworkPrivateMembers
-        {
-            get { return ((visibleItems & VisibleItems.InheritedFrameworkPrivateMembers) != 0); }
-            set
-            {
-                if(value)
-                {
-                    this.VisibleItems |= (VisibleItems.InheritedMembers |
-                        VisibleItems.InheritedFrameworkMembers |
-                        VisibleItems.InheritedFrameworkPrivateMembers);
-                    this.DocumentPrivates = true;
-                }
-                else
-                    this.VisibleItems &= ~VisibleItems.InheritedFrameworkPrivateMembers;
-            }
-        }
-
-        /// <summary>
-        /// This is used to get or set whether or not inherited internal
-        /// framework members are documented.
-        /// </summary>
-        /// <value>Set to true to document inherited internal framework members
-        /// or false to hide them.  For this to work,
-        /// <see cref="DocumentInheritedFrameworkMembers"/> and
-        /// <see cref="DocumentInternals"/> must also be enabled.</value>
-        [Category("Visibility"), Description("If set to true, inherited " +
-          "internal framework members are documented.  If set to false, they " +
-          "are not.  NOTE: To work, DocumentInheritedFrameworkMembers and " +
-          "DocumentInternals also be set to True."), DefaultValue(false),
-          XmlIgnore, RefreshProperties(RefreshProperties.All)]
+        /// <value>Set to true to document inherited internal framework members or false to hide them.  For this
+        /// to work, <see cref="DocumentInheritedFrameworkMembers"/> and <see cref="DocumentInternals"/> must
+        /// also be enabled.</value>
+        [Category("Visibility"), Description("If set to true, inherited internal framework members are " +
+          "documented.  If set to false, they are not.  NOTE: To work, DocumentInheritedFrameworkMembers and " +
+          "DocumentInternals also be set to True."), DefaultValue(false), XmlIgnore,
+          RefreshProperties(RefreshProperties.All)]
         public bool DocumentInheritedFrameworkInternalMembers
         {
             get { return ((visibleItems & VisibleItems.InheritedFrameworkInternalMembers) != 0); }
@@ -2111,14 +2088,38 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get or set whether or not internal members are
-        /// documented in the help file.
+        /// This is used to get or set whether or not inherited private framework members are documented
         /// </summary>
-        /// <value>Set to true to document internal members or false to hide
-        /// them</value>
-        [Category("Visibility"), Description("If set to true, internal " +
-          "members are documented in the help file.  If set to false, " +
-          "they are not."), DefaultValue(false), XmlIgnore,
+        /// <value>Set to true to document inherited private framework members or false to hide them.  For this
+        /// to work, <see cref="DocumentInheritedFrameworkMembers"/> and <see cref="DocumentPrivates"/> must also
+        /// be enabled.</value>
+        [Category("Visibility"), Description("If set to true, inherited private framework members are " +
+          "documented.  If set to false, they are not.  NOTE: To work, DocumentInheritedFrameworkMembers and " +
+          "DocumentPrivates also be set to True."), DefaultValue(false), XmlIgnore,
+          RefreshProperties(RefreshProperties.All)]
+        public bool DocumentInheritedFrameworkPrivateMembers
+        {
+            get { return ((visibleItems & VisibleItems.InheritedFrameworkPrivateMembers) != 0); }
+            set
+            {
+                if(value)
+                {
+                    this.VisibleItems |= (VisibleItems.InheritedMembers |
+                        VisibleItems.InheritedFrameworkMembers |
+                        VisibleItems.InheritedFrameworkPrivateMembers);
+                    this.DocumentPrivates = true;
+                }
+                else
+                    this.VisibleItems &= ~VisibleItems.InheritedFrameworkPrivateMembers;
+            }
+        }
+
+        /// <summary>
+        /// This is used to get or set whether or not internal members are documented in the help file
+        /// </summary>
+        /// <value>Set to true to document internal members or false to hide them</value>
+        [Category("Visibility"), Description("If set to true, internal members are documented in the help " +
+          "file.  If set to false, they are not."), DefaultValue(false), XmlIgnore,
           RefreshProperties(RefreshProperties.All)]
         public bool DocumentInternals
         {
@@ -2136,14 +2137,11 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get or set whether or not private members are
-        /// documented in the help file.
+        /// This is used to get or set whether or not private members are documented in the help file
         /// </summary>
-        /// <value>Set to true to document private members or false to hide
-        /// them</value>
-        [Category("Visibility"), Description("If set to true, private " +
-          "members are documented in the help file.  If set to false, " +
-          "they are not."), DefaultValue(false), XmlIgnore,
+        /// <value>Set to true to document private members or false to hide them</value>
+        [Category("Visibility"), Description("If set to true, private members are documented in the help " +
+          "file.  If set to false, they are not."), DefaultValue(false), XmlIgnore,
           RefreshProperties(RefreshProperties.All)]
         public bool DocumentPrivates
         {
@@ -2161,19 +2159,15 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get or set whether or not private fields are
-        /// documented in the help file.
+        /// This is used to get or set whether or not private fields are documented in the help file
         /// </summary>
-        /// <value>Set to true to document private fields or false to hide
-        /// them.  For this to work, <see cref="DocumentPrivates"/> must
-        /// also be enabled.</value>
-        /// <remarks>Private fields are most often used to back properties
-        /// and do not have documentation.  With this set to false, they
-        /// are omitted from the help file to reduce unnecessary clutter.</remarks>
-        [Category("Visibility"), Description("If set to true, private " +
-          "fields are documented in the help file.  If set to false, " +
-          "they are not.  NOTE: To work, DocumentPrivates must also be set " +
-          "to True."), DefaultValue(false), XmlIgnore]
+        /// <value>Set to true to document private fields or false to hide them.  For this to work,
+        /// <see cref="DocumentPrivates"/> must also be enabled.</value>
+        /// <remarks>Private fields are most often used to back properties and do not have documentation.  With
+        /// this set to false, they are omitted from the help file to reduce unnecessary clutter.</remarks>
+        [Category("Visibility"), Description("If set to true, private fields are documented in the help file.  " +
+          "If set to false, they are not.  NOTE: To work, DocumentPrivates must also be set to True."),
+          DefaultValue(false), XmlIgnore]
         public bool DocumentPrivateFields
         {
             get { return ((visibleItems & VisibleItems.PrivateFields) != 0); }
@@ -2187,14 +2181,11 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get or set whether or not protected members are
-        /// documented in the help file.
+        /// This is used to get or set whether or not protected members are documented in the help file
         /// </summary>
-        /// <value>Set to true to document protected members or false to hide
-        /// them</value>
-        [Category("Visibility"), Description("If set to true, protected " +
-          "members are documented in the help file.  If set to false, " +
-          "they are not."), DefaultValue(true), XmlIgnore,
+        /// <value>Set to true to document protected members or false to hide them</value>
+        [Category("Visibility"), Description("If set to true, protected members are documented in the help " +
+          "file.  If set to false, they are not."), DefaultValue(true), XmlIgnore,
           RefreshProperties(RefreshProperties.All)]
         public bool DocumentProtected
         {
@@ -2203,24 +2194,41 @@ namespace SandcastleBuilder.Utils
             {
                 if(value)
                     this.VisibleItems |= VisibleItems.Protected;
-
                 else
                     this.VisibleItems &= ~(VisibleItems.Protected | VisibleItems.SealedProtected);
             }
         }
 
         /// <summary>
-        /// This is used to get or set whether or not "protected internal"
-        /// members are documented as "protected" only in the help file.
+        /// This is used to get or set whether or not protected members of sealed classes are documented in the
+        /// help file.
         /// </summary>
-        /// <value>Set to true to document "protected internal" members
-        /// as "protected" only or false to document them normally.  This
-        /// option is ignored if <see cref="DocumentProtected"/> is false.</value>
-        [Category("Visibility"), Description("If set to true, \"protected " +
-          "internal\" members are documented as \"protected\" only.  If " +
-          "set to false, they documented normally.  NOTE: This option is " +
-          "ignored if DocumentProtected is false"), DefaultValue(false),
-          XmlIgnore]
+        /// <value>Set to true to document protected members of sealed classes or false to hide them. For this to
+        /// work, <see cref="DocumentProtected"/> must also be enabled.</value>
+        [Category("Visibility"), Description("If set to true, protected members of sealed classes are " +
+          "documented in the help file.  If set to false, they are not.  NOTE: To work, DocumentProtected " +
+          "must also be enabled."), RefreshProperties(RefreshProperties.All), DefaultValue(false), XmlIgnore]
+        public bool DocumentSealedProtected
+        {
+            get { return ((visibleItems & VisibleItems.SealedProtected) != 0); }
+            set
+            {
+                if(value)
+                    this.VisibleItems |= (VisibleItems.SealedProtected | VisibleItems.Protected);
+                else
+                    this.VisibleItems &= ~VisibleItems.SealedProtected;
+            }
+        }
+
+        /// <summary>
+        /// This is used to get or set whether or not "protected internal" members are documented as "protected"
+        /// only in the help file.
+        /// </summary>
+        /// <value>Set to true to document "protected internal" members as "protected" only or false to document
+        /// them normally.  This option is ignored if <see cref="DocumentProtected"/> is false.</value>
+        [Category("Visibility"), Description("If set to true, \"protected internal\" members are documented as " +
+          "\"protected\" only.  If set to false, they documented normally.  NOTE: This option is ignored if " +
+          "DocumentProtected is false"), DefaultValue(true), XmlIgnore]
         public bool DocumentProtectedInternalAsProtected
         {
             get { return ((visibleItems & VisibleItems.ProtectedInternalAsProtected) != 0); }
@@ -2234,26 +2242,22 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get or set whether or not protected members of
-        /// sealed classes are documented in the help file.
+        /// This is used to get or set whether or not no-PIA (Primary Interop Assembly) embedded interop types
+        /// are documented in the help file.
         /// </summary>
-        /// <value>Set to true to document protected members of sealed classes
-        /// or false to hide them. For this to work,
-        /// <see cref="DocumentProtected"/> must also be enabled.</value>
-        [Category("Visibility"), Description("If set to true, protected " +
-          "members of sealed classes are documented in the help file.  If " +
-          "set to false, they are not.  NOTE: To work, DocumentProtected " +
-          "must also be enabled."), RefreshProperties(RefreshProperties.All),
-          DefaultValue(true), XmlIgnore]
-        public bool DocumentSealedProtected
+        /// <value>Set to true to document no-PIA COM types or false to hide them</value>
+        [Category("Visibility"), Description("If set to true, no-PIA (Primary Interop Assembly) embedded " +
+          "interop types are documented in the help file.  If set to false, they are not."), DefaultValue(true),
+          XmlIgnore]
+        public bool DocumentNoPIATypes
         {
-            get { return ((visibleItems & VisibleItems.SealedProtected) != 0); }
+            get { return ((visibleItems & VisibleItems.NoPIATypes) != 0); }
             set
             {
                 if(value)
-                    this.VisibleItems |= (VisibleItems.SealedProtected | VisibleItems.Protected);
+                    this.VisibleItems |= VisibleItems.NoPIATypes;
                 else
-                    this.VisibleItems &= ~VisibleItems.SealedProtected;
+                    this.VisibleItems &= ~VisibleItems.NoPIATypes;
             }
         }
 
@@ -2944,7 +2948,7 @@ namespace SandcastleBuilder.Utils
                     MissingTags.AutoDocumentDispose;
 
                 visibleItems = VisibleItems.InheritedFrameworkMembers | VisibleItems.InheritedMembers |
-                    VisibleItems.Protected | VisibleItems.SealedProtected;
+                    VisibleItems.Protected | VisibleItems.ProtectedInternalAsProtected;
 
                 buildAssemblerVerbosity = BuildAssemblerVerbosity.OnlyWarningsAndErrors;
                 helpFileFormat = HelpFileFormat.HtmlHelp1;

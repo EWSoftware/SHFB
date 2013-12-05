@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : PresentationStyleSettings.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/22/2013
+// Updated : 11/30/2013
 // Note    : Copyright 2012-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -17,10 +17,12 @@
 // ==============================================================================================================
 // 1.9.6.0  10/24/2012  EFW  Created the code
 // 1.9.8.0  06/21/2013  EFW  Added support for format-specific help content files
+// 1.9.9.0  11/30/2013  EFW  Merged changes from Stazzz to support namespace grouping
 //===============================================================================================================
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
@@ -73,6 +75,12 @@ namespace SandcastleBuilder.Utils.PresentationStyle
         public HelpFileFormat HelpFileFormats { get; private set; }
 
         /// <summary>
+        /// This read-only property returns whether or not namespace logical grouping is supported by the
+        /// presentation style.
+        /// </summary>
+        public bool NamespaceGroupingSupported { get; private set; }
+
+        /// <summary>
         /// This read-only property returns an enumerable list of help content file locations
         /// </summary>
         public IEnumerable<ContentFiles> ContentFiles
@@ -111,7 +119,7 @@ namespace SandcastleBuilder.Utils.PresentationStyle
         public string ReferenceBuildConfiguration { get; private set; }
 
         /// <summary>
-        /// This read-only property retuns the transform component arguments if any
+        /// This read-only property returns the transform component arguments if any
         /// </summary>
         public IEnumerable<TransformComponentArgument> TransformComponentArguments
         {
@@ -154,7 +162,8 @@ namespace SandcastleBuilder.Utils.PresentationStyle
                 docModel = style.Descendants("DocumentModelTransformation").FirstOrDefault(),
                 toc = style.Descendants("IntermediateTOCTransformation").FirstOrDefault(),
                 conceptual = style.Descendants("ConceptualBuildConfiguration").FirstOrDefault(),
-                reference = style.Descendants("ReferenceBuildConfiguration").FirstOrDefault();
+                reference = style.Descendants("ReferenceBuildConfiguration").FirstOrDefault(),
+                nsGroupingSupported = style.Descendants("NamespaceGroupingSupported").FirstOrDefault();
 
             if(resourceItems == null)
                 throw new InvalidOperationException("ResourceItems element is missing");
@@ -185,7 +194,9 @@ namespace SandcastleBuilder.Utils.PresentationStyle
                 DocumentModelTransformation = new TransformationFile(docModel),
                 IntermediateTocTransformation = new TransformationFile(toc),
                 ConceptualBuildConfiguration = conceptual.Attribute("File").Value,
-                ReferenceBuildConfiguration = reference.Attribute("File").Value
+                ReferenceBuildConfiguration = reference.Attribute("File").Value,
+                NamespaceGroupingSupported = nsGroupingSupported != null && Convert.ToBoolean(
+                    nsGroupingSupported.Value, CultureInfo.InvariantCulture)
             };
 
             foreach(var format in style.Descendants("SupportedFormats").Descendants("Format"))
@@ -357,7 +368,7 @@ namespace SandcastleBuilder.Utils.PresentationStyle
                     }
 
                     if(progressReporter != null)
-                        progressReporter("{0} -> {1}", new[] { name, filename});
+                        progressReporter("{0} -> {1}", new[] { name, filename });
                 }
             }
 

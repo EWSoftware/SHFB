@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : ConvertFromNDoc.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/17/2012
-// Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
+// Updated : 11/30/2013
+// Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class used to convert NDoc 1.x project files to the MSBuild format project files used by
@@ -131,13 +131,12 @@ namespace SandcastleBuilder.Utils.Conversion
                 foreach(XPathNavigator ns in navNDoc.Select(
                   "project/namespaces/namespace"))
                     if(!String.IsNullOrEmpty(ns.InnerXml))
-                        project.NamespaceSummaries.Add(ns.GetAttribute("name",
-                            String.Empty), true, ns.InnerXml);
+                        project.NamespaceSummaries.Add(ns.GetAttribute("name", String.Empty), false, true,
+                            ns.InnerXml);
 
                 // Add one for the global namespace if it isn't there
                 if(project.NamespaceSummaries[String.Empty] == null)
-                    project.NamespaceSummaries.Add(String.Empty, false,
-                        String.Empty);
+                    project.NamespaceSummaries.Add(String.Empty, false, false, String.Empty);
 
                 project.NamespaceSummaries.Sort();
 

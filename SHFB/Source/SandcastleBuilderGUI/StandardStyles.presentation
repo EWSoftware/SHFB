@@ -27,6 +27,10 @@
 			<Format Type="Website" />
 		</SupportedFormats>
 
+		<!-- This is used to indicate whether or not the presentation style supports the namespace grouping option
+		     used to logically group namespaces with a common root name.  The default if omitted is false. -->
+		<NamespaceGroupingSupported>false</NamespaceGroupingSupported>
+
 		<!-- This defines the content from the presentation style that should be embedded in the compiled help file. -->
 		<HelpContent>
 			<!-- These define the files to copy and their destination in the compiled help file.  The Source attribute
@@ -97,7 +101,11 @@
 					 used (i.e. the syntax filter language definitions).  The Description attribute provides a description
 					 of the parameter that can be displayed by build tools. -->
 			<Argument Key="logoFile" ForConceptualBuild="true" ForReferenceBuild="true" Value=""
-					Description="An optional logo file to insert into the topic headers.  Specify the filename only, omit the path.  Place the file in your project in an Icons\ folder and set the Build Action to Content.  If blank, no logo will appear in the topic headers."/>
+					Description="An optional logo file to insert into the topic headers.  Specify the filename only, omit
+the path.  Place the file in your project in an icons\ folder and set the Build Action to Content.  If blank, no
+logo will appear in the topic headers.  If building website output and your web server is case-sensitive, be
+sure to match the case of the folder name in your project with that of the presentation style.  The same applies
+to the logo filename itself."/>
 			<Argument Key="logoHeight" ForConceptualBuild="true" ForReferenceBuild="true" Value=""
 					Description="An optional logo height.  If left blank, the actual logo image height is used."/>
 			<Argument Key="logoWidth" ForConceptualBuild="true" ForReferenceBuild="true" Value=""
@@ -105,9 +113,11 @@
 			<Argument Key="logoAltText" ForConceptualBuild="true" ForReferenceBuild="true" Value=""
 					Description="Optional logo alternate text.  If left blank, no alternate text is added."/>
 			<Argument Key="logoPlacement" ForConceptualBuild="true" ForReferenceBuild="true" Value="left"
-					Description="An optional logo placement.  Specify left, right, or above.  If not specified, the default is left."/>
+					Description="An optional logo placement.  Specify left, right, or above.  If not specified, the default
+is left."/>
 			<Argument Key="logoAlignment" ForConceptualBuild="true" ForReferenceBuild="true" Value="left"
-					Description="An optional logo alignment when using the 'above' placement option.  Specify left, right, or center.  If not specified, the default is left."/>
+					Description="An optional logo alignment when using the 'above' placement option.  Specify left, right,
+or center.  If not specified, the default is left."/>
 
 			<!-- An example of a complex content argument for reference builds only:
 			<Argument Key="complexParameter" ForConceptualBuild="false" ForReferenceBuild="true"
@@ -128,6 +138,8 @@
 			<Format Type="MSHelpViewer" />
 			<Format Type="Website" />
 		</SupportedFormats>
+
+		<NamespaceGroupingSupported>false</NamespaceGroupingSupported>
 
 		<HelpContent>
 			<Files Source="icons\*.*" />
@@ -155,7 +167,11 @@
 
 		<TransformComponentArguments>
 			<Argument Key="logoFile" ForConceptualBuild="true" ForReferenceBuild="true" Value=""
-					Description="An optional logo file to insert into the topic headers.  Specify the filename only, omit the path.  Place the file in your project in an Icons\ folder and set the Build Action to Content.  If blank, no logo will appear in the topic headers."/>
+					Description="An optional logo file to insert into the topic headers.  Specify the filename only, omit
+the path.  Place the file in your project in an icons\ folder and set the Build Action to Content.  If blank, no
+logo will appear in the topic headers.  If building website output and your web server is case-sensitive, be
+sure to match the case of the folder name in your project with that of the presentation style.  The same applies
+to the logo filename itself."/>
 			<Argument Key="logoHeight" ForConceptualBuild="true" ForReferenceBuild="true" Value=""
 					Description="An optional logo height.  If left blank, the actual logo image height is used."/>
 			<Argument Key="logoWidth" ForConceptualBuild="true" ForReferenceBuild="true" Value=""
@@ -163,14 +179,17 @@
 			<Argument Key="logoAltText" ForConceptualBuild="true" ForReferenceBuild="true" Value=""
 					Description="Optional logo alternate text.  If left blank, no alternate text is added."/>
 			<Argument Key="logoPlacement" ForConceptualBuild="true" ForReferenceBuild="true" Value="left"
-					Description="An optional logo placement.  Specify left, right, or above.  If not specified, the default is left."/>
+					Description="An optional logo placement.  Specify left, right, or above.  If not specified, the default
+is left."/>
 			<Argument Key="logoAlignment" ForConceptualBuild="true" ForReferenceBuild="true" Value="left"
-					Description="An optional logo alignment when using the 'above' placement option.  Specify left, right, or center.  If not specified, the default is left."/>
+					Description="An optional logo alignment when using the 'above' placement option.  Specify left, right,
+or center.  If not specified, the default is left."/>
 		</TransformComponentArguments>
 	</PresentationStyle>
 
 	<PresentationStyle ID="Hana" Title="Hana (Deprecated)" BasePath="%DXROOT%\Presentation\Hana">
-		<Description>This style has been deprecated and is no longer supported.  It was an experimental style that was never used in production by Microsoft.</Description>
+		<Description>This style has been deprecated and is no longer supported.  It was an experimental style that
+was never used in production by Microsoft.</Description>
 
 		<!-- This deprecated style does not support the MS Help Viewer format -->
 		<SupportedFormats>
@@ -178,6 +197,8 @@
 			<Format Type="MSHelp2" />
 			<Format Type="Website" />
 		</SupportedFormats>
+
+		<NamespaceGroupingSupported>false</NamespaceGroupingSupported>
 
 		<HelpContent>
 			<Files Source="icons\*.*" />
@@ -205,7 +226,11 @@
 
 		<TransformComponentArguments>
 			<Argument Key="logoFile" ForConceptualBuild="true" ForReferenceBuild="true" Value=""
-					Description="An optional logo file to insert into the topic headers.  Specify the filename only, omit the path.  Place the file in your project in an Icons\ folder and set the Build Action to Content.  If blank, no logo will appear in the topic headers."/>
+					Description="An optional logo file to insert into the topic headers.  Specify the filename only, omit
+the path.  Place the file in your project in an icons\ folder and set the Build Action to Content.  If blank, no
+logo will appear in the topic headers.  If building website output and your web server is case-sensitive, be
+sure to match the case of the folder name in your project with that of the presentation style.  The same applies
+to the logo filename itself."/>
 			<Argument Key="logoHeight" ForConceptualBuild="true" ForReferenceBuild="true" Value=""
 					Description="An optional logo height.  If left blank, the actual logo image height is used."/>
 			<Argument Key="logoWidth" ForConceptualBuild="true" ForReferenceBuild="true" Value=""
@@ -213,14 +238,17 @@
 			<Argument Key="logoAltText" ForConceptualBuild="true" ForReferenceBuild="true" Value=""
 					Description="Optional logo alternate text.  If left blank, no alternate text is added."/>
 			<Argument Key="logoPlacement" ForConceptualBuild="true" ForReferenceBuild="true" Value="left"
-					Description="An optional logo placement.  Specify left, right, or above.  If not specified, the default is left."/>
+					Description="An optional logo placement.  Specify left, right, or above.  If not specified, the default
+is left."/>
 			<Argument Key="logoAlignment" ForConceptualBuild="true" ForReferenceBuild="true" Value="left"
-					Description="An optional logo alignment when using the 'above' placement option.  Specify left, right, or center.  If not specified, the default is left."/>
+					Description="An optional logo alignment when using the 'above' placement option.  Specify left, right,
+or center.  If not specified, the default is left."/>
 		</TransformComponentArguments>
 	</PresentationStyle>
 
 	<PresentationStyle ID="Prototype" Title="Prototype (Deprecated)" BasePath="%DXROOT%\Presentation\Prototype">
-		<Description>This style has been deprecated and is no longer supported.  It was the first style provided with Sandcastle.</Description>
+		<Description>This style has been deprecated and is no longer supported.  It was the first style provided with
+Sandcastle.</Description>
 
 		<!-- This deprecated style does not support the MS Help Viewer format -->
 		<SupportedFormats>
@@ -228,6 +256,8 @@
 			<Format Type="MSHelp2" />
 			<Format Type="Website" />
 		</SupportedFormats>
+
+		<NamespaceGroupingSupported>false</NamespaceGroupingSupported>
 
 		<HelpContent>
 			<Files Source="icons\*.*" />
@@ -257,7 +287,11 @@
 
 		<TransformComponentArguments>
 			<Argument Key="logoFile" ForConceptualBuild="true" ForReferenceBuild="true" Value=""
-					Description="An optional logo file to insert into the topic headers.  Specify the filename only, omit the path.  Place the file in your project in an Icons\ folder and set the Build Action to Content.  If blank, no logo will appear in the topic headers."/>
+					Description="An optional logo file to insert into the topic headers.  Specify the filename only, omit
+the path.  Place the file in your project in an icons\ folder and set the Build Action to Content.  If blank, no
+logo will appear in the topic headers.  If building website output and your web server is case-sensitive, be
+sure to match the case of the folder name in your project with that of the presentation style.  The same applies
+to the logo filename itself."/>
 			<Argument Key="logoHeight" ForConceptualBuild="true" ForReferenceBuild="true" Value=""
 					Description="An optional logo height.  If left blank, the actual logo image height is used."/>
 			<Argument Key="logoWidth" ForConceptualBuild="true" ForReferenceBuild="true" Value=""
@@ -265,9 +299,11 @@
 			<Argument Key="logoAltText" ForConceptualBuild="true" ForReferenceBuild="true" Value=""
 					Description="Optional logo alternate text.  If left blank, no alternate text is added."/>
 			<Argument Key="logoPlacement" ForConceptualBuild="true" ForReferenceBuild="true" Value="left"
-					Description="An optional logo placement.  Specify left, right, or above.  If not specified, the default is left."/>
+					Description="An optional logo placement.  Specify left, right, or above.  If not specified, the default
+is left."/>
 			<Argument Key="logoAlignment" ForConceptualBuild="true" ForReferenceBuild="true" Value="left"
-					Description="An optional logo alignment when using the 'above' placement option.  Specify left, right, or center.  If not specified, the default is left."/>
+					Description="An optional logo alignment when using the 'above' placement option.  Specify left, right,
+or center.  If not specified, the default is left."/>
 		</TransformComponentArguments>
 	</PresentationStyle>
 

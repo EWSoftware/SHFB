@@ -6,37 +6,20 @@
 // Change history:
 // 09/10/2012 - EFW - Added support to the TargetPlatform class for using the Frameworks.xml file to load
 // framework assembly information.
+// 11/22/2013 - EFW - Cleared out the conditional statements
 
-using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
-#if FxCop
-using InterfaceList = Microsoft.Cci.InterfaceCollection;
-using TypeNodeList = Microsoft.Cci.TypeNodeCollection;
-using Module = Microsoft.Cci.ModuleNode;
-using Class = Microsoft.Cci.ClassNode;
-using Interface = Microsoft.Cci.InterfaceNode;
-#endif
-#if CCINamespace
-using Microsoft.Cci.Metadata;
-#else
 using System.Compiler.Metadata;
-#endif
 
-#if CCINamespace
-namespace Microsoft.Cci{
-#else
 namespace System.Compiler
 {
-#endif
-#if !FxCop
-    public
-#endif
- sealed class SystemAssemblyLocation
+    public static class SystemAssemblyLocation
     {
         static string location;
+
         public static string Location
         {
             get
@@ -51,43 +34,19 @@ namespace System.Compiler
         }
         public static AssemblyNode ParsedAssembly;
     }
-#if ExtendedRuntime
-  public sealed class SystemCompilerRuntimeAssemblyLocation{
-    public static string Location {
-      get { return location; }
-      set {
-        location = value;
-        Identifier id = Identifier.For("System.Compiler.Runtime");
-        AssemblyReference aref = (AssemblyReference)TargetPlatform.AssemblyReferenceFor[id.UniqueIdKey];
-        if (aref == null) {
-          aref = new AssemblyReference(typeof(ComposerAttribute).Assembly.FullName);
-          TargetPlatform.AssemblyReferenceFor[id.UniqueIdKey] = aref;
-        }
-        aref.Location = value;
-      }
-    }
-    private static string location = null; //Can be set by compiler in cross compilation scenarios
-    public static AssemblyNode ParsedAssembly;
-  }
-#endif
-#if !NoData && !ROTOR
-    public sealed class SystemDataAssemblyLocation
+
+    public static class SystemDataAssemblyLocation
     {
         public static string Location = null;
     }
-#endif
-#if !NoXml && !NoRuntimeXml
-    public sealed class SystemXmlAssemblyLocation
+
+    public static class SystemXmlAssemblyLocation
     {
         public static string Location = null;
     }
-#endif
-#if !FxCop
-    public
-#endif
- sealed class TargetPlatform
+
+    public static class TargetPlatform
     {
-        private TargetPlatform() { }
         public static bool DoNotLockFiles;
         public static bool GetDebugInfo;
         public static char GenericTypeNamesMangleChar = '_';
@@ -110,15 +69,8 @@ namespace System.Compiler
         public static void Clear()
         {
             SystemAssemblyLocation.Location = null;
-#if ExtendedRuntime
-      SystemCompilerRuntimeAssemblyLocation.Location = null;
-#endif
-#if !NoData && !ROTOR
             SystemDataAssemblyLocation.Location = null;
-#endif
-#if !NoXml && !NoRuntimeXml
             SystemXmlAssemblyLocation.Location = null;
-#endif
             TargetPlatform.DoNotLockFiles = false;
             TargetPlatform.GetDebugInfo = false;
             TargetPlatform.PlatformAssembliesLocation = "";
@@ -128,12 +80,8 @@ namespace System.Compiler
         {
             get { return Reader.StaticAssemblyCache; }
         }
-        public static Version TargetVersion =
-#if WHIDBEY
- new Version(2, 0, 50727);  // Default for a WHIDBEY compiler
-#else
-      new Version(1, 0, 5000);  // Default for an Everett compiler
-#endif
+
+        public static Version TargetVersion = new Version(2, 0, 50727);  // Default for a Whidbey compiler
         public static string TargetRuntimeVersion;
 
         public static int LinkerMajorVersion
@@ -176,7 +124,7 @@ namespace System.Compiler
                 TargetPlatform.assemblyReferenceFor = value;
             }
         }
-#if !FxCop
+
         private readonly static string[]/*!*/ FxAssemblyNames =
           new string[]{"Accessibility", "CustomMarshalers", "IEExecRemote", "IEHost", "IIEHost", "ISymWrapper", 
                     "Microsoft.JScript", "Microsoft.VisualBasic", "Microsoft.VisualBasic.Vsa", "Microsoft.VisualC",
@@ -237,22 +185,20 @@ namespace System.Compiler
                     "2.0.0.0", "2.0.0.0", "2.0.0.0", "2.0.0.0", "2.0.0.0",
                     "2.0.0.0", "2.0.0.0", "2.0.0.0", "2.0.0.0", "2.0.0.0", "8.0.0.0",
                     "2.0.0.0", "2.0.0.0", "2.0.0.0", "2.0.0.0", "2.0.0.0", "2.0.0.0", "2.0.0.0", "2.0.0.0"};
-#endif
+
         private static void SetupAssemblyReferenceFor()
         {
-#if FxCop
-      TargetPlatform.SetToPostV1_1(Path.GetDirectoryName(typeof(object).Module.Assembly.Location));
-#else
             Version version = TargetPlatform.TargetVersion;
             if (version == null) version = typeof(object).Module.Assembly.GetName().Version;
             TargetPlatform.SetTo(version);
-#endif
         }
-#if !FxCop
+
         public static void SetTo(Version/*!*/ version)
         {
-            if (version == null) throw new ArgumentNullException();
-            if (version.Major == 1)
+            if(version == null)
+                throw new ArgumentNullException("version");
+
+            if(version.Major == 1)
             {
                 if (version.Minor == 0 && version.Build == 3300) TargetPlatform.SetToV1();
                 else if (version.Minor == 0 && version.Build == 5000) TargetPlatform.SetToV1_1();
@@ -268,8 +214,13 @@ namespace System.Compiler
         }
         public static void SetTo(Version/*!*/ version, string/*!*/ platformAssembliesLocation)
         {
-            if (version == null || platformAssembliesLocation == null) throw new ArgumentNullException();
-            if (version.Major == 1)
+            if(version == null)
+                throw new ArgumentNullException("version");
+
+            if(platformAssembliesLocation == null)
+                throw new ArgumentNullException("platformAssembliesLocation");
+
+            if(version.Major == 1)
             {
                 if (version.Minor == 0 && version.Build == 3300) TargetPlatform.SetToV1(platformAssembliesLocation);
                 else if (version.Minor == 0 && version.Build == 5000) TargetPlatform.SetToV1_1(platformAssembliesLocation);
@@ -308,9 +259,6 @@ namespace System.Compiler
                 assemblyReferenceFor[Identifier.For(name).UniqueIdKey] = aref;
             }
             TargetPlatform.assemblyReferenceFor = assemblyReferenceFor;
-#if ExtendedRuntime
-      SystemCompilerRuntimeAssemblyLocation.Location = SystemCompilerRuntimeAssemblyLocation.Location;
-#endif
         }
         public static void SetToV1_1()
         {
@@ -365,9 +313,6 @@ namespace System.Compiler
                 assemblyReferenceFor[Identifier.For(name).UniqueIdKey] = aref;
             }
             TargetPlatform.assemblyReferenceFor = assemblyReferenceFor;
-#if ExtendedRuntime
-      SystemCompilerRuntimeAssemblyLocation.Location = SystemCompilerRuntimeAssemblyLocation.Location;
-#endif
         }
         public static void SetToV2Beta1()
         {
@@ -436,11 +381,8 @@ namespace System.Compiler
                 assemblyReferenceFor[Identifier.For(name).UniqueIdKey] = aref;
             }
             TargetPlatform.assemblyReferenceFor = assemblyReferenceFor;
-#if ExtendedRuntime
-      SystemCompilerRuntimeAssemblyLocation.Location = SystemCompilerRuntimeAssemblyLocation.Location;
-#endif
         }
-#endif
+
         /// <summary>
         /// Use this to set the target platform to a platform with a superset of the platform assemblies in version 1.1, but
         /// where the public key tokens and versions numbers are determined by reading in the actual assemblies from
@@ -452,9 +394,6 @@ namespace System.Compiler
             TargetPlatform.TargetVersion = new Version(1, 1, 9999);
             TargetPlatform.TargetRuntimeVersion = "v1.1.9999";
             TargetPlatform.InitializeStandardAssemblyLocationsWithDefaultValues(platformAssembliesLocation);
-#if FxCop
-      TargetPlatform.assemblyReferenceFor = new TrivialHashtable(0);
-#else
             TargetPlatform.assemblyReferenceFor = new TrivialHashtable(46);
             string[] dlls = Directory.GetFiles(platformAssembliesLocation, "*.dll");
             foreach (string dll in dlls)
@@ -467,32 +406,16 @@ namespace System.Compiler
                 if (assem == null) continue;
                 TargetPlatform.assemblyReferenceFor[Identifier.For(assem.Name).UniqueIdKey] = new AssemblyReference(assem);
             }
-#endif
-#if ExtendedRuntime
-      SystemCompilerRuntimeAssemblyLocation.Location = SystemCompilerRuntimeAssemblyLocation.Location;
-#endif
         }
         private static void InitializeStandardAssemblyLocationsWithDefaultValues(string platformAssembliesLocation)
         {
             SystemAssemblyLocation.Location = platformAssembliesLocation + "\\mscorlib.dll";
-#if ExtendedRuntime
-      if (SystemCompilerRuntimeAssemblyLocation.Location == null)
-#if CCINamespace
-        SystemCompilerRuntimeAssemblyLocation.Location = platformAssembliesLocation+"\\Microsoft.Cci.Runtime.dll";
-#else
-        SystemCompilerRuntimeAssemblyLocation.Location = platformAssembliesLocation+"\\system.compiler.runtime.dll";
-#endif
-      // If the System.Compiler.Runtime assembly does not exist at this location, DO NOTHING (don't load another one)
-      // as this signals the fact that the types may need to be loaded from the SystemAssembly instead.
-#endif
-#if !NoData && !ROTOR
+
             if (SystemDataAssemblyLocation.Location == null)
                 SystemDataAssemblyLocation.Location = platformAssembliesLocation + "\\system.data.dll";
-#endif
-#if !NoXml && !NoRuntimeXml
+
             if (SystemXmlAssemblyLocation.Location == null)
                 SystemXmlAssemblyLocation.Location = platformAssembliesLocation + "\\system.xml.dll";
-#endif
         }
 
         //!EFW
@@ -557,170 +480,13 @@ namespace System.Compiler
         }
 
     }
-#if ExtendedRuntime
-  public sealed class ExtendedRuntimeTypes{ //TODO: move all types from System.Compiler.Runtime into here.
-    public static AssemblyNode/*!*/ SystemCompilerRuntimeAssembly;
 
-    public static Interface/*!*/ ConstrainedType;
-    public static Interface/*!*/ ITemplateParameter;
-    public static Class/*!*/ NullableType;
-    public static Class/*!*/ NonNullType;
-    public static Class/*!*/ NotNullAttribute;
-    public static Class/*!*/ NotNullGenericArgumentsAttribute;
-    public static Class/*!*/ DelayedAttribute;
-    public static Class/*!*/ NotDelayedAttribute;
-    public static Class/*!*/ EncodedTypeSpecAttribute;
-    public static Class/*!*/ StrictReadonlyAttribute;
-    public static Interface/*!*/ TupleType;
-    public static Interface/*!*/ TypeAlias;
-    public static Interface/*!*/ TypeDefinition;
-    public static Interface/*!*/ TypeIntersection;
-    public static Interface/*!*/ TypeUnion;
-
-    public static Method nonNullTypeAssertInitialized;
-    public static Method NonNullTypeAssertInitialized {
-      get {
-        if (nonNullTypeAssertInitialized == null) {
-          if (NonNullType != null) {
-            nonNullTypeAssertInitialized = NonNullType.GetMethod(Identifier.For("AssertInitialized"), SystemTypes.Object);
-          }
-        }
-        return nonNullTypeAssertInitialized;
-      }
-    }
-
-    public static Method nonNullTypeAssertInitializedGeneric;
-    public static Method NonNullTypeAssertInitializedGeneric {
-      get {
-        if (nonNullTypeAssertInitializedGeneric != null) {
-          return nonNullTypeAssertInitializedGeneric;
-        }
-
-        if (NonNullType != null) {
-          MemberList ml = NonNullType.GetMembersNamed(Identifier.For("AssertInitialized"));
-          if (ml != null && ml.Count > 0) {
-            foreach (Member mem in ml) {
-              Method m = mem as Method;
-              if (m == null) continue;
-              if (m.IsGeneric) {
-                nonNullTypeAssertInitializedGeneric = m;
-                break;
-              }
-            }
-          }
-        }
-
-        return nonNullTypeAssertInitializedGeneric;
-      }
-    }
-    static ExtendedRuntimeTypes(){
-      ExtendedRuntimeTypes.Initialize(TargetPlatform.DoNotLockFiles, TargetPlatform.GetDebugInfo);
-    }
-
-    public static void Initialize(bool doNotLockFile, bool getDebugInfo) {
-      SystemCompilerRuntimeAssembly = ExtendedRuntimeTypes.GetSystemCompilerRuntimeAssembly(doNotLockFile, getDebugInfo);
-      if (SystemCompilerRuntimeAssembly == null) throw new InvalidOperationException(ExceptionStrings.InternalCompilerError);
-#if CCINamespace
-      const string CciNs = "Microsoft.Cci";
-      const string ContractsNs = "Microsoft.Contracts";
-      //const string CompilerGuardsNs = "Microsoft.Contracts";
-#else
-      const string CciNs = "System.Compiler";
-      const string ContractsNs = "Microsoft.Contracts";
-      //const string CompilerGuardsNs = "Microsoft.Contracts";
-#endif
-      ConstrainedType = (Interface)GetCompilerRuntimeTypeNodeFor("StructuralTypes", "IConstrainedType", ElementType.Class);
-      ITemplateParameter = (Interface)GetCompilerRuntimeTypeNodeFor(CciNs, "ITemplateParameter", ElementType.Class);
-      NullableType = (Class)GetCompilerRuntimeTypeNodeFor(ContractsNs, "NullableType", ElementType.Class);
-      NonNullType = (Class)GetCompilerRuntimeTypeNodeFor(ContractsNs, "NonNullType", ElementType.Class);
-      NotNullAttribute = (Class)GetCompilerRuntimeTypeNodeFor(ContractsNs, "NotNullAttribute", ElementType.Class);
-      NotNullGenericArgumentsAttribute = (Class)GetCompilerRuntimeTypeNodeFor(ContractsNs, "NotNullGenericArgumentsAttribute", ElementType.Class);
-      DelayedAttribute = (Class)GetCompilerRuntimeTypeNodeFor(ContractsNs, "DelayedAttribute", ElementType.Class);
-      NotDelayedAttribute = (Class)GetCompilerRuntimeTypeNodeFor(ContractsNs, "NotDelayedAttribute", ElementType.Class);
-      EncodedTypeSpecAttribute = (Class)GetCompilerRuntimeTypeNodeFor(ContractsNs, "EncodedTypeSpecAttribute", ElementType.Class);
-      StrictReadonlyAttribute = (Class)GetCompilerRuntimeTypeNodeFor(ContractsNs, "StrictReadonlyAttribute", ElementType.Class);
-      TupleType = (Interface)GetCompilerRuntimeTypeNodeFor("StructuralTypes", "ITupleType", ElementType.Class);
-      TypeAlias = (Interface)GetCompilerRuntimeTypeNodeFor("StructuralTypes", "ITypeAlias", ElementType.Class);
-      TypeDefinition = (Interface)GetCompilerRuntimeTypeNodeFor("StructuralTypes", "ITypeDefinition", ElementType.Class);
-      TypeIntersection = (Interface)GetCompilerRuntimeTypeNodeFor("StructuralTypes", "ITypeIntersection", ElementType.Class);
-      TypeUnion = (Interface)GetCompilerRuntimeTypeNodeFor("StructuralTypes", "ITypeUnion", ElementType.Class);
-    }
-
-    public static void Clear(){
-      lock (Module.GlobalLock){
-        if (ExtendedRuntimeTypes.SystemCompilerRuntimeAssembly != AssemblyNode.Dummy && ExtendedRuntimeTypes.SystemCompilerRuntimeAssembly != null) {
-          ExtendedRuntimeTypes.SystemCompilerRuntimeAssembly.Dispose();
-          ExtendedRuntimeTypes.SystemCompilerRuntimeAssembly = null;
-        }
-        ConstrainedType = null;
-        ITemplateParameter = null;
-        NullableType = null;
-        NonNullType = null;
-        NotNullAttribute = null;
-        NotNullGenericArgumentsAttribute = null;
-        DelayedAttribute = null;
-        NotDelayedAttribute = null;
-        EncodedTypeSpecAttribute = null;
-        StrictReadonlyAttribute = null;
-        TupleType = null;
-        TypeAlias = null;
-        TypeDefinition = null;
-        TypeIntersection = null;
-        TypeUnion = null;
-        nonNullTypeAssertInitialized = null;
-        nonNullTypeAssertInitializedGeneric = null;
-      }
-    }
-    private static AssemblyNode/*!*/ GetSystemCompilerRuntimeAssembly(bool doNotLockFile, bool getDebugInfo) {
-      if (SystemCompilerRuntimeAssemblyLocation.ParsedAssembly != null) 
-        return SystemCompilerRuntimeAssemblyLocation.ParsedAssembly;
-      if (SystemCompilerRuntimeAssemblyLocation.Location == null || SystemCompilerRuntimeAssemblyLocation.Location.Length == 0)
-        SystemCompilerRuntimeAssemblyLocation.Location = typeof(ComposerAttribute).Module.Assembly.Location;
-      AssemblyNode result = (AssemblyNode)(new Reader(SystemCompilerRuntimeAssemblyLocation.Location, null, doNotLockFile, getDebugInfo, true, false)).ReadModule();
-      if (result == null) {
-        if (CoreSystemTypes.SystemAssembly.GetType(Identifier.For("Microsoft.Contracts"), Identifier.For("NonNullType")) != null) {
-          result = SystemTypes.SystemAssembly;
-        } else {
-          SystemCompilerRuntimeAssemblyLocation.Location = typeof(ComposerAttribute).Module.Assembly.Location;
-          result = (AssemblyNode)(new Reader(SystemCompilerRuntimeAssemblyLocation.Location, null, doNotLockFile, getDebugInfo, true, false)).ReadModule();
-        }
-      }
-      if (result == null) {
-        result = new AssemblyNode();
-        System.Reflection.AssemblyName aname = typeof(ComposerAttribute).Module.Assembly.GetName();
-        result.Name = aname.Name;
-        result.Version = aname.Version;
-        result.PublicKeyOrToken = aname.GetPublicKeyToken();
-      }
-      TargetPlatform.AssemblyReferenceFor[Identifier.For(result.Name).UniqueIdKey] = new AssemblyReference(result);
-      return result;
-    }
-    private static TypeNode/*!*/ GetCompilerRuntimeTypeNodeFor(string/*!*/ nspace, string/*!*/ name, ElementType typeCode) {
-      return ExtendedRuntimeTypes.GetCompilerRuntimeTypeNodeFor(nspace, name, 0, typeCode);
-    }
-    private static TypeNode/*!*/ GetCompilerRuntimeTypeNodeFor(string/*!*/ nspace, string/*!*/ name, int numParams, ElementType typeCode) {
-      if (TargetPlatform.GenericTypeNamesMangleChar != 0 && numParams > 0)
-        name = name + TargetPlatform.GenericTypeNamesMangleChar + numParams;
-      TypeNode result = null;
-      if (SystemCompilerRuntimeAssembly == null)
-        Debug.Assert(false);
-      else
-        result = SystemCompilerRuntimeAssembly.GetType(Identifier.For(nspace), Identifier.For(name));
-      if (result == null) result = CoreSystemTypes.GetDummyTypeNode(SystemCompilerRuntimeAssembly, nspace, name, typeCode);
-      result.typeCode = typeCode;
-      return result;
-    }
-  }
-#endif
-#if !FxCop
-    public
-#endif
- sealed class CoreSystemTypes
+    public static class CoreSystemTypes
     {
-        private CoreSystemTypes() { }
         internal static bool Initialized;
 
         internal static bool IsInitialized { get { return Initialized; } }
+
         //system assembly (the basic runtime)
         public static AssemblyNode/*!*/ SystemAssembly;
 
@@ -732,11 +498,10 @@ namespace System.Compiler
         public static Class/*!*/ MulticastDelegate;
         public static Class/*!*/ Array;
         public static Class/*!*/ Type;
-#if !FxCop
         public static Class/*!*/ Delegate;
         public static Class/*!*/ Exception;
         public static Class/*!*/ Attribute;
-#endif
+
         //primitive types
         public static Struct/*!*/ Boolean;
         public static Struct/*!*/ Char;
@@ -754,12 +519,10 @@ namespace System.Compiler
         public static Struct/*!*/ UIntPtr;
         public static Struct/*!*/ DynamicallyTypedReference;
 
-#if !MinimalReader
         //Classes need for System.TypeCode
         public static Class/*!*/ DBNull;
         public static Struct/*!*/ DateTime;
         public static Struct/*!*/ Decimal;
-#endif
 
         //Special types
         public static Class/*!*/ IsVolatile;
@@ -768,9 +531,8 @@ namespace System.Compiler
         public static Struct/*!*/ RuntimeFieldHandle;
         public static Struct/*!*/ RuntimeMethodHandle;
         public static Struct/*!*/ RuntimeTypeHandle;
-#if !MinimalReader
         public static Struct/*!*/ RuntimeArgumentHandle;
-#endif
+
         //Special attributes    
         public static EnumNode SecurityAction;
 
@@ -853,31 +615,27 @@ namespace System.Compiler
             IntPtr = (Struct)GetTypeNodeFor("System", "IntPtr", ElementType.IntPtr);
             UIntPtr = (Struct)GetTypeNodeFor("System", "UIntPtr", ElementType.UIntPtr);
             DynamicallyTypedReference = (Struct)GetTypeNodeFor("System", "TypedReference", ElementType.DynamicallyTypedReference);
-#if !MinimalReader
             Delegate = (Class)GetTypeNodeFor("System", "Delegate", ElementType.Class);
             Exception = (Class)GetTypeNodeFor("System", "Exception", ElementType.Class);
             Attribute = (Class)GetTypeNodeFor("System", "Attribute", ElementType.Class);
             DBNull = (Class)GetTypeNodeFor("System", "DBNull", ElementType.Class);
             DateTime = (Struct)GetTypeNodeFor("System", "DateTime", ElementType.ValueType);
             Decimal = (Struct)GetTypeNodeFor("System", "Decimal", ElementType.ValueType);
-#endif
             ArgIterator = (Struct)GetTypeNodeFor("System", "ArgIterator", ElementType.ValueType);
             IsVolatile = (Class)GetTypeNodeFor("System.Runtime.CompilerServices", "IsVolatile", ElementType.Class);
             Void = (Struct)GetTypeNodeFor("System", "Void", ElementType.Void);
             RuntimeFieldHandle = (Struct)GetTypeNodeFor("System", "RuntimeFieldHandle", ElementType.ValueType);
             RuntimeMethodHandle = (Struct)GetTypeNodeFor("System", "RuntimeMethodHandle", ElementType.ValueType);
             RuntimeTypeHandle = (Struct)GetTypeNodeFor("System", "RuntimeTypeHandle", ElementType.ValueType);
-#if !MinimalReader
             RuntimeArgumentHandle = (Struct)GetTypeNodeFor("System", "RuntimeArgumentHandle", ElementType.ValueType);
-#endif
             SecurityAction = GetTypeNodeFor("System.Security.Permissions", "SecurityAction", ElementType.ValueType) as EnumNode;
             CoreSystemTypes.Initialized = true;
             CoreSystemTypes.InstantiateGenericInterfaces();
-#if !NoWriter
-            Literal.Initialize();
-#endif
+
             object dummy = TargetPlatform.AssemblyReferenceFor; //Force selection of target platform
-            if (dummy == null) return;
+
+            if(dummy == null)
+                return;
         }
         private static void ClearStatics()
         {
@@ -889,11 +647,10 @@ namespace System.Compiler
             MulticastDelegate = null;
             Array = null;
             Type = null;
-#if !MinimalReader
             Delegate = null;
             Exception = null;
             Attribute = null;
-#endif
+
             //primitive types
             Boolean = null;
             Char = null;
@@ -912,12 +669,10 @@ namespace System.Compiler
             DynamicallyTypedReference = null;
 
             //Special types
-#if !MinimalReader
             DBNull = null;
             DateTime = null;
             Decimal = null;
             RuntimeArgumentHandle = null;
-#endif
             ArgIterator = null;
             RuntimeFieldHandle = null;
             RuntimeMethodHandle = null;
@@ -942,11 +697,9 @@ namespace System.Compiler
             InstantiateGenericInterfaces(UInt64);
             InstantiateGenericInterfaces(Single);
             InstantiateGenericInterfaces(Double);
-#if !MinimalReader
             InstantiateGenericInterfaces(DBNull);
             InstantiateGenericInterfaces(DateTime);
             InstantiateGenericInterfaces(Decimal);
-#endif
         }
         private static void InstantiateGenericInterfaces(TypeNode type)
         {
@@ -1040,12 +793,9 @@ namespace System.Compiler
             return result;
         }
     }
-#if !FxCop
-    public
-#endif
- sealed class SystemTypes
+
+    public static class SystemTypes
     {
-        private SystemTypes() { }
         private static bool Initialized;
 
         //system assembly (the basic runtime)
@@ -1054,19 +804,7 @@ namespace System.Compiler
             get { return CoreSystemTypes.SystemAssembly; }
             set { CoreSystemTypes.SystemAssembly = value; }
         }
-#if ExtendedRuntime
-    public static AssemblyNode/*!*/ SystemCompilerRuntimeAssembly {
-      get{return ExtendedRuntimeTypes.SystemCompilerRuntimeAssembly;}
-      set{ExtendedRuntimeTypes.SystemCompilerRuntimeAssembly = value;}
-    }
-#if !NoData
-    public static AssemblyNode/*!*/ SystemDataAssembly;
-#endif
-#if !NoXml && !NoRuntimeXml
-    public static AssemblyNode /*!*/SystemXmlAssembly;
-#endif
-#endif
-#if !FxCop
+
         //Special base types
         public static Class/*!*/ Object { get { return CoreSystemTypes.Object; } }
         public static Class/*!*/ String { get { return CoreSystemTypes.String; } }
@@ -1095,7 +833,6 @@ namespace System.Compiler
         public static Struct/*!*/ IntPtr { get { return CoreSystemTypes.IntPtr; } }
         public static Struct/*!*/ UIntPtr { get { return CoreSystemTypes.UIntPtr; } }
         public static Struct/*!*/ DynamicallyTypedReference { get { return CoreSystemTypes.DynamicallyTypedReference; } }
-#endif
 
         // Types required for a complete rendering
         // of binary attribute information
@@ -1114,7 +851,6 @@ namespace System.Compiler
         public static Interface/*!*/ IEnumerable;
         public static Interface/*!*/ IList;
 
-#if !MinimalReader
         //Special types
         public static Struct/*!*/ ArgIterator { get { return CoreSystemTypes.ArgIterator; } }
         public static Class/*!*/ IsVolatile { get { return CoreSystemTypes.IsVolatile; } }
@@ -1204,9 +940,7 @@ namespace System.Compiler
         public static Class/*!*/ EventArgs;
         public static Class/*!*/ ExecutionEngineException;
         public static Struct/*!*/ GenericArraySegment;
-#if !WHIDBEYwithGenerics
         public static Class/*!*/ GenericArrayToIEnumerableAdapter;
-#endif
         public static Class/*!*/ GenericDictionary;
         public static Interface/*!*/ GenericIComparable;
         public static Interface/*!*/ GenericIComparer;
@@ -1262,216 +996,17 @@ namespace System.Compiler
         public static Class/*!*/ SystemException;
         public static Class/*!*/ Thread;
         public static Class/*!*/ WindowsImpersonationContext;
-#endif
-#if ExtendedRuntime
-    public static Interface/*!*/ ConstrainedType { get { return ExtendedRuntimeTypes.ConstrainedType; } }
-    public static Interface/*!*/ TupleType { get { return ExtendedRuntimeTypes.TupleType; } }
-    public static Interface/*!*/ TypeAlias { get { return ExtendedRuntimeTypes.TypeAlias; } }
-    public static Interface/*!*/ TypeDefinition { get { return ExtendedRuntimeTypes.TypeDefinition; } }
-    public static Interface/*!*/ TypeIntersection { get { return ExtendedRuntimeTypes.TypeIntersection; } }
-    public static Interface/*!*/ TypeUnion { get { return ExtendedRuntimeTypes.TypeUnion; } }
-    public static Class/*!*/ AnonymousAttribute;
-    public static TypeNode/*!*/ AnonymityEnum;
-    public static Class/*!*/ ComposerAttribute;
-    public static Class/*!*/ CustomVisitorAttribute;
-    public static Class/*!*/ TemplateAttribute;
-    public static Class/*!*/ TemplateInstanceAttribute;
-    public static Class/*!*/ UnmanagedStructTemplateParameterAttribute;
-    public static Class/*!*/ TemplateParameterFlagsAttribute;
-    public static Struct/*!*/ GenericBoxed;
-    public static Class/*!*/ GenericIEnumerableToGenericIListAdapter;
-    public static Struct/*!*/ GenericInvariant;
-    public static Struct/*!*/ GenericNonEmptyIEnumerable;
-    public static Struct/*!*/ GenericNonNull;
-    public static Class/*!*/ GenericStreamUtility;
-    public static Class/*!*/ GenericUnboxer;
-    public static Interface/*!*/ ITemplateParameter { get { return ExtendedRuntimeTypes.ITemplateParameter; } }
-    public static Class/*!*/ ElementTypeAttribute;
-    public static Interface/*!*/ IDbTransactable;
-    public static Interface/*!*/ IAggregate;
-    public static Interface/*!*/ IAggregateGroup;
-    public static Class/*!*/ StreamNotSingletonException;
-    public static EnumNode SqlHint;
-    public static Class/*!*/ SqlFunctions;
-    public static Class/*!*/ XmlAttributeAttributeClass;
-    public static Class/*!*/ XmlChoiceIdentifierAttributeClass;
-    public static Class/*!*/ XmlElementAttributeClass;
-    public static Class/*!*/ XmlIgnoreAttributeClass;
-    public static Class/*!*/ XmlTypeAttributeClass;
-    public static Interface/*!*/ INullable;
-    public static Struct/*!*/ SqlBinary;
-    public static Struct/*!*/ SqlBoolean;
-    public static Struct/*!*/ SqlByte;
-    public static Struct/*!*/ SqlDateTime;
-    public static Struct/*!*/ SqlDecimal;
-    public static Struct/*!*/ SqlDouble;
-    public static Struct/*!*/ SqlGuid;
-    public static Struct/*!*/ SqlInt16;
-    public static Struct/*!*/ SqlInt32;
-    public static Struct/*!*/ SqlInt64;
-    public static Struct/*!*/ SqlMoney;
-    public static Struct/*!*/ SqlSingle;
-    public static Struct/*!*/ SqlString;
-    public static Interface/*!*/ IDbConnection;
-    public static Interface/*!*/ IDbTransaction;
-    public static EnumNode IsolationLevel;
-
-    //OrdinaryExceptions
-    public static Class/*!*/ NoChoiceException;
-    public static Class/*!*/ IllegalUpcastException;
-    public static EnumNode/*!*/ CciMemberKind;
-    public static Class/*!*/ CciMemberKindAttribute;
-    //NonNull  
-    public static Class/*!*/ Range;
-    //Invariants
-    public static DelegateNode/*!*/ InitGuardSetsDelegate;
-    public static DelegateNode/*!*/ CheckInvariantDelegate;
-    public static DelegateNode/*!*/ FrameGuardGetter;
-    public static Class/*!*/ ObjectInvariantException;
-    public static DelegateNode/*!*/ ThreadConditionDelegate;
-    public static DelegateNode/*!*/ GuardThreadStart;
-    public static Class/*!*/ Guard;
-    public static Class/*!*/ ContractMarkers;
-    //public static Interface IReduction;
-    public static Class/*!*/ AssertHelpers;
-    public static DelegateNode/*!*/ ThreadStart;
-    //CheckedExceptions
-    public static Interface/*!*/ ICheckedException;
-    public static Class/*!*/ CheckedException;
-
-    // Contracts
-    public static Class/*!*/ UnreachableException;
-    public static Class/*!*/ ContractException;
-    public static Class/*!*/ NullTypeException;
-    public static Class/*!*/ AssertException;
-    public static Class/*!*/ AssumeException;
-    public static Class/*!*/ InvalidContractException;
-    public static Class/*!*/ RequiresException;
-    public static Class/*!*/ EnsuresException;
-    public static Class/*!*/ ModifiesException;
-    public static Class/*!*/ ThrowsException;
-    public static Class/*!*/ DoesException;
-    public static Class/*!*/ InvariantException;
-    public static Class/*!*/ ContractMarkerException;
-
-    public static Class/*!*/ AdditiveAttribute;
-    public static Class/*!*/ InsideAttribute;
-    public static Class/*!*/ SpecPublicAttribute;
-    public static Class/*!*/ SpecProtectedAttribute;
-    public static Class/*!*/ SpecInternalAttribute;
-    public static Class/*!*/ PureAttribute;
-    public static Class/*!*/ OwnedAttribute;
-    public static Class/*!*/ RepAttribute;
-    public static Class/*!*/ PeerAttribute;
-    public static Class/*!*/ CapturedAttribute;
-    public static Class/*!*/ LockProtectedAttribute;
-    public static Class/*!*/ RequiresLockProtectedAttribute;
-    public static Class/*!*/ ImmutableAttribute;
-    public static Class/*!*/ RequiresImmutableAttribute;
-    public static Class/*!*/ RequiresCanWriteAttribute;
-    public static Class/*!*/ StateIndependentAttribute;
-    public static Class/*!*/ ConfinedAttribute;
-    public static Class/*!*/ ModelfieldContractAttribute;
-    public static Class/*!*/ ModelfieldAttribute;    
-    public static Class/*!*/ SatisfiesAttribute;  //Stores a satisfies clause of a modelfield
-    public static Class/*!*/ ModelfieldException;
-
-    public static Class/*!*/ OnceAttribute;
-    public static Class/*!*/ WriteConfinedAttribute;
-    public static Class/*!*/ GlobalReadAttribute;
-    public static Class/*!*/ GlobalAccessAttribute;
-    public static Class/*!*/ GlobalWriteAttribute;
-    public static Class/*!*/ FreshAttribute;
-    public static Class/*!*/ EscapesAttribute;
-    
-    public static Class/*!*/ ModelAttribute;
-    public static Class/*!*/ RequiresAttribute;
-    public static Class/*!*/ EnsuresAttribute;
-    public static Class/*!*/ ModifiesAttribute;
-    public static Class/*!*/ HasWitnessAttribute;
-    public static Class/*!*/ InferredReturnValueAttribute;
-    public static Class/*!*/ ThrowsAttribute;
-    public static Class/*!*/ DoesAttribute;
-    public static Class/*!*/ InvariantAttribute;
-    public static Class/*!*/ NoDefaultActivityAttribute;
-    public static Class/*!*/ NoDefaultContractAttribute;
-    public static Class/*!*/ ReaderAttribute;
-    public static Class/*!*/ ShadowsAssemblyAttribute;
-    public static Class/*!*/ VerifyAttribute;
-    public static Class/*!*/ NonNullType { get { return ExtendedRuntimeTypes.NonNullType; } }
-    public static Method NonNullTypeAssertInitialized { get { return ExtendedRuntimeTypes.NonNullTypeAssertInitialized; } }
-    public static Method NonNullTypeAssertInitializedGeneric { get { return ExtendedRuntimeTypes.NonNullTypeAssertInitializedGeneric; } }
-
-    public static Class/*!*/ NullableType { get { return ExtendedRuntimeTypes.NullableType; } }
-    public static Class/*!*/ NotNullAttribute { get { return ExtendedRuntimeTypes.NotNullAttribute; } }
-    public static Class/*!*/ NotNullGenericArgumentsAttribute { get { return ExtendedRuntimeTypes.NotNullGenericArgumentsAttribute; } }
-    public static Class/*!*/ EncodedTypeSpecAttribute { get { return ExtendedRuntimeTypes.EncodedTypeSpecAttribute; } }
-    public static Class/*!*/ DependentAttribute;
-    public static Class/*!*/ ElementsRepAttribute;
-    public static Class/*!*/ ElementsPeerAttribute;
-    public static Class/*!*/ ElementAttribute;
-    public static Class/*!*/ ElementCollectionAttribute;
-    public static Class/*!*/ RecursionTerminationAttribute;
-    public static Class/*!*/ NoReferenceComparisonAttribute;
-    public static Class/*!*/ ResultNotNewlyAllocatedAttribute;
-
-    // This attribute is recognized by the Bartok compiler and marks methods without heap allocation.
-    // Thus the presence of this attribute implies [ResultNotNewlyAllocated] for pure methods.
-    public static Class/*!*/ BartokNoHeapAllocationAttribute {
-      //^ [NoDefaultContract]
-      get
-        //^ modifies noHeapAllocationAttribute;
-      {
-        if(noHeapAllocationAttribute == null) {
-          noHeapAllocationAttribute = (Class)GetCompilerRuntimeTypeNodeFor(
-            @"System.Runtime.CompilerServices", @"NoHeapAllocationAttribute", ElementType.Class);
-        }
-        return noHeapAllocationAttribute;
-      }
-    }
-    private static Class noHeapAllocationAttribute;    
-#endif
 
         static SystemTypes()
         {
             SystemTypes.Initialize(TargetPlatform.DoNotLockFiles, TargetPlatform.GetDebugInfo);
         }
 
-#if FxCop
-    internal static event EventHandler<EventArgs> ClearingSystemTypes;
-    internal static void RaiseClearingSystemTypes()
-    {
-      EventHandler<EventArgs> handler = ClearingSystemTypes;
-      if (handler != null) handler(null, EventArgs.Empty);
-    }
-#endif
         public static void Clear()
         {
             lock (Module.GlobalLock)
             {
                 CoreSystemTypes.Clear();
-#if FxCop
-        RaiseClearingSystemTypes(); 
-#endif
-#if ExtendedRuntime
-        ExtendedRuntimeTypes.Clear();
-        if (SystemTypes.SystemCompilerRuntimeAssembly != null && SystemTypes.SystemCompilerRuntimeAssembly != AssemblyNode.Dummy) {
-          SystemTypes.SystemCompilerRuntimeAssembly.Dispose();
-          SystemTypes.SystemCompilerRuntimeAssembly = null;
-        }
-#if !NoData && !ROTOR
-        if (SystemTypes.SystemDataAssembly != null && SystemTypes.SystemDataAssembly != AssemblyNode.Dummy) {
-          SystemTypes.SystemDataAssembly.Dispose();
-          SystemTypes.SystemDataAssembly = null;
-        }
-#endif
-#if !NoXml && !NoRuntimeXml
-        if (SystemTypes.SystemXmlAssembly != null && SystemTypes.SystemXmlAssembly != AssemblyNode.Dummy) {
-          SystemTypes.SystemXmlAssembly.Dispose();
-          SystemTypes.SystemXmlAssembly = null;
-        }
-#endif
-#endif
                 SystemTypes.ClearStatics();
                 SystemTypes.Initialized = false;
             }
@@ -1482,17 +1017,10 @@ namespace System.Compiler
             {
                 SystemTypes.Clear();
                 CoreSystemTypes.Initialize(doNotLockFile, getDebugInfo);
-#if ExtendedRuntime
-        ExtendedRuntimeTypes.Initialize(doNotLockFile, getDebugInfo);
-#endif
             }
             else if (!CoreSystemTypes.Initialized)
             {
                 CoreSystemTypes.Initialize(doNotLockFile, getDebugInfo);
-#if ExtendedRuntime
-        ExtendedRuntimeTypes.Clear();
-        ExtendedRuntimeTypes.Initialize(doNotLockFile, getDebugInfo);
-#endif
             }
 
             if (TargetPlatform.TargetVersion == null)
@@ -1502,14 +1030,7 @@ namespace System.Compiler
                     TargetPlatform.TargetVersion = typeof(object).Module.Assembly.GetName().Version;
             }
             //TODO: throw an exception when the result is null
-#if ExtendedRuntime
-#if !NoData && !ROTOR
-      SystemDataAssembly = SystemTypes.GetSystemDataAssembly(doNotLockFile, getDebugInfo);
-#endif
-#if !NoXml && !NoRuntimeXml
-      SystemXmlAssembly = SystemTypes.GetSystemXmlAssembly(doNotLockFile, getDebugInfo);
-#endif
-#endif
+
             AttributeUsageAttribute = (Class)GetTypeNodeFor("System", "AttributeUsageAttribute", ElementType.Class);
             ConditionalAttribute = (Class)GetTypeNodeFor("System.Diagnostics", "ConditionalAttribute", ElementType.Class);
             DefaultMemberAttribute = (Class)GetTypeNodeFor("System.Reflection", "DefaultMemberAttribute", ElementType.Class);
@@ -1524,7 +1045,6 @@ namespace System.Compiler
             IEnumerable = (Interface)GetTypeNodeFor("System.Collections", "IEnumerable", ElementType.Class);
             IList = (Interface)GetTypeNodeFor("System.Collections", "IList", ElementType.Class);
 
-#if !MinimalReader
             AllowPartiallyTrustedCallersAttribute = (Class)GetTypeNodeFor("System.Security", "AllowPartiallyTrustedCallersAttribute", ElementType.Class);
             AssemblyCompanyAttribute = (Class)GetTypeNodeFor("System.Reflection", "AssemblyCompanyAttribute", ElementType.Class);
             AssemblyConfigurationAttribute = (Class)GetTypeNodeFor("System.Reflection", "AssemblyConfigurationAttribute", ElementType.Class);
@@ -1654,171 +1174,7 @@ namespace System.Compiler
             SystemException = (Class)GetTypeNodeFor("System", "SystemException", ElementType.Class);
             Thread = (Class)GetTypeNodeFor("System.Threading", "Thread", ElementType.Class);
             WindowsImpersonationContext = (Class)GetTypeNodeFor("System.Security.Principal", "WindowsImpersonationContext", ElementType.Class);
-#endif
-#if ExtendedRuntime
-#if !NoXml && !NoRuntimeXml
-      XmlAttributeAttributeClass = (Class)GetXmlTypeNodeFor("System.Xml.Serialization", "XmlAttributeAttribute", ElementType.Class);
-      XmlChoiceIdentifierAttributeClass = (Class)GetXmlTypeNodeFor("System.Xml.Serialization", "XmlChoiceIdentifierAttribute", ElementType.Class);
-      XmlElementAttributeClass = (Class)GetXmlTypeNodeFor("System.Xml.Serialization", "XmlElementAttribute", ElementType.Class);
-      XmlIgnoreAttributeClass = (Class)GetXmlTypeNodeFor("System.Xml.Serialization", "XmlIgnoreAttribute", ElementType.Class);
-      XmlTypeAttributeClass = (Class)GetXmlTypeNodeFor("System.Xml.Serialization", "XmlTypeAttribute", ElementType.Class);
-#endif
 
-#if !NoData
-      INullable = (Interface) GetDataTypeNodeFor("System.Data.SqlTypes", "INullable", ElementType.Class);
-      SqlBinary = (Struct)GetDataTypeNodeFor("System.Data.SqlTypes", "SqlBinary", ElementType.ValueType);
-      SqlBoolean = (Struct)GetDataTypeNodeFor("System.Data.SqlTypes", "SqlBoolean", ElementType.ValueType);
-      SqlByte = (Struct)GetDataTypeNodeFor("System.Data.SqlTypes", "SqlByte", ElementType.ValueType);
-      SqlDateTime = (Struct)GetDataTypeNodeFor("System.Data.SqlTypes", "SqlDateTime", ElementType.ValueType);
-      SqlDecimal = (Struct)GetDataTypeNodeFor("System.Data.SqlTypes", "SqlDecimal", ElementType.ValueType);
-      SqlDouble = (Struct)GetDataTypeNodeFor("System.Data.SqlTypes", "SqlDouble", ElementType.ValueType);
-      SqlGuid = (Struct)GetDataTypeNodeFor("System.Data.SqlTypes", "SqlGuid", ElementType.ValueType);
-      SqlInt16 = (Struct)GetDataTypeNodeFor("System.Data.SqlTypes", "SqlInt16", ElementType.ValueType);
-      SqlInt32 = (Struct)GetDataTypeNodeFor("System.Data.SqlTypes", "SqlInt32", ElementType.ValueType);
-      SqlInt64 = (Struct)GetDataTypeNodeFor("System.Data.SqlTypes", "SqlInt64", ElementType.ValueType);
-      SqlMoney = (Struct)GetDataTypeNodeFor("System.Data.SqlTypes", "SqlMoney", ElementType.ValueType);
-      SqlSingle = (Struct)GetDataTypeNodeFor("System.Data.SqlTypes", "SqlSingle", ElementType.ValueType);
-      SqlString = (Struct)GetDataTypeNodeFor("System.Data.SqlTypes", "SqlString", ElementType.ValueType);
-      IDbConnection = (Interface)GetDataTypeNodeFor("System.Data", "IDbConnection", ElementType.Class);
-      IDbTransaction = (Interface)GetDataTypeNodeFor("System.Data", "IDbTransaction", ElementType.Class);
-      IsolationLevel = GetDataTypeNodeFor("System.Data", "IsolationLevel", ElementType.ValueType) as EnumNode;
-#endif
-#if CCINamespace
-      const string CciNs = "Microsoft.Cci";
-      const string ContractsNs = "Microsoft.Contracts";
-      const string CompilerGuardsNs = "Microsoft.Contracts";
-#else
-      const string CciNs = "System.Compiler";
-      const string ContractsNs = "Microsoft.Contracts";
-      const string CompilerGuardsNs = "Microsoft.Contracts";
-#endif
-      const string GuardsNs = "Microsoft.Contracts";
-      AnonymousAttribute = (Class)GetCompilerRuntimeTypeNodeFor(CciNs, "AnonymousAttribute", ElementType.Class);
-      AnonymityEnum = GetCompilerRuntimeTypeNodeFor(CciNs, "Anonymity", ElementType.ValueType);
-      ComposerAttribute = (Class)GetCompilerRuntimeTypeNodeFor(CciNs, "ComposerAttribute", ElementType.Class);
-      CustomVisitorAttribute = (Class)GetCompilerRuntimeTypeNodeFor(CciNs, "CustomVisitorAttribute", ElementType.Class);
-      TemplateAttribute = (Class)GetCompilerRuntimeTypeNodeFor(CciNs, "TemplateAttribute", ElementType.Class);
-      TemplateInstanceAttribute = (Class)GetCompilerRuntimeTypeNodeFor(CciNs, "TemplateInstanceAttribute", ElementType.Class);
-      UnmanagedStructTemplateParameterAttribute = (Class)GetCompilerRuntimeTypeNodeFor(CciNs, "UnmanagedStructTemplateParameterAttribute", ElementType.Class);
-      TemplateParameterFlagsAttribute = (Class)GetCompilerRuntimeTypeNodeFor(CciNs, "TemplateParameterFlagsAttribute", ElementType.Class);
-#if !WHIDBEYwithGenerics
-      GenericArrayToIEnumerableAdapter = (Class)GetCompilerRuntimeTypeNodeFor("StructuralTypes", "ArrayToIEnumerableAdapter", 1, ElementType.Class);
-#endif
-      GenericBoxed = (Struct)GetCompilerRuntimeTypeNodeFor("StructuralTypes", "Boxed", 1, ElementType.ValueType);
-      GenericIEnumerableToGenericIListAdapter = (Class)GetCompilerRuntimeTypeNodeFor("StructuralTypes", "GenericIEnumerableToGenericIListAdapter", 1, ElementType.Class);
-      GenericInvariant = (Struct)GetCompilerRuntimeTypeNodeFor("StructuralTypes", "Invariant", 1, ElementType.ValueType);
-      GenericNonEmptyIEnumerable = (Struct)GetCompilerRuntimeTypeNodeFor("StructuralTypes", "NonEmptyIEnumerable", 1, ElementType.ValueType);
-      GenericNonNull = (Struct)GetCompilerRuntimeTypeNodeFor("StructuralTypes", "NonNull", 1, ElementType.ValueType);
-      GenericStreamUtility = (Class)GetCompilerRuntimeTypeNodeFor("StructuralTypes", "StreamUtility", 1, ElementType.Class);
-      GenericUnboxer = (Class)GetCompilerRuntimeTypeNodeFor("StructuralTypes", "Unboxer", 1, ElementType.Class);
-      ElementTypeAttribute = (Class)GetCompilerRuntimeTypeNodeFor(CciNs, "ElementTypeAttribute", ElementType.Class);
-      IDbTransactable = (Interface)GetCompilerRuntimeTypeNodeFor("System.Data", "IDbTransactable", ElementType.Class);
-      IAggregate = (Interface)GetCompilerRuntimeTypeNodeFor("System.Query", "IAggregate", ElementType.Class);
-      IAggregateGroup = (Interface)GetCompilerRuntimeTypeNodeFor("System.Query", "IAggregateGroup", ElementType.Class);
-      StreamNotSingletonException = (Class)GetCompilerRuntimeTypeNodeFor("System.Query", "StreamNotSingletonException", ElementType.Class);
-      SqlHint = GetCompilerRuntimeTypeNodeFor("System.Query", "SqlHint", ElementType.ValueType) as EnumNode;
-      SqlFunctions = (Class)GetCompilerRuntimeTypeNodeFor("System.Query", "SqlFunctions", ElementType.Class);
-
-            #region Contracts
-      Range = (Class)GetCompilerRuntimeTypeNodeFor(ContractsNs, "Range", ElementType.Class);
-      //Ordinary Exceptions
-      NoChoiceException = (Class)GetCompilerRuntimeTypeNodeFor(ContractsNs, "NoChoiceException", ElementType.Class);
-      IllegalUpcastException = (Class)GetCompilerRuntimeTypeNodeFor(ContractsNs, "IllegalUpcastException", ElementType.Class);
-      CciMemberKind = (EnumNode)GetCompilerRuntimeTypeNodeFor(CciNs, "CciMemberKind", ElementType.ValueType);
-      CciMemberKindAttribute = (Class)GetCompilerRuntimeTypeNodeFor(CciNs, "CciMemberKindAttribute", ElementType.Class);
-      //Checked Exceptions
-      ICheckedException = (Interface)GetCompilerRuntimeTypeNodeFor(ContractsNs, "ICheckedException", ElementType.Class);
-      CheckedException = (Class)GetCompilerRuntimeTypeNodeFor(ContractsNs, "CheckedException", ElementType.Class);
-      ContractMarkers = (Class)GetCompilerRuntimeTypeNodeFor(ContractsNs, "ContractMarkers", ElementType.Class);
-      //Invariant
-      InitGuardSetsDelegate = (DelegateNode) GetCompilerRuntimeTypeNodeFor(GuardsNs, "InitGuardSetsDelegate", ElementType.Class);
-      CheckInvariantDelegate = (DelegateNode) GetCompilerRuntimeTypeNodeFor(GuardsNs, "CheckInvariantDelegate", ElementType.Class);
-      FrameGuardGetter = (DelegateNode) GetCompilerRuntimeTypeNodeFor(GuardsNs, "FrameGuardGetter", ElementType.Class);
-      ObjectInvariantException = (Class)GetCompilerRuntimeTypeNodeFor("Microsoft.Contracts", "ObjectInvariantException", ElementType.Class);
-      ThreadConditionDelegate = (DelegateNode) GetCompilerRuntimeTypeNodeFor(GuardsNs, "ThreadConditionDelegate", ElementType.Class);
-      GuardThreadStart = (DelegateNode) GetCompilerRuntimeTypeNodeFor(GuardsNs, "GuardThreadStart", ElementType.Class);
-      Guard = (Class) GetCompilerRuntimeTypeNodeFor(GuardsNs, "Guard", ElementType.Class);
-      ThreadStart = (DelegateNode) GetTypeNodeFor("System.Threading", "ThreadStart", ElementType.Class);
-      AssertHelpers = (Class)GetCompilerRuntimeTypeNodeFor(ContractsNs, "AssertHelpers", ElementType.Class);
-            #region Exceptions
-      UnreachableException = (Class)GetCompilerRuntimeTypeNodeFor(ContractsNs, "UnreachableException", ElementType.Class);
-      ContractException = (Class)GetCompilerRuntimeTypeNodeFor(ContractsNs, "ContractException", ElementType.Class);
-      NullTypeException = (Class)GetCompilerRuntimeTypeNodeFor(ContractsNs, "NullTypeException", ElementType.Class);
-      AssertException = (Class)GetCompilerRuntimeTypeNodeFor(ContractsNs, "AssertException", ElementType.Class);
-      AssumeException = (Class)GetCompilerRuntimeTypeNodeFor(ContractsNs, "AssumeException", ElementType.Class);
-      InvalidContractException = (Class)GetCompilerRuntimeTypeNodeFor(ContractsNs, "InvalidContractException", ElementType.Class);
-      RequiresException = (Class)GetCompilerRuntimeTypeNodeFor(ContractsNs, "RequiresException", ElementType.Class);
-      EnsuresException = (Class)GetCompilerRuntimeTypeNodeFor(ContractsNs, "EnsuresException", ElementType.Class);
-      ModifiesException = (Class)GetCompilerRuntimeTypeNodeFor(ContractsNs, "ModifiesException", ElementType.Class);
-      ThrowsException = (Class)GetCompilerRuntimeTypeNodeFor(ContractsNs, "ThrowsException", ElementType.Class);
-      DoesException = (Class)GetCompilerRuntimeTypeNodeFor(ContractsNs, "DoesException", ElementType.Class);
-      InvariantException = (Class)GetCompilerRuntimeTypeNodeFor(ContractsNs, "InvariantException", ElementType.Class);
-      ContractMarkerException = (Class)GetCompilerRuntimeTypeNodeFor(ContractsNs, "ContractMarkerException", ElementType.Class);
-      #endregion
-            #region Attributes
-      AdditiveAttribute = (Class)GetCompilerRuntimeTypeNodeFor(ContractsNs, "AdditiveAttribute", ElementType.Class);
-      InsideAttribute = (Class)GetCompilerRuntimeTypeNodeFor(ContractsNs, "InsideAttribute", ElementType.Class);
-      PureAttribute = (Class)GetCompilerRuntimeTypeNodeFor(ContractsNs, "PureAttribute", ElementType.Class);
-      ConfinedAttribute = (Class)GetCompilerRuntimeTypeNodeFor(CompilerGuardsNs, "ConfinedAttribute", ElementType.Class);
-
-            #region modelfield attributes and exceptions
-      ModelfieldContractAttribute = (Class)GetCompilerRuntimeTypeNodeFor(ContractsNs, "ModelfieldContractAttribute", ElementType.Class);
-      ModelfieldAttribute = (Class)GetCompilerRuntimeTypeNodeFor(ContractsNs, "ModelfieldAttribute", ElementType.Class);
-      SatisfiesAttribute = (Class)GetCompilerRuntimeTypeNodeFor(ContractsNs, "SatisfiesAttribute", ElementType.Class);
-      ModelfieldException = (Class)GetCompilerRuntimeTypeNodeFor("Microsoft.Contracts", "ModelfieldException", ElementType.Class);
-      #endregion
-
-      /* Diego's Attributes for Purity and WriteEffects */
-        OnceAttribute = (Class)GetCompilerRuntimeTypeNodeFor(CompilerGuardsNs, "OnceAttribute", ElementType.Class);
-        WriteConfinedAttribute = (Class)GetCompilerRuntimeTypeNodeFor(CompilerGuardsNs, "WriteConfinedAttribute", ElementType.Class);
-        GlobalReadAttribute = (Class)GetCompilerRuntimeTypeNodeFor(CompilerGuardsNs, "GlobalReadAttribute", ElementType.Class);
-        GlobalWriteAttribute = (Class)GetCompilerRuntimeTypeNodeFor(CompilerGuardsNs, "GlobalWriteAttribute", ElementType.Class);
-        GlobalAccessAttribute = (Class)GetCompilerRuntimeTypeNodeFor(CompilerGuardsNs, "GlobalAccessAttribute", ElementType.Class);
-        FreshAttribute = (Class)GetCompilerRuntimeTypeNodeFor(CompilerGuardsNs, "FreshAttribute", ElementType.Class);
-        EscapesAttribute = (Class)GetCompilerRuntimeTypeNodeFor(CompilerGuardsNs, "EscapesAttribute", ElementType.Class);
-        /*  */
-
-      StateIndependentAttribute = (Class)GetCompilerRuntimeTypeNodeFor(ContractsNs, "StateIndependentAttribute", ElementType.Class);
-      SpecPublicAttribute = (Class)GetCompilerRuntimeTypeNodeFor(ContractsNs, "SpecPublicAttribute", ElementType.Class);
-      SpecProtectedAttribute = (Class)GetCompilerRuntimeTypeNodeFor(ContractsNs, "SpecProtectedAttribute", ElementType.Class);
-      SpecInternalAttribute = (Class)GetCompilerRuntimeTypeNodeFor(ContractsNs, "SpecInternalAttribute", ElementType.Class);
-
-      OwnedAttribute = (Class)GetCompilerRuntimeTypeNodeFor(CompilerGuardsNs, "OwnedAttribute", ElementType.Class);
-      RepAttribute = (Class)GetCompilerRuntimeTypeNodeFor(CompilerGuardsNs, "RepAttribute", ElementType.Class);
-      PeerAttribute = (Class)GetCompilerRuntimeTypeNodeFor(CompilerGuardsNs, "PeerAttribute", ElementType.Class);
-      CapturedAttribute = (Class)GetCompilerRuntimeTypeNodeFor(CompilerGuardsNs, "CapturedAttribute", ElementType.Class);
-      LockProtectedAttribute = (Class)GetCompilerRuntimeTypeNodeFor(CompilerGuardsNs, "LockProtectedAttribute", ElementType.Class);
-      RequiresLockProtectedAttribute = (Class)GetCompilerRuntimeTypeNodeFor(CompilerGuardsNs, "RequiresLockProtectedAttribute", ElementType.Class);
-      ImmutableAttribute = (Class)GetCompilerRuntimeTypeNodeFor(CompilerGuardsNs, "ImmutableAttribute", ElementType.Class);
-      RequiresImmutableAttribute = (Class)GetCompilerRuntimeTypeNodeFor(CompilerGuardsNs, "RequiresImmutableAttribute", ElementType.Class);
-      RequiresCanWriteAttribute = (Class)GetCompilerRuntimeTypeNodeFor(CompilerGuardsNs, "RequiresCanWriteAttribute", ElementType.Class);
-
-      ModelAttribute = (Class)GetCompilerRuntimeTypeNodeFor(ContractsNs, "ModelAttribute", ElementType.Class);
-      RequiresAttribute = (Class)GetCompilerRuntimeTypeNodeFor(ContractsNs, "RequiresAttribute", ElementType.Class);
-      EnsuresAttribute = (Class)GetCompilerRuntimeTypeNodeFor(ContractsNs, "EnsuresAttribute", ElementType.Class);
-      ModifiesAttribute = (Class)GetCompilerRuntimeTypeNodeFor(ContractsNs, "ModifiesAttribute", ElementType.Class);
-      HasWitnessAttribute = (Class)GetCompilerRuntimeTypeNodeFor(ContractsNs, "HasWitnessAttribute", ElementType.Class);
-      InferredReturnValueAttribute = (Class)GetCompilerRuntimeTypeNodeFor(ContractsNs, "InferredReturnValueAttribute", ElementType.Class);
-      ThrowsAttribute = (Class)GetCompilerRuntimeTypeNodeFor(ContractsNs, "ThrowsAttribute", ElementType.Class);
-      DoesAttribute = (Class)GetCompilerRuntimeTypeNodeFor(ContractsNs, "DoesAttribute", ElementType.Class);
-      InvariantAttribute = (Class)GetCompilerRuntimeTypeNodeFor(ContractsNs, "InvariantAttribute", ElementType.Class);
-      NoDefaultActivityAttribute = (Class)GetCompilerRuntimeTypeNodeFor(CompilerGuardsNs, "NoDefaultActivityAttribute", ElementType.Class);
-      NoDefaultContractAttribute = (Class)GetCompilerRuntimeTypeNodeFor(CompilerGuardsNs, "NoDefaultContractAttribute", ElementType.Class);
-      ReaderAttribute = (Class)GetCompilerRuntimeTypeNodeFor(CompilerGuardsNs, "ReaderAttribute", ElementType.Class);
-
-      ShadowsAssemblyAttribute = (Class)GetCompilerRuntimeTypeNodeFor(ContractsNs, "ShadowsAssemblyAttribute", ElementType.Class);
-      VerifyAttribute = (Class)GetCompilerRuntimeTypeNodeFor(ContractsNs, "VerifyAttribute", ElementType.Class);
-      DependentAttribute = (Class)GetCompilerRuntimeTypeNodeFor(ContractsNs, "DependentAttribute", ElementType.Class);
-      ElementsRepAttribute = (Class)GetCompilerRuntimeTypeNodeFor(ContractsNs, "ElementsRepAttribute", ElementType.Class);
-      ElementsPeerAttribute = (Class)GetCompilerRuntimeTypeNodeFor(ContractsNs, "ElementsPeerAttribute", ElementType.Class);
-      ElementAttribute = (Class)GetCompilerRuntimeTypeNodeFor(ContractsNs, "ElementAttribute", ElementType.Class);
-      ElementCollectionAttribute = (Class)GetCompilerRuntimeTypeNodeFor(ContractsNs, "ElementCollectionAttribute", ElementType.Class);
-      RecursionTerminationAttribute = (Class)GetCompilerRuntimeTypeNodeFor(ContractsNs, "RecursionTerminationAttribute", ElementType.Class);
-      NoReferenceComparisonAttribute = (Class)GetCompilerRuntimeTypeNodeFor(ContractsNs, "NoReferenceComparisonAttribute", ElementType.Class);
-      ResultNotNewlyAllocatedAttribute = (Class)GetCompilerRuntimeTypeNodeFor(ContractsNs, "ResultNotNewlyAllocatedAttribute", ElementType.Class);
-            #endregion
-      #endregion
-#endif
             SystemTypes.Initialized = true;
             object dummy = TargetPlatform.AssemblyReferenceFor; //Force selection of target platform
             if (dummy == null) return;
@@ -1838,7 +1194,7 @@ namespace System.Compiler
             ICollection = null;
             IEnumerable = null;
             IList = null;
-#if !MinimalReader
+
             //Special attributes    
             AllowPartiallyTrustedCallersAttribute = null;
             AssemblyCompanyAttribute = null;
@@ -1918,9 +1274,7 @@ namespace System.Compiler
             EventArgs = null;
             ExecutionEngineException = null;
             GenericArraySegment = null;
-#if !WHIDBEYwithGenerics
             GenericArrayToIEnumerableAdapter = null;
-#endif
             GenericDictionary = null;
             GenericIComparable = null;
             GenericIComparer = null;
@@ -1976,147 +1330,8 @@ namespace System.Compiler
             SystemException = null;
             Thread = null;
             WindowsImpersonationContext = null;
-#endif
-#if ExtendedRuntime
-      AnonymousAttribute = null;
-      AnonymityEnum = null;
-      ComposerAttribute = null;
-      CustomVisitorAttribute = null;
-      TemplateAttribute = null;
-      TemplateInstanceAttribute = null;
-      UnmanagedStructTemplateParameterAttribute = null;
-      TemplateParameterFlagsAttribute = null;
-      GenericBoxed = null;
-      GenericIEnumerableToGenericIListAdapter = null;
-      GenericInvariant = null;
-      GenericNonEmptyIEnumerable = null;
-      GenericNonNull = null;
-      GenericStreamUtility = null;
-      GenericUnboxer = null;
-      ElementTypeAttribute = null;
-      IDbTransactable = null;
-      IAggregate = null;
-      IAggregateGroup = null;
-      StreamNotSingletonException = null;
-      SqlHint = null;
-      SqlFunctions = null;
-      XmlAttributeAttributeClass = null;
-      XmlChoiceIdentifierAttributeClass = null;
-      XmlElementAttributeClass = null;
-      XmlIgnoreAttributeClass = null;
-      XmlTypeAttributeClass = null;
-      INullable = null;
-      SqlBinary = null;
-      SqlBoolean = null;
-      SqlByte = null;
-      SqlDateTime = null;
-      SqlDecimal = null;
-      SqlDouble = null;
-      SqlGuid = null;
-      SqlInt16 = null;
-      SqlInt32 = null;
-      SqlInt64 = null;
-      SqlMoney = null;
-      SqlSingle = null;
-      SqlString = null;
-      IDbConnection = null;
-      IDbTransaction = null;
-      IsolationLevel = null;
-
-      //OrdinaryExceptions
-      NoChoiceException = null;
-      IllegalUpcastException = null;
-      //NonNull  
-      Range = null;
-      //Invariants
-      InitGuardSetsDelegate = null;
-      CheckInvariantDelegate = null;
-      ObjectInvariantException = null;
-      ThreadConditionDelegate = null;
-      GuardThreadStart = null;
-      Guard = null;
-      ContractMarkers = null;
-      //IReduction = null;
-      AssertHelpers = null;
-      ThreadStart = null;
-      //CheckedExceptions
-      ICheckedException = null;
-      CheckedException = null;
-
-      // Contracts
-      UnreachableException = null;
-      ContractException = null;
-      NullTypeException = null;
-      AssertException = null;
-      AssumeException = null;
-      InvalidContractException = null;
-      RequiresException = null;
-      EnsuresException = null;
-      ModifiesException = null;
-      ThrowsException = null;
-      DoesException = null;
-      InvariantException = null;
-      ContractMarkerException = null;
-
-      AdditiveAttribute = null;
-      InsideAttribute = null;
-      SpecPublicAttribute = null;
-      SpecProtectedAttribute = null;
-      SpecInternalAttribute = null;
-      PureAttribute = null;
-      OwnedAttribute = null;
-      RepAttribute = null;
-      PeerAttribute = null;
-      CapturedAttribute = null;
-      LockProtectedAttribute = null;
-      RequiresLockProtectedAttribute = null;
-      ImmutableAttribute = null;
-      RequiresImmutableAttribute = null;
-      RequiresCanWriteAttribute = null;
-      StateIndependentAttribute = null;
-      ConfinedAttribute = null;
-      ModelfieldContractAttribute = null;
-      ModelfieldAttribute = null;
-      SatisfiesAttribute = null;
-      ModelfieldException = null;
-
-        /* Diego's Attributes for Purity Analysis and Write effects */
-      OnceAttribute = null;
-      WriteConfinedAttribute = null;
-      GlobalReadAttribute = null;
-      GlobalWriteAttribute = null;
-      GlobalAccessAttribute = null;
-      FreshAttribute = null;
-      EscapesAttribute = null;
-        /* */
-
-      ModelAttribute = null;
-      RequiresAttribute = null;
-      EnsuresAttribute = null;
-      ModifiesAttribute = null;
-      HasWitnessAttribute = null;
-      InferredReturnValueAttribute = null;
-      ThrowsAttribute = null;
-      DoesAttribute = null;
-      InvariantAttribute = null;
-      NoDefaultActivityAttribute = null;
-      NoDefaultContractAttribute = null;
-      ReaderAttribute = null;
-      ShadowsAssemblyAttribute = null;
-      VerifyAttribute = null;
-      DependentAttribute = null;
-      ElementsRepAttribute = null;
-      ElementsPeerAttribute = null;
-      ElementAttribute = null;
-      ElementCollectionAttribute = null;
-      RecursionTerminationAttribute = null;
-      NoReferenceComparisonAttribute = null;
-      ResultNotNewlyAllocatedAttribute = null;
-      noHeapAllocationAttribute = null;
-#endif
         }
 
-#if !NoData && !ROTOR
         private static AssemblyNode/*!*/ GetSystemDataAssembly(bool doNotLockFile, bool getDebugInfo)
         {
             System.Reflection.AssemblyName aName = typeof(System.Data.IDataReader).Module.Assembly.GetName();
@@ -2135,8 +1350,7 @@ namespace System.Compiler
             if (aref.assembly == null) aref.Location = SystemDataAssemblyLocation.Location;
             return aref.assembly = AssemblyNode.GetAssembly(aref);
         }
-#endif
-#if !NoXml && !NoRuntimeXml
+
         private static AssemblyNode/*!*/ GetSystemXmlAssembly(bool doNotLockFile, bool getDebugInfo)
         {
             System.Reflection.AssemblyName aName = typeof(System.Xml.XmlNode).Module.Assembly.GetName();
@@ -2155,15 +1369,11 @@ namespace System.Compiler
             if (aref.assembly == null) aref.Location = SystemXmlAssemblyLocation.Location;
             return aref.assembly = AssemblyNode.GetAssembly(aref);
         }
-#endif
+
         private static TypeNode/*!*/ GetGenericRuntimeTypeNodeFor(string/*!*/ nspace, string/*!*/ name, int numParams, ElementType typeCode)
         {
             if (TargetPlatform.GenericTypeNamesMangleChar != 0) name = name + TargetPlatform.GenericTypeNamesMangleChar + numParams;
-#if ExtendedRuntime
-      if (TargetPlatform.TargetVersion != null && TargetPlatform.TargetVersion.Major == 1 && TargetPlatform.TargetVersion.Minor < 2)
-        return SystemTypes.GetCompilerRuntimeTypeNodeFor(nspace, name, typeCode);
-      else
-#endif
+
             return SystemTypes.GetTypeNodeFor(nspace, name, typeCode);
         }
         private static TypeNode/*!*/ GetTypeNodeFor(string/*!*/ nspace, string/*!*/ name, ElementType typeCode)
@@ -2177,46 +1387,5 @@ namespace System.Compiler
             result.typeCode = typeCode;
             return result;
         }
-#if ExtendedRuntime
-    private static TypeNode/*!*/ GetCompilerRuntimeTypeNodeFor(string/*!*/ nspace, string/*!*/ name, ElementType typeCode) {
-      return SystemTypes.GetCompilerRuntimeTypeNodeFor(nspace, name, 0, typeCode);
-    }
-    private static TypeNode/*!*/ GetCompilerRuntimeTypeNodeFor(string/*!*/ nspace, string/*!*/ name, int numParams, ElementType typeCode) {
-      if (TargetPlatform.GenericTypeNamesMangleChar != 0 && numParams > 0)
-        name = name + TargetPlatform.GenericTypeNamesMangleChar + numParams;
-      TypeNode result = null;
-      if (SystemCompilerRuntimeAssembly == null)
-        Debug.Assert(false);
-      else
-        result = SystemCompilerRuntimeAssembly.GetType(Identifier.For(nspace), Identifier.For(name));
-      if (result == null) result = CoreSystemTypes.GetDummyTypeNode(SystemCompilerRuntimeAssembly, nspace, name, typeCode);
-      result.typeCode = typeCode;
-      return result;
-    }
-#if !NoData
-    private static TypeNode/*!*/ GetDataTypeNodeFor(string/*!*/ nspace, string/*!*/ name, ElementType typeCode) {
-      TypeNode result = null;
-      if (SystemDataAssembly == null)
-        Debug.Assert(false);
-      else
-        result = SystemDataAssembly.GetType(Identifier.For(nspace), Identifier.For(name));
-      if (result == null) result = CoreSystemTypes.GetDummyTypeNode(SystemDataAssembly, nspace, name, typeCode);
-      result.typeCode = typeCode;
-      return result;
-    }
-#endif
-#if !NoXml && !NoRuntimeXml
-    private static TypeNode/*!*/ GetXmlTypeNodeFor(string/*!*/ nspace, string/*!*/ name, ElementType typeCode) {
-      TypeNode result = null;
-      if (SystemXmlAssembly == null)
-        Debug.Assert(false);
-      else
-        result = SystemXmlAssembly.GetType(Identifier.For(nspace), Identifier.For(name));
-      if (result == null) result = CoreSystemTypes.GetDummyTypeNode(SystemXmlAssembly, nspace, name, typeCode);
-      result.typeCode = typeCode;
-      return result;
-    }
-#endif
-#endif
     }
 }

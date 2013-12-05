@@ -3,21 +3,23 @@
 // See http://www.microsoft.com/resources/sharedsource/licensingbasics/sharedsourcelicenses.mspx.
 // All other rights reserved.
 
-using System;
-using System.Collections.Generic;
-using System.Xml;
 using System.Xml.XPath;
 
-using System.Compiler;
-
-using Microsoft.Ddue.Tools.Reflection;
-
-namespace Microsoft.Ddue.Tools {
-
-    public class MRefBuilderAddIn {
-
-        protected MRefBuilderAddIn(ManagedReflectionWriter writer, XPathNavigator configuration) { }
-
+namespace Microsoft.Ddue.Tools
+{
+    /// <summary>
+    /// This serves as the base class for MRefBuilder add-ins
+    /// </summary>
+    public class MRefBuilderAddIn
+    {
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="writer">The API visitor and reflection data writer</param>
+        /// <param name="configuration">An XPath navigator containing the add-in configuration</param>
+        /// <remarks>For this base class, this does nothing</remarks>
+        protected MRefBuilderAddIn(ManagedReflectionWriter writer, XPathNavigator configuration)
+        {
+        }
     }
-
 }

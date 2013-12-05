@@ -46,6 +46,7 @@
             this.lblAPIFilterState = new System.Windows.Forms.Label();
             this.btnEditAPIFilter = new System.Windows.Forms.Button();
             this.epNotes = new System.Windows.Forms.ErrorProvider(this.components);
+            this.chkNoPIATypes = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.epNotes)).BeginInit();
             this.SuspendLayout();
             // 
@@ -176,8 +177,6 @@
             // chkSealedProtected
             // 
             this.chkSealedProtected.AutoSize = true;
-            this.chkSealedProtected.Checked = true;
-            this.chkSealedProtected.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkSealedProtected.Location = new System.Drawing.Point(44, 348);
             this.chkSealedProtected.Name = "chkSealedProtected";
             this.chkSealedProtected.Size = new System.Drawing.Size(275, 24);
@@ -189,31 +188,33 @@
             // chkProtectedInternalAsProtected
             // 
             this.chkProtectedInternalAsProtected.AutoSize = true;
+            this.chkProtectedInternalAsProtected.Checked = true;
+            this.chkProtectedInternalAsProtected.CheckState = System.Windows.Forms.CheckState.Checked;
             this.epNotes.SetError(this.chkProtectedInternalAsProtected, "This option is ignored if the Protected Members option is turned off");
             this.epNotes.SetIconPadding(this.chkProtectedInternalAsProtected, 5);
-            this.chkProtectedInternalAsProtected.Location = new System.Drawing.Point(13, 398);
+            this.chkProtectedInternalAsProtected.Location = new System.Drawing.Point(13, 417);
             this.chkProtectedInternalAsProtected.Name = "chkProtectedInternalAsProtected";
             this.chkProtectedInternalAsProtected.Size = new System.Drawing.Size(452, 24);
-            this.chkProtectedInternalAsProtected.TabIndex = 12;
+            this.chkProtectedInternalAsProtected.TabIndex = 13;
             this.chkProtectedInternalAsProtected.Text = "Doc&ument \"protected internal\" members as \"protected\" instead";
             this.chkProtectedInternalAsProtected.UseVisualStyleBackColor = true;
             // 
             // lblAPIFilterState
             // 
             this.lblAPIFilterState.AutoSize = true;
-            this.lblAPIFilterState.Location = new System.Drawing.Point(13, 451);
+            this.lblAPIFilterState.Location = new System.Drawing.Point(13, 463);
             this.lblAPIFilterState.Name = "lblAPIFilterState";
             this.lblAPIFilterState.Size = new System.Drawing.Size(232, 20);
-            this.lblAPIFilterState.TabIndex = 13;
+            this.lblAPIFilterState.TabIndex = 14;
             this.lblAPIFilterState.Tag = "ApiFilter";
             this.lblAPIFilterState.Text = "An API filter has not been defined";
             // 
             // btnEditAPIFilter
             // 
-            this.btnEditAPIFilter.Location = new System.Drawing.Point(262, 445);
+            this.btnEditAPIFilter.Location = new System.Drawing.Point(262, 457);
             this.btnEditAPIFilter.Name = "btnEditAPIFilter";
             this.btnEditAPIFilter.Size = new System.Drawing.Size(135, 32);
-            this.btnEditAPIFilter.TabIndex = 14;
+            this.btnEditAPIFilter.TabIndex = 15;
             this.btnEditAPIFilter.Text = "Edit API &Filter";
             this.btnEditAPIFilter.UseVisualStyleBackColor = true;
             this.btnEditAPIFilter.Click += new System.EventHandler(this.btnEditAPIFilter_Click);
@@ -224,9 +225,20 @@
             this.epNotes.ContainerControl = this;
             this.epNotes.Icon = ((System.Drawing.Icon)(resources.GetObject("epNotes.Icon")));
             // 
+            // chkNoPIATypes
+            // 
+            this.chkNoPIATypes.AutoSize = true;
+            this.chkNoPIATypes.Location = new System.Drawing.Point(44, 378);
+            this.chkNoPIATypes.Name = "chkNoPIATypes";
+            this.chkNoPIATypes.Size = new System.Drawing.Size(430, 24);
+            this.chkNoPIATypes.TabIndex = 12;
+            this.chkNoPIATypes.Text = "No-PIA (Primary Interop Assembly) embedded interop types";
+            this.chkNoPIATypes.UseVisualStyleBackColor = true;
+            // 
             // VisibilityPropertiesPageControl
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
+            this.Controls.Add(this.chkNoPIATypes);
             this.Controls.Add(this.btnEditAPIFilter);
             this.Controls.Add(this.lblAPIFilterState);
             this.Controls.Add(this.chkProtectedInternalAsProtected);
@@ -244,7 +256,7 @@
             this.Controls.Add(this.label1);
             this.MinimumSize = new System.Drawing.Size(500, 495);
             this.Name = "VisibilityPropertiesPageControl";
-            this.Size = new System.Drawing.Size(500, 495);
+            this.Size = new System.Drawing.Size(500, 499);
             ((System.ComponentModel.ISupportInitialize)(this.epNotes)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -269,6 +281,7 @@
         private System.Windows.Forms.Label lblAPIFilterState;
         private System.Windows.Forms.Button btnEditAPIFilter;
         private System.Windows.Forms.ErrorProvider epNotes;
+        private System.Windows.Forms.CheckBox chkNoPIATypes;
 
 
     }

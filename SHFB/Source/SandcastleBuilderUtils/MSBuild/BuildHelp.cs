@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : BuildHelp.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/16/2012
+// Updated : 11/15/2013
 // Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -401,7 +401,40 @@ namespace SandcastleBuilder.Utils.MSBuild
             IEnumerable configCache;
             ProjectInstance project, lastMatchingProject = null;
 
-            // From the BuildManager...
+            // See if we can get the project instance from the build engine for this task.  This is preferred
+            // as it will work when building projects synchronously or in parallel.
+            Type taskHostType = Type.GetType("Microsoft.Build.BackEnd.TaskHost,Microsoft.Build");
+            Type targetBuilderType = Type.GetType("Microsoft.Build.BackEnd.TargetBuilder,Microsoft.Build");
+
+            if(taskHostType != null && targetBuilderType != null)
+            {
+                // From the this task's build engine ...
+                fieldInfo = taskHostType.GetField("targetBuilderCallback", BindingFlags.NonPublic |
+                    BindingFlags.Instance);
+
+                if(fieldInfo != null)
+                {
+                    // ... get the target builder ...
+                    object targetBuilder = fieldInfo.GetValue(this.BuildEngine);
+
+                    if(targetBuilder != null)
+                    {
+                        fieldInfo = targetBuilderType.GetField("projectInstance", BindingFlags.NonPublic |
+                            BindingFlags.Instance);
+
+                        if(fieldInfo != null)
+                        {
+                            // ... then get the project instance XML from it.
+                            project = (ProjectInstance)fieldInfo.GetValue(targetBuilder);
+
+                            if(project != null)
+                                return project;
+                        }
+                    }
+                }
+            }
+
+            // If not, from the BuildManager ...
             fieldInfo = typeof(BuildManager).GetField("configCache", BindingFlags.NonPublic | BindingFlags.Instance);
 
             if(fieldInfo == null)

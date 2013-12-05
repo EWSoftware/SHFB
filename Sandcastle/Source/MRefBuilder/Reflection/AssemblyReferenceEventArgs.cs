@@ -2,35 +2,35 @@
 //
 
 using System;
-using System.Collections.Generic;
-using System.Xml.XPath;
 
 using System.Compiler;
 
-namespace Microsoft.Ddue.Tools.Reflection {
+namespace Microsoft.Ddue.Tools.Reflection
+{
+    /// <summary>
+    /// This event arguments class contains information used to resolve assembly references
+    /// </summary>
+    public class AssemblyReferenceEventArgs : EventArgs
+    {
+        /// <summary>
+        /// This read-only property returns the assembly reference needed
+        /// </summary>
+        public AssemblyReference Reference { get; private set; }
 
-    public class AssemblyReferenceEventArgs : EventArgs {
+        /// <summary>
+        /// This read-only property returns the module requiring the reference
+        /// </summary>
+        public Module Referrer { get; private set; }
 
-        private Module module;
-
-        private AssemblyReference reference;
-
-        public AssemblyReferenceEventArgs(AssemblyReference reference, Module module) {
-            this.reference = reference;
-            this.module = module;
-        }
-
-        public AssemblyReference Reference {
-            get {
-                return (reference);
-            }
-        }
-
-        public Module Referrer {
-            get {
-                return (module);
-            }
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="reference">The assembly reference needed</param>
+        /// <param name="referrer">The module requiring the reference</param>
+        public AssemblyReferenceEventArgs(AssemblyReference reference, Module referrer)
+        {
+            this.Reference = reference;
+            this.Referrer = referrer;
         }
     }
-
 }

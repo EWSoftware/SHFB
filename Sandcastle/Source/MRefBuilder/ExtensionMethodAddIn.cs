@@ -9,9 +9,11 @@
 // 03/02/2012 - EFW - Added code to ignore unexposed namespaces and types.  This fixes a crash issue
 // caused by certain compiler generated types.
 // 07/25/2012 - EFW - Fixed RecordExtensionMethods() to prevent a crash in an odd case
+// 11/25/2013 - EFW - Cleaned up the code and removed unused members
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml;
 using System.Xml.XPath;
 
@@ -22,250 +24,57 @@ using Microsoft.Ddue.Tools.Reflection;
 namespace Microsoft.Ddue.Tools
 {
     /// <summary>
-    /// This MRefBuilder add-in adds extension method information to API member nodes
+    /// This add-in is used to add extension method information to API member nodes
     /// </summary>
     public class ExtensionMethodAddIn : MRefBuilderAddIn
     {
-        private Dictionary<TypeNode, List<Method>> index = new Dictionary<TypeNode, List<Method>>();
+        #region Private data members
+        //=====================================================================
+
+        private Dictionary<TypeNode, List<Method>> index;
         private bool isExtensionMethod;
-        private ManagedReflectionWriter reflector;
+        private ManagedReflectionWriter mrw;
+
+        #endregion
+
+        #region Constructor
+        //=====================================================================
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="reflector">The managed reflection writer</param>
-        /// <param name="configuration">The configuration to use</param>
-        public ExtensionMethodAddIn(ManagedReflectionWriter reflector, XPathNavigator configuration) :
-          base(reflector, configuration)
+        /// <param name="writer">The API visitor and reflection data writer</param>
+        /// <param name="configuration">This add-in has no configurable options</param>
+        public ExtensionMethodAddIn(ManagedReflectionWriter writer, XPathNavigator configuration) :
+          base(writer, configuration)
         {
-            this.reflector = reflector;
+            index = new Dictionary<TypeNode, List<Method>>();
 
-            reflector.RegisterStartTagCallback("apis", new MRefBuilderCallback(RecordExtensionMethods));
-            reflector.RegisterEndTagCallback("elements", new MRefBuilderCallback(AddExtensionMethods));
-            reflector.RegisterStartTagCallback("apidata", new MRefBuilderCallback(AddExtensionSubsubgroup));
+            this.mrw = writer;
+
+            writer.RegisterStartTagCallback("apis", RecordExtensionMethods);
+            writer.RegisterStartTagCallback("apidata", AddExtensionSubsubgroup);
+            writer.RegisterEndTagCallback("elements", AddExtensionMethods);
         }
+        #endregion
+
+        #region Add-in callback methods
+        //=====================================================================
 
         /// <summary>
-        /// Add extension method information to a type
+        /// This finds all extension methods, adds information about them to the types, and tracks
+        /// them for adding to the reflection data later in the other callbacks.
         /// </summary>
-        /// <param name="writer"></param>
-        /// <param name="type">the current type being extended</param>
-        /// <param name="extensionMethodTemplate">A reference to the extension method. For generic methods,
-        /// this is a reference to the non-specialized method, e.g. System.Linq.Enumerable.Select``2.
-        /// </param>
-        /// <param name="specialization">When the current type implements or inherits from a specialization
-        /// of a generic type, this parameter has a TypeNode for the type used as apecialization of the
-        /// generic type's first template param. 
-        /// </param>
-        private void AddExtensionMethod(XmlWriter writer, TypeNode type, Method extensionMethodTemplate,
-          TypeNode specialization)
-        {
-            // !EFW - Bug fix
-            // Don't add extension method support to enumerations and static classes
-            if(type != null && (type.NodeType == NodeType.EnumNode || (type.NodeType == NodeType.Class &&
-              type.IsAbstract && type.IsSealed)))
-                return;
-
-            // If this is a specialization of a generic method, construct a Method object that describes
-            // the specialization.
-            Method extensionMethodTemplate2 = extensionMethodTemplate;
-
-            if(extensionMethodTemplate2.IsGeneric && (specialization != null))
-            {
-                // The specialization type is the first of the method's template arguments
-                TypeNodeList templateArgs = new TypeNodeList();
-                templateArgs.Add(specialization);
-
-                // Add any additional template arguments
-                for(int i = 1; i < extensionMethodTemplate.TemplateParameters.Count; i++)
-                    templateArgs.Add(extensionMethodTemplate.TemplateParameters[i]);
-
-                extensionMethodTemplate2 = extensionMethodTemplate.GetTemplateInstance(type, templateArgs);
-            }
-
-            TypeNode extensionMethodTemplateReturnType = extensionMethodTemplate2.ReturnType;
-            ParameterList extensionMethodTemplateParameters = extensionMethodTemplate2.Parameters;
-
-            ParameterList extensionMethodParameters = new ParameterList();
-
-            for(int i = 1; i < extensionMethodTemplateParameters.Count; i++)
-            {
-                Parameter extensionMethodParameter = extensionMethodTemplateParameters[i];
-                extensionMethodParameters.Add(extensionMethodParameter);
-            }
-
-            Method extensionMethod = new Method(extensionMethodTemplate.DeclaringType, new AttributeList(),
-                extensionMethodTemplate.Name, extensionMethodParameters, extensionMethodTemplate.ReturnType,
-                null);
-            extensionMethod.Flags = extensionMethodTemplate.Flags & ~MethodFlags.Static;
-
-            // For generic methods, set the template args and params so the template data is included in
-            // the id and the method data.
-            if(extensionMethodTemplate2.IsGeneric)
-            {
-                extensionMethod.IsGeneric = true;
-
-                if(specialization != null)
-                {
-                    // Set the template args for the specialized generic method
-                    extensionMethod.TemplateArguments = extensionMethodTemplate2.TemplateArguments;
-                }
-                else
-                {
-                    // Set the generic template params for the non-specialized generic method
-                    extensionMethod.TemplateParameters = extensionMethodTemplate2.TemplateParameters;
-                }
-            }
-
-            // Get the id
-            string extensionMethodTemplateId = reflector.ApiNamer.GetMemberName(extensionMethodTemplate);
-
-            // Write the element node
-            writer.WriteStartElement("element");
-            writer.WriteAttributeString("api", extensionMethodTemplateId);
-            writer.WriteAttributeString("source", "extension");
-
-            isExtensionMethod = true;
-            reflector.WriteMember(extensionMethod);
-            isExtensionMethod = false;
-            writer.WriteEndElement();
-        }
-
-        private void AddExtensionMethods(XmlWriter writer, Object info)
-        {
-            MemberDictionary members = info as MemberDictionary;
-            if(members == null)
-                return;
-
-            TypeNode type = members.Type;
-
-            InterfaceList contracts = type.Interfaces;
-            foreach(Interface contract in contracts)
-            {
-                List<Method> extensionMethods = null;
-                if(index.TryGetValue(contract, out extensionMethods))
-                {
-                    foreach(Method extensionMethod in extensionMethods)
-                        if(!IsExtensionMethodHidden(extensionMethod, members))
-                            AddExtensionMethod(writer, type, extensionMethod, null);
-                }
-                if(contract.IsGeneric && (contract.TemplateArguments != null) && (contract.TemplateArguments.Count > 0))
-                {
-                    Interface templateContract = (Interface)ReflectionUtilities.GetTemplateType(contract);
-                    TypeNode specialization = contract.TemplateArguments[0];
-                    if(index.TryGetValue(templateContract, out extensionMethods))
-                    {
-                        foreach(Method extensionMethod in extensionMethods)
-                        {
-                            if(IsValidTemplateArgument(specialization, extensionMethod.TemplateParameters[0]))
-                            {
-                                if(!IsExtensionMethodHidden(extensionMethod, members))
-                                    AddExtensionMethod(writer, type, extensionMethod, specialization);
-                            }
-                        }
-                    }
-                }
-            }
-
-            TypeNode comparisonType = type;
-            while(comparisonType != null)
-            {
-                List<Method> extensionMethods = null;
-                if(index.TryGetValue(comparisonType, out extensionMethods))
-                {
-                    foreach(Method extensionMethod in extensionMethods)
-                        if(!IsExtensionMethodHidden(extensionMethod, members))
-                            AddExtensionMethod(writer, type, extensionMethod, null);
-                }
-                if(comparisonType.IsGeneric && (comparisonType.TemplateArguments != null) && (comparisonType.TemplateArguments.Count > 0))
-                {
-                    TypeNode templateType = ReflectionUtilities.GetTemplateType(comparisonType);
-                    TypeNode specialization = comparisonType.TemplateArguments[0];
-                    if(index.TryGetValue(templateType, out extensionMethods))
-                    {
-                        foreach(Method extensionMethod in extensionMethods)
-                        {
-                            if(IsValidTemplateArgument(specialization, extensionMethod.TemplateParameters[0]))
-                            {
-                                if(!IsExtensionMethodHidden(extensionMethod, members))
-                                    AddExtensionMethod(writer, type, extensionMethod, specialization);
-                            }
-                        }
-                    }
-                }
-                comparisonType = comparisonType.BaseType;
-            }
-        }
-
-        private void AddExtensionSubsubgroup(XmlWriter writer, Object data)
-        {
-            if(isExtensionMethod)
-                writer.WriteAttributeString("subsubgroup", "extension");
-        }
-
-        private bool HasExtensionAttribute(Method method)
-        {
-            AttributeList attributes = method.Attributes;
-            foreach(AttributeNode attribute in attributes)
-            {
-                if(attribute.Type.FullName == "System.Runtime.CompilerServices.ExtensionAttribute")
-                    return (true);
-            }
-            return (false);
-        }
-
-        private bool IsValidTemplateArgument(TypeNode type, TypeNode parameter)
-        {
-            if(type == null)
-                throw new ArgumentNullException("type");
-            if(parameter == null)
-                throw new ArgumentNullException("parameter");
-
-            // check that the parameter really is a type parameter
-
-            ITypeParameter itp = parameter as ITypeParameter;
-            if(itp == null)
-                throw new ArgumentException("The 'parameter' argument is null or not an 'ITypeParameter'.");
-
-            // test constraints
-
-            bool reference = ((itp.TypeParameterFlags & TypeParameterFlags.ReferenceTypeConstraint) > 0);
-            if(reference && type.IsValueType)
-                return (false);
-
-            bool value = ((itp.TypeParameterFlags & TypeParameterFlags.ValueTypeConstraint) > 0);
-            if(value && !type.IsValueType)
-                return (false);
-
-            bool constructor = ((itp.TypeParameterFlags & TypeParameterFlags.DefaultConstructorConstraint) > 0);
-
-
-            InterfaceList contracts = parameter.Interfaces;
-            if(contracts != null)
-            {
-                foreach(Interface contract in contracts)
-                {
-                    if(!type.IsAssignableTo(contract))
-                        return (false);
-                }
-            }
-
-            TypeNode parent = parameter.BaseType;
-            if((parent != null) && !type.IsAssignableTo(parent))
-                return (false);
-
-            // okay, passed all tests
-            return (true);
-        }
-
-        private void RecordExtensionMethods(XmlWriter writer, Object info)
+        /// <param name="writer">The reflection data XML writer</param>
+        /// <param name="info">For this callback, the information object is a namespace list</param>
+        private void RecordExtensionMethods(XmlWriter writer, object info)
         {
             NamespaceList spaces = (NamespaceList)info;
 
             foreach(Namespace space in spaces)
             {
                 // !EFW - Don't bother checking unexposed namespaces
-                if(!reflector.ApiFilter.IsExposedNamespace(space))
+                if(!mrw.ApiFilter.IsExposedNamespace(space))
                     continue;
 
                 TypeNodeList types = space.Types;
@@ -273,23 +82,18 @@ namespace Microsoft.Ddue.Tools
                 foreach(TypeNode type in types)
                 {
                     // !EFW - Don't bother checking unexposed types
-                    if(!reflector.ApiFilter.IsExposedType(type))
+                    if(!mrw.ApiFilter.IsExposedType(type))
                         continue;
 
                     MemberList members = type.Members;
 
-                    // go through the members, looking for fields signaling extension methods
+                    // Go through the members looking for fields signaling extension methods
                     foreach(Member member in members)
                     {
                         Method method = member as Method;
 
-                        if(method == null)
-                            continue;
-
-                        if(!reflector.ApiFilter.IsExposedMember(method))
-                            continue;
-
-                        if(!HasExtensionAttribute(method))
+                        if(method == null || !mrw.ApiFilter.IsExposedMember(method) ||
+                          !method.Attributes.Any(a => a.Type.FullName == "System.Runtime.CompilerServices.ExtensionAttribute"))
                             continue;
 
                         ParameterList parameters = method.Parameters;
@@ -301,31 +105,36 @@ namespace Microsoft.Ddue.Tools
 
                         TypeNode extendedType = parameters[0].Type;
 
-                        // recognize generic extension methods where the extended type is a specialization of a generic type,  
-                        // and the extended type's specialized template arg is a type parameter declared by the generic extension method 
-                        // In this case, we need to save a TypeNode for the non-specialized type in the index, 
-                        // because a TypeNode for the specialized type won't match correctly in AddExtensionMethods
-                        // Note: we are not interested in extended types that are specialized by a specific type rather than by the extension method's template param.
-                        if(method.IsGeneric && (method.TemplateParameters.Count > 0))
-                        {
-                            if(extendedType.IsGeneric && (extendedType.TemplateArguments != null) && (extendedType.TemplateArguments.Count == 1))
+                        // Recognize generic extension methods where the extended type is a specialization of a
+                        // generic type and the extended type's specialized template argument is a type parameter
+                        // declared by the generic extension method.  In this case, we need to save a TypeNode
+                        // for the non-specialized type in the index because a TypeNode for the specialized type
+                        // won't match correctly in AddExtensionMethods().  NOTE: we are not interested in
+                        // extended types that are specialized by a specific type rather than by the extension
+                        // method's template parameter.
+                        if(method.IsGeneric && method.TemplateParameters.Count > 0)
+                            if(extendedType.IsGeneric && extendedType.TemplateArguments != null &&
+                              extendedType.TemplateArguments.Count == 1)
                             {
-                                // is the extended type's template arg a template parameter, rather than a specialized type?
+                                // Is the extended type's template argument a template parameter rather than a
+                                // specialized type?
                                 TypeNode arg = extendedType.TemplateArguments[0];
+
                                 if(arg.IsTemplateParameter)
                                 {
-                                    // is the template parameter declared on the extension method
+                                    // Is the template parameter declared on the extension method
                                     ITypeParameter gtp = (ITypeParameter)arg;
-                                    if((gtp.DeclaringMember == method) && (gtp.ParameterListIndex == 0))
+
+                                    if(gtp.DeclaringMember == method && gtp.ParameterListIndex == 0)
                                     {
-                                        // get a TypeNode for the non-specialized type
-                                        extendedType = ReflectionUtilities.GetTemplateType(extendedType);
+                                        // Get a TypeNode for the non-specialized type
+                                        extendedType = extendedType.GetTemplateType();
                                     }
                                 }
                             }
-                        }
 
                         List<Method> methods = null;
+
                         if(!index.TryGetValue(extendedType, out methods))
                         {
                             methods = new List<Method>();
@@ -339,50 +148,264 @@ namespace Microsoft.Ddue.Tools
         }
 
         /// <summary>
-        /// Determines whether an extension method is hidden by a member that's already defined on the type being extended.
-        /// The extension method is hidden if it has the same name, template params, and parameters as a defined method.
+        /// This is used to add a <c>subsubgroup</c> attribute that identifies the extension method
         /// </summary>
-        /// <param name="extensionMethod">The extension method to compare.</param>
-        /// <param name="members">A dictionary of the members defined on the type being extended.</param>
-        /// <returns></returns>
-        private bool IsExtensionMethodHidden(Method extensionMethod, MemberDictionary members)
+        /// <param name="writer">The reflection data XML writer</param>
+        /// <param name="info">Not used here</param>
+        private void AddExtensionSubsubgroup(XmlWriter writer, object data)
+        {
+            if(isExtensionMethod)
+                writer.WriteAttributeString("subsubgroup", "extension");
+        }
+
+        /// <summary>
+        /// This is used to add the extension method elements to the type's member list
+        /// </summary>
+        /// <param name="writer">The reflection data XML writer</param>
+        /// <param name="info">For this callback, this is a member dictionary</param>
+        private void AddExtensionMethods(XmlWriter writer, object info)
+        {
+            MemberDictionary members = info as MemberDictionary;
+
+            if(members == null)
+                return;
+
+            TypeNode type = members.Type;
+
+            foreach(Interface contract in type.Interfaces)
+            {
+                List<Method> extensionMethods = null;
+
+                if(index.TryGetValue(contract, out extensionMethods))
+                    foreach(Method extensionMethod in extensionMethods)
+                        if(!IsExtensionMethodHidden(extensionMethod, members))
+                            AddExtensionMethod(writer, type, extensionMethod, null);
+
+                if(contract.IsGeneric && contract.TemplateArguments != null && contract.TemplateArguments.Count > 0)
+                {
+                    Interface templateContract = (Interface)contract.GetTemplateType();
+                    TypeNode specialization = contract.TemplateArguments[0];
+
+                    if(index.TryGetValue(templateContract, out extensionMethods))
+                        foreach(Method extensionMethod in extensionMethods)
+                            if(IsValidTemplateArgument(specialization, extensionMethod.TemplateParameters[0]))
+                                if(!IsExtensionMethodHidden(extensionMethod, members))
+                                    AddExtensionMethod(writer, type, extensionMethod, specialization);
+                }
+            }
+
+            TypeNode comparisonType = type;
+
+            while(comparisonType != null)
+            {
+                List<Method> extensionMethods = null;
+
+                if(index.TryGetValue(comparisonType, out extensionMethods))
+                    foreach(Method extensionMethod in extensionMethods)
+                        if(!IsExtensionMethodHidden(extensionMethod, members))
+                            AddExtensionMethod(writer, type, extensionMethod, null);
+
+                if(comparisonType.IsGeneric && comparisonType.TemplateArguments != null &&
+                  comparisonType.TemplateArguments.Count > 0)
+                {
+                    TypeNode templateType = comparisonType.GetTemplateType();
+                    TypeNode specialization = comparisonType.TemplateArguments[0];
+
+                    if(index.TryGetValue(templateType, out extensionMethods))
+                        foreach(Method extensionMethod in extensionMethods)
+                            if(IsValidTemplateArgument(specialization, extensionMethod.TemplateParameters[0]))
+                                if(!IsExtensionMethodHidden(extensionMethod, members))
+                                    AddExtensionMethod(writer, type, extensionMethod, specialization);
+                }
+
+                comparisonType = comparisonType.BaseType;
+            }
+        }
+        #endregion
+
+        #region Helper methods
+        //=====================================================================
+
+        /// <summary>
+        /// Add extension method information to a type
+        /// </summary>
+        /// <param name="writer">The reflection data XML writer</param>
+        /// <param name="type">the current type being extended</param>
+        /// <param name="extensionMethodTemplate">A reference to the extension method. For generic methods,
+        /// this is a reference to the non-specialized method, e.g. System.Linq.Enumerable.Select``2.</param>
+        /// <param name="specialization">When the current type implements or inherits from a specialization
+        /// of a generic type, this parameter has a TypeNode for the type used as a specialization of the
+        /// generic type's first template parameter.</param>
+        private void AddExtensionMethod(XmlWriter writer, TypeNode type, Method extensionMethodTemplate,
+          TypeNode specialization)
+        {
+            // !EFW - Bug fix
+            // Don't add extension method support to enumerations and static classes
+            if(type != null && (type.NodeType == NodeType.EnumNode || (type.NodeType == NodeType.Class &&
+              type.IsAbstract && type.IsSealed)))
+                return;
+
+            // If this is a specialization of a generic method, construct a Method object that describes
+            // the specialization.
+            Method extensionMethodTemplate2 = extensionMethodTemplate;
+
+            if(extensionMethodTemplate2.IsGeneric && specialization != null)
+            {
+                // The specialization type is the first of the method's template arguments
+                TypeNodeList templateArgs = new TypeNodeList();
+                templateArgs.Add(specialization);
+
+                // Add any additional template arguments
+                for(int i = 1; i < extensionMethodTemplate.TemplateParameters.Count; i++)
+                    templateArgs.Add(extensionMethodTemplate.TemplateParameters[i]);
+
+                extensionMethodTemplate2 = extensionMethodTemplate.GetTemplateInstance(type, templateArgs);
+            }
+
+            ParameterList extensionMethodTemplateParameters = extensionMethodTemplate2.Parameters;
+
+            ParameterList extensionMethodParameters = new ParameterList();
+
+            for(int i = 1; i < extensionMethodTemplateParameters.Count; i++)
+            {
+                Parameter extensionMethodParameter = extensionMethodTemplateParameters[i];
+                extensionMethodParameters.Add(extensionMethodParameter);
+            }
+
+            Method extensionMethod = new Method(extensionMethodTemplate.DeclaringType, new AttributeList(),
+                extensionMethodTemplate.Name, extensionMethodParameters, extensionMethodTemplate2.ReturnType,
+                null);
+            extensionMethod.Flags = extensionMethodTemplate.Flags & ~MethodFlags.Static;
+
+            // For generic methods, set the template arguments and parameters so the template data is included in
+            // the ID and the method data.
+            if(extensionMethodTemplate2.IsGeneric)
+            {
+                extensionMethod.IsGeneric = true;
+
+                if(specialization != null)
+                {
+                    // Set the template arguments for the specialized generic method
+                    extensionMethod.TemplateArguments = extensionMethodTemplate2.TemplateArguments;
+                }
+                else
+                {
+                    // Set the generic template parameters for the non-specialized generic method
+                    extensionMethod.TemplateParameters = extensionMethodTemplate2.TemplateParameters;
+                }
+            }
+
+            // Get the ID
+            string extensionMethodTemplateId = mrw.ApiNamer.GetMemberName(extensionMethodTemplate);
+
+            // Write the element node
+            writer.WriteStartElement("element");
+            writer.WriteAttributeString("api", extensionMethodTemplateId);
+            writer.WriteAttributeString("source", "extension");
+
+            isExtensionMethod = true;
+            mrw.WriteMember(extensionMethod);
+            isExtensionMethod = false;
+
+            writer.WriteEndElement();
+        }
+
+        /// <summary>
+        /// This is used to see if a type and parameter are valid template arguments
+        /// </summary>
+        /// <param name="type">The type to check</param>
+        /// <param name="parameter">The parameter to check</param>
+        /// <returns>True if it is valid, false if not</returns>
+        private static bool IsValidTemplateArgument(TypeNode type, TypeNode parameter)
+        {
+            if(type == null)
+                throw new ArgumentNullException("type");
+
+            // Check that the parameter really is a type parameter
+            ITypeParameter itp = parameter as ITypeParameter;
+
+            if(itp == null)
+                throw new ArgumentException("The 'parameter' argument is null or not an 'ITypeParameter'.");
+
+            // Test constraints
+            bool reference = ((itp.TypeParameterFlags & TypeParameterFlags.ReferenceTypeConstraint) > 0);
+
+            if(reference && type.IsValueType)
+                return (false);
+
+            bool value = ((itp.TypeParameterFlags & TypeParameterFlags.ValueTypeConstraint) > 0);
+
+            if(value && !type.IsValueType)
+                return (false);
+
+            InterfaceList contracts = parameter.Interfaces;
+
+            if(contracts != null)
+                foreach(Interface contract in contracts)
+                    if(!type.IsAssignableTo(contract))
+                        return false;
+
+            TypeNode parent = parameter.BaseType;
+
+            if(parent != null && !type.IsAssignableTo(parent))
+                return false;
+
+            // Okay, passed all tests
+            return true;
+        }
+
+        /// <summary>
+        /// Determines whether an extension method is hidden by a member that's already defined on the type being
+        /// extended.  The extension method is hidden if it has the same name, template parameters, and
+        /// parameters as a defined method.
+        /// </summary>
+        /// <param name="extensionMethod">The extension method to compare</param>
+        /// <param name="members">A dictionary of the members defined on the type being extended</param>
+        /// <returns>True if hidden, false if not</returns>
+        private static bool IsExtensionMethodHidden(Method extensionMethod, MemberDictionary members)
         {
             if(!members.MemberNames.Contains(extensionMethod.Name.Name))
                 return false;
 
-            // get a list of members with the same name as the extension method
-            List<Member> membersList = members[extensionMethod.Name.Name];
-            foreach(Member member in membersList)
+            // Get a list of members with the same name as the extension method
+            foreach(Member member in members[extensionMethod.Name.Name])
             {
-                // the hiding member must be a method
+                // The hiding member must be a method
                 if(member.NodeType != NodeType.Method)
                     continue;
+
                 Method method = (Method)member;
 
-                // do the generic template parameters of both methods match?
+                // Do the generic template parameters of both methods match?
                 if(!method.TemplateParametersMatch(extensionMethod.TemplateParameters))
                     continue;
 
-                // do both methods have the same number of parameters?
-                // (not counting the extension method's first param, which identifies the extended type)
-                if(method.Parameters.Count != (extensionMethod.Parameters.Count - 1))
+                // Do both methods have the same number of parameters (not counting the extension method's first
+                // parameter which identifies the extended type)?
+                if(method.Parameters.Count != extensionMethod.Parameters.Count - 1)
                     continue;
 
-                // do the parameter types of both methods match?
+                // Do the parameter types of both methods match?
                 if(DoParameterTypesMatch(extensionMethod.Parameters, method.Parameters))
                     return true;
             }
             return false;
         }
 
-        private bool DoParameterTypesMatch(ParameterList extensionParams, ParameterList methodParams)
+        /// <summary>
+        /// This is used to see if the extension parameter types match the method parameter types
+        /// </summary>
+        /// <param name="extensionParams">The extension parameters</param>
+        /// <param name="methodParams">The method parameters</param>
+        /// <returns>True if they match, false if not</returns>
+        private static bool DoParameterTypesMatch(ParameterList extensionParams, ParameterList methodParams)
         {
             for(int i = 0; i < methodParams.Count; i++)
-            {
                 if(methodParams[i].Type.FullName != extensionParams[i + 1].Type.FullName)
                     return false;
-            }
+
             return true;
         }
+        #endregion
     }
 }

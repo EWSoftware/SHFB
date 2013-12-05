@@ -3,16 +3,13 @@
 // See http://www.microsoft.com/resources/sharedsource/licensingbasics/sharedsourcelicenses.mspx.
 // All other rights reserved.
 
-using System;
-using System.IO;
+// Change history:
+// 11/23/2013 - EFW - Cleared out the conditional statements
+
 using System.Resources;
 
-#if CCINamespace
-namespace Microsoft.Cci{
-#else
 namespace System.Compiler
 {
-#endif
     sealed class ExceptionStrings
     {
         private readonly static WeakReference/*!*/ resMgr = new WeakReference(null);
@@ -28,13 +25,8 @@ namespace System.Compiler
                 System.Resources.ResourceManager rMgr = ExceptionStrings.resMgr.Target as System.Resources.ResourceManager;
                 if (rMgr == null)
                 {
-            
-#if STATIC
-          rMgr = new System.Resources.ResourceManager("Microsoft.Cci.System.Compiler.ExceptionStrings", typeof(ExceptionStrings).Assembly);
-#else
-          rMgr = new System.Resources.ResourceManager("Microsoft.Ddue.Tools.CCI.ExceptionStrings", typeof(ExceptionStrings).Assembly);
-#endif
-            
+                    rMgr = new System.Resources.ResourceManager("Microsoft.Ddue.Tools.CCI.ExceptionStrings",
+                        typeof(ExceptionStrings).Assembly);
                     ExceptionStrings.resMgr.Target = rMgr;
                 }
                 return rMgr;
@@ -82,11 +74,11 @@ namespace System.Compiler
                 return /*^ (!) ^*/ ResourceManager.GetString("BadCustomAttributeTypeEncodedToken", null);
             }
         }
-        internal static string/*!*/ BaddCalliSignature
+        internal static string/*!*/ BadCalliSignature
         {
             get
             {
-                return /*^ (!) ^*/ ResourceManager.GetString("BaddCalliSignature", null);
+                return /*^ (!) ^*/ ResourceManager.GetString("BadCalliSignature", null);
             }
         }
         internal static string/*!*/ BadExceptionHandlerType
@@ -437,20 +429,6 @@ namespace System.Compiler
             get
             {
                 return /*^ (!) ^*/ ResourceManager.GetString("UnknownVirtualAddress", null);
-            }
-        }
-        internal static string/*!*/ UnresolvedAssemblyReferenceNotAllowed
-        {
-            get
-            {
-                return /*^ (!) ^*/ ResourceManager.GetString("UnresolvedAssemblyReferenceNotAllowed", null);
-            }
-        }
-        internal static string/*!*/ UnresolvedModuleReferenceNotAllowed
-        {
-            get
-            {
-                return /*^ (!) ^*/ ResourceManager.GetString("UnresolvedModuleReferenceNotAllowed", null);
             }
         }
         internal static string/*!*/ UnsupportedTableEncountered

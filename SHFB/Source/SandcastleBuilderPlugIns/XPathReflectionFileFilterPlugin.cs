@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : XPathReflectionFileFilterPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)  Based on code by Eyal Post
-// Updated : 06/18/2013
+// Updated : 12/04/2013
 // Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -133,8 +133,8 @@ namespace SandcastleBuilder.PlugIns
 
                     // This one has a slightly higher priority as it removes stuff that the other plug-ins don't
                     // need to see.
-                    executionPoints.Add(new ExecutionPoint(BuildStep.ApplyVisibilityProperties,
-                        ExecutionBehaviors.After, 1100));
+                    executionPoints.Add(new ExecutionPoint(BuildStep.GenerateNamespaceSummaries,
+                        ExecutionBehaviors.Before, 1100));
                 }
 
                 return executionPoints;

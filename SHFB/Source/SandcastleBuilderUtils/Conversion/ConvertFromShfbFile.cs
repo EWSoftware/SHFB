@@ -1,27 +1,26 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder Utilities
 // File    : ConvertFromShfbFile.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/08/2012
-// Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
+// Updated : 11/30/2013
+// Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains a class used to convert version 1.7.0.0 and prior SHFB
-// project files to the new MSBuild format project files.
+// This file contains a class used to convert version 1.7.0.0 and prior SHFB project files to the new MSBuild
+// format project files.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.8.0.0  07/23/2008  EFW  Created the code
 // 1.9.0.0  06/20/2010  EFW  Removed ProjectLinkType property
 // 1.9.1.0  07/09/2010  EFW  Updated for use with .NET 4.0 and MSBuild 4.0.
 // 1.9.3.4  01/08/2012  EFW  Added constructor to support use from VSPackage
-//=============================================================================
+//===============================================================================================================
 
 using System;
 using System.Collections.Generic;
@@ -32,8 +31,8 @@ using System.Xml;
 namespace SandcastleBuilder.Utils.Conversion
 {
     /// <summary>
-    /// This class is used to convert version 1.7.0.0 and prior SHFB project
-    /// files to the new MSBuild format project files.
+    /// This class is used to convert version 1.7.0.0 and prior SHFB project files to the new MSBuild format
+    /// project files.
     /// </summary>
     public sealed class ConvertFromShfbFile : ConvertToMSBuildFormat
     {
@@ -529,12 +528,10 @@ namespace SandcastleBuilder.Utils.Conversion
                   xr.Name == "namespaceSummaryItem")
                 {
                     name = xr.GetAttribute("name");
-                    isDocumented = Convert.ToBoolean(xr.GetAttribute(
-                        "isDocumented"), CultureInfo.InvariantCulture);
+                    isDocumented = Convert.ToBoolean(xr.GetAttribute("isDocumented"), CultureInfo.InvariantCulture);
                     summary = xr.ReadString();
 
-                    base.Project.NamespaceSummaries.Add(name, isDocumented,
-                        summary);
+                    base.Project.NamespaceSummaries.Add(name, false, isDocumented, summary);
                 }
 
                 xr.Read();

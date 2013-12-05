@@ -1,4 +1,4 @@
-//=============================================================================
+//===============================================================================================================
 // System  : EWSoftware Design Time Attributes and Editors
 // File    : NamespaceSummaryItemEditorDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
@@ -6,51 +6,74 @@
 // Note    : Copyright 2006-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains the form used to edit namespace summaries and to indicate
-// which namespaces should appear in the help file.
+// This file contains the form used to edit namespace summaries and to indicate which namespaces should appear
+// in the help file.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.2.0.0  09/04/2006  EFW  Created the code
 // 1.4.0.0  02/12/2007  EFW  Added the ability to delete old namespaces
-// 1.6.0.4  01/17/2008  EFW  Added more error info to help diagnose exceptions
-//                           when an assembly fails to load.
-// 1.6.0.6  03/07/2008  EFW  Added filter options and reworked the namespace
-//                           extract to use a partial build rather than the
-//                           assembly loader to prevent "assembly not found"
-//                           errors caused by nested dependencies.
+// 1.6.0.4  01/17/2008  EFW  Added more error info to help diagnose exceptions when an assembly fails to load
+// 1.6.0.6  03/07/2008  EFW  Added filter options and reworked the namespace extract to use a partial build
+//                           rather than the assembly loader to prevent "assembly not found" errors caused by
+//                           nested dependencies.
 // 1.8.0.0  06/30/2008  EFW  Reworked to support MSBuild project format
-//=============================================================================
+//===============================================================================================================
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Globalization;
 using System.IO;
-using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
-using System.Xml;
 using System.Xml.XPath;
 
-using SandcastleBuilder.Utils;
 using SandcastleBuilder.Utils.BuildEngine;
 
 namespace SandcastleBuilder.Utils.Design
 {
     /// <summary>
-    /// This form is used to edit namespace summaries and to indicate which
-    /// namespaces should appear in the help file.
+    /// This form is used to edit namespace summaries and to indicate which namespaces should appear in the help
+    /// file.
     /// </summary>
     public partial class NamespaceSummaryItemEditorDlg : Form
     {
+        #region Private namespace comparer
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to compare namespace names and sort namespace groups ahead of the contained namespaces
+        /// </summary>
+        private class NamespaceComparer : IComparer<String>
+        {
+            internal const string GroupSuffix = " (Group)";
+
+            /// <summary>
+            /// Constructor
+            /// </summary>
+            public NamespaceComparer()
+            {
+            }
+
+            /// <inheritdoc />
+            int IComparer<string>.Compare(string x, string y)
+            {
+                var retVal = String.Compare(x, y, StringComparison.CurrentCulture);
+
+                // Groups get special handling.  If matched with the suffix, invert the result.
+                if(retVal != 0 && (x == y + GroupSuffix || y == x + GroupSuffix))
+                    retVal = -retVal;
+
+                return retVal;
+            }
+        }
+        #endregion
+
         #region Private data members
         //=====================================================================
 
@@ -64,6 +87,7 @@ namespace SandcastleBuilder.Utils.Design
 
         #region Constructor
         //=====================================================================
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -73,7 +97,7 @@ namespace SandcastleBuilder.Utils.Design
             InitializeComponent();
 
             nsColl = items;
-            namespaceItems = new SortedDictionary<string, NamespaceSummaryItem>();
+            namespaceItems = new SortedDictionary<string, NamespaceSummaryItem>(new NamespaceComparer());
 
             // Get a copy of the current namespace summary items
             foreach(NamespaceSummaryItem nsi in nsColl)
@@ -83,16 +107,13 @@ namespace SandcastleBuilder.Utils.Design
 
         #region Build methods
         //=====================================================================
-        // Build methods
 
         /// <summary>
-        /// This is called by the build process thread to update the main
-        /// window with the current build step.
+        /// This is called by the build process thread to update the main window with the current build step
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        private void buildProcess_BuildStepChanged(object sender,
-          BuildProgressEventArgs e)
+        private void buildProcess_BuildStepChanged(object sender, BuildProgressEventArgs e)
         {
             if(this.InvokeRequired)
             {
@@ -105,8 +126,8 @@ namespace SandcastleBuilder.Utils.Design
                 }
                 catch(Exception)
                 {
-                    // Ignore these as we still get one occasionally due to the object being disposed
-                    // or the handle not being valid even though we do check for it first.
+                    // Ignore these as we still get one occasionally due to the object being disposed or the
+                    // handle not being valid even though we do check for it first.
                 }
             }
             else
@@ -116,17 +137,14 @@ namespace SandcastleBuilder.Utils.Design
                 if(e.HasCompleted)
                 {
                     // Switch back to the current project's folder
-                    Directory.SetCurrentDirectory(Path.GetDirectoryName(
-                        nsColl.Project.Filename));
+                    Directory.SetCurrentDirectory(Path.GetDirectoryName(nsColl.Project.Filename));
 
-                    // If successful, load the namespace nodes, and enable
-                    // the UI.
+                    // If successful, load the namespace nodes, and enable the UI
                     if(e.BuildStep == BuildStep.Completed)
                     {
                         this.LoadNamespaces(buildProcess.ReflectionInfoFilename);
 
-                        cboAssembly.Enabled = txtSearchText.Enabled =
-                            btnApplyFilter.Enabled = btnAll.Enabled =
+                        cboAssembly.Enabled = txtSearchText.Enabled = btnApplyFilter.Enabled = btnAll.Enabled =
                             btnNone.Enabled = true;
                     }
 
@@ -140,13 +158,12 @@ namespace SandcastleBuilder.Utils.Design
         }
 
         /// <summary>
-        /// This is called by the build process thread to update the main
-        /// window with information about its progress.
+        /// This is called by the build process thread to update the main window with information about its
+        /// progress.
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        private void buildProcess_BuildProgress(object sender,
-          BuildProgressEventArgs e)
+        private void buildProcess_BuildProgress(object sender, BuildProgressEventArgs e)
         {
             if(this.InvokeRequired)
             {
@@ -159,8 +176,8 @@ namespace SandcastleBuilder.Utils.Design
                 }
                 catch(Exception)
                 {
-                    // Ignore these as we still get one occasionally due to the object being disposed
-                    // or the handle not being valid even though we do check for it first.
+                    // Ignore these as we still get one occasionally due to the object being disposed or the
+                    // handle not being valid even though we do check for it first.
                 }
             }
             else
@@ -196,9 +213,8 @@ namespace SandcastleBuilder.Utils.Design
                 reflectionInfo = new XPathDocument(reflectionFile);
                 navDoc = reflectionInfo.CreateNavigator();
 
-                // Namespace nodes don't contain assembly info so we'll have
-                // to look at all types and add all unique namespaces from
-                // their container info.
+                // Namespace nodes don't contain assembly info so we'll have to look at all types and add all
+                // unique namespaces from their container info.
                 foreach(XPathNavigator container in navDoc.Select(
                   "reflection/apis/api[starts-with(@id, 'T:')]/containers"))
                 {
@@ -207,10 +223,8 @@ namespace SandcastleBuilder.Utils.Design
 
                     if(navNamespace != null && navLibrary != null)
                     {
-                        nsName = navNamespace.GetAttribute("api",
-                            String.Empty).Substring(2);
-                        asmName = navLibrary.GetAttribute("assembly",
-                            String.Empty);
+                        nsName = navNamespace.GetAttribute("api", String.Empty).Substring(2);
+                        asmName = navLibrary.GetAttribute("assembly", String.Empty);
 
                         if(namespaceInfo.TryGetValue(nsName, out assemblies))
                         {
@@ -228,23 +242,37 @@ namespace SandcastleBuilder.Utils.Design
                     Application.DoEvents();
                 }
 
-                // The global namespace (N:) isn't always listed but we'll
-                // add it as it does show up in the reflection info anyway.
+                // The global namespace (N:) isn't always listed but we'll add it as it does show up in the
+                // reflection info anyway.
                 if(!namespaceInfo.ContainsKey(String.Empty))
                     namespaceInfo.Add(String.Empty, new List<string>());
 
-                // Add new namespaces to the list as temporary items.  They
-                // will get added to the project if modified.
+                // Add new namespaces to the list as temporary items.  They will get added to the project if
+                // modified.
                 foreach(string ns in namespaceInfo.Keys)
                 {
                     nsName = (ns.Length == 0) ? "(global)" : ns;
 
                     if(!namespaceItems.ContainsKey(nsName))
-                        namespaceItems.Add(ns, nsColl.CreateTemporaryItem(ns));
+                        namespaceItems.Add(ns, nsColl.CreateTemporaryItem(ns, false));
 
                     // Sort the assemblies for each namespace
                     assemblies = namespaceInfo[ns];
                     assemblies.Sort();
+                }
+
+                // Add namespace group info, if present.  These are an abstract concept and aren't part of any
+                // assemblies.
+                foreach(XPathNavigator nsGroup in navDoc.Select("reflection/apis/api[starts-with(@id, 'G:') and " +
+                  "not(apidata/@subgroup='rootGroup')]/apidata"))
+                {
+                    nsName = nsGroup.GetAttribute("name", String.Empty);
+                    nsName = nsName + NamespaceComparer.GroupSuffix;
+
+                    namespaceInfo.Add(nsName, new List<String>());
+
+                    if(!namespaceItems.ContainsKey(nsName))
+                        namespaceItems.Add(nsName, nsColl.CreateTemporaryItem(nsName, true));
                 }
 
                 Application.DoEvents();
@@ -274,8 +302,8 @@ namespace SandcastleBuilder.Utils.Design
         //=====================================================================
 
         /// <summary>
-        /// Do a partial build on load to gather new namespace information that
-        /// isn't currently in the project's namespace list.
+        /// Do a partial build on load to gather new namespace information that isn't currently in the project's
+        /// namespace list.
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
@@ -283,18 +311,17 @@ namespace SandcastleBuilder.Utils.Design
         {
             string tempPath;
 
-            cboAssembly.Enabled = txtSearchText.Enabled = btnAll.Enabled =
-                btnNone.Enabled = btnApplyFilter.Enabled = btnDelete.Enabled =
-                false;
+            cboAssembly.Enabled = txtSearchText.Enabled = btnAll.Enabled = btnNone.Enabled =
+                btnApplyFilter.Enabled = btnDelete.Enabled = false;
 
             try
             {
                 // Clone the project for the build and adjust its properties for our needs
                 tempProject = new SandcastleProject(nsColl.Project);
 
-                // The temporary project resides in the same folder as the current project (by filename
-                // only, it isn't saved) to maintain relative paths.  However, build output is stored
-                // in a temporary folder and it keeps the intermediate files.
+                // The temporary project resides in the same folder as the current project (by filename only, it
+                // isn't saved) to maintain relative paths.  However, build output is stored in a temporary
+                // folder and it keeps the intermediate files.
                 tempProject.CleanIntermediates = false;
                 tempPath = Path.GetTempFileName();
 
@@ -318,8 +345,8 @@ namespace SandcastleBuilder.Utils.Design
             catch(Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
-                MessageBox.Show("Unable to build project to obtain API information.  Error: " +
-                    ex.Message, Constants.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Unable to build project to obtain API information.  Error: " + ex.Message,
+                    Constants.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -332,11 +359,9 @@ namespace SandcastleBuilder.Utils.Design
         {
             if(buildThread != null && buildThread.IsAlive)
             {
-                if(MessageBox.Show("A build is currently taking place to " +
-                  "obtain namespace information.  Do you want to abort it " +
-                  "and close this form?", Constants.AppName,
-                  MessageBoxButtons.YesNo, MessageBoxIcon.Question) ==
-                  DialogResult.No)
+                if(MessageBox.Show("A build is currently taking place to obtain namespace information.  Do " +
+                  "you want to abort it and close this form?", Constants.AppName, MessageBoxButtons.YesNo,
+                  MessageBoxIcon.Question) == DialogResult.No)
                 {
                     e.Cancel = true;
                     return;
@@ -374,8 +399,7 @@ namespace SandcastleBuilder.Utils.Design
                 try
                 {
                     // Delete the temporary project's working files
-                    if(!String.IsNullOrEmpty(tempProject.OutputPath) &&
-                      Directory.Exists(tempProject.OutputPath))
+                    if(!String.IsNullOrEmpty(tempProject.OutputPath) && Directory.Exists(tempProject.OutputPath))
                         Directory.Delete(tempProject.OutputPath, true);
                 }
                 catch
@@ -413,8 +437,7 @@ namespace SandcastleBuilder.Utils.Design
         }
 
         /// <summary>
-        /// When the item changes, show its summary in the text box and set
-        /// the Appears In list box data source.
+        /// When the item changes, show its summary in the text box and set the Appears In list box data source
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
@@ -425,8 +448,7 @@ namespace SandcastleBuilder.Utils.Design
 
             if(lbNamespaces.SelectedIndex != -1)
             {
-                NamespaceSummaryItem nsi =
-                    (NamespaceSummaryItem)lbNamespaces.SelectedItem;
+                NamespaceSummaryItem nsi = (NamespaceSummaryItem)lbNamespaces.SelectedItem;
                 txtSummary.Text = nsi.Summary;
                 name = nsi.Name;
 
@@ -446,8 +468,7 @@ namespace SandcastleBuilder.Utils.Design
         }
 
         /// <summary>
-        /// Mark the summary item as documented or not when the check state
-        /// changes.
+        /// Mark the summary item as documented or not when the check state changes
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -536,37 +557,39 @@ namespace SandcastleBuilder.Utils.Design
             if(txtSearchText.Text.Length != 0)
                 try
                 {
-                    reFilter = new Regex(txtSearchText.Text,
-                        RegexOptions.IgnoreCase);
+                    reFilter = new Regex(txtSearchText.Text, RegexOptions.IgnoreCase);
                 }
                 catch(ArgumentException ex)
                 {
-                    epErrors.SetError(txtSearchText, "The search regular " +
-                        "expression is not valid: " + ex.Message);
+                    epErrors.SetError(txtSearchText, "The search regular expression is not valid: " + ex.Message);
                     return;
                 }
 
-            // Add the items to the listbox in sorted order by name
+            // Add the items to the list box in sorted order by name
             foreach(string key in namespaceItems.Keys)
             {
                 nsi = namespaceItems[key];
 
-                // Filter by assembly?
-                if(cboAssembly.SelectedIndex != 0)
+                // Always show groups
+                if(!nsi.IsGroup)
                 {
-                    name = nsi.Name;
+                    // Filter by assembly?
+                    if(cboAssembly.SelectedIndex != 0)
+                    {
+                        name = nsi.Name;
 
-                    if(name[0] == '(')
-                        name = String.Empty;
+                        if(name[0] == '(')
+                            name = String.Empty;
 
-                    if(namespaceInfo.TryGetValue(name, out assemblies))
-                        if(!assemblies.Contains(cboAssembly.Text))
-                            continue;
+                        if(namespaceInfo.TryGetValue(name, out assemblies))
+                            if(!assemblies.Contains(cboAssembly.Text))
+                                continue;
+                    }
+
+                    // Filter by search text?
+                    if(reFilter != null && !reFilter.IsMatch(nsi.Name))
+                        continue;
                 }
-
-                // Filter by search text?
-                if(reFilter != null && !reFilter.IsMatch(nsi.Name))
-                    continue;
 
                 lbNamespaces.Items.Add(nsi, nsi.IsDocumented);
             }
@@ -596,8 +619,8 @@ namespace SandcastleBuilder.Utils.Design
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        /// <remarks>Note that at least one will need to be selected or the
-        /// build will fail due to lack of information to document.</remarks>
+        /// <remarks>Note that at least one will need to be selected or the build will fail due to lack of
+        /// information to document.</remarks>
         private void btnNone_Click(object sender, EventArgs e)
         {
             for(int idx = 0; idx < lbNamespaces.Items.Count; idx++)

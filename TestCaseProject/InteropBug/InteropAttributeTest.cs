@@ -1,17 +1,32 @@
 using System;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 namespace TestDoc.InteropAttributesBug
 {
     /// <summary>
-    /// Demonstrate bug with certain System.Runtime.InteropServices
-    /// attributes.
+    /// Demonstrate bug with certain System.Runtime.InteropServices attributes.  Fixed in Sandcastle 2.7.5.0.
     /// </summary>
-    /// <remarks>Certain System.Runtime.InteropServices attributes will not
-    /// show up in the reflection information even when the attribute filter
-    /// is completely removed.</remarks>
+    /// <remarks>Certain System.Runtime.InteropServices attributes will not show up in the reflection information
+    /// even when the attribute filter is completely removed.</remarks>
     public class InteropAttributeTest
     {
+        /// <summary>
+        /// Test PreserveSig on a method
+        /// </summary>
+        [PreserveSig]
+        public static extern void Test();
+
+        /// <summary>
+        /// Test the other DllImport attribute settings to make sure they appear in the syntax section
+        /// </summary>
+        [DllImport("wininetXYZ", BestFitMapping = false, ExactSpelling = true, ThrowOnUnmappableChar = true,
+            CallingConvention = CallingConvention.Cdecl, PreserveSig = false)]
+        public static extern IntPtr ThisFunctionDoesNotExist(
+            [MarshalAs(UnmanagedType.LPTStr)] string lpszUrlSearchPattern,
+            IntPtr lpFirstCacheEntryInfo,
+            ref int lpdwFirstCacheEntryInfoBufferSize);
+
         /// <summary>
         /// This begins the enumeration of the Internet cache
         /// </summary>
@@ -112,5 +127,26 @@ namespace TestDoc.InteropAttributesBug
         /// <summary></summary>
         [PreserveSig]
         int Clone(out IAssemblyEnum ppEnum);
+    }
+
+    /// <summary>
+    /// This is a fake PIA (Primary Interop Assembly) embedded interop type used to test the visibility filter.
+    /// </summary>
+    [CompilerGenerated, TypeIdentifier]
+    public interface FakeNoPIAType
+    {
+        /// <summary>
+        /// Test method 1
+        /// </summary>
+        [DispId(1)]
+        void Method1();
+
+        /// <summary>
+        /// Test method 2
+        /// </summary>
+        /// <param name="x">Parameter X</param>
+        /// <param name="y">Parameter Y</param>
+        [DispId(2)]
+        void Method2(int x, string y);
     }
 }

@@ -3,17 +3,13 @@
 // See http://www.microsoft.com/resources/sharedsource/licensingbasics/sharedsourcelicenses.mspx.
 // All other rights reserved.
 
-#if !MinimalReader || !NoWriter
-using System;
-using System.Collections;
+// Change history:
+// 11/22/2013 - EFW - Cleared out the conditional statements and updated based on changes to ListTemplate.cs.
+
 using System.Diagnostics;
 
-#if CCINamespace
-namespace Microsoft.Cci{
-#else
 namespace System.Compiler
 {
-#endif
     /// <summary>
     /// Walks a normalized IR, removing push, pop and dup instructions, replacing them with references to local variables.
     /// Requires all Blocks to be basic blocks. I.e. any transfer statement is always the last statement in a block.
@@ -74,25 +70,39 @@ namespace System.Compiler
             }
             return block;
         }
+
         public override Statement VisitBranch(Branch branch)
         {
-            if (branch == null) return null;
-            if (branch.Target == null) return null;
+            if(branch == null)
+                return null;
+
+            if(branch.Target == null)
+                return null;
+
             branch.Condition = this.VisitExpression(branch.Condition);
+
             int n = this.localsStack.top + 1;
             LocalsStack targetStack = (LocalsStack)this.StackLocalsAtEntry[branch.Target.UniqueKey];
-            if (targetStack == null)
+
+            if(targetStack == null)
             {
                 this.StackLocalsAtEntry[branch.Target.UniqueKey] = this.localsStack.Clone();
                 return branch;
             }
-            //Target block has an entry stack that is different from the current stack. Need to copy stack before branching.
-            if (n <= 0) return branch; //Empty stack, no need to copy
-            StatementList statements = new StatementList(n + 1);
+
+            // Target block has an entry stack that is different from the current stack.  Need to copy stack
+            // before branching.
+            if(n <= 0)
+                return branch; //Empty stack, no need to copy
+
+            StatementList statements = new StatementList();
+
             this.localsStack.Transfer(targetStack, statements);
             statements.Add(branch);
+
             return new Block(statements);
         }
+
         public override Statement VisitSwitchInstruction(SwitchInstruction switchInstruction)
         {
             if (switchInstruction == null) return null;
@@ -380,4 +390,3 @@ namespace System.Compiler
         }
     }
 }
-#endif

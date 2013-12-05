@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : MainForm.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/08/2013
+// Updated : 11/22/2013
 // Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -1327,13 +1327,17 @@ namespace SandcastleBuilder.Gui
         private void miCleanOutput_Click(object sender, EventArgs e)
         {
             StringBuilder sb = new StringBuilder(1024);
-            string projectFolder, outputFolder;
+            string projectFolder, outputFolder = project.OutputPath;
 
             // Make sure we start out in the project's output folder in case the output folder is relative to it
             projectFolder = Path.GetDirectoryName(Path.GetFullPath(project.Filename));
             Directory.SetCurrentDirectory(projectFolder);
 
-            outputFolder = Path.GetFullPath(project.OutputPath);
+            // If the output path contains MSBuild variables, get the evaluated value from the project
+            if(outputFolder.IndexOf("$(", StringComparison.Ordinal) != -1)
+                outputFolder = project.MSBuildProject.GetProperty("OutputPath").EvaluatedValue;
+
+            outputFolder = Path.GetFullPath(outputFolder);
 
             // If the folder doesn't exist, don't bother
             if(Directory.Exists(outputFolder) && MessageBox.Show(String.Format(CultureInfo.CurrentCulture,
@@ -1482,6 +1486,10 @@ namespace SandcastleBuilder.Gui
             Directory.SetCurrentDirectory(Path.GetDirectoryName(Path.GetFullPath(project.Filename)));
 
             string outputPath = project.OutputPath, help2Viewer = Settings.Default.HTMLHelp2ViewerPath;
+
+            // If the output path contains MSBuild variables, get the evaluated value from the project
+            if(outputPath.IndexOf("$(", StringComparison.Ordinal) != -1)
+                outputPath = project.MSBuildProject.GetProperty("OutputPath").EvaluatedValue;
 
             if(String.IsNullOrEmpty(outputPath))
                 outputPath = Directory.GetCurrentDirectory();

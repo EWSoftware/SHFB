@@ -55,7 +55,27 @@
         <Type Name="IndexedFile" Analyze="True" AnalyzeAllChildren="True" />
         <Type Name="IndexedFileCache" Analyze="True" AnalyzeAllChildren="True" />
         <Type Name="InheritDocumentationComponent" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="IntelliSenseComponent" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="IntelliSenseComponent" Analyze="True" AnalyzeAllChildren="False">
+         <Members AnalyzeAllChildren="False">
+          <Member Name="#.ctor(Microsoft.Ddue.Tools.BuildAssembler,System.Xml.XPath.XPathNavigator)" Analyze="True" />
+          <Member Name="#Apply(System.Xml.XmlDocument,System.String)" Analyze="True" />
+          <Member Name="#assemblyExpression" Analyze="True" />
+          <Member Name="#ConfigureComponent(System.String)" Analyze="True" />
+          <Member Name="#Dispose(System.Boolean)" Analyze="True" />
+          <Member Name="#elementsExpression" Analyze="True" />
+          <Member Name="#exceptionExpression" Analyze="True" />
+          <Member Name="#includeNamespaces" Analyze="True" />
+          <Member Name="#namespacesFilename" Analyze="True" />
+          <Member Name="#outputFolder" Analyze="True" />
+          <Member Name="#paramExpression" Analyze="True" />
+          <Member Name="#returnsExpression" Analyze="True" />
+          <Member Name="#subgroupExpression" Analyze="True" />
+          <Member Name="#summaryExpression" Analyze="True" />
+          <Member Name="#typeparamExpression" Analyze="True" />
+          <Member Name="#WriteComments(System.String,System.String,System.Xml.XPath.XPathNavigator)" Analyze="True" />
+          <Member Name="#writers" Analyze="True" />
+         </Members>
+        </Type>
         <Type Name="Language" Analyze="True" AnalyzeAllChildren="True" />
         <Type Name="MemberFilter" Analyze="True" AnalyzeAllChildren="True" />
         <Type Name="MsdnResolver" Analyze="True" AnalyzeAllChildren="True" />
@@ -101,7 +121,64 @@
       <Namespace Name="Microsoft.Ddue.Tools.Commands" Analyze="True" AnalyzeAllChildren="True" />
       <Namespace Name="Microsoft.Ddue.Tools.Properties" Analyze="True" AnalyzeAllChildren="True" />
       <Namespace Name="Microsoft.Ddue.Tools.Snippets" Analyze="True" AnalyzeAllChildren="True" />
-      <Namespace Name="Microsoft.Ddue.Tools.Targets" Analyze="True" AnalyzeAllChildren="True" />
+      <Namespace Name="Microsoft.Ddue.Tools.Targets" Analyze="True" AnalyzeAllChildren="False">
+       <Types AnalyzeAllChildren="False">
+        <Type Name="ArtTarget" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="ConceptualLinkInfo" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="ConceptualLinkType" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="DisplayOptions" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="InMemoryTargetDictionary" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="LinkTextResolver" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="ReferenceLinkInfo" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="ReferenceLinkType" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="SharedContentElement" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="TargetDictionary" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="TargetDirectory" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="TargetDirectoryCollection" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="TargetInfo" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="TargetTypeDictionary" Analyze="True" AnalyzeAllChildren="False">
+         <Members AnalyzeAllChildren="False">
+          <Member Name="#.ctor()" Analyze="True" />
+          <Member Name="#&lt;get_Count&gt;b__8(System.Collections.Generic.KeyValuePair`2&lt;Microsoft.Ddue.Tools.Targets.ReferenceLinkType,Microsoft.Ddue.Tools.Targets.TargetDictionary&gt;)" Analyze="True" />
+          <Member Name="#&lt;get_Keys&gt;b__0(System.Collections.Generic.KeyValuePair`2&lt;Microsoft.Ddue.Tools.Targets.ReferenceLinkType,Microsoft.Ddue.Tools.Targets.TargetDictionary&gt;)" Analyze="True" />
+          <Member Name="#&lt;get_Keys&gt;b__1(System.Collections.Generic.ICollection`1&lt;System.String&gt;)" Analyze="True" />
+          <Member Name="#&lt;get_NeedsMsdnResolver&gt;b__a(System.Collections.Generic.KeyValuePair`2&lt;Microsoft.Ddue.Tools.Targets.ReferenceLinkType,Microsoft.Ddue.Tools.Targets.TargetDictionary&gt;)" Analyze="True" />
+          <Member Name="#&lt;get_Values&gt;b__4(System.Collections.Generic.KeyValuePair`2&lt;Microsoft.Ddue.Tools.Targets.ReferenceLinkType,Microsoft.Ddue.Tools.Targets.TargetDictionary&gt;)" Analyze="True" />
+          <Member Name="#&lt;get_Values&gt;b__5(System.Collections.Generic.ICollection`1&lt;Microsoft.Ddue.Tools.Targets.Target&gt;)" Analyze="True" />
+          <Member Name="#Add(Microsoft.Ddue.Tools.Targets.ReferenceLinkType,Microsoft.Ddue.Tools.Targets.TargetDictionary)" Analyze="True" />
+          <Member Name="#Add(System.Collections.Generic.KeyValuePair`2&lt;System.String,Microsoft.Ddue.Tools.Targets.Target&gt;)" Analyze="True" />
+          <Member Name="#Add(System.String,Microsoft.Ddue.Tools.Targets.Target)" Analyze="True" />
+          <Member Name="#Clear()" Analyze="True" />
+          <Member Name="#Contains(System.Collections.Generic.KeyValuePair`2&lt;System.String,Microsoft.Ddue.Tools.Targets.Target&gt;)" Analyze="True" />
+          <Member Name="#ContainsKey(System.String)" Analyze="True" />
+          <Member Name="#CopyTo(System.Collections.Generic.KeyValuePair`2&lt;System.String,Microsoft.Ddue.Tools.Targets.Target&gt;[],System.Int32)" Analyze="True" />
+          <Member Name="#Count" Analyze="True" AnalyzeAllChildren="True" />
+          <Member Name="#CS$&lt;&gt;9__CachedAnonymousMethodDelegate2" Analyze="True" />
+          <Member Name="#CS$&lt;&gt;9__CachedAnonymousMethodDelegate3" Analyze="True" />
+          <Member Name="#CS$&lt;&gt;9__CachedAnonymousMethodDelegate6" Analyze="True" />
+          <Member Name="#CS$&lt;&gt;9__CachedAnonymousMethodDelegate7" Analyze="True" />
+          <Member Name="#CS$&lt;&gt;9__CachedAnonymousMethodDelegate9" Analyze="True" />
+          <Member Name="#CS$&lt;&gt;9__CachedAnonymousMethodDelegateb" Analyze="True" />
+          <Member Name="#Dispose()" Analyze="True" />
+          <Member Name="#GetEnumerator()" Analyze="True" />
+          <Member Name="#IsReadOnly" Analyze="True" AnalyzeAllChildren="True" />
+          <Member Name="#Item[System.String]" Analyze="True" AnalyzeAllChildren="True" />
+          <Member Name="#Keys" Analyze="True" AnalyzeAllChildren="True" />
+          <Member Name="#NeedsMsdnResolver" Analyze="True" AnalyzeAllChildren="True" />
+          <Member Name="#Remove(System.Collections.Generic.KeyValuePair`2&lt;System.String,Microsoft.Ddue.Tools.Targets.Target&gt;)" Analyze="True" />
+          <Member Name="#Remove(System.String)" Analyze="True" />
+          <Member Name="#System.Collections.IEnumerable.GetEnumerator()" Analyze="True" />
+          <Member Name="#targetDictionaries" Analyze="True" />
+          <Member Name="#TryGetValue(System.String,Microsoft.Ddue.Tools.Targets.Target&amp;)" Analyze="True" />
+          <Member Name="#TryGetValue(System.String,Microsoft.Ddue.Tools.Targets.Target&amp;,Microsoft.Ddue.Tools.Targets.ReferenceLinkType&amp;)" Analyze="True" />
+          <Member Name="#Values" Analyze="True" AnalyzeAllChildren="True" />
+         </Members>
+        </Type>
+        <Type Name="TextReferenceUtilities" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="XmlTargetDictionaryUtilities" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="XmlTargetDictionaryUtilities+&lt;EnumerateTargets&gt;d__0" Analyze="True" AnalyzeAllChildren="True" />
+       </Types>
+      </Namespace>
       <Namespace Name="Microsoft.Ddue.Tools.UI" Analyze="True" AnalyzeAllChildren="True" />
      </Namespaces>
      <Resources AnalyzeAllChildren="True" />
@@ -1738,11 +1815,16 @@
           <Members>
            <Member Name="#.ctor(System.Xml.XPath.XPathNavigator)">
             <Messages>
-             <Message Id="configuration" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Created="2013-03-18 20:34:36Z" FixCategory="DependsOnFix">
+             <Message Id="configuration" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2013-03-18 20:34:36Z" FixCategory="DependsOnFix">
               <Issue>
                <Item>'configuration'</Item>
                <Item>'AspNetSyntaxGenerator.AspNetSyntaxGenerator(XPathNavigator)'</Item>
               </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="53" />
+               </User>
+              </Notes>
              </Message>
             </Messages>
            </Member>
@@ -1780,26 +1862,6 @@
                 <Note Id="26" />
                </User>
               </Notes>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="JScriptDeclarationSyntaxGenerator">
-          <Members>
-           <Member Name="#WriteAttributeList(System.Xml.XPath.XPathNavigator,Microsoft.Ddue.Tools.SyntaxWriter)">
-            <Messages>
-             <Message Id="reflection" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Created="2012-12-24 04:29:28Z" FixCategory="NonBreaking">
-              <Issue>
-               <Item>'reflection'</Item>
-               <Item>'JScriptDeclarationSyntaxGenerator.WriteAttributeList(XPathNavigator, SyntaxWriter)'</Item>
-              </Issue>
-             </Message>
-             <Message Id="writer" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Created="2012-12-24 04:29:28Z" FixCategory="NonBreaking">
-              <Issue>
-               <Item>'writer'</Item>
-               <Item>'JScriptDeclarationSyntaxGenerator.WriteAttributeList(XPathNavigator, SyntaxWriter)'</Item>
-              </Issue>
              </Message>
             </Messages>
            </Member>
@@ -3815,6 +3877,7 @@
     <Note Id="50" Modified="2013-03-18 21:09:06Z">Okay as is</Note>
     <Note Id="51" Modified="2013-03-18 21:09:44Z">Lowercase is preferred</Note>
     <Note Id="52" Modified="2013-04-01 16:36:13Z">Leaving it as is to keep things simple in this case.</Note>
+    <Note Id="53" Modified="2013-11-29 21:19:16Z">Required constructor parameter to meet instantiation requirements</Note>
    </User>
   </Notes>
   <Rules>

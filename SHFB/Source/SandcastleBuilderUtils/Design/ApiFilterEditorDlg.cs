@@ -2,7 +2,7 @@
 // System  : EWSoftware Design Time Attributes and Editors
 // File    : ApiFilterEditorDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/15/2013
+// Updated : 11/30/2013
 // Note    : Copyright 2007-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -20,6 +20,7 @@
 //                           feature.
 // 1.8.0.0  07/08/2008  EFW  Reworked to support MSBuild project format
 // 1.9.3.3  11/19/2011  EFW  Updated checked state optimization to handle some odd edge cases
+// 1.9.9.0  11/30/2013  EFW  Merged changes from Stazzz to support namespace groups
 //===============================================================================================================
 
 using System;
@@ -221,6 +222,13 @@ namespace SandcastleBuilder.Utils.Design
                 XmlNode subsubgroup;
                 string subgroup, id;
 
+                // Is it a namespace group
+                if(apiNode.Name == "namespaceGroup")
+                {
+                    entryType = ApiEntryType.NamespaceGroup;
+                    return;
+                }
+
                 // Is it an inherited namespace?
                 if(apiNode.Name == "namespace")
                 {
@@ -235,7 +243,7 @@ namespace SandcastleBuilder.Utils.Design
                     entryType = ApiEntryType.Class;
                     return;
                 }
-                
+
                 // It's a documented or inherited member of some sort
                 if(apiNode.Name == "element" || apiNode.Name == "type")
                     id = apiNode.Attributes["api"].Value;   // Inherited
@@ -249,6 +257,12 @@ namespace SandcastleBuilder.Utils.Design
                         entryType = ApiEntryType.Namespace;
                         return;
                     }
+                    else
+                        if(id[0] == 'G')
+                        {
+                            entryType = ApiEntryType.NamespaceGroup;
+                            return;
+                        }
                 }
 
                 subsubgroup = apiNode.SelectSingleNode("apidata/@subsubgroup");
@@ -527,7 +541,7 @@ namespace SandcastleBuilder.Utils.Design
                         this.Invoke(new EventHandler<BuildProgressEventArgs>(buildProcess_BuildProgress),
                             new object[] { sender, e });
                 }
-                catch(Exception )
+                catch(Exception)
                 {
                     // Ignore these as we still get one occasionally due to the object being
                     // disposed even though we do check for it first.
@@ -609,42 +623,53 @@ namespace SandcastleBuilder.Utils.Design
                 tvApiList.BeginUpdate();
 
                 // Build a set of nodes to store the necessary information and sort it
-                foreach(XmlNode nsNode in apisNode.SelectNodes("api[starts-with(@id, 'N:')]"))
+                foreach(XmlNode nsNode in apisNode.SelectNodes("api[starts-with(@id, 'N:') or " +
+                  "(starts-with(@id, 'G:') and not(apidata/@subgroup='rootGroup'))]"))
                 {
-                    nodeInfo = new NodeInfo(nsNode.Attributes["id"].Value.Substring(2),
-                        nsNode.Attributes["id"].Value.Substring(2));
+                    string apiID = nsNode.Attributes["id"].Value, namespaceText = apiID.Substring(2);
+
+                    if(apiID.StartsWith("G:"))
+                        namespaceText += " (Group)";
+
+                    nodeInfo = new NodeInfo(namespaceText, apiID.Substring(2));
                     nodeInfo.ApiNode = nsNode;
 
                     nodeList.Add(nodeInfo);
 
-                    // Classes with extension methods can show up in the system types too so we'll
-                    // filter them out below.
+                    // Classes with extension methods can show up in the system types too so we'll filter them
+                    // out below.
                     existingIds.Add(nodeInfo.NodeText);
                 }
 
                 nodeList.Sort((x, y) =>
                 {
-                    return String.Compare(x.NodeText, y.NodeText,
-                        StringComparison.CurrentCulture);
+                    var rVal = String.Compare(x.Id, y.Id, StringComparison.CurrentCulture);
+
+                    // Sometimes group namespace ID is same as normal namespace, return group namespace first
+                    return rVal == 0 ? -String.Compare(x.NodeText, y.NodeText, StringComparison.CurrentCulture) : rVal;
                 });
 
-                // Load the tree view with the namespaces for documented APIs
-                // as children of the first root node.
+                // Load the tree view with the namespaces for documented APIs as children of the first root node
                 foreach(NodeInfo ni in nodeList)
                 {
-                    // The text is the namespace name and we'll store a
-                    // reference to the node info in the tag.
+                    // The text is the namespace name and we'll store a reference to the node info in the tag
                     node = new TreeNode(ni.NodeText);
                     node.Tag = ni;
                     node.ImageIndex = node.SelectedImageIndex = (int)ApiEntryType.Namespace;
+
+                    // This node may be namespace or namespace group
+                    bool isNamespace = (ni.EntryType == ApiEntryType.Namespace);
 
                     // See if it's in the current filter
                     if(!buildFilterEntries.TryGetValue(ni.Id, out filter))
                     {
                         node.Checked = true;
 
-                        // Add a placeholder node for expansion on demand
-                        node.Nodes.Add(String.Empty);
+                        if(isNamespace)
+                        {
+                            // Add a placeholder node for expansion on demand
+                            node.Nodes.Add(String.Empty);
+                        }
                     }
                     else
                     {
@@ -662,24 +687,25 @@ namespace SandcastleBuilder.Utils.Design
                         if(filter.Children.Count != 0 && !filter.IsExposed)
                             node.BackColor = Color.LightBlue;
 
-                        // Add children now as it contains filtered entries and
-                        // we'll need to keep them in synch with the parent.
-                        this.AddTypes(node);
+                        if(isNamespace)
+                        {
+                            // Add children now as it contains filtered entries and we'll need to keep them in
+                            // synch with the parent.
+                            this.AddTypes(node);
+                        }
                     }
 
                     rootNode.Nodes.Add(node);
                 }
 
-                // Load inherited namespaces found in dependent assemblies and
-                // the .NET Framework itself.
+                // Load inherited namespaces found in dependent assemblies and the .NET Framework itself
                 lblProgress.Text = "Loading inherited namespaces...";
                 Application.DoEvents();
 
                 nodeList.Clear();
                 rootNode = tvApiList.Nodes[1];
 
-                // Build a set of nodes to store the necessary information and
-                // sort it.
+                // Build a set of nodes to store the necessary information and sort it
                 foreach(XmlNode nsNode in apisNode.SelectNodes("api/elements/element/containers/namespace"))
                 {
                     fullName = nsNode.Attributes["api"].Value.Substring(2);
@@ -694,18 +720,12 @@ namespace SandcastleBuilder.Utils.Design
                     }
                 }
 
-                nodeList.Sort((x, y) =>
-                {
-                    return String.Compare(x.NodeText, y.NodeText,
-                        StringComparison.CurrentCulture);
-                });
+                nodeList.Sort((x, y) => String.Compare(x.NodeText, y.NodeText, StringComparison.CurrentCulture));
 
-                // Load the tree view with the namespaces of inherited APIs as
-                // children of the second root node.
+                // Load the tree view with the namespaces of inherited APIs as children of the second root node
                 foreach(NodeInfo ni in nodeList)
                 {
-                    // The text is the namespace name and we'll store a
-                    // reference to the node info in the tag.
+                    // The text is the namespace name and we'll store a reference to the node info in the tag
                     node = new TreeNode(ni.NodeText);
                     node.Tag = ni;
                     node.NodeFont = italicFont;
@@ -728,8 +748,8 @@ namespace SandcastleBuilder.Utils.Design
                         if(filter.Children.Count != 0 && !filter.IsExposed)
                             node.BackColor = Color.LightBlue;
 
-                        // Add children now as it contains filtered entries and
-                        // we'll need to keep them in synch with the parent.
+                        // Add children now as it contains filtered entries and we'll need to keep them in synch
+                        // with the parent.
                         this.AddBaseTypes(node);
                     }
 
@@ -767,14 +787,14 @@ namespace SandcastleBuilder.Utils.Design
             string fullName, memberName;
             int nsLen;
 
-            if(parentInfo.NodeText[0] == '(')
+            if(parentInfo.Id.Length == 0)
                 nsLen = 0;      // Global namespace
             else
             {
-                nsLen = parentInfo.NodeText.Length;
+                nsLen = parentInfo.Id.Length;
 
                 // Handle AjaxDoc 1.0 prefix
-                if(parentInfo.NodeText[nsLen - 1] != ':')
+                if(parentInfo.Id[nsLen - 1] != ':')
                     nsLen++;
             }
 
@@ -1342,7 +1362,7 @@ namespace SandcastleBuilder.Utils.Design
                     {
                         nodeInfo = (NodeInfo)node.Tag;
 
-                        apiFilter.Add(new ApiFilter(ApiEntryType.Namespace,
+                        apiFilter.Add(new ApiFilter(nodeInfo.EntryType,
                             nodeInfo.Id, false));
                     }
                 }
@@ -1350,7 +1370,7 @@ namespace SandcastleBuilder.Utils.Design
                 {
                     nodeInfo = (NodeInfo)node.Tag;
 
-                    filter = new ApiFilter(ApiEntryType.Namespace, nodeInfo.Id,
+                    filter = new ApiFilter(nodeInfo.EntryType, nodeInfo.Id,
                         node.Checked);
                     apiFilter.Add(filter);
 
@@ -1460,10 +1480,10 @@ namespace SandcastleBuilder.Utils.Design
         {
             InitializeComponent();
 
-            // An italic font is used for nodes that cannot have their
-            // check state changed.  A tooltip will give further details.
-            tvApiList.Nodes[0].NodeFont = tvApiList.Nodes[1].NodeFont =
-                italicFont = new Font(this.Font, FontStyle.Italic);
+            // An italic font is used for nodes that cannot have their check state changed.  A tool tip will give
+            // further details.
+            tvApiList.Nodes[0].NodeFont = tvApiList.Nodes[1].NodeFont = italicFont =
+                new Font(this.Font, FontStyle.Italic);
 
             apiFilter = filter;
         }
@@ -1512,7 +1532,7 @@ namespace SandcastleBuilder.Utils.Design
                 buildProcess.BuildProgress += buildProcess_BuildProgress;
 
                 buildThread = new Thread(new ThreadStart(buildProcess.Build));
-                buildThread.Name = "API fitler partial build thread";
+                buildThread.Name = "API filter partial build thread";
                 buildThread.IsBackground = true;
                 buildThread.Start();
             }

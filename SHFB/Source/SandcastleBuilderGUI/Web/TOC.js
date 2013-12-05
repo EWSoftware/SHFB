@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : TOC.js
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 07/26/2013
+// Updated : 11/19/2013
 // Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
 // Compiler: JavaScript
 //
@@ -26,7 +26,7 @@
 // 1.9.4.0  02/21/2012  EFW  Merged code from Thomas Levesque to show direct link and support other page types
 //                           like PHP.
 // 1.9.5.0  07/25/2012  EFW  Made changes to support IE 10.
-// 1.9.8.0  07/26/2013  EFW  Merged changes from Dave Dansey to sync to toc when the topic URL parameter is used
+// 1.9.8.0  07/26/2013  EFW  Merged changes from Dave Dansey to sync to TOC when the topic URL parameter is used
 //===============================================================================================================
 
 // IE and Chrome flags
@@ -105,7 +105,7 @@ function Initialize(extension)
 }
 
 //============================================================================
-// Navigation and expand/collaps code
+// Navigation and expand/collapse code
 
 // Synchronize the table of content with the selected page if possible
 function SyncTOC()
@@ -208,7 +208,7 @@ function SyncTOC()
 }
 
 // Search an array to see if it contains the given object
-function contains(a, obj)
+function Contains(a, obj)
 {
     for(var i = 0; i < a.length; i++)
         if(a[i] === obj)
@@ -217,48 +217,24 @@ function contains(a, obj)
     return false;
 }
 
-// Load the given XML document
-function loadXMLDoc(dname)
-{
-    try
-    {
-        // Internet Explorer
-        xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
-    }
-    catch(e)
-    {
-        try
-        {
-            // Firefox, Mozilla, Opera, etc. (Doesn't currently work in Chrome)
-            xmlDoc = document.implementation.createDocument("","",null);
-        }
-        catch(e)
-        {
-//            alert(e.message);
-        }
-    }
-
-    try
-    {
-        xmlDoc.async = false;
-        xmlDoc.load(dname);
-        return(xmlDoc);
-    }
-    catch(e)
-    {
-//        alert(e.message);
-    }
-
-    return null;
-}
-
 // Get the parent TOC IDs from the TOC XML file
 function GetParentTOCIds(target)
 {
     if(xmlTOCDoc == null)
     {
         // Load the TOC XML
-        xmlTOCDoc=loadXMLDoc("WebTOC.xml");
+        try
+        {
+            var xmlhttp = GetXmlHttpRequest();
+            xmlhttp.open("GET", "WebTOC.xml", false);
+            xmlhttp.send();
+
+            xmlTOCDoc = xmlhttp.responseXML;
+        }
+        catch(e)
+        {
+//            alert(e.message);
+        }
 
         if(xmlTOCDoc == null)
             return new Array();
@@ -333,7 +309,7 @@ function LoadTOC(url)
                 }
             }
 
-            if(div.className == "Hidden" && contains(idList,div.id))
+            if(div.className == "Hidden" && Contains(idList,div.id))
             {
                 div.className = "Visible";
                 img.src = "Expanded.gif";
@@ -344,7 +320,7 @@ function LoadTOC(url)
         }
 }
 
-// Lazy load the child TOC nodes and re-try to SyncTOC afterwards (if the TOC still can't be sync'd the proces
+// Lazy load the child TOC nodes and re-try to SyncTOC afterwards (if the TOC still can't be synced the process
 // will run again to expand the next parent down).
 function FillNodeAndTrySyncTOC(div)
 {
@@ -385,8 +361,8 @@ function GetCurrentUrl()
     }
     catch(e)
     {
-        // If this happens the user probably navigated to another frameset that didn't make itself the topmost
-        // frameset and we don't have control of the other frame anymore.  In that case, just reload our index
+        // If this happens the user probably navigated to another frame set that didn't make itself the topmost
+        // frame set and we don't have control of the other frame anymore.  In that case, just reload our index
         // page.
         base = window.location.href;
         base = base.substr(0, base.lastIndexOf("/") + 1);

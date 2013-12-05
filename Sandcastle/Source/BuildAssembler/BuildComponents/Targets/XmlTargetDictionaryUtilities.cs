@@ -140,7 +140,7 @@ namespace Microsoft.Ddue.Tools.Targets
         {
             string subGroup = (string)api.Evaluate(apiGroupExpression);
 
-            if(subGroup == "namespace")
+            if(subGroup == "namespace" || subGroup == "namespaceGroup" )
                 return CreateNamespaceTarget(api);
 
             if(subGroup == "type")

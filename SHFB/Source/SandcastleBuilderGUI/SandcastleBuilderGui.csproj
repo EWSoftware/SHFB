@@ -1053,6 +1053,7 @@
     </Content>
     <Content Include="Templates\MRefBuilder.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Templates\Help2x.HxC">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

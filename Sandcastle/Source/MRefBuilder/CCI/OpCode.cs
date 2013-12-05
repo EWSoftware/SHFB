@@ -3,14 +3,13 @@
 // See http://www.microsoft.com/resources/sharedsource/licensingbasics/sharedsourcelicenses.mspx.
 // All other rights reserved.
 
+// Change history:
+// 11/22/2013 - EFW - Cleared out the conditional statements
+
 using System;
 
-#if CCINamespace
-namespace Microsoft.Cci{
-#else
 namespace System.Compiler
 {
-#endif
     public enum OpCode
     {
         Nop = 0x00,
@@ -240,41 +239,23 @@ namespace System.Compiler
         Refanytype = 0xfe1d,
         Readonly_ = 0xfe1e,
         // fake opcodes
-#if WHIDBEY
         [CLSCompliant(false)]
-#endif
         _Locals = 0xfef7,
-#if WHIDBEY
         [CLSCompliant(false)]
-#endif
         _Try = 0xfef8,
-#if WHIDBEY
         [CLSCompliant(false)]
-#endif
         _EndTry = 0xfef9,
-#if WHIDBEY
         [CLSCompliant(false)]
-#endif
         _Filter = 0xfefa,
-#if WHIDBEY
         [CLSCompliant(false)]
-#endif
         _EndFilter = 0xfefb,
-#if WHIDBEY
         [CLSCompliant(false)]
-#endif
         _Catch = 0xfefc,
-#if WHIDBEY
         [CLSCompliant(false)]
-#endif
         _Finally = 0xfefd,
-#if WHIDBEY
         [CLSCompliant(false)]
-#endif
         _Fault = 0xfefe,
-#if WHIDBEY
         [CLSCompliant(false)]
-#endif
         _EndHandler = 0xfeff
     }
 }

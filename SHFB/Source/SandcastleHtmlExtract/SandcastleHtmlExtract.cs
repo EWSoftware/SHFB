@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder - HTML Extract
 // File    : SandcastleHtmlExtract.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/23/2013
+// Updated : 11/30/2013
 // Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -45,7 +45,6 @@ using System.Xml;
 using System.Xml.XPath;
 
 using Microsoft.Build.Framework;
-using Microsoft.Build.Utilities;
 
 namespace SandcastleBuilder.HtmlExtract
 {
@@ -660,12 +659,10 @@ commas, or other special characters.
 
             key = Path.GetFileNameWithoutExtension(sourceFile);
 
-            if(titles.ContainsKey(key))
+            if(!titles.TryAdd(key, new TitleInfo(HttpUtility.HtmlDecode(topicTitle),
+              HttpUtility.HtmlDecode(tocTitle), sourceFile)))
                 Console.WriteLine("SHFB: Warning SHE0004: The key '{0}' used for '{1}' is already in use by '{2}'.  " +
                     "'{1}' will be ignored.", key, sourceFile, titles[key].File);
-            else
-                titles.TryAdd(key, new TitleInfo(HttpUtility.HtmlDecode(topicTitle),
-                    HttpUtility.HtmlDecode(tocTitle), sourceFile));
 
             // Extract K index keywords
             matches = reKKeyword.Matches(content);

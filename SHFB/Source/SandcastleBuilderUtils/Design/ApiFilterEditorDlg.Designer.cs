@@ -53,8 +53,8 @@ namespace SandcastleBuilder.Utils.Design
             this.lblLoading = new System.Windows.Forms.Label();
             this.pbWait = new System.Windows.Forms.PictureBox();
             this.lvSearchResults = new System.Windows.Forms.ListView();
-            this.colMember = new System.Windows.Forms.ColumnHeader();
-            this.colFullName = new System.Windows.Forms.ColumnHeader();
+            this.colMember = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colFullName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.pnlOptions = new System.Windows.Forms.FlowLayoutPanel();
             this.chkCaseSensitive = new System.Windows.Forms.CheckBox();
@@ -79,6 +79,7 @@ namespace SandcastleBuilder.Utils.Design
             this.lblProgress = new System.Windows.Forms.Label();
             this.epErrors = new System.Windows.Forms.ErrorProvider(this.components);
             this.statusBarTextProvider1 = new SandcastleBuilder.Utils.Controls.StatusBarTextProvider(this.components);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
             this.splitContainer.Panel1.SuspendLayout();
             this.splitContainer.Panel2.SuspendLayout();
             this.splitContainer.SuspendLayout();
@@ -92,7 +93,7 @@ namespace SandcastleBuilder.Utils.Design
             // 
             this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnClose.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnClose.Location = new System.Drawing.Point(842, 611);
+            this.btnClose.Location = new System.Drawing.Point(842, 616);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(88, 32);
             this.statusBarTextProvider1.SetStatusBarText(this.btnClose, "Close: Close this form");
@@ -105,7 +106,7 @@ namespace SandcastleBuilder.Utils.Design
             // btnReset
             // 
             this.btnReset.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnReset.Location = new System.Drawing.Point(748, 611);
+            this.btnReset.Location = new System.Drawing.Point(748, 616);
             this.btnReset.Name = "btnReset";
             this.btnReset.Size = new System.Drawing.Size(88, 32);
             this.statusBarTextProvider1.SetStatusBarText(this.btnReset, "Reset: Reset the API filter to its default state");
@@ -132,7 +133,7 @@ namespace SandcastleBuilder.Utils.Design
             // 
             this.btnGoto.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnGoto.Enabled = false;
-            this.btnGoto.Location = new System.Drawing.Point(3, 558);
+            this.btnGoto.Location = new System.Drawing.Point(3, 563);
             this.btnGoto.Name = "btnGoto";
             this.btnGoto.Size = new System.Drawing.Size(88, 32);
             this.statusBarTextProvider1.SetStatusBarText(this.btnGoto, "Goto: Goto the selected member in the tree view");
@@ -146,7 +147,7 @@ namespace SandcastleBuilder.Utils.Design
             // 
             this.btnInclude.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnInclude.Enabled = false;
-            this.btnInclude.Location = new System.Drawing.Point(97, 558);
+            this.btnInclude.Location = new System.Drawing.Point(97, 563);
             this.btnInclude.Name = "btnInclude";
             this.btnInclude.Size = new System.Drawing.Size(88, 32);
             this.statusBarTextProvider1.SetStatusBarText(this.btnInclude, "Include: Include the selected members");
@@ -160,7 +161,7 @@ namespace SandcastleBuilder.Utils.Design
             // 
             this.btnExclude.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnExclude.Enabled = false;
-            this.btnExclude.Location = new System.Drawing.Point(191, 558);
+            this.btnExclude.Location = new System.Drawing.Point(191, 563);
             this.btnExclude.Name = "btnExclude";
             this.btnExclude.Size = new System.Drawing.Size(88, 32);
             this.statusBarTextProvider1.SetStatusBarText(this.btnExclude, "Exclude: Exclude the selected members");
@@ -173,7 +174,7 @@ namespace SandcastleBuilder.Utils.Design
             // btnHelp
             // 
             this.btnHelp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnHelp.Location = new System.Drawing.Point(654, 611);
+            this.btnHelp.Location = new System.Drawing.Point(654, 616);
             this.btnHelp.Name = "btnHelp";
             this.btnHelp.Size = new System.Drawing.Size(88, 32);
             this.statusBarTextProvider1.SetStatusBarText(this.btnHelp, "Help: View help for this form");
@@ -209,12 +210,12 @@ namespace SandcastleBuilder.Utils.Design
             treeNode2});
             this.tvApiList.SelectedImageIndex = 0;
             this.tvApiList.ShowNodeToolTips = true;
-            this.tvApiList.Size = new System.Drawing.Size(308, 593);
+            this.tvApiList.Size = new System.Drawing.Size(308, 598);
             this.statusBarTextProvider1.SetStatusBarText(this.tvApiList, "The API list to filter");
             this.tvApiList.TabIndex = 1;
+            this.tvApiList.BeforeCheck += new System.Windows.Forms.TreeViewCancelEventHandler(this.tvApiList_BeforeCheck);
             this.tvApiList.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.tvApiList_AfterCheck);
             this.tvApiList.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.tvApiList_BeforeExpand);
-            this.tvApiList.BeforeCheck += new System.Windows.Forms.TreeViewCancelEventHandler(this.tvApiList_BeforeCheck);
             // 
             // ilTreeImages
             // 
@@ -274,9 +275,9 @@ namespace SandcastleBuilder.Utils.Design
             // 
             // splitContainer
             // 
-            this.splitContainer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.splitContainer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.splitContainer.Location = new System.Drawing.Point(12, 12);
             this.splitContainer.Name = "splitContainer";
             // 
@@ -294,7 +295,7 @@ namespace SandcastleBuilder.Utils.Design
             this.splitContainer.Panel2.Controls.Add(this.btnGoto);
             this.splitContainer.Panel2.Controls.Add(this.lvSearchResults);
             this.splitContainer.Panel2.Controls.Add(this.groupBox1);
-            this.splitContainer.Size = new System.Drawing.Size(918, 593);
+            this.splitContainer.Size = new System.Drawing.Size(918, 598);
             this.splitContainer.SplitterDistance = 308;
             this.splitContainer.SplitterWidth = 10;
             this.splitContainer.TabIndex = 0;
@@ -322,9 +323,9 @@ namespace SandcastleBuilder.Utils.Design
             // 
             // lvSearchResults
             // 
-            this.lvSearchResults.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.lvSearchResults.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lvSearchResults.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.colMember,
             this.colFullName});
@@ -333,7 +334,7 @@ namespace SandcastleBuilder.Utils.Design
             this.lvSearchResults.HideSelection = false;
             this.lvSearchResults.Location = new System.Drawing.Point(3, 217);
             this.lvSearchResults.Name = "lvSearchResults";
-            this.lvSearchResults.Size = new System.Drawing.Size(594, 335);
+            this.lvSearchResults.Size = new System.Drawing.Size(594, 340);
             this.lvSearchResults.SmallImageList = this.ilTreeImages;
             this.lvSearchResults.TabIndex = 1;
             this.lvSearchResults.UseCompatibleStateImageBehavior = false;
@@ -352,8 +353,8 @@ namespace SandcastleBuilder.Utils.Design
             // 
             // groupBox1
             // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.pnlOptions);
             this.groupBox1.Controls.Add(this.btnFind);
             this.groupBox1.Controls.Add(this.txtSearchText);
@@ -366,8 +367,8 @@ namespace SandcastleBuilder.Utils.Design
             // 
             // pnlOptions
             // 
-            this.pnlOptions.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnlOptions.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlOptions.AutoScroll = true;
             this.pnlOptions.Controls.Add(this.chkCaseSensitive);
             this.pnlOptions.Controls.Add(this.chkFullyQualified);
@@ -671,8 +672,8 @@ namespace SandcastleBuilder.Utils.Design
             // 
             // txtSearchText
             // 
-            this.txtSearchText.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtSearchText.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtSearchText.Location = new System.Drawing.Point(6, 21);
             this.txtSearchText.Name = "txtSearchText";
             this.txtSearchText.Size = new System.Drawing.Size(471, 22);
@@ -681,11 +682,11 @@ namespace SandcastleBuilder.Utils.Design
             // 
             // lblProgress
             // 
-            this.lblProgress.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblProgress.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lblProgress.AutoEllipsis = true;
             this.lblProgress.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblProgress.Location = new System.Drawing.Point(12, 616);
+            this.lblProgress.Location = new System.Drawing.Point(12, 621);
             this.lblProgress.Name = "lblProgress";
             this.lblProgress.Size = new System.Drawing.Size(636, 23);
             this.lblProgress.TabIndex = 1;
@@ -714,11 +715,12 @@ namespace SandcastleBuilder.Utils.Design
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "API Filter";
-            this.Load += new System.EventHandler(this.ApiFilterEditorDlg_Load);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ApiFilterEditorDlg_FormClosing);
+            this.Load += new System.EventHandler(this.ApiFilterEditorDlg_Load);
             this.splitContainer.Panel1.ResumeLayout(false);
             this.splitContainer.Panel1.PerformLayout();
             this.splitContainer.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).EndInit();
             this.splitContainer.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pbWait)).EndInit();
             this.groupBox1.ResumeLayout(false);

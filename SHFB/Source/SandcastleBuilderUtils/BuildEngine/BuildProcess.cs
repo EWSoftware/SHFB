@@ -53,6 +53,8 @@
 // 1.9.7.0  01/02/2013  EFW  Added method to get referenced namespaces
 // 1.9.8.0  06/21/2013  EFW  Added support for format-specific help content files.  Removed the
 //                           ModifyHelpTopicFilenames build step.
+// 1.9.9.0  12/04/2013  EFW  Removed the ApplyVisibilityProperties build step.  Plug-ins can apply visibility
+//                           settings if needed by calling the ApplyVisibilityProperties() method.
 //===============================================================================================================
 
 using System;
@@ -306,7 +308,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// </summary>
         /// <remarks>Partial builds occur when editing the namespace summaries, editing the API filter, and as
         /// part of some plug-ins and may not require all build options.  In a partial build, build steps after
-        /// <b>ApplyVisibilityProperties</b> are not executed.</remarks>
+        /// <c>GenerateNamespaceSummaries</c> are not executed.</remarks>
         public bool IsPartialBuild
         {
             get { return isPartialBuild; }
@@ -951,9 +953,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 // Generate namespace summary information
                 this.GenerateNamespaceSummaries();
-
-                // Remove unwanted items from the reflection information file
-                this.ApplyVisibilityProperties();
 
                 // If there is nothing to document, stop the build
                 if(apisNode.ChildNodes.Count == 0)

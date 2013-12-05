@@ -63,6 +63,7 @@
             this.label14 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.cblSyntaxFilters = new System.Windows.Forms.CheckedListBox();
+            this.chkNamespaceGrouping = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.epNotes)).BeginInit();
             this.SuspendLayout();
             // 
@@ -92,10 +93,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.epNotes.SetError(this.txtCopyrightText, "This value is treated as plain text");
             this.epNotes.SetIconPadding(this.txtCopyrightText, 5);
-            this.txtCopyrightText.Location = new System.Drawing.Point(254, 409);
+            this.txtCopyrightText.Location = new System.Drawing.Point(254, 432);
             this.txtCopyrightText.Name = "txtCopyrightText";
             this.txtCopyrightText.Size = new System.Drawing.Size(346, 27);
-            this.txtCopyrightText.TabIndex = 23;
+            this.txtCopyrightText.TabIndex = 24;
             this.txtCopyrightText.Tag = "CopyrightText";
             // 
             // txtHeaderText
@@ -104,10 +105,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.epNotes.SetError(this.txtHeaderText, "HTML elements are supported within this property\'s value");
             this.epNotes.SetIconPadding(this.txtHeaderText, 5);
-            this.txtHeaderText.Location = new System.Drawing.Point(254, 310);
+            this.txtHeaderText.Location = new System.Drawing.Point(254, 333);
             this.txtHeaderText.Name = "txtHeaderText";
             this.txtHeaderText.Size = new System.Drawing.Size(346, 27);
-            this.txtHeaderText.TabIndex = 17;
+            this.txtHeaderText.TabIndex = 18;
             this.txtHeaderText.Tag = "HeaderText";
             // 
             // txtFooterText
@@ -116,10 +117,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.epNotes.SetError(this.txtFooterText, "HTML elements are supported within this property\'s value");
             this.epNotes.SetIconPadding(this.txtFooterText, 5);
-            this.txtFooterText.Location = new System.Drawing.Point(254, 343);
+            this.txtFooterText.Location = new System.Drawing.Point(254, 366);
             this.txtFooterText.Name = "txtFooterText";
             this.txtFooterText.Size = new System.Drawing.Size(346, 27);
-            this.txtFooterText.TabIndex = 19;
+            this.txtFooterText.TabIndex = 20;
             this.txtFooterText.Tag = "FooterText";
             // 
             // txtHtmlHelpName
@@ -184,10 +185,10 @@
             // 
             // label3
             // 
-            this.label3.Location = new System.Drawing.Point(87, 378);
+            this.label3.Location = new System.Drawing.Point(87, 401);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(161, 23);
-            this.label3.TabIndex = 20;
+            this.label3.TabIndex = 21;
             this.label3.Text = "Copyright notice URL";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
@@ -195,18 +196,18 @@
             // 
             this.txtCopyrightHref.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtCopyrightHref.Location = new System.Drawing.Point(254, 376);
+            this.txtCopyrightHref.Location = new System.Drawing.Point(254, 399);
             this.txtCopyrightHref.Name = "txtCopyrightHref";
             this.txtCopyrightHref.Size = new System.Drawing.Size(346, 27);
-            this.txtCopyrightHref.TabIndex = 21;
+            this.txtCopyrightHref.TabIndex = 22;
             this.txtCopyrightHref.Tag = "CopyrightHref";
             // 
             // label4
             // 
-            this.label4.Location = new System.Drawing.Point(91, 411);
+            this.label4.Location = new System.Drawing.Point(91, 434);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(157, 23);
-            this.label4.TabIndex = 22;
+            this.label4.TabIndex = 23;
             this.label4.Text = "Copyright notice text";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
@@ -214,18 +215,18 @@
             // 
             this.txtFeedbackEMailAddress.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtFeedbackEMailAddress.Location = new System.Drawing.Point(254, 442);
+            this.txtFeedbackEMailAddress.Location = new System.Drawing.Point(254, 465);
             this.txtFeedbackEMailAddress.Name = "txtFeedbackEMailAddress";
             this.txtFeedbackEMailAddress.Size = new System.Drawing.Size(346, 27);
-            this.txtFeedbackEMailAddress.TabIndex = 25;
+            this.txtFeedbackEMailAddress.TabIndex = 26;
             this.txtFeedbackEMailAddress.Tag = "FeedbackEMailAddress";
             // 
             // label5
             // 
-            this.label5.Location = new System.Drawing.Point(66, 444);
+            this.label5.Location = new System.Drawing.Point(66, 467);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(182, 23);
-            this.label5.TabIndex = 24;
+            this.label5.TabIndex = 25;
             this.label5.Text = "Feedback e-mail address";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
@@ -233,36 +234,36 @@
             // 
             this.txtFeedbackEMailLinkText.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtFeedbackEMailLinkText.Location = new System.Drawing.Point(254, 475);
+            this.txtFeedbackEMailLinkText.Location = new System.Drawing.Point(254, 498);
             this.txtFeedbackEMailLinkText.Name = "txtFeedbackEMailLinkText";
             this.txtFeedbackEMailLinkText.Size = new System.Drawing.Size(346, 27);
-            this.txtFeedbackEMailLinkText.TabIndex = 27;
+            this.txtFeedbackEMailLinkText.TabIndex = 28;
             this.txtFeedbackEMailLinkText.Tag = "FeedbackEMailLinkText";
             // 
             // label6
             // 
-            this.label6.Location = new System.Drawing.Point(62, 477);
+            this.label6.Location = new System.Drawing.Point(62, 500);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(186, 23);
-            this.label6.TabIndex = 26;
+            this.label6.TabIndex = 27;
             this.label6.Text = "Feedback e-mail link text";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label7
             // 
-            this.label7.Location = new System.Drawing.Point(49, 312);
+            this.label7.Location = new System.Drawing.Point(49, 335);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(199, 23);
-            this.label7.TabIndex = 16;
+            this.label7.TabIndex = 17;
             this.label7.Text = "&Additional header content";
             this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label8
             // 
-            this.label8.Location = new System.Drawing.Point(59, 345);
+            this.label8.Location = new System.Drawing.Point(59, 368);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(189, 23);
-            this.label8.TabIndex = 18;
+            this.label8.TabIndex = 19;
             this.label8.Text = "Additional footer content";
             this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
@@ -327,10 +328,10 @@
             // chkPreliminary
             // 
             this.chkPreliminary.AutoSize = true;
-            this.chkPreliminary.Location = new System.Drawing.Point(254, 280);
+            this.chkPreliminary.Location = new System.Drawing.Point(254, 303);
             this.chkPreliminary.Name = "chkPreliminary";
             this.chkPreliminary.Size = new System.Drawing.Size(332, 24);
-            this.chkPreliminary.TabIndex = 15;
+            this.chkPreliminary.TabIndex = 16;
             this.chkPreliminary.Tag = "Preliminary";
             this.chkPreliminary.Text = "Include \"preliminary documentation\" warning";
             this.chkPreliminary.UseVisualStyleBackColor = true;
@@ -369,28 +370,28 @@
             // 
             this.cboSdkLinkTarget.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboSdkLinkTarget.FormattingEnabled = true;
-            this.cboSdkLinkTarget.Location = new System.Drawing.Point(254, 508);
+            this.cboSdkLinkTarget.Location = new System.Drawing.Point(254, 531);
             this.cboSdkLinkTarget.MaxDropDownItems = 16;
             this.cboSdkLinkTarget.Name = "cboSdkLinkTarget";
             this.cboSdkLinkTarget.Size = new System.Drawing.Size(111, 28);
-            this.cboSdkLinkTarget.TabIndex = 29;
+            this.cboSdkLinkTarget.TabIndex = 30;
             this.cboSdkLinkTarget.Tag = "SdkLinkTarget";
             // 
             // label14
             // 
-            this.label14.Location = new System.Drawing.Point(120, 510);
+            this.label14.Location = new System.Drawing.Point(120, 533);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(128, 23);
-            this.label14.TabIndex = 28;
+            this.label14.TabIndex = 29;
             this.label14.Text = "SDK Link Target";
             this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label15
             // 
-            this.label15.Location = new System.Drawing.Point(130, 544);
+            this.label15.Location = new System.Drawing.Point(130, 567);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(114, 23);
-            this.label15.TabIndex = 30;
+            this.label15.TabIndex = 31;
             this.label15.Text = "Syntax &Filters";
             this.label15.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
@@ -399,16 +400,30 @@
             this.cblSyntaxFilters.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cblSyntaxFilters.FormattingEnabled = true;
-            this.cblSyntaxFilters.Location = new System.Drawing.Point(254, 542);
+            this.cblSyntaxFilters.Location = new System.Drawing.Point(254, 565);
             this.cblSyntaxFilters.MultiColumn = true;
             this.cblSyntaxFilters.Name = "cblSyntaxFilters";
             this.cblSyntaxFilters.Size = new System.Drawing.Size(346, 114);
-            this.cblSyntaxFilters.TabIndex = 31;
+            this.cblSyntaxFilters.TabIndex = 32;
             this.cblSyntaxFilters.Tag = "SyntaxFilters";
+            // 
+            // chkNamespaceGrouping
+            // 
+            this.chkNamespaceGrouping.AutoSize = true;
+            this.epNotes.SetError(this.chkNamespaceGrouping, "The selected presentation style must support namespace\ngrouping for this to have " +
+        "any effect.");
+            this.chkNamespaceGrouping.Location = new System.Drawing.Point(254, 263);
+            this.chkNamespaceGrouping.Name = "chkNamespaceGrouping";
+            this.chkNamespaceGrouping.Size = new System.Drawing.Size(305, 24);
+            this.chkNamespaceGrouping.TabIndex = 15;
+            this.chkNamespaceGrouping.Tag = "NamespaceGrouping";
+            this.chkNamespaceGrouping.Text = "Enable namespace grouping if supported";
+            this.chkNamespaceGrouping.UseVisualStyleBackColor = true;
             // 
             // HelpFilePropertiesPageControl
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
+            this.Controls.Add(this.chkNamespaceGrouping);
             this.Controls.Add(this.cblSyntaxFilters);
             this.Controls.Add(this.label15);
             this.Controls.Add(this.cboSdkLinkTarget);
@@ -443,7 +458,7 @@
             this.Controls.Add(this.label2);
             this.MinimumSize = new System.Drawing.Size(635, 670);
             this.Name = "HelpFilePropertiesPageControl";
-            this.Size = new System.Drawing.Size(635, 670);
+            this.Size = new System.Drawing.Size(635, 686);
             ((System.ComponentModel.ISupportInitialize)(this.epNotes)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -485,6 +500,7 @@
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.CheckedListBox cblSyntaxFilters;
         private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.CheckBox chkNamespaceGrouping;
 
     }
 }

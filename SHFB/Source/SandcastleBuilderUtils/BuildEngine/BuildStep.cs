@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildStep.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/02/2013
+// Updated : 12/04/2013
 // Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -28,6 +28,8 @@
 // 1.9.8.0  06/21/2013  EFW  Moved CopyStandardContent build step to allow for standard content defined in a
 //                           presentation style definition file.  Removed ModifyHelpTopicFilenames as naming is
 //                           now handled entirely by AddFilenames.xsl.
+// 1.9.9.0  12/04/2013  EFW  Removed the ApplyVisibilityProperties build step.  Plug-ins can apply visibility
+//                           settings if needed by calling the ApplyVisibilityProperties() method.
 //===============================================================================================================
 
 using System;
@@ -56,9 +58,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
         GenerateReflectionInfo,
         /// <summary>Namespace summary information is being generated.</summary>
         GenerateNamespaceSummaries,
-        /// <summary>The Visibility category properties are being applied to the reflection information file to
-        /// remove unwanted items.</summary>
-        ApplyVisibilityProperties,
         /// <summary>All <c>&lt;inheritDoc /&gt;</c> tags are being expanded.</summary>
         GenerateInheritedDocumentation,
         /// <summary>The reflection information is being transformed by <b>XslTransform</b>.</summary>

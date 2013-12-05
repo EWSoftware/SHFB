@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : FrameworkSettings.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/21/2012
-// Note    : Copyright 2012, Eric Woodruff, All rights reserved
+// Updated : 10/17/2013
+// Note    : Copyright 2012-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class that is used to contain settings information for a specific .NET Framework version
@@ -198,24 +198,31 @@ namespace Microsoft.Ddue.Tools.Frameworks
                         yield return Path.Combine(path, "*.xml");
                 }
                 else
-                {
-                    // The .NET Portable Library Framework 4.0 duplicates most of its comments files across all
-                    // of the profile folders.  To minimize the duplication, we'll find the folder with the most
-                    // files and return it followed by an entry for each unique file in subsequent folders.
-                    var commentGroups = Directory.EnumerateFiles(l.Path, "*.xml",
-                        SearchOption.AllDirectories).Where(d => File.Exists(
-                            Path.ChangeExtension(d, ".dll"))).GroupBy(d =>
-                                Path.GetDirectoryName(d)).OrderByDescending(d => d.Count());
+                    if(Directory.Exists(l.Path))
+                    {
+                        // The .NET Portable Library Framework 4.0 duplicates most of its comments files across
+                        // all of the profile folders.  To minimize the duplication, we'll find the folder with
+                        // the most files and return it followed by an entry for each unique file in subsequent
+                        // folders.
+                        var commentGroups = Directory.EnumerateFiles(l.Path, "*.xml",
+                            SearchOption.AllDirectories).Where(d => File.Exists(
+                                Path.ChangeExtension(d, ".dll"))).GroupBy(d =>
+                                    Path.GetDirectoryName(d)).OrderByDescending(d => d.Count());
 
-                    HashSet<string> commentsFiles = new HashSet<string>(commentGroups.First().Select(
-                        f => Path.GetFileName(f)));
+                        // Odd case but it appears that the folder does exist in some cases with no comments
+                        // files in it for the assemblies.
+                        if(commentGroups.Count() != 0)
+                        {
+                            HashSet<string> commentsFiles = new HashSet<string>(commentGroups.First().Select(
+                                f => Path.GetFileName(f)));
 
-                    yield return Path.Combine(commentGroups.First().Key, "*.xml");
+                            yield return Path.Combine(commentGroups.First().Key, "*.xml");
 
-                    foreach(var g in commentGroups)
-                        foreach(var f in g.Where(f => !commentsFiles.Contains(Path.GetFileName(f))).ToList())
-                            yield return Path.Combine(g.Key, Path.GetFileName(f));
-                }
+                            foreach(var g in commentGroups)
+                                foreach(var f in g.Where(f => !commentsFiles.Contains(Path.GetFileName(f))))
+                                    yield return Path.Combine(g.Key, Path.GetFileName(f));
+                        }
+                    }
         }
 
         /// <summary>

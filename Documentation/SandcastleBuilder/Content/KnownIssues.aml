@@ -62,21 +62,6 @@ style will produce content that in some contexts produces two vertical scrollbar
       </content>
     </section>
   
-    <section address="Sandcastle">
-      <title>Sandcastle</title>
-      <content>
-				<list class="bullet">
-					<listItem>
-						<para>The <legacyBold>VS2010</legacyBold> presentation style is new as of the Sandcastle 2.7.0.0
-release.  As it is a brand new style, it has not been fully tested so expect to see some issues.  These will
-be resolved as they are found.</para>
-					</listItem>
-
-				</list>
-      </content>
-    </section>
-
-
     <section address="SHFB">
       <title>Sandcastle Help File Builder</title>
       <content>

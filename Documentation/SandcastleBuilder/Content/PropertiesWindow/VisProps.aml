@@ -7,22 +7,7 @@
     <introduction>
       <para>The following properties are available in the Visibility category.  These control what appears in the
 help file and can reduce the help content and get rid of unwanted items, especially when documenting internal and
-private members.  Information is written to the log file detailing how each property affected the build.</para>
-
-			<alert class="note">
-				<para><legacyBold>Known Limitations</legacyBold></para>
-
-				<para>Many of the properties starting with "<codeInline>Document</codeInline>" are applied after the
-<application>MRefBuilder</application> tool runs.  When the <codeInline>Document Internals</codeInline> and/or
-<codeInline>Document Privates</codeInline> options are set to true, setting one or more of the
-<codeInline>Document Inherited *</codeInline> options to false may increase the build time on help files with a
-large number of topics.  If you find that the <legacyItalic>Applying visibility properties</legacyItalic> step
-of the build is taking a very long time, you can set these options to true and use the
-<codeInline>Api Filter</codeInline> project option to remove the unwanted members.  This is generally much more
-efficient as <application>MRefBuilder</application> removes the items as it is generating the reflection
-information file. This also applies to some of the other properties in this category.  The trade-off is that you
-must search for and exclude the items manually in the API filter search dialog box.</para>
-			</alert>
+private members.</para>
 
 			<autoOutline lead="none" excludeRelatedTopics="true" />
     </introduction>
@@ -33,12 +18,12 @@ must search for and exclude the items manually in the API filter search dialog b
 		<para>When set to false, the default, the help file builder will strip all attribute information from the
 documented items so that they do not appear in the syntax section of each class, property, method, etc. in the
 compiled help file. When set to true, the attribute information is left intact and will appear in the help file.
-The attributes <codeInline>ExtensionAttribute</codeInline>, <codeInline>FixedBufferAttribute</codeInline>,
+Several attributes such as <codeInline>ExtensionAttribute</codeInline>, <codeInline>FixedBufferAttribute</codeInline>,
 <codeInline>FlagsAttribute</codeInline>, <codeInline>SerializableAttribute</codeInline>,
-<codeInline>ObsoleteAttribute</codeInline>, and several special attributes used by <application>AjaxDoc</application>
+<codeInline>ObsoleteAttribute</codeInline>, and some special attributes used by <application>AjaxDoc</application>
 and <application>Script#</application> are always included regardless of this property's setting as they provide
 important information about the types and members to which they are applied or are used by other components such
-as the syntax generators.</para>
+as the syntax generators or presentation style XSL transformations.</para>
 
   </content>
 </section>
@@ -107,11 +92,10 @@ framework members are included.</para>
   <title>Internal members (DocumentInternals)</title>
   <content>
 		<para>When set to false, the default, the help file builder will not document any internal (Friend) members
-of classes in the documentation assemblies. When true, the help file builder will add the <system>/internal+</system>
-command line option to <application>MRefBuilder</application> so that it does include documentation for internal
-class members.  Because they share a similar visibility, protected internal members will be left in the help file
-when this is set to true even if the <codeInline>Document Protected</codeInline> property is set to false. Also
-note that this property works independently of the <codeInline>Document Privates</codeInline> property below.</para>
+in the documentation assemblies.  Because they share a similar visibility, protected internal members will be
+left in the help file when this is set to true even if the <codeInline>Document Protected</codeInline> property
+is set to false. Also note that this property works independently of the <codeInline>Document Privates</codeInline>
+property below.</para>
 
   </content>
 </section>
@@ -119,9 +103,9 @@ note that this property works independently of the <codeInline>Document Privates
 <section address="DocPrvFlds">
   <title>Private fields (DocumentPrivateFields)</title>
   <content>
-		<para>When set to false, the default, the help file builder will not document any private fields of classes
-in the documentation assemblies.  Since most private fields back properties or represent items such as controls
-on forms, they usually do not have comments and can significantly clutter the resulting help file with unwanted
+		<para>When set to false, the default, the help file builder will not document any private fields in the
+documentation assemblies.  Since most private fields back properties or represent items such as controls on
+forms, they usually do not have comments and can significantly clutter the resulting help file with unwanted
 entries.  Leaving this option set to false can eliminate the problem.  When set to true, the private fields are
 included in  the help file.  To work, the <codeInline>Document Privates</codeInline> property must also be set
 to true.</para>
@@ -132,10 +116,8 @@ to true.</para>
 <section address="DocPrivates">
   <title>Private members (DocumentPrivates)</title>
   <content>
-		<para>When set to false, the default, the help file builder will not document any private members of classes
-in the documentation assemblies.  When true, the help file builder will add the <system>/internal+</system>
-command line option to <application>MRefBuilder</application> so that it does include documentation for private
-class members.  Also note that this property works independently of the <codeInline>Document Internals</codeInline>
+		<para>When set to false, the default, the help file builder will not document any private members in the
+documentation assemblies.  Note that this property works independently of the <codeInline>Document Internals</codeInline>
 property above.</para>
 
   </content>
@@ -145,11 +127,11 @@ property above.</para>
   <title>Protected members (DocumentProtected)</title>
   <content>
 		<para>When set to true, the default, the help file builder will document all protected and protected internal
-members of classes in the documentation assemblies.  When false, the help file builder will remove them from the
-help file including those inherited from base .NET framework classes (those starting with
-"<codeInline>System.</codeInline>" and "<codeInline>Microsoft.</codeInline>").  Because they share a similar
-visibility, protected internal members will be left in the help file when the <codeInline>Document Internals</codeInline>
-property is set to true even if this property is set to false.</para>
+members in the documentation assemblies.  When false, the help file builder will remove them from the help file
+including those inherited from base .NET framework classes (those starting with "<codeInline>System.</codeInline>"
+and "<codeInline>Microsoft.</codeInline>").  Because they share a similar visibility, protected internal members
+will be left in the help file when the <codeInline>Document Internals</codeInline> property is set to true even
+if this property is set to false.</para>
 
   </content>
 </section>
@@ -157,21 +139,31 @@ property is set to true even if this property is set to false.</para>
 <section address="DocSealed">
   <title>Protected members of sealed classes (DocumentSealedProtected)</title>
   <content>
-		<para>When set to true, the default, the help file builder will document all protected members of sealed
-classes in the documentation assemblies. When false, the help file builder will remove all protected members from
-sealed classes so that they do not appear in the help file.  To work, the <codeInline>Document Protected</codeInline>
+		<para>When set to false, the default, the help file builder will remove all protected members from sealed
+classes so that they do not appear in the help file.  When true, the help file builder will document all
+protected members of sealed classes in the documentation assemblies.  To work, the <codeInline>Document Protected</codeInline>
 property must also be set to true.</para>
 
   </content>
 </section>
 
+<section address="NoPIATypes">
+  <title>No-PIA (Primary Interop Assembly) embedded interop types (DocumentNoPIATypes)</title>
+  <content>
+		<para>When set to false, the default, the help file builder will remove all "no-PIA" embedded interop types
+(those marked as compiler generated with a type identifier attribute).  When true, such types are documented.
+Examples of these types are the Microsoft Office reference assemblies used in Office add-in projects.</para>
+
+  </content>
+</section>
+		
 <section address="DocProtInt">
   <title>Document "protected internal" members as "protected" instead (DocumentProtectedInternalAsProtected)</title>
   <content>
-		<para>When set to false, the default, the help file builder will document all protected internal members of
-classes in the documentation assemblies without modification.  When true, the help file builder will alter
-protected internal members so that they are listed as protected only in the help file.  If
-<codeInline>Document Protected</codeInline> is set to false, this option is ignored.</para>
+		<para>When set to true, the default, the help file builder will alter protected internal members so that they
+are listed as protected only in the help file.  When true, the help file builder will document all protected
+internal members of classes in the documentation assemblies without modification.  If <codeInline>Document
+Protected</codeInline> is set to false, this option is ignored.</para>
 
   </content>
 </section>

@@ -6,6 +6,8 @@
 // Change history:
 // 03/28/2012 - EFW - Fixed Contains() so that when checking for matching members it compares generic
 // template parameters by name to match members with generic parameters correctly.
+// 11/25/2013 - EFW - Cleaned up the code and removed unused members.  Added support for the visibility options
+// in the API filter.
 
 using System;
 using System.Collections;
@@ -17,220 +19,151 @@ using Microsoft.Ddue.Tools.Reflection;
 
 namespace Microsoft.Ddue.Tools
 {
-
-    public class MemberDictionary : ICollection<Member>
+    public sealed class MemberDictionary : ICollection<Member>
     {
+        #region Private data members
+        //=====================================================================
 
-        private Dictionary<string, List<Member>> index = new Dictionary<string, List<Member>>();
-
+        private Dictionary<string, List<Member>> index;
         private TypeNode type;
 
-        // construct the dictionary
+        #endregion
 
+        #region Constructor
+        //=====================================================================
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="type">The type for which the dictionary is created</param>
+        /// <param name="filter">The API filter used to exclude unwanted members</param>
         public MemberDictionary(TypeNode type, ApiFilter filter)
         {
-
             this.type = type;
 
-            bool isSealed = type.IsSealed;
+            index = new Dictionary<string, List<Member>>();
 
-            // add all member of the type that the filter allows
-            MemberList members = type.Members;
-            for(int i = 0; i < members.Count; i++)
-            {
-                Member member = members[i];
+            // Add all member of the type except nested types and members that the filter rejects
+            foreach(var member in type.Members)
+                if(!(member is TypeNode) && filter.IsExposedMember(member))
+                    this.AddMember(member);
 
-                // don't add nested types
-                if(member is TypeNode)
-                    continue;
-
-                // if our type is sealed, don't add protected members (is this check even necessary?)
-                // if (isSealed && (member.IsFamily || member.IsFamilyAndAssembly)) continue;
-
-                // don't add members that the filter rejects
-                if(!filter.IsExposedMember(member))
-                    continue;
-
-                // okay, add the member
-                AddMember(member);
-            }
-
-            // for enumerations, don't list inherited members
+            // For enumerations, don't list inherited members
             if(type is EnumNode)
                 return;
 
-            // for interfaces, list members of inherited interfaces
-            if(type is Interface)
+            // For interfaces, list members of inherited interfaces
+            if(type is Interface && filter.IncludeInheritedMembers)
             {
-
-                InterfaceList contracts = type.Interfaces;
-                for(int i = 0; i < contracts.Count; i++)
+                foreach(var contract in type.Interfaces)
                 {
-
-                    Interface contract = contracts[i];
-
-                    // members of hidden interfaces don't count
-                    if(!filter.IsExposedType(contract))
-                        continue;
-
-                    // otherwise, add inherited interface members
-                    MemberList contractMembers = contract.Members;
-                    for(int j = 0; j < contractMembers.Count; j++)
+                    // Members of hidden interfaces don't count
+                    if(filter.IsExposedType(contract))
                     {
-                        Member contractMember = contractMembers[j];
-
-                        // check for exposure; this is necessary to remove accessor methods
-                        if(!filter.IsExposedMember(contractMember))
-                            continue;
-
-                        AddMember(contractMember);
+                        // Otherwise, add inherited interface members except those rejected by the filter.
+                        // This is necessary to remove accessor methods.
+                        foreach(var contractMember in contract.Members)
+                            if(!filter.IsExcludedFrameworkMember(type, contractMember) &&
+                              filter.IsExposedMember(contractMember))
+                            {
+                                this.AddMember(contractMember);
+                            }
                     }
-
-
                 }
 
                 return;
             }
 
-            // don't list inherited memers for static classes
+            // Don't list inherited members for static classes
             if(type.IsAbstract && type.IsSealed)
                 return;
 
-            // now interate up through the type hierarchy
+            // If not including inherited members, don't go any further
+            if(!filter.IncludeInheritedMembers)
+                return;
+
+            // Now iterate up through the type hierarchy
             for(TypeNode parentType = type.BaseType; parentType != null; parentType = parentType.BaseType)
-            {
-
-                // iterate through the members of each type
-                MemberList parentMembers = parentType.Members;
-                for(int i = 0; i < parentMembers.Count; i++)
+                foreach(var parentMember in parentType.Members)
                 {
-                    Member parentMember = parentMembers[i];
-
-                    // don't add constructors
-                    if((parentMember.NodeType == NodeType.InstanceInitializer) || (parentMember.NodeType == NodeType.StaticInitializer))
+                    // Don't add constructors
+                    if(parentMember.NodeType == NodeType.InstanceInitializer ||
+                      parentMember.NodeType == NodeType.StaticInitializer)
                         continue;
 
-                    // don't add inherited static members
+                    // Don't add inherited static members
                     if(parentMember.IsStatic)
                         continue;
 
-                    // don't add nested types
+                    // Don't add nested types
                     if(parentMember is TypeNode)
                         continue;
 
-                    // if our type is sealed, don't add protected members
-                    // if (isSealed && (parentMember.IsFamily || parentMember.IsFamilyAndAssembly)) continue;
-
-                    // don't add members that the filter rejects
-                    if(!filter.IsExposedMember(parentMember))
+                    // Don't add protected members if the derived type is sealed and they are not wanted
+                    if(!filter.IncludeSealedProtected && type.IsSealed && (parentMember.IsFamily ||
+                      parentMember.IsFamilyOrAssembly))
                         continue;
 
-                    // don't add members we have overridden
+                    // Don't add members that the filter rejects
+                    if(filter.IsExcludedFrameworkMember(type, parentMember) || !filter.IsExposedMember(parentMember))
+                        continue;
+
+                    // Don't add members we have overridden
                     if(this.Contains(parentMember))
                         continue;
 
-                    // otherwise, add the member 
-                    AddMember(parentMember);
-
+                    // Otherwise, add the member 
+                    this.AddMember(parentMember);
                 }
-
-            }
-
         }
+        #endregion
 
-        public List<Member> AllMembers
+        #region ICollection<Member> Members
+        //=====================================================================
+
+        /// <summary>
+        /// This member is not implemented and should not be called
+        /// </summary>
+        /// <param name="member">Not used</param>
+        void ICollection<Member>.Add(Member member)
         {
-            get
-            {
-                List<Member> list = new List<Member>();
-                foreach(List<Member> entries in index.Values)
-                {
-                    list.AddRange(entries);
-                }
-                return (list);
-            }
+            throw new NotImplementedException();
         }
 
-        public int Count
+        /// <summary>
+        /// This member is not implemented and should not be called
+        /// </summary>
+        void ICollection<Member>.Clear()
         {
-            get
-            {
-                int count = 0;
-                foreach(List<Member> entries in index.Values)
-                {
-                    count += entries.Count;
-                }
-                return (count);
-            }
+            throw new NotImplementedException();
         }
 
-        public IList<string> MemberNames
-        {
-            get
-            {
-                return (new List<string>(index.Keys));
-            }
-        }
-
-        // access the data
-
-        public TypeNode Type
-        {
-            get
-            {
-                return (type);
-            }
-        }
-
-        bool ICollection<Member>.IsReadOnly
-        {
-            get
-            {
-                return (true);
-            }
-        }
-
-        public List<Member> this[string name]
-        {
-            get
-            {
-                List<Member> members;
-                index.TryGetValue(name, out members);
-                return (members);
-            }
-        }
-
-        public void Clear()
-        {
-            throw new InvalidOperationException();
-        }
-
+        /// <inheritdoc />
         public bool Contains(Member member)
         {
-            // get candidate members with the same name
             List<Member> candidates;
-            bool found = index.TryGetValue(member.Name.Name, out candidates);
 
-            // if no candidates were found, we don't have the member
-            if(!found)
-                return (false);
+            // Get candidate members with the same name
+            if(!index.TryGetValue(member.Name.Name, out candidates))
+                return false;
 
-            // iterate over the candidates, looking for one of the same type with the same parameters
+            // Iterate over the candidates looking for one of the same type with the same parameters
             ParameterList parameters = GetParameters(member);
+
             foreach(Member candidate in candidates)
             {
-                // candidates must be of the same type
+                // Candidates must be of the same type
                 if(candidate.NodeType != member.NodeType)
                     continue;
 
-                // get candidate parameters
+                // Get candidate parameters
                 ParameterList candidateParameters = GetParameters(candidate);
 
-                // number of parameters must match
+                // Number of parameters must match
                 if(parameters.Count != candidateParameters.Count)
                     continue;
 
-                // each parameter type must match
+                // Each parameter type must match
                 bool parameterMismatch = false;
 
                 for(int i = 0; i < parameters.Count; i++)
@@ -255,86 +188,173 @@ namespace Microsoft.Ddue.Tools
                     return true;
             }
 
-            // no candidates matched
+            // No candidates matched
             return false;
         }
 
-        // methods to complete ICollection<Member>
-
-        public void CopyTo(Member[] array, int index)
+        /// <summary>
+        /// This member is not implemented and should not be called
+        /// </summary>
+        /// <param name="array">Not used</param>
+        /// <param name="index">Not used</param>
+        void ICollection<Member>.CopyTo(Member[] array, int index)
         {
             throw new NotImplementedException();
         }
 
-        void ICollection<Member>.Add(Member member)
+        /// <inheritdoc />
+        /// <remarks>Note that the count returned is the sum of all members including overloads, inherited
+        /// members, etc.</remarks>
+        public int Count
         {
-            throw new InvalidOperationException();
+            get
+            {
+                int count = 0;
+
+                foreach(var entries in index.Values)
+                    count += entries.Count;
+
+                return count;
+            }
         }
 
-        IEnumerator<Member> IEnumerable<Member>.GetEnumerator()
+        /// <summary>
+        /// This always returns true
+        /// </summary>
+        bool ICollection<Member>.IsReadOnly
         {
-            return (GetEnumerator());
+            get { return true; }
         }
 
+        /// <summary>
+        /// This member is not implemented and should not be called
+        /// </summary>
+        /// <param name="member">Not used</param>
+        bool ICollection<Member>.Remove(Member member)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
+
+        #region IEnumerable<Member> Members
+        //=====================================================================
+
+        /// <inheritdoc />
+        public IEnumerator<Member> GetEnumerator()
+        {
+            return this.AllMembers.GetEnumerator();
+        }
+        #endregion
+
+        #region IEnumerable Members
+        //=====================================================================
+
+        /// <inheritdoc />
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return (GetEnumerator());
+            return this.AllMembers.GetEnumerator();
         }
+        #endregion
 
-        public bool Remove(Member member)
+        #region Properties
+        //=====================================================================
+
+        /// <summary>
+        /// This read-only property returns the type information
+        /// </summary>
+        public TypeNode Type
         {
-            throw new InvalidOperationException();
+            get { return type; }
         }
 
+       /// <summary>
+       /// This read-only property returns an enumerable list of all members in the dictionary
+       /// </summary>
+       /// <remarks>There may be multiple members for each member name in the dictionary</remarks>
+        public IEnumerable<Member> AllMembers
+        {
+            get
+            {
+                foreach(var entries in index.Values)
+                    foreach(var entry in entries)
+                        yield return entry;
+            }
+        }
+
+        /// <summary>
+        /// This read-only property returns an enumerable list of member names from the dictionary
+        /// </summary>
+        public IEnumerable<string> MemberNames
+        {
+            get { return index.Keys; }
+        }
+
+        /// <summary>
+        /// Item indexer.  This returns an enumerable list of all members for the matching name
+        /// </summary>
+        /// <param name="name">The member name to find</param>
+        /// <returns>An enumerable list of members for the given name or an empty enumeration if a match was not
+        /// found.</returns>
+        public IEnumerable<Member> this[string name]
+        {
+            get
+            {
+                List<Member> members;
+                index.TryGetValue(name, out members);
+
+                if(members != null)
+                    foreach(var m in members)
+                        yield return m;
+            }
+        }
+        #endregion
+
+        #region Helper methods
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to get the parameters from a member if applicable
+        /// </summary>
+        /// <param name="member">The member from which to get the parameters</param>
+        /// <returns>The parameter list if one exists or an empty parameter list if there are no parameters</returns>
         private static ParameterList GetParameters(Member member)
         {
-
-            // if the member is a method, get it's parameter list
+            // If the member is a method, get it's parameter list
             Method method = member as Method;
+
             if(method != null)
-            {
-                return (method.Parameters);
-            }
+                return method.Parameters;
 
-            // if the member is a property, get it's parameter list
+            // If the member is a property, get it's parameter list
             Property property = member as Property;
+
             if(property != null)
-            {
-                return (property.Parameters);
-            }
+                return property.Parameters;
 
-            // member is neither a method nor a property
-            return (new ParameterList());
-            //return(null);
-
+            // Member is neither a method nor a property
+            return new ParameterList();
         }
 
+        /// <summary>
+        /// Add a new member to the dictionary
+        /// </summary>
+        /// <param name="member">The member to add</param>
         private void AddMember(Member member)
         {
-
-            // get the member name
+            List<Member> members;
             string name = member.Name.Name;
 
-            // look up the member list for that name
-            List<Member> members;
+            // Look up the member list for the name
             if(!index.TryGetValue(name, out members))
             {
-                // if there isn't one already, make one
+                // If there isn't one already, make one
                 members = new List<Member>();
                 index.Add(name, members);
             }
-            // add the member to the list
+
+            // Add the member to the list
             members.Add(member);
-
         }
-
-        // enumerator stuff
-
-        private IEnumerator<Member> GetEnumerator()
-        {
-            return (AllMembers.GetEnumerator());
-        }
-
+        #endregion
     }
-
 }

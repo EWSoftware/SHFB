@@ -4,437 +4,214 @@
 // Change history:
 // 03/29/2012 - EFW - Fixed WriteTemplate() so that it uses the correct template parameter names which
 // don't always match the base class's template parameter names (i.e. Collection<TControl> vs Collection<T>).
+// 11/20/2013 - EFW - Merged code from Stazzz to implement namespace grouping support.  Replaced the StringWriter
+// with a StringBuilder and cleared out dead code.
 
 using System;
-using System.IO;
+using System.Linq;
+using System.Text;
 
 using System.Compiler;
 
 namespace Microsoft.Ddue.Tools.Reflection
 {
-
+    /// <summary>
+    /// This is the default API member namer for all current versions of the .NET Framework
+    /// </summary>
     public class OrcasNamer : ApiNamer
     {
+        #region ApiNamer implementation
+        //=====================================================================
 
-        public override string GetMemberName(Member member)
+        /// <inheritdoc />
+        public override string GetGroupingNamespaceName(string groupingNamespace)
         {
-
-            using(TextWriter writer = new StringWriter())
-            {
-
-                switch(member.NodeType)
-                {
-                    case NodeType.Field:
-                        writer.Write("F:");
-                        WriteField((Field)member, writer);
-                        break;
-                    case NodeType.Property:
-                        writer.Write("P:");
-                        WriteProperty((Property)member, writer);
-                        break;
-                    case NodeType.Method:
-                        writer.Write("M:");
-                        WriteMethod((Method)member, writer);
-                        break;
-                    case NodeType.InstanceInitializer:
-                        writer.Write("M:");
-                        WriteConstructor((InstanceInitializer)member, writer);
-                        break;
-                    case NodeType.StaticInitializer:
-                        writer.Write("M:");
-                        WriteStaticConstructor((StaticInitializer)member, writer);
-                        break;
-                    case NodeType.Event:
-                        writer.Write("E:");
-                        WriteEvent((Event)member, writer);
-                        break;
-                }
-
-                return (writer.ToString());
-
-            }
-
+            return "G:" + groupingNamespace;
         }
 
+        /// <inheritdoc />
         public override string GetNamespaceName(Namespace space)
         {
-            using(TextWriter writer = new StringWriter())
-            {
-                writer.Write("N:");
-                WriteNamespace(space, writer);
-                return (writer.ToString());
-            }
+            return "N:" + space.Name;
         }
 
+        /// <inheritdoc />
         public override string GetTypeName(TypeNode type)
         {
-            using(TextWriter writer = new StringWriter())
-            {
-                writer.Write("T:");
-                WriteType(type, writer);
-                return (writer.ToString());
-            }
+            StringBuilder sb = new StringBuilder("T:");
+
+            WriteType(type, sb);
+
+            return sb.ToString();
         }
 
-
-        private static string GetName(Member entity)
+        /// <inheritdoc />
+        public override string GetMemberName(Member member)
         {
+            StringBuilder sb = new StringBuilder();
 
-            using(TextWriter writer = new StringWriter())
+            switch(member.NodeType)
             {
+                case NodeType.Field:
+                    sb.Append("F:");
+                    WriteField((Field)member, sb);
+                    break;
 
-                TypeNode type = entity as TypeNode;
-                if(type != null)
-                {
-                    writer.Write("T:");
-                    WriteType(type, writer);
-                    return (writer.ToString());
-                }
+                case NodeType.Property:
+                    sb.Append("P:");
+                    WriteProperty((Property)member, sb);
+                    break;
 
-                switch(entity.NodeType)
-                {
-                    case NodeType.Namespace:
-                        writer.Write("N:");
-                        WriteNamespace(entity as Namespace, writer);
-                        break;
-                    case NodeType.Field:
-                        writer.Write("F:");
-                        WriteField(entity as Field, writer);
-                        break;
-                    case NodeType.Property:
-                        writer.Write("P:");
-                        WriteProperty(entity as Property, writer);
-                        break;
-                    case NodeType.Method:
-                        writer.Write("M:");
-                        WriteMethod(entity as Method, writer);
-                        break;
-                    case NodeType.InstanceInitializer:
-                        writer.Write("M:");
-                        WriteConstructor(entity as InstanceInitializer, writer);
-                        break;
-                    case NodeType.StaticInitializer:
-                        writer.Write("M:");
-                        WriteStaticConstructor(entity as StaticInitializer, writer);
-                        break;
-                    case NodeType.Event:
-                        writer.Write("E:");
-                        WriteEvent(entity as Event, writer);
-                        break;
-                }
+                case NodeType.Event:
+                    sb.Append("E:");
+                    WriteEvent((Event)member, sb);
+                    break;
 
-                return (writer.ToString());
+                case NodeType.Method:
+                    sb.Append("M:");
+                    WriteMethod((Method)member, sb);
+                    break;
 
+                case NodeType.InstanceInitializer:
+                    sb.Append("M:");
+                    WriteConstructor((InstanceInitializer)member, sb);
+                    break;
+
+                case NodeType.StaticInitializer:
+                    sb.Append("M:");
+                    WriteStaticConstructor((StaticInitializer)member, sb);
+                    break;
             }
 
+            return sb.ToString();
         }
+        #endregion
 
-        private static void WriteConstructor(InstanceInitializer constructor, TextWriter writer)
-        {
-            WriteType(constructor.DeclaringType, writer);
-            writer.Write(".#ctor");
-            WriteParameters(constructor.Parameters, writer);
-        }
-
-        private static void WriteEvent(Event trigger, TextWriter writer)
-        {
-            WriteType(trigger.DeclaringType, writer);
-
-            Event eiiTrigger = null;
-            if(trigger.IsPrivate && trigger.IsVirtual)
-            {
-                Event[] eiiTriggers = ReflectionUtilities.GetImplementedEvents(trigger);
-                if(eiiTriggers.Length > 0)
-                    eiiTrigger = eiiTriggers[0];
-            }
-
-            if(eiiTrigger != null)
-            {
-                TypeNode eiiType = eiiTrigger.DeclaringType;
-                TextWriter eiiWriter = new StringWriter();
-
-                if(eiiType != null && eiiType.Template != null)
-                {
-                    writer.Write(".");
-                    WriteTemplate(eiiType, writer);
-                }
-                else
-                {
-                    WriteType(eiiType, eiiWriter);
-                    writer.Write(".");
-                    writer.Write(eiiWriter.ToString().Replace('.', '#'));
-                }
-
-                writer.Write("#");
-                writer.Write(eiiTrigger.Name.Name);
-            }
-            else
-            {
-                writer.Write(".{0}", trigger.Name.Name);
-            }
-        }
-
-        private static void WriteField(Field field, TextWriter writer)
-        {
-            WriteType(field.DeclaringType, writer);
-            writer.Write(".{0}", field.Name.Name);
-        }
-
-        private static void WriteMethod(Method method, TextWriter writer)
-        {
-            string name = method.Name.Name;
-            WriteType(method.DeclaringType, writer);
-
-            Method eiiMethod = null;
-            if(method.IsPrivate && method.IsVirtual)
-            {
-                MethodList eiiMethods = method.ImplementedInterfaceMethods;
-                if(eiiMethods.Count > 0)
-                    eiiMethod = eiiMethods[0];
-            }
-            if(eiiMethod != null)
-            { //explicitly implemented interface
-                TypeNode eiiType = eiiMethod.DeclaringType;
-                TextWriter eiiWriter = new StringWriter();
-
-
-                //we need to keep the param names instead of turning them into numbers
-                //get the template to the right format
-                if(eiiType != null && eiiType.Template != null)
-                {
-                    writer.Write(".");
-                    WriteTemplate(eiiType, writer);
-                }
-                else //revert back to writing the type the old way if there is no template
-                {
-                    WriteType(eiiType, eiiWriter);
-                    writer.Write(".");
-                    writer.Write(eiiWriter.ToString().Replace('.', '#'));
-                }
-
-                writer.Write("#");
-                writer.Write(eiiMethod.Name.Name);
-            }
-            else
-            {
-                writer.Write(".{0}", name);
-            }
-            if(method.IsGeneric)
-            {
-                TypeNodeList genericParameters = method.TemplateParameters;
-                if(genericParameters != null)
-                {
-                    writer.Write("``{0}", genericParameters.Count);
-                }
-            }
-            WriteParameters(method.Parameters, writer);
-            // add ~ for conversion operators
-            if((name == "op_Implicit") || (name == "op_Explicit"))
-            {
-                writer.Write("~");
-                WriteType(method.ReturnType, writer);
-            }
-
-        }
-
-        // The actual logic to construct names
-
-        private static void WriteNamespace(Namespace space, TextWriter writer)
-        {
-            writer.Write(space.Name);
-        }
-
-        private static void WriteParameters(ParameterList parameters, TextWriter writer)
-        {
-            if((parameters == null) || (parameters.Count == 0))
-                return;
-            writer.Write("(");
-            for(int i = 0; i < parameters.Count; i++)
-            {
-                if(i > 0)
-                    writer.Write(",");
-                WriteType(parameters[i].Type, writer);
-            }
-            writer.Write(")");
-        }
-
-        private static void WriteProperty(Property property, TextWriter writer)
-        {
-            WriteType(property.DeclaringType, writer);
-            //Console.WriteLine( "{0}::{1}", property.DeclaringType.FullName, property.Name );
-
-            Property eiiProperty = null;
-            if(property.IsPrivate && property.IsVirtual)
-            {
-                Property[] eiiProperties = ReflectionUtilities.GetImplementedProperties(property);
-                if(eiiProperties.Length > 0)
-                    eiiProperty = eiiProperties[0];
-            }
-
-
-
-            if(eiiProperty != null)
-            {
-                TypeNode eiiType = eiiProperty.DeclaringType;
-                TextWriter eiiWriter = new StringWriter();
-
-
-                if(eiiType != null && eiiType.Template != null)
-                {
-                    writer.Write(".");
-                    WriteTemplate(eiiType, writer);
-                }
-                else
-                {
-                    WriteType(eiiType, eiiWriter);
-                    writer.Write(".");
-                    writer.Write(eiiWriter.ToString().Replace('.', '#'));
-                }
-
-                writer.Write("#");
-                writer.Write(eiiProperty.Name.Name);
-            }
-            else
-            {
-                writer.Write(".{0}", property.Name.Name);
-            }
-            ParameterList parameters = property.Parameters;
-            WriteParameters(parameters, writer);
-        }
-
-        private static void WriteStaticConstructor(StaticInitializer constructor, TextWriter writer)
-        {
-            WriteType(constructor.DeclaringType, writer);
-            writer.Write(".#cctor");
-            WriteParameters(constructor.Parameters, writer);
-        }
+        #region Helper methods
+        //=====================================================================
 
         /// <summary>
-        /// Used for explicitly implemented interfaces to convert the template to the
-        /// format used in the comments file.
+        /// Write out a type name
         /// </summary>
-        /// <param name="type">EII Type</param>
-        /// <param name="writer"></param>
-        private static void WriteTemplate(TypeNode eiiType, TextWriter writer)
-        {
-//            string eiiClean = eiiType.Template.ToString();
-            // !EFW Use this instead as the type paramater may be different in the user's code
-            // (i.e. Collection<TControl> instead of Collection<T>.
-            string eiiClean = eiiType.GetFullUnmangledNameWithTypeParameters();
-
-            eiiClean = eiiClean.Replace('.', '#');
-            eiiClean = eiiClean.Replace(',', '@'); //change the seperator between params
-            eiiClean = eiiClean.Replace('<', '{'); //change the parameter brackets
-            eiiClean = eiiClean.Replace('>', '}');
-            writer.Write(eiiClean);
-        }
-
-        private static void WriteType(TypeNode type, TextWriter writer)
+        /// <param name="type">The type for which to write out the name</param>
+        /// <param name="sb">The string builder to which the name is written</param>
+        private static void WriteType(TypeNode type, StringBuilder sb)
         {
             switch(type.NodeType)
             {
                 case NodeType.ArrayType:
-                    ArrayType array = type as ArrayType;
-                    WriteType(array.ElementType, writer);
-                    writer.Write("[");
+                    ArrayType array = (ArrayType)type;
+                    WriteType(array.ElementType, sb);
+
+                    sb.Append("[");
+
                     if(array.Rank > 1)
-                    {
                         for(int i = 0; i < array.Rank; i++)
                         {
                             if(i > 0)
-                                writer.Write(",");
-                            writer.Write("0:");
+                                sb.Append(",");
+
+                            sb.Append("0:");
                         }
-                    }
-                    writer.Write("]");
+
+                    sb.Append("]");
                     break;
+
                 case NodeType.Reference:
-                    Reference reference = type as Reference;
-                    TypeNode referencedType = reference.ElementType;
-                    WriteType(referencedType, writer);
-                    writer.Write("@");
+                    Reference reference = (Reference)type;
+                    WriteType(reference.ElementType, sb);
+                    sb.Append("@");
                     break;
+
                 case NodeType.Pointer:
-                    Pointer pointer = type as Pointer;
-                    WriteType(pointer.ElementType, writer);
-                    writer.Write("*");
+                    Pointer pointer = (Pointer)type;
+                    WriteType(pointer.ElementType, sb);
+                    sb.Append("*");
                     break;
+
                 case NodeType.OptionalModifier:
-                    TypeModifier optionalModifierClause = type as TypeModifier;
-                    WriteType(optionalModifierClause.ModifiedType, writer);
-                    writer.Write("!");
-                    WriteType(optionalModifierClause.Modifier, writer);
+                    TypeModifier optionalModifierClause = (TypeModifier)type;
+                    WriteType(optionalModifierClause.ModifiedType, sb);
+                    sb.Append("!");
+                    WriteType(optionalModifierClause.Modifier, sb);
                     break;
+
                 case NodeType.RequiredModifier:
-                    TypeModifier requiredModifierClause = type as TypeModifier;
-                    WriteType(requiredModifierClause.ModifiedType, writer);
-                    writer.Write("|");
-                    WriteType(requiredModifierClause.Modifier, writer);
+                    TypeModifier requiredModifierClause = (TypeModifier)type;
+                    WriteType(requiredModifierClause.ModifiedType, sb);
+                    sb.Append("|");
+                    WriteType(requiredModifierClause.Modifier, sb);
                     break;
+
                 default:
                     if(type.IsTemplateParameter)
                     {
                         ITypeParameter gtp = (ITypeParameter)type;
+
                         if(gtp.DeclaringMember is TypeNode)
-                        {
-                            writer.Write("`");
-                        }
-                        else if(gtp.DeclaringMember is Method)
-                        {
-                            writer.Write("``");
-                        }
-                        else
-                        {
-                            throw new InvalidOperationException("Generic parameter not on type or method.");
-                        }
-                        writer.Write(gtp.ParameterListIndex);
+                            sb.Append("`");
+                        else 
+                            if(gtp.DeclaringMember is Method)
+                                sb.Append("``");
+                            else
+                                throw new InvalidOperationException("Generic parameter not on type or method");
+
+                        sb.Append(gtp.ParameterListIndex);
                     }
                     else
                     {
-                        // namespace
+                        // Namespace
                         TypeNode declaringType = type.DeclaringType;
+
                         if(declaringType != null)
                         {
-                            // names of nested types begin with outer type name
-                            WriteType(declaringType, writer);
-                            writer.Write(".");
+                            // Names of nested types begin with outer type name
+                            WriteType(declaringType, sb);
+                            sb.Append(".");
                         }
                         else
                         {
-                            // otherwise just prepend the namespace
+                            // Otherwise just prefix with the namespace
                             Identifier space = type.Namespace;
-                            if((space != null) && !String.IsNullOrEmpty(space.Name))
+
+                            if(space != null && !String.IsNullOrEmpty(space.Name))
                             {
-                                //string space = type.Namespace.Name;
-                                //if (space != null && space.Length > 0) {
-                                writer.Write(space.Name);
-                                writer.Write(".");
+                                sb.Append(space.Name);
+                                sb.Append(".");
                             }
                         }
-                        // name
-                        writer.Write(type.GetUnmangledNameWithoutTypeParameters());
-                        // generic parameters
+
+                        // Name
+                        sb.Append(type.GetUnmangledNameWithoutTypeParameters());
+
+                        // Generic parameters
                         if(type.IsGeneric)
                         {
-                            // number of parameters
+                            // Number of parameters
                             TypeNodeList parameters = type.TemplateParameters;
+
                             if(parameters != null)
                             {
-                                writer.Write("`{0}", parameters.Count);
+                                sb.Append('`');
+                                sb.Append(parameters.Count);
                             }
-                            // arguments
+
+                            // Arguments
                             TypeNodeList arguments = type.TemplateArguments;
-                            if((arguments != null) && (arguments.Count > 0))
+
+                            if(arguments != null && arguments.Count > 0)
                             {
-                                writer.Write("{");
+                                sb.Append("{");
+
                                 for(int i = 0; i < arguments.Count; i++)
                                 {
-                                    TypeNode argument = arguments[i];
                                     if(i > 0)
-                                        writer.Write(",");
-                                    WriteType(arguments[i], writer);
+                                        sb.Append(",");
+
+                                    WriteType(arguments[i], sb);
                                 }
-                                writer.Write("}");
+
+                                sb.Append("}");
                             }
                         }
                     }
@@ -442,6 +219,237 @@ namespace Microsoft.Ddue.Tools.Reflection
             }
         }
 
-    }
+        /// <summary>
+        /// Write out a field name
+        /// </summary>
+        /// <param name="field">The field for which to write out the name</param>
+        /// <param name="sb">The string builder to which the name is written</param>
+        private static void WriteField(Field field, StringBuilder sb)
+        {
+            WriteType(field.DeclaringType, sb);
+            sb.Append('.');
+            sb.Append(field.Name.Name);
+        }
 
+        /// <summary>
+        /// Write out a property name
+        /// </summary>
+        /// <param name="property">The property for which to write out the name</param>
+        /// <param name="sb">The string builder to which the name is written</param>
+        private static void WriteProperty(Property property, StringBuilder sb)
+        {
+            WriteType(property.DeclaringType, sb);
+
+            Property eiiProperty = null;
+
+            if(property.IsPrivate && property.IsVirtual)
+                eiiProperty = property.GetImplementedProperties().FirstOrDefault();
+
+            if(eiiProperty != null)
+            {
+                TypeNode eiiType = eiiProperty.DeclaringType;
+
+                if(eiiType != null)
+                    if(eiiType.Template != null)
+                    {
+                        sb.Append(".");
+                        WriteTemplate(eiiType, sb);
+                    }
+                    else
+                    {
+                        StringBuilder eiiName = new StringBuilder();
+
+                        WriteType(eiiType, eiiName);
+                        sb.Append(".");
+                        sb.Append(eiiName.ToString().Replace('.', '#'));
+                    }
+
+                sb.Append("#");
+                sb.Append(eiiProperty.Name.Name);
+            }
+            else
+            {
+                sb.Append('.');
+                sb.Append(property.Name.Name);
+            }
+
+            WriteParameters(property.Parameters, sb);
+        }
+
+        /// <summary>
+        /// Write out an event name
+        /// </summary>
+        /// <param name="trigger">The event for which to write out the name</param>
+        /// <param name="sb">The string builder to which the name is written</param>
+        private static void WriteEvent(Event trigger, StringBuilder sb)
+        {
+            WriteType(trigger.DeclaringType, sb);
+
+            Event eiiTrigger = null;
+
+            if(trigger.IsPrivate && trigger.IsVirtual)
+                eiiTrigger = trigger.GetImplementedEvents().FirstOrDefault();
+
+            if(eiiTrigger != null)
+            {
+                TypeNode eiiType = eiiTrigger.DeclaringType;
+
+                if(eiiType != null)
+                    if(eiiType.Template != null)
+                    {
+                        sb.Append(".");
+                        WriteTemplate(eiiType, sb);
+                    }
+                    else
+                    {
+                        StringBuilder eiiName = new StringBuilder();
+
+                        WriteType(eiiType, eiiName);
+                        sb.Append(".");
+                        sb.Append(eiiName.ToString().Replace('.', '#'));
+                    }
+
+                sb.Append("#");
+                sb.Append(eiiTrigger.Name.Name);
+            }
+            else
+            {
+                sb.Append('.');
+                sb.Append(trigger.Name.Name);
+            }
+        }
+
+        /// <summary>
+        /// Write out a constructor name
+        /// </summary>
+        /// <param name="constructor">The constructor for which to write out the name</param>
+        /// <param name="sb">The string builder to which the name is written</param>
+        private static void WriteConstructor(InstanceInitializer constructor, StringBuilder sb)
+        {
+            WriteType(constructor.DeclaringType, sb);
+            sb.Append(".#ctor");
+            WriteParameters(constructor.Parameters, sb);
+        }
+
+        /// <summary>
+        /// Write out a static constructor name
+        /// </summary>
+        /// <param name="constructor">The static constructor for which to write out the name</param>
+        /// <param name="sb">The string builder to which the name is written</param>
+        private static void WriteStaticConstructor(StaticInitializer constructor, StringBuilder sb)
+        {
+            WriteType(constructor.DeclaringType, sb);
+            sb.Append(".#cctor");
+            WriteParameters(constructor.Parameters, sb);
+        }
+
+        /// <summary>
+        /// Write out a method name
+        /// </summary>
+        /// <param name="method">The method for which to write out the name</param>
+        /// <param name="sb">The string builder to which the name is written</param>
+        private static void WriteMethod(Method method, StringBuilder sb)
+        {
+            string name = method.Name.Name;
+
+            WriteType(method.DeclaringType, sb);
+
+            Method eiiMethod = null;
+
+            if(method.IsPrivate && method.IsVirtual)
+                eiiMethod = method.ImplementedInterfaceMethods.FirstOrDefault();
+
+            if(eiiMethod != null)
+            {
+                TypeNode eiiType = eiiMethod.DeclaringType;
+
+                if(eiiType != null)
+                    if(eiiType.Template != null)
+                    {
+                        sb.Append(".");
+                        WriteTemplate(eiiType, sb);
+                    }
+                    else
+                    {
+                        StringBuilder eiiName = new StringBuilder();
+
+                        WriteType(eiiType, eiiName);
+                        sb.Append(".");
+                        sb.Append(eiiName.ToString().Replace('.', '#'));
+                    }
+
+                sb.Append("#");
+                sb.Append(eiiMethod.Name.Name);
+            }
+            else
+            {
+                sb.Append('.');
+                sb.Append(name);
+            }
+
+            if(method.IsGeneric)
+            {
+                TypeNodeList genericParameters = method.TemplateParameters;
+
+                if(genericParameters != null)
+                {
+                    sb.Append("``");
+                    sb.Append(genericParameters.Count);
+                }
+            }
+
+            WriteParameters(method.Parameters, sb);
+
+            // Add ~ for conversion operators
+            if(name == "op_Implicit" || name == "op_Explicit")
+            {
+                sb.Append("~");
+                WriteType(method.ReturnType, sb);
+            }
+        }
+
+        /// <summary>
+        /// This is used for explicitly implemented interfaces to convert the template to the format used in the
+        /// comments file.
+        /// </summary>
+        /// <param name="type">The explicitly implemented interface type</param>
+        /// <param name="sb">The string builder to which the name is written</param>
+        private static void WriteTemplate(TypeNode eiiType, StringBuilder sb)
+        {
+            // !EFW Use this instead of the template name as the type parameter may be different in the user's
+            // code (i.e. Collection<TControl> instead of Collection<T>.
+            string eiiClean = eiiType.GetFullUnmangledNameWithTypeParameters();
+
+            eiiClean = eiiClean.Replace('.', '#');
+            eiiClean = eiiClean.Replace(',', '@');  // Change the separator between parameters
+            eiiClean = eiiClean.Replace('<', '{');  // Change the parameter brackets
+            eiiClean = eiiClean.Replace('>', '}');
+
+            sb.Append(eiiClean);
+        }
+
+        /// <summary>
+        /// This is used to write out the parameter types for a member
+        /// </summary>
+        /// <param name="parameters">The list of parameters to write out</param>
+        /// <param name="sb">The string builder to which the parameter names are written</param>
+        private static void WriteParameters(ParameterList parameters, StringBuilder sb)
+        {
+            if(parameters != null && parameters.Count != 0)
+            {
+                sb.Append("(");
+
+                for(int i = 0; i < parameters.Count; i++)
+                {
+                    if(i > 0)
+                        sb.Append(",");
+
+                    WriteType(parameters[i].Type, sb);
+                }
+
+                sb.Append(")");
+            }
+        }
+        #endregion
+    }
 }

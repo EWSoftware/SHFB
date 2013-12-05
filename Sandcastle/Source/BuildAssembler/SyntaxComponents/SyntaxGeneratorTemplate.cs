@@ -11,9 +11,9 @@
 // with the exception of a couple of unused static methods and an abstract WriteVisibility() method.  It was
 // only used by the JSharpDeclarationSyntaxGenerator which has been changed to use SyntaxGeneratorTemplate as
 // its base class.
+// 11/29/2013 - EFW - Added support for interop metadata
 
 using System;
-using System.Collections.Generic;
 using System.Xml.XPath;
 
 namespace Microsoft.Ddue.Tools
@@ -47,7 +47,7 @@ namespace Microsoft.Ddue.Tools
 #pragma warning disable 1591
         // Where data is stored
 
-        // api data
+        // API data
         protected static XPathExpression apiNameExpression = XPathExpression.Compile("string(apidata/@name)");
         protected static XPathExpression apiGroupExpression = XPathExpression.Compile("string(apidata/@group)");
         protected static XPathExpression apiSubgroupExpression = XPathExpression.Compile("string(apidata/@subgroup)");
@@ -71,6 +71,12 @@ namespace Microsoft.Ddue.Tools
         protected static XPathExpression apiIsAbstractTypeExpression = XPathExpression.Compile("boolean(typedata[@abstract='true'])");
         protected static XPathExpression apiIsSealedTypeExpression = XPathExpression.Compile("boolean(typedata[@sealed='true'])");
         protected static XPathExpression apiIsSerializableTypeExpression = XPathExpression.Compile("boolean(typedata[@serializable='true'])");
+        // !EFW - Added support for interop metadata
+        protected static XPathExpression apiComImportTypeExpression = XPathExpression.Compile("boolean(typedata[@comimport='true'])");
+        protected static XPathExpression apiStructLayoutTypeExpression = XPathExpression.Compile("string(typedata/@layout)");
+        protected static XPathExpression apiStructLayoutSizeTypeExpression = XPathExpression.Compile("number(typedata/@size)");
+        protected static XPathExpression apiStructLayoutPackTypeExpression = XPathExpression.Compile("number(typedata/@pack)");
+        protected static XPathExpression apiStructLayoutFormatTypeExpression = XPathExpression.Compile("string(typedata/@format)");
 
         // class data
         protected static XPathExpression apiBaseClassExpression = XPathExpression.Compile("family/ancestors/*[1]");
@@ -96,6 +102,9 @@ namespace Microsoft.Ddue.Tools
         protected static XPathExpression apiIsInitOnlyFieldExpression = XPathExpression.Compile("boolean(fielddata[@initonly='true'])");
         protected static XPathExpression apiIsVolatileFieldExpression = XPathExpression.Compile("boolean(fielddata[@volatile='true'])");
         protected static XPathExpression apiIsSerializedFieldExpression = XPathExpression.Compile("boolean(fielddata[@serialized='true'])");
+        // !EFW - Added support for interop metadata
+        protected static XPathExpression apiFieldOffsetFieldExpression = XPathExpression.Compile("number(fielddata/@offset)");
+
         // !EFW - Added support for fixed keyword
         protected static XPathExpression apiFixedAttribute = XPathExpression.Compile("attributes//attribute[type/@api=" +
             "'T:System.Runtime.CompilerServices.FixedBufferAttribute']");
@@ -111,6 +120,16 @@ namespace Microsoft.Ddue.Tools
         protected static XPathExpression apiIsExplicitImplementationExpression = XPathExpression.Compile("boolean(memberdata/@visibility='private' and proceduredata/@virtual='true' and boolean(implements/member))");
         protected static XPathExpression apiImplementedMembersExpression = XPathExpression.Compile("implements/member");
         protected static XPathExpression apiIsOverrideExpression = XPathExpression.Compile("boolean(overrides/member)");
+        // !EFW - Added support for interop metadata
+        protected static XPathExpression apiPreserveSigProcedureExpression = XPathExpression.Compile("boolean(proceduredata[@preservesig='true'])");
+        protected static XPathExpression apiModuleProcedureExpression = XPathExpression.Compile("string(proceduredata/@module)");
+        protected static XPathExpression apiEntryPointProcedureExpression = XPathExpression.Compile("string(proceduredata/@entrypoint)");
+        protected static XPathExpression apiCallingConvProcedureExpression = XPathExpression.Compile("string(proceduredata/@callingconvention)");
+        protected static XPathExpression apiCharSetProcedureExpression = XPathExpression.Compile("string(proceduredata/@charset)");
+        protected static XPathExpression apiBestFitMappingProcedureExpression = XPathExpression.Compile("string(proceduredata/@bestfitmapping)");
+        protected static XPathExpression apiExactSpellingProcedureExpression = XPathExpression.Compile("boolean(proceduredata[@exactspelling='true'])");
+        protected static XPathExpression apiUnmappableCharProcedureExpression = XPathExpression.Compile("boolean(proceduredata[@throwonunmappablechar='true'])");
+        protected static XPathExpression apiSetLastErrorProcedureExpression = XPathExpression.Compile("boolean(proceduredata[@setlasterror='true'])");
 
         // property data
         protected static XPathExpression apiIsReadPropertyExpression = XPathExpression.Compile("boolean(propertydata/@get='true')");
@@ -505,6 +524,32 @@ namespace Microsoft.Ddue.Tools
                 writer.WriteMessage("UnsupportedExplicit_" + this.Language);
 
             return isExplicit;
+        }
+
+        /// <summary>
+        /// This is used to write a string followed by an optional line break if needed (the writer position is
+        /// past the maximum position afterwards).
+        /// </summary>
+        /// <param name="writer">The syntax writer to use</param>
+        /// <param name="text">An optional text string to write before the new line</param>
+        /// <param name="indent">An optional indent to write after the line break</param>
+        /// <returns>True if a new line was written, false if not</returns>
+        public static bool WriteWithLineBreakIfNeeded(SyntaxWriter writer, string text, string indent)
+        {
+            if(!String.IsNullOrEmpty(text))
+                writer.WriteString(text);
+
+            if(writer.Position > MaxPosition)
+            {
+                writer.WriteLine();
+
+                if(!String.IsNullOrEmpty(indent))
+                    writer.WriteString(indent);
+
+                return true;
+            }
+
+            return false;
         }
     }
 }

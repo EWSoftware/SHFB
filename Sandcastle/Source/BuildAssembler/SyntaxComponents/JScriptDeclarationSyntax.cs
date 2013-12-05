@@ -44,8 +44,8 @@ namespace Microsoft.Ddue.Tools
             bool isAbstract = (bool)reflection.Evaluate(apiIsAbstractTypeExpression);
             bool isSealed = (bool)reflection.Evaluate(apiIsSealedTypeExpression);
 
-            WriteAttributeList(reflection, writer);
             WriteAccessModifier(reflection, writer);
+
             if(isSealed)
             {
                 writer.WriteKeyword("final");
@@ -79,7 +79,6 @@ namespace Microsoft.Ddue.Tools
 
             string name = (string)reflection.Evaluate(apiNameExpression);
 
-            WriteAttributeList(reflection, writer);
             WriteAccessModifier(reflection, writer);
             writer.WriteKeyword("interface");
             writer.WriteString(" ");
@@ -100,7 +99,6 @@ namespace Microsoft.Ddue.Tools
         {
             string name = (string)reflection.Evaluate(apiNameExpression);
 
-            WriteAttributeList(reflection, writer);
             WriteAccessModifier(reflection, writer);
             writer.WriteKeyword("enum");
             writer.WriteString(" ");
@@ -122,7 +120,6 @@ namespace Microsoft.Ddue.Tools
                     return;
                 XPathNavigator declaringType = reflection.SelectSingleNode(apiContainingTypeExpression);
 
-                WriteAttributeList(reflection, writer);
                 WriteAccessModifier(reflection, writer);
                 writer.WriteKeyword("function");
                 writer.WriteString(" ");
@@ -146,7 +143,6 @@ namespace Microsoft.Ddue.Tools
             string name = (string)reflection.Evaluate(apiNameExpression);
             XPathNavigator returnType = reflection.SelectSingleNode(apiReturnTypeExpression);
 
-            WriteAttributeList(reflection, writer);
             WriteProcedureModifiers(reflection, writer);
             writer.WriteKeyword("function");
             writer.WriteString(" ");
@@ -180,9 +176,8 @@ namespace Microsoft.Ddue.Tools
 
             if(isGettable)
             {
-                WriteAttributeList(reflection, writer);
-
                 string getVisibility = (string)reflection.Evaluate(apiGetVisibilityExpression);
+
                 if(!String.IsNullOrEmpty(getVisibility))
                 {
                     WriteVisibility(getVisibility, writer);
@@ -200,9 +195,8 @@ namespace Microsoft.Ddue.Tools
 
             if(isSettable)
             {
-                WriteAttributeList(reflection, writer);
-
                 string setVisibility = (string)reflection.Evaluate(apiSetVisibilityExpression);
+
                 if(!String.IsNullOrEmpty(setVisibility))
                 {
                     WriteVisibility(setVisibility, writer);
@@ -234,7 +228,6 @@ namespace Microsoft.Ddue.Tools
             bool isInitOnly = (bool)reflection.Evaluate(apiIsInitOnlyFieldExpression);
             XPathNavigator type = reflection.SelectSingleNode(apiReturnTypeExpression);
 
-            WriteAttributeList(reflection, writer);
             WriteAccessModifier(reflection, writer);
 
             if(isStatic)
@@ -553,11 +546,6 @@ namespace Microsoft.Ddue.Tools
                     writer.WriteReferenceLink(api);
                     break;
             }
-        }
-
-        private static void WriteAttributeList(XPathNavigator reflection, SyntaxWriter writer)
-        {
-            // TODO: Fill in this logic.  Are attributes even supported?  If not, remove the method.
         }
 
         private static void WriteVisibility(string visibility, SyntaxWriter writer)

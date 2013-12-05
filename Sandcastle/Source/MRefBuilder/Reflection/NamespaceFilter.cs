@@ -1,143 +1,181 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 //
 
+// Change history:
+// 11/24/2013 - EFW - Cleaned up the code and removed unused members.  Added support for a "required" attribute.
+
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Xml;
-using System.Xml.XPath;
 
 using System.Compiler;
 
-namespace Microsoft.Ddue.Tools.Reflection {
-
+namespace Microsoft.Ddue.Tools.Reflection
+{
+    /// <summary>
+    /// This class implements the namespace filter
+    /// </summary>
     public class NamespaceFilter
     {
+        #region Private data members
+        //=====================================================================
 
-#region Member Variables
-
-        private bool exposed;
         private string name;
+        private bool exposed;
 
-        private List < TypeFilter > typeFilters = new List < TypeFilter >();
-#endregion
+        private List<TypeFilter> typeFilters;
+        #endregion
 
-#region Constructors
-        public NamespaceFilter(string name, bool exposed) {
-            this.name = name;
-            this.exposed = exposed;
-        }
-
-        public NamespaceFilter(XmlReader configuration) {
-            if (configuration.Name != "namespace") throw new InvalidOperationException();
-            name = configuration.GetAttribute("name");
-            exposed = Convert.ToBoolean(configuration.GetAttribute("expose"));
-            XmlReader subtree = configuration.ReadSubtree();
-            while (subtree.Read()) {
-                if ((subtree.NodeType == XmlNodeType.Element) && (subtree.Name == "type")) {
-                    TypeFilter typeFilter = new TypeFilter(subtree);
-                    typeFilters.Add(typeFilter);
-                }
-            }
-            subtree.Close();
-        }
-#endregion
-
-#region Public API
+        #region Constructor
+        //=====================================================================
 
         /// <summary>
-        /// Gets the number of type filters
+        /// Constructor
         /// </summary>
-        public int TypeFilterCount
+        /// <param name="configuration">The XML reader from which to get the configuration information</param>
+        public NamespaceFilter(XmlReader configuration)
         {
-            get
+            if(configuration.Name != "namespace")
+                throw new InvalidOperationException("The configuration element must be named 'namespace'");
+
+            typeFilters = new List<TypeFilter>();
+            name = configuration.GetAttribute("name");
+            exposed = Convert.ToBoolean(configuration.GetAttribute("expose"), CultureInfo.InvariantCulture);
+
+            XmlReader subtree = configuration.ReadSubtree();
+
+            while(subtree.Read())
+                if(subtree.NodeType == XmlNodeType.Element && subtree.Name == "type")
+                    typeFilters.Add(new TypeFilter(subtree));
+
+            subtree.Close();
+        }
+        #endregion
+
+        #region Methods
+        //=====================================================================
+
+        /// <summary>
+        /// Check to see if the type is required or not by this entry
+        /// </summary>
+        /// <param name="type">The type to check</param>
+        /// <returns>Null if the type is not within the namespace of this entry, true if it is and it is required
+        /// or false if it is and it is not required.</returns>
+        public bool? IsRequiredType(TypeNode type)
+        {
+            if(this.IsExposedNamespace(type.GetNamespace()) != null)
             {
-                return typeFilters.Count;
-            }
-        }
-
-        public List < TypeFilter > TypeFilters {
-            get {
-                return (typeFilters);
+                foreach(TypeFilter typeFilter in typeFilters)
                 {
+                    bool? result = typeFilter.IsRequiredType(type);
+
+                    if(result != null)
+                        return result;
                 }
+
+                // No filters match so it's not required
+                return false;
             }
+
+            return null;
         }
 
-
-        //Find out if any are exposed incase this class is not exposed
+        /// <summary>
+        /// This is used to find out if the given type is in this namespace and has any exposed members
+        /// </summary>
+        /// <param name="type">The type to check</param>
+        /// <returns>True if the type is in this namespace and has exposed members, false if not</returns>
         public bool HasExposedMembers(TypeNode type)
         {
-            Namespace space = ReflectionUtilities.GetNamespace(type);
-            if (IsExposedNamespace(space) != null)
-            {
-                foreach (TypeFilter typeFilter in typeFilters)
+            if(this.IsExposedNamespace(type.GetNamespace()) != null)
+                foreach(TypeFilter typeFilter in typeFilters)
                 {
                     bool? result = typeFilter.IsExposedType(type);
-                    if (result != null) //matched
-                    {
+
+                    if(result != null)
                         return typeFilter.HasExposedMembers(type);
-                    }
                 }
-            }
 
             return false;
         }
 
-        public bool? IsExposedMember(Member member) {
-            //Console.WriteLine("DEBUG: namespaceFilter.isExposedMemeber");
-            TypeNode type = ReflectionUtilities.GetTemplateType(member.DeclaringType);
-            Namespace space = ReflectionUtilities.GetNamespace(type);
-            if (IsExposedNamespace(space) != null) {
-                foreach (TypeFilter typeFilter in typeFilters) {
-                    bool? result = typeFilter.IsExposedMember(member);
-                    if (result != null) return (result);
-                }
-
-                //no filters matched this method, check if the type is exposed
-                bool? typeIsExposed = IsExposedType(type);
-                if (typeIsExposed != null) return typeIsExposed;
-
-                return (exposed); //if the namespace is exposed
-            } else {
-                return (null);
-            }
+        /// <summary>
+        /// Check to see if the namespace is exposed or not by this entry
+        /// </summary>
+        /// <param name="space">The namespace to check</param>
+        /// <returns>Null if the namespace is not represented by this entry, true if it is and it is exposed or
+        /// false if it is and it is not exposed.</returns>
+        public bool? IsExposedNamespace(Namespace space)
+        {
+            return (space.Name.Name == name) ? exposed : (bool?)null;
         }
 
-        public bool? IsExposedNamespace(Namespace space) {
-            if (space.Name.Name == name) {
-                return (exposed);
-            } else {
-                return (null);
-            }
-        }
-
-        public bool? IsExposedType(TypeNode type) {
-            Namespace space = ReflectionUtilities.GetNamespace(type);
-            if (IsExposedNamespace(space) != null) {
-                foreach (TypeFilter typeFilter in typeFilters) {
-                    bool? result = typeFilter.IsExposedType(type);
-                    if (result != null) return (result);
-                }
-
-                //no filter matches for this type, check the parents since it could be nested
-                TypeNode parent = type.DeclaringType;
-                while (parent != null)
+        /// <summary>
+        /// Check to see if the type is exposed or not by this entry
+        /// </summary>
+        /// <param name="type">The type to check</param>
+        /// <returns>Null if the type is not within the namespace of this entry, true if it is and it is exposed
+        /// or false if it is and it is not exposed.</returns>
+        public bool? IsExposedType(TypeNode type)
+        {
+            if(this.IsExposedNamespace(type.GetNamespace()) != null)
+            {
+                foreach(TypeFilter typeFilter in typeFilters)
                 {
-                    bool? parentExposed = IsExposedType(parent);
+                    bool? result = typeFilter.IsExposedType(type);
 
-                    if (parentExposed != null)
+                    if(result != null)
+                        return result;
+                }
+
+                // No filter matches for this type, check the parents since it could be nested
+                TypeNode parent = type.DeclaringType;
+
+                while(parent != null)
+                {
+                    bool? parentExposed = this.IsExposedType(parent);
+
+                    if(parentExposed != null)
                         return parentExposed;
 
                     parent = type.DeclaringType;
                 }
 
-                //no answer for the parents either, the top parent should pass this back above
-                return (exposed);
-            } else {
-                return (null);
+                // No filters match for the parents either, use the namespace setting
+                return exposed;
             }
+
+            return null;
         }
 
-#endregion
+        /// <summary>
+        /// Check to see if the member is exposed or not by this entry
+        /// </summary>
+        /// <param name="member">The member to check</param>
+        /// <returns>Null if the member is not within a type in the namespace of this entry, true if it is and it
+        /// is exposed or false if it is and it is not exposed.</returns>
+        public bool? IsExposedMember(Member member)
+        {
+            TypeNode type = member.DeclaringType.GetTemplateType();
+
+            if(this.IsExposedNamespace(type.GetNamespace()) != null)
+            {
+                foreach(TypeFilter typeFilter in typeFilters)
+                {
+                    bool? result = typeFilter.IsExposedMember(member);
+
+                    if(result != null)
+                        return result;
+                }
+
+                // No filters matched this method, check if the type is exposed.  If no types match, use the
+                // namespace setting.
+                return (this.IsExposedType(type) ?? exposed);
+            }
+
+            return null;
+        }
+        #endregion
     }
 }

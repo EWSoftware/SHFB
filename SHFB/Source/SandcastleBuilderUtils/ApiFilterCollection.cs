@@ -1,27 +1,25 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder Utilities
 // File    : ApiFilterCollection.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/07/2011
-// Note    : Copyright 2007-2011, Eric Woodruff, All rights reserved
+// Updated : 11/30/2013
+// Note    : Copyright 2007-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains a collection class used to hold the API filter entries
-// for MRefBuilder to remove.
+// This file contains a collection class used to hold the API filter entries for MRefBuilder to remove.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.5.0.2  07/16/2007  EFW  Created the code
 // 1.8.0.0  07/03/2008  EFW  Rewrote to support MSBuild project format
-// 1.9.3.0  04/07/2011  EFW  Made the constructor and from/to XML members
-//                           public so that it can be used from the VSPackage.
-//=============================================================================
+// 1.9.3.0  04/07/2011  EFW  Made the constructor and from/to XML members public so that it can be used from the
+//                           VSPackage.
+//===============================================================================================================
 
 using System;
 using System.Collections.Generic;
@@ -36,15 +34,12 @@ using SandcastleBuilder.Utils.Design;
 namespace SandcastleBuilder.Utils
 {
     /// <summary>
-    /// This collection class is used to hold the API filter entries for
-    /// MRefBuilder to remove.
+    /// This collection class is used to hold the API filter entries for MRefBuilder to remove
     /// </summary>
-    /// <remarks><note type="note">Unlike other collections in the project,
-    /// this one is cleared and rebuilt if it changes.  As such, the contained
-    /// items do not notify the project when they change as they are created
+    /// <remarks><note type="note">Unlike other collections in the project, this one is cleared and rebuilt if it
+    /// changes.  As such, the contained items do not notify the project when they change as they are created
     /// anew each time the collection is rebuilt.</note></remarks>
-    [TypeConverter(typeof(ApiFilterCollectionTypeConverter)),
-      Editor(typeof(ApiFilterEditor), typeof(UITypeEditor))]
+    [TypeConverter(typeof(ApiFilterCollectionTypeConverter)), Editor(typeof(ApiFilterEditor), typeof(UITypeEditor))]
     public class ApiFilterCollection : BindingList<ApiFilter>, ICloneable
     {
         #region Private data members
@@ -248,7 +243,7 @@ namespace SandcastleBuilder.Utils
             // Find the namespace.  The entry is only added if the namespace
             // is exposed.
             foreach(ApiFilter entry in this)
-                if(entry.FullName == nameSpace)
+                if(entry.EntryType == ApiEntryType.Namespace && entry.FullName == nameSpace)
                 {
                     if(entry.IsExposed)
                     {

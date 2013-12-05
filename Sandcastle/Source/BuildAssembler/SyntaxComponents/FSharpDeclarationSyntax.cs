@@ -7,6 +7,7 @@
 // 01/30/2012 - EFW - Fixed WriteValue() so that it outputs numeric attribute values.
 // 02/09/2012 - EFW - Added support for optional parameters and property getter/setter attributes.
 // 02/14/2012 - EFW - Made the unsafe code checks consistent across all syntax generators
+// 11/29/2013 - EFW - Added support for metadata based interop attributes
 
 using System;
 using System.Collections.Generic;
@@ -655,11 +656,14 @@ namespace Microsoft.Ddue.Tools
         // !EFW - Added indent parameter for property getter/setter attributes
         private void WriteAttributes(XPathNavigator reflection, SyntaxWriter writer, string indent = null)
         {
+            // Handle interop attributes first as they are output in metadata
+            WriteInteropAttributes(reflection, writer, indent);
+
+            // Add the standard attributes
             XPathNodeIterator attributes = (XPathNodeIterator)reflection.Evaluate(apiAttributesExpression);
 
             foreach(XPathNavigator attribute in attributes)
             {
-
                 XPathNavigator type = attribute.SelectSingleNode(attributeTypeExpression);
 
                 // !EFW - Ignore FixedBufferAttribute too
@@ -676,52 +680,229 @@ namespace Microsoft.Ddue.Tools
                 if((arguments.Count > 0) || (assignments.Count > 0))
                 {
                     writer.WriteString("(");
+
                     while(arguments.MoveNext())
                     {
                         XPathNavigator argument = arguments.Current;
+
                         if(arguments.CurrentPosition > 1)
-                        {
-                            writer.WriteString(", ");
-                            if(writer.Position > MaxPosition)
-                            {
-                                writer.WriteLine();
+                            WriteWithLineBreakIfNeeded(writer, ", ", indent + "\t");
 
-                                if(!String.IsNullOrEmpty(indent))
-                                    writer.WriteString(indent);
-
-                                writer.WriteString("    ");
-                            }
-                        }
                         WriteValue(argument, writer);
                     }
-                    if((arguments.Count > 0) && (assignments.Count > 0))
+
+                    if(arguments.Count > 0 && assignments.Count > 0)
                         writer.WriteString(", ");
+
                     while(assignments.MoveNext())
                     {
                         XPathNavigator assignment = assignments.Current;
+
                         if(assignments.CurrentPosition > 1)
-                        {
-                            writer.WriteString(", ");
-                            if(writer.Position > MaxPosition)
-                            {
-                                writer.WriteLine();
+                            WriteWithLineBreakIfNeeded(writer, ", ", indent + "\t");
 
-                                if(!String.IsNullOrEmpty(indent))
-                                    writer.WriteString(indent);
-
-                                writer.WriteString("    ");
-                            }
-                        }
                         writer.WriteString((string)assignment.Evaluate(assignmentNameExpression));
                         writer.WriteString(" = ");
                         WriteValue(assignment, writer);
                     }
+
                     writer.WriteString(")");
                 }
 
                 writer.WriteString(">]");
                 writer.WriteLine();
             }
+        }
+
+        // EFW - Added support for interop attributes stored in metadata
+        private static void WriteInteropAttributes(XPathNavigator reflection, SyntaxWriter writer, string indent = null)
+        {
+            if((bool)reflection.Evaluate(apiComImportTypeExpression))
+                WriteAttribute("T:System.Runtime.InteropServices.ComImportAttribute", true, writer);
+
+            string layout = (string)reflection.Evaluate(apiStructLayoutTypeExpression);
+
+            if(!String.IsNullOrEmpty(layout))
+            {
+                double size = (double)reflection.Evaluate(apiStructLayoutSizeTypeExpression),
+                    pack = (double)reflection.Evaluate(apiStructLayoutPackTypeExpression);
+                string format = (string)reflection.Evaluate(apiStructLayoutFormatTypeExpression);
+
+                writer.WriteString("[<");
+                WriteNormalTypeReference("T:System.Runtime.InteropServices.StructLayoutAttribute", writer);
+                writer.WriteString("(");
+
+                switch(layout)
+                {
+                    case "explicit":
+                        writer.WriteString("LayoutKind.Explicit");
+                        break;
+
+                    case "sequential":
+                        writer.WriteString("LayoutKind.Sequential");
+                        break;
+
+                    default:
+                        writer.WriteString("LayoutKind.Auto");
+                        break;
+                }
+
+                if(!Double.IsNaN(size) && size != 0)
+                {
+                    WriteWithLineBreakIfNeeded(writer, ", ", indent + "\t");
+                    writer.WriteString("Size = ");
+                    writer.WriteString(((int)size).ToString(CultureInfo.InvariantCulture));
+                }
+
+                if(!Double.IsNaN(pack) && pack != 0)
+                {
+                    WriteWithLineBreakIfNeeded(writer, ", ", indent + "\t");
+                    writer.WriteString("Pack = ");
+                    writer.WriteString(((int)pack).ToString(CultureInfo.InvariantCulture));
+                }
+
+                switch(format)
+                {
+                    case "ansi":
+                        WriteWithLineBreakIfNeeded(writer, ", ", indent + "\t");
+                        writer.WriteString("CharSet = CharSet.Ansi");
+                        break;
+
+                    case "auto":
+                        WriteWithLineBreakIfNeeded(writer, ", ", indent + "\t");
+                        writer.WriteString("CharSet = CharSet.Auto");
+                        break;
+
+                    case "unicode":
+                        WriteWithLineBreakIfNeeded(writer, ", ", indent + "\t");
+                        writer.WriteString("CharSet = CharSet.Unicode");
+                        break;
+                }
+
+                writer.WriteString(")");
+                writer.WriteString(">]");
+                writer.WriteLine();
+            }
+
+            double fieldOffset = (double)reflection.Evaluate(apiFieldOffsetFieldExpression);
+
+            if(!Double.IsNaN(fieldOffset))
+            {
+                writer.WriteString("[<");
+                WriteNormalTypeReference("T:System.Runtime.InteropServices.FieldOffsetAttribute", writer);
+                writer.WriteString("(");
+                writer.WriteString(((int)fieldOffset).ToString(CultureInfo.InvariantCulture));
+                writer.WriteString(")");
+                writer.WriteString(">]");
+                writer.WriteLine();
+            }
+
+            bool preserveSig = (bool)reflection.Evaluate(apiPreserveSigProcedureExpression);
+            string module = (string)reflection.Evaluate(apiModuleProcedureExpression);
+
+            if(!String.IsNullOrEmpty(module))
+            {
+                string entryPoint = (string)reflection.Evaluate(apiEntryPointProcedureExpression),
+                    callingConv = (string)reflection.Evaluate(apiCallingConvProcedureExpression),
+                    charset = (string)reflection.Evaluate(apiCharSetProcedureExpression),
+                    bestFitMapping = (string)reflection.Evaluate(apiBestFitMappingProcedureExpression);
+
+                bool exactSpelling = (bool)reflection.Evaluate(apiExactSpellingProcedureExpression),
+                    throwOnUnmappableChar = (bool)reflection.Evaluate(apiUnmappableCharProcedureExpression),
+                    setLastError = (bool)reflection.Evaluate(apiSetLastErrorProcedureExpression);
+
+                writer.WriteString("[<");
+                WriteNormalTypeReference("T:System.Runtime.InteropServices.DllImportAttribute", writer);
+                writer.WriteString("(\"");
+                writer.WriteString(module);
+                writer.WriteString("\"");
+
+                if(!String.IsNullOrEmpty(entryPoint))
+                {
+                    WriteWithLineBreakIfNeeded(writer, ", ", indent + "\t");
+                    writer.WriteString("EntryPoint = \"");
+                    writer.WriteString(entryPoint);
+                    writer.WriteString("\"");
+                }
+
+                switch(callingConv)
+                {
+                    case "cdecl":
+                        WriteWithLineBreakIfNeeded(writer, ", ", indent + "\t");
+                        writer.WriteString("CallingConvention = CallingConvention.Cdecl");
+                        break;
+
+                    case "fastcall":
+                        WriteWithLineBreakIfNeeded(writer, ", ", indent + "\t");
+                        writer.WriteString("CallingConvention = CallingConvention.FastCall");
+                        break;
+
+                    case "stdcall":
+                        WriteWithLineBreakIfNeeded(writer, ", ", indent + "\t");
+                        writer.WriteString("CallingConvention = CallingConvention.StdCall");
+                        break;
+
+                    case "thiscall":
+                        WriteWithLineBreakIfNeeded(writer, ", ", indent + "\t");
+                        writer.WriteString("CallingConvention = CallingConvention.ThisCall");
+                        break;
+                }
+
+                switch(charset)
+                {
+                    case "ansi":
+                        WriteWithLineBreakIfNeeded(writer, ", ", indent + "\t");
+                        writer.WriteString("CharSet = CharSet.Ansi");
+                        break;
+
+                    case "auto":
+                        WriteWithLineBreakIfNeeded(writer, ", ", indent + "\t");
+                        writer.WriteString("CharSet = CharSet.Auto");
+                        break;
+
+                    case "unicode":
+                        WriteWithLineBreakIfNeeded(writer, ", ", indent + "\t");
+                        writer.WriteString("CharSet = CharSet.Unicode");
+                        break;
+                }
+
+                if(!String.IsNullOrEmpty(bestFitMapping) && !Convert.ToBoolean(bestFitMapping, CultureInfo.InvariantCulture))
+                {
+                    WriteWithLineBreakIfNeeded(writer, ", ", indent + "\t");
+                    writer.WriteString("BestFitMapping = false");
+                }
+
+                if(exactSpelling)
+                {
+                    WriteWithLineBreakIfNeeded(writer, ", ", indent + "\t");
+                    writer.WriteString("ExactSpelling = true");
+                }
+
+                if(throwOnUnmappableChar)
+                {
+                    WriteWithLineBreakIfNeeded(writer, ", ", indent + "\t");
+                    writer.WriteString("ThrowOnUnmappableChar = true");
+                }
+
+                if(!preserveSig)
+                {
+                    WriteWithLineBreakIfNeeded(writer, ", ", indent + "\t");
+                    writer.WriteString("PreserveSig = false");
+                }
+
+                if(setLastError)
+                {
+                    WriteWithLineBreakIfNeeded(writer, ", ", indent + "\t");
+                    writer.WriteString("SetLastError = true");
+                }
+
+                writer.WriteString(")");
+                writer.WriteString(">]");
+                writer.WriteLine();
+            }
+            else
+                if(preserveSig)
+                    WriteAttribute("T:System.Runtime.InteropServices.PreserveSigAttribute", true, writer);
         }
 
         private void WriteValue(XPathNavigator parent, SyntaxWriter writer)
@@ -1005,17 +1186,12 @@ namespace Microsoft.Ddue.Tools
 
         private void WriteReturnValue(XPathNavigator reflection, SyntaxWriter writer)
         {
-
             XPathNavigator type = reflection.SelectSingleNode(apiReturnTypeExpression);
 
             if(type == null)
-            {
                 writer.WriteKeyword("unit");
-            }
             else
-            {
                 WriteTypeReference(type, writer);
-            }
         }
 
         // References

@@ -3,35 +3,29 @@
 // See http://www.microsoft.com/resources/sharedsource/licensingbasics/sharedsourcelicenses.mspx.
 // All other rights reserved.
 
+// Change history:
+// 11/22/2013 - EFW - Cleared out the conditional statements
+
 using System;
-#if CCINamespace
-using Microsoft.Cci;
-#else
 using System.Compiler;
-#endif
 using System.Diagnostics;
 using System.IO;
 using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Text;
 
-#if CCINamespace
-namespace Microsoft.Cci.Metadata{
-#else
 namespace System.Compiler.Metadata
 {
-#endif
     unsafe internal sealed class MemoryCursor
     {
         private byte* buffer, pb;
         readonly internal int Length;
 
-#if !ROTOR
         internal MemoryCursor(MemoryMappedFile/*!*/ memoryMap)
             : this(memoryMap.Buffer, memoryMap.Length)
         {
         }
-#endif
+
         internal MemoryCursor(byte* buffer, int length, int position)
         {
             this.buffer = buffer;
@@ -319,8 +313,7 @@ namespace System.Compiler.Metadata
         internal string/*!*/ ReadASCII() { return ReadASCII(-1); }
     }
 
-#if !ROTOR
-#if !FxCop
+
     /// <summary>
     /// Public only for use by the Framework. Do not use this class.
     /// Well, if you really really must, use it only if you can tolerate keeping the file locked for at least as long as any Identifier
@@ -328,9 +321,6 @@ namespace System.Compiler.Metadata
     /// </summary>   
     unsafe public sealed class MemoryMappedFile : IDisposable, ISourceTextBuffer
     {
-#else
-  unsafe sealed class MemoryMappedFile : IDisposable{
-#endif
         private byte* buffer;
         private int length;
 
@@ -364,7 +354,7 @@ namespace System.Compiler.Metadata
                 return this.length;
             }
         }
-#if !FxCop
+
         string ISourceText.Substring(int start, int length)
         {
             Debug.Assert(false, "Can't use Substring on memory mapped files");
@@ -378,7 +368,7 @@ namespace System.Compiler.Metadata
                 return ' ';
             }
         }
-#endif
+
         private void OpenMap(string filename)
         {
             IntPtr hmap;
@@ -387,12 +377,10 @@ namespace System.Compiler.Metadata
             {
                 if (stream.Length > Int32.MaxValue)
                     throw new FileLoadException(ExceptionStrings.FileTooBig, filename);
+
                 length = unchecked((int)stream.Length);
-#if WHIDBEY && !OldWhidbey
                 hmap = CreateFileMapping(stream.SafeFileHandle.DangerousGetHandle(), IntPtr.Zero, PageAccess.PAGE_READONLY, 0, length, null);
-#else
-        hmap = CreateFileMapping(stream.Handle, IntPtr.Zero, PageAccess.PAGE_READONLY, 0, length, null);
-#endif
+
                 if (hmap == IntPtr.Zero)
                 {
                     int rc = Marshal.GetLastWin32Error();
@@ -418,11 +406,10 @@ namespace System.Compiler.Metadata
                 buffer = null;
             }
         }
-#if !FxCop
+
         void ISourceText.MakeCollectible()
         {
         }
-#endif
 
         private enum PageAccess : int { PAGE_READONLY = 0x02 };
         private enum FileMapAccess : int { FILE_MAP_READ = 0x0004 };
@@ -458,5 +445,4 @@ namespace System.Compiler.Metadata
           IntPtr hObject  // handle to object
           );
     }
-#endif
 }

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : VisibilityPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 01/09/2013
+// Updated : 12/03/2013
 // Note    : Copyright 2011-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -17,6 +17,7 @@
 // ==============================================================================================================
 // 1.9.3.0  03/27/2011  EFW  Created the code
 // 1.9.6.0  10/28/2012  EFW  Updated for use in the standalone GUI
+// 1.9.9.0  12/03/2013  EFW  Added support for no-PIA types
 //===============================================================================================================
 
 using System;
@@ -79,6 +80,7 @@ namespace SandcastleBuilder.Package.PropertyPages
             chkProtected.CheckedChanged += base.OnPropertyChanged;
             chkProtectedInternalAsProtected.CheckedChanged += base.OnPropertyChanged;
             chkSealedProtected.CheckedChanged += base.OnPropertyChanged;
+            chkNoPIATypes.CheckedChanged += base.OnPropertyChanged;
         }
         #endregion
 
@@ -158,6 +160,7 @@ namespace SandcastleBuilder.Package.PropertyPages
             chkProtected.Checked = ((items & VisibleItems.Protected) != 0);
             chkProtectedInternalAsProtected.Checked = ((items & VisibleItems.ProtectedInternalAsProtected) != 0);
             chkSealedProtected.Checked = ((items & VisibleItems.SealedProtected) != 0);
+            chkNoPIATypes.Checked = ((items & VisibleItems.NoPIATypes) != 0);
 
             return true;
         }
@@ -233,6 +236,9 @@ namespace SandcastleBuilder.Package.PropertyPages
             
             if(chkSealedProtected.Checked)
                 items |= VisibleItems.SealedProtected;
+
+            if(chkNoPIATypes.Checked)
+                items |= VisibleItems.NoPIATypes;
 
 #if !STANDALONEGUI
             this.ProjectMgr.SetProjectProperty("VisibleItems", items.ToString());

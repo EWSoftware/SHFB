@@ -3,17 +3,14 @@
 // See http://www.microsoft.com/resources/sharedsource/licensingbasics/sharedsourcelicenses.mspx.
 // All other rights reserved.
 
-using System;
-using System.Collections.Generic;
 using System.Xml;
-using System.Xml.XPath;
 
-using System.Compiler;
-
-using Microsoft.Ddue.Tools.Reflection;
-
-namespace Microsoft.Ddue.Tools {
-
-    public delegate void MRefBuilderCallback(XmlWriter writer, object information);
-
+namespace Microsoft.Ddue.Tools
+{
+    /// <summary>
+    /// This delegate is used for MRefBuilder callback methods
+    /// </summary>
+    /// <param name="writer">The reflection data XML writer</param>
+    /// <param name="info">An object containing information for the callback (context dependent)</param>
+    public delegate void MRefBuilderCallback(XmlWriter writer, object info);
 }

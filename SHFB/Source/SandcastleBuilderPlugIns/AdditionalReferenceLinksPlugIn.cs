@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : AdditionalReferenceLinksPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/10/2013
+// Updated : 12/04/2013
 // Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -145,7 +145,7 @@ namespace SandcastleBuilder.PlugIns
                 if(executionPoints == null)
                     executionPoints = new ExecutionPointCollection
                     {
-                        new ExecutionPoint(BuildStep.ApplyVisibilityProperties, ExecutionBehaviors.After),
+                        new ExecutionPoint(BuildStep.GenerateNamespaceSummaries, ExecutionBehaviors.Before),
                         new ExecutionPoint(BuildStep.GenerateInheritedDocumentation, ExecutionBehaviors.Before),
                         new ExecutionPoint(BuildStep.CreateBuildAssemblerConfigs, ExecutionBehaviors.Before),
                         new ExecutionPoint(BuildStep.MergeCustomConfigs, ExecutionBehaviors.After),
@@ -214,7 +214,7 @@ namespace SandcastleBuilder.PlugIns
             string workingPath, configFilename;
             bool success;
 
-            if(context.BuildStep == BuildStep.ApplyVisibilityProperties)
+            if(context.BuildStep == BuildStep.GenerateNamespaceSummaries)
             {
                 // Merge the additional reference links information
                 builder.ReportProgress("Performing partial builds on additional targets' projects");

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : ScriptSharpPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/18/2013
+// Updated : 12/05/2013
 // Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -19,6 +19,7 @@
 // ==============================================================================================================
 // 1.6.0.5  01/25/2008  EFW  Created the code
 // 1.8.0.0  07/14/2008  EFW  Updated for use with MSBuild project format
+// 1.9.9.0  12/04/2013  EFW  Updated for use with the new visibility settings in MRefBuilder.config.
 //===============================================================================================================
 
 using System;
@@ -88,7 +89,7 @@ namespace SandcastleBuilder.PlugIns
                 AssemblyCopyrightAttribute copyright = (AssemblyCopyrightAttribute)Attribute.GetCustomAttribute(
                     asm, typeof(AssemblyCopyrightAttribute));
 
-                return copyright.Copyright + "\r\nScript# is Copyright \xA9 2007-2009 Nikhil Kothari, " +
+                return copyright.Copyright + "\r\nScript# is Copyright \xA9 2007-2013 Nikhil Kothari, " +
                     "All Rights Reserved";
             }
         }
@@ -177,6 +178,153 @@ namespace SandcastleBuilder.PlugIns
         /// <param name="context">The current execution context</param>
         public void Execute(Utils.PlugIn.ExecutionContext context)
         {
+            if(this.ModifyMRefBuilderConfig())
+                this.ModifyGenerateRefInfoProject();
+        }
+        #endregion
+
+        #region IDisposable implementation
+        //=====================================================================
+
+        /// <summary>
+        /// This handles garbage collection to ensure proper disposal of the plug-in if not done explicit with
+        /// <see cref="Dispose()"/>.
+        /// </summary>
+        ~ScriptSharpPlugIn()
+        {
+            this.Dispose(false);
+        }
+
+        /// <summary>
+        /// This implements the Dispose() interface to properly dispose of the plug-in object
+        /// </summary>
+        /// <overloads>There are two overloads for this method.</overloads>
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// This can be overridden by derived classes to add their own disposal code if necessary
+        /// </summary>
+        /// <param name="disposing">Pass true to dispose of the managed and unmanaged resources or false to just
+        /// dispose of the unmanaged resources.</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            // Nothing to dispose of in this one
+        }
+        #endregion
+
+        #region Helper methods
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to modify the MRefBuilder.config file for use with Script#
+        /// </summary>
+        private bool ModifyMRefBuilderConfig()
+        {
+            XmlDocument config;
+            XmlNode filter, type;
+            XmlAttribute attr;
+            string configFile;
+
+            configFile = builder.WorkingFolder + "MRefBuilder.config";
+
+            // If the configuration file doesn't exist we have nothing to do.  However, it could be that some
+            // other plug-in has bypassed it so only issue a warning.
+            if(!File.Exists(configFile))
+            {
+                builder.ReportWarning("SSP0001", "The MRefBuilder configuration file '{0}' could not be " +
+                    "found.  The Script# plug-in did not run successfully.", configFile);
+                return false;
+            }
+
+            builder.ReportProgress("Adding Script# attributes to MRefBuilder.config");
+
+            // Add the required Script# attributes to the attribute filter
+            config = new XmlDocument();
+            config.Load(configFile);
+
+            filter = config.SelectSingleNode("configuration/dduetools/attributeFilter/namespace[@name='System']");
+
+            if(filter == null)
+                throw new BuilderException("SSP0002", "Unable to locate attribute filter for the System " +
+                    "namespace in the configuration file");
+
+            type = config.CreateElement("type");
+            attr = config.CreateAttribute("name");
+            attr.Value = "AttachedPropertyAttribute";
+            type.Attributes.Append(attr);
+            attr = config.CreateAttribute("required");
+            attr.Value = "true";
+            type.Attributes.Append(attr);
+            filter.AppendChild(type);
+
+            type = config.CreateElement("type");
+            attr = config.CreateAttribute("name");
+            attr.Value = "GlobalMethodsAttribute";
+            type.Attributes.Append(attr);
+            attr = config.CreateAttribute("required");
+            attr.Value = "true";
+            type.Attributes.Append(attr);
+            filter.AppendChild(type);
+
+            type = config.CreateElement("type");
+            attr = config.CreateAttribute("name");
+            attr.Value = "IgnoreNamespaceAttribute";
+            type.Attributes.Append(attr);
+            attr = config.CreateAttribute("required");
+            attr.Value = "true";
+            type.Attributes.Append(attr);
+            filter.AppendChild(type);
+
+            type = config.CreateElement("type");
+            attr = config.CreateAttribute("name");
+            attr.Value = "IntrinsicPropertyAttribute";
+            type.Attributes.Append(attr);
+            attr = config.CreateAttribute("required");
+            attr.Value = "true";
+            type.Attributes.Append(attr);
+            filter.AppendChild(type);
+
+            type = config.CreateElement("type");
+            attr = config.CreateAttribute("name");
+            attr.Value = "NonScriptableAttribute";
+            type.Attributes.Append(attr);
+            attr = config.CreateAttribute("required");
+            attr.Value = "true";
+            type.Attributes.Append(attr);
+            filter.AppendChild(type);
+
+            type = config.CreateElement("type");
+            attr = config.CreateAttribute("name");
+            attr.Value = "PreserveCaseAttribute";
+            type.Attributes.Append(attr);
+            attr = config.CreateAttribute("required");
+            attr.Value = "true";
+            type.Attributes.Append(attr);
+            filter.AppendChild(type);
+
+            type = config.CreateElement("type");
+            attr = config.CreateAttribute("name");
+            attr.Value = "RecordAttribute";
+            type.Attributes.Append(attr);
+            attr = config.CreateAttribute("required");
+            attr.Value = "true";
+            type.Attributes.Append(attr);
+            filter.AppendChild(type);
+
+            config.Save(configFile);
+
+            return true;
+        }
+
+        /// <summary>
+        /// This is used to modify the GenerateRefInfo.proj file for use with Script#
+        /// </summary>
+        private void ModifyGenerateRefInfoProject()
+        {
             XmlNamespaceManager nsm;
             XmlDocument project;
             XmlNode target, task;
@@ -189,12 +337,12 @@ namespace SandcastleBuilder.PlugIns
             // has bypassed it so only issue a warning.
             if(!File.Exists(projectFile))
             {
-                builder.ReportWarning("SSP0002", "The reflection information generation project '{0}' could " +
-                    "not be found.  The Script# plug-in did not run.", projectFile);
+                builder.ReportWarning("SSP0003", "The reflection information generation project '{0}' could " +
+                    "not be found.  The Script# plug-in did not run successfully.", projectFile);
                 return;
             }
 
-            builder.ReportProgress("Adding Script# AfterGenerateRefInfo tasks");
+            builder.ReportProgress("Adding Script# AfterGenerateRefInfo tasks to GenerateRefInfo.proj");
 
             // Add the transform that fixes up the Script# elements to the AfterGenerateRefInfo project target.
             // Note that we use a customized version that adds a <scriptSharp /> element to each API node so that
@@ -207,7 +355,7 @@ namespace SandcastleBuilder.PlugIns
             target = project.SelectSingleNode("//MSBuild:Target[@Name='AfterGenerateRefInfo']", nsm);
 
             if(target == null)
-                throw new BuilderException("SSP0001", "Unable to locate AfterGenerateRefInfo target " +
+                throw new BuilderException("SSP0004", "Unable to locate AfterGenerateRefInfo target " +
                     "in project file");
 
             task = project.CreateElement("Message", nsm.LookupNamespace("MSBuild"));
@@ -250,39 +398,6 @@ namespace SandcastleBuilder.PlugIns
             target.AppendChild(task);
 
             project.Save(projectFile);
-        }
-        #endregion
-
-        #region IDisposable implementation
-        //=====================================================================
-
-        /// <summary>
-        /// This handles garbage collection to ensure proper disposal of the plug-in if not done explicit with
-        /// <see cref="Dispose()"/>.
-        /// </summary>
-        ~ScriptSharpPlugIn()
-        {
-            this.Dispose(false);
-        }
-
-        /// <summary>
-        /// This implements the Dispose() interface to properly dispose of the plug-in object
-        /// </summary>
-        /// <overloads>There are two overloads for this method.</overloads>
-        public void Dispose()
-        {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// This can be overridden by derived classes to add their own disposal code if necessary
-        /// </summary>
-        /// <param name="disposing">Pass true to dispose of the managed and unmanaged resources or false to just
-        /// dispose of the unmanaged resources.</param>
-        protected virtual void Dispose(bool disposing)
-        {
-            // Nothing to dispose of in this one
         }
         #endregion
     }

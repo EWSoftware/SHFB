@@ -34,6 +34,8 @@
         </xsl:otherwise>
 
       </xsl:choose>
+      <!-- Process namespace-groups as well -->
+      <xsl:apply-templates select="/reflection/apis/api[apidata[@group='namespaceGroup']]" />
     </topics>
   </xsl:template>
 
