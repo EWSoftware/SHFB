@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : ApiEntryType.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/05/2013
+// Updated : 12/06/2013
 // Note    : Copyright 2007-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -54,9 +54,6 @@ namespace SandcastleBuilder.Utils
         /// <summary>An event</summary>
         Event,
         /// <summary>A field</summary>
-        Field,
-        /// <summary>A namespace group</summary>
-        /// <remarks>Handled like a namespace but it is listed last to avoid throwing off the image indices.</remarks>
-        NamespaceGroup
+        Field
     }
 }

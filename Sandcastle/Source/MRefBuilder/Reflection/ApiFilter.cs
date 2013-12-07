@@ -14,8 +14,8 @@
 // 11/30/2012 - EFW - Added updates based on changes submitted by ComponentOne to fix crashes caused by
 // obfuscated member names.
 // 11/19/2013 - EFW - Merged common code from AllDocumentedFilter and ExternalDocumentedFilter into this class.
-// 11/20/2013 - EFW - Merged code from Stazzz to implement namespace grouping support.  Cleaned up the code and
-// removed unused members.  Merged all SHFB visibility options into the API filter.
+// 11/20/2013 - EFW - Cleaned up the code and removed unused members.  Merged all SHFB visibility options into
+// the API filter.
 
 using System;
 using System.Collections.Generic;
@@ -37,7 +37,7 @@ namespace Microsoft.Ddue.Tools.Reflection
 
         private VisibleItems visibleItems;
         private RootFilter apiFilter, attributeFilter;
-        private Dictionary<string, bool> namespaceCache, typeExposedCache, namespaceGroupCache;
+        private Dictionary<string, bool> namespaceCache, typeExposedCache;
 
         #endregion
 
@@ -296,7 +296,6 @@ namespace Microsoft.Ddue.Tools.Reflection
 
             namespaceCache = new Dictionary<string, bool>();
             typeExposedCache = new Dictionary<string, bool>();
-            namespaceGroupCache = new Dictionary<string, bool>();
 
             // Visibility settings
             this.IncludeAttributes = (bool)configuration.Evaluate("boolean(visibility/attributes[@expose='true'])");
@@ -408,33 +407,6 @@ namespace Microsoft.Ddue.Tools.Reflection
 
                 // Cache the result 
                 namespaceCache.Add(name, exposed);
-            }
-
-            return exposed;
-        }
-
-        /// <summary>
-        /// This is used to see if a namespace group is exposed
-        /// </summary>
-        /// <param name="namespaceGroup">The namespace group to check</param>
-        /// <returns>True if the namespace group is exposed, false if not</returns>
-        public virtual Boolean IsExposedNamespaceGroup(string namespaceGroup)
-        {
-            if(namespaceGroup == null)
-                throw new ArgumentNullException("namespaceGroup");
-
-            // !EFW - Bug fix.  Some obfuscated assemblies have mangled names containing characters that
-            // are not valid in XML.  Exclude those by default.
-            if(namespaceGroup.HasInvalidXmlCharacters())
-                return false;
-
-            // Look in cache to see if namespace exposure is already determined
-            bool exposed;
-
-            if(!namespaceGroupCache.TryGetValue(namespaceGroup, out exposed))
-            {
-                exposed = this.apiFilter.IsExposedNamespaceGroup(namespaceGroup);
-                namespaceGroupCache.Add(namespaceGroup, exposed);
             }
 
             return exposed;

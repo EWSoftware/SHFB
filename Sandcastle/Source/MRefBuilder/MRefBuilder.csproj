@@ -103,7 +103,6 @@
     <Compile Include="Reflection\BindingRedirectSettings.cs" />
     <Compile Include="Reflection\MemberFilter.cs" />
     <Compile Include="Reflection\NamespaceFilter.cs" />
-    <Compile Include="Reflection\NamespaceGroupFilter.cs" />
     <Compile Include="Reflection\OrcasNamer.cs" />
     <Compile Include="Reflection\Reflection.cs" />
     <Compile Include="Reflection\RootFilter.cs" />

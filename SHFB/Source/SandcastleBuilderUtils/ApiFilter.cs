@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : ApiFilter.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/30/2013
+// Updated : 12/06/2013
 // Note    : Copyright 2007-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -227,11 +227,6 @@ namespace SandcastleBuilder.Utils
             {
                 switch(entryType)
                 {
-                    case ApiEntryType.NamespaceGroup:
-                        sb.Append("  <namespaceGroup name=\"");
-                        endTag = "  </namespaceGroup>\r\n";
-                        break;
-
                     case ApiEntryType.Namespace:
                         sb.Append("  <namespace name=\"");
                         endTag = "  </namespace>\r\n";

@@ -2,7 +2,7 @@
 // System  : EWSoftware Design Time Attributes and Editors
 // File    : ApiFilterEditorDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/30/2013
+// Updated : 12/06/2013
 // Note    : Copyright 2007-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -20,7 +20,6 @@
 //                           feature.
 // 1.8.0.0  07/08/2008  EFW  Reworked to support MSBuild project format
 // 1.9.3.3  11/19/2011  EFW  Updated checked state optimization to handle some odd edge cases
-// 1.9.9.0  11/30/2013  EFW  Merged changes from Stazzz to support namespace groups
 //===============================================================================================================
 
 using System;
@@ -222,13 +221,6 @@ namespace SandcastleBuilder.Utils.Design
                 XmlNode subsubgroup;
                 string subgroup, id;
 
-                // Is it a namespace group
-                if(apiNode.Name == "namespaceGroup")
-                {
-                    entryType = ApiEntryType.NamespaceGroup;
-                    return;
-                }
-
                 // Is it an inherited namespace?
                 if(apiNode.Name == "namespace")
                 {
@@ -257,12 +249,6 @@ namespace SandcastleBuilder.Utils.Design
                         entryType = ApiEntryType.Namespace;
                         return;
                     }
-                    else
-                        if(id[0] == 'G')
-                        {
-                            entryType = ApiEntryType.NamespaceGroup;
-                            return;
-                        }
                 }
 
                 subsubgroup = apiNode.SelectSingleNode("apidata/@subsubgroup");

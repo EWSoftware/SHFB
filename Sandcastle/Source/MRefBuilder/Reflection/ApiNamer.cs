@@ -2,7 +2,7 @@
 //
 
 // Change history:
-// 11/20/2013 - EFW - Merged code from Stazzz to implement namespace grouping support
+// 11/20/2013 - EFW - General code clean up
 
 using System.Compiler;
 
@@ -32,13 +32,6 @@ namespace Microsoft.Ddue.Tools.Reflection
 
             return this.GetMemberName(api);
         }
-
-        /// <summary>
-        /// This method is used to get the grouping namespace name
-        /// </summary>
-        /// <param name="groupingNamespace">The grouping namespace name</param>
-        /// <returns>The grouping namespace name</returns>
-        public abstract string GetGroupingNamespaceName(string groupingNamespace);
 
         /// <summary>
         /// This method is used to get the namespace name

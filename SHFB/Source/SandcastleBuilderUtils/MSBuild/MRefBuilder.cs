@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : MRefBuilderTask.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/30/2013
+// Updated : 12/06/2013
 // Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -16,7 +16,7 @@
 // Version     Date     Who  Comments
 // ==============================================================================================================
 // 1.8.0.0  07/11/2008  EFW  Created the code
-// 1.9.9.0  11/30/2013  EFW  Removed the deprecated DocumentInternals property, added NamespaceGrouping property
+// 1.9.9.0  11/30/2013  EFW  Removed the deprecated DocumentInternals property
 //===============================================================================================================
 
 using System;
@@ -70,11 +70,6 @@ namespace SandcastleBuilder.Utils.MSBuild
         /// </summary>
         [Required]
         public string WorkingFolder { get; set; }
-
-        /// <summary>
-        /// This is used to indicate whether or not namespace grouping is enabled
-        /// </summary>
-        public bool NamespaceGrouping { get; set; }
 
         /// <summary>
         /// This is used to pass in the assemblies to reflect over
@@ -140,9 +135,6 @@ namespace SandcastleBuilder.Utils.MSBuild
                 {
                     sw.WriteLine("/config:MRefBuilder.config");
                     sw.WriteLine("/out:reflection.org");
-
-                    if(this.NamespaceGrouping)
-                        sw.WriteLine("/groupNamespaces+");
 
                     if(this.References != null)
                         foreach(ITaskItem item in this.References)

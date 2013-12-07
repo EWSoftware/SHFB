@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.Transform.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/03/2013
+// Updated : 12/06/2013
 // Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -43,8 +43,7 @@
 //                           property.  Added Support for XAML configuration files.
 // 1.9.5.0  09/10/2012  EFW  Updated to use the new framework definition file for the .NET Framework versions
 // 1.9.6.0  10/25/2012  EFW  Updated to use the new presentation style definition files
-// 1.9.9.0  11/29/2013  EFW  Added support for the new MRefBuilder visibility settings.  Merged changes from
-//                           Stazzz to support namespace grouping.
+// 1.9.9.0  11/29/2013  EFW  Added support for the new MRefBuilder visibility settings
 //===============================================================================================================
 
 using System;
@@ -401,10 +400,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                     if(replaceWith.Length == 0)
                         replaceWith = "<include item=\"rootTopicTitleLocalized\"/>";
-                    break;
-
-                case "namespacegrouping":
-                    replaceWith = project.NamespaceGrouping.ToString().ToLowerInvariant();
                     break;
 
                 case "binarytoc":

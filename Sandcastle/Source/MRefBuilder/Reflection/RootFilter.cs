@@ -2,8 +2,7 @@
 //
 
 // Change history:
-// 11/20/2013 - EFW - Merged code from Stazzz to implement namespace grouping support.  Cleaned up the code and
-// removed unused members.  Added support for a "required" attribute.
+// 11/20/2013 - EFW - Cleaned up the code and removed unused members.  Added support for a "required" attribute.
 
 using System;
 using System.Collections.Generic;
@@ -22,7 +21,6 @@ namespace Microsoft.Ddue.Tools.Reflection
         private bool exposed;
 
         private List<NamespaceFilter> namespaceFilters;
-        private List<NamespaceGroupFilter> namespaceGroupFilters;
         #endregion
 
         #region Properties
@@ -48,7 +46,6 @@ namespace Microsoft.Ddue.Tools.Reflection
         {
             exposed = true;
             namespaceFilters = new List<NamespaceFilter>();
-            namespaceGroupFilters = new List<NamespaceGroupFilter>();
         }
 
         /// <summary>
@@ -61,15 +58,11 @@ namespace Microsoft.Ddue.Tools.Reflection
             XmlReader subtree = configuration.ReadSubtree();
 
             while(subtree.Read())
-                if(subtree.NodeType == XmlNodeType.Element)
-                    if(subtree.Name == "namespace")
-                    {
-                        NamespaceFilter namespaceFilter = new NamespaceFilter(subtree);
-                        namespaceFilters.Add(namespaceFilter);
-                    }
-                    else
-                        if(subtree.Name == "namespaceGroup")
-                            namespaceGroupFilters.Add(new NamespaceGroupFilter(subtree));
+                if(subtree.NodeType == XmlNodeType.Element && subtree.Name == "namespace")
+                {
+                    NamespaceFilter namespaceFilter = new NamespaceFilter(subtree);
+                    namespaceFilters.Add(namespaceFilter);
+                }
 
             subtree.Close();
         }
@@ -112,24 +105,6 @@ namespace Microsoft.Ddue.Tools.Reflection
             }
 
             return false;
-        }
-
-        /// <summary>
-        /// This is used to find out if the given namespace group is exposed
-        /// </summary>
-        /// <param name="type">The namespace group to check</param>
-        /// <returns>True if the namespace group is exposed, false if not</returns>
-        public bool IsExposedNamespaceGroup(string space)
-        {
-            foreach(NamespaceGroupFilter namespaceFilter in namespaceGroupFilters)
-            {
-                bool? result = namespaceFilter.IsExposedNamespaceGroup(space);
-
-                if(result != null)
-                    return result.Value;
-            }
-
-            return exposed;
         }
 
         /// <summary>

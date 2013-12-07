@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SandcastleProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/04/2013
+// Updated : 12/06/2013
 // Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -990,8 +990,7 @@ namespace SandcastleBuilder.Utils
         /// support for namespace grouping in order for the feature to work.
         /// </summary>
         /// <value>If <c>true</c>, namespace grouping is enabled. Otherwise, namespace grouping is not enabled.</value>
-        /// <remarks>Namespace groups are determined automatically and they are part of API filter and may be
-        /// documented as well.</remarks>
+        /// <remarks>Namespace groups are determined automatically and may be documented as well.</remarks>
         [Category("Help file"), Description("If true, and if the presentation style supports it, this enables " +
           "the namespace grouping feature.  The namespace groups behave like normal namespaces but they may " +
           "not contain types or anything else.  Each group is determined automatically."), DefaultValue(false)]

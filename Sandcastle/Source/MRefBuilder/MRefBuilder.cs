@@ -9,8 +9,7 @@
 // frameworks.  Added support for expanding environment variables in dependency and assembly name command line
 // values.
 // 11/20/2013 - EFW - Deprecated support for /internal command line option as the new visibility settings in the
-// configuration file provide finer grained control over the members included in the output.  Merged code from
-// Stazzz to implement namespace grouping support
+// configuration file provide finer grained control over the members included in the output.
 
 using System;
 using System.IO;
@@ -55,10 +54,6 @@ namespace Microsoft.Ddue.Tools
             options.Add(new BooleanOption("internal", "Specify whether to document internal as well as " +
                 "externally exposed APIs.  *** DEPRECATED:  Use the visibility settings in the MRefBuilder.config " +
                 "file instead which provide finer grained control over the exposed API members."));
-            options.Add(new BooleanOption("groupNamespaces", "Specify whether to add special 'grouping' " +
-                "namespaces to group logically nested namespaces.  The default is false."));
-// TODO: Remove?            options.Add(new StringOption( "groupingNSSeparator", "Specify a string separating logically nested" +
-//               " namespace components. The default is \"" + NSGrouping.NSGroupingAlgorithms.DEFAULT_GROUPING_SEPARATOR + "\"." ) );
 
             // Process options
             ParseArgumentsResult results = options.ParseArguments(args);
@@ -358,13 +353,10 @@ namespace Microsoft.Ddue.Tools
                 ManagedReflectionWriter builder = new ManagedReflectionWriter(output, namer, resolver,
                     new ApiFilter(config.CreateNavigator().SelectSingleNode("/configuration/dduetools")));
 
-// TODO: Add                builder.GroupNamespaces = (results.Options["groupNamespaces"].IsPresent && (bool)results.Options["groupNamespaces"].Value);
-// TODO: Remove?                builder.GroupingNamespaceSeparater = (results.Options["groupingNSSeparator"].IsPresent ?
-//                    (string)results.Options["groupingNSSeparator"].Value : null);
-
                 // If the deprecated /internal+ option is used, expose everything via the filter to mimic the
                 // behavior of prior versions.
                 if(results.Options["internal"].IsPresent && (bool)results.Options["internal"].Value)
+                {
                     builder.ApiFilter.IncludeAttributes =
                         builder.ApiFilter.IncludeExplicitInterfaceImplementations =
                         builder.ApiFilter.IncludePrivates =
@@ -377,6 +369,8 @@ namespace Microsoft.Ddue.Tools
                         builder.ApiFilter.IncludeInheritedFrameworkPrivateMembers =
                         builder.ApiFilter.IncludeInheritedFrameworkInternalMembers =
                         builder.ApiFilter.IncludeNoPIATypes = true;
+                    builder.ApiFilter.IncludeProtectedInternalAsProtected = false;
+                }
 
                 // Register add-ins to the builder
                 XPathNodeIterator addinNodes = config.CreateNavigator().Select("/configuration/dduetools/addins/addin");

@@ -8,9 +8,9 @@
 // OptionalAttribute alone (no default value).
 // 11/30/2012 - EFW - Added updates based on changes submitted by ComponentOne to fix crashes caused by
 // obfuscated member names.
-// 11/20/2013 - EFW - Merged code from Stazzz to implement namespace grouping support.  Cleaned up the code and
-// removed unused members.  Added code to apply visibility settings to property getters and setters.  Added code
-// to write out type data for the interop attributes that are converted to type metadata.
+// 11/20/2013 - EFW - Cleaned up the code and removed unused members.  Added code to apply visibility settings
+// to property getters and setters.  Added code to write out type data for the interop attributes that are
+// converted to type metadata.
 
 using System;
 using System.Collections.Generic;
@@ -186,15 +186,6 @@ namespace Microsoft.Ddue.Tools
             base.VisitNamespace(space);
         }
 
-/* TODO: Add
-        /// <inheritdoc />
-        protected override void VisitRootNamespaceGroup(NSGrouping.NSGroup group,
-          Func<NSGrouping.NS, Namespace> groupingToNS)
-        {
-            this.WriteRootNamespaceGroup(group, groupingToNS);
-            base.VisitRootNamespaceGroup(group, groupingToNS);
-        }
-*/
         /// <inheritdoc />
         protected override void VisitType(TypeNode type)
         {
@@ -526,23 +517,6 @@ namespace Microsoft.Ddue.Tools
             writer.WriteEndElement();
         }
 
-/* TODO: Add
-        private void WriteRootNamespaceGroup(NSGrouping.NSGroup rootGroup, Func<NSGrouping.NS, Namespace> groupingToNS )
-        {
-            NSGrouping.NSGroupingAlgorithms.WriteRootGroupRecursively(
-                writer,
-                rootGroup,
-                grpOrNS => this.NSGroupToName( grpOrNS, groupingToNS ),
-                grpOrNS => Object.ReferenceEquals( rootGroup, grpOrNS )
-                    || ( grpOrNS is NSGrouping.NSGroup ? this.ApiFilter.IsExposedGroupNamespace( ((NSGrouping.NSGroup)grpOrNS).groupID ) : this.ApiFilter.IsExposedNamespace(groupingToNS(((NSGrouping.NS)grpOrNS))) )
-                );
-        }
-
-        private String NSGroupToName( NSGrouping.NSGroupOrNS grpOrNS, Func<NSGrouping.NS, Namespace> groupingToNS )
-        {
-            return ( grpOrNS is NSGrouping.NSGroup ? this.namer.GetGroupingNamespaceName( ( (NSGrouping.NSGroup) grpOrNS ).groupID ) : this.namer.GetNamespaceName( groupingToNS( (NSGrouping.NS) grpOrNS ) ) ).TranslateToValidXmlValue();
-        }
-*/
         /// <summary>
         /// Write out a list of namespace elements
         /// </summary>

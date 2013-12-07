@@ -634,13 +634,6 @@
 		</xsd:restriction>
 	</xsd:simpleType>
 
-	<!-- Stazz - Added namespace group -->
-	<xsd:simpleType name="namespaceGroupId">
-		<xsd:restriction base="xsd:string">
-			<xsd:pattern value="G:([_\w]+\.)*[_\w]*" />
-		</xsd:restriction>
-	</xsd:simpleType>
-
 	<xsd:simpleType name="typeId">
 		<xsd:restriction base="xsd:string">
 			<xsd:pattern value="T:.+" />
@@ -662,7 +655,7 @@
 	</xsd:simpleType>
 
 	<xsd:simpleType name="apiId">
-		<xsd:union memberTypes="rootId namespaceId namespaceGroupId typeId memberId" />
+		<xsd:union memberTypes="rootId namespaceId typeId memberId" />
 	</xsd:simpleType>
 
 	<xsd:simpleType name="apiGroupType">
@@ -670,14 +663,11 @@
 			<xsd:enumeration value="namespace" />
 			<xsd:enumeration value="type" />
 			<xsd:enumeration value="member" />
-			<xsd:enumeration value="namespaceGroup" />
 		</xsd:restriction>
 	</xsd:simpleType>
 
 	<xsd:simpleType name="apiSubgroupType">
 		<xsd:restriction base="xsd:string">
-			<!-- Stazz - Grouping namespace root group -->
-			<xsd:enumeration value="rootGroup" />
 			<!-- type subgroups -->
 			<xsd:enumeration value="class" />
 			<xsd:enumeration value="structure" />

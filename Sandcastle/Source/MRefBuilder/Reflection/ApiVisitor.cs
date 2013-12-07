@@ -2,8 +2,7 @@
 //
 
 // Change history:
-// 11/20/2013 - EFW - Merged code from Stazzz to implement namespace grouping support.  Cleaned up the code and
-// removed unused members
+// 11/20/2013 - EFW - Cleaned up the code and removed unused members
 
 using System;
 using System.Collections.Generic;
@@ -23,10 +22,6 @@ namespace Microsoft.Ddue.Tools.Reflection
         private Dictionary<string, Namespace> catalog;
         private ApiFilter filter;
         private AssemblyResolver resolver;
-
-        // Namespace grouping - TODO: Make these properties
-// TODO: ADD       private bool groupNamespaces;
-// TODO: Remove?        private string groupSeparator;
         #endregion
 
         #region Properties
@@ -307,15 +302,11 @@ namespace Microsoft.Ddue.Tools.Reflection
         protected virtual void VisitNamespaces(NamespaceList spaces)
         {
             // Visit the namespaces in sorted order
-            foreach(Namespace space in spaces.OrderBy(s => s.FullName))
+            var sortedNamespaces = spaces.OrderBy(s => s.FullName).ToList();
+
+            foreach(Namespace space in sortedNamespaces)
                 if(filter.IsExposedNamespace(space))
                     this.VisitNamespace(space);
-
-/* TODO: Add            
-            // Check if we need to build grouping hierarchy
-            if(groupNamespaces)
-                this.VisitRootNamespaceGroup(NSGrouping.NSGroupingAlgorithms.BuildRootGroup( sorted_spaces, s => s.FullName, this.groupSeparator ), ns => sorted_spaces[ns.idx]);
-*/
         }
 
         /// <summary>
@@ -327,12 +318,6 @@ namespace Microsoft.Ddue.Tools.Reflection
             this.VisitEntity(space);
             this.VisitTypes(space.Types);
         }
-
-/* TODO: Add
-        protected virtual void VisitRootNamespaceGroup(NSGrouping.NSGroup group, Func<NSGrouping.NS, Namespace> groupingToNS)
-        {
-            // Nothing to do by default
-        }*/
 
         /// <summary>
         /// This is used to visit a list of types

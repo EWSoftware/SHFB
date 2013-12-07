@@ -12,7 +12,6 @@
 		<AddXamlSyntaxData>{@AddXamlSyntaxData}</AddXamlSyntaxData>
 		<SandcastlePath>{@SandcastlePath}</SandcastlePath>
 		<WorkingFolder>{@HtmlEncWorkingFolder}</WorkingFolder>
-		<NamespaceGrouping>{@NamespaceGrouping}</NamespaceGrouping>
 		<ReferencePath Condition=" '$(ReferencePath)' == '' ">{@ReferencePath}</ReferencePath>
 	</PropertyGroup>
 
@@ -45,7 +44,6 @@
 		<SandcastleBuilder.Utils.MSBuild.MRefBuilder
       SandcastlePath="$(SandcastlePath)"
       WorkingFolder="$(WorkingFolder)"
-			NamespaceGrouping="$(NamespaceGrouping)"
       Assemblies="@(Assembly)"
       References="@(ReferencePath)" />
 

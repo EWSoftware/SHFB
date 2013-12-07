@@ -4,8 +4,7 @@
 // Change history:
 // 03/29/2012 - EFW - Fixed WriteTemplate() so that it uses the correct template parameter names which
 // don't always match the base class's template parameter names (i.e. Collection<TControl> vs Collection<T>).
-// 11/20/2013 - EFW - Merged code from Stazzz to implement namespace grouping support.  Replaced the StringWriter
-// with a StringBuilder and cleared out dead code.
+// 11/20/2013 - EFW - Replaced the StringWriter with a StringBuilder and cleared out dead code.
 
 using System;
 using System.Linq;
@@ -22,12 +21,6 @@ namespace Microsoft.Ddue.Tools.Reflection
     {
         #region ApiNamer implementation
         //=====================================================================
-
-        /// <inheritdoc />
-        public override string GetGroupingNamespaceName(string groupingNamespace)
-        {
-            return "G:" + groupingNamespace;
-        }
 
         /// <inheritdoc />
         public override string GetNamespaceName(Namespace space)
