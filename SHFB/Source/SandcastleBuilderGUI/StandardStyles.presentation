@@ -29,7 +29,7 @@
 
 		<!-- This is used to indicate whether or not the presentation style supports the namespace grouping option
 		     used to logically group namespaces with a common root name.  The default if omitted is false. -->
-		<NamespaceGroupingSupported>false</NamespaceGroupingSupported>
+		<SupportsNamespaceGrouping>true</SupportsNamespaceGrouping>
 
 		<!-- This defines the content from the presentation style that should be embedded in the compiled help file. -->
 		<HelpContent>
@@ -139,7 +139,7 @@ or center.  If not specified, the default is left."/>
 			<Format Type="Website" />
 		</SupportedFormats>
 
-		<NamespaceGroupingSupported>false</NamespaceGroupingSupported>
+		<SupportsNamespaceGrouping>true</SupportsNamespaceGrouping>
 
 		<HelpContent>
 			<Files Source="icons\*.*" />
@@ -198,8 +198,6 @@ was never used in production by Microsoft.</Description>
 			<Format Type="Website" />
 		</SupportedFormats>
 
-		<NamespaceGroupingSupported>false</NamespaceGroupingSupported>
-
 		<HelpContent>
 			<Files Source="icons\*.*" />
 			<Files Source="scripts\*.*" />
@@ -256,8 +254,6 @@ Sandcastle.</Description>
 			<Format Type="MSHelp2" />
 			<Format Type="Website" />
 		</SupportedFormats>
-
-		<NamespaceGroupingSupported>false</NamespaceGroupingSupported>
 
 		<HelpContent>
 			<Files Source="icons\*.*" />

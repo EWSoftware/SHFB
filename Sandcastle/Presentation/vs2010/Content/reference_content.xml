@@ -12,6 +12,7 @@
 	<item id="rootLink"><referenceLink target="R:Project">Namespaces</referenceLink></item>
   <item id="rootTopicTitle">Namespaces</item>
   <item id="namespaceTopicTitle">{0} Namespace</item>
+  <item id="namespaceGroupTopicTitle">{0} Namespaces</item>
   <item id="definedBy">(Defined by {0}.)</item>
 	<item id="inheritedFrom">(Inherited from {0}.)</item>
 	<item id="overridesMember">(Overrides {0}.)</item>
@@ -29,6 +30,7 @@
   <item id="meta_mshelp_rlTitle">{0} ({1})</item>
   <item id="topicTitle_root"><include item="rootTopicTitle"/></item>
 	<item id="topicTitle_namespace"><include item="namespaceTopicTitle"><parameter>{0}</parameter></include></item>
+	<item id="topicTitle_namespaceGroup"><include item="namespaceGroupTopicTitle"><parameter>{0}</parameter></include></item>
 	<item id="topicTitle_class">{0} Class</item>
 	<item id="topicTitle_structure">{0} Structure</item>
 	<item id="topicTitle_interface">{0} Interface</item>
@@ -170,6 +172,7 @@
   <item id="header_invariantsName">Invariants</item>
   
   <!-- member list table titles -->
+  <item id="tableTitle_namespace">Namespaces</item>
 	<item id="tableTitle_class">Classes</item>
 	<item id="tableTitle_structure">Structures</item>
 	<item id="tableTitle_interface">Interfaces</item>
@@ -216,10 +219,6 @@
        This boilerplate is used if the type is a type parameter of the member's type. -->
   <item id="typeLinkToTypeParameter"><b>{0}</b> type parameter of {1}.</item>
   
-	<!-- Internal only boilerplate text -->
-  <item id="internalOnly">This API supports the .NET Framework infrastructure and is not intended to be used directly from your code.</item>
-  <item id="infraStructure">Infrastructure. </item>
-
 	<!-- Host protection boilerplate text -->
   <item id="text_hostProtectionAttribute">HostProtectionAttribute. </item>
 	<item id="boilerplate_hostProtectionAttribute">The <referenceLink target="T:System.Security.Permissions.HostProtectionAttribute"

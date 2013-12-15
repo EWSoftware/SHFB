@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.Transform.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/06/2013
+// Updated : 12/13/2013
 // Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -43,7 +43,8 @@
 //                           property.  Added Support for XAML configuration files.
 // 1.9.5.0  09/10/2012  EFW  Updated to use the new framework definition file for the .NET Framework versions
 // 1.9.6.0  10/25/2012  EFW  Updated to use the new presentation style definition files
-// 1.9.9.0  11/29/2013  EFW  Added support for the new MRefBuilder visibility settings
+// 1.9.9.0  11/29/2013  EFW  Added support for the new MRefBuilder visibility settings.  Added support for
+//                           namespace grouping based on changes submitted by Stazzz.
 //===============================================================================================================
 
 using System;
@@ -314,12 +315,12 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     replaceWith = project.PresentationStyle;
                     break;
 
-                case "manifesttransformation":
+                case "docmodeltransformation":
                     replaceWith = presentationStyle.ResolvePath(
                         presentationStyle.DocumentModelTransformation.TransformationFilename);
                     break;
 
-                case "manifesttransformparameters":
+                case "docmodeltransformationparameters":
                     replaceWith = String.Join(";", presentationStyle.DocumentModelTransformation.Select(p =>
                         String.Format(CultureInfo.InvariantCulture, "{0}={1}", p.Key, p.Value)));
                     break;
@@ -400,6 +401,23 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                     if(replaceWith.Length == 0)
                         replaceWith = "<include item=\"rootTopicTitleLocalized\"/>";
+                    break;
+
+                case "namespacegrouping":
+                    if(project.NamespaceGrouping && presentationStyle.SupportsNamespaceGrouping)
+                        replaceWith = "true";
+                    else
+                    {
+                        replaceWith = "false";
+
+                        if(project.NamespaceGrouping)
+                            this.ReportWarning("BE0027", "Namespace grouping was requested but the selected " +
+                                "presentation style does not support it.  Option ignored.");
+                    }
+                    break;
+
+                case "maximumgroupparts":
+                    replaceWith = project.MaximumGroupParts.ToString(CultureInfo.InvariantCulture);
                     break;
 
                 case "binarytoc":
@@ -732,9 +750,9 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     break;
 
                 case "apifilter":
-                    // In a partial build used to get API info for the API
-                    // filter designer, we won't apply the filter.
-                    if(!suppressApiFilter)
+                    // In a partial build used to get API info for the API filter designer, we won't apply the
+                    // filter.
+                    if(!this.SuppressApiFilter)
                         replaceWith = apiFilter.ToString();
                     else
                         replaceWith = String.Empty;

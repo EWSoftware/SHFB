@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : PresentationStyleSettings.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/30/2013
+// Updated : 12/13/2013
 // Note    : Copyright 2012-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -75,10 +75,10 @@ namespace SandcastleBuilder.Utils.PresentationStyle
         public HelpFileFormat HelpFileFormats { get; private set; }
 
         /// <summary>
-        /// This read-only property returns whether or not namespace logical grouping is supported by the
-        /// presentation style.
+        /// This read-only property returns whether or not namespace grouping is supported by the presentation
+        /// style.
         /// </summary>
-        public bool NamespaceGroupingSupported { get; private set; }
+        public bool SupportsNamespaceGrouping { get; private set; }
 
         /// <summary>
         /// This read-only property returns an enumerable list of help content file locations
@@ -163,7 +163,7 @@ namespace SandcastleBuilder.Utils.PresentationStyle
                 toc = style.Descendants("IntermediateTOCTransformation").FirstOrDefault(),
                 conceptual = style.Descendants("ConceptualBuildConfiguration").FirstOrDefault(),
                 reference = style.Descendants("ReferenceBuildConfiguration").FirstOrDefault(),
-                nsGroupingSupported = style.Descendants("NamespaceGroupingSupported").FirstOrDefault();
+                supportsNamespaceGrouping = style.Descendants("SupportsNamespaceGrouping").FirstOrDefault();
 
             if(resourceItems == null)
                 throw new InvalidOperationException("ResourceItems element is missing");
@@ -195,8 +195,8 @@ namespace SandcastleBuilder.Utils.PresentationStyle
                 IntermediateTocTransformation = new TransformationFile(toc),
                 ConceptualBuildConfiguration = conceptual.Attribute("File").Value,
                 ReferenceBuildConfiguration = reference.Attribute("File").Value,
-                NamespaceGroupingSupported = nsGroupingSupported != null && Convert.ToBoolean(
-                    nsGroupingSupported.Value, CultureInfo.InvariantCulture)
+                SupportsNamespaceGrouping = supportsNamespaceGrouping != null && Convert.ToBoolean(
+                    supportsNamespaceGrouping.Value, CultureInfo.InvariantCulture)
             };
 
             foreach(var format in style.Descendants("SupportedFormats").Descendants("Format"))

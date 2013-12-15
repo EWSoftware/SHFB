@@ -1,14 +1,18 @@
 ﻿<Project DefaultTargets="Transform" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
-	<!-- Sandcastle Help File Builder Tasks.  http://SHFB.CodePlex.com -->
-	<UsingTask TaskName="SandcastleBuilder.Utils.MSBuild.XslTransform"
-		AssemblyFile="$(SHFBROOT)\SandcastleBuilder.Utils.dll" />
+	<!-- Sandcastle Tools MSBuild Tasks.  http://SHFB.CodePlex.com -->
+	<UsingTask TaskName="Microsoft.Ddue.Tools.MSBuild.AddNamespaceGroups"
+    AssemblyFile="{@SandcastlePath}\ProductionTools\AddNamespaceGroups.exe" />
+	<UsingTask TaskName="Microsoft.Ddue.Tools.MSBuild.XslTransform"
+    AssemblyFile="{@SandcastlePath}\ProductionTools\XslTransform.exe" />
 
 	<!-- Task properties -->
 	<PropertyGroup>
-		<SandcastlePath>{@SandcastlePath}</SandcastlePath>
 		<WorkingFolder>{@HtmlEncWorkingFolder}</WorkingFolder>
-		<ManifestTransformation>{@ManifestTransformation}</ManifestTransformation>
-		<ManifestTransformParameters>{@ManifestTransformParameters}</ManifestTransformParameters>
+		<DocModelTransformation>{@DocModelTransformation}</DocModelTransformation>
+		<DocModelTransformationParameters>{@DocModelTransformationParameters}</DocModelTransformationParameters>
+		<NamingMethod>{@NamingMethod}</NamingMethod>
+		<NamespaceGrouping>{@NamespaceGrouping}</NamespaceGrouping>
+		<MaximumParts>{@MaximumGroupParts}</MaximumParts>
 	</PropertyGroup>
 
 	<!-- This defines the dependencies for the Transform target -->
@@ -25,17 +29,36 @@
 	<!-- The Transform Manifest target -->
 	<Target Name="TransformManifest">
 		<!-- Transform the reflection output based on the presentation style -->
-		<SandcastleBuilder.Utils.MSBuild.XslTransform
-			SandcastlePath="$(SandcastlePath)"
+		<Microsoft.Ddue.Tools.MSBuild.XslTransform
 			WorkingFolder="$(WorkingFolder)"
-			Transformations="$(ManifestTransformation);ProductionTransforms\AddFilenames.xsl"
-			Arguments="$(ManifestTransformParameters);namingMethod={@NamingMethod}"
+			Transformations="$(DocModelTransformation)"
+			Arguments="$(DocModelTransformationParameters)"
 			InputFile="reflection.org"
 			OutputFile="reflection.xml" />
 
+		<!-- Add namespace group topics if enabled -->
+		<Copy SourceFiles="reflection.xml" DestinationFiles="reflection.ungrouped"
+			Condition=" '$(NamespaceGrouping)' == 'true' " />
+
+		<Microsoft.Ddue.Tools.MSBuild.AddNamespaceGroups
+			WorkingFolder="$(WorkingFolder)"
+			MaximumParts="$(MaximumParts)"
+			InputFile="reflection.ungrouped"
+			OutputFile="reflection.xml"
+			Condition=" '$(NamespaceGrouping)' == 'true' " />
+
+		<!-- Add filenames to the topics.  This needs to happen after grouping if it was enabled. -->
+		<Copy SourceFiles="reflection.xml" DestinationFiles="reflection.nofilenames" />
+
+		<Microsoft.Ddue.Tools.MSBuild.XslTransform
+			WorkingFolder="$(WorkingFolder)"
+			Transformations="ProductionTransforms\AddFilenames.xsl"
+			Arguments="namingMethod=$(NamingMethod)"
+			InputFile="reflection.nofilenames"
+			OutputFile="reflection.xml" />
+
 		<!-- Generate the topic manifest -->
-		<SandcastleBuilder.Utils.MSBuild.XslTransform
-			SandcastlePath="$(SandcastlePath)"
+		<Microsoft.Ddue.Tools.MSBuild.XslTransform
 			WorkingFolder="$(WorkingFolder)"
 			Transformations="ProductionTransforms\ReflectionToManifest.xsl"
 			InputFile="reflection.xml"

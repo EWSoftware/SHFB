@@ -29,16 +29,6 @@ presentation style.</para>
 					</listItem>
 
 					<listItem>
-						<para>The Hierarchical TOC plug-in is not compatible with MS Help Viewer output and there is
-currently no fix available.  The problem is that the table of contents is generated off of the help topics when
-the help viewer file is installed and, since there are no physical topics for the namespace nodes added to the
-intermediate table of contents file by the plug-in, they do not appear in the help file.  Updating the plug-in to
-support help viewer output would have required more work than time would allow.  If building other output formats
-in which you want to use the plug-in, build them separately from the MS Help Viewer output.  Support for MS Help
-Viewer may be added in a future release.</para>
-					</listItem>
-
-					<listItem>
 						<para>The deprecated raw HTML additional content model, site maps, and file system-based table of
 contents generation is not supported for help viewer output.  All additional topics must be in the form of MAML
 <link xlink:href="3d4edd2d-7883-4508-b9d2-bd7b4d848b0d">conceptual content</link> and must be defined in a

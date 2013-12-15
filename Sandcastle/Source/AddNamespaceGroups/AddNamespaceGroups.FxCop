@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<FxCopProject Version="10.0" Name="XslTransform">
+<FxCopProject Version="10.0" Name="Add Namespace Groups Tool">
  <ProjectOptions>
   <SharedProject>True</SharedProject>
   <Stylesheet Apply="False">$(FxCopDir)\Xml\FxCopReport.xsl</Stylesheet>
@@ -21,10 +21,7 @@
   <IgnoreGeneratedCode>False</IgnoreGeneratedCode>
  </ProjectOptions>
  <Targets>
-  <AssemblyReferenceDirectories>
-   <Directory>$(ProjectDir)/bin/Debug/</Directory>
-  </AssemblyReferenceDirectories>
-  <Target Name="$(ProjectDir)/../../ProductionTools/XslTransform.exe" Analyze="True" AnalyzeAllChildren="True" />
+  <Target Name="$(ProjectDir)/../../ProductionTools/AddNamespaceGroups.exe" Analyze="True" AnalyzeAllChildren="True" />
  </Targets>
  <Rules>
   <RuleFiles>
@@ -46,14 +43,14 @@
   <Namespaces>
    <Namespace Name="Microsoft.Ddue.Tools">
     <Messages>
-     <Message Id="Ddue" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2012-03-10 21:33:26Z">
+     <Message Id="Ddue" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2013-12-13 03:31:20Z">
       <Issue Name="Namespace">
        <Item>Ddue</Item>
        <Item>Microsoft.Ddue.Tools</Item>
       </Issue>
       <Notes>
        <User Name="EWOODRUFF">
-        <Note Id="0" />
+        <Note Id="1" />
        </User>
       </Notes>
      </Message>
@@ -61,7 +58,7 @@
    </Namespace>
    <Namespace Name="Microsoft.Ddue.Tools.MSBuild">
     <Messages>
-     <Message Id="Ddue" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2013-12-12 03:24:33Z">
+     <Message Id="Ddue" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2013-12-13 03:31:20Z">
       <Issue Name="Namespace">
        <Item>Ddue</Item>
        <Item>Microsoft.Ddue.Tools.MSBuild</Item>
@@ -76,24 +73,24 @@
    </Namespace>
   </Namespaces>
   <Targets>
-   <Target Name="$(ProjectDir)/../../ProductionTools/XslTransform.exe">
+   <Target Name="$(ProjectDir)/../../ProductionTools/AddNamespaceGroups.exe">
     <Modules>
-     <Module Name="xsltransform.exe">
+     <Module Name="addnamespacegroups.exe">
       <Namespaces>
        <Namespace Name="Microsoft.Ddue.Tools.MSBuild">
         <Types>
-         <Type Name="XslTransform">
+         <Type Name="AddNamespaceGroups">
           <Members>
            <Member Name="#Execute()">
             <Messages>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2013-12-12 03:24:33Z">
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2013-12-13 03:31:20Z">
               <Issue>
-               <Item>'XslTransform.Execute()'</Item>
+               <Item>'AddNamespaceGroups.Execute()'</Item>
                <Item>'Exception'</Item>
               </Issue>
               <Notes>
                <User Name="EWOODRUFF">
-                <Note Id="2" />
+                <Note Id="0" />
                </User>
               </Notes>
              </Message>
@@ -110,9 +107,8 @@
   </Targets>
   <Notes>
    <User Name="EWOODRUFF">
-    <Note Id="0" Modified="2012-03-10 21:33:35Z">Okay as is</Note>
-    <Note Id="1" Modified="2013-12-12 03:24:47Z">Okay as is</Note>
-    <Note Id="2" Modified="2013-12-12 03:24:59Z">The error is reported</Note>
+    <Note Id="0" Modified="2013-12-13 03:31:35Z">The error is reported</Note>
+    <Note Id="1" Modified="2013-12-13 03:31:43Z">Okay as is</Note>
    </User>
   </Notes>
   <Rules>

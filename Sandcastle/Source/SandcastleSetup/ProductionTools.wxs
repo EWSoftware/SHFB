@@ -7,6 +7,9 @@
 	<Fragment>
     <DirectoryRef Id="INSTALLDIR">
       <Directory Id="dir44F17896E66DC6820541483F22084C8C" Name="ProductionTools">
+        <Component Id="cmp445450BFF7A740AD13C08ED477254036" Guid="{E75E3B34-0303-44C9-939D-C1915E9A7083}">
+          <File Id="fil5B0E2DFB0A168B98529844622DC78268" KeyPath="yes" Source="$(var.RootFolder)\ProductionTools\AddNamespaceGroups.exe" />
+        </Component>
         <Component Id="cmp596919F29F0A4F6E4FAFEF3BFCC1E428" Guid="{782977B5-C460-4479-94CF-D4C324FA4651}">
           <File Id="filD8ABEDFAFAF919929FE827761A9185E0" KeyPath="yes" Source="$(var.RootFolder)\ProductionTools\AggregateByNamespace.exe" />
         </Component>
@@ -93,6 +96,7 @@
   </Fragment>
   <Fragment>
     <ComponentGroup Id="ProductionTools">
+      <ComponentRef Id="cmp445450BFF7A740AD13C08ED477254036" />
       <ComponentRef Id="cmp596919F29F0A4F6E4FAFEF3BFCC1E428" />
       <ComponentRef Id="cmpE835AF42D25B78EAE04BEBF0AA7152D3" />
       <ComponentRef Id="cmp5DACB168BA1A0FE69AEE1C6BED89B1F9" />

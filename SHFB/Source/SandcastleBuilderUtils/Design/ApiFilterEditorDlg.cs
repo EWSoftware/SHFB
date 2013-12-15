@@ -2,7 +2,7 @@
 // System  : EWSoftware Design Time Attributes and Editors
 // File    : ApiFilterEditorDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/06/2013
+// Updated : 12/13/2013
 // Note    : Copyright 2007-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -1509,7 +1509,7 @@ namespace SandcastleBuilder.Utils.Design
 
                 tempProject.OutputPath = tempPath;
 
-                buildProcess = new BuildProcess(tempProject, true);
+                buildProcess = new BuildProcess(tempProject, PartialBuildType.GenerateReflectionInfo);
 
                 // We must suppress the current API filter for this build
                 buildProcess.SuppressApiFilter = true;

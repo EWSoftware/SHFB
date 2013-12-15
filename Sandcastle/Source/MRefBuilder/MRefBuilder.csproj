@@ -60,6 +60,8 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Build.Framework" />
+    <Reference Include="Microsoft.Build.Utilities.v4.0" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -90,6 +92,7 @@
     <Compile Include="Frameworks\PlatformType.cs" />
     <Compile Include="MemberDictionary.cs" />
     <Compile Include="MRefBuilder.cs" />
+    <Compile Include="MRefBuilderCore.cs" />
     <Compile Include="MRefBuilderAddIn.cs" />
     <Compile Include="MRefBuilderCallback.cs" />
     <Compile Include="MRefWriter.cs" />

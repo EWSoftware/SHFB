@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SandcastleProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/06/2013
+// Updated : 12/13/2013
 // Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -162,6 +162,7 @@ namespace SandcastleBuilder.Utils
         private string outputPath, frameworkVersion;
         private bool cleanIntermediates, keepLogFile, cppCommentsFixup, disableCodeBlockComponent,
             namespaceGrouping;
+        private int maximumGroupParts;
         private HelpFileFormat helpFileFormat;
         private BuildAssemblerVerbosity buildAssemblerVerbosity;
 
@@ -1005,6 +1006,27 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
+        /// This is used to get or set the maximum number of namespace parts to consider when namespace grouping
+        /// is enabled.
+        /// </summary>
+        /// <value>The minimum and default is 2.  A higher value results in more namespace groups.</value>
+        /// <remarks>Namespace groups are determined automatically and may be documented as well.</remarks>
+        [Category("Help file"), Description("This is used to get or set the maximum number of namespace parts " +
+          "to consider when namespace grouping is enabled."), DefaultValue(2)]
+        public int MaximumGroupParts
+        {
+            get { return maximumGroupParts; }
+            set
+            {
+                if(value < 2)
+                    value = 2;
+
+                this.SetProjectProperty("MaximumGroupParts", value);
+                maximumGroupParts = value;
+            }
+        }
+
+        /// <summary>
         /// This is used to get or set the help file's title
         /// </summary>
         [Category("Help File"), Description("The title for the help file"),
@@ -1546,13 +1568,13 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get or set the MS Help Viewer 2.0 content catalog name.
+        /// This is used to get or set the MS Help Viewer 2.x content catalog name.
         /// </summary>
-        /// <remarks>If not specified, the default is "VisualStudio11".  This should typically be left set to
-        /// the default value.</remarks>
-        [Category("MS Help Viewer"), Description("Specify the MS Help Viewer 2.0 content catalog name.  This " +
-          "should typically be left set to the default value \"VisualStudio11\"."), DefaultValue("VisualStudio11"),
-          EscapeValue]
+        /// <remarks>If not specified, the default is "VisualStudio11" for Visual Studio 2012.  If using Visual
+        /// Studio 2013, change it to "VisualStudio12".</remarks>
+        [Category("MS Help Viewer"), Description("Specify the MS Help Viewer 2.x content catalog name.  For " +
+          "Visual Studio 2012 use \"VisualStudio11\".  For Visual Studio 2013 use \"VisualStudio12\"."),
+          DefaultValue("VisualStudio11"), EscapeValue]
         public string CatalogName
         {
             get { return catalogName; }
@@ -2961,6 +2983,7 @@ namespace SandcastleBuilder.Utils
                 collectionTocStyle = CollectionTocStyle.Hierarchical;
                 helpFileVersion = "1.0.0.0";
                 tocOrder = -1;
+                maximumGroupParts = 2;
 
                 this.OutputPath = null;
                 this.HtmlHelp1xCompilerPath = this.HtmlHelp2xCompilerPath = this.SandcastlePath =

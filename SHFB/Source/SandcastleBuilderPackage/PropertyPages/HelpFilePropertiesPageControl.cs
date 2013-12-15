@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : HelpFilePropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 03/08/2013
+// Updated : 12/13/2013
 // Note    : Copyright 2011-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -17,6 +17,7 @@
 // ==============================================================================================================
 // 1.9.3.0  03/27/2011  EFW  Created the code
 // 1.9.6.0  10/27/2012  EFW  Added support for the new presentation style definition file
+// 1.9.9.0  12/13/2013  EFW  Added support for namespace grouping
 //===============================================================================================================
 
 using System;
@@ -162,6 +163,9 @@ namespace SandcastleBuilder.Package.PropertyPages
 
                 if(txtHtmlHelpName.Text.Length == 0)
                     txtHtmlHelpName.Text = "Documentation";
+
+                if(udcMaximumGroupParts.Text.Trim().Length == 0)
+                    udcMaximumGroupParts.Value = 2;
 
                 return true;
             }

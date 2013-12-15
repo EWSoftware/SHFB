@@ -19,6 +19,7 @@
   <SearchGlobalAssemblyCache>False</SearchGlobalAssemblyCache>
   <DeadlockDetectionTimeout>120</DeadlockDetectionTimeout>
   <IgnoreGeneratedCode>False</IgnoreGeneratedCode>
+  <TargetFrameworkVersion>0.0</TargetFrameworkVersion>
  </ProjectOptions>
  <Targets>
   <Target Name="$(ProjectDir)/../../ProductionTools/MRefBuilder.exe" Analyze="True" AnalyzeAllChildren="False">
@@ -28,7 +29,69 @@
       <Namespace Name="" Analyze="True" AnalyzeAllChildren="True" />
       <Namespace Name="Microsoft.Ddue.Tools" Analyze="True" AnalyzeAllChildren="True" />
       <Namespace Name="Microsoft.Ddue.Tools.Frameworks" Analyze="True" AnalyzeAllChildren="True" />
-      <Namespace Name="Microsoft.Ddue.Tools.Reflection" Analyze="True" AnalyzeAllChildren="True" />
+      <Namespace Name="Microsoft.Ddue.Tools.MSBuild" Analyze="True" AnalyzeAllChildren="True" />
+      <Namespace Name="Microsoft.Ddue.Tools.Reflection" Analyze="True" AnalyzeAllChildren="False">
+       <Types AnalyzeAllChildren="False">
+        <Type Name="ApiFilter" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="ApiNamer" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="ApiVisitor" Analyze="True" AnalyzeAllChildren="False">
+         <Members AnalyzeAllChildren="False">
+          <Member Name="#.ctor(Microsoft.Ddue.Tools.Reflection.AssemblyResolver,Microsoft.Ddue.Tools.Reflection.ApiFilter)" Analyze="True" />
+          <Member Name="#&lt;VisitMembers&gt;b__4(System.Compiler.Member)" Analyze="True" />
+          <Member Name="#&lt;VisitNamespaces&gt;b__0(System.Compiler.Namespace)" Analyze="True" />
+          <Member Name="#&lt;VisitTypes&gt;b__2(System.Compiler.TypeNode)" Analyze="True" />
+          <Member Name="#accessoryAssemblies" Analyze="True" />
+          <Member Name="#AccessoryAssemblies" Analyze="True" AnalyzeAllChildren="True" />
+          <Member Name="#ApiFilter" Analyze="True" AnalyzeAllChildren="True" />
+          <Member Name="#assemblies" Analyze="True" />
+          <Member Name="#Assemblies" Analyze="True" AnalyzeAllChildren="True" />
+          <Member Name="#catalog" Analyze="True" />
+          <Member Name="#CS$&lt;&gt;9__CachedAnonymousMethodDelegate1" Analyze="True" />
+          <Member Name="#CS$&lt;&gt;9__CachedAnonymousMethodDelegate3" Analyze="True" />
+          <Member Name="#CS$&lt;&gt;9__CachedAnonymousMethodDelegate5" Analyze="True" />
+          <Member Name="#Dispose()" Analyze="True" />
+          <Member Name="#Dispose(System.Boolean)" Analyze="True" />
+          <Member Name="#filter" Analyze="True" />
+          <Member Name="#Finalize()" Analyze="True" />
+          <Member Name="#GetNamespaceName(System.Compiler.TypeNode)" Analyze="True" />
+          <Member Name="#LoadAccessoryAssemblies(System.String)" Analyze="True" />
+          <Member Name="#LoadAccessoryAssembly(System.String)" Analyze="True" />
+          <Member Name="#LoadAssemblies(System.String)" Analyze="True" />
+          <Member Name="#LoadAssembly(System.String)" Analyze="True" />
+          <Member Name="#ResetMscorlib(System.Compiler.AssemblyNode)" Analyze="True" />
+          <Member Name="#resolver" Analyze="True" />
+          <Member Name="#Resolver" Analyze="True" AnalyzeAllChildren="True" />
+          <Member Name="#StoreType(System.Compiler.TypeNode)" Analyze="True" />
+          <Member Name="#StoreTypes(System.Compiler.TypeNodeList)" Analyze="True" />
+          <Member Name="#VisitApis()" Analyze="True" />
+          <Member Name="#VisitEntity(System.Compiler.Member)" Analyze="True" />
+          <Member Name="#VisitMember(System.Compiler.Member)" Analyze="True" />
+          <Member Name="#VisitMembers(System.Compiler.MemberList)" Analyze="True" />
+          <Member Name="#VisitNamespace(System.Compiler.Namespace)" Analyze="True" />
+          <Member Name="#VisitNamespaces(System.Compiler.NamespaceList)" Analyze="True" />
+          <Member Name="#VisitType(System.Compiler.TypeNode)" Analyze="True" />
+          <Member Name="#VisitTypes(System.Compiler.TypeNodeList)" Analyze="True" />
+         </Members>
+        </Type>
+        <Type Name="AssemblyReferenceEventArgs" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="AssemblyResolver" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="BindingRedirectSettings" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="MemberFilter" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="NamespaceFilter" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="OrcasNamer" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="ReflectionUtilities" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="ReflectionUtilities+&lt;&gt;c__DisplayClass1b" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="ReflectionUtilities+&lt;&gt;c__DisplayClass1e" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="ReflectionUtilities+&lt;&gt;c__DisplayClass21" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="ReflectionUtilities+&lt;GetImplementedEvents&gt;d__8" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="ReflectionUtilities+&lt;GetImplementedMethods&gt;d__f" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="ReflectionUtilities+&lt;GetImplementedProperties&gt;d__0" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="RootFilter" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="TypeFilter" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="TypeFilter+&lt;&gt;c__DisplayClass2" Analyze="True" AnalyzeAllChildren="True" />
+        <Type Name="VisibleItems" Analyze="True" AnalyzeAllChildren="True" />
+       </Types>
+      </Namespace>
      </Namespaces>
      <Resources AnalyzeAllChildren="True" />
     </Module>
@@ -78,6 +141,21 @@
       <Notes>
        <User Name="EWOODRUFF">
         <Note Id="2" />
+       </User>
+      </Notes>
+     </Message>
+    </Messages>
+   </Namespace>
+   <Namespace Name="Microsoft.Ddue.Tools.MSBuild">
+    <Messages>
+     <Message Id="Ddue" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2013-12-11 22:54:13Z">
+      <Issue Name="Namespace">
+       <Item>Ddue</Item>
+       <Item>Microsoft.Ddue.Tools.MSBuild</Item>
+      </Issue>
+      <Notes>
+       <User Name="EWOODRUFF">
+        <Note Id="17" />
        </User>
       </Notes>
      </Message>
@@ -335,6 +413,29 @@
             </Notes>
            </Message>
           </Messages>
+         </Type>
+        </Types>
+       </Namespace>
+       <Namespace Name="Microsoft.Ddue.Tools.MSBuild">
+        <Types>
+         <Type Name="MRefBuilder">
+          <Members>
+           <Member Name="#Execute()">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2013-12-11 22:54:13Z">
+              <Issue>
+               <Item>'MRefBuilder.Execute()'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="18" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
          </Type>
         </Types>
        </Namespace>
@@ -13274,6 +13375,8 @@
     <Note Id="14" Modified="2013-11-29 02:19:37Z">Okay as is</Note>
     <Note Id="15" Modified="2013-11-29 02:27:45Z">This is only intended to be used with types</Note>
     <Note Id="16" Modified="2013-11-29 02:27:58Z">Okay as is</Note>
+    <Note Id="17" Modified="2013-12-11 22:57:58Z">Okay as is</Note>
+    <Note Id="18" Modified="2013-12-11 22:58:03Z">The error is reported</Note>
    </User>
   </Notes>
   <Rules>
@@ -13289,6 +13392,9 @@
    <Rule TypeName="DoNotCastUnnecessarily" Category="Microsoft.Performance" CheckId="CA1800">
     <Resolution Name="Parameter">{0}, a parameter, is cast to type {1} multiple times in method {2}. Cache the result of the 'as' operator or direct cast in order to eliminate the redundant {3} instruction.</Resolution>
    </Rule>
+   <Rule TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031">
+    <Resolution Name="Default">Modify {0} to catch a more specific exception than {1} or rethrow the exception.</Resolution>
+   </Rule>
    <Rule TypeName="DoNotExposeGenericLists" Category="Microsoft.Design" CheckId="CA1002">
     <Resolution Name="Default">Change {0} in {1} to use Collection&lt;T&gt;, ReadOnlyCollection&lt;T&gt; or KeyedCollection&lt;K,V&gt;</Resolution>
    </Rule>
@@ -13298,9 +13404,7 @@
    </Rule>
    <Rule TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704">
     <Resolution Name="Member">Correct the spelling of '{0}' in member name {1} or remove it entirely if it represents any sort of Hungarian notation.</Resolution>
-    <Resolution Name="MemberMoreMeaningfulName">Consider providing a more meaningful name than member name {0}.</Resolution>
     <Resolution Name="MemberParameter">In method {0}, correct the spelling of '{1}' in parameter name {2} or remove it entirely if it represents any sort of Hungarian notation.</Resolution>
-    <Resolution Name="MemberParameterMoreMeaningfulName">In method {0}, consider providing a more meaningful name than parameter name {1}.</Resolution>
     <Resolution Name="Namespace">Correct the spelling of '{0}' in namespace name '{1}'.</Resolution>
     <Resolution Name="Type">Correct the spelling of '{0}' in type name {1}.</Resolution>
    </Rule>

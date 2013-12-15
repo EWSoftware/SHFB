@@ -21,13 +21,13 @@
   <msxsl:using namespace="System.Text.RegularExpressions" />
     <![CDATA[
     private static Regex reWarning = new Regex(@"(Warn|Warning( HXC\d+)?):|" +
-        @"SHFB\s*:\s*Warning\s.*?:|.*?(\(\d*,\d*\))?:\s*warning\s.*?:");
+        @"SHFB\s*:\s*(W|w)arning\s.*?:|.*?(\(\d*,\d*\))?:\s*(W|w)arning\s.*?:");
 
     private static Regex reErrors = new Regex(
         @"^\s*((Error|UnrecognizedOption|Unhandled Exception|Fatal Error|" +
         @"Unexpected error.*|HHC\d+: Error|(Fatal )?Error HXC\d+):|" +
-        @"Process is terminated|BUILD FAILED|\w+\s*:\s*Error\s.*?:|" +
-        @".*?\(\d*,\d*\):\s*error\s.*?:)", RegexOptions.Multiline);
+        @"Process is terminated|BUILD FAILED|\w+\s*:\s*(E|e)rror\s.*?:|" +
+        @".*?\(\d*,\d*\):\s*(E|e)rror\s.*?:)", RegexOptions.Multiline);
 
     // Encode a few special characters, add a style to warnings and errors, and
 		// return a non-breaking space if empty.

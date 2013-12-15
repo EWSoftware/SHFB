@@ -263,11 +263,47 @@
 				</xsl:call-template>
 			</td>
 			<td>
-				<xsl:call-template name="getInternalOnlyDescription" />
 				<xsl:if test="attributes/attribute/type[@api='T:System.ObsoleteAttribute']">
 					<xsl:text> </xsl:text>
 					<include item="obsoleteRed" />
 				</xsl:if>
+				<xsl:call-template name="getElementDescription" />
+			</td>
+		</tr>
+	</xsl:template>
+
+	<xsl:template match="elements" mode="namespaceGroup" name="t_namespaceGroupElements">
+		<xsl:if test="count(element) > 0">
+			<xsl:call-template name="section">
+				<xsl:with-param name="toggleSwitch" select="'namespaceGroup'" />
+				<xsl:with-param name="title">
+					<include item="namespacesTitle" />
+				</xsl:with-param>
+				<xsl:with-param name="content">
+					<table class="members" id="memberList" frame="lhs" cellpadding="2">
+						<tr>
+							<th class="nameColumn">
+								<include item="namespaceNameHeader"/>
+							</th>
+							<th class="descriptionColumn">
+								<include item="namespaceDescriptionHeader"/>
+							</th>
+						</tr>
+						<xsl:apply-templates select="element" mode="namespaceGroup">
+							<xsl:sort select="substring-after(@api, ':')"/>
+						</xsl:apply-templates>
+					</table>
+				</xsl:with-param>
+			</xsl:call-template>
+		</xsl:if>
+	</xsl:template>
+
+	<xsl:template match="element" mode="namespaceGroup" name="t_namespaceGroupElement">
+		<tr>
+			<td>
+				<referenceLink target="{@api}" qualified="false"/>
+			</td>
+			<td>
 				<xsl:call-template name="getElementDescription" />
 			</td>
 		</tr>
@@ -354,7 +390,6 @@
 			</td>
 			<td>
 
-				<xsl:call-template name="getInternalOnlyDescription" />
 				<xsl:if test="attributes/attribute/type[@api='T:System.ObsoleteAttribute']">
 					<xsl:text> </xsl:text>
 					<include item="obsoleteRed" />
@@ -780,7 +815,6 @@
 
 	<xsl:template match="elements" mode="root">
 		<xsl:if test="count(element) > 0">
-
 			<xsl:call-template name="section">
 				<xsl:with-param name="toggleSwitch" select="'namespaces'"/>
 				<xsl:with-param name="title">
@@ -1440,7 +1474,6 @@
 					</xsl:choose>
 				</td>
 				<td>
-					<xsl:call-template name="getInternalOnlyDescription" />
 					<xsl:if test="attributes/attribute/type[@api='T:System.ObsoleteAttribute']">
 						<xsl:text> </xsl:text>
 						<include item="obsoleteRed" />

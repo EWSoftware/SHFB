@@ -3,6 +3,7 @@
 
 // Change history:
 // 11/20/2013 - EFW - Cleaned up the code and removed unused members
+// 12/10/2013 - EFW - Made the API visitor cancelable
 
 using System;
 using System.Collections.Generic;
@@ -58,6 +59,13 @@ namespace Microsoft.Ddue.Tools.Reflection
         {
             get { return assemblies; }
         }
+
+        /// <summary>
+        /// This is used to get or set the canceled state of the build
+        /// </summary>
+        /// <value>If set to true, the reflection process stops once the current type has been visited</value>
+        public bool Canceled { get; set; }
+
         #endregion
 
         #region Constructor
@@ -229,7 +237,12 @@ namespace Microsoft.Ddue.Tools.Reflection
         private void StoreTypes(TypeNodeList types)
         {
             for(int i = 0; i < types.Count; i++)
+            {
                 this.StoreType(types[i]);
+
+                if(this.Canceled)
+                    break;
+            }
         }
 
         /// <summary>
@@ -274,15 +287,24 @@ namespace Microsoft.Ddue.Tools.Reflection
             // Store types.  We have to do this after all assemblies are registered because the resolution may
             // not work unless all the assemblies we need are in the resolver cache.
             foreach(AssemblyNode assembly in assemblies)
+            {
                 this.StoreTypes(assembly.Types);
 
-            NamespaceList spaces = new NamespaceList();
+                if(this.Canceled)
+                    break;
+            }
 
-            foreach(Namespace space in catalog.Values)
-                if(filter.IsExposedNamespace(space))
-                    spaces.Add(space);
+            if(!this.Canceled)
+            {
+                NamespaceList spaces = new NamespaceList();
 
-            this.VisitNamespaces(spaces);
+                foreach(Namespace space in catalog.Values)
+                    if(filter.IsExposedNamespace(space))
+                        spaces.Add(space);
+
+                if(!this.Canceled)
+                    this.VisitNamespaces(spaces);
+            }
         }
 
         /// <summary>
@@ -305,8 +327,13 @@ namespace Microsoft.Ddue.Tools.Reflection
             var sortedNamespaces = spaces.OrderBy(s => s.FullName).ToList();
 
             foreach(Namespace space in sortedNamespaces)
+            {
                 if(filter.IsExposedNamespace(space))
                     this.VisitNamespace(space);
+
+                if(this.Canceled)
+                    break;
+            }
         }
 
         /// <summary>
@@ -327,8 +354,13 @@ namespace Microsoft.Ddue.Tools.Reflection
         {
             // Visit the types in sorted order
             foreach(TypeNode type in types.OrderBy(t => t.FullName))
+            {
                 if(filter.IsExposedType(type) || filter.HasExposedMembers(type))
                     this.VisitType(type);
+
+                if(this.Canceled)
+                    break;
+            }
         }
 
         /// <summary>

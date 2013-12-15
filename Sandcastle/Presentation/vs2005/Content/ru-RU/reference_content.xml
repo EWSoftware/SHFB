@@ -11,6 +11,7 @@
   <item id="rlTitle">{0} ({1})</item>
   <item id="rootTopicTitle">Пространства имён</item>
   <item id="namespaceTopicTitle">{0} - пространство имён</item>
+  <item id="namespaceGroupTopicTitle">{0} Пространства имён</item>
   <item id="classTopicTitle">{0} - класс</item>
   <item id="structureTopicTitle">{0} - структура</item>
   <item id="interfaceTopicTitle">{0} - интерфейс</item>
@@ -136,7 +137,7 @@
   <item id="implementsTitle">Реализации</item>
   <item id="examplesTitle">Примеры</item>
   <item id="threadSafetyTitle">Потокобезопасность</item>
-  <item id="permissionsTitle">Безопасность платформы .NET Framework</item> 
+  <item id="permissionsTitle">Безопасность платформы .NET Framework</item>
   <item id="namespacesTitle">Пространства имён</item>
   <item id="typesTitle">Типы</item>
   <item id="allMembersTitle">Члены</item>
@@ -464,11 +465,6 @@
   <!-- First line of a param or retval description is a link to the type of the param or retval.
        This boilerplate is used if the type is a type parameter of the member's type. -->
   <item id="typeLinkToTypeParameter"><b>{0}</b> - параметр типа {1}.</item>
-  
- <!-- Internal only Boilerplate text -->
-  <item id="internalOnly">Данный API разработан для поддержки инфраструктуры .NET Framework и не предназначен для использования непосредственно из кода.</item>
-  <item id="infraStructure">Инфраструктура. </item>
-  
   
   <!-- Variance boilerplate text -->
   <item id="inKeyword"><span class="languageSpecificText"><span class="cs"><span class="keyword">in</span> </span><span class="vb"><span class="keyword">In</span> </span><span class="cpp"><span class="keyword">in</span> </span><span class="nu"><span class="keyword">in</span> </span><span class="fs"></span></span></item>

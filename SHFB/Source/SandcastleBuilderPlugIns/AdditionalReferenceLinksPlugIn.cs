@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : AdditionalReferenceLinksPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/04/2013
+// Updated : 12/14/2013
 // Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -31,7 +31,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.XPath;
@@ -210,7 +209,6 @@ namespace SandcastleBuilder.PlugIns
         /// <param name="context">The current execution context</param>
         public void Execute(Utils.PlugIn.ExecutionContext context)
         {
-            StringBuilder sb = new StringBuilder(1024);
             string workingPath, configFilename;
             bool success;
 
@@ -249,27 +247,8 @@ namespace SandcastleBuilder.PlugIns
 
                     // Save the reflection file location as we need it later
                     vs.ReflectionFilename = workingPath + "reflection.xml";
-
-                    sb.AppendFormat("\"{0}ProductionTools\\XslTransform\" " +
-                        "/xsl:\"{0}ProductionTransforms\\ApplyVSDocModel.xsl\"," +
-                        "\"{0}ProductionTransforms\\AddFilenames.xsl\" " +
-                        "\"{1}reflection.org\" /out:\"{1}reflection.xml\" " +
-                        "/arg:IncludeAllMembersTopic=true " +
-                        "/arg:IncludeInheritedOverloadTopics=true\r\n", builder.SandcastleFolder, workingPath);
                 }
 
-                // Run the Transform step on the reflection.org files.  This adds some stuff the build
-                // components need.
-                sb.Insert(0, "@ECHO OFF\r\n");
-                workingPath = builder.WorkingFolder + "TransformReferences.bat";
-
-                using(StreamWriter sw = new StreamWriter(workingPath))
-                {
-                    sw.Write(sb.ToString());
-                }
-
-                builder.ReportProgress("\r\nTransforming reference reflection files...");
-                builder.RunProcess(workingPath, null);
                 return;
             }
 
@@ -526,7 +505,9 @@ namespace SandcastleBuilder.PlugIns
                 if(!String.IsNullOrEmpty(outDir) && outDir != @".\")
                     project.MSBuildOutDir = outDir;
 
-                buildProcess = new BuildProcess(project, true);
+                // Run the partial build through the transformation step as we need the document model
+                // applied and filenames added.
+                buildProcess = new BuildProcess(project, PartialBuildType.TransformReflectionInfo);
 
                 buildProcess.BuildStepChanged += buildProcess_BuildStepChanged;
 

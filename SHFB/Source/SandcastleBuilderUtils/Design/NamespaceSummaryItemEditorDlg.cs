@@ -2,8 +2,8 @@
 // System  : EWSoftware Design Time Attributes and Editors
 // File    : NamespaceSummaryItemEditorDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/15/2011
-// Note    : Copyright 2006-2011, Eric Woodruff, All rights reserved
+// Updated : 12/13/2013
+// Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the form used to edit namespace summaries and to indicate which namespaces should appear
@@ -264,7 +264,7 @@ namespace SandcastleBuilder.Utils.Design
                 // Add namespace group info, if present.  These are an abstract concept and aren't part of any
                 // assemblies.
                 foreach(XPathNavigator nsGroup in navDoc.Select("reflection/apis/api[starts-with(@id, 'G:') and " +
-                  "not(apidata/@subgroup='rootGroup')]/apidata"))
+                  "not(topicdata/@group='rootGroup')]/apidata"))
                 {
                     nsName = nsGroup.GetAttribute("name", String.Empty);
                     nsName = nsName + NamespaceComparer.GroupSuffix;
@@ -333,7 +333,7 @@ namespace SandcastleBuilder.Utils.Design
 
                 tempProject.OutputPath = tempPath;
 
-                buildProcess = new BuildProcess(tempProject, true);
+                buildProcess = new BuildProcess(tempProject, PartialBuildType.TransformReflectionInfo);
                 buildProcess.BuildStepChanged += buildProcess_BuildStepChanged;
                 buildProcess.BuildProgress += buildProcess_BuildProgress;
 

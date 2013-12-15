@@ -22,7 +22,6 @@
 	<xsl:variable name="languageFilterSection" select="boolean(string-length(/document/comments/example[normalize-space(.)]) > 0)" />
 
 	<xsl:template name="body">
-
 		<!-- auto-inserted info -->
 		<!-- <xsl:apply-templates select="/document/reference/attributes" /> -->
 		<xsl:apply-templates select="/document/comments/preliminary" />
@@ -31,11 +30,11 @@
 			<xsl:apply-templates select="/document/reference/elements" mode="overloadSummary" />
 		</xsl:if>
 		<!-- assembly information -->
-		<xsl:if test="not($group='list' or $group='root' or $group='namespace')">
+		<xsl:if test="not($group='list' or $group='root' or $group='namespace' or $group='namespaceGroup')">
 			<xsl:call-template name="requirementsInfo"/>
 		</xsl:if>
 		<!-- syntax -->
-		<xsl:if test="not($group='list' or $group='namespace')">
+		<xsl:if test="not($group='list' or $group='root' or $group='namespace' or $group='namespaceGroup')">
 			<xsl:apply-templates select="/document/syntax" />
 		</xsl:if>
 		<!-- members -->
@@ -45,6 +44,9 @@
 			</xsl:when>
 			<xsl:when test="$group='namespace'">
 				<xsl:apply-templates select="/document/reference/elements" mode="namespace" />
+			</xsl:when>
+			<xsl:when test="$group='namespaceGroup'">
+				<xsl:apply-templates select="/document/reference/elements" mode="namespaceGroup" />
 			</xsl:when>
 			<xsl:when test="$subgroup='enumeration'">
 				<xsl:apply-templates select="/document/reference/elements" mode="enumeration" />
@@ -83,7 +85,7 @@
 		<xsl:apply-templates select="/document/reference/family" />
 		<xsl:apply-templates select="/document/comments/threadsafety" />
 		<!--versions-->
-		<xsl:if test="not($group='list' or $group='namespace' or $group='root' )">
+		<xsl:if test="not($group='list' or $group='root' or $group='namespace' or $group='namespaceGroup')">
 			<xsl:apply-templates select="/document/reference/versions" />
 		</xsl:if>
 		<!-- bibliography -->
@@ -114,11 +116,6 @@
 	<xsl:template name="getOverloadSections">
 		<xsl:apply-templates select="overloads" mode="sections"/>
 	</xsl:template>
-
-	<xsl:template name="getInternalOnlyDescription">
-
-	</xsl:template>
-
 
 	<!-- block sections -->
 
@@ -302,7 +299,7 @@
 				</xsl:with-param>
 				<xsl:with-param name="content">
 					<div class="tableSection">
-						<table width="100%" cellspacing="2" cellpadding="5" frame="lhs" >
+						<table width="100%" cellspacing="2" cellpadding="5" frame="lhs">
 							<tr>
 								<th class="exceptionNameColumn">
 									<include item="exceptionNameHeader" />

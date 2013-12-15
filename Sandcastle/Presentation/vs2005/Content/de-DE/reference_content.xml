@@ -11,6 +11,7 @@
   <item id="rlTitle">{0} ({1})</item>
   <item id="rootTopicTitle">Namensräume</item>
 	<item id="namespaceTopicTitle">{0} Namensraum</item>
+  <item id="namespaceGroupTopicTitle">{0} Namensräume</item>
 	<item id="classTopicTitle">{0} Klasse</item>
 	<item id="structureTopicTitle">{0} Struktur</item>
 	<item id="interfaceTopicTitle">{0} Interface</item>
@@ -136,7 +137,7 @@
   <item id="implementsTitle">Implementiert</item>
 	<item id="examplesTitle">Beispiele</item>
 	<item id="threadSafetyTitle">Thread Sicherheit</item>
-	<item id="permissionsTitle">.NET Framework Sicherheit</item> 
+	<item id="permissionsTitle">.NET Framework Sicherheit</item>
 	<item id="namespacesTitle">Namensräume</item>
 	<item id="typesTitle">Typen</item>
   <item id="allMembersTitle">Member</item>
@@ -462,11 +463,6 @@
   <!-- First line of a param or retval description is a link to the type of the param or retval.
        This boilerplate is used if the type is a type parameter of the member's type. -->
   <item id="typeLinkToTypeParameter"><b>{0}</b> Typ-Parameter von {1}.</item>
-  
- <!-- Internal only Boilerplate text -->
-  <item id="internalOnly">Diese API unterstützt das .NET Framework Infrastruktur und sollte nicht direkt aus Ihrem Code heraus benutzt werden.</item>
-  <item id="infraStructure">Infrastruktur. </item>
-  
   
   <!-- Variance boilerplate text -->
   <item id="inKeyword"><span class="languageSpecificText"><span class="cs"><span class="keyword">in</span> </span><span class="vb"><span class="keyword">In</span> </span><span class="cpp"><span class="keyword">in</span> </span><span class="nu"><span class="keyword">in</span> </span><span class="fs"></span></span></item>

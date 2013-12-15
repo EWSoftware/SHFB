@@ -13,6 +13,7 @@
 	<item id="rootLink"><referenceLink target="R:Project">Namensräume</referenceLink></item>
   <item id="rootTopicTitle">Namensräume</item>
   <item id="namespaceTopicTitle">{0} Namensraum</item>
+  <item id="namespaceGroupTopicTitle">{0} Namensräume</item>
   <item id="definedBy">(Definiert von {0}.)</item>
 	<item id="inheritedFrom">(Vererbt von {0}.)</item>
 	<item id="overridesMember">(Überschreibt {0}.)</item>
@@ -30,6 +31,7 @@
   <item id="meta_mshelp_rlTitle">{0} ({1})</item>
   <item id="topicTitle_root"><include item="rootTopicTitle"/></item>
 	<item id="topicTitle_namespace"><include item="namespaceTopicTitle"><parameter>{0}</parameter></include></item>
+	<item id="topicTitle_namespaceGroup"><include item="namespaceGroupTopicTitle"><parameter>{0}</parameter></include></item>
 	<item id="topicTitle_class">{0} Klasse</item>
 	<item id="topicTitle_structure">{0} Struktur</item>
 	<item id="topicTitle_interface">{0} Schnittstelle</item>
@@ -217,10 +219,6 @@
        This boilerplate is used if the type is a type parameter of the member's type. -->
   <item id="typeLinkToTypeParameter"><b>{0}</b> Typparameter von {1}.</item>
   
-	<!-- Internal only boilerplate text -->
-  <item id="internalOnly">Diese API unterstützt die .NET Framework Infrastruktur und ist nicht dazu geeignet, sie direkt to be used directly from your code.</item>
-  <item id="infraStructure">Infrastruktur. </item>
-
 	<!-- Host protection boilerplate text -->
   <item id="text_hostProtectionAttribute">HostProtection Attribut. </item>
 	<item id="boilerplate_hostProtectionAttribute">Das <referenceLink target="T:System.Security.Permissions.HostProtectionAttribute"

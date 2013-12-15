@@ -28,7 +28,7 @@
 	<xsl:variable name="g_hasSeeAlsoSection"
 		select="boolean((count(/document/comments//seealso[not(ancestor::overloads)] |
 		/document/comments/conceptualLink |
-		/document/reference/elements/element/overloads//seealso) > 0)  or 
+		/document/reference/elements/element/overloads//seealso) > 0)  or
     ($g_apiTopicGroup='type' or $g_apiTopicGroup='member' or $g_apiTopicGroup='list'))"/>
 
 	<!-- ============================================================================================
@@ -36,7 +36,6 @@
 	============================================================================================= -->
 
 	<xsl:template name="t_body">
-
 		<!-- auto-inserted info -->
 		<xsl:apply-templates select="/document/comments/preliminary"/>
 		<xsl:apply-templates select="/document/comments/summary"/>
@@ -48,12 +47,12 @@
 		<xsl:apply-templates select="/document/reference/family"/>
 
 		<!-- assembly information -->
-		<xsl:if test="not($g_apiTopicGroup='list' or $g_apiTopicGroup='root' or $g_apiTopicGroup='namespace')">
+		<xsl:if test="not($g_apiTopicGroup='list' or $g_apiTopicGroup='root' or $g_apiTopicGroup='namespace' or $g_apiTopicGroup='namespaceGroup')">
 			<xsl:call-template name="t_putRequirementsInfo"/>
 		</xsl:if>
 
 		<!-- syntax -->
-		<xsl:if test="not($g_apiTopicGroup='list' or $g_apiTopicGroup='namespace')">
+		<xsl:if test="not($g_apiTopicGroup='list' or $g_apiTopicGroup='root' or $g_apiTopicGroup='namespace' or $g_apiTopicGroup='namespaceGroup')">
 			<xsl:apply-templates select="/document/syntax"/>
 		</xsl:if>
 
@@ -66,6 +65,9 @@
 			<xsl:when test="$g_apiTopicGroup='namespace'">
 				<xsl:apply-templates select="/document/reference/elements"
 														 mode="namespace"/>
+			</xsl:when>
+			<xsl:when test="$g_apiTopicGroup='namespaceGroup'">
+				<xsl:apply-templates select="/document/reference/elements" mode="namespaceGroup" />
 			</xsl:when>
 			<xsl:when test="$g_apiTopicSubGroup='enumeration'">
 				<xsl:apply-templates select="/document/reference/elements"
@@ -105,7 +107,7 @@
 		<!-- contracts -->
 		<xsl:call-template name="t_contracts"/>
 		<!--versions-->
-		<xsl:if test="not($g_apiTopicGroup='list' or $g_apiTopicGroup='namespace' or $g_apiTopicGroup='root' )">
+		<xsl:if test="not($g_apiTopicGroup='list' or $g_apiTopicGroup='root' or $g_apiTopicGroup='namespace' or $g_apiTopicGroup='namespaceGroup')">
 			<xsl:apply-templates select="/document/reference/versions"/>
 		</xsl:if>
 		<!-- permissions -->
@@ -1378,10 +1380,6 @@
 	<xsl:template name="t_getOverloadSections">
 		<xsl:apply-templates select="overloads"
 												 mode="sections"/>
-	</xsl:template>
-
-	<xsl:template name="t_getInternalOnlyDescription">
-
 	</xsl:template>
 
 	<!-- ============================================================================================

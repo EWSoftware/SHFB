@@ -141,8 +141,8 @@ namespace SandcastleBuilder.PlugIns
                         new ExecutionPoint(BuildStep.GenerateApiFilter, ExecutionBehaviors.InsteadOf),
                         new ExecutionPoint(BuildStep.GenerateReflectionInfo, ExecutionBehaviors.InsteadOf),
                         new ExecutionPoint(BuildStep.GenerateNamespaceSummaries, ExecutionBehaviors.InsteadOf),
-                        new ExecutionPoint(BuildStep.GenerateInheritedDocumentation, ExecutionBehaviors.InsteadOf),
                         new ExecutionPoint(BuildStep.TransformReflectionInfo, ExecutionBehaviors.InsteadOf),
+                        new ExecutionPoint(BuildStep.GenerateInheritedDocumentation, ExecutionBehaviors.InsteadOf),
                         new ExecutionPoint(BuildStep.MergeCustomConfigs, ExecutionBehaviors.After),
                         new ExecutionPoint(BuildStep.BuildReferenceTopics, ExecutionBehaviors.InsteadOf),
                     };

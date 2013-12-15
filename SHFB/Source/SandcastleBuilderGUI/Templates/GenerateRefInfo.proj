@@ -1,16 +1,15 @@
 ﻿<Project DefaultTargets="Generate" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
-	<!-- Sandcastle Help File Builder Tasks.  http://SHFB.CodePlex.com -->
-	<UsingTask TaskName="SandcastleBuilder.Utils.MSBuild.MRefBuilder"
-    AssemblyFile="$(SHFBROOT)\SandcastleBuilder.Utils.dll" />
-	<UsingTask TaskName="SandcastleBuilder.Utils.MSBuild.XslTransform"
-    AssemblyFile="$(SHFBROOT)\SandcastleBuilder.Utils.dll" />
+	<!-- Sandcastle Tools MSBuild Tasks.  http://SHFB.CodePlex.com -->
+	<UsingTask TaskName="Microsoft.Ddue.Tools.MSBuild.MRefBuilder"
+    AssemblyFile="{@SandcastlePath}\ProductionTools\MRefBuilder.exe" />
+	<UsingTask TaskName="Microsoft.Ddue.Tools.MSBuild.XslTransform"
+    AssemblyFile="{@SandcastlePath}\ProductionTools\XslTransform.exe" />
 
 	<!-- Task properties -->
 	<PropertyGroup>
 		<TargetFrameworkIdentifier>{@TargetFrameworkIdentifier}</TargetFrameworkIdentifier>
 		<TargetFrameworkVersion>v{@FrameworkVersionShort}</TargetFrameworkVersion>
 		<AddXamlSyntaxData>{@AddXamlSyntaxData}</AddXamlSyntaxData>
-		<SandcastlePath>{@SandcastlePath}</SandcastlePath>
 		<WorkingFolder>{@HtmlEncWorkingFolder}</WorkingFolder>
 		<ReferencePath Condition=" '$(ReferencePath)' == '' ">{@ReferencePath}</ReferencePath>
 	</PropertyGroup>
@@ -41,17 +40,17 @@
 				 ResolveReferences dependency target will resolve them to absolute paths that can be passed to
 				 MRefBuilder using the /dep command line option.  Assembly build items are added by the build
 				 process to define the assemblies to reflect. -->
-		<SandcastleBuilder.Utils.MSBuild.MRefBuilder
-      SandcastlePath="$(SandcastlePath)"
+		<Microsoft.Ddue.Tools.MSBuild.MRefBuilder
       WorkingFolder="$(WorkingFolder)"
+			ConfigurationFile="MRefBuilder.config"
+			ReflectionFilename="reflection.org"
       Assemblies="@(Assembly)"
       References="@(ReferencePath)" />
 
 		<!-- Merge duplicate topics (if any) and add XAML syntax data if needed -->
 		<Copy SourceFiles="reflection.org" DestinationFiles="reflection.all" />
 
-		<SandcastleBuilder.Utils.MSBuild.XslTransform
-      SandcastlePath="$(SandcastlePath)"
+		<Microsoft.Ddue.Tools.MSBuild.XslTransform
       WorkingFolder="$(WorkingFolder)"
       Transformations="ProductionTransforms\MergeDuplicates.xsl$(AddXamlSyntaxData)"
       InputFile="reflection.all"

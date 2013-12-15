@@ -6,11 +6,14 @@
 // Change history:
 // 02/16/2012 - EFW - Added support for setting a verbosity level.  Messages with a log level below
 // the current verbosity level are ignored.
+// 12/10/2013 - EFW - Added support for MSBuild logging
 
 using System;
-using System.IO;
 using System.Reflection;
 using System.Xml.XPath;
+
+using Microsoft.Build.Framework;
+using Microsoft.Build.Utilities;
 
 namespace Microsoft.Ddue.Tools.CommandLine
 {
@@ -29,6 +32,17 @@ namespace Microsoft.Ddue.Tools.CommandLine
         /// <value>The default level is <see cref="LogLevel.Info"/> so that all messages are displayed.
         /// Setting it to a higher level will suppress messages below the given level.</value>
         public static LogLevel VerbosityLevel { get; set; }
+
+        /// <summary>
+        /// This is used to set the MSBuild log to use for all messages output via the message writing methods
+        /// </summary>
+        /// <value>If null, the messages are written to the console</value>
+        public static TaskLoggingHelper Log { get; set; }
+
+        /// <summary>
+        /// This is used to set the tool name reported in warning and error messages when running under MSBuild
+        /// </summary>
+        public static string ToolName { get; set; }
         #endregion
 
         #region Methods
@@ -53,32 +67,6 @@ namespace Microsoft.Ddue.Tools.CommandLine
         }
 
         /// <summary>
-        /// This doesn't appear to be used anywhere and it's probably more efficient to use
-        /// <see cref="Directory.EnumerateFiles"/> instead anyway.
-        /// </summary>
-        /// <param name="filePattern">The file pattern to use</param>
-        /// <returns>An array of files matching the pattern</returns>
-        [Obsolete("Use Directory.EnumerateFiles instead")]
-        public static string[] GetFiles(string filePattern)
-        {
-            // get the full path to the relevent directory
-            string directoryPath = Path.GetDirectoryName(filePattern);
-
-            if((directoryPath == null) || (directoryPath.Length == 0))
-                directoryPath = Environment.CurrentDirectory;
-
-            directoryPath = Path.GetFullPath(directoryPath);
-
-            // get the file name, which may contain wildcards
-            string filePath = Path.GetFileName(filePattern);
-
-            // look up the files and load them
-            string[] files = Directory.GetFiles(directoryPath, filePath);
-
-            return files;
-        }
-
-        /// <summary>
         /// Write the name, version, and copyright information of the calling assembly
         /// </summary>
         public static void WriteBanner()
@@ -86,12 +74,18 @@ namespace Microsoft.Ddue.Tools.CommandLine
             Assembly application = Assembly.GetCallingAssembly();
             AssemblyName applicationData = application.GetName();
 
-            Console.WriteLine("{0} (v{1})", applicationData.Name, applicationData.Version);
+            if(Log != null)
+                Log.LogMessage("{0} (v{1})", applicationData.Name, applicationData.Version);
+            else
+                Console.WriteLine("{0} (v{1})", applicationData.Name, applicationData.Version);
 
             Object[] copyrightAttributes = application.GetCustomAttributes(typeof(AssemblyCopyrightAttribute), true);
 
             foreach(AssemblyCopyrightAttribute copyrightAttribute in copyrightAttributes)
-                Console.WriteLine(copyrightAttribute.Copyright);
+                if(Log != null)
+                    Log.LogMessage(copyrightAttribute.Copyright);
+                else
+                    Console.WriteLine(copyrightAttribute.Copyright);
         }
 
         /// <summary>
@@ -102,7 +96,10 @@ namespace Microsoft.Ddue.Tools.CommandLine
         public static void WriteMessage(LogLevel level, string message)
         {
             if(level >= VerbosityLevel)
-                Console.WriteLine("{0}: {1}", level, message);
+                if(Log != null)
+                    LogMessage(level, message);
+                else
+                    Console.WriteLine("{0}: {1}", level, message);
         }
 
         /// <summary>
@@ -110,13 +107,44 @@ namespace Microsoft.Ddue.Tools.CommandLine
         /// </summary>
         /// <param name="level">The log level of the message</param>
         /// <param name="format">The message format string</param>
-        /// <param name="arg">The list of arguments to format into the message</param>
-        public static void WriteMessage(LogLevel level, string format, params object[] arg)
+        /// <param name="args">The list of arguments to format into the message</param>
+        public static void WriteMessage(LogLevel level, string format, params object[] args)
         {
             if(level >= VerbosityLevel)
+                if(Log != null)
+                    LogMessage(level, format, args);
+                else
+                {
+                    Console.Write("{0}: ", level);
+                    Console.WriteLine(format, args);
+                }
+        }
+
+        /// <summary>
+        /// Write a formatted message to the MSBuild logger with the given parameters
+        /// </summary>
+        /// <param name="level">The log level of the message</param>
+        /// <param name="format">The message format string</param>
+        /// <param name="args">The list of arguments to format into the message</param>
+        private static void LogMessage(LogLevel level, string format, params object[] args)
+        {
+            switch(level)
             {
-                Console.Write("{0}: ", level);
-                Console.WriteLine(format, arg);
+                case LogLevel.Diagnostic:
+                    Log.LogMessage(MessageImportance.High, format, args);
+                    break;
+
+                case LogLevel.Warn:
+                    Log.LogWarning(null, null, null, ToolName, 0, 0, 0, 0, format, args);
+                    break;
+
+                case LogLevel.Error:
+                    Log.LogError(null, null, null, ToolName, 0, 0, 0, 0, format, args);
+                    break;
+
+                default:     // Info or unknown level
+                    Log.LogMessage(format, args);
+                    break;
             }
         }
         #endregion

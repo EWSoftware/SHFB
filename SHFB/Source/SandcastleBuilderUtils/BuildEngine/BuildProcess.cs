@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/23/2013
+// Updated : 12/13/2013
 // Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -54,7 +54,8 @@
 // 1.9.8.0  06/21/2013  EFW  Added support for format-specific help content files.  Removed the
 //                           ModifyHelpTopicFilenames build step.
 // 1.9.9.0  12/04/2013  EFW  Removed the ApplyVisibilityProperties build step.  Plug-ins can apply visibility
-//                           settings if needed by calling the ApplyVisibilityProperties() method.
+//                           settings if needed by calling the ApplyVisibilityProperties() method.  Added
+//                           support for namespace grouping based on changes submitted by Stazzz.
 //===============================================================================================================
 
 using System;
@@ -107,9 +108,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
         // The log file stream
         private StreamWriter swLog;
-
-        // Partial build flag for obtaining API information
-        private bool isPartialBuild, suppressApiFilter;
 
         // Build output file lists
         private Collection<string> help1Files, help2Files, helpViewerFiles, websiteFiles;
@@ -304,15 +302,12 @@ namespace SandcastleBuilder.Utils.BuildEngine
         }
 
         /// <summary>
-        /// This read-only property is used to get the partial build flag
+        /// This read-only property is used to get the partial build type
         /// </summary>
         /// <remarks>Partial builds occur when editing the namespace summaries, editing the API filter, and as
-        /// part of some plug-ins and may not require all build options.  In a partial build, build steps after
-        /// <c>GenerateNamespaceSummaries</c> are not executed.</remarks>
-        public bool IsPartialBuild
-        {
-            get { return isPartialBuild; }
-        }
+        /// part of some plug-ins that do not require all build options.  In a partial build, build steps after
+        /// the point indicated by this property are not executed and the build stops.</remarks>
+        public PartialBuildType PartialBuildType { get; private set; }
 
         /// <summary>
         /// This is used to get the conceptual content settings in effect for the build
@@ -370,11 +365,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// </summary>
         /// <value>By default, it is not suppressed and the API filter will be applied.  The API Filter designer
         /// uses this to suppress the filter so that all members are obtained.</value>
-        public bool SuppressApiFilter
-        {
-            get { return suppressApiFilter; }
-            set { suppressApiFilter = value; }
-        }
+        public bool SuppressApiFilter { get; set; }
 
         /// <summary>
         /// This is used to get or set the table of contents parent for the API content
@@ -539,10 +530,10 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// Constructor
         /// </summary>
         /// <param name="buildProject">The project to build</param>
-        /// <param name="partialBuild">Pass true to perform a partial build</param>
-        public BuildProcess(SandcastleProject buildProject, bool partialBuild) : this(buildProject)
+        /// <param name="partialBuildType">The partial build type to perform</param>
+        public BuildProcess(SandcastleProject buildProject, PartialBuildType partialBuildType) : this(buildProject)
         {
-            isPartialBuild = partialBuild;
+            this.PartialBuildType = partialBuildType;
         }
         #endregion
 
@@ -940,35 +931,61 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     if(project.FrameworkVersion.StartsWith("Silverlight", StringComparison.OrdinalIgnoreCase) &&
                       msBuildExePath.IndexOf("Framework64", StringComparison.OrdinalIgnoreCase) != -1)
                         this.RunProcess(msBuildExePath.Replace("Framework64", "Framework"),
-                            "/nologo /clp:NoSummary /v:m GenerateRefInfo.proj");
+                            "/nologo /clp:NoSummary /v:n GenerateRefInfo.proj");
                     else
-                        this.RunProcess(msBuildExePath, "/nologo /clp:NoSummary /v:m GenerateRefInfo.proj");
+                        this.RunProcess(msBuildExePath, "/nologo /clp:NoSummary /v:n GenerateRefInfo.proj");
 
                     this.ExecutePlugIns(ExecutionBehaviors.After);
                 }
 
+                // If this was a partial build used to obtain API information, stop now
+                if(this.PartialBuildType == PartialBuildType.GenerateReflectionInfo)
+                {
+                    commentsFiles.Save();
+                    goto AllDone;       // Yeah, I know it's evil but it's quick
+                }
+
+                // Transform the reflection output based on the document model and create the topic manifest
+                this.ReportProgress(BuildStep.TransformReflectionInfo, "Transforming reflection output...");
+
+                if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
+                {
+                    scriptFile = this.TransformTemplate("TransformManifest.proj", templateFolder, workingFolder);
+
+                    this.ExecutePlugIns(ExecutionBehaviors.Before);
+                    this.RunProcess(msBuildExePath, "/nologo /clp:NoSummary /v:n TransformManifest.proj");
+
+                    // Change the reflection file extension before running the ExecutionBehaviors.After plug-ins
+                    // so that the plug-ins (if any) get the correct filename.
+                    reflectionFile = Path.ChangeExtension(reflectionFile, ".xml");
+
+                    this.ExecutePlugIns(ExecutionBehaviors.After);
+                }
+                else
+                    reflectionFile = Path.ChangeExtension(reflectionFile, ".xml");
+
+                // If this was a partial build used to obtain information for namespace and namespace group
+                // comments, stop now.
+                if(this.PartialBuildType == PartialBuildType.TransformReflectionInfo)
+                {
+                    commentsFiles.Save();
+                    goto AllDone;       // Yeah, I know it's evil but it's quick
+                }
+
+                // Load the transformed reflection information file
+                reflectionFile = workingFolder + "reflection.xml";
+
                 reflectionInfo = new XmlDocument();
                 reflectionInfo.Load(reflectionFile);
                 apisNode = reflectionInfo.SelectSingleNode("reflection/apis");
-
-                // Generate namespace summary information
-                this.GenerateNamespaceSummaries();
 
                 // If there is nothing to document, stop the build
                 if(apisNode.ChildNodes.Count == 0)
                     throw new BuilderException("BE0033", "No APIs found to document.  See error topic in " +
                         "help file for details.");
 
-                reflectionInfo = null;
-                apisNode = null;
-
-                // If this was a partial build used to obtain API information,
-                // stop now.
-                if(isPartialBuild)
-                {
-                    commentsFiles.Save();
-                    goto AllDone;       // Yeah, I know it's evil but it's quick
-                }
+                // Generate namespace summary information
+                this.GenerateNamespaceSummaries();
 
                 // Expand <inheritdoc /> tags?
                 if(commentsFiles.ContainsInheritedDocumentation)
@@ -993,33 +1010,9 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     commentsFiles.Add(new XmlCommentsFile(workingFolder + "_InheritedDocs_.xml"));
                 }
 
-                this.GarbageCollect();
-
-                // Transform the reflection output.
-                this.ReportProgress(BuildStep.TransformReflectionInfo, "Transforming reflection output...");
-
-                if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
-                {
-                    scriptFile = this.TransformTemplate("TransformManifest.proj", templateFolder, workingFolder);
-
-                    this.ExecutePlugIns(ExecutionBehaviors.Before);
-                    this.RunProcess(msBuildExePath, "/nologo /clp:NoSummary /v:m TransformManifest.proj");
-
-                    // Change the reflection file extension before running the ExecutionBehaviors.After plug-ins
-                    // so that the plug-ins (if any) get the correct filename.
-                    reflectionFile = Path.ChangeExtension(reflectionFile, ".xml");
-
-                    this.ExecutePlugIns(ExecutionBehaviors.After);
-                }
-                else
-                    reflectionFile = Path.ChangeExtension(reflectionFile, ".xml");
-
-                // Load the transformed file
-                reflectionInfo = new XmlDocument();
-                reflectionInfo.Load(reflectionFile);
-                apisNode = reflectionInfo.SelectSingleNode("reflection/apis");
-
                 commentsFiles.Save();
+
+                this.GarbageCollect();
 
                 this.EnsureOutputFoldersExist("html");
 
@@ -1074,7 +1067,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                     this.ExecutePlugIns(ExecutionBehaviors.Before);
 
-                    this.RunProcess(msBuildExePath, "/nologo /clp:NoSummary /v:m GenerateIntermediateTOC.proj");
+                    this.RunProcess(msBuildExePath, "/nologo /clp:NoSummary /v:n GenerateIntermediateTOC.proj");
 
                     // Determine the API content placement
                     this.DetermineApiContentPlacement();
@@ -1343,7 +1336,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         scriptFile = this.TransformTemplate("Generate2xTOC.proj", templateFolder, workingFolder);
 
                         this.ExecutePlugIns(ExecutionBehaviors.Before);
-                        this.RunProcess(msBuildExePath, "/nologo /clp:NoSummary /v:m Generate2xTOC.proj");
+                        this.RunProcess(msBuildExePath, "/nologo /clp:NoSummary /v:n Generate2xTOC.proj");
                         this.ExecutePlugIns(ExecutionBehaviors.After);
                     }
 

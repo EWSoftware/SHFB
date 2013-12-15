@@ -111,6 +111,7 @@
     <Compile Include="BuildComponent\ComponentPosition.cs" />
     <Compile Include="BuildEngine\FrameworkCommentsFileLocation.cs" />
     <Compile Include="BuildEngine\MSHCPackage.cs" />
+    <Compile Include="BuildEngine\PartialBuildType.cs" />
     <Compile Include="BuilderException.cs" />
     <Compile Include="BuildEngine\BuildProcess.HelpFileUtils.cs" />
     <Compile Include="BuildEngine\BuildProcess.MSHelp2.cs" />
@@ -237,9 +238,7 @@
     <Compile Include="MSBuild\BuildAssembler.cs" />
     <Compile Include="MSBuild\BuildHelp.cs" />
     <Compile Include="MSBuild\CleanHelp.cs" />
-    <Compile Include="MSBuild\MRefBuilder.cs" />
     <Compile Include="MSBuild\MSBuildProject.cs" />
-    <Compile Include="MSBuild\XslTransform.cs" />
     <Compile Include="MSHelpAttr.cs" />
     <Compile Include="MSHelpAttrCollection.cs" />
     <Compile Include="HelpFileFormat.cs" />

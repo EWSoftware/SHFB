@@ -254,7 +254,8 @@
             // 
             // txtCatalogName
             // 
-            this.epNotes.SetError(this.txtCatalogName, "Typically left set to the default, \"VisualStudio11\"");
+            this.epNotes.SetError(this.txtCatalogName, "For Visual Studio 2012 use \"VisualStudio11\".  For Visual Studio 2013 use \"VisualS" +
+        "tudio12\".");
             this.epNotes.SetIconPadding(this.txtCatalogName, 5);
             this.txtCatalogName.Location = new System.Drawing.Point(279, 83);
             this.txtCatalogName.Name = "txtCatalogName";
@@ -269,7 +270,7 @@
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(267, 23);
             this.label11.TabIndex = 4;
-            this.label11.Text = "Help Viewer 2.0 content catalog name";
+            this.label11.Text = "Help Viewer 2.x content catalog name";
             this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // MSHelpViewerPropertiesPageControl

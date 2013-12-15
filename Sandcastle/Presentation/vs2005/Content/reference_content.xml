@@ -8,7 +8,8 @@
   <item id="tocTitle">{0}</item>
   <item id="rlTitle">{0} ({1})</item>
   <item id="rootTopicTitle">Namespaces</item>
-	<item id="namespaceTopicTitle">{0} Namespace</item>
+  <item id="namespaceTopicTitle">{0} Namespace</item>
+  <item id="namespaceGroupTopicTitle">{0} Namespaces</item>
 	<item id="classTopicTitle">{0} Class</item>
 	<item id="structureTopicTitle">{0} Structure</item>
 	<item id="interfaceTopicTitle">{0} Interface</item>
@@ -134,7 +135,7 @@
   <item id="implementsTitle">Implements</item>
 	<item id="examplesTitle">Examples</item>
 	<item id="threadSafetyTitle">Thread Safety</item>
-	<item id="permissionsTitle">.NET Framework Security</item> 
+	<item id="permissionsTitle">.NET Framework Security</item>
 	<item id="namespacesTitle">Namespaces</item>
 	<item id="typesTitle">Types</item>
   <item id="allMembersTitle">Members</item>
@@ -155,7 +156,7 @@
   <item id="interfaceNameHeader">Interface</item>
   <item id="delegateNameHeader">Delegate</item>
   <item id="enumerationNameHeader">Enumeration</item>
-  
+
 	<item id="typeNameHeader">Name</item>
 	<item id="typeDescriptionHeader">Description</item>
 	<item id="memberIconHeader">Icon</item>
@@ -463,11 +464,6 @@
        This boilerplate is used if the type is a type parameter of the member's type. -->
   <item id="typeLinkToTypeParameter"><b>{0}</b> type parameter of {1}.</item>
   
- <!-- Internal only Boilerplate text -->
-  <item id="internalOnly">This API supports the .NET Framework infrastructure and is not intended to be used directly from your code.</item>
-  <item id="infraStructure">Infrastructure. </item>
-  
-  
   <!-- Variance boilerplate text -->
   <item id="inKeyword"><span class="languageSpecificText"><span class="cs"><span class="keyword">in</span> </span><span class="vb"><span class="keyword">In</span> </span><span class="cpp"><span class="keyword">in</span> </span><span class="nu"><span class="keyword">in</span> </span><span class="fs"></span></span></item>
   <item id="outKeyword"><span class="languageSpecificText"><span class="cs"><span class="keyword">out</span> </span><span class="vb"><span class="keyword">Out</span> </span><span class="cpp"><span class="keyword">out</span> </span><span class="nu"><span class="keyword">out</span> </span><span class="fs"></span></span></item>
@@ -484,7 +480,7 @@
   <item id="typeSecurityCriticalBoilerplate">This type has a SecurityCriticalAttribute attribute, which restricts it to internal use by the .NET Framework for Silverlight class library. Application code that uses any member of this type throws a MethodAccessException.</item>
   <item id="memberSecurityCriticalBoilerplate">This member has a SecurityCriticalAttribute attribute, which restricts it to internal use by the .NET Framework for Silverlight class library. Application code that uses this member throws a MethodAccessException.</item>
   <item id="securityCritical">[SECURITY CRITICAL] </item>
-  
+
   <!-- Overload page boilerplate -->
   <item id="overloadSummary">This member is overloaded. For complete information about this member, including syntax, usage, and examples, click a name in the overload list.</item>
        

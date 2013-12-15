@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : HierarchicalTocPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/18/2013
+// Updated : 12/14/2013
 // Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -21,6 +21,7 @@
 // 1.8.0.0  07/22/2008  EFW  Fixed bug caused by root namespace container
 // 1.9.0.0  06/22/2010  EFW  Suppressed use in MS Help Viewer output due to the way the TOC is generated in
 //                           those files.
+// 1.9.9.0  12/14/2013  EFW  Deprecated.  Use the namespace grouping project options instead.
 //===============================================================================================================
 
 using System;
@@ -42,6 +43,7 @@ namespace SandcastleBuilder.PlugIns
     /// This plug-in class can be used to rearrange the table of contents such that namespaces are nested within
     /// their parent namespaces rather than appearing as a flat list of all namespaces at the root level.
     /// </summary>
+    /// <remarks>This plug-in has been deprecated.  Use the namespace grouping project options instead.</remarks>
     public class HierarchicalTocPlugIn : IPlugIn
     {
         #region Private data members
@@ -106,7 +108,8 @@ namespace SandcastleBuilder.PlugIns
             {
                 return "This plug-in can be used to rearrange the table of contents such that namespaces are " +
                     "nested within their parent namespaces rather than appearing as a flat list of all " +
-                    "namespaces at the root level.";
+                    "namespaces at the root level.\r\n\r\nNOTE:  This plug-in has been deprecated.  Use the " +
+                    "namespace grouping project options instead";
             }
         }
 
@@ -178,40 +181,52 @@ namespace SandcastleBuilder.PlugIns
 
             builder.ReportProgress("{0} Version {1}\r\n{2}", this.Name, this.Version, this.Copyright);
 
-            // The Hierarchical TOC plug-in is not compatible with MS Help Viewer output and there is currently
-            // no fix available.  The problem is that the table of contents is generated off of the help topics
-            // when the help viewer file is installed and, since there are no physical topics for the namespace
-            // nodes added to the intermediate TOC file by the plug-in, they do not appear in the help file.
-            // Updating the plug-in to support help viewer output would have required more work than time would
-            // allow for this release.  If building other output formats in which you want to use the plug-in,
-            // build them separately from the MS Help Viewer output.
+            // This plug-in cannot be used if the namespace grouping option is enabled as that replaces this
+            // plug-in.
+            if(builder.CurrentProject.NamespaceGrouping)
+            {
+                this.ExecutionPoints.Clear();
+
+                builder.ReportWarning("HTP0001", "The project being built has namespace grouping enabled which " +
+                    "supersedes the Hierarchical TOC Plug-In.  The plug-in will not be used in this build.");
+                return;
+            }
+
+            // The Hierarchical TOC plug-in is not compatible with MS Help Viewer output.  The problem is that
+            // the table of contents is generated off of the help topics when the help viewer file is installed
+            // and, since there are no physical topics for the namespace nodes added to the intermediate TOC file
+            // by the plug-in, they do not appear in the help file.
+            //
+            // The project namespace grouping options supersede this plug-in and fix the above issue as topics
+            // are generated for the namespace group entries.  As such, this plug-in is deprecated and will not
+            // receive further changes.  It will available for the time being to support the older presentation
+            // styles that do not support MS Help Viewer output or the namespace grouping project options.
             if((builder.CurrentProject.HelpFileFormat & HelpFileFormat.MSHelpViewer) != 0)
             {
                 this.ExecutionPoints.Clear();
 
                 builder.ReportWarning("HTP0002", "This build produces MS Help Viewer output with which the " +
                     "Hierarchical TOC Plug-In is not compatible.  It will not be used in this build.");
+                return;
             }
-            else
+
+            // Load the configuration
+            root = configuration.SelectSingleNode("configuration/toc");
+
+            if(root != null)
             {
-                // Load the configuration
-                root = configuration.SelectSingleNode("configuration/toc");
+                option = root.GetAttribute("minParts", String.Empty);
 
-                if(root != null)
-                {
-                    option = root.GetAttribute("minParts", String.Empty);
+                if(!String.IsNullOrEmpty(option))
+                    minParts = Convert.ToInt32(option, CultureInfo.InvariantCulture);
 
-                    if(!String.IsNullOrEmpty(option))
-                        minParts = Convert.ToInt32(option, CultureInfo.InvariantCulture);
+                if(minParts < 1)
+                    minParts = 1;
 
-                    if(minParts < 1)
-                        minParts = 1;
+                option = root.GetAttribute("insertBelow", String.Empty);
 
-                    option = root.GetAttribute("insertBelow", String.Empty);
-
-                    if(!String.IsNullOrEmpty(option))
-                        insertBelow = Convert.ToBoolean(option, CultureInfo.InvariantCulture);
-                }
+                if(!String.IsNullOrEmpty(option))
+                    insertBelow = Convert.ToBoolean(option, CultureInfo.InvariantCulture);
             }
         }
 
@@ -241,7 +256,7 @@ namespace SandcastleBuilder.PlugIns
                 topicTitle = tocEntry.InnerText;
             else
             {
-                builder.ReportWarning("HTP0001", "Unable to locate namespace topic title in reference " +
+                builder.ReportWarning("HTP0003", "Unable to locate namespace topic title in reference " +
                     "content file.  Using default.");
                 topicTitle = "{0} Namespace";
             }

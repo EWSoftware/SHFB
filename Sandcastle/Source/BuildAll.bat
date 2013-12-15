@@ -15,6 +15,7 @@ DEL /Q %OUTDIR%
 "%WINDIR%\Microsoft.Net\Framework\v4.0.30319\msbuild.exe" "BuildAssembler\BuildAssembler\BuildAssembler.csproj" /t:Clean;Build /p:Configuration=Release;Platform=AnyCPU;OutDir=%OUTDIR%
 "%WINDIR%\Microsoft.Net\Framework\v4.0.30319\msbuild.exe" "ChmBuilder\ChmBuilder.csproj" /t:Clean;Build /p:Configuration=Release;Platform=AnyCPU;OutDir=%OUTDIR%
 "%WINDIR%\Microsoft.Net\Framework\v4.0.30319\msbuild.exe" "DBCSFix\DBCSFix.csproj" /t:Clean;Build /p:Configuration=Release;Platform=AnyCPU;OutDir=%OUTDIR%
+"%WINDIR%\Microsoft.Net\Framework\v4.0.30319\msbuild.exe" "AddNamespaceGroups\AddNamespaceGroups.csproj" /t:Clean;Build /p:Configuration=Release;Platform=AnyCPU;OutDir=%OUTDIR%
 "%WINDIR%\Microsoft.Net\Framework\v4.0.30319\msbuild.exe" "AggregateByNamespace\AggregateByNamespace.csproj" /t:Clean;Build /p:Configuration=Release;Platform=AnyCPU;OutDir=%OUTDIR%
 "%WINDIR%\Microsoft.Net\Framework\v4.0.30319\msbuild.exe" "SegregateByAssembly\SegregateByAssembly.csproj" /t:Clean;Build /p:Configuration=Release;Platform=AnyCPU;OutDir=%OUTDIR%
 "%WINDIR%\Microsoft.Net\Framework\v4.0.30319\msbuild.exe" "SegregateByNamespace\SegregateByNamespace.csproj" /t:Clean;Build /p:Configuration=Release;Platform=AnyCPU;OutDir=%OUTDIR%

@@ -174,7 +174,8 @@
             this.cboHelpViewerVersion.FormattingEnabled = true;
             this.cboHelpViewerVersion.Items.AddRange(new object[] {
             "1.0",
-            "2.0"});
+            "2.0",
+            "2.1"});
             this.cboHelpViewerVersion.Location = new System.Drawing.Point(402, 194);
             this.cboHelpViewerVersion.Name = "cboHelpViewerVersion";
             this.cboHelpViewerVersion.Size = new System.Drawing.Size(59, 24);

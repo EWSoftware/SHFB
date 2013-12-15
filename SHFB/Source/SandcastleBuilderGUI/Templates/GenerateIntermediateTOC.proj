@@ -1,11 +1,10 @@
 ﻿<Project DefaultTargets="Generate" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
-	<!-- Sandcastle Help File Builder Tasks.  http://SHFB.CodePlex.com -->
-	<UsingTask TaskName="SandcastleBuilder.Utils.MSBuild.XslTransform"
-		AssemblyFile="$(SHFBROOT)\SandcastleBuilder.Utils.dll" />
+	<!-- Sandcastle Tools MSBuild Tasks.  http://SHFB.CodePlex.com -->
+	<UsingTask TaskName="Microsoft.Ddue.Tools.MSBuild.XslTransform"
+    AssemblyFile="{@SandcastlePath}\ProductionTools\XslTransform.exe" />
 
 	<!-- Task properties -->
 	<PropertyGroup>
-		<SandcastlePath>{@SandcastlePath}</SandcastlePath>
 		<WorkingFolder>{@HtmlEncWorkingFolder}</WorkingFolder>
 		<TocTransformation>{@TocTransformation}</TocTransformation>
 		<TocTransformParameters>{@TocTransformParameters}</TocTransformParameters>
@@ -25,8 +24,7 @@
 	<!-- The Generate Intermediate TOC target -->
 	<Target Name="GenerateIntermediateTOC">
 		<!-- Transform the reflection output based on the presentation style -->
-		<SandcastleBuilder.Utils.MSBuild.XslTransform
-			SandcastlePath="$(SandcastlePath)"
+		<Microsoft.Ddue.Tools.MSBuild.XslTransform
 			WorkingFolder="$(WorkingFolder)"
 			Transformations="$(TocTransformation)"
 			Arguments="$(TocTransformParameters)"

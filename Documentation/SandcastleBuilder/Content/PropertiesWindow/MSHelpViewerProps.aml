@@ -46,13 +46,16 @@ installation script.  If not set, it defaults to "100" to use the standard Visua
 </section>
 
 <section address="CatalogName">
-	<title>Help Viewer 2.0 content catalog name (CatalogName)</title>
+	<title>Help Viewer 2.x content catalog name (CatalogName)</title>
 	<content>
-		<para>This property is used to specify the MS Help Viewer 2.0 content catalog name to use for the
-installation script.  If not set, it defaults to "VisualStudio11" to use the standard Visual Studio catalog.</para>
+		<para>This property is used to specify the MS Help Viewer 2.x content catalog name to use for the
+installation script.  If not set, it defaults to "VisualStudio11" to use the standard Visual Studio 2012
+catalog.  If using Visual Studio 2013, use "VisualStudio12" for the catalog name instead.</para>
 
 		<alert class="note">
-			<para>This should typically be left set to the default value.</para>
+			<para>Be sure to set this to the appropriate catalog name when installing and removing the content from
+the standalone GUI or the Visual Studio package.  When using the command line tool, specify the appropriate
+version using the <replaceable>viewerVersion</replaceable> option.</para>
 		</alert>
 	</content>
 </section>

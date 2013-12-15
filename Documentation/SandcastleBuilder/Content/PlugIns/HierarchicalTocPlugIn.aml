@@ -1,84 +1,84 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <topic id="aa7bcd07-1a86-42dc-9f1d-49bd4afeb5d2" revisionNumber="1">
-  <developerConceptualDocument
+	<developerConceptualDocument
     xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
     xmlns:xlink="http://www.w3.org/1999/xlink">
 
-    <introduction>
-<alert class="note">
-  <para>The Hierarchical TOC plug-in is not compatible with MS Help Viewer output
-and there is currently no fix available.  The problem is that the table of contents is
-generated off of the help topics when the help viewer file is installed and, since there
-are no physical topics for the namespace nodes added to the intermediate TOC file by the
-plug-in, they do not appear in the help file.  Updating the plug-in to support help
-viewer output would have required more work than time would allow for this release.
-If building other output formats in which you want to use the plug-in, build them
-separately from the MS Help Viewer output.</para>
-</alert>
+		<introduction>
+			<alert class="note">
+				<para>The Hierarchical TOC plug-in is not compatible with MS Help Viewer output.  The problem is that the
+table of contents is generated off of the help topics when the help viewer file is installed and, since there are
+no physical topics for the namespace nodes added to the intermediate TOC file by the plug-in, they do not appear
+in the help file.</para>
 
-      <para>This plug-in can be used to rearrange the table of contents such
-that namespaces are nested within their parent namespaces rather than appearing
-as a flat list of all namespaces at the root level.  The plug-in has two
-configuration options:</para>
-    </introduction>
+				<para>The project namespace grouping options supersede this plug-in and fix the above issue as topics are
+generated for the namespace group entries.  As such, this plug-in is deprecated and will not receive further
+changes.  It will be available for the time being to support the older presentation styles that do not support MS
+Help Viewer output or the namespace grouping project options.</para>
+			</alert>
 
-<section>
-  <content>
-<definitionTable>
-  <definedTerm>Create containers for common root namespaces with more than [N]
-part(s)</definedTerm>
-  <definition><para>This option lets you specify at what level container
-namespace entries should start being created for namespaces with a common root
-namespace.  By default, entries in the table of contents are only created for
-namespaces with content. For example, consider the following namespaces in a
-table of contents:</para>
+			<para>This plug-in can be used to rearrange the table of contents such that namespaces are nested within
+their parent namespaces rather than appearing as a flat list of all namespaces at the root level.  The plug-in
+has two configuration options:</para>
+		</introduction>
 
-<list class="bullet">
-    <listItem>MyCompany.MyProduct</listItem>
-    <listItem>MyCompany.MyProduct.Web.Controls</listItem>
-    <listItem>MyCompany.MyProduct.Web.Design</listItem>
-    <listItem>MyCompany.MyProduct.Windows.Forms</listItem>
-</list>
+		<section>
+			<content>
+				<definitionTable>
+					<definedTerm>Create containers for common root namespaces with more than [N] part(s)</definedTerm>
+					<definition>
+						<para>This option lets you specify at what level container namespace entries should start being
+created for namespaces with a common root namespace.  By default, entries in the table of contents are only
+created for namespaces with content. For example, consider the following namespaces in a table of contents:</para>
 
-<para>Since no classes exist in the <codeInline>MyCompany.MyProduct.Web</codeInline>
-or <codeInline>MyCompany.MyProduct.Windows</codeInline> namespaces, no
-namespace entries exists for them.  When this option is set to two, the
-default, the plug-in will create a container namespace in the table of contents
-called <codeInline>MyCompany.MyProduct.Web</codeInline> and will nest the
-<codeInline>MyCompany.MyProduct.Web.Controls</codeInline> and
-<codeInline>MyCompany.MyProduct.Web.Design</codeInline> namespaces beneath it.
-The created container will have no page associated with it as it just serves to
-further group the namespaces with a common root name.  This will only occur if
-two or more namespaces would appear.  Since there would only be one namespace
-under <codeInline>MyCompany.MyProduct.Windows</codeInline>, no container entry
-is created for it.</para>
+						<list class="bullet">
+							<listItem>
+								<para>MyCompany.MyProduct</para>
+							</listItem>
+							<listItem>
+								<para>MyCompany.MyProduct.Web.Controls</para>
+							</listItem>
+							<listItem>
+								<para>MyCompany.MyProduct.Web.Design</para>
+							</listItem>
+							<listItem>
+								<para>MyCompany.MyProduct.Windows.Forms</para>
+							</listItem>
+						</list>
 
-<para>If set to one, an additional container for the <codeInline>MyCompany</codeInline>
-namespace would be created at the root level and all of the other namespaces
-would be nested below it.  The <codeInline>MyCompany.MyProduct.Web</codeInline>
-namespace container would also be created as before.  By setting the number to
-a higher value, you can delay the point at which it creates the containers or
-prevent it from doing so altogether.  For example, if set to three in the above
-example, the additional <codeInline>MyCompany.MyProduct.Web</codeInline>
-container would not be created and, since there are no common root namespaces
-with four or more parts no other additional containers would be created
-either.</para>
-</definition>
-  
-  <definedTerm>Insert nested namespaces below the parent namespace's content</definedTerm>
-  <definition><para>As its name implies, if this option is checked, the nested
-namespaces will be inserted below the parent namespace's content.  If
-unchecked, the default, the namespaces are inserted ahead of the parent's
-content.</para></definition>
+						<para>Since no classes exist in the <codeInline>MyCompany.MyProduct.Web</codeInline> or
+<codeInline>MyCompany.MyProduct.Windows</codeInline> namespaces, no namespace entries exists for them.  When this
+option is set to two, the default, the plug-in will create a container namespace in the table of contents called
+<codeInline>MyCompany.MyProduct.Web</codeInline> and will nest the <codeInline>MyCompany.MyProduct.Web.Controls</codeInline>
+and <codeInline>MyCompany.MyProduct.Web.Design</codeInline> namespaces beneath it.  The created container will
+have no page associated with it as it just serves to further group the namespaces with a common root name.  This
+will only occur if two or more namespaces would appear.  Since there would only be one namespace under
+<codeInline>MyCompany.MyProduct.Windows</codeInline>, no container entry is created for it.</para>
 
-</definitionTable>
+						<para>If set to one, an additional container for the <codeInline>MyCompany</codeInline> namespace
+would be created at the root level and all of the other namespaces would be nested below it.  The
+<codeInline>MyCompany.MyProduct.Web</codeInline> namespace container would also be created as before.  By
+setting the number to a higher value, you can delay the point at which it creates the containers or prevent it
+from doing so altogether.  For example, if set to three in the above example, the additional
+<codeInline>MyCompany.MyProduct.Web</codeInline> container would not be created and, since there are no common
+root namespaces with four or more parts no other additional containers would be created either.</para>
+					</definition>
 
-  </content>
-</section>
+					<definedTerm>Insert nested namespaces below the parent namespace's content</definedTerm>
+					<definition>
+						<para>As its name implies, if this option is checked, the nested namespaces will be inserted below
+the parent namespace's content.  If unchecked, the default, the namespaces are inserted ahead of the parent's
+content.</para>
+					</definition>
 
-    <relatedTopics>
-    <link xlink:href="e031b14e-42f0-47e1-af4c-9fed2b88cbc7" />
-    </relatedTopics>
+				</definitionTable>
 
-  </developerConceptualDocument>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="e031b14e-42f0-47e1-af4c-9fed2b88cbc7" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
 </topic>

@@ -86,6 +86,9 @@
 &lt;p/&gt;Test of the &amp;lt;inheritdoc /&amp;gt; tag in namespace comments.  The stuff from the &lt;b&gt;TestDoc&lt;/b&gt; namespace should be above this paragraph.</NamespaceSummaryItem>
       <NamespaceSummaryItem name="TestDoc.IndexTocBugs" isDocumented="True">CHM duplicate index keyword test and &amp;lt;see&amp;gt;/&amp;lt;seealso&amp;gt; inner text tests.</NamespaceSummaryItem>
       <NamespaceSummaryItem name="TestNamespace" isDocumented="True">This namespace contains the class from the Sandcastle tools examples.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="TestDoc.Generics (Group)" isGroup="True" isDocumented="True">These namespaces contain various tests for documenting generic types.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="TestDoc.HierarchicalToc (Group)" isGroup="True" isDocumented="True">These namespaces are used to test the namespace grouping support.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="TestDoc (Group)" isGroup="True" isDocumented="True">These namespaces contain various classes used to test the Sandcastle Help File Builder and the Sandcastle tools.</NamespaceSummaryItem>
     </NamespaceSummaries>
     <PlugInConfigurations>
       <PlugInConfig id="Additional Content Only" enabled="False">
@@ -139,6 +142,9 @@
       <Argument Key="logoPlacement" Value="left" />
       <Argument Key="logoAlignment" Value="left" />
     </TransformComponentArguments>
+    <MaximumGroupParts>2</MaximumGroupParts>
+    <NamespaceGrouping>True</NamespaceGrouping>
+    <CatalogName>VisualStudio12</CatalogName>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in
        order for Visual Studio to perform the build.  The others are optional

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : ScriptSharpPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/05/2013
+// Updated : 12/12/2013
 // Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -374,11 +374,7 @@ namespace SandcastleBuilder.PlugIns
             task.Attributes.Append(attr);
             target.AppendChild(task);
 
-            task = project.CreateElement("XslTransform", nsm.LookupNamespace("MSBuild"));
-            attr = project.CreateAttribute("SandcastlePath");
-            attr.Value = "$(SandcastlePath)";
-            task.Attributes.Append(attr);
-
+            task = project.CreateElement("Microsoft.Ddue.Tools.MSBuild.XslTransform", nsm.LookupNamespace("MSBuild"));
             attr = project.CreateAttribute("WorkingFolder");
             attr.Value = "$(WorkingFolder)";
             task.Attributes.Append(attr);

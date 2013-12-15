@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.Namespaces.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/02/2013
+// Updated : 12/13/2013
 // Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -25,6 +25,7 @@
 //                           ripping feature.
 // 1.5.2.0  09/13/2007  EFW  Added support for calling plug-ins
 // 1.6.0.6  03/08/2008  EFW  Added support for NamespaceDoc classes
+// 1.9.9.0  12/14/2013  EFW  Added support for namespace grouping
 //===============================================================================================================
 
 using System;
@@ -42,16 +43,14 @@ namespace SandcastleBuilder.Utils.BuildEngine
     {
         #region Private data members
         //=====================================================================
-        // Private data members
 
         private XmlCommentsFileCollection commentsFiles;
 
         private static Regex reStripWhitespace = new Regex(@"\s");
         #endregion
 
-        #region Private data members
+        #region Properties
         //=====================================================================
-        // Private data members
 
         /// <summary>
         /// This read-only property returns the XML comments files collection
@@ -118,7 +117,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 // Get all the namespace nodes
                 nsElements = apisNode.SelectNodes("api[starts-with(@id, 'N:') or (starts-with(@id, 'G:') and " +
-                    "not(apidata/@subgroup='rootGroup'))]");
+                    "not(topicdata/@group='rootGroup'))]");
 
                 // Add the namespace summaries
                 foreach(XmlNode n in nsElements)
@@ -160,7 +159,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
             {
                 // Eat the error in a partial build so that the user can get into the namespace comments editor
                 // to fix it.
-                if(!isPartialBuild)
+                if(this.PartialBuildType != PartialBuildType.None)
                     throw new BuilderException("BE0012", String.Format(CultureInfo.InvariantCulture,
                         "Error generating namespace summaries (Namespace = {0}): {1}", nsName, ex.Message), ex);
             }
@@ -180,15 +179,14 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
             if(tag == null)
             {
-                tag = member.OwnerDocument.CreateNode(XmlNodeType.Element,
-                    "summary", null);
+                tag = member.OwnerDocument.CreateNode(XmlNodeType.Element, "summary", null);
                 member.AppendChild(tag);
             }
 
             text = reStripWhitespace.Replace(tag.InnerText, String.Empty);
 
-            // NOTE: The text is not HTML encoded as it can contain HTML tags.  As such, entities such as
-            //       "&" should be entered in encoded form in the text (i.e. &amp;).
+            // NOTE: The text is not HTML encoded as it can contain HTML tags.  As such, entities such as "&"
+            // should be entered in encoded form in the text (i.e. &amp;).
             if(!String.IsNullOrEmpty(text))
             {
                 if(!String.IsNullOrEmpty(summaryText))

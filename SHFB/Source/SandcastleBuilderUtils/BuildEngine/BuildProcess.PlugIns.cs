@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.PlugIns.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/14/2008
+// Updated : 12/13/2013
 // Note    : Copyright 2007-2008, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -102,9 +102,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                     plugIn = PlugInManager.PlugIns[key].NewInstance();
 
-                    // For partial builds, only plug-ins that run in partial
-                    // builds are loaded.
-                    if(!this.IsPartialBuild || plugIn.RunsInPartialBuild)
+                    // For partial builds, only plug-ins that run in partial builds are loaded
+                    if(this.PartialBuildType == PartialBuildType.None || plugIn.RunsInPartialBuild)
                     {
                         config = new XmlDocument();
                         config.LoadXml(plugInConfig.Configuration);

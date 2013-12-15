@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : VersionBuilderPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/08/2013
+// Updated : 12/14/2013
 // Note    : Copyright 2007-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -144,7 +144,7 @@ namespace SandcastleBuilder.PlugIns
                     executionPoints = new ExecutionPointCollection
                     {
                         new ExecutionPoint(BuildStep.GenerateSharedContent, ExecutionBehaviors.After),
-                        new ExecutionPoint(BuildStep.GenerateNamespaceSummaries, ExecutionBehaviors.Before)
+                        new ExecutionPoint(BuildStep.TransformReflectionInfo, ExecutionBehaviors.Before)
                     };
 
                 return executionPoints;
@@ -443,7 +443,7 @@ namespace SandcastleBuilder.PlugIns
                 if(!String.IsNullOrEmpty(outDir) && outDir != @".\")
                     project.MSBuildOutDir = outDir;
 
-                buildProcess = new BuildProcess(project, true);
+                buildProcess = new BuildProcess(project, PartialBuildType.GenerateReflectionInfo);
 
                 buildProcess.BuildStepChanged += buildProcess_BuildStepChanged;
 

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : LaunchMSHelpViewDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/01/2013
+// Updated : 12/14/2013
 // Note    : Copyright 2010-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -20,6 +20,7 @@
 // 1.9.3.0  04/02/2011  EFW  Made it project independent so that it could be used in the VSPackage too
 // 1.9.3.4  03/24/2012  EFW  Merged changes from Don Fehr
 // 1.9.5.0  10/05/2012  EFW  Added support for Help Viewer 2.0
+// 1.9.9.0  12/14/2013  EFW  Added support for Help Viewer 2.1
 //===============================================================================================================
 
 using System;
@@ -35,8 +36,8 @@ using SandcastleBuilder.Utils;
 namespace SandcastleBuilder.MicrosoftHelpViewer
 {
     /// <summary>
-    /// This form is used determine the state of the current MS Help Viewer
-    /// content and offer options to install, launch, or remove it.
+    /// This form is used determine the state of the current MS Help Viewer content and offer options to install,
+    /// launch, or remove it.
     /// </summary>
     public partial class LaunchMSHelpViewerDlg : Form
     {

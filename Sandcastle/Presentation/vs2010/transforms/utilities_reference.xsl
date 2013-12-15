@@ -730,6 +730,42 @@
 
 	</xsl:template>
 
+	<xsl:template match="elements" mode="namespaceGroup" name="t_namespaceGroupElements">
+		<div id="namespacesSection">
+			<xsl:if test="count(element) > 0">
+				<xsl:call-template name="t_putSectionInclude">
+					<xsl:with-param name="p_titleInclude" select="'tableTitle_namespace'"/>
+					<xsl:with-param name="p_content">
+						<table id="typeList" class="members">
+							<tr>
+								<th class="ps_nameColumn">
+									<include item="header_namespaceName"/>
+								</th>
+								<th class="ps_descriptionColumn">
+									<include item="header_namespaceDescription"/>
+								</th>
+							</tr>
+							<xsl:apply-templates select="element" mode="namespaceGroup">
+								<xsl:sort select="substring-after(@api, ':')"/>
+							</xsl:apply-templates>
+						</table>
+					</xsl:with-param>
+				</xsl:call-template>
+			</xsl:if>
+		</div>
+	</xsl:template>
+
+	<xsl:template match="element" mode="namespaceGroup" name="t_namespaceGroupElement">
+		<tr>
+			<td>
+				<referenceLink target="{@api}" qualified="false"/>
+			</td>
+			<td>
+				<xsl:call-template name="t_getElementDescription"/>
+			</td>
+		</tr>
+	</xsl:template>
+
 	<xsl:template match="elements"
 								mode="enumeration"
 								name="t_enumerationElements">
@@ -1108,7 +1144,6 @@
 											 qualified="false"/>
 			</td>
 			<td>
-				<xsl:call-template name="t_getInternalOnlyDescription"/>
 				<xsl:if test="attributes/attribute/type[@api='T:System.ObsoleteAttribute']">
 					<xsl:text> </xsl:text>
 					<include item="boilerplate_obsoleteRed"/>
@@ -1209,7 +1244,6 @@
 			</td>
 			<td>
 
-				<xsl:call-template name="t_getInternalOnlyDescription"/>
 				<xsl:if test="attributes/attribute/type[@api='T:System.ObsoleteAttribute']">
 					<xsl:text> </xsl:text>
 					<include item="boilerplate_obsoleteRed"/>
@@ -1379,7 +1413,6 @@
 					</xsl:choose>
 				</td>
 				<td>
-					<xsl:call-template name="t_getInternalOnlyDescription"/>
 					<xsl:if test="attributes/attribute/type[@api='T:System.ObsoleteAttribute']">
 						<xsl:text> </xsl:text>
 						<include item="boilerplate_obsoleteRed"/>
