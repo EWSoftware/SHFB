@@ -107,7 +107,6 @@ other code tag attributes are optional.</para>
       <code language="xaml" source="ExampleFiles\Test.xaml" region="XAML Snippet" title="Test region from XAML file" />
       <code language="sql" source="ExampleFiles\Test.sql" title="Whole SQL File" />
       <code language="sql" source="ExampleFiles\Test.sql" region="SQL Snippet" title="Test region from SQL file" />
-      <code language="pshell" source="%DXROOT%\ProductionTools\scbuild.ps1" />
 			<code language="xml" title="How-to configure the Dummy Service"><![CDATA[
 <configuration>
   <configSections>

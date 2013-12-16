@@ -513,7 +513,7 @@ namespace SandcastleBuilder.PlugIns
 
             config.Append("</versions>\r\n");
 
-            script.AppendFormat("\"{0}ProductionTools\\VersionBuilder.exe\" {1} /config:VersionBuilder.config " +
+            script.AppendFormat("\"{0}VersionBuilder.exe\" {1} /config:VersionBuilder.config " +
                 "/out:reflection.org\r\n", builder.SandcastleFolder, ripOldApis ? String.Empty : "/rip-");
 
             // Save the files

@@ -96,7 +96,7 @@ namespace SandcastleBuilder.Utils.Frameworks
         {
             get
             {
-                return Path.Combine(BuildComponentManager.SandcastlePath, @"ProductionTools\Frameworks.xml");
+                return Path.Combine(BuildComponentManager.SandcastlePath, "Frameworks.xml");
             }
         }
         #endregion

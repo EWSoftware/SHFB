@@ -28,46 +28,22 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\..\Deploy\</OutputPath>
     <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\SandcastleBuilder.Components.xml</DocumentationFile>
+    <DocumentationFile>..\..\Deploy\SandcastleBuilder.Components.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\..\Deploy\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\SandcastleBuilder.Components.xml</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'ReleaseNoDoc|AnyCPU' ">
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <DocumentationFile>bin\Release\SandcastleBuilder.Components.xml</DocumentationFile>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
+    <DocumentationFile>..\..\Deploy\SandcastleBuilder.Components.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BuildAssemblerLibrary, Version=2.7.3.0, Culture=neutral, PublicKeyToken=c8895f0c125eff20, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(DXROOT)\ProductionTools\BuildAssemblerLibrary.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="BuildComponents, Version=2.7.3.0, Culture=neutral, PublicKeyToken=c8895f0c125eff20, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(DXROOT)\ProductionTools\BuildComponents.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="BuildComponents.Targets, Version=2.7.3.0, Culture=neutral, PublicKeyToken=c8895f0c125eff20, processorArchitecture=MSIL">
-      <HintPath>$(DXROOT)\ProductionTools\BuildComponents.Targets.dll</HintPath>
-      <SpecificVersion>False</SpecificVersion>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Esent.Collections, Version=1.7.0.0, Culture=neutral, PublicKeyToken=e75931dc3debaf8d, processorArchitecture=MSIL">
       <HintPath>..\ReferenceAssemblies\Esent.Collections.dll</HintPath>
     </Reference>
@@ -167,6 +143,18 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BuildAssembler\BuildAssemblerLibrary\BuildAssemblerLibrary.csproj">
+      <Project>{399E78F8-4954-409E-991A-37DA9D0579CC}</Project>
+      <Name>BuildAssemblerLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BuildAssembler\BuildComponents\BuildComponents.csproj">
+      <Project>{30773718-BC7C-4FCC-A9C2-7EE61DF4EC41}</Project>
+      <Name>BuildComponents</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BuildAssembler\BuildComponentTargets\BuildComponentTargets.csproj">
+      <Project>{84F8BE08-B5A3-4E5E-BC99-8E5C2351EF62}</Project>
+      <Name>BuildComponentTargets</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CodeColorizer\ColorizerLibrary\ColorizerLibrary.csproj">
       <Project>{72331A21-C452-4BE4-BFDB-B8029A6BC1C0}</Project>
       <Name>ColorizerLibrary</Name>
@@ -228,10 +216,7 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>XCopy /q /y "$(TargetDir)*.dll" "$(SolutionDir)SandcastleBuilderGUI\$(OutDir)"
-XCopy /q /y "$(TargetDir)*.xml" "$(SolutionDir)SandcastleBuilderGUI\$(OutDir)"
-XCopy /q /y "$(ProjectDir)*.components" "$(SolutionDir)SandcastleBuilderGUI\$(OutDir)"
-XCopy /q /y "$(ProjectDir)*.filters" "$(SolutionDir)SandcastleBuilderGUI\$(OutDir)"
-</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
 </Project>

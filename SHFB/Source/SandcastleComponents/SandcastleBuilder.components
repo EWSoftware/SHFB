@@ -173,7 +173,7 @@
 	<!-- ****************************************************************** -->
 
 	<component id="IntelliSense Component" type="Microsoft.Ddue.Tools.IntelliSenseComponent"
-		assembly="{@SandcastlePath}ProductionTools\BuildComponents.dll">
+		assembly="{@SandcastlePath}\BuildComponents.dll">
 		<description>This build component is used to extract the XML comments into files that can be used for IntelliSense.  Only the basic set of tags needed for IntelliSense are exported and only for documented API members.</description>
 
 		<!-- It's more useful when used with the Show Missing component but it can be used by itself (see the insert
@@ -515,7 +515,7 @@ This component requires access to a Microsoft SQL Server instance.  Express and 
 	<!-- ****************************************************************** -->
 
 	<component id="MS Help 2 Attributes" type="Microsoft.Ddue.Tools.MSHelpAttrComponent"
-		assembly="{@SandcastlePath}ProductionTools\BuildComponents.dll">
+		assembly="{@SandcastlePath}\BuildComponents.dll">
 		<description>This build component is used to add additional MS Help 2 attributes to the XML data island in each generated API topic.</description>
 
 		<insert placement="after" type="Microsoft.Ddue.Tools.TransformComponent" />
@@ -534,7 +534,7 @@ This component requires access to a Microsoft SQL Server instance.  Express and 
 	<!-- ****************************************************************** -->
 
 	<component id="API Token Resolution" type="Microsoft.Ddue.Tools.SharedContentComponent"
-			assembly="{@SandcastlePath}ProductionTools\BuildComponents.dll">
+			assembly="{@SandcastlePath}\BuildComponents.dll">
 		<description>This build component is used to resolve tokens in XML comments files.</description>
 
 		<!-- This only applies to API builds. -->

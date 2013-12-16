@@ -60,15 +60,6 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\SandcastleBuilder.Utils.xml</DocumentationFile>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'ReleaseNoDoc|AnyCPU' ">
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <DocumentationFile>bin\Release\SandcastleBuilder.Utils.xml</DocumentationFile>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -442,7 +433,6 @@
     <EmbeddedResource Include="Controls\RefreshableItemListBox.bmp" />
     <EmbeddedResource Include="Controls\FilePathUserControl.bmp" />
     <EmbeddedResource Include="Controls\FolderPathUserControl.bmp" />
-    <Content Include="MSBuild\SandcastleHelpFileBuilder.targets" />
     <None Include="Resources\SpinningWheel.gif" />
     <Compile Include="BuildAction.cs" />
     <Compile Include="BuildComponent\SyntaxFilterInfo.cs" />
@@ -511,7 +501,6 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -521,8 +510,8 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>XCopy /q /s /y "$(ProjectDir)MSBuild\*.targets" "$(SolutionDir)SandcastleBuilderGUI\$(OutDir)"
-</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
 </Project>

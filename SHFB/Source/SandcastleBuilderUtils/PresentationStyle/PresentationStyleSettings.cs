@@ -258,19 +258,14 @@ namespace SandcastleBuilder.Utils.PresentationStyle
         }
 
         /// <summary>
-        /// This is used to resolve environment variable in a path with the added step of resolving
-        /// <c>%DXROOT%</c> and <c>%SHFBROOT%</c> to the paths found by the build component manager if they
-        /// do not resolve automatically.
+        /// This is used to resolve environment variable in a path with the added step of resolving <c>%SHFBROOT%</c>
+        /// to the path found by the build component manager if it does not resolve automatically.
         /// </summary>
         /// <param name="path">The path in which to resolve an environment variable</param>
         /// <returns>The resolved path value</returns>
         private static string ResolveEnvironmentVariables(string path)
         {
             path = Environment.ExpandEnvironmentVariables(path);
-
-            if(!String.IsNullOrEmpty(BuildComponentManager.SandcastlePath) && path.IndexOf("%DXROOT%",
-              StringComparison.Ordinal) != -1)
-                path = path.Replace("%DXROOT%", FolderPath.TerminatePath(BuildComponentManager.SandcastlePath));
 
             if(!String.IsNullOrEmpty(BuildComponentManager.HelpFileBuilderFolder) && path.IndexOf("%SHFBROOT%",
               StringComparison.Ordinal) != -1)

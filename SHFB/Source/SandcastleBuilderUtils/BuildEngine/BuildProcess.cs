@@ -663,17 +663,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     Environment.SetEnvironmentVariable("SHFBROOT", shfbFolder);
                 }
 
-                // Do the same for DXROOT
-                if(Environment.GetEnvironmentVariable("DXROOT") == null)
-                {
-                    this.ReportProgress("The DXROOT system environment variable was not found.  This " +
-                        "variable is usually created during installation and may require a reboot.  It has " +
-                        "been defined temporarily for this process as: DXROOT={0}",
-                        BuildComponentManager.SandcastlePath);
-
-                    Environment.SetEnvironmentVariable("DXROOT", BuildComponentManager.SandcastlePath);
-                }
-
                 if(!Directory.Exists(sandcastleFolder + @"Data\Reflection"))
                     throw new BuilderException("BE0032", "Reflection data files do not exist yet");
 
@@ -1962,17 +1951,18 @@ AllDone:
 
             sandcastleFolder = project.SandcastlePath;
 
-            // Try to find it based on the DXROOT environment variable
+            // TODO: The SandcastlePath property will most likely go away as will most of this code since the
+            // Sandcastle Tools are now located in the same folder as SHFB.
             if(sandcastleFolder.Length == 0)
             {
-                sandcastleFolder = Environment.GetEnvironmentVariable("DXROOT");
+                // Try for SHFBROOT first (the VSPackage needs it)
+                sandcastleFolder = Environment.GetEnvironmentVariable("SHFBROOT");
 
-                if(String.IsNullOrEmpty(sandcastleFolder) || sandcastleFolder.IndexOf(@"\Sandcastle",
-                  StringComparison.OrdinalIgnoreCase) == -1)
-                    sandcastleFolder = String.Empty;
+                // If not, use the executing assembly's folder
+                if(String.IsNullOrWhiteSpace(sandcastleFolder))
+                    sandcastleFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             }
 
-            // Try to find Sandcastle based on the path if not specified in the project or DXROOT
             if(sandcastleFolder.Length == 0)
             {
                 Match m = Regex.Match(Environment.GetEnvironmentVariable("PATH"),
@@ -1994,7 +1984,7 @@ AllDone:
                 sandcastleFolder += @"\";
 
             if(sandcastleFolder.Length == 0 || !Directory.Exists(sandcastleFolder) ||
-              !File.Exists(sandcastleFolder + @"ProductionTools\MRefBuilder.exe"))
+              !File.Exists(sandcastleFolder + "MRefBuilder.exe"))
                 throw new BuilderException("BE0035", "Could not find the path to the Microsoft Sandcastle " +
                     "documentation compiler tools.  See the error number topic in the help file for details.\r\n");
 
@@ -2003,8 +1993,7 @@ AllDone:
             BuildComponentManager.SandcastlePath = sandcastleFolder;
 
             // Make sure we've got a version we can use
-            FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(sandcastleFolder +
-                @"ProductionTools\MRefBuilder.exe");
+            FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(sandcastleFolder + "MRefBuilder.exe");
 
             Version fileVersion = new Version(fvi.FileMajorPart, fvi.FileMinorPart, fvi.FileBuildPart,
                 fvi.FilePrivatePart);

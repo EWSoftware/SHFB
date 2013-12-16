@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildComponentManager.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/26/2013
+// Updated : 12/15/2013
 // Note    : Copyright 2007-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -51,8 +51,6 @@ namespace SandcastleBuilder.Utils.BuildComponent
         private static Dictionary<string, SyntaxFilterInfo> syntaxFilters;
         private static string sandcastlePath, shfbFolder, buildComponentsFolder;
 
-        private static Regex reMatchPath = new Regex(@"[A-Z]:\\.[^;]+\\Sandcastle(?=\\Prod)",
-            RegexOptions.IgnoreCase);
         private static Regex reMatchShfbFolder = new Regex("{@SHFBFolder}", RegexOptions.IgnoreCase);
         private static Regex reMatchCompFolder = new Regex("{@ComponentsFolder}", RegexOptions.IgnoreCase);
         private static Regex reMatchSandcastleFolder = new Regex("{@SandcastlePath}", RegexOptions.IgnoreCase);
@@ -108,30 +106,15 @@ namespace SandcastleBuilder.Utils.BuildComponent
         {
             get
             {
-                // Figure out where Sandcastle is if not specified
                 if(String.IsNullOrEmpty(sandcastlePath))
                 {
-                    // Try to find it based on the DXROOT environment variable
-                    sandcastlePath = Environment.GetEnvironmentVariable("DXROOT");
+                    // Try for SHFBROOT first (the VSPackage needs it)
+                    sandcastlePath = Environment.GetEnvironmentVariable("SHFBROOT");
 
-                    if(String.IsNullOrEmpty(sandcastlePath) || !sandcastlePath.Contains(@"\Sandcastle"))
-                        sandcastlePath = String.Empty;
-
-                    if(sandcastlePath.Length == 0)
-                    {
-                        // Search for it in the PATH environment variable
-                        Match m = reMatchPath.Match(Environment.GetEnvironmentVariable("PATH"));
-
-                        // If not found in the path, search all fixed drives
-                        if(m.Success)
-                            sandcastlePath = m.Value;
-                        else
-                            sandcastlePath = BuildProcess.FindOnFixedDrives(@"\Sandcastle");
-                    }
+                    // If not, use the executing assembly's folder
+                    if(String.IsNullOrWhiteSpace(sandcastlePath))
+                        sandcastlePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
                 }
-                else
-                    if(!File.Exists(Path.Combine(sandcastlePath, @"ProductionTools\MRefBuilder.exe")))
-                        sandcastlePath = String.Empty;
 
                 return sandcastlePath;
             }
@@ -188,10 +171,11 @@ namespace SandcastleBuilder.Utils.BuildComponent
         {
             if(shfbFolder == null)
             {
-                shfbFolder = Environment.ExpandEnvironmentVariables("%SHFBROOT%");
+                // Try for SHFBROOT first (the VSPackage needs it)
+                shfbFolder = Environment.GetEnvironmentVariable("SHFBROOT");
 
-                // If SHFBROOT isn't defined, use the executing assembly's folder
-                if(String.IsNullOrEmpty(shfbFolder) || shfbFolder[0] == '%')
+                // If not, use the executing assembly's folder
+                if(String.IsNullOrWhiteSpace(shfbFolder))
                     shfbFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
                 if(!shfbFolder.EndsWith(@"\", StringComparison.Ordinal))

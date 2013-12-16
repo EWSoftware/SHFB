@@ -12,7 +12,7 @@
 			 
 			 Values in the form "{@Name}" will be replaced at build time with the named project property value or
 			 replacement tag value by the build engine. -->
-	<PresentationStyle ID="VS2005" Title="VS2005" BasePath="%DXROOT%\Presentation\VS2005">
+	<PresentationStyle ID="VS2005" Title="VS2005" BasePath="%SHFBROOT%\Presentation\VS2005">
 		<!-- This provides a description of the presentation style -->
 		<Description>This is the style used by Visual Studio 2005 and Visual Studio 2008.</Description>
 
@@ -69,7 +69,7 @@
 		<!-- This defines the document model XSL transformation to use on the reflection data to prepare it for
 				 use with BuildAssembler in order to generate topics.  The File attribute specifies the path to the
 				 XSL transformation. -->
-		<DocumentModelTransformation File="%DXROOT%\ProductionTransforms\ApplyVSDocModel.xsl">
+		<DocumentModelTransformation File="%SHFBROOT%\ProductionTransforms\ApplyVSDocModel.xsl">
 			<!-- These can be used to define parameters passed to the XSL transformation to define how it should
 					 affect the transformed reflection data. -->
 			<Parameter Name="IncludeAllMembersTopic" Value="true" />
@@ -80,7 +80,7 @@
 		<!-- This defines the XSL transformation to use on the reflection data to generate the intermediate table of
 				 contents XML file used by help formats that require a table of contents.  As above, parameter elements
 				 can be specified if necessary to define any parameters required by the transformation file. -->
-		<IntermediateTOCTransformation File="%DXROOT%\ProductionTransforms\CreateVSToc.xsl" />
+		<IntermediateTOCTransformation File="%SHFBROOT%\ProductionTransforms\CreateVSToc.xsl" />
 
 		<!-- This defines the BuildAssembler configuration file to use for conceptual content builds. -->
 		<ConceptualBuildConfiguration File="%SHFBROOT%\Templates\Conceptual.config" />
@@ -129,7 +129,7 @@ or center.  If not specified, the default is left."/>
 		</TransformComponentArguments>
 	</PresentationStyle>
 
-	<PresentationStyle ID="VS2010" Title="VS2010" BasePath="%DXROOT%\Presentation\VS2010">
+	<PresentationStyle ID="VS2010" Title="VS2010" BasePath="%SHFBROOT%\Presentation\VS2010">
 		<Description>This is the style used by Visual Studio 2010 and later in the Microsoft Help Viewer.</Description>
 
 		<SupportedFormats>
@@ -153,13 +153,13 @@ or center.  If not specified, the default is left."/>
 			<ToolResourceItems Path="%SHFBROOT%\SharedContent" />
 		</ResourceItems>
 
-		<DocumentModelTransformation File="%DXROOT%\ProductionTransforms\ApplyVSDocModel.xsl">
+		<DocumentModelTransformation File="%SHFBROOT%\ProductionTransforms\ApplyVSDocModel.xsl">
 			<Parameter Name="IncludeAllMembersTopic" Value="true" />
 			<Parameter Name="IncludeInheritedOverloadTopics" Value="false" />
 			<Parameter Name="project" Value="{@ProjectNodeIDOptional}" />
 		</DocumentModelTransformation>
 
-		<IntermediateTOCTransformation File="%DXROOT%\ProductionTransforms\CreateVSToc.xsl" />
+		<IntermediateTOCTransformation File="%SHFBROOT%\ProductionTransforms\CreateVSToc.xsl" />
 
 		<ConceptualBuildConfiguration File="%SHFBROOT%\Templates\Conceptual.config" />
 
@@ -187,7 +187,7 @@ or center.  If not specified, the default is left."/>
 		</TransformComponentArguments>
 	</PresentationStyle>
 
-	<PresentationStyle ID="Hana" Title="Hana (Deprecated)" BasePath="%DXROOT%\Presentation\Hana">
+	<PresentationStyle ID="Hana" Title="Hana (Deprecated)" BasePath="%SHFBROOT%\Presentation\Hana">
 		<Description>This style has been deprecated and is no longer supported.  It was an experimental style that
 was never used in production by Microsoft.</Description>
 
@@ -210,13 +210,13 @@ was never used in production by Microsoft.</Description>
 			<ToolResourceItems Path="%SHFBROOT%\SharedContent" />
 		</ResourceItems>
 
-		<DocumentModelTransformation File="%DXROOT%\ProductionTransforms\ApplyVSDocModel.xsl">
+		<DocumentModelTransformation File="%SHFBROOT%\ProductionTransforms\ApplyVSDocModel.xsl">
 			<Parameter Name="IncludeAllMembersTopic" Value="false" />
 			<Parameter Name="IncludeInheritedOverloadTopics" Value="false" />
 			<Parameter Name="project" Value="{@ProjectNodeIDOptional}" />
 		</DocumentModelTransformation>
 
-		<IntermediateTOCTransformation File="%DXROOT%\ProductionTransforms\CreateVSToc.xsl" />
+		<IntermediateTOCTransformation File="%SHFBROOT%\ProductionTransforms\CreateVSToc.xsl" />
 
 		<ConceptualBuildConfiguration File="%SHFBROOT%\Templates\Conceptual.config" />
 
@@ -244,7 +244,7 @@ or center.  If not specified, the default is left."/>
 		</TransformComponentArguments>
 	</PresentationStyle>
 
-	<PresentationStyle ID="Prototype" Title="Prototype (Deprecated)" BasePath="%DXROOT%\Presentation\Prototype">
+	<PresentationStyle ID="Prototype" Title="Prototype (Deprecated)" BasePath="%SHFBROOT%\Presentation\Prototype">
 		<Description>This style has been deprecated and is no longer supported.  It was the first style provided with
 Sandcastle.</Description>
 
@@ -267,13 +267,13 @@ Sandcastle.</Description>
 			<ToolResourceItems Path="%SHFBROOT%\SharedContent" />
 		</ResourceItems>
 
-		<DocumentModelTransformation File="%DXROOT%\ProductionTransforms\ApplyPrototypeDocModel.xsl">
+		<DocumentModelTransformation File="%SHFBROOT%\ProductionTransforms\ApplyPrototypeDocModel.xsl">
 			<!-- This presentation style requires a project node ID in order to generate the root namespaces node
 					 which is used to generate the root namespaces topic page. -->
 			<Parameter Name="project" Value="{@ProjectNodeIDRequired}" />
 		</DocumentModelTransformation>
 
-		<IntermediateTOCTransformation File="%DXROOT%\ProductionTransforms\CreatePrototypeToc.xsl">
+		<IntermediateTOCTransformation File="%SHFBROOT%\ProductionTransforms\CreatePrototypeToc.xsl">
 			<Parameter Name="rootNamespaceContainer" Value="{@RootNamespaceContainer}" />
 		</IntermediateTOCTransformation>
 

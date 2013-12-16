@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.Transform.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/13/2013
+// Updated : 12/15/2013
 // Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -1001,7 +1001,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 case "addxamlsyntaxdata":
                     // If the XAML syntax generator is present, add XAML syntax data to the reflection file
                     if(BuildComponentManager.SyntaxFiltersFrom(project.SyntaxFilters).Any(s => s.Id == "XamlUsage"))
-                        replaceWith = @";ProductionTransforms\AddXamlSyntaxData.xsl";
+                        replaceWith = @";~\ProductionTransforms\AddXamlSyntaxData.xsl";
                     else
                         replaceWith = String.Empty;
                     break;

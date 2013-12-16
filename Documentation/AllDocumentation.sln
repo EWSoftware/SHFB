@@ -6,12 +6,21 @@ EndProject
 Project("{7CF6DF6D-3B04-46F8-A40B-537D21BCA0B4}") = "MAMLGuide", "SandcastleMAMLGuide\MAMLGuide.shfbproj", "{979656C9-42E5-4C2E-A7B0-9D355A2BD652}"
 EndProject
 Project("{7CF6DF6D-3B04-46F8-A40B-537D21BCA0B4}") = "XMLCommentsGuide", "XMLCommentsGuide\XMLCommentsGuide.shfbproj", "{721BD6EC-48F5-4391-95BD-FEFEFC528993}"
+	ProjectSection(ProjectDependencies) = postProject
+		{46157C34-C925-4733-8682-957F3D97345A} = {46157C34-C925-4733-8682-957F3D97345A}
+	EndProjectSection
 EndProject
 Project("{7CF6DF6D-3B04-46F8-A40B-537D21BCA0B4}") = "SandcastleTools", "SandcastleTools\SandcastleTools.shfbproj", "{16E6EFF1-928E-4130-AA59-C493E35F5DD8}"
 EndProject
+Project("{7CF6DF6D-3B04-46F8-A40B-537D21BCA0B4}") = "HtmlToMamlDocs", "..\SHFB\Source\HtmlToMaml\Doc\HtmlToMamlDocs.shfbproj", "{C1AB8F68-82B0-4DA3-B9EE-84703C939B66}"
+EndProject
+Project("{7CF6DF6D-3B04-46F8-A40B-537D21BCA0B4}") = "EWSoftwareCodeDom", "..\SHFB\Source\WebCodeProviders\Doc\EWSoftwareCodeDom.shfbproj", "{AACC5248-C357-442F-B789-17488EE609D9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XMLCommentsExamples", "..\SHFB\Source\XMLCommentsExamples\XMLCommentsExamples.csproj", "{46157C34-C925-4733-8682-957F3D97345A}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 5
+		SccNumberOfProjects = 8
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs01
 		SccLocalPath0 = .
@@ -27,6 +36,15 @@ Global
 		SccProjectUniqueName4 = SandcastleTools\\SandcastleTools.shfbproj
 		SccProjectName4 = SandcastleTools
 		SccLocalPath4 = SandcastleTools
+		SccProjectUniqueName5 = ..\\SHFB\\Source\\HtmlToMaml\\Doc\\HtmlToMamlDocs.shfbproj
+		SccProjectName5 = ../SHFB/Source/HtmlToMaml/Doc
+		SccLocalPath5 = ..\\SHFB\\Source\\HtmlToMaml\\Doc
+		SccProjectUniqueName6 = ..\\SHFB\\Source\\WebCodeProviders\\Doc\\EWSoftwareCodeDom.shfbproj
+		SccProjectName6 = ../SHFB/Source/WebCodeProviders/Doc
+		SccLocalPath6 = ..\\SHFB\\Source\\WebCodeProviders\\Doc
+		SccProjectUniqueName7 = ..\\SHFB\\Source\\XMLCommentsExamples\\XMLCommentsExamples.csproj
+		SccProjectName7 = ../SHFB/Source/XMLCommentsExamples
+		SccLocalPath7 = ..\\SHFB\\Source\\XMLCommentsExamples
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +67,18 @@ Global
 		{16E6EFF1-928E-4130-AA59-C493E35F5DD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{16E6EFF1-928E-4130-AA59-C493E35F5DD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{16E6EFF1-928E-4130-AA59-C493E35F5DD8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1AB8F68-82B0-4DA3-B9EE-84703C939B66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1AB8F68-82B0-4DA3-B9EE-84703C939B66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1AB8F68-82B0-4DA3-B9EE-84703C939B66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1AB8F68-82B0-4DA3-B9EE-84703C939B66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AACC5248-C357-442F-B789-17488EE609D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AACC5248-C357-442F-B789-17488EE609D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AACC5248-C357-442F-B789-17488EE609D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AACC5248-C357-442F-B789-17488EE609D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46157C34-C925-4733-8682-957F3D97345A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46157C34-C925-4733-8682-957F3D97345A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46157C34-C925-4733-8682-957F3D97345A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46157C34-C925-4733-8682-957F3D97345A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

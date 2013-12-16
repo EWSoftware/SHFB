@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : ScriptSharpPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/12/2013
+// Updated : 12/15/2013
 // Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -380,7 +380,7 @@ namespace SandcastleBuilder.PlugIns
             task.Attributes.Append(attr);
 
             attr = project.CreateAttribute("Transformations");
-            attr.Value = Path.Combine(builder.SandcastleFolder, @"ProductionTransforms\FixScriptSharp.xsl");
+            attr.Value = Path.Combine(builder.SandcastleFolder, @"~\ProductionTransforms\FixScriptSharp.xsl");
             task.Attributes.Append(attr);
 
             attr = project.CreateAttribute("InputFile");

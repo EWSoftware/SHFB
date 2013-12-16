@@ -1,9 +1,9 @@
 ﻿<Project DefaultTargets="Transform" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
 	<!-- Sandcastle Tools MSBuild Tasks.  http://SHFB.CodePlex.com -->
 	<UsingTask TaskName="Microsoft.Ddue.Tools.MSBuild.AddNamespaceGroups"
-    AssemblyFile="{@SandcastlePath}\ProductionTools\AddNamespaceGroups.exe" />
+    AssemblyFile="{@SandcastlePath}\AddNamespaceGroups.exe" />
 	<UsingTask TaskName="Microsoft.Ddue.Tools.MSBuild.XslTransform"
-    AssemblyFile="{@SandcastlePath}\ProductionTools\XslTransform.exe" />
+    AssemblyFile="{@SandcastlePath}\XslTransform.exe" />
 
 	<!-- Task properties -->
 	<PropertyGroup>
@@ -52,7 +52,7 @@
 
 		<Microsoft.Ddue.Tools.MSBuild.XslTransform
 			WorkingFolder="$(WorkingFolder)"
-			Transformations="ProductionTransforms\AddFilenames.xsl"
+			Transformations="~\ProductionTransforms\AddFilenames.xsl"
 			Arguments="namingMethod=$(NamingMethod)"
 			InputFile="reflection.nofilenames"
 			OutputFile="reflection.xml" />
@@ -60,7 +60,7 @@
 		<!-- Generate the topic manifest -->
 		<Microsoft.Ddue.Tools.MSBuild.XslTransform
 			WorkingFolder="$(WorkingFolder)"
-			Transformations="ProductionTransforms\ReflectionToManifest.xsl"
+			Transformations="~\ProductionTransforms\ReflectionToManifest.xsl"
 			InputFile="reflection.xml"
 			OutputFile="manifest.xml" />
 	</Target>

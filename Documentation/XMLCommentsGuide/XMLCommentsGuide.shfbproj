@@ -47,7 +47,7 @@
       </ComponentConfig>
     </ComponentConfigurations>
     <DocumentationSources>
-      <DocumentationSource sourceFile="..\..\Sandcastle\Examples\XMLCommentsExamples\XMLCommentsExamples.sln" />
+      <DocumentationSource sourceFile="..\..\SHFB\Source\XMLCommentsExamples\XMLCommentsExamples.csproj" />
     </DocumentationSources>
     <HelpAttributes>
       <HelpAttribute name="DocSet" value="{@HtmlHelpName}" />
@@ -58,6 +58,34 @@
       <NamespaceSummaryItem name="XMLCommentsExamples" isDocumented="True">This namespace contains classes used to demonstrate the various XML comments elements.</NamespaceSummaryItem>
     </NamespaceSummaries>
     <PlugInConfigurations>
+      <PlugInConfig id="Output Deployment" enabled="True">
+        <configuration deleteAfterDeploy="false">
+          <deploymentLocation id="help1x" location="..\..\SHFB\Deploy\Help\">
+            <userCredentials useDefault="true" userName="" password="" />
+            <proxyCredentials useProxy="false" proxyServer="">
+              <userCredentials useDefault="true" userName="" password="" />
+            </proxyCredentials>
+          </deploymentLocation>
+          <deploymentLocation id="help2x" location="">
+            <userCredentials useDefault="true" userName="" password="" />
+            <proxyCredentials useProxy="false" proxyServer="">
+              <userCredentials useDefault="true" userName="" password="" />
+            </proxyCredentials>
+          </deploymentLocation>
+          <deploymentLocation id="helpViewer" location="" renameMSHA="false">
+            <userCredentials useDefault="true" userName="" password="" />
+            <proxyCredentials useProxy="false" proxyServer="">
+              <userCredentials useDefault="true" userName="" password="" />
+            </proxyCredentials>
+          </deploymentLocation>
+          <deploymentLocation id="website" location="">
+            <userCredentials useDefault="true" userName="" password="" />
+            <proxyCredentials useProxy="false" proxyServer="">
+              <userCredentials useDefault="true" userName="" password="" />
+            </proxyCredentials>
+          </deploymentLocation>
+        </configuration>
+      </PlugInConfig>
     </PlugInConfigurations>
     <BuildLogFile />
     <HtmlHelp1xCompilerPath />

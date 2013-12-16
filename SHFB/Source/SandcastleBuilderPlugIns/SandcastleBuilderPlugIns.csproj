@@ -43,29 +43,20 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\..\Deploy\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\SandcastleBuilder.PlugIns.xml</DocumentationFile>
+    <DocumentationFile>..\..\Deploy\SandcastleBuilder.PlugIns.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\..\Deploy\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\SandcastleBuilder.PlugIns.xml</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'ReleaseNoDoc|AnyCPU' ">
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <DocumentationFile>bin\Release\SandcastleBuilder.PlugIns.xml</DocumentationFile>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
+    <DocumentationFile>..\..\Deploy\SandcastleBuilder.PlugIns.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Build" />
@@ -268,8 +259,7 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>Copy /y "$(TargetDir)$(TargetName).xml" "$(SolutionDir)SandcastleBuilderGUI\$(OutDir)$(TargetName).xml"
-Copy /y "$(TargetPath)" "$(SolutionDir)SandcastleBuilderGUI\$(OutDir)$(TargetName).plugins"
-</PostBuildEvent>
+    <PostBuildEvent>DEL "$(TargetDir)$(TargetName).plugins" 2&gt; NUL
+REN "$(TargetPath)" "$(TargetName).plugins"</PostBuildEvent>
   </PropertyGroup>
 </Project>

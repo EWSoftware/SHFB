@@ -41,8 +41,8 @@
     <ComponentConfigurations>
     </ComponentConfigurations>
     <DocumentationSources>
-      <DocumentationSource sourceFile="$(DXROOT)\ProductionTools\BuildAssemblerLibrary.xml" />
-      <DocumentationSource sourceFile="$(DXROOT)\ProductionTools\BuildComponents.xml" />
+      <DocumentationSource sourceFile="$(SHFBROOT)\BuildAssemblerLibrary.xml" />
+      <DocumentationSource sourceFile="$(SHFBROOT)\BuildComponents.xml" />
       <DocumentationSource sourceFile="..\..\SHFB\Source\SandcastleBuilder.sln" />
     </DocumentationSources>
     <NamespaceSummaries>
@@ -93,7 +93,7 @@
           </targets>
         </configuration>
       </PlugInConfig>
-    </PlugInConfigurations>
+<PlugInConfig id="Output Deployment" enabled="True"><configuration deleteAfterDeploy="false"><deploymentLocation id="help1x" location="..\..\SHFB\Deploy\Help\"><userCredentials useDefault="true" userName="" password="" /><proxyCredentials useProxy="false" proxyServer=""><userCredentials useDefault="true" userName="" password="" /></proxyCredentials></deploymentLocation><deploymentLocation id="help2x" location=""><userCredentials useDefault="true" userName="" password="" /><proxyCredentials useProxy="false" proxyServer=""><userCredentials useDefault="true" userName="" password="" /></proxyCredentials></deploymentLocation><deploymentLocation id="helpViewer" location="" renameMSHA="false"><userCredentials useDefault="true" userName="" password="" /><proxyCredentials useProxy="false" proxyServer=""><userCredentials useDefault="true" userName="" password="" /></proxyCredentials></deploymentLocation><deploymentLocation id="website" location=""><userCredentials useDefault="true" userName="" password="" /><proxyCredentials useProxy="false" proxyServer=""><userCredentials useDefault="true" userName="" password="" /></proxyCredentials></deploymentLocation></configuration></PlugInConfig></PlugInConfigurations>
     <Preliminary>False</Preliminary>
     <HelpAttributes>
       <HelpAttribute name="DocSet" value="{@HtmlHelpName}" />

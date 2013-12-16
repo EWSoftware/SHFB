@@ -226,7 +226,7 @@ namespace SandcastleBuilder.PlugIns
                 resolver.Attributes.Append(attr);
 
                 attr = config.CreateAttribute("assembly");
-                attr.Value = builder.TransformText(@"{@SandcastlePath}ProductionTools\MRefBuilder.exe");
+                attr.Value = builder.TransformText(@"{@SandcastlePath}MRefBuilder.exe");
                 resolver.Attributes.Append(attr);
 
                 attr = config.CreateAttribute("use-gac");

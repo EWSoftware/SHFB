@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : BuildAssemblerTask.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/05/2008
-// Note    : Copyright 2008, Eric Woodruff, All rights reserved
+// Updated : 12/15/2013
+// Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the MSBuild task used to run BuildAssembler.exe which is
@@ -145,8 +145,7 @@ namespace SandcastleBuilder.Utils.MSBuild
         /// <returns>The full path to the tool</returns>
         protected override string GenerateFullPathToTool()
         {
-            return Path.Combine(sandcastlePath, "ProductionTools\\" +
-                this.ToolName);
+            return Path.Combine(sandcastlePath, this.ToolName);
         }
 
         /// <summary>
