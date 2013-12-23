@@ -12,6 +12,9 @@ using System.Globalization;
 using System.Xml;
 using System.Xml.XPath;
 
+using Sandcastle.Core.BuildAssembler;
+using Sandcastle.Core.BuildAssembler.BuildComponent;
+
 namespace Microsoft.Ddue.Tools.Commands
 {
     /// <summary>
@@ -76,7 +79,7 @@ namespace Microsoft.Ddue.Tools.Commands
         /// <param name="isAttribute">True if the targets are to be added as attributes, false if they are to be
         /// added as elements</param>
         /// <param name="ignoreCase">True to ignore case on the keys when retrieving index values</param>
-        public CopyFromIndexCommand(BuildComponent parent, IndexedCache sourceIndex, string keyXPath,
+        public CopyFromIndexCommand(BuildComponentCore parent, IndexedCache sourceIndex, string keyXPath,
           string sourceXPath, string targetXPath, bool isAttribute, bool ignoreCase) :
             base(parent, sourceXPath, targetXPath)
         {

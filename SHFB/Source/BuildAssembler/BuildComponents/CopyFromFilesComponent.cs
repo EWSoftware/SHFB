@@ -13,13 +13,16 @@ using System.Xml.XPath;
 
 using Microsoft.Ddue.Tools.Commands;
 
+using Sandcastle.Core.BuildAssembler;
+using Sandcastle.Core.BuildAssembler.BuildComponent;
+
 namespace Microsoft.Ddue.Tools
 {
     /// <summary>
     /// This build component copies elements from one or more XML files determined using an XPath query into the
     /// target document based on one or more copy commands that define the elements to copy and where to put them.
     /// </summary>
-    public class CopyFromFilesComponent : BuildComponent
+    public class CopyFromFilesComponent : BuildComponentCore
     {
         #region Private data members
         //=====================================================================
@@ -32,7 +35,7 @@ namespace Microsoft.Ddue.Tools
         //=====================================================================
 
         /// <inheritdoc />
-        public CopyFromFilesComponent(BuildAssembler assembler, XPathNavigator configuration) :
+        public CopyFromFilesComponent(BuildAssemblerCore assembler, XPathNavigator configuration) :
           base(assembler, configuration)
         {
             XPathNodeIterator copyNodes = configuration.Select("copy");

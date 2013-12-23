@@ -11,6 +11,9 @@ using System.Xml;
 using System.Xml.XPath;
 using System.IO;
 
+using Sandcastle.Core.BuildAssembler;
+using Sandcastle.Core.BuildAssembler.BuildComponent;
+
 // still have problems with spaces
 
 namespace Microsoft.Ddue.Tools
@@ -18,7 +21,7 @@ namespace Microsoft.Ddue.Tools
     /// <summary>
     /// Task grabber component
     /// </summary>
-    public class TaskGrabberComponent : BuildComponent
+    public class TaskGrabberComponent : BuildComponentCore
     {
         private XmlNamespaceManager nsManager = new XmlNamespaceManager(new NameTable());
 
@@ -39,7 +42,7 @@ namespace Microsoft.Ddue.Tools
         /// </summary>
         /// <param name="assembler">The build assembler instance</param>
         /// <param name="configuration">The component configuration</param>
-        public TaskGrabberComponent(BuildAssembler assembler, XPathNavigator configuration)
+        public TaskGrabberComponent(BuildAssemblerCore assembler, XPathNavigator configuration)
             : base(assembler, configuration)
         {
             XPathNavigator keywordsNode = configuration.SelectSingleNode("keywords");

@@ -5,7 +5,8 @@ using System.IO;
 using System.Xml;
 using System.Xml.XPath;
 
-using Microsoft.Ddue.Tools.CommandLine;
+using Sandcastle.Core;
+using Sandcastle.Core.CommandLine;
 
 namespace AggregateByNamespace
 {
@@ -95,7 +96,7 @@ namespace AggregateByNamespace
                     catch(IOException ioEx)
                     {
                         ConsoleApplication.WriteMessage(LogLevel.Error, String.Format(CultureInfo.CurrentCulture,
-                            "An error occured while reading the input file '{0}'. The error message follows: {1}",
+                            "An error occurred while reading the input file '{0}'. The error message follows: {1}",
                             str2, ioEx.Message));
                         return 1;
                     }
@@ -127,7 +128,7 @@ namespace AggregateByNamespace
                 catch(IOException ioEx)
                 {
                     ConsoleApplication.WriteMessage(LogLevel.Error, String.Format(CultureInfo.CurrentCulture,
-                        "An error occured while trying to create the output file. The error message is: {0}",
+                        "An error occurred while trying to create the output file. The error message is: {0}",
                         ioEx.Message));
                     return 1;
                 }

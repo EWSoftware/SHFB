@@ -19,13 +19,16 @@ using System.Xml.XPath;
 
 using Microsoft.Ddue.Tools.Commands;
 
+using Sandcastle.Core.BuildAssembler;
+using Sandcastle.Core.BuildAssembler.BuildComponent;
+
 namespace Microsoft.Ddue.Tools
 {
     /// <summary>
     /// This build component copies elements from an indexed set of XML files into the target document based on
     /// one or more copy commands that define the elements to copy and where to put them.
     /// </summary>
-    public class CopyFromIndexComponent : BuildComponent
+    public class CopyFromIndexComponent : BuildComponentCore
     {
         #region Private data members
         //=====================================================================
@@ -55,7 +58,7 @@ namespace Microsoft.Ddue.Tools
         /// </summary>
         /// <param name="assembler">The build assembler reference</param>
         /// <param name="configuration">The component configuration</param>
-        public CopyFromIndexComponent(BuildAssembler assembler, XPathNavigator configuration) :
+        public CopyFromIndexComponent(BuildAssemblerCore assembler, XPathNavigator configuration) :
           base(assembler, configuration)
         {
             MessageLevel level;
@@ -95,7 +98,7 @@ namespace Microsoft.Ddue.Tools
                 TimeSpan loadTime = (DateTime.Now - startLoad);
                 base.WriteMessage(MessageLevel.Diagnostic, "Load time: {0} seconds", loadTime.TotalSeconds);
 #endif
-                BuildComponent.Data.Add(index.Name, index);
+                BuildComponentCore.Data.Add(index.Name, index);
             }
 
             // Get the copy commands
@@ -137,7 +140,7 @@ namespace Microsoft.Ddue.Tools
                 if(!String.IsNullOrWhiteSpace(boolValue) && !Boolean.TryParse(boolValue, out ignoreCase))
                     base.WriteMessage(MessageLevel.Error, "The ignoreCase attribute value is not a valid Boolean");
 
-                IndexedCache index = (IndexedCache)BuildComponent.Data[sourceName];
+                IndexedCache index = (IndexedCache)BuildComponentCore.Data[sourceName];
 
                 CopyFromIndexCommand copyCommand = new CopyFromIndexCommand(this, index, keyXPath, sourceXPath,
                     targetXPath, isAttribute, ignoreCase);
@@ -193,7 +196,7 @@ namespace Microsoft.Ddue.Tools
 
                     CopyComponent component = (CopyComponent)assembly.CreateInstance(typeName, false,
                         BindingFlags.Public | BindingFlags.Instance, null,
-                        new object[3] { this, componentNode.Clone(), BuildComponent.Data }, null, null);
+                        new object[3] { this, componentNode.Clone(), BuildComponentCore.Data }, null, null);
 
                     if(component == null)
                         base.WriteMessage(MessageLevel.Error, "The type '{0}' does not exist in the assembly '{1}'",
@@ -276,7 +279,7 @@ namespace Microsoft.Ddue.Tools
         {
             // Find and dispose of the index caches we own
             if(disposing)
-                foreach(var cache in BuildComponent.Data.Values.OfType<IndexedCache>().Where(
+                foreach(var cache in BuildComponentCore.Data.Values.OfType<IndexedCache>().Where(
                   c => c.Component == this))
                 {
                     cache.ReportCacheStatistics();

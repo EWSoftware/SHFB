@@ -29,6 +29,9 @@ using System.Reflection;
 using System.Xml;
 using System.Xml.XPath;
 
+using Sandcastle.Core.BuildAssembler;
+using Sandcastle.Core.BuildAssembler.BuildComponent;
+
 namespace Microsoft.Ddue.Tools
 {
     /// <summary>
@@ -53,7 +56,7 @@ namespace Microsoft.Ddue.Tools
     /// &lt;/component&gt;
     /// </code>
     /// </example>
-    public class MSHelpAttrComponent : BuildComponent
+    public class MSHelpAttrComponent : BuildComponentCore
     {
         #region Private data members
         //=====================================================================
@@ -72,7 +75,7 @@ namespace Microsoft.Ddue.Tools
         /// <remarks>See the <see cref="MSHelpAttrComponent"/> class topic for an example of the configuration</remarks>
         /// <exception cref="ConfigurationErrorsException">This is thrown if an error is detected in the
         /// configuration.</exception>
-        public MSHelpAttrComponent(BuildAssembler assembler, XPathNavigator configuration) :
+        public MSHelpAttrComponent(BuildAssemblerCore assembler, XPathNavigator configuration) :
           base(assembler, configuration)
         {
             XPathNodeIterator attrs;

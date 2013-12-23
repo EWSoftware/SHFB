@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : VersionBuilderPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/14/2013
+// Updated : 12/17/2013
 // Note    : Copyright 2007-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -19,22 +19,22 @@
 // 1.6.0.3  12/01/2007  EFW  Created the code
 // 1.8.0.0  08/13/2008  EFW  Updated to support the new project format
 // 1.9.0.0  06/27/2010  EFW  Added support for /rip option
+// -------  12/17/2013  EFW  Updated to use MEF for the plug-ins
 //===============================================================================================================
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
-using System.Reflection;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.XPath;
 
 using SandcastleBuilder.Utils;
+using SandcastleBuilder.Utils.BuildComponent;
 using SandcastleBuilder.Utils.BuildEngine;
-using SandcastleBuilder.Utils.PlugIn;
 
 namespace SandcastleBuilder.PlugIns
 {
@@ -42,12 +42,15 @@ namespace SandcastleBuilder.PlugIns
     /// This plug-in class is designed to generate version information for assemblies in the current project and
     /// others related to the same product that can be merged into the current project's help file topics.
     /// </summary>
-    public class VersionBuilderPlugIn : IPlugIn
+    [HelpFileBuilderPlugInExport("Version Builder", IsConfigurable = true, RunsInPartialBuild = true,
+      Description = "This plug-in is used to generate version information for the current project and others " +
+        "related to the same product and merge that information into a single help file for all of them.")]
+    public sealed class VersionBuilderPlugIn : IPlugIn
     {
         #region Private data members
         //=====================================================================
 
-        private ExecutionPointCollection executionPoints;
+        private List<ExecutionPoint> executionPoints;
 
         private BuildProcess builder;
         private BuildStep lastBuildStep;
@@ -64,84 +67,15 @@ namespace SandcastleBuilder.PlugIns
         //=====================================================================
 
         /// <summary>
-        /// This read-only property returns a friendly name for the plug-in
-        /// </summary>
-        public string Name
-        {
-            get { return "Version Builder"; }
-        }
-
-        /// <summary>
-        /// This read-only property returns the version of the plug-in
-        /// </summary>
-        public Version Version
-        {
-            get
-            {
-                // Use the assembly version
-                Assembly asm = Assembly.GetExecutingAssembly();
-                FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(asm.Location);
-
-                return new Version(fvi.ProductVersion);
-            }
-        }
-
-        /// <summary>
-        /// This read-only property returns the copyright information for the plug-in
-        /// </summary>
-        public string Copyright
-        {
-            get
-            {
-                // Use the assembly copyright
-                Assembly asm = Assembly.GetExecutingAssembly();
-                AssemblyCopyrightAttribute copyright = (AssemblyCopyrightAttribute)Attribute.GetCustomAttribute(
-                    asm, typeof(AssemblyCopyrightAttribute));
-
-                return copyright.Copyright;
-            }
-        }
-
-        /// <summary>
-        /// This read-only property returns a brief description of the plug-in
-        /// </summary>
-        public string Description
-        {
-            get
-            {
-                return "This plug-in is used to generate version information for the current project and " +
-                    "others related to the same product and merge that information into a single help file " +
-                    "for all of them.";
-            }
-        }
-
-        /// <summary>
-        /// This plug-in supports configuration
-        /// </summary>
-        /// <seealso cref="ConfigurePlugIn"/>
-        public bool SupportsConfiguration
-        {
-            get { return true; }
-        }
-
-        /// <summary>
-        /// This plug-in runs in partial builds
-        /// </summary>
-        public bool RunsInPartialBuild
-        {
-            get { return true; }
-        }
-
-        /// <summary>
         /// This read-only property returns a collection of execution points that define when the plug-in should
         /// be invoked during the build process.
         /// </summary>
-        public ExecutionPointCollection ExecutionPoints
+        public IEnumerable<ExecutionPoint> ExecutionPoints
         {
             get
             {
                 if(executionPoints == null)
-                    executionPoints = new ExecutionPointCollection
+                    executionPoints = new List<ExecutionPoint>
                     {
                         new ExecutionPoint(BuildStep.GenerateSharedContent, ExecutionBehaviors.After),
                         new ExecutionPoint(BuildStep.TransformReflectionInfo, ExecutionBehaviors.Before)
@@ -185,7 +119,10 @@ namespace SandcastleBuilder.PlugIns
             allVersions = new VersionSettingsCollection();
             uniqueLabels = new List<string>();
 
-            builder.ReportProgress("{0} Version {1}\r\n{2}", this.Name, this.Version, this.Copyright);
+            var metadata = (HelpFileBuilderPlugInExportAttribute)this.GetType().GetCustomAttributes(
+                typeof(HelpFileBuilderPlugInExportAttribute), false).First();
+
+            builder.ReportProgress("{0} Version {1}\r\n{2}", metadata.Id, metadata.Version, metadata.Copyright);
 
             root = configuration.SelectSingleNode("configuration");
 
@@ -230,7 +167,7 @@ namespace SandcastleBuilder.PlugIns
         /// This method is used to execute the plug-in during the build process
         /// </summary>
         /// <param name="context">The current execution context</param>
-        public void Execute(Utils.PlugIn.ExecutionContext context)
+        public void Execute(ExecutionContext context)
         {
             string workingPath;
             bool success;
@@ -298,32 +235,12 @@ namespace SandcastleBuilder.PlugIns
         //=====================================================================
 
         /// <summary>
-        /// This handles garbage collection to ensure proper disposal of the plug-in if not done explicitly with
-        /// <see cref="Dispose()"/>.
-        /// </summary>
-        ~VersionBuilderPlugIn()
-        {
-            this.Dispose(false);
-        }
-
-        /// <summary>
         /// This implements the Dispose() interface to properly dispose of the plug-in object
         /// </summary>
-        /// <overloads>There are two overloads for this method</overloads>
         public void Dispose()
         {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// This can be overridden by derived classes to add their own disposal code if necessary
-        /// </summary>
-        /// <param name="disposing">Pass true to dispose of the managed and unmanaged resources or false to just
-        /// dispose of the unmanaged resources.</param>
-        protected virtual void Dispose(bool disposing)
-        {
             // Nothing to dispose of in this one
+            GC.SuppressFinalize(this);
         }
         #endregion
 
@@ -429,7 +346,6 @@ namespace SandcastleBuilder.PlugIns
             try
             {
                 // For the plug-in, we'll override some project settings
-                project.SandcastlePath = new FolderPath(builder.SandcastleFolder, true, project);
                 project.HtmlHelp1xCompilerPath = new FolderPath(builder.Help1CompilerFolder, true, project);
                 project.HtmlHelp2xCompilerPath = new FolderPath(builder.Help2CompilerFolder, true, project);
                 project.WorkingPath = new FolderPath(workingPath, true, project);
@@ -514,7 +430,7 @@ namespace SandcastleBuilder.PlugIns
             config.Append("</versions>\r\n");
 
             script.AppendFormat("\"{0}VersionBuilder.exe\" {1} /config:VersionBuilder.config " +
-                "/out:reflection.org\r\n", builder.SandcastleFolder, ripOldApis ? String.Empty : "/rip-");
+                "/out:reflection.org\r\n", builder.HelpFileBuilderFolder, ripOldApis ? String.Empty : "/rip-");
 
             // Save the files
             using(StreamWriter sw = new StreamWriter(builder.WorkingFolder + "VersionBuilder.config"))

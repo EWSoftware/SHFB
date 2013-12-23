@@ -12,7 +12,7 @@
 			 
 			 Values in the form "{@Name}" will be replaced at build time with the named project property value or
 			 replacement tag value by the build engine. -->
-	<PresentationStyle ID="VS2005" Title="VS2005" BasePath="%SHFBROOT%\Presentation\VS2005">
+	<PresentationStyle ID="VS2005" Title="VS2005" BasePath="Presentation\VS2005">
 		<!-- This provides a description of the presentation style -->
 		<Description>This is the style used by Visual Studio 2005 and Visual Studio 2008.</Description>
 
@@ -47,12 +47,13 @@
 
 			<!-- The Formats attribute can be used to limit which help file formats the files apply to.  Specify one or
 					 more of the help file formats above separated by commas.  If omitted, the files will apply to all help
-					 file formats.  The BasePath attribute can be used to override the presentation style base path and
-					 copy the files from a different location.  The TemplateFiles attribute can be used to have the
-					 Sandcastle Help File builder resolve substitution tags within files ending with on of the given
-					 extensions.  The extensions should be separated by semi-colons.  If omitted, the files are copied to
-					 the destination as-is.  This entry copies the help file builder version of the website template files
-					 when building website output. -->
+					 file formats.  A BasePath attribute can be used to override the presentation style base path and
+					 copy the files from a different location.  For example, adding BasePath="%SHFBROOT%" in a custom
+					 presentation style file would copy the standard web content from the Sandcastle Help File Builder.
+					 The TemplateFiles attribute can be used to have the Sandcastle Help File builder resolve substitution
+					 tags within files ending with on of the given extensions.  The extensions should be separated by
+					 semi-colons.  If omitted, the files are copied to the destination as-is.  This entry copies the help
+					 file builder version of the website template files when building website output. -->
 			<Files Formats="Website" BasePath="%SHFBROOT%" Source="Web\*.*" Destination=".\"
 				TemplateFiles=".aspx;.html;.htm;.php" />
 		</HelpContent>
@@ -129,7 +130,7 @@ or center.  If not specified, the default is left."/>
 		</TransformComponentArguments>
 	</PresentationStyle>
 
-	<PresentationStyle ID="VS2010" Title="VS2010" BasePath="%SHFBROOT%\Presentation\VS2010">
+	<PresentationStyle ID="VS2010" Title="VS2010" BasePath="Presentation\VS2010">
 		<Description>This is the style used by Visual Studio 2010 and later in the Microsoft Help Viewer.</Description>
 
 		<SupportedFormats>
@@ -187,7 +188,7 @@ or center.  If not specified, the default is left."/>
 		</TransformComponentArguments>
 	</PresentationStyle>
 
-	<PresentationStyle ID="Hana" Title="Hana (Deprecated)" BasePath="%SHFBROOT%\Presentation\Hana">
+	<PresentationStyle ID="Hana" Title="Hana (Deprecated)" BasePath="Presentation\Hana">
 		<Description>This style has been deprecated and is no longer supported.  It was an experimental style that
 was never used in production by Microsoft.</Description>
 
@@ -244,7 +245,7 @@ or center.  If not specified, the default is left."/>
 		</TransformComponentArguments>
 	</PresentationStyle>
 
-	<PresentationStyle ID="Prototype" Title="Prototype (Deprecated)" BasePath="%SHFBROOT%\Presentation\Prototype">
+	<PresentationStyle ID="Prototype" Title="Prototype (Deprecated)" BasePath="Presentation\Prototype">
 		<Description>This style has been deprecated and is no longer supported.  It was the first style provided with
 Sandcastle.</Description>
 

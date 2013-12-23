@@ -32,7 +32,9 @@ using System.Xml;
 using System.Xml.Schema;
 using System.Xml.XPath;
 
-using Microsoft.Ddue.Tools;
+using Sandcastle.Core.BuildAssembler;
+using Sandcastle.Core.BuildAssembler.BuildComponent;
+
 using Microsoft.Ddue.Tools.Targets;
 
 namespace SandcastleBuilder.Components.Targets
@@ -73,7 +75,7 @@ namespace SandcastleBuilder.Components.Targets
         /// project data so that it is always current.</param>
         /// <returns>A target dictionary instance that uses a simple in-memory
         /// <see cref="Dictionary{TKey, TValue}"/> instance to store the targets.</returns>
-        public SqlTargetDictionary(BuildComponent component, XPathNavigator configuration,
+        public SqlTargetDictionary(BuildComponentCore component, XPathNavigator configuration,
           string connectionString, string groupId, int localCacheSize, bool reload) :
           base(component, configuration)
         {

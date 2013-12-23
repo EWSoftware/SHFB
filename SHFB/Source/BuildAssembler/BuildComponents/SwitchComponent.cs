@@ -9,27 +9,30 @@ using System.Configuration;
 using System.Xml;
 using System.Xml.XPath;
 
+using Sandcastle.Core.BuildAssembler;
+using Sandcastle.Core.BuildAssembler.BuildComponent;
+
 namespace Microsoft.Ddue.Tools
 {
     /// <summary>
     /// This build component executes a set of build components on the topic based on the result of an XPath
     /// expression.
     /// </summary>
-    public class SwitchComponent : BuildComponent
+    public class SwitchComponent : BuildComponentCore
     {
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="assembler">The build assembler reference</param>
         /// <param name="configuration">The component configuration</param>
-        public SwitchComponent(BuildAssembler assembler, XPathNavigator configuration) :
+        public SwitchComponent(BuildAssemblerCore assembler, XPathNavigator configuration) :
           base(assembler, configuration)
         {
             // get the condition
             XPathNavigator condition_element = configuration.SelectSingleNode("switch");
 
             if(condition_element == null)
-                throw new ConfigurationErrorsException("You must specifiy a condition using the <switch> statement with a 'value' attribute.");
+                throw new ConfigurationErrorsException("You must specify a condition using the <switch> statement with a 'value' attribute.");
 
             string condition_value = condition_element.GetAttribute("value", String.Empty);
 
@@ -53,7 +56,7 @@ namespace Microsoft.Ddue.Tools
 
         private XPathExpression condition;
 
-        private Dictionary<string, IEnumerable<BuildComponent>> cases = new Dictionary<string, IEnumerable<BuildComponent>>();
+        private Dictionary<string, IEnumerable<BuildComponentCore>> cases = new Dictionary<string, IEnumerable<BuildComponentCore>>();
 
         // the action of the component
 
@@ -64,12 +67,12 @@ namespace Microsoft.Ddue.Tools
             string result = document.CreateNavigator().Evaluate(condition).ToString();
 
             // get the corresponding component stack
-            IEnumerable<BuildComponent> components;
+            IEnumerable<BuildComponentCore> components;
 
             if(cases.TryGetValue(result, out components))
             {
                 // apply it
-                foreach(BuildComponent component in components)
+                foreach(BuildComponentCore component in components)
                     component.Apply(document, key);
             }
         }
@@ -78,8 +81,8 @@ namespace Microsoft.Ddue.Tools
         protected override void Dispose(bool disposing)
         {
             if(disposing)
-                foreach(IEnumerable<BuildComponent> components in cases.Values)
-                    foreach(BuildComponent component in components)
+                foreach(IEnumerable<BuildComponentCore> components in cases.Values)
+                    foreach(BuildComponentCore component in components)
                         component.Dispose();
 
             base.Dispose(disposing);

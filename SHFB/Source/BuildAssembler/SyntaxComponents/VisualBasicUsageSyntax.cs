@@ -7,11 +7,14 @@
 // 02/14/2012 - EFW - Made the unsafe code checks consistent across all syntax generators
 // 03/08/2013 - EFW - Added configuration option to enable inclusion of the line continuation character.  The
 // default is false to exclude it.
+// 12/20/2013 - EFW - Updated the syntax generator to be discoverable via MEF
 
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Xml.XPath;
+
+using Sandcastle.Core.BuildAssembler.SyntaxGenerator;
 
 namespace Microsoft.Ddue.Tools
 {
@@ -20,21 +23,36 @@ namespace Microsoft.Ddue.Tools
     /// </summary>
     public sealed class VisualBasicUsageSyntaxGenerator : SyntaxGeneratorTemplate
     {
-        private bool includeLineContinuation;
+        #region Syntax generator factory for MEF
+        //=====================================================================
 
         /// <summary>
-        /// Constructor
+        /// This is used to create a new instance of the syntax generator
         /// </summary>
-        /// <param name="configuration">The configuration for the syntax generator</param>
-        public VisualBasicUsageSyntaxGenerator(XPathNavigator configuration) : base(configuration)
+        [SyntaxGeneratorExport("VisualBasicUsage", "VisualBasicUsage", "vb", AlternateIds = "vbusage, vbnetusage",
+          IsConfigurable = true, SortOrder = 30, Description = "Generates Visual Basic usage syntax sections",
+          DefaultConfiguration = "<includeLineContinuation value=\"false\" />")]
+        public sealed class Factory : ISyntaxGeneratorFactory
         {
-            string lineCont = configuration.GetAttribute("includeLineContinuation", String.Empty);
+            /// <inheritdoc />
+            public SyntaxGeneratorBase Create()
+            {
+                return new VisualBasicUsageSyntaxGenerator();
+            }
+        }
+        #endregion
 
-            if(String.IsNullOrWhiteSpace(lineCont) || !Boolean.TryParse(lineCont, out includeLineContinuation))
+        private bool includeLineContinuation;
+
+        /// <inheritdoc />
+        public override void Initialize(XPathNavigator configuration)
+        {
+            base.Initialize(configuration);
+
+            var lineCont = configuration.SelectSingleNode("includeLineContinuation/@value");
+
+            if(lineCont != null || !Boolean.TryParse(lineCont.Value, out includeLineContinuation))
                 includeLineContinuation = false;
-
-            if(String.IsNullOrEmpty(Language))
-                Language = "VisualBasicUsage";
         }
 
         /// <inheritdoc />

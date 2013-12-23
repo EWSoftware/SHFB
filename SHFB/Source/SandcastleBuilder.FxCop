@@ -19,11 +19,12 @@
   <SearchGlobalAssemblyCache>False</SearchGlobalAssemblyCache>
   <DeadlockDetectionTimeout>120</DeadlockDetectionTimeout>
   <IgnoreGeneratedCode>False</IgnoreGeneratedCode>
+  <TargetFrameworkVersion>0.0</TargetFrameworkVersion>
  </ProjectOptions>
  <Targets>
   <Target Name="$(ProjectDir)/../Deploy/GenerateInheritedDocs.exe" Analyze="True" AnalyzeAllChildren="True" />
   <Target Name="$(ProjectDir)/../Deploy/HelpLibraryManagerLauncher.exe" Analyze="True" AnalyzeAllChildren="True" />
-  <Target Name="$(ProjectDir)/../Deploy/SandcastleBuilder.PlugIns.plugins" Analyze="True" AnalyzeAllChildren="True" />
+  <Target Name="$(ProjectDir)/../Deploy/SandcastleBuilder.PlugIns.dll" Analyze="True" AnalyzeAllChildren="True" />
   <Target Name="$(ProjectDir)/../Deploy/SandcastleBuilder.Utils.dll" Analyze="True" AnalyzeAllChildren="True" />
   <Target Name="$(ProjectDir)/../Deploy/SandcastleBuilder.WPF.dll" Analyze="True" AnalyzeAllChildren="True" />
   <Target Name="$(ProjectDir)/../Deploy/SandcastleBuilderGUI.exe" Analyze="True" AnalyzeAllChildren="True" />
@@ -478,494 +479,6 @@
                 <Note Id="71" />
                </User>
               </Notes>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-        </Types>
-       </Namespace>
-      </Namespaces>
-     </Module>
-    </Modules>
-   </Target>
-   <Target Name="$(ProjectDir)/../Deploy/SandcastleBuilder.PlugIns.plugins">
-    <Modules>
-     <Module Name="sandcastlebuilder.plugins.plugins">
-      <Namespaces>
-       <Namespace Name="SandcastleBuilder.PlugIns">
-        <Types>
-         <Type Name="AdditionalReferenceLinksConfigDlg">
-          <Members>
-           <Member Name="#lnkCodePlexSHFB_LinkClicked(System.Object,System.Windows.Forms.LinkLabelLinkClickedEventArgs)">
-            <Messages>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Created="2013-12-16 02:13:11Z">
-              <Issue>
-               <Item>'AdditionalReferenceLinksConfigDlg.lnkCodePlexSHFB_LinkClicked(object, LinkLabelLinkClickedEventArgs)'</Item>
-               <Item>'Exception'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="AjaxDocConfigDlg">
-          <Members>
-           <Member Name="#btnOK_Click(System.Object,System.EventArgs)">
-            <Messages>
-             <Message TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308" Created="2013-12-16 02:13:11Z">
-              <Issue Name="ToUpperInvariant">
-               <Item>'AjaxDocConfigDlg.btnOK_Click(object, EventArgs)'</Item>
-               <Item>'string.ToLower(CultureInfo)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#codePlex_LinkClicked(System.Object,System.Windows.Forms.LinkLabelLinkClickedEventArgs)">
-            <Messages>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Created="2013-12-16 02:13:11Z">
-              <Issue>
-               <Item>'AjaxDocConfigDlg.codePlex_LinkClicked(object, LinkLabelLinkClickedEventArgs)'</Item>
-               <Item>'Exception'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="BibliographySupportConfigDlg">
-          <Members>
-           <Member Name="#project_LinkClicked(System.Object,System.Windows.Forms.LinkLabelLinkClickedEventArgs)">
-            <Messages>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Created="2013-12-16 02:13:11Z">
-              <Issue>
-               <Item>'BibliographySupportConfigDlg.project_LinkClicked(object, LinkLabelLinkClickedEventArgs)'</Item>
-               <Item>'Exception'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="BindingRedirectResolverConfigDlg">
-          <Members>
-           <Member Name="#btnOK_Click(System.Object,System.EventArgs)">
-            <Messages>
-             <Message TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308" Created="2013-12-16 02:13:11Z">
-              <Issue Name="ToUpperInvariant">
-               <Item>'BindingRedirectResolverConfigDlg.btnOK_Click(object, EventArgs)'</Item>
-               <Item>'string.ToLowerInvariant()'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#lnkCodePlexSHFB_LinkClicked(System.Object,System.Windows.Forms.LinkLabelLinkClickedEventArgs)">
-            <Messages>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Created="2013-12-16 02:13:11Z">
-              <Issue>
-               <Item>'BindingRedirectResolverConfigDlg.lnkCodePlexSHFB_LinkClicked(object, LinkLabelLinkClickedEventArgs)'</Item>
-               <Item>'Exception'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="BindingRedirectResolverPlugIn">
-          <Members>
-           <Member Name="#Execute(SandcastleBuilder.Utils.PlugIn.ExecutionContext)">
-            <Messages>
-             <Message TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308" Created="2013-12-16 02:13:11Z">
-              <Issue Name="ToUpperInvariant">
-               <Item>'BindingRedirectResolverPlugIn.Execute(ExecutionContext)'</Item>
-               <Item>'string.ToLowerInvariant()'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="BindingRedirectSettings">
-          <Members>
-           <Member Name="#ToXml(System.Xml.XmlDocument,System.Xml.XmlNode,System.Boolean)">
-            <Messages>
-             <Message Id="System.Xml.XmlNode" TypeName="MembersShouldNotExposeCertainConcreteTypes" Category="Microsoft.Design" CheckId="CA1059" Created="2013-12-16 02:13:11Z">
-              <Issue Name="Xml">
-               <Item>'BindingRedirectSettings.ToXml(XmlDocument, XmlNode, bool)'</Item>
-               <Item>'XmlDocument'</Item>
-              </Issue>
-              <Issue Name="Xml">
-               <Item>'BindingRedirectSettings.ToXml(XmlDocument, XmlNode, bool)'</Item>
-               <Item>'XmlNode'</Item>
-              </Issue>
-              <Issue Name="Xml">
-               <Item>'BindingRedirectSettings.ToXml(XmlDocument, XmlNode, bool)'</Item>
-               <Item>'XmlNode'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="BindingRedirectSettingsCollection">
-          <Members>
-           <Member Name="#ToXml(System.Xml.XmlDocument,System.Xml.XmlNode,System.Boolean)">
-            <Messages>
-             <Message Id="System.Xml.XmlNode" TypeName="MembersShouldNotExposeCertainConcreteTypes" Category="Microsoft.Design" CheckId="CA1059" Created="2013-12-16 02:13:11Z">
-              <Issue Name="Xml">
-               <Item>'BindingRedirectSettingsCollection.ToXml(XmlDocument, XmlNode, bool)'</Item>
-               <Item>'XmlDocument'</Item>
-              </Issue>
-              <Issue Name="Xml">
-               <Item>'BindingRedirectSettingsCollection.ToXml(XmlDocument, XmlNode, bool)'</Item>
-               <Item>'XmlNode'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="CompletionNotificationConfigDlg">
-          <Members>
-           <Member Name="#btnOK_Click(System.Object,System.EventArgs)">
-            <Messages>
-             <Message TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308" Created="2013-12-16 02:13:11Z">
-              <Issue Name="ToUpperInvariant">
-               <Item>'CompletionNotificationConfigDlg.btnOK_Click(object, EventArgs)'</Item>
-               <Item>'string.ToLower(CultureInfo)'</Item>
-              </Issue>
-              <Issue Name="ToUpperInvariant">
-               <Item>'CompletionNotificationConfigDlg.btnOK_Click(object, EventArgs)'</Item>
-               <Item>'string.ToLower(CultureInfo)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#lnkCodePlexSHFB_LinkClicked(System.Object,System.Windows.Forms.LinkLabelLinkClickedEventArgs)">
-            <Messages>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Created="2013-12-16 02:13:11Z">
-              <Issue>
-               <Item>'CompletionNotificationConfigDlg.lnkCodePlexSHFB_LinkClicked(object, LinkLabelLinkClickedEventArgs)'</Item>
-               <Item>'Exception'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="CompletionNotificationPlugIn">
-          <Members>
-           <Member Name="#TransformLogFile()">
-            <Messages>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Created="2013-12-16 02:13:11Z">
-              <Issue>
-               <Item>'CompletionNotificationPlugIn.TransformLogFile()'</Item>
-               <Item>'Exception'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="DbcsFixConfigDlg">
-          <Members>
-           <Member Name="#project_LinkClicked(System.Object,System.Windows.Forms.LinkLabelLinkClickedEventArgs)">
-            <Messages>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Created="2013-12-16 02:13:11Z">
-              <Issue>
-               <Item>'DbcsFixConfigDlg.project_LinkClicked(object, LinkLabelLinkClickedEventArgs)'</Item>
-               <Item>'Exception'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="DbcsFixPlugIn">
-          <Messages>
-           <Message Id="Dbcs" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2013-12-16 02:13:11Z">
-            <Issue Name="Type">
-             <Item>Dbcs</Item>
-             <Item>'DbcsFixPlugIn'</Item>
-            </Issue>
-           </Message>
-          </Messages>
-         </Type>
-         <Type Name="DeploymentConfigDlg">
-          <Members>
-           <Member Name="#btnOK_Click(System.Object,System.EventArgs)">
-            <Messages>
-             <Message TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308" Created="2013-12-16 02:13:11Z">
-              <Issue Name="ToUpperInvariant">
-               <Item>'DeploymentConfigDlg.btnOK_Click(object, EventArgs)'</Item>
-               <Item>'string.ToLowerInvariant()'</Item>
-              </Issue>
-              <Issue Name="ToUpperInvariant">
-               <Item>'DeploymentConfigDlg.btnOK_Click(object, EventArgs)'</Item>
-               <Item>'string.ToLowerInvariant()'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#codePlex_LinkClicked(System.Object,System.Windows.Forms.LinkLabelLinkClickedEventArgs)">
-            <Messages>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Created="2013-12-16 02:13:11Z">
-              <Issue>
-               <Item>'DeploymentConfigDlg.codePlex_LinkClicked(object, LinkLabelLinkClickedEventArgs)'</Item>
-               <Item>'Exception'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="DeploymentLocation">
-          <Members>
-           <Member Name="#ToXml(System.Xml.XmlDocument,System.Xml.XmlNode,System.String)">
-            <Messages>
-             <Message Id="System.Xml.XmlNode" TypeName="MembersShouldNotExposeCertainConcreteTypes" Category="Microsoft.Design" CheckId="CA1059" Created="2013-12-16 02:13:11Z">
-              <Issue Name="Xml">
-               <Item>'DeploymentLocation.ToXml(XmlDocument, XmlNode, string)'</Item>
-               <Item>'XmlDocument'</Item>
-              </Issue>
-              <Issue Name="Xml">
-               <Item>'DeploymentLocation.ToXml(XmlDocument, XmlNode, string)'</Item>
-               <Item>'XmlNode'</Item>
-              </Issue>
-              <Issue Name="Xml">
-               <Item>'DeploymentLocation.ToXml(XmlDocument, XmlNode, string)'</Item>
-               <Item>'XmlNode'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="HierarchicalTocConfigDlg">
-          <Members>
-           <Member Name="#project_LinkClicked(System.Object,System.Windows.Forms.LinkLabelLinkClickedEventArgs)">
-            <Messages>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Created="2013-12-16 02:13:11Z">
-              <Issue>
-               <Item>'HierarchicalTocConfigDlg.project_LinkClicked(object, LinkLabelLinkClickedEventArgs)'</Item>
-               <Item>'Exception'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="ProxyCredentials">
-          <Members>
-           <Member Name="#ToXml(System.Xml.XmlDocument,System.Xml.XmlNode)">
-            <Messages>
-             <Message Id="System.Xml.XmlNode" TypeName="MembersShouldNotExposeCertainConcreteTypes" Category="Microsoft.Design" CheckId="CA1059" Created="2013-12-16 02:13:11Z">
-              <Issue Name="Xml">
-               <Item>'ProxyCredentials.ToXml(XmlDocument, XmlNode)'</Item>
-               <Item>'XmlDocument'</Item>
-              </Issue>
-              <Issue Name="Xml">
-               <Item>'ProxyCredentials.ToXml(XmlDocument, XmlNode)'</Item>
-               <Item>'XmlNode'</Item>
-              </Issue>
-              <Issue Name="Xml">
-               <Item>'ProxyCredentials.ToXml(XmlDocument, XmlNode)'</Item>
-               <Item>'XmlNode'</Item>
-              </Issue>
-             </Message>
-             <Message TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308" Created="2013-12-16 02:13:11Z">
-              <Issue Name="ToUpperInvariant">
-               <Item>'ProxyCredentials.ToXml(XmlDocument, XmlNode)'</Item>
-               <Item>'string.ToLower(CultureInfo)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="ReferenceLinkSettings">
-          <Members>
-           <Member Name="#ToXml(System.Xml.XmlDocument,System.Xml.XmlNode)">
-            <Messages>
-             <Message Id="System.Xml.XmlNode" TypeName="MembersShouldNotExposeCertainConcreteTypes" Category="Microsoft.Design" CheckId="CA1059" Created="2013-12-16 02:13:11Z">
-              <Issue Name="Xml">
-               <Item>'ReferenceLinkSettings.ToXml(XmlDocument, XmlNode)'</Item>
-               <Item>'XmlDocument'</Item>
-              </Issue>
-              <Issue Name="Xml">
-               <Item>'ReferenceLinkSettings.ToXml(XmlDocument, XmlNode)'</Item>
-               <Item>'XmlNode'</Item>
-              </Issue>
-              <Issue Name="Xml">
-               <Item>'ReferenceLinkSettings.ToXml(XmlDocument, XmlNode)'</Item>
-               <Item>'XmlNode'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="ReferenceLinkSettingsCollection">
-          <Members>
-           <Member Name="#ToXml(System.Xml.XmlDocument,System.Xml.XmlNode)">
-            <Messages>
-             <Message Id="System.Xml.XmlNode" TypeName="MembersShouldNotExposeCertainConcreteTypes" Category="Microsoft.Design" CheckId="CA1059" Created="2013-12-16 02:13:11Z">
-              <Issue Name="Xml">
-               <Item>'ReferenceLinkSettingsCollection.ToXml(XmlDocument, XmlNode)'</Item>
-               <Item>'XmlDocument'</Item>
-              </Issue>
-              <Issue Name="Xml">
-               <Item>'ReferenceLinkSettingsCollection.ToXml(XmlDocument, XmlNode)'</Item>
-               <Item>'XmlNode'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="UserCredentials">
-          <Members>
-           <Member Name="#ToXml(System.Xml.XmlDocument,System.Xml.XmlNode)">
-            <Messages>
-             <Message Id="System.Xml.XmlNode" TypeName="MembersShouldNotExposeCertainConcreteTypes" Category="Microsoft.Design" CheckId="CA1059" Created="2013-12-16 02:13:11Z">
-              <Issue Name="Xml">
-               <Item>'UserCredentials.ToXml(XmlDocument, XmlNode)'</Item>
-               <Item>'XmlDocument'</Item>
-              </Issue>
-              <Issue Name="Xml">
-               <Item>'UserCredentials.ToXml(XmlDocument, XmlNode)'</Item>
-               <Item>'XmlNode'</Item>
-              </Issue>
-              <Issue Name="Xml">
-               <Item>'UserCredentials.ToXml(XmlDocument, XmlNode)'</Item>
-               <Item>'XmlNode'</Item>
-              </Issue>
-             </Message>
-             <Message TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308" Created="2013-12-16 02:13:11Z">
-              <Issue Name="ToUpperInvariant">
-               <Item>'UserCredentials.ToXml(XmlDocument, XmlNode)'</Item>
-               <Item>'string.ToLower(CultureInfo)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="VersionBuilderConfigDlg">
-          <Members>
-           <Member Name="#lnkCodePlexSHFB_LinkClicked(System.Object,System.Windows.Forms.LinkLabelLinkClickedEventArgs)">
-            <Messages>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Created="2013-12-16 02:13:11Z">
-              <Issue>
-               <Item>'VersionBuilderConfigDlg.lnkCodePlexSHFB_LinkClicked(object, LinkLabelLinkClickedEventArgs)'</Item>
-               <Item>'Exception'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="VersionSettings">
-          <Members>
-           <Member Name="#ToXml(System.Xml.XmlDocument,System.Xml.XmlNode)">
-            <Messages>
-             <Message Id="System.Xml.XmlNode" TypeName="MembersShouldNotExposeCertainConcreteTypes" Category="Microsoft.Design" CheckId="CA1059" Created="2013-12-16 02:13:11Z">
-              <Issue Name="Xml">
-               <Item>'VersionSettings.ToXml(XmlDocument, XmlNode)'</Item>
-               <Item>'XmlDocument'</Item>
-              </Issue>
-              <Issue Name="Xml">
-               <Item>'VersionSettings.ToXml(XmlDocument, XmlNode)'</Item>
-               <Item>'XmlNode'</Item>
-              </Issue>
-              <Issue Name="Xml">
-               <Item>'VersionSettings.ToXml(XmlDocument, XmlNode)'</Item>
-               <Item>'XmlNode'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="VersionSettingsCollection">
-          <Members>
-           <Member Name="#ToXml(System.Xml.XmlDocument,System.Xml.XmlNode)">
-            <Messages>
-             <Message Id="System.Xml.XmlNode" TypeName="MembersShouldNotExposeCertainConcreteTypes" Category="Microsoft.Design" CheckId="CA1059" Created="2013-12-16 02:13:11Z">
-              <Issue Name="Xml">
-               <Item>'VersionSettingsCollection.ToXml(XmlDocument, XmlNode)'</Item>
-               <Item>'XmlDocument'</Item>
-              </Issue>
-              <Issue Name="Xml">
-               <Item>'VersionSettingsCollection.ToXml(XmlDocument, XmlNode)'</Item>
-               <Item>'XmlNode'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="WildcardReferencesConfigDlg">
-          <Members>
-           <Member Name="#lnkCodePlexSHFB_LinkClicked(System.Object,System.Windows.Forms.LinkLabelLinkClickedEventArgs)">
-            <Messages>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Created="2013-12-16 02:13:11Z">
-              <Issue>
-               <Item>'WildcardReferencesConfigDlg.lnkCodePlexSHFB_LinkClicked(object, LinkLabelLinkClickedEventArgs)'</Item>
-               <Item>'Exception'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="WildcardReferenceSettingsCollection">
-          <Members>
-           <Member Name="#FromXml(SandcastleBuilder.Utils.IBasePathProvider,System.Xml.Linq.XElement)">
-            <Messages>
-             <Message TypeName="ConsiderPassingBaseTypesAsParameters" Category="Microsoft.Design" CheckId="CA1011" Created="2013-12-16 02:13:11Z">
-              <Issue>
-               <Item>'root'</Item>
-               <Item>'WildcardReferenceSettingsCollection.FromXml(IBasePathProvider, XElement)'</Item>
-               <Item>'XElement'</Item>
-               <Item>'XContainer'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#ToXml(System.Xml.Linq.XElement)">
-            <Messages>
-             <Message TypeName="ConsiderPassingBaseTypesAsParameters" Category="Microsoft.Design" CheckId="CA1011" Created="2013-12-16 02:13:11Z">
-              <Issue>
-               <Item>'root'</Item>
-               <Item>'WildcardReferenceSettingsCollection.ToXml(XElement)'</Item>
-               <Item>'XElement'</Item>
-               <Item>'XContainer'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="XPathReflectionFileFilterConfigDlg">
-          <Members>
-           <Member Name="#lnkCodePlexSHFB_LinkClicked(System.Object,System.Windows.Forms.LinkLabelLinkClickedEventArgs)">
-            <Messages>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Created="2013-12-16 02:13:11Z">
-              <Issue>
-               <Item>'XPathReflectionFileFilterConfigDlg.lnkCodePlexSHFB_LinkClicked(object, LinkLabelLinkClickedEventArgs)'</Item>
-               <Item>'Exception'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#tvExpressions_BeforeSelect(System.Object,System.Windows.Forms.TreeViewCancelEventArgs)">
-            <Messages>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Created="2013-12-16 02:13:11Z">
-              <Issue>
-               <Item>'XPathReflectionFileFilterConfigDlg.tvExpressions_BeforeSelect(object, TreeViewCancelEventArgs)'</Item>
-               <Item>'Exception'</Item>
-              </Issue>
              </Message>
             </Messages>
            </Member>
@@ -1939,21 +1452,6 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="#UserDefinedProperties">
-            <Messages>
-             <Message TypeName="PropertyNamesShouldNotMatchGetMethods" Category="Microsoft.Naming" CheckId="CA1721" Status="Excluded" Created="2011-12-31 23:40:53Z">
-              <Issue Name="SameType">
-               <Item>'SandcastleProject.UserDefinedProperties'</Item>
-               <Item>'SandcastleProject.GetUserDefinedProperties()'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="133" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
            <Member Name="#VisibleItems">
             <Accessors>
              <Accessor Name="#set_VisibleItems(SandcastleBuilder.Utils.VisibleItems)">
@@ -2031,44 +1529,6 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="BuildComponentManager">
-          <Members>
-           <Member Name="#LoadSyntaxFilters()">
-            <Messages>
-             <Message TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308" Status="Excluded" Created="2009-11-11 03:27:19Z">
-              <Issue Name="ToUpperInvariant">
-               <Item>'BuildComponentManager.LoadSyntaxFilters()'</Item>
-               <Item>'string.ToLowerInvariant()'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="70" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#SyntaxFiltersFrom(System.String)">
-            <Messages>
-             <Message TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308" Status="Excluded" Created="2009-11-11 03:27:19Z">
-              <Issue Name="ToUpperInvariant">
-               <Item>'BuildComponentManager.SyntaxFiltersFrom(string)'</Item>
-               <Item>'string.ToLowerInvariant()'</Item>
-              </Issue>
-              <Issue Name="ToUpperInvariant">
-               <Item>'BuildComponentManager.SyntaxFiltersFrom(string)'</Item>
-               <Item>'string.ToLowerInvariant()'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="70" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
          <Type Name="ComponentConfigurationDictionary">
           <Messages>
            <Message TypeName="ImplementISerializableCorrectly" Category="Microsoft.Usage" CheckId="CA2240" Status="Excluded" Created="2007-11-05 21:59:28Z">
@@ -2102,6 +1562,30 @@
             <Notes>
              <User Name="EWOODRUFF">
               <Note Id="99" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="PlugInConfigurationDictionary">
+          <Messages>
+           <Message TypeName="ImplementISerializableCorrectly" Category="Microsoft.Usage" CheckId="CA2240" Status="Excluded" Created="2007-11-05 21:59:28Z">
+            <Issue>
+             <Item>'PlugInConfigurationDictionary'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="80" />
+             </User>
+            </Notes>
+           </Message>
+           <Message TypeName="ImplementSerializationConstructors" Category="Microsoft.Usage" CheckId="CA2229" Status="Excluded" Created="2007-11-05 21:59:28Z">
+            <Issue Name="CreateMagicConstructor">
+             <Item>PlugInConfigurationDictionary</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="82" />
              </User>
             </Notes>
            </Message>
@@ -3861,55 +3345,6 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="ComponentConfigurationEditorDlg">
-          <Members>
-           <Member Name="#.ctor(SandcastleBuilder.Utils.BuildComponent.ComponentConfigurationDictionary)">
-            <Messages>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2007-11-05 21:59:28Z">
-              <Issue>
-               <Item>'ComponentConfigurationEditorDlg.ComponentConfigurationEditorDlg(ComponentConfigurationDictionary)'</Item>
-               <Item>'Exception'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="78" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#btnConfigure_Click(System.Object,System.EventArgs)">
-            <Messages>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2006-12-04 21:56:02Z">
-              <Issue>
-               <Item>'ComponentConfigurationEditorDlg.btnConfigure_Click(object, EventArgs)'</Item>
-               <Item>'Exception'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="33" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#btnHelp_Click(System.Object,System.EventArgs)">
-            <Messages>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2007-10-08 22:00:51Z">
-              <Issue>
-               <Item>'ComponentConfigurationEditorDlg.btnHelp_Click(object, EventArgs)'</Item>
-               <Item>'Exception'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="66" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
          <Type Name="ContentFileEditorCollection">
           <Members>
            <Member Name="#.ctor(SandcastleBuilder.Utils.Design.ContentFileEditorCollection)">
@@ -4114,72 +3549,6 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="MSHelpAttrEditor">
-          <Messages>
-           <Message Id="Attr" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2008-04-01 21:22:38Z">
-            <Issue Name="Type">
-             <Item>Attr</Item>
-             <Item>'MSHelpAttrEditor'</Item>
-            </Issue>
-            <Notes>
-             <User Name="EWOODRUFF">
-              <Note Id="88" />
-             </User>
-            </Notes>
-           </Message>
-          </Messages>
-         </Type>
-         <Type Name="MSHelpAttrEditorDlg">
-          <Messages>
-           <Message Id="Attr" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2008-04-01 21:22:38Z">
-            <Issue Name="Type">
-             <Item>Attr</Item>
-             <Item>'MSHelpAttrEditorDlg'</Item>
-            </Issue>
-            <Notes>
-             <User Name="EWOODRUFF">
-              <Note Id="88" />
-             </User>
-            </Notes>
-           </Message>
-          </Messages>
-          <Members>
-           <Member Name="#btnHelp_Click(System.Object,System.EventArgs)">
-            <Messages>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2008-04-01 21:22:38Z">
-              <Issue>
-               <Item>'MSHelpAttrEditorDlg.btnHelp_Click(object, EventArgs)'</Item>
-               <Item>'Exception'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="87" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="MSHelpKeywordEditorDlg">
-          <Members>
-           <Member Name="#btnHelp_Click(System.Object,System.EventArgs)">
-            <Messages>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2008-05-28 16:11:25Z">
-              <Issue>
-               <Item>'MSHelpKeywordEditorDlg.btnHelp_Click(object, EventArgs)'</Item>
-               <Item>'Exception'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="117" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
          <Type Name="NamespaceSummaryItemEditorDlg">
           <Members>
            <Member Name="#btnHelp_Click(System.Object,System.EventArgs)">
@@ -4252,190 +3621,6 @@
               <Notes>
                <User Name="EWOODRUFF">
                 <Note Id="15" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="PlugInConfigurationEditorDlg">
-          <Members>
-           <Member Name="#.ctor(SandcastleBuilder.Utils.PlugIn.PlugInConfigurationDictionary)">
-            <Messages>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2007-11-05 21:59:28Z">
-              <Issue>
-               <Item>'PlugInConfigurationEditorDlg.PlugInConfigurationEditorDlg(PlugInConfigurationDictionary)'</Item>
-               <Item>'Exception'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="78" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#btnHelp_Click(System.Object,System.EventArgs)">
-            <Messages>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2007-10-08 22:00:51Z">
-              <Issue>
-               <Item>'PlugInConfigurationEditorDlg.btnHelp_Click(object, EventArgs)'</Item>
-               <Item>'Exception'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="66" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="SyntaxFilterTypeConverter">
-          <Members>
-           <Member Name="#ConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object)">
-            <Messages>
-             <Message TypeName="DoNotCastUnnecessarily" Category="Microsoft.Performance" CheckId="CA1800" Status="Excluded" Created="2011-12-31 23:40:53Z">
-              <Issue Name="Parameter">
-               <Item>'value'</Item>
-               <Item>'string'</Item>
-               <Item>'SyntaxFilterTypeConverter.ConvertFrom(ITypeDescriptorContext, CultureInfo, object)'</Item>
-               <Item>castclass</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="136" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="UserDefinedPropertyEditorDlg">
-          <Members>
-           <Member Name="#.ctor(SandcastleBuilder.Utils.SandcastleProject)">
-            <Messages>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2009-04-21 01:18:50Z">
-              <Issue>
-               <Item>'UserDefinedPropertyEditorDlg.UserDefinedPropertyEditorDlg(SandcastleProject)'</Item>
-               <Item>'Exception'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="69" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#btnHelp_Click(System.Object,System.EventArgs)">
-            <Messages>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2009-04-21 01:18:50Z">
-              <Issue>
-               <Item>'UserDefinedPropertyEditorDlg.btnHelp_Click(object, EventArgs)'</Item>
-               <Item>'Exception'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="69" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="UserDefinedPropertyEditorDlg+PropertyItem">
-          <Members>
-           <Member Name="#Condition">
-            <Accessors>
-             <Accessor Name="#set_Condition(System.String)">
-              <Messages>
-               <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Status="Excluded" Created="2009-04-21 01:18:50Z">
-                <Issue>
-                 <Item>'UserDefinedPropertyEditorDlg.PropertyItem.Condition.set(string)'</Item>
-                </Issue>
-                <Notes>
-                 <User Name="EWOODRUFF">
-                  <Note Id="56" />
-                 </User>
-                </Notes>
-               </Message>
-              </Messages>
-             </Accessor>
-            </Accessors>
-           </Member>
-           <Member Name="#Name">
-            <Accessors>
-             <Accessor Name="#set_Name(System.String)">
-              <Messages>
-               <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Status="Excluded" Created="2009-04-21 01:18:50Z">
-                <Issue>
-                 <Item>'UserDefinedPropertyEditorDlg.PropertyItem.Name.set(string)'</Item>
-                </Issue>
-                <Notes>
-                 <User Name="EWOODRUFF">
-                  <Note Id="56" />
-                 </User>
-                </Notes>
-               </Message>
-              </Messages>
-             </Accessor>
-            </Accessors>
-           </Member>
-           <Member Name="#Value">
-            <Accessors>
-             <Accessor Name="#set_Value(System.String)">
-              <Messages>
-               <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Status="Excluded" Created="2009-04-21 01:18:50Z">
-                <Issue>
-                 <Item>'UserDefinedPropertyEditorDlg.PropertyItem.Value.set(string)'</Item>
-                </Issue>
-                <Notes>
-                 <User Name="EWOODRUFF">
-                  <Note Id="56" />
-                 </User>
-                </Notes>
-               </Message>
-              </Messages>
-             </Accessor>
-            </Accessors>
-           </Member>
-           <Member Name="#WasModified">
-            <Accessors>
-             <Accessor Name="#set_WasModified(System.Boolean)">
-              <Messages>
-               <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Status="Excluded" Created="2011-02-28 00:35:53Z">
-                <Issue>
-                 <Item>'UserDefinedPropertyEditorDlg.PropertyItem.WasModified.set(bool)'</Item>
-                </Issue>
-                <Notes>
-                 <User Name="EWOODRUFF">
-                  <Note Id="36" />
-                 </User>
-                </Notes>
-               </Message>
-              </Messages>
-             </Accessor>
-            </Accessors>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="UserDefinedPropertyTypeConverter">
-          <Members>
-           <Member Name="#ConvertTo(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object,System.Type)">
-            <Messages>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2009-04-21 01:18:50Z">
-              <Issue>
-               <Item>'UserDefinedPropertyTypeConverter.ConvertTo(ITypeDescriptorContext, CultureInfo, object, Type)'</Item>
-               <Item>'Exception'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="69" />
                </User>
               </Notes>
              </Message>
@@ -4648,34 +3833,6 @@
             </Messages>
            </Member>
           </Members>
-         </Type>
-        </Types>
-       </Namespace>
-       <Namespace Name="SandcastleBuilder.Utils.PlugIn">
-        <Types>
-         <Type Name="PlugInConfigurationDictionary">
-          <Messages>
-           <Message TypeName="ImplementISerializableCorrectly" Category="Microsoft.Usage" CheckId="CA2240" Status="Excluded" Created="2007-11-05 21:59:28Z">
-            <Issue>
-             <Item>'PlugInConfigurationDictionary'</Item>
-            </Issue>
-            <Notes>
-             <User Name="EWOODRUFF">
-              <Note Id="80" />
-             </User>
-            </Notes>
-           </Message>
-           <Message TypeName="ImplementSerializationConstructors" Category="Microsoft.Usage" CheckId="CA2229" Status="Excluded" Created="2007-11-05 21:59:28Z">
-            <Issue Name="CreateMagicConstructor">
-             <Item>PlugInConfigurationDictionary</Item>
-            </Issue>
-            <Notes>
-             <User Name="EWOODRUFF">
-              <Note Id="82" />
-             </User>
-            </Notes>
-           </Message>
-          </Messages>
          </Type>
         </Types>
        </Namespace>
@@ -9422,10 +8579,8 @@
     <Note Id="29" Modified="2008-09-19 23:52:09Z">These are the MSBuild task interface properties and must remain instance-based.</Note>
     <Note Id="31" Modified="2008-02-20 17:09:38Z">Okay as is</Note>
     <Note Id="32" Modified="2008-09-20 02:07:56Z">I like it the way it is</Note>
-    <Note Id="33" Modified="2006-12-04 21:57:14Z">The error is being reported</Note>
     <Note Id="34" Modified="2009-10-27 17:40:46Z">Distinct words: "Dump Log On Failure"</Note>
     <Note Id="35" Modified="2008-03-04 17:43:18Z">The error is reported</Note>
-    <Note Id="36" Modified="2011-02-28 00:37:51Z">Appears to be firing in error as it is used.</Note>
     <Note Id="37" Modified="2008-09-20 02:26:16Z">Okay as is</Note>
     <Note Id="39" Modified="2006-12-09 05:43:09Z">Okay as is</Note>
     <Note Id="41" Modified="2006-12-27 23:40:43Z">Called via Reflection when loading a project</Note>
@@ -9437,7 +8592,6 @@
     <Note Id="51" Modified="2011-02-28 01:05:23Z">Okay as is</Note>
     <Note Id="52" Modified="2013-10-03 21:46:01Z">The exception is intentionally ignored.</Note>
     <Note Id="55" Modified="2008-09-20 02:55:19Z">Lowercase is preferred</Note>
-    <Note Id="56" Modified="2009-04-21 01:29:06Z">This is accessed by the property grid control at runtime.</Note>
     <Note Id="57" Modified="2007-08-03 18:01:40Z">It's fine</Note>
     <Note Id="58" Modified="2007-08-03 18:07:22Z">Not applicable in this case</Note>
     <Note Id="59" Modified="2007-08-03 18:08:01Z">The error is reported</Note>
@@ -9449,7 +8603,6 @@
     <Note Id="66" Modified="2007-10-08 22:04:38Z">The error is reported</Note>
     <Note Id="67" Modified="2008-09-20 03:04:51Z">Lowercase is preferred</Note>
     <Note Id="68" Modified="2008-03-24 05:13:24Z">This is just in the debug build to verify the code for the help file</Note>
-    <Note Id="69" Modified="2009-04-21 01:29:52Z">The error is reported</Note>
     <Note Id="70" Modified="2009-11-11 03:38:21Z">Lowercase is preferred</Note>
     <Note Id="71" Modified="2011-02-28 01:05:49Z">No security issues found</Note>
     <Note Id="73" Modified="2011-03-07 01:03:02Z">Lowercase is needed here.</Note>
@@ -9457,7 +8610,6 @@
     <Note Id="75" Modified="2009-12-07 05:23:51Z">The error is reported</Note>
     <Note Id="76" Modified="2008-03-24 05:13:34Z">Okay as is</Note>
     <Note Id="77" Modified="2007-10-08 22:29:52Z">Doesn't appear to be worth it in this case.</Note>
-    <Note Id="78" Modified="2007-11-05 22:01:36Z">The error is reported</Note>
     <Note Id="79" Modified="2011-03-07 01:03:42Z">Lowercase is preferred here</Note>
     <Note Id="80" Modified="2007-11-05 22:05:17Z">There's nothing to serialize in this class, let the base class handle it.</Note>
     <Note Id="81" Modified="2011-12-31 23:41:21Z">Okay as is</Note>
@@ -9466,7 +8618,6 @@
     <Note Id="84" Modified="2008-09-20 03:09:01Z">Lowercase is preferred</Note>
     <Note Id="85" Modified="2008-03-24 05:21:26Z">Allow in this case to avoid any potential problems with null values.</Note>
     <Note Id="86" Modified="2013-10-03 21:46:37Z">The exception is intentionally ignored.</Note>
-    <Note Id="87" Modified="2008-04-01 21:23:02Z">The error is reported</Note>
     <Note Id="88" Modified="2008-04-01 21:24:09Z">Okay as is.  Spelling out "Attribute" gives the wrong impression about what it is for.  It's not an attribute class in the normal sense.</Note>
     <Note Id="89" Modified="2008-09-20 03:18:12Z">Lowercase is preferred</Note>
     <Note Id="92" Modified="2008-04-01 21:28:11Z">Leave it for now.  It's only compared internally.</Note>
@@ -9494,7 +8645,6 @@
     <Note Id="114" Modified="2013-10-03 21:46:46Z">The exception is intentionally ignored.</Note>
     <Note Id="115" Modified="2008-05-28 16:14:17Z">It's a reference to the topic's parent.</Note>
     <Note Id="116" Modified="2008-09-27 02:30:17Z">No security issues found</Note>
-    <Note Id="117" Modified="2008-05-28 16:15:28Z">The error is reported</Note>
     <Note Id="118" Modified="2008-09-27 02:31:41Z">It's the name of the member in the structure</Note>
     <Note Id="119" Modified="2008-05-28 16:21:38Z">Leave it for now.  It's only compared internally.</Note>
     <Note Id="120" Modified="2008-09-27 02:33:01Z">Lowercase is preferred</Note>
@@ -9510,10 +8660,8 @@
     <Note Id="130" Modified="2011-12-31 23:46:50Z">Okay as is</Note>
     <Note Id="131" Modified="2011-12-31 23:47:16Z">This is not intended to be used as a property</Note>
     <Note Id="132" Modified="2011-12-31 23:48:11Z">WPF controls don't implement IDisposable and doing so poses its own set of problems.  The cancellation token is disposed of when the control's visibility changes which is the most reliable way to handle it.</Note>
-    <Note Id="133" Modified="2011-12-31 23:48:24Z">Okay as is</Note>
     <Note Id="134" Modified="2011-12-31 23:49:01Z">This is only intended to be used with the given type.</Note>
     <Note Id="135" Modified="2011-12-31 23:49:45Z">This interface is added by the compiler.</Note>
-    <Note Id="136" Modified="2011-12-31 23:54:18Z">Okay as is</Note>
     <Note Id="137" Modified="2011-12-31 23:54:36Z">Okay as is</Note>
     <Note Id="138" Modified="2011-12-31 23:55:03Z">Okay as is</Note>
     <Note Id="139" Modified="2011-12-31 23:55:29Z">Compiler generated code</Note>

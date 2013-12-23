@@ -1,40 +1,40 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SegregateByNamespace", "SegregateByNamespace.csproj", "{1635EA21-E9B5-415F-9AC5-1363ED981ED6}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommandLine", "..\CommandLine\CommandLine.csproj", "{6CF7CA42-3706-4F6B-A2B4-10EF3F511888}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SegregateByNamespace", "SegregateByNamespace.csproj", "{5EA1AADE-4D33-4C3E-9A00-AA1200031D87}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2C78B9DA-2FEA-4EFF-A73A-9634F693B9E5}"
 	ProjectSection(SolutionItems) = preProject
 		SegregateByNamespace.FxCop = SegregateByNamespace.FxCop
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandcastle.Core", "..\SandcastleCore\Sandcastle.Core.csproj", "{399E78F8-4954-409E-991A-37DA9D0579CC}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
 		SccNumberOfProjects = 3
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs01
-		SccProjectUniqueName0 = ..\\CommandLine\\CommandLine.csproj
-		SccProjectName0 = ../CommandLine
-		SccLocalPath0 = ..\\CommandLine
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = SegregateByNamespace.csproj
 		SccLocalPath1 = .
-		SccProjectUniqueName2 = SegregateByNamespace.csproj
-		SccLocalPath2 = .
+		SccProjectUniqueName2 = ..\\SandcastleCore\\Sandcastle.Core.csproj
+		SccProjectName2 = ../SandcastleCore
+		SccLocalPath2 = ..\\SandcastleCore
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{1635EA21-E9B5-415F-9AC5-1363ED981ED6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1635EA21-E9B5-415F-9AC5-1363ED981ED6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1635EA21-E9B5-415F-9AC5-1363ED981ED6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1635EA21-E9B5-415F-9AC5-1363ED981ED6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6CF7CA42-3706-4F6B-A2B4-10EF3F511888}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6CF7CA42-3706-4F6B-A2B4-10EF3F511888}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6CF7CA42-3706-4F6B-A2B4-10EF3F511888}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6CF7CA42-3706-4F6B-A2B4-10EF3F511888}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5EA1AADE-4D33-4C3E-9A00-AA1200031D87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5EA1AADE-4D33-4C3E-9A00-AA1200031D87}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5EA1AADE-4D33-4C3E-9A00-AA1200031D87}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5EA1AADE-4D33-4C3E-9A00-AA1200031D87}.Release|Any CPU.Build.0 = Release|Any CPU
+		{399E78F8-4954-409E-991A-37DA9D0579CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{399E78F8-4954-409E-991A-37DA9D0579CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{399E78F8-4954-409E-991A-37DA9D0579CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{399E78F8-4954-409E-991A-37DA9D0579CC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

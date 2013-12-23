@@ -1,11 +1,15 @@
-﻿using System;
+﻿// Change history:
+// 12/15/2013 - EFW - Added check for invalid filename characters in the namespace filenames
+
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Xml;
 using System.Xml.XPath;
 
-using Microsoft.Ddue.Tools.CommandLine;
+using Sandcastle.Core;
+using Sandcastle.Core.CommandLine;
 
 namespace SegregateByNamespace
 {
@@ -64,7 +68,7 @@ namespace SegregateByNamespace
             catch(IOException ioEx)
             {
                 ConsoleApplication.WriteMessage(LogLevel.Error, String.Format(CultureInfo.CurrentCulture,
-                    "An error occured while attempting to access the file '{0}'. The error message is: {1}",
+                    "An error occurred while attempting to access the file '{0}'. The error message is: {1}",
                     uri, ioEx.Message));
                 return 1;
             }
@@ -86,6 +90,7 @@ namespace SegregateByNamespace
             Dictionary<string, object> dictionary3;
             XmlWriter writer;
             string current;
+            char[] invalidChars = Path.GetInvalidFileNameChars();
 
             Dictionary<string, Dictionary<string, object>> dictionary = new Dictionary<string, Dictionary<string, object>>();
             Dictionary<string, XmlWriter> dictionary2 = new Dictionary<string, XmlWriter>();
@@ -120,6 +125,10 @@ namespace SegregateByNamespace
 
                     if(filename == ".xml")
                         filename = "default_namespace.xml";
+                    else
+                        if(filename.IndexOfAny(invalidChars) != -1)
+                            foreach(char c in invalidChars)
+                                filename = filename.Replace(c, '_');
 
                     if(outputDir != null)
                         filename = Path.Combine(outputDir, filename);

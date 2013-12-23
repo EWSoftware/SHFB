@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Project Launcher
 // File    : StartUp.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/22/2012
-// Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
+// Updated : 12/16/2013
+// Note    : Copyright 2011-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This application provides a way for the user to choose which application is used to load help file builder
@@ -25,6 +25,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Windows.Forms;
 
 using SandcastleBuilder.ProjectLauncher.Properties;
@@ -32,8 +33,8 @@ using SandcastleBuilder.ProjectLauncher.Properties;
 namespace SandcastleBuilder.ProjectLauncher
 {
     /// <summary>
-    /// This application provides a way for the user to choose which application is
-    /// used to load help file builder project files (.shfbproj).
+    /// This application provides a way for the user to choose which application is used to load help file
+    /// builder project files (.shfbproj).
     /// </summary>
     internal static class StartUp
     {
@@ -46,23 +47,18 @@ namespace SandcastleBuilder.ProjectLauncher
         public static string ProjectToLoad { get; private set; }
 
         /// <summary>
-        /// This read-only properyt returns teh path to the Sandcastle Help File Builder
+        /// This read-only property returns the path to the Sandcastle Help File Builder
         /// </summary>
         /// <value>Returns the path to the help file builder or null if not found</value>
         public static string SHFBPath
         {
             get
             {
-                string shfbPath = Environment.GetEnvironmentVariable("SHFBROOT",
-                    EnvironmentVariableTarget.Machine);
+                string shfbPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                    "SandcastleBuilderGUI.exe");
 
-                if(!String.IsNullOrEmpty(shfbPath))
-                {
-                    shfbPath = Path.Combine(shfbPath, @"SandcastleBuilderGUI.exe");
-
-                    if(!File.Exists(shfbPath))
-                        shfbPath = null;
-                }
+                if(!File.Exists(shfbPath))
+                    shfbPath = null;
 
                 return shfbPath;
             }
@@ -78,7 +74,10 @@ namespace SandcastleBuilder.ProjectLauncher
         {
             get
             {
-                string vsPath = FindVisualStudioPath("VS110COMNTOOLS", "11.0");
+                string vsPath = FindVisualStudioPath("VS120COMNTOOLS", "11.0");
+
+                if(vsPath == null)
+                    vsPath = FindVisualStudioPath("VS110COMNTOOLS", "10.0");
 
                 if(vsPath == null)
                     vsPath = FindVisualStudioPath("VS100COMNTOOLS", "10.0");
@@ -91,8 +90,8 @@ namespace SandcastleBuilder.ProjectLauncher
         /// This read-only property returns the project name in a format suitable for passing to
         /// <c>Process.Start</c>.
         /// </summary>
-        /// <value>If the path contains spaces and is not in quote marks already, it will be
-        /// enclosed in quote marks.</value>
+        /// <value>If the path contains spaces and is not in quote marks already, it will be enclosed in quote
+        /// marks.</value>
         private static string ProjectNameParameter
         {
             get

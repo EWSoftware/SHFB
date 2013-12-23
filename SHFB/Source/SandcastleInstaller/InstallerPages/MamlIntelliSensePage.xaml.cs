@@ -1,24 +1,22 @@
-﻿//=============================================================================
+﻿//===============================================================================================================
 // System  : Sandcastle Guided Installation
 // File    : MamlIntelliSensePage.cs
 // Author  : Eric Woodruff
-// Updated : 04/16/2012
+// Updated : 12/16/2013
 // Compiler: Microsoft Visual C#
 //
-// This file contains a page used to help the user install the Sandcastle MAML
-// schema files for use with Visual Studio IntelliSense.
+// This file contains a page used to help the user install the Sandcastle MAML schema files for use with Visual
+// Studio IntelliSense.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice and
-// all copyright notices must remain intact in all applications, documentation,
-// and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice and all copyright notices must remain intact in all applications, documentation, and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.0.0.0  02/05/2011  EFW  Created the code
 // 1.1.0.0  04/14/2012  EFW  Converted to use WPF
-//=============================================================================
+//===============================================================================================================
 
 using System;
 using System.IO;
@@ -236,24 +234,18 @@ namespace Sandcastle.Installer.InstallerPages
         /// <inheritdoc />
         public override void ShowPage()
         {
-            // DXROOT will exist as a system environment variable if it is installed correctly
-            sandcastleSchemaFolder = Environment.GetEnvironmentVariable("DXROOT", EnvironmentVariableTarget.Machine);
+            // SHFBROOT will exist as a system environment variable if it is installed correctly
+            sandcastleSchemaFolder = Environment.GetEnvironmentVariable("SHFBROOT", EnvironmentVariableTarget.Machine);
 
             // It may not be there if we just installed it so look for the folder manually
             if(String.IsNullOrEmpty(sandcastleSchemaFolder))
             {
-                sandcastleSchemaFolder = Environment.GetEnvironmentVariable("ProgramFiles(x86)");
+                sandcastleSchemaFolder = Path.Combine(Environment.GetFolderPath(Environment.Is64BitProcess ?
+                    Environment.SpecialFolder.ProgramFilesX86 : Environment.SpecialFolder.ProgramFiles),
+                    @"EWSoftware\Sandcastle Help File Builder");
 
-                if(String.IsNullOrEmpty(sandcastleSchemaFolder))
-                    sandcastleSchemaFolder = Environment.GetEnvironmentVariable("ProgramFiles");
-
-                if(!String.IsNullOrEmpty(sandcastleSchemaFolder))
-                {
-                    sandcastleSchemaFolder = Path.Combine(sandcastleSchemaFolder, "Sandcastle");
-
-                    if(!Directory.Exists(sandcastleSchemaFolder))
-                        sandcastleSchemaFolder = null;
-                }
+                if(!Directory.Exists(sandcastleSchemaFolder))
+                    sandcastleSchemaFolder = null;
             }
 
             if(!String.IsNullOrEmpty(sandcastleSchemaFolder))

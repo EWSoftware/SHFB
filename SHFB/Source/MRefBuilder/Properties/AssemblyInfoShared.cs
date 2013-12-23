@@ -1,7 +1,7 @@
 //===============================================================================================================
 // System  : Sandcastle Tools
 // File    : AssemblyInfoShared.cs
-// Updated : 10/12/2013
+// Updated : 12/17/2013
 // Note    : Copyright 2006-2013, Microsoft Corporation, All rights reserved
 //
 // Sandcastle tools common assembly attributes.
@@ -20,9 +20,8 @@ using System.Runtime.InteropServices;
 [assembly: NeutralResourcesLanguageAttribute("en")]
 
 //
-// General Information about an assembly is controlled through the following
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
+// General Information about an assembly is controlled through the following set of attributes.  Change these
+// attribute values to modify the information associated with an assembly.
 //
 [assembly: AssemblyProduct("Sandcastle Tools")]
 [assembly: AssemblyConfiguration("")]
@@ -31,23 +30,20 @@ using System.Runtime.InteropServices;
     "Portions Copyright \xA9 2006-2013, Eric Woodruff, All Rights Reserved.")]
 [assembly: AssemblyTrademark("Microsoft Corporation, All Rights Reserved")]
 [assembly: AssemblyCulture("")]
+
 [assembly: ComVisible(false)]
 
 //
 // Version information for an assembly consists of the following four values:
 //
-//      Major Version
-//      Minor Version
-//      Build Number
-//      Revision
+//      Year of release
+//      Month of release
+//      Day of release
+//      Revision (typically zero unless multiple releases are made on the same day)
 //
-// You can specify all the values or you can default the Revision and Build Numbers
-// by using the '*' as shown below:
-
-// NOTE: Revision number should always be zero.  This allows build component
-// and plug-in developers to use the same major, minor, and build numbers
-// as the Sandcastle tools to indicate with which version their components are
-// compatible.
-[assembly: AssemblyVersion("2.7.4.0")]
+// This versioning scheme allows build component and plug-in developers to use the same major, minor, and build
+// numbers as the Sandcastle tools to indicate with which version their components are compatible.
+//
+[assembly: AssemblyVersion("2013.12.21.0")]
 
 // See AssemblyInfo.cs for project-specific assembly attributes

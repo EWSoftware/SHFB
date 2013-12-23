@@ -312,15 +312,15 @@ used:</para>
 
 				<list class="bullet">
 					<listItem>
-						<para>If a <environmentVariable>SHFBCOMPONENTROOT</environmentVariable> environment variable is
-defined (optional), it is searched first.</para>
+						<para>If a <codeInline>ComponentPath</codeInline> project property value is set, the folder it refers
+to is searched first.  If the property contains no value, the actual project folder is searched first.</para>
 					</listItem>
 					<listItem>
-						<para>Next, the help file builder installation folder (<environmentVariable>SHFBROOT</environmentVariable>)
+						<para>Next, the common application data folders noted above are searched.</para>
+					</listItem>
+					<listItem>
+						<para>Finally, the help file builder installation folder (<environmentVariable>SHFBROOT</environmentVariable>)
 is searched.</para>
-					</listItem>
-					<listItem>
-						<para>Finally, the common application data folders noted above are searched.</para>
 					</listItem>
 				</list>
 

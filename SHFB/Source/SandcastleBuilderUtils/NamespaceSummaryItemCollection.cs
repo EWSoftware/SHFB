@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : NamespaceSummaryItemCollection.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/30/2013
+// Updated : 12/18/2013
 // Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -25,13 +25,10 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing.Design;
 using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Xml;
-
-using SandcastleBuilder.Utils.Design;
 
 namespace SandcastleBuilder.Utils
 {
@@ -40,8 +37,6 @@ namespace SandcastleBuilder.Utils
     /// </summary>
     /// <remarks>Namespaces that appear in the assemblies but not in this list are documented by default and
     /// will appear without a namespace summary.</remarks>
-    [TypeConverter(typeof(NamespaceSummaryItemCollectionTypeConverter)),
-      Editor(typeof(NamespaceSummaryItemEditor), typeof(UITypeEditor))]
     public class NamespaceSummaryItemCollection : BindingList<NamespaceSummaryItem>
     {
         #region Private data members

@@ -18,13 +18,16 @@ using System.Xml.Schema;
 
 using Microsoft.Ddue.Tools.Targets;
 
+using Sandcastle.Core.BuildAssembler;
+using Sandcastle.Core.BuildAssembler.BuildComponent;
+
 namespace Microsoft.Ddue.Tools
 {
     /// <summary>
     /// This build component is used to replace a given set of elements with the content of shared content items
     /// loaded from XML files.
     /// </summary>
-    public class SharedContentComponent : BuildComponent
+    public class SharedContentComponent : BuildComponentCore
     {
         #region Private data members
         //=====================================================================
@@ -38,7 +41,7 @@ namespace Microsoft.Ddue.Tools
         //=====================================================================
 
         /// <inheritdoc />
-        public SharedContentComponent(BuildAssembler assembler, XPathNavigator configuration) :
+        public SharedContentComponent(BuildAssemblerCore assembler, XPathNavigator configuration) :
           base(assembler, configuration)
         {
             // Get the context.  This will contain namespaces that prefix the elements to find.

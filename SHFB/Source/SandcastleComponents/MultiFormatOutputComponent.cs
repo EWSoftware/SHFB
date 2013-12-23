@@ -28,7 +28,8 @@ using System.Reflection;
 using System.Xml;
 using System.Xml.XPath;
 
-using Microsoft.Ddue.Tools;
+using Sandcastle.Core.BuildAssembler;
+using Sandcastle.Core.BuildAssembler.BuildComponent;
 
 namespace SandcastleBuilder.Components
 {
@@ -43,12 +44,12 @@ namespace SandcastleBuilder.Components
     ///     source="..\..\SHFB\Source\SandcastleBuilderGUI\Templates\VS2005.config"
     ///     region="Multi-format output component" />
     /// </example>
-    public class MultiFormatOutputComponent : BuildComponent
+    public class MultiFormatOutputComponent : BuildComponentCore
     {
         #region Private data members
         //=====================================================================
 
-        private Dictionary<string, IEnumerable<BuildComponent>> formatComponents;
+        private Dictionary<string, IEnumerable<BuildComponentCore>> formatComponents;
         #endregion
 
         #region Constructor
@@ -59,7 +60,7 @@ namespace SandcastleBuilder.Components
         /// </summary>
         /// <param name="assembler">A reference to the build assembler.</param>
         /// <param name="configuration">The configuration information</param>
-        public MultiFormatOutputComponent(BuildAssembler assembler, XPathNavigator configuration) :
+        public MultiFormatOutputComponent(BuildAssemblerCore assembler, XPathNavigator configuration) :
           base(assembler, configuration)
         {
             Assembly asm = Assembly.GetExecutingAssembly();
@@ -73,7 +74,7 @@ namespace SandcastleBuilder.Components
                 "\r\n    [{0}, version {1}]\r\n    Multi-Format Output Component. {2}\r\n    http://SHFB.CodePlex.com",
                 fvi.ProductName, fvi.ProductVersion, fvi.LegalCopyright));
 
-            formatComponents = new Dictionary<string, IEnumerable<BuildComponent>>();
+            formatComponents = new Dictionary<string, IEnumerable<BuildComponentCore>>();
 
             // Get the requested formats
             nav = configuration.SelectSingleNode("build");
@@ -123,7 +124,7 @@ namespace SandcastleBuilder.Components
             {
                 clone = (XmlDocument)document.Clone();
 
-                foreach(BuildComponent component in formatComponents[format])
+                foreach(var component in formatComponents[format])
                     component.Apply(clone, key);
             }
         }
@@ -140,8 +141,8 @@ namespace SandcastleBuilder.Components
         protected override void Dispose(bool disposing)
         {
             if(disposing)
-                foreach(IEnumerable<BuildComponent> list in formatComponents.Values)
-                    foreach(BuildComponent component in list)
+                foreach(var list in formatComponents.Values)
+                    foreach(var component in list)
                         component.Dispose();
 
             base.Dispose(disposing);

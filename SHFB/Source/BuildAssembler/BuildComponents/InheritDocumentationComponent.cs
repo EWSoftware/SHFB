@@ -23,6 +23,9 @@ using System.Xml.XPath;
 
 using Microsoft.Ddue.Tools.Commands;
 
+using Sandcastle.Core.BuildAssembler;
+using Sandcastle.Core.BuildAssembler.BuildComponent;
+
 namespace Microsoft.Ddue.Tools
 {
     /// <summary>
@@ -85,7 +88,7 @@ namespace Microsoft.Ddue.Tools
         /// <param name="parent">The parent build component</param>
         /// <param name="configuration">Configuration section to be parsed.</param>
         /// <param name="data">A dictionary object with string as key and object as value.</param>
-        public InheritDocumentationComponent(BuildComponent parent, XPathNavigator configuration,
+        public InheritDocumentationComponent(BuildComponentCore parent, XPathNavigator configuration,
           IDictionary<string, object> data) : base(parent)
         {
             // Get the copy command

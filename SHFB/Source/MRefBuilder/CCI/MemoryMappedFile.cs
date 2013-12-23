@@ -5,6 +5,7 @@
 
 // Change history:
 // 11/22/2013 - EFW - Cleared out the conditional statements
+// 12/16/2013 - EFW - Added hack to work around a bug when parsing .NETCore 4.5 assemblies.
 
 using System;
 using System.Compiler;
@@ -148,55 +149,82 @@ namespace System.Compiler.Metadata
 
         internal string/*!*/ ReadUTF8(int bytesToRead)
         {
+            // !EFW - Hack bug fix.  When parsing .NETCore 4.5 assemblies, the offset is off in some cases on
+            // attribute names.  Not sure why.  It seems to be consistent so we'll just adjust for it and hope
+            // for the best.
+            if(bytesToRead > 32767)
+            {
+                bytesToRead = 0;
+
+                this.pb += 5;
+
+                while(*(this.pb + bytesToRead) > '\x1F' && bytesToRead < 256)
+                    bytesToRead++;
+            }
+
             char[] buffer = new char[bytesToRead];
             byte* pb = this.pb;
             this.pb += bytesToRead;
             int j = 0;
-            while (bytesToRead > 0)
+
+            while(bytesToRead > 0)
             {
                 byte b = *pb++; bytesToRead--;
-                if ((b & 0x80) == 0 || bytesToRead == 0)
+
+                if((b & 0x80) == 0 || bytesToRead == 0)
                 {
                     buffer[j++] = (char)b;
                     continue;
                 }
+
                 char ch;
                 byte b1 = *pb++; bytesToRead--;
-                if ((b & 0x20) == 0)
+
+                if((b & 0x20) == 0)
                     ch = (char)(((b & 0x1F) << 6) | (b1 & 0x3F));
                 else
                 {
-                    if (bytesToRead == 0)
-                    { //Dangling lead bytes, do not decompose
+                    if(bytesToRead == 0)
+                    {
+                        //Dangling lead bytes, do not decompose
                         buffer[j++] = (char)((b << 8) | b1);
                         break;
                     }
+
                     byte b2 = *pb++; bytesToRead--;
                     uint ch32;
-                    if ((b & 0x10) == 0)
+
+                    if((b & 0x10) == 0)
                         ch32 = (uint)(((b & 0x0F) << 12) | ((b1 & 0x3F) << 6) | (b2 & 0x3F));
                     else
                     {
-                        if (bytesToRead == 0)
-                        { //Dangling lead bytes, do not decompose
+                        if(bytesToRead == 0)
+                        {
+                            //Dangling lead bytes, do not decompose
                             buffer[j++] = (char)((b << 8) | b1);
                             buffer[j++] = (char)b2;
                             break;
                         }
+
                         byte b3 = *pb++; bytesToRead--;
                         ch32 = (uint)(((b & 0x07) << 18) | ((b1 & 0x3F) << 12) | ((b2 & 0x3F) << 6) | (b3 & 0x3F));
                     }
-                    if ((ch32 & 0xFFFF0000) == 0)
+
+                    if((ch32 & 0xFFFF0000) == 0)
                         ch = (char)ch32;
                     else
-                    { //break up into UTF16 surrogate pair
+                    {
+                        //break up into UTF16 surrogate pair
                         buffer[j++] = (char)((ch32 >> 10) | 0xD800);
                         ch = (char)((ch32 & 0x3FF) | 0xDC00);
                     }
                 }
                 buffer[j++] = ch;
             }
-            if (j > 0 && buffer[j - 1] == 0) j--;
+
+            if(j > 0 && buffer[j - 1] == 0)
+                j--;
+
             return new String(buffer, 0, j);
         }
 

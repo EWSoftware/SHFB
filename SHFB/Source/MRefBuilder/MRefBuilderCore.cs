@@ -21,7 +21,10 @@ using System.Xml;
 using System.Xml.XPath;
 
 using System.Compiler;
-using Microsoft.Ddue.Tools.CommandLine;
+
+using Sandcastle.Core;
+using Sandcastle.Core.CommandLine;
+
 using Microsoft.Ddue.Tools.Reflection;
 
 namespace Microsoft.Ddue.Tools

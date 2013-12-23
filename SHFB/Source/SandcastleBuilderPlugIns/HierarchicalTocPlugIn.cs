@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : HierarchicalTocPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/14/2013
+// Updated : 12/17/2013
 // Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -22,20 +22,20 @@
 // 1.9.0.0  06/22/2010  EFW  Suppressed use in MS Help Viewer output due to the way the TOC is generated in
 //                           those files.
 // 1.9.9.0  12/14/2013  EFW  Deprecated.  Use the namespace grouping project options instead.
+// -------  12/17/2013  EFW  Updated to use MEF for the plug-ins
 //===============================================================================================================
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
-using System.Reflection;
+using System.Linq;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.XPath;
 
 using SandcastleBuilder.Utils;
+using SandcastleBuilder.Utils.BuildComponent;
 using SandcastleBuilder.Utils.BuildEngine;
-using SandcastleBuilder.Utils.PlugIn;
 
 namespace SandcastleBuilder.PlugIns
 {
@@ -44,12 +44,17 @@ namespace SandcastleBuilder.PlugIns
     /// their parent namespaces rather than appearing as a flat list of all namespaces at the root level.
     /// </summary>
     /// <remarks>This plug-in has been deprecated.  Use the namespace grouping project options instead.</remarks>
-    public class HierarchicalTocPlugIn : IPlugIn
+    [HelpFileBuilderPlugInExport("Hierarchical Table of Contents", IsConfigurable = true,
+      Description = "This plug-in can be used to rearrange the table of contents such that namespaces are " +
+        "nested within their parent namespaces rather than appearing as a flat list of all namespaces at the " +
+        "root level.\r\n\r\nNOTE:  This plug-in has been deprecated.  Use the NamespaceGrouping and " +
+        "MaximumGroupParts project options instead.")]
+    public sealed class HierarchicalTocPlugIn : IPlugIn
     {
         #region Private data members
         //=====================================================================
 
-        private ExecutionPointCollection executionPoints;
+        private List<ExecutionPoint> executionPoints;
 
         private BuildProcess builder;
 
@@ -61,85 +66,15 @@ namespace SandcastleBuilder.PlugIns
         //=====================================================================
 
         /// <summary>
-        /// This read-only property returns a friendly name for the plug-in
-        /// </summary>
-        public string Name
-        {
-            get { return "Hierarchical Table of Contents"; }
-        }
-
-        /// <summary>
-        /// This read-only property returns the version of the plug-in
-        /// </summary>
-        public Version Version
-        {
-            get
-            {
-                // Use the assembly version
-                Assembly asm = Assembly.GetExecutingAssembly();
-                FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(asm.Location);
-
-                return new Version(fvi.ProductVersion);
-            }
-        }
-
-        /// <summary>
-        /// This read-only property returns the copyright information for the plug-in
-        /// </summary>
-        public string Copyright
-        {
-            get
-            {
-                // Use the assembly copyright
-                Assembly asm = Assembly.GetExecutingAssembly();
-                AssemblyCopyrightAttribute copyright = (AssemblyCopyrightAttribute)Attribute.GetCustomAttribute(
-                    asm, typeof(AssemblyCopyrightAttribute));
-
-                return copyright.Copyright;
-            }
-        }
-
-        /// <summary>
-        /// This read-only property returns a brief description of the plug-in
-        /// </summary>
-        public string Description
-        {
-            get
-            {
-                return "This plug-in can be used to rearrange the table of contents such that namespaces are " +
-                    "nested within their parent namespaces rather than appearing as a flat list of all " +
-                    "namespaces at the root level.\r\n\r\nNOTE:  This plug-in has been deprecated.  Use the " +
-                    "namespace grouping project options instead";
-            }
-        }
-
-        /// <summary>
-        /// This plug-in supports configuration
-        /// </summary>
-        /// <seealso cref="ConfigurePlugIn"/>
-        public bool SupportsConfiguration
-        {
-            get { return true; }
-        }
-
-        /// <summary>
-        /// This plug-in does not run in partial builds
-        /// </summary>
-        public bool RunsInPartialBuild
-        {
-            get { return false; }
-        }
-
-        /// <summary>
         /// This read-only property returns a collection of execution points that define when the plug-in should
         /// be invoked during the build process.
         /// </summary>
-        public ExecutionPointCollection ExecutionPoints
+        public IEnumerable<ExecutionPoint> ExecutionPoints
         {
             get
             {
                 if(executionPoints == null)
-                    executionPoints = new ExecutionPointCollection
+                    executionPoints = new List<ExecutionPoint>
                     {
                         new ExecutionPoint(BuildStep.GenerateIntermediateTableOfContents, ExecutionBehaviors.After)
                     };
@@ -179,13 +114,19 @@ namespace SandcastleBuilder.PlugIns
             builder = buildProcess;
             minParts = 2;
 
-            builder.ReportProgress("{0} Version {1}\r\n{2}", this.Name, this.Version, this.Copyright);
+            var metadata = (HelpFileBuilderPlugInExportAttribute)this.GetType().GetCustomAttributes(
+                typeof(HelpFileBuilderPlugInExportAttribute), false).First();
+
+            builder.ReportProgress("{0} Version {1}\r\n{2}", metadata.Id, metadata.Version, metadata.Copyright);
 
             // This plug-in cannot be used if the namespace grouping option is enabled as that replaces this
             // plug-in.
             if(builder.CurrentProject.NamespaceGrouping)
             {
-                this.ExecutionPoints.Clear();
+                if(executionPoints == null)
+                    executionPoints = new List<ExecutionPoint>();
+                else
+                    executionPoints.Clear();
 
                 builder.ReportWarning("HTP0001", "The project being built has namespace grouping enabled which " +
                     "supersedes the Hierarchical TOC Plug-In.  The plug-in will not be used in this build.");
@@ -203,7 +144,10 @@ namespace SandcastleBuilder.PlugIns
             // styles that do not support MS Help Viewer output or the namespace grouping project options.
             if((builder.CurrentProject.HelpFileFormat & HelpFileFormat.MSHelpViewer) != 0)
             {
-                this.ExecutionPoints.Clear();
+                if(executionPoints == null)
+                    executionPoints = new List<ExecutionPoint>();
+                else
+                    executionPoints.Clear();
 
                 builder.ReportWarning("HTP0002", "This build produces MS Help Viewer output with which the " +
                     "Hierarchical TOC Plug-In is not compatible.  It will not be used in this build.");
@@ -366,32 +310,12 @@ namespace SandcastleBuilder.PlugIns
         //=====================================================================
 
         /// <summary>
-        /// This handles garbage collection to ensure proper disposal of the plug-in if not done explicitly with
-        /// <see cref="Dispose()"/>.
-        /// </summary>
-        ~HierarchicalTocPlugIn()
-        {
-            this.Dispose(false);
-        }
-
-        /// <summary>
         /// This implements the Dispose() interface to properly dispose of the plug-in object
         /// </summary>
-        /// <overloads>There are two overloads for this method.</overloads>
         public void Dispose()
         {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// This can be overridden by derived classes to add their own disposal code if necessary
-        /// </summary>
-        /// <param name="disposing">Pass true to dispose of the managed and unmanaged resources or false to just
-        /// dispose of the unmanaged resources.</param>
-        protected virtual void Dispose(bool disposing)
-        {
             // Nothing to dispose of in this one
+            GC.SuppressFinalize(this);
         }
         #endregion
     }

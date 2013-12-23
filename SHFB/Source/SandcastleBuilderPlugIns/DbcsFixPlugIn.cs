@@ -19,19 +19,20 @@
 // 1.6.0.5  02/18/2008  EFW  Created the code
 // 1.8.0.0  07/15/2008  EFW  Updated for use with MSBuild project format
 // 1.9.0.0  06/07/2010  EFW  Added support for multi-format build output
+// -------  12/17/2013  EFW  Updated to use MEF for the plug-ins
 //===============================================================================================================
 
 using System;
-using System.Diagnostics;
+using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
+using System.Linq;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.XPath;
 
 using SandcastleBuilder.Utils;
+using SandcastleBuilder.Utils.BuildComponent;
 using SandcastleBuilder.Utils.BuildEngine;
-using SandcastleBuilder.Utils.PlugIn;
 
 namespace SandcastleBuilder.PlugIns
 {
@@ -41,12 +42,16 @@ namespace SandcastleBuilder.PlugIns
     /// </summary>
     /// <remarks>This uses the <see href="http://www.steelbytes.com/?mid=45">Steel Bytes SBAppLocale</see> tool
     /// to run the HTML Help 1 compiler using the correct locale.</remarks>
-    public class DbcsFixPlugIn : IPlugIn
+    [HelpFileBuilderPlugInExport("DBCS Fix for CHM Builds", IsConfigurable = true,
+      AdditionalCopyrightInfo = "SBAppLocale is Copyright \xA9 2005-2013 Steel Bytes, All Rights Reserved",
+      Description = "This plug-in is used to modify the HTML files and alter the build so as to overcome the " +
+        "encoding issues encountered when building HTML Help 1 (.chm) files for various foreign languages.")]
+    public sealed class DbcsFixPlugIn : IPlugIn
     {
         #region Private data members
         //=====================================================================
 
-        private ExecutionPointCollection executionPoints;
+        private List<ExecutionPoint> executionPoints;
 
         private BuildProcess builder;
 
@@ -57,85 +62,15 @@ namespace SandcastleBuilder.PlugIns
         //=====================================================================
 
         /// <summary>
-        /// This read-only property returns a friendly name for the plug-in
-        /// </summary>
-        public string Name
-        {
-            get { return "DBCS Fix for CHM Builds"; }
-        }
-
-        /// <summary>
-        /// This read-only property returns the version of the plug-in
-        /// </summary>
-        public Version Version
-        {
-            get
-            {
-                // Use the assembly version
-                Assembly asm = Assembly.GetExecutingAssembly();
-                FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(asm.Location);
-
-                return new Version(fvi.ProductVersion);
-            }
-        }
-
-        /// <summary>
-        /// This read-only property returns the copyright information for the plug-in
-        /// </summary>
-        public string Copyright
-        {
-            get
-            {
-                // Use the assembly copyright
-                Assembly asm = Assembly.GetExecutingAssembly();
-                AssemblyCopyrightAttribute copyright = (AssemblyCopyrightAttribute)Attribute.GetCustomAttribute(
-                    asm, typeof(AssemblyCopyrightAttribute));
-
-                return copyright.Copyright + "\r\nSBAppLocale is Copyright \xA9 2005-2009 Steel Bytes, All " +
-                    "Rights Reserved";
-            }
-        }
-
-        /// <summary>
-        /// This read-only property returns a brief description of the plug-in
-        /// </summary>
-        public string Description
-        {
-            get
-            {
-                return "This plug-in is used to modify the HTML files and alter the build so as to overcome " +
-                    "the encoding issues encountered when building HTML Help 1 (.chm) files for various " +
-                    "foreign languages.";
-            }
-        }
-
-        /// <summary>
-        /// This plug-in supports configuration
-        /// </summary>
-        /// <seealso cref="ConfigurePlugIn"/>
-        public bool SupportsConfiguration
-        {
-            get { return true; }
-        }
-
-        /// <summary>
-        /// This plug-in does not run in partial builds
-        /// </summary>
-        public bool RunsInPartialBuild
-        {
-            get { return false; }
-        }
-
-        /// <summary>
         /// This read-only property returns a collection of execution points that define when the plug-in should
         /// be invoked during the build process.
         /// </summary>
-        public ExecutionPointCollection ExecutionPoints
+        public IEnumerable<ExecutionPoint> ExecutionPoints
         {
             get
             {
                 if(executionPoints == null)
-                    executionPoints = new ExecutionPointCollection
+                    executionPoints = new List<ExecutionPoint>
                     {
                         new ExecutionPoint(BuildStep.ExtractingHtmlInfo, ExecutionBehaviors.Before),
                         new ExecutionPoint(BuildStep.CompilingHelpFile, ExecutionBehaviors.Before)
@@ -175,7 +110,10 @@ namespace SandcastleBuilder.PlugIns
 
             builder = buildProcess;
 
-            builder.ReportProgress("{0} Version {1}\r\n{2}", this.Name, this.Version, this.Copyright);
+            var metadata = (HelpFileBuilderPlugInExportAttribute)this.GetType().GetCustomAttributes(
+                typeof(HelpFileBuilderPlugInExportAttribute), false).First();
+
+            builder.ReportProgress("{0} Version {1}\r\n{2}", metadata.Id, metadata.Version, metadata.Copyright);
 
             root = configuration.SelectSingleNode("configuration");
 
@@ -210,7 +148,7 @@ namespace SandcastleBuilder.PlugIns
         /// This method is used to execute the plug-in during the build process
         /// </summary>
         /// <param name="context">The current execution context</param>
-        public void Execute(Utils.PlugIn.ExecutionContext context)
+        public void Execute(ExecutionContext context)
         {
             XmlNamespaceManager nsm;
             XmlDocument project;
@@ -271,32 +209,12 @@ namespace SandcastleBuilder.PlugIns
         //=====================================================================
 
         /// <summary>
-        /// This handles garbage collection to ensure proper disposal of the plug-in if not done explicitly with
-        /// <see cref="Dispose()"/>.
-        /// </summary>
-        ~DbcsFixPlugIn()
-        {
-            this.Dispose(false);
-        }
-
-        /// <summary>
         /// This implements the Dispose() interface to properly dispose of the plug-in object
         /// </summary>
-        /// <overloads>There are two overloads for this method</overloads>
         public void Dispose()
         {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// This can be overridden by derived classes to add their own disposal code if necessary
-        /// </summary>
-        /// <param name="disposing">Pass true to dispose of the managed and unmanaged resources or false to just
-        /// dispose of the unmanaged resources.</param>
-        protected virtual void Dispose(bool disposing)
-        {
             // Nothing to dispose of in this one
+            GC.SuppressFinalize(this);
         }
         #endregion
     }

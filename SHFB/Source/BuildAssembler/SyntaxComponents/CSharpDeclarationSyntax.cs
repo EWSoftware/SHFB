@@ -8,10 +8,13 @@
 // 02/09/2012 - EFW - Added support for optional parameters and property getter/setter attributes.
 // 02/14/2012 - EFW - Added support for fixed keyword
 // 11/29/2013 - EFW - Added support for metadata based interop attributes
+// 12/20/2013 - EFW - Updated the syntax generator to be discoverable via MEF
 
 using System;
 using System.Globalization;
 using System.Xml.XPath;
+
+using Sandcastle.Core.BuildAssembler.SyntaxGenerator;
 
 namespace Microsoft.Ddue.Tools
 {
@@ -20,15 +23,23 @@ namespace Microsoft.Ddue.Tools
     /// </summary>
     public sealed class CSharpDeclarationSyntaxGenerator : SyntaxGeneratorTemplate
     {
+        #region Syntax generator factory for MEF
+        //=====================================================================
+
         /// <summary>
-        /// Constructor
+        /// This is used to create a new instance of the syntax generator
         /// </summary>
-        /// <param name="configuration">The configuration for the syntax generator</param>
-        public CSharpDeclarationSyntaxGenerator(XPathNavigator configuration) : base(configuration)
+        [SyntaxGeneratorExport("CSharp", "CSharp", "cs", AlternateIds = "cs, c#",
+          SortOrder = 10, Description = "Generates C# declaration syntax sections")]
+        public sealed class Factory : ISyntaxGeneratorFactory
         {
-            if(String.IsNullOrEmpty(Language))
-                Language = "CSharp";
+            /// <inheritdoc />
+            public SyntaxGeneratorBase Create()
+            {
+                return new CSharpDeclarationSyntaxGenerator();
+            }
         }
+        #endregion
 
         /// <inheritdoc />
         public override void WriteNamespaceSyntax(XPathNavigator reflection, SyntaxWriter writer)

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : MSHelpAttrCollection.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/28/2013
+// Updated : 12/18/2013
 // Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -23,21 +23,16 @@
 
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing.Design;
 using System.IO;
 using System.Text;
 using System.Web;
 using System.Xml;
-
-using SandcastleBuilder.Utils.Design;
 
 namespace SandcastleBuilder.Utils
 {
     /// <summary>
     /// This collection class is used to hold the help attribute items for a project
     /// </summary>
-    [TypeConverter(typeof(MSHelpAttrCollectionTypeConverter)),
-      Editor(typeof(MSHelpAttrEditor), typeof(UITypeEditor))]
     public class MSHelpAttrCollection : BindingList<MSHelpAttr>
     {
         #region Private data members

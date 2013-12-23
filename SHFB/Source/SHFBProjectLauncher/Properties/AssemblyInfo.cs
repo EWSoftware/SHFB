@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Project Launcher
 // File    : AssemblyInfo.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/12/2013
+// Updated : 12/22/2013
 // Note    : Copyright 2011-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -13,48 +13,23 @@
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.0.0.0  08/02/2006  EFW  Created the code
+// 08/02/2006  EFW  Created the code
 //===============================================================================================================
 
 using System;
 using System.Reflection;
-using System.Resources;
-using System.Runtime.InteropServices;
-
-// Resources contained within the assembly are English
-[assembly: NeutralResourcesLanguageAttribute("en")]
 
 //
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly: AssemblyProduct("Sandcastle Help File Builder")]
 [assembly: AssemblyTitle("Sandcastle Help File Builder Project Launcher")]
 [assembly: AssemblyDescription("This utility is used to open Sandcastle Help File Builder project files " +
     "using either the standalone GUI or Visual Studio.")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Eric Woodruff")]
-[assembly: AssemblyCopyright("Copyright \xA9 2011-2013, Eric Woodruff, All Rights Reserved")]
-[assembly: AssemblyTrademark("Eric Woodruff, All Rights Reserved")]
-[assembly: AssemblyCulture("")]
+
 [assembly: CLSCompliant(true)]
-[assembly: ComVisible(false)]
 
-//
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Revision and Build Numbers
-// by using the '*' as shown below:
-
-// NOTE: This version number will control the version number in the installer.  This allows the build engine
-//       to use a different version number so that plug-ins and other components will continue to work with the
-//       latest official production release as well as a development release using an older version number.
-[assembly: AssemblyVersion("1.9.8.0")]
+// See AssemblyInfoShared.cs for the shared attributes common to all projects in the solution.

@@ -64,14 +64,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\SandcastleBuilderGUI\Properties\AssemblyInfoShared.cs">
+      <Link>Properties\AssemblyInfoShared.cs</Link>
+    </Compile>
     <Compile Include="..\SandcastleBuilderUtils\Constants.cs">
       <Link>Constants.cs</Link>
     </Compile>
-    <Compile Include="..\SandcastleBuilderUtils\Properties\AssemblyInfoShared.cs">
-      <Link>Properties\AssemblyInfoShared.cs</Link>
-    </Compile>
-    <Compile Include="CachedCopyFromIndexComponent.cs" />
-    <Compile Include="CachedResolveReferenceLinksComponent.cs" />
     <Compile Include="CodeBlockComponent.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -88,10 +86,7 @@
     <Compile Include="Commands\ESentIndexCache.cs" />
     <Compile Include="ESentResolveReferenceLinksComponent.cs" />
     <Compile Include="Targets\ESentTargetDictionary.cs" />
-    <Compile Include="IntelliSenseComponent.cs" />
-    <Compile Include="MSHelpAttrComponent.cs" />
     <Compile Include="MultiFormatOutputComponent.cs" />
-    <Compile Include="PostTransformComponent.cs" />
     <Compile Include="UI\ESentCommentsIndexConfigDlg.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -110,14 +105,7 @@
     <Compile Include="UI\ESentResolveReferenceLinksConfigDlg.Designer.cs">
       <DependentUpon>ESentResolveReferenceLinksConfigDlg.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\PostTransformConfigDlg.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\PostTransformConfigDlg.Designer.cs">
-      <DependentUpon>PostTransformConfigDlg.cs</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ShowMissingComponent.cs" />
     <Compile Include="SqlCopyFromIndexComponent.cs" />
     <Compile Include="SqlDictionary.cs" />
     <Compile Include="Commands\SqlIndexCache.cs" />
@@ -143,10 +131,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BuildAssembler\BuildAssemblerLibrary\BuildAssemblerLibrary.csproj">
-      <Project>{399E78F8-4954-409E-991A-37DA9D0579CC}</Project>
-      <Name>BuildAssemblerLibrary</Name>
-    </ProjectReference>
     <ProjectReference Include="..\BuildAssembler\BuildComponents\BuildComponents.csproj">
       <Project>{30773718-BC7C-4FCC-A9C2-7EE61DF4EC41}</Project>
       <Name>BuildComponents</Name>
@@ -160,12 +144,13 @@
       <Name>ColorizerLibrary</Name>
       <Private>True</Private>
     </ProjectReference>
+    <ProjectReference Include="..\SandcastleCore\Sandcastle.Core.csproj">
+      <Project>{399E78F8-4954-409E-991A-37DA9D0579CC}</Project>
+      <Name>Sandcastle.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\CreateSandcastleDB.sql" />
-    <Content Include="SandcastleBuilder.filters">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <None Include="SandcastleBuilderComponents.snk" />
     <Content Include="SandcastleBuilder.components">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -189,10 +174,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\ESentResolveReferenceLinksConfigDlg.resx">
       <DependentUpon>ESentResolveReferenceLinksConfigDlg.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\PostTransformConfigDlg.resx">
-      <DependentUpon>PostTransformConfigDlg.cs</DependentUpon>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\SqlConnectionDlg.resx">
       <DependentUpon>SqlConnectionDlg.cs</DependentUpon>

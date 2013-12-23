@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : WildcardReferencesPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/18/2013
+// Updated : 12/17/2013
 // Note    : Copyright 2011-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -17,20 +17,20 @@
 // Version     Date     Who  Comments
 // ==============================================================================================================
 // 1.9.2.0  01/17/2011  EFW  Created the code
+// -------  12/17/2013  EFW  Updated to use MEF for the plug-ins
 //===============================================================================================================
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Reflection;
+using System.Linq;
 using System.Windows.Forms;
 using System.Xml.XPath;
 using System.Xml.Linq;
 
 using SandcastleBuilder.Utils;
+using SandcastleBuilder.Utils.BuildComponent;
 using SandcastleBuilder.Utils.BuildEngine;
-using SandcastleBuilder.Utils.PlugIn;
 
 using Microsoft.Build.Evaluation;
 
@@ -40,12 +40,15 @@ namespace SandcastleBuilder.PlugIns
     /// This plug-in class is designed to modify the MRefBuilder project file by adding in reference assemblies
     /// matching wildcard search paths.
     /// </summary>
-    public class WildcardReferencesPlugIn : IPlugIn
+    [HelpFileBuilderPlugInExport("Wildcard Assembly References", IsConfigurable = true, RunsInPartialBuild = true,
+      Description = "This plug-in is used to modify the Generate Reflection Information build step by adding " +
+        "assembly references found in one or more wildcard search paths.")]
+    public sealed class WildcardReferencesPlugIn : IPlugIn
     {
         #region Private data members
         //=====================================================================
 
-        private ExecutionPointCollection executionPoints;
+        private List<ExecutionPoint> executionPoints;
 
         private BuildProcess builder;
 
@@ -57,88 +60,18 @@ namespace SandcastleBuilder.PlugIns
         //=====================================================================
 
         /// <summary>
-        /// This read-only property returns a friendly name for the plug-in
-        /// </summary>
-        public string Name
-        {
-            get { return "Wildcard Assembly References"; }
-        }
-
-        /// <summary>
-        /// This read-only property returns the version of the plug-in
-        /// </summary>
-        public Version Version
-        {
-            get
-            {
-                // Use the assembly version
-                Assembly asm = Assembly.GetExecutingAssembly();
-                FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(asm.Location);
-
-                return new Version(fvi.ProductVersion);
-            }
-        }
-
-        /// <summary>
-        /// This read-only property returns the copyright information for the plug-in
-        /// </summary>
-        public string Copyright
-        {
-            get
-            {
-                // Use the assembly copyright
-                Assembly asm = Assembly.GetExecutingAssembly();
-                AssemblyCopyrightAttribute copyright = (AssemblyCopyrightAttribute)Attribute.GetCustomAttribute(
-                    asm, typeof(AssemblyCopyrightAttribute));
-
-                return copyright.Copyright;
-            }
-        }
-
-        /// <summary>
-        /// This read-only property returns a brief description of the plug-in
-        /// </summary>
-        public string Description
-        {
-            get
-            {
-                return "This plug-in is used to modify the Generate Reflection Information build step by " +
-                    "adding assembly references found in one or more wildcard search paths.";
-            }
-        }
-
-        /// <summary>
-        /// This plug-in supports configuration
-        /// </summary>
-        /// <seealso cref="ConfigurePlugIn"/>
-        public bool SupportsConfiguration
-        {
-            get { return true; }
-        }
-
-        /// <summary>
-        /// This plug-in runs in partial builds
-        /// </summary>
-        public bool RunsInPartialBuild
-        {
-            get { return true; }
-        }
-
-        /// <summary>
         /// This read-only property returns a collection of execution points that define when the plug-in should
         /// be invoked during the build process.
         /// </summary>
-        public ExecutionPointCollection ExecutionPoints
+        public IEnumerable<ExecutionPoint> ExecutionPoints
         {
             get
             {
                 if(executionPoints == null)
-                {
-                    executionPoints = new ExecutionPointCollection();
-
-                    executionPoints.Add(new ExecutionPoint(BuildStep.GenerateReflectionInfo,
-                        ExecutionBehaviors.Before));
-                }
+                    executionPoints = new List<ExecutionPoint>
+                    {
+                        new ExecutionPoint(BuildStep.GenerateReflectionInfo, ExecutionBehaviors.Before)
+                    };
 
                 return executionPoints;
             }
@@ -172,7 +105,10 @@ namespace SandcastleBuilder.PlugIns
         {
             builder = buildProcess;
 
-            builder.ReportProgress("{0} Version {1}\r\n{2}", this.Name, this.Version, this.Copyright);
+            var metadata = (HelpFileBuilderPlugInExportAttribute)this.GetType().GetCustomAttributes(
+                typeof(HelpFileBuilderPlugInExportAttribute), false).First();
+
+            builder.ReportProgress("{0} Version {1}\r\n{2}", metadata.Id, metadata.Version, metadata.Copyright);
 
             XElement root = XElement.Parse(configuration.OuterXml);
 
@@ -192,7 +128,7 @@ namespace SandcastleBuilder.PlugIns
         /// This method is used to execute the plug-in during the build process
         /// </summary>
         /// <param name="context">The current execution context</param>
-        public void Execute(Utils.PlugIn.ExecutionContext context)
+        public void Execute(ExecutionContext context)
         {
             Project msBuildProject = null;
             ProjectItem projectItem;
@@ -264,32 +200,12 @@ namespace SandcastleBuilder.PlugIns
         //=====================================================================
 
         /// <summary>
-        /// This handles garbage collection to ensure proper disposal of the plug-in if not done explicitly with
-        /// <see cref="Dispose()"/>.
-        /// </summary>
-        ~WildcardReferencesPlugIn()
-        {
-            this.Dispose(false);
-        }
-
-        /// <summary>
         /// This implements the Dispose() interface to properly dispose of the plug-in object
         /// </summary>
-        /// <overloads>There are two overloads for this method</overloads>
         public void Dispose()
         {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// This can be overridden by derived classes to add their own disposal code if necessary
-        /// </summary>
-        /// <param name="disposing">Pass true to dispose of the managed and unmanaged resources or false to just
-        /// dispose of the unmanaged resources.</param>
-        protected virtual void Dispose(bool disposing)
-        {
             // Nothing to dispose of in this one
+            GC.SuppressFinalize(this);
         }
         #endregion
     }

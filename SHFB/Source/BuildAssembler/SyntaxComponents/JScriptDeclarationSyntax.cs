@@ -3,9 +3,14 @@
 // See http://www.microsoft.com/resources/sharedsource/licensingbasics/sharedsourcelicenses.mspx.
 // All other rights reserved.
 
+// Change history:
+// 12/20/2013 - EFW - Updated the syntax generator to be discoverable via MEF
+
 using System;
 using System.Globalization;
 using System.Xml.XPath;
+
+using Sandcastle.Core.BuildAssembler.SyntaxGenerator;
 
 namespace Microsoft.Ddue.Tools
 {
@@ -14,15 +19,23 @@ namespace Microsoft.Ddue.Tools
     /// </summary>
     public sealed class JScriptDeclarationSyntaxGenerator : SyntaxGeneratorTemplate
     {
+        #region Syntax generator factory for MEF
+        //=====================================================================
+
         /// <summary>
-        /// Constructor
+        /// This is used to create a new instance of the syntax generator
         /// </summary>
-        /// <param name="configuration">The syntax generator configuration</param>
-        public JScriptDeclarationSyntaxGenerator(XPathNavigator configuration) : base(configuration)
+        [SyntaxGeneratorExport("JScript", "JScript", "cs", AlternateIds = "jscript#, jscript.net",
+          SortOrder = 70, Description = "Generates JScript declaration syntax sections")]
+        public sealed class Factory : ISyntaxGeneratorFactory
         {
-            if(String.IsNullOrEmpty(Language))
-                Language = "JScript";
+            /// <inheritdoc />
+            public SyntaxGeneratorBase Create()
+            {
+                return new JScriptDeclarationSyntaxGenerator();
+            }
         }
+        #endregion
 
         /// <inheritdoc />
         public override void WriteNamespaceSyntax(XPathNavigator reflection, SyntaxWriter writer)

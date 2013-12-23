@@ -10,6 +10,9 @@
 using System.Xml;
 using System.Xml.XPath;
 
+using Sandcastle.Core.BuildAssembler;
+using Sandcastle.Core.BuildAssembler.BuildComponent;
+
 namespace Microsoft.Ddue.Tools.Commands
 {
     /// <summary>
@@ -37,7 +40,7 @@ namespace Microsoft.Ddue.Tools.Commands
         /// <param name="sourceDocument">The source XPath document</param>
         /// <param name="sourceXPath">The source XPath expression</param>
         /// <param name="targetXPath">The target XPath expression</param>
-        public CopyFromFileCommand(BuildComponent parent, XPathDocument sourceDocument, string sourceXPath,
+        public CopyFromFileCommand(BuildComponentCore parent, XPathDocument sourceDocument, string sourceXPath,
           string targetXPath) : base(parent, sourceXPath, targetXPath)
         {
             this.SourceDocument = sourceDocument;

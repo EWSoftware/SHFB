@@ -2,7 +2,7 @@
 // System  : Sandcastle Guided Installation
 // File    : MamlSnippetsPage.cs
 // Author  : Eric Woodruff
-// Updated : 11/25/2012
+// Updated : 12/16/2013
 // Compiler: Microsoft Visual C#
 //
 // This file contains a page used to help the user install the Sandcastle MAML snippet files for use with Visual
@@ -169,24 +169,18 @@ namespace Sandcastle.Installer.InstallerPages
         /// <inheritdoc />
         public override void ShowPage()
         {
-            // DXROOT will exist as a system environment variable if it is installed correctly
-            sandcastleSnippetsFolder = Environment.GetEnvironmentVariable("DXROOT", EnvironmentVariableTarget.Machine);
+            // SHFBROOT will exist as a system environment variable if it is installed correctly
+            sandcastleSnippetsFolder = Environment.GetEnvironmentVariable("SHFBROOT", EnvironmentVariableTarget.Machine);
 
             // It may not be there if we just installed it so look for the folder manually
             if(String.IsNullOrEmpty(sandcastleSnippetsFolder))
             {
-                sandcastleSnippetsFolder = Environment.GetEnvironmentVariable("ProgramFiles(x86)");
+                sandcastleSnippetsFolder = Path.Combine(Environment.GetFolderPath(Environment.Is64BitProcess ?
+                    Environment.SpecialFolder.ProgramFilesX86 : Environment.SpecialFolder.ProgramFiles),
+                    @"EWSoftware\Sandcastle Help File Builder");
 
-                if(String.IsNullOrEmpty(sandcastleSnippetsFolder))
-                    sandcastleSnippetsFolder = Environment.GetEnvironmentVariable("ProgramFiles");
-
-                if(!String.IsNullOrEmpty(sandcastleSnippetsFolder))
-                {
-                    sandcastleSnippetsFolder = Path.Combine(sandcastleSnippetsFolder, "Sandcastle");
-
-                    if(!Directory.Exists(sandcastleSnippetsFolder))
-                        sandcastleSnippetsFolder = null;
-                }
+                if(!Directory.Exists(sandcastleSnippetsFolder))
+                    sandcastleSnippetsFolder = null;
             }
 
             if(!String.IsNullOrEmpty(sandcastleSnippetsFolder))

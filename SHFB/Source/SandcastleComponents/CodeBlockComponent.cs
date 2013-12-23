@@ -51,6 +51,9 @@ using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.XPath;
 
+using Sandcastle.Core.BuildAssembler;
+using Sandcastle.Core.BuildAssembler.BuildComponent;
+
 using Microsoft.Ddue.Tools;
 
 using ColorizerLibrary;
@@ -149,7 +152,7 @@ namespace SandcastleBuilder.Components
     /// &lt;example&gt;
     /// </code>
     /// </example>
-    public class CodeBlockComponent : BuildComponent
+    public class CodeBlockComponent : BuildComponentCore
     {
         #region Private data members
         //=====================================================================
@@ -208,7 +211,7 @@ namespace SandcastleBuilder.Components
         /// usage.</remarks>
         /// <exception cref="ConfigurationErrorsException">This is thrown if an error is detected in the
         /// configuration.</exception>
-        public CodeBlockComponent(BuildAssembler assembler, XPathNavigator configuration) :
+        public CodeBlockComponent(BuildAssemblerCore assembler, XPathNavigator configuration) :
           base(assembler, configuration)
         {
             XPathNavigator nav;

@@ -7,13 +7,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildAssembler", "BuildAsse
 		{CEAEC85B-973A-4414-8668-723EB65E5088} = {CEAEC85B-973A-4414-8668-723EB65E5088}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildAssemblerLibrary", "BuildAssemblerLibrary\BuildAssemblerLibrary.csproj", "{399E78F8-4954-409E-991A-37DA9D0579CC}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildComponents", "BuildComponents\BuildComponents.csproj", "{30773718-BC7C-4FCC-A9C2-7EE61DF4EC41}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SyntaxComponents", "SyntaxComponents\SyntaxComponents.csproj", "{CEAEC85B-973A-4414-8668-723EB65E5088}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommandLine", "..\CommandLine\CommandLine.csproj", "{6CF7CA42-3706-4F6B-A2B4-10EF3F511888}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DA42C7D1-8CF9-44DF-8A25-8370697A1A7D}"
 	ProjectSection(SolutionItems) = preProject
@@ -22,30 +18,29 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildComponentTargets", "BuildComponentTargets\BuildComponentTargets.csproj", "{84F8BE08-B5A3-4E5E-BC99-8E5C2351EF62}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandcastle.Core", "..\SandcastleCore\Sandcastle.Core.csproj", "{399E78F8-4954-409E-991A-37DA9D0579CC}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 7
+		SccNumberOfProjects = 6
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs01
 		SccLocalPath0 = .
-		SccProjectUniqueName1 = ..\\CommandLine\\CommandLine.csproj
-		SccProjectName1 = ../CommandLine
-		SccLocalPath1 = ..\\CommandLine
-		SccProjectUniqueName2 = BuildAssembler\\BuildAssembler.csproj
-		SccProjectName2 = BuildAssembler
-		SccLocalPath2 = BuildAssembler
-		SccProjectUniqueName3 = BuildAssemblerLibrary\\BuildAssemblerLibrary.csproj
-		SccProjectName3 = BuildAssemblerLibrary
-		SccLocalPath3 = BuildAssemblerLibrary
-		SccProjectUniqueName4 = BuildComponents\\BuildComponents.csproj
-		SccProjectName4 = BuildComponents
-		SccLocalPath4 = BuildComponents
-		SccProjectUniqueName5 = SyntaxComponents\\SyntaxComponents.csproj
-		SccProjectName5 = SyntaxComponents
-		SccLocalPath5 = SyntaxComponents
-		SccProjectUniqueName6 = BuildComponentTargets\\BuildComponentTargets.csproj
-		SccProjectName6 = BuildComponentTargets
-		SccLocalPath6 = BuildComponentTargets
+		SccProjectUniqueName1 = BuildAssembler\\BuildAssembler.csproj
+		SccProjectName1 = BuildAssembler
+		SccLocalPath1 = BuildAssembler
+		SccProjectUniqueName2 = BuildComponents\\BuildComponents.csproj
+		SccProjectName2 = BuildComponents
+		SccLocalPath2 = BuildComponents
+		SccProjectUniqueName3 = SyntaxComponents\\SyntaxComponents.csproj
+		SccProjectName3 = SyntaxComponents
+		SccLocalPath3 = SyntaxComponents
+		SccProjectUniqueName4 = BuildComponentTargets\\BuildComponentTargets.csproj
+		SccProjectName4 = BuildComponentTargets
+		SccLocalPath4 = BuildComponentTargets
+		SccProjectUniqueName5 = ..\\SandcastleCore\\Sandcastle.Core.csproj
+		SccProjectName5 = ../SandcastleCore
+		SccLocalPath5 = ..\\SandcastleCore
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -56,10 +51,6 @@ Global
 		{5BA19924-5A65-46E0-97CD-948595932584}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5BA19924-5A65-46E0-97CD-948595932584}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5BA19924-5A65-46E0-97CD-948595932584}.Release|Any CPU.Build.0 = Release|Any CPU
-		{399E78F8-4954-409E-991A-37DA9D0579CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{399E78F8-4954-409E-991A-37DA9D0579CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{399E78F8-4954-409E-991A-37DA9D0579CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{399E78F8-4954-409E-991A-37DA9D0579CC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{30773718-BC7C-4FCC-A9C2-7EE61DF4EC41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{30773718-BC7C-4FCC-A9C2-7EE61DF4EC41}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{30773718-BC7C-4FCC-A9C2-7EE61DF4EC41}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -68,14 +59,14 @@ Global
 		{CEAEC85B-973A-4414-8668-723EB65E5088}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CEAEC85B-973A-4414-8668-723EB65E5088}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CEAEC85B-973A-4414-8668-723EB65E5088}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6CF7CA42-3706-4F6B-A2B4-10EF3F511888}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6CF7CA42-3706-4F6B-A2B4-10EF3F511888}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6CF7CA42-3706-4F6B-A2B4-10EF3F511888}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6CF7CA42-3706-4F6B-A2B4-10EF3F511888}.Release|Any CPU.Build.0 = Release|Any CPU
 		{84F8BE08-B5A3-4E5E-BC99-8E5C2351EF62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{84F8BE08-B5A3-4E5E-BC99-8E5C2351EF62}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84F8BE08-B5A3-4E5E-BC99-8E5C2351EF62}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{84F8BE08-B5A3-4E5E-BC99-8E5C2351EF62}.Release|Any CPU.Build.0 = Release|Any CPU
+		{399E78F8-4954-409E-991A-37DA9D0579CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{399E78F8-4954-409E-991A-37DA9D0579CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{399E78F8-4954-409E-991A-37DA9D0579CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{399E78F8-4954-409E-991A-37DA9D0579CC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

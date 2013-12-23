@@ -16,12 +16,15 @@ using System.Text;
 using System.Xml;
 using System.Xml.XPath;
 
+using Sandcastle.Core.BuildAssembler;
+using Sandcastle.Core.BuildAssembler.BuildComponent;
+
 namespace Microsoft.Ddue.Tools
 {
     /// <summary>
     /// This build component is used to save the generated document or parts of it to a file
     /// </summary>
-    public class SaveComponent : BuildComponent
+    public class SaveComponent : BuildComponentCore
     {
         #region Private data members
         //=====================================================================
@@ -38,7 +41,7 @@ namespace Microsoft.Ddue.Tools
         //=====================================================================
 
         /// <inheritdoc />
-        public SaveComponent(BuildAssembler assembler, XPathNavigator configuration) :
+        public SaveComponent(BuildAssemblerCore assembler, XPathNavigator configuration) :
           base(assembler, configuration)
         {
             settings.Encoding = Encoding.UTF8;

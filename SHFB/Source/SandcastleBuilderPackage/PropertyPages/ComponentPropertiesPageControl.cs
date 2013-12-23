@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : ComponentPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 02/24/2013
+// Updated : 12/16/2013
 // Note    : Copyright 2011-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -99,7 +99,7 @@ namespace SandcastleBuilder.Package.PropertyPages
             // Is it a Sandcastle component?
             if(asm == null)
             {
-                resolveName = Directory.EnumerateFiles(BuildComponentManager.SandcastlePath, "*.dll",
+                resolveName = Directory.EnumerateFiles(BuildComponentManager.HelpFileBuilderFolder, "*.dll",
                     SearchOption.AllDirectories).FirstOrDefault(
                     f => resolveName == Path.GetFileNameWithoutExtension(f));
 
@@ -127,18 +127,6 @@ namespace SandcastleBuilder.Package.PropertyPages
             {
                 try
                 {
-                    // If Sandcastle cannot be found, use the SandcastlePath project property setting
-                    if(String.IsNullOrEmpty(BuildComponentManager.SandcastlePath))
-                    {
-#if !STANDALONEGUI
-                        projProp = this.ProjectMgr.BuildProject.GetProperty("SandcastlePath");
-#else
-                        projProp = this.CurrentProject.MSBuildProject.GetProperty("SandcastlePath");
-#endif
-                        if(projProp != null && !String.IsNullOrEmpty(projProp.EvaluatedValue))
-                            BuildComponentManager.SandcastlePath = projProp.EvaluatedValue;
-                    }
-
                     // Show all but the hidden components
                     lbAvailableComponents.Items.AddRange(BuildComponentManager.BuildComponents.Values.Where(
                         bc => !bc.IsHidden).Select(bc => bc.Id).ToArray());

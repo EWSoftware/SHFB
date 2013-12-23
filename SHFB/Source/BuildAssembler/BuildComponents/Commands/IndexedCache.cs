@@ -13,6 +13,8 @@ using System.IO;
 using System.Xml;
 using System.Xml.XPath;
 
+using Sandcastle.Core.BuildAssembler;
+
 namespace Microsoft.Ddue.Tools.Commands
 {
     /// <summary>

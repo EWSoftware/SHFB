@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : FrameworkDictionary.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/15/2013
+// Updated : 12/16/2013
 // Note    : Copyright 2012-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -38,8 +38,7 @@ namespace Microsoft.Ddue.Tools.Frameworks
         /// <summary>
         /// This read-only property returns the path to the framework definition file
         /// </summary>
-        /// <remarks>The file <b>Frameworks.xml</b> should be in the <b>%SHFBROOT%</b> folder.  If not found
-        /// there, it looks in the location of the executing assembly.</remarks>
+        /// <remarks>The <b>Frameworks.xml</b> file should be in the same location as the executing assembly</remarks>
         public static string FrameworkFilePath
         {
             get

@@ -26,7 +26,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Xml;
 
-using SandcastleBuilder.Utils.PlugIn;
+using SandcastleBuilder.Utils.BuildComponent;
 
 namespace SandcastleBuilder.Utils.BuildEngine
 {

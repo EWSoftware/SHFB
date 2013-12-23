@@ -19,167 +19,19 @@
   <SearchGlobalAssemblyCache>False</SearchGlobalAssemblyCache>
   <DeadlockDetectionTimeout>120</DeadlockDetectionTimeout>
   <IgnoreGeneratedCode>False</IgnoreGeneratedCode>
-  <TargetFrameworkVersion>0.0</TargetFrameworkVersion>
  </ProjectOptions>
  <Targets>
   <Target Name="$(ProjectDir)/../../Deploy/BuildAssembler.exe" Analyze="True" AnalyzeAllChildren="True" />
-  <Target Name="$(ProjectDir)/../../Deploy/BuildAssemblerLibrary.dll" Analyze="True" AnalyzeAllChildren="True" />
   <Target Name="$(ProjectDir)/../../Deploy/BuildComponents.dll" Analyze="True" AnalyzeAllChildren="False">
    <Modules AnalyzeAllChildren="False">
     <Module Name="buildcomponents.dll" Analyze="True" AnalyzeAllChildren="False">
      <Namespaces AnalyzeAllChildren="False">
       <Namespace Name="" Analyze="True" AnalyzeAllChildren="True" />
-      <Namespace Name="Microsoft.Ddue.Tools" Analyze="True" AnalyzeAllChildren="False">
-       <Types AnalyzeAllChildren="False">
-        <Type Name="BrandingComponent" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="BrandingComponent+SpecialXmlReader" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="CloneComponent" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="CopyComponent" Analyze="True" AnalyzeAllChildren="False">
-         <Members AnalyzeAllChildren="False">
-          <Member Name="#&lt;ParentBuildComponent&gt;k__BackingField" Analyze="True" />
-          <Member Name="#Apply(System.Xml.XmlDocument,System.String)" Analyze="True" />
-          <Member Name="#ParentBuildComponent" Analyze="True" AnalyzeAllChildren="True" />
-         </Members>
-        </Type>
-        <Type Name="CopyFromFileComponent" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="CopyFromFilesComponent" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="CopyFromIndexComponent" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="CopySet" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="DisplayComponent" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="ExampleComponent" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="FileCreatedEventArgs" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="ForEachComponent" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="HxfGeneratorComponent" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="IfThenComponent" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="InclusionFilter" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="IndexedExample" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="IndexedFile" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="IndexedFileCache" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="InheritDocumentationComponent" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="IntelliSenseComponent" Analyze="True" AnalyzeAllChildren="False">
-         <Members AnalyzeAllChildren="False">
-          <Member Name="#.ctor(Microsoft.Ddue.Tools.BuildAssembler,System.Xml.XPath.XPathNavigator)" Analyze="True" />
-          <Member Name="#Apply(System.Xml.XmlDocument,System.String)" Analyze="True" />
-          <Member Name="#assemblyExpression" Analyze="True" />
-          <Member Name="#ConfigureComponent(System.String)" Analyze="True" />
-          <Member Name="#Dispose(System.Boolean)" Analyze="True" />
-          <Member Name="#elementsExpression" Analyze="True" />
-          <Member Name="#exceptionExpression" Analyze="True" />
-          <Member Name="#includeNamespaces" Analyze="True" />
-          <Member Name="#namespacesFilename" Analyze="True" />
-          <Member Name="#outputFolder" Analyze="True" />
-          <Member Name="#paramExpression" Analyze="True" />
-          <Member Name="#returnsExpression" Analyze="True" />
-          <Member Name="#subgroupExpression" Analyze="True" />
-          <Member Name="#summaryExpression" Analyze="True" />
-          <Member Name="#typeparamExpression" Analyze="True" />
-          <Member Name="#WriteComments(System.String,System.String,System.Xml.XPath.XPathNavigator)" Analyze="True" />
-          <Member Name="#writers" Analyze="True" />
-         </Members>
-        </Type>
-        <Type Name="Language" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="MemberFilter" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="MsdnResolver" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="MSHCComponent" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="MSHCComponent+ConfigurationAttr" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="MSHCComponent+ConfigurationTag" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="MSHCComponent+Help2Attr" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="MSHCComponent+Help2Namespace" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="MSHCComponent+Help2Value" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="MSHCComponent+Help2XPath" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="MSHCComponent+MHSDefault" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="MSHCComponent+MHSMetaAttr" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="MSHCComponent+MHSMetaName" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="MSHCComponent+MHSTag" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="MSHCComponent+TocAttr" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="MSHCComponent+TocInfo" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="MSHCComponent+TocXPath" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="MSHelpAttrComponent" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="NamespaceFilter" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="OverloadFilter" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="PlatformsComponent" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="ResolveArtLinksComponent" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="ResolveConceptualLinksComponent" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="ResolveReferenceLinksComponent2" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="SaveComponent" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="SharedContentComponent" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="ShowMissingComponent" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="Snippet" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="SnippetCache" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="SnippetComponent" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="SwitchComponent" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="SyntaxComponent" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="TaskGrabberComponent" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="Transform" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="TransformComponent" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="TransformedTopicEventArgs" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="TypeFilter" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="ValidateComponent" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="ValidateComponent+&lt;&gt;c__DisplayClass1" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="VersionFilter" Analyze="True" AnalyzeAllChildren="True" />
-       </Types>
-      </Namespace>
+      <Namespace Name="Microsoft.Ddue.Tools" Analyze="True" AnalyzeAllChildren="True" />
       <Namespace Name="Microsoft.Ddue.Tools.Commands" Analyze="True" AnalyzeAllChildren="True" />
       <Namespace Name="Microsoft.Ddue.Tools.Properties" Analyze="True" AnalyzeAllChildren="True" />
       <Namespace Name="Microsoft.Ddue.Tools.Snippets" Analyze="True" AnalyzeAllChildren="True" />
-      <Namespace Name="Microsoft.Ddue.Tools.Targets" Analyze="True" AnalyzeAllChildren="False">
-       <Types AnalyzeAllChildren="False">
-        <Type Name="ArtTarget" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="ConceptualLinkInfo" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="ConceptualLinkType" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="DisplayOptions" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="InMemoryTargetDictionary" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="LinkTextResolver" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="ReferenceLinkInfo" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="ReferenceLinkType" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="SharedContentElement" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="TargetDictionary" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="TargetDirectory" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="TargetDirectoryCollection" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="TargetInfo" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="TargetTypeDictionary" Analyze="True" AnalyzeAllChildren="False">
-         <Members AnalyzeAllChildren="False">
-          <Member Name="#.ctor()" Analyze="True" />
-          <Member Name="#&lt;get_Count&gt;b__8(System.Collections.Generic.KeyValuePair`2&lt;Microsoft.Ddue.Tools.Targets.ReferenceLinkType,Microsoft.Ddue.Tools.Targets.TargetDictionary&gt;)" Analyze="True" />
-          <Member Name="#&lt;get_Keys&gt;b__0(System.Collections.Generic.KeyValuePair`2&lt;Microsoft.Ddue.Tools.Targets.ReferenceLinkType,Microsoft.Ddue.Tools.Targets.TargetDictionary&gt;)" Analyze="True" />
-          <Member Name="#&lt;get_Keys&gt;b__1(System.Collections.Generic.ICollection`1&lt;System.String&gt;)" Analyze="True" />
-          <Member Name="#&lt;get_NeedsMsdnResolver&gt;b__a(System.Collections.Generic.KeyValuePair`2&lt;Microsoft.Ddue.Tools.Targets.ReferenceLinkType,Microsoft.Ddue.Tools.Targets.TargetDictionary&gt;)" Analyze="True" />
-          <Member Name="#&lt;get_Values&gt;b__4(System.Collections.Generic.KeyValuePair`2&lt;Microsoft.Ddue.Tools.Targets.ReferenceLinkType,Microsoft.Ddue.Tools.Targets.TargetDictionary&gt;)" Analyze="True" />
-          <Member Name="#&lt;get_Values&gt;b__5(System.Collections.Generic.ICollection`1&lt;Microsoft.Ddue.Tools.Targets.Target&gt;)" Analyze="True" />
-          <Member Name="#Add(Microsoft.Ddue.Tools.Targets.ReferenceLinkType,Microsoft.Ddue.Tools.Targets.TargetDictionary)" Analyze="True" />
-          <Member Name="#Add(System.Collections.Generic.KeyValuePair`2&lt;System.String,Microsoft.Ddue.Tools.Targets.Target&gt;)" Analyze="True" />
-          <Member Name="#Add(System.String,Microsoft.Ddue.Tools.Targets.Target)" Analyze="True" />
-          <Member Name="#Clear()" Analyze="True" />
-          <Member Name="#Contains(System.Collections.Generic.KeyValuePair`2&lt;System.String,Microsoft.Ddue.Tools.Targets.Target&gt;)" Analyze="True" />
-          <Member Name="#ContainsKey(System.String)" Analyze="True" />
-          <Member Name="#CopyTo(System.Collections.Generic.KeyValuePair`2&lt;System.String,Microsoft.Ddue.Tools.Targets.Target&gt;[],System.Int32)" Analyze="True" />
-          <Member Name="#Count" Analyze="True" AnalyzeAllChildren="True" />
-          <Member Name="#CS$&lt;&gt;9__CachedAnonymousMethodDelegate2" Analyze="True" />
-          <Member Name="#CS$&lt;&gt;9__CachedAnonymousMethodDelegate3" Analyze="True" />
-          <Member Name="#CS$&lt;&gt;9__CachedAnonymousMethodDelegate6" Analyze="True" />
-          <Member Name="#CS$&lt;&gt;9__CachedAnonymousMethodDelegate7" Analyze="True" />
-          <Member Name="#CS$&lt;&gt;9__CachedAnonymousMethodDelegate9" Analyze="True" />
-          <Member Name="#CS$&lt;&gt;9__CachedAnonymousMethodDelegateb" Analyze="True" />
-          <Member Name="#Dispose()" Analyze="True" />
-          <Member Name="#GetEnumerator()" Analyze="True" />
-          <Member Name="#IsReadOnly" Analyze="True" AnalyzeAllChildren="True" />
-          <Member Name="#Item[System.String]" Analyze="True" AnalyzeAllChildren="True" />
-          <Member Name="#Keys" Analyze="True" AnalyzeAllChildren="True" />
-          <Member Name="#NeedsMsdnResolver" Analyze="True" AnalyzeAllChildren="True" />
-          <Member Name="#Remove(System.Collections.Generic.KeyValuePair`2&lt;System.String,Microsoft.Ddue.Tools.Targets.Target&gt;)" Analyze="True" />
-          <Member Name="#Remove(System.String)" Analyze="True" />
-          <Member Name="#System.Collections.IEnumerable.GetEnumerator()" Analyze="True" />
-          <Member Name="#targetDictionaries" Analyze="True" />
-          <Member Name="#TryGetValue(System.String,Microsoft.Ddue.Tools.Targets.Target&amp;)" Analyze="True" />
-          <Member Name="#TryGetValue(System.String,Microsoft.Ddue.Tools.Targets.Target&amp;,Microsoft.Ddue.Tools.Targets.ReferenceLinkType&amp;)" Analyze="True" />
-          <Member Name="#Values" Analyze="True" AnalyzeAllChildren="True" />
-         </Members>
-        </Type>
-        <Type Name="TextReferenceUtilities" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="XmlTargetDictionaryUtilities" Analyze="True" AnalyzeAllChildren="True" />
-        <Type Name="XmlTargetDictionaryUtilities+&lt;EnumerateTargets&gt;d__0" Analyze="True" AnalyzeAllChildren="True" />
-       </Types>
-      </Namespace>
+      <Namespace Name="Microsoft.Ddue.Tools.Targets" Analyze="True" AnalyzeAllChildren="True" />
       <Namespace Name="Microsoft.Ddue.Tools.UI" Analyze="True" AnalyzeAllChildren="True" />
      </Namespaces>
      <Resources AnalyzeAllChildren="True" />
@@ -187,6 +39,7 @@
    </Modules>
   </Target>
   <Target Name="$(ProjectDir)/../../Deploy/BuildComponents.Targets.dll" Analyze="True" AnalyzeAllChildren="True" />
+  <Target Name="$(ProjectDir)/../../Deploy/Sandcastle.Core.dll" Analyze="True" AnalyzeAllChildren="True" />
   <Target Name="$(ProjectDir)/../../Deploy/SyntaxComponents.dll" Analyze="True" AnalyzeAllChildren="True" />
  </Targets>
  <Rules>
@@ -287,205 +140,36 @@
      </Message>
     </Messages>
    </Namespace>
+   <Namespace Name="Sandcastle.Core">
+    <Messages>
+     <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Status="Excluded" Created="2013-12-22 02:28:55Z">
+      <Issue>
+       <Item>Sandcastle.Core</Item>
+      </Issue>
+      <Notes>
+       <User Name="EWOODRUFF">
+        <Note Id="54" />
+       </User>
+      </Notes>
+     </Message>
+    </Messages>
+   </Namespace>
+   <Namespace Name="Sandcastle.Core.BuildAssembler.BuildComponent">
+    <Messages>
+     <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Status="Excluded" Created="2013-12-22 02:28:55Z">
+      <Issue>
+       <Item>Sandcastle.Core.BuildAssembler.BuildComponent</Item>
+      </Issue>
+      <Notes>
+       <User Name="EWOODRUFF">
+        <Note Id="54" />
+       </User>
+      </Notes>
+     </Message>
+    </Messages>
+   </Namespace>
   </Namespaces>
   <Targets>
-   <Target Name="$(ProjectDir)/../../Deploy/BuildAssemblerLibrary.dll">
-    <Modules>
-     <Module Name="buildassemblerlibrary.dll">
-      <Namespaces>
-       <Namespace Name="Microsoft.Ddue.Tools">
-        <Types>
-         <Type Name="BuildAssembler">
-          <Members>
-           <Member Name="#Execute(System.Xml.XPath.XPathDocument,System.String)">
-            <Messages>
-             <Message Id="System.Xml.XPath.XPathDocument" TypeName="MembersShouldNotExposeCertainConcreteTypes" Category="Microsoft.Design" CheckId="CA1059" Status="Excluded" Created="2013-01-21 02:22:45Z">
-              <Issue Name="Xml">
-               <Item>'BuildAssembler.Execute(XPathDocument, string)'</Item>
-               <Item>'XPathDocument'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="42" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#WriteMessage(System.Type,Microsoft.Ddue.Tools.MessageLevel,System.String,System.String)">
-            <Messages>
-             <Message TypeName="ConsiderPassingBaseTypesAsParameters" Category="Microsoft.Design" CheckId="CA1011" Status="Excluded" Created="2013-01-21 02:22:45Z">
-              <Issue>
-               <Item>'type'</Item>
-               <Item>'BuildAssembler.WriteMessage(Type, MessageLevel, string, string)'</Item>
-               <Item>'Type'</Item>
-               <Item>'MemberInfo'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="32" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="BuildComponent">
-          <Members>
-           <Member Name="#.ctor(Microsoft.Ddue.Tools.BuildAssembler,System.Xml.XPath.XPathNavigator)">
-            <Messages>
-             <Message Id="configuration" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2012-03-10 20:52:03Z" FixCategory="DependsOnFix">
-              <Issue>
-               <Item>'configuration'</Item>
-               <Item>'BuildComponent.BuildComponent(BuildAssembler, XPathNavigator)'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="9" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#Apply(System.Xml.XmlDocument,System.String)">
-            <Messages>
-             <Message Id="System.Xml.XmlNode" TypeName="MembersShouldNotExposeCertainConcreteTypes" Category="Microsoft.Design" CheckId="CA1059" Status="Excluded" Created="2012-03-10 20:52:03Z">
-              <Issue Name="Xml">
-               <Item>'BuildComponent.Apply(XmlDocument, string)'</Item>
-               <Item>'XmlDocument'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="6" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="BuildComponentUtilities">
-          <Members>
-           <Member Name="#EvalXPathExpr(System.Xml.XPath.IXPathNavigable,System.Xml.XPath.XPathExpression,Microsoft.Ddue.Tools.CustomContext)">
-            <Messages>
-             <Message Id="Expr" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2012-03-10 20:52:03Z">
-              <Issue Name="Member">
-               <Item>Expr</Item>
-               <Item>'BuildComponentUtilities.EvalXPathExpr(this IXPathNavigable, XPathExpression, CustomContext)'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="4" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#EvalXPathExpr(System.Xml.XPath.IXPathNavigable,System.Xml.XPath.XPathExpression,System.String[])">
-            <Messages>
-             <Message Id="Expr" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2012-03-10 20:52:03Z">
-              <Issue Name="Member">
-               <Item>Expr</Item>
-               <Item>'BuildComponentUtilities.EvalXPathExpr(this IXPathNavigable, XPathExpression, params string[])'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="5" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="BuildContext">
-          <Members>
-           <Member Name="#AddNamespace(System.String,System.String)">
-            <Messages>
-             <Message Id="1#" TypeName="UriParametersShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1054" Status="Excluded" Created="2012-03-10 20:52:03Z">
-              <Issue>
-               <Item>'uri'</Item>
-               <Item>'BuildContext.AddNamespace(string, string)'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="8" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="CustomContext">
-          <Messages>
-           <Message TypeName="CollectionsShouldImplementGenericInterface" Category="Microsoft.Design" CheckId="CA1010" Status="Excluded" Created="2012-03-10 20:52:03Z">
-            <Issue Certainty="60">
-             <Item>'CustomContext'</Item>
-             <Item>IEnumerable</Item>
-            </Issue>
-            <Notes>
-             <User Name="EWOODRUFF">
-              <Note Id="3" />
-             </User>
-            </Notes>
-           </Message>
-           <Message TypeName="IdentifiersShouldHaveCorrectSuffix" Category="Microsoft.Naming" CheckId="CA1710" Status="Excluded" Created="2012-03-10 20:52:03Z">
-            <Issue>
-             <Item>'CustomContext'</Item>
-             <Item>Collection</Item>
-            </Issue>
-            <Notes>
-             <User Name="EWOODRUFF">
-              <Note Id="1" />
-             </User>
-            </Notes>
-           </Message>
-          </Messages>
-          <Members>
-           <Member Name="#CompareDocument(System.String,System.String)">
-            <Messages>
-             <Message Id="1#" TypeName="ParameterNamesShouldMatchBaseDeclaration" Category="Microsoft.Naming" CheckId="CA1725" Status="Excluded" Created="2012-03-10 20:52:03Z">
-              <Issue>
-               <Item>'CustomContext.CompareDocument(string, string)'</Item>
-               <Item>'nextBaseUri'</Item>
-               <Item>'nextbaseUri'</Item>
-               <Item>'XsltContext.CompareDocument(string, string)'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="2" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#ResolveFunction(System.String,System.String,System.Xml.XPath.XPathResultType[])">
-            <Messages>
-             <Message Id="2#" TypeName="ParameterNamesShouldMatchBaseDeclaration" Category="Microsoft.Naming" CheckId="CA1725" Status="Excluded" Created="2012-03-10 20:52:03Z">
-              <Issue>
-               <Item>'CustomContext.ResolveFunction(string, string, XPathResultType[])'</Item>
-               <Item>'argumentTypes'</Item>
-               <Item>'ArgTypes'</Item>
-               <Item>'XsltContext.ResolveFunction(string, string, XPathResultType[])'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="7" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-        </Types>
-       </Namespace>
-      </Namespaces>
-     </Module>
-    </Modules>
-   </Target>
    <Target Name="$(ProjectDir)/../../Deploy/BuildComponents.dll">
     <Modules>
      <Module Name="buildcomponents.dll">
@@ -617,10 +301,15 @@
           <Members>
            <Member Name="#component">
             <Messages>
-             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Created="2013-01-21 02:22:45Z">
+             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="Excluded" Created="2013-01-21 02:22:45Z">
               <Issue>
                <Item>'BrandingComponent.SpecialXmlReader.component'</Item>
               </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="60" />
+               </User>
+              </Notes>
              </Message>
             </Messages>
            </Member>
@@ -647,16 +336,16 @@
          </Type>
          <Type Name="CopyFromIndexComponent">
           <Members>
-           <Member Name="#.ctor(Microsoft.Ddue.Tools.BuildAssembler,System.Xml.XPath.XPathNavigator)">
+           <Member Name="#.ctor(Sandcastle.Core.BuildAssembler.BuildController,System.Xml.XPath.XPathNavigator)">
             <Messages>
-             <Message TypeName="DoNotCallOverridableMethodsInConstructors" Category="Microsoft.Usage" CheckId="CA2214" Status="Excluded" Created="2013-01-24 18:43:39Z">
+             <Message TypeName="DoNotCallOverridableMethodsInConstructors" Category="Microsoft.Usage" CheckId="CA2214" Status="Excluded" Created="2013-12-22 02:28:55Z">
               <Issue>
-               <Item>'CopyFromIndexComponent.CopyFromIndexComponent(BuildAssembler, XPathNavigator)'</Item>
-               <Item>&#xD;&#xA;&#xD;&#xA;CopyFromIndexComponent..ctor(BuildAssembler, XPathNavigator)&#xD;&#xA;CopyFromIndexComponent.CreateIndex(XPathNavigator):IndexedCache</Item>
+               <Item>'CopyFromIndexComponent.CopyFromIndexComponent(BuildController, XPathNavigator)'</Item>
+               <Item>&#xD;&#xA;&#xD;&#xA;CopyFromIndexComponent..ctor(BuildController, XPathNavigator)&#xD;&#xA;CopyFromIndexComponent.CreateIndex(XPathNavigator):IndexedCache</Item>
               </Issue>
               <Notes>
                <User Name="EWOODRUFF">
-                <Note Id="48" />
+                <Note Id="62" />
                </User>
               </Notes>
              </Message>
@@ -1093,20 +782,20 @@
          </Type>
          <Type Name="ResolveReferenceLinksComponent2">
           <Members>
-           <Member Name="#.ctor(Microsoft.Ddue.Tools.BuildAssembler,System.Xml.XPath.XPathNavigator)">
+           <Member Name="#.ctor(Sandcastle.Core.BuildAssembler.BuildController,System.Xml.XPath.XPathNavigator)">
             <Messages>
-             <Message TypeName="DoNotCallOverridableMethodsInConstructors" Category="Microsoft.Usage" CheckId="CA2214" Status="Excluded" Created="2012-12-31 20:50:41Z">
+             <Message TypeName="DoNotCallOverridableMethodsInConstructors" Category="Microsoft.Usage" CheckId="CA2214" Status="Excluded" Created="2013-12-22 02:28:55Z">
               <Issue>
-               <Item>'ResolveReferenceLinksComponent2.ResolveReferenceLinksComponent2(BuildAssembler, XPathNavigator)'</Item>
-               <Item>&#xD;&#xA;&#xD;&#xA;ResolveReferenceLinksComponent2..ctor(BuildAssembler, XPathNavigator)&#xD;&#xA;BuildComponent.WriteMessage(MessageLevel, String, Object[]):Void&#xD;&#xA;BuildComponent.get_BuildAssembler():BuildAssembler&#xD;&#xA;ResolveReferenceLinksComponent2.CreateMsdnResolver(XPathNavigator):MsdnResolver</Item>
+               <Item>'ResolveReferenceLinksComponent2.ResolveReferenceLinksComponent2(BuildController, XPathNavigator)'</Item>
+               <Item>&#xD;&#xA;&#xD;&#xA;ResolveReferenceLinksComponent2..ctor(BuildController, XPathNavigator)&#xD;&#xA;BuildComponentBase.WriteMessage(MessageLevel, String, Object[]):Void&#xD;&#xA;BuildComponentBase.get_BuildAssembler():BuildController&#xD;&#xA;ResolveReferenceLinksComponent2.CreateMsdnResolver(XPathNavigator):MsdnResolver</Item>
               </Issue>
               <Issue>
-               <Item>'ResolveReferenceLinksComponent2.ResolveReferenceLinksComponent2(BuildAssembler, XPathNavigator)'</Item>
-               <Item>&#xD;&#xA;&#xD;&#xA;ResolveReferenceLinksComponent2..ctor(BuildAssembler, XPathNavigator)&#xD;&#xA;BuildComponent.WriteMessage(MessageLevel, String, Object[]):Void&#xD;&#xA;ResolveReferenceLinksComponent2.CreateTargetDictionary(XPathNavigator):TargetDictionary</Item>
+               <Item>'ResolveReferenceLinksComponent2.ResolveReferenceLinksComponent2(BuildController, XPathNavigator)'</Item>
+               <Item>&#xD;&#xA;&#xD;&#xA;ResolveReferenceLinksComponent2..ctor(BuildController, XPathNavigator)&#xD;&#xA;BuildComponentBase.WriteMessage(MessageLevel, String, Object[]):Void&#xD;&#xA;ResolveReferenceLinksComponent2.CreateTargetDictionary(XPathNavigator):TargetDictionary</Item>
               </Issue>
               <Notes>
                <User Name="EWOODRUFF">
-                <Note Id="35" />
+                <Note Id="62" />
                </User>
               </Notes>
              </Message>
@@ -1131,29 +820,29 @@
          </Type>
          <Type Name="SharedContentComponent">
           <Members>
-           <Member Name="#.ctor(Microsoft.Ddue.Tools.BuildAssembler,System.Xml.XPath.XPathNavigator)">
+           <Member Name="#.ctor(Sandcastle.Core.BuildAssembler.BuildController,System.Xml.XPath.XPathNavigator)">
             <Messages>
-             <Message Id="item_expression" TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804" Status="Excluded" Created="2012-03-10 20:52:03Z">
+             <Message Id="item_expression" TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804" Status="Excluded" Created="2013-12-22 02:28:55Z">
               <Issue>
-               <Item>'SharedContentComponent.SharedContentComponent(BuildAssembler, XPathNavigator)'</Item>
+               <Item>'SharedContentComponent.SharedContentComponent(BuildController, XPathNavigator)'</Item>
                <Item>'item_expression'</Item>
                <Item>'XPathExpression'</Item>
               </Issue>
               <Notes>
                <User Name="EWOODRUFF">
-                <Note Id="19" />
+                <Note Id="58" />
                </User>
               </Notes>
              </Message>
-             <Message Id="path_expresion" TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804" Status="Excluded" Created="2012-03-10 20:52:03Z">
+             <Message Id="path_expresion" TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804" Status="Excluded" Created="2013-12-22 02:28:55Z">
               <Issue>
-               <Item>'SharedContentComponent.SharedContentComponent(BuildAssembler, XPathNavigator)'</Item>
+               <Item>'SharedContentComponent.SharedContentComponent(BuildController, XPathNavigator)'</Item>
                <Item>'path_expresion'</Item>
                <Item>'XPathExpression'</Item>
               </Issue>
               <Notes>
                <User Name="EWOODRUFF">
-                <Note Id="20" />
+                <Note Id="58" />
                </User>
               </Notes>
              </Message>
@@ -1197,26 +886,21 @@
          </Type>
          <Type Name="SnippetComponent">
           <Members>
-           <Member Name="#.ctor(Microsoft.Ddue.Tools.BuildAssembler,System.Xml.XPath.XPathNavigator)">
+           <Member Name="#.ctor(Sandcastle.Core.BuildAssembler.BuildController,System.Xml.XPath.XPathNavigator)">
             <Messages>
-             <Message TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308" Status="Excluded" Created="2012-12-24 19:09:39Z">
+             <Message TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308" Created="2013-12-22 02:28:55Z">
               <Issue Name="ToUpperInvariant">
-               <Item>'SnippetComponent.SnippetComponent(BuildAssembler, XPathNavigator)'</Item>
+               <Item>'SnippetComponent.SnippetComponent(BuildController, XPathNavigator)'</Item>
                <Item>'string.ToLowerInvariant()'</Item>
               </Issue>
               <Issue Name="ToUpperInvariant">
-               <Item>'SnippetComponent.SnippetComponent(BuildAssembler, XPathNavigator)'</Item>
+               <Item>'SnippetComponent.SnippetComponent(BuildController, XPathNavigator)'</Item>
                <Item>'string.ToLowerInvariant()'</Item>
               </Issue>
               <Issue Name="ToUpperInvariant">
-               <Item>'SnippetComponent.SnippetComponent(BuildAssembler, XPathNavigator)'</Item>
+               <Item>'SnippetComponent.SnippetComponent(BuildController, XPathNavigator)'</Item>
                <Item>'string.ToLowerInvariant()'</Item>
               </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="21" />
-               </User>
-              </Notes>
              </Message>
             </Messages>
            </Member>
@@ -1452,16 +1136,16 @@
          </Type>
          <Type Name="CopyFromFileCommand">
           <Members>
-           <Member Name="#.ctor(Microsoft.Ddue.Tools.BuildComponent,System.Xml.XPath.XPathDocument,System.String,System.String)">
+           <Member Name="#.ctor(Sandcastle.Core.BuildAssembler.BuildComponent.BuildComponentBase,System.Xml.XPath.XPathDocument,System.String,System.String)">
             <Messages>
-             <Message Id="System.Xml.XPath.XPathDocument" TypeName="MembersShouldNotExposeCertainConcreteTypes" Category="Microsoft.Design" CheckId="CA1059" Status="Excluded" Created="2013-01-21 02:22:45Z">
+             <Message Id="System.Xml.XPath.XPathDocument" TypeName="MembersShouldNotExposeCertainConcreteTypes" Category="Microsoft.Design" CheckId="CA1059" Status="Excluded" Created="2013-12-22 02:28:55Z">
               <Issue Name="Xml">
-               <Item>'CopyFromFileCommand.CopyFromFileCommand(BuildComponent, XPathDocument, string, string)'</Item>
+               <Item>'CopyFromFileCommand.CopyFromFileCommand(BuildComponentBase, XPathDocument, string, string)'</Item>
                <Item>'XPathDocument'</Item>
               </Issue>
               <Notes>
                <User Name="EWOODRUFF">
-                <Note Id="46" />
+                <Note Id="64" />
                </User>
               </Notes>
              </Message>
@@ -1806,30 +1490,1286 @@
      </Module>
     </Modules>
    </Target>
-   <Target Name="$(ProjectDir)/../../Deploy/SyntaxComponents.dll">
+   <Target Name="$(ProjectDir)/../../Deploy/Sandcastle.Core.dll">
     <Modules>
-     <Module Name="syntaxcomponents.dll">
+     <Module Name="sandcastle.core.dll">
       <Namespaces>
-       <Namespace Name="Microsoft.Ddue.Tools">
+       <Namespace Name="Sandcastle.Core">
         <Types>
-         <Type Name="AspNetSyntaxGenerator">
+         <Type Name="ConsoleApplication">
           <Members>
-           <Member Name="#.ctor(System.Xml.XPath.XPathNavigator)">
+           <Member Name="#GetConfigurationFile()">
             <Messages>
-             <Message Id="configuration" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2013-03-18 20:34:36Z" FixCategory="DependsOnFix">
-              <Issue>
-               <Item>'configuration'</Item>
-               <Item>'AspNetSyntaxGenerator.AspNetSyntaxGenerator(XPathNavigator)'</Item>
+             <Message Id="System.Xml.XPath.XPathDocument" TypeName="MembersShouldNotExposeCertainConcreteTypes" Category="Microsoft.Design" CheckId="CA1059" Status="Excluded" Created="2013-12-22 02:28:55Z">
+              <Issue Name="Xml">
+               <Item>'ConsoleApplication.GetConfigurationFile()'</Item>
+               <Item>'XPathDocument'</Item>
               </Issue>
               <Notes>
                <User Name="EWOODRUFF">
-                <Note Id="53" />
+                <Note Id="64" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#GetConfigurationFile(System.String)">
+            <Messages>
+             <Message Id="System.Xml.XPath.XPathDocument" TypeName="MembersShouldNotExposeCertainConcreteTypes" Category="Microsoft.Design" CheckId="CA1059" Status="Excluded" Created="2013-12-22 02:28:55Z">
+              <Issue Name="Xml">
+               <Item>'ConsoleApplication.GetConfigurationFile(string)'</Item>
+               <Item>'XPathDocument'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="64" />
                </User>
               </Notes>
              </Message>
             </Messages>
            </Member>
           </Members>
+         </Type>
+        </Types>
+       </Namespace>
+       <Namespace Name="Sandcastle.Core.BuildAssembler">
+        <Types>
+         <Type Name="BuildComponentUtilities">
+          <Members>
+           <Member Name="#EvalXPathExpr(System.Xml.XPath.IXPathNavigable,System.Xml.XPath.XPathExpression,Sandcastle.Core.BuildAssembler.CustomContext)">
+            <Messages>
+             <Message Id="Expr" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2013-12-22 02:28:55Z">
+              <Issue Name="Member">
+               <Item>Expr</Item>
+               <Item>'BuildComponentUtilities.EvalXPathExpr(this IXPathNavigable, XPathExpression, CustomContext)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="55" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#EvalXPathExpr(System.Xml.XPath.IXPathNavigable,System.Xml.XPath.XPathExpression,System.String[])">
+            <Messages>
+             <Message Id="Expr" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2013-12-22 02:28:55Z">
+              <Issue Name="Member">
+               <Item>Expr</Item>
+               <Item>'BuildComponentUtilities.EvalXPathExpr(this IXPathNavigable, XPathExpression, params string[])'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="55" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="BuildContext">
+          <Members>
+           <Member Name="#AddNamespace(System.String,System.String)">
+            <Messages>
+             <Message Id="1#" TypeName="UriParametersShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1054" Status="Excluded" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'uri'</Item>
+               <Item>'BuildContext.AddNamespace(string, string)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="59" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="BuildController">
+          <Members>
+           <Member Name="#Execute(System.Xml.XPath.XPathDocument,System.String)">
+            <Messages>
+             <Message Id="System.Xml.XPath.XPathDocument" TypeName="MembersShouldNotExposeCertainConcreteTypes" Category="Microsoft.Design" CheckId="CA1059" Status="Excluded" Created="2013-12-22 02:28:55Z">
+              <Issue Name="Xml">
+               <Item>'BuildController.Execute(XPathDocument, string)'</Item>
+               <Item>'XPathDocument'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="64" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#WriteMessage(System.Type,Sandcastle.Core.BuildAssembler.MessageLevel,System.String,System.String)">
+            <Messages>
+             <Message TypeName="ConsiderPassingBaseTypesAsParameters" Category="Microsoft.Design" CheckId="CA1011" Status="Excluded" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'type'</Item>
+               <Item>'BuildController.WriteMessage(Type, MessageLevel, string, string)'</Item>
+               <Item>'Type'</Item>
+               <Item>'MemberInfo'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="61" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="CustomContext">
+          <Messages>
+           <Message TypeName="CollectionsShouldImplementGenericInterface" Category="Microsoft.Design" CheckId="CA1010" Status="Excluded" Created="2013-12-22 02:28:55Z">
+            <Issue Certainty="60">
+             <Item>'CustomContext'</Item>
+             <Item>IEnumerable</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="61" />
+             </User>
+            </Notes>
+           </Message>
+           <Message TypeName="IdentifiersShouldHaveCorrectSuffix" Category="Microsoft.Naming" CheckId="CA1710" Status="Excluded" Created="2013-12-22 02:28:55Z">
+            <Issue>
+             <Item>'CustomContext'</Item>
+             <Item>Collection</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="63" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+          <Members>
+           <Member Name="#CompareDocument(System.String,System.String)">
+            <Messages>
+             <Message Id="1#" TypeName="ParameterNamesShouldMatchBaseDeclaration" Category="Microsoft.Naming" CheckId="CA1725" Status="Excluded" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'CustomContext.CompareDocument(string, string)'</Item>
+               <Item>'nextBaseUri'</Item>
+               <Item>'nextbaseUri'</Item>
+               <Item>'XsltContext.CompareDocument(string, string)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="57" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#ResolveFunction(System.String,System.String,System.Xml.XPath.XPathResultType[])">
+            <Messages>
+             <Message Id="2#" TypeName="ParameterNamesShouldMatchBaseDeclaration" Category="Microsoft.Naming" CheckId="CA1725" Status="Excluded" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'CustomContext.ResolveFunction(string, string, XPathResultType[])'</Item>
+               <Item>'argumentTypes'</Item>
+               <Item>'ArgTypes'</Item>
+               <Item>'XsltContext.ResolveFunction(string, string, XPathResultType[])'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="57" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+       <Namespace Name="Sandcastle.Core.BuildAssembler.BuildComponent">
+        <Types>
+         <Type Name="BuildComponentBase">
+          <Members>
+           <Member Name="#.ctor(Sandcastle.Core.BuildAssembler.BuildController,System.Xml.XPath.XPathNavigator)">
+            <Messages>
+             <Message Id="configuration" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Created="2013-12-22 02:28:55Z" FixCategory="DependsOnFix">
+              <Issue>
+               <Item>'configuration'</Item>
+               <Item>'BuildComponentBase.BuildComponentBase(BuildController, XPathNavigator)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Apply(System.Xml.XmlDocument,System.String)">
+            <Messages>
+             <Message Id="System.Xml.XmlNode" TypeName="MembersShouldNotExposeCertainConcreteTypes" Category="Microsoft.Design" CheckId="CA1059" Status="Excluded" Created="2013-12-22 02:28:55Z">
+              <Issue Name="Xml">
+               <Item>'BuildComponentBase.Apply(XmlDocument, string)'</Item>
+               <Item>'XmlDocument'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="64" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+       <Namespace Name="Sandcastle.Core.BuildAssembler.SyntaxGenerator">
+        <Types>
+         <Type Name="SyntaxGeneratorTemplate">
+          <Members>
+           <Member Name="#apiAncestorsExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiAncestorsExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiAttributesExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiAttributesExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiBaseClassExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiBaseClassExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiBestFitMappingProcedureExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiBestFitMappingProcedureExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiCallingConvProcedureExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiCallingConvProcedureExpression'</Item>
+              </Issue>
+             </Message>
+             <Message Id="Conv" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2013-12-22 02:28:55Z">
+              <Issue Name="Member">
+               <Item>Conv</Item>
+               <Item>'SyntaxGeneratorTemplate.apiCallingConvProcedureExpression'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="55" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiCharSetProcedureExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiCharSetProcedureExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiComImportTypeExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiComImportTypeExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiContainingAssemblyExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiContainingAssemblyExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiContainingNamespaceIdExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiContainingNamespaceIdExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiContainingNamespaceNameExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiContainingNamespaceNameExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiContainingTypeExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiContainingTypeExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiContainingTypeNameExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiContainingTypeNameExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiContainingTypeSubgroupExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiContainingTypeSubgroupExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiEntryPointProcedureExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiEntryPointProcedureExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiEventArgsExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiEventArgsExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiExactSpellingProcedureExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiExactSpellingProcedureExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiFieldOffsetFieldExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiFieldOffsetFieldExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiFixedAttribute">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiFixedAttribute'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiFixedBufferSize">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiFixedBufferSize'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiFixedBufferType">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiFixedBufferType'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiGetterExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiGetterExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiGetVisibilityExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiGetVisibilityExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiGroupExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiGroupExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiHandlerOfEventExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiHandlerOfEventExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiImplementedInterfacesExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiImplementedInterfacesExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiImplementedMembersExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiImplementedMembersExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiIsAbstractProcedureExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiIsAbstractProcedureExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiIsAbstractTypeExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiIsAbstractTypeExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiIsDefaultMemberExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiIsDefaultMemberExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiIsExplicitImplementationExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiIsExplicitImplementationExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiIsExtensionMethod">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiIsExtensionMethod'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiIsFamilyMemberExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiIsFamilyMemberExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiIsFinalExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiIsFinalExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiIsGenericExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiIsGenericExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiIsInitOnlyFieldExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiIsInitOnlyFieldExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiIsLiteralFieldExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiIsLiteralFieldExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiIsOverrideExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiIsOverrideExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiIsReadPropertyExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiIsReadPropertyExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiIsSealedTypeExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiIsSealedTypeExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiIsSerializableTypeExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiIsSerializableTypeExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiIsSerializedFieldExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiIsSerializedFieldExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiIsSpecialExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiIsSpecialExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiIsStaticExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiIsStaticExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiIsUdtReturnExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiIsUdtReturnExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiIsUnsafeExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiIsUnsafeExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiIsVarargsExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiIsVarargsExpression'</Item>
+              </Issue>
+             </Message>
+             <Message Id="Varargs" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2013-12-22 02:28:55Z">
+              <Issue Name="Member">
+               <Item>Varargs</Item>
+               <Item>'SyntaxGeneratorTemplate.apiIsVarargsExpression'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="55" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiIsVirtualExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiIsVirtualExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiIsVolatileFieldExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiIsVolatileFieldExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiIsWritePropertyExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiIsWritePropertyExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiModuleProcedureExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiModuleProcedureExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiNameExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiNameExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiOverridesMemberExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiOverridesMemberExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiParametersExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiParametersExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiPreserveSigProcedureExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiPreserveSigProcedureExpression'</Item>
+              </Issue>
+             </Message>
+             <Message Id="Sig" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2013-12-22 02:28:55Z">
+              <Issue Name="Member">
+               <Item>Sig</Item>
+               <Item>'SyntaxGeneratorTemplate.apiPreserveSigProcedureExpression'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="55" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiReturnTypeExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiReturnTypeExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiSetLastErrorProcedureExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiSetLastErrorProcedureExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiSetterExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiSetterExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiSetVisibilityExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiSetVisibilityExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiStructLayoutFormatTypeExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiStructLayoutFormatTypeExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiStructLayoutPackTypeExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiStructLayoutPackTypeExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiStructLayoutSizeTypeExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiStructLayoutSizeTypeExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiStructLayoutTypeExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiStructLayoutTypeExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiSubgroupExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiSubgroupExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiSubsubgroupExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiSubsubgroupExpression'</Item>
+              </Issue>
+             </Message>
+             <Message Id="Subsubgroup" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2013-12-22 02:28:55Z">
+              <Issue Name="Member">
+               <Item>Subsubgroup</Item>
+               <Item>'SyntaxGeneratorTemplate.apiSubsubgroupExpression'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="55" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiTemplatesExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiTemplatesExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiUnmappableCharProcedureExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiUnmappableCharProcedureExpression'</Item>
+              </Issue>
+             </Message>
+             <Message Id="Unmappable" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2013-12-22 02:28:55Z">
+              <Issue Name="Member">
+               <Item>Unmappable</Item>
+               <Item>'SyntaxGeneratorTemplate.apiUnmappableCharProcedureExpression'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="55" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiVisibilityExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiVisibilityExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiVisibilityOfMemberExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiVisibilityOfMemberExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#apiVisibilityOfTypeExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.apiVisibilityOfTypeExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#assignmentNameExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.assignmentNameExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#attachedEventAdderExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.attachedEventAdderExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#attachedEventRemoverExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.attachedEventRemoverExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#attachedPropertyGetterExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.attachedPropertyGetterExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#attachedPropertySetterExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.attachedPropertySetterExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#attributeArgumentsExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.attributeArgumentsExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#attributeAssignmentsExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.attributeAssignmentsExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#attributeTypeExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.attributeTypeExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#explicitDereferenceExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.explicitDereferenceExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#IsUnsupportedVarargs(System.Xml.XPath.XPathNavigator,Sandcastle.Core.BuildAssembler.SyntaxGenerator.SyntaxWriter)">
+            <Messages>
+             <Message Id="Varargs" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2013-12-22 02:28:55Z">
+              <Issue Name="Member">
+               <Item>Varargs</Item>
+               <Item>'SyntaxGeneratorTemplate.IsUnsupportedVarargs(XPathNavigator, SyntaxWriter)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="55" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#memberDeclaringTypeExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.memberDeclaringTypeExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#nameExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.nameExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#parameterArgumentExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.parameterArgumentExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#parameterIsInExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.parameterIsInExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#parameterIsOptionalExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.parameterIsOptionalExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#parameterIsOutExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.parameterIsOutExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#parameterIsParamArrayExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.parameterIsParamArrayExpression'</Item>
+              </Issue>
+             </Message>
+             <Message Id="Param" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2013-12-22 02:28:55Z">
+              <Issue Name="Member">
+               <Item>Param</Item>
+               <Item>'SyntaxGeneratorTemplate.parameterIsParamArrayExpression'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="55" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#parameterIsRefExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.parameterIsRefExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#parameterNameExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.parameterNameExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#parameterTypeExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.parameterTypeExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#specializationArgumentsExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.specializationArgumentsExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#templateConstraintsExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.templateConstraintsExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#templateIsConstrainedExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.templateIsConstrainedExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#templateIsConstructableExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.templateIsConstructableExpression'</Item>
+              </Issue>
+             </Message>
+             <Message Id="Constructable" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2013-12-22 02:28:55Z">
+              <Issue Name="Member">
+               <Item>Constructable</Item>
+               <Item>'SyntaxGeneratorTemplate.templateIsConstructableExpression'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="55" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#templateIsContravariantExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.templateIsContravariantExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#templateIsCovariantExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.templateIsCovariantExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#templateIsReferenceTypeExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.templateIsReferenceTypeExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#templateIsValueTypeExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.templateIsValueTypeExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#templateNameExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.templateNameExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#typeExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.typeExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#typeIdExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.typeIdExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#typeIsObjectExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.typeIsObjectExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#typeModifiersExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.typeModifiersExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#typeOuterTypeExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.typeOuterTypeExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#valueExpression">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-22 02:28:55Z">
+              <Issue>
+               <Item>'SyntaxGeneratorTemplate.valueExpression'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+      </Namespaces>
+     </Module>
+    </Modules>
+   </Target>
+   <Target Name="$(ProjectDir)/../../Deploy/SyntaxComponents.dll">
+    <Modules>
+     <Module Name="syntaxcomponents.dll">
+      <Namespaces>
+       <Namespace Name="Microsoft.Ddue.Tools">
+        <Types>
+         <Type Name="AspNetSyntaxGenerator+Factory">
+          <Messages>
+           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2013-12-22 02:33:01Z">
+            <Issue>
+             <Item>'AspNetSyntaxGenerator.Factory'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="56" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
          </Type>
          <Type Name="CPlusPlusDeclarationSyntaxGenerator">
           <Messages>
@@ -1840,6 +2780,48 @@
             <Notes>
              <User Name="EWOODRUFF">
               <Note Id="25" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="CPlusPlusDeclarationSyntaxGenerator+Factory">
+          <Messages>
+           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2013-12-22 02:33:01Z">
+            <Issue>
+             <Item>'CPlusPlusDeclarationSyntaxGenerator.Factory'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="56" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="CSharpDeclarationSyntaxGenerator+Factory">
+          <Messages>
+           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2013-12-22 02:33:01Z">
+            <Issue>
+             <Item>'CSharpDeclarationSyntaxGenerator.Factory'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="56" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="FSharpDeclarationSyntaxGenerator+Factory">
+          <Messages>
+           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2013-12-22 02:33:01Z">
+            <Issue>
+             <Item>'FSharpDeclarationSyntaxGenerator.Factory'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="56" />
              </User>
             </Notes>
            </Message>
@@ -1868,1036 +2850,75 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="ScriptSharpDeclarationSyntaxGenerator">
-          <Members>
-           <Member Name="#CreateCamelCaseName(System.String)">
-            <Messages>
-             <Message TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308" Status="Excluded" Created="2012-12-24 04:29:28Z">
-              <Issue Name="ToUpperInvariant">
-               <Item>'ScriptSharpDeclarationSyntaxGenerator.CreateCamelCaseName(string)'</Item>
-               <Item>'string.ToLowerInvariant()'</Item>
-              </Issue>
-              <Issue Name="ToUpperInvariant">
-               <Item>'ScriptSharpDeclarationSyntaxGenerator.CreateCamelCaseName(string)'</Item>
-               <Item>'string.ToLowerInvariant()'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="26" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
+         <Type Name="JavaScriptDeclarationSyntaxGenerator+Factory">
+          <Messages>
+           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2013-12-22 02:33:01Z">
+            <Issue>
+             <Item>'JavaScriptDeclarationSyntaxGenerator.Factory'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="56" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
          </Type>
-         <Type Name="SyntaxGeneratorTemplate">
-          <Members>
-           <Member Name="#apiAncestorsExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiAncestorsExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiAttributesExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiAttributesExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiBaseClassExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiBaseClassExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiBestFitMappingProcedureExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-16 02:16:25Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiBestFitMappingProcedureExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiCallingConvProcedureExpression">
-            <Messages>
-             <Message Id="Conv" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2013-12-16 02:16:25Z">
-              <Issue Name="Member">
-               <Item>Conv</Item>
-               <Item>'SyntaxGeneratorTemplate.apiCallingConvProcedureExpression'</Item>
-              </Issue>
-             </Message>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-16 02:16:25Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiCallingConvProcedureExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiCharSetProcedureExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-16 02:16:25Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiCharSetProcedureExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiComImportTypeExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-16 02:16:25Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiComImportTypeExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiContainingAssemblyExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiContainingAssemblyExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiContainingNamespaceIdExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiContainingNamespaceIdExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiContainingNamespaceNameExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiContainingNamespaceNameExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiContainingTypeExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiContainingTypeExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiContainingTypeNameExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiContainingTypeNameExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiContainingTypeSubgroupExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiContainingTypeSubgroupExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiEntryPointProcedureExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-16 02:16:25Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiEntryPointProcedureExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiEventArgsExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiEventArgsExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiExactSpellingProcedureExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-16 02:16:25Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiExactSpellingProcedureExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiFieldOffsetFieldExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-16 02:16:25Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiFieldOffsetFieldExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiFixedAttribute">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiFixedAttribute'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiFixedBufferSize">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiFixedBufferSize'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiFixedBufferType">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiFixedBufferType'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiGetterExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiGetterExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiGetVisibilityExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiGetVisibilityExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiGroupExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiGroupExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiHandlerOfEventExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiHandlerOfEventExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiImplementedInterfacesExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiImplementedInterfacesExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiImplementedMembersExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiImplementedMembersExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiIsAbstractProcedureExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiIsAbstractProcedureExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiIsAbstractTypeExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiIsAbstractTypeExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiIsDefaultMemberExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiIsDefaultMemberExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiIsExplicitImplementationExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiIsExplicitImplementationExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiIsExtensionMethod">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiIsExtensionMethod'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiIsFamilyMemberExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiIsFamilyMemberExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiIsFinalExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiIsFinalExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiIsGenericExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiIsGenericExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiIsInitOnlyFieldExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiIsInitOnlyFieldExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiIsLiteralFieldExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiIsLiteralFieldExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiIsOverrideExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiIsOverrideExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiIsReadPropertyExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiIsReadPropertyExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiIsSealedTypeExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiIsSealedTypeExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiIsSerializableTypeExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiIsSerializableTypeExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiIsSerializedFieldExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiIsSerializedFieldExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiIsSpecialExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiIsSpecialExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiIsStaticExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiIsStaticExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiIsUdtReturnExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiIsUdtReturnExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiIsUnsafeExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiIsUnsafeExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiIsVarargsExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiIsVarargsExpression'</Item>
-              </Issue>
-             </Message>
-             <Message Id="Varargs" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2012-12-24 04:29:28Z">
-              <Issue Name="Member">
-               <Item>Varargs</Item>
-               <Item>'SyntaxGeneratorTemplate.apiIsVarargsExpression'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="28" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiIsVirtualExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiIsVirtualExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiIsVolatileFieldExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiIsVolatileFieldExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiIsWritePropertyExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiIsWritePropertyExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiModuleProcedureExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-16 02:16:25Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiModuleProcedureExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiNameExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiNameExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiOverridesMemberExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiOverridesMemberExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiParametersExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiParametersExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiPreserveSigProcedureExpression">
-            <Messages>
-             <Message Id="Sig" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2013-12-16 02:16:25Z">
-              <Issue Name="Member">
-               <Item>Sig</Item>
-               <Item>'SyntaxGeneratorTemplate.apiPreserveSigProcedureExpression'</Item>
-              </Issue>
-             </Message>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-16 02:16:25Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiPreserveSigProcedureExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiReturnTypeExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiReturnTypeExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiSetLastErrorProcedureExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-16 02:16:25Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiSetLastErrorProcedureExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiSetterExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiSetterExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiSetVisibilityExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiSetVisibilityExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiStructLayoutFormatTypeExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-16 02:16:25Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiStructLayoutFormatTypeExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiStructLayoutPackTypeExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-16 02:16:25Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiStructLayoutPackTypeExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiStructLayoutSizeTypeExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-16 02:16:25Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiStructLayoutSizeTypeExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiStructLayoutTypeExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-16 02:16:25Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiStructLayoutTypeExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiSubgroupExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiSubgroupExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiSubsubgroupExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiSubsubgroupExpression'</Item>
-              </Issue>
-             </Message>
-             <Message Id="Subsubgroup" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2012-12-24 04:29:28Z">
-              <Issue Name="Member">
-               <Item>Subsubgroup</Item>
-               <Item>'SyntaxGeneratorTemplate.apiSubsubgroupExpression'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="28" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiTemplatesExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiTemplatesExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiUnmappableCharProcedureExpression">
-            <Messages>
-             <Message Id="Unmappable" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2013-12-16 02:16:25Z">
-              <Issue Name="Member">
-               <Item>Unmappable</Item>
-               <Item>'SyntaxGeneratorTemplate.apiUnmappableCharProcedureExpression'</Item>
-              </Issue>
-             </Message>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2013-12-16 02:16:25Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiUnmappableCharProcedureExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiVisibilityExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiVisibilityExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiVisibilityOfMemberExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiVisibilityOfMemberExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#apiVisibilityOfTypeExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.apiVisibilityOfTypeExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#assignmentNameExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.assignmentNameExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#attachedEventAdderExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.attachedEventAdderExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#attachedEventRemoverExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.attachedEventRemoverExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#attachedPropertyGetterExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.attachedPropertyGetterExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#attachedPropertySetterExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.attachedPropertySetterExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#attributeArgumentsExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.attributeArgumentsExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#attributeAssignmentsExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.attributeAssignmentsExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#attributeTypeExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.attributeTypeExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#explicitDereferenceExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.explicitDereferenceExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#IsUnsupportedVarargs(System.Xml.XPath.XPathNavigator,Microsoft.Ddue.Tools.SyntaxWriter)">
-            <Messages>
-             <Message Id="Varargs" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2012-12-24 04:29:28Z">
-              <Issue Name="Member">
-               <Item>Varargs</Item>
-               <Item>'SyntaxGeneratorTemplate.IsUnsupportedVarargs(XPathNavigator, SyntaxWriter)'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="28" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#memberDeclaringTypeExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.memberDeclaringTypeExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#nameExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.nameExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#parameterArgumentExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.parameterArgumentExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#parameterIsInExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.parameterIsInExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#parameterIsOptionalExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.parameterIsOptionalExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#parameterIsOutExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.parameterIsOutExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#parameterIsParamArrayExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.parameterIsParamArrayExpression'</Item>
-              </Issue>
-             </Message>
-             <Message Id="Param" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2012-12-24 04:29:28Z">
-              <Issue Name="Member">
-               <Item>Param</Item>
-               <Item>'SyntaxGeneratorTemplate.parameterIsParamArrayExpression'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="28" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#parameterIsRefExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.parameterIsRefExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#parameterNameExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.parameterNameExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#parameterTypeExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.parameterTypeExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#specializationArgumentsExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.specializationArgumentsExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#templateConstraintsExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.templateConstraintsExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#templateIsConstrainedExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.templateIsConstrainedExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#templateIsConstructableExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.templateIsConstructableExpression'</Item>
-              </Issue>
-             </Message>
-             <Message Id="Constructable" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2012-12-24 04:29:28Z">
-              <Issue Name="Member">
-               <Item>Constructable</Item>
-               <Item>'SyntaxGeneratorTemplate.templateIsConstructableExpression'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="28" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#templateIsContravariantExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.templateIsContravariantExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#templateIsCovariantExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.templateIsCovariantExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#templateIsReferenceTypeExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.templateIsReferenceTypeExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#templateIsValueTypeExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.templateIsValueTypeExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#templateNameExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.templateNameExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#typeExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.typeExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#typeIdExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.typeIdExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#typeIsObjectExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.typeIsObjectExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#typeModifiersExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.typeModifiersExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#typeOuterTypeExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.typeOuterTypeExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#valueExpression">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2012-12-24 04:29:28Z">
-              <Issue>
-               <Item>'SyntaxGeneratorTemplate.valueExpression'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
+         <Type Name="JScriptDeclarationSyntaxGenerator+Factory">
+          <Messages>
+           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2013-12-22 02:33:01Z">
+            <Issue>
+             <Item>'JScriptDeclarationSyntaxGenerator.Factory'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="56" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="JSharpDeclarationSyntaxGenerator+Factory">
+          <Messages>
+           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2013-12-22 02:33:01Z">
+            <Issue>
+             <Item>'JSharpDeclarationSyntaxGenerator.Factory'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="56" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="VisualBasicDeclarationSyntaxGenerator+Factory">
+          <Messages>
+           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2013-12-22 02:33:01Z">
+            <Issue>
+             <Item>'VisualBasicDeclarationSyntaxGenerator.Factory'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="56" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="VisualBasicUsageSyntaxGenerator+Factory">
+          <Messages>
+           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2013-12-22 02:33:01Z">
+            <Issue>
+             <Item>'VisualBasicUsageSyntaxGenerator.Factory'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="56" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
          </Type>
          <Type Name="XamlBoilerplateID">
           <Messages>
@@ -3969,6 +3990,20 @@
            </Member>
           </Members>
          </Type>
+         <Type Name="XamlUsageSyntaxGenerator+Factory">
+          <Messages>
+           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2013-12-22 02:33:01Z">
+            <Issue>
+             <Item>'XamlUsageSyntaxGenerator.Factory'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="56" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
         </Types>
        </Namespace>
       </Namespaces>
@@ -3979,15 +4014,6 @@
   <Notes>
    <User Name="EWOODRUFF">
     <Note Id="0" Modified="2012-12-24 00:29:06Z">Okay as is</Note>
-    <Note Id="1" Modified="2012-12-24 00:31:49Z">The name is well established and cannot be changed.</Note>
-    <Note Id="2" Modified="2012-12-24 00:33:07Z">Left as-is.  It follows expected naming conventions.</Note>
-    <Note Id="3" Modified="2012-12-24 00:33:18Z">Okay as is</Note>
-    <Note Id="4" Modified="2012-12-24 00:35:35Z">The name is well established and will not be changed</Note>
-    <Note Id="5" Modified="2012-12-24 00:35:53Z">The name is well established and will not be changed</Note>
-    <Note Id="6" Modified="2012-12-24 00:36:11Z">Okay as is</Note>
-    <Note Id="7" Modified="2012-12-24 00:36:29Z">Left as-is.  It follows expected naming conventions.</Note>
-    <Note Id="8" Modified="2012-12-24 00:42:24Z">Okay as is</Note>
-    <Note Id="9" Modified="2012-12-24 00:40:30Z">It would break too much stuff to remove it now.</Note>
     <Note Id="10" Modified="2012-12-24 00:53:01Z">The error is reported</Note>
     <Note Id="11" Modified="2012-12-24 18:32:22Z">Okay as is</Note>
     <Note Id="12" Modified="2012-12-24 18:32:57Z">Okay as is</Note>
@@ -3997,8 +4023,6 @@
     <Note Id="16" Modified="2012-12-24 01:05:00Z">Lowercase is required</Note>
     <Note Id="17" Modified="2012-12-24 01:05:22Z">Lowercase is required</Note>
     <Note Id="18" Modified="2012-12-24 19:04:12Z">Okay as is</Note>
-    <Note Id="19" Modified="2012-12-24 01:10:07Z">Okay as is</Note>
-    <Note Id="20" Modified="2012-12-24 01:10:31Z">Okay as is</Note>
     <Note Id="21" Modified="2012-12-24 19:10:25Z">Lowercase is preferred</Note>
     <Note Id="22" Modified="2012-12-24 21:14:07Z">Lowercase is preferred</Note>
     <Note Id="23" Modified="2012-12-24 04:30:25Z">Okay as is</Note>
@@ -4010,28 +4034,34 @@
     <Note Id="29" Modified="2012-12-24 04:33:40Z">Okay as is</Note>
     <Note Id="30" Modified="2012-12-24 07:00:20Z">Okay as is</Note>
     <Note Id="31" Modified="2012-12-27 01:15:32Z">Okay as is</Note>
-    <Note Id="32" Modified="2013-01-21 02:26:24Z">Okay as is</Note>
     <Note Id="33" Modified="2012-12-24 07:00:53Z">Okay as is</Note>
     <Note Id="34" Modified="2012-12-24 07:01:09Z">Okay as is</Note>
-    <Note Id="35" Modified="2012-12-31 21:05:26Z">The call chain appears to be safe.</Note>
     <Note Id="36" Modified="2012-12-24 21:31:54Z">Okay as is</Note>
     <Note Id="37" Modified="2012-12-26 03:43:21Z">The error is reported</Note>
     <Note Id="38" Modified="2012-12-27 01:18:53Z">Okay as is</Note>
     <Note Id="39" Modified="2012-12-31 21:05:45Z">The error is reported</Note>
     <Note Id="40" Modified="2012-12-31 21:08:18Z">This one is more complete so the constructor is fine</Note>
     <Note Id="41" Modified="2012-12-31 21:14:03Z">Lowercase is preferred here</Note>
-    <Note Id="42" Modified="2013-01-21 02:28:50Z">Okay as is</Note>
     <Note Id="43" Modified="2013-01-21 02:32:34Z">Okay as is</Note>
     <Note Id="44" Modified="2013-01-21 02:33:30Z">It's used to set the default value typically used so it's fine.</Note>
     <Note Id="45" Modified="2013-01-21 02:33:48Z">Okay as is</Note>
     <Note Id="46" Modified="2013-01-21 02:34:14Z">Okay as is</Note>
     <Note Id="47" Modified="2013-01-21 02:34:45Z">Lowercase is preferred here</Note>
-    <Note Id="48" Modified="2013-01-24 18:59:39Z">The call chain appears to be safe</Note>
     <Note Id="49" Modified="2013-03-18 21:08:53Z">Okay as is</Note>
     <Note Id="50" Modified="2013-03-18 21:09:06Z">Okay as is</Note>
     <Note Id="51" Modified="2013-03-18 21:09:44Z">Lowercase is preferred</Note>
     <Note Id="52" Modified="2013-04-01 16:36:13Z">Leaving it as is to keep things simple in this case.</Note>
-    <Note Id="53" Modified="2013-11-29 21:19:16Z">Required constructor parameter to meet instantiation requirements</Note>
+    <Note Id="54" Modified="2013-12-22 02:29:21Z">Okay as is</Note>
+    <Note Id="55" Modified="2013-12-22 02:31:45Z">Okay as is</Note>
+    <Note Id="56" Modified="2013-12-22 02:33:35Z">It is a factory class for the containing type</Note>
+    <Note Id="57" Modified="2013-12-22 02:35:12Z">Okay as is</Note>
+    <Note Id="58" Modified="2013-12-22 02:36:01Z">Okay as us</Note>
+    <Note Id="59" Modified="2013-12-22 02:36:15Z">Okay as is</Note>
+    <Note Id="60" Modified="2013-12-22 02:36:42Z">Okay as is</Note>
+    <Note Id="61" Modified="2013-12-22 02:36:58Z">Okay as is</Note>
+    <Note Id="62" Modified="2013-12-22 02:39:23Z">Okay as is</Note>
+    <Note Id="63" Modified="2013-12-22 02:47:01Z">Okay as is</Note>
+    <Note Id="64" Modified="2013-12-22 02:47:19Z">Okay as is</Note>
    </User>
   </Notes>
   <Rules>
@@ -4081,9 +4111,8 @@
     <Resolution Name="Default">Consider a design where {0} doesn't nest generic type {1}.</Resolution>
    </Rule>
    <Rule TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709">
-    <Resolution Name="Member">Correct the casing of '{0}' in member name {1} by changing it to '{2}'.</Resolution>
+    <Resolution Name="MemberAbbreviation">Correct the casing of '{0}' in member name {1} by changing it to '{2}'. '{2}' is an abbreviation and therefore is not subject to acronym casing guidelines.</Resolution>
     <Resolution Name="Type">Correct the casing of '{0}' in type name {1} by changing it to '{2}'.</Resolution>
-    <Resolution Name="TypeAbbreviation">Correct the casing of '{0}' in type name {1} by changing it to '{2}'. '{2}' is an abbreviation and therefore is not subject to acronym casing guidelines.</Resolution>
    </Rule>
    <Rule TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704">
     <Resolution Name="Member">Correct the spelling of '{0}' in member name {1} or remove it entirely if it represents any sort of Hungarian notation.</Resolution>
@@ -4109,6 +4138,9 @@
    </Rule>
    <Rule TypeName="MembersShouldNotExposeCertainConcreteTypes" Category="Microsoft.Design" CheckId="CA1059">
     <Resolution Name="Xml">Modify member {0} so that it no longer exposes the concrete type {1}. Use IXPathNavigable to represent XML data sources.</Resolution>
+   </Rule>
+   <Rule TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034">
+    <Resolution Name="Default">Do not nest type {0}. Alternatively, change its accessibility so that it is not externally visible.</Resolution>
    </Rule>
    <Rule TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211">
     <Resolution Name="Default">Consider making {0} non-public or a constant.</Resolution>

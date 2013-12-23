@@ -23,10 +23,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing.Design;
 using System.Xml;
-
-using SandcastleBuilder.Utils.Design;
 
 namespace SandcastleBuilder.Utils
 {
@@ -34,8 +31,6 @@ namespace SandcastleBuilder.Utils
     /// This collection class is used to hold the help index keyword items for
     /// a project.
     /// </summary>
-    [TypeConverter(typeof(MSHelpKeywordCollectionTypeConverter)),
-      Editor(typeof(MSHelpKeywordEditor), typeof(UITypeEditor)), Serializable]
     public class MSHelpKeywordCollection : BindingList<MSHelpKeyword>
     {
         #region Sort collection

@@ -10,18 +10,21 @@ using System.Collections.Generic;
 using System.Xml;
 using System.Xml.XPath;
 
+using Sandcastle.Core.BuildAssembler;
+using Sandcastle.Core.BuildAssembler.BuildComponent;
+
 namespace Microsoft.Ddue.Tools
 {
     /// <summary>
     /// This build component is used to clone the topic for each set of build components and execute them
     /// on the cloned topic.
     /// </summary>
-    public class CloneComponent : BuildComponent
+    public class CloneComponent : BuildComponentCore
     {
         #region Private data members
         //=====================================================================
 
-        private List<IEnumerable<BuildComponent>> branches = new List<IEnumerable<BuildComponent>>();
+        private List<IEnumerable<BuildComponentCore>> branches = new List<IEnumerable<BuildComponentCore>>();
         #endregion
 
         #region Constructor
@@ -36,7 +39,7 @@ namespace Microsoft.Ddue.Tools
         /// element can contain one or more <c>component</c> definitions that will be created and executed when
         /// this component is applied.  Each branch receives a clone of the document.  This may be useful for
         /// generating multiple help output formats in one build configuration.</remarks>
-        public CloneComponent(BuildAssembler assembler, XPathNavigator configuration) :
+        public CloneComponent(BuildAssemblerCore assembler, XPathNavigator configuration) :
           base(assembler, configuration)
         {
             XPathNodeIterator branchNodes = configuration.Select("branch");
@@ -52,11 +55,11 @@ namespace Microsoft.Ddue.Tools
         /// <inheritdoc />
         public override void Apply(XmlDocument document, string key)
         {
-            foreach(IEnumerable<BuildComponent> branch in branches)
+            foreach(IEnumerable<BuildComponentCore> branch in branches)
             {
                 XmlDocument subdocument = document.Clone() as XmlDocument;
 
-                foreach(BuildComponent component in branch)
+                foreach(BuildComponentCore component in branch)
                     component.Apply(subdocument, key);
             }
         }

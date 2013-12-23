@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <topic id="e6fcfa33-e7ee-430a-abfe-6b7962e6d068" revisionNumber="1">
-  <developerConceptualDocument
+	<developerConceptualDocument
     xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
     xmlns:xlink="http://www.w3.org/1999/xlink">
 
@@ -9,81 +9,79 @@
 				excludeRelatedTopics="true" />
 		</introduction>
 
-<section address="SCPath">
-	<title>Sandcastle tools folder (SandcastlePath)</title>
-	<content>
-		<para>This property lets you specify the path to Sandcastle.  By default, the builder will try to locate it
-automatically by extracting its location from the <environmentVariable>DXROOT</environmentVariable> environment
-variable, the system path or, if not found there, by searching the <localUri>Program Files</localUri> special
-folder on all fixed hard drives.  As such, you only need to specify the path if the build fails with a message
-stating that it could not be found.</para>
-
-	</content>
-</section>
-
-<section address="HHCPath">
-	<title>HTML Help 1 compiler folder (HtmlHelp1xCompilerPath)</title>
-	<content>
-		<para>This property lets you specify the path to the HTML Help 1 compiler (<localUri>HHC.EXE</localUri>).  By
-default, the builder will try to locate it automatically by searching the <localUri>Program Files</localUri>
-special folder on all fixed hard drives.  As such, you only need to specify the path if the build fails with a
-message stating that it could not be found.</para>
-
-	</content>
-</section>
-
-<section address="HXCompPath">
-	<title>MS Help 2 compiler folder (HtmlHelp2xCompilerPath)</title>
-	<content>
-		<para>This property lets you specify the path to the MS Help 2 compiler (<localUri>HXCOMP.EXE</localUri>).
+		<section address="HHCPath">
+			<title>HTML Help 1 compiler path (HtmlHelp1xCompilerPath)</title>
+			<content>
+				<para>This property lets you specify the path to the HTML Help 1 compiler (<localUri>HHC.EXE</localUri>).
 By default, the builder will try to locate it automatically by searching the <localUri>Program Files</localUri>
 special folder on all fixed hard drives.  As such, you only need to specify the path if the build fails with a
 message stating that it could not be found.</para>
 
-	</content>
-</section>
+			</content>
+		</section>
 
-<section address="OutputPath">
-	<title>Help content output path (OutputPath)</title>
-	<content>
-		<para>This property lets you specify where the compiled help file should be placed.  The default is to store
-it in a folder called <localUri>.\Help\</localUri> relative to the project folder.  It is also the location of
-the temporary <localUri>.\Working\</localUri> folder used to store the generated build files unless it is changed
-with the <codeInline>Working Path</codeInline> property.  This property cannot be set to the same value as the
-<codeInline>Working Path</codeInline> property as the working path folder is cleared prior to the build.</para>
+		<section address="HXCompPath">
+			<title>MS Help 2 compiler path (HtmlHelp2xCompilerPath)</title>
+			<content>
+				<para>This property lets you specify the path to the MS Help 2 compiler (<localUri>HXCOMP.EXE</localUri>).
+By default, the builder will try to locate it automatically by searching the <localUri>Program Files</localUri>
+special folder on all fixed hard drives.  As such, you only need to specify the path if the build fails with a
+message stating that it could not be found.</para>
+			</content>
+		</section>
 
-		<alert class="warning">
-			<para>Be aware that if an option is selected that produces a website, the output folder specified by the
-<codeInline>Output Path</codeInline> property will be cleared of all of its current content without any prompting
-before the web site content is copied to it.  In other words, don't do something stupid like set it to the root
-of your C: drive or your desktop folder.    The help file builder will try to take steps to ensure this does not
-happen.  When producing Help 1, Help 2, and/or MS Help Viewer files, the output folder is not cleared.</para>
-		</alert>
+		<section address="ComponentPath">
+			<title>Project-specific components path (ComponentPath)</title>
+			<content>
+				<para>This property lets you specify the path where the help file builder can find custom build
+components and plug-ins specific to the project.  If left blank, the project's folder is searched instead.  This
+is useful for XCOPY deployments or when developing build components so that they don't have to be installed in
+the standard location (the common application data folder).</para>
 
-	</content>
-</section>
+			</content>
+		</section>
 
-<section address="WorkingPath">
-	<title>Working files path (WorkingPath)</title>
-	<content>
-		<para>This property lets you specify an alternate location with a shorter path in which to perform the build
-if it fails due to long file path names.  If not specified, the working folder will be placed under the output
-path and will be called <localUri>.\Working</localUri>.  This property cannot be set to the same value as the
-<codeInline>Output Path</codeInline> property as the working path folder is cleared prior to the build.</para>
+		<section address="OutputPath">
+			<title>Help content output path (OutputPath)</title>
+			<content>
+				<para>This property lets you specify where the compiled help file should be placed.  The default is to
+store it in a folder called <localUri>.\Help\</localUri> relative to the project folder.  It is also the location
+of the temporary <localUri>.\Working\</localUri> folder used to store the generated build files unless it is
+changed with the <codeInline>Working Path</codeInline> property.  This property cannot be set to the same value
+as the <codeInline>Working Path</codeInline> property as the working path folder is cleared prior to the build.</para>
 
-		<alert class="warning">
-			<para>Be aware that the working folder specified by the <codeInline>Working Path</codeInline> property will
-be cleared of all of its current content without any prompting before the build begins.  In other words, don't do
-something stupid like set it to the root of your C: drive or your desktop folder.  The help file builder will try
-to take steps to ensure this does not happen.</para>
-		</alert>
+				<alert class="warning">
+					<para>Be aware that if an option is selected that produces a website, the output folder specified by
+the <codeInline>Output Path</codeInline> property will be cleared of all of its current content without any
+prompting before the web site content is copied to it.  In other words, don't do something stupid like set it to
+the root of your C: drive or your desktop folder.    The help file builder will try to take steps to ensure this
+does not happen.  When producing Help 1, Help 2, and/or MS Help Viewer files, the output folder is not cleared.</para>
+				</alert>
 
-	</content>
-</section>
+			</content>
+		</section>
 
-    <relatedTopics>
-    <link xlink:href="e32086c6-de17-4e54-a746-1ac80bf0c45a" />
-    </relatedTopics>
+		<section address="WorkingPath">
+			<title>Working files path (WorkingPath)</title>
+			<content>
+				<para>This property lets you specify an alternate location with a shorter path in which to perform the
+build if it fails due to long file path names.  If not specified, the working folder will be placed under the
+output path and will be called <localUri>.\Working</localUri>.  This property cannot be set to the same value as
+the <codeInline>Output Path</codeInline> property as the working path folder is cleared prior to the build.</para>
 
-  </developerConceptualDocument>
+				<alert class="warning">
+					<para>Be aware that the working folder specified by the <codeInline>Working Path</codeInline> property
+will be cleared of all of its current content without any prompting before the build begins.  In other words,
+don't do something stupid like set it to the root of your C: drive or your desktop folder.  The help file builder
+will try to take steps to ensure this does not happen.</para>
+				</alert>
+
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="e32086c6-de17-4e54-a746-1ac80bf0c45a" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
 </topic>

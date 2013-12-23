@@ -26,7 +26,8 @@ using System.Globalization;
 using System.Xml.XPath;
 
 using System.Compiler;
-using Microsoft.Ddue.Tools.CommandLine;
+
+using Sandcastle.Core;
 
 namespace Microsoft.Ddue.Tools.Reflection
 {

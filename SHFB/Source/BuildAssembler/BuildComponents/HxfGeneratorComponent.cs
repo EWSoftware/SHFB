@@ -18,6 +18,9 @@ using System.IO;
 using System.Xml;
 using System.Xml.XPath;
 
+using Sandcastle.Core.BuildAssembler;
+using Sandcastle.Core.BuildAssembler.BuildComponent;
+
 namespace Microsoft.Ddue.Tools
 {
     /// <summary>
@@ -26,7 +29,7 @@ namespace Microsoft.Ddue.Tools
     /// </summary>
     /// <remarks>Rather than modifying the document, this responds to component events with an event argument
     /// type of <see cref="FileCreatedEventArgs"/> to save file information to the HxF file.</remarks>
-    public class HxfGeneratorComponent : BuildComponent
+    public class HxfGeneratorComponent : BuildComponentCore
     {
         #region Private data members
         //=====================================================================
@@ -43,7 +46,7 @@ namespace Microsoft.Ddue.Tools
         //=====================================================================
 
         /// <inheritdoc />
-        public HxfGeneratorComponent(BuildAssembler assembler, XPathNavigator configuration) :
+        public HxfGeneratorComponent(BuildAssemblerCore assembler, XPathNavigator configuration) :
           base(assembler, configuration)
         {
             inputFile = configuration.GetAttribute("input", String.Empty);

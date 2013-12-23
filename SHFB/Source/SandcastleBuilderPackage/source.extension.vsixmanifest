@@ -3,7 +3,7 @@
   <Identifier Id="c997d569-ee8e-4947-a46f-9a0717ce39a0">
     <Name>SHFB</Name>
     <Author>EWSoftware</Author>
-    <Version>1.9.8.0</Version>
+    <Version>2013.12.21.0</Version>
     <Description xml:space="preserve">Visual Studio integration for the Sandcastle Help File Builder.
 Copyright © 2011-2013, Eric Woodruff, All Rights Reserved.
 http://SHFB.CodePlex.com</Description>

@@ -99,30 +99,6 @@
 
 	<!-- ****************************************************************** -->
 
-	<component id="Post-transform Component"
-		type="SandcastleBuilder.Components.PostTransformComponent"
-		assembly="{@SHFBFolder}SandcastleBuilder.Components.dll">
-		<description>This component is obsolete and will be removed in a future release.</description>
-
-		<insert placement="after" type="Microsoft.Ddue.Tools.TransformComponent" />
-		<insertConceptual placement="after" type="Microsoft.Ddue.Tools.TransformComponent" />
-
-		<configureMethod name="ConfigureComponent" />
-
-		<!-- This component is obsolete and will be removed in a future release. -->
-		<hidden />
-
-		<defaultConfiguration>
-			<outputPaths>
-				{@HelpFormatOutputPaths}
-			</outputPaths>
-
-			<logoFile filename="" height="0" width="0" altText="" placement="left" alignment="left" />
-		</defaultConfiguration>
-	</component>
-
-	<!-- ****************************************************************** -->
-
 	<component id="Show Missing Documentation Component" type="SandcastleBuilder.Components.ShowMissingComponent"
 		assembly="{@SHFBFolder}SandcastleBuilder.Components.dll">
 		<description>This build component is used to add "missing" notes for missing summary, parameter, returns, value, and remarks tags.  It can also add default summary documentation for constructors.</description>
@@ -173,7 +149,7 @@
 	<!-- ****************************************************************** -->
 
 	<component id="IntelliSense Component" type="Microsoft.Ddue.Tools.IntelliSenseComponent"
-		assembly="{@SandcastlePath}\BuildComponents.dll">
+		assembly="{@SHFBFolder}\BuildComponents.dll">
 		<description>This build component is used to extract the XML comments into files that can be used for IntelliSense.  Only the basic set of tags needed for IntelliSense are exported and only for documented API members.</description>
 
 		<!-- It's more useful when used with the Show Missing component but it can be used by itself (see the insert
@@ -201,99 +177,6 @@
 
 	<!-- ****************************************************************** -->
 
-	<component id="Cached Reflection Index Data"
-		type="SandcastleBuilder.Components.CachedCopyFromIndexComponent"
-		assembly="{@SHFBFolder}SandcastleBuilder.Components.dll">
-		<description>This component is obsolete and will be removed in a future release.</description>
-
-		<insert placement="replace" instance="1" type="Microsoft.Ddue.Tools.CopyFromIndexComponent" />
-
-		<!-- Not editable at all -->
-		<configureMethod name="-" />
-
-		<!-- This component is obsolete and will be removed in a future release. -->
-		<hidden />
-
-		<defaultConfiguration>
-			<index name="reflection" value="/reflection/apis/api" key="@id" cache="15">
-				<cache base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml"
-					cacheFile="{@LocalDataFolder}Cache\Reflection.cache"/>
-				<data files="reflection.xml" />
-			</index>
-			<copy name="reflection" source="*" target="/document/reference" />
-		</defaultConfiguration>
-	</component>
-
-	<!-- ****************************************************************** -->
-
-	<component id="Cached Framework Comments Index Data"
-		type="SandcastleBuilder.Components.CachedCopyFromIndexComponent"
-		assembly="{@SHFBFolder}SandcastleBuilder.Components.dll">
-		<description>This component is obsolete and will be removed in a future release.</description>
-
-		<insert placement="replace" instance="3" type="Microsoft.Ddue.Tools.CopyFromIndexComponent" />
-
-		<!-- Not editable at all -->
-		<configureMethod name="-" />
-
-		<!-- This component is obsolete and will be removed in a future release. -->
-		<hidden />
-
-		<defaultConfiguration>
-			<index name="comments" value="/doc/members/member" key="@name" cache="30">
-				{@CachedFrameworkCommentList}
-				{@CommentFileList}
-			</index>
-			<copy name="comments" source="*" target="/document/comments" />
-		</defaultConfiguration>
-	</component>
-
-	<!-- ****************************************************************** -->
-
-	<component id="Cached MSDN URL References"
-		type="SandcastleBuilder.Components.CachedResolveReferenceLinksComponent"
-		assembly="{@SHFBFolder}SandcastleBuilder.Components.dll"
-		locale="{@Locale}" linkTarget="{@SdkLinkTarget}">
-		<description>This component is obsolete and will be removed in a future release.</description>
-
-		<insert placement="replace" type="Microsoft.Ddue.Tools.ResolveReferenceLinksComponent2" />
-		<insertConceptual placement="replace" type="Microsoft.Ddue.Tools.ResolveReferenceLinksComponent2" />
-
-		<!-- Not editable at all -->
-		<configureMethod name="-" />
-
-		<!-- This component is obsolete and will be removed in a future release. -->
-		<hidden />
-
-		<defaultConfiguration>
-			<helpOutput format="HtmlHelp1">
-				<cache filename="{@LocalDataFolder}Cache\MsdnUrl.cache" />
-				<targets base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" type="{@HtmlSdkLinkType}" />
-				<targets files="reflection.xml" type="Local" />
-			</helpOutput>
-
-			<helpOutput format="MSHelp2">
-				<cache filename="{@LocalDataFolder}Cache\MsdnUrl.cache" />
-				<targets base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" type="{@MSHelp2SdkLinkType}" />
-				<targets files="reflection.xml" type="Index" />
-			</helpOutput>
-
-			<helpOutput format="MSHelpViewer">
-				<cache filename="{@LocalDataFolder}Cache\MsdnUrl.cache" />
-				<targets base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" type="{@MSHelpViewerSdkLinkType}" />
-				<targets files="reflection.xml" type="Id" />
-			</helpOutput>
-
-			<helpOutput format="Website">
-				<cache filename="{@LocalDataFolder}Cache\MsdnUrl.cache" />
-				<targets base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" type="{@WebsiteSdkLinkType}" />
-				<targets files="reflection.xml" type="Local" />
-			</helpOutput>
-		</defaultConfiguration>
-	</component>
-
-	<!-- ****************************************************************** -->
-
 	<component id="Resolve Reference Links (ESENT Cache)"
 		type="SandcastleBuilder.Components.ESentResolveReferenceLinksComponent"
 		assembly="{@SHFBFolder}SandcastleBuilder.Components.dll"
@@ -311,7 +194,7 @@ The ESENT database engine is part of every version of Microsoft Windows and no s
 			<helpOutput format="HtmlHelp1">
 				<msdnContentIdCache path="{@LocalDataFolder}Cache\MsdnContentId.cache"
 					cachePath="{@LocalDataFolder}Cache\ESentMsdnContentIdCache" localCacheSize="2500" />
-				<targets base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" type="{@HtmlSdkLinkType}"
+				<targets base="{@SHFBFolder}Data\Reflection" recurse="true" files="*.xml" type="{@HtmlSdkLinkType}"
 					id="FrameworkTargets" cachePath="{@LocalDataFolder}Cache\ESentFrameworkTargetCache" localCacheSize="2500">
 					{@ReferenceLinkNamespaceFiles}
 				</targets>
@@ -321,7 +204,7 @@ The ESENT database engine is part of every version of Microsoft Windows and no s
 			<helpOutput format="MSHelp2">
 				<msdnContentIdCache path="{@LocalDataFolder}Cache\MsdnContentId.cache"
 					cachePath="{@LocalDataFolder}Cache\ESentMsdnContentIdCache" localCacheSize="2500" />
-				<targets base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" type="{@MSHelp2SdkLinkType}"
+				<targets base="{@SHFBFolder}Data\Reflection" recurse="true" files="*.xml" type="{@MSHelp2SdkLinkType}"
 					id="FrameworkTargets" cachePath="{@LocalDataFolder}Cache\ESentFrameworkTargetCache" localCacheSize="2500">
 					{@ReferenceLinkNamespaceFiles}
 				</targets>
@@ -331,7 +214,7 @@ The ESENT database engine is part of every version of Microsoft Windows and no s
 			<helpOutput format="MSHelpViewer">
 				<msdnContentIdCache path="{@LocalDataFolder}Cache\MsdnContentId.cache"
 					cachePath="{@LocalDataFolder}Cache\ESentMsdnContentIdCache" localCacheSize="2500" />
-				<targets base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" type="{@MSHelpViewerSdkLinkType}"
+				<targets base="{@SHFBFolder}Data\Reflection" recurse="true" files="*.xml" type="{@MSHelpViewerSdkLinkType}"
 					id="FrameworkTargets" cachePath="{@LocalDataFolder}Cache\ESentFrameworkTargetCache" localCacheSize="2500">
 					{@ReferenceLinkNamespaceFiles}
 				</targets>
@@ -341,7 +224,7 @@ The ESENT database engine is part of every version of Microsoft Windows and no s
 			<helpOutput format="Website">
 				<msdnContentIdCache path="{@LocalDataFolder}Cache\MsdnContentId.cache"
 					cachePath="{@LocalDataFolder}Cache\ESentMsdnContentIdCache" localCacheSize="2500" />
-				<targets base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" type="{@WebsiteSdkLinkType}"
+				<targets base="{@SHFBFolder}Data\Reflection" recurse="true" files="*.xml" type="{@WebsiteSdkLinkType}"
 					id="FrameworkTargets" cachePath="{@LocalDataFolder}Cache\ESentFrameworkTargetCache" localCacheSize="2500">
 					{@ReferenceLinkNamespaceFiles}
 				</targets>
@@ -366,7 +249,7 @@ The ESENT database engine is part of every version of Microsoft Windows and no s
 		<defaultConfiguration>
 			<index name="reflection" value="/reflection/apis/api" key="@id" cache="15" localCacheSize="2500"
 				frameworkCachePath="{@LocalDataFolder}Cache\ReflectionIndexCache" projectCachePath="">
-				<data base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" duplicateWarning="false"
+				<data base="{@SHFBFolder}Data\Reflection" recurse="true" files="*.xml" duplicateWarning="false"
 					groupId="ReflectionIndexCache">
 					{@ReferenceLinkNamespaceFiles}
 				</data>
@@ -421,7 +304,7 @@ This component requires access to a Microsoft SQL Server instance.  Express and 
 				<sqlCache connectionString="" msdnLocalCacheSize="2500" frameworkLocalCacheSize="2500"
 					projectLocalCacheSize="2500" cacheProject="false" />
 				<msdnContentIdCache path="{@LocalDataFolder}Cache\MsdnContentId.cache" />
-				<targets base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" type="{@HtmlSdkLinkType}"
+				<targets base="{@SHFBFolder}Data\Reflection" recurse="true" files="*.xml" type="{@HtmlSdkLinkType}"
 					groupId="FrameworkTargets">
 					{@ReferenceLinkNamespaceFiles}
 				</targets>
@@ -432,7 +315,7 @@ This component requires access to a Microsoft SQL Server instance.  Express and 
 				<sqlCache connectionString="" msdnLocalCacheSize="2500" frameworkLocalCacheSize="2500"
 					projectLocalCacheSize="2500" cacheProject="false" />
 				<msdnContentIdCache path="{@LocalDataFolder}Cache\MsdnContentId.cache" />
-				<targets base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" type="{@MSHelp2SdkLinkType}"
+				<targets base="{@SHFBFolder}Data\Reflection" recurse="true" files="*.xml" type="{@MSHelp2SdkLinkType}"
 					groupId="FrameworkTargets">
 					{@ReferenceLinkNamespaceFiles}
 				</targets>
@@ -443,7 +326,7 @@ This component requires access to a Microsoft SQL Server instance.  Express and 
 				<sqlCache connectionString="" msdnLocalCacheSize="2500" frameworkLocalCacheSize="2500"
 					projectLocalCacheSize="2500" cacheProject="false" />
 				<msdnContentIdCache path="{@LocalDataFolder}Cache\MsdnContentId.cache" />
-				<targets base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" type="{@MSHelpViewerSdkLinkType}"
+				<targets base="{@SHFBFolder}Data\Reflection" recurse="true" files="*.xml" type="{@MSHelpViewerSdkLinkType}"
 					groupId="FrameworkTargets">
 					{@ReferenceLinkNamespaceFiles}
 				</targets>
@@ -454,7 +337,7 @@ This component requires access to a Microsoft SQL Server instance.  Express and 
 				<sqlCache connectionString="" msdnLocalCacheSize="2500" frameworkLocalCacheSize="2500"
 					projectLocalCacheSize="2500" cacheProject="false" />
 				<msdnContentIdCache path="{@LocalDataFolder}Cache\MsdnContentId.cache" />
-				<targets base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" type="{@WebsiteSdkLinkType}"
+				<targets base="{@SHFBFolder}Data\Reflection" recurse="true" files="*.xml" type="{@WebsiteSdkLinkType}"
 					groupId="FrameworkTargets">
 					{@ReferenceLinkNamespaceFiles}
 				</targets>
@@ -479,7 +362,7 @@ This component requires access to a Microsoft SQL Server instance.  Express and 
 		<defaultConfiguration>
 			<index name="reflection" value="/reflection/apis/api" key="@id" cache="15" localCacheSize="2500"
 				cacheProject="false" connectionString="">
-				<data base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" duplicateWarning="false"
+				<data base="{@SHFBFolder}Data\Reflection" recurse="true" files="*.xml" duplicateWarning="false"
 					groupId="ReflectionIndexCache">
 					{@ReferenceLinkNamespaceFiles}
 				</data>
@@ -515,7 +398,7 @@ This component requires access to a Microsoft SQL Server instance.  Express and 
 	<!-- ****************************************************************** -->
 
 	<component id="MS Help 2 Attributes" type="Microsoft.Ddue.Tools.MSHelpAttrComponent"
-		assembly="{@SandcastlePath}\BuildComponents.dll">
+		assembly="{@SHFBFolder}\BuildComponents.dll">
 		<description>This build component is used to add additional MS Help 2 attributes to the XML data island in each generated API topic.</description>
 
 		<insert placement="after" type="Microsoft.Ddue.Tools.TransformComponent" />
@@ -534,7 +417,7 @@ This component requires access to a Microsoft SQL Server instance.  Express and 
 	<!-- ****************************************************************** -->
 
 	<component id="API Token Resolution" type="Microsoft.Ddue.Tools.SharedContentComponent"
-			assembly="{@SandcastlePath}\BuildComponents.dll">
+			assembly="{@SHFBFolder}\BuildComponents.dll">
 		<description>This build component is used to resolve tokens in XML comments files.</description>
 
 		<!-- This only applies to API builds. -->

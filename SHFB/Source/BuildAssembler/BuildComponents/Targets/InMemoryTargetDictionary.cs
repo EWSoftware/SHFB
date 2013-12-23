@@ -23,6 +23,8 @@ using System.Collections.Generic;
 using System.Collections.Concurrent;
 using System.Xml.XPath;
 
+using Sandcastle.Core.BuildAssembler.BuildComponent;
+
 namespace Microsoft.Ddue.Tools.Targets
 {
     /// <summary>
@@ -58,7 +60,7 @@ namespace Microsoft.Ddue.Tools.Targets
         /// <param name="configuration">The target dictionary configuration</param>
         /// <returns>A target dictionary instance that uses a simple in-memory
         /// <see cref="Dictionary{TKey, TValue}"/> instance to store the targets.</returns>
-        public InMemoryTargetDictionary(BuildComponent component, XPathNavigator configuration) :
+        public InMemoryTargetDictionary(BuildComponentCore component, XPathNavigator configuration) :
           base(component, configuration)
         {
             index = new ConcurrentDictionary<string, Target>();

@@ -74,6 +74,7 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -201,9 +202,6 @@
       <Link>PropertyPages\VisibilityPropertiesPageControl.designer.cs</Link>
       <DependentUpon>VisibilityPropertiesPageControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="..\SandcastleBuilderUtils\Properties\AssemblyInfoShared.cs">
-      <Link>Properties\AssemblyInfoShared.cs</Link>
-    </Compile>
     <Compile Include="AboutDlg.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -326,6 +324,7 @@
     <Compile Include="PromptToSaveDlg.Designer.cs">
       <DependentUpon>PromptToSaveDlg.cs</DependentUpon>
     </Compile>
+    <Compile Include="Properties\AssemblyInfoShared.cs" />
     <Compile Include="PropertyPages\BasePropertyPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -599,6 +598,10 @@
     <ProjectReference Include="..\SandcastleBuilderWPF\SandcastleBuilderWPF.csproj">
       <Project>{D3B06405-3435-4329-9233-2DF1BF5028AA}</Project>
       <Name>SandcastleBuilderWPF</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SandcastleCore\Sandcastle.Core.csproj">
+      <Project>{399E78F8-4954-409E-991A-37DA9D0579CC}</Project>
+      <Name>Sandcastle.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

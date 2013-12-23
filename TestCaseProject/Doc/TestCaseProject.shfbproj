@@ -30,7 +30,7 @@
     <BuildLogFile>
     </BuildLogFile>
     <FrameworkVersion>.NET Framework 4.0</FrameworkVersion>
-    <IndentHtml>False</IndentHtml>
+    <IndentHtml>True</IndentHtml>
     <RootNamespaceContainer>True</RootNamespaceContainer>
     <RootNamespaceTitle>Test Root Namespace Title</RootNamespaceTitle>
     <CopyrightHref>http://www.EWoodruff.us</CopyrightHref>
@@ -52,7 +52,7 @@
         </component>
       </ComponentConfig>
       <ComponentConfig id="IntelliSense Component" enabled="True">
-        <component id="IntelliSense Component" type="Microsoft.Ddue.Tools.IntelliSenseComponent" assembly="{@SandcastlePath}ProductionTools\BuildComponents.dll">
+        <component id="IntelliSense Component" type="Microsoft.Ddue.Tools.IntelliSenseComponent" assembly="{@SHFBFolder}ProductionTools\BuildComponents.dll">
           <!-- Output options (optional)
 					 Attributes:
 							Include Namespaces (false by default)
@@ -62,7 +62,7 @@
         </component>
       </ComponentConfig>
       <ComponentConfig id="API Token Resolution" enabled="True">
-        <component id="API Token Resolution" type="Microsoft.Ddue.Tools.SharedContentComponent" assembly="{@SandcastlePath}ProductionTools\BuildComponents.dll">
+        <component id="API Token Resolution" type="Microsoft.Ddue.Tools.SharedContentComponent" assembly="{@SHFBFolder}ProductionTools\BuildComponents.dll">
 
         {@TokenFiles}
         <replace elements="/*//token" item="string(.)" /></component>
@@ -94,12 +94,55 @@
       <PlugInConfig id="Additional Content Only" enabled="False">
         <configuration />
       </PlugInConfig>
-<PlugInConfig id="XPath Reflection File Filter" enabled="False"><configuration><expressions><expression>/reflection/apis/api[apidata/@subgroup="class" and typedata/@sealed="true"]/elements/element[@api="M:System.Object.Equals(System.Object)"]</expression><expression>/reflection/apis/api[apidata/@subgroup="class" and typedata/@sealed="true"]/elements/element[@api="M:System.Object.GetHashCode"]</expression><expression>/reflection/apis/api[apidata/@subgroup="class" and typedata/@sealed="true"]/elements/element[@api="M:System.Object.GetType"]</expression><expression>/reflection/apis/api[apidata/@subgroup="class" and typedata/@sealed="true"]/elements/element[@api="M:System.Object.Finalize"]</expression><expression>/reflection/apis/api[apidata/@subgroup="class" and typedata/@sealed="true"]/elements/element[@api="M:System.Object.MemberwiseClone"]</expression><expression>/reflection/apis/api[apidata/@subgroup="class" and typedata/@sealed="true"]/elements/element[@api="M:System.Object.ToString"]</expression></expressions></configuration></PlugInConfig>
-<PlugInConfig id="Bibliography Support" enabled="False"><configuration><bibliography path="{@ProjectFolder}Bibliography.xml" /></configuration></PlugInConfig>
-<PlugInConfig id="Completion Notification" enabled="False"><configuration><smtpServer host="mail.somecompany.org" port="25" /><userCredentials useDefault="true" userName="" password="" /><fromEMail address="SHFB@SomeCompany.org" /><successEMail address="EWoodruff@SomeCompany.org" attachLog="false" /><failureEMail address="EWoodruff@SomeCompany.org" attachLog="true" /><xslTransform filename="{@SHFBFolder}Templates\TransformBuildLog.xsl" /></configuration></PlugInConfig>
-<PlugInConfig id="DBCS Fix for CHM Builds" enabled="False"><configuration><sbAppLocale path="C:\UTILS\SBAppLocale.exe" /></configuration></PlugInConfig>
-<PlugInConfig id="Hierarchical Table of Contents" enabled="False"><configuration><toc minParts="2" insertBelow="False" /></configuration></PlugInConfig>
-<PlugInConfig id="Wildcard Assembly References" enabled="False"><configuration><references><reference path="..\..\CodeColorizer\ColorizerLibrary\bin\Debug\" wildcard="*.dll" recurse="false" /><reference path="..\..\SandcastleBuilder\" wildcard="*.dll" recurse="true" /></references></configuration></PlugInConfig></PlugInConfigurations>
+      <PlugInConfig id="XPath Reflection File Filter" enabled="False">
+        <configuration>
+          <expressions>
+            <expression>/reflection/apis/api[apidata/@subgroup="class" and typedata/@sealed="true"]/elements/element[@api="M:System.Object.Equals(System.Object)"]</expression>
+            <expression>/reflection/apis/api[apidata/@subgroup="class" and typedata/@sealed="true"]/elements/element[@api="M:System.Object.GetHashCode"]</expression>
+            <expression>/reflection/apis/api[apidata/@subgroup="class" and typedata/@sealed="true"]/elements/element[@api="M:System.Object.GetType"]</expression>
+            <expression>/reflection/apis/api[apidata/@subgroup="class" and typedata/@sealed="true"]/elements/element[@api="M:System.Object.Finalize"]</expression>
+            <expression>/reflection/apis/api[apidata/@subgroup="class" and typedata/@sealed="true"]/elements/element[@api="M:System.Object.MemberwiseClone"]</expression>
+            <expression>/reflection/apis/api[apidata/@subgroup="class" and typedata/@sealed="true"]/elements/element[@api="M:System.Object.ToString"]</expression>
+          </expressions>
+        </configuration>
+      </PlugInConfig>
+      <PlugInConfig id="Bibliography Support" enabled="False">
+        <configuration>
+          <bibliography path="{@ProjectFolder}Bibliography.xml" />
+        </configuration>
+      </PlugInConfig>
+      <PlugInConfig id="Completion Notification" enabled="False">
+        <configuration>
+          <smtpServer host="mail.somecompany.org" port="25" />
+          <userCredentials useDefault="true" userName="" password="" />
+          <fromEMail address="SHFB@SomeCompany.org" />
+          <successEMail address="EWoodruff@SomeCompany.org" attachLog="false" />
+          <failureEMail address="EWoodruff@SomeCompany.org" attachLog="true" />
+          <xslTransform filename="{@SHFBFolder}Templates\TransformBuildLog.xsl" />
+        </configuration>
+      </PlugInConfig>
+      <PlugInConfig id="DBCS Fix for CHM Builds" enabled="False">
+        <configuration>
+          <sbAppLocale path="C:\UTILS\SBAppLocale.exe" />
+        </configuration>
+      </PlugInConfig>
+      <PlugInConfig id="Hierarchical Table of Contents" enabled="False">
+        <configuration>
+          <toc minParts="2" insertBelow="False" />
+        </configuration>
+      </PlugInConfig>
+      <PlugInConfig id="Wildcard Assembly References" enabled="False">
+        <configuration>
+          <references>
+            <reference path="..\..\SHFB\Source\CodeColorizer\ColorizerLibrary\bin\Debug\" wildcard="*.dll" recurse="false" />
+            <reference path="..\..\SHFB\Deploy\" wildcard="*.dll" recurse="true" />
+          </references>
+        </configuration>
+      </PlugInConfig>
+      <PlugInConfig id="Additional Reference Links" enabled="False">
+        <configuration />
+      </PlugInConfig>
+    </PlugInConfigurations>
     <ApiFilter>
     </ApiFilter>
     <HelpFileFormat>HtmlHelp1</HelpFileFormat>

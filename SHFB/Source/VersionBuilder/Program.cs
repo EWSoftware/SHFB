@@ -14,7 +14,8 @@ using System.IO;
 using System.Xml;
 using System.Xml.XPath;
 
-using Microsoft.Ddue.Tools.CommandLine;
+using Sandcastle.Core;
+using Sandcastle.Core.CommandLine;
 
 namespace VersionBuilder
 {

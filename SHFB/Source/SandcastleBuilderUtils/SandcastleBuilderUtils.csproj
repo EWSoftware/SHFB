@@ -70,6 +70,7 @@
     <Reference Include="Microsoft.Build.Framework" />
     <Reference Include="Microsoft.Build.Utilities.v4.0" />
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -100,6 +101,8 @@
     <Compile Include="BuildComponent\BuildComponentInfo.cs" />
     <Compile Include="BuildComponent\BuildComponentManager.cs" />
     <Compile Include="BuildComponent\ComponentPosition.cs" />
+    <Compile Include="BuildComponent\HelpFileBuilderPlugInExportAttribute.cs" />
+    <Compile Include="BuildComponent\IPlugInMetaData.cs" />
     <Compile Include="BuildEngine\FrameworkCommentsFileLocation.cs" />
     <Compile Include="BuildEngine\MSHCPackage.cs" />
     <Compile Include="BuildEngine\PartialBuildType.cs" />
@@ -154,21 +157,11 @@
     <Compile Include="Conversion\NewFromOtherFormatDlg.designer.cs">
       <DependentUpon>NewFromOtherFormatDlg.cs</DependentUpon>
     </Compile>
-    <Compile Include="Design\ApiFilterCollectionTypeConverter.cs" />
-    <Compile Include="Design\ApiFilterEditor.cs" />
     <Compile Include="Design\ApiFilterEditorDlg.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Design\ApiFilterEditorDlg.Designer.cs">
       <DependentUpon>ApiFilterEditorDlg.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Design\ComponentConfigurationDictionaryTypeConverter.cs" />
-    <Compile Include="Design\ComponentConfigurationEditor.cs" />
-    <Compile Include="Design\ComponentConfigurationEditorDlg.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Design\ComponentConfigurationEditorDlg.Designer.cs">
-      <DependentUpon>ComponentConfigurationEditorDlg.cs</DependentUpon>
     </Compile>
     <Compile Include="Design\ConfigurationEditorDlg.cs">
       <SubType>Form</SubType>
@@ -178,37 +171,12 @@
     </Compile>
     <Compile Include="Design\ContentFileEditor.cs" />
     <Compile Include="Design\ContentFileEditorCollection.cs" />
-    <Compile Include="Design\NamespaceSummaryItemCollectionTypeConverter.cs" />
     <Compile Include="Design\EscapeValueAttribute.cs" />
     <Compile Include="Design\FilePathObjectEditor.cs" />
     <Compile Include="Design\FilePathTypeConverter.cs" />
     <Compile Include="Design\FlagsEnumEditor.cs" />
     <Compile Include="Design\FolderPathObjectEditor.cs" />
     <Compile Include="Design\FolderPathTypeConverter.cs" />
-    <Compile Include="Design\MSHelpAttrCollectionTypeConverter.cs" />
-    <Compile Include="Design\MSHelpAttrEditor.cs" />
-    <Compile Include="Design\MSHelpAttrEditorDlg.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Design\MSHelpAttrEditorDlg.Designer.cs">
-      <DependentUpon>MSHelpAttrEditorDlg.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Design\MSHelpKeywordCollectionTypeConverter.cs" />
-    <Compile Include="Design\MSHelpKeywordEditor.cs" />
-    <Compile Include="Design\MSHelpKeywordEditorDlg.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Design\MSHelpKeywordEditorDlg.Designer.cs">
-      <DependentUpon>MSHelpKeywordEditorDlg.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Design\PlugInConfigurationDictionaryTypeConverter.cs" />
-    <Compile Include="Design\PlugInConfigurationEditor.cs" />
-    <Compile Include="Design\PlugInConfigurationEditorDlg.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Design\PlugInConfigurationEditorDlg.Designer.cs">
-      <DependentUpon>PlugInConfigurationEditorDlg.cs</DependentUpon>
-    </Compile>
     <Compile Include="Design\VersionTypeConverter.cs" />
     <Compile Include="FilePath.cs" />
     <Compile Include="FolderPath.cs" />
@@ -237,15 +205,12 @@
     <Compile Include="ApiFilterCollection.cs" />
     <Compile Include="MSHelpKeyword.cs" />
     <Compile Include="MSHelpKeywordCollection.cs" />
-    <Compile Include="PlugIn\ExecutionContext.cs" />
-    <Compile Include="PlugIn\ExecutionPoint.cs" />
-    <Compile Include="PlugIn\ExecutionBehaviors.cs" />
-    <Compile Include="PlugIn\ExecutionPointCollection.cs" />
-    <Compile Include="PlugIn\IPlugIn.cs" />
-    <Compile Include="PlugIn\PlugInConfiguration.cs" />
-    <Compile Include="PlugIn\PlugInConfigurationDictionary.cs" />
-    <Compile Include="PlugIn\PlugInInfo.cs" />
-    <Compile Include="PlugIn\PlugInManager.cs" />
+    <Compile Include="BuildComponent\ExecutionContext.cs" />
+    <Compile Include="BuildComponent\ExecutionPoint.cs" />
+    <Compile Include="BuildComponent\ExecutionBehaviors.cs" />
+    <Compile Include="BuildComponent\IPlugIn.cs" />
+    <Compile Include="BuildComponent\PlugInConfiguration.cs" />
+    <Compile Include="BuildComponent\PlugInConfigurationDictionary.cs" />
     <Compile Include="PresentationStyle\ContentFiles.cs" />
     <Compile Include="PresentationStyle\PresentationStyleDictionary.cs" />
     <Compile Include="PresentationStyle\PresentationStyleSettings.cs" />
@@ -266,7 +231,6 @@
     <Compile Include="VisibleItems.cs" />
     <Compile Include="ReferenceItem.cs" />
     <Compile Include="ReferenceItemCollection.cs" />
-    <Compile Include="Design\NamespaceSummaryItemEditor.cs" />
     <Compile Include="Design\LanguageResourceConverter.cs" />
     <Compile Include="Controls\RefreshableItemListBox.cs">
       <SubType>Component</SubType>
@@ -299,6 +263,9 @@
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="SandcastleBuilderUtils.snk" />
+    <Content Include="SandcastleHelpFileBuilder.targets">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Controls\FilePathUserControl.resx">
@@ -320,10 +287,6 @@
       <DependentUpon>ApiFilterEditorDlg.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Design\ComponentConfigurationEditorDlg.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>ComponentConfigurationEditorDlg.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Design\ConfigurationEditorDlg.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ConfigurationEditorDlg.cs</DependentUpon>
@@ -331,25 +294,6 @@
     <EmbeddedResource Include="Design\NamespaceSummaryItemEditorDlg.resx">
       <DependentUpon>NamespaceSummaryItemEditorDlg.cs</DependentUpon>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Design\ProjectSummaryEditorDlg.resx">
-      <DependentUpon>ProjectSummaryEditorDlg.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Design\MSHelpAttrEditorDlg.resx">
-      <DependentUpon>MSHelpAttrEditorDlg.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Design\MSHelpKeywordEditorDlg.resx">
-      <DependentUpon>MSHelpKeywordEditorDlg.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Design\PlugInConfigurationEditorDlg.resx">
-      <DependentUpon>PlugInConfigurationEditorDlg.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Design\UserDefinedPropertyEditorDlg.resx">
-      <DependentUpon>UserDefinedPropertyEditorDlg.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <SubType>Designer</SubType>
@@ -427,6 +371,10 @@
       <Project>{72331A21-C452-4BE4-BFDB-B8029A6BC1C0}</Project>
       <Name>ColorizerLibrary</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SandcastleCore\Sandcastle.Core.csproj">
+      <Project>{399E78F8-4954-409E-991A-37DA9D0579CC}</Project>
+      <Name>Sandcastle.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\SandcastleLogo.png" />
@@ -449,9 +397,6 @@
     <Compile Include="Conversion\ConvertFromSandcastleGui.cs" />
     <Compile Include="Conversion\ConvertToMSBuildFormat.cs" />
     <Compile Include="Design\BuildActionEnumConverter.cs" />
-    <Compile Include="Design\SyntaxFilterTypeConverter.cs" />
-    <Compile Include="Design\SyntaxFilterValueEditor.cs" />
-    <Compile Include="Design\UserDefinedPropertyEditor.cs" />
     <Compile Include="Design\DynamicReadOnlyPropertyDescriptor.cs" />
     <Compile Include="Design\NamespaceSummaryItemEditorDlg.cs">
       <SubType>Form</SubType>
@@ -459,20 +404,6 @@
     <Compile Include="Design\NamespaceSummaryItemEditorDlg.Designer.cs">
       <DependentUpon>NamespaceSummaryItemEditorDlg.cs</DependentUpon>
     </Compile>
-    <Compile Include="Design\ProjectSummaryEditor.cs" />
-    <Compile Include="Design\ProjectSummaryEditorDlg.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Design\ProjectSummaryEditorDlg.Designer.cs">
-      <DependentUpon>ProjectSummaryEditorDlg.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Design\UserDefinedPropertyEditorDlg.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Design\UserDefinedPropertyEditorDlg.Designer.cs">
-      <DependentUpon>UserDefinedPropertyEditorDlg.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Design\UserDefinedPropertyTypeConverter.cs" />
     <Compile Include="FileItem.cs" />
     <Compile Include="FileItemCollection.cs" />
     <Compile Include="HtmlSdkLinkType.cs" />
@@ -480,7 +411,6 @@
     <Compile Include="MSHelp2SdkLinkType.cs" />
     <Compile Include="MSHelpViewerSdkLinkType.cs" />
     <Compile Include="ProjectFileConfiguration.cs" />
-    <Compile Include="Properties\AssemblyInfoShared.cs" />
     <Compile Include="SdkLinkTarget.cs" />
     <None Include="Resources\ProjectTemplate.txt" />
   </ItemGroup>

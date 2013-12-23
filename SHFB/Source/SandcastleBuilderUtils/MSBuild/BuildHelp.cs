@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : BuildHelp.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/15/2013
+// Updated : 12/21/2013
 // Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -20,6 +20,8 @@
 // 1.8.0.2  04/20/2009  EFW  Added DumpLogOnFailure property
 // 1.8.0.3  07/06/2009  EFW  Added support for MS Help Viewer output files
 // 1.9.1.0  07/09/2010  EFW  Updated for use with .NET 4.0 and MSBuild 4.0.
+// -------  12/21/2013  EFW  Removed support for SHFBCOMPONENT root as the ComponentPath project property
+//                           handles its functionality now.
 //===============================================================================================================
 
 using System;
@@ -126,11 +128,6 @@ namespace SandcastleBuilder.Utils.MSBuild
         /// In such cases, command line property overrides are ignored.</value>
         public bool AlwaysLoadProject { get; set; }
 
-        /// <summary>
-        /// This is used to specify a path that will override the <c>SHFBCOMPONENTROOT</c> location when the
-        /// build engine searches for custom build components and plug-ins.
-        /// </summary>
-        public string ComponentRoot { get; set; }
         #endregion
 
         #region Task output properties
@@ -243,14 +240,9 @@ namespace SandcastleBuilder.Utils.MSBuild
             bool removeProjectWhenDisposed = false;
             string line;
 
-            // If cancelled already, just return
+            // If canceled already, just return
             if(buildCancelled)
                 return false;
-
-            // If the component root path is overridden, set it now
-            if(!String.IsNullOrEmpty(this.ComponentRoot))
-                BuildComponent.BuildComponentManager.ComponentRoot = PlugIn.PlugInManager.ComponentRoot =
-                    this.ComponentRoot;
 
             try
             {

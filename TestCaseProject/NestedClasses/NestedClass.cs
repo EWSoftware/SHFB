@@ -1,6 +1,28 @@
 namespace TestDoc.NestedClasses
 {
     /// <summary>
+    /// Test
+    /// </summary>
+    public class Foo
+    {
+        /// <summary>
+        /// Test
+        /// </summary>
+        public enum BarEnum
+        {
+            /// <summary>
+            /// Ick
+            /// </summary>
+            Ick
+        }
+
+        /// <summary>
+        /// Test
+        /// </summary>
+        public BarEnum Bar { get; set; }
+    }
+
+    /// <summary>
     /// This is the parent class
     /// </summary>
     public class ParentClass
@@ -25,9 +47,8 @@ namespace TestDoc.NestedClasses
                 }
 
                 /// <summary>
-                /// A method on the parent class
+                /// A method on the innermost class
                 /// </summary>
-                /// <exclude/>
                 public void InnermostClassMethod()
                 {
                 }
@@ -42,11 +63,16 @@ namespace TestDoc.NestedClasses
             }
 
             /// <summary>
-            /// A method on the parent class
+            /// A property on the nested class
             /// </summary>
-            /// <exclude/>
-            public void NestedClassMethod()
+            public InnermostClass Value { get; set; }
+
+            /// <summary>
+            /// A method on the nested class
+            /// </summary>
+            public InnermostClass NestedClassMethod()
             {
+                return null;
             }
         }
         #endregion
@@ -59,11 +85,17 @@ namespace TestDoc.NestedClasses
         }
 
         /// <summary>
+        /// A property on the parent class
+        /// </summary>
+        public NestedClass Value { get; set; }
+
+        /// <summary>
         /// A method on the parent class
         /// </summary>
-        /// <exclude/>
-        public void ParentClassMethod()
+        /// <remarks>If <see langword="true"/>, do something.</remarks>
+        public NestedClass ParentClassMethod()
         {
+            return null;
         }
     }
 

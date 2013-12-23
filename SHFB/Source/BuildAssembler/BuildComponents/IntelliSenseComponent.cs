@@ -34,6 +34,9 @@ using System.Windows.Forms;
 using System.Xml;
 using System.Xml.XPath;
 
+using Sandcastle.Core.BuildAssembler;
+using Sandcastle.Core.BuildAssembler.BuildComponent;
+
 using Microsoft.Ddue.Tools.UI;
 
 namespace Microsoft.Ddue.Tools
@@ -61,7 +64,7 @@ namespace Microsoft.Ddue.Tools
     /// &lt;/component&gt;
     /// </code>
     /// </example>
-    public class IntelliSenseComponent : BuildComponent
+    public class IntelliSenseComponent : BuildComponentCore
     {
         #region Private data members
         //=====================================================================
@@ -85,7 +88,7 @@ namespace Microsoft.Ddue.Tools
         /// </summary>
         /// <param name="assembler">A reference to the build assembler.</param>
         /// <param name="configuration">The configuration information</param>
-        public IntelliSenseComponent(BuildAssembler assembler, XPathNavigator configuration) :
+        public IntelliSenseComponent(BuildAssemblerCore assembler, XPathNavigator configuration) :
           base(assembler, configuration)
         {
             XPathNavigator nav;

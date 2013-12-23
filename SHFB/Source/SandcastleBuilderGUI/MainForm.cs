@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : MainForm.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/22/2013
+// Updated : 12/16/2013
 // Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -143,9 +143,9 @@ namespace SandcastleBuilder.Gui
         {
             get
             {
-                string userName = Environment.ExpandEnvironmentVariables("%USERNAME%");
+                string userName = Environment.GetEnvironmentVariable("USERNAME");
 
-                if(String.IsNullOrEmpty(userName) || userName[0] == '%')
+                if(String.IsNullOrWhiteSpace(userName))
                     userName = "DefaultUser";
 
                 return "_" + userName;
@@ -693,8 +693,7 @@ namespace SandcastleBuilder.Gui
                 // that projects can be loaded and built.
                 if(Environment.GetEnvironmentVariable("SHFBROOT") == null)
                 {
-                    string shfbRootPath = Path.GetDirectoryName(
-                        Assembly.GetExecutingAssembly().Location);
+                    string shfbRootPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
                     MessageBox.Show("The SHFBROOT system environment variable was not found.  This variable " +
                         "is usually created during installation and may require a reboot.  It has been defined " +
@@ -901,8 +900,7 @@ namespace SandcastleBuilder.Gui
         //=====================================================================
 
         /// <summary>
-        /// This updates the state of the form when the project is modified.  It also updates the Sandcastle path
-        /// in the component configuration form.
+        /// This updates the state of the form when the project is modified
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
@@ -913,12 +911,6 @@ namespace SandcastleBuilder.Gui
                 this.Invoke(new EventHandler(project_Modified), new object[] { sender, e });
                 return;
             }
-
-            string scPath = BuildComponentManager.SandcastlePath, prjPath = project.SandcastlePath;
-
-            if((String.IsNullOrEmpty(scPath) && prjPath.Length != 0) ||
-              (!String.IsNullOrEmpty(scPath) && prjPath.Length != 0 && scPath != prjPath))
-                BuildComponentManager.SandcastlePath = prjPath;
 
             this.UpdateFilenameInfo();
 
@@ -1611,8 +1603,9 @@ namespace SandcastleBuilder.Gui
                     outputPath = Path.GetDirectoryName(outputPath);
 
                     // Visual Studio conveniently provides a development web server that doesn't require IIS
-                    path = Environment.ExpandEnvironmentVariables(@"%ProgramFiles%\Common Files\" +
-                        @"Microsoft Shared\DevServer");
+                    path = Path.Combine(Environment.GetFolderPath(Environment.Is64BitProcess ?
+                        Environment.SpecialFolder.ProgramFilesX86 : Environment.SpecialFolder.ProgramFiles),
+                        @"Common Files\Microsoft Shared\DevServer");
 
                     if(Directory.Exists(path))
                     {
@@ -1623,22 +1616,6 @@ namespace SandcastleBuilder.Gui
                         if(!File.Exists(webServerPath))
                             webServerPath.Path = Directory.EnumerateFiles(path, "WebDev.WebServer20.exe",
                                 SearchOption.AllDirectories).FirstOrDefault();
-                    }
-
-                    if(!File.Exists(webServerPath))
-                    {
-                        path = Environment.ExpandEnvironmentVariables(@"%ProgramFiles(x86)%\Common Files\" +
-                            @"Microsoft Shared\DevServer");
-
-                        if(Directory.Exists(path))
-                        {
-                           webServerPath.Path = Directory.EnumerateFiles(path, "WebDev.WebServer40.exe",
-                                SearchOption.AllDirectories).LastOrDefault();
-
-                           if(!File.Exists(webServerPath))
-                               webServerPath.Path = Directory.EnumerateFiles(path, "WebDev.WebServer20.exe",
-                                   SearchOption.AllDirectories).FirstOrDefault();
-                        }
                     }
 
                     if(!File.Exists(webServerPath))

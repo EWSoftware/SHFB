@@ -25,6 +25,8 @@ using System.Reflection;
 using System.Windows.Forms;
 using System.Xml.XPath;
 
+using Sandcastle.Core.BuildAssembler;
+
 using Microsoft.Ddue.Tools;
 using Microsoft.Ddue.Tools.Commands;
 
@@ -48,7 +50,7 @@ namespace SandcastleBuilder.Components
         /// <param name="assembler">A reference to the build assembler.</param>
         /// <param name="configuration">The configuration information</param>
         /// <remarks>This component is obsolete and will be removed in a future release.</remarks>
-        public ESentCopyFromIndexComponent(BuildAssembler assembler, XPathNavigator configuration) :
+        public ESentCopyFromIndexComponent(BuildAssemblerCore assembler, XPathNavigator configuration) :
           base(assembler, configuration)
         {
             Assembly asm = Assembly.GetExecutingAssembly();

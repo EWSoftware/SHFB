@@ -1,22 +1,21 @@
-﻿//=============================================================================
+﻿//===============================================================================================================
 // System  : Sandcastle MRefBuilder Tool
 // File    : BindingRedirectSettings.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/02/2012
+// Updated : 12/17/2013
 // Compiler: Microsoft Visual C#
 //
-// This file contains a class representing binding redirection settings for the
-// MRefBuilder assembly resolver class.
+// This file contains a class representing binding redirection settings for the MRefBuilder assembly resolver
+// class.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice and
-// all copyright notices must remain intact in all applications, documentation,
-// and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice and all copyright notices must remain intact in all applications, documentation, and source files.
 //
 // Change History
 // 03/02/2012 - EFW - Added my code to the MRefBuilder project
-//=============================================================================
+// 12/17/2013 - EFW - Updated regex to ignore anything after the public key token such as ", Retargetable=Yes".
+//===============================================================================================================
 
 using System;
 using System.Collections.ObjectModel;
@@ -37,7 +36,7 @@ namespace Microsoft.Ddue.Tools.Reflection
 
         private static Regex reStrongName = new Regex(@"(?<Name>.*?),\s*" +
             @"Version=(?<Version>.*?),\s*Culture=(?<Culture>.*?),\s*" +
-            "PublicKeyToken=(?<PublicKeyToken>.*)", RegexOptions.IgnoreCase);
+            "PublicKeyToken=(?<PublicKeyToken>[^,]*)", RegexOptions.IgnoreCase);
 
         private string configFile, assemblyName, publicKeyToken, culture;
         private Version oldVersionFrom, oldVersionTo, newVersion;

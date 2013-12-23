@@ -35,7 +35,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
 
-using SandcastleBuilder.Utils.PlugIn;
+using SandcastleBuilder.Utils.BuildComponent;
 
 namespace SandcastleBuilder.Utils.BuildEngine
 {

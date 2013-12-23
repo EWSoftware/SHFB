@@ -20,12 +20,15 @@ using System.Xml.XPath;
 
 using Microsoft.Ddue.Tools.Snippets;
 
+using Sandcastle.Core.BuildAssembler;
+using Sandcastle.Core.BuildAssembler.BuildComponent;
+
 namespace Microsoft.Ddue.Tools
 {
     /// <summary>
     /// This build component is used to replace code references with snippets from a file
     /// </summary>
-    public class ExampleComponent : BuildComponent
+    public class ExampleComponent : BuildComponentCore
     {
         #region Private data members
         //=====================================================================
@@ -51,7 +54,7 @@ namespace Microsoft.Ddue.Tools
         /// </summary>
         /// <param name="assembler">The build assembler reference</param>
         /// <param name="configuration">The component configuration</param>
-        public ExampleComponent(BuildAssembler assembler, XPathNavigator configuration) :
+        public ExampleComponent(BuildAssemblerCore assembler, XPathNavigator configuration) :
           base(assembler, configuration)
         {
             XPathNodeIterator contentNodes = configuration.Select("examples");

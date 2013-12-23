@@ -23,7 +23,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml.XPath;
 
-using Microsoft.Ddue.Tools;
+using Sandcastle.Core.BuildAssembler;
+using Sandcastle.Core.BuildAssembler.BuildComponent;
+
 using Microsoft.Ddue.Tools.Targets;
 
 using Microsoft.Isam.Esent.Collections.Generic;
@@ -60,7 +62,7 @@ namespace SandcastleBuilder.Components.Targets
         /// <param name="configuration">The target dictionary configuration</param>
         /// <returns>A target dictionary instance that uses a simple in-memory
         /// <see cref="Dictionary{TKey, TValue}"/> instance to store the targets.</returns>
-        public ESentTargetDictionary(BuildComponent component, XPathNavigator configuration) :
+        public ESentTargetDictionary(BuildComponentCore component, XPathNavigator configuration) :
           base(component, configuration)
         {
             bool noReload = false;

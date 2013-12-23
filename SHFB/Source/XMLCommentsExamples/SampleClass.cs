@@ -6,7 +6,7 @@
 // Note    : Copyright 2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This class is used to demonstrate the various XML comments elements.  It servers no useful purpose.
+// This class is used to demonstrate the various XML comments elements.  It serves no useful purpose.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
 // distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This

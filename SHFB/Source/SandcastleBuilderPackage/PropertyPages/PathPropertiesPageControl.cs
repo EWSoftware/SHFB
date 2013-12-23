@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : PathPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 10/28/2012
-// Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
+// Updated : 12/20/2013
+// Note    : Copyright 2011-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This user control is used to edit the Path category properties
@@ -17,6 +17,7 @@
 // ==============================================================================================================
 // 1.9.3.0  03/27/2011  EFW  Created the code
 // 1.9.6.0  10/28/2012  EFW  Updated for use in the standalone GUI
+// -------  12/20/2013  EFW  Added support for the ComponentPath project property
 //===============================================================================================================
 
 using System;
@@ -26,7 +27,6 @@ using System.Runtime.InteropServices;
 using SandcastleBuilder.Package.Nodes;
 #endif
 using SandcastleBuilder.Utils;
-using SandcastleBuilder.Utils.BuildComponent;
 
 namespace SandcastleBuilder.Package.PropertyPages
 {
@@ -69,15 +69,6 @@ namespace SandcastleBuilder.Package.PropertyPages
                 else
                     txtOutputPath.Text = FolderPath.TerminatePath(txtOutputPath.Text);
 
-                // Update the Sandcastle path in the build component manager if necessary
-                string scPath = BuildComponentManager.SandcastlePath,
-                       prjPath = txtSandcastlePath.Folder;
-
-                if((String.IsNullOrEmpty(scPath) && prjPath.Length != 0) ||
-                  (!String.IsNullOrEmpty(scPath) && prjPath.Length == 0) ||
-                  (!String.IsNullOrEmpty(scPath) && prjPath.Length != 0 && scPath != prjPath))
-                    BuildComponentManager.SandcastlePath = prjPath;
-
                 return true;
             }
         }
@@ -97,12 +88,11 @@ namespace SandcastleBuilder.Package.PropertyPages
 #endif
                 txtHtmlHelp1xCompilerPath.Folder = new FolderPath(project);
                 txtHtmlHelp2xCompilerPath.Folder = new FolderPath(project);
+                txtComponentPath.Folder = new FolderPath(project);
                 txtOutputPath.Folder = new FolderPath(project);
-                txtSandcastlePath.Folder = new FolderPath(project);
                 txtWorkingPath.Folder = new FolderPath(project);
             }
         }
-
         #endregion
 
         #region Event handlers

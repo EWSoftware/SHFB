@@ -16,7 +16,7 @@
 // 02/16/2012 - EFW - Merged my changes into the code
 // 09/28/2012 - EFW - Changed "SelfBranded" to "Microsoft.Help.SelfBranded" for Help Viewer 2.0 support.
 //                    Removed the ContentType metadata as it's output by the XSL transformations.
-//                    Removed header bottom fix up code as it is handled in the XSL transofmrations and script.
+//                    Removed header bottom fix up code as it is handled in the XSL transformations and script.
 //===============================================================================================================
 
 using System;
@@ -25,6 +25,9 @@ using System.Globalization;
 using System.IO;
 using System.Xml;
 using System.Xml.XPath;
+
+using Sandcastle.Core.BuildAssembler;
+using Sandcastle.Core.BuildAssembler.BuildComponent;
 
 namespace Microsoft.Ddue.Tools
 {
@@ -70,7 +73,7 @@ namespace Microsoft.Ddue.Tools
     /// &lt;/topics&gt;
     /// </code>
     /// </example>
-    public class MSHCComponent : BuildComponent
+    public class MSHCComponent : BuildComponentCore
     {
         #region Constants definitions
         //=====================================================================
@@ -235,9 +238,9 @@ namespace Microsoft.Ddue.Tools
         /// <summary>
         /// Creates a new instance of the <see cref="MSHCComponent"/> class.
         /// </summary>
-        /// <param name="assembler">The active <see cref="BuildAssembler"/>.</param>
+        /// <param name="assembler">The active <see cref="BuildAssemblerCore"/>.</param>
         /// <param name="configuration">The current <see cref="XPathNavigator"/> of the configuration.</param>
-        public MSHCComponent(BuildAssembler assembler, XPathNavigator configuration) :
+        public MSHCComponent(BuildAssemblerCore assembler, XPathNavigator configuration) :
           base(assembler, configuration)
         {
             string tocFile = MHSDefault.TocFile;

@@ -10,10 +10,13 @@
 // 03/08/2013 - EFW - Added configuration option to enable inclusion of the line continuation character.  The
 // default is false to exclude it.
 // 11/29/2013 - EFW - Added support for metadata based interop attributes
+// 12/20/2013 - EFW - Updated the syntax generator to be discoverable via MEF
 
 using System;
 using System.Globalization;
 using System.Xml.XPath;
+
+using Sandcastle.Core.BuildAssembler.SyntaxGenerator;
 
 namespace Microsoft.Ddue.Tools
 {
@@ -22,21 +25,36 @@ namespace Microsoft.Ddue.Tools
     /// </summary>
     public sealed class VisualBasicDeclarationSyntaxGenerator : SyntaxGeneratorTemplate
     {
-        private bool includeLineContinuation;
+        #region Syntax generator factory for MEF
+        //=====================================================================
 
         /// <summary>
-        /// Constructor
+        /// This is used to create a new instance of the syntax generator
         /// </summary>
-        /// <param name="configuration">The syntax generator configuration</param>
-        public VisualBasicDeclarationSyntaxGenerator(XPathNavigator configuration) : base(configuration)
+        [SyntaxGeneratorExport("VisualBasic", "VisualBasic", "vb", AlternateIds = "vb, vb#, vbnet, vb.net",
+          IsConfigurable = true, SortOrder = 20, Description = "Generates Visual Basic declaration syntax sections",
+          DefaultConfiguration = "<includeLineContinuation value=\"false\" />")]
+        public sealed class Factory : ISyntaxGeneratorFactory
         {
-            string lineCont = configuration.GetAttribute("includeLineContinuation", String.Empty);
+            /// <inheritdoc />
+            public SyntaxGeneratorBase Create()
+            {
+                return new VisualBasicDeclarationSyntaxGenerator();
+            }
+        }
+        #endregion
 
-            if(String.IsNullOrWhiteSpace(lineCont) || !Boolean.TryParse(lineCont, out includeLineContinuation))
+        private bool includeLineContinuation;
+
+        /// <inheritdoc />
+        public override void Initialize(XPathNavigator configuration)
+        {
+            base.Initialize(configuration);
+
+            var lineCont = configuration.SelectSingleNode("includeLineContinuation/@value");
+
+            if(lineCont != null || !Boolean.TryParse(lineCont.Value, out includeLineContinuation))
                 includeLineContinuation = false;
-
-            if(String.IsNullOrEmpty(Language))
-                Language = "VisualBasic";
         }
 
         /// <inheritdoc />

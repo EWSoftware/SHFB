@@ -21,11 +21,14 @@
 //
 // Change History
 // 02/16/2012 - EFW - Merged my changes into the code
+// 12/20/2013 - EFW - Updated the syntax generator to be discoverable via MEF
 //===============================================================================================================
 
 using System;
 using System.Globalization;
 using System.Xml.XPath;
+
+using Sandcastle.Core.BuildAssembler.SyntaxGenerator;
 
 namespace Microsoft.Ddue.Tools
 {
@@ -44,6 +47,24 @@ namespace Microsoft.Ddue.Tools
     /// </remarks>
     public sealed class JavaScriptDeclarationSyntaxGenerator : SyntaxGeneratorTemplate
     {
+        #region Syntax generator factory for MEF
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to create a new instance of the syntax generator
+        /// </summary>
+        [SyntaxGeneratorExport("JavaScript", "JavaScript", "cs", AlternateIds = "js, ecmascript",
+          SortOrder = 80, Description = "Generates JavaScript declaration syntax sections")]
+        public sealed class Factory : ISyntaxGeneratorFactory
+        {
+            /// <inheritdoc />
+            public SyntaxGeneratorBase Create()
+            {
+                return new JavaScriptDeclarationSyntaxGenerator();
+            }
+        }
+        #endregion
+
         #region Fields
         //=====================================================================
 
@@ -461,21 +482,6 @@ namespace Microsoft.Ddue.Tools
                     // Not supported
                     break;
             }
-        }
-        #endregion
-
-        #region Constructor
-        //=====================================================================
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="configuration">The syntax generator configuration</param>
-        public JavaScriptDeclarationSyntaxGenerator(
-          XPathNavigator configuration) : base(configuration)
-        {
-            if(String.IsNullOrEmpty(base.Language))
-                base.Language = "JavaScript";
         }
         #endregion
 

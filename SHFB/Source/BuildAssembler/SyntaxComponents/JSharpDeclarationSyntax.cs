@@ -10,10 +10,13 @@
 // 12/23/2012 - EFW - Changed base class to SyntaxGeneratorTemplate as it was identical with the exception of
 // the static WriteVisibility() method.
 // 11/29/2013 - EFW - Added support for metadata based interop attributes
+// 12/20/2013 - EFW - Updated the syntax generator to be discoverable via MEF
 
 using System;
 using System.Globalization;
 using System.Xml.XPath;
+
+using Sandcastle.Core.BuildAssembler.SyntaxGenerator;
 
 namespace Microsoft.Ddue.Tools
 {
@@ -22,17 +25,23 @@ namespace Microsoft.Ddue.Tools
     /// </summary>
     public sealed class JSharpDeclarationSyntaxGenerator : SyntaxGeneratorTemplate
     {
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="configuration">The syntax generator configuration</param>
-        public JSharpDeclarationSyntaxGenerator(XPathNavigator configuration) : base(configuration)
-        {
-            if(String.IsNullOrEmpty(Language))
-                Language = "JSharp";
-        }
+        #region Syntax generator factory for MEF
+        //=====================================================================
 
-        // private static string unsupportedGeneric = "UnsupportedGeneric_JSharp";
+        /// <summary>
+        /// This is used to create a new instance of the syntax generator
+        /// </summary>
+        [SyntaxGeneratorExport("JSharp", "JSharp", "cs", AlternateIds = "j#",
+          SortOrder = 60, Description = "Generates JSharp declaration syntax sections")]
+        public sealed class Factory : ISyntaxGeneratorFactory
+        {
+            /// <inheritdoc />
+            public SyntaxGeneratorBase Create()
+            {
+                return new JSharpDeclarationSyntaxGenerator();
+            }
+        }
+        #endregion
 
         /// <inheritdoc />
         public override void WriteNamespaceSyntax(XPathNavigator reflection, SyntaxWriter writer)

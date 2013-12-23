@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : AdditionalReferenceLinksPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/14/2013
+// Updated : 12/17/2013
 // Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -22,22 +22,21 @@
 // 1.9.0.0  06/07/2010  EFW  Added support for multi-format build output
 // 1.9.7.0  01/01/2013  EFW  Updated for use with the new cached build components.  Added code to insert the
 //                           reflection file names into the GenerateInheritedDocs tool configuration file.
+// -------  12/17/2013  EFW  Updated to use MEF for the plug-ins
 //===============================================================================================================
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.XPath;
 
 using SandcastleBuilder.Utils;
+using SandcastleBuilder.Utils.BuildComponent;
 using SandcastleBuilder.Utils.BuildEngine;
-using SandcastleBuilder.Utils.PlugIn;
 
 namespace SandcastleBuilder.PlugIns
 {
@@ -46,12 +45,16 @@ namespace SandcastleBuilder.PlugIns
     /// Data</b> and <b>Resolve Reference Links</b> build components so that links can be created to other third
     /// party help in Help 2/MS Help Viewer collections or additional online MSDN content.
     /// </summary>
-    public class AdditionalReferenceLinksPlugIn : IPlugIn
+    [HelpFileBuilderPlugInExport("Additional Reference Links", IsConfigurable = true,
+      Description = "This plug-in is used to add additional reference link targets to the Reflection Index " +
+        "Data and Resolve Reference Links build component so that links can be created to other third " +
+        "party help in a Help 2 collection, MS Help Viewer collection, or additional online MSDN content.")]
+    public sealed class AdditionalReferenceLinksPlugIn : IPlugIn
     {
         #region Private data members
         //=====================================================================
 
-        private ExecutionPointCollection executionPoints;
+        private List<ExecutionPoint> executionPoints;
 
         private BuildProcess builder;
         private BuildStep lastBuildStep;
@@ -64,90 +67,20 @@ namespace SandcastleBuilder.PlugIns
         //=====================================================================
 
         /// <summary>
-        /// This read-only property returns a friendly name for the plug-in
-        /// </summary>
-        public string Name
-        {
-            get { return "Additional Reference Links"; }
-        }
-
-        /// <summary>
-        /// This read-only property returns the version of the plug-in
-        /// </summary>
-        public Version Version
-        {
-            get
-            {
-                // Use the assembly version
-                Assembly asm = Assembly.GetExecutingAssembly();
-                FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(asm.Location);
-
-                return new Version(fvi.ProductVersion);
-            }
-        }
-
-        /// <summary>
-        /// This read-only property returns the copyright information for the plug-in
-        /// </summary>
-        public string Copyright
-        {
-            get
-            {
-                // Use the assembly copyright
-                Assembly asm = Assembly.GetExecutingAssembly();
-                AssemblyCopyrightAttribute copyright = (AssemblyCopyrightAttribute)Attribute.GetCustomAttribute(
-                    asm, typeof(AssemblyCopyrightAttribute));
-
-                return copyright.Copyright;
-            }
-        }
-
-        /// <summary>
-        /// This read-only property returns a brief description of the plug-in
-        /// </summary>
-        public string Description
-        {
-            get
-            {
-                return "This plug-in is used to add additional reference link targets to the Reflection Index " +
-                    "Data and Resolve Reference Links build component so that links can be created to other " +
-                    "third party help in a Help 2 collection, MS Help Viewer collection, or additional online " +
-                    "MSDN content.";
-            }
-        }
-
-        /// <summary>
-        /// This plug-in supports configuration
-        /// </summary>
-        /// <seealso cref="ConfigurePlugIn"/>
-        public bool SupportsConfiguration
-        {
-            get { return true; }
-        }
-
-        /// <summary>
-        /// This plug-in does not run in partial builds
-        /// </summary>
-        public bool RunsInPartialBuild
-        {
-            get { return false; }
-        }
-
-        /// <summary>
         /// This read-only property returns a collection of execution points that define when the plug-in should
         /// be invoked during the build process.
         /// </summary>
-        public ExecutionPointCollection ExecutionPoints
+        public IEnumerable<ExecutionPoint> ExecutionPoints
         {
             get
             {
                 if(executionPoints == null)
-                    executionPoints = new ExecutionPointCollection
+                    executionPoints = new List<ExecutionPoint>
                     {
                         new ExecutionPoint(BuildStep.GenerateNamespaceSummaries, ExecutionBehaviors.Before),
                         new ExecutionPoint(BuildStep.GenerateInheritedDocumentation, ExecutionBehaviors.Before),
                         new ExecutionPoint(BuildStep.CreateBuildAssemblerConfigs, ExecutionBehaviors.Before),
-                        new ExecutionPoint(BuildStep.MergeCustomConfigs, ExecutionBehaviors.After),
+                        new ExecutionPoint(BuildStep.MergeCustomConfigs, ExecutionBehaviors.After)
                     };
 
                 return executionPoints;
@@ -187,7 +120,10 @@ namespace SandcastleBuilder.PlugIns
             builder = buildProcess;
             otherLinks = new ReferenceLinkSettingsCollection();
 
-            builder.ReportProgress("{0} Version {1}\r\n{2}", this.Name, this.Version, this.Copyright);
+            var metadata = (HelpFileBuilderPlugInExportAttribute)this.GetType().GetCustomAttributes(
+                typeof(HelpFileBuilderPlugInExportAttribute), false).First();
+
+            builder.ReportProgress("{0} Version {1}\r\n{2}", metadata.Id, metadata.Version, metadata.Copyright);
 
             root = configuration.SelectSingleNode("configuration");
 
@@ -207,7 +143,7 @@ namespace SandcastleBuilder.PlugIns
         /// This method is used to execute the plug-in during the build process
         /// </summary>
         /// <param name="context">The current execution context</param>
-        public void Execute(Utils.PlugIn.ExecutionContext context)
+        public void Execute(ExecutionContext context)
         {
             string workingPath, configFilename;
             bool success;
@@ -265,7 +201,7 @@ namespace SandcastleBuilder.PlugIns
                 var rn = builder.ReferencedNamespaces;
 
                 HashSet<string> validNamespaces = new HashSet<string>(Directory.EnumerateFiles(Path.Combine(
-                  builder.SandcastleFolder, @"Data\Reflection"), "*.xml", SearchOption.AllDirectories).Select(
+                  builder.HelpFileBuilderFolder, @"Data\Reflection"), "*.xml", SearchOption.AllDirectories).Select(
                   f => Path.GetFileNameWithoutExtension(f)));
 
                 foreach(ReferenceLinkSettings vs in otherLinks)
@@ -440,32 +376,12 @@ namespace SandcastleBuilder.PlugIns
         //=====================================================================
 
         /// <summary>
-        /// This handles garbage collection to ensure proper disposal of the plug-in if not done explicitly with
-        /// <see cref="Dispose()"/>.
-        /// </summary>
-        ~AdditionalReferenceLinksPlugIn()
-        {
-            this.Dispose(false);
-        }
-
-        /// <summary>
         /// This implements the Dispose() interface to properly dispose of the plug-in object.
         /// </summary>
-        /// <overloads>There are two overloads for this method.</overloads>
         public void Dispose()
         {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// This can be overridden by derived classes to add their own disposal code if necessary.
-        /// </summary>
-        /// <param name="disposing">Pass true to dispose of the managed and unmanaged resources or false to just
-        /// dispose of the unmanaged resources.</param>
-        protected virtual void Dispose(bool disposing)
-        {
             // Nothing to dispose of in this one
+            GC.SuppressFinalize(this);
         }
         #endregion
 
@@ -489,7 +405,6 @@ namespace SandcastleBuilder.PlugIns
             try
             {
                 // For the plug-in, we'll override some project settings
-                project.SandcastlePath = new FolderPath(builder.SandcastleFolder, true, project);
                 project.HtmlHelp1xCompilerPath = new FolderPath(builder.Help1CompilerFolder, true, project);
                 project.HtmlHelp2xCompilerPath = new FolderPath(builder.Help2CompilerFolder, true, project);
                 project.WorkingPath = new FolderPath(workingPath, true, project);

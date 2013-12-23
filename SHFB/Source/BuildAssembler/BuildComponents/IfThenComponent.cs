@@ -9,19 +9,22 @@ using System.Configuration;
 using System.Xml;
 using System.Xml.XPath;
 
+using Sandcastle.Core.BuildAssembler;
+using Sandcastle.Core.BuildAssembler.BuildComponent;
+
 namespace Microsoft.Ddue.Tools
 {
     /// <summary>
     /// This component is used to conditionally execute a set of components based on an XPath condition
     /// </summary>
-    public class IfThenComponent : BuildComponent
+    public class IfThenComponent : BuildComponentCore
     {
         #region Private data members
         //=====================================================================
 
         private XPathExpression condition;
-        private IEnumerable<BuildComponent> true_branch = new List<BuildComponent>();
-        private IEnumerable<BuildComponent> false_branch = new List<BuildComponent>();
+        private IEnumerable<BuildComponentCore> true_branch = new List<BuildComponentCore>();
+        private IEnumerable<BuildComponentCore> false_branch = new List<BuildComponentCore>();
         private BuildContext context;
         #endregion
 
@@ -33,7 +36,7 @@ namespace Microsoft.Ddue.Tools
         /// </summary>
         /// <param name="assembler">The build assembler reference</param>
         /// <param name="configuration">The component configuration</param>
-        public IfThenComponent(BuildAssembler assembler, XPathNavigator configuration) :
+        public IfThenComponent(BuildAssemblerCore assembler, XPathNavigator configuration) :
           base(assembler, configuration)
         {
             // Get the condition
@@ -45,7 +48,7 @@ namespace Microsoft.Ddue.Tools
             string condition_xpath = if_node.GetAttribute("condition", String.Empty);
 
             if(String.IsNullOrEmpty(condition_xpath))
-                throw new ConfigurationErrorsException();
+                throw new ConfigurationErrorsException("You must define a condition attribute on the <if> element");
 
             condition = XPathExpression.Compile(condition_xpath);
 
@@ -83,12 +86,12 @@ namespace Microsoft.Ddue.Tools
             // On the basis of the condition, execute either the true or the false branch
             if(result)
             {
-                foreach(BuildComponent component in true_branch)
+                foreach(BuildComponentCore component in true_branch)
                     component.Apply(document, key);
             }
             else
             {
-                foreach(BuildComponent component in false_branch)
+                foreach(BuildComponentCore component in false_branch)
                     component.Apply(document, key);
             }
         }
@@ -98,10 +101,10 @@ namespace Microsoft.Ddue.Tools
         {
             if(disposing)
             {
-                foreach(BuildComponent component in true_branch)
+                foreach(BuildComponentCore component in true_branch)
                     component.Dispose();
 
-                foreach(BuildComponent component in false_branch)
+                foreach(BuildComponentCore component in false_branch)
                     component.Dispose();
             }
 

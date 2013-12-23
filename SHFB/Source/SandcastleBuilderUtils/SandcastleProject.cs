@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SandcastleProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/13/2013
+// Updated : 12/20/2013
 // Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -64,7 +64,9 @@
 //                           Added the CatalogName property for Help Viewer 2.0 support.
 // 1.9.6.0  10/13/2012  EFW  Removed the BrandingPackageName and SelfBranded properties.  Added support for
 //                           transform component arguments.
-// 1.9.9.0  11/30/2013  EFW  Merged changes from Stazzz to support namespace grouping.
+// 1.9.9.0  11/30/2013  EFW  Merged changes from Stazzz to support namespace grouping
+// -------  12/17/2013  EFW  Removed the SandcastlePath property and all references to it
+//          12/20/2013  EFW  Added support for the ComponentPath project property
 //===============================================================================================================
 
 using System;
@@ -86,7 +88,6 @@ using Microsoft.Build.Evaluation;
 using SandcastleBuilder.Utils.BuildComponent;
 using SandcastleBuilder.Utils.Design;
 using SandcastleBuilder.Utils.Frameworks;
-using SandcastleBuilder.Utils.PlugIn;
 using SandcastleBuilder.Utils.PresentationStyle;
 
 namespace SandcastleBuilder.Utils
@@ -157,7 +158,7 @@ namespace SandcastleBuilder.Utils
         private PlugInConfigurationDictionary plugInConfigs;
 
         // Path and build-related properties
-        private FolderPath hhcPath, hxcompPath, sandcastlePath, workingPath;
+        private FolderPath hhcPath, hxcompPath, workingPath, componentPath;
         private FilePath buildLogFile;
         private string outputPath, frameworkVersion;
         private bool cleanIntermediates, keepLogFile, cppCommentsFixup, disableCodeBlockComponent,
@@ -512,8 +513,7 @@ namespace SandcastleBuilder.Utils
         /// </summary>
         /// <remarks>These notes will appear in the root namespaces page if
         /// entered.</remarks>
-        [Category("Summaries"), Description("Project summary comments"),
-          EscapeValue, Editor(typeof(ProjectSummaryEditor), typeof(UITypeEditor))]
+        [Category("Summaries"), Description("Project summary comments"), EscapeValue]
         public string ProjectSummary
         {
             get { return projectSummary; }
@@ -530,6 +530,30 @@ namespace SandcastleBuilder.Utils
 
         #region Path-related properties
         //=====================================================================
+
+        /// <summary>
+        /// This is used to get or set the path to a folder containing additional, project-specific build
+        /// components.
+        /// </summary>
+        /// <value>If left blank, the current project's folder is searched instead.</value>
+        [Category("Paths"), Description("This is used to get or set the path to a folder containing " +
+          "additional, project-specific build components."), DefaultValue(null),
+          Editor(typeof(FolderPathObjectEditor), typeof(UITypeEditor)),
+          FolderDialog("Select an additional build component location", Environment.SpecialFolder.MyDocuments)]
+        public FolderPath ComponentPath
+        {
+            get { return componentPath; }
+            set
+            {
+                if(value == null)
+                    value = new FolderPath(this);
+
+                this.SetProjectProperty("ComponentPath", value);
+                componentPath = value;
+                componentPath.PersistablePathChanging += PathProperty_Changing;
+                componentPath.PersistablePathChanged += PathProperty_Changed;
+            }
+        }
 
         /// <summary>
         /// This is used to get or set the path to the HTML Help 1 compiler
@@ -611,30 +635,6 @@ namespace SandcastleBuilder.Utils
 
                 this.SetProjectProperty("OutputPath", value);
                 outputPath = value;
-            }
-        }
-
-        /// <summary>
-        /// This is used to get or set the path to the Sandcastle components
-        /// </summary>
-        /// <value>You only need to set this if the builder cannot determine
-        /// the path for itself.</value>
-        [Category("Paths"), Description("The path to the Sandcastle components.  This only needs to be set " +
-          "if the builder cannot determine the path for itself."), DefaultValue(null),
-          Editor(typeof(FolderPathObjectEditor), typeof(UITypeEditor)),
-          FolderDialog("Select the Sandcastle installation location", Environment.SpecialFolder.ProgramFiles)]
-        public FolderPath SandcastlePath
-        {
-            get { return sandcastlePath; }
-            set
-            {
-                if(value == null)
-                    value = new FolderPath(this);
-
-                this.SetProjectProperty("SandcastlePath", value);
-                sandcastlePath = value;
-                sandcastlePath.PersistablePathChanging += PathProperty_Changing;
-                sandcastlePath.PersistablePathChanged += PathProperty_Changed;
             }
         }
 
@@ -827,9 +827,8 @@ namespace SandcastleBuilder.Utils
             get { return frameworkVersion; }
             set
             {
-                // Let bad values through.  The SandcastlePath value may be needed to find the installed
-                // frameworks and it might not have been set yet.  The property pages or the build engine will
-                // catch bad values if necessary.
+                // Let bad values through.  The property pages or the build engine will catch bad values if
+                // necessary.
                 if(value == null)
                     value = FrameworkDictionary.DefaultFrameworkInternal;
 
@@ -860,20 +859,6 @@ namespace SandcastleBuilder.Utils
         public PlugInConfigurationDictionary PlugInConfigurations
         {
             get { return plugInConfigs; }
-        }
-
-        /// <summary>
-        /// This is used to present a design-time property that is used for editing user-defined project file
-        /// properties.
-        /// </summary>
-        /// <remarks>The designer attached to the property handles updating the user-defined project
-        /// properties.</remarks>
-        [Category("Build"), Editor(typeof(UserDefinedPropertyEditor), typeof(UITypeEditor)),
-          TypeConverter(typeof(UserDefinedPropertyTypeConverter)),
-          Description("Add, edit, or delete user-defined project properties")]
-        public SandcastleProject UserDefinedProperties
-        {
-            get { return this; }
         }
 
         /// <summary>
@@ -1275,10 +1260,9 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get or set the naming method used to generate the
-        /// help topic filenames.
+        /// This is used to get or set the naming method used to generate the help topic filenames
         /// </summary>
-        /// <value>The default is to use GUID values as the filenames.</value>
+        /// <value>The default is to use GUID values as the filenames</value>
         [Category("Help File"), Description("Specify the naming method to use for the help topic filenames"),
           DefaultValue(NamingMethod.Guid)]
         public NamingMethod NamingMethod
@@ -1292,16 +1276,13 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to get or set the language filters which determines
-        /// which languages appear in the <b>Syntax</b> section of the help
-        /// topics.
+        /// This is used to get or set the language filters which determines which languages appear in the
+        /// <b>Syntax</b> section of the help topics.
         /// </summary>
         /// <value>The default is <b>Standard</b> (C#, VB.NET, and C++).</value>
-        [Category("Help File"), Description("Select which languages will " +
-          "appear in the Syntax section of each help topic.  Select values " +
-          "from the dropdown or enter a comma-separated list of values."),
-          DefaultValue("Standard"), TypeConverter(typeof(SyntaxFilterTypeConverter)),
-          Editor(typeof(SyntaxFilterValueEditor), typeof(UITypeEditor))]
+        [Category("Help File"), Description("Select which languages will appear in the Syntax section of each " +
+          "help topic.  Select values from the dropdown or enter a comma-separated list of values."),
+          DefaultValue("Standard")]
         public string SyntaxFilters
         {
             get { return syntaxFilters; }
@@ -2453,16 +2434,6 @@ namespace SandcastleBuilder.Utils
         {
             return (this.HelpAttributes.Count != 0);
         }
-
-        /// <summary>
-        /// This is used to see if the <see cref="UserDefinedProperties"/> property should be serialized.
-        /// </summary>
-        /// <returns>True to serialize it, false if it matches the default and should not be serialized.</returns>
-        /// <remarks>We do not allow resetting this property as it is a design-time only property.</remarks>
-        private bool ShouldSerializeUserDefinedProperties()
-        {
-            return this.GetUserDefinedProperties().Count != 0;
-        }
         #endregion
 
         #region Private class methods
@@ -2531,8 +2502,8 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// This is used to ensure that path properties are written to the
-        /// project when one of their sub-properties is edited.
+        /// This is used to ensure that path properties are written to the project when one of their
+        /// sub-properties is edited.
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
@@ -2547,10 +2518,10 @@ namespace SandcastleBuilder.Utils
                 propName = "HtmlHelp1xCompilerPath";
             else if(changedPath == hxcompPath)
                 propName = "HtmlHelp2xCompilerPath";
-            else if(changedPath == sandcastlePath)
-                propName = "SandcastlePath";
             else if(changedPath == workingPath)
                 propName = "WorkingPath";
+            else if(changedPath == componentPath)
+                propName = "ComponentPath";
             else
                 throw new ArgumentException("Unknown path property changed", "sender");
 
@@ -2558,8 +2529,7 @@ namespace SandcastleBuilder.Utils
         }
 
         /// <summary>
-        /// Replace a \xNN value in the copyright text with its actual
-        /// character.
+        /// Replace a \xNN value in the copyright text with its actual character
         /// </summary>
         /// <param name="match">The match that was found</param>
         /// <returns>The string to use as the replacement</returns>
@@ -2986,8 +2956,8 @@ namespace SandcastleBuilder.Utils
                 maximumGroupParts = 2;
 
                 this.OutputPath = null;
-                this.HtmlHelp1xCompilerPath = this.HtmlHelp2xCompilerPath = this.SandcastlePath =
-                    this.WorkingPath = null;
+                this.HtmlHelp1xCompilerPath = this.HtmlHelp2xCompilerPath = this.WorkingPath =
+                    this.ComponentPath = null;
 
                 this.HelpTitle = this.HtmlHelpName = this.CopyrightHref = this.CopyrightText =
                     this.FeedbackEMailAddress = this.FeedbackEMailLinkText = this.HeaderText = this.FooterText =
@@ -3119,7 +3089,7 @@ namespace SandcastleBuilder.Utils
 
         /// <summary>
         /// This handles garbage collection to ensure proper disposal of the Sandcastle project if not done
-        /// explicity with <see cref="Dispose()"/>.
+        /// explicitly with <see cref="Dispose()"/>.
         /// </summary>
         ~SandcastleProject()
         {
@@ -3512,8 +3482,8 @@ namespace SandcastleBuilder.Utils
                 this.SetProjectProperty("BuildLogFile", buildLogFile);
                 this.SetProjectProperty("HtmlHelp1xCompilerPath", hhcPath);
                 this.SetProjectProperty("HtmlHelp2xCompilerPath", hxcompPath);
-                this.SetProjectProperty("SandcastlePath", sandcastlePath);
                 this.SetProjectProperty("WorkingPath", workingPath);
+                this.SetProjectProperty("ComponentPath", componentPath);
             }
 
             // Update the schema version if necessary but only if the project is dirty

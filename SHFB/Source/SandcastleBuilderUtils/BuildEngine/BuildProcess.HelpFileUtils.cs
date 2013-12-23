@@ -43,7 +43,7 @@ using System.Xml;
 using System.Xml.XPath;
 using System.Web;
 
-using SandcastleBuilder.Utils.PlugIn;
+using SandcastleBuilder.Utils.BuildComponent;
 using SandcastleBuilder.Utils.ConceptualContent;
 
 namespace SandcastleBuilder.Utils.BuildEngine

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : ApiFilterCollection.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/30/2013
+// Updated : 12/18/2013
 // Note    : Copyright 2007-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -24,12 +24,9 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing.Design;
 using System.IO;
 using System.Text;
 using System.Xml;
-
-using SandcastleBuilder.Utils.Design;
 
 namespace SandcastleBuilder.Utils
 {
@@ -39,7 +36,6 @@ namespace SandcastleBuilder.Utils
     /// <remarks><note type="note">Unlike other collections in the project, this one is cleared and rebuilt if it
     /// changes.  As such, the contained items do not notify the project when they change as they are created
     /// anew each time the collection is rebuilt.</note></remarks>
-    [TypeConverter(typeof(ApiFilterCollectionTypeConverter)), Editor(typeof(ApiFilterEditor), typeof(UITypeEditor))]
     public class ApiFilterCollection : BindingList<ApiFilter>, ICloneable
     {
         #region Private data members

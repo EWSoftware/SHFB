@@ -6,7 +6,7 @@
 // Note    : Copyright 2012, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This class is used to demonstrate the various XML comments elements related to generics.  It servers no
+// This class is used to demonstrate the various XML comments elements related to generics.  It serves no
 // useful purpose.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
@@ -27,7 +27,7 @@ namespace XMLCommentsExamples
 
     /// <summary>
     /// This class is used to demonstrate the various XML comments elements
-    /// related to generics.  It servers no useful purpose.
+    /// related to generics.  It serves no useful purpose.
     /// </summary>
     /// <typeparam name="T1">This is the first generic argument.</typeparam>
     /// <typeparam name="T2">This is the second generic argument constrained to

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.PlugIns.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/13/2013
-// Note    : Copyright 2007-2008, Eric Woodruff, All rights reserved
+// Updated : 12/20/2013
+// Note    : Copyright 2007-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the methods that handle the plug-ins during the build process
@@ -18,15 +18,18 @@
 // 1.5.2.0  09/12/2007  EFW  Created the code
 // 1.6.0.6  03/13/2008  EFW  Wrapped plug-in log output in an XML element
 // 1.8.0.1  11/14/2008  EFW  Added execution priority support
+// -------  12/18/2013  EFW  Updated to use MEF for the plug-ins
 //===============================================================================================================
 
 using System;
 using System.Collections.Generic;
-using System.Reflection;
+using System.ComponentModel.Composition.Hosting;
+using System.IO;
+using System.Linq;
 using System.Text;
 using System.Xml;
 
-using SandcastleBuilder.Utils.PlugIn;
+using SandcastleBuilder.Utils.BuildComponent;
 
 namespace SandcastleBuilder.Utils.BuildEngine
 {
@@ -34,7 +37,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
     {
         #region Private data members
         //=====================================================================
-        // Private data members
 
         private Dictionary<string, IPlugIn> loadedPlugIns;
         private BuildStep lastBeforeStep, lastAfterStep;
@@ -42,16 +44,13 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
         #region Properties
         //=====================================================================
-        // Properties
 
         /// <summary>
-        /// This returns a <see cref="Dictionary{TKey, TValue}"/> containing
-        /// the currently loaded plug-ins.
+        /// This returns a <see cref="Dictionary{TKey, TValue}"/> containing the currently loaded plug-ins.
         /// </summary>
-        /// <value>The key is the plug in name.  The value is a reference to
-        /// an <see cref="IPlugIn"/> interface for the plug-in.</value>
-        /// <remarks>This allows you to access other plug-ins to facilitate
-        /// sharing of information between them.</remarks>
+        /// <value>The key is the plug in ID.  The value is a reference to an <see cref="IPlugIn"/> interface
+        /// for the plug-in.</value>
+        /// <remarks>This allows you to access other plug-ins to facilitate sharing of information between them.</remarks>
         public Dictionary<string, IPlugIn> LoadedPlugIns
         {
             get { return loadedPlugIns; }
@@ -61,30 +60,29 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// <summary>
         /// Load and initialize the plug-ins used by this project
         /// </summary>
-        /// <exception cref="BuilderException">This is thrown if a requested
-        /// plug-in is not found or has a version that is not supported by
-        /// this version of the help file builder.</exception>
+        /// <exception cref="BuilderException">This is thrown if a requested plug-in is not found</exception>
         private void LoadPlugIns()
         {
             PlugInConfiguration plugInConfig;
-            IPlugIn plugIn;
+            Lazy<IPlugIn, IPlugInMetadata> plugIn;
+            IPlugIn instance;
             XmlDocument config;
             StringBuilder sb = new StringBuilder(256);
 
             this.ReportProgress("Loading and initializing plug-ins...");
             loadedPlugIns = new Dictionary<string, IPlugIn>();
 
-            // Note that a list of failures is accumulate as we may need to
-            // run the Completion Notification plug-in to report the failures
-            // when done.
+            var availablePlugs = componentContainer.GetExports<IPlugIn, IPlugInMetadata>();
+
+            // Note that a list of failures is accumulate as we may need to run the Completion Notification
+            // plug-in to report the failures when done.
             foreach(string key in project.PlugInConfigurations.Keys)
             {
                 plugInConfig = project.PlugInConfigurations[key];
 
                 if(!plugInConfig.Enabled)
                 {
-                    this.ReportProgress("{0} plug-in is disabled and will " +
-                        "not be loaded", key);
+                    this.ReportProgress("{0} plug-in is disabled and will not be loaded", key);
                     continue;
                 }
 
@@ -92,49 +90,39 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 try
                 {
-                    if(!PlugInManager.IsSupported(key))
+                    plugIn = availablePlugs.FirstOrDefault(p => p.Metadata.Id == key);
+
+                    if(plugIn == null)
                     {
-                        sb.AppendFormat("Error: Unable to locate plug-in '{0}' " +
-                            "or it is of a version that is not supported by " +
-                            "this version of the help file builder\r\n", key);
+                        sb.AppendFormat("Error: Unable to locate plug-in '{0}' in any of the component or " +
+                            "project folders and it cannot be used.\r\n", key);
                         continue;
                     }
 
-                    plugIn = PlugInManager.PlugIns[key].NewInstance();
-
                     // For partial builds, only plug-ins that run in partial builds are loaded
-                    if(this.PartialBuildType == PartialBuildType.None || plugIn.RunsInPartialBuild)
+                    if(this.PartialBuildType == PartialBuildType.None || plugIn.Metadata.RunsInPartialBuild)
                     {
+                        // Plug-ins are singletons and will be disposed of by the composition container when it
+                        // is disposed of.
+                        instance = plugIn.Value;
+
                         config = new XmlDocument();
                         config.LoadXml(plugInConfig.Configuration);
-                        plugIn.Initialize(this, config.CreateNavigator());
-                        loadedPlugIns.Add(key, plugIn);
+
+                        instance.Initialize(this, config.CreateNavigator());
+
+                        loadedPlugIns.Add(key, instance);
                     }
-                    else
-                        plugIn.Dispose();
-                }
-                catch(ReflectionTypeLoadException rex)
-                {
-                    sb.AppendFormat("Unable to load plug-in assembly for {0}:\r\n",
-                        key);
-
-                    if(rex.Types.Length != 0)
-                        sb.AppendFormat("  Assembly: {0}\r\n",
-                            rex.Types[0].Module.FullyQualifiedName);
-
-                    foreach(Exception ex in rex.LoaderExceptions)
-                        sb.AppendFormat("  {0}\r\n", ex.Message);
                 }
                 catch(Exception ex)
                 {
                     BuilderException bex  = ex as BuilderException;
 
                     if(bex != null)
-                        sb.AppendFormat("{0}: {1}\r\n", bex.ErrorCode,
-                            bex.Message);
+                        sb.AppendFormat("{0}: {1}\r\n", bex.ErrorCode, bex.Message);
                     else
                         sb.AppendFormat("{0}: Unexpected error: {1}\r\n",
-                            (plugIn != null) ? plugIn.Name : key, ex.ToString());
+                            (plugIn != null) ? plugIn.Metadata.Id : key, ex.ToString());
                 }
             }
 
@@ -146,15 +134,13 @@ namespace SandcastleBuilder.Utils.BuildEngine
         }
 
         /// <summary>
-        /// Execute all plug-ins that need to execute in the given build step
-        /// that have the given execution behavior.
+        /// Execute all plug-ins that need to execute in the given build step that have the given execution
+        /// behavior.
         /// </summary>
         /// <param name="behavior">The execution behavior</param>
-        /// <returns>True if at least one plug-in was executed or false if
-        /// no plug-ins were executed.</returns>
-        /// <remarks>Plug-ins will execute based on their execution priority.
-        /// Those with a higher priority value will execute before those with
-        /// a lower value.  Plug-ins with identical priority values may execute
+        /// <returns>True if at least one plug-in was executed or false if no plug-ins were executed.</returns>
+        /// <remarks>Plug-ins will execute based on their execution priority.  Those with a higher priority value
+        /// will execute before those with a lower value.  Plug-ins with identical priority values may execute
         /// in any order within their group.</remarks>
         private bool ExecutePlugIns(ExecutionBehaviors behavior)
         {
@@ -166,37 +152,30 @@ namespace SandcastleBuilder.Utils.BuildEngine
             if(loadedPlugIns == null)
                 return false;
 
-            executeList = new List<IPlugIn>();
             step = progressArgs.BuildStep;
 
             // Find plug-ins that need to be executed
-            foreach(IPlugIn plugIn in loadedPlugIns.Values)
-                if(plugIn.ExecutionPoints.RunsAt(step, behavior))
-                    executeList.Add(plugIn);
+            executeList = loadedPlugIns.Values.Where(p => p.ExecutionPoints.RunsAt(step, behavior)).ToList();
 
             if(executeList.Count == 0)
                 return false;
 
             // Sort by execution priority in descending order
-            executeList.Sort(
-                delegate(IPlugIn x, IPlugIn y)
-                {
-                    return y.ExecutionPoints.PriorityFor(step, behavior) -
-                        x.ExecutionPoints.PriorityFor(step, behavior);
-                });
+            executeList.Sort((x, y) => y.ExecutionPoints.PriorityFor(step, behavior) -
+                x.ExecutionPoints.PriorityFor(step, behavior));
 
             context = new ExecutionContext(step, behavior);
 
             foreach(IPlugIn plugIn in executeList)
             {
+                var metadata = (HelpFileBuilderPlugInExportAttribute)plugIn.GetType().GetCustomAttributes(
+                    typeof(HelpFileBuilderPlugInExportAttribute), false).First();
+
                 try
                 {
-                    // Wrap plug-in output in an element so that it
-                    // can be formatted differently.
-                    swLog.WriteLine("<plugIn name=\"{0}\" " +
-                        "behavior=\"{1}\" priority=\"{2}\">", plugIn.Name,
-                        behavior, plugIn.ExecutionPoints.PriorityFor(step,
-                        behavior));
+                    // Wrap plug-in output in an element so that it can be formatted differently
+                    swLog.WriteLine("<plugIn name=\"{0}\" behavior=\"{1}\" priority=\"{2}\">", metadata.Id,
+                        behavior, plugIn.ExecutionPoints.PriorityFor(step, behavior));
 
                     context.Executed = true;
                     plugIn.Execute(context);
@@ -207,9 +186,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 {
                     swLog.WriteLine("</plugIn>");
 
-                    throw new BuilderException("BE0029", "Unexpected " +
-                        "error while executing plug-in '" +
-                        plugIn.Name + "': " + ex.ToString(), ex);
+                    throw new BuilderException("BE0029", "Unexpected error while executing plug-in '" +
+                        metadata.Id + "': " + ex.ToString(), ex);
                 }
 
                 if(context.Executed)
@@ -221,12 +199,10 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
         /// <summary>
         /// This can be used by plug-ins using the
-        /// <see cref="ExecutionBehaviors.InsteadOf" /> execution behavior to
-        /// execute plug-ins that want to run before the plug-in executes its
-        /// main processing.
+        /// <see cref="ExecutionBehaviors.InsteadOf" /> execution behavior to execute plug-ins that want to run
+        /// before the plug-in executes its main processing.
         /// </summary>
-        /// <remarks>This will only run once per step.  Any subsequent calls by
-        /// other plug-ins will be ignored.</remarks>
+        /// <remarks>This will only run once per step.  Any subsequent calls by other plug-ins will be ignored.</remarks>
         public void ExecuteBeforeStepPlugIns()
         {
             // Only execute once per step
@@ -239,12 +215,10 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
         /// <summary>
         /// This can be used by plug-ins using the
-        /// <see cref="ExecutionBehaviors.InsteadOf" /> execution behavior to
-        /// execute plug-ins that want to run after the plug-in has executed
-        /// its main processing.
+        /// <see cref="ExecutionBehaviors.InsteadOf" /> execution behavior to execute plug-ins that want to run
+        /// after the plug-in has executed its main processing.
         /// </summary>
-        /// <remarks>This will only run once per step.  Any subsequent calls by
-        /// other plug-ins will be ignored.</remarks>
+        /// <remarks>This will only run once per step.  Any subsequent calls by other plug-ins will be ignored.</remarks>
         public void ExecuteAfterStepPlugIns()
         {
             // Only execute once per step

@@ -6,8 +6,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MRefBuilder", "MRefBuilder.
 		{E8606C83-11D9-411D-97A4-0ED1FC5C32EA} = {E8606C83-11D9-411D-97A4-0ED1FC5C32EA}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommandLine", "..\CommandLine\CommandLine.csproj", "{6CF7CA42-3706-4F6B-A2B4-10EF3F511888}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestCase", "TestCase\TestCase.csproj", "{E8606C83-11D9-411D-97A4-0ED1FC5C32EA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6D908FB5-0118-43FC-9941-E96D68ED47E4}"
@@ -15,20 +13,22 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		MRefBuilder.FxCop = MRefBuilder.FxCop
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandcastle.Core", "..\SandcastleCore\Sandcastle.Core.csproj", "{399E78F8-4954-409E-991A-37DA9D0579CC}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
 		SccNumberOfProjects = 4
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs01
-		SccProjectUniqueName0 = ..\\CommandLine\\CommandLine.csproj
-		SccProjectName0 = ../CommandLine
-		SccLocalPath0 = ..\\CommandLine
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = MRefBuilder.csproj
 		SccLocalPath1 = .
-		SccProjectUniqueName2 = MRefBuilder.csproj
-		SccLocalPath2 = .
-		SccProjectUniqueName3 = TestCase\\TestCase.csproj
-		SccProjectName3 = TestCase
-		SccLocalPath3 = TestCase
+		SccProjectUniqueName2 = TestCase\\TestCase.csproj
+		SccProjectName2 = TestCase
+		SccLocalPath2 = TestCase
+		SccProjectUniqueName3 = ..\\SandcastleCore\\Sandcastle.Core.csproj
+		SccProjectName3 = ../SandcastleCore
+		SccLocalPath3 = ..\\SandcastleCore
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,14 +39,14 @@ Global
 		{A8DCAD75-879F-4C97-803B-C9A17F227B04}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A8DCAD75-879F-4C97-803B-C9A17F227B04}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A8DCAD75-879F-4C97-803B-C9A17F227B04}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6CF7CA42-3706-4F6B-A2B4-10EF3F511888}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6CF7CA42-3706-4F6B-A2B4-10EF3F511888}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6CF7CA42-3706-4F6B-A2B4-10EF3F511888}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6CF7CA42-3706-4F6B-A2B4-10EF3F511888}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E8606C83-11D9-411D-97A4-0ED1FC5C32EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E8606C83-11D9-411D-97A4-0ED1FC5C32EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E8606C83-11D9-411D-97A4-0ED1FC5C32EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E8606C83-11D9-411D-97A4-0ED1FC5C32EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{399E78F8-4954-409E-991A-37DA9D0579CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{399E78F8-4954-409E-991A-37DA9D0579CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{399E78F8-4954-409E-991A-37DA9D0579CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{399E78F8-4954-409E-991A-37DA9D0579CC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

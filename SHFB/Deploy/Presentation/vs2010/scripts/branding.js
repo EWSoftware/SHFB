@@ -131,7 +131,7 @@ function onLoad()
     while (i < snippetIdSets.length)
     {
       var _tempSnippetCount = 5;
-      if (document.getElementById(snippetIdSets[i] + "_tab5") == null)
+      if (document.getElementById(snippetIdSets[i] + "_tab4") == null)
         _tempSnippetCount = 1;
 
       if (_tempSnippetCount < 2)
@@ -183,7 +183,7 @@ function onLoad()
       }
      
       }
-      if (document.getElementById(snippetIdSets[i] + "_tab5").className.indexOf("OH_CodeSnippetContainerTabDisabled") != -1)
+      if (document.getElementById(snippetIdSets[i] + "_tab4").className.indexOf("OH_CodeSnippetContainerTabDisabled") != -1)
       {
         // disable right most img if last tab disabled
         document.getElementById(snippetIdSets[i] + "_tabimgright").className = "OH_CodeSnippetContainerTabRightDisabled";
@@ -429,7 +429,7 @@ function ChangeTab(objid, lang, index, snippetCount)
     {
 
       var _tempSnippetCount = 5;
-      if (document.getElementById(snippetIdSets[i] + "_tab5") == null)
+      if (document.getElementById(snippetIdSets[i] + "_tab4") == null)
         _tempSnippetCount = 1;
       if (_tempSnippetCount < 2)
       { // Tabs are not grouped - skip
@@ -580,7 +580,7 @@ function ExchangeTitleContent(objid, snippetCount)
     if (snippetIdSets[i] != objid)
     {
       var _tempSnippetCount = 5;
-      if (document.getElementById(snippetIdSets[i] + "_tab5") == null)
+      if (document.getElementById(snippetIdSets[i] + "_tab4") == null)
         _tempSnippetCount = 1;
 
       if (_tempSnippetCount < 2) return;

@@ -12,6 +12,9 @@ using System.Xml.XPath;
 using System.IO;
 using System.Text;
 
+using Sandcastle.Core.BuildAssembler;
+using Sandcastle.Core.BuildAssembler.BuildComponent;
+
 // still have problems with spaces
 
 namespace Microsoft.Ddue.Tools
@@ -19,7 +22,7 @@ namespace Microsoft.Ddue.Tools
     /// <summary>
     /// This component is used to insert platform information into the topics
     /// </summary>
-    public class PlatformsComponent : BuildComponent
+    public class PlatformsComponent : BuildComponentCore
     {
         private Dictionary<string, Dictionary<string, VersionFilter>> versionFilters = new Dictionary<string, Dictionary<string, VersionFilter>>();
 
@@ -40,7 +43,7 @@ namespace Microsoft.Ddue.Tools
         /// </summary>
         /// <param name="assembler">The build assembler instance</param>
         /// <param name="configuration">The component configuration</param>
-        public PlatformsComponent(BuildAssembler assembler, XPathNavigator configuration) :
+        public PlatformsComponent(BuildAssemblerCore assembler, XPathNavigator configuration) :
           base(assembler, configuration)
         {
             // get the filter files

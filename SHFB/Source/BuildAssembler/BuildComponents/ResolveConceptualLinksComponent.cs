@@ -29,6 +29,9 @@ using System.Xml.XPath;
 
 using Microsoft.Ddue.Tools.Targets;
 
+using Sandcastle.Core.BuildAssembler;
+using Sandcastle.Core.BuildAssembler.BuildComponent;
+
 namespace Microsoft.Ddue.Tools
 {
     /// <summary>
@@ -71,7 +74,7 @@ namespace Microsoft.Ddue.Tools
     /// &lt;/component&gt;
     /// </code>
     /// </example>
-    public class ResolveConceptualLinksComponent : BuildComponent
+    public class ResolveConceptualLinksComponent : BuildComponentCore
     {
         #region Private data members
         //=====================================================================
@@ -93,7 +96,7 @@ namespace Microsoft.Ddue.Tools
         /// </summary>
         /// <param name="assembler">A reference to the build assembler</param>
         /// <param name="configuration">The configuration information</param>
-        public ResolveConceptualLinksComponent(BuildAssembler assembler, XPathNavigator configuration) :
+        public ResolveConceptualLinksComponent(BuildAssemblerCore assembler, XPathNavigator configuration) :
           base(assembler, configuration)
         {
             TargetDirectory targetDirectory;

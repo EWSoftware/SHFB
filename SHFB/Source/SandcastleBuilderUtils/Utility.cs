@@ -1,27 +1,31 @@
-﻿//=============================================================================
+﻿//===============================================================================================================
 // System  : Sandcastle Help File Builder Utilities
 // File    : Utility.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/15/2011
-// Note    : Copyright 2011, Eric Woodruff, All rights reserved
+// Updated : 12/17/2013
+// Note    : Copyright 2011-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a utility class with extension and utility methods.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.  This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.9.3.3  12/15/2011  EFW  Created the code
-//=============================================================================
+//===============================================================================================================
 
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
+
+using SandcastleBuilder.Utils.BuildEngine;
+using SandcastleBuilder.Utils.BuildComponent;
 
 namespace SandcastleBuilder.Utils
 {
@@ -49,12 +53,20 @@ namespace SandcastleBuilder.Utils
 
             try
             {
-#if DEBUG
-                // In debug builds, SHFBROOT points to the .\Debug folder for the SandcastleBuilderGUI project
-                path = Path.Combine(@"C:\Program Files (x86)\EWSoftware\Sandcastle Help File Builder\SandcastleBuilder.chm");
-#else
-                path = Path.Combine(Environment.ExpandEnvironmentVariables("%SHFBROOT%"), "SandcastleBuilder.chm");
-#endif
+                path = Path.Combine(BuildComponentManager.HelpFileBuilderFolder, @"Help\SandcastleBuilder.chm");
+
+                // It may not be there in development builds so look in the release folder.  If still not found,
+                // just ignore it.
+                if(!File.Exists(path))
+                {
+                    path = Path.Combine(Environment.GetFolderPath(Environment.Is64BitProcess ?
+                        Environment.SpecialFolder.ProgramFilesX86 : Environment.SpecialFolder.ProgramFiles),
+                        @"EWSoftware\Sandcastle Help File Builder\Help\SandcastleBuilder.chm");
+
+                    if(!File.Exists(path))
+                        return;
+                }
+
                 // If there's an anchor, split it off
                 pos = topic.IndexOf('#');
 
@@ -72,6 +84,45 @@ namespace SandcastleBuilder.Utils
             {
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
             }
+        }
+        #endregion
+
+        #region Plug-in execution point extension methods
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to determine if the enumerable list of execution points contains an entry for the
+        /// specified build step and behavior.
+        /// </summary>
+        /// <param name="executionPoints">An enumerable list of execution points to check</param>
+        /// <param name="step">The build step</param>
+        /// <param name="behavior">The behavior</param>
+        /// <returns>True if the enumerable list of execution points contains an entry for the specified build
+        /// step and behavior or false if it does not.</returns>
+        public static bool RunsAt(this IEnumerable<ExecutionPoint> executionPoints, BuildStep step,
+          ExecutionBehaviors behavior)
+        {
+            return executionPoints.Any(p => p.BuildStep == step && (p.Behavior & behavior) != 0);
+        }
+
+        /// <summary>
+        /// This is used to obtain the execution priority for a plug-in in the given build step and behavior
+        /// </summary>
+        /// <param name="executionPoints">An enumerable list of execution points to search</param>
+        /// <param name="step">The build step</param>
+        /// <param name="behavior">The behavior</param>
+        /// <returns>The execution priority is used to determine the order in which the plug-ins will be
+        /// executed.  Those with a higher priority value will be executed before those with a lower value.
+        /// Those with an identical priority may be executed in any order within their group.</returns>
+        public static int PriorityFor(this IEnumerable<ExecutionPoint> executionPoints, BuildStep step,
+          ExecutionBehaviors behavior)
+        {
+            var point = executionPoints.FirstOrDefault(p => p.BuildStep == step && (p.Behavior & behavior) != 0);
+
+            if(point != null)
+                return point.Priority;
+
+            return ExecutionPoint.DefaultPriority;
         }
         #endregion
     }

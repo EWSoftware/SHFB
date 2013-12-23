@@ -17,12 +17,15 @@ using System.Xml.XPath;
 
 using Microsoft.Ddue.Tools.Targets;
 
+using Sandcastle.Core.BuildAssembler;
+using Sandcastle.Core.BuildAssembler.BuildComponent;
+
 namespace Microsoft.Ddue.Tools
 {
     /// <summary>
     /// This component is used to resolve links to media files (i.e images)
     /// </summary>
-    public class ResolveArtLinksComponent : BuildComponent
+    public class ResolveArtLinksComponent : BuildComponentCore
     {
         #region Private data members
         //=====================================================================
@@ -39,7 +42,7 @@ namespace Microsoft.Ddue.Tools
         //=====================================================================
 
         /// <inheritdoc />
-        public ResolveArtLinksComponent(BuildAssembler assembler, XPathNavigator configuration) :
+        public ResolveArtLinksComponent(BuildAssemblerCore assembler, XPathNavigator configuration) :
           base(assembler, configuration)
         {
             XPathExpression artIdExpression = XPathExpression.Compile("string(@id)"),

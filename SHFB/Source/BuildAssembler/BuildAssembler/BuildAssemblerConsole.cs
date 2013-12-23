@@ -13,7 +13,9 @@ using System.IO;
 using System.Xml;
 using System.Xml.XPath;
 
-using Microsoft.Ddue.Tools.CommandLine;
+using Sandcastle.Core;
+using Sandcastle.Core.CommandLine;
+using Sandcastle.Core.BuildAssembler;
 
 namespace Microsoft.Ddue.Tools
 {
@@ -91,8 +93,8 @@ namespace Microsoft.Ddue.Tools
             }
             #endregion
 
-            // Create a BuildAssembler instance to do the work.  Messages are logged to the console.
-            BuildAssembler buildAssembler = new BuildAssembler(s => Console.WriteLine(s));
+            // Create a build assembler instance to do the work.  Messages are logged to the console.
+            var buildAssembler = new BuildAssemblerCore(s => Console.WriteLine(s));
 
             try
             {

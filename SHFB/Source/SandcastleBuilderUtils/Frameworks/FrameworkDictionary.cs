@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : FrameworkDictionary.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/23/2012
-// Note    : Copyright 2012, Eric Woodruff, All rights reserved
+// Updated : 12/16/2013
+// Note    : Copyright 2012-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class representing a dictionary of .NET Framework version settings
@@ -96,7 +96,9 @@ namespace SandcastleBuilder.Utils.Frameworks
         {
             get
             {
-                return Path.Combine(BuildComponentManager.SandcastlePath, "Frameworks.xml");
+                // Use BuildComponentManger.HelpFileBuilderFolder so that it runs under both the standalone
+                // GUI and the VSPackage.
+                return Path.Combine(BuildComponentManager.HelpFileBuilderFolder, "Frameworks.xml");
             }
         }
         #endregion

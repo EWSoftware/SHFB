@@ -3,12 +3,12 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AddNamespaceGroups", "AddNamespaceGroups.csproj", "{57410D6B-4BA4-400D-A304-1CCE5E571EBA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommandLine", "..\CommandLine\CommandLine.csproj", "{6CF7CA42-3706-4F6B-A2B4-10EF3F511888}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7BCBB4EC-545D-4B02-A5F4-D4A9A80C32B0}"
 	ProjectSection(SolutionItems) = preProject
 		AddNamespaceGroups.FxCop = AddNamespaceGroups.FxCop
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandcastle.Core", "..\SandcastleCore\Sandcastle.Core.csproj", "{399E78F8-4954-409E-991A-37DA9D0579CC}"
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
@@ -16,11 +16,11 @@ Global
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs01
 		SccLocalPath0 = .
-		SccProjectUniqueName1 = ..\\CommandLine\\CommandLine.csproj
-		SccProjectName1 = ../CommandLine
-		SccLocalPath1 = ..\\CommandLine
-		SccProjectUniqueName2 = AddNamespaceGroups.csproj
-		SccLocalPath2 = .
+		SccProjectUniqueName1 = AddNamespaceGroups.csproj
+		SccLocalPath1 = .
+		SccProjectUniqueName2 = ..\\SandcastleCore\\Sandcastle.Core.csproj
+		SccProjectName2 = ../SandcastleCore
+		SccLocalPath2 = ..\\SandcastleCore
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,16 +41,16 @@ Global
 		{57410D6B-4BA4-400D-A304-1CCE5E571EBA}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{57410D6B-4BA4-400D-A304-1CCE5E571EBA}.Release|x86.ActiveCfg = Release|x86
 		{57410D6B-4BA4-400D-A304-1CCE5E571EBA}.Release|x86.Build.0 = Release|x86
-		{6CF7CA42-3706-4F6B-A2B4-10EF3F511888}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6CF7CA42-3706-4F6B-A2B4-10EF3F511888}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6CF7CA42-3706-4F6B-A2B4-10EF3F511888}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{6CF7CA42-3706-4F6B-A2B4-10EF3F511888}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{6CF7CA42-3706-4F6B-A2B4-10EF3F511888}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{6CF7CA42-3706-4F6B-A2B4-10EF3F511888}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6CF7CA42-3706-4F6B-A2B4-10EF3F511888}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6CF7CA42-3706-4F6B-A2B4-10EF3F511888}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{6CF7CA42-3706-4F6B-A2B4-10EF3F511888}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{6CF7CA42-3706-4F6B-A2B4-10EF3F511888}.Release|x86.ActiveCfg = Release|Any CPU
+		{399E78F8-4954-409E-991A-37DA9D0579CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{399E78F8-4954-409E-991A-37DA9D0579CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{399E78F8-4954-409E-991A-37DA9D0579CC}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{399E78F8-4954-409E-991A-37DA9D0579CC}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{399E78F8-4954-409E-991A-37DA9D0579CC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{399E78F8-4954-409E-991A-37DA9D0579CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{399E78F8-4954-409E-991A-37DA9D0579CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{399E78F8-4954-409E-991A-37DA9D0579CC}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{399E78F8-4954-409E-991A-37DA9D0579CC}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{399E78F8-4954-409E-991A-37DA9D0579CC}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

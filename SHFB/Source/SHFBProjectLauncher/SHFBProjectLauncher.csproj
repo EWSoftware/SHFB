@@ -89,6 +89,9 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\SandcastleBuilderGUI\Properties\AssemblyInfoShared.cs">
+      <Link>Properties\AssemblyInfoShared.cs</Link>
+    </Compile>
     <Compile Include="ProjectLauncherForm.cs">
       <SubType>Form</SubType>
     </Compile>

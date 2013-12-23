@@ -149,6 +149,9 @@
       <Link>UI\LaunchMSHelpViewerDlg.designer.cs</Link>
       <DependentUpon>LaunchMSHelpViewerDlg.cs</DependentUpon>
     </Compile>
+    <Compile Include="..\SandcastleBuilderGUI\Properties\AssemblyInfoShared.cs">
+      <Link>Properties\AssemblyInfoShared.cs</Link>
+    </Compile>
     <Compile Include="Automation\OADocumentationSourceItem.cs" />
     <Compile Include="Automation\OADocumentationSourcesFolderItem.cs" />
     <Compile Include="Automation\OASandcastleBuilderProject.cs" />
@@ -263,9 +266,6 @@
     </Compile>
     <Compile Include="SandcastleBuilderPackage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="..\SandcastleBuilderUtils\Properties\AssemblyInfoShared.cs">
-      <Link>Properties\AssemblyInfoShared.cs</Link>
-    </Compile>
     <Compile Include="SandcastleBuilderProjectFactory.cs" />
     <Compile Include="PropertyPages\BasePropertyPage.cs">
       <SubType>UserControl</SubType>
@@ -687,6 +687,10 @@
     <ProjectReference Include="..\SandcastleBuilderWPF\SandcastleBuilderWPF.csproj">
       <Project>{D3B06405-3435-4329-9233-2DF1BF5028AA}</Project>
       <Name>SandcastleBuilderWPF</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SandcastleCore\Sandcastle.Core.csproj">
+      <Project>{399E78F8-4954-409E-991A-37DA9D0579CC}</Project>
+      <Name>Sandcastle.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

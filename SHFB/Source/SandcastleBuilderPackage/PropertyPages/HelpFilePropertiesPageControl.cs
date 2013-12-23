@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : HelpFilePropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 12/13/2013
+// Updated : 12/21/2013
 // Note    : Copyright 2011-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -17,7 +17,8 @@
 // ==============================================================================================================
 // 1.9.3.0  03/27/2011  EFW  Created the code
 // 1.9.6.0  10/27/2012  EFW  Added support for the new presentation style definition file
-// 1.9.9.0  12/13/2013  EFW  Added support for namespace grouping
+// -------  12/13/2013  EFW  Added support for namespace grouping
+//          12/21/2013  EFW  Updated to use MEF for loading the syntax generators
 //===============================================================================================================
 
 using System;
@@ -29,10 +30,18 @@ using System.Windows.Forms;
 
 using Microsoft.Build.Evaluation;
 
+using Sandcastle.Core.BuildAssembler.SyntaxGenerator;
+
 using SandcastleBuilder.Utils;
 using SandcastleBuilder.Utils.BuildComponent;
 using SandcastleBuilder.Utils.Design;
 using SandcastleBuilder.Utils.PresentationStyle;
+
+
+#if !STANDALONEGUI
+using SandcastleBuilder.Package.Nodes;
+using SandcastleBuilder.Package.Properties;
+#endif
 
 namespace SandcastleBuilder.Package.PropertyPages
 {
@@ -42,6 +51,13 @@ namespace SandcastleBuilder.Package.PropertyPages
     [Guid("714E7D74-A81C-403B-91E9-D052F0438FC6")]
     public partial class HelpFilePropertiesPageControl : BasePropertyPage
     {
+        #region Private data members
+        //=====================================================================
+
+        private List<ISyntaxGeneratorMetadata> syntaxGenerators;
+        private string messageBoxTitle, lastProjectName;
+        #endregion
+
         #region Constructor
         //=====================================================================
 
@@ -52,6 +68,11 @@ namespace SandcastleBuilder.Package.PropertyPages
         {
             InitializeComponent();
 
+#if !STANDALONEGUI
+            messageBoxTitle = Resources.PackageTitle;
+#else
+            messageBoxTitle = SandcastleBuilder.Utils.Constants.AppName;
+#endif
             // Set the maximum size to prevent an unnecessary vertical scrollbar
             this.MaximumSize = new System.Drawing.Size(2048, this.Height);
 
@@ -81,27 +102,86 @@ namespace SandcastleBuilder.Package.PropertyPages
             cboLanguage.Items.AddRange(LanguageResourceConverter.StandardValues.ToArray());
             cboLanguage.SelectedItem = LanguageResourceConverter.StandardValues.First(
                 c => c.Name.Equals("en-US", StringComparison.OrdinalIgnoreCase));
-
-            cblSyntaxFilters.Items.AddRange(BuildComponentManager.SyntaxFilters.Select(
-                f => f.Value.Id).OrderBy(f => f).ToArray());
-
-            // Resize the syntax filter columns to the widest entry
-            int width, maxWidth = 0;
-
-            foreach(string s in cblSyntaxFilters.Items)
-            {
-                width = TextRenderer.MeasureText(s, this.Font).Width;
-
-                if(width > maxWidth)
-                    maxWidth = width;
-            }
-
-            cblSyntaxFilters.ColumnWidth = maxWidth + 20;
         }
         #endregion
 
         #region Helper methods
         //=====================================================================
+
+        /// <summary>
+        /// Try to load information about all available syntax generators so that they can be selected for use
+        /// in the project.
+        /// </summary>
+        /// <returns>True on success, false on failure or if no project is loaded</returns>
+        private void LoadAvailableSyntaxGenerators()
+        {
+            SandcastleProject currentProject;
+            HashSet<string> generatorIds = new HashSet<string>();
+
+            try
+            {
+                Cursor.Current = Cursors.WaitCursor;
+
+                syntaxGenerators = new List<ISyntaxGeneratorMetadata>();
+
+#if !STANDALONEGUI
+                currentProject = ((SandcastleBuilderProjectNode)base.ProjectMgr).SandcastleProject;
+#else
+                currentProject = base.CurrentProject;
+#endif
+                lastProjectName = currentProject == null ? null : currentProject.Filename;
+
+                using(var componentContainer = BuildComponentManager.GetComponentContainer(currentProject))
+                {
+                    cblSyntaxFilters.Items.Clear();
+
+                    var generators = componentContainer.GetExports<ISyntaxGeneratorFactory,
+                        ISyntaxGeneratorMetadata>().Select(g => g.Metadata).ToList();
+
+                    // There may be duplicate generator IDs across the assemblies found.  See
+                    // BuildComponentManger.GetComponentContainer() for the folder search precedence.  Only the
+                    // first component for a unique ID will be used.
+                    foreach(var generator in generators)
+                        if(!generatorIds.Contains(generator.Id))
+                        {
+                            syntaxGenerators.Add(generator);
+                            generatorIds.Add(generator.Id);
+                        }
+                }
+
+                cblSyntaxFilters.Items.AddRange(syntaxGenerators.Select(f => f.Id).OrderBy(f => f).ToArray());
+
+                // Resize the syntax filter columns to the widest entry
+                int width, maxWidth = 0;
+
+                foreach(string s in cblSyntaxFilters.Items)
+                {
+                    width = TextRenderer.MeasureText(s, this.Font).Width;
+
+                    if(width > maxWidth)
+                        maxWidth = width;
+                }
+
+                cblSyntaxFilters.ColumnWidth = maxWidth + 20;
+            }
+            catch(Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.ToString());
+
+                MessageBox.Show("Unexpected error loading plug-ins: " + ex.Message, messageBoxTitle,
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                Cursor.Current = Cursors.Default;
+            }
+
+            if(cblSyntaxFilters.Items.Count != 0)
+                cblSyntaxFilters.SelectedIndex = 0;
+            else
+                MessageBox.Show("No valid syntax generators found", messageBoxTitle, MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+        }
 
         /// <summary>
         /// This adds a language to the language combo box if possible
@@ -231,15 +311,31 @@ namespace SandcastleBuilder.Package.PropertyPages
                     cblSyntaxFilters.SetItemChecked(idx, false);
 
 #if !STANDALONEGUI
+                SandcastleProject currentProject = null;
+
+                if(base.ProjectMgr != null)
+                    currentProject = ((SandcastleBuilderProjectNode)base.ProjectMgr).SandcastleProject;
+
+                if(syntaxGenerators == null || currentProject == null || currentProject.Filename != lastProjectName)
+                    this.LoadAvailableSyntaxGenerators();
+
                 projProp = this.ProjectMgr.BuildProject.GetProperty("SyntaxFilters");
 #else
+                if(syntaxGenerators == null || base.CurrentProject == null ||
+                  base.CurrentProject.Filename != lastProjectName)
+                    this.LoadAvailableSyntaxGenerators();
+
                 projProp = this.CurrentProject.MSBuildProject.GetProperty("SyntaxFilters");
 #endif
 
                 if(projProp != null)
-                    allFilters = BuildComponentManager.SyntaxFiltersFrom(projProp.UnevaluatedValue).Select(f => f.Id).ToList();
+                {
+                    allFilters = BuildComponentManager.SyntaxFiltersFrom(syntaxGenerators,
+                        projProp.UnevaluatedValue).Select(f => f.Id).ToList();
+                }
                 else
-                    allFilters = BuildComponentManager.SyntaxFiltersFrom("Standard").Select(f => f.Id).ToList();
+                    allFilters = BuildComponentManager.SyntaxFiltersFrom(syntaxGenerators, "Standard").Select(
+                        f => f.Id).ToList();
 
                 foreach(string s in allFilters)
                 {
@@ -270,11 +366,11 @@ namespace SandcastleBuilder.Package.PropertyPages
             {
 #if !STANDALONEGUI
                 this.ProjectMgr.SetProjectProperty("SyntaxFilters",
-                    SyntaxFilterTypeConverter.ToRecognizedFilterIds(String.Join(", ",
+                    BuildComponentManager.ToRecognizedSyntaxFilterIds(syntaxGenerators, String.Join(", ",
                         cblSyntaxFilters.CheckedItems.Cast<string>().ToArray())));
 #else
                 this.CurrentProject.MSBuildProject.SetProperty("SyntaxFilters",
-                    SyntaxFilterTypeConverter.ToRecognizedFilterIds(String.Join(", ",
+                    BuildComponentManager.ToRecognizedSyntaxFilterIds(syntaxGenerators, String.Join(", ",
                         cblSyntaxFilters.CheckedItems.Cast<string>().ToArray())));
 #endif
                 return true;

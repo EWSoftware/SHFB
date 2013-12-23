@@ -5,6 +5,7 @@
 
 // Change history:
 // 11/21/2013 - EFW - Cleared out the conditional statements and updated based on changes to ListTemplate.cs.
+// 12/15/2013 - EFW - Fixed a bug found when parsing the .NET 4.5.1 Framework assemblies
 
 using System.Collections;
 using System.Collections.Generic;
@@ -3450,7 +3451,7 @@ nextModRef:     ;
             if (declaringType != null)
             {
                 result.DeclaringType = declaringType;
-                result.DeclaringType.DeclaringModule = declaringType.DeclaringModule;
+                result.DeclaringModule = declaringType.DeclaringModule;
                 declaringType.Members.Add(result);
             }
             else

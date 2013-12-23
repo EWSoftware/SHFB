@@ -9,10 +9,14 @@
 // 02/14/2012 - EFW - Added support for fixed keyword
 // 03/30/2012 - EFW - Added support for interior_ptr<T>
 // 11/29/2013 - EFW - Added support for metadata based interop attributes
+// 12/20/2013 - EFW - Updated the syntax generator to be discoverable via MEF
 
 using System;
 using System.Globalization;
 using System.Xml.XPath;
+
+using Sandcastle.Core.BuildAssembler;
+using Sandcastle.Core.BuildAssembler.SyntaxGenerator;
 
 namespace Microsoft.Ddue.Tools
 {
@@ -21,15 +25,23 @@ namespace Microsoft.Ddue.Tools
     /// </summary>
     public sealed class CPlusPlusDeclarationSyntaxGenerator : SyntaxGeneratorTemplate
     {
+        #region Syntax generator factory for MEF
+        //=====================================================================
+
         /// <summary>
-        /// Constructor
+        /// This is used to create a new instance of the syntax generator
         /// </summary>
-        /// <param name="configuration">The syntax generator configuration</param>
-        public CPlusPlusDeclarationSyntaxGenerator(XPathNavigator configuration) : base(configuration)
+        [SyntaxGeneratorExport("CPlusPlus", "ManagedCPlusPlus", "cpp", AlternateIds = "cpp, cpp#, c++",
+          SortOrder = 40, Description = "Generates C++ declaration syntax sections")]
+        public sealed class Factory : ISyntaxGeneratorFactory
         {
-            if(String.IsNullOrEmpty(Language))
-                Language = "ManagedCPlusPlus";
+            /// <inheritdoc />
+            public SyntaxGeneratorBase Create()
+            {
+                return new CPlusPlusDeclarationSyntaxGenerator();
+            }
         }
+        #endregion
 
         // namespace: done
 

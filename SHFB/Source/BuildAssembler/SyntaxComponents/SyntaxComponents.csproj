@@ -60,8 +60,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Web.Services" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -75,25 +74,10 @@
     <Compile Include="JavaScriptDeclarationSyntaxGenerator.cs" />
     <Compile Include="JScriptDeclarationSyntax.cs" />
     <Compile Include="JSharpDeclarationSyntax.cs" />
-    <Compile Include="ManagedSyntaxWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ScriptSharpDeclarationSyntax.cs" />
-    <Compile Include="SyntaxGenerator.cs" />
-    <Compile Include="SyntaxGeneratorTemplate.cs" />
-    <Compile Include="SyntaxWriter.cs" />
     <Compile Include="VisualBasicDeclarationSyntax.cs" />
     <Compile Include="VisualBasicUsageSyntax.cs" />
     <Compile Include="XamlUsageSyntax.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\BuildAssemblerLibrary\BuildAssemblerLibrary.csproj">
-      <Project>{399E78F8-4954-409E-991A-37DA9D0579CC}</Project>
-      <Name>BuildAssemblerLibrary</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\BuildComponentTargets\BuildComponentTargets.csproj">
-      <Project>{84F8BE08-B5A3-4E5E-BC99-8E5C2351EF62}</Project>
-      <Name>BuildComponentTargets</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -111,6 +95,12 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\SandcastleCore\Sandcastle.Core.csproj">
+      <Project>{399E78F8-4954-409E-991A-37DA9D0579CC}</Project>
+      <Name>Sandcastle.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

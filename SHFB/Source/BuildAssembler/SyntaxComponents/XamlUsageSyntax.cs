@@ -7,6 +7,7 @@
 // 03/28/2012 - EFW - Fixed WritePropertySyntax() so that it generates syntax for properties with
 // abstract return types as long as there is a type converter for it (i.e. Brush).
 // 12/23/2012 - EFW - Made the xamlAssemblies dictionary use case-insensitive key comparisons
+// 12/20/2013 - EFW - Updated the syntax generator to be discoverable via MEF
 
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,8 @@ using System.Globalization;
 using System.IO;
 using System.Xml.XPath;
 
+using Sandcastle.Core.BuildAssembler.SyntaxGenerator;
+
 namespace Microsoft.Ddue.Tools
 {
     /// <summary>
@@ -22,16 +25,32 @@ namespace Microsoft.Ddue.Tools
     /// </summary>
     public sealed class XamlUsageSyntaxGenerator : SyntaxGeneratorTemplate
     {
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="configuration">The syntax generator configuration</param>
-        public XamlUsageSyntaxGenerator(XPathNavigator configuration) : base(configuration)
-        {
-            LoadConfigNode(configuration);
+        #region Syntax generator factory for MEF
+        //=====================================================================
 
-            if(String.IsNullOrEmpty(Language))
-                Language = "XAML";
+        /// <summary>
+        /// This is used to create a new instance of the syntax generator
+        /// </summary>
+        [SyntaxGeneratorExport("XamlUsage", "XAML", "cs", AlternateIds = "xml",
+          SortOrder = 90, Description = "Generates XAML usage syntax sections",
+          DefaultConfiguration="<filter files=\"{@SHFBFolder}Presentation\\Shared\\configuration\\xamlSyntax.config\" />\r\n" +
+			"{@XamlConfigFiles}")]
+        public sealed class Factory : ISyntaxGeneratorFactory
+        {
+            /// <inheritdoc />
+            public SyntaxGeneratorBase Create()
+            {
+                return new XamlUsageSyntaxGenerator();
+            }
+        }
+        #endregion
+
+        /// <inheritdoc />
+        public override void Initialize(XPathNavigator configuration)
+        {
+            base.Initialize(configuration);
+
+            this.LoadConfigNode(configuration);
         }
 
         /// <inheritdoc />
@@ -100,6 +119,7 @@ namespace Microsoft.Ddue.Tools
         {
             // get the filter files
             XPathNodeIterator filterNodes = configuration.Select("filter");
+
             if(filterNodes.Count == 0)
             {
                 LoadConfiguration(configuration);
@@ -109,8 +129,10 @@ namespace Microsoft.Ddue.Tools
             foreach(XPathNavigator filterNode in filterNodes)
             {
                 string filterFiles = filterNode.GetAttribute("files", String.Empty);
+
                 if((filterFiles == null) || (filterFiles.Length == 0))
-                    throw new ConfigurationErrorsException("The XamlUsageSyntaxGenerator filter/@files attribute must specify a path.");
+                    throw new InvalidOperationException("The XamlUsageSyntaxGenerator filter/@files attribute must specify a path.");
+
                 ParseDocuments(filterFiles);
             }
         }
@@ -173,7 +195,7 @@ namespace Microsoft.Ddue.Tools
             string filterFiles = Environment.ExpandEnvironmentVariables(wildcardPath);
 
             if(filterFiles == null || filterFiles.Length == 0)
-                throw new ConfigurationErrorsException("The XamlUsageSyntaxGenerator filter path is an empty string.");
+                throw new InvalidOperationException("The XamlUsageSyntaxGenerator filter path is an empty string.");
 
             string directoryPart = Path.GetDirectoryName(filterFiles);
 
@@ -198,7 +220,7 @@ namespace Microsoft.Ddue.Tools
             }
             catch(Exception e)
             {
-                throw new ConfigurationErrorsException(String.Format(CultureInfo.CurrentCulture,
+                throw new InvalidOperationException(String.Format(CultureInfo.CurrentCulture,
                     "Exception parsing XamlUsageSyntaxGenerator filter file: {0}. Exception message: {1}", file,
                     e.Message));
             }

@@ -24,12 +24,15 @@ using System.Xml.XPath;
 
 using Microsoft.Ddue.Tools.Targets;
 
+using Sandcastle.Core.BuildAssembler;
+using Sandcastle.Core.BuildAssembler.BuildComponent;
+
 namespace Microsoft.Ddue.Tools
 {
     /// <summary>
     /// This build component is used to resolve links to reference topics
     /// </summary>
-    public class ResolveReferenceLinksComponent2 : BuildComponent
+    public class ResolveReferenceLinksComponent2 : BuildComponentCore
     {
         #region Constants
         //=====================================================================
@@ -89,7 +92,7 @@ namespace Microsoft.Ddue.Tools
         //=====================================================================
 
         /// <inheritdoc />
-        public ResolveReferenceLinksComponent2(BuildAssembler assembler, XPathNavigator configuration) :
+        public ResolveReferenceLinksComponent2(BuildAssemblerCore assembler, XPathNavigator configuration) :
           base(assembler, configuration)
         {
             TargetDictionary newTargets;
@@ -100,11 +103,11 @@ namespace Microsoft.Ddue.Tools
             resolver = new LinkTextResolver(targets);
 
             // Get the shared instances dictionary.  Create it if it doesn't exist.
-            if(BuildComponent.Data.ContainsKey(SharedReferenceTargetsId))
-                sharedTargets = BuildComponent.Data[SharedReferenceTargetsId] as Dictionary<string, TargetDictionary>;
+            if(BuildComponentCore.Data.ContainsKey(SharedReferenceTargetsId))
+                sharedTargets = BuildComponentCore.Data[SharedReferenceTargetsId] as Dictionary<string, TargetDictionary>;
 
             if(sharedTargets == null)
-                BuildComponent.Data[SharedReferenceTargetsId] = sharedTargets = new Dictionary<string, TargetDictionary>();
+                BuildComponentCore.Data[SharedReferenceTargetsId] = sharedTargets = new Dictionary<string, TargetDictionary>();
 
             // base-url is an xpath expression applied against the current document to pick up the save location of the
             // document. If specified, local links will be made relative to the base-url.
@@ -506,7 +509,7 @@ namespace Microsoft.Ddue.Tools
         /// <returns>An MSDN resolver instance</returns>
         /// <remarks>This can be overridden in derived classes to provide persistent caches with backing stores
         /// other than the default dictionary serialized to a binary file.  It also allows sharing the cache
-        /// across instances by placing it in the <see cref="BuildComponent.Data"/> dictionary using the key
+        /// across instances by placing it in the <see cref="BuildComponentCore.Data"/> dictionary using the key
         /// name <c>SharedMsdnContentIdCacheID</c>.
         /// 
         /// <para>If overridden, the <see cref="UpdateMsdnContentIdCache"/> method should also be overridden to
@@ -516,8 +519,8 @@ namespace Microsoft.Ddue.Tools
             MsdnResolver resolver;
             IDictionary<string, string> cache = null;
 
-            if(BuildComponent.Data.ContainsKey(SharedMsdnContentIdCacheId))
-                cache = BuildComponent.Data[SharedMsdnContentIdCacheId] as IDictionary<string, string>;
+            if(BuildComponentCore.Data.ContainsKey(SharedMsdnContentIdCacheId))
+                cache = BuildComponentCore.Data[SharedMsdnContentIdCacheId] as IDictionary<string, string>;
 
             // If the shared cache already exists, return an instance that uses it.  It is assumed that all
             // subsequent instances will use the same cache.
@@ -567,7 +570,7 @@ namespace Microsoft.Ddue.Tools
                     }
             }
 
-            BuildComponent.Data[SharedMsdnContentIdCacheId] = resolver.MsdnContentIdCache;
+            BuildComponentCore.Data[SharedMsdnContentIdCacheId] = resolver.MsdnContentIdCache;
 
             return resolver;
         }

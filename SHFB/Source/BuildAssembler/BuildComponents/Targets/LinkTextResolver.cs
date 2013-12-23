@@ -74,7 +74,7 @@ namespace Microsoft.Ddue.Tools.Targets
                 return;
             }
 
-            throw new InvalidOperationException();
+            throw new InvalidOperationException("Unknown target type");
         }
 
         /// <summary>
@@ -267,7 +267,7 @@ namespace Microsoft.Ddue.Tools.Targets
                 return;
             }
 
-            throw new InvalidOperationException();
+            throw new InvalidOperationException("Unknown target type");
         }
 
         /// <summary>
@@ -685,6 +685,7 @@ namespace Microsoft.Ddue.Tools.Targets
         {
             // if we have the name, just write it
             NamedTemplateTypeReference namedTemplate = template as NamedTemplateTypeReference;
+
             if(namedTemplate != null)
             {
                 writer.WriteString(namedTemplate.Name);
@@ -692,6 +693,7 @@ namespace Microsoft.Ddue.Tools.Targets
             }
 
             IndexedTemplateTypeReference indexedTemplate = template as IndexedTemplateTypeReference;
+
             if(indexedTemplate != null)
             {
                 if(dictionary != null && dictionary.ContainsKey(indexedTemplate))
@@ -708,6 +710,7 @@ namespace Microsoft.Ddue.Tools.Targets
             {
 
                 TypeReference value = null;
+
                 if(dictionary != null)
                 {
                     IndexedTemplateTypeReference key = new IndexedTemplateTypeReference(typeTemplate.TemplateType.Id, typeTemplate.Position);
@@ -724,7 +727,7 @@ namespace Microsoft.Ddue.Tools.Targets
                 return;
             }
 
-            throw new InvalidOperationException();
+            throw new InvalidOperationException("Unknown template type");
         }
 
         private string GetTemplateName(string templateId, int position)
@@ -841,7 +844,7 @@ namespace Microsoft.Ddue.Tools.Targets
                 return;
             }
 
-            throw new InvalidOperationException();
+            throw new InvalidOperationException("Unknown member reference type");
 
         }
 

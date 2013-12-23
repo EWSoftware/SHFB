@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : PlugInPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 03/07/2013
+// Updated : 12/20/2013
 // Note    : Copyright 2011-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -17,11 +17,15 @@
 // ==============================================================================================================
 // 1.9.3.0  03/27/2011  EFW  Created the code
 // 1.9.6.0  10/28/2012  EFW  Updated for use in the standalone GUI
+// -------  12/18/2013  EFW  Updated to use MEF for the plug-ins
 //===============================================================================================================
 
 using System;
+using System.Collections.Generic;
+using System.ComponentModel.Composition.Hosting;
 using System.Globalization;
-using System.Reflection;
+using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
@@ -30,8 +34,11 @@ using Microsoft.Build.Evaluation;
 #if !STANDALONEGUI
 using SandcastleBuilder.Package.Nodes;
 using SandcastleBuilder.Package.Properties;
+
+using SandcastleBuilder.Utils;
 #endif
-using SandcastleBuilder.Utils.PlugIn;
+
+using SandcastleBuilder.Utils.BuildComponent;
 
 namespace SandcastleBuilder.Package.PropertyPages
 {
@@ -44,8 +51,10 @@ namespace SandcastleBuilder.Package.PropertyPages
         #region Private data members
         //=====================================================================
 
+        private CompositionContainer componentContainer;
+        private List<Lazy<IPlugIn, IPlugInMetadata>> availablePlugIns;
         private PlugInConfigurationDictionary currentConfigs;
-        private string messageBoxTitle;
+        private string messageBoxTitle, lastProjectName;
         #endregion
 
         #region Constructor
@@ -65,19 +74,53 @@ namespace SandcastleBuilder.Package.PropertyPages
 #endif
             this.Title = "Plug-Ins";
             this.HelpKeyword = "be2b5b09-cf5f-4fc3-be8c-f6d8a27c3691";
+        }
+        #endregion
+
+        #region Helper methods
+        //=====================================================================
+
+        /// <summary>
+        /// Try to load information about all available plug-ins so that they can be added to the project
+        /// </summary>
+        /// <returns>True on success, false on failure or if no project is loaded</returns>
+        private void LoadAvailablePlugInMetadata()
+        {
+            HashSet<string> plugInIds = new HashSet<string>();
 
             try
             {
-                foreach(string key in PlugInManager.PlugIns.Keys)
-                    lbAvailablePlugIns.Items.Add(key);
-            }
-            catch(ReflectionTypeLoadException loadEx)
-            {
-                System.Diagnostics.Debug.WriteLine(loadEx.ToString());
-                System.Diagnostics.Debug.WriteLine(loadEx.LoaderExceptions[0].ToString());
+                Cursor.Current = Cursors.WaitCursor;
 
-                MessageBox.Show("Unexpected error loading plug-ins: " + loadEx.LoaderExceptions[0].Message,
-                    messageBoxTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                if(componentContainer != null)
+                {
+                    componentContainer.Dispose();
+                    componentContainer = null;
+                    availablePlugIns = null;
+                }
+
+#if !STANDALONEGUI
+                SandcastleProject currentProject = ((SandcastleBuilderProjectNode)base.ProjectMgr).SandcastleProject;
+
+                lastProjectName = currentProject == null ? null : currentProject.Filename;
+                componentContainer = BuildComponentManager.GetComponentContainer(currentProject);
+#else
+                lastProjectName = base.CurrentProject == null ? null : base.CurrentProject.Filename;
+                componentContainer = BuildComponentManager.GetComponentContainer(base.CurrentProject);
+#endif
+                lbProjectPlugIns.Items.Clear();
+
+                availablePlugIns = componentContainer.GetExports<IPlugIn, IPlugInMetadata>().ToList();
+
+                // There may be duplicate component IDs across the assemblies found.  See
+                // BuildComponentManger.GetComponentContainer() for the folder search precedence.  Only the first
+                // component for a unique ID will be used.
+                foreach(var plugIn in availablePlugIns)
+                    if(!plugInIds.Contains(plugIn.Metadata.Id))
+                    {
+                        lbAvailablePlugIns.Items.Add(plugIn.Metadata.Id);
+                        plugInIds.Add(plugIn.Metadata.Id);
+                    }
             }
             catch(Exception ex)
             {
@@ -86,9 +129,16 @@ namespace SandcastleBuilder.Package.PropertyPages
                 MessageBox.Show("Unexpected error loading plug-ins: " + ex.Message, messageBoxTitle,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            finally
+            {
+                Cursor.Current = Cursors.Default;
+            }
 
             if(lbAvailablePlugIns.Items.Count != 0)
+            {
                 lbAvailablePlugIns.SelectedIndex = 0;
+                gbAvailablePlugIns.Enabled = gbProjectAddIns.Enabled = true;
+            }
             else
             {
                 MessageBox.Show("No valid plug-ins found", messageBoxTitle, MessageBoxButtons.OK,
@@ -107,21 +157,33 @@ namespace SandcastleBuilder.Package.PropertyPages
             ProjectProperty projProp;
             int idx;
 
-            lbProjectPlugIns .Items.Clear();
+            lbProjectPlugIns.Items.Clear();
+            btnConfigure.Enabled = btnDelete.Enabled = false;
 
 #if !STANDALONEGUI
-            if(this.ProjectMgr == null)
+            SandcastleProject currentProject = null;
+
+            if(base.ProjectMgr != null)
+                currentProject = ((SandcastleBuilderProjectNode)base.ProjectMgr).SandcastleProject;
+
+            if(componentContainer == null || currentProject == null || currentProject.Filename != lastProjectName)
+                this.LoadAvailablePlugInMetadata();
+
+            if(this.ProjectMgr == null || currentProject == null)
                 return false;
 
-            currentConfigs = new PlugInConfigurationDictionary(
-                ((SandcastleBuilderProjectNode)base.ProjectMgr).SandcastleProject);
+            currentConfigs = new PlugInConfigurationDictionary(currentProject);
             projProp = this.ProjectMgr.BuildProject.GetProperty("PlugInConfigurations");
 #else
-            if(this.CurrentProject == null)
+            if(componentContainer == null || base.CurrentProject == null ||
+              base.CurrentProject.Filename != lastProjectName)
+                this.LoadAvailablePlugInMetadata();
+
+            if(base.CurrentProject == null)
                 return false;
 
-            currentConfigs = new PlugInConfigurationDictionary(this.CurrentProject);
-            projProp = this.CurrentProject.MSBuildProject.GetProperty("PlugInConfigurations");
+            currentConfigs = new PlugInConfigurationDictionary(base.CurrentProject);
+            projProp = base.CurrentProject.MSBuildProject.GetProperty("PlugInConfigurations");
 #endif
             if(projProp != null && !String.IsNullOrEmpty(projProp.UnevaluatedValue))
                 currentConfigs.FromXml(projProp.UnevaluatedValue);
@@ -133,9 +195,10 @@ namespace SandcastleBuilder.Package.PropertyPages
             }
 
             if(lbProjectPlugIns.Items.Count != 0)
+            {
                 lbProjectPlugIns.SelectedIndex = 0;
-            else
-                btnConfigure.Enabled = btnDelete.Enabled = false;
+                btnConfigure.Enabled = btnDelete.Enabled = true;
+            }
 
             return true;
         }
@@ -149,10 +212,10 @@ namespace SandcastleBuilder.Package.PropertyPages
 
             this.ProjectMgr.SetProjectProperty("PlugInConfigurations", currentConfigs.ToXml());
 #else
-            if(this.CurrentProject == null)
+            if(base.CurrentProject == null)
                 return false;
 
-            this.CurrentProject.MSBuildProject.SetProperty("PlugInConfigurations", currentConfigs.ToXml());
+            base.CurrentProject.MSBuildProject.SetProperty("PlugInConfigurations", currentConfigs.ToXml());
 #endif
             return true;
         }
@@ -170,10 +233,22 @@ namespace SandcastleBuilder.Package.PropertyPages
         {
             string key = (string)lbAvailablePlugIns.SelectedItem;
 
-            PlugInInfo info = PlugInManager.PlugIns[key];
-            txtPlugInCopyright.Text = info.Copyright;
-            txtPlugInVersion.Text = String.Format(CultureInfo.CurrentCulture, "Version {0}", info.Version);
-            txtPlugInDescription.Text = info.Description;
+            txtPlugInCopyright.Text = txtPlugInVersion.Text = txtPlugInDescription.Text = "?? Not Found ??";
+
+            if(availablePlugIns != null)
+            {
+                var plugIn = availablePlugIns.FirstOrDefault(p => p.Metadata.Id == key);
+
+                if(plugIn != null)
+                {
+                    txtPlugInCopyright.Text = plugIn.Metadata.Copyright +
+                        (String.IsNullOrWhiteSpace(plugIn.Metadata.AdditionalCopyrightInfo) ? String.Empty :
+                        "\r\n" + plugIn.Metadata.AdditionalCopyrightInfo);
+                    txtPlugInVersion.Text = String.Format(CultureInfo.CurrentCulture, "Version {0}",
+                        plugIn.Metadata.Version);
+                    txtPlugInDescription.Text = plugIn.Metadata.Description;
+                }
+            }
         }
 
         /// <summary>
@@ -203,31 +278,34 @@ namespace SandcastleBuilder.Package.PropertyPages
             string key = (string)lbAvailablePlugIns.SelectedItem;
             int idx = lbProjectPlugIns.FindStringExact(key);
 
-            // Currently, no duplicates are allowed
-            if(idx != -1)
-                lbProjectPlugIns.SelectedIndex = idx;
-            else
-                if(PlugInManager.IsSupported(key))
+            if(availablePlugIns != null)
+            {
+                // Currently, no duplicates are allowed
+                if(idx != -1)
+                    lbProjectPlugIns.SelectedIndex = idx;
+                else
                 {
-                    idx = lbProjectPlugIns.Items.Add(key);
+                    var plugIn = availablePlugIns.FirstOrDefault(p => p.Metadata.Id == key);
 
-                    if(idx != -1)
+                    if(plugIn != null)
                     {
-                        currentConfigs.Add(key, true, null);
-                        lbProjectPlugIns.SelectedIndex = idx;
-                        lbProjectPlugIns.SetItemChecked(idx, true);
-                        btnConfigure.Enabled = btnDelete.Enabled = true;
+                        idx = lbProjectPlugIns.Items.Add(key);
 
-                        this.IsDirty = true;
+                        if(idx != -1)
+                        {
+                            currentConfigs.Add(key, true, null);
+                            lbProjectPlugIns.SelectedIndex = idx;
+                            lbProjectPlugIns.SetItemChecked(idx, true);
+                            btnConfigure.Enabled = btnDelete.Enabled = true;
 
-                        // Open the configuration dialog to configure it when first added if needed
-                        btnConfigure_Click(sender, e);
+                            this.IsDirty = true;
+
+                            // Open the configuration dialog to configure it when first added if needed
+                            btnConfigure_Click(sender, e);
+                        }
                     }
                 }
-                else
-                    MessageBox.Show("The selected plug-in's version is not compatible with this version of the " +
-                        "help file builder and cannot be used.", messageBoxTitle, MessageBoxButtons.OK,
-                        MessageBoxIcon.Error);
+            }
         }
 
         /// <summary>
@@ -240,36 +318,39 @@ namespace SandcastleBuilder.Package.PropertyPages
             PlugInConfiguration plugInConfig;
             string newConfig, currentConfig, key = (string)lbProjectPlugIns.SelectedItem;
 
-            if(PlugInManager.IsSupported(key))
+            if(availablePlugIns != null)
             {
-                PlugInInfo info = PlugInManager.PlugIns[key];
+                var plugIn = availablePlugIns.FirstOrDefault(p => p.Metadata.Id == key);
 
-                if(!info.SupportsConfiguration)
+                if(plugIn != null)
                 {
-                    if(sender == btnConfigure)
-                        MessageBox.Show("The selected plug-in contains no editable configuration information",
-                            messageBoxTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    return;
-                }
+                    if(!plugIn.Metadata.IsConfigurable)
+                    {
+                        if(sender == btnConfigure)
+                            MessageBox.Show("The selected plug-in contains no editable configuration information",
+                                messageBoxTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        return;
+                    }
 
-                using(IPlugIn plugIn = info.NewInstance())
-                {
                     plugInConfig = currentConfigs[key];
                     currentConfig = plugInConfig.Configuration;
-                    newConfig = plugIn.ConfigurePlugIn(currentConfigs.ProjectFile, currentConfig);
-                }
 
-                // Only store it if new or if it changed
-                if(currentConfig != newConfig)
-                {
-                    plugInConfig.Configuration = newConfig;
-                    this.IsDirty = true;
+                    // Plug-in instances are shared.  The container will dispose of the plug-in when it is
+                    // disposed of.
+                    newConfig = plugIn.Value.ConfigurePlugIn(currentConfigs.ProjectFile, currentConfig);
+
+                    // Only store it if new or if it changed
+                    if(currentConfig != newConfig)
+                    {
+                        plugInConfig.Configuration = newConfig;
+                        this.IsDirty = true;
+                    }
                 }
+                else
+                    MessageBox.Show("The selected plug-in could not be found in any of the component or " +
+                        "project folders and cannot be used.", messageBoxTitle, MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
             }
-            else
-                MessageBox.Show("The selected plug-in either does not exist or is of a version that is not " +
-                    "compatible with this version of the help file builder and cannot be used.",
-                    messageBoxTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         /// <summary>

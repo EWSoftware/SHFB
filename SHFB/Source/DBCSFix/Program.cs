@@ -16,7 +16,8 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 
-using Microsoft.Ddue.Tools.CommandLine;
+using Sandcastle.Core;
+using Sandcastle.Core.CommandLine;
 
 namespace DBCSFix
 {

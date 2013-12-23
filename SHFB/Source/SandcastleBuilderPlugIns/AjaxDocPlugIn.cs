@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : AjaxDocPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/13/2013
+// Updated : 12/17/2013
 // Note    : Copyright 2007-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -20,15 +20,16 @@
 // 1.6.0.1  10/19/2007  EFW  Added execution behavior for ValidateAssemblies
 // 1.6.0.6  03/10/2008  EFW  Added support for the API filter
 // 1.8.0.0  08/12/2008  EFW  Modified to support the new project format
+// -------  12/17/2013  EFW  Updated to use MEF for the plug-ins
 //===============================================================================================================
 
 using System;
-using System.Diagnostics;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Cache;
-using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 using System.Text;
@@ -37,8 +38,8 @@ using System.Xml;
 using System.Xml.XPath;
 
 using SandcastleBuilder.Utils;
+using SandcastleBuilder.Utils.BuildComponent;
 using SandcastleBuilder.Utils.BuildEngine;
-using SandcastleBuilder.Utils.PlugIn;
 
 namespace SandcastleBuilder.PlugIns
 {
@@ -46,12 +47,17 @@ namespace SandcastleBuilder.PlugIns
     /// This plug-in class is designed to generate XML comments and reflection file information for Atlas client
     /// script libraries using AjaxDoc.
     /// </summary>
-    public class AjaxDocPlugIn : IPlugIn
+    [HelpFileBuilderPlugInExport("AjaxDoc Builder", IsConfigurable = true, RunsInPartialBuild = true,
+      AdditionalCopyrightInfo = "AjaxDoc is Copyright \xA9 2006-2013 Bertrand Le Roy, All Rights Reserved",
+      Description = "This plug-in is used to generate XML comments and reflection information for Atlas " +
+        "client script libraries using AjaxDoc that can then be used by the Sandcastle Help File " +
+        "Builder to produce a help file.")]
+    public sealed class AjaxDocPlugIn : IPlugIn
     {
         #region Private data members
         //=====================================================================
 
-        private ExecutionPointCollection executionPoints;
+        private List<ExecutionPoint> executionPoints;
 
         private BuildProcess builder;
 
@@ -74,94 +80,20 @@ namespace SandcastleBuilder.PlugIns
         //=====================================================================
 
         /// <summary>
-        /// This read-only property returns a friendly name for the plug-in
-        /// </summary>
-        public string Name
-        {
-            get { return "AjaxDoc Builder"; }
-        }
-
-        /// <summary>
-        /// This read-only property returns the version of the plug-in
-        /// </summary>
-        public Version Version
-        {
-            get
-            {
-                // Use the assembly version
-                Assembly asm = Assembly.GetExecutingAssembly();
-                FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(asm.Location);
-
-                return new Version(fvi.ProductVersion);
-            }
-        }
-
-        /// <summary>
-        /// This read-only property returns the copyright information for the plug-in
-        /// </summary>
-        public string Copyright
-        {
-            get
-            {
-                // Use the assembly copyright
-                Assembly asm = Assembly.GetExecutingAssembly();
-                AssemblyCopyrightAttribute copyright = (AssemblyCopyrightAttribute)Attribute.GetCustomAttribute(
-                    asm, typeof(AssemblyCopyrightAttribute));
-
-                return copyright.Copyright + "\r\nAjaxDoc is Copyright \xA9 2006-2013 Bertrand Le Roy, All " +
-                    "Rights Reserved";
-            }
-        }
-
-        /// <summary>
-        /// This read-only property returns a brief description of the plug-in
-        /// </summary>
-        public string Description
-        {
-            get
-            {
-                return "This plug-in is used to generate XML comments and reflection information for Atlas " +
-                    "client script libraries using AjaxDoc that can then be used by the Sandcastle Help File " +
-                    "Builder to produce a help file.";
-            }
-        }
-
-        /// <summary>
-        /// This plug-in supports configuration
-        /// </summary>
-        /// <seealso cref="ConfigurePlugIn"/>
-        public bool SupportsConfiguration
-        {
-            get { return true; }
-        }
-
-        /// <summary>
-        /// This plug-in runs in partial builds
-        /// </summary>
-        public bool RunsInPartialBuild
-        {
-            get { return true; }
-        }
-
-        /// <summary>
         /// This read-only property returns a collection of execution points that define when the plug-in should
         /// be invoked during the build process.
         /// </summary>
-        public ExecutionPointCollection ExecutionPoints
+        public IEnumerable<ExecutionPoint> ExecutionPoints
         {
             get
             {
                 if(executionPoints == null)
-                {
-                    executionPoints = new ExecutionPointCollection();
-
-                    executionPoints.Add(new ExecutionPoint(BuildStep.ValidatingDocumentationSources,
-                        ExecutionBehaviors.InsteadOf));
-                    executionPoints.Add(new ExecutionPoint(BuildStep.GenerateSharedContent,
-                        ExecutionBehaviors.After));
-                    executionPoints.Add(new ExecutionPoint(BuildStep.GenerateReflectionInfo,
-                        ExecutionBehaviors.InsteadOf));
-                }
+                    executionPoints = new List<ExecutionPoint>
+                    {
+                        new ExecutionPoint(BuildStep.ValidatingDocumentationSources, ExecutionBehaviors.InsteadOf),
+                        new ExecutionPoint(BuildStep.GenerateSharedContent, ExecutionBehaviors.After),
+                        new ExecutionPoint(BuildStep.GenerateReflectionInfo, ExecutionBehaviors.InsteadOf)
+                    };
 
                 return executionPoints;
             }
@@ -201,7 +133,11 @@ namespace SandcastleBuilder.PlugIns
             userCreds = new UserCredentials();
             proxyCreds = new ProxyCredentials();
 
-            builder.ReportProgress("{0} Version {1}\r\n{2}", this.Name, this.Version, this.Copyright);
+            var metadata = (HelpFileBuilderPlugInExportAttribute)this.GetType().GetCustomAttributes(
+                typeof(HelpFileBuilderPlugInExportAttribute), false).First();
+
+            builder.ReportProgress("{0} Version {1}\r\n{2}\r\n{3}", metadata.Id, metadata.Version,
+                metadata.Copyright, metadata.AdditionalCopyrightInfo);
 
             root = configuration.SelectSingleNode("configuration");
 
@@ -233,7 +169,7 @@ namespace SandcastleBuilder.PlugIns
         /// This method is used to execute the plug-in during the build process
         /// </summary>
         /// <param name="context">The current execution context</param>
-        public void Execute(Utils.PlugIn.ExecutionContext context)
+        public void Execute(SandcastleBuilder.Utils.BuildComponent.ExecutionContext context)
         {
             Encoding enc = Encoding.Default;
             Thread browserThread;
@@ -419,32 +355,12 @@ namespace SandcastleBuilder.PlugIns
         //=====================================================================
 
         /// <summary>
-        /// This handles garbage collection to ensure proper disposal of the plug-in if not done explicitly with
-        /// <see cref="Dispose()"/>.
-        /// </summary>
-        ~AjaxDocPlugIn()
-        {
-            this.Dispose(false);
-        }
-
-        /// <summary>
         /// This implements the Dispose() interface to properly dispose of the plug-in object
         /// </summary>
-        /// <overloads>There are two overloads for this method</overloads>
         public void Dispose()
         {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// This can be overridden by derived classes to add their own disposal code if necessary
-        /// </summary>
-        /// <param name="disposing">Pass true to dispose of the managed and unmanaged resources or false to just
-        /// dispose of the unmanaged resources.</param>
-        protected virtual void Dispose(bool disposing)
-        {
             // Nothing to dispose of in this one
+            GC.SuppressFinalize(this);
         }
         #endregion
 

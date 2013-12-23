@@ -27,6 +27,9 @@ using System.Reflection;
 using System.Windows.Forms;
 using System.Xml.XPath;
 
+using Sandcastle.Core.BuildAssembler;
+using Sandcastle.Core.BuildAssembler.BuildComponent;
+
 using Microsoft.Ddue.Tools;
 using Microsoft.Ddue.Tools.Targets;
 
@@ -58,7 +61,7 @@ namespace SandcastleBuilder.Components
         /// <param name="assembler">A reference to the build assembler.</param>
         /// <param name="configuration">The configuration information</param>
         /// <remarks>This component is obsolete and will be removed in a future release.</remarks>
-        public ESentResolveReferenceLinksComponent(BuildAssembler assembler, XPathNavigator configuration) :
+        public ESentResolveReferenceLinksComponent(BuildAssemblerCore assembler, XPathNavigator configuration) :
           base(assembler, configuration)
         {
             Assembly asm = Assembly.GetExecutingAssembly();
@@ -84,8 +87,8 @@ namespace SandcastleBuilder.Components
             IDictionary<string, string> cache = null;
             int localCacheSize;
 
-            if(BuildComponent.Data.ContainsKey(SharedMsdnContentIdCacheId))
-                cache = BuildComponent.Data[SharedMsdnContentIdCacheId] as IDictionary<string, string>;
+            if(BuildComponentCore.Data.ContainsKey(SharedMsdnContentIdCacheId))
+                cache = BuildComponentCore.Data[SharedMsdnContentIdCacheId] as IDictionary<string, string>;
 
             // If the shared cache already exists, return an instance that uses it.  It is assumed that all
             // subsequent instances will use the same cache.
@@ -135,7 +138,7 @@ namespace SandcastleBuilder.Components
                     else
                         base.WriteMessage(MessageLevel.Info, "{0} cached MSDN content ID entries exist", cacheCount);
 
-                    BuildComponent.Data[SharedMsdnContentIdCacheId] = resolver.MsdnContentIdCache;
+                    BuildComponentCore.Data[SharedMsdnContentIdCacheId] = resolver.MsdnContentIdCache;
                 }
             }
 

@@ -11,6 +11,9 @@ using System.IO;
 using System.Xml;
 using System.Xml.XPath;
 
+using Sandcastle.Core.BuildAssembler;
+using Sandcastle.Core.BuildAssembler.BuildComponent;
+
 namespace Microsoft.Ddue.Tools.Commands
 {
     /// <summary>
@@ -44,7 +47,7 @@ namespace Microsoft.Ddue.Tools.Commands
         /// <param name="fileXPath">The file XPath expression used to get the file from which to copy elements</param>
         /// <param name="sourceXPath">The source XPath expression</param>
         /// <param name="targetXPath">The target XPath expression</param>
-        public CopyFromFilesCommand(BuildComponent parent, string basePath, string fileXPath, string sourceXPath,
+        public CopyFromFilesCommand(BuildComponentCore parent, string basePath, string fileXPath, string sourceXPath,
           string targetXPath) : base(parent, sourceXPath, targetXPath)
         {
             this.BasePath = basePath;

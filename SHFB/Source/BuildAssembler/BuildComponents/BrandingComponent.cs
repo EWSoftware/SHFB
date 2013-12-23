@@ -6,6 +6,9 @@ using System.Xml;
 using System.Xml.XPath;
 using System.Xml.Xsl;
 
+using Sandcastle.Core.BuildAssembler;
+using Sandcastle.Core.BuildAssembler.BuildComponent;
+
 namespace Microsoft.Ddue.Tools
 {
     /// <summary>
@@ -47,7 +50,7 @@ namespace Microsoft.Ddue.Tools
     /// </code>
     /// </example>
     /// </remarks>
-    public class BrandingComponent : BuildComponent
+    public class BrandingComponent : BuildComponentCore
     {
         #region Private data members
         //=====================================================================
@@ -94,7 +97,7 @@ namespace Microsoft.Ddue.Tools
         //=====================================================================
 
         /// <inheritdoc/>
-        public BrandingComponent(BuildAssembler assembler, XPathNavigator configuration)
+        public BrandingComponent(BuildAssemblerCore assembler, XPathNavigator configuration)
             : base(assembler, configuration)
         {
             XPathNavigator v_configData = configuration.SelectSingleNode("data");
@@ -173,18 +176,14 @@ namespace Microsoft.Ddue.Tools
             if(String.Compare(m_helpOutput, s_defaultHelpOutput, StringComparison.OrdinalIgnoreCase) == 0)
             {
                 if(m_selfBranded)
-                {
                     ApplyBranding(document, key);
-                }
-                else
-                {
-                    ReformatLanguageSpecific(document);
-                }
             }
             else
-            {
                 ApplyBranding(document, key);
-            }
+
+            // EFW - Apply language specific text to syntax sections which the branding transformations miss
+            // for some reason.
+            ReformatLanguageSpecific(document);
         }
 
         #endregion
@@ -590,9 +589,9 @@ namespace Microsoft.Ddue.Tools
         /// </summary>
         private class SpecialXmlReader : XmlTextReader
         {
-            BuildComponent component;
+            BuildComponentCore component;
 
-            public SpecialXmlReader(String fragment, BuildComponent component) : base(fragment,
+            public SpecialXmlReader(String fragment, BuildComponentCore component) : base(fragment,
               XmlNodeType.Element, new XmlParserContext(null, null, null, XmlSpace.Default))
             {
                 this.component = component;

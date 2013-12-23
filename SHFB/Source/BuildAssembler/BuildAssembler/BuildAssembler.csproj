@@ -88,13 +88,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\CommandLine\CommandLine.csproj">
-      <Project>{6CF7CA42-3706-4F6B-A2B4-10EF3F511888}</Project>
-      <Name>CommandLine</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\BuildAssemblerLibrary\BuildAssemblerLibrary.csproj">
+    <ProjectReference Include="..\..\SandcastleCore\Sandcastle.Core.csproj">
       <Project>{399E78F8-4954-409E-991A-37DA9D0579CC}</Project>
-      <Name>BuildAssemblerLibrary</Name>
+      <Name>Sandcastle.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

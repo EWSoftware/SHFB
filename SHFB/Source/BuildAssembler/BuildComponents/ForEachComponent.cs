@@ -10,19 +10,22 @@ using System.Linq;
 using System.Xml;
 using System.Xml.XPath;
 
+using Sandcastle.Core.BuildAssembler;
+using Sandcastle.Core.BuildAssembler.BuildComponent;
+
 namespace Microsoft.Ddue.Tools
 {
     /// <summary>
     /// This component is used to execute a set of components on the topic
     /// </summary>
-    public class ForEachComponent : BuildComponent
+    public class ForEachComponent : BuildComponentCore
     {
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="assembler">The build assembler instance</param>
         /// <param name="configuration">The component configuration</param>
-        public ForEachComponent(BuildAssembler assembler, XPathNavigator configuration) :
+        public ForEachComponent(BuildAssemblerCore assembler, XPathNavigator configuration) :
           base(assembler, configuration)
         {
             // set up the context
@@ -63,11 +66,11 @@ namespace Microsoft.Ddue.Tools
         // the format string for the variable expression
         private XPathExpression xpath;
 
-        // the xpath context
+        // the XPath context
         private CustomContext context = new CustomContext();
 
         // the subcomponents
-        private IEnumerable<BuildComponent> components;
+        private IEnumerable<BuildComponentCore> components;
 
         // the work of the component
 
@@ -106,7 +109,7 @@ namespace Microsoft.Ddue.Tools
         /// <param name="key">The document key</param>
         private void ApplyComponents(XmlDocument document, string key)
         {
-            foreach(BuildComponent component in components)
+            foreach(BuildComponentCore component in components)
                 component.Apply(document, key);
         }
 
@@ -114,7 +117,7 @@ namespace Microsoft.Ddue.Tools
         protected override void Dispose(bool disposing)
         {
             if(disposing)
-                foreach(BuildComponent component in components)
+                foreach(BuildComponentCore component in components)
                     component.Dispose();
 
             base.Dispose(disposing);

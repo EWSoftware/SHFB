@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.Transform.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/15/2013
+// Updated : 12/21/2013
 // Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -43,8 +43,9 @@
 //                           property.  Added Support for XAML configuration files.
 // 1.9.5.0  09/10/2012  EFW  Updated to use the new framework definition file for the .NET Framework versions
 // 1.9.6.0  10/25/2012  EFW  Updated to use the new presentation style definition files
-// 1.9.9.0  11/29/2013  EFW  Added support for the new MRefBuilder visibility settings.  Added support for
+// -------  11/29/2013  EFW  Added support for the new MRefBuilder visibility settings.  Added support for
 //                           namespace grouping based on changes submitted by Stazzz.
+//          12/17/2013  EFW  Removed the SandcastlePath property and all references to it
 //===============================================================================================================
 
 using System;
@@ -60,9 +61,10 @@ using System.Xml.XPath;
 
 using Microsoft.Build.Evaluation;
 
+using Sandcastle.Core.BuildAssembler.SyntaxGenerator;
+
 using SandcastleBuilder.Utils.BuildComponent;
 using SandcastleBuilder.Utils.Frameworks;
-using SandcastleBuilder.Utils.PlugIn;
 
 namespace SandcastleBuilder.Utils.BuildEngine
 {
@@ -261,7 +263,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     break;
 
                 case "shfbfolder":
-                    replaceWith = shfbFolder;
+                    replaceWith = BuildComponentManager.HelpFileBuilderFolder;
                     break;
 
                 case "componentsfolder":
@@ -301,10 +303,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 case "htmlencworkingfolder":
                     replaceWith = HttpUtility.HtmlEncode(workingFolder);
-                    break;
-
-                case "sandcastlepath":
-                    replaceWith = sandcastleFolder;
                     break;
 
                 case "presentationpath":
@@ -648,13 +646,15 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     break;
 
                 case "syntaxfilters":
-                    replaceWith = BuildComponentManager.SyntaxFilterGeneratorsFrom(project.SyntaxFilters);
+                    replaceWith = BuildComponentManager.SyntaxFilterGeneratorsFrom(syntaxGenerators,
+                        project.SyntaxFilters);
                     break;
 
                 case "syntaxfiltersdropdown":
-                    // Note that we can't remove the dropdown box if only a single
-                    // language is selected as script still depends on it.
-                    replaceWith = BuildComponentManager.SyntaxFilterLanguagesFrom(project.SyntaxFilters);
+                    // Note that we can't remove the dropdown box if only a single language is selected as
+                    // script still depends on it.
+                    replaceWith = BuildComponentManager.SyntaxFilterLanguagesFrom(syntaxGenerators,
+                        project.SyntaxFilters);
                     break;
 
                 case "autodocumentconstructors":
@@ -1000,7 +1000,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 case "addxamlsyntaxdata":
                     // If the XAML syntax generator is present, add XAML syntax data to the reflection file
-                    if(BuildComponentManager.SyntaxFiltersFrom(project.SyntaxFilters).Any(s => s.Id == "XamlUsage"))
+                    if(BuildComponentManager.SyntaxFiltersFrom(syntaxGenerators, project.SyntaxFilters).Any(
+                      s => s.Id == "XamlUsage"))
                         replaceWith = @";~\ProductionTransforms\AddXamlSyntaxData.xsl";
                     else
                         replaceWith = String.Empty;
@@ -1029,9 +1030,9 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 case "uniqueid":
                     // Get a unique ID for the project and current user
-                    replaceWith = Environment.ExpandEnvironmentVariables("%USERNAME%");
+                    replaceWith = Environment.GetEnvironmentVariable("USERNAME");
 
-                    if(String.IsNullOrEmpty(replaceWith) || replaceWith[0] == '%')
+                    if(String.IsNullOrWhiteSpace(replaceWith))
                         replaceWith = "DefaultUser";
 
                     replaceWith = (project.Filename + "_" + replaceWith).GetHashCode().ToString("X",

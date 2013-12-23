@@ -15,13 +15,16 @@ using System.Xml;
 using System.Xml.XPath;
 using System.Xml.Xsl;
 
+using Sandcastle.Core.BuildAssembler;
+using Sandcastle.Core.BuildAssembler.BuildComponent;
+
 namespace Microsoft.Ddue.Tools
 {
     /// <summary>
     /// This build component is used to transform the intermediate topic to its final form such as an HTML
     /// document.
     /// </summary>
-    public class TransformComponent : BuildComponent
+    public class TransformComponent : BuildComponentCore
     {
         #region Private data members
         //=====================================================================
@@ -49,7 +52,7 @@ namespace Microsoft.Ddue.Tools
         /// </summary>
         /// <param name="assembler">The build assembler instance that is using the component</param>
         /// <param name="configuration">The component configuration</param>
-        public TransformComponent(BuildAssembler assembler, XPathNavigator configuration) :
+        public TransformComponent(BuildAssemblerCore assembler, XPathNavigator configuration) :
           base(assembler, configuration)
         {
             // load the transforms

@@ -5,7 +5,8 @@ using System.IO;
 using System.Xml;
 using System.Xml.XPath;
 
-using Microsoft.Ddue.Tools.CommandLine;
+using Sandcastle.Core;
+using Sandcastle.Core.CommandLine;
 
 namespace SegregateByAssembly
 {
@@ -64,7 +65,7 @@ namespace SegregateByAssembly
             catch(IOException ioEx)
             {
                 ConsoleApplication.WriteMessage(LogLevel.Error, String.Format(CultureInfo.CurrentCulture,
-                    "An error occured while attempting to access the file '{0}'.  The error message is: {1}",
+                    "An error occurred while attempting to access the file '{0}'.  The error message is: {1}",
                     uri, ioEx.Message));
                 return 1;
             }
@@ -98,7 +99,7 @@ namespace SegregateByAssembly
                     catch(IOException ioEx)
                     {
                         ConsoleApplication.WriteMessage(LogLevel.Error, String.Format(CultureInfo.CurrentCulture,
-                            "An access error occured while attempting to create the output file '{0}'.  " +
+                            "An access error occurred while attempting to create the output file '{0}'.  " +
                             "The error message is: {1}", filename, ioEx.Message));
                         return 1;
                     }
@@ -117,7 +118,7 @@ namespace SegregateByAssembly
                 catch(IOException ioEx)
                 {
                     ConsoleApplication.WriteMessage(LogLevel.Error, String.Format(CultureInfo.CurrentCulture,
-                        "An access error occured while attempting to create the output file '{0}'.  The " +
+                        "An access error occurred while attempting to create the output file '{0}'.  The " +
                         "error message is: {1}", namespaceFile, ioEx.Message));
                     return 1;
                 }

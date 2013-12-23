@@ -20,6 +20,9 @@ using System.Xml;
 using System.Xml.Schema;
 using System.Xml.XPath;
 
+using Sandcastle.Core.BuildAssembler;
+using Sandcastle.Core.BuildAssembler.BuildComponent;
+
 namespace Microsoft.Ddue.Tools.Targets
 {
     // The basic object model here is this:
@@ -46,7 +49,7 @@ namespace Microsoft.Ddue.Tools.Targets
 
     // But there is a reason for it: I wanted all the code that interpreted XML together, all the code that
     // interpreted CER strings together, and all the code that did link text rendering together, and I wanted
-    // them all separate from each other. I belive this is extremely important for maintainability. It may
+    // them all separate from each other. I believe this is extremely important for maintainability. It may
     // be possible to leverage partial classes to do this in a more OO fashion.
 
     /// <summary>
@@ -68,7 +71,7 @@ namespace Microsoft.Ddue.Tools.Targets
         /// This read-only property returns the build component that owns the target dictionary
         /// </summary>
         /// <value>This is useful for logging information during initialization</value>
-        public BuildComponent BuildComponent { get; private set; }
+        public BuildComponentCore BuildComponent { get; private set; }
 
         /// <summary>
         /// This is used to get or set the target dictionary's unique ID
@@ -117,8 +120,8 @@ namespace Microsoft.Ddue.Tools.Targets
         /// <param name="configuration">The configuration used to create the target dictionary</param>
         /// <remarks>The default implementation always creates a unique ID based on the directory path and file
         /// pattern if an <c>id</c> attribute is not found in the configuration.  Using a common ID across
-        /// instances allows sharing of the target dicitonary data store.</remarks>
-        protected TargetDictionary(BuildComponent component, XPathNavigator configuration)
+        /// instances allows sharing of the target dictionary data store.</remarks>
+        protected TargetDictionary(BuildComponentCore component, XPathNavigator configuration)
         {
             this.BuildComponent = component;
 
@@ -260,7 +263,7 @@ namespace Microsoft.Ddue.Tools.Targets
                 catch(IOException e)
                 {
                     throw new InvalidOperationException(String.Format(CultureInfo.InvariantCulture,
-                        "An access error occured while opening the reference targets file '{0}'. The error " +
+                        "An access error occurred while opening the reference targets file '{0}'. The error " +
                         "message is: {1}", file, e.GetExceptionMessage()));
                 }
             });

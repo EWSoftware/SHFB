@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : ComponentConfigurationDictionary.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/10/2011
+// Updated : 12/17/2013
 // Note    : Copyright 2006-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -27,13 +27,10 @@
 using System;
 using System.ComponentModel;
 using System.Collections.Generic;
-using System.Drawing.Design;
 using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Xml;
-
-using SandcastleBuilder.Utils.Design;
 
 namespace SandcastleBuilder.Utils.BuildComponent
 {
@@ -41,8 +38,6 @@ namespace SandcastleBuilder.Utils.BuildComponent
     /// This dictionary class is used to hold the third party build component
     /// configuration properties for a project such as the Code Block Component.
     /// </summary>
-    [TypeConverter(typeof(ComponentConfigurationDictionaryTypeConverter)),
-      Editor(typeof(ComponentConfigurationEditor), typeof(UITypeEditor)), Serializable]
     public class ComponentConfigurationDictionary : Dictionary<string, BuildComponentConfiguration>
     {
         #region Private data members

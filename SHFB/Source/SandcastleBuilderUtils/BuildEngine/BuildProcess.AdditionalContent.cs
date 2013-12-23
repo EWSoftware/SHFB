@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.AdditionalContent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/11/2013
+// Updated : 12/17/2013
 // Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -46,8 +46,9 @@ using System.Xml.XPath;
 using System.Xml.Xsl;
 
 using ColorizerLibrary;
+
+using SandcastleBuilder.Utils.BuildComponent;
 using SandcastleBuilder.Utils.ConceptualContent;
-using SandcastleBuilder.Utils.PlugIn;
 
 namespace SandcastleBuilder.Utils.BuildEngine
 {
@@ -495,8 +496,9 @@ namespace SandcastleBuilder.Utils.BuildEngine
             {
                 // Initialize code colorizer on first use
                 if(codeColorizer == null)
-                    codeColorizer = new CodeColorizer(shfbFolder + @"Colorizer\highlight.xml",
-                        shfbFolder + @"Colorizer\highlight.xsl");
+                    codeColorizer = new CodeColorizer(BuildComponentManager.HelpFileBuilderFolder +
+                        @"Colorizer\highlight.xml", BuildComponentManager.HelpFileBuilderFolder +
+                        @"Colorizer\highlight.xsl");
 
                 // Set the path the "Copy" image
                 codeColorizer.CopyImageUrl = pathToRoot + "icons/CopyCode.gif";
@@ -544,11 +546,13 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     if(!File.Exists(baseFolder + @"styles\highlight.css"))
                     {
                         syntaxFile = baseFolder + @"styles\highlight.css";
-                        File.Copy(shfbFolder + @"Colorizer\highlight.css", syntaxFile);
+                        File.Copy(BuildComponentManager.HelpFileBuilderFolder + @"Colorizer\highlight.css",
+                            syntaxFile);
                         File.SetAttributes(syntaxFile, FileAttributes.Normal);
 
                         syntaxFile = baseFolder + @"scripts\highlight_ac.js";
-                        File.Copy(shfbFolder + @"Colorizer\highlight_ac.js", syntaxFile);
+                        File.Copy(BuildComponentManager.HelpFileBuilderFolder + @"Colorizer\highlight_ac.js",
+                            syntaxFile);
                         File.SetAttributes(syntaxFile, FileAttributes.Normal);
 
                         // Always copy the image files, they may be different.  Also, delete the
@@ -561,7 +565,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
                             File.Delete(syntaxFile);
                         }
 
-                        File.Copy(shfbFolder + @"Colorizer\CopyCode.gif", syntaxFile);
+                        File.Copy(BuildComponentManager.HelpFileBuilderFolder + @"Colorizer\CopyCode.gif",
+                            syntaxFile);
                         File.SetAttributes(syntaxFile, FileAttributes.Normal);
 
                         syntaxFile = baseFolder + @"icons\CopyCode_h.gif";
@@ -572,7 +577,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
                             File.Delete(syntaxFile);
                         }
 
-                        File.Copy(shfbFolder + @"Colorizer\CopyCode_h.gif", syntaxFile);
+                        File.Copy(BuildComponentManager.HelpFileBuilderFolder + @"Colorizer\CopyCode_h.gif",
+                            syntaxFile);
                         File.SetAttributes(syntaxFile, FileAttributes.Normal);
                     }
             }
@@ -974,8 +980,9 @@ namespace SandcastleBuilder.Utils.BuildEngine
             {
                 // Initialize code colorizer on first use
                 if(codeColorizer == null)
-                    codeColorizer = new CodeColorizer(shfbFolder + @"Colorizer\highlight.xml",
-                        shfbFolder + @"Colorizer\highlight.xsl");
+                    codeColorizer = new CodeColorizer(BuildComponentManager.HelpFileBuilderFolder +
+                        @"Colorizer\highlight.xml", BuildComponentManager.HelpFileBuilderFolder +
+                        @"Colorizer\highlight.xsl");
 
                 // Set the path the "Copy" image
                 codeColorizer.CopyImageUrl = pathToRoot + "icons/CopyCode.gif";

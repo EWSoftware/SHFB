@@ -3,23 +3,43 @@
 // See http://www.microsoft.com/resources/sharedsource/licensingbasics/sharedsourcelicenses.mspx.
 // All other rights reserved.
 
+// Change history:
+// 12/20/2013 - EFW - Updated the syntax generator to be discoverable via MEF
+
 using System;
 using System.Xml.XPath;
+
+using Sandcastle.Core.BuildAssembler.SyntaxGenerator;
 
 namespace Microsoft.Ddue.Tools
 {
     /// <summary>
     /// This class generates declaration syntax sections for ASP.NET
     /// </summary>
-    public sealed class AspNetSyntaxGenerator : SyntaxGenerator
+    public sealed class AspNetSyntaxGenerator : SyntaxGeneratorBase
     {
+        #region Syntax generator factory for MEF
+        //=====================================================================
+
         /// <summary>
-        /// Constructor
+        /// This is used to create a new instance of the syntax generator
         /// </summary>
-        /// <param name="configuration">The syntax generator configuration</param>
-        public AspNetSyntaxGenerator(XPathNavigator configuration)
+        [SyntaxGeneratorExport("AspNet", "AspNet", "cs", AlternateIds = "asp, asp.net", SortOrder = 100,
+          Description = "Generates ASP.NET declaration syntax sections")]
+        public sealed class Factory : ISyntaxGeneratorFactory
         {
+            /// <inheritdoc />
+            public SyntaxGeneratorBase Create()
+            {
+                return new AspNetSyntaxGenerator();
+            }
         }
+        #endregion
+
+        #region Private data members
+        //=====================================================================
+
+        private const string Language = "AspNet";
 
         private static XPathExpression nameExpression = XPathExpression.Compile("string(apidata/@name)");
         private static XPathExpression groupExpression = XPathExpression.Compile("string(apidata/@group)");
@@ -37,7 +57,19 @@ namespace Microsoft.Ddue.Tools
 
         private static XPathExpression containingNamespaceExpression = XPathExpression.Compile("string(containers/namespace/@api)");
 
-        private const string Language = "AspNet";
+        #endregion
+
+        #region Methods
+        //=====================================================================
+
+        /// <summary>
+        /// Initialize the syntax generator
+        /// </summary>
+        /// <param name="configuration">The syntax generator configuration</param>
+        /// <remarks>This component has no configurable elements</remarks>
+        public override void Initialize(XPathNavigator configuration)
+        {
+        }
 
         /// <inheritdoc />
         public override void WriteSyntax(XPathNavigator reflection, SyntaxWriter writer)
@@ -70,6 +102,11 @@ namespace Microsoft.Ddue.Tools
             }
         }
 
+        /// <summary>
+        /// This is used to get the web control prefix based on the given type
+        /// </summary>
+        /// <param name="reflection">An XPath navigator containing the type information</param>
+        /// <returns>The web control prefix or null if the type is not a web control</returns>
         private static string WebControlPrefix(XPathNavigator reflection)
         {
             if((bool)reflection.Evaluate(typeIsWebControl))
@@ -85,10 +122,16 @@ namespace Microsoft.Ddue.Tools
 
                 return "asp";
             }
-            
+
             return null;
         }
 
+        /// <summary>
+        /// Write out class syntax
+        /// </summary>
+        /// <param name="reflection">An XPath navigator containing the member information</param>
+        /// <param name="writer">The syntax writer to which the information is written</param>
+        /// <param name="prefix">The web control prefix to use</param>
         private static void WriteClassSyntax(XPathNavigator reflection, SyntaxWriter writer, string prefix)
         {
             string name = (string)reflection.Evaluate(nameExpression);
@@ -104,6 +147,12 @@ namespace Microsoft.Ddue.Tools
             writer.WriteEndBlock();
         }
 
+        /// <summary>
+        /// Write out property syntax
+        /// </summary>
+        /// <param name="reflection">An XPath navigator containing the member information</param>
+        /// <param name="writer">The syntax writer to which the information is written</param>
+        /// <param name="prefix">The web control prefix to use</param>
         private static void WritePropertySyntax(XPathNavigator reflection, SyntaxWriter writer, string prefix)
         {
             bool set = (bool)reflection.Evaluate(propertyIsSettable);
@@ -180,6 +229,12 @@ namespace Microsoft.Ddue.Tools
             writer.WriteEndBlock();
         }
 
+        /// <summary>
+        /// Write out event syntax
+        /// </summary>
+        /// <param name="reflection">An XPath navigator containing the member information</param>
+        /// <param name="writer">The syntax writer to which the information is written</param>
+        /// <param name="prefix">The web control prefix to use</param>
         private static void WriteEventSyntax(XPathNavigator reflection, SyntaxWriter writer, string prefix)
         {
             string name = (string)reflection.Evaluate(nameExpression);
@@ -201,5 +256,6 @@ namespace Microsoft.Ddue.Tools
 
             writer.WriteEndBlock();
         }
+        #endregion
     }
 }

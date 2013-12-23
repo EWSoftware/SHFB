@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : XPathReflectionFileFilterPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)  Based on code by Eyal Post
-// Updated : 12/04/2013
+// Updated : 12/17/2013
 // Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -17,19 +17,19 @@
 // Version     Date     Who  Comments
 // ==============================================================================================================
 // 1.8.0.1  10/31/2008  EFW  Created the code
+// -------  12/17/2013  EFW  Updated to use MEF for the plug-ins
 //===============================================================================================================
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Reflection;
+using System.Linq;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.XPath;
 
 using SandcastleBuilder.Utils;
+using SandcastleBuilder.Utils.BuildComponent;
 using SandcastleBuilder.Utils.BuildEngine;
-using SandcastleBuilder.Utils.PlugIn;
 
 namespace SandcastleBuilder.PlugIns
 {
@@ -37,12 +37,16 @@ namespace SandcastleBuilder.PlugIns
     /// This plug-in class is used to filter out unwanted information from the reflection information file using
     /// XPath queries.
     /// </summary>
-    public class XPathReflectionFileFilterPlugIn : SandcastleBuilder.Utils.PlugIn.IPlugIn
+    [HelpFileBuilderPlugInExport("XPath Reflection File Filter", IsConfigurable = true, RunsInPartialBuild = true,
+      AdditionalCopyrightInfo = "Based on code submitted by Eyal Post",
+      Description = "This plug in is used to remove unwanted items from the reflection information file using " +
+        "XPath queries.")]
+    public sealed class XPathReflectionFileFilterPlugIn : IPlugIn
     {
         #region Private data members
         //=====================================================================
 
-        private ExecutionPointCollection executionPoints;
+        private List<ExecutionPoint> executionPoints;
         private BuildProcess builder;
 
         private List<string> expressions;
@@ -52,90 +56,20 @@ namespace SandcastleBuilder.PlugIns
         //=====================================================================
 
         /// <summary>
-        /// This read-only property returns a friendly name for the plug-in
-        /// </summary>
-        public string Name
-        {
-            get { return "XPath Reflection File Filter"; }
-        }
-
-        /// <summary>
-        /// This read-only property returns the version of the plug-in
-        /// </summary>
-        public Version Version
-        {
-            get
-            {
-                // Use the assembly version
-                Assembly asm = Assembly.GetExecutingAssembly();
-                FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(asm.Location);
-
-                return new Version(fvi.ProductVersion);
-            }
-        }
-
-        /// <summary>
-        /// This read-only property returns the copyright information for the plug-in
-        /// </summary>
-        public string Copyright
-        {
-            get
-            {
-                // Use the assembly copyright
-                Assembly asm = Assembly.GetExecutingAssembly();
-                AssemblyCopyrightAttribute copyright = (AssemblyCopyrightAttribute)Attribute.GetCustomAttribute(
-                    asm, typeof(AssemblyCopyrightAttribute));
-
-                return copyright.Copyright + "\r\nBased on code submitted by Eyal Post";
-            }
-        }
-
-        /// <summary>
-        /// This read-only property returns a brief description of the plug-in
-        /// </summary>
-        public string Description
-        {
-            get
-            {
-                return "This plug in is used to remove unwanted items from the reflection information file " +
-                    "using XPath queries.";
-            }
-        }
-
-        /// <summary>
-        /// This plug-in supports configuration
-        /// </summary>
-        /// <seealso cref="ConfigurePlugIn"/>
-        public bool SupportsConfiguration
-        {
-            get { return true; }
-        }
-
-        /// <summary>
-        /// This plug-in runs in partial builds
-        /// </summary>
-        public bool RunsInPartialBuild
-        {
-            get { return true; }
-        }
-
-        /// <summary>
         /// This read-only property returns a collection of execution points that define when the plug-in should
         /// be invoked during the build process.
         /// </summary>
-        public ExecutionPointCollection ExecutionPoints
+        public IEnumerable<ExecutionPoint> ExecutionPoints
         {
             get
             {
                 if(executionPoints == null)
-                {
-                    executionPoints = new ExecutionPointCollection();
-
-                    // This one has a slightly higher priority as it removes stuff that the other plug-ins don't
-                    // need to see.
-                    executionPoints.Add(new ExecutionPoint(BuildStep.GenerateNamespaceSummaries,
-                        ExecutionBehaviors.Before, 1100));
-                }
+                    executionPoints = new List<ExecutionPoint>
+                    {
+                        // This one has a slightly higher priority as it removes stuff that the other plug-ins
+                        // don't need to see.
+                        new ExecutionPoint(BuildStep.GenerateNamespaceSummaries, ExecutionBehaviors.Before, 1100)
+                    };
 
                 return executionPoints;
             }
@@ -169,7 +103,10 @@ namespace SandcastleBuilder.PlugIns
         {
             builder = buildProcess;
 
-            builder.ReportProgress("{0} Version {1}\r\n{2}\r\n", this.Name, this.Version, this.Copyright);
+            var metadata = (HelpFileBuilderPlugInExportAttribute)this.GetType().GetCustomAttributes(
+                typeof(HelpFileBuilderPlugInExportAttribute), false).First();
+
+            builder.ReportProgress("{0} Version {1}\r\n{2}", metadata.Id, metadata.Version, metadata.Copyright);
 
             expressions = new List<string>();
 
@@ -212,32 +149,12 @@ namespace SandcastleBuilder.PlugIns
         //=====================================================================
 
         /// <summary>
-        /// This handles garbage collection to ensure proper disposal of the plug-in if not done explicitly with
-        /// <see cref="Dispose()"/>.
-        /// </summary>
-        ~XPathReflectionFileFilterPlugIn()
-        {
-            this.Dispose(false);
-        }
-
-        /// <summary>
         /// This implements the Dispose() interface to properly dispose of the plug-in object
         /// </summary>
-        /// <overloads>There are two overloads for this method</overloads>
         public void Dispose()
         {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// This can be overridden by derived classes to add their own disposal code if necessary
-        /// </summary>
-        /// <param name="disposing">Pass true to dispose of the managed and unmanaged resources or false to just
-        /// dispose of the unmanaged resources.</param>
-        protected virtual void Dispose(bool disposing)
-        {
             // Nothing to dispose of in this one
+            GC.SuppressFinalize(this);
         }
         #endregion
     }

@@ -8,11 +8,14 @@
 // 02/09/2012 - EFW - Added support for optional parameters and property getter/setter attributes.
 // 02/14/2012 - EFW - Made the unsafe code checks consistent across all syntax generators
 // 11/29/2013 - EFW - Added support for metadata based interop attributes
+// 12/20/2013 - EFW - Updated the syntax generator to be discoverable via MEF
 
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Xml.XPath;
+
+using Sandcastle.Core.BuildAssembler.SyntaxGenerator;
 
 namespace Microsoft.Ddue.Tools
 {
@@ -21,15 +24,23 @@ namespace Microsoft.Ddue.Tools
     /// </summary>
     public sealed class FSharpDeclarationSyntaxGenerator : SyntaxGeneratorTemplate
     {
+        #region Syntax generator factory for MEF
+        //=====================================================================
+
         /// <summary>
-        /// Constructor
+        /// This is used to create a new instance of the syntax generator
         /// </summary>
-        /// <param name="configuration">The syntax generator configuration</param>
-        public FSharpDeclarationSyntaxGenerator(XPathNavigator configuration) : base(configuration)
+        [SyntaxGeneratorExport("FSharp", "FSharp", "fs", AlternateIds = "fs, f#, fsscript",
+          SortOrder = 50, Description = "Generates F# declaration syntax sections")]
+        public sealed class Factory : ISyntaxGeneratorFactory
         {
-            if(String.IsNullOrEmpty(Language))
-                Language = "FSharp";
+            /// <inheritdoc />
+            public SyntaxGeneratorBase Create()
+            {
+                return new FSharpDeclarationSyntaxGenerator();
+            }
         }
+        #endregion
 
         // namespace: done
 

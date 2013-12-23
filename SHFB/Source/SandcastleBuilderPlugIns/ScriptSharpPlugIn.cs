@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : ScriptSharpPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/15/2013
+// Updated : 12/17/2013
 // Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -20,19 +20,20 @@
 // 1.6.0.5  01/25/2008  EFW  Created the code
 // 1.8.0.0  07/14/2008  EFW  Updated for use with MSBuild project format
 // 1.9.9.0  12/04/2013  EFW  Updated for use with the new visibility settings in MRefBuilder.config.
+// -------  12/17/2013  EFW  Updated to use MEF for the plug-ins
 //===============================================================================================================
 
 using System;
-using System.Diagnostics;
+using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
+using System.Linq;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.XPath;
 
 using SandcastleBuilder.Utils;
+using SandcastleBuilder.Utils.BuildComponent;
 using SandcastleBuilder.Utils.BuildEngine;
-using SandcastleBuilder.Utils.PlugIn;
 
 namespace SandcastleBuilder.PlugIns
 {
@@ -41,12 +42,17 @@ namespace SandcastleBuilder.PlugIns
     /// MRefBuilder on assemblies produced by the Script# compiler so that it is suitable for use in
     /// producing a help file.
     /// </summary>
-    public class ScriptSharpPlugIn : IPlugIn
+    [HelpFileBuilderPlugInExport("Script# Reflection File Fixer", RunsInPartialBuild = true,
+      AdditionalCopyrightInfo = "Script# is Copyright \xA9 2007-2013 Nikhil Kothari, All Rights Reserved",
+      Description = "This plug-in is used to modify the reflection information file produced after running " +
+      "MRefBuilder on assemblies produced by the Script# compiler so that it is suitable for use in producing " +
+      "a help file.")]
+    public sealed class ScriptSharpPlugIn : IPlugIn
     {
         #region Private data members
         //=====================================================================
 
-        private ExecutionPointCollection executionPoints;
+        private List<ExecutionPoint> executionPoints;
 
         private BuildProcess builder;
         #endregion
@@ -55,90 +61,18 @@ namespace SandcastleBuilder.PlugIns
         //=====================================================================
 
         /// <summary>
-        /// This read-only property returns a friendly name for the plug-in
-        /// </summary>
-        public string Name
-        {
-            get { return "Script# Reflection File Fixer"; }
-        }
-
-        /// <summary>
-        /// This read-only property returns the version of the plug-in
-        /// </summary>
-        public Version Version
-        {
-            get
-            {
-                // Use the assembly version
-                Assembly asm = Assembly.GetExecutingAssembly();
-                FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(asm.Location);
-
-                return new Version(fvi.ProductVersion);
-            }
-        }
-
-        /// <summary>
-        /// This read-only property returns the copyright information for the plug-in
-        /// </summary>
-        public string Copyright
-        {
-            get
-            {
-                // Use the assembly copyright
-                Assembly asm = Assembly.GetExecutingAssembly();
-                AssemblyCopyrightAttribute copyright = (AssemblyCopyrightAttribute)Attribute.GetCustomAttribute(
-                    asm, typeof(AssemblyCopyrightAttribute));
-
-                return copyright.Copyright + "\r\nScript# is Copyright \xA9 2007-2013 Nikhil Kothari, " +
-                    "All Rights Reserved";
-            }
-        }
-
-        /// <summary>
-        /// This read-only property returns a brief description of the plug-in
-        /// </summary>
-        public string Description
-        {
-            get
-            {
-                return "This plug-in is used to modify the reflection information file produced after " +
-                    "running MRefBuilder on assemblies produced by the Script# compiler so that it is " +
-                    "suitable for use in producing a help file.";
-            }
-        }
-
-        /// <summary>
-        /// This plug-in does not support configuration
-        /// </summary>
-        /// <seealso cref="ConfigurePlugIn"/>
-        public bool SupportsConfiguration
-        {
-            get { return false; }
-        }
-
-        /// <summary>
-        /// This plug-in runs in partial builds
-        /// </summary>
-        public bool RunsInPartialBuild
-        {
-            get { return true; }
-        }
-
-        /// <summary>
         /// This read-only property returns a collection of execution points that define when the plug-in should
         /// be invoked during the build process.
         /// </summary>
-        public ExecutionPointCollection ExecutionPoints
+        public IEnumerable<ExecutionPoint> ExecutionPoints
         {
             get
             {
                 if(executionPoints == null)
-                {
-                    executionPoints = new ExecutionPointCollection();
-
-                    executionPoints.Add(new ExecutionPoint(BuildStep.GenerateReflectionInfo,
-                        ExecutionBehaviors.Before));
-                }
+                    executionPoints = new List<ExecutionPoint>
+                    {
+                        new ExecutionPoint(BuildStep.GenerateReflectionInfo, ExecutionBehaviors.Before)
+                    };
 
                 return executionPoints;
             }
@@ -154,8 +88,8 @@ namespace SandcastleBuilder.PlugIns
         /// <remarks>The configuration data will be stored in the help file builder project</remarks>
         public string ConfigurePlugIn(SandcastleProject project, string currentConfig)
         {
-            MessageBox.Show("This plug-in has no configurable settings",
-                "Script# Reflection File Fixer Plug-In", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("This plug-in has no configurable settings", "Script# Reflection File Fixer Plug-In",
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             return currentConfig;
         }
@@ -169,14 +103,17 @@ namespace SandcastleBuilder.PlugIns
         {
             builder = buildProcess;
 
-            builder.ReportProgress("{0} Version {1}\r\n{2}", this.Name, this.Version, this.Copyright);
+            var metadata = (HelpFileBuilderPlugInExportAttribute)this.GetType().GetCustomAttributes(
+                typeof(HelpFileBuilderPlugInExportAttribute), false).First();
+
+            builder.ReportProgress("{0} Version {1}\r\n{2}", metadata.Id, metadata.Version, metadata.Copyright);
         }
 
         /// <summary>
         /// This method is used to execute the plug-in during the build process
         /// </summary>
         /// <param name="context">The current execution context</param>
-        public void Execute(Utils.PlugIn.ExecutionContext context)
+        public void Execute(ExecutionContext context)
         {
             if(this.ModifyMRefBuilderConfig())
                 this.ModifyGenerateRefInfoProject();
@@ -187,32 +124,12 @@ namespace SandcastleBuilder.PlugIns
         //=====================================================================
 
         /// <summary>
-        /// This handles garbage collection to ensure proper disposal of the plug-in if not done explicit with
-        /// <see cref="Dispose()"/>.
-        /// </summary>
-        ~ScriptSharpPlugIn()
-        {
-            this.Dispose(false);
-        }
-
-        /// <summary>
         /// This implements the Dispose() interface to properly dispose of the plug-in object
         /// </summary>
-        /// <overloads>There are two overloads for this method.</overloads>
         public void Dispose()
         {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// This can be overridden by derived classes to add their own disposal code if necessary
-        /// </summary>
-        /// <param name="disposing">Pass true to dispose of the managed and unmanaged resources or false to just
-        /// dispose of the unmanaged resources.</param>
-        protected virtual void Dispose(bool disposing)
-        {
             // Nothing to dispose of in this one
+            GC.SuppressFinalize(this);
         }
         #endregion
 
@@ -380,7 +297,7 @@ namespace SandcastleBuilder.PlugIns
             task.Attributes.Append(attr);
 
             attr = project.CreateAttribute("Transformations");
-            attr.Value = Path.Combine(builder.SandcastleFolder, @"~\ProductionTransforms\FixScriptSharp.xsl");
+            attr.Value = Path.Combine(builder.HelpFileBuilderFolder, @"~\ProductionTransforms\FixScriptSharp.xsl");
             task.Attributes.Append(attr);
 
             attr = project.CreateAttribute("InputFile");

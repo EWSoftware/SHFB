@@ -13,7 +13,8 @@ using System.IO;
 using System.Xml;
 using System.Xml.Xsl;
 
-using Microsoft.Ddue.Tools.CommandLine;
+using Sandcastle.Core;
+using Sandcastle.Core.CommandLine;
 
 namespace Microsoft.Ddue.Tools
 {

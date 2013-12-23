@@ -1,7 +1,7 @@
 ﻿<Project DefaultTargets="Generate" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <!-- Generate inherited documentation.  http://SHFB.CodePlex.com -->
   <UsingTask TaskName="SandcastleBuilder.InheritedDocumentation.GenerateInheritedDocs"
-    AssemblyFile="$(SHFBROOT)\GenerateInheritedDocs.exe" />
+    AssemblyFile="{@SHFBFolder}\GenerateInheritedDocs.exe" />
 
     <!-- Task properties -->
   <PropertyGroup>

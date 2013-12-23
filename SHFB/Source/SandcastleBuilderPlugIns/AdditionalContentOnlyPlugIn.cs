@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : AdditionalContentOnlyPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/04/2013
+// Updated : 12/17/2013
 // Note    : Copyright 2007-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -21,21 +21,21 @@
 // 1.6.0.7  05/27/2008  EFW  Modified to support use in conceptual preview
 // 1.8.0.0  08/05/2008  EFW  Modified to support the new project format
 // 1.9.0.0  06/07/2010  EFW  Added support for multi-format build output
+// -------  12/17/2013  EFW  Updated to use MEF for the plug-ins
 //===============================================================================================================
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Reflection;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.XPath;
 
 using SandcastleBuilder.Utils;
+using SandcastleBuilder.Utils.BuildComponent;
 using SandcastleBuilder.Utils.BuildEngine;
-using SandcastleBuilder.Utils.PlugIn;
 
 namespace SandcastleBuilder.PlugIns
 {
@@ -43,99 +43,33 @@ namespace SandcastleBuilder.PlugIns
     /// This plug-in class can be used to build a help file consisting of nothing but additional content items.
     /// It is also useful for proofreading your additional content without having to build all the API topics.
     /// </summary>
-    public class AdditionalContentOnlyPlugIn : IPlugIn
+    [HelpFileBuilderPlugInExport("Additional Content Only", Description = "This plug-in can be used to build a " +
+      "help file consisting of nothing but conceptual content and/or additional content items.  It is also " +
+      "useful for proofreading your conceptual and/or additional content without having to build all the API " +
+      "topics.")]
+    public sealed class AdditionalContentOnlyPlugIn : IPlugIn
     {
         #region Private data members
         //=====================================================================
 
-        private ExecutionPointCollection executionPoints;
+        private List<ExecutionPoint> executionPoints;
 
         private BuildProcess builder;
-        private bool isPreviewBuild;
         #endregion
 
         #region IPlugIn implementation
         //=====================================================================
 
         /// <summary>
-        /// This read-only property returns a friendly name for the plug-in
-        /// </summary>
-        public string Name
-        {
-            get { return "Additional Content Only"; }
-        }
-
-        /// <summary>
-        /// This read-only property returns the version of the plug-in
-        /// </summary>
-        public Version Version
-        {
-            get
-            {
-                // Use the assembly version
-                Assembly asm = Assembly.GetExecutingAssembly();
-                FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(asm.Location);
-
-                return new Version(fvi.ProductVersion);
-            }
-        }
-
-        /// <summary>
-        /// This read-only property returns the copyright information for the plug-in
-        /// </summary>
-        public string Copyright
-        {
-            get
-            {
-                // Use the assembly copyright
-                Assembly asm = Assembly.GetExecutingAssembly();
-                AssemblyCopyrightAttribute copyright = (AssemblyCopyrightAttribute)Attribute.GetCustomAttribute(
-                    asm, typeof(AssemblyCopyrightAttribute));
-
-                return copyright.Copyright;
-            }
-        }
-
-        /// <summary>
-        /// This read-only property returns a brief description of the plug-in
-        /// </summary>
-        public string Description
-        {
-            get
-            {
-                return "This plug-in can be used to build a help file consisting of nothing but conceptual " +
-                    "content and/or additional content items.  It is also useful for proofreading your " +
-                    "conceptual and/or additional content without having to build all the API topics.";
-            }
-        }
-
-        /// <summary>
-        /// This plug-in does not support configuration
-        /// </summary>
-        /// <seealso cref="ConfigurePlugIn"/>
-        public bool SupportsConfiguration
-        {
-            get { return false; }
-        }
-
-        /// <summary>
-        /// This plug-in does not run in partial builds
-        /// </summary>
-        public bool RunsInPartialBuild
-        {
-            get { return false; }
-        }
-
-        /// <summary>
         /// This read-only property returns a collection of execution points that define when the plug-in should
         /// be invoked during the build process.
         /// </summary>
-        public ExecutionPointCollection ExecutionPoints
+        public IEnumerable<ExecutionPoint> ExecutionPoints
         {
             get
             {
                 if(executionPoints == null)
-                    executionPoints = new ExecutionPointCollection
+                    executionPoints = new List<ExecutionPoint>
                     {
                         new ExecutionPoint(BuildStep.ValidatingDocumentationSources, ExecutionBehaviors.InsteadOf),
                         new ExecutionPoint(BuildStep.GenerateApiFilter, ExecutionBehaviors.InsteadOf),
@@ -144,7 +78,7 @@ namespace SandcastleBuilder.PlugIns
                         new ExecutionPoint(BuildStep.TransformReflectionInfo, ExecutionBehaviors.InsteadOf),
                         new ExecutionPoint(BuildStep.GenerateInheritedDocumentation, ExecutionBehaviors.InsteadOf),
                         new ExecutionPoint(BuildStep.MergeCustomConfigs, ExecutionBehaviors.After),
-                        new ExecutionPoint(BuildStep.BuildReferenceTopics, ExecutionBehaviors.InsteadOf),
+                        new ExecutionPoint(BuildStep.BuildReferenceTopics, ExecutionBehaviors.InsteadOf)
                     };
 
                 return executionPoints;
@@ -176,35 +110,17 @@ namespace SandcastleBuilder.PlugIns
         {
             builder = buildProcess;
 
+            var metadata = (HelpFileBuilderPlugInExportAttribute)this.GetType().GetCustomAttributes(
+                typeof(HelpFileBuilderPlugInExportAttribute), false).First();
+
             builder.ReportProgress("{0} Version {1}\r\n{2}\r\n    This build will only include additional " +
-                "content items.", this.Name, this.Version, this.Copyright);
+                "content items.", metadata.Id, metadata.Version, metadata.Copyright);
 
             if(!builder.CurrentProject.HasItems(BuildAction.ContentLayout) &&
               !builder.CurrentProject.HasItems(BuildAction.SiteMap) &&
               !builder.CurrentProject.HasItems(BuildAction.Content))
                 throw new BuilderException("ACP0001", "The Additional Content Only plug-in requires a " +
                     "conceptual content layout file, a site map file, or content items in the project.");
-
-            // If doing a preview for conceptual content, suppress all the steps that actually build the help
-            // file too.  Not used anymore since the topic previewer control was created.  May support for this
-            // option remove later.
-            configuration.MoveToChild(XPathNodeType.All);
-
-            if(configuration.GetAttribute("previewBuild", String.Empty) == "true")
-            {
-                isPreviewBuild = true;
-
-                this.ExecutionPoints.AddRange(new [] {
-                    new ExecutionPoint(BuildStep.GenerateIntermediateTableOfContents, ExecutionBehaviors.InsteadOf),
-                    new ExecutionPoint(BuildStep.CombiningIntermediateTocFiles, ExecutionBehaviors.InsteadOf),
-                    new ExecutionPoint(BuildStep.ExtractingHtmlInfo, ExecutionBehaviors.InsteadOf),
-                    new ExecutionPoint(BuildStep.GenerateHelpFormatTableOfContents, ExecutionBehaviors.InsteadOf),
-                    new ExecutionPoint(BuildStep.GenerateHelpFileIndex,  ExecutionBehaviors.InsteadOf),
-                    new ExecutionPoint(BuildStep.GenerateHelpProject, ExecutionBehaviors.InsteadOf),
-                    new ExecutionPoint(BuildStep.CompilingHelpFile, ExecutionBehaviors.InsteadOf),
-                    new ExecutionPoint(BuildStep.GenerateFullTextIndex, ExecutionBehaviors.InsteadOf),
-                    new ExecutionPoint(BuildStep.CopyingWebsiteFiles, ExecutionBehaviors.InsteadOf) });
-            }
         }
 
         /// <summary>
@@ -254,16 +170,6 @@ namespace SandcastleBuilder.PlugIns
                     foreach(XPathNavigator target in allTargets)
                         deleteTargets.Add(target);
 
-                    // Get rid of the framework targets too in preview build.  This can knock about 20 seconds
-                    // off the build time.
-                    if(isPreviewBuild)
-                    {
-                        allTargets = navConfig.Select("//targets[contains(@base, 'Data\\Reflection')]");
-
-                        foreach(XPathNavigator target in allTargets)
-                            deleteTargets.Add(target);
-                    }
-
                     foreach(var t in deleteTargets)
                         t.DeleteSelf();
 
@@ -278,32 +184,12 @@ namespace SandcastleBuilder.PlugIns
         //=====================================================================
 
         /// <summary>
-        /// This handles garbage collection to ensure proper disposal of the plug-in if not done explicitly with
-        /// <see cref="Dispose()"/>.
-        /// </summary>
-        ~AdditionalContentOnlyPlugIn()
-        {
-            this.Dispose(false);
-        }
-
-        /// <summary>
         /// This implements the Dispose() interface to properly dispose of the plug-in object
         /// </summary>
-        /// <overloads>There are two overloads for this method.</overloads>
         public void Dispose()
         {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// This can be overridden by derived classes to add their own disposal code if necessary
-        /// </summary>
-        /// <param name="disposing">Pass true to dispose of the managed and unmanaged resources or false to just
-        /// dispose of the unmanaged resources.</param>
-        protected virtual void Dispose(bool disposing)
-        {
             // Nothing to dispose of in this one
+            GC.SuppressFinalize(this);
         }
         #endregion
     }

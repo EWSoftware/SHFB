@@ -37,16 +37,19 @@ namespace SandcastleBuilder.PlugIns
             this.label2 = new System.Windows.Forms.Label();
             this.udcMinParts = new System.Windows.Forms.NumericUpDown();
             this.chkInsertBelow = new System.Windows.Forms.CheckBox();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.label3 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.udcMinParts)).BeginInit();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(510, 75);
+            this.btnCancel.Location = new System.Drawing.Point(510, 147);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(88, 32);
-            this.btnCancel.TabIndex = 6;
+            this.btnCancel.TabIndex = 7;
             this.btnCancel.Text = "Cancel";
             this.toolTip1.SetToolTip(this.btnCancel, "Exit without saving changes");
             this.btnCancel.UseVisualStyleBackColor = true;
@@ -54,10 +57,10 @@ namespace SandcastleBuilder.PlugIns
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(12, 75);
+            this.btnOK.Location = new System.Drawing.Point(12, 147);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(88, 32);
-            this.btnOK.TabIndex = 4;
+            this.btnOK.TabIndex = 5;
             this.btnOK.Text = "OK";
             this.toolTip1.SetToolTip(this.btnOK, "Save changes to configuration");
             this.btnOK.UseVisualStyleBackColor = true;
@@ -65,10 +68,10 @@ namespace SandcastleBuilder.PlugIns
             // 
             // lnkCodePlexSHFB
             // 
-            this.lnkCodePlexSHFB.Location = new System.Drawing.Point(196, 80);
+            this.lnkCodePlexSHFB.Location = new System.Drawing.Point(196, 152);
             this.lnkCodePlexSHFB.Name = "lnkCodePlexSHFB";
             this.lnkCodePlexSHFB.Size = new System.Drawing.Size(218, 23);
-            this.lnkCodePlexSHFB.TabIndex = 5;
+            this.lnkCodePlexSHFB.TabIndex = 6;
             this.lnkCodePlexSHFB.TabStop = true;
             this.lnkCodePlexSHFB.Text = "Sandcastle Help File Builder";
             this.lnkCodePlexSHFB.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -77,25 +80,25 @@ namespace SandcastleBuilder.PlugIns
             // 
             // label1
             // 
-            this.label1.Location = new System.Drawing.Point(28, 11);
+            this.label1.Location = new System.Drawing.Point(55, 83);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(425, 23);
-            this.label1.TabIndex = 0;
+            this.label1.TabIndex = 1;
             this.label1.Text = "Create containers for common root namespaces with more than";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label2
             // 
-            this.label2.Location = new System.Drawing.Point(507, 11);
+            this.label2.Location = new System.Drawing.Point(534, 83);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(56, 23);
-            this.label2.TabIndex = 2;
+            this.label2.TabIndex = 3;
             this.label2.Text = "part(s)";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // udcMinParts
             // 
-            this.udcMinParts.Location = new System.Drawing.Point(459, 12);
+            this.udcMinParts.Location = new System.Drawing.Point(486, 84);
             this.udcMinParts.Maximum = new decimal(new int[] {
             20,
             0,
@@ -108,7 +111,7 @@ namespace SandcastleBuilder.PlugIns
             0});
             this.udcMinParts.Name = "udcMinParts";
             this.udcMinParts.Size = new System.Drawing.Size(42, 22);
-            this.udcMinParts.TabIndex = 1;
+            this.udcMinParts.TabIndex = 2;
             this.udcMinParts.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.udcMinParts.Value = new decimal(new int[] {
             2,
@@ -118,19 +121,40 @@ namespace SandcastleBuilder.PlugIns
             // 
             // chkInsertBelow
             // 
-            this.chkInsertBelow.Location = new System.Drawing.Point(79, 40);
+            this.chkInsertBelow.Location = new System.Drawing.Point(106, 112);
             this.chkInsertBelow.Name = "chkInsertBelow";
             this.chkInsertBelow.Size = new System.Drawing.Size(484, 21);
-            this.chkInsertBelow.TabIndex = 3;
+            this.chkInsertBelow.TabIndex = 4;
             this.chkInsertBelow.Text = "Insert nested namespaces below the parent namespace\'s content";
             this.chkInsertBelow.UseVisualStyleBackColor = true;
+            // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.SystemColors.Info;
+            this.panel1.Controls.Add(this.label3);
+            this.panel1.ForeColor = System.Drawing.SystemColors.InfoText;
+            this.panel1.Location = new System.Drawing.Point(12, 12);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(621, 60);
+            this.panel1.TabIndex = 0;
+            // 
+            // label3
+            // 
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(13, 9);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(594, 43);
+            this.label3.TabIndex = 0;
+            this.label3.Text = "This plug-in has been deprecated.  Use the NamespaceGrouping and MaximumGroupPart" +
+    "s project options instead.";
             // 
             // HierarchicalTocConfigDlg
             // 
             this.AcceptButton = this.btnOK;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(610, 119);
+            this.ClientSize = new System.Drawing.Size(645, 191);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.chkInsertBelow);
             this.Controls.Add(this.udcMinParts);
             this.Controls.Add(this.label2);
@@ -146,6 +170,7 @@ namespace SandcastleBuilder.PlugIns
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Configure Hierarchical TOC Plug-In";
             ((System.ComponentModel.ISupportInitialize)(this.udcMinParts)).EndInit();
+            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -160,5 +185,7 @@ namespace SandcastleBuilder.PlugIns
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.NumericUpDown udcMinParts;
         private System.Windows.Forms.CheckBox chkInsertBelow;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label label3;
     }
 }

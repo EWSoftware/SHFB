@@ -26,6 +26,8 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.XPath;
 
+using Sandcastle.Core.BuildAssembler;
+
 using Microsoft.Ddue.Tools;
 using Microsoft.Ddue.Tools.Commands;
 

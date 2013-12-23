@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/13/2013
+// Updated : 12/17/2013
 // Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -53,14 +53,16 @@
 // 1.9.7.0  01/02/2013  EFW  Added method to get referenced namespaces
 // 1.9.8.0  06/21/2013  EFW  Added support for format-specific help content files.  Removed the
 //                           ModifyHelpTopicFilenames build step.
-// 1.9.9.0  12/04/2013  EFW  Removed the ApplyVisibilityProperties build step.  Plug-ins can apply visibility
+// -------  12/04/2013  EFW  Removed the ApplyVisibilityProperties build step.  Plug-ins can apply visibility
 //                           settings if needed by calling the ApplyVisibilityProperties() method.  Added
 //                           support for namespace grouping based on changes submitted by Stazzz.
+//          12/17/2013  EFW  Removed the SandcastlePath property and all references to it
 //===============================================================================================================
 
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.Composition.Hosting;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -73,11 +75,12 @@ using System.Web;
 using System.Xml;
 using System.Xml.XPath;
 
+using Sandcastle.Core.BuildAssembler.SyntaxGenerator;
+
 using SandcastleBuilder.Utils.BuildComponent;
 using SandcastleBuilder.Utils.ConceptualContent;
 using SandcastleBuilder.Utils.Frameworks;
 using SandcastleBuilder.Utils.MSBuild;
-using SandcastleBuilder.Utils.PlugIn;
 using SandcastleBuilder.Utils.PresentationStyle;
 
 using Microsoft.Build.Evaluation;
@@ -94,6 +97,10 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
         private SandcastleProject project;      // The project to build
         private string originalProjectName;
+
+        // The composition container for build components and the syntax generator list
+        private CompositionContainer componentContainer;
+        private List<ISyntaxGeneratorMetadata> syntaxGenerators;
 
         // Framework, assembly, and reference information
         private FrameworkSettings frameworkSettings;
@@ -117,8 +124,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
         private DateTime buildStart, stepStart;
 
         // Various paths and other strings
-        private string shfbFolder, templateFolder, projectFolder, outputFolder, workingFolder, sandcastleFolder,
-            hhcFolder, hxcompFolder, languageFolder, defaultTopic, namespacesTopic, reflectionFile, msBuildExePath;
+        private string templateFolder, projectFolder, outputFolder, workingFolder, hhcFolder, hxcompFolder,
+            languageFolder, defaultTopic, namespacesTopic, reflectionFile, msBuildExePath;
 
         private Collection<string> helpFormatOutputFolders;
 
@@ -169,7 +176,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// </summary>
         public string HelpFileBuilderFolder
         {
-            get { return shfbFolder; }
+            get { return BuildComponentManager.HelpFileBuilderFolder; }
         }
 
         /// <summary>
@@ -211,14 +218,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
         public string WorkingFolder
         {
             get { return workingFolder; }
-        }
-
-        /// <summary>
-        /// This returns the name of the main Sandcastle folder determined by the build process
-        /// </summary>
-        public string SandcastleFolder
-        {
-            get { return sandcastleFolder; }
         }
 
         /// <summary>
@@ -576,11 +575,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 msBuildExePath = Path.Combine(ProjectCollection.GlobalProjectCollection.Toolsets.First(
                     t => t.ToolsVersion == project.MSBuildProject.ToolsVersion).ToolsPath, "MSBuild.exe");
 
-                // Base folder for SHFB
-                shfbFolder = BuildComponentManager.HelpFileBuilderFolder;
-
                 // Get the location of the template files
-                templateFolder = shfbFolder + @"Templates\";
+                templateFolder = BuildComponentManager.HelpFileBuilderFolder + @"Templates\";
 
                 // Make sure we start out in the project's output folder in case the output folder is relative
                 // to it.
@@ -658,12 +654,13 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     // Storing it in the environment here lets the SHFB build projects work as expected.
                     this.ReportProgress("The SHFBROOT system environment variable was not found.  This " +
                         "variable is usually created during installation and may require a reboot.  It has " +
-                        "been defined temporarily for this process as: SHFBROOT={0}", shfbFolder);
+                        "been defined temporarily for this process as: SHFBROOT={0}",
+                        BuildComponentManager.HelpFileBuilderFolder);
 
-                    Environment.SetEnvironmentVariable("SHFBROOT", shfbFolder);
+                    Environment.SetEnvironmentVariable("SHFBROOT", BuildComponentManager.HelpFileBuilderFolder);
                 }
 
-                if(!Directory.Exists(sandcastleFolder + @"Data\Reflection"))
+                if(!Directory.Exists(BuildComponentManager.HelpFileBuilderFolder + @"Data\Reflection"))
                     throw new BuilderException("BE0032", "Reflection data files do not exist yet");
 
                 // Get the framework settings to use for the build
@@ -692,6 +689,12 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         "The selected presentation style ({0}) does not support one or more of the selected " +
                         "help file formats.  Supported formats: {1}", presentationStyle.Id,
                         presentationStyle.HelpFileFormats));
+
+                // Get the composition container used to find build components in the rest of the build process 
+                componentContainer = BuildComponentManager.GetComponentContainer(project);
+
+                syntaxGenerators = componentContainer.GetExports<ISyntaxGeneratorFactory,
+                    ISyntaxGeneratorMetadata>().Select(sf => sf.Metadata).ToList();
 
                 // Load the plug-ins
                 if(project.PlugInConfigurations.Count != 0)
@@ -1097,8 +1100,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 // These are all of the valid namespaces we are interested in.  This prevents the methods below
                 // from returning nested types as potential namespaces since they can't tell the difference.
                 HashSet<string> validNamespaces = new HashSet<string>(Directory.EnumerateFiles(Path.Combine(
-                  sandcastleFolder, @"Data\Reflection"), "*.xml", SearchOption.AllDirectories).Select(
-                  f => Path.GetFileNameWithoutExtension(f)));
+                    BuildComponentManager.HelpFileBuilderFolder, @"Data\Reflection"), "*.xml",
+                    SearchOption.AllDirectories).Select(f => Path.GetFileNameWithoutExtension(f)));
 
                 // Get namespaces referenced in the XML comments of the documentation sources
                 foreach(var n in commentsFiles.GetReferencedNamespaces(validNamespaces))
@@ -1415,7 +1418,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         File.Move(workingFolder + "RemoveMSHC.bat", workingFolder + "Remove_" + this.ResolvedHtmlHelpName + ".bat");
 
                         // Copy the launcher utility
-                        File.Copy(shfbFolder + "HelpLibraryManagerLauncher.exe", workingFolder + "HelpLibraryManagerLauncher.exe");
+                        File.Copy(BuildComponentManager.HelpFileBuilderFolder + "HelpLibraryManagerLauncher.exe",
+                            workingFolder + "HelpLibraryManagerLauncher.exe");
                         File.SetAttributes(workingFolder + "HelpLibraryManagerLauncher.exe", FileAttributes.Normal);
 
                         scriptFile = this.TransformTemplate("BuildHelpViewerFile.proj", templateFolder, workingFolder);
@@ -1592,9 +1596,8 @@ AllDone:
                 {
                     this.ExecutePlugIns(ExecutionBehaviors.After);
 
-                    if(loadedPlugIns != null)
-                        foreach(IPlugIn plugIn in loadedPlugIns.Values)
-                            plugIn.Dispose();
+                    if(componentContainer != null)
+                        componentContainer.Dispose();
                 }
                 catch(Exception ex)
                 {
@@ -1831,6 +1834,7 @@ AllDone:
                     specialPaths.Add(Environment.GetFolderPath(Environment.SpecialFolder.CommonProgramFiles));
                     specialPaths.Add(Environment.GetFolderPath(Environment.SpecialFolder.MyComputer));
                     specialPaths.Add(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles));
+                    specialPaths.Add(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86));
                     specialPaths.Add(Environment.GetFolderPath(Environment.SpecialFolder.Programs));
                     specialPaths.Add(Environment.GetFolderPath(Environment.SpecialFolder.System));
 
@@ -1949,76 +1953,8 @@ AllDone:
             this.ReportProgress("Finding tools...");
             this.ExecutePlugIns(ExecutionBehaviors.Before);
 
-            sandcastleFolder = project.SandcastlePath;
-
-            // TODO: The SandcastlePath property will most likely go away as will most of this code since the
-            // Sandcastle Tools are now located in the same folder as SHFB.
-            if(sandcastleFolder.Length == 0)
-            {
-                // Try for SHFBROOT first (the VSPackage needs it)
-                sandcastleFolder = Environment.GetEnvironmentVariable("SHFBROOT");
-
-                // If not, use the executing assembly's folder
-                if(String.IsNullOrWhiteSpace(sandcastleFolder))
-                    sandcastleFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            }
-
-            if(sandcastleFolder.Length == 0)
-            {
-                Match m = Regex.Match(Environment.GetEnvironmentVariable("PATH"),
-                    @"[A-Z]:\\.[^;]+\\Sandcastle(?=\\Prod)", RegexOptions.IgnoreCase);
-
-                // If not found in the path, search all fixed drives
-                if(m.Success)
-                    sandcastleFolder = m.Value;
-                else
-                {
-                    this.ReportProgress("Searching for Sandcastle tools...");
-                    sandcastleFolder = BuildProcess.FindOnFixedDrives(@"\Sandcastle");
-                }
-            }
-            else
-                sandcastleFolder = Path.GetFullPath(sandcastleFolder);
-
-            if(sandcastleFolder.Length != 0 && sandcastleFolder[sandcastleFolder.Length - 1] != '\\')
-                sandcastleFolder += @"\";
-
-            if(sandcastleFolder.Length == 0 || !Directory.Exists(sandcastleFolder) ||
-              !File.Exists(sandcastleFolder + "MRefBuilder.exe"))
-                throw new BuilderException("BE0035", "Could not find the path to the Microsoft Sandcastle " +
-                    "documentation compiler tools.  See the error number topic in the help file for details.\r\n");
-
-            this.ReportProgress("Found Sandcastle tools in '{0}'", sandcastleFolder);
-
-            BuildComponentManager.SandcastlePath = sandcastleFolder;
-
-            // Make sure we've got a version we can use
-            FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(sandcastleFolder + "MRefBuilder.exe");
-
-            Version fileVersion = new Version(fvi.FileMajorPart, fvi.FileMinorPart, fvi.FileBuildPart,
-                fvi.FilePrivatePart);
-
-            Version expectedVersion = new Version("2.7.4.0");
-
-            if(fileVersion < expectedVersion)
-                throw new BuilderException("BE0036", String.Format(CultureInfo.InvariantCulture,
-                    "Your version of the Microsoft Sandcastle documentation compiler tools is out of " +
-                    "date (found '{0}' but expected '{1}').  See the error number topic in the help " +
-                    "file for details.\r\n", fileVersion, expectedVersion));
-
-            // If the version is greater, we can't use it as the build components are bound to the older version
-            // and it will fail later on in the BuildAssembler step.
-            if(fileVersion > expectedVersion)
-            {
-                // I tend to forget, so this is a clue to me that I need to update the version number used above
-                if(System.Diagnostics.Debugger.IsAttached)
-                    System.Diagnostics.Debugger.Break();
-
-                throw new BuilderException("BE0004", String.Format(CultureInfo.InvariantCulture,
-                    "MRefBuilder has a version of '{0}' but version '{1}' was expected.  You need to " +
-                    "update your copy of the help file builder.\r\nSee the error number topic in the help " +
-                    "file for details.\r\n", fileVersion, expectedVersion));
-            }
+            this.ReportProgress("The Sandcastle tools are located in '{0}'",
+                BuildComponentManager.HelpFileBuilderFolder);
 
             // Find the help compilers by looking on all fixed drives.  We don't need them if the result is only
             // a website.

@@ -24,7 +24,7 @@ using System.Reflection;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 
-using Microsoft.Ddue.Tools.CommandLine;
+using Sandcastle.Core;
 
 namespace Microsoft.Ddue.Tools.MSBuild
 {

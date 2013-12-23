@@ -69,7 +69,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\SandcastleBuilderUtils\Properties\AssemblyInfoShared.cs">
+    <Compile Include="..\SandcastleBuilderGUI\Properties\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
     <Compile Include="OptionInfo.cs" />

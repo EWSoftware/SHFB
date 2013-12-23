@@ -12,12 +12,15 @@ using System.Globalization;
 using System.Xml;
 using System.Xml.XPath;
 
+using Sandcastle.Core.BuildAssembler;
+using Sandcastle.Core.BuildAssembler.BuildComponent;
+
 namespace Microsoft.Ddue.Tools
 {
     /// <summary>
     /// This component serves as a debugging aid.  It dumps the current document to the message log
     /// </summary>
-    public class DisplayComponent : BuildComponent
+    public class DisplayComponent : BuildComponentCore
     {
         #region Private data members
         //=====================================================================
@@ -37,7 +40,7 @@ namespace Microsoft.Ddue.Tools
         /// a filter expression to select elements to dump.  If not found, the entire document is dumped.   The
         /// expression can have a single replacement parameter (<c>{0}</c>).  If present, it will be replaced
         /// with the current document key.</remarks>
-        public DisplayComponent(BuildAssembler assembler, XPathNavigator configuration) :
+        public DisplayComponent(BuildAssemblerCore assembler, XPathNavigator configuration) :
           base(assembler, configuration)
         {
             XPathNavigator xpathFormatNode = configuration.SelectSingleNode("xpath");

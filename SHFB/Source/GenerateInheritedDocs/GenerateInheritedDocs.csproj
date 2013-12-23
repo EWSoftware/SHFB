@@ -70,6 +70,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\SandcastleBuilderGUI\Properties\AssemblyInfoShared.cs">
+      <Link>Properties\AssemblyInfoShared.cs</Link>
+    </Compile>
     <Compile Include="..\SandcastleBuilderUtils\InheritedDocumentation\CommentsCacheEventArgs.cs">
       <Link>CommentsCacheEventArgs.cs</Link>
     </Compile>
@@ -78,9 +81,6 @@
     </Compile>
     <Compile Include="..\SandcastleBuilderUtils\InheritedDocumentation\InheritedDocsException.cs">
       <Link>InheritedDocsException.cs</Link>
-    </Compile>
-    <Compile Include="..\SandcastleBuilderUtils\Properties\AssemblyInfoShared.cs">
-      <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
     <Compile Include="GenerateInheritedDocs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

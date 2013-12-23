@@ -16,12 +16,15 @@ using System.Xml.XPath;
 
 using Microsoft.Ddue.Tools.Snippets;
 
+using Sandcastle.Core.BuildAssembler;
+using Sandcastle.Core.BuildAssembler.BuildComponent;
+
 namespace Microsoft.Ddue.Tools
 {
     /// <summary>
     /// SnippetComponent class to replace the snippet code references.
     /// </summary>
-    public class SnippetComponent : BuildComponent
+    public class SnippetComponent : BuildComponentCore
     {
         #region Private members
         /// <summary>
@@ -94,7 +97,7 @@ namespace Microsoft.Ddue.Tools
         /// </summary>
         /// <param name="assembler">An instance of Build Assembler</param>
         /// <param name="configuration">configuration to be parsed for information related to snippets</param>
-        public SnippetComponent(BuildAssembler assembler, XPathNavigator configuration)
+        public SnippetComponent(BuildAssemblerCore assembler, XPathNavigator configuration)
             : base(assembler, configuration)
         {
             Debug.Assert(assembler != null);

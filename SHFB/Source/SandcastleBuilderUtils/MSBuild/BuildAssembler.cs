@@ -22,6 +22,7 @@
 
 using System;
 using System.IO;
+using System.Reflection;
 using System.Text;
 
 using Microsoft.Build.Framework;
@@ -41,7 +42,7 @@ namespace SandcastleBuilder.Utils.MSBuild
         #region Private data members
         //=====================================================================
 
-        private string sandcastlePath, configFile, manifestFile, workingFolder;
+        private string configFile, manifestFile, workingFolder;
         #endregion
 
         #region Properties
@@ -69,16 +70,6 @@ namespace SandcastleBuilder.Utils.MSBuild
         protected override MessageImportance StandardOutputLoggingImportance
         {
             get { return MessageImportance.High; }
-        }
-
-        /// <summary>
-        /// This is used to pass in the path to the Sandcastle tools
-        /// </summary>
-        [Required]
-        public string SandcastlePath
-        {
-            get { return sandcastlePath; }
-            set { sandcastlePath = value; }
         }
 
         /// <summary>
@@ -145,7 +136,7 @@ namespace SandcastleBuilder.Utils.MSBuild
         /// <returns>The full path to the tool</returns>
         protected override string GenerateFullPathToTool()
         {
-            return Path.Combine(sandcastlePath, this.ToolName);
+            return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), this.ToolName);
         }
 
         /// <summary>

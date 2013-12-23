@@ -10,6 +10,9 @@
 using System.Xml;
 using System.Xml.XPath;
 
+using Sandcastle.Core.BuildAssembler;
+using Sandcastle.Core.BuildAssembler.BuildComponent;
+
 namespace Microsoft.Ddue.Tools.Commands
 {
     /// <summary>
@@ -24,7 +27,7 @@ namespace Microsoft.Ddue.Tools.Commands
         /// This read-only property returns the parent component
         /// </summary>
         /// <value>This can be used to log messages</value>
-        public BuildComponent ParentComponent { get; private set; }
+        public BuildComponentCore ParentComponent { get; private set; }
 
         /// <summary>
         /// This read-only property returns the XPath expression used to get the source elements
@@ -47,7 +50,7 @@ namespace Microsoft.Ddue.Tools.Commands
         /// <param name="parent">The parent build component</param>
         /// <param name="sourceXPath">The source XPath expression</param>
         /// <param name="targetXPath">The target XPath expression</param>
-        protected CopyCommand(BuildComponent parent, string sourceXPath, string targetXPath)
+        protected CopyCommand(BuildComponentCore parent, string sourceXPath, string targetXPath)
         {
             this.ParentComponent = parent;
             this.Source = XPathExpression.Compile(sourceXPath);

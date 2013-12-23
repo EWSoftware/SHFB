@@ -36,6 +36,9 @@ using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.XPath;
 
+using Sandcastle.Core.BuildAssembler;
+using Sandcastle.Core.BuildAssembler.BuildComponent;
+
 namespace Microsoft.Ddue.Tools
 {
     /// <summary>
@@ -82,7 +85,7 @@ namespace Microsoft.Ddue.Tools
     /// &lt;/component&gt;
     /// </code>
     /// </example>
-    public class ShowMissingComponent : BuildComponent
+    public class ShowMissingComponent : BuildComponentCore
     {
         #region Private data members
         //=====================================================================
@@ -106,7 +109,7 @@ namespace Microsoft.Ddue.Tools
         /// <remarks>See the <see cref="ShowMissingComponent"/> class topic for an example of the configuration</remarks>
         /// <exception cref="ConfigurationErrorsException">This is thrown if an error is detected in the
         /// configuration.</exception>
-        public ShowMissingComponent(BuildAssembler assembler, XPathNavigator configuration) :
+        public ShowMissingComponent(BuildAssemblerCore assembler, XPathNavigator configuration) :
           base(assembler, configuration)
         {
             XPathNavigator nav;

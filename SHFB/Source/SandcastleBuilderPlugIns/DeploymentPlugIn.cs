@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : DeploymentPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/18/2013
+// Updated : 12/17/2013
 // Note    : Copyright 2007-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -20,36 +20,39 @@
 // 1.6.0.5  02/18/2008  EFW  Added support for relative deployment paths
 // 1.8.0.0  08/13/2008  EFW  Updated to support the new project format
 // 1.8.0.3  07/06/2009  EFW  Added support for Help Viewer deployment
+// -------  12/17/2013  EFW  Updated to use MEF for the plug-ins
 //===============================================================================================================
 
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Cache;
-using System.Reflection;
 using System.Windows.Forms;
 using System.Xml.XPath;
 
 using SandcastleBuilder.Utils;
+using SandcastleBuilder.Utils.BuildComponent;
 using SandcastleBuilder.Utils.BuildEngine;
-using SandcastleBuilder.Utils.PlugIn;
 
 namespace SandcastleBuilder.PlugIns
 {
     /// <summary>
-    /// This plug-in class is used to copy the resulting help file output to
-    /// a location other than the output folder (i.e. a file share, an FTP
-    /// site, a web server, etc.).
+    /// This plug-in class is used to copy the resulting help file output to a location other than the output
+    /// folder (i.e. a file share, an FTP site, a web server, etc.).
     /// </summary>
-    public class DeploymentPlugIn : IPlugIn
+    [HelpFileBuilderPlugInExport("Output Deployment", IsConfigurable = true,
+      Description = "This plug-in is used to deploy the resulting help file output to a location other than " +
+        "the output folder (i.e. a file share, a web server, an FTP site, etc.).")]
+    public sealed class DeploymentPlugIn : IPlugIn
     {
         #region Private data members
         //=====================================================================
 
-        private ExecutionPointCollection executionPoints;
+        private List<ExecutionPoint> executionPoints;
 
         private BuildProcess builder;
 
@@ -62,92 +65,21 @@ namespace SandcastleBuilder.PlugIns
         //=====================================================================
 
         /// <summary>
-        /// This read-only property returns a friendly name for the plug-in
-        /// </summary>
-        public string Name
-        {
-            get { return "Output Deployment"; }
-        }
-
-        /// <summary>
-        /// This read-only property returns the version of the plug-in
-        /// </summary>
-        public Version Version
-        {
-            get
-            {
-                // Use the assembly version
-                Assembly asm = Assembly.GetExecutingAssembly();
-                FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(asm.Location);
-
-                return new Version(fvi.ProductVersion);
-            }
-        }
-
-        /// <summary>
-        /// This read-only property returns the copyright information for the plug-in
-        /// </summary>
-        public string Copyright
-        {
-            get
-            {
-                // Use the assembly copyright
-                Assembly asm = Assembly.GetExecutingAssembly();
-                AssemblyCopyrightAttribute copyright = (AssemblyCopyrightAttribute)Attribute.GetCustomAttribute(
-                    asm, typeof(AssemblyCopyrightAttribute));
-
-                return copyright.Copyright;
-            }
-        }
-
-        /// <summary>
-        /// This read-only property returns a brief description of the plug-in
-        /// </summary>
-        public string Description
-        {
-            get
-            {
-                return "This plug-in is used to deploy the resulting help file output to a location other than " +
-                    "the output folder (i.e. a file share, a web server, an FTP site, etc.).";
-            }
-        }
-
-        /// <summary>
-        /// This plug-in supports configuration
-        /// </summary>
-        /// <seealso cref="ConfigurePlugIn"/>
-        public bool SupportsConfiguration
-        {
-            get { return true; }
-        }
-
-        /// <summary>
-        /// This plug-in does not run in partial builds
-        /// </summary>
-        public bool RunsInPartialBuild
-        {
-            get { return false; }
-        }
-
-        /// <summary>
         /// This read-only property returns a collection of execution points that define when the plug-in should
         /// be invoked during the build process.
         /// </summary>
-        public ExecutionPointCollection ExecutionPoints
+        public IEnumerable<ExecutionPoint> ExecutionPoints
         {
             get
             {
                 if(executionPoints == null)
-                {
-                    executionPoints = new ExecutionPointCollection();
-
-                    // This plug-in has a lower priority as it should execute after all other plug-ins in case
-                    // they add other files to the set.
-                    executionPoints.Add(new ExecutionPoint(BuildStep.CompilingHelpFile,
-                        ExecutionBehaviors.After, 200));
-                    executionPoints.Add(new ExecutionPoint(BuildStep.CopyingWebsiteFiles,
-                        ExecutionBehaviors.After, 200));
-                }
+                    executionPoints = new List<ExecutionPoint>
+                    {
+                        // This plug-in has a lower priority as it should execute after all other plug-ins in
+                        // case they add other files to the set.
+                        new ExecutionPoint(BuildStep.CompilingHelpFile, ExecutionBehaviors.After, 200),
+                        new ExecutionPoint(BuildStep.CopyingWebsiteFiles, ExecutionBehaviors.After, 200)
+                    };
 
                 return executionPoints;
             }
@@ -185,7 +117,10 @@ namespace SandcastleBuilder.PlugIns
 
             builder = buildProcess;
 
-            builder.ReportProgress("{0} Version {1}\r\n{2}", this.Name, this.Version, this.Copyright);
+            var metadata = (HelpFileBuilderPlugInExportAttribute)this.GetType().GetCustomAttributes(
+                typeof(HelpFileBuilderPlugInExportAttribute), false).First();
+
+            builder.ReportProgress("{0} Version {1}\r\n{2}", metadata.Id, metadata.Version, metadata.Copyright);
 
             root = configuration.SelectSingleNode("configuration");
             value = root.GetAttribute("deleteAfterDeploy", String.Empty);
@@ -375,32 +310,12 @@ namespace SandcastleBuilder.PlugIns
         //=====================================================================
 
         /// <summary>
-        /// This handles garbage collection to ensure proper disposal of the plug-in if not done explicitly with
-        /// <see cref="Dispose()"/>.
-        /// </summary>
-        ~DeploymentPlugIn()
-        {
-            this.Dispose(false);
-        }
-
-        /// <summary>
         /// This implements the Dispose() interface to properly dispose of the plug-in object
         /// </summary>
-        /// <overloads>There are two overloads for this method.</overloads>
         public void Dispose()
         {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// This can be overridden by derived classes to add their own disposal code if necessary
-        /// </summary>
-        /// <param name="disposing">Pass true to dispose of the managed and unmanaged resources or false to just
-        /// dispose of the unmanaged resources.</param>
-        protected virtual void Dispose(bool disposing)
-        {
             // Nothing to dispose of in this one
+            GC.SuppressFinalize(this);
         }
         #endregion
     }

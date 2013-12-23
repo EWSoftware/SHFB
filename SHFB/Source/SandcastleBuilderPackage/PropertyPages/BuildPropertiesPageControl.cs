@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : BuildPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 06/21/2013
+// Updated : 12/16/2013
 // Note    : Copyright 2011-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -34,7 +34,6 @@ using SandcastleBuilder.Package.Properties;
 #endif
 
 using SandcastleBuilder.Utils;
-using SandcastleBuilder.Utils.BuildComponent;
 using SandcastleBuilder.Utils.Frameworks;
 
 namespace SandcastleBuilder.Package.PropertyPages
@@ -152,18 +151,6 @@ namespace SandcastleBuilder.Package.PropertyPages
             {
                 try
                 {
-                    // If Sandcastle cannot be found, use the SandcastlePath project property setting
-                    if(String.IsNullOrEmpty(BuildComponentManager.SandcastlePath))
-                    {
-#if !STANDALONEGUI
-                        projProp = this.ProjectMgr.BuildProject.GetProperty("SandcastlePath");
-#else
-                        projProp = this.CurrentProject.MSBuildProject.GetProperty("SandcastlePath");
-#endif
-                        if(projProp != null && !String.IsNullOrEmpty(projProp.EvaluatedValue))
-                            BuildComponentManager.SandcastlePath = projProp.EvaluatedValue;
-                    }
-
                     cboFrameworkVersion.Items.AddRange(FrameworkDictionary.AllFrameworks.Keys.ToArray());
                     cboFrameworkVersion.SelectedItem = FrameworkDictionary.DefaultFramework;
                 }

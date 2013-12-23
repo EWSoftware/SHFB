@@ -11,6 +11,8 @@ using System.Collections.Generic;
 using System.Xml;
 using System.Xml.XPath;
 
+using Sandcastle.Core.BuildAssembler.BuildComponent;
+
 namespace Microsoft.Ddue.Tools
 {
     /// <summary>
@@ -22,13 +24,13 @@ namespace Microsoft.Ddue.Tools
         /// <summary>
         /// This read-only property returns a reference to the parent build component
         /// </summary>
-        protected BuildComponent ParentBuildComponent { get; private set; }
+        protected BuildComponentCore ParentBuildComponent { get; private set; }
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="parent">The parent build component</param>
-        protected CopyComponent(BuildComponent parent)
+        protected CopyComponent(BuildComponentCore parent)
         {
             this.ParentBuildComponent = parent;
         }
