@@ -2,10 +2,10 @@
 // System  : Sandcastle Help File Builder Components
 // File    : SqlResolveReferenceLinksComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/14/2013
+// Updated : 12/26/2013
 // Compiler: Microsoft Visual C#
 //
-// This is a version of the ResolveReferenceLinksComponent2 that stores the MSDN content IDs and the framework
+// This is a version of the ResolveReferenceLinksComponent that stores the MSDN content IDs and the framework
 // targets in persistent SQL database tables.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
@@ -16,6 +16,7 @@
 // Version     Date     Who  Comments
 // ==============================================================================================================
 // 1.9.7.0  01/14/2013  EFW  Created the code
+// -------  12/26/2013  EFW  Updated the build component to be discoverable via MEF
 //===============================================================================================================
 
 using System;
@@ -38,37 +39,143 @@ using SandcastleBuilder.Components.UI;
 namespace SandcastleBuilder.Components
 {
     /// <summary>
-    /// This is a version of the <c>ResolveReferenceLinksComponent2</c> that stores the MSDN content IDs and the
+    /// This is a version of the <c>ResolveReferenceLinksComponent</c> that stores the MSDN content IDs and the
     /// framework targets in persistent SQL databases.
     /// </summary>
-    public class SqlResolveReferenceLinksComponent : ResolveReferenceLinksComponent2
+    public class SqlResolveReferenceLinksComponent : ResolveReferenceLinksComponent
     {
+        #region Build component factory for MEF
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to create a new instance of the build component used for API token resolution
+        /// </summary>
+        [BuildComponentExport("Resolve Reference Links (SQL Cache)", DesignerVisible = true, IsConfigurable = true,
+          Version = AssemblyInfo.Version, Copyright = AssemblyInfo.Copyright,
+          Description = "This component is used to resolve reference links in topics.  It uses a Microsoft " +
+            "SQL Server database to cache MSDN content IDs and .NET Framework reference link targets.  This " +
+            "speeds up initialization and conserves memory at the expense of some build time in larger " +
+            "projects.  For extremely large projects, it is also possible to cache project reference link " +
+            "data to conserve memory.\r\n\r\nThis component requires access to a Microsoft SQL Server " +
+            "instance.  Express and LocalDB versions are supported.  Some initial configuration and set up " +
+            "steps are required.")]
+        public sealed class SqlResolveReferenceLinksComponentFactory : BuildComponentFactory
+        {
+            /// <summary>
+            /// Constructor
+            /// </summary>
+            public SqlResolveReferenceLinksComponentFactory()
+            {
+                base.ReferenceBuildPlacement = new ComponentPlacement(PlacementAction.Replace,
+                    "Resolve Reference Links Component");
+                base.ConceptualBuildPlacement = new ComponentPlacement(PlacementAction.Replace,
+                    "Resolve Reference Links Component");
+            }
+
+            /// <inheritdoc />
+            public override BuildComponentCore Create()
+            {
+                return new SqlResolveReferenceLinksComponent(base.BuildAssembler);
+            }
+
+            /// <inheritdoc />
+            public override string DefaultConfiguration
+            {
+                get
+                {
+                    return @"<locale value=""{@Locale}"" />
+<linkTarget value=""{@SdkLinkTarget}"" />
+
+<helpOutput format=""HtmlHelp1"">
+	<sqlCache connectionString="""" msdnLocalCacheSize=""2500"" frameworkLocalCacheSize=""2500""
+		projectLocalCacheSize=""2500"" cacheProject=""false"" />
+	<msdnContentIdCache path=""{@LocalDataFolder}Cache\MsdnContentId.cache"" />
+	<targets base=""{@SHFBFolder}Data\Reflection"" recurse=""true"" files=""*.xml"" type=""{@HtmlSdkLinkType}""
+		groupId=""FrameworkTargets"">
+		{@ReferenceLinkNamespaceFiles}
+	</targets>
+	<targets files=""reflection.xml"" type=""Local"" groupId=""Project_{@UniqueID}"" />
+</helpOutput>
+
+<helpOutput format=""MSHelp2"">
+	<sqlCache connectionString="""" msdnLocalCacheSize=""2500"" frameworkLocalCacheSize=""2500""
+		projectLocalCacheSize=""2500"" cacheProject=""false"" />
+	<msdnContentIdCache path=""{@LocalDataFolder}Cache\MsdnContentId.cache"" />
+	<targets base=""{@SHFBFolder}Data\Reflection"" recurse=""true"" files=""*.xml"" type=""{@MSHelp2SdkLinkType}""
+		groupId=""FrameworkTargets"">
+		{@ReferenceLinkNamespaceFiles}
+	</targets>
+	<targets files=""reflection.xml"" type=""Index"" groupId=""Project_{@UniqueID}"" />
+</helpOutput>
+
+<helpOutput format=""MSHelpViewer"">
+	<sqlCache connectionString="""" msdnLocalCacheSize=""2500"" frameworkLocalCacheSize=""2500""
+		projectLocalCacheSize=""2500"" cacheProject=""false"" />
+	<msdnContentIdCache path=""{@LocalDataFolder}Cache\MsdnContentId.cache"" />
+	<targets base=""{@SHFBFolder}Data\Reflection"" recurse=""true"" files=""*.xml"" type=""{@MSHelpViewerSdkLinkType}""
+		groupId=""FrameworkTargets"">
+		{@ReferenceLinkNamespaceFiles}
+	</targets>
+	<targets files=""reflection.xml"" type=""Id"" groupId=""Project_{@UniqueID}"" />
+</helpOutput>
+
+<helpOutput format=""Website"">
+	<sqlCache connectionString="""" msdnLocalCacheSize=""2500"" frameworkLocalCacheSize=""2500""
+		projectLocalCacheSize=""2500"" cacheProject=""false"" />
+	<msdnContentIdCache path=""{@LocalDataFolder}Cache\MsdnContentId.cache"" />
+	<targets base=""{@SHFBFolder}Data\Reflection"" recurse=""true"" files=""*.xml"" type=""{@WebsiteSdkLinkType}""
+		groupId=""FrameworkTargets"">
+		{@ReferenceLinkNamespaceFiles}
+	</targets>
+	<targets files=""reflection.xml"" type=""Local"" groupId=""Project_{@UniqueID}"" />
+</helpOutput>";
+                }
+            }
+
+            /// <inheritdoc />
+            public override string ConfigureComponent(string currentConfiguration)
+            {
+                using(var dlg = new SqlResolveReferenceLinksConfigDlg(currentConfiguration))
+                {
+                    if(dlg.ShowDialog() == DialogResult.OK)
+                        currentConfiguration = dlg.Configuration;
+                }
+
+                return currentConfiguration;
+            }
+        }
+        #endregion
+
         #region Constructor
         //=====================================================================
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="assembler">A reference to the build assembler.</param>
-        /// <param name="configuration">The configuration information</param>
-        /// <remarks>This component is obsolete and will be removed in a future release.</remarks>
-        public SqlResolveReferenceLinksComponent(BuildAssemblerCore assembler, XPathNavigator configuration) :
-          base(assembler, configuration)
+        /// <param name="buildAssembler">A reference to the build assembler</param>
+        protected SqlResolveReferenceLinksComponent(BuildAssemblerCore buildAssembler) : base(buildAssembler)
         {
-            Assembly asm = Assembly.GetExecutingAssembly();
-            FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(asm.Location);
-
-            base.WriteMessage(MessageLevel.Info, String.Format(CultureInfo.InvariantCulture,
-                "\r\n    [{0}, version {1}]\r\n    Sql Resolve Reference Links Component.  {2}\r\n" +
-                "    http://SHFB.CodePlex.com", fvi.ProductName, fvi.ProductVersion, fvi.LegalCopyright));
         }
         #endregion
 
         #region Method overrides
         //=====================================================================
 
+        /// <inheritdoc />
+        public override void Initialize(XPathNavigator configuration)
+        {
+            Assembly asm = Assembly.GetExecutingAssembly();
+            FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(asm.Location);
+
+            base.WriteMessage(MessageLevel.Info, String.Format(CultureInfo.InvariantCulture,
+                "[{0}, version {1}]\r\n    SQL Resolve Reference Links Component.  {2}\r\n" +
+                "    http://SHFB.CodePlex.com", fvi.ProductName, fvi.ProductVersion, fvi.LegalCopyright));
+
+            base.Initialize(configuration);
+        }
+
         /// <summary>
-        /// This is overridden to allow use of an Sql backed MSDN content ID cache
+        /// This is overridden to allow use of an SQL backed MSDN content ID cache
         /// </summary>
         /// <param name="configuration">The component configuration</param>
         /// <returns>An MSDN resolver instance</returns>
@@ -205,27 +312,6 @@ namespace SandcastleBuilder.Components
             }
 
             base.UpdateMsdnContentIdCache();
-        }
-        #endregion
-
-        #region Static configuration method for use with SHFB
-        //=====================================================================
-
-        /// <summary>
-        /// This static method is used by the Sandcastle Help File Builder to let the component perform its own
-        /// configuration.
-        /// </summary>
-        /// <param name="currentConfig">The current configuration XML fragment</param>
-        /// <returns>A string containing the new configuration XML fragment</returns>
-        public static string ConfigureComponent(string currentConfig)
-        {
-            using(var dlg = new SqlResolveReferenceLinksConfigDlg(currentConfig))
-            {
-                if(dlg.ShowDialog() == DialogResult.OK)
-                    currentConfig = dlg.Configuration;
-            }
-
-            return currentConfig;
         }
         #endregion
     }

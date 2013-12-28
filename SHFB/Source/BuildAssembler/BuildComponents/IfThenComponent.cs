@@ -3,6 +3,9 @@
 // See http://www.microsoft.com/resources/sharedsource/licensingbasics/sharedsourcelicenses.mspx.
 // All other rights reserved.
 
+// Change history:
+// 12/23/2013 - EFW - Updated the build component to be discoverable via MEF
+
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -19,6 +22,23 @@ namespace Microsoft.Ddue.Tools
     /// </summary>
     public class IfThenComponent : BuildComponentCore
     {
+        #region Build component factory for MEF
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to create a new instance of the build component
+        /// </summary>
+        [BuildComponentExport("If Then Component")]
+        public sealed class Factory : BuildComponentFactory
+        {
+            /// <inheritdoc />
+            public override BuildComponentCore Create()
+            {
+                return new IfThenComponent(base.BuildAssembler);
+            }
+        }
+        #endregion
+
         #region Private data members
         //=====================================================================
 
@@ -34,10 +54,17 @@ namespace Microsoft.Ddue.Tools
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="assembler">The build assembler reference</param>
-        /// <param name="configuration">The component configuration</param>
-        public IfThenComponent(BuildAssemblerCore assembler, XPathNavigator configuration) :
-          base(assembler, configuration)
+        /// <param name="buildAssembler">A reference to the build assembler</param>
+        protected IfThenComponent(BuildAssemblerCore buildAssembler) : base(buildAssembler)
+        {
+        }
+        #endregion
+
+        #region Method overrides
+        //=====================================================================
+
+        /// <inheritdoc />
+        public override void Initialize(XPathNavigator configuration)
         {
             // Get the condition
             XPathNavigator if_node = configuration.SelectSingleNode("if");
@@ -65,12 +92,8 @@ namespace Microsoft.Ddue.Tools
                 false_branch = BuildAssembler.LoadComponents(else_node);
 
             // Keep a pointer to the context for future use
-            context = assembler.Context;
+            context = this.BuildAssembler.Context;
         }
-        #endregion
-
-        #region Method overrides
-        //=====================================================================
 
         /// <inheritdoc />
         public override void Apply(XmlDocument document, string key)

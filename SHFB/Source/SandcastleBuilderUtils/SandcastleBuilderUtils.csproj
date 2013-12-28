@@ -98,9 +98,7 @@
     <Compile Include="BaseBuildItem.cs" />
     <Compile Include="BuildAssemblerVerbosity.cs" />
     <Compile Include="BuildComponent\BuildComponentConfiguration.cs" />
-    <Compile Include="BuildComponent\BuildComponentInfo.cs" />
     <Compile Include="BuildComponent\BuildComponentManager.cs" />
-    <Compile Include="BuildComponent\ComponentPosition.cs" />
     <Compile Include="BuildComponent\HelpFileBuilderPlugInExportAttribute.cs" />
     <Compile Include="BuildComponent\IPlugInMetaData.cs" />
     <Compile Include="BuildEngine\FrameworkCommentsFileLocation.cs" />
@@ -162,12 +160,6 @@
     </Compile>
     <Compile Include="Design\ApiFilterEditorDlg.Designer.cs">
       <DependentUpon>ApiFilterEditorDlg.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Design\ConfigurationEditorDlg.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Design\ConfigurationEditorDlg.Designer.cs">
-      <DependentUpon>ConfigurationEditorDlg.cs</DependentUpon>
     </Compile>
     <Compile Include="Design\ContentFileEditor.cs" />
     <Compile Include="Design\ContentFileEditorCollection.cs" />
@@ -287,10 +279,6 @@
       <DependentUpon>ApiFilterEditorDlg.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Design\ConfigurationEditorDlg.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>ConfigurationEditorDlg.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Design\NamespaceSummaryItemEditorDlg.resx">
       <DependentUpon>NamespaceSummaryItemEditorDlg.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -383,7 +371,6 @@
     <EmbeddedResource Include="Controls\FolderPathUserControl.bmp" />
     <None Include="Resources\SpinningWheel.gif" />
     <Compile Include="BuildAction.cs" />
-    <Compile Include="BuildComponent\SyntaxFilterInfo.cs" />
     <Compile Include="ConceptualContent\ApiParentMode.cs" />
     <Compile Include="ConceptualContent\CodeSnippetCollection.cs" />
     <Compile Include="ConceptualContent\ITableOfContents.cs" />

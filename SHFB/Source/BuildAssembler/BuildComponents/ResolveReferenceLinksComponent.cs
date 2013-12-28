@@ -12,6 +12,7 @@
 // 12/30/2012 - EFW - Reworked to use TargetTypeDictionary and share the target data across instances.
 // 03/17/2013 - EFW - Added support for the ReferenceLink.RenderAsLink property
 // 11/08/2013 - EFW - Applied patch from Stazzz to write out nested XML elements within the link inner text
+// 12/24/2013 - EFW - Updated the build component to be discoverable via MEF
 
 using System;
 using System.Collections.Generic;
@@ -32,8 +33,25 @@ namespace Microsoft.Ddue.Tools
     /// <summary>
     /// This build component is used to resolve links to reference topics
     /// </summary>
-    public class ResolveReferenceLinksComponent2 : BuildComponentCore
+    public class ResolveReferenceLinksComponent : BuildComponentCore
     {
+        #region Build component factory for MEF
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to create a new instance of the build component
+        /// </summary>
+        [BuildComponentExport("Resolve Reference Links Component")]
+        public sealed class Factory : BuildComponentFactory
+        {
+            /// <inheritdoc />
+            public override BuildComponentCore Create()
+            {
+                return new ResolveReferenceLinksComponent(base.BuildAssembler);
+            }
+        }
+        #endregion
+
         #region Constants
         //=====================================================================
 
@@ -91,9 +109,20 @@ namespace Microsoft.Ddue.Tools
         #region Constructor
         //=====================================================================
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="buildAssembler">A reference to the build assembler</param>
+        protected ResolveReferenceLinksComponent(BuildAssemblerCore buildAssembler) : base(buildAssembler)
+        {
+        }
+        #endregion
+
+        #region Method overrides
+        //=====================================================================
+
         /// <inheritdoc />
-        public ResolveReferenceLinksComponent2(BuildAssemblerCore assembler, XPathNavigator configuration) :
-          base(assembler, configuration)
+        public override void Initialize(XPathNavigator configuration)
         {
             TargetDictionary newTargets;
             ReferenceLinkType type;
@@ -183,21 +212,17 @@ namespace Microsoft.Ddue.Tools
 
                 msdnResolver = this.CreateMsdnResolver(configuration);
 
-                string localeValue = configuration.GetAttribute("locale", String.Empty);
+                string localeValue = (string)configuration.Evaluate("string(locale/@value)");
 
                 if(msdnResolver != null && !String.IsNullOrWhiteSpace(localeValue))
                     msdnResolver.Locale = localeValue;
             }
 
-            linkTarget = configuration.GetAttribute("linkTarget", String.Empty);
+            linkTarget = (string)configuration.Evaluate("string(linkTarget/@value)");
 
             if(String.IsNullOrWhiteSpace(linkTarget))
                 linkTarget = "_blank";
         }
-        #endregion
-
-        #region Method overrides
-        //=====================================================================
 
         /// <inheritdoc />
         public override void Apply(XmlDocument document, string key)

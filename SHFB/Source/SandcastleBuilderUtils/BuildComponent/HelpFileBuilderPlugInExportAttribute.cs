@@ -21,7 +21,6 @@
 
 using System;
 using System.ComponentModel.Composition;
-using System.Diagnostics;
 
 namespace SandcastleBuilder.Utils.BuildComponent
 {
@@ -58,42 +57,15 @@ namespace SandcastleBuilder.Utils.BuildComponent
         public string Description { get; set; }
 
         /// <summary>
-        /// This is used to get or set an additional user-defined copyright information separate from the
-        /// assembly copyright information.
+        /// This is used to get or set the plug-in version number
         /// </summary>
-        public string AdditionalCopyrightInfo { get; set; }
+        public string Version { get; set; }
 
         /// <summary>
-        /// This read-only property returns the version of the plug-in
+        /// This is used to get or set copyright information for the plug-in
         /// </summary>
-        /// <value>This returns the product version value from the assembly attributes or "0.0.0.0" if one does
-        /// not exist.</value>
-        public string Version
-        {
-            get
-            {
-                // Use the assembly version
-                FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(base.ContractType.Assembly.Location);
+        public string Copyright { get; set; }
 
-                return fvi.ProductVersion;
-            }
-        }
-
-        /// <summary>
-        /// This read-only property returns the copyright information for the plug-in
-        /// </summary>
-        /// <value>This returns the legal copyright value from the assembly attributes or null if one does not
-        /// exist.</value>
-        public string Copyright
-        {
-            get
-            {
-                // Use the assembly version
-                FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(base.ContractType.Assembly.Location);
-
-                return fvi.LegalCopyright;
-            }
-        }
         #endregion
 
         #region Constructor

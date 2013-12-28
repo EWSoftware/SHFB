@@ -79,7 +79,6 @@
     <Compile Include="Commands\CopyFromIndexCommand.cs" />
     <Compile Include="Commands\IndexedCache.cs" />
     <Compile Include="Commands\InMemoryIndexedCache.cs" />
-    <Compile Include="CopyComponent.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
@@ -100,7 +99,7 @@
     <Compile Include="MsdnResolver.cs" />
     <Compile Include="MSHelpAttrComponent.cs" />
     <Compile Include="ResolveConceptualLinksComponent.cs" />
-    <Compile Include="ResolveReferenceLinksComponent2.cs" />
+    <Compile Include="ResolveReferenceLinksComponent.cs" />
     <Compile Include="CloneComponent.cs" />
     <Compile Include="CopyFromFileComponent.cs" />
     <Compile Include="CopyFromFilesComponent.cs" />

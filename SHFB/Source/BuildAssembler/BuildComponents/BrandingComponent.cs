@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Change history:
+// 12/23/2013 - EFW - Updated the build component to be discoverable via MEF
+
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -52,6 +55,23 @@ namespace Microsoft.Ddue.Tools
     /// </remarks>
     public class BrandingComponent : BuildComponentCore
     {
+        #region Build component factory for MEF
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to create a new instance of the build component
+        /// </summary>
+        [BuildComponentExport("Branding Component")]
+        public sealed class Factory : BuildComponentFactory
+        {
+            /// <inheritdoc />
+            public override BuildComponentCore Create()
+            {
+                return new BrandingComponent(base.BuildAssembler);
+            }
+        }
+        #endregion
+
         #region Private data members
         //=====================================================================
 
@@ -96,9 +116,20 @@ namespace Microsoft.Ddue.Tools
         #region Constructor
         //=====================================================================
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="buildAssembler">A reference to the build assembler</param>
+        protected BrandingComponent(BuildAssemblerCore buildAssembler) : base(buildAssembler)
+        {
+        }
+        #endregion
+
+        #region Method overrides
+        //=====================================================================
+
         /// <inheritdoc/>
-        public BrandingComponent(BuildAssemblerCore assembler, XPathNavigator configuration)
-            : base(assembler, configuration)
+        public override void Initialize(XPathNavigator configuration)
         {
             XPathNavigator v_configData = configuration.SelectSingleNode("data");
             String v_configValue;
@@ -165,11 +196,6 @@ namespace Microsoft.Ddue.Tools
                 LoadBrandingTransform();
         }
 
-        #endregion
-
-        #region Apply method
-        //=====================================================================
-
         /// <inheritdoc/>
         public override void Apply(XmlDocument document, string key)
         {
@@ -185,7 +211,6 @@ namespace Microsoft.Ddue.Tools
             // for some reason.
             ReformatLanguageSpecific(document);
         }
-
         #endregion
 
         #region Branding

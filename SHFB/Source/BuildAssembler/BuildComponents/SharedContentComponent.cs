@@ -7,6 +7,7 @@
 // 12/24/2012 - EFW - Moved SharedContentElement into its own file and inlined a couple of methods.  Looked into
 // sharing the common content across all instances with local instance overrides but it loads fast and it
 // typically loads under 60KB of data per instance so it's not worth the extra overhead.
+// 12/24/2013 - EFW - Updated the build component to be discoverable via MEF
 
 using System;
 using System.Collections.Generic;
@@ -29,6 +30,72 @@ namespace Microsoft.Ddue.Tools
     /// </summary>
     public class SharedContentComponent : BuildComponentCore
     {
+        #region Build component factory for MEF - Standard version
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to create a new instance of the build component
+        /// </summary>
+        [BuildComponentExport("Shared Content Component")]
+        public sealed class DefaultFactory : BuildComponentFactory
+        {
+            /// <inheritdoc />
+            public override BuildComponentCore Create()
+            {
+                return new SharedContentComponent(base.BuildAssembler);
+            }
+        }
+        #endregion
+
+        #region Build component factory for MEF - API token resolution version
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to create a new instance of the build component used for API token resolution
+        /// </summary>
+        [BuildComponentExport("API Token Resolution", DesignerVisible = true,
+          Version = AssemblyInfo.Version, Copyright = AssemblyInfo.Copyright,
+          Description = "This build component is used to resolve tokens in XML comments files.")]
+        public sealed class ApiTokenResolutionComponentFactory : BuildComponentFactory
+        {
+            /// <summary>
+            /// Constructor
+            /// </summary>
+            public ApiTokenResolutionComponentFactory()
+            {
+                base.ReferenceBuildPlacement = new ComponentPlacement(PlacementAction.Before,
+                    "Show Missing Documentation Component");
+            }
+
+            /// <inheritdoc />
+            public override BuildComponentCore Create()
+            {
+                return new SharedContentComponent(base.BuildAssembler);
+            }
+
+            /// <inheritdoc />
+            public override string DefaultConfiguration
+            {
+                get
+                {
+                    return @"{@TokenFiles}
+<replace elements=""/*//token"" item=""string(.)"" />";
+                }
+            }
+
+            /// <inheritdoc />
+            /// <remarks>Indicate a dependency on the missing documentation component as that's the best
+            /// placement if the IntelliSense component is used too.</remarks>
+            public override IEnumerable<string> Dependencies
+            {
+                get
+                {
+                    return new List<string> { "Show Missing Documentation Component" };
+                }
+            }
+        }
+        #endregion
+
         #region Private data members
         //=====================================================================
 
@@ -40,9 +107,20 @@ namespace Microsoft.Ddue.Tools
         #region Constructor
         //=====================================================================
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="buildAssembler">A reference to the build assembler</param>
+        protected SharedContentComponent(BuildAssemblerCore buildAssembler) : base(buildAssembler)
+        {
+        }
+        #endregion
+
+        #region Method overrides
+        //=====================================================================
+
         /// <inheritdoc />
-        public SharedContentComponent(BuildAssemblerCore assembler, XPathNavigator configuration) :
-          base(assembler, configuration)
+        public override void Initialize(XPathNavigator configuration)
         {
             // Get the context.  This will contain namespaces that prefix the elements to find.
             context = new CustomContext();
@@ -129,10 +207,6 @@ namespace Microsoft.Ddue.Tools
 
             base.WriteMessage(MessageLevel.Info, "Loaded {0} shared content items.", content.Count);
         }
-        #endregion
-
-        #region Method overrides
-        //=====================================================================
 
         /// <summary>
         /// Search for elements to replace and insert the shared content in their place

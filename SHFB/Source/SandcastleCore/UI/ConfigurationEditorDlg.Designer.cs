@@ -1,4 +1,4 @@
-namespace SandcastleBuilder.Utils.Design
+namespace Sandcastle.Core.UI
 {
     partial class ConfigurationEditorDlg
     {
@@ -32,7 +32,6 @@ namespace SandcastleBuilder.Utils.Design
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConfigurationEditorDlg));
             this.btnOK = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
-            this.statusBarTextProvider1 = new SandcastleBuilder.Utils.Controls.StatusBarTextProvider(this.components);
             this.txtConfiguration = new System.Windows.Forms.TextBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.label1 = new System.Windows.Forms.Label();
@@ -44,7 +43,6 @@ namespace SandcastleBuilder.Utils.Design
             this.btnOK.Location = new System.Drawing.Point(12, 341);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(88, 32);
-            this.statusBarTextProvider1.SetStatusBarText(this.btnOK, "OK: Save the configuration information");
             this.btnOK.TabIndex = 2;
             this.btnOK.Text = "&OK";
             this.toolTip1.SetToolTip(this.btnOK, "Save the configuration");
@@ -58,7 +56,6 @@ namespace SandcastleBuilder.Utils.Design
             this.btnClose.Location = new System.Drawing.Point(747, 341);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(88, 32);
-            this.statusBarTextProvider1.SetStatusBarText(this.btnClose, "Cancel: Close without saving the changes");
             this.btnClose.TabIndex = 3;
             this.btnClose.Text = "Cancel";
             this.toolTip1.SetToolTip(this.btnClose, "Close without saving");
@@ -69,28 +66,27 @@ namespace SandcastleBuilder.Utils.Design
             // 
             this.txtConfiguration.AcceptsReturn = true;
             this.txtConfiguration.AcceptsTab = true;
-            this.txtConfiguration.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtConfiguration.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtConfiguration.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtConfiguration.Location = new System.Drawing.Point(12, 29);
             this.txtConfiguration.Multiline = true;
             this.txtConfiguration.Name = "txtConfiguration";
             this.txtConfiguration.Size = new System.Drawing.Size(823, 306);
-            this.statusBarTextProvider1.SetStatusBarText(this.txtConfiguration, "Configuration: Edit the configuration data");
             this.txtConfiguration.TabIndex = 1;
             this.txtConfiguration.Enter += new System.EventHandler(this.txtConfiguration_Enter);
             // 
             // label1
             // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.Location = new System.Drawing.Point(12, 9);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(823, 17);
             this.label1.TabIndex = 0;
             this.label1.Text = "This component does not have a configuration method.  Edit the XML configuration " +
-                "data below.";
+    "data below.";
             // 
             // ConfigurationEditorDlg
             // 
@@ -117,7 +113,6 @@ namespace SandcastleBuilder.Utils.Design
 
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.Button btnClose;
-        private SandcastleBuilder.Utils.Controls.StatusBarTextProvider statusBarTextProvider1;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.TextBox txtConfiguration;
         private System.Windows.Forms.Label label1;

@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ISyntaxGeneratorFactory.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/17/2013
+// Updated : 12/27/2013
 // Note    : Copyright 2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -21,7 +21,6 @@
 
 using System;
 using System.ComponentModel.Composition;
-using System.Diagnostics;
 
 namespace Sandcastle.Core.BuildAssembler.SyntaxGenerator
 {
@@ -41,16 +40,18 @@ namespace Sandcastle.Core.BuildAssembler.SyntaxGenerator
         public string Id { get; private set; }
 
         /// <summary>
-        /// This read-only property is used to get the prefix for resource items used during XSL transformation
-        /// such as for label text.
+        /// This read-only property is used to get the value used as the XML element name and in resource item
+        /// IDs used during XSL transformation such as for label text.
         /// </summary>
-        public string ResourceItemPrefix { get; private set; }
+        public string LanguageElementName { get; private set; }
 
         /// <summary>
-        /// This read-only property is used to get the style name parameter used by the client side script in the
-        /// topics.
+        /// This read-only property is used to get the keyword style parameter value used by the client side
+        /// script in the topics for language specific keyword/separator text.
         /// </summary>
-        public string StyleNameParameter { get; private set; }
+        /// <value>This will typically be one of the following: <c>cs</c> (C# or equivalent), <c>vb</c> (VB.NET
+        /// or equivalent), <c>cpp</c> (C++ or equivalent), <c>fs</c> (F# or equivalent).</value>
+        public string KeywordStyleParameter { get; private set; }
 
         /// <summary>
         /// This is used to get or set whether or not the syntax generator is configurable
@@ -64,42 +65,14 @@ namespace Sandcastle.Core.BuildAssembler.SyntaxGenerator
         public string Description { get; set; }
 
         /// <summary>
-        /// This is used to get or set an additional user-defined copyright information separate from the
-        /// assembly copyright information.
+        /// This is used to get or set the syntax generator version number
         /// </summary>
-        public string AdditionalCopyrightInfo { get; set; }
+        public string Version { get; set; }
 
         /// <summary>
-        /// This read-only property returns the version of the syntax generator
+        /// This is used to get or set copyright information for the syntax generator
         /// </summary>
-        /// <value>This returns the product version value from the assembly attributes or "0.0.0.0" if one does
-        /// not exist.</value>
-        public string Version
-        {
-            get
-            {
-                // Use the assembly version
-                FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(base.ContractType.Assembly.Location);
-
-                return fvi.ProductVersion;
-            }
-        }
-
-        /// <summary>
-        /// This read-only property returns the copyright information for the syntax generator
-        /// </summary>
-        /// <value>This returns the legal copyright value from the assembly attributes or null if one does not
-        /// exist.</value>
-        public string Copyright
-        {
-            get
-            {
-                // Use the assembly version
-                FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(base.ContractType.Assembly.Location);
-
-                return fvi.LegalCopyright;
-            }
-        }
+        public string Copyright { get; set; }
 
         /// <summary>
         /// This is used to get or set the the value that defines the order in which the syntax generators are
@@ -130,23 +103,23 @@ namespace Sandcastle.Core.BuildAssembler.SyntaxGenerator
         /// Constructor
         /// </summary>
         /// <param name="id">The required plug-in ID</param>
-        /// <param name="resourceItemPrefix">The resource item prefix</param>
-        /// <param name="styleNameParameter">The style parameter name for client side script</param>
-        public SyntaxGeneratorExportAttribute(string id, string resourceItemPrefix, string styleNameParameter) :
-            base(typeof(ISyntaxGeneratorFactory))
+        /// <param name="languageElementName">The language element name and resource item ID</param>
+        /// <param name="keywordStyleParameter">The keyword style parameter value for client side script</param>
+        public SyntaxGeneratorExportAttribute(string id, string languageElementName, string keywordStyleParameter) :
+          base(typeof(ISyntaxGeneratorFactory))
         {
             if(String.IsNullOrWhiteSpace(id))
                 throw new ArgumentException("An ID value is required", "id");
 
-            if(String.IsNullOrWhiteSpace(resourceItemPrefix))
-                throw new ArgumentException("A resource item prefix value is required", "resourceItemPrefix");
+            if(String.IsNullOrWhiteSpace(languageElementName))
+                throw new ArgumentException("A language element name value is required", "languageElementName");
 
-            if(String.IsNullOrWhiteSpace(styleNameParameter))
-                throw new ArgumentException("A style parameter name value is required", "styleNameParameter");
+            if(String.IsNullOrWhiteSpace(keywordStyleParameter))
+                throw new ArgumentException("A keyword style parameter value is required", "keywordStyleParameter");
 
             this.Id = id;
-            this.ResourceItemPrefix = resourceItemPrefix;
-            this.StyleNameParameter = styleNameParameter;
+            this.LanguageElementName = languageElementName;
+            this.KeywordStyleParameter = keywordStyleParameter;
         }
         #endregion
     }

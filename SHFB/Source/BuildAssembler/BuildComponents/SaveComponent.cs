@@ -7,6 +7,7 @@
 // 12/24/2012 - Removed support for the link configuration attribute and simplified the FileCreatedEventArgs
 // class to make it more generic.  Components that handle the event arguments are responsible for determining
 // additional file locations rather than relying on this component to tell them.
+// 12/24/2013 - EFW - Updated the build component to be discoverable via MEF
 
 using System;
 using System.Configuration;
@@ -26,6 +27,23 @@ namespace Microsoft.Ddue.Tools
     /// </summary>
     public class SaveComponent : BuildComponentCore
     {
+        #region Build component factory for MEF
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to create a new instance of the build component
+        /// </summary>
+        [BuildComponentExport("Save Component")]
+        public sealed class Factory : BuildComponentFactory
+        {
+            /// <inheritdoc />
+            public override BuildComponentCore Create()
+            {
+                return new SaveComponent(base.BuildAssembler);
+            }
+        }
+        #endregion
+
         #region Private data members
         //=====================================================================
 
@@ -40,9 +58,20 @@ namespace Microsoft.Ddue.Tools
         #region Constructor
         //=====================================================================
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="buildAssembler">A reference to the build assembler</param>
+        protected SaveComponent(BuildAssemblerCore buildAssembler) : base(buildAssembler)
+        {
+        }
+        #endregion
+
+        #region Method overrides
+        //=====================================================================
+
         /// <inheritdoc />
-        public SaveComponent(BuildAssemblerCore assembler, XPathNavigator configuration) :
-          base(assembler, configuration)
+        public override void Initialize(XPathNavigator configuration)
         {
             settings.Encoding = Encoding.UTF8;
             settings.CloseOutput = true;
@@ -91,10 +120,6 @@ namespace Microsoft.Ddue.Tools
             if(!String.IsNullOrEmpty(addXhtmlDeclaration))
                 writeXhtmlNamespace = Convert.ToBoolean(addXhtmlDeclaration, CultureInfo.InvariantCulture);
         }
-        #endregion
-
-        #region Method overrides
-        //=====================================================================
 
         /// <inheritdoc />
         public override void Apply(XmlDocument document, string key)

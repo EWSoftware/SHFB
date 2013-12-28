@@ -1,42 +1,41 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder Utilities
 // File    : ComponentConfigurationDictionary.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/17/2013
+// Updated : 12/26/2013
 // Note    : Copyright 2006-2011, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains a dictionary class used to hold the configurations for
-// third party build components such as the Code Block Component.
+// This file contains a dictionary class used to hold the configurations for third party build components such
+// as the Code Block Component.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.3.3.0  11/24/2006  EFW  Created the code
 // 1.6.0.2  11/01/2007  EFW  Reworked to support better handling of components
 // 1.8.0.0  07/01/2008  EFW  Reworked to support MSBuild project format
-// 1.9.3.0  04/07/2011  EFW  Made the from/to XML members public so that it can
-//                           be used from the VSPackage.
-//=============================================================================
+// 1.9.3.0  04/07/2011  EFW  Made the from/to XML members public so that it can be used from the VSPackage
+//===============================================================================================================
 
 using System;
 using System.ComponentModel;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Xml;
 
 namespace SandcastleBuilder.Utils.BuildComponent
 {
     /// <summary>
-    /// This dictionary class is used to hold the third party build component
-    /// configuration properties for a project such as the Code Block Component.
+    /// This dictionary class is used to hold the third party build component configuration properties for a
+    /// project such as the Code Block Component.
     /// </summary>
     public class ComponentConfigurationDictionary : Dictionary<string, BuildComponentConfiguration>
     {
@@ -57,42 +56,15 @@ namespace SandcastleBuilder.Utils.BuildComponent
         {
             get
             {
-                foreach(BuildComponentConfiguration bc in this.Values)
-                    if(bc.IsDirty)
-                        return true;
-
-                return isDirty;
+                return isDirty || this.Values.Any(c => c.IsDirty);
             }
             set
             {
-                foreach(BuildComponentConfiguration bc in this.Values)
+                foreach(var bc in this.Values)
                     bc.IsDirty = value;
 
                 isDirty = value;
             }
-        }
-        #endregion
-
-        #region Events
-        /// <summary>
-        /// This event is raised when the dictionary is modified
-        /// </summary>
-        public event ListChangedEventHandler DictionaryChanged;
-
-        /// <summary>
-        /// This raises the <see cref="DictionaryChanged"/> event.
-        /// </summary>
-        /// <param name="e">The event arguments</param>
-        /// <remarks>The dictionary doesn't raise events automatically so
-        /// this is raised manually as needed.</remarks>
-        internal void OnDictionaryChanged(ListChangedEventArgs e)
-        {
-            var handler = DictionaryChanged;
-
-            if(handler != null)
-                handler(this, e);
-
-            isDirty = true;
         }
         #endregion
 
@@ -113,8 +85,7 @@ namespace SandcastleBuilder.Utils.BuildComponent
         //=====================================================================
 
         /// <summary>
-        /// This is used to load existing component configuration items from
-        /// the project file.
+        /// This is used to load existing component configuration items from the project file
         /// </summary>
         /// <param name="components">The component items</param>
         /// <remarks>The information is stored as an XML fragment</remarks>
@@ -157,11 +128,10 @@ namespace SandcastleBuilder.Utils.BuildComponent
         }
 
         /// <summary>
-        /// This is used to write the component configuration info to an XML
-        /// fragment ready for storing in the project file.
+        /// This is used to write the component configuration info to an XML fragment ready for storing in the
+        /// project file.
         /// </summary>
-        /// <returns>The XML fragment containing the component configuration
-        /// info.</returns>
+        /// <returns>The XML fragment containing the component configuration info.</returns>
         public string ToXml()
         {
             BuildComponentConfiguration config;
@@ -206,18 +176,19 @@ namespace SandcastleBuilder.Utils.BuildComponent
         /// <param name="id">The component ID</param>
         /// <param name="enabled">True for enabled, false disabled</param>
         /// <param name="config">The component configuration</param>
-        /// <returns>The <see cref="BuildComponentConfiguration" /> added to
-        /// the project.  If the ID already exists in the collection, the
-        /// existing item is returned.</returns>
-        /// <remarks>The <see cref="BuildComponentConfiguration" /> constructor
-        /// is internal so that we control creation of the items and can
-        /// associate them with the project.</remarks>
+        /// <returns>The <see cref="BuildComponentConfiguration" /> added to the project.  If the ID already
+        /// exists in the collection, the existing item is returned.</returns>
+        /// <remarks>The <see cref="BuildComponentConfiguration" /> constructor is internal so that we control
+        /// creation of the items and can associate them with the project.</remarks>
         public BuildComponentConfiguration Add(string id, bool enabled, string config)
         {
             BuildComponentConfiguration item;
 
             if(!this.TryGetValue(id, out item))
             {
+                if(String.IsNullOrWhiteSpace(config))
+                    config = String.Format(CultureInfo.InvariantCulture, "<component id=\"{0}\" />", id);
+
                 item = new BuildComponentConfiguration(enabled, config, projectFile);
                 base.Add(id, item);
             }

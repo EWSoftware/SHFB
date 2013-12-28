@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Components
 // File    : CodeBlockComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 02/27/2013
+// Updated : 12/26/2013
 // Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -36,6 +36,7 @@
 // 1.9.6.0  10/17/2012  EFW  Moved the code block insertion code from PostTransformComponent into the new
 //                           component event handler in this class.  Moved the title support into the
 //                           presentation style XSL transformations.
+// -------  12/26/2013  EFW  Updated the build component to be discoverable via MEF
 //===============================================================================================================
 
 using System;
@@ -67,13 +68,12 @@ namespace SandcastleBuilder.Components
     /// </summary>
     /// <remarks>The colorizer files are only copied once and only if code is actually colorized.  If the files
     /// already exist (i.e. additional content has replaced them), they are not copied either.  That way, you
-    /// can customize the color stylesheet as you see fit without modifying the default stylesheet.</remarks>
+    /// can customize the color style sheet as you see fit without modifying the default style sheet.</remarks>
     /// <example>
     /// <code lang="xml" title="Example configuration">
     /// &lt;!-- Code block component configuration.  This must appear before
     ///      the TransformComponent. --&gt;
-    /// &lt;component type="SandcastleBuilder.Components.CodeBlockComponent"
-    ///   assembly="C:\SandcastleBuilder\SandcastleBuilder.Components.dll"&gt;
+    /// &lt;component id="Code Block Component"&gt;
     ///     &lt;!-- Base path for relative filenames in source
     ///          attributes (optional). --&gt;
     ///     &lt;basePath value="..\SandcastleComponents" /&gt;
@@ -100,8 +100,8 @@ namespace SandcastleBuilder.Components
     ///     &lt;!-- Code colorizer options (required).
     ///       Attributes:
     ///         Language syntax configuration file (required)
-    ///         XSLT stylesheet file (required)
-    ///         CSS stylesheet file (required)
+    ///         XSLT style sheet file (required)
+    ///         CSS style sheet file (required)
     ///         Script file (required)
     ///         Disabled (optional, leading whitespace normalization only)
     ///         Default language (optional)
@@ -154,6 +154,92 @@ namespace SandcastleBuilder.Components
     /// </example>
     public class CodeBlockComponent : BuildComponentCore
     {
+        #region Build component factory for MEF
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to create a new instance of the build component used for API token resolution
+        /// </summary>
+        [BuildComponentExport("Code Block Component", DesignerVisible = true, IsConfigurable = true,
+          Version = AssemblyInfo.Version, Copyright = AssemblyInfo.Copyright,
+          Description = "This build component is used to search for <code> elements within reference XML " +
+            "comments and conceptual content topics and colorize the code within them.  It can also include " +
+            "code from an external file or a region within the file.")]
+        public sealed class Factory : BuildComponentFactory
+        {
+            /// <summary>
+            /// Constructor
+            /// </summary>
+            public Factory()
+            {
+                base.ReferenceBuildPlacement = new ComponentPlacement(PlacementAction.Before,
+                    "XSL Transform Component");
+                base.ConceptualBuildPlacement = new ComponentPlacement(PlacementAction.Before,
+                    "XSL Transform Component");
+            }
+
+            /// <inheritdoc />
+            public override BuildComponentCore Create()
+            {
+                return new CodeBlockComponent(base.BuildAssembler);
+            }
+
+            /// <inheritdoc />
+            public override string DefaultConfiguration
+            {
+                get
+                {
+                    return @"<!-- Base path for relative filenames in source attributes (optional) -->
+<basePath value=""{@HtmlEncProjectFolder}"" />
+
+<!-- Base output paths for the files (required).  These should match the parent folder of the output path
+	 of the HTML files (see each of the SaveComponent instances in the configuration files). -->
+<outputPaths>
+	{@HelpFormatOutputPaths}
+</outputPaths>
+
+<!-- Allow missing source files (Optional).  If omitted, it will generate errors if referenced source files
+	 are missing. -->
+<allowMissingSource value=""false"" />
+
+<!-- Remove region markers from imported code blocks.  If omitted, region markers in imported code blocks
+	 are left alone. -->
+<removeRegionMarkers value=""false"" />
+
+<!-- Code colorizer options (required).
+	 Attributes:
+		Language syntax configuration file (required)
+		XSLT style sheet file (required)
+		CSS style sheet file (required)
+		Script file (required)
+		Disabled (optional, leading whitespace normalization only)
+		Default language (optional)
+		Enable line numbering (optional)
+		Enable outlining (optional)
+		Keep XML comment ""see"" tags within the code (optional)
+		Tab size override (optional, 0 = Use syntax file setting)
+		Use language name as default title (optional) -->
+<colorizer syntaxFile=""{@SHFBFolder}Colorizer\highlight.xml"" styleFile=""{@SHFBFolder}Colorizer\highlight.xsl""
+	stylesheet=""{@SHFBFolder}Colorizer\highlight.css"" scriptFile=""{@SHFBFolder}Colorizer\highlight.js""
+	disabled=""{@DisableCodeBlockComponent}"" language=""cs"" numberLines=""false"" outlining=""false""
+	keepSeeTags=""false"" tabSize=""0"" defaultTitle=""true"" />";
+                }
+            }
+
+            /// <inheritdoc />
+            public override string ConfigureComponent(string currentConfiguration)
+            {
+                using(CodeBlockConfigDlg dlg = new CodeBlockConfigDlg(currentConfiguration))
+                {
+                    if(dlg.ShowDialog() == DialogResult.OK)
+                        currentConfiguration = dlg.Configuration;
+                }
+
+                return currentConfiguration;
+            }
+        }
+        #endregion
+
         #region Private data members
         //=====================================================================
 
@@ -165,7 +251,7 @@ namespace SandcastleBuilder.Components
 
         private CodeColorizer colorizer;    // The code colorizer
 
-        // The stylesheet, script, and image files to include and the output path
+        // The style sheet, script, and image files to include and the output path
         private string stylesheet, scriptFile;
 
         // Line numbering, outlining, keep see tags, remove region markers, disabled, and files copied flags
@@ -205,14 +291,21 @@ namespace SandcastleBuilder.Components
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="assembler">A reference to the build assembler.</param>
-        /// <param name="configuration">The configuration information</param>
+        /// <param name="buildAssembler">A reference to the build assembler</param>
+        protected CodeBlockComponent(BuildAssemblerCore buildAssembler) : base(buildAssembler)
+        {
+        }
+        #endregion
+
+        #region Method overrides
+        //=====================================================================
+
+        /// <inheritdoc />
         /// <remarks>See the <see cref="CodeBlockComponent"/> class topic for an example of the configuration and
         /// usage.</remarks>
         /// <exception cref="ConfigurationErrorsException">This is thrown if an error is detected in the
         /// configuration.</exception>
-        public CodeBlockComponent(BuildAssemblerCore assembler, XPathNavigator configuration) :
-          base(assembler, configuration)
+        public override void Initialize(XPathNavigator configuration)
         {
             XPathNavigator nav;
             string value = null;
@@ -224,7 +317,7 @@ namespace SandcastleBuilder.Components
             Assembly asm = Assembly.GetExecutingAssembly();
             FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(asm.Location);
 
-            base.WriteMessage(MessageLevel.Info, "\r\n    [{0}, version {1}]\r\n    Code Block Component.  " +
+            base.WriteMessage(MessageLevel.Info, "[{0}, version {1}]\r\n    Code Block Component.  " +
                 "{2}.\r\n    Portions copyright (c) 2003, Jonathan de Halleux, All rights reserved.\r\n" +
                 "    http://SHFB.CodePlex.com", fvi.ProductName, fvi.ProductVersion, fvi.LegalCopyright);
 
@@ -335,7 +428,7 @@ namespace SandcastleBuilder.Components
                     styleFile);
 
             if(!File.Exists(stylesheet))
-                throw new ConfigurationErrorsException("Could not find stylesheet file: " + stylesheet);
+                throw new ConfigurationErrorsException("Could not find style sheet file: " + stylesheet);
 
             if(!File.Exists(stylesheet))
                 throw new ConfigurationErrorsException("Could not find script file: " + scriptFile);
@@ -402,10 +495,6 @@ namespace SandcastleBuilder.Components
             // Hook up the event handler to complete the process after the topic is transformed to HTML
             base.BuildAssembler.ComponentEvent += TransformComponent_TopicTransformed;
         }
-        #endregion
-
-        #region Apply the component
-        //=====================================================================
 
         /// <summary>
         /// This is implemented to perform the code colorization.
@@ -799,7 +888,7 @@ namespace SandcastleBuilder.Components
                 return;
             }
 
-            // Add the link to the stylesheet
+            // Add the link to the style sheet
             node = tt.Document.CreateNode(XmlNodeType.Element, "link", null);
 
             attr = tt.Document.CreateAttribute("type");
@@ -860,27 +949,6 @@ namespace SandcastleBuilder.Components
                 else
                     base.WriteMessage(tt.Key, MessageLevel.Warn, "Unable to locate colorized code for placeholder: " +
                         placeholder.InnerText);
-        }
-        #endregion
-
-        #region Static configuration method for use with SHFB
-        //=====================================================================
-
-        /// <summary>
-        /// This static method is used by the Sandcastle Help File Builder to let the component perform its own
-        /// configuration.
-        /// </summary>
-        /// <param name="currentConfig">The current configuration XML fragment</param>
-        /// <returns>A string containing the new configuration XML fragment</returns>
-        public static string ConfigureComponent(string currentConfig)
-        {
-            using(CodeBlockConfigDlg dlg = new CodeBlockConfigDlg(currentConfig))
-            {
-                if(dlg.ShowDialog() == DialogResult.OK)
-                    currentConfig = dlg.Configuration;
-            }
-
-            return currentConfig;
         }
         #endregion
     }

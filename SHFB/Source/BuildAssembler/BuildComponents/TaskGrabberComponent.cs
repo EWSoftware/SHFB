@@ -3,6 +3,9 @@
 // See http://www.microsoft.com/resources/sharedsource/licensingbasics/sharedsourcelicenses.mspx.
 // All other rights reserved.
 
+// Change history:
+// 12/24/2013 - EFW - Updated the build component to be discoverable via MEF
+
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -23,6 +26,23 @@ namespace Microsoft.Ddue.Tools
     /// </summary>
     public class TaskGrabberComponent : BuildComponentCore
     {
+        #region Build component factory for MEF
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to create a new instance of the build component
+        /// </summary>
+        [BuildComponentExport("Task Grabber Component")]
+        public sealed class Factory : BuildComponentFactory
+        {
+            /// <inheritdoc />
+            public override BuildComponentCore Create()
+            {
+                return new TaskGrabberComponent(base.BuildAssembler);
+            }
+        }
+        #endregion
+
         private XmlNamespaceManager nsManager = new XmlNamespaceManager(new NameTable());
 
         private XPathExpression valueQuery = null;
@@ -40,10 +60,13 @@ namespace Microsoft.Ddue.Tools
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="assembler">The build assembler instance</param>
-        /// <param name="configuration">The component configuration</param>
-        public TaskGrabberComponent(BuildAssemblerCore assembler, XPathNavigator configuration)
-            : base(assembler, configuration)
+        /// <param name="buildAssembler">A reference to the build assembler</param>
+        protected TaskGrabberComponent(BuildAssemblerCore buildAssembler) : base(buildAssembler)
+        {
+        }
+
+        /// <inheritdoc />
+        public override void Initialize(XPathNavigator configuration)
         {
             XPathNavigator keywordsNode = configuration.SelectSingleNode("keywords");
             if(keywordsNode == null)

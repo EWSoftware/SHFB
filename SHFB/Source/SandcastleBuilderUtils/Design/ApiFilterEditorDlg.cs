@@ -2,7 +2,7 @@
 // System  : EWSoftware Design Time Attributes and Editors
 // File    : ApiFilterEditorDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/13/2013
+// Updated : 12/28/2013
 // Note    : Copyright 2007-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -614,7 +614,7 @@ namespace SandcastleBuilder.Utils.Design
                 {
                     string apiID = nsNode.Attributes["id"].Value, namespaceText = apiID.Substring(2);
 
-                    if(apiID.StartsWith("G:"))
+                    if(apiID.StartsWith("G:", StringComparison.Ordinal))
                         namespaceText += " (Group)";
 
                     nodeInfo = new NodeInfo(namespaceText, apiID.Substring(2));

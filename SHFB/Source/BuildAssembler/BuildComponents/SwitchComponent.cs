@@ -3,6 +3,9 @@
 // See http://www.microsoft.com/resources/sharedsource/licensingbasics/sharedsourcelicenses.mspx.
 // All other rights reserved.
 
+// Change history:
+// 12/24/2013 - EFW - Updated the build component to be discoverable via MEF
+
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -20,13 +23,48 @@ namespace Microsoft.Ddue.Tools
     /// </summary>
     public class SwitchComponent : BuildComponentCore
     {
+        #region Build component factory for MEF
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to create a new instance of the build component
+        /// </summary>
+        [BuildComponentExport("Switch Component")]
+        public sealed class Factory : BuildComponentFactory
+        {
+            /// <inheritdoc />
+            public override BuildComponentCore Create()
+            {
+                return new SwitchComponent(base.BuildAssembler);
+            }
+        }
+        #endregion
+
+        #region Private data members
+        //=====================================================================
+
+        private XPathExpression condition;
+        private Dictionary<string, IEnumerable<BuildComponentCore>> cases = new Dictionary<string, IEnumerable<BuildComponentCore>>();
+
+        #endregion
+
+        #region Constructor
+        //=====================================================================
+
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="assembler">The build assembler reference</param>
-        /// <param name="configuration">The component configuration</param>
-        public SwitchComponent(BuildAssemblerCore assembler, XPathNavigator configuration) :
-          base(assembler, configuration)
+        /// <param name="buildAssembler">A reference to the build assembler</param>
+        protected SwitchComponent(BuildAssemblerCore buildAssembler) : base(buildAssembler)
+        {
+        }
+        #endregion
+
+        #region Method overrides
+        //=====================================================================
+
+        /// <inheritdoc />
+        public override void Initialize(XPathNavigator configuration)
         {
             // get the condition
             XPathNavigator condition_element = configuration.SelectSingleNode("switch");
@@ -51,14 +89,6 @@ namespace Microsoft.Ddue.Tools
                 cases.Add(case_value, BuildAssembler.LoadComponents(case_element));
             }
         }
-
-        // data held by the component
-
-        private XPathExpression condition;
-
-        private Dictionary<string, IEnumerable<BuildComponentCore>> cases = new Dictionary<string, IEnumerable<BuildComponentCore>>();
-
-        // the action of the component
 
         /// <inheritdoc />
         public override void Apply(XmlDocument document, string key)
@@ -87,5 +117,6 @@ namespace Microsoft.Ddue.Tools
 
             base.Dispose(disposing);
         }
+        #endregion
     }
 }

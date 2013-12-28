@@ -4,7 +4,7 @@
 // Note    : Copyright 2010-2012 Microsoft Corporation
 //
 // This file contains the ReferenceLinkInfo class used to hold reference link information used by the
-// ResolveReferenceLinksComponent2.
+// ResolveReferenceLinksComponent.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
 // distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
@@ -23,7 +23,7 @@ namespace Microsoft.Ddue.Tools.Targets
 {
     /// <summary>
     /// This class is used to hold reference link information used by by the
-    /// <see cref="ResolveReferenceLinksComponent2"/>.
+    /// <see cref="ResolveReferenceLinksComponent"/>.
     /// </summary>
     public class ReferenceLinkInfo
     {

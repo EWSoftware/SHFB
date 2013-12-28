@@ -1,23 +1,22 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : UserCredentials.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/24/2007
-// Note    : Copyright 2007, Eric Woodruff, All rights reserved
+// Updated : 12/28/2013
+// Note    : Copyright 2007-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains a class that is used to specify user credentials.
+// This file contains a class that is used to specify user credentials
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.5.2.0  09/13/2007  EFW  Created the code
-//=============================================================================
+//===============================================================================================================
 
 using System;
 using System.Globalization;
@@ -33,7 +32,6 @@ namespace SandcastleBuilder.PlugIns
     {
         #region Private data members
         //=====================================================================
-        // Private data members
 
         private bool useDefaultCredentials;
         private string userName, password;
@@ -41,14 +39,11 @@ namespace SandcastleBuilder.PlugIns
 
         #region Properties
         //=====================================================================
-        // Properties
 
         /// <summary>
-        /// This is used to set or get the flag indicating whether or not to
-        /// use default credentials.
+        /// This is used to set or get the flag indicating whether or not to use default credentials
         /// </summary>
-        /// <value>By default, this is true and <see cref="UserName"/> and
-        /// <see cref="Password"/> will be ignored.</value>
+        /// <value>By default, this is true and <see cref="UserName"/> and <see cref="Password"/> will be ignored</value>
         public bool UseDefaultCredentials
         {
             get { return useDefaultCredentials; }
@@ -58,8 +53,7 @@ namespace SandcastleBuilder.PlugIns
         /// <summary>
         /// Get or set the user name
         /// </summary>
-        /// <value>If <see cref="UseDefaultCredentials"/> is true, this will
-        /// be ignored.</value>
+        /// <value>If <see cref="UseDefaultCredentials"/> is true, this will be ignored</value>
         public string UserName
         {
             get { return userName; }
@@ -75,8 +69,7 @@ namespace SandcastleBuilder.PlugIns
         /// <summary>
         /// Get or set the password
         /// </summary>
-        /// <value>If <see cref="UseDefaultCredentials"/> is true, this will
-        /// be ignored.</value>
+        /// <value>If <see cref="UseDefaultCredentials"/> is true, this will be ignored</value>
         public string Password
         {
             get { return password; }
@@ -90,13 +83,13 @@ namespace SandcastleBuilder.PlugIns
         }
         #endregion
 
+        #region Constructors
         //=====================================================================
-        // Methods, etc.
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <overloads>There are two overloads for the constructor.</overloads>
+        /// <overloads>There are three overloads for the constructor.</overloads>
         public UserCredentials()
         {
             useDefaultCredentials = true;
@@ -106,8 +99,8 @@ namespace SandcastleBuilder.PlugIns
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="useDefault">True to use default credentials, false to
-        /// use the supplied user name and password.</param>
+        /// <param name="useDefault">True to use default credentials, false to use the supplied user name and
+        /// password.</param>
         /// <param name="user">The user name to use.</param>
         /// <param name="pwd">The password to use.</param>
         public UserCredentials(bool useDefault, string user, string pwd)
@@ -118,18 +111,13 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// Create a user credentials instance from an XPath navigator
-        /// containing the settings.
+        /// Create a user credentials instance from an XPath navigator containing the settings
         /// </summary>
-        /// <param name="navigator">The XPath navigator from which to
-        /// obtain the settings.</param>
-        /// <returns>A <see cref="UserCredentials"/> object containing the
-        /// settings from the XPath navigator.</returns>
-        /// <remarks>It should contain an element called <b>userCredentials</b>
-        /// with three attributes: <b>useDefault</b>, <b>userName</b>, and
-        /// <b>password</b>.</remarks>
-        public static UserCredentials FromXPathNavigator(
-          XPathNavigator navigator)
+        /// <param name="navigator">The XPath navigator from which to obtain the settings</param>
+        /// <returns>A <see cref="UserCredentials"/> object containing the settings from the XPath navigator</returns>
+        /// <remarks>It should contain an element called <c>userCredentials</c> with three attributes:
+        /// <c>useDefault</c>, <c>userName</c>, and <c>password</c>.</remarks>
+        public static UserCredentials FromXPathNavigator(XPathNavigator navigator)
         {
             UserCredentials credentials = new UserCredentials();
 
@@ -139,30 +127,29 @@ namespace SandcastleBuilder.PlugIns
 
                 if(navigator != null)
                 {
-                    credentials.UseDefaultCredentials = Convert.ToBoolean(
-                        navigator.GetAttribute("useDefault", String.Empty),
-                        CultureInfo.InvariantCulture);
-                    credentials.UserName = navigator.GetAttribute("userName",
-                        String.Empty).Trim();
-                    credentials.Password = navigator.GetAttribute("password",
-                        String.Empty).Trim();
+                    credentials.UseDefaultCredentials = Convert.ToBoolean(navigator.GetAttribute("useDefault",
+                        String.Empty), CultureInfo.InvariantCulture);
+                    credentials.UserName = navigator.GetAttribute("userName", String.Empty).Trim();
+                    credentials.Password = navigator.GetAttribute("password", String.Empty).Trim();
                 }
             }
 
             return credentials;
         }
+        #endregion
+
+        #region Helper methods
+        //=====================================================================
 
         /// <summary>
         /// Store the credentials as a node in the given XML document
         /// </summary>
         /// <param name="config">The XML document</param>
         /// <param name="root">The node in which to store the element</param>
-        /// <returns>Returns the node that was added or the one that
-        /// already existed in the document.</returns>
-        /// <remarks>The credentials are stored in an element called
-        /// <b>userCredentials</b> with three attributes:  <b>useDefault</b>,
-        /// <b>userName</b>, and <b>password</b>.  It is created if it
-        /// does not already exist.</remarks>
+        /// <returns>Returns the node that was added or the one that already existed in the document</returns>
+        /// <remarks>The credentials are stored in an element called <c>userCredentials</c> with three
+        /// attributes:  <c>useDefault</c>, <c>userName</c>, and <c>password</c>.  It is created if it does not
+        /// already exist.</remarks>
         public XmlNode ToXml(XmlDocument config, XmlNode root)
         {
             XmlNode node;
@@ -175,8 +162,7 @@ namespace SandcastleBuilder.PlugIns
 
             if(node == null)
             {
-                node = config.CreateNode(XmlNodeType.Element,
-                    "userCredentials", null);
+                node = config.CreateNode(XmlNodeType.Element, "userCredentials", null);
                 root.AppendChild(node);
 
                 attr = config.CreateAttribute("useDefault");
@@ -187,13 +173,12 @@ namespace SandcastleBuilder.PlugIns
                 node.Attributes.Append(attr);
             }
 
-            node.Attributes["useDefault"].Value =
-                useDefaultCredentials.ToString().ToLower(
-                    CultureInfo.InvariantCulture);
+            node.Attributes["useDefault"].Value = useDefaultCredentials.ToString().ToLowerInvariant();
             node.Attributes["userName"].Value = userName;
             node.Attributes["password"].Value = password;
 
             return node;
         }
+        #endregion
     }
 }

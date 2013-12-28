@@ -32,12 +32,13 @@ namespace Microsoft.Ddue.Tools
         /// This is used to create a new instance of the syntax generator
         /// </summary>
         [SyntaxGeneratorExport("VisualBasic", "VisualBasic", "vb", AlternateIds = "vb, vb#, vbnet, vb.net",
-          IsConfigurable = true, SortOrder = 20, Description = "Generates Visual Basic declaration syntax sections",
+          IsConfigurable = true, SortOrder = 20, Version = AssemblyInfo.Version, Copyright = AssemblyInfo.Copyright,
+          Description = "Generates Visual Basic declaration syntax sections",
           DefaultConfiguration = "<includeLineContinuation value=\"false\" />")]
         public sealed class Factory : ISyntaxGeneratorFactory
         {
             /// <inheritdoc />
-            public SyntaxGeneratorBase Create()
+            public SyntaxGeneratorCore Create()
             {
                 return new VisualBasicDeclarationSyntaxGenerator();
             }

@@ -9,6 +9,7 @@
 // 01/12/2013 - EFW - Moved the execution code into the BuildAssembler class to allow for parallel execution.
 
 using System;
+using System.ComponentModel.Composition;
 using System.IO;
 using System.Xml;
 using System.Xml.XPath;
@@ -24,6 +25,9 @@ namespace Microsoft.Ddue.Tools
     /// </summary>
     class BuildAssemblerConsole
     {
+        [Export(typeof(BuildAssemblerCore))]
+        public static BuildAssemblerCore BuildAssembler { get; private set; }
+
         /// <summary>
         /// Main program entry point
         /// </summary>
@@ -94,12 +98,12 @@ namespace Microsoft.Ddue.Tools
             #endregion
 
             // Create a build assembler instance to do the work.  Messages are logged to the console.
-            var buildAssembler = new BuildAssemblerCore(s => Console.WriteLine(s));
+            BuildAssembler = new BuildAssemblerCore(s => Console.WriteLine(s));
 
             try
             {
                 // Execute it using the given configuration and manifest
-                buildAssembler.Execute(configuration, manifest);
+                BuildAssembler.Execute(configuration, manifest);
             }
             catch(Exception ex)
             {
@@ -115,7 +119,7 @@ namespace Microsoft.Ddue.Tools
             }
             finally
             {
-                buildAssembler.Dispose();
+                BuildAssembler.Dispose();
             }
 
             return exitCode;

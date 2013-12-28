@@ -1,35 +1,34 @@
-//=============================================================================
+//===============================================================================================================
 // System  : EWSoftware Design Time Attributes and Editors
 // File    : ConfigurationEditorDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/10/2011
-// Note    : Copyright 2007-2011, Eric Woodruff, All rights reserved
+// Updated : 12/27/2013
+// Note    : Copyright 2007-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains a form used to edit a build component configuration as
-// XML text.  This is used for components that have no built-in configuration
-// method.
+// This file contains a form used to edit a build component configuration as XML text.  This is used for
+// components that have no built-in configuration method override.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
-// Version     Date     Who  Comments
-// ============================================================================
-// 1.5.0.2  07/02/2007  EFW  Created the code
-//=============================================================================
+//    Date     Who  Comments
+// ==============================================================================================================
+// 07/02/2007  EFW  Created the code
+// 12/27/2013  EFW  Moved the form from SandcastleBuilder.Utils to Sandcastle.Core
+//===============================================================================================================
 
 using System;
 using System.Windows.Forms;
 using System.Xml;
 
-namespace SandcastleBuilder.Utils.Design
+namespace Sandcastle.Core.UI
 {
     /// <summary>
-    /// This form is used to edit a build component configuration as XML text.
-    /// This is used for components that have to built-in configuration method.
+    /// This form is used to edit a build component configuration as XML text.  This is used for components that
+    /// have to built-in configuration method override.
     /// </summary>
     public partial class ConfigurationEditorDlg : Form
     {
@@ -84,20 +83,19 @@ namespace SandcastleBuilder.Utils.Design
                 XmlDocument doc = new XmlDocument();
                 doc.LoadXml(txtConfiguration.Text);
 
-                // If we get here, it's probably ok
+                // If we get here, it's probably okay
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }
             catch(XmlException ex)
             {
-                MessageBox.Show("The XML configuration is not valid.  Reason:" + ex.Message, Constants.AppName,
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("The XML configuration is not valid.  Reason:" + ex.Message,
+                    "Component Configuration Editor", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         /// <summary>
-        /// Clear the text selection on entry to prevent accidental
-        /// deletion of the text.
+        /// Clear the text selection on entry to prevent accidental deletion of the text.
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>

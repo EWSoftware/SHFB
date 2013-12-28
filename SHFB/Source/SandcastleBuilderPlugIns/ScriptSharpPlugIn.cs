@@ -43,7 +43,8 @@ namespace SandcastleBuilder.PlugIns
     /// producing a help file.
     /// </summary>
     [HelpFileBuilderPlugInExport("Script# Reflection File Fixer", RunsInPartialBuild = true,
-      AdditionalCopyrightInfo = "Script# is Copyright \xA9 2007-2013 Nikhil Kothari, All Rights Reserved",
+      Version = AssemblyInfo.Version, Copyright = AssemblyInfo.Copyright + "\r\nScript# is Copyright \xA9 " +
+      "2007-2013 Nikhil Kothari, All Rights Reserved",
       Description = "This plug-in is used to modify the reflection information file produced after running " +
       "MRefBuilder on assemblies produced by the Script# compiler so that it is suitable for use in producing " +
       "a help file.")]
@@ -297,7 +298,8 @@ namespace SandcastleBuilder.PlugIns
             task.Attributes.Append(attr);
 
             attr = project.CreateAttribute("Transformations");
-            attr.Value = Path.Combine(builder.HelpFileBuilderFolder, @"~\ProductionTransforms\FixScriptSharp.xsl");
+            attr.Value = Path.Combine(BuildComponentManager.HelpFileBuilderFolder,
+                @"~\ProductionTransforms\FixScriptSharp.xsl");
             task.Attributes.Append(attr);
 
             attr = project.CreateAttribute("InputFile");

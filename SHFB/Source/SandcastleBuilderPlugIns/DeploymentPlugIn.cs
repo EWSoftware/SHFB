@@ -44,7 +44,8 @@ namespace SandcastleBuilder.PlugIns
     /// This plug-in class is used to copy the resulting help file output to a location other than the output
     /// folder (i.e. a file share, an FTP site, a web server, etc.).
     /// </summary>
-    [HelpFileBuilderPlugInExport("Output Deployment", IsConfigurable = true,
+    [HelpFileBuilderPlugInExport("Output Deployment", IsConfigurable = true, Version = AssemblyInfo.Version,
+      Copyright = AssemblyInfo.Copyright,
       Description = "This plug-in is used to deploy the resulting help file output to a location other than " +
         "the output folder (i.e. a file share, a web server, an FTP site, etc.).")]
     public sealed class DeploymentPlugIn : IPlugIn

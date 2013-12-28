@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.Namespaces.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/13/2013
+// Updated : 12/28/2013
 // Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -124,8 +124,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 {
                     nsName = n.Attributes["id"].Value;
 
-                    nsi = project.NamespaceSummaries[nsName.StartsWith("N:") ? nsName.Substring(2) :
-                        nsName.Substring(2) + " (Group)"];
+                    nsi = project.NamespaceSummaries[nsName.StartsWith("N:", StringComparison.Ordinal) ?
+                        nsName.Substring(2) : nsName.Substring(2) + " (Group)"];
 
                     if(nsi != null)
                     {

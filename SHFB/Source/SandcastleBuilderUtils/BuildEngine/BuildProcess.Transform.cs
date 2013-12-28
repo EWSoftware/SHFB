@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.Transform.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/21/2013
+// Updated : 12/27/2013
 // Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -46,6 +46,7 @@
 // -------  11/29/2013  EFW  Added support for the new MRefBuilder visibility settings.  Added support for
 //                           namespace grouping based on changes submitted by Stazzz.
 //          12/17/2013  EFW  Removed the SandcastlePath property and all references to it
+//          12/26/2013  EFW  Updated to use MEF to load BuildAssembler build components
 //===============================================================================================================
 
 using System;
@@ -61,7 +62,7 @@ using System.Xml.XPath;
 
 using Microsoft.Build.Evaluation;
 
-using Sandcastle.Core.BuildAssembler.SyntaxGenerator;
+using Sandcastle.Core.BuildAssembler.BuildComponent;
 
 using SandcastleBuilder.Utils.BuildComponent;
 using SandcastleBuilder.Utils.Frameworks;
@@ -920,6 +921,10 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         "Warn" : "Error";
                     break;
 
+                case "componentlocations":
+                    replaceWith = this.FormatComponentLocations();
+                    break;
+
                 case "helpfileformat":
                     replaceWith = project.HelpFileFormat.ToString();
                     break;
@@ -1109,13 +1114,40 @@ namespace SandcastleBuilder.Utils.BuildEngine
         }
 
         /// <summary>
-        /// This is used to merge the component configurations from the
-        /// project with the <b>sandcastle.config</b> file.
+        /// This is used to format the component locations for BuildAssembler configuration files
+        /// </summary>
+        /// <returns>A string containing the component location elements</returns>
+        private string FormatComponentLocations()
+        {
+            FolderPath projectFolder,
+                componentsFolder = new FolderPath(BuildComponentManager.BuildComponentsFolder, null),
+                helpFileBuilderFolder = new FolderPath(BuildComponentManager.HelpFileBuilderFolder, null);
+            StringBuilder sb = new StringBuilder(2048);
+
+            if(project.ComponentPath.Path.Length != 0)
+                projectFolder = project.ComponentPath;
+            else
+                projectFolder = new FolderPath(Path.GetDirectoryName(project.Filename), null);
+
+            if(Directory.Exists(projectFolder))
+                sb.AppendFormat("<location folder=\"{0}\" />", projectFolder);
+
+            if(componentsFolder.Path.Length != 0 && Directory.Exists(componentsFolder))
+                sb.AppendFormat("<location folder=\"{0}\" />", componentsFolder);
+
+            sb.AppendFormat("<location folder=\"{0}\" />", helpFileBuilderFolder);
+
+            return sb.ToString();
+        }
+
+        /// <summary>
+        /// This is used to merge the component configurations from the project with the <b>sandcastle.config</b>
+        /// file.
         /// </summary>
         private void MergeComponentConfigurations()
         {
             Dictionary<string, XmlNode> outputNodes = new Dictionary<string, XmlNode>();
-            BuildComponentInfo info;
+            BuildComponentFactory factory;
             BuildComponentConfiguration projectComp;
             XmlDocument config;
             XmlNode rootNode, configNode, clone;
@@ -1125,10 +1157,13 @@ namespace SandcastleBuilder.Utils.BuildEngine
             this.ReportProgress(BuildStep.MergeCustomConfigs, "Merging custom build component configurations");
 
             // Reset the adjusted instance values to match the configuration instance values
-            foreach(BuildComponentInfo component in BuildComponentManager.BuildComponents.Values)
+            foreach(var component in buildComponents.Values)
             {
-                component.ReferenceBuildPosition.AdjustedInstance = component.ReferenceBuildPosition.Instance;
-                component.ConceptualBuildPosition.AdjustedInstance = component.ConceptualBuildPosition.Instance;
+                var p = component.ReferenceBuildPlacement;
+                p.AdjustedInstance = p.Instance;
+
+                component.ReferenceBuildPlacement.AdjustedInstance = component.ReferenceBuildPlacement.Instance;
+                component.ConceptualBuildPlacement.AdjustedInstance = component.ConceptualBuildPlacement.Instance;
             }
 
             if(this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
@@ -1148,12 +1183,12 @@ namespace SandcastleBuilder.Utils.BuildEngine
             {
                 projectComp = project.ComponentConfigurations[id];
 
-                if(!BuildComponentManager.BuildComponents.TryGetValue(id, out info))
+                if(!buildComponents.TryGetValue(id, out factory))
                     throw new BuilderException("BE0021", String.Format(CultureInfo.InvariantCulture,
                         "The project contains a reference to a custom build " +
                         "component '{0}' that could not be found.", id));
 
-                if(info.ReferenceBuildPosition.Place == ComponentPosition.Placement.NotUsed)
+                if(factory.ReferenceBuildPlacement.Placement == PlacementAction.None)
                     this.ReportProgress("    Skipping component '{0}', not used in reference build", id);
                 else
                     if(projectComp.Enabled)
@@ -1178,7 +1213,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         if(outputNodes.Count == 0)
                         {
                             // Replace the component in the file
-                            this.MergeComponent(id, info, rootNode, configNode, false);
+                            this.MergeComponent(id, factory, rootNode, configNode, false);
                         }
                         else
                         {
@@ -1190,7 +1225,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                             {
                                 clone = configNode.Clone();
                                 clone.FirstChild.InnerXml = outputNodes[format.Attributes["format"].Value].InnerXml;
-                                this.MergeComponent(id, info, format, clone, false);
+                                this.MergeComponent(id, factory, format, clone, false);
                             }
                         }
                     }
@@ -1200,7 +1235,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
             config.Save(configName);
 
-            // Do the same for conceptual config if necessary
+            // Do the same for conceptual.config if necessary
             if(conceptualContent.ContentLayoutFiles.Count != 0)
             {
                 configName = workingFolder + "conceptual.config";
@@ -1215,12 +1250,12 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 {
                     projectComp = project.ComponentConfigurations[id];
 
-                    if(!BuildComponentManager.BuildComponents.TryGetValue(id, out info))
+                    if(!buildComponents.TryGetValue(id, out factory))
                         throw new BuilderException("BE0021", String.Format(CultureInfo.InvariantCulture,
                             "The project contains a reference to a custom build " +
                             "component '{0}' that could not be found.", id));
 
-                    if(info.ConceptualBuildPosition.Place == ComponentPosition.Placement.NotUsed)
+                    if(factory.ConceptualBuildPlacement.Placement == PlacementAction.None)
                         this.ReportProgress("    Skipping component '{0}', not used in conceptual build", id);
                     else
                         if(projectComp.Enabled)
@@ -1245,7 +1280,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                             if(outputNodes.Count == 0)
                             {
                                 // Replace the component in the file
-                                this.MergeComponent(id, info, rootNode, configNode, true);
+                                this.MergeComponent(id, factory, rootNode, configNode, true);
                             }
                             else
                             {
@@ -1257,7 +1292,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                                 {
                                     clone = configNode.Clone();
                                     clone.FirstChild.InnerXml = outputNodes[format.Attributes["format"].Value].InnerXml;
-                                    this.MergeComponent(id, info, format, clone, true);
+                                    this.MergeComponent(id, factory, format, clone, true);
                                 }
                             }
                         }
@@ -1269,7 +1304,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 if(conceptualContent.CodeSnippetFiles.Count == 0)
                 {
                     this.ReportProgress("    Removing unused ExampleComponent.");
-                    configNode = rootNode.SelectSingleNode("component[@type = 'Microsoft.Ddue.Tools.ExampleComponent']");
+                    configNode = rootNode.SelectSingleNode("component[@id='Example Component']");
 
                     if(configNode != null)
                         configNode.ParentNode.RemoveChild(configNode);
@@ -1283,71 +1318,58 @@ namespace SandcastleBuilder.Utils.BuildEngine
         }
 
         /// <summary>
-        /// This handles merging of the custom component configurations into
-        /// the configuration file including dependencies.
+        /// This handles merging of the custom component configurations into the configuration file including
+        /// dependencies.
         /// </summary>
         /// <param name="id">The ID of the component to merge</param>
-        /// <param name="info">The build component definition</param>
+        /// <param name="factory">The build component factory</param>
         /// <param name="rootNode">The root container node</param>
         /// <param name="configNode">The configuration node to merge</param>
-        /// <param name="isConceptualConfig">True if this is a conceptual
-        /// content configuration file or false if it is a reference build
-        /// configuration file.</param>
-        private void MergeComponent(string id, BuildComponentInfo info, XmlNode rootNode, XmlNode configNode,
+        /// <param name="isConceptualConfig">True if this is a conceptual content configuration file or false if
+        /// it is a reference build configuration file.</param>
+        private void MergeComponent(string id, BuildComponentFactory factory, XmlNode rootNode, XmlNode configNode,
           bool isConceptualConfig)
         {
-            BuildComponentInfo depInfo;
-            ComponentPosition position;
+            BuildComponentFactory dependencyFactory;
+            ComponentPlacement position;
             XmlNodeList matchingNodes;
             XmlNode node;
             string replaceId;
 
             // Merge dependent component configurations first
-            if(info.Dependencies.Count != 0)
-                foreach(string dependency in info.Dependencies)
+            if(factory.Dependencies.Any())
+                foreach(string dependency in factory.Dependencies)
                 {
                     node = rootNode.SelectSingleNode("component[@id='" + dependency + "']");
 
-                    // If it's already there or would create a circular
-                    // dependency, ignore it.
+                    // If it's already there or would create a circular dependency, ignore it
                     if(node != null || mergeStack.Contains(dependency))
                         continue;
 
                     // Add the dependency with a default configuration
-                    if(!BuildComponentManager.BuildComponents.TryGetValue(dependency, out depInfo))
-                        throw new BuilderException("BE0023", String.Format(
-                            CultureInfo.InvariantCulture, "The project contains " +
-                            "a reference to a custom build component '{0}' that " +
-                            "has a dependency '{1}' that could not be found.",
-                            id, dependency));
+                    if(!buildComponents.TryGetValue(dependency, out dependencyFactory))
+                        throw new BuilderException("BE0023", String.Format(CultureInfo.InvariantCulture,
+                            "The project contains a reference to a custom build component '{0}' that has a " +
+                            "dependency '{1}' that could not be found.", id, dependency));
 
                     node = rootNode.OwnerDocument.CreateDocumentFragment();
-                    node.InnerXml = reField.Replace(depInfo.DefaultConfiguration, fieldMatchEval);
+                    node.InnerXml = reField.Replace(dependencyFactory.DefaultConfiguration, fieldMatchEval);
 
                     this.ReportProgress("    Merging '{0}' dependency for '{1}'", dependency, id);
 
                     mergeStack.Push(dependency);
-                    this.MergeComponent(dependency, depInfo, rootNode, node, isConceptualConfig);
+                    this.MergeComponent(dependency, dependencyFactory, rootNode, node, isConceptualConfig);
                     mergeStack.Pop();
                 }
 
-            position = (!isConceptualConfig) ? info.ReferenceBuildPosition : info.ConceptualBuildPosition;
+            position = (!isConceptualConfig) ? factory.ReferenceBuildPlacement : factory.ConceptualBuildPlacement;
 
-            // Find all matching components by ID or type name
-            if(!String.IsNullOrEmpty(position.Id))
-            {
-                replaceId = position.Id;
-                matchingNodes = rootNode.SelectNodes("component[@id='" + replaceId + "']");
-            }
-            else
-            {
-                replaceId = position.TypeName;
-                matchingNodes = rootNode.SelectNodes("component[@type='" + replaceId + "']");
-            }
+            // Find all matching components by ID
+            replaceId = position.Id;
+            matchingNodes = rootNode.SelectNodes("component[@id='" + replaceId + "']");
 
-            // If replacing another component, search for that by ID or
-            // type and replace it if found.
-            if(position.Place == ComponentPosition.Placement.Replace)
+            // If replacing another component, search for that by ID and replace it if found
+            if(position.Placement == PlacementAction.Replace)
             {
                 if(matchingNodes.Count < position.AdjustedInstance)
                 {
@@ -1367,26 +1389,20 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     "for '{2}'", replaceId, position.AdjustedInstance, id);
 
                 // Adjust instance values on matching components
-                foreach(BuildComponentInfo component in BuildComponentManager.BuildComponents.Values)
+                foreach(var component in buildComponents.Values)
                     if(!isConceptualConfig)
                     {
-                        if(((!String.IsNullOrEmpty(component.ReferenceBuildPosition.Id) &&
-                          component.ReferenceBuildPosition.Id == replaceId) ||
-                          (String.IsNullOrEmpty(component.ReferenceBuildPosition.Id) &&
-                          component.ReferenceBuildPosition.TypeName == replaceId)) &&
-                          component.ReferenceBuildPosition.AdjustedInstance > position.AdjustedInstance)
+                        if(component.ReferenceBuildPlacement.Id == replaceId &&
+                          component.ReferenceBuildPlacement.AdjustedInstance > position.AdjustedInstance)
                         {
-                            component.ReferenceBuildPosition.AdjustedInstance--;
+                            component.ReferenceBuildPlacement.AdjustedInstance--;
                         }
                     }
                     else
-                        if(((!String.IsNullOrEmpty(component.ConceptualBuildPosition.Id) &&
-                          component.ConceptualBuildPosition.Id == replaceId) ||
-                          (String.IsNullOrEmpty(component.ConceptualBuildPosition.Id) &&
-                          component.ConceptualBuildPosition.TypeName == replaceId)) &&
-                          component.ConceptualBuildPosition.AdjustedInstance > position.AdjustedInstance)
+                        if(component.ConceptualBuildPlacement.Id == replaceId &&
+                          component.ConceptualBuildPlacement.AdjustedInstance > position.AdjustedInstance)
                         {
-                            component.ConceptualBuildPosition.AdjustedInstance--;
+                            component.ConceptualBuildPlacement.AdjustedInstance--;
                         }
 
                 return;
@@ -1404,20 +1420,20 @@ namespace SandcastleBuilder.Utils.BuildEngine
             }
 
             // Create the node and add it in the correct location
-            switch(position.Place)
+            switch(position.Placement)
             {
-                case ComponentPosition.Placement.Start:
+                case PlacementAction.Start:
                     rootNode.InsertBefore(configNode, rootNode.ChildNodes[0]);
                     this.ReportProgress("    Added configuration for '{0}' to the start of the configuration file", id);
                     break;
 
-                case ComponentPosition.Placement.End:
+                case PlacementAction.End:
                     rootNode.InsertAfter(configNode,
                         rootNode.ChildNodes[rootNode.ChildNodes.Count - 1]);
                     this.ReportProgress("    Added configuration for '{0}' to the end of the configuration file", id);
                     break;
 
-                case ComponentPosition.Placement.Before:
+                case PlacementAction.Before:
                     if(matchingNodes.Count < position.AdjustedInstance)
                         this.ReportProgress("    Could not find configuration '{0}' (instance {1}) to add " +
                             "configuration for '{2}' so it will be omitted.", replaceId, position.AdjustedInstance, id);

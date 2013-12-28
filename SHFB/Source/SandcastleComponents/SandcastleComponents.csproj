@@ -51,6 +51,7 @@
       <HintPath>..\ReferenceAssemblies\Esent.Interop.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -152,9 +153,6 @@
   <ItemGroup>
     <None Include="Resources\CreateSandcastleDB.sql" />
     <None Include="SandcastleBuilderComponents.snk" />
-    <Content Include="SandcastleBuilder.components">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

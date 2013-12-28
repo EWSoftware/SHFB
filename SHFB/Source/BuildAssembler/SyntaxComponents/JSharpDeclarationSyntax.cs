@@ -31,12 +31,13 @@ namespace Microsoft.Ddue.Tools
         /// <summary>
         /// This is used to create a new instance of the syntax generator
         /// </summary>
-        [SyntaxGeneratorExport("JSharp", "JSharp", "cs", AlternateIds = "j#",
-          SortOrder = 60, Description = "Generates JSharp declaration syntax sections")]
+        [SyntaxGeneratorExport("JSharp", "JSharp", "cs", AlternateIds = "j#", SortOrder = 60,
+          Version = AssemblyInfo.Version, Copyright = AssemblyInfo.Copyright,
+          Description = "Generates JSharp declaration syntax sections")]
         public sealed class Factory : ISyntaxGeneratorFactory
         {
             /// <inheritdoc />
-            public SyntaxGeneratorBase Create()
+            public SyntaxGeneratorCore Create()
             {
                 return new JSharpDeclarationSyntaxGenerator();
             }

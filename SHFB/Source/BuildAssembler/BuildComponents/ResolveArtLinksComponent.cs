@@ -8,6 +8,7 @@
 // the add targets method.  Updated it to only copy the image if not already there as it seems redundant to
 // copy it every time the same ID is encountered.  As with the SharedContentComponent, this one doesn't load
 // enough info to warrant trying to share the common data across all instances.
+// 12/24/2013 - EFW - Updated the build component to be discoverable via MEF
 
 using System;
 using System.Collections.Generic;
@@ -27,6 +28,23 @@ namespace Microsoft.Ddue.Tools
     /// </summary>
     public class ResolveArtLinksComponent : BuildComponentCore
     {
+        #region Build component factory for MEF
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to create a new instance of the build component
+        /// </summary>
+        [BuildComponentExport("Resolve Art Links Component")]
+        public sealed class Factory : BuildComponentFactory
+        {
+            /// <inheritdoc />
+            public override BuildComponentCore Create()
+            {
+                return new ResolveArtLinksComponent(base.BuildAssembler);
+            }
+        }
+        #endregion
+
         #region Private data members
         //=====================================================================
 
@@ -41,9 +59,20 @@ namespace Microsoft.Ddue.Tools
         #region Constructor
         //=====================================================================
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="buildAssembler">A reference to the build assembler</param>
+        protected ResolveArtLinksComponent(BuildAssemblerCore buildAssembler) : base(buildAssembler)
+        {
+        }
+        #endregion
+
+        #region Method overrides
+        //=====================================================================
+
         /// <inheritdoc />
-        public ResolveArtLinksComponent(BuildAssemblerCore assembler, XPathNavigator configuration) :
-          base(assembler, configuration)
+        public override void Initialize(XPathNavigator configuration)
         {
             XPathExpression artIdExpression = XPathExpression.Compile("string(@id)"),
                 artFileExpression = XPathExpression.Compile("string(image/@file)"),
@@ -132,10 +161,6 @@ namespace Microsoft.Ddue.Tools
 
             base.WriteMessage(MessageLevel.Info, "Indexed {0} art targets.", targets.Count);
         }
-        #endregion
-
-        #region Method overrides
-        //=====================================================================
 
         /// <inheritdoc />
         public override void Apply(XmlDocument document, string key)

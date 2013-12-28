@@ -17,13 +17,13 @@
 // 10/03/2013 - EFW - Applied patch from gfraiteur to remove the GUID topic ID requirement.  Bear in mind that
 // GUIDs are still preferred as they are guaranteed to be unique which is important for Help 2 and MS Help
 // Viewer content.  Duplicate IDs across multiple sets of content would cause linking issues in the collections.
+// 12/24/2013 - EFW - Updated the build component to be discoverable via MEF
 //===============================================================================================================
 
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.XPath;
 
@@ -67,15 +67,31 @@ namespace Microsoft.Ddue.Tools
     /// 
     /// <code lang="xml" title="Example configuration">
     /// &lt;!-- Resolve conceptual links --&gt;
-    /// &lt;component type="Microsoft.Ddue.Tools.ResolveConceptualLinksComponent"
-    ///   assembly="%SHFBROOT%\BuildComponents.dll"
-    ///   showBrokenLinkText="true"&gt;
+    /// &lt;component id="Resolve Conceptual Links Component">
+    ///     &lt;showBrokenLinkText value="true" /&gt;
     ///     &lt;targets base="xmlComp" type="local" /&gt;
     /// &lt;/component&gt;
     /// </code>
     /// </example>
     public class ResolveConceptualLinksComponent : BuildComponentCore
     {
+        #region Build component factory for MEF
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to create a new instance of the build component
+        /// </summary>
+        [BuildComponentExport("Resolve Conceptual Links Component")]
+        public sealed class Factory : BuildComponentFactory
+        {
+            /// <inheritdoc />
+            public override BuildComponentCore Create()
+            {
+                return new ResolveConceptualLinksComponent(base.BuildAssembler);
+            }
+        }
+        #endregion
+
         #region Private data members
         //=====================================================================
 
@@ -94,10 +110,17 @@ namespace Microsoft.Ddue.Tools
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="assembler">A reference to the build assembler</param>
-        /// <param name="configuration">The configuration information</param>
-        public ResolveConceptualLinksComponent(BuildAssemblerCore assembler, XPathNavigator configuration) :
-          base(assembler, configuration)
+        /// <param name="buildAssembler">A reference to the build assembler</param>
+        protected ResolveConceptualLinksComponent(BuildAssemblerCore buildAssembler) : base(buildAssembler)
+        {
+        }
+        #endregion
+
+        #region Method overrides
+        //=====================================================================
+
+        /// <inheritdoc />
+        public override void Initialize(XPathNavigator configuration)
         {
             TargetDirectory targetDirectory;
             XPathExpression urlExp, textExp, linkTextExp;
@@ -109,9 +132,9 @@ namespace Microsoft.Ddue.Tools
             // This is a simple cache.  If the cache size limit is reached, it clears the cache and starts over
             cache = new Dictionary<string, TargetInfo>(CacheSize);
 
-            attribute = configuration.GetAttribute("showBrokenLinkText", String.Empty);
+            attribute = (string)configuration.Evaluate("string(showBrokenLinkText/@value)");
 
-            if(!String.IsNullOrEmpty(attribute))
+            if(!String.IsNullOrWhiteSpace(attribute))
                 showBrokenLinkText = Convert.ToBoolean(attribute, CultureInfo.InvariantCulture);
 
             foreach(XPathNavigator navigator in configuration.Select("targets"))
@@ -165,10 +188,6 @@ namespace Microsoft.Ddue.Tools
 
             base.WriteMessage(MessageLevel.Info, "Collected {0} targets directories.", targetDirectories.Count);
         }
-        #endregion
-
-        #region Apply method
-        //=====================================================================
 
         /// <summary>
         /// This is implemented to resolve the conceptual links

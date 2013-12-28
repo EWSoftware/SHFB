@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ISyntaxGeneratorFactory.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/17/2013
+// Updated : 12/27/2013
 // Note    : Copyright 2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -31,16 +31,16 @@ namespace Sandcastle.Core.BuildAssembler.SyntaxGenerator
         string Id { get; }
 
         /// <summary>
-        /// This read-only property return the prefix for resource items used during XSL transformation such as
-        /// for label text.
+        /// This read-only property is used to get the value used as the XML element name and in resource item
+        /// IDs used during XSL transformation such as for label text.
         /// </summary>
-        string ResourceItemPrefix { get; }
+        string LanguageElementName { get; }
 
         /// <summary>
-        /// This read-only property is used to get the style name parameter used by the client side script in the
-        /// topics.
+        /// This read-only property is used to get the keyword style parameter value used by the client side
+        /// script in the topics for language specific keyword text.
         /// </summary>
-        string StyleNameParameter { get; }
+        string KeywordStyleParameter { get; }
 
         /// <summary>
         /// This read-only property returns true if the syntax generator is configurable or false if it is not
@@ -62,12 +62,6 @@ namespace Sandcastle.Core.BuildAssembler.SyntaxGenerator
         /// This read-only property returns the copyright information for the syntax generator
         /// </summary>
         string Copyright { get; }
-
-        /// <summary>
-        /// This read-only property returns additional copyright information for the syntax generator
-        /// </summary>
-        /// <value>This value is user-defined and is set on the syntax generator class itself</value>
-        string AdditionalCopyrightInfo { get; }
 
         /// <summary>
         /// This read-only property returns the value that defines the order in which the syntax generators are

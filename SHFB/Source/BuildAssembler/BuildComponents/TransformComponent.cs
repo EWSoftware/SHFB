@@ -6,6 +6,7 @@
 // Change History
 // 10/14/2012 - EFW - Added code to raise a component event to signal that the topic has been transformed.
 // The event uses the new TransformedTopicEventArgs as the event arguments.
+// 12/24/2013 - EFW - Updated the build component to be discoverable via MEF
 
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,23 @@ namespace Microsoft.Ddue.Tools
     /// </summary>
     public class TransformComponent : BuildComponentCore
     {
+        #region Build component factory for MEF
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to create a new instance of the build component
+        /// </summary>
+        [BuildComponentExport("XSL Transform Component")]
+        public sealed class Factory : BuildComponentFactory
+        {
+            /// <inheritdoc />
+            public override BuildComponentCore Create()
+            {
+                return new TransformComponent(base.BuildAssembler);
+            }
+        }
+        #endregion
+
         #region Private data members
         //=====================================================================
 
@@ -50,10 +68,17 @@ namespace Microsoft.Ddue.Tools
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="assembler">The build assembler instance that is using the component</param>
-        /// <param name="configuration">The component configuration</param>
-        public TransformComponent(BuildAssemblerCore assembler, XPathNavigator configuration) :
-          base(assembler, configuration)
+        /// <param name="buildAssembler">A reference to the build assembler</param>
+        protected TransformComponent(BuildAssemblerCore buildAssembler) : base(buildAssembler)
+        {
+        }
+        #endregion
+
+        #region Method overrides
+        //=====================================================================
+
+        /// <inheritdoc />
+        public override void Initialize(XPathNavigator configuration)
         {
             // load the transforms
             XPathNodeIterator transform_nodes = configuration.Select("transform");
@@ -117,13 +142,9 @@ namespace Microsoft.Ddue.Tools
                 }
             }
         }
-        #endregion
-
-        #region Method overrides
-        //=====================================================================
 
         /// <summary>
-        /// This is overriddent to apply the XSL transformations to the document
+        /// This is overridden to apply the XSL transformations to the document
         /// </summary>
         /// <param name="document">The document to transform</param>
         /// <param name="key">The topic key</param>
@@ -157,7 +178,7 @@ namespace Microsoft.Ddue.Tools
                     }
                     catch(XmlException e)
                     {
-                        base.WriteMessage(key, MessageLevel.Error, "An error ocurred while executing the " +
+                        base.WriteMessage(key, MessageLevel.Error, "An error occurred while executing the " +
                             "transform '{0}', on line {1}, at position {2}. The error message was: {3}",
                             e.SourceUri, e.LineNumber, e.LinePosition, (e.InnerException == null) ? e.Message :
                             e.InnerException.Message);
@@ -187,7 +208,7 @@ namespace Microsoft.Ddue.Tools
                     }
                     catch(XmlException e)
                     {
-                        base.WriteMessage(key, MessageLevel.Error, "An error ocurred while executing the " +
+                        base.WriteMessage(key, MessageLevel.Error, "An error occurred while executing the " +
                             "transform '{0}', on line {1}, at position {2}. The error message was: {3}",
                             e.SourceUri, e.LineNumber, e.LinePosition, (e.InnerException == null) ? e.Message :
                             e.InnerException.Message);

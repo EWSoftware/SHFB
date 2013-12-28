@@ -5,6 +5,7 @@
 
 // Change History
 // 12/21/2012 - EFW - Updated the warning message to include the document key
+// 12/24/2013 - EFW - Updated the build component to be discoverable via MEF
 
 using System;
 using System.Xml;
@@ -22,6 +23,23 @@ namespace Microsoft.Ddue.Tools
     /// </summary>
     public class ValidateComponent : BuildComponentCore
     {
+        #region Build component factory for MEF
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to create a new instance of the build component
+        /// </summary>
+        [BuildComponentExport("XML Schema Validation Component")]
+        public sealed class Factory : BuildComponentFactory
+        {
+            /// <inheritdoc />
+            public override BuildComponentCore Create()
+            {
+                return new ValidateComponent(base.BuildAssembler);
+            }
+        }
+        #endregion
+
         #region Private data members
         //=====================================================================
 
@@ -34,20 +52,23 @@ namespace Microsoft.Ddue.Tools
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="assembler">The build assembler reference</param>
-        /// <param name="configuration">The component configuration</param>
-        /// <remarks>The configuration should contain one or more <c>schema</c> elements with a <c>file</c>
-        /// attribute that specifies the XSD schema file to use.</remarks>
-        public ValidateComponent(BuildAssemblerCore assembler, XPathNavigator configuration) :
-          base(assembler, configuration)
+        /// <param name="buildAssembler">A reference to the build assembler</param>
+        protected ValidateComponent(BuildAssemblerCore buildAssembler) : base(buildAssembler)
         {
-            foreach(XPathNavigator schema_node in configuration.Select("schema"))
-                schemas.Add(null, schema_node.GetAttribute("file", String.Empty));
         }
         #endregion
 
         #region Method overrides
         //=====================================================================
+
+        /// <inheritdoc />
+        /// <remarks>The configuration should contain one or more <c>schema</c> elements with a <c>file</c>
+        /// attribute that specifies the XSD schema file to use.</remarks>
+        public override void Initialize(XPathNavigator configuration)
+        {
+            foreach(XPathNavigator schema_node in configuration.Select("schema"))
+                schemas.Add(null, schema_node.GetAttribute("file", String.Empty));
+        }
 
         /// <inheritdoc />
         public override void Apply(XmlDocument document, string key)

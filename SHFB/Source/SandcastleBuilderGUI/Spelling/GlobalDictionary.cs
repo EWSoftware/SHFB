@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : GlobalDictionary.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/21/2013
+// Updated : 12/28/2013
 // Note    : Copyright 2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -75,7 +75,7 @@ namespace SandcastleBuilder.Gui.Spelling
         }
         #endregion
 
-        #region ISpellingDictionary Members
+        #region Spelling dictionary members
         //=====================================================================
 
         /// <inheritdoc />
@@ -149,24 +149,6 @@ namespace SandcastleBuilder.Gui.Spelling
             {
                 return ignoredWords.Contains(word);
             }
-        }
-
-#pragma warning disable 0067
-
-        /// <inheritdoc />
-        /// <remarks>This event is not used by the global dictionary</remarks>
-        public event EventHandler<SpellingEventArgs> DictionaryUpdated;
-
-        /// <inheritdoc />
-        /// <remarks>This event is not used by the global dictionary</remarks>
-        public event EventHandler<SpellingEventArgs> ReplaceAll;
-
-#pragma warning restore 0067
-
-        /// <inheritdoc />
-        /// <remarks>This method is not used by the global dictionary</remarks>
-        public void ReplaceAllOccurrences(string word, string replacement)
-        {
         }
         #endregion
 

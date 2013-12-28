@@ -30,7 +30,7 @@
     <BuildLogFile>
     </BuildLogFile>
     <FrameworkVersion>.NET Framework 4.0</FrameworkVersion>
-    <IndentHtml>True</IndentHtml>
+    <IndentHtml>False</IndentHtml>
     <RootNamespaceContainer>True</RootNamespaceContainer>
     <RootNamespaceTitle>Test Root Namespace Title</RootNamespaceTitle>
     <CopyrightHref>http://www.EWoodruff.us</CopyrightHref>
@@ -43,7 +43,7 @@
     <HelpFileVersion>{%40Major}.{%40Minor}.{%40Build}.{%40Revision}</HelpFileVersion>
     <ComponentConfigurations>
       <ComponentConfig id="Code Block Component" enabled="True">
-        <component id="Code Block Component" type="SandcastleBuilder.Components.CodeBlockComponent" assembly="{@SHFBFolder}SandcastleBuilder.Components.dll">
+        <component id="Code Block Component">
           <basePath value="{@HtmlEncProjectFolder}" />
           <outputPaths>{@HelpFormatOutputPaths}</outputPaths>
           <allowMissingSource value="false" />
@@ -51,21 +51,19 @@
           <colorizer syntaxFile="{@SHFBFolder}Colorizer\highlight.xml" styleFile="{@SHFBFolder}Colorizer\highlight.xsl" stylesheet="{@SHFBFolder}Colorizer\highlight.css" scriptFile="{@SHFBFolder}Colorizer\highlight.js" language="cs" tabSize="0" numberLines="false" outlining="false" keepSeeTags="false" defaultTitle="true" />
         </component>
       </ComponentConfig>
-      <ComponentConfig id="IntelliSense Component" enabled="True">
-        <component id="IntelliSense Component" type="Microsoft.Ddue.Tools.IntelliSenseComponent" assembly="{@SHFBFolder}ProductionTools\BuildComponents.dll">
-          <!-- Output options (optional)
-					 Attributes:
-							Include Namespaces (false by default)
-							Namespaces filename ("Namespaces" if not specified or empty)
-							Directory (current folder if not specified or empty) -->
-          <output includeNamespaces="false" namespacesFile="NamespaceComments" folder="{@OutputFolder}" />
-        </component>
-      </ComponentConfig>
       <ComponentConfig id="API Token Resolution" enabled="True">
-        <component id="API Token Resolution" type="Microsoft.Ddue.Tools.SharedContentComponent" assembly="{@SHFBFolder}ProductionTools\BuildComponents.dll">
-
-        {@TokenFiles}
-        <replace elements="/*//token" item="string(.)" /></component>
+        <component id="API Token Resolution">{@TokenFiles}
+<replace elements="/*//token" item="string(.)" /></component>
+      </ComponentConfig>
+      <ComponentConfig id="IntelliSense Component" enabled="True">
+        <component id="IntelliSense Component">
+          <!-- Output options (optional)
+  Attributes:
+    Include namespaces (false by default)
+    Namespaces comments filename ("Namespaces" if not specified or empty)
+    Output folder (current folder if not specified or empty) -->
+          <output includeNamespaces="true" namespacesFile="Namespaces" folder="{@OutputFolder}" />
+        </component>
       </ComponentConfig>
     </ComponentConfigurations>
     <DocumentationSources>
@@ -123,7 +121,7 @@
       </PlugInConfig>
       <PlugInConfig id="DBCS Fix for CHM Builds" enabled="False">
         <configuration>
-          <sbAppLocale path="C:\UTILS\SBAppLocale.exe" />
+          <sbAppLocale path="C:\UTILS\SBAppLocale.exe!" />
         </configuration>
       </PlugInConfig>
       <PlugInConfig id="Hierarchical Table of Contents" enabled="False">

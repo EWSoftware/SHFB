@@ -5,6 +5,7 @@
 
 // Change History
 // 12/23/2012 - EFW - Added a dispose method to properly dispose of all components in each branch
+// 12/23/2013 - EFW - Updated the build component to be discoverable via MEF
 
 using System.Collections.Generic;
 using System.Xml;
@@ -21,6 +22,23 @@ namespace Microsoft.Ddue.Tools
     /// </summary>
     public class CloneComponent : BuildComponentCore
     {
+        #region Build component factory for MEF
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to create a new instance of the build component
+        /// </summary>
+        [BuildComponentExport("Clone Component")]
+        public sealed class Factory : BuildComponentFactory
+        {
+            /// <inheritdoc />
+            public override BuildComponentCore Create()
+            {
+                return new CloneComponent(base.BuildAssembler);
+            }
+        }
+        #endregion
+
         #region Private data members
         //=====================================================================
 
@@ -33,24 +51,27 @@ namespace Microsoft.Ddue.Tools
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="assembler">The build assembler reference</param>
-        /// <param name="configuration">The component configuration</param>
-        /// <remarks>Multiple <c>branch</c> elements are specified as the configuration.  Each <c>branch</c>
-        /// element can contain one or more <c>component</c> definitions that will be created and executed when
-        /// this component is applied.  Each branch receives a clone of the document.  This may be useful for
-        /// generating multiple help output formats in one build configuration.</remarks>
-        public CloneComponent(BuildAssemblerCore assembler, XPathNavigator configuration) :
-          base(assembler, configuration)
+        /// <param name="buildAssembler">A reference to the build assembler</param>
+        protected CloneComponent(BuildAssemblerCore buildAssembler) : base(buildAssembler)
         {
-            XPathNodeIterator branchNodes = configuration.Select("branch");
-
-            foreach(XPathNavigator branchNode in branchNodes)
-                branches.Add(BuildAssembler.LoadComponents(branchNode));
         }
         #endregion
 
         #region Method overrides
         //=====================================================================
+
+        /// <inheritdoc />
+        /// <remarks>Multiple <c>branch</c> elements are specified as the configuration.  Each <c>branch</c>
+        /// element can contain one or more <c>component</c> definitions that will be created and executed when
+        /// this component is applied.  Each branch receives a clone of the document.  This may be useful for
+        /// generating multiple help output formats in one build configuration.</remarks>
+        public override void Initialize(XPathNavigator configuration)
+        {
+            XPathNodeIterator branchNodes = configuration.Select("branch");
+
+            foreach(XPathNavigator branchNode in branchNodes)
+                branches.Add(this.BuildAssembler.LoadComponents(branchNode));
+        }
 
         /// <inheritdoc />
         public override void Apply(XmlDocument document, string key)

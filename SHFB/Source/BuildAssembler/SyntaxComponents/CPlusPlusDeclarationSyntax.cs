@@ -32,11 +32,12 @@ namespace Microsoft.Ddue.Tools
         /// This is used to create a new instance of the syntax generator
         /// </summary>
         [SyntaxGeneratorExport("CPlusPlus", "ManagedCPlusPlus", "cpp", AlternateIds = "cpp, cpp#, c++",
-          SortOrder = 40, Description = "Generates C++ declaration syntax sections")]
+          SortOrder = 40, Version = AssemblyInfo.Version, Copyright = AssemblyInfo.Copyright,
+          Description = "Generates C++ declaration syntax sections")]
         public sealed class Factory : ISyntaxGeneratorFactory
         {
             /// <inheritdoc />
-            public SyntaxGeneratorBase Create()
+            public SyntaxGeneratorCore Create()
             {
                 return new CPlusPlusDeclarationSyntaxGenerator();
             }

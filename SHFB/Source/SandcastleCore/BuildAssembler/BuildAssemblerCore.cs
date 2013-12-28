@@ -15,12 +15,16 @@
 // code without contention for the console.
 // 03/01/2013 - EFW - Added a warning count
 // 12/21/2013 - EFW - Moved class to Sandcastle.Core assembly
+// 12/26/2013 - EFW - Updated to load build components via MEF
 
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
+using System.ComponentModel.Composition.Hosting;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
@@ -34,6 +38,7 @@ namespace Sandcastle.Core.BuildAssembler
     /// <summary>
     /// This class contains the build context and the build components
     /// </summary>
+    [Export(typeof(BuildAssemblerCore))]
     public class BuildAssemblerCore : IDisposable
     {
         #region Private data members
@@ -44,6 +49,9 @@ namespace Sandcastle.Core.BuildAssembler
         private List<BuildComponentCore> components = new List<BuildComponentCore>();
 
         private BlockingCollection<string> messageLog = new BlockingCollection<string>();
+
+        private CompositionContainer componentContainer;
+        private List<Lazy<BuildComponentFactory, IBuildComponentMetadata>> allBuildComponents;
 
         private MessageLevel verbosityLevel;
         private Action<string> messageLogger;
@@ -97,6 +105,13 @@ namespace Sandcastle.Core.BuildAssembler
         //=====================================================================
 
         /// <summary>
+        /// Private default constructor to satisfy MEF composition
+        /// </summary>
+        private BuildAssemblerCore()
+        {
+        }
+
+        /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="messageLogger">The message logger action</param>
@@ -132,6 +147,9 @@ namespace Sandcastle.Core.BuildAssembler
 
                 if(messageLog != null)
                     messageLog.Dispose();
+
+                if(componentContainer != null)
+                    componentContainer.Dispose();
             }
         }
         #endregion
@@ -194,6 +212,10 @@ namespace Sandcastle.Core.BuildAssembler
 
                     if(contextNode != null)
                         this.Context.Load(contextNode);
+
+                    // Find all available build components
+                    this.CreateComponentContainer(configNav.SelectSingleNode(
+                        "/configuration/dduetools/builder/componentLocations"));
 
                     // Load the build components
                     XPathNavigator componentsNode = configNav.SelectSingleNode(
@@ -292,106 +314,6 @@ namespace Sandcastle.Core.BuildAssembler
 
             return count;
         }
-
-        /// <summary>
-        /// This is used to create a component based on the given configuration
-        /// </summary>
-        /// <param name="configuration">The component configuration</param>
-        /// <returns>A component created using the given definition</returns>
-        /// <exception cref="ArgumentNullException">This is thrown if <paramref name="configuration"/> is null</exception>
-        public BuildComponentCore LoadComponent(XPathNavigator configuration)
-        {
-            if(configuration == null)
-                throw new ArgumentNullException("configuration");
-
-            // Get the component information
-            string assemblyName = configuration.GetAttribute("assembly", String.Empty);
-
-            if(String.IsNullOrEmpty(assemblyName))
-                this.WriteMessage(MessageLevel.Error, "Each component element must have an assembly attribute " +
-                    "that specifies a path to the component assembly.");
-
-            string typeName = configuration.GetAttribute("type", String.Empty);
-
-            if(String.IsNullOrEmpty(typeName))
-                this.WriteMessage(MessageLevel.Error, "Each component element must have a type attribute that " +
-                    "specifies the fully qualified name of a component type.");
-
-            // Expand environment variables in path of assembly name
-            assemblyName = Environment.ExpandEnvironmentVariables(assemblyName);
-
-            // TODO: Temporary hack.  Remove references to ProductionTools\ in the path
-            if(assemblyName.IndexOf("ProductionTools\\", StringComparison.OrdinalIgnoreCase) != -1)
-                assemblyName = assemblyName.Replace("ProductionTools\\", "\\");
-
-            // Load and instantiate the component
-            BuildComponentCore component = null;
-
-            try
-            {
-                Assembly assembly = Assembly.LoadFrom(assemblyName);
-                component = (BuildComponentCore)assembly.CreateInstance(typeName, false, BindingFlags.Public |
-                    BindingFlags.Instance, null, new object[2] { this, configuration }, null, null);
-            }
-            catch(IOException e)
-            {
-                this.WriteMessage(MessageLevel.Error, "A file access error occurred while attempting to load " +
-                    "the build component assembly '{0}'. The error message is: {1}", assemblyName, e.Message);
-            }
-            catch(BadImageFormatException e)
-            {
-                this.WriteMessage(MessageLevel.Error, "The build component assembly '{0}' is not a valid " +
-                    "managed assembly. The error message is: {1}", assemblyName, e.Message);
-            }
-            catch(TypeLoadException)
-            {
-                this.WriteMessage(MessageLevel.Error, "The build component '{0}' was not found in the " +
-                    "assembly '{1}'.", typeName, assemblyName);
-            }
-            catch(MissingMethodException e)
-            {
-                this.WriteMessage(MessageLevel.Error, "No appropriate constructor exists for the build " +
-                    "component '{0}' in the component assembly '{1}'. The error message is: {1}", typeName,
-                    assemblyName, e.Message);
-            }
-            catch(TargetInvocationException e)
-            {
-                // Ignore OperationCanceledException as it is the result of logging an error message
-                if(e.InnerException is OperationCanceledException)
-                    throw e.InnerException;
-
-                this.WriteMessage(MessageLevel.Error, "An error occurred while initializing the build component " +
-                    "'{0}' in the component assembly '{1}'. The error message and stack trace follows: {2}",
-                    typeName, assemblyName, e.InnerException.ToString());
-            }
-            catch(InvalidCastException)
-            {
-                this.WriteMessage(MessageLevel.Error, "The type '{0}' in the component assembly '{1}' is not a " +
-                    "build component.", typeName, assemblyName);
-            }
-
-            if(component == null)
-                this.WriteMessage(MessageLevel.Error, "The type '{0}' was not found in the component " +
-                    "assembly '{1}'.", typeName, assemblyName);
-
-            return component;
-        }
-
-        /// <summary>
-        /// This is used to load a set of components in a configuration and return them as an enumerable list
-        /// </summary>
-        /// <param name="configuration">The con</param>
-        /// <returns>An enumerable list of components created based on the configuration information</returns>
-        public IEnumerable<BuildComponentCore> LoadComponents(XPathNavigator configuration)
-        {
-            XPathNodeIterator componentNodes = configuration.Select("component");
-            List<BuildComponentCore> components = new List<BuildComponentCore>();
-
-            foreach(XPathNavigator componentNode in componentNodes)
-                components.Add(this.LoadComponent(componentNode));
-
-            return components;
-        }
         #endregion
 
         #region Methods used to add and remove components
@@ -415,6 +337,121 @@ namespace Sandcastle.Core.BuildAssembler
                 component.Dispose();
 
             components.Clear();
+        }
+
+        /// <summary>
+        /// This is used to load a set of components in a configuration and return them as an enumerable list
+        /// </summary>
+        /// <param name="configuration">The con</param>
+        /// <returns>An enumerable list of components created based on the configuration information</returns>
+        public IEnumerable<BuildComponentCore> LoadComponents(XPathNavigator configuration)
+        {
+            XPathNodeIterator componentNodes = configuration.Select("component");
+            List<BuildComponentCore> components = new List<BuildComponentCore>();
+
+            foreach(XPathNavigator componentNode in componentNodes)
+                components.Add(this.LoadComponent(componentNode));
+
+            return components;
+        }
+
+        /// <summary>
+        /// This is used to create a component based on the given configuration
+        /// </summary>
+        /// <param name="configuration">The component configuration</param>
+        /// <returns>A component created using the given definition</returns>
+        /// <exception cref="ArgumentNullException">This is thrown if <paramref name="configuration"/> is null</exception>
+        public BuildComponentCore LoadComponent(XPathNavigator configuration)
+        {
+            if(configuration == null)
+                throw new ArgumentNullException("configuration");
+
+            // Get the component ID
+            string id = configuration.GetAttribute("id", String.Empty);
+
+            if(String.IsNullOrWhiteSpace(id))
+                this.WriteMessage(MessageLevel.Error, "Each component element must have an id attribute " +
+                    "that specifies the component's unique ID.");
+
+            // Load and instantiate the component
+            BuildComponentCore component = null;
+
+            try
+            {
+                var factory = allBuildComponents.FirstOrDefault(f => f.Metadata.Id == id);
+
+                if(factory == null)
+                    this.WriteMessage(MessageLevel.Error, "The component '{0}' was not found in any of the " +
+                        "component assemblies", id);
+
+                component = factory.Value.Create();
+                component.Initialize(configuration);
+            }
+            catch(Exception e)
+            {
+                this.WriteMessage(MessageLevel.Error, "An unexpected error occurred while attempting to create " +
+                    "the build component '{0}'. The error message is: {1}", id, e.Message);
+            }
+
+            return component;
+        }
+
+        /// <summary>
+        /// This is used to create a composition container filled with the available build components
+        /// </summary>
+        /// <param name="componentLocations">The component locations configuration node</param>
+        /// <remarks>If any component locations are specified, they are searched recursively for component
+        /// assemblies in the order given.  The tools folder is added last if not already specified as one of
+        /// the component locations.  There may be duplicate component IDs across the assemblies found.  Only
+        /// the first component for a unique ID will be used.  As such, assemblies in a folder that appears
+        /// earlier in the list can override copies in folders lower in the list.</remarks>
+        private void CreateComponentContainer(XPathNavigator componentLocations)
+        {
+            if(componentContainer != null)
+            {
+                componentContainer.Dispose();
+                componentContainer = null;
+                allBuildComponents = null;
+            }
+
+            // Create an aggregate catalog that combines directory catalogs for all of the possible component
+            // locations.
+            var catalog = new AggregateCatalog();
+
+            if(componentLocations != null)
+                foreach(XPathNavigator location in componentLocations.Select("location/@folder"))
+                    if(!String.IsNullOrWhiteSpace(location.Value) && Directory.Exists(location.Value))
+                        AddDirectoryCatalogs(catalog, location.Value);
+
+            string toolsFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+
+            // Always include the tools folder
+            if(!catalog.Catalogs.OfType<DirectoryCatalog>().Any(c => c.FullPath == toolsFolder))
+                AddDirectoryCatalogs(catalog, toolsFolder);
+
+            componentContainer = new CompositionContainer(catalog);
+
+            // The caller should have exported a property that returns this instance
+            componentContainer.ComposeParts(this);
+
+            allBuildComponents = componentContainer.GetExports<BuildComponentFactory, IBuildComponentMetadata>().ToList();
+        }
+
+        /// <summary>
+        /// This adds a directory catalog to the given aggregate catalog for the given folder and all of its
+        /// subfolders recursively.
+        /// </summary>
+        /// <param name="catalog">The aggregate catalog to which the directory catalogs are added</param>
+        /// <param name="folder">The root folder to search.  It and all subfolders recursively will be added
+        /// to the aggregate catalog if they contain assemblies.</param>
+        private static void AddDirectoryCatalogs(AggregateCatalog catalog, string folder)
+        {
+            if(Directory.EnumerateFiles(folder, "*.dll").Any())
+                catalog.Catalogs.Add(new DirectoryCatalog(folder));
+
+            foreach(string subfolder in Directory.EnumerateDirectories(folder, "*", SearchOption.AllDirectories))
+                if(Directory.EnumerateFiles(subfolder, "*.dll").Any())
+                    catalog.Catalogs.Add(new DirectoryCatalog(subfolder));
         }
         #endregion
 

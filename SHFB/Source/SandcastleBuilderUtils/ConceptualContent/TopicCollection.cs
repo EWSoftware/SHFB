@@ -34,6 +34,7 @@ using System.Xml;
 
 using Microsoft.Build.Evaluation;
 
+using SandcastleBuilder.Utils.BuildComponent;
 using SandcastleBuilder.Utils.BuildEngine;
 
 namespace SandcastleBuilder.Utils.ConceptualContent
@@ -501,7 +502,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                     var rn = builder.ReferencedNamespaces;
 
                     foreach(string ns in t.TopicFile.GetReferencedNamespaces(Path.Combine(
-                      builder.HelpFileBuilderFolder, @"Data\Reflection")))
+                      BuildComponentManager.HelpFileBuilderFolder, @"Data\Reflection")))
                         rn.Add(ns);
                 }
                 else

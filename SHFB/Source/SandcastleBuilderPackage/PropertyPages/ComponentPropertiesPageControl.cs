@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : ComponentPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 12/16/2013
+// Updated : 12/27/2013
 // Note    : Copyright 2011-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -17,25 +17,30 @@
 // ==============================================================================================================
 // 1.9.3.0  03/27/2011  EFW  Created the code
 // 1.9.6.0  10/28/2012  EFW  Updated for use in the standalone GUI
+// -------  12/26/2013  EFW  Updated to use MEF for the build components
 //===============================================================================================================
 
 using System;
+using System.Collections.Generic;
+using System.ComponentModel.Composition.Hosting;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+
+using Sandcastle.Core.BuildAssembler.BuildComponent;
 
 using Microsoft.Build.Evaluation;
 
 #if !STANDALONEGUI
 using SandcastleBuilder.Package.Nodes;
 using SandcastleBuilder.Package.Properties;
+
+using SandcastleBuilder.Utils;
 #endif
 
 using SandcastleBuilder.Utils.BuildComponent;
-using SandcastleBuilder.Utils.Design;
 
 namespace SandcastleBuilder.Package.PropertyPages
 {
@@ -48,8 +53,10 @@ namespace SandcastleBuilder.Package.PropertyPages
         #region Private data members
         //=====================================================================
 
+        private CompositionContainer componentContainer;
+        private List<Lazy<BuildComponentFactory, IBuildComponentMetadata>> availableComponents;
         private ComponentConfigurationDictionary currentConfigs;
-        private string messageBoxTitle;
+        private string messageBoxTitle, lastProjectName;
         #endregion
 
         #region Constructor
@@ -76,41 +83,70 @@ namespace SandcastleBuilder.Package.PropertyPages
         //=====================================================================
 
         /// <summary>
-        /// This is handled to resolve dependent assemblies and load them when necessary
+        /// Try to load information about all available build components so that they can be added to the project
         /// </summary>
-        /// <param name="sender">The sender of the event</param>
-        /// <param name="args">The event arguments</param>
-        /// <returns>The loaded assembly</returns>
-        private Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
+        /// <returns>True on success, false on failure or if no project is loaded</returns>
+        private void LoadAvailableBuildComponentMetadata()
         {
-            Assembly asm = null;
+            HashSet<string> componentIds = new HashSet<string>();
 
-            string[] nameInfo = args.Name.Split(new char[] { ',' });
-            string resolveName = nameInfo[0];
+            try
+            {
+                Cursor.Current = Cursors.WaitCursor;
 
-            // See if it has already been loaded
-            foreach(Assembly a in AppDomain.CurrentDomain.GetAssemblies())
-                if(args.Name == a.FullName)
+                if(componentContainer != null)
                 {
-                    asm = a;
-                    break;
+                    componentContainer.Dispose();
+                    componentContainer = null;
+                    availableComponents = null;
                 }
 
-            // Is it a Sandcastle component?
-            if(asm == null)
-            {
-                resolveName = Directory.EnumerateFiles(BuildComponentManager.HelpFileBuilderFolder, "*.dll",
-                    SearchOption.AllDirectories).FirstOrDefault(
-                    f => resolveName == Path.GetFileNameWithoutExtension(f));
+#if !STANDALONEGUI
+                SandcastleProject currentProject = ((SandcastleBuilderProjectNode)base.ProjectMgr).SandcastleProject;
 
-                if(resolveName != null)
-                    asm = Assembly.LoadFile(resolveName);
+                lastProjectName = currentProject == null ? null : currentProject.Filename;
+                componentContainer = BuildComponentManager.GetComponentContainer(currentProject);
+#else
+                lastProjectName = base.CurrentProject == null ? null : base.CurrentProject.Filename;
+                componentContainer = BuildComponentManager.GetComponentContainer(base.CurrentProject);
+#endif
+                lbProjectComponents.Items.Clear();
+
+                availableComponents = componentContainer.GetExports<BuildComponentFactory, IBuildComponentMetadata>().ToList();
+
+                // Only load those that indicate that they are visible to the designer.  There may be duplicate
+                // component IDs across the assemblies found.  See BuildComponentManger.GetComponentContainer()
+                // for the folder search precedence.  Only the first component for a unique ID will be used.
+                foreach(var component in availableComponents)
+                    if(!componentIds.Contains(component.Metadata.Id) && component.Metadata.DesignerVisible)
+                    {
+                        lbAvailableComponents.Items.Add(component.Metadata.Id);
+                        componentIds.Add(component.Metadata.Id);
+                    }
+            }
+            catch(Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.ToString());
+
+                MessageBox.Show("Unexpected error loading build components: " + ex.Message, messageBoxTitle,
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                Cursor.Current = Cursors.Default;
             }
 
-            if(asm == null)
-                throw new FileLoadException("Unable to resolve reference to " + args.Name);
-
-            return asm;
+            if(lbAvailableComponents.Items.Count != 0)
+            {
+                lbAvailableComponents.SelectedIndex = 0;
+                gbAvailableComponents.Enabled = gbProjectAddIns.Enabled = true;
+            }
+            else
+            {
+                MessageBox.Show("No valid build components found", messageBoxTitle, MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+                gbAvailableComponents.Enabled = gbProjectAddIns.Enabled = false;
+            }
         }
         #endregion
 
@@ -123,47 +159,33 @@ namespace SandcastleBuilder.Package.PropertyPages
             ProjectProperty projProp;
             int idx;
 
-            if(lbAvailableComponents.Items.Count == 0)
-            {
-                try
-                {
-                    // Show all but the hidden components
-                    lbAvailableComponents.Items.AddRange(BuildComponentManager.BuildComponents.Values.Where(
-                        bc => !bc.IsHidden).Select(bc => bc.Id).ToArray());
-                }
-                catch(Exception ex)
-                {
-                    System.Diagnostics.Debug.WriteLine(ex.ToString());
-
-                    MessageBox.Show("Unexpected error loading build components: " + ex.Message,
-                        messageBoxTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-
-                if(lbAvailableComponents.Items.Count != 0)
-                    lbAvailableComponents.SelectedIndex = 0;
-                else
-                {
-                    MessageBox.Show("No valid build components found", messageBoxTitle, MessageBoxButtons.OK,
-                        MessageBoxIcon.Information);
-                    gbAvailableComponents.Enabled = gbProjectAddIns.Enabled = false;
-                }
-            }
-
             lbProjectComponents.Items.Clear();
+            btnConfigure.Enabled = btnDelete.Enabled = false;
 
 #if !STANDALONEGUI
-            if(this.ProjectMgr == null)
+            SandcastleProject currentProject = null;
+
+            if(base.ProjectMgr != null)
+                currentProject = ((SandcastleBuilderProjectNode)base.ProjectMgr).SandcastleProject;
+
+            if(componentContainer == null || currentProject == null || currentProject.Filename != lastProjectName)
+                this.LoadAvailableBuildComponentMetadata();
+
+            if(this.ProjectMgr == null || currentProject == null)
                 return false;
 
-            currentConfigs = new ComponentConfigurationDictionary(
-                ((SandcastleBuilderProjectNode)base.ProjectMgr).SandcastleProject);
+            currentConfigs = new ComponentConfigurationDictionary(currentProject);
             projProp = this.ProjectMgr.BuildProject.GetProperty("ComponentConfigurations");
 #else
-            if(this.CurrentProject == null)
+            if(componentContainer == null || base.CurrentProject == null ||
+              base.CurrentProject.Filename != lastProjectName)
+                this.LoadAvailableBuildComponentMetadata();
+
+            if(base.CurrentProject == null)
                 return false;
 
-            currentConfigs = new ComponentConfigurationDictionary(this.CurrentProject);
-            projProp = this.CurrentProject.MSBuildProject.GetProperty("ComponentConfigurations");
+            currentConfigs = new ComponentConfigurationDictionary(base.CurrentProject);
+            projProp = base.CurrentProject.MSBuildProject.GetProperty("ComponentConfigurations");
 #endif
             if(projProp != null && !String.IsNullOrEmpty(projProp.UnevaluatedValue))
                 currentConfigs.FromXml(projProp.UnevaluatedValue);
@@ -175,9 +197,10 @@ namespace SandcastleBuilder.Package.PropertyPages
             }
 
             if(lbProjectComponents.Items.Count != 0)
+            {
                 lbProjectComponents.SelectedIndex = 0;
-            else
-                btnConfigure.Enabled = btnDelete.Enabled = false;
+                btnConfigure.Enabled = btnDelete.Enabled = true;
+            }
 
             return true;
         }
@@ -191,10 +214,10 @@ namespace SandcastleBuilder.Package.PropertyPages
 
             this.ProjectMgr.SetProjectProperty("ComponentConfigurations", currentConfigs.ToXml());
 #else
-            if(this.CurrentProject == null)
+            if(base.CurrentProject == null)
                 return false;
 
-            this.CurrentProject.MSBuildProject.SetProperty("ComponentConfigurations", currentConfigs.ToXml());
+            base.CurrentProject.MSBuildProject.SetProperty("ComponentConfigurations", currentConfigs.ToXml());
 #endif
             return true;
         }
@@ -212,10 +235,20 @@ namespace SandcastleBuilder.Package.PropertyPages
         {
             string key = (string)lbAvailableComponents.SelectedItem;
 
-            BuildComponentInfo info = BuildComponentManager.BuildComponents[key];
-            txtComponentCopyright.Text = info.Copyright;
-            txtComponentVersion.Text = String.Format(CultureInfo.CurrentCulture, "Version {0}", info.Version);
-            txtComponentDescription.Text = info.Description;
+            txtComponentCopyright.Text = txtComponentVersion.Text = txtComponentDescription.Text = "?? Not Found ??";
+
+            if(availableComponents != null)
+            {
+                var component = availableComponents.FirstOrDefault(p => p.Metadata.Id == key);
+
+                if(component != null)
+                {
+                    txtComponentCopyright.Text = component.Metadata.Copyright;
+                    txtComponentVersion.Text = String.Format(CultureInfo.CurrentCulture, "Version {0}",
+                        component.Metadata.Version ?? "0.0.0.0");
+                    txtComponentDescription.Text = component.Metadata.Description;
+                }
+            }
         }
 
         /// <summary>
@@ -245,24 +278,45 @@ namespace SandcastleBuilder.Package.PropertyPages
             string key = (string)lbAvailableComponents.SelectedItem;
             int idx = lbProjectComponents.FindStringExact(key);
 
-            // Currently, no duplicates are allowed
-            if(idx != -1)
-                lbProjectComponents.SelectedIndex = idx;
-            else
+            if(availableComponents != null)
             {
-                idx = lbProjectComponents.Items.Add(key);
-
+                // Currently, no duplicates are allowed
                 if(idx != -1)
-                {
-                    currentConfigs.Add(key, true, BuildComponentManager.BuildComponents[key].DefaultConfiguration);
                     lbProjectComponents.SelectedIndex = idx;
-                    lbProjectComponents.SetItemChecked(idx, true);
-                    btnConfigure.Enabled = btnDelete.Enabled = true;
+                else
+                {
+                    var component = availableComponents.FirstOrDefault(p => p.Metadata.Id == key);
 
-                    this.IsDirty = true;
+                    if(component != null)
+                    {
+                        idx = lbProjectComponents.Items.Add(key);
 
-                    // Open the configuration dialog to configure it when first added if needed
-                    btnConfigure_Click(sender, e);
+                        if(idx != -1)
+                        {
+                            try
+                            {
+                                currentConfigs.Add(key, true, String.Format(CultureInfo.InvariantCulture,
+                                    "<component id=\"{0}\">{1}</component>", key, component.Value.DefaultConfiguration));
+                            }
+                            catch(Exception ex)
+                            {
+                                System.Diagnostics.Debug.WriteLine(ex.ToString());
+
+                                MessageBox.Show("Unexpected error attempting to add component: " + ex.Message,
+                                    messageBoxTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                return;
+                            }
+
+                            lbProjectComponents.SelectedIndex = idx;
+                            lbProjectComponents.SetItemChecked(idx, true);
+                            btnConfigure.Enabled = btnDelete.Enabled = true;
+
+                            this.IsDirty = true;
+
+                            // Open the configuration dialog to configure it when first added if needed
+                            btnConfigure_Click(sender, e);
+                        }
+                    }
                 }
             }
         }
@@ -275,98 +329,48 @@ namespace SandcastleBuilder.Package.PropertyPages
         private void btnConfigure_Click(object sender, EventArgs e)
         {
             BuildComponentConfiguration componentConfig;
-            string newConfig, currentConfig, assembly, key = (string)lbProjectComponents.SelectedItem;
+            string newConfig, currentConfig, key = (string)lbProjectComponents.SelectedItem;
 
-            BuildComponentInfo info = BuildComponentManager.BuildComponents[key];
-
-            componentConfig = currentConfigs[key];
-            currentConfig = componentConfig.Configuration;
-
-            // If it doesn't have a configuration method, use the default configuration editor
-            if(String.IsNullOrEmpty(info.ConfigureMethod))
+            if(availableComponents != null)
             {
-                using(ConfigurationEditorDlg dlg = new ConfigurationEditorDlg())
+                var component = availableComponents.FirstOrDefault(p => p.Metadata.Id == key);
+
+                if(component != null)
                 {
-                    dlg.Configuration = currentConfig;
-
-                    if(dlg.ShowDialog() == DialogResult.OK)
+                    if(!component.Metadata.IsConfigurable)
                     {
-                        // Only store it if new or if it changed
-                        newConfig = dlg.Configuration;
+                        if(sender == btnConfigure)
+                            MessageBox.Show("The selected build component contains no editable configuration information",
+                                messageBoxTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        return;
+                    }
 
+                    componentConfig = currentConfigs[key];
+                    currentConfig = componentConfig.Configuration;
+
+                    try
+                    {
+                        newConfig = component.Value.ConfigureComponent(currentConfig);
+
+                        // Only store it if new or if it changed
                         if(currentConfig != newConfig)
                         {
                             componentConfig.Configuration = newConfig;
                             this.IsDirty = true;
                         }
                     }
-                }
-
-                return;
-            }
-
-            // Don't allow editing if set to "-"
-            if(info.ConfigureMethod == "-")
-            {
-                if(sender == btnConfigure)
-                    MessageBox.Show("The selected component contains no editable configuration information",
-                        messageBoxTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
-
-            try
-            {
-                // Change into the component's folder so that it has a better chance of finding all of its
-                // dependencies.
-                assembly = BuildComponentManager.ResolveComponentPath(info.AssemblyPath);
-                Directory.SetCurrentDirectory(Path.GetDirectoryName(Path.GetFullPath(assembly)));
-
-                // The exception is BuildAssemblerLibrary.dll which is in the Sandcastle installation folder.
-                // We'll have to resolve that one manually.
-                AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
-
-                // Load the type and get a reference to the static configuration method
-                Assembly asm = Assembly.LoadFrom(assembly);
-                Type component = asm.GetType(info.TypeName);
-                MethodInfo mi = null;
-
-                if(component != null)
-                    mi = component.GetMethod(info.ConfigureMethod, BindingFlags.Public | BindingFlags.Static);
-
-                if(component != null && mi != null)
-                {
-                    // Invoke the method to let it configure the settings
-                    newConfig = (string)mi.Invoke(null, new object[] { currentConfig });
-
-                    // Only store it if new or if it changed
-                    if(currentConfig != newConfig)
+                    catch(Exception ex)
                     {
-                        componentConfig.Configuration = newConfig;
-                        this.IsDirty = true;
+                        System.Diagnostics.Debug.WriteLine(ex.ToString());
+
+                        MessageBox.Show("Unexpected error attempting to configure component: " + ex.Message,
+                            messageBoxTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
                 else
-                    MessageBox.Show(String.Format(CultureInfo.InvariantCulture, "Unable to locate the '{0}' " +
-                        "method in component '{1}' in assembly {2}", info.ConfigureMethod, info.TypeName,
-                        assembly), messageBoxTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            catch(IOException ioEx)
-            {
-                System.Diagnostics.Debug.WriteLine(ioEx.ToString());
-                MessageBox.Show(String.Format(CultureInfo.InvariantCulture, "A file access error occurred " +
-                    "trying to configure the component '{0}'.  Error: {1}", info.TypeName, ioEx.Message),
-                    messageBoxTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            catch(Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine(ex.ToString());
-                MessageBox.Show(String.Format(CultureInfo.InvariantCulture, "An error occurred trying to " +
-                    "configure the component '{0}'.  Error: {1}", info.TypeName, ex.Message),
-                    messageBoxTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            finally
-            {
-                AppDomain.CurrentDomain.AssemblyResolve -= new ResolveEventHandler(CurrentDomain_AssemblyResolve);
+                    MessageBox.Show("The selected build component could not be found in any of the component " +
+                        "or project folders and cannot be used.", messageBoxTitle, MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
             }
         }
 

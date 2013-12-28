@@ -75,6 +75,7 @@ using System.Web;
 using System.Xml;
 using System.Xml.XPath;
 
+using Sandcastle.Core.BuildAssembler.BuildComponent;
 using Sandcastle.Core.BuildAssembler.SyntaxGenerator;
 
 using SandcastleBuilder.Utils.BuildComponent;
@@ -101,6 +102,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         // The composition container for build components and the syntax generator list
         private CompositionContainer componentContainer;
         private List<ISyntaxGeneratorMetadata> syntaxGenerators;
+        private Dictionary<string, BuildComponentFactory> buildComponents;
 
         // Framework, assembly, and reference information
         private FrameworkSettings frameworkSettings;
@@ -169,14 +171,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
         public string MSBuildExePath
         {
             get { return msBuildExePath; }
-        }
-
-        /// <summary>
-        /// This returns the location of the help file builder executables
-        /// </summary>
-        public string HelpFileBuilderFolder
-        {
-            get { return BuildComponentManager.HelpFileBuilderFolder; }
         }
 
         /// <summary>
@@ -548,7 +542,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         {
             Project msBuildProject = null;
             ProjectItem projectItem;
-            Version v;
+            Version version;
             string resolvedPath, helpFile, languageFile, scriptFile, hintPath, message = null;
             SandcastleProject originalProject = null;
             int waitCount;
@@ -695,6 +689,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 syntaxGenerators = componentContainer.GetExports<ISyntaxGeneratorFactory,
                     ISyntaxGeneratorMetadata>().Select(sf => sf.Metadata).ToList();
+                buildComponents = componentContainer.GetExports<BuildComponentFactory,
+                    IBuildComponentMetadata>().ToDictionary(key => key.Metadata.Id, value => value.Value);
 
                 // Load the plug-ins
                 if(project.PlugInConfigurations.Count != 0)
@@ -778,11 +774,11 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 try
                 {
                     if(project.HelpFileVersion.IndexOf('{') == -1)
-                        v = new Version(project.HelpFileVersion);
+                        version = new Version(project.HelpFileVersion);
                     else
-                        v = new Version(this.TransformText(project.HelpFileVersion));
+                        version = new Version(this.TransformText(project.HelpFileVersion));
 
-                    if(v.Build == -1 || v.Revision == -1)
+                    if(version.Build == -1 || version.Revision == -1)
                         throw new FormatException("The version number must specify all four parts.  " +
                             "Specify zero for unused parts.");
                 }

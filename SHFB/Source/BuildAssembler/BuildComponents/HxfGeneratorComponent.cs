@@ -11,6 +11,7 @@
 // multiple HxF files concurrently.  This seems like an odd feature considering that there's typically only
 // one Help 2 output file set but since the original component made an attempt to support it, I've kept the
 // ability to do so.
+// 12/23/2013 - EFW - Updated the build component to be discoverable via MEF
 
 using System;
 using System.Collections.Generic;
@@ -31,6 +32,23 @@ namespace Microsoft.Ddue.Tools
     /// type of <see cref="FileCreatedEventArgs"/> to save file information to the HxF file.</remarks>
     public class HxfGeneratorComponent : BuildComponentCore
     {
+        #region Build component factory for MEF
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to create a new instance of the build component
+        /// </summary>
+        [BuildComponentExport("HxF File Generator Component")]
+        public sealed class Factory : BuildComponentFactory
+        {
+            /// <inheritdoc />
+            public override BuildComponentCore Create()
+            {
+                return new HxfGeneratorComponent(base.BuildAssembler);
+            }
+        }
+        #endregion
+
         #region Private data members
         //=====================================================================
 
@@ -45,9 +63,20 @@ namespace Microsoft.Ddue.Tools
         #region Constructor
         //=====================================================================
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="buildAssembler">A reference to the build assembler</param>
+        protected HxfGeneratorComponent(BuildAssemblerCore buildAssembler) : base(buildAssembler)
+        {
+        }
+        #endregion
+
+        #region Method overrides
+        //=====================================================================
+
         /// <inheritdoc />
-        public HxfGeneratorComponent(BuildAssemblerCore assembler, XPathNavigator configuration) :
-          base(assembler, configuration)
+        public override void Initialize(XPathNavigator configuration)
         {
             inputFile = configuration.GetAttribute("input", String.Empty);
 
@@ -60,12 +89,8 @@ namespace Microsoft.Ddue.Tools
                 outputFilename = Environment.ExpandEnvironmentVariables(outputFilename);
 
             // Subscribe to component events
-            assembler.ComponentEvent += FileCreatedHandler;
+            base.BuildAssembler.ComponentEvent += FileCreatedHandler;
         }
-        #endregion
-
-        #region Method overrides
-        //=====================================================================
 
         /// <summary>
         /// This component does not change the document

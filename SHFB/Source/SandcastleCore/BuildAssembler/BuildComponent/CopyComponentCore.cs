@@ -6,20 +6,19 @@
 // Change history:
 // 01/19/2013 - EFW - Moved the class out into its own file.  Added a parent parameter to the constructor to
 // allow passing the parent component reference to the copy component so that it can log messages.
+// 12/27/2013 - EFW - Updated the copy component to be discoverable via MEF.  Moved it to Sandcastle.Core.
 
 using System.Collections.Generic;
 using System.Xml;
 using System.Xml.XPath;
 
-using Sandcastle.Core.BuildAssembler.BuildComponent;
-
-namespace Microsoft.Ddue.Tools
+namespace Sandcastle.Core.BuildAssembler.BuildComponent
 {
     /// <summary>
     /// This abstract class is used to create copy components used in other build components such as
-    /// <see cref="CopyFromIndexComponent"/>
+    /// <c>CopyFromIndexComponent</c>
     /// </summary>
-    public abstract class CopyComponent
+    public abstract class CopyComponentCore
     {
         /// <summary>
         /// This read-only property returns a reference to the parent build component
@@ -30,10 +29,17 @@ namespace Microsoft.Ddue.Tools
         /// Constructor
         /// </summary>
         /// <param name="parent">The parent build component</param>
-        protected CopyComponent(BuildComponentCore parent)
+        protected CopyComponentCore(BuildComponentCore parent)
         {
             this.ParentBuildComponent = parent;
         }
+
+        /// <summary>
+        /// This abstract method must be overridden to initialize the copy component
+        /// </summary>
+        /// <param name="configuration">The copy component configuration</param>
+        /// <param name="data">A dictionary object with string as key and object as value.</param>
+        public abstract void Initialize(XPathNavigator configuration, IDictionary<string, object> data);
 
         /// <summary>
         /// This abstract method must be overridden to apply the copy component's changes to the specified

@@ -5,7 +5,7 @@
 
 // Change History
 // 03/09/2013 - EFW - Moved the supporting syntax writer classes to the SyntaxComponents assembly project
-// 12/21/2013 - EFW - Moved class to Sandcastle.Core assembly
+// 12/21/2013 - EFW - Moved class to Sandcastle.Core assembly and updated for use via MEF
 
 using System.Xml.XPath;
 
@@ -14,7 +14,7 @@ namespace Sandcastle.Core.BuildAssembler.SyntaxGenerator
     /// <summary>
     /// This is the abstract base class for syntax generators
     /// </summary>
-    public abstract class SyntaxGeneratorBase
+    public abstract class SyntaxGeneratorCore
     {
         #region Constructor
         //=====================================================================
@@ -22,7 +22,7 @@ namespace Sandcastle.Core.BuildAssembler.SyntaxGenerator
         /// <summary>
         /// Constructor
         /// </summary>
-        protected SyntaxGeneratorBase()
+        protected SyntaxGeneratorCore()
         {
         }
         #endregion

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildComponentManager.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/21/2013
+// Updated : 12/27/2013
 // Note    : Copyright 2007-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -25,18 +25,16 @@
 //                           to load plug-ins.
 //          12/20/2013  EFW  Updated to use MEF to load the syntax filters and removed support for
 //                           SHFBCOMPONENTROOT.
+//          12/26/2013  EFW  Updated to use MEF to load BuildAssembler build components
 //===============================================================================================================
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel.Composition.Hosting;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Text.RegularExpressions;
-using System.Xml.XPath;
 
 using Sandcastle.Core.BuildAssembler.SyntaxGenerator;
 
@@ -50,27 +48,12 @@ namespace SandcastleBuilder.Utils.BuildComponent
         #region Private data members
         //=====================================================================
 
-        private static Dictionary<string, BuildComponentInfo> buildComponents;
         private static string shfbFolder, buildComponentsFolder;
 
-        private static Regex reMatchShfbFolder = new Regex("{@SHFBFolder}", RegexOptions.IgnoreCase);
-        private static Regex reMatchCompFolder = new Regex("{@ComponentsFolder}", RegexOptions.IgnoreCase);
         #endregion
 
         #region Properties
         //=====================================================================
-
-        /// <summary>
-        /// This read-only property returns the common application data build components folder
-        /// </summary>
-        public static string BuildComponentsFolder
-        {
-            get
-            {
-                SetPaths();
-                return buildComponentsFolder;
-            }
-        }
 
         /// <summary>
         /// This read-only property returns the path to the Sandcastle Help File builder assemblies
@@ -85,6 +68,18 @@ namespace SandcastleBuilder.Utils.BuildComponent
         }
 
         /// <summary>
+        /// This read-only property returns the common application data build components folder
+        /// </summary>
+        public static string BuildComponentsFolder
+        {
+            get
+            {
+                SetPaths();
+                return buildComponentsFolder;
+            }
+        }
+
+        /// <summary>
         /// This read-only property returns the default syntax filter setting
         /// </summary>
         /// <value>This returns "Standard" to add the standard C#, VB.NET and C++ syntax filter to each API
@@ -92,21 +87,6 @@ namespace SandcastleBuilder.Utils.BuildComponent
         public static string DefaultSyntaxFilter
         {
             get { return "Standard"; }
-        }
-
-        /// <summary>
-        /// This returns a dictionary containing the loaded build component information
-        /// </summary>
-        /// <value>The dictionary keys are the component IDs</value>
-        public static Dictionary<string, BuildComponentInfo> BuildComponents
-        {
-            get
-            {
-                if(buildComponents == null || buildComponents.Count == 0)
-                    LoadBuildComponents();
-
-                return buildComponents;
-            }
         }
         #endregion
 
@@ -137,64 +117,6 @@ namespace SandcastleBuilder.Utils.BuildComponent
                     Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
                     Constants.ComponentsAndPlugInsFolder));
             }
-        }
-
-        /// <summary>
-        /// Load the build components found in the Components and Plug-Ins folder and its subfolders
-        /// </summary>
-        private static void LoadBuildComponents()
-        {
-            List<string> allFiles = new List<string>();
-            XPathDocument configFile;
-            XPathNavigator navConfig;
-            BuildComponentInfo info;
-
-            SetPaths();
-
-            buildComponents = new Dictionary<string, BuildComponentInfo>();
-
-            // Add the standard component configuration file and any third-party component configuration files in
-            // the installation folder.  This allows for XCOPY deployments of SHFB to build servers.
-            allFiles.AddRange(Directory.EnumerateFiles(HelpFileBuilderFolder, "*.components",
-                SearchOption.AllDirectories));
-
-            // Finally, check the common app data build components folder
-            if(Directory.Exists(BuildComponentsFolder))
-                allFiles.AddRange(Directory.EnumerateFiles(BuildComponentsFolder, "*.components",
-                    SearchOption.AllDirectories));
-
-            foreach(string file in allFiles)
-            {
-                configFile = new XPathDocument(file);
-                navConfig = configFile.CreateNavigator();
-
-                foreach(XPathNavigator component in navConfig.Select("components/component"))
-                {
-                    info = new BuildComponentInfo(component);
-
-                    // Ignore components with duplicate IDs
-                    if(!buildComponents.ContainsKey(info.Id))
-                        buildComponents.Add(info.Id, info);
-                }
-            }
-        }
-
-        /// <summary>
-        /// This is used to resolve replacement tags and environment variables
-        /// in a build component's assembly path and return the actual path
-        /// to it.
-        /// </summary>
-        /// <param name="path">The path to resolve</param>
-        /// <returns>The actual absolute path to the assembly</returns>
-        public static string ResolveComponentPath(string path)
-        {
-            if(String.IsNullOrEmpty(HelpFileBuilderFolder))
-                LoadBuildComponents();
-
-            path = reMatchShfbFolder.Replace(path, HelpFileBuilderFolder);
-            path = reMatchCompFolder.Replace(path, BuildComponentsFolder);
-
-            return Environment.ExpandEnvironmentVariables(path);
         }
 
         /// <summary>
@@ -258,7 +180,7 @@ namespace SandcastleBuilder.Utils.BuildComponent
         /// </summary>
         /// <param name="catalog">The aggregate catalog to which the directory catalogs are added</param>
         /// <param name="folder">The root folder to search.  It and all subfolders recursively will be added
-        /// to the aggregate catalog if they contain assemblies</param>
+        /// to the aggregate catalog if they contain assemblies.</param>
         private static void AddDirectoryCatalogs(AggregateCatalog catalog, string folder)
         {
             if(Directory.EnumerateFiles(folder, "*.dll").Any())
@@ -315,8 +237,8 @@ namespace SandcastleBuilder.Utils.BuildComponent
         /// </summary>
         /// <param name="allFilters">The list of all available syntax filter generators</param>
         /// <param name="filterIds">A comma-separated list of syntax filter ID values.</param>
-        /// <returns>A collection containing <see cref="SyntaxFilterInfo" /> entries for each syntax filter ID
-        /// found.</returns>
+        /// <returns>An enumerable list of <see cref="ISyntaxGeneratorMetadata" /> representing the syntax
+        /// filters found.</returns>
         /// <remarks>The following special IDs are also recognized: None = No filters, All = all filters,
         /// AllButUsage = All but syntax filters with "Usage" in their ID (i.e. VisualBasicUsage), Standard = C#,
         /// VB.NET, and C++ only.</remarks>
@@ -336,8 +258,8 @@ namespace SandcastleBuilder.Utils.BuildComponent
 
                 // Translate from some common alternate names if necessary
                 foreach(var sf in allFilters)
-                    if(sf.AlternateIds.Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries).Contains(
-                      syntaxId))
+                    if(sf.AlternateIds.ToLowerInvariant().Split(new[] { ',', ' ' },
+                      StringSplitOptions.RemoveEmptyEntries).Contains(syntaxId))
                     {
                         syntaxId = sf.Id.ToLowerInvariant();
                         break;
@@ -399,11 +321,11 @@ namespace SandcastleBuilder.Utils.BuildComponent
                 if(!String.IsNullOrWhiteSpace(generator.DefaultConfiguration))
                 {
                     sb.AppendFormat("<generator id=\"{0}\" name=\"{1}\">{2}</generator>\r\n", generator.Id,
-                        generator.ResourceItemPrefix, generator.DefaultConfiguration);
+                        generator.LanguageElementName, generator.DefaultConfiguration);
                 }
                 else
                     sb.AppendFormat("<generator id=\"{0}\" name=\"{1}\" />\r\n", generator.Id,
-                        generator.ResourceItemPrefix);
+                        generator.LanguageElementName);
 
             return sb.ToString();
         }
@@ -421,8 +343,8 @@ namespace SandcastleBuilder.Utils.BuildComponent
             StringBuilder sb = new StringBuilder(1024);
 
             foreach(var generator in SyntaxFiltersFrom(allFilters, filterIds))
-                sb.AppendFormat("<language label=\"{0}\" name=\"{0}\" style=\"{1}\" />\r\n",
-                    generator.ResourceItemPrefix, generator.StyleNameParameter);
+                sb.AppendFormat("<language name=\"{0}\" style=\"{1}\" />\r\n",
+                    generator.LanguageElementName, generator.KeywordStyleParameter);
 
             return sb.ToString();
         }

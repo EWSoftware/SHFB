@@ -45,6 +45,7 @@ namespace SandcastleBuilder.PlugIns
     /// </summary>
     /// <remarks>This plug-in has been deprecated.  Use the namespace grouping project options instead.</remarks>
     [HelpFileBuilderPlugInExport("Hierarchical Table of Contents", IsConfigurable = true,
+      Version = AssemblyInfo.Version, Copyright = AssemblyInfo.Copyright,
       Description = "This plug-in can be used to rearrange the table of contents such that namespaces are " +
         "nested within their parent namespaces rather than appearing as a flat list of all namespaces at the " +
         "root level.\r\n\r\nNOTE:  This plug-in has been deprecated.  Use the NamespaceGrouping and " +

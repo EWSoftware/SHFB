@@ -8,9 +8,11 @@
 // in their own files.
 // 01/24/2012 - EFW - Added a virtual method to create the index caches, added code to dispose of them when done,
 // and exposed the context via a protected property.
+// 12/23/2013 - EFW - Updated the build component to be discoverable via MEF
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -30,11 +32,36 @@ namespace Microsoft.Ddue.Tools
     /// </summary>
     public class CopyFromIndexComponent : BuildComponentCore
     {
+        #region Build component factory for MEF
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to create a new instance of the build component
+        /// </summary>
+        [BuildComponentExport("Copy From Index Component")]
+        public sealed class Factory : BuildComponentFactory
+        {
+            /// <summary>
+            /// This is used to import the list of copy component factories that is passed to the build component
+            /// when it is created.
+            /// </summary>
+            [ImportMany(typeof(ICopyComponentFactory))]
+            private List<Lazy<ICopyComponentFactory, ICopyComponentMetadata>> CopyComponents { get; set; }
+
+            /// <inheritdoc />
+            public override BuildComponentCore Create()
+            {
+                return new CopyFromIndexComponent(base.BuildAssembler, this.CopyComponents);
+            }
+        }
+        #endregion
+
         #region Private data members
         //=====================================================================
 
         // List of copy components
-        private List<CopyComponent> components = new List<CopyComponent>();
+        private List<Lazy<ICopyComponentFactory, ICopyComponentMetadata>> copyComponentFactories;
+        private List<CopyComponentCore> components = new List<CopyComponentCore>();
 
         // What to copy
         private List<CopyFromIndexCommand> copyCommands = new List<CopyFromIndexCommand>();
@@ -56,10 +83,34 @@ namespace Microsoft.Ddue.Tools
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="assembler">The build assembler reference</param>
-        /// <param name="configuration">The component configuration</param>
-        public CopyFromIndexComponent(BuildAssemblerCore assembler, XPathNavigator configuration) :
-          base(assembler, configuration)
+        /// <param name="buildAssembler">A reference to the build assembler</param>
+        /// <param name="copyComponentFactories">The list of available copy component factory components</param>
+        protected CopyFromIndexComponent(BuildAssemblerCore buildAssembler,
+          List<Lazy<ICopyComponentFactory, ICopyComponentMetadata>> copyComponentFactories) : base(buildAssembler)
+        {
+            this.copyComponentFactories = copyComponentFactories;
+        }
+        #endregion
+
+        #region Helper methods
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to create the index cache
+        /// </summary>
+        /// <param name="configuration">The index configuration</param>
+        /// <returns>An instance of an <see cref="IndexedCache"/> derived class</returns>
+        protected virtual IndexedCache CreateIndex(XPathNavigator configuration)
+        {
+            return new InMemoryIndexedCache(this, this.Context, configuration);
+        }
+        #endregion
+
+        #region Method overrides
+        //=====================================================================
+
+        /// <inheritdoc />
+        public override void Initialize(XPathNavigator configuration)
         {
             MessageLevel level;
             bool isAttribute, ignoreCase;
@@ -146,7 +197,7 @@ namespace Microsoft.Ddue.Tools
                     targetXPath, isAttribute, ignoreCase);
 
                 string messageLevel = copyNode.GetAttribute("missing-entry", String.Empty);
-                
+
                 if(!String.IsNullOrWhiteSpace(messageLevel))
                     if(Enum.TryParse<MessageLevel>(messageLevel, true, out level))
                         copyCommand.MissingEntry = level;
@@ -176,88 +227,35 @@ namespace Microsoft.Ddue.Tools
 
             foreach(XPathNavigator componentNode in componentNodes)
             {
-                // Get the data to load the component
-                string assemblyPath = componentNode.GetAttribute("assembly", String.Empty);
+                // Get the ID of the copy component
+                string id = componentNode.GetAttribute("id", String.Empty);
 
-                if(String.IsNullOrWhiteSpace(assemblyPath))
-                    base.WriteMessage(MessageLevel.Error, "Each component element must have an assembly attribute.");
+                if(String.IsNullOrWhiteSpace(id))
+                    base.WriteMessage(MessageLevel.Error, "Each copy component element must have an id attribute");
 
-                string typeName = componentNode.GetAttribute("type", String.Empty);
+                var copyComponentFactory = copyComponentFactories.FirstOrDefault(g => g.Metadata.Id == id);
 
-                if(String.IsNullOrWhiteSpace(typeName))
-                    base.WriteMessage(MessageLevel.Error, "Each component element must have a type attribute.");
-
-                // expand environment variables in the path
-                assemblyPath = Environment.ExpandEnvironmentVariables(assemblyPath);
+                if(copyComponentFactory == null)
+                    base.WriteMessage(MessageLevel.Error, "A copy component with the ID '{0}' could not be found", id);
 
                 try
                 {
-                    Assembly assembly = Assembly.LoadFrom(assemblyPath);
+                    var copyComponent = copyComponentFactory.Value.Create(this);
 
-                    CopyComponent component = (CopyComponent)assembly.CreateInstance(typeName, false,
-                        BindingFlags.Public | BindingFlags.Instance, null,
-                        new object[3] { this, componentNode.Clone(), BuildComponentCore.Data }, null, null);
-
-                    if(component == null)
-                        base.WriteMessage(MessageLevel.Error, "The type '{0}' does not exist in the assembly '{1}'",
-                            typeName, assemblyPath);
-                    else
-                        components.Add(component);
+                    copyComponent.Initialize(componentNode.Clone(), BuildComponentCore.Data);
+                    components.Add(copyComponent);
                 }
-                catch(IOException e)
+                catch(Exception ex)
                 {
-                    base.WriteMessage(MessageLevel.Error, "A file access error occured while attempting to " +
-                        "load the build component '{0}'. The error message is: {1}", assemblyPath, e.Message);
-                }
-                catch(BadImageFormatException e)
-                {
-                    base.WriteMessage(MessageLevel.Error, "A syntax generator assembly '{0}' is invalid. The " +
-                        "error message is: {1}.", assemblyPath, e.Message);
-                }
-                catch(TypeLoadException e)
-                {
-                    base.WriteMessage(MessageLevel.Error, "The type '{0}' does not exist in the assembly " +
-                        "'{1}'. The error message is: {2}", typeName, assemblyPath, e.Message);
-                }
-                catch(MissingMethodException e)
-                {
-                    base.WriteMessage(MessageLevel.Error, "The type '{0}' in the assembly '{1}' does not have " +
-                        "an appropriate constructor. The error message is: {2}", typeName, assemblyPath, e.Message);
-                }
-                catch(TargetInvocationException e)
-                {
-                    base.WriteMessage(MessageLevel.Error, "An error occured while attempting to instantiate " +
-                        "the type '{0}' in the assembly '{1}'. The error message is: {2}", typeName, assemblyPath,
-                        e.InnerException.Message);
-                }
-                catch(InvalidCastException)
-                {
-                    base.WriteMessage(MessageLevel.Error, "The type '{0}' in the assembly '{1}' is not a " +
-                        "CopyComponent", typeName, assemblyPath);
+                    base.WriteMessage(MessageLevel.Error, "An error occurred while attempting to instantiate " +
+                        "the '{0}' copy component. The error message is: {1}{2}", id, ex.Message,
+                        ex.InnerException != null ? "\r\n" + ex.InnerException.Message : String.Empty);
                 }
             }
 
             if(components.Count != 0)
                 base.WriteMessage(MessageLevel.Info, "Loaded {0} copy components", components.Count);
         }
-        #endregion
-
-        #region Helper methods
-        //=====================================================================
-
-        /// <summary>
-        /// This is used to create the index cache
-        /// </summary>
-        /// <param name="configuration">The index configuration</param>
-        /// <returns>An instance of an <see cref="IndexedCache"/> derived class</returns>
-        protected virtual IndexedCache CreateIndex(XPathNavigator configuration)
-        {
-            return new InMemoryIndexedCache(this, this.Context, configuration);
-        }
-        #endregion
-
-        #region Method overrides
-        //=====================================================================
 
         /// <inheritdoc />
         public override void Apply(XmlDocument document, string key)
@@ -270,7 +268,7 @@ namespace Microsoft.Ddue.Tools
                 copyCommand.Apply(document, this.Context);
 
             // Apply changes for each sub-component, if any
-            foreach(CopyComponent component in components)
+            foreach(CopyComponentCore component in components)
                 component.Apply(document, key);
         }
 

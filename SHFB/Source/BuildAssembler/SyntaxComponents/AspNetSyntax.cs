@@ -16,7 +16,7 @@ namespace Microsoft.Ddue.Tools
     /// <summary>
     /// This class generates declaration syntax sections for ASP.NET
     /// </summary>
-    public sealed class AspNetSyntaxGenerator : SyntaxGeneratorBase
+    public sealed class AspNetSyntaxGenerator : SyntaxGeneratorCore
     {
         #region Syntax generator factory for MEF
         //=====================================================================
@@ -25,11 +25,12 @@ namespace Microsoft.Ddue.Tools
         /// This is used to create a new instance of the syntax generator
         /// </summary>
         [SyntaxGeneratorExport("AspNet", "AspNet", "cs", AlternateIds = "asp, asp.net", SortOrder = 100,
+          Version = AssemblyInfo.Version, Copyright = AssemblyInfo.Copyright,
           Description = "Generates ASP.NET declaration syntax sections")]
         public sealed class Factory : ISyntaxGeneratorFactory
         {
             /// <inheritdoc />
-            public SyntaxGeneratorBase Create()
+            public SyntaxGeneratorCore Create()
             {
                 return new AspNetSyntaxGenerator();
             }

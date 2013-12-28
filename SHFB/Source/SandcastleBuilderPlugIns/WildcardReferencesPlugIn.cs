@@ -41,6 +41,7 @@ namespace SandcastleBuilder.PlugIns
     /// matching wildcard search paths.
     /// </summary>
     [HelpFileBuilderPlugInExport("Wildcard Assembly References", IsConfigurable = true, RunsInPartialBuild = true,
+      Version = AssemblyInfo.Version, Copyright = AssemblyInfo.Copyright,
       Description = "This plug-in is used to modify the Generate Reflection Information build step by adding " +
         "assembly references found in one or more wildcard search paths.")]
     public sealed class WildcardReferencesPlugIn : IPlugIn

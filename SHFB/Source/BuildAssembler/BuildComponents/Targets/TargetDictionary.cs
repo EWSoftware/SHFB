@@ -187,7 +187,7 @@ namespace Microsoft.Ddue.Tools.Targets
 
         /// <summary>
         /// This handles garbage collection to ensure proper disposal of the target dictionary if not done
-        /// explicity with <see cref="Dispose()"/>.
+        /// explicitly with <see cref="Dispose()"/>.
         /// </summary>
         ~TargetDictionary()
         {

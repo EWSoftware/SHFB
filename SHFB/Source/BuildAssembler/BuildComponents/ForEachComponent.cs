@@ -3,6 +3,9 @@
 // See http://www.microsoft.com/resources/sharedsource/licensingbasics/sharedsourcelicenses.mspx.
 // All other rights reserved.
 
+// Change history:
+// 12/23/2013 - EFW - Updated the build component to be discoverable via MEF
+
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -20,13 +23,54 @@ namespace Microsoft.Ddue.Tools
     /// </summary>
     public class ForEachComponent : BuildComponentCore
     {
+        #region Build component factory for MEF
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to create a new instance of the build component
+        /// </summary>
+        [BuildComponentExport("For Each Component")]
+        public sealed class Factory : BuildComponentFactory
+        {
+            /// <inheritdoc />
+            public override BuildComponentCore Create()
+            {
+                return new ForEachComponent(base.BuildAssembler);
+            }
+        }
+        #endregion
+
+        #region Private data members
+        //=====================================================================
+
+        // The format string for the variable expression
+        private XPathExpression xpath;
+
+        // The XPath context
+        private CustomContext context = new CustomContext();
+
+        // The subcomponents
+        private IEnumerable<BuildComponentCore> components;
+
+        #endregion
+
+        #region Constructor
+        //=====================================================================
+
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="assembler">The build assembler instance</param>
-        /// <param name="configuration">The component configuration</param>
-        public ForEachComponent(BuildAssemblerCore assembler, XPathNavigator configuration) :
-          base(assembler, configuration)
+        /// <param name="buildAssembler">A reference to the build assembler</param>
+        protected ForEachComponent(BuildAssemblerCore buildAssembler) : base(buildAssembler)
+        {
+        }
+        #endregion
+
+        #region Method overrides
+        //=====================================================================
+
+        /// <inheritdoc />
+        public override void Initialize(XPathNavigator configuration)
         {
             // set up the context
             XPathNodeIterator context_nodes = configuration.Select("context");
@@ -42,12 +86,14 @@ namespace Microsoft.Ddue.Tools
             XPathNavigator variable_node = configuration.SelectSingleNode("variable");
 
             if(variable_node == null)
-                throw new ConfigurationErrorsException("When instantiating a ForEach component, you must specify a variable using the <variable> element.");
+                throw new ConfigurationErrorsException("When instantiating a ForEach component, you must " +
+                    "specify a variable using the <variable> element.");
 
             string xpath_format = variable_node.GetAttribute("expression", String.Empty);
 
             if((xpath_format == null) || (xpath_format.Length == 0))
-                throw new ConfigurationErrorsException("When instantiating a ForEach component, you must specify a variable expression using the expression attribute");
+                throw new ConfigurationErrorsException("When instantiating a ForEach component, you must " +
+                    "specify a variable expression using the expression attribute");
 
             xpath = XPathExpression.Compile(xpath_format);
 
@@ -56,23 +102,13 @@ namespace Microsoft.Ddue.Tools
             XPathNavigator components_node = configuration.SelectSingleNode("components");
 
             if(components_node == null)
-                throw new ConfigurationErrorsException("When instantiating a ForEach component, you must specify subcomponents using the <components> element.");
+                throw new ConfigurationErrorsException("When instantiating a ForEach component, you must " +
+                    "specify subcomponents using the <components> element.");
 
             components = BuildAssembler.LoadComponents(components_node);
 
             WriteMessage(MessageLevel.Info, "Loaded {0} subcomponents.", components.Count());
         }
-
-        // the format string for the variable expression
-        private XPathExpression xpath;
-
-        // the XPath context
-        private CustomContext context = new CustomContext();
-
-        // the subcomponents
-        private IEnumerable<BuildComponentCore> components;
-
-        // the work of the component
 
         /// <inheritdoc />
         public override void Apply(XmlDocument document, string key)
@@ -86,7 +122,7 @@ namespace Microsoft.Ddue.Tools
 
             Object result = document.CreateNavigator().Evaluate(xpath_local);
 
-            // try to intrepret the result as a node set
+            // try to interpret the result as a node set
             XPathNodeIterator result_node_iterator = result as XPathNodeIterator;
 
             if(result_node_iterator != null)
@@ -102,6 +138,20 @@ namespace Microsoft.Ddue.Tools
             }
         }
 
+        /// <inheritdoc />
+        protected override void Dispose(bool disposing)
+        {
+            if(disposing)
+                foreach(BuildComponentCore component in components)
+                    component.Dispose();
+
+            base.Dispose(disposing);
+        }
+        #endregion
+
+        #region Helper methods
+        //=====================================================================
+
         /// <summary>
         /// Apply the components to the document
         /// </summary>
@@ -112,15 +162,6 @@ namespace Microsoft.Ddue.Tools
             foreach(BuildComponentCore component in components)
                 component.Apply(document, key);
         }
-
-        /// <inheritdoc />
-        protected override void Dispose(bool disposing)
-        {
-            if(disposing)
-                foreach(BuildComponentCore component in components)
-                    component.Dispose();
-
-            base.Dispose(disposing);
-        }
+        #endregion
     }
 }

@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : FileSpellChecker.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/04/2013
+// Updated : 12/28/2013
 // Note    : Copyright 2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -531,6 +531,7 @@ namespace SandcastleBuilder.Gui.Spelling
         /// <returns>False if it was cancelled or True if it completed.</returns>
         public bool SpellCheckXmlReader(XmlReader reader)
         {
+            IXmlLineInfo lineInfo = (IXmlLineInfo)reader;
             TextLocation location = new TextLocation();
             bool wasCancelled = false;
             int idx;
@@ -542,8 +543,8 @@ namespace SandcastleBuilder.Gui.Spelling
                 switch(reader.NodeType)
                 {
                     case XmlNodeType.Element:
-                        location.Line = ((IXmlLineInfo)reader).LineNumber;
-                        location.Column = ((IXmlLineInfo)reader).LinePosition;
+                        location.Line = lineInfo.LineNumber;
+                        location.Column = lineInfo.LinePosition;
 
                         if(reader.HasAttributes)
                         {
@@ -555,14 +556,13 @@ namespace SandcastleBuilder.Gui.Spelling
                                 {
                                     // Set the approximate position of the value assuming the format:
                                     // attrName="value"
-                                    location.Line = ((IXmlLineInfo)reader).LineNumber;
-                                    location.Column = ((IXmlLineInfo)reader).LinePosition +
-                                        reader.Settings.LinePositionOffset + reader.Name.Length + 2;
+                                    location.Line = lineInfo.LineNumber;
+                                    location.Column = lineInfo.LinePosition + reader.Settings.LinePositionOffset +
+                                        reader.Name.Length + 2;
 
                                     // The value must be encoded to get an accurate position (quotes excluded)
                                     wasCancelled = !this.SpellCheckInternal(WebUtility.HtmlEncode(
-                                        reader.Value).Replace("&quot;", "\"").Replace("&#39;", "'"),
-                                        location);
+                                        reader.Value).Replace("&quot;", "\"").Replace("&#39;", "'"), location);
                                 }
                             }
  
@@ -579,19 +579,19 @@ namespace SandcastleBuilder.Gui.Spelling
 
                     case XmlNodeType.Comment:
                     case XmlNodeType.CDATA:
-                        location.Line = ((IXmlLineInfo)reader).LineNumber;
-                        location.Column = ((IXmlLineInfo)reader).LinePosition;
+                        location.Line = lineInfo.LineNumber;
+                        location.Column = lineInfo.LinePosition;
 
                         wasCancelled = !this.SpellCheckInternal(reader.Value, location);
                         break;
 
                     case XmlNodeType.Text:
-                        location.Line = ((IXmlLineInfo)reader).LineNumber;
-                        location.Column = ((IXmlLineInfo)reader).LinePosition;
+                        location.Line = lineInfo.LineNumber;
+                        location.Column = lineInfo.LinePosition;
 
                         // The value must be encoded to get an accurate position (quotes excluded)
-                        wasCancelled = !this.SpellCheckInternal(WebUtility.HtmlEncode(
-                            reader.Value).Replace("&quot;", "\"").Replace("&#39;", "'"), location);
+                        wasCancelled = !this.SpellCheckInternal(WebUtility.HtmlEncode(reader.Value).Replace(
+                            "&quot;", "\"").Replace("&#39;", "'"), location);
                         break;
 
                     default:

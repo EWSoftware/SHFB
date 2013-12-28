@@ -10,6 +10,7 @@
 // 01/05/2012 - EFW - Made the WriteMessage method public so that subcomponents with a reference to a build
 // component can log messages easily.
 // 12/21/2013 - EFW - Moved class to Sandcastle.Core assembly
+// 12/23/2013 - EFW - Updated the build components to be discoverable via MEF
 
 using System;
 using System.Collections.Generic;
@@ -20,14 +21,12 @@ using System.Xml.XPath;
 namespace Sandcastle.Core.BuildAssembler.BuildComponent
 {
     /// <summary>
-    /// This is the base class for all build components
+    /// This is the abstract base class for all build components
     /// </summary>
     public abstract class BuildComponentCore : IDisposable
     {
         #region Private data members
         //=====================================================================
-
-        private BuildAssemblerCore assembler;
 
         private static Dictionary<string, object> data = new Dictionary<string, object>();
 
@@ -39,10 +38,7 @@ namespace Sandcastle.Core.BuildAssembler.BuildComponent
         /// <summary>
         /// This read-only property returns a reference to the build assembler instance using the component
         /// </summary>
-        public BuildAssemblerCore BuildAssembler
-        {
-            get { return assembler; }
-        }
+        public BuildAssemblerCore BuildAssembler { get; private set; }
 
         /// <summary>
         /// This read-only property returns a static dictionary that can be used to store information shared
@@ -52,6 +48,15 @@ namespace Sandcastle.Core.BuildAssembler.BuildComponent
         {
             get { return data; }
         }
+
+        /// <summary>
+        /// Reserved for future use
+        /// </summary>
+        /// <value>This property is not currently used.  It is reserved for future use.</value>
+        public virtual bool IsThreadSafe
+        {
+            get { return false; }
+        }
         #endregion
 
         #region Constructor
@@ -60,12 +65,10 @@ namespace Sandcastle.Core.BuildAssembler.BuildComponent
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="assembler">The build assembler instance using this component</param>
-        /// <param name="configuration">The component configuration</param>
-        protected BuildComponentCore(BuildAssemblerCore assembler, XPathNavigator configuration)
+        /// <param name="buildAssembler">A reference to the build assembler</param>
+        protected BuildComponentCore(BuildAssemblerCore buildAssembler)
         {
-            this.assembler = assembler;
-            WriteMessage(MessageLevel.Info, "Instantiating component.");
+            this.BuildAssembler = buildAssembler;
         }
         #endregion
 
@@ -74,7 +77,7 @@ namespace Sandcastle.Core.BuildAssembler.BuildComponent
 
         /// <summary>
         /// This handles garbage collection to ensure proper disposal of the build component if not done
-        /// explicity with <see cref="Dispose()"/>.
+        /// explicitly with <see cref="Dispose()"/>.
         /// </summary>
         ~BuildComponentCore()
         {
@@ -106,6 +109,12 @@ namespace Sandcastle.Core.BuildAssembler.BuildComponent
         //=====================================================================
 
         /// <summary>
+        /// This abstract method must be overridden to initialize the component
+        /// </summary>
+        /// <param name="configuration">The component configuration</param>
+        public abstract void Initialize(XPathNavigator configuration);
+
+        /// <summary>
         /// This abstract method must be overridden to apply the build component's changes to the specified
         /// document.
         /// </summary>
@@ -125,7 +134,8 @@ namespace Sandcastle.Core.BuildAssembler.BuildComponent
         /// arguments class containing information to pass to the event handlers.</param>
         protected void OnComponentEvent(EventArgs e)
         {
-            assembler.OnComponentEvent(this.GetType(), e);
+            if(this.BuildAssembler != null)
+                this.BuildAssembler.OnComponentEvent(this.GetType(), e);
         }
 
         /// <summary>
@@ -136,8 +146,8 @@ namespace Sandcastle.Core.BuildAssembler.BuildComponent
         /// <param name="args">An optional list of arguments to format into the message</param>
         public void WriteMessage(MessageLevel level, string message, params object[] args)
         {
-            if(level != MessageLevel.Ignore)
-                assembler.WriteMessage(this.GetType(), level, null, (args.Length == 0) ? message :
+            if(level != MessageLevel.Ignore && this.BuildAssembler != null)
+                this.BuildAssembler.WriteMessage(this.GetType(), level, null, (args.Length == 0) ? message :
                     String.Format(CultureInfo.CurrentCulture, message, args));
         }
 
@@ -153,8 +163,8 @@ namespace Sandcastle.Core.BuildAssembler.BuildComponent
         /// the "building topic X" messages are suppressed.</remarks>
         public void WriteMessage(string key, MessageLevel level, string message, params object[] args)
         {
-            if(level != MessageLevel.Ignore)
-                assembler.WriteMessage(this.GetType(), level, key, (args.Length == 0) ? message :
+            if(level != MessageLevel.Ignore && this.BuildAssembler != null)
+                this.BuildAssembler.WriteMessage(this.GetType(), level, key, (args.Length == 0) ? message :
                     String.Format(CultureInfo.CurrentCulture, message, args));
         }
         #endregion

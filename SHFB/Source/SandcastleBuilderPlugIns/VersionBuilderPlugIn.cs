@@ -43,6 +43,7 @@ namespace SandcastleBuilder.PlugIns
     /// others related to the same product that can be merged into the current project's help file topics.
     /// </summary>
     [HelpFileBuilderPlugInExport("Version Builder", IsConfigurable = true, RunsInPartialBuild = true,
+      Version = AssemblyInfo.Version, Copyright = AssemblyInfo.Copyright,
       Description = "This plug-in is used to generate version information for the current project and others " +
         "related to the same product and merge that information into a single help file for all of them.")]
     public sealed class VersionBuilderPlugIn : IPlugIn
@@ -430,7 +431,8 @@ namespace SandcastleBuilder.PlugIns
             config.Append("</versions>\r\n");
 
             script.AppendFormat("\"{0}VersionBuilder.exe\" {1} /config:VersionBuilder.config " +
-                "/out:reflection.org\r\n", builder.HelpFileBuilderFolder, ripOldApis ? String.Empty : "/rip-");
+                "/out:reflection.org\r\n", BuildComponentManager.HelpFileBuilderFolder, ripOldApis ?
+                String.Empty : "/rip-");
 
             // Save the files
             using(StreamWriter sw = new StreamWriter(builder.WorkingFolder + "VersionBuilder.config"))

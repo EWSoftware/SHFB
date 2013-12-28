@@ -1,7 +1,7 @@
 ﻿//===============================================================================================================
 // System  : Sandcastle Build Components
 // File    : MSHCComponent.cs
-// Note    : Copyright 2010-2012 Microsoft Corporation
+// Note    : Copyright 2010-2013 Microsoft Corporation
 //
 // This file contains a modified version of the original MSHCComponent that allows the inclusion of a sortOrder
 // attribute on the table of contents file elements.  This allows the sort order of the elements to be defined
@@ -17,6 +17,7 @@
 // 09/28/2012 - EFW - Changed "SelfBranded" to "Microsoft.Help.SelfBranded" for Help Viewer 2.0 support.
 //                    Removed the ContentType metadata as it's output by the XSL transformations.
 //                    Removed header bottom fix up code as it is handled in the XSL transformations and script.
+// 12/23/2013 - EFW - Updated the build component to be discoverable via MEF
 //===============================================================================================================
 
 using System;
@@ -32,25 +33,19 @@ using Sandcastle.Core.BuildAssembler.BuildComponent;
 namespace Microsoft.Ddue.Tools
 {
     /// <summary>
-    /// This class is a modified version of the original <c>MSHCComponent</c> that
-    /// is used to add MS Help Viewer meta data to the topics.  This version allows
-    /// the inclusion of a <c>sortOrder</c> attribute on the table of contents
-    /// file elements.  This allows the sort order of the elements to be defined
-    /// to set the proper placement of the TOC entries when parented to an entry
-    /// outside of the help file and to parent the API content within a conceptual
-    /// content folder.
+    /// This class is a modified version of the original <c>MSHCComponent</c> that is used to add MS Help Viewer
+    /// meta data to the topics.  This version allows the inclusion of a <c>sortOrder</c> attribute on the table
+    /// of contents file elements.  This allows the sort order of the elements to be defined to set the proper
+    /// placement of the TOC entries when parented to an entry outside of the help file and to parent the API
+    /// content within a conceptual content folder.
     /// </summary>
-    /// <remarks>The <c>sortOrder</c> attributes are optional.  If not found,
-    /// standard ordering is applied starting from zero.  If a <c>sortOrder</c>
-    /// attribute is found, numbering starts from that value for the associated
-    /// topic and increments by one for all subsequent topics until another
-    /// <c>sortOrder</c> attribute is encountered or the end of the group is
-    /// reached.
-    /// </remarks>
+    /// <remarks>The <c>sortOrder</c> attributes are optional.  If not found, standard ordering is applied
+    /// starting from zero.  If a <c>sortOrder</c> attribute is found, numbering starts from that value for the
+    /// associated topic and increments by one for all subsequent topics until another <c>sortOrder</c> attribute
+    /// is encountered or the end of the group is reached.</remarks>
     /// <example>
     /// <code lang="xml" title="Example Component Configuration">
-    /// &lt;component type="Microsoft.Ddue.Tools.MSHCComponent"
-    ///   assembly="%SHFBROOT%\BuildComponents.dll"&gt;
+    /// &lt;component id="Microsoft Help Viewer Metadata Component"&gt;
     ///   &lt;data self-branded="true" topic-version="100" toc-file="toc.xml"
     ///   toc-parent="" toc-parent-version="100" locale="en-US" /&gt;
     /// &lt;/component&gt;
@@ -75,6 +70,23 @@ namespace Microsoft.Ddue.Tools
     /// </example>
     public class MSHCComponent : BuildComponentCore
     {
+        #region Build component factory for MEF
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to create a new instance of the build component
+        /// </summary>
+        [BuildComponentExport("Microsoft Help Viewer Metadata Component")]
+        public sealed class Factory : BuildComponentFactory
+        {
+            /// <inheritdoc />
+            public override BuildComponentCore Create()
+            {
+                return new MSHCComponent(base.BuildAssembler);
+            }
+        }
+        #endregion
+
         #region Constants definitions
         //=====================================================================
 
@@ -236,12 +248,19 @@ namespace Microsoft.Ddue.Tools
         //=====================================================================
 
         /// <summary>
-        /// Creates a new instance of the <see cref="MSHCComponent"/> class.
+        /// Constructor
         /// </summary>
-        /// <param name="assembler">The active <see cref="BuildAssemblerCore"/>.</param>
-        /// <param name="configuration">The current <see cref="XPathNavigator"/> of the configuration.</param>
-        public MSHCComponent(BuildAssemblerCore assembler, XPathNavigator configuration) :
-          base(assembler, configuration)
+        /// <param name="buildAssembler">A reference to the build assembler</param>
+        protected MSHCComponent(BuildAssemblerCore buildAssembler) : base(buildAssembler)
+        {
+        }
+        #endregion
+
+        #region Method overrides
+        //=====================================================================
+
+        /// <inheritdoc />
+        public override void Initialize(XPathNavigator configuration)
         {
             string tocFile = MHSDefault.TocFile;
             XPathNavigator data = configuration.SelectSingleNode(ConfigurationTag.Data);
@@ -281,10 +300,6 @@ namespace Microsoft.Ddue.Tools
 
             LoadToc(Path.GetFullPath(Environment.ExpandEnvironmentVariables(tocFile)));
         }
-        #endregion
-
-        #region Apply method
-        //=====================================================================
 
         /// <summary>
         /// Applies Microsoft Help System transformation to the output document.

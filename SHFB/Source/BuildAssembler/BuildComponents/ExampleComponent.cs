@@ -7,6 +7,7 @@
 // 02/14/2013 - EFW - Removed RegexOptions.Compiled from the Regex instances.  It was causing a significant delay
 // and a huge memory usage increase that isn't justified based on the way the expressions are used here.
 // 03/09/2013 - EFW - Moved the supporting classes to the Snippets namespace
+// 12/23/2013 - EFW - Updated the build component to be discoverable via MEF
 
 using System;
 using System.Collections.Generic;
@@ -30,6 +31,23 @@ namespace Microsoft.Ddue.Tools
     /// </summary>
     public class ExampleComponent : BuildComponentCore
     {
+        #region Build component factory for MEF
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to create a new instance of the build component
+        /// </summary>
+        [BuildComponentExport("Example Component")]
+        public sealed class Factory : BuildComponentFactory
+        {
+            /// <inheritdoc />
+            public override BuildComponentCore Create()
+            {
+                return new ExampleComponent(base.BuildAssembler);
+            }
+        }
+        #endregion
+
         #region Private data members
         //=====================================================================
 
@@ -52,55 +70,9 @@ namespace Microsoft.Ddue.Tools
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="assembler">The build assembler reference</param>
-        /// <param name="configuration">The component configuration</param>
-        public ExampleComponent(BuildAssemblerCore assembler, XPathNavigator configuration) :
-          base(assembler, configuration)
+        /// <param name="buildAssembler">A reference to the build assembler</param>
+        protected ExampleComponent(BuildAssemblerCore buildAssembler) : base(buildAssembler)
         {
-            XPathNodeIterator contentNodes = configuration.Select("examples");
-
-            foreach(XPathNavigator contentNode in contentNodes)
-            {
-                string file = contentNode.GetAttribute("file", String.Empty);
-                file = Environment.ExpandEnvironmentVariables(file);
-
-                if(String.IsNullOrEmpty(file))
-                    WriteMessage(MessageLevel.Error, "Each examples element must contain a file attribute.");
-
-                LoadContent(file);
-            }
-
-            WriteMessage(MessageLevel.Info, "Loaded {0} code snippets", snippets.Count);
-
-            XPathNodeIterator colorsNodes = configuration.Select("colors");
-
-            foreach(XPathNavigator colorsNode in colorsNodes)
-            {
-                string language = colorsNode.GetAttribute("language", String.Empty);
-                List<ColorizationRule> rules = new List<ColorizationRule>();
-
-                XPathNodeIterator colorNodes = colorsNode.Select("color");
-
-                foreach(XPathNavigator colorNode in colorNodes)
-                {
-                    string pattern = colorNode.GetAttribute("pattern", String.Empty);
-                    string region = colorNode.GetAttribute("region", String.Empty);
-                    string name = colorNode.GetAttribute("class", String.Empty);
-
-                    if(String.IsNullOrEmpty(region))
-                        rules.Add(new ColorizationRule(pattern, name));
-                    else
-                        rules.Add(new ColorizationRule(pattern, region, name));
-                }
-
-                colorization[language] = rules;
-                WriteMessage(MessageLevel.Info, "Loaded {0} colorization rules for the language '{1}'.", rules.Count, language);
-            }
-
-            context.AddNamespace("ddue", "http://ddue.schemas.microsoft.com/authoring/2003/5");
-
-            selector = XPathExpression.Compile("//ddue:codeReference");
-            selector.SetContext(context);
         }
         #endregion
 
@@ -346,6 +318,55 @@ namespace Microsoft.Ddue.Tools
 
         #region Method overrides
         //=====================================================================
+
+        /// <inheritdoc />
+        public override void Initialize(XPathNavigator configuration)
+        {
+            XPathNodeIterator contentNodes = configuration.Select("examples");
+
+            foreach(XPathNavigator contentNode in contentNodes)
+            {
+                string file = contentNode.GetAttribute("file", String.Empty);
+                file = Environment.ExpandEnvironmentVariables(file);
+
+                if(String.IsNullOrEmpty(file))
+                    WriteMessage(MessageLevel.Error, "Each examples element must contain a file attribute.");
+
+                LoadContent(file);
+            }
+
+            WriteMessage(MessageLevel.Info, "Loaded {0} code snippets", snippets.Count);
+
+            XPathNodeIterator colorsNodes = configuration.Select("colors");
+
+            foreach(XPathNavigator colorsNode in colorsNodes)
+            {
+                string language = colorsNode.GetAttribute("language", String.Empty);
+                List<ColorizationRule> rules = new List<ColorizationRule>();
+
+                XPathNodeIterator colorNodes = colorsNode.Select("color");
+
+                foreach(XPathNavigator colorNode in colorNodes)
+                {
+                    string pattern = colorNode.GetAttribute("pattern", String.Empty);
+                    string region = colorNode.GetAttribute("region", String.Empty);
+                    string name = colorNode.GetAttribute("class", String.Empty);
+
+                    if(String.IsNullOrEmpty(region))
+                        rules.Add(new ColorizationRule(pattern, name));
+                    else
+                        rules.Add(new ColorizationRule(pattern, region, name));
+                }
+
+                colorization[language] = rules;
+                WriteMessage(MessageLevel.Info, "Loaded {0} colorization rules for the language '{1}'.", rules.Count, language);
+            }
+
+            context.AddNamespace("ddue", "http://ddue.schemas.microsoft.com/authoring/2003/5");
+
+            selector = XPathExpression.Compile("//ddue:codeReference");
+            selector.SetContext(context);
+        }
 
         /// <inheritdoc />
         public override void Apply(XmlDocument document, string key)

@@ -64,12 +64,23 @@
     <Reference Include="Microsoft.Build.Utilities.v4.0" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BuildAssembler\BuildAssemblerCore.cs" />
     <Compile Include="BuildAssembler\BuildComponentUtilities.cs" />
     <Compile Include="BuildAssembler\BuildComponent\BuildComponentCore.cs" />
+    <Compile Include="BuildAssembler\BuildComponent\BuildComponentExportAttribute.cs" />
+    <Compile Include="BuildAssembler\BuildComponent\BuildComponentFactory.cs" />
+    <Compile Include="BuildAssembler\BuildComponent\ComponentPlacement.cs" />
+    <Compile Include="BuildAssembler\BuildComponent\CopyComponentCore.cs" />
+    <Compile Include="BuildAssembler\BuildComponent\CopyComponentExportAttribute.cs" />
+    <Compile Include="BuildAssembler\BuildComponent\IBuildComponentMetadata.cs" />
+    <Compile Include="BuildAssembler\BuildComponent\ICopyComponentFactory.cs" />
+    <Compile Include="BuildAssembler\BuildComponent\ICopyComponentMetadata.cs" />
+    <Compile Include="BuildAssembler\BuildComponent\PlacementAction.cs" />
     <Compile Include="BuildAssembler\BuildContext.cs" />
     <Compile Include="BuildAssembler\CustomContext.cs" />
     <Compile Include="BuildAssembler\CustomVariable.cs" />
@@ -77,7 +88,7 @@
     <Compile Include="BuildAssembler\SyntaxGenerator\ISyntaxGeneratorFactory.cs" />
     <Compile Include="BuildAssembler\SyntaxGenerator\ISyntaxGeneratorMetadata.cs" />
     <Compile Include="BuildAssembler\SyntaxGenerator\ManagedSyntaxWriter.cs" />
-    <Compile Include="BuildAssembler\SyntaxGenerator\SyntaxGeneratorBase.cs" />
+    <Compile Include="BuildAssembler\SyntaxGenerator\SyntaxGeneratorCore.cs" />
     <Compile Include="BuildAssembler\SyntaxGenerator\SyntaxGeneratorExportAttribute.cs" />
     <Compile Include="BuildAssembler\SyntaxGenerator\SyntaxGeneratorTemplate.cs" />
     <Compile Include="BuildAssembler\SyntaxGenerator\SyntaxWriter.cs" />
@@ -92,6 +103,12 @@
     <Compile Include="ConsoleApplication.cs" />
     <Compile Include="LogLevel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UI\ConfigurationEditorDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ConfigurationEditorDlg.Designer.cs">
+      <DependentUpon>ConfigurationEditorDlg.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -109,6 +126,15 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Dependencies.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="UI\ConfigurationEditorDlg.resx">
+      <DependentUpon>ConfigurationEditorDlg.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

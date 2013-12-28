@@ -14,6 +14,7 @@
 // Change History
 // 12/21/2012 - EFW - Moved this component into the main BuildComponents project and removed the CopyComponents
 // project as this was the only thing in it.
+// 12/27/2013 - EFW - Updated the component to be discoverable via MEF
 
 using System;
 using System.Collections.Generic;
@@ -31,8 +32,25 @@ namespace Microsoft.Ddue.Tools
     /// <summary>
     /// InheritDocumentationComponent class.
     /// </summary>
-    public class InheritDocumentationComponent : CopyComponent
+    public class InheritDocumentationComponent : CopyComponentCore
     {
+        #region Copy component factory for MEF
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to create a new instance of the copy component
+        /// </summary>
+        [CopyComponentExport("Inherit Documentation Copy Component")]
+        public sealed class Factory : ICopyComponentFactory
+        {
+            /// <inheritdoc />
+            public CopyComponentCore Create(BuildComponentCore parent)
+            {
+                return new InheritDocumentationComponent(parent);
+            }
+        }
+        #endregion
+
         #region Private members
         //=====================================================================
 
@@ -83,51 +101,43 @@ namespace Microsoft.Ddue.Tools
         //=====================================================================
 
         /// <summary>
-        /// Creates an instance of InheritDocumentationComponent class.
+        /// Constructor
         /// </summary>
         /// <param name="parent">The parent build component</param>
-        /// <param name="configuration">Configuration section to be parsed.</param>
-        /// <param name="data">A dictionary object with string as key and object as value.</param>
-        public InheritDocumentationComponent(BuildComponentCore parent, XPathNavigator configuration,
-          IDictionary<string, object> data) : base(parent)
+        public InheritDocumentationComponent(BuildComponentCore parent) : base(parent)
         {
-            // Get the copy command
-            XPathNavigator copyNode = configuration.SelectSingleNode("copy");
-
-            if(copyNode == null)
-                parent.WriteMessage(MessageLevel.Error, "A copy element is required to define the indexes " +
-                    "from which to obtain comments and reflection information");
-
-            // Get the comments info
-            string sourceName = copyNode.GetAttribute("name", string.Empty);
-
-            if(String.IsNullOrEmpty(sourceName))
-                parent.WriteMessage(MessageLevel.Error, "Each copy command must specify an index to copy from");
-
-            // Get the reflection info
-            string reflectionName = copyNode.GetAttribute("use", String.Empty);
-
-            if(String.IsNullOrEmpty(reflectionName))
-                parent.WriteMessage(MessageLevel.Error, "Each copy command must specify an index to get " +
-                    "reflection information from");
-
-            this.commentsIndex = (IndexedCache)data[sourceName];
-            this.reflectionIndex = (IndexedCache)data[reflectionName];
         }
         #endregion
 
         #region Methods
         //=====================================================================
 
-        /// <summary>
-        /// Deletes the specified node and logs the message.
-        /// </summary>
-        /// <param name="inheritDocNodeNavigator">navigator for inheritdoc node</param>
-        /// <param name="key">Id of the topic specified</param>
-        public void DeleteNode(XPathNavigator inheritDocNodeNavigator, string key)
+        /// <inheritdoc />
+        public override void Initialize(XPathNavigator configuration, IDictionary<string, object> data)
         {
-            base.ParentBuildComponent.WriteMessage(MessageLevel.Info, "Comments not found for topic: {0}", key);
-            inheritDocNodeNavigator.DeleteSelf();
+            // Get the copy command
+            XPathNavigator copyNode = configuration.SelectSingleNode("copy");
+
+            if(copyNode == null)
+                base.ParentBuildComponent.WriteMessage(MessageLevel.Error, "A copy element is required to " +
+                    "define the indexes from which to obtain comments and reflection information");
+
+            // Get the comments info
+            string sourceName = copyNode.GetAttribute("name", string.Empty);
+
+            if(String.IsNullOrEmpty(sourceName))
+                base.ParentBuildComponent.WriteMessage(MessageLevel.Error, "Each copy command must specify " +
+                    "an index to copy from");
+
+            // Get the reflection info
+            string reflectionName = copyNode.GetAttribute("use", String.Empty);
+
+            if(String.IsNullOrEmpty(reflectionName))
+                base.ParentBuildComponent.WriteMessage(MessageLevel.Error, "Each copy command must specify " +
+                    "an index to get reflection information from");
+
+            this.commentsIndex = (IndexedCache)data[sourceName];
+            this.reflectionIndex = (IndexedCache)data[reflectionName];
         }
 
         /// <summary>
@@ -144,10 +154,21 @@ namespace Microsoft.Ddue.Tools
         }
 
         /// <summary>
+        /// Deletes the specified node and logs the message.
+        /// </summary>
+        /// <param name="inheritDocNodeNavigator">navigator for inheritdoc node</param>
+        /// <param name="key">Id of the topic specified</param>
+        private void DeleteNode(XPathNavigator inheritDocNodeNavigator, string key)
+        {
+            base.ParentBuildComponent.WriteMessage(MessageLevel.Info, "Comments not found for topic: {0}", key);
+            inheritDocNodeNavigator.DeleteSelf();
+        }
+
+        /// <summary>
         /// Inherit the documentation.
         /// </summary>
         /// <param name="key">Id of the topic specified</param>
-        public void InheritDocumentation(string key)
+        private void InheritDocumentation(string key)
         {
             foreach(XPathNavigator inheritDocNodeNavigator in this.sourceDocument.CreateNavigator().Select(inheritDocExpression))
             {
@@ -281,7 +302,7 @@ namespace Microsoft.Ddue.Tools
         /// </summary>
         /// <param name="inheritDocNodeNavigator">Navigator for inheritdoc node</param>
         /// <param name="contentNodeNavigator">Navigator for content</param>
-        public void UpdateNode(XPathNavigator inheritDocNodeNavigator, XPathNavigator contentNodeNavigator)
+        private void UpdateNode(XPathNavigator inheritDocNodeNavigator, XPathNavigator contentNodeNavigator)
         {
             // retrieve the selection filter if specified.
             string selectValue = inheritDocNodeNavigator.GetAttribute("select", string.Empty);
@@ -309,7 +330,7 @@ namespace Microsoft.Ddue.Tools
         /// </summary>
         /// <param name="iterator">Iterator for API information</param>
         /// <param name="inheritDocNodeNavigator">Navigator for inheritdoc node</param>
-        public void GetComments(XPathNodeIterator iterator, XPathNavigator inheritDocNodeNavigator)
+        private void GetComments(XPathNodeIterator iterator, XPathNavigator inheritDocNodeNavigator)
         {
             foreach(XPathNavigator navigator in iterator)
             {

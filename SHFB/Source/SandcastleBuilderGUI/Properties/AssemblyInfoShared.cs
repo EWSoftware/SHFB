@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : AssemblyInfoShared.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/22/2013
+// Updated : 12/27/2013
 // Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -47,7 +47,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyProduct("Sandcastle Help File Builder")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Eric Woodruff")]
-[assembly: AssemblyCopyright("Copyright \xA9 2006-2013, Eric Woodruff, All Rights Reserved")]
+[assembly: AssemblyCopyright(AssemblyInfo.Copyright)]
 [assembly: AssemblyTrademark("Eric Woodruff, All Rights Reserved")]
 [assembly: AssemblyCulture("")]
 
@@ -64,6 +64,19 @@ using System.Runtime.InteropServices;
 // This versioning scheme allows build component and plug-in developers to use the same major, minor, and build
 // numbers as the Sandcastle Help File Builder to indicate with which version their components are compatible.
 //
-[assembly: AssemblyVersion("2013.12.21.0")]
+[assembly: AssemblyVersion(AssemblyInfo.Version)]
 
 // See AssemblyInfo.cs for project-specific assembly attributes
+
+/// <summary>
+/// This defines constants that can be used by plug-ins and components in their metadata
+/// </summary>
+internal static partial class AssemblyInfo
+{
+    /// <summary>
+    /// Common assembly version
+    /// </summary>
+    public const string Version = "2013.12.27.0";
+
+    public const string Copyright = "Copyright \xA9 2006-2013, Eric Woodruff, All Rights Reserved";
+}

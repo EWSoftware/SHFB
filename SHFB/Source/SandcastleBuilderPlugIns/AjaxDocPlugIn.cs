@@ -48,7 +48,8 @@ namespace SandcastleBuilder.PlugIns
     /// script libraries using AjaxDoc.
     /// </summary>
     [HelpFileBuilderPlugInExport("AjaxDoc Builder", IsConfigurable = true, RunsInPartialBuild = true,
-      AdditionalCopyrightInfo = "AjaxDoc is Copyright \xA9 2006-2013 Bertrand Le Roy, All Rights Reserved",
+      Version = AssemblyInfo.Version, Copyright = AssemblyInfo.Copyright + "\r\nAjaxDoc is Copyright \xA9 " +
+      "2006-2013 Bertrand Le Roy, All Rights Reserved",
       Description = "This plug-in is used to generate XML comments and reflection information for Atlas " +
         "client script libraries using AjaxDoc that can then be used by the Sandcastle Help File " +
         "Builder to produce a help file.")]
@@ -136,8 +137,7 @@ namespace SandcastleBuilder.PlugIns
             var metadata = (HelpFileBuilderPlugInExportAttribute)this.GetType().GetCustomAttributes(
                 typeof(HelpFileBuilderPlugInExportAttribute), false).First();
 
-            builder.ReportProgress("{0} Version {1}\r\n{2}\r\n{3}", metadata.Id, metadata.Version,
-                metadata.Copyright, metadata.AdditionalCopyrightInfo);
+            builder.ReportProgress("{0} Version {1}\r\n{2}", metadata.Id, metadata.Version, metadata.Copyright);
 
             root = configuration.SelectSingleNode("configuration");
 
@@ -318,7 +318,7 @@ namespace SandcastleBuilder.PlugIns
             }
 
             // AjaxDoc 1.1 prefixes all member names with "J#" which causes BuildAssembler's
-            // ResolveReferenceLinksComponent2 component in the Sept 2007 CTP to crash.  As such, we'll strip it
+            // ResolveReferenceLinksComponent component in the Sept 2007 CTP to crash.  As such, we'll strip it
             // out.  I can't see a need for it anyway.
             content = BuildProcess.ReadWithEncoding(workingPath, ref enc);
             content = content.Replace(":J#", ":");

@@ -30,12 +30,13 @@ namespace Microsoft.Ddue.Tools
         /// <summary>
         /// This is used to create a new instance of the syntax generator
         /// </summary>
-        [SyntaxGeneratorExport("FSharp", "FSharp", "fs", AlternateIds = "fs, f#, fsscript",
-          SortOrder = 50, Description = "Generates F# declaration syntax sections")]
+        [SyntaxGeneratorExport("FSharp", "FSharp", "fs", AlternateIds = "fs, f#, fsscript", SortOrder = 50,
+          Version = AssemblyInfo.Version, Copyright = AssemblyInfo.Copyright,
+          Description = "Generates F# declaration syntax sections")]
         public sealed class Factory : ISyntaxGeneratorFactory
         {
             /// <inheritdoc />
-            public SyntaxGeneratorBase Create()
+            public SyntaxGeneratorCore Create()
             {
                 return new FSharpDeclarationSyntaxGenerator();
             }

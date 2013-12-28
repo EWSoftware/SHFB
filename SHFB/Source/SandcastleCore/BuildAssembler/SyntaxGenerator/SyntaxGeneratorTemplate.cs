@@ -3,8 +3,6 @@
 // See http://www.microsoft.com/resources/sharedsource/licensingbasics/sharedsourcelicenses.mspx.
 // All other rights reserved.
 
-// TODO: Clean the code up (regions, etc.)
-
 // Change history:
 // 02/09/2012 - EFW - Added XPath expressions for optional parameter argument element and property
 // getter and setter to list their attributes.
@@ -14,7 +12,7 @@
 // only used by the JSharpDeclarationSyntaxGenerator which has been changed to use SyntaxGeneratorTemplate as
 // its base class.
 // 11/29/2013 - EFW - Added support for interop metadata
-// 12/21/2013 - EFW - Moved class to Sandcastle.Core assembly
+// 12/21/2013 - EFW - Moved class to Sandcastle.Core assembly and updated for use via MEF
 
 using System;
 using System.Xml.XPath;
@@ -24,24 +22,20 @@ namespace Sandcastle.Core.BuildAssembler.SyntaxGenerator
     /// <summary>
     /// This abstract class is used as the base class for syntax generators
     /// </summary>
-    public abstract class SyntaxGeneratorTemplate : SyntaxGeneratorBase
+    public abstract class SyntaxGeneratorTemplate : SyntaxGeneratorCore
     {
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        protected SyntaxGeneratorTemplate()
-        {
-        }
+        #region Constants
+        //=====================================================================
 
         /// <summary>
         /// The maximum line width for the generated syntax
         /// </summary>
         protected const int MaxPosition = 60;
 
-        /// <summary>
-        /// This is used to get or set the language identifier
-        /// </summary>
-        public string Language { get; protected set; }
+        #endregion
+
+        #region Shared XPath expressions
+        //=====================================================================
 
 // I can't be bothered to document all these right now so just ignore the warnings
 #pragma warning disable 1591
@@ -206,6 +200,108 @@ namespace Sandcastle.Core.BuildAssembler.SyntaxGenerator
         protected static XPathExpression attachedPropertySetterExpression = XPathExpression.Compile("string(attachedpropertydata/setter/member/@api)");
 
 #pragma warning restore 1591
+        #endregion
+
+        #region Properties
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to get or set the language identifier
+        /// </summary>
+        /// <value>This is used as the element name of the root element written to the topics.  The presentation
+        /// style XSL transformations will also use it to name the language-specific resource items.</value>
+        public string Language { get; protected set; }
+
+        #endregion
+
+        #region Constructor
+        //=====================================================================
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        protected SyntaxGeneratorTemplate()
+        {
+        }
+        #endregion
+
+        #region Abstract methods
+        //=====================================================================
+
+        /// <summary>
+        /// Write namespace syntax
+        /// </summary>
+        /// <param name="reflection">The reflection data used to produce the syntax</param>
+        /// <param name="writer">The writer to which the syntax is written</param>
+        public abstract void WriteNamespaceSyntax(XPathNavigator reflection, SyntaxWriter writer);
+
+        /// <summary>
+        /// Write class syntax
+        /// </summary>
+        /// <param name="reflection">The reflection data used to produce the syntax</param>
+        /// <param name="writer">The writer to which the syntax is written</param>
+        public abstract void WriteClassSyntax(XPathNavigator reflection, SyntaxWriter writer);
+
+        /// <summary>
+        /// Write structure syntax
+        /// </summary>
+        /// <param name="reflection">The reflection data used to produce the syntax</param>
+        /// <param name="writer">The writer to which the syntax is written</param>
+        public abstract void WriteStructureSyntax(XPathNavigator reflection, SyntaxWriter writer);
+
+        /// <summary>
+        /// Write interface syntax
+        /// </summary>
+        /// <param name="reflection">The reflection data used to produce the syntax</param>
+        /// <param name="writer">The writer to which the syntax is written</param>
+        public abstract void WriteInterfaceSyntax(XPathNavigator reflection, SyntaxWriter writer);
+
+        /// <summary>
+        /// Write delegate syntax
+        /// </summary>
+        /// <param name="reflection">The reflection data used to produce the syntax</param>
+        /// <param name="writer">The writer to which the syntax is written</param>
+        public abstract void WriteDelegateSyntax(XPathNavigator reflection, SyntaxWriter writer);
+
+        /// <summary>
+        /// Write enumeration syntax
+        /// </summary>
+        /// <param name="reflection">The reflection data used to produce the syntax</param>
+        /// <param name="writer">The writer to which the syntax is written</param>
+        public abstract void WriteEnumerationSyntax(XPathNavigator reflection, SyntaxWriter writer);
+
+        /// <summary>
+        /// Write constructor syntax
+        /// </summary>
+        /// <param name="reflection">The reflection data used to produce the syntax</param>
+        /// <param name="writer">The writer to which the syntax is written</param>
+        public abstract void WriteConstructorSyntax(XPathNavigator reflection, SyntaxWriter writer);
+
+        /// <summary>
+        /// Write property syntax
+        /// </summary>
+        /// <param name="reflection">The reflection data used to produce the syntax</param>
+        /// <param name="writer">The writer to which the syntax is written</param>
+        public abstract void WritePropertySyntax(XPathNavigator reflection, SyntaxWriter writer);
+
+        /// <summary>
+        /// Write field syntax
+        /// </summary>
+        /// <param name="reflection">The reflection data used to produce the syntax</param>
+        /// <param name="writer">The writer to which the syntax is written</param>
+        public abstract void WriteFieldSyntax(XPathNavigator reflection, SyntaxWriter writer);
+
+        /// <summary>
+        /// Write event syntax
+        /// </summary>
+        /// <param name="reflection">The reflection data used to produce the syntax</param>
+        /// <param name="writer">The writer to which the syntax is written</param>
+        public abstract void WriteEventSyntax(XPathNavigator reflection, SyntaxWriter writer);
+
+        #endregion
+
+        #region Overrides and other methods
+        //=====================================================================
 
         /// <summary>
         /// Initialize the syntax generator
@@ -321,55 +417,6 @@ namespace Sandcastle.Core.BuildAssembler.SyntaxGenerator
         }
 
         /// <summary>
-        /// Write namespace syntax
-        /// </summary>
-        /// <param name="reflection">The reflection data used to produce the syntax</param>
-        /// <param name="writer">The writer to which the syntax is written</param>
-        public abstract void WriteNamespaceSyntax(XPathNavigator reflection, SyntaxWriter writer);
-
-        /// <summary>
-        /// Write class syntax
-        /// </summary>
-        /// <param name="reflection">The reflection data used to produce the syntax</param>
-        /// <param name="writer">The writer to which the syntax is written</param>
-        public abstract void WriteClassSyntax(XPathNavigator reflection, SyntaxWriter writer);
-
-        /// <summary>
-        /// Write structure syntax
-        /// </summary>
-        /// <param name="reflection">The reflection data used to produce the syntax</param>
-        /// <param name="writer">The writer to which the syntax is written</param>
-        public abstract void WriteStructureSyntax(XPathNavigator reflection, SyntaxWriter writer);
-
-        /// <summary>
-        /// Write interface syntax
-        /// </summary>
-        /// <param name="reflection">The reflection data used to produce the syntax</param>
-        /// <param name="writer">The writer to which the syntax is written</param>
-        public abstract void WriteInterfaceSyntax(XPathNavigator reflection, SyntaxWriter writer);
-
-        /// <summary>
-        /// Write delegate syntax
-        /// </summary>
-        /// <param name="reflection">The reflection data used to produce the syntax</param>
-        /// <param name="writer">The writer to which the syntax is written</param>
-        public abstract void WriteDelegateSyntax(XPathNavigator reflection, SyntaxWriter writer);
-
-        /// <summary>
-        /// Write enumeration syntax
-        /// </summary>
-        /// <param name="reflection">The reflection data used to produce the syntax</param>
-        /// <param name="writer">The writer to which the syntax is written</param>
-        public abstract void WriteEnumerationSyntax(XPathNavigator reflection, SyntaxWriter writer);
-
-        /// <summary>
-        /// Write constructor syntax
-        /// </summary>
-        /// <param name="reflection">The reflection data used to produce the syntax</param>
-        /// <param name="writer">The writer to which the syntax is written</param>
-        public abstract void WriteConstructorSyntax(XPathNavigator reflection, SyntaxWriter writer);
-
-        /// <summary>
         /// Write method syntax
         /// </summary>
         /// <param name="reflection">The reflection data used to produce the syntax</param>
@@ -398,46 +445,31 @@ namespace Sandcastle.Core.BuildAssembler.SyntaxGenerator
         }
 
         /// <summary>
-        /// Write property syntax
-        /// </summary>
-        /// <param name="reflection">The reflection data used to produce the syntax</param>
-        /// <param name="writer">The writer to which the syntax is written</param>
-        public abstract void WritePropertySyntax(XPathNavigator reflection, SyntaxWriter writer);
-
-        /// <summary>
-        /// Write field syntax
-        /// </summary>
-        /// <param name="reflection">The reflection data used to produce the syntax</param>
-        /// <param name="writer">The writer to which the syntax is written</param>
-        public abstract void WriteFieldSyntax(XPathNavigator reflection, SyntaxWriter writer);
-
-        /// <summary>
-        /// Write event syntax
-        /// </summary>
-        /// <param name="reflection">The reflection data used to produce the syntax</param>
-        /// <param name="writer">The writer to which the syntax is written</param>
-        public abstract void WriteEventSyntax(XPathNavigator reflection, SyntaxWriter writer);
-
-        /// <summary>
         /// Write normal method syntax
         /// </summary>
         /// <param name="reflection">The reflection data used to produce the syntax</param>
         /// <param name="writer">The writer to which the syntax is written</param>
-        public virtual void WriteNormalMethodSyntax(XPathNavigator reflection, SyntaxWriter writer) { }
+        public virtual void WriteNormalMethodSyntax(XPathNavigator reflection, SyntaxWriter writer)
+        {
+        }
 
         /// <summary>
         /// Write operator syntax
         /// </summary>
         /// <param name="reflection">The reflection data used to produce the syntax</param>
         /// <param name="writer">The writer to which the syntax is written</param>
-        public virtual void WriteOperatorSyntax(XPathNavigator reflection, SyntaxWriter writer) { }
+        public virtual void WriteOperatorSyntax(XPathNavigator reflection, SyntaxWriter writer)
+        {
+        }
 
         /// <summary>
         /// Write cast syntax
         /// </summary>
         /// <param name="reflection">The reflection data used to produce the syntax</param>
         /// <param name="writer">The writer to which the syntax is written</param>
-        public virtual void WriteCastSyntax(XPathNavigator reflection, SyntaxWriter writer) { }
+        public virtual void WriteCastSyntax(XPathNavigator reflection, SyntaxWriter writer)
+        {
+        }
 
         /// <summary>
         /// Write attached property syntax
@@ -568,5 +600,6 @@ namespace Sandcastle.Core.BuildAssembler.SyntaxGenerator
 
             return false;
         }
+        #endregion
     }
 }

@@ -43,7 +43,8 @@ namespace SandcastleBuilder.PlugIns
     /// <remarks>This uses the <see href="http://www.steelbytes.com/?mid=45">Steel Bytes SBAppLocale</see> tool
     /// to run the HTML Help 1 compiler using the correct locale.</remarks>
     [HelpFileBuilderPlugInExport("DBCS Fix for CHM Builds", IsConfigurable = true,
-      AdditionalCopyrightInfo = "SBAppLocale is Copyright \xA9 2005-2013 Steel Bytes, All Rights Reserved",
+      Version = AssemblyInfo.Version, Copyright = AssemblyInfo.Copyright + "\r\nSBAppLocale is Copyright \xA9 " +
+      "2005-2013 Steel Bytes, All Rights Reserved",
       Description = "This plug-in is used to modify the HTML files and alter the build so as to overcome the " +
         "encoding issues encountered when building HTML Help 1 (.chm) files for various foreign languages.")]
     public sealed class DbcsFixPlugIn : IPlugIn

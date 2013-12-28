@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : IPlugInMetadata.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/17/2013
+// Updated : 12/27/2013
 // Note    : Copyright 2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -59,11 +59,5 @@ namespace SandcastleBuilder.Utils.BuildComponent
         /// This read-only property returns the copyright information for the plug-in
         /// </summary>
         string Copyright { get; }
-
-        /// <summary>
-        /// This read-only property returns additional copyright information for the plug-in
-        /// </summary>
-        /// <value>This value is user-defined and is set on the plug-in class itself</value>
-        string AdditionalCopyrightInfo { get; }
     }
 }

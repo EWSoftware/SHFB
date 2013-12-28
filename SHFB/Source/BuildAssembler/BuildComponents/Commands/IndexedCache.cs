@@ -134,7 +134,7 @@ namespace Microsoft.Ddue.Tools.Commands
 
         /// <summary>
         /// This handles garbage collection to ensure proper disposal of the indexed cache if not done
-        /// explicity with <see cref="Dispose()"/>.
+        /// explicitly with <see cref="Dispose()"/>.
         /// </summary>
         ~IndexedCache()
         {

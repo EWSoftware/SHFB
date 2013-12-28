@@ -75,30 +75,6 @@ namespace SandcastleBuilder.Utils.BuildComponent
         }
         #endregion
 
-        #region Events
-        //=====================================================================
-
-        /// <summary>
-        /// This event is raised when the dictionary is modified
-        /// </summary>
-        public event ListChangedEventHandler DictionaryChanged;
-
-        /// <summary>
-        /// This raises the <see cref="DictionaryChanged"/> event.
-        /// </summary>
-        /// <param name="e">The event arguments</param>
-        /// <remarks>The dictionary doesn't raise events automatically so this is raised manually as needed.</remarks>
-        internal void OnDictionaryChanged(ListChangedEventArgs e)
-        {
-            var handler = DictionaryChanged;
-
-            if(handler != null)
-                handler(this, e);
-
-            isDirty = true;
-        }
-        #endregion
-
         #region Constructor
         //=====================================================================
 

@@ -37,7 +37,8 @@ namespace SandcastleBuilder.PlugIns
     /// This plug-in class is used to add bibliography support to the topics
     /// </summary>
     [HelpFileBuilderPlugInExport("Bibliography Support", IsConfigurable = true,
-        Description = "This plug in is used to add bibliography support to the help file topics.")]
+      Version = AssemblyInfo.Version, Copyright = AssemblyInfo.Copyright,
+      Description = "This plug in is used to add bibliography support to the help file topics.")]
     public sealed class BibliographySupportPlugIn : SandcastleBuilder.Utils.BuildComponent.IPlugIn
     {
         #region Private data members
@@ -167,16 +168,14 @@ namespace SandcastleBuilder.PlugIns
             configFile.Load(configFilename);
 
 
-            // To configure Sandcastle, find the main XSLT component (Microsoft.Ddue.Tools.TransformComponent) in
-            // the configuration file and add a new argument to it:
-            // <argument key='bibliographyData' value='../Data/bibliography.xml' />
+            // To configure Sandcastle, find the main XSL Transform Component in the configuration file and add
+            // a new argument to it: <argument key='bibliographyData' value='../Data/bibliography.xml' />
             // Update sandcastle.config and conceptual.config if it exists.
-
             transform = configFile.SelectSingleNode("configuration/dduetools/builder/components/component[" +
-                "@type='Microsoft.Ddue.Tools.TransformComponent']/transform");
+                "@id='XSL Transform Component']/transform");
 
             if(transform == null)
-                throw new BuilderException("BIB0004", "Unable to locate TransformComponent configuration in " +
+                throw new BuilderException("BIB0004", "Unable to locate XSL Transform Component configuration in " +
                     configFilename);
 
             argument = configFile.CreateElement("argument");

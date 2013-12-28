@@ -3,9 +3,11 @@
 // See http://www.microsoft.com/resources/sharedsource/licensingbasics/sharedsourcelicenses.mspx.
 // All other rights reserved.
 
+// Change history:
+// 12/24/2013 - EFW - Updated the build component to be discoverable via MEF
+
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -26,6 +28,23 @@ namespace Microsoft.Ddue.Tools
     /// </summary>
     public class SnippetComponent : BuildComponentCore
     {
+        #region Build component factory for MEF
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to create a new instance of the build component
+        /// </summary>
+        [BuildComponentExport("Snippet Code Component")]
+        public sealed class Factory : BuildComponentFactory
+        {
+            /// <inheritdoc />
+            public override BuildComponentCore Create()
+            {
+                return new SnippetComponent(base.BuildAssembler);
+            }
+        }
+        #endregion
+
         #region Private members
         /// <summary>
         /// Regex to validate the snippet references.
@@ -91,18 +110,23 @@ namespace Microsoft.Ddue.Tools
         #endregion
 
         #region Constructor
+        //=====================================================================
 
         /// <summary>
-        /// Constructor for SnippetComponent class.
+        /// Constructor
         /// </summary>
-        /// <param name="assembler">An instance of Build Assembler</param>
-        /// <param name="configuration">configuration to be parsed for information related to snippets</param>
-        public SnippetComponent(BuildAssemblerCore assembler, XPathNavigator configuration)
-            : base(assembler, configuration)
+        /// <param name="buildAssembler">A reference to the build assembler</param>
+        protected SnippetComponent(BuildAssemblerCore buildAssembler) : base(buildAssembler)
         {
-            Debug.Assert(assembler != null);
-            Debug.Assert(configuration != null);
+        }
+        #endregion
 
+        #region Method overrides
+        //=====================================================================
+
+        /// <inheritdoc />
+        public override void Initialize(XPathNavigator configuration)
+        {
             // Get the parsnip examples location.
             XPathNodeIterator examplesNode = configuration.Select("examples/example");
 
@@ -229,10 +253,6 @@ namespace Microsoft.Ddue.Tools
             // create the snippet cache
             snippetCache = new SnippetCache(100, approvedSnippetIndex, languageMap, languages, excludedUnits);
         }
-        #endregion
-
-        #region Public methods
-        //=====================================================================
 
         /// <summary>
         /// Apply method to perform the actual work of the component.

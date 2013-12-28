@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : AdditionalReferenceLinksPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/17/2013
+// Updated : 12/27/2013
 // Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -46,6 +46,7 @@ namespace SandcastleBuilder.PlugIns
     /// party help in Help 2/MS Help Viewer collections or additional online MSDN content.
     /// </summary>
     [HelpFileBuilderPlugInExport("Additional Reference Links", IsConfigurable = true,
+      Version = AssemblyInfo.Version, Copyright = AssemblyInfo.Copyright,
       Description = "This plug-in is used to add additional reference link targets to the Reflection Index " +
         "Data and Resolve Reference Links build component so that links can be created to other third " +
         "party help in a Help 2 collection, MS Help Viewer collection, or additional online MSDN content.")]
@@ -201,8 +202,8 @@ namespace SandcastleBuilder.PlugIns
                 var rn = builder.ReferencedNamespaces;
 
                 HashSet<string> validNamespaces = new HashSet<string>(Directory.EnumerateFiles(Path.Combine(
-                  builder.HelpFileBuilderFolder, @"Data\Reflection"), "*.xml", SearchOption.AllDirectories).Select(
-                  f => Path.GetFileNameWithoutExtension(f)));
+                  BuildComponentManager.HelpFileBuilderFolder, @"Data\Reflection"), "*.xml",
+                  SearchOption.AllDirectories).Select(f => Path.GetFileNameWithoutExtension(f)));
 
                 foreach(ReferenceLinkSettings vs in otherLinks)
                     if(!String.IsNullOrEmpty(vs.ReflectionFilename))
@@ -282,7 +283,7 @@ namespace SandcastleBuilder.PlugIns
                 // type but we only need the first one.  This only appears in the reference build's configuration
                 // file.
                 component = configFile.SelectSingleNode("configuration/dduetools/builder/components/component[" +
-                    "@type='Microsoft.Ddue.Tools.CopyFromIndexComponent']/index");
+                    "@id='Copy From Index Component']/index");
 
                 // If not found, try for the cached version
                 if(component == null)
@@ -312,13 +313,7 @@ namespace SandcastleBuilder.PlugIns
             }
 
             // Add them to the Resolve Reference Links component
-            matchingComponents = configFile.SelectNodes(
-                "//component[@type='Microsoft.Ddue.Tools.ResolveReferenceLinksComponent2']");
-
-            // If not found, try for the cached version
-            if(matchingComponents.Count == 0)
-                matchingComponents = configFile.SelectNodes("//component[starts-with(@id, " +
-                    "'Resolve Reference Links ')]");
+            matchingComponents = configFile.SelectNodes("//component[starts-with(@id, 'Resolve Reference Links')]");
 
             if(matchingComponents.Count == 0)
                 throw new BuilderException("ARL0005", "Unable to locate Resolve Reference Links component in " +

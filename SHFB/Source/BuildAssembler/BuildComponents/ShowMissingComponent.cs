@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Components
 // File    : ShowMissingComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/22/2012
-// Note    : Copyright 2007-2012, Eric Woodruff, All rights reserved
+// Updated : 12/24/2013
+// Note    : Copyright 2007-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a build component that is used to add "missing" notes for missing summary, parameter,
@@ -23,13 +23,13 @@
 // 1.8.0.1  01/16/2009  EFW  Added support for missing <include> target docs
 // 1.8.0.3  11/19/2009  EFW  Added support for auto-documenting Dispose methods
 // 2.7.3.0  12/22/2012  EFW  Moved this component into the Sandcastle BuildComponents project
+// -------  12/24/2013  EFW  Updated the build component to be discoverable via MEF
 //===============================================================================================================
 
 using System;
 using System.Configuration;
 using System.Diagnostics;
 using System.Globalization;
-using System.IO;
 using System.Net;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -49,8 +49,7 @@ namespace Microsoft.Ddue.Tools
     /// <code lang="xml" title="Example configuration">
     /// &lt;!-- Show missing documentation component configuration.  This must
     ///      appear before the TransformComponent. --&gt;
-    /// &lt;component type="Microsoft.Ddue.Tools.ShowMissingComponent"
-    ///   assembly="%SHFBROOT%\BuildComponents.dll"&gt;
+    /// &lt;component id="Show Missing Documentation Component"&gt;
     ///     &lt;!-- All elements are optional. --&gt;
     ///
     ///     &lt;!-- Auto-document constructors (true by default) --&gt;
@@ -87,6 +86,32 @@ namespace Microsoft.Ddue.Tools
     /// </example>
     public class ShowMissingComponent : BuildComponentCore
     {
+        #region Build component factory for MEF
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to create a new instance of the build component
+        /// </summary>
+        [BuildComponentExport("Show Missing Documentation Component")]
+        public sealed class Factory : BuildComponentFactory
+        {
+            /// <summary>
+            /// Constructor
+            /// </summary>
+            public Factory()
+            {
+                base.ReferenceBuildPlacement = new ComponentPlacement(PlacementAction.Before,
+                    "XSL Transform Component");
+            }
+
+            /// <inheritdoc />
+            public override BuildComponentCore Create()
+            {
+                return new ShowMissingComponent(base.BuildAssembler);
+            }
+        }
+        #endregion
+
         #region Private data members
         //=====================================================================
 
@@ -104,13 +129,20 @@ namespace Microsoft.Ddue.Tools
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="assembler">A reference to the build assembler.</param>
-        /// <param name="configuration">The configuration information</param>
+        /// <param name="buildAssembler">A reference to the build assembler</param>
+        protected ShowMissingComponent(BuildAssemblerCore buildAssembler) : base(buildAssembler)
+        {
+        }
+        #endregion
+
+        #region Method overrides
+        //=====================================================================
+
+        /// <inheritdoc />
         /// <remarks>See the <see cref="ShowMissingComponent"/> class topic for an example of the configuration</remarks>
         /// <exception cref="ConfigurationErrorsException">This is thrown if an error is detected in the
         /// configuration.</exception>
-        public ShowMissingComponent(BuildAssemblerCore assembler, XPathNavigator configuration) :
-          base(assembler, configuration)
+        public override void Initialize(XPathNavigator configuration)
         {
             XPathNavigator nav;
             string value = null;
@@ -118,7 +150,7 @@ namespace Microsoft.Ddue.Tools
             Assembly asm = Assembly.GetExecutingAssembly();
             FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(asm.Location);
 
-            base.WriteMessage(MessageLevel.Info, "\r\n    [{0}, version {1}]\r\n    Show Missing Documentation " +
+            base.WriteMessage(MessageLevel.Info, "[{0}, version {1}]\r\n    Show Missing Documentation " +
                 "Component. Copyright \xA9 2006-2012, Eric Woodruff, All Rights Reserved\r\n" +
                 "    http://SHFB.CodePlex.com", fvi.ProductName, fvi.ProductVersion);
 
@@ -245,10 +277,6 @@ namespace Microsoft.Ddue.Tools
                 base.WriteMessage(MessageLevel.Info, "  All Show Missing options are disabled.  The component " +
                     "will do nothing.");
         }
-        #endregion
-
-        #region Apply the component
-        //=====================================================================
 
         /// <summary>
         /// This is implemented to add the missing documentation tags

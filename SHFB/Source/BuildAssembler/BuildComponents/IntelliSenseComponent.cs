@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Components
 // File    : IntelliSenseComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/12/2013
+// Updated : 12/23/2013
 // Note    : Copyright 2007-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -22,6 +22,7 @@
 // 1.8.0.3  07/04/2009  EFW  Add parameter to Dispose() to match base class
 // 2.7.3.0  12/21/2012  EFW  Replaced the Microsoft IntelliSense build component with my version
 // 2.7.5.0  11/12/2013  EFW  Added support for exporting code contracts XML comments elements
+// -------  12/23/2013  EFW  Updated the build component to be discoverable via MEF
 //===============================================================================================================
 
 using System;
@@ -52,8 +53,7 @@ namespace Microsoft.Ddue.Tools
     /// <code lang="xml" title="Example configuration">
     /// &lt;!-- IntelliSense component configuration.  This must appear
     ///      before the TransformComponent. --&gt;
-    /// &lt;component type="Microsoft.Ddue.Tools.IntelliSenseComponent"
-    ///   assembly="%SHFBROOT%\BuildComponents.dll"&gt;
+    /// &lt;component id="IntelliSense Component"&gt;
     ///  &lt;!-- Output options (optional)
     ///       Attributes:
     ///          Include Namespaces (false by default)
@@ -66,6 +66,73 @@ namespace Microsoft.Ddue.Tools
     /// </example>
     public class IntelliSenseComponent : BuildComponentCore
     {
+        #region Build component factory for MEF
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to create a new instance of the build component
+        /// </summary>
+        [BuildComponentExport("IntelliSense Component", DesignerVisible = true, IsConfigurable = true,
+          Version = AssemblyInfo.Version, Copyright = AssemblyInfo.Copyright,
+          Description = "This build component is used to extract the XML comments into files that can be used " +
+            "for IntelliSense.  Only the basic set of tags needed for IntelliSense are exported and only for " +
+            "documented API members.")]
+        public sealed class Factory : BuildComponentFactory
+        {
+            /// <summary>
+            /// Constructor
+            /// </summary>
+            public Factory()
+            {
+                base.ReferenceBuildPlacement = new ComponentPlacement(PlacementAction.After,
+                    "Show Missing Documentation Component");
+            }
+
+            /// <inheritdoc />
+            public override BuildComponentCore Create()
+            {
+                return new IntelliSenseComponent(base.BuildAssembler);
+            }
+
+            /// <inheritdoc />
+            public override string ConfigureComponent(string currentConfiguration)
+            {
+                using(IntelliSenseConfigDlg dlg = new IntelliSenseConfigDlg(currentConfiguration))
+                {
+                    if(dlg.ShowDialog() == DialogResult.OK)
+                        currentConfiguration = dlg.Configuration;
+                }
+
+                return currentConfiguration;
+            }
+
+            /// <inheritdoc />
+            public override string DefaultConfiguration
+            {
+                get
+                {
+                    return @"<!-- Output options (optional)
+  Attributes:
+    Include namespaces (false by default)
+    Namespaces comments filename (""Namespaces"" if not specified or empty)
+    Output folder (current folder if not specified or empty) -->
+<output includeNamespaces=""false"" namespacesFile=""Namespaces"" folder=""{@OutputFolder}"" />";
+                }
+            }
+
+            /// <inheritdoc />
+            /// <remarks>Indicate a dependency on the missing documentation component as it will produce more
+            /// complete documentation with all the proper elements present.</remarks>
+            public override IEnumerable<string> Dependencies
+            {
+                get
+                {
+                    return new List<string> { "Show Missing Documentation Component" };
+                }
+            }
+        }
+        #endregion
+
         #region Private data members
         //=====================================================================
 
@@ -84,12 +151,19 @@ namespace Microsoft.Ddue.Tools
         //=====================================================================
 
         /// <summary>
-        /// Constructor.
+        /// Constructor
         /// </summary>
-        /// <param name="assembler">A reference to the build assembler.</param>
-        /// <param name="configuration">The configuration information</param>
-        public IntelliSenseComponent(BuildAssemblerCore assembler, XPathNavigator configuration) :
-          base(assembler, configuration)
+        /// <param name="buildAssembler">A reference to the build assembler</param>
+        protected IntelliSenseComponent(BuildAssemblerCore buildAssembler) : base(buildAssembler)
+        {
+        }
+        #endregion
+
+        #region Method overrides
+        //=====================================================================
+
+        /// <inheritdoc />
+        public override void Initialize(XPathNavigator configuration)
         {
             XPathNavigator nav;
             string attrValue;
@@ -97,7 +171,7 @@ namespace Microsoft.Ddue.Tools
             Assembly asm = Assembly.GetExecutingAssembly();
             FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(asm.Location);
 
-            base.WriteMessage(MessageLevel.Info, "\r\n    [{0}, version {1}]\r\n    IntelliSense Component. " +
+            base.WriteMessage(MessageLevel.Info, "[{0}, version {1}]\r\n    IntelliSense Component. " +
                 "Copyright \xA9 2006-2012, Eric Woodruff, All Rights Reserved.\r\n    http://SHFB.CodePlex.com",
                 fvi.ProductName, fvi.ProductVersion);
 
@@ -145,16 +219,8 @@ namespace Microsoft.Ddue.Tools
                     namespacesFilename = attrValue;
             }
         }
-        #endregion
 
-        #region Apply the component
-        //=====================================================================
-
-        /// <summary>
-        /// This is implemented to extract the IntelliSense comments.
-        /// </summary>
-        /// <param name="document">The XML document with which to work.</param>
-        /// <param name="key">The key (member name) of the item being documented.</param>
+        /// <inheritdoc />
         public override void Apply(XmlDocument document, string key)
         {
             XPathNavigator navComments;
@@ -173,6 +239,27 @@ namespace Microsoft.Ddue.Tools
                 foreach(XPathNavigator asmName in navComments.Select(assemblyExpression))
                     this.WriteComments(key, asmName.Value, navComments);
         }
+
+        /// <summary>
+        /// Write out closing tags and close all open XML writers when disposed.
+        /// </summary>
+        /// <param name="disposing">Pass true to dispose of the managed and unmanaged resources or false to just
+        /// dispose of the unmanaged resources.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if(disposing)
+                foreach(XmlWriter writer in writers.Values)
+                {
+                    writer.WriteEndDocument();
+                    writer.Close();
+                }
+
+            base.Dispose(disposing);
+        }
+        #endregion
+
+        #region Helper methods
+        //=====================================================================
 
         /// <summary>
         /// Write the comments to the assembly's XML comments file
@@ -284,48 +371,6 @@ namespace Microsoft.Ddue.Tools
                 base.WriteMessage(key, MessageLevel.Error, "IntelliSense data was not valid XML. The error " +
                     "message is: {0}", xmlEx.Message);
             }
-        }
-        #endregion
-
-        #region Dispose of the component
-        //=====================================================================
-
-        /// <summary>
-        /// Write out closing tags and close all open XML writers when disposed.
-        /// </summary>
-        /// <param name="disposing">Pass true to dispose of the managed and unmanaged resources or false to just
-        /// dispose of the unmanaged resources.</param>
-        protected override void Dispose(bool disposing)
-        {
-            if(disposing)
-                foreach(XmlWriter writer in writers.Values)
-                {
-                    writer.WriteEndDocument();
-                    writer.Close();
-                }
-
-            base.Dispose(disposing);
-        }
-        #endregion
-
-        #region Static configuration method for use with SHFB
-        //=====================================================================
-
-        /// <summary>
-        /// This static method is used by the Sandcastle Help File Builder to let the component perform its own
-        /// configuration.
-        /// </summary>
-        /// <param name="currentConfig">The current configuration XML fragment</param>
-        /// <returns>A string containing the new configuration XML fragment</returns>
-        public static string ConfigureComponent(string currentConfig)
-        {
-            using(IntelliSenseConfigDlg dlg = new IntelliSenseConfigDlg(currentConfig))
-            {
-                if(dlg.ShowDialog() == DialogResult.OK)
-                    currentConfig = dlg.Configuration;
-            }
-
-            return currentConfig;
         }
         #endregion
     }

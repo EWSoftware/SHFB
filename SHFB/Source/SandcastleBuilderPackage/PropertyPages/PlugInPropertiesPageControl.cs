@@ -2,11 +2,11 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : PlugInPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 12/20/2013
+// Updated : 12/27/2013
 // Note    : Copyright 2011-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This user control is used to edit the Plug-In category properties
+// This user control is used to edit the Plug-Ins category properties
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
 // distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
@@ -241,11 +241,9 @@ namespace SandcastleBuilder.Package.PropertyPages
 
                 if(plugIn != null)
                 {
-                    txtPlugInCopyright.Text = plugIn.Metadata.Copyright +
-                        (String.IsNullOrWhiteSpace(plugIn.Metadata.AdditionalCopyrightInfo) ? String.Empty :
-                        "\r\n" + plugIn.Metadata.AdditionalCopyrightInfo);
+                    txtPlugInCopyright.Text = plugIn.Metadata.Copyright;
                     txtPlugInVersion.Text = String.Format(CultureInfo.CurrentCulture, "Version {0}",
-                        plugIn.Metadata.Version);
+                        plugIn.Metadata.Version ?? "0.0.0.0");
                     txtPlugInDescription.Text = plugIn.Metadata.Description;
                 }
             }
@@ -335,15 +333,25 @@ namespace SandcastleBuilder.Package.PropertyPages
                     plugInConfig = currentConfigs[key];
                     currentConfig = plugInConfig.Configuration;
 
-                    // Plug-in instances are shared.  The container will dispose of the plug-in when it is
-                    // disposed of.
-                    newConfig = plugIn.Value.ConfigurePlugIn(currentConfigs.ProjectFile, currentConfig);
-
-                    // Only store it if new or if it changed
-                    if(currentConfig != newConfig)
+                    try
                     {
-                        plugInConfig.Configuration = newConfig;
-                        this.IsDirty = true;
+                        // Plug-in instances are shared.  The container will dispose of the plug-in when it is
+                        // disposed of.
+                        newConfig = plugIn.Value.ConfigurePlugIn(currentConfigs.ProjectFile, currentConfig);
+
+                        // Only store it if new or if it changed
+                        if(currentConfig != newConfig)
+                        {
+                            plugInConfig.Configuration = newConfig;
+                            this.IsDirty = true;
+                        }
+                    }
+                    catch(Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine(ex.ToString());
+
+                        MessageBox.Show("Unexpected error attempting to configure component: " + ex.Message,
+                            messageBoxTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
                 else

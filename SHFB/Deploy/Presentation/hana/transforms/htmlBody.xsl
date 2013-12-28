@@ -339,7 +339,7 @@
 				<label id="{@name}Label" for="languageFilterImage" style="display: none;">
 					<include item="languageFilter">
 						<parameter>
-							<include item="{@label}Label"/>
+							<include item="{@name}Label"/>
 						</parameter>
 					</include>
 				</label>
@@ -400,7 +400,7 @@
 						</includeAttribute>
 					</img>
 					<xsl:text>&#xa0;</xsl:text>
-					<include item="{@label}Label" />
+					<include item="{@name}Label" />
 				</div>
 				<br />
 			</xsl:for-each>

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Components
 // File    : MSHelpAttrComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/22/2012
-// Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
+// Updated : 12/24/2013
+// Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a build component that is used to add additional MS Help 2 attributes to the XML data
@@ -19,6 +19,7 @@
 // 1.6.0.7  04/07/2008  EFW  Created the code
 // 1.9.0.0  06/19/2010  EFW  Attributes are now optional.  The component will do nothing if none are specified
 // 2.7.3.0  12/22/2012  EFW  Moved this component into the Sandcastle BuildComponents project
+// -------  12/24/2013  EFW  Updated the build component to be discoverable via MEF
 //===============================================================================================================
 
 using System;
@@ -35,15 +36,14 @@ using Sandcastle.Core.BuildAssembler.BuildComponent;
 namespace Microsoft.Ddue.Tools
 {
     /// <summary>
-    /// This build component is used to add additional MS Help 2 attributes
-    /// to the XML data island in each generated API topic.
+    /// This build component is used to add additional MS Help 2 attributes to the XML data island in each
+    /// generated API topic.
     /// </summary>
     /// <example>
     /// <code lang="xml" title="Example configuration">
     /// &lt;!-- MS Help 2 attribute configuration.  This must appear after
     ///      the TransformComponent. --&gt;
-    /// &lt;component type="Microsoft.Ddue.Tools.MSHelpAttrComponent"
-    ///   assembly="%SHFBROOT%\BuildComponents.dll"&gt;
+    /// &lt;component id="Help 2 Help Attribute Component"&gt;
     ///     &lt;!-- Additional attributes.  If no attributes are specified,
     ///          the component will do nothing. --&gt;
     ///     &lt;attributes&gt;
@@ -58,6 +58,25 @@ namespace Microsoft.Ddue.Tools
     /// </example>
     public class MSHelpAttrComponent : BuildComponentCore
     {
+        #region Build component factory for MEF
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to create a new instance of the build component
+        /// </summary>
+        /// <remarks>The help file builder project contains properties for this component so it isn't exposed or
+        /// configurable here.</remarks>
+        [BuildComponentExport("Help 2 Help Attribute Component")]
+        public sealed class Factory : BuildComponentFactory
+        {
+            /// <inheritdoc />
+            public override BuildComponentCore Create()
+            {
+                return new MSHelpAttrComponent(base.BuildAssembler);
+            }
+        }
+        #endregion
+
         #region Private data members
         //=====================================================================
 
@@ -70,13 +89,20 @@ namespace Microsoft.Ddue.Tools
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="assembler">A reference to the build assembler.</param>
-        /// <param name="configuration">The configuration information</param>
+        /// <param name="buildAssembler">A reference to the build assembler</param>
+        protected MSHelpAttrComponent(BuildAssemblerCore buildAssembler) : base(buildAssembler)
+        {
+        }
+        #endregion
+
+        #region Method overrides
+        //=====================================================================
+
+        /// <inheritdoc />
         /// <remarks>See the <see cref="MSHelpAttrComponent"/> class topic for an example of the configuration</remarks>
         /// <exception cref="ConfigurationErrorsException">This is thrown if an error is detected in the
         /// configuration.</exception>
-        public MSHelpAttrComponent(BuildAssemblerCore assembler, XPathNavigator configuration) :
-          base(assembler, configuration)
+        public override void Initialize(XPathNavigator configuration)
         {
             XPathNodeIterator attrs;
             string name, value;
@@ -113,10 +139,6 @@ namespace Microsoft.Ddue.Tools
                 base.WriteMessage(MessageLevel.Info, "Loaded {0} attributes", attributes.Count);
             }
         }
-        #endregion
-
-        #region Apply the component
-        //=====================================================================
 
         /// <summary>
         /// This is implemented to add the attributes to the XML data island.

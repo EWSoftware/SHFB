@@ -3,14 +3,17 @@
 // See http://www.microsoft.com/resources/sharedsource/licensingbasics/sharedsourcelicenses.mspx.
 // All other rights reserved.
 
+// Change history:
+// 12/24/2013 - EFW - Updated the build component to be discoverable via MEF
+
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
-using System.Xml;
-using System.Xml.XPath;
 using System.IO;
 using System.Text;
+using System.Xml;
+using System.Xml.XPath;
 
 using Sandcastle.Core.BuildAssembler;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
@@ -24,6 +27,23 @@ namespace Microsoft.Ddue.Tools
     /// </summary>
     public class PlatformsComponent : BuildComponentCore
     {
+        #region Build component factory for MEF
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to create a new instance of the build component
+        /// </summary>
+        [BuildComponentExport("Platforms Component")]
+        public sealed class Factory : BuildComponentFactory
+        {
+            /// <inheritdoc />
+            public override BuildComponentCore Create()
+            {
+                return new PlatformsComponent(base.BuildAssembler);
+            }
+        }
+        #endregion
+
         private Dictionary<string, Dictionary<string, VersionFilter>> versionFilters = new Dictionary<string, Dictionary<string, VersionFilter>>();
 
         private XPathExpression platformQuery = XPathExpression.Compile("/platforms/platform");
@@ -41,18 +61,24 @@ namespace Microsoft.Ddue.Tools
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="assembler">The build assembler instance</param>
-        /// <param name="configuration">The component configuration</param>
-        public PlatformsComponent(BuildAssemblerCore assembler, XPathNavigator configuration) :
-          base(assembler, configuration)
+        /// <param name="buildAssembler">A reference to the build assembler</param>
+        protected PlatformsComponent(BuildAssemblerCore buildAssembler) : base(buildAssembler)
+        {
+        }
+
+        /// <inheritdoc />
+        public override void Initialize(XPathNavigator configuration)
         {
             // get the filter files
             XPathNodeIterator filterNodes = configuration.Select("filter");
+
             foreach (XPathNavigator filterNode in filterNodes)
             {
                 string filterFiles = filterNode.GetAttribute("files", String.Empty);
-                if ((filterFiles == null) || (filterFiles.Length == 0))
+
+                if(filterFiles == null || filterFiles.Length == 0)
                     throw new ConfigurationErrorsException("The filter/@files attribute must specify a path.");
+
                 ParseDocuments(filterFiles);
             }
         }

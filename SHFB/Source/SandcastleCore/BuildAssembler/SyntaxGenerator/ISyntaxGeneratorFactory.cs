@@ -30,6 +30,6 @@ namespace Sandcastle.Core.BuildAssembler.SyntaxGenerator
         /// This is implemented to provide a syntax generator factory
         /// </summary>
         /// <returns>A new instance of a syntax generator</returns>
-        SyntaxGeneratorBase Create();
+        SyntaxGeneratorCore Create();
     }
 }

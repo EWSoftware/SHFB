@@ -72,6 +72,7 @@ namespace Test.PlugIns
     /// is disposed of.
     /// </remarks>
     [HelpFileBuilderPlugInExport("ZZZ - TODO: Add your plug-in's unique ID here",
+      Version = AssemblyInfo.Version, Copyright = AssemblyInfo.Copyright,
       Description = "TODO: Add your plug-in description here")]
     public sealed class TestPlugIn : IPlugIn
     {

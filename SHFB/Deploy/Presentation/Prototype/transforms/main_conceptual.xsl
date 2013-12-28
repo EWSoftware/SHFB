@@ -307,7 +307,7 @@
 					<select id="languageSelector" onchange="var names = this.value.split(' '); toggleVisibleLanguage(names[1]); switchLanguage(names, this.value);">
 						<xsl:for-each select="$languages/language">
 							<option value="{@name} {@style}">
-								<include item="{@label}Label" />
+								<include item="{@name}Label" />
 							</option>
 						</xsl:for-each>
 					</select>

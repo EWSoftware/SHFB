@@ -4,6 +4,7 @@
 // All other rights reserved.
 
 // 01/18/2013 - EFW - Moved CopyFromFilesCommand into its own file.
+// 12/23/2013 - EFW - Updated the build component to be discoverable via MEF
 
 using System;
 using System.Collections.Generic;
@@ -24,6 +25,23 @@ namespace Microsoft.Ddue.Tools
     /// </summary>
     public class CopyFromFilesComponent : BuildComponentCore
     {
+        #region Build component factory for MEF
+        //=====================================================================
+
+        /// <summary>
+        /// This is used to create a new instance of the build component
+        /// </summary>
+        [BuildComponentExport("Copy From Files Component")]
+        public sealed class Factory : BuildComponentFactory
+        {
+            /// <inheritdoc />
+            public override BuildComponentCore Create()
+            {
+                return new CopyFromFilesComponent(base.BuildAssembler);
+            }
+        }
+        #endregion
+
         #region Private data members
         //=====================================================================
 
@@ -34,9 +52,20 @@ namespace Microsoft.Ddue.Tools
         #region Constructor
         //=====================================================================
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="buildAssembler">A reference to the build assembler</param>
+        protected CopyFromFilesComponent(BuildAssemblerCore buildAssembler) : base(buildAssembler)
+        {
+        }
+        #endregion
+
+        #region Method overrides
+        //=====================================================================
+
         /// <inheritdoc />
-        public CopyFromFilesComponent(BuildAssemblerCore assembler, XPathNavigator configuration) :
-          base(assembler, configuration)
+        public override void Initialize(XPathNavigator configuration)
         {
             XPathNodeIterator copyNodes = configuration.Select("copy");
 
@@ -75,10 +104,6 @@ namespace Microsoft.Ddue.Tools
 
             base.WriteMessage(MessageLevel.Info, "Loaded {0} copy commands", copyCommands.Count);
         }
-        #endregion
-
-        #region Method overrides
-        //=====================================================================
 
         /// <inheritdoc />
         public override void Apply(XmlDocument document, string key)

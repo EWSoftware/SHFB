@@ -39,9 +39,10 @@ namespace SandcastleBuilder.PlugIns
     /// <c>&lt;tocexclude /&gt;</c> XML comment tag.  The excluded items are still accessible in the help file
     /// via other topic links.
     /// </summary>
-    [HelpFileBuilderPlugInExport("Table of Contents Exclusion", Description = "This plug-in can be used to " +
-      "exclude API members from the table of contents via the <tocexclude /> XML comment tag.  The excluded " +
-      "items are still accessible in the help file via other topic links.")]
+    [HelpFileBuilderPlugInExport("Table of Contents Exclusion", Version = AssemblyInfo.Version,
+      Copyright = AssemblyInfo.Copyright, Description = "This plug-in can be used to exclude API members from " +
+      "the table of contents via the <tocexclude /> XML comment tag.  The excluded items are still accessible " +
+      "in the help file via other topic links.")]
     public sealed class TocExcludePlugIn : IPlugIn
     {
         #region Private data members

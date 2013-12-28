@@ -2914,10 +2914,7 @@ namespace SandcastleBuilder.Utils
             references.ListChanged += ItemList_ListChanged;
 
             componentConfigs = new ComponentConfigurationDictionary(this);
-            componentConfigs.DictionaryChanged += ItemList_ListChanged;
-
             plugInConfigs = new PlugInConfigurationDictionary(this);
-            plugInConfigs.DictionaryChanged += ItemList_ListChanged;
 
             apiFilter = new ApiFilterCollection(this);
             apiFilter.ListChanged += ItemList_ListChanged;
