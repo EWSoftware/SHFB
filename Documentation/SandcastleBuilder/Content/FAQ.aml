@@ -57,8 +57,6 @@ cannot do that.  Why?</link></listItem>
         <list class="bullet">
             <listItem><link xlink:href="#BuildTools">Why does the build fail
 telling me that it cannot find the Sandcastle or HTML help compiler tools?</link></listItem>
-            <listItem><link xlink:href="#BadVersion">Why does the build fail
-telling me that it cannot find the most current version of Sandcastle?</link></listItem>
             <listItem><link xlink:href="#MissingDLL">Why does my build fail
 with an error saying that it cannot find an assembly?</link></listItem>
             <listItem><link xlink:href="#UnresolvedAssembly">Why does my build
@@ -414,31 +412,6 @@ on where to download the required tools.  If you have the tools installed, but
 in a non-standard location, you may need to specify the paths to the tools.
 See the <link xlink:href="e6fcfa33-e7ee-430a-abfe-6b7962e6d068" /> topic for
 more information.</definition>
-
-    <definedTerm address="BadVersion">Why does the build fail telling me that
-it cannot find the most current version of Sandcastle?</definedTerm>
-    <definition><para>First, be sure that you have the most recent version of
-Sandcastle installed.  This can be confirmed by running
-<application>MRefBuilder.exe</application> from the command line and making sure
-that the version number that it reports is the same as the one expected by
-the help file builder.</para>
-
-	<para>Also check the top of the log file to see where it found the copy of
-Sandcastle that it tried to use.  A common cause of finding an outdated
-version of Sandcastle is if you install the Visual Studio 2005 SDK.  It
-contains an outdated version of Sandcastle and it resets the
-<environmentVariable>DXROOT</environmentVariable> environment variable to
-point at its copy.  You can edit the environment variable to point at the
-latest version of Sandcastle or reinstall the latest version so that it sets
-the variable back to the right location.</para>
-
-<alert class="note">
-  <para>There may be two copies of the <environmentVariable>DXROOT</environmentVariable>
-environment variable: one user copy and one system copy.  If this is the case,
-delete the user copy and make sure that the system copy is pointing at the
-latest release of Sandcastle (the one from Microsoft, not the help file
-builder).  You may need to reboot in order for the changes to take effect.</para>
-</alert></definition>
 
     <definedTerm address="MissingDLL">Why does my build fail with an error
 saying that it cannot find an assembly?</definedTerm>

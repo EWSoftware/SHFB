@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : VersionBuilderPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/17/2013
+// Updated : 12/28/2013
 // Note    : Copyright 2007-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -20,6 +20,7 @@
 // 1.8.0.0  08/13/2008  EFW  Updated to support the new project format
 // 1.9.0.0  06/27/2010  EFW  Added support for /rip option
 // -------  12/17/2013  EFW  Updated to use MEF for the plug-ins
+//          12/28/2013  EFW  Updated to run VersionBuilder tool as an MSBuild task in GenerateRefInfo.proj
 //===============================================================================================================
 
 using System;
@@ -128,7 +129,7 @@ namespace SandcastleBuilder.PlugIns
             root = configuration.SelectSingleNode("configuration");
 
             if(root.IsEmptyElement)
-                throw new BuilderException("VBP0002", "The Version Builder plug-in has not been configured yet");
+                throw new BuilderException("VBP0001", "The Version Builder plug-in has not been configured yet");
 
             // Add an element for the current project.  This one won't have a project to build.
             currentVersion = new VersionSettings();
@@ -154,7 +155,7 @@ namespace SandcastleBuilder.PlugIns
                 currentVersion.FrameworkLabel = " ";
 
             if(node == null || allVersions.Count == 1)
-                throw new BuilderException("VBP0003", "A version value and at least one prior version are " +
+                throw new BuilderException("VBP0002", "A version value and at least one prior version are " +
                     "required for the Version Builder plug-in.");
 
             foreach(VersionSettings vs in allVersions)
@@ -214,7 +215,7 @@ namespace SandcastleBuilder.PlugIns
                         Directory.SetCurrentDirectory(builder.ProjectFolder);
 
                         if(!success)
-                            throw new BuilderException("VBP0004", "Unable to build prior version project: " +
+                            throw new BuilderException("VBP0003", "Unable to build prior version project: " +
                                 project.Filename);
                     }
                 }
@@ -223,12 +224,9 @@ namespace SandcastleBuilder.PlugIns
                 vs.ReflectionFilename = workingPath + "reflection.org";
             }
 
-            // Create the Version Builder configuration and script file
-            // and run it.
-            builder.ReportProgress("\r\nCreating and running Version Builder script");
-            builder.RunProcess(this.CreateVersionBuilderScript(), null);
-
-            builder.ReportProgress("\r\nVersion information merged\r\n");
+            // Create the Version Builder configuration and add the parameters to the transform project
+            this.CreateVersionBuilderConfigurationFile();
+            this.ModifyTransformManifestProject();
         }
         #endregion
 
@@ -374,7 +372,7 @@ namespace SandcastleBuilder.PlugIns
             }
             catch(Exception ex)
             {
-                throw new BuilderException("VBP0005", String.Format(CultureInfo.InvariantCulture,
+                throw new BuilderException("VBP0004", String.Format(CultureInfo.InvariantCulture,
                     "Fatal error, unable to compile project '{0}': {1}", project.Filename, ex.ToString()));
             }
 
@@ -393,20 +391,15 @@ namespace SandcastleBuilder.PlugIns
         }
 
         /// <summary>
-        /// This creates the Version Builder configuration and script files
+        /// This creates the Version Builder configuration file
         /// </summary>
-        /// <returns>The name of the script to run</returns>
-        private string CreateVersionBuilderScript()
+        private void CreateVersionBuilderConfigurationFile()
         {
-            StringBuilder config = new StringBuilder(4096), script = new StringBuilder(4096);
-            string scriptName;
+            StringBuilder config = new StringBuilder(4096);
+
+            builder.ReportProgress("Creating Version Builder configuration file");
 
             config.Append("<versions>\r\n");
-            script.Append("@ECHO OFF\r\n\r\n");
-
-            // Make sure the script is ran from the correct location.  There was one report were it wasn't
-            // running from the correct folder for some reason.
-            script.AppendFormat("CD {0}\r\n\r\n", builder.WorkingFolder);
 
             // Write out a <versions> element for each unique label that contains info for each related version.
             // We also copy the reflection files to unique names as we will create a new reflection.org file that
@@ -422,7 +415,8 @@ namespace SandcastleBuilder.PlugIns
                         config.AppendFormat("    <version name=\"SHFB_VBPI_{0:X}\" file=\"{1:X}.ver\" />\r\n",
                             vs.Version.GetHashCode(), vs.GetHashCode());
 
-                        script.AppendFormat("Copy \"{0}\" \"{1:X}.ver\"\r\n", vs.ReflectionFilename, vs.GetHashCode());
+                        File.Copy(vs.ReflectionFilename, Path.Combine(builder.WorkingFolder,
+                            String.Format(CultureInfo.InvariantCulture, "{0:X}.ver", vs.GetHashCode())), true);
                     }
 
                 config.Append("  </versions>\r\n");
@@ -430,24 +424,57 @@ namespace SandcastleBuilder.PlugIns
 
             config.Append("</versions>\r\n");
 
-            script.AppendFormat("\"{0}VersionBuilder.exe\" {1} /config:VersionBuilder.config " +
-                "/out:reflection.org\r\n", BuildComponentManager.HelpFileBuilderFolder, ripOldApis ?
-                String.Empty : "/rip-");
-
-            // Save the files
+            // Save the file
             using(StreamWriter sw = new StreamWriter(builder.WorkingFolder + "VersionBuilder.config"))
             {
                 sw.Write(config.ToString());
             }
+        }
 
-            scriptName = builder.WorkingFolder + "RunVersionBuilder.bat";
+        /// <summary>
+        /// This is used to modify the GenerateRefInfo.proj file for use with VersionBuilder
+        /// </summary>
+        private void ModifyTransformManifestProject()
+        {
+            XmlNamespaceManager nsm;
+            XmlDocument project;
+            XmlNode property;
+            string projectFile;
 
-            using(StreamWriter sw = new StreamWriter(scriptName))
+            projectFile = builder.WorkingFolder + "TransformManifest.proj";
+
+            // If the project doesn't exist we have nothing to do.  However, it could be that some other plug-in
+            // has bypassed it so only issue a warning.
+            if(!File.Exists(projectFile))
             {
-                sw.Write(script.ToString());
+                builder.ReportWarning("VBP0005", "The transform manifest project '{0}' could not be found.  " +
+                    "The Version Builder plug-in did not run successfully.", projectFile);
+                return;
             }
 
-            return scriptName;
+            builder.ReportProgress("Adding Version Builder parameters to TransformManifest.proj");
+
+            project = new XmlDocument();
+            project.Load(projectFile);
+            nsm = new XmlNamespaceManager(project.NameTable);
+            nsm.AddNamespace("MSBuild", project.DocumentElement.NamespaceURI);
+
+            property = project.SelectSingleNode("//MSBuild:VersionBuilderConfigurationFile", nsm);
+
+            if(property == null)
+                throw new BuilderException("VBP0006", "Unable to locate Version Builder property: " +
+                    "VersionBuilderConfigurationFile");
+
+            property.InnerText = Path.Combine(builder.WorkingFolder, "VersionBuilder.config");
+
+            property = project.SelectSingleNode("//MSBuild:RipOldApis", nsm);
+
+            if(property == null)
+                throw new BuilderException("VBP0006", "Unable to locate Version Builder property: RipOldApis");
+
+            property.InnerText = ripOldApis.ToString().ToLowerInvariant();
+
+            project.Save(projectFile);
         }
         #endregion
     }

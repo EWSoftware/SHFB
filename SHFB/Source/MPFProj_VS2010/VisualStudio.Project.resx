@@ -538,4 +538,10 @@ Are you sure you want to change the Target Framework for this project?</value>
   <data name="ReloadPromptOnTargetFxChangedCaption" xml:space="preserve">
     <value>Target Framework Change</value>
   </data>
+  <data name="ReferenceOutputAssembly" xml:space="preserve">
+    <value>Reference Output Assembly</value>
+  </data>
+  <data name="ReferenceOutputAssemblyDescription" xml:space="preserve">
+    <value>True to reference the output assembly or false to only use it for MSBuild dependency determination</value>
+  </data>
 </root>

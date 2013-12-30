@@ -392,7 +392,7 @@
         <HelpKeyword index="K" term="properties, HtmlHelp1xCompilerPath" />
         <HelpKeyword index="K" term="properties, HtmlHelp2xCompilerPath" />
         <HelpKeyword index="K" term="properties, OutputPath" />
-        <HelpKeyword index="K" term="properties, SandcastlePath" />
+        <HelpKeyword index="K" term="properties, ComponentPath" />
         <HelpKeyword index="K" term="properties, WorkingPath" />
       </HelpKeywords>
     </Topic>
@@ -690,7 +690,7 @@
       </HelpKeywords>
     </Topic>
   </Topic>
-  <Topic id="46d1f76e-a97e-4ee6-971c-fdeab725ff09" visible="True" title="Errors and Warnings">
+  <Topic id="46d1f76e-a97e-4ee6-971c-fdeab725ff09" visible="True" isExpanded="true" title="Errors and Warnings">
     <HelpKeywords>
       <HelpKeyword index="K" term="error list" />
       <HelpKeyword index="K" term="warning list" />
@@ -709,11 +709,6 @@
       <Topic id="7f4054ff-9490-452e-b842-5b783f31a8af" visible="True" title="BE0003: Sandcastle shared content for the '[langId]' language could not be found">
         <HelpKeywords>
           <HelpKeyword index="K" term="warnings, BE0003" />
-        </HelpKeywords>
-      </Topic>
-      <Topic id="06ad726a-d35b-419c-bff6-0157f32d659b" visible="True" title="BE0004: MRefBuilder has a version of '[installedVersion]' but version '[expectedVersion]' was expected">
-        <HelpKeywords>
-          <HelpKeyword index="K" term="errors, BE0004" />
         </HelpKeywords>
       </Topic>
       <Topic id="ed7661b1-f675-4a8d-a0a2-6eed59cd3720" visible="True" title="BE0005: File '[file]' does not contain a 'doc/members' node">
@@ -859,16 +854,6 @@
       <Topic id="3e506dda-8d9e-4e87-a265-cd213b97d815" visible="True" title="BE0034: The '[propName]' property resolved to '[folder]' which is a reserved folder name">
         <HelpKeywords>
           <HelpKeyword index="K" term="errors, BE0034" />
-        </HelpKeywords>
-      </Topic>
-      <Topic id="378d6894-02b8-4ee9-9c50-58f278490ed8" visible="True" title="BE0035: Could not find the path to the Microsoft Sandcastle documentation compiler tools">
-        <HelpKeywords>
-          <HelpKeyword index="K" term="errors, BE0035" />
-        </HelpKeywords>
-      </Topic>
-      <Topic id="593259a3-ea02-4023-b318-0d33362f1e2c" visible="True" title="BE0036: Your version of the Microsoft Sandcastle documentation compiler tools is out of date">
-        <HelpKeywords>
-          <HelpKeyword index="K" term="errors, BE0036" />
         </HelpKeywords>
       </Topic>
       <Topic id="e2af12c6-af9e-4b59-9fe1-fc3c413022ae" visible="True" title="BE0037: Could not find the path the the HTML Help 1 compiler">
@@ -1133,7 +1118,7 @@
         </HelpKeywords>
       </Topic>
     </Topic>
-    <Topic id="5d8bf748-a38f-422c-bae7-9ae5f210347c" visible="True" noFile="true" title="MSBuild Tasks">
+    <Topic id="5d8bf748-a38f-422c-bae7-9ae5f210347c" visible="True" noFile="true" isExpanded="true" isSelected="true" title="MSBuild Tasks">
       <Topic id="e4b1c387-d296-42ed-9458-7c6b460b5c35" visible="True" title="B1X0001: A help compiler path must be specified">
         <HelpKeywords>
           <HelpKeyword index="K" term="errors, B1X0001" />
@@ -1152,16 +1137,6 @@
       <Topic id="a707806a-1173-4a0e-a21d-7b2d5a42f7fe" visible="True" title="B2X0002: An HTML help base name must be specified">
         <HelpKeywords>
           <HelpKeyword index="K" term="errors, B2X0002" />
-        </HelpKeywords>
-      </Topic>
-      <Topic id="c1f743fb-2040-4d5e-bf9f-5a4985481cc8" visible="True" title="BAT0001: A configuration file must be specified and it must exist">
-        <HelpKeywords>
-          <HelpKeyword index="K" term="errors, BAT0001" />
-        </HelpKeywords>
-      </Topic>
-      <Topic id="bc626934-b59f-4557-9db7-9bedcec39bc0" visible="True" title="BAT0002: A manifest file must be specified and it must exist">
-        <HelpKeywords>
-          <HelpKeyword index="K" term="errors, BAT0002" />
         </HelpKeywords>
       </Topic>
       <Topic id="842594b8-d1ba-4baa-9082-de991e376d4f" visible="True" title="BHT0001: Unable to get executing project">
@@ -1187,31 +1162,6 @@
       <Topic id="13b7b97f-6a6d-442a-aabf-b00a026b54c0" visible="True" title="CT0001: Unable to clean output folder.  Reason: [reason]">
         <HelpKeywords>
           <HelpKeyword index="K" term="errors, CT0001" />
-        </HelpKeywords>
-      </Topic>
-      <Topic id="bddb17b5-2733-4b82-9b0f-7e9cef5e8c56" visible="True" title="MBT0001: At least one assembly (.dll or .exe) is required for MRefBuilder to parse">
-        <HelpKeywords>
-          <HelpKeyword index="K" term="errors, MBT0001" />
-        </HelpKeywords>
-      </Topic>
-      <Topic id="3eedd8d1-9172-49c3-9f54-f75d21f251d9" visible="True" title="MBT0002: Unable to generate response file.  Reason: [reason]">
-        <HelpKeywords>
-          <HelpKeyword index="K" term="errors, MBT0002" />
-        </HelpKeywords>
-      </Topic>
-      <Topic id="3c2c627c-8cbe-4f41-82f4-e383efe5c7cb" visible="True" title="XTT0001: At least one XSL transformation is required">
-        <HelpKeywords>
-          <HelpKeyword index="K" term="errors, XTT0001" />
-        </HelpKeywords>
-      </Topic>
-      <Topic id="bc743362-c234-4684-973e-0710543314dc" visible="True" title="XTT0002: An input file must be specified and it must exist">
-        <HelpKeywords>
-          <HelpKeyword index="K" term="errors, XTT0002" />
-        </HelpKeywords>
-      </Topic>
-      <Topic id="a763207e-4afd-400d-afb5-fa7c632f5144" visible="True" title="XTT0003: An output filename must be specified">
-        <HelpKeywords>
-          <HelpKeyword index="K" term="errors, XTT0003" />
         </HelpKeywords>
       </Topic>
     </Topic>
@@ -1389,7 +1339,7 @@
       <HelpKeyword index="K" term="History" />
       <HelpKeyword index="K" term="Version History" />
     </HelpKeywords>
-    <Topic id="f4c5d176-8da1-4500-b070-e3b1e9e2c65c" visible="True" isSelected="true" title="Version 1.9.8.0">
+    <Topic id="f4c5d176-8da1-4500-b070-e3b1e9e2c65c" visible="True" title="Version 1.9.8.0">
       <HelpKeywords>
         <HelpKeyword index="K" term="versions, 1.9.8.0" />
       </HelpKeywords>

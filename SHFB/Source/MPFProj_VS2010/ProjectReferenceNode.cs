@@ -46,12 +46,24 @@ a particular purpose and non-infringement.
 
 ********************************************************************************************/
 
+//===============================================================================================================
+// File    : ProjectReferenceNode.cs
+// Updated : 12/29/2013
+// Modifier: Eric Woodruff  (Eric@EWoodruff.us)
+//
+// Search for "!EFW" to find the changes
+//
+//    Date     Who  Comments
+// ==============================================================================================================
+// 12/29/2013  EFW  Added support for ReferenceOutputAssembly metadata
+//===============================================================================================================
+
 using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
-using Microsoft.VisualStudio;
+
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
@@ -60,9 +72,9 @@ namespace Microsoft.VisualStudio.Project
     [CLSCompliant(false), ComVisible(true)]
     public class ProjectReferenceNode : ReferenceNode
     {
-        #region fieds
+        #region fields
         /// <summary>
-        /// The name of the assembly this refernce represents
+        /// The name of the assembly this reference represents
         /// </summary>
         private Guid referencedProjectGuid;
 
@@ -88,7 +100,7 @@ namespace Microsoft.VisualStudio.Project
 
         /// <summary>
         /// Possibility for solution listener to update the state on the dangling reference.
-        /// It will be set in OnBeforeUnloadProject then the nopde is invalidated then it is reset to false.
+        /// It will be set in OnBeforeUnloadProject then the node is invalidated then it is reset to false.
         /// </summary>
         private bool isNodeValid;
 
@@ -121,8 +133,8 @@ namespace Microsoft.VisualStudio.Project
         }
 
         /// <summary>
-        /// Possiblity to shortcut and set the dangling project reference icon.
-        /// It is ussually manipulated by solution listsneres who handle reference updates.
+        /// Possibility to shortcut and set the dangling project reference icon.
+        /// It is usually manipulated by solution listeners who handle reference updates.
         /// </summary>
         internal protected bool IsNodeValid
         {
@@ -176,7 +188,7 @@ namespace Microsoft.VisualStudio.Project
                     }
                     foreach (EnvDTE.Project prj in dte.Solution.Projects)
                     {
-                        //Skip this project if it is an umodeled project (unloaded)
+                        //Skip this project if it is an unmodeled project (unloaded)
                         if (string.Compare(EnvDTE.Constants.vsProjectKindUnmodeled, prj.Kind, StringComparison.OrdinalIgnoreCase) == 0)
                         {
                             continue;
@@ -194,7 +206,7 @@ namespace Microsoft.VisualStudio.Project
                             pathProperty = prj.Properties.Item("FullPath");
                             if (null == pathProperty)
                             {
-                                // The full path should alway be availabe, but if this is not the
+                                // The full path should alway be available, but if this is not the
                                 // case then we have to skip it.
                                 continue;
                             }
@@ -275,7 +287,7 @@ namespace Microsoft.VisualStudio.Project
 
                 string outputPath = outputPathProperty.Value.ToString();
 
-                // Ususally the output path is relative to the project path, but it is possible
+                // Usually the output path is relative to the project path, but it is possible
                 // to set it as an absolute path. If it is not absolute, then evaluate its value
                 // based on the project directory.
                 if(!System.IO.Path.IsPathRooted(outputPath))
@@ -318,22 +330,44 @@ namespace Microsoft.VisualStudio.Project
                 return projectReference;
             }
         }
+
+        /// <summary>
+        /// This is used to get or set whether or not to use the project as a reference or just for MSBuild
+        /// dependency determination.
+        /// </summary>
+        public bool ReferenceOutputAssembly
+        {
+            get
+            {
+                bool value;
+
+                // If not present or valid, default to true
+                if(!Boolean.TryParse(this.ItemNode.GetMetadata(ProjectFileConstants.ReferenceOutputAssembly), out value))
+                    value = true;
+
+                return value;
+            }
+            set
+            {
+                this.ItemNode.SetMetadata(ProjectFileConstants.ReferenceOutputAssembly, value.ToString().ToLowerInvariant());
+            }
+        }
         #endregion
 
         #region ctors
         /// <summary>
-        /// Constructor for the ReferenceNode. It is called when the project is reloaded, when the project element representing the refernce exists. 
+        /// Constructor for the ReferenceNode. It is called when the project is reloaded, when the project element representing the reference exists. 
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2234:PassSystemUriObjectsInsteadOfStrings")]
         public ProjectReferenceNode(ProjectNode root, ProjectElement element)
             : base(root, element)
         {
             this.referencedProjectRelativePath = this.ItemNode.GetMetadata(ProjectFileConstants.Include);
-            Debug.Assert(!String.IsNullOrEmpty(this.referencedProjectRelativePath), "Could not retrive referenced project path form project file");
+            Debug.Assert(!String.IsNullOrEmpty(this.referencedProjectRelativePath), "Could not retrieve referenced project path form project file");
 
             string guidString = this.ItemNode.GetMetadata(ProjectFileConstants.Project);
 
-            // Continue even if project setttings cannot be read.
+            // Continue even if project settings cannot be read.
             try
             {
                 this.referencedProjectGuid = new Guid(guidString);
@@ -343,11 +377,11 @@ namespace Microsoft.VisualStudio.Project
             }
             finally
             {
-                Debug.Assert(this.referencedProjectGuid != Guid.Empty, "Could not retrive referenced project guidproject file");
+                Debug.Assert(this.referencedProjectGuid != Guid.Empty, "Could not retrieve referenced project guidproject file");
 
                 this.referencedProjectName = this.ItemNode.GetMetadata(ProjectFileConstants.Name);
 
-                Debug.Assert(!String.IsNullOrEmpty(this.referencedProjectName), "Could not retrive referenced project name form project file");
+                Debug.Assert(!String.IsNullOrEmpty(this.referencedProjectName), "Could not retrieve referenced project name form project file");
             }
 
             Uri uri = new Uri(this.ProjectMgr.BaseURI.Uri, this.referencedProjectRelativePath);
@@ -379,7 +413,7 @@ namespace Microsoft.VisualStudio.Project
 
             string fileName = String.Empty;
 
-            // Unfortunately we cannot use the path part of the projectReference string since it is not resolving correctly relative pathes.
+            // Unfortunately we cannot use the path part of the projectReference string since it is not resolving correctly relative paths.
             if(indexOfSeparator != -1)
             {
                 string projectGuid = projectReference.Substring(0, indexOfSeparator);
@@ -469,7 +503,7 @@ namespace Microsoft.VisualStudio.Project
         }
 
         /// <summary>
-        /// Defines whether this node is valid node for painting the refererence icon.
+        /// Defines whether this node is valid node for painting the reference icon.
         /// </summary>
         /// <returns></returns>
         protected override bool CanShowDefaultIcon()
@@ -504,7 +538,7 @@ namespace Microsoft.VisualStudio.Project
         /// <returns></returns>
         protected override bool CanAddReference(out CannotAddReferenceErrorMessage errorHandler)
         {
-            // When this method is called this refererence has not yet been added to the hierarchy, only instantiated.
+            // When this method is called this reference has not yet been added to the hierarchy, only instantiated.
             if(!base.CanAddReference(out errorHandler))
             {
                 return false;

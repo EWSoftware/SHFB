@@ -277,7 +277,6 @@
 
 	<msxsl:script language="C#"
 								implements-prefix="branding">
-		<msxsl:assembly name="System" />
 		<msxsl:using namespace="System" />
 		<msxsl:using namespace="System.Collections.Generic" />
 		<msxsl:using namespace="System.Collections.Specialized" />

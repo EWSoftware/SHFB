@@ -3,8 +3,8 @@
 	<!-- For testing, a relative path offset for the install resources -->
 	<pathOffset location="..\..\..\..\Deployment" />
 
-	<!-- This indicates the release date and version of Sandcastle with which this installer is associated.-->
-	<sandcastle date="October 2013" version="v2.7.4.0" />
+	<!-- This indicates the version of Sandcastle with which this installer is associated.-->
+	<sandcastle version="v2013.12.29.0" />
 
 	<!-- Define the installer pages.  Third-party build tool and component providers can add new pages that
 			 they have created to install their own products as well. -->
@@ -25,8 +25,23 @@
 			<page type="Sandcastle.Installer.InstallerPages.Help1CompilerPage" />
 			<page type="Sandcastle.Installer.InstallerPages.Help2CompilerPage" />
 		</page>
-		<page type="Sandcastle.Installer.InstallerPages.SandcastlePage"
-			frameworkVersion="4.0" sandcastleVersion="2.7.4.0" installerName="Sandcastle_2740.msi" />
+
+		<!-- Sandcastle Help File Builder and Tools installer pages -->
+		<page type="Sandcastle.Installer.InstallerPages.SandcastleHelpFileBuilderPage"
+			frameworkVersion="4.0" shfbVersion="2013.12.29.0" installerName="SandcastleHelpFileBuilder_2013.12.29.0.msi"/>
+		<page type="Sandcastle.Installer.InstallerPages.SHFBVisualStudioPackagePage"
+			frameworkVersion="4.0" packageGuid="c997d569-ee8e-4947-a46f-9a0717ce39a0"
+			installerName="SHFBVisualStudioPackage_2013.12.29.0.vsix">
+			<!-- These paths can be adjusted if you installed Visual Studio in a non-standard location.  They must
+					 be in version order from earliest to most recent. -->
+			<visualStudio version="10.0" name="Visual Studio 2010 Professional/Premium/Ultimate"
+				location="%VS100COMNTOOLS%\..\IDE" />
+			<visualStudio version="11.0" name="Visual Studio 2012 Professional/Premium/Ultimate"
+				location="%VS110COMNTOOLS%\..\IDE" />
+			<visualStudio version="12.0" name="Visual Studio 2013 Professional/Premium/Ultimate"
+				location="%VS120COMNTOOLS%\..\IDE" />
+		</page>
+
 		<page type="Sandcastle.Installer.InstallerPages.MamlIntelliSensePage">
 			<!-- These paths can be adjusted if you installed Visual Studio in a non-standard location -->
 			<visualStudio version="Visual Studio 2008" location="%VS90COMNTOOLS%\..\..\Xml\Schemas" />
@@ -41,22 +56,6 @@
 			<visualStudio version="Visual Studio 2010" location="Visual Studio 2010\Code Snippets\Xml\My Xml Snippets" />
 			<visualStudio version="Visual Studio 2012" location="Visual Studio 2012\Code Snippets\Xml\My Xml Snippets" />
 			<visualStudio version="Visual Studio 2013" location="Visual Studio 2013\Code Snippets\Xml\My Xml Snippets" />
-		</page>
-
-		<!-- Sandcastle Help File Builder installer pages -->
-		<page type="Sandcastle.Installer.InstallerPages.SandcastleHelpFileBuilderPage"
-			frameworkVersion="4.0" shfbVersion="1.9.8.0" installerName="SandcastleHelpFileBuilder_1980.msi"/>
-		<page type="Sandcastle.Installer.InstallerPages.SHFBVisualStudioPackagePage"
-			frameworkVersion="4.0" packageGuid="c997d569-ee8e-4947-a46f-9a0717ce39a0"
-			installerName="SHFBVisualStudioPackage_1980.vsix">
-			<!-- These paths can be adjusted if you installed Visual Studio in a non-standard location.  They must
-					 be in version order from earliest to most recent. -->
-			<visualStudio version="10.0" name="Visual Studio 2010 Professional/Premium/Ultimate"
-				location="%VS100COMNTOOLS%\..\IDE" />
-			<visualStudio version="11.0" name="Visual Studio 2012 Professional/Premium/Ultimate"
-				location="%VS110COMNTOOLS%\..\IDE" />
-			<visualStudio version="12.0" name="Visual Studio 2013 Professional/Premium/Ultimate"
-				location="%VS120COMNTOOLS%\..\IDE" />
 		</page>
 
 		<page type="Sandcastle.Installer.InstallerPages.VisualStudioSpellCheckerPage" />

@@ -370,15 +370,6 @@ its <codeInline>BuildAction</codeInline> set to <codeInline>ResourceItems</codeI
   </row>
   <row>
     <entry>
-			<para>{@SandcastlePath}</para>
-		</entry>
-    <entry>
-			<para>This tag expands to the path to the Sandcastle installation folder.  This will be the path that the
-help builder found or the <codeInline>SandcastlePath</codeInline> project option if it is specified instead.</para>
-		</entry>
-  </row>
-  <row>
-    <entry>
 			<para>{@SHFBFolder}</para>
 		</entry>
     <entry>

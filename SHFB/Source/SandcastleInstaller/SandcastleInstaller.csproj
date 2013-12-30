@@ -119,10 +119,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="InstallerPages\SandcastlePage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="InstallerPages\SHFBVisualStudioPackagePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -176,9 +172,6 @@
     <Compile Include="InstallerPages\SandcastleHelpFileBuilderPage.xaml.cs">
       <DependentUpon>SandcastleHelpFileBuilderPage.xaml</DependentUpon>
       <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="InstallerPages\SandcastlePage.xaml.cs">
-      <DependentUpon>SandcastlePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="InstallerPages\SHFBVisualStudioPackagePage.xaml.cs">
       <DependentUpon>SHFBVisualStudioPackagePage.xaml</DependentUpon>

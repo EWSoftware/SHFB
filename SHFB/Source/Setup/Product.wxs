@@ -23,7 +23,7 @@
 		<Property Id="ARPHELPLINK"      Value="$(var.ProductHomePage)" />
 		<Property Id="ARPURLINFOABOUT"  Value="http://www.EWoodruff.us" />
 		<Property Id="ARPURLUPDATEINFO" Value="$(var.ProductHomePage)" />
-		<Property Id="ARPCOMMENTS"      Value="Sandcastle Help File Builder GUI and MSBuild tasks." />
+		<Property Id="ARPCOMMENTS"      Value="Sandcastle Help File Builder and Tools" />
 
 		<!-- Launch Conditions -->
 		<Condition Message="An administrator must approve or install [ProductName].">
@@ -43,9 +43,9 @@
 		<Media Id="1" Cabinet="$(var.ProductShortName).cab" CompressionLevel="high" EmbedCab="yes" />
 
 		<!-- Icons -->
-		<Icon Id="Help.ico" SourceFile="$(var.BinFolder)..\..\Images\Help.ico" />
-		<Icon Id="SandcastleBuilder.exe" SourceFile="$(var.BinFolder)..\..\Images\SandcastleBuilder.ico" />
-		<Icon Id="SHFBProjectLauncher.exe" SourceFile="$(var.LauncherFolder)..\..\Images\SHFBProjectLauncher.ico" />
+		<Icon Id="Help.ico" SourceFile="Resources\Help.ico" />
+		<Icon Id="SandcastleBuilder.exe" SourceFile="Resources\SandcastleBuilder.ico" />
+		<Icon Id="SHFBProjectLauncher.exe" SourceFile="Resources\SHFBProjectLauncher.ico" />
 		<Icon Id="HtmlDocument.ico" SourceFile="Resources\HtmlDocument.ico" />
 
 		<!-- Files and Directories -->
@@ -62,12 +62,8 @@
 
 		<!-- Features -->
 		<Feature Id="Main" Level="1" Absent="disallow" AllowAdvertise="no">
-			<ComponentGroupRef Id="Binaries" />
-			<ComponentGroupRef Id="Colorizer" />
-			<ComponentGroupRef Id="SharedContent"/>
-			<ComponentGroupRef Id="Spelling" />
-			<ComponentGroupRef Id="Templates" />
-			<ComponentGroupRef Id="Web" />
+			<ComponentGroupRef Id="Environment" />
+			<ComponentGroupRef Id="DeploymentFiles" />
 		</Feature>
 
 		<!-- Install Sequences -->
@@ -83,9 +79,11 @@
 		<!-- WixUI scaffolding -->
 		<Property Id="ALLUSERS" Value="1" />
 		<Property Id="WIXUI_INSTALLDIR" Value="INSTALLDIR" />
+
 		<WixVariable Id="WixUILicenseRtf" Value="$(var.SolutionDir)License.rtf" />
 		<WixVariable Id="WixUIBannerBmp"  Value="Resources\Banner.jpg" />
 		<WixVariable Id="WixUIDialogBmp"  Value="Resources\Dialog.jpg" />
+
 		<UIRef Id="WixUI_InstallDir" />
 	</Product>
 </Wix>

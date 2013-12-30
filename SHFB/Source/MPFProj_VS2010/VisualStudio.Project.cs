@@ -46,14 +46,23 @@ a particular purpose and non-infringement.
 
 ********************************************************************************************/
 
+//===============================================================================================================
+// File    : NodeProperties.cs
+// Updated : 12/29/2013
+// Modifier: Eric Woodruff  (Eric@EWoodruff.us)
+//
+// Search for "!EFW" to find the changes
+//
+//    Date     Who  Comments
+// ==============================================================================================================
+// 12/29/2013  EFW  Added support for ReferenceOutputAssembly metadata
+//===============================================================================================================
+
 using System;
-using System.Reflection;
 using System.Globalization;
 using System.Resources;
-using System.Text;
 using System.Threading;
 using System.ComponentModel;
-using System.Security.Permissions;
 
 namespace Microsoft.VisualStudio.Project
 {
@@ -119,6 +128,10 @@ namespace Microsoft.VisualStudio.Project
         internal const string CopyToLocalDescription = "CopyToLocalDescription";
         internal const string EmbedInteropTypes = "EmbedInteropTypes";
         internal const string EmbedInteropTypesDescription = "EmbedInteropTypesDescription";
+        // !EFW - Added support for ReferenceOutputAssembly metadata
+        internal const string ReferenceOutputAssembly = "ReferenceOutputAssembly";
+        internal const string ReferenceOutputAssemblyDescription = "ReferenceOutputAssemblyDescription";
+
         internal const string CustomTool = "CustomTool";
         internal const string CustomToolDescription = "CustomToolDescription";
         internal const string CustomToolNamespace = "CustomToolNamespace";

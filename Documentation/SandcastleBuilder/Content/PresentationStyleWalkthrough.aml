@@ -125,13 +125,13 @@ a build to see if it works.</para>
 			&lt;ToolResourceItems Path="SharedContent" /&gt;
 		&lt;/ResourceItems&gt;
 
-		&lt;DocumentModelTransformation File="%DXROOT%\ProductionTransforms\ApplyVSDocModel.xsl"&gt;
+		&lt;DocumentModelTransformation File="%SHFBROOT%\ProductionTransforms\ApplyVSDocModel.xsl"&gt;
 			&lt;Parameter Name="IncludeAllMembersTopic" Value="true" /&gt;
 			&lt;Parameter Name="IncludeInheritedOverloadTopics" Value="false" /&gt;
 			&lt;Parameter Name="project" Value="{@ProjectNodeIDOptional}" /&gt;
 		&lt;/DocumentModelTransformation&gt;
 
-		&lt;IntermediateTOCTransformation File="%DXROOT%\ProductionTransforms\CreateVSToc.xsl" /&gt;
+		&lt;IntermediateTOCTransformation File="%SHFBROOT%\ProductionTransforms\CreateVSToc.xsl" /&gt;
 
 		&lt;!-- NOTE: This example assumes you have made a copy of the SHFB configuration file.
 		    If not, change the path too "%SHFBROOT%\Templates\Conceptual.config" --&gt;

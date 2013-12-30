@@ -46,6 +46,18 @@ a particular purpose and non-infringement.
 
 ********************************************************************************************/
 
+//===============================================================================================================
+// File    : ProjectReferenceNode.cs
+// Updated : 12/29/2013
+// Modifier: Eric Woodruff  (Eric@EWoodruff.us)
+//
+// Search for "!EFW" to find the changes
+//
+//    Date     Who  Comments
+// ==============================================================================================================
+// 12/29/2013  EFW  Added support for ReferenceOutputAssembly metadata
+//===============================================================================================================
+
 using System.Diagnostics.CodeAnalysis;
 
 namespace Microsoft.VisualStudio.Project
@@ -89,6 +101,8 @@ namespace Microsoft.VisualStudio.Project
         public const string Private = "Private";
         public const string EmbedInteropTypes = "EmbedInteropTypes";
         public const string ProjectReference = "ProjectReference";
+        // !EFW - Added support for ReferenceOutputAssembly
+        public const string ReferenceOutputAssembly = "ReferenceOutputAssembly";
         public const string Reference = "Reference";
         public const string WebReference = "WebReference";
         public const string WebReferenceFolder = "WebReferenceFolder";

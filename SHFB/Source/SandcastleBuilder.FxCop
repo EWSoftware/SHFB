@@ -19,6 +19,7 @@
   <SearchGlobalAssemblyCache>False</SearchGlobalAssemblyCache>
   <DeadlockDetectionTimeout>120</DeadlockDetectionTimeout>
   <IgnoreGeneratedCode>False</IgnoreGeneratedCode>
+  <TargetFrameworkVersion>0.0</TargetFrameworkVersion>
  </ProjectOptions>
  <Targets>
   <Target Name="$(ProjectDir)/../Deploy/GenerateInheritedDocs.exe" Analyze="True" AnalyzeAllChildren="True" />
@@ -990,6 +991,25 @@
            </Member>
           </Members>
          </Type>
+         <Type Name="VersionBuilderPlugIn">
+          <Members>
+           <Member Name="#ModifyTransformManifestProject()">
+            <Messages>
+             <Message TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308" Status="Excluded" Created="2013-12-29 23:20:58Z">
+              <Issue Name="ToUpperInvariant">
+               <Item>'VersionBuilderPlugIn.ModifyTransformManifestProject()'</Item>
+               <Item>'string.ToLowerInvariant()'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="35" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
          <Type Name="VersionSettings">
           <Members>
            <Member Name="#ToXml(System.Xml.XmlDocument,System.Xml.XmlNode)">
@@ -1822,6 +1842,29 @@
               </Notes>
              </Message>
             </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="ProjectReferenceItem">
+          <Members>
+           <Member Name="#ReferenceOutputAssembly">
+            <Accessors>
+             <Accessor Name="#set_ReferenceOutputAssembly(System.Boolean)">
+              <Messages>
+               <Message TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308" Status="Excluded" Created="2013-12-29 23:20:58Z">
+                <Issue Name="ToUpperInvariant">
+                 <Item>'ProjectReferenceItem.ReferenceOutputAssembly.set(bool)'</Item>
+                 <Item>'string.ToLowerInvariant()'</Item>
+                </Issue>
+                <Notes>
+                 <User Name="EWOODRUFF">
+                  <Note Id="35" />
+                 </User>
+                </Notes>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
            </Member>
           </Members>
          </Type>
@@ -9220,6 +9263,7 @@
     <Note Id="32" Modified="2008-09-20 02:07:56Z">I like it the way it is</Note>
     <Note Id="33" Modified="2013-12-28 20:46:19Z">The type is not intended for serialization</Note>
     <Note Id="34" Modified="2009-10-27 17:40:46Z">Distinct words: "Dump Log On Failure"</Note>
+    <Note Id="35" Modified="2013-12-29 23:21:33Z">Lowercase is required here</Note>
     <Note Id="36" Modified="2013-12-28 20:49:50Z">Okay as is</Note>
     <Note Id="37" Modified="2008-09-20 02:26:16Z">Okay as is</Note>
     <Note Id="38" Modified="2013-12-28 21:09:11Z">Lowercase is required</Note>

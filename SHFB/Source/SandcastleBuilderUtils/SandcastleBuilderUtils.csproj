@@ -186,7 +186,6 @@
     <Compile Include="InheritedDocumentation\InheritedDocsException.cs" />
     <Compile Include="MSBuild\Build1xHelpFile.cs" />
     <Compile Include="MSBuild\Build2xHelpFile.cs" />
-    <Compile Include="MSBuild\BuildAssembler.cs" />
     <Compile Include="MSBuild\BuildHelp.cs" />
     <Compile Include="MSBuild\CleanHelp.cs" />
     <Compile Include="MSBuild\MSBuildProject.cs" />

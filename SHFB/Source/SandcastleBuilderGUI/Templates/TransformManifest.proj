@@ -4,6 +4,8 @@
     AssemblyFile="{@SHFBFolder}\AddNamespaceGroups.exe" />
 	<UsingTask TaskName="Microsoft.Ddue.Tools.MSBuild.XslTransform"
     AssemblyFile="{@SHFBFolder}\XslTransform.exe" />
+	<UsingTask TaskName="Microsoft.Ddue.Tools.MSBuild.VersionBuilder"
+    AssemblyFile="{@SHFBFolder}\VersionBuilder.exe" />
 
 	<!-- Task properties -->
 	<PropertyGroup>
@@ -13,6 +15,8 @@
 		<NamingMethod>{@NamingMethod}</NamingMethod>
 		<NamespaceGrouping>{@NamespaceGrouping}</NamespaceGrouping>
 		<MaximumParts>{@MaximumGroupParts}</MaximumParts>
+		<VersionBuilderConfigurationFile></VersionBuilderConfigurationFile>
+		<RipOldApis>false</RipOldApis>
 	</PropertyGroup>
 
 	<!-- This defines the dependencies for the Transform target -->
@@ -28,6 +32,15 @@
 
 	<!-- The Transform Manifest target -->
 	<Target Name="TransformManifest">
+		<!-- If a Version Builder configuration has been specified, run version builder first to merge the
+				 information from each version. -->
+		<Microsoft.Ddue.Tools.MSBuild.VersionBuilder
+			WorkingFolder="$(WorkingFolder)"
+			ConfigurationFile="$(VersionBuilderConfigurationFile)"
+			OutputFile="reflection.org"
+			RipOldApis="$(RipOldApis)"
+			Condition=" '$(VersionBuilderConfigurationFile)' != '' " />
+		
 		<!-- Transform the reflection output based on the presentation style -->
 		<Microsoft.Ddue.Tools.MSBuild.XslTransform
 			WorkingFolder="$(WorkingFolder)"

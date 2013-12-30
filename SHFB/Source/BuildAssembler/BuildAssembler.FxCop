@@ -19,7 +19,6 @@
   <SearchGlobalAssemblyCache>False</SearchGlobalAssemblyCache>
   <DeadlockDetectionTimeout>120</DeadlockDetectionTimeout>
   <IgnoreGeneratedCode>False</IgnoreGeneratedCode>
-  <TargetFrameworkVersion>0.0</TargetFrameworkVersion>
  </ProjectOptions>
  <Targets>
   <Target Name="$(ProjectDir)/../../Deploy/BuildAssembler.exe" Analyze="True" AnalyzeAllChildren="True" />
@@ -96,6 +95,21 @@
       <Notes>
        <User Name="EWOODRUFF">
         <Note Id="43" />
+       </User>
+      </Notes>
+     </Message>
+    </Messages>
+   </Namespace>
+   <Namespace Name="Microsoft.Ddue.Tools.MSBuild">
+    <Messages>
+     <Message Id="Ddue" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2013-12-28 22:07:45Z">
+      <Issue Name="Namespace">
+       <Item>Ddue</Item>
+       <Item>Microsoft.Ddue.Tools.MSBuild</Item>
+      </Issue>
+      <Notes>
+       <User Name="EWOODRUFF">
+        <Note Id="35" />
        </User>
       </Notes>
      </Message>
@@ -185,6 +199,50 @@
    </Namespace>
   </Namespaces>
   <Targets>
+   <Target Name="$(ProjectDir)/../../Deploy/BuildAssembler.exe">
+    <Modules>
+     <Module Name="buildassembler.exe">
+      <Namespaces>
+       <Namespace Name="Microsoft.Ddue.Tools.MSBuild">
+        <Types>
+         <Type Name="BuildAssembler">
+          <Messages>
+           <Message TypeName="TypeNamesShouldNotMatchNamespaces" Category="Microsoft.Naming" CheckId="CA1724" Status="Excluded" Created="2013-12-28 22:07:45Z">
+            <Issue>
+             <Item>'BuildAssembler'</Item>
+             <Item>Sandcastle.Core.BuildAssembler</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="39" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+          <Members>
+           <Member Name="#Execute()">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2013-12-28 22:07:45Z">
+              <Issue>
+               <Item>'BuildAssembler.Execute()'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="42" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+      </Namespaces>
+     </Module>
+    </Modules>
+   </Target>
    <Target Name="$(ProjectDir)/../../Deploy/BuildComponents.dll">
     <Modules>
      <Module Name="buildcomponents.dll">
@@ -5067,11 +5125,14 @@
     <Note Id="32" Modified="2013-12-28 20:31:08Z">May revisit these later but for they are okay.</Note>
     <Note Id="33" Modified="2012-12-24 07:00:53Z">Okay as is</Note>
     <Note Id="34" Modified="2012-12-24 07:01:09Z">Okay as is</Note>
+    <Note Id="35" Modified="2013-12-28 22:09:01Z">Okay as is</Note>
     <Note Id="36" Modified="2012-12-24 21:31:54Z">Okay as is</Note>
     <Note Id="37" Modified="2012-12-26 03:43:21Z">The error is reported</Note>
     <Note Id="38" Modified="2012-12-27 01:18:53Z">Okay as is</Note>
+    <Note Id="39" Modified="2013-12-28 23:07:36Z">It's for the build task and won't conflict with anything so I'm going to leave it alone.</Note>
     <Note Id="40" Modified="2012-12-31 21:08:18Z">This one is more complete so the constructor is fine</Note>
     <Note Id="41" Modified="2012-12-31 21:14:03Z">Lowercase is preferred here</Note>
+    <Note Id="42" Modified="2013-12-28 23:07:48Z">The error is reported</Note>
     <Note Id="43" Modified="2013-01-21 02:32:34Z">Okay as is</Note>
     <Note Id="44" Modified="2013-01-21 02:33:30Z">It's used to set the default value typically used so it's fine.</Note>
     <Note Id="45" Modified="2013-01-21 02:33:48Z">Okay as is</Note>
@@ -5136,7 +5197,9 @@
     <Resolution Name="Default">Consider a design where {0} doesn't nest generic type {1}.</Resolution>
    </Rule>
    <Rule TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709">
+    <Resolution Name="Member" />
     <Resolution Name="Type">Correct the casing of '{0}' in type name {1} by changing it to '{2}'.</Resolution>
+    <Resolution Name="TypeAbbreviation" />
    </Rule>
    <Rule TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704">
     <Resolution Name="Member">Correct the spelling of '{0}' in member name {1} or remove it entirely if it represents any sort of Hungarian notation.</Resolution>
@@ -5181,6 +5244,9 @@
    </Rule>
    <Rule TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804">
     <Resolution Name="Default">{0} declares a variable, {1}, of type {2}, which is never used or is only assigned to. Use this variable or remove it.</Resolution>
+   </Rule>
+   <Rule TypeName="TypeNamesShouldNotMatchNamespaces" Category="Microsoft.Naming" CheckId="CA1724">
+    <Resolution Name="Default">The type name {0} conflicts in whole or in part with the namespace name '{1}'. Change either name to eliminate the conflict.</Resolution>
    </Rule>
    <Rule TypeName="UriParametersShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1054">
     <Resolution Name="Default">Change the type of parameter {0} of method {1} from string to System.Uri, or provide an overload of {1}, that allows {0} to be passed as a System.Uri object.</Resolution>

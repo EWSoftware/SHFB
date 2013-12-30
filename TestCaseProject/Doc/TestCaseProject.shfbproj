@@ -62,13 +62,11 @@
     Include namespaces (false by default)
     Namespaces comments filename ("Namespaces" if not specified or empty)
     Output folder (current folder if not specified or empty) -->
-          <output includeNamespaces="true" namespacesFile="Namespaces" folder="{@OutputFolder}" />
+          <output includeNamespaces="false" namespacesFile="Namespaces" folder="{@OutputFolder}" />
         </component>
       </ComponentConfig>
     </ComponentConfigurations>
     <DocumentationSources>
-      <DocumentationSource sourceFile="%ProgramFiles(x86)%\Sandcastle\Examples\Sandcastle\comments.xml" />
-      <DocumentationSource sourceFile="%ProgramFiles(x86)%\Sandcastle\Examples\Sandcastle\test.dll" />
       <DocumentationSource sourceFile="..\TestDoc.csproj" />
     </DocumentationSources>
     <HelpAttributes>

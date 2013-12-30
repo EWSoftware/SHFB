@@ -13,8 +13,7 @@ when the help file is built.</para>
 inserted into the configuration file before the <codeInline>ShowMissingComponent</codeInline>.</para>
 
 <code language="xml" title="Example Configuration">
-&lt;component type="Microsoft.Ddue.Tools.SharedContentComponent"
-  assembly="{@SandcastlePath}ProductionTools\BuildComponents.dll"&gt;
+&lt;component id="API Token Resolution"&gt;
 
   &lt;!-- A list of one or more token files from which to resolve tokens --&gt;
 	&lt;content file="TokenFile1.tokens" /&gt;
@@ -24,12 +23,6 @@ inserted into the configuration file before the <codeInline>ShowMissingComponent
   &lt;replace elements="/*//token" item="string(.)" /&gt;
 &lt;/component&gt;
 </code>
-
-		<para>The example given above is taken from the Sandcastle Help File Builder's configuration file.  When
-used with it, the replacement tag <codeInline>{@SandcastlePath}</codeInline> is used to insert the Sandcastle
-tools folder in the file path.  This is replaced at build time with the appropriate value.  If using the
-component in your own build scripts, replace the tag with a relative or absolute path to the component
-assembly.</para>
 
 		<para>The <codeInline>content</codeInline> elements are used to specify the files that contain the tokens
 to be resolved and their values.</para>

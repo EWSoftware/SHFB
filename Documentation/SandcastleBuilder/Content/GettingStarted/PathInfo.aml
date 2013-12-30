@@ -17,11 +17,11 @@ opened again.</para>
 option below the path text box on the related project property page.  The path is then displayed as an absolute
 path and will be saved as such in the project.</para>
 
-				<para>In addition, environment variables such as <environmentVariable>%DXROOT%</environmentVariable>,
+				<para>In addition, environment variables such as <environmentVariable>%SHFBROOT%</environmentVariable>,
 <environmentVariable>%WINDIR%</environmentVariable>, etc. can be specified in the paths and they will be expanded
 at build time to the value of the specified environment variable.  The display area below the related path
 property's text box will show you the expanded form based on the current system's settings.  The MSBuild-format
-for environment variables is also supported (<environmentVariable>$(DXROOT)</environmentVariable>,
+for environment variables is also supported (<environmentVariable>$(SHFBROOT)</environmentVariable>,
 <environmentVariable>$(WINDIR)</environmentVariable>, etc.).</para>
 
 				<para>The key point to remember is that help file builder projects built either from the standalone GUI,

@@ -16,6 +16,7 @@
 // 03/01/2013 - EFW - Added a warning count
 // 12/21/2013 - EFW - Moved class to Sandcastle.Core assembly
 // 12/26/2013 - EFW - Updated to load build components via MEF
+// 12/28/2013 - EFW - Added MSBuild task support
 
 using System;
 using System.Collections.Concurrent;
@@ -44,17 +45,19 @@ namespace Sandcastle.Core.BuildAssembler
         #region Private data members
         //=====================================================================
 
+        private CancellationTokenSource tokenSource;
         private BuildContext context = new BuildContext();
 
         private List<BuildComponentCore> components = new List<BuildComponentCore>();
 
-        private BlockingCollection<string> messageLog = new BlockingCollection<string>();
+        private BlockingCollection<Tuple<LogLevel, string>> messageLog =
+            new BlockingCollection<Tuple<LogLevel, string>>();
 
         private CompositionContainer componentContainer;
         private List<Lazy<BuildComponentFactory, IBuildComponentMetadata>> allBuildComponents;
 
         private MessageLevel verbosityLevel;
-        private Action<string> messageLogger;
+        private Action<LogLevel, string> messageLogger;
         private int warningCount;
 
         #endregion
@@ -115,12 +118,14 @@ namespace Sandcastle.Core.BuildAssembler
         /// Constructor
         /// </summary>
         /// <param name="messageLogger">The message logger action</param>
-        public BuildAssemblerCore(Action<string> messageLogger)
+        public BuildAssemblerCore(Action<LogLevel, string> messageLogger)
         {
             if(messageLogger == null)
                 throw new ArgumentNullException("messageLogger");
 
             this.messageLogger = messageLogger;
+
+            tokenSource = new CancellationTokenSource();
         }
         #endregion
 
@@ -150,6 +155,9 @@ namespace Sandcastle.Core.BuildAssembler
 
                 if(componentContainer != null)
                     componentContainer.Dispose();
+
+                if(tokenSource != null)
+                    tokenSource.Dispose();
             }
         }
         #endregion
@@ -179,6 +187,17 @@ namespace Sandcastle.Core.BuildAssembler
 
         #region Operations
         //=====================================================================
+        
+        /// <summary>
+        /// This is used to cancel the build
+        /// </summary>
+        /// <remarks>The build will terminate as soon as possible after initializing a component or after a
+        /// topic finishes being generated.</remarks>
+        public void Cancel()
+        {
+            if(tokenSource != null)
+                tokenSource.Cancel();
+        }
 
         /// <summary>
         /// This is used to execute the build assembler instance using the specified configuration file and
@@ -204,7 +223,7 @@ namespace Sandcastle.Core.BuildAssembler
                     this.VerbosityLevel = level;
 
                     if(level > MessageLevel.Info)
-                        messageLog.Add("Info: Loading configuration...");
+                        messageLog.Add(LogMessage(LogLevel.Info, "Loading configuration..."));
 
                     // Load the context
                     XPathNavigator contextNode = configNav.SelectSingleNode(
@@ -226,28 +245,30 @@ namespace Sandcastle.Core.BuildAssembler
 
                     // Proceed through the build manifest, processing all topics named there
                     if(level > MessageLevel.Info)
-                        messageLog.Add("Info: Processing topics...");
+                        messageLog.Add(LogMessage(LogLevel.Info, "Processing topics..."));
 
                     int count = this.Apply(manifest);
 
-                    messageLog.Add(String.Format(CultureInfo.CurrentCulture, "Info: Processed {0} topic(s)", count));
+                    messageLog.Add(LogMessage(LogLevel.Info, String.Format(CultureInfo.CurrentCulture,
+                        "Processed {0} topic(s)", count)));
 
                     if(warningCount != 0)
-                        messageLog.Add(String.Format(CultureInfo.CurrentCulture, "Info: {0} warning(s)", warningCount));
+                        messageLog.Add(LogMessage(LogLevel.Info, String.Format(CultureInfo.CurrentCulture,
+                            "{0} warning(s)", warningCount)));
                 }
                 finally
                 {
                     messageLog.CompleteAdding();
                 }
-            });
+            }, tokenSource.Token);
 
             Task logger = Task.Factory.StartNew(() =>
             {
-                foreach(string s in messageLog.GetConsumingEnumerable())
-                    messageLogger(s);
-            });
+                foreach(var msg in messageLog.GetConsumingEnumerable())
+                    messageLogger(msg.Item1, msg.Item2);
+            }, tokenSource.Token);
 
-            Task.WaitAll(builder, logger);
+            Task.WaitAll(new[] { builder, logger}, tokenSource.Token);
         }
 
         /// <summary>
@@ -307,7 +328,10 @@ namespace Sandcastle.Core.BuildAssembler
 
                 // Apply the component stack
                 foreach(BuildComponentCore component in components)
+                {
                     component.Apply(document, topic);
+                    tokenSource.Token.ThrowIfCancellationRequested();
+                }
 
                 count++;
             }
@@ -350,7 +374,10 @@ namespace Sandcastle.Core.BuildAssembler
             List<BuildComponentCore> components = new List<BuildComponentCore>();
 
             foreach(XPathNavigator componentNode in componentNodes)
+            {
                 components.Add(this.LoadComponent(componentNode));
+                tokenSource.Token.ThrowIfCancellationRequested();
+            }
 
             return components;
         }
@@ -459,6 +486,50 @@ namespace Sandcastle.Core.BuildAssembler
         //=====================================================================
 
         /// <summary>
+        /// This is a helper method used to create log message tuples
+        /// </summary>
+        /// <param name="level">The log level</param>
+        /// <param name="message">The message</param>
+        /// <returns></returns>
+        private static Tuple<LogLevel, string> LogMessage(LogLevel level, string message)
+        {
+            return Tuple.Create<LogLevel, string>(level, message);
+        }
+
+        /// <summary>
+        /// This is a helper method used to create log message tuples
+        /// </summary>
+        /// <param name="level">The log level</param>
+        /// <param name="message">The message</param>
+        /// <returns></returns>
+        private static Tuple<LogLevel, string> LogMessage(MessageLevel level, string message)
+        {
+            LogLevel logLevel;
+
+            switch(level)
+            {
+                case MessageLevel.Ignore:
+                case MessageLevel.Info:
+                    logLevel = LogLevel.Info;
+                    break;
+
+                case MessageLevel.Warn:
+                    logLevel = LogLevel.Warn;
+                    break;
+
+                case MessageLevel.Error:
+                    logLevel = LogLevel.Error;
+                    break;
+
+                default:
+                    logLevel = LogLevel.Diagnostic;
+                    break;
+            }
+
+            return Tuple.Create<LogLevel, string>(logLevel, message);
+        }
+
+        /// <summary>
         /// Write a message to the message log
         /// </summary>
         /// <param name="level">The message level</param>
@@ -485,10 +556,9 @@ namespace Sandcastle.Core.BuildAssembler
             if(level >= this.VerbosityLevel)
             {
                 if(String.IsNullOrWhiteSpace(key))
-                    text = String.Format(CultureInfo.CurrentCulture, "{0}: {1}: {2}", level, type.Name, message);
+                    text = String.Format(CultureInfo.CurrentCulture, "{0}: {1}", type.Name, message);
                 else
-                    text = String.Format(CultureInfo.CurrentCulture, "{0}: {1}: [{2}] {3}", level, type.Name,
-                        key, message);
+                    text = String.Format(CultureInfo.CurrentCulture, "{0}: [{1}] {2}", type.Name, key, message);
 
                 // If the background task has completed, we'll call the message logger action directly
                 switch(level)
@@ -499,19 +569,23 @@ namespace Sandcastle.Core.BuildAssembler
                         if(level == MessageLevel.Warn)
                             Interlocked.Add(ref warningCount, 1);
 
+                        var m = LogMessage(level, text);
+
                         if(!messageLog.IsAddingCompleted)
-                            messageLog.Add(text);
+                            messageLog.Add(m);
                         else
-                            messageLogger(text);
+                            messageLogger(m.Item1, m.Item2);
                         break;
 
                     case MessageLevel.Error:
                         text = "\r\n" + text;
 
+                        var m2 = LogMessage(level, text);
+
                         if(!messageLog.IsAddingCompleted)
-                            messageLog.Add(text);
+                            messageLog.Add(m2);
                         else
-                            messageLogger(text);
+                            messageLogger(m2.Item1, m2.Item2);
 
                         if(System.Diagnostics.Debugger.IsAttached)
                             System.Diagnostics.Debugger.Break();

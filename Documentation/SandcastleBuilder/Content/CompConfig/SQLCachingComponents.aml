@@ -65,9 +65,7 @@ files so that their information is cached in the same group within the table dat
 
 <code language="xml" title="Comments Index Data">
 &lt;!-- This should replace the third instance of the CopyFromIndexComponent. --&gt;
-&lt;component id="Comments Index Data (SQL Cache)"
-	type="SandcastleBuilder.Components.SqlCopyFromIndexComponent"
-	assembly="{@SHFBFolder}SandcastleBuilder.Components.dll"&gt;
+&lt;component id="Comments Index Data (SQL Cache)"&gt;
   &lt;index name="comments" value="/doc/members/member" key="@name" cache="30" localCacheSize="2500"
     cacheProject="false" connectionString="Data Source=(localdb)\v11.0;Initial Catalog=Sandcastle"&gt;
     &lt;data base="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0"
@@ -87,12 +85,10 @@ files so that their information is cached in the same group within the table dat
 
 <code language="xml" title="Reflection Index Data">
 &lt;!-- This should replace the first instance of the CopyFromIndexComponent. --&gt;
-&lt;component id="Reflection Index Data (SQL Cache)"
-	type="SandcastleBuilder.Components.SqlCopyFromIndexComponent"
-	assembly="{@SHFBFolder}SandcastleBuilder.Components.dll"&gt;
+&lt;component id="Reflection Index Data (SQL Cache)"&gt;
   &lt;index name="reflection" value="/reflection/apis/api" key="@id" cache="15" localCacheSize="2500"
     cacheProject="false" connectionString="Data Source=(localdb)\v11.0;Initial Catalog=Sandcastle"&gt;
-    &lt;data base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" duplicateWarning="false"
+    &lt;data base="{@SHFBFolder}Data\Reflection" recurse="true" files="*.xml" duplicateWarning="false"
       groupId="ReflectionIndexCache"&gt;
       &lt;!-- A list of namespace elements can be specified here to limit what data is loaded
       &lt;namespace file="System.xml" /&gt;
@@ -108,15 +104,14 @@ files so that their information is cached in the same group within the table dat
 <code language="xml" title="Resolve Reference Links">
 &lt;!-- This should replace the standard ResolveReferenceLinksComponent2 build
      component. --&gt;
-&lt;component id="Resolve Reference Links (SQL Cache)"
-	type="SandcastleBuilder.Components.SqlResolveReferenceLinksComponent"
-	assembly="{@SHFBFolder}SandcastleBuilder.Components.dll"
-	locale="{@Locale}" linkTarget="{@SdkLinkTarget}"&gt;
+&lt;component id="Resolve Reference Links (SQL Cache)"&gt;
+	&lt;locale="{@Locale}" /&gt;
+	&lt;linkTarget="{@SdkLinkTarget}" /&gt;
   &lt;sqlCache connectionString="Data Source=(localdb)\v11.0;Initial Catalog=Sandcastle"
     msdnLocalCacheSize="2500" frameworkLocalCacheSize="2500"
     projectLocalCacheSize="2500" cacheProject="false" /&gt;
   &lt;msdnContentIdCache path="{@LocalDataFolder}Cache\MsdnContentId.cache" /&gt;
-  &lt;targets base="{@SandcastlePath}Data\Reflection" recurse="true" files="*.xml" type="{@SdkLinkType}"
+  &lt;targets base="{@SHFBFolder}Data\Reflection" recurse="true" files="*.xml" type="{@SdkLinkType}"
     groupId="FrameworkTargets"&gt;
     &lt;!-- A list of namespace elements can be specified here to limit what data is loaded
     &lt;namespace file="System.xml" /&gt;

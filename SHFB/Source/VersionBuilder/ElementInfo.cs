@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Xml.XPath;
 
-namespace VersionBuilder
+namespace Microsoft.Ddue.Tools
 {
     internal class ElementInfo
     {

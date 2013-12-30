@@ -1,40 +1,32 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <topic id="bc38b398-4cca-4972-b4b5-966def8428b4" revisionNumber="1">
-  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <introduction>
-      <para>Error BE0032: Reflection data files do not exist yet</para>
-    </introduction>
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>Error BE0032: Reflection data files do not exist yet</para>
+		</introduction>
 
-    <section>
-      <title>Cause</title>
-      <content>
-        <para>This error will occur if the <localUri>%DXROOT%\Data\Reflection</localUri>
-folder does not exist.</para>
-      </content>
-    </section>
+		<section>
+			<title>Cause</title>
+			<content>
+				<para>This error will occur if the <localUri>%SHFBROOT%\Data\Reflection</localUri> folder does not exist.</para>
+			</content>
+		</section>
 
-    <section>
-      <title>Solution</title>
-      <content>
-        <para>The files in that folder are required to document members
-inherited from base .NET Framework classes.  If you get this error, check to
-be sure that the <environmentVariable>DXROOT</environmentVariable>
-environment variable points to the latest copy of Sandcastle (usually in the
-<localUri>C:\Program Files\Sandcastle</localUri>) folder and that the
-<localUri>.\Data\Reflection</localUri> folder exists beneath it.  If it does
-not, you should reinstall Sandcastle.</para>
+		<section>
+			<title>Solution</title>
+			<content>
+				<para>The files in that folder are required to document members inherited from base .NET Framework
+classes.  If you get this error, check to be sure that the <environmentVariable>SHFBROOT</environmentVariable>
+environment variable points to the latest copy of the Sandcastle Help File Builder and tools (usually in the
+<localUri>%ProgramFiles(x86)\EWSoftware\Sandcastle Help File Builder</localUri>) folder and that the
+<localUri>.\Data\Reflection</localUri> folder exists beneath it.  If it does not, you should reinstall the
+Sandcastle Help File Builder.</para>
 
-<alert class="note">
-  <para>If you do need to recreate the files for some reason (i.e. you install
-a new .NET Framework release), you can run <ui>Start | Programs | Sandcastle
-Help File Builder | Rebuild Reflection Data</ui>.</para>
-</alert>
+			</content>
+		</section>
 
-      </content>
-    </section>
-
-    <relatedTopics>
-    <link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
-    </relatedTopics>
-  </developerConceptualDocument>
+		<relatedTopics>
+			<link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
+		</relatedTopics>
+	</developerConceptualDocument>
 </topic>

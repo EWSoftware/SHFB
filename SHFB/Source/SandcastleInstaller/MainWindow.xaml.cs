@@ -1,23 +1,21 @@
-﻿//=============================================================================
+﻿//===============================================================================================================
 // System  : Sandcastle Guided Installation
 // File    : MainForm.cs
 // Author  : Eric Woodruff
-// Updated : 04/16/2012
+// Updated : 12/28/2013
 // Compiler: Microsoft Visual C#
 //
 // This is the main form for the Sandcastle Guided Installer.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice and
-// all copyright notices must remain intact in all applications, documentation,
-// and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice and all copyright notices must remain intact in all applications, documentation, and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.0.0.0  02/05/2011  EFW  Created the code
 // 1.1.0.0  03/05/2012  EFW  Converted to use WPF
-//=============================================================================
+//===============================================================================================================
 
 using System;
 using System.Collections.Generic;
@@ -89,8 +87,7 @@ namespace Sandcastle.Installer
         /// </summary>
         private void LoadConfiguration()
         {
-            string date = null, version = null, configFile = IOPath.Combine(Utility.BasePath,
-                "InstallerConfiguration.xml");
+            string version = null, configFile = IOPath.Combine(Utility.BasePath, "InstallerConfiguration.xml");
 
             try
             {
@@ -103,16 +100,10 @@ namespace Sandcastle.Installer
 
                 var sandcastle = config.Root.Element("sandcastle");
 
-                if(sandcastle != null)
-                {
-                    if(sandcastle.Attribute("date") != null)
-                        date = sandcastle.Attribute("date").Value.Trim();
+                if(sandcastle != null && sandcastle.Attribute("version") != null)
+                    version = sandcastle.Attribute("version").Value.Trim();
 
-                    if(sandcastle.Attribute("version") != null)
-                        version = sandcastle.Attribute("version").Value.Trim();
-                }
-
-                if(sandcastle == null || String.IsNullOrEmpty(date) || String.IsNullOrEmpty(version))
+                if(sandcastle == null || String.IsNullOrEmpty(version))
                 {
                     lblTitle.Content = String.Format(CultureInfo.CurrentCulture, lblTitle.Content.ToString(),
                         "No configuration", String.Empty);
@@ -120,12 +111,11 @@ namespace Sandcastle.Installer
                         "configuration file");
                 }
 
-                lblTitle.Content = String.Format(CultureInfo.CurrentCulture, lblTitle.Content.ToString(),
-                    date, version);
+                lblTitle.Content = String.Format(CultureInfo.CurrentCulture, lblTitle.Content.ToString(), version);
 
                 // Load the root pages and all child pages
                 foreach(var page in config.Root.Descendants("pages").Elements("page"))
-                    this.AddHelpPage(page, null, date, version);
+                    this.AddHelpPage(page, null, version);
             }
             catch(Exception ex)
             {
@@ -147,11 +137,10 @@ namespace Sandcastle.Installer
         /// This is used to recursively load help page definitions
         /// </summary>
         /// <param name="page">The help page to load</param>
-        /// <param name="root">The root tree node to which the page is added.
-        /// If null, it is added as a root page.</param>
-        /// <param name="sandcastleDate">The Sandcastle release date</param>
+        /// <param name="root">The root tree node to which the page is added.  If null, it is added as a root
+        /// page.</param>
         /// <param name="sandcastleDate">The Sandcastle version</param>
-        private void AddHelpPage(XElement page, TreeViewItem root, string sandcastleDate, string sandcastleVersion)
+        private void AddHelpPage(XElement page, TreeViewItem root, string sandcastleVersion)
         {
             Assembly asm = Assembly.GetExecutingAssembly();
             IInstallerPage pageInstance;
@@ -199,7 +188,6 @@ namespace Sandcastle.Installer
 
             pageInstance = (IInstallerPage)Activator.CreateInstance(pageType);
             pageInstance.Installer = this;
-            pageInstance.SandcastleDate = sandcastleDate;
             pageInstance.SandcastleVersion = sandcastleVersion;
 
             pageInstance.Initialize(page);
@@ -219,7 +207,7 @@ namespace Sandcastle.Installer
             pnlPages.Children.Add(pageInstance.Control);
 
             foreach(var childPage in page.Elements("page"))
-                this.AddHelpPage(childPage, node, sandcastleDate, sandcastleVersion);
+                this.AddHelpPage(childPage, node, sandcastleVersion);
         }
 
         /// <summary>
@@ -271,8 +259,7 @@ namespace Sandcastle.Installer
         /// Flatten the tree view hierarchy to make it searchable
         /// </summary>
         /// <param name="item">The initial tree view item</param>
-        /// <returns>An enumerable collection containing the initial item and all of its children
-        /// recursively</returns>
+        /// <returns>An enumerable collection containing the initial item and all of its children recursively</returns>
         private static IEnumerable<TreeViewItem> Flatten(TreeViewItem item)
         {
             return (new[] { item }).Concat(item.Items.OfType<TreeViewItem>().SelectMany(ti => Flatten(ti)));

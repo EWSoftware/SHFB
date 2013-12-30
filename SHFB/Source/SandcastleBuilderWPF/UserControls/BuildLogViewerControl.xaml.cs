@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : BuildLogViewerControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/16/2013
+// Updated : 12/29/2013
 // Note    : Copyright 2012-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -22,13 +22,14 @@ using System;
 using System.Globalization;
 using System.IO;
 using System.Net;
-using System.Reflection;
 using System.Text;
 using System.Xml;
 using System.Xml.Xsl;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+
+using SandcastleBuilder.Utils.BuildComponent;
 
 namespace SandcastleBuilder.WPF.UserControls
 {
@@ -149,7 +150,7 @@ namespace SandcastleBuilder.WPF.UserControls
                 XsltSettings settings = new XsltSettings(true, true);
 
                 xslTransform.Load(XmlReader.Create(Path.Combine(Path.GetDirectoryName(
-                    Assembly.GetExecutingAssembly().Location), @"Templates\TransformBuildLog.xsl"),
+                    BuildComponentManager.HelpFileBuilderFolder), @"Templates\TransformBuildLog.xsl"),
                     readerSettings), settings, new XmlUrlResolver());
 
                 XsltArgumentList argList = new XsltArgumentList();

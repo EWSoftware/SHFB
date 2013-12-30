@@ -2,7 +2,7 @@
 // System  : Sandcastle Guided Installation - Sandcastle Help File Builder
 // File    : SandcastleHelpFileBuilderPage.cs
 // Author  : Eric Woodruff
-// Updated : 10/06/2012
+// Updated : 12/28/2013
 // Compiler: Microsoft Visual C#
 //
 // This file contains a page used to help the user install the Sandcastle Help File Builder
@@ -49,21 +49,19 @@ namespace Sandcastle.Installer.InstallerPages
         /// <inheritdoc />
         public override string PageTitle
         {
-            get { return "Sandcastle Help File Builder"; }
+            get { return "Sandcastle Help File Builder and Tools"; }
         }
 
         /// <inheritdoc />
-        /// <remarks>This returns the .NET Framework version required by the
-        /// Sandcastle Help File Builder installed by this release of the
-        /// package.</remarks>
+        /// <remarks>This returns the .NET Framework version required by the Sandcastle Help File Builder
+        /// installed by this release of the package.</remarks>
         public override Version RequiredFrameworkVersion
         {
             get { return frameworkVersion; }
         }
 
         /// <summary>
-        /// This is overridden to prevent continuing until the Sandcastle
-        /// tools are installed.
+        /// This is overridden to prevent continuing until the Sandcastle tools are installed
         /// </summary>
         public override bool CanContinue
         {
@@ -71,8 +69,8 @@ namespace Sandcastle.Installer.InstallerPages
             {
                 if(String.IsNullOrEmpty(shfbFolder))
                 {
-                    MessageBox.Show("The Sandcastle Help File Builder must be installed in order to install " +
-                        "the remainder of the tools in this package.  Follow the instructions on this " +
+                    MessageBox.Show("The Sandcastle Help File Builder and Tools must be installed in order to " +
+                        "install the remainder of the tools in this package.  Follow the instructions on this " +
                         "page to install them.", this.PageTitle, MessageBoxButton.OK, MessageBoxImage.Exclamation);
                     return false;
                 }
@@ -90,22 +88,33 @@ namespace Sandcastle.Installer.InstallerPages
         }
 
         /// <summary>
-        /// This is overridden to return a completion action that offers to
-        /// open the SHFB help file.
+        /// This is overridden to return completion actions that offers to open the Sandcastle and SHFB help
+        /// files.
         /// </summary>
         public override IEnumerable<CompletionAction> CompletionActions
         {
             get
             {
                 if(!String.IsNullOrEmpty(shfbFolder))
+                {
+                    yield return new CompletionAction
+                    {
+                        Description = "Open the Sandcastle Tools help file",
+                        Action = new Action(() =>
+                        {
+                            Utility.Open(Path.Combine(shfbFolder, @"Help\SandcastleTools.chm"));
+                        })
+                    };
+
                     yield return new CompletionAction
                     {
                         Description = "Open the Sandcastle Help File Builder help file",
                         Action = new Action(() =>
                         {
-                            Utility.Open(Path.Combine(shfbFolder, "SandcastleBuilder.chm"));
+                            Utility.Open(Path.Combine(shfbFolder, @"Help\SandcastleBuilder.chm"));
                         })
                     };
+                }
             }
         }
 
@@ -158,8 +167,7 @@ namespace Sandcastle.Installer.InstallerPages
         }
 
         /// <summary>
-        /// This is overridden to figure out if the Sandcastle Help File
-        /// Builder is installed.
+        /// This is overridden to figure out if the Sandcastle Help File Builder is installed
         /// </summary>
         public override void ShowPage()
         {
@@ -190,8 +198,10 @@ namespace Sandcastle.Installer.InstallerPages
                     {
                         fvi = FileVersionInfo.GetVersionInfo(Path.Combine(shfbFolder, "SHFBProjectLauncher.exe"));
 
-                        installedVersion = new Version(fvi.FileMajorPart, fvi.FileMinorPart, fvi.FileBuildPart,
-                            fvi.FilePrivatePart);
+                        // The file version is missing the century to satisfy the MSI rule for the major version
+                        // value so we'll add the century back from the SHFB version to get a match.
+                        installedVersion = new Version(fvi.FileMajorPart + (shfbVersion.Major / 100 * 100),
+                            fvi.FileMinorPart, fvi.FileBuildPart, fvi.FilePrivatePart);
                     }
 
                     if(installedVersion < shfbVersion)

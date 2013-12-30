@@ -25,18 +25,18 @@
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Binaries.wxs" />
-    <Compile Include="Colorizer.wxs" />
+    <Compile Include="Environment.wxs" />
+    <Compile Include="DeploymentFiles.wxs" />
     <Compile Include="Product.wxs" />
-    <Compile Include="SharedContent.wxs" />
-    <Compile Include="Spelling.wxs" />
-    <Compile Include="Templates.wxs" />
-    <Compile Include="Web.wxs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\SandcastleBuilder.ico" />
+    <Content Include="Resources\SHFBProjectLauncher.ico" />
+    <None Include="GenerateWixFiles.bat" />
     <Content Include="Product.wxi" />
     <Content Include="Resources\Banner.jpg" />
     <Content Include="Resources\Dialog.jpg" />
+    <Content Include="Resources\Help.ico" />
     <Content Include="Resources\HtmlDocument.ico" />
   </ItemGroup>
   <ItemGroup>

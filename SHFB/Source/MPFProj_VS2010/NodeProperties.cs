@@ -46,21 +46,21 @@ a particular purpose and non-infringement.
 
 ********************************************************************************************/
 
-//=============================================================================
+//===============================================================================================================
 // File    : NodeProperties.cs
-// Updated : 04/17/2011
+// Updated : 12/29/2013
 // Modifier: Eric Woodruff  (Eric@EWoodruff.us)
 //
-// This file has been modified to support "Show All Files" in the project.
-// Search for "!EFW" to find the changes.
+// This file has been modified to support "Show All Files" in the project.  Search for "!EFW" to find the
+// changes.
 //
 //    Date     Who  Comments
-// ============================================================================
-// 04/17/2011  EFW  Added code to FileNodeProperties to hide the BuildAction
-//                  property for non-member nodes.  Also added code to it and
-//                  FolderNodeProperties to prevent editing of the name for
-//                  non-member items.
-//=============================================================================
+// ==============================================================================================================
+// 04/17/2011  EFW  Added code to FileNodeProperties to hide the BuildAction property for non-member nodes.
+//                  Also added code to it and FolderNodeProperties to prevent editing of the name for non-member
+//                  items.
+// 12/29/2013  EFW  Added support for ReferenceOutputAssembly metadata
+//===============================================================================================================
 
 using System;
 using System.ComponentModel;
@@ -69,7 +69,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
-using Microsoft.VisualStudio;
+
 using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -157,7 +157,7 @@ namespace Microsoft.VisualStudio.Project
 
         #region IVsSpecifyProjectDesignerPages
         /// <summary>
-        /// Implementation of the IVsSpecifyProjectDesignerPages. It will retun the pages that are configuration independent.
+        /// Implementation of the IVsSpecifyProjectDesignerPages. It will return the pages that are configuration independent.
         /// </summary>
         /// <param name="pages">The pages to return.</param>
         /// <returns></returns>
@@ -928,7 +928,7 @@ namespace Microsoft.VisualStudio.Project
         }
         #endregion
 
-        #region overriden methods
+        #region overridden methods
         public override string FullPath
         {
             get
@@ -937,6 +937,16 @@ namespace Microsoft.VisualStudio.Project
             }
         }
         #endregion
+
+        // !EFW - Added support for ReferenceOutputAssembly
+        [SRCategory(SR.Misc)]
+        [LocDisplayName(SR.ReferenceOutputAssembly)]
+        [SRDescription(SR.ReferenceOutputAssemblyDescription)]
+        public virtual bool ReferenceOutputAssembly
+        {
+            get { return ((ProjectReferenceNode)this.Node).ReferenceOutputAssembly; }
+            set { ((ProjectReferenceNode)this.Node).ReferenceOutputAssembly = value; }
+        }
     }
 
     [ComVisible(true)]

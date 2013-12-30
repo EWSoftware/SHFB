@@ -17,10 +17,15 @@ using System.Xml.XPath;
 using Sandcastle.Core;
 using Sandcastle.Core.CommandLine;
 
-namespace VersionBuilder
+namespace Microsoft.Ddue.Tools
 {
-    public static class Program
+    public static class VersionBuilderCore
     {
+        /// <summary>
+        /// This is used to cancel the MSBuild task
+        /// </summary>
+        public static bool Cancel { get; set; }
+
         // Methods
         public static int Main(string[] args)
         {
@@ -31,9 +36,8 @@ namespace VersionBuilder
             OptionCollection options = new OptionCollection {
                 new SwitchOption("?", "Show this help page."),
                 new StringOption("config", "Specify a configuration file.", "versionCatalog"),
-                new StringOption("out", "Specify an output file containing version information.",
-                    "outputFile"),
-                new BooleanOption("rip", "Specify whether to rip old Apis which are not supported by " +
+                new StringOption("out", "Specify an output file containing version information.", "outputFile"),
+                new BooleanOption("rip", "Specify whether to rip old APIs which are not supported by the " +
                     "latest versions.")
             };
 
@@ -78,7 +82,7 @@ namespace VersionBuilder
             catch(IOException ioEx)
             {
                 ConsoleApplication.WriteMessage(LogLevel.Error, String.Format(CultureInfo.CurrentCulture,
-                    "An error occured while accessing the version catalog file '{0}'. The error message " +
+                    "An error occurred while accessing the version catalog file '{0}'. The error message " +
                     "is: {1}", uri, ioEx.Message));
                 return 1;
             }
@@ -89,49 +93,59 @@ namespace VersionBuilder
                     xmlEx.Message));
                 return 1;
             }
+
             XPathNavigator navigator = document.CreateNavigator().SelectSingleNode("versions");
             XPathExpression expr = XPathExpression.Compile("string(ancestor::versions/@name)");
             List<VersionInfo> list = new List<VersionInfo>();
             List<string> latestVersions = new List<string>();
+
             foreach(XPathNavigator navigator2 in document.CreateNavigator().Select("versions//version[@file]"))
             {
                 string group = (string)navigator2.Evaluate(expr);
                 string attribute = navigator2.GetAttribute("name", String.Empty);
+
                 if(string.IsNullOrEmpty(attribute))
-                {
                     ConsoleApplication.WriteMessage(LogLevel.Error, "Every version element must have a name attribute.");
-                }
+
                 string name = navigator2.GetAttribute("file", String.Empty);
+
                 if(String.IsNullOrEmpty(attribute))
-                {
                     ConsoleApplication.WriteMessage(LogLevel.Error, "Every version element must have a file attribute.");
-                }
+
                 name = Environment.ExpandEnvironmentVariables(name);
                 VersionInfo item = new VersionInfo(attribute, group, name);
                 list.Add(item);
             }
+
             string str5 = String.Empty;
+
             foreach(VersionInfo info2 in list)
-            {
                 if(info2.Group != str5)
                 {
                     latestVersions.Add(info2.Name);
                     str5 = info2.Group;
                 }
+
+            if(Cancel)
+            {
+                ConsoleApplication.WriteMessage(LogLevel.Info, "VersionBuilder canceled");
+                return 1;
             }
+
             XmlReaderSettings settings = new XmlReaderSettings
             {
                 IgnoreWhitespace = true
             };
+
             XmlWriterSettings settings2 = new XmlWriterSettings
             {
                 Indent = true
             };
+
             Dictionary<string, List<KeyValuePair<string, string>>> versionIndex = new Dictionary<string, List<KeyValuePair<string, string>>>();
             Dictionary<string, Dictionary<string, ElementInfo>> dictionary2 = new Dictionary<string, Dictionary<string, ElementInfo>>();
             Dictionary<string, Dictionary<String, XPathNavigator>> extensionMethods = new Dictionary<string, Dictionary<String, XPathNavigator>>();
             XPathExpression expression2 = XPathExpression.Compile("string(/api/@id)");
-            XPathExpression expression3 = XPathExpression.Compile("string(/api/containers/library/@assembly)");
             XPathExpression expression4 = XPathExpression.Compile("/api/elements/element");
             XPathExpression expression = XPathExpression.Compile("/api/attributes/attribute[type[@api='T:System.ObsoleteAttribute']]");
             XPathExpression extensionAttributeExpression = XPathExpression.Compile("/api/attributes/attribute[type[@api='T:System.Runtime.CompilerServices.ExtensionAttribute']]");
@@ -141,8 +155,15 @@ namespace VersionBuilder
             XPathExpression skipFirstParam = XPathExpression.Compile("./parameter[position()>1]" );
             XPathExpression expression6 = XPathExpression.Compile("boolean(argument[type[@api='T:System.Boolean'] and value[.='True']])");
             XPathExpression apiChild = XPathExpression.Compile("./api");
+
             foreach(VersionInfo info3 in list)
             {
+                if(Cancel)
+                {
+                    ConsoleApplication.WriteMessage(LogLevel.Info, "VersionBuilder canceled");
+                    return 1;
+                }
+
                 ConsoleApplication.WriteMessage(LogLevel.Info, String.Format(CultureInfo.CurrentCulture,
                     "Indexing version '{0}' using file '{1}'.", info3.Name, info3.File));
                 try
@@ -163,18 +184,19 @@ namespace VersionBuilder
                                 XPathNavigator navigator3 = new XPathDocument(reader2).CreateNavigator();
 
                                 key = (string)navigator3.Evaluate(expression2);
-                                string text2 = (string)navigator3.Evaluate(expression3);
 
                                 if(!versionIndex.TryGetValue(key, out list3))
                                 {
                                     list3 = new List<KeyValuePair<string, string>>();
                                     versionIndex.Add(key, list3);
                                 }
+
                                 if(!dictionary2.TryGetValue(key, out dictionary3))
                                 {
                                     dictionary3 = new Dictionary<string, ElementInfo>();
                                     dictionary2.Add(key, dictionary3);
                                 }
+
                                 foreach(XPathNavigator navigator4 in navigator3.Select(expression4))
                                 {
                                     ElementInfo info4;
@@ -254,7 +276,7 @@ namespace VersionBuilder
                 catch(IOException ioEx)
                 {
                     ConsoleApplication.WriteMessage(LogLevel.Error, String.Format(CultureInfo.CurrentCulture,
-                        "An error occured while accessing the input file '{0}'. The error message is: {1}",
+                        "An error occurred while accessing the input file '{0}'. The error message is: {1}",
                         info3.File, ioEx.Message));
                     return 1;
                 }
@@ -276,24 +298,30 @@ namespace VersionBuilder
             try
             {
                 XmlWriter writer;
+
                 if(result.Options["out"].IsPresent)
-                {
                     writer = XmlWriter.Create((string)result.Options["out"].Value, settings2);
-                }
                 else
-                {
                     writer = XmlWriter.Create(Console.Out, settings2);
-                }
+
                 try
                 {
                     writer.WriteStartDocument();
                     writer.WriteStartElement("reflection");
                     writer.WriteStartElement("assemblies");
                     Dictionary<string, object> dictionary4 = new Dictionary<string, object>();
+
                     foreach(VersionInfo info5 in list)
                     {
+                        if(Cancel)
+                        {
+                            ConsoleApplication.WriteMessage(LogLevel.Info, "VersionBuilder canceled");
+                            return 1;
+                        }
+
                         XmlReader reader3 = XmlReader.Create(info5.File, settings);
                         reader3.MoveToContent();
+
                         while(reader3.Read())
                         {
                             if((reader3.NodeType == XmlNodeType.Element) && (reader3.LocalName == "assembly"))
@@ -309,13 +337,22 @@ namespace VersionBuilder
                             }
                         }
                     }
+
                     writer.WriteEndElement();
                     writer.WriteStartElement("apis");
                     var readElements = new HashSet<String>();
+
                     foreach(VersionInfo info6 in list)
                     {
+                        if(Cancel)
+                        {
+                            ConsoleApplication.WriteMessage(LogLevel.Info, "VersionBuilder canceled");
+                            return 1;
+                        }
+
                         XmlReader reader5 = XmlReader.Create(info6.File, settings);
                         reader5.MoveToContent();
+
                         while(reader5.Read())
                         {
                             if((reader5.NodeType == XmlNodeType.Element) && (reader5.LocalName == "api"))
@@ -501,8 +538,10 @@ namespace VersionBuilder
                                 }
                             }
                         }
+
                         reader5.Close();
                     }
+
                     writer.WriteEndElement();
                     writer.WriteEndElement();
                     writer.WriteEndDocument();
@@ -512,8 +551,10 @@ namespace VersionBuilder
                     writer.Close();
                 }
             }
-            catch(IOException)
+            catch(IOException ioEx)
             {
+                ConsoleApplication.WriteMessage(LogLevel.Error, String.Format(CultureInfo.CurrentCulture,
+                    "An error occurred while generating the output file. The error message is: {1}", ioEx.Message));
                 return 1;
             }
 

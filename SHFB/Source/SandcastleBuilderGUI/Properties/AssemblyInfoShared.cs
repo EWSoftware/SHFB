@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder
 // File    : AssemblyInfoShared.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/27/2013
+// Updated : 12/29/2013
 // Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -73,10 +73,10 @@ using System.Runtime.InteropServices;
 /// </summary>
 internal static partial class AssemblyInfo
 {
-    /// <summary>
-    /// Common assembly version
-    /// </summary>
-    public const string Version = "2013.12.27.0";
+    // Common assembly version and installer file version.  MSIs only support a Major value between 0 and 255
+    // so we drop the century from the year.
+    public const string Version        = "2013.12.29.0";
+    public const string InstallerVersion = "13.12.29.0";
 
     public const string Copyright = "Copyright \xA9 2006-2013, Eric Woodruff, All Rights Reserved";
 }

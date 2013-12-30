@@ -224,15 +224,15 @@ See the comments within each for details about what the examples are showing.  T
 Comments Guide</legacyBold> installed as part of the Sandcastle tools contains working examples that you look
 at to see the end result.</para>
 
-<code source="..\..\Sandcastle\Examples\XMLCommentsExamples\DocumentationInheritance\CustomException.cs"
+<code source="..\..\SHFB\Source\XMLCommentsExamples\DocumentationInheritance\CustomException.cs"
     region="Constructor documentation inheritance" outlining="true"
     language="cs" title="Constructor Documentation Inheritance" />
 
-<code source="..\..\Sandcastle\Examples\XMLCommentsExamples\DocumentationInheritance\ExplicitImplementation.cs"
+<code source="..\..\SHFB\Source\XMLCommentsExamples\DocumentationInheritance\ExplicitImplementation.cs"
     region="Interface implementation documentation inheritance" outlining="true"
     language="cs" title="Interface Implementation Examples" />
 
-<code source="..\..\Sandcastle\Examples\XMLCommentsExamples\DocumentationInheritance\DocumentationInheritance.cs"
+<code source="..\..\SHFB\Source\XMLCommentsExamples\DocumentationInheritance\DocumentationInheritance.cs"
     region="Various documentation inheritance examples" outlining="true"
     language="cs" title="Various Other Examples" />
 

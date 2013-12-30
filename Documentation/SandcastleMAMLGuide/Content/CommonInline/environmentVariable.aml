@@ -17,7 +17,7 @@ as the inner text.</para>
       <content>
         <code language="xml" title=" ">
 The Sandcastle tools find their installed location using the
-&lt;environmentVariable&gt;DXROOT&lt;/environmentVariable&gt; environment variable.
+&lt;environmentVariable&gt;SHFBROOT&lt;/environmentVariable&gt; environment variable.
 </code>
       </content>
     </section>
@@ -25,7 +25,7 @@ The Sandcastle tools find their installed location using the
       <title>Example Output</title>
       <content>
         <para>The Sandcastle tools find their installed location using the
-<environmentVariable>DXROOT</environmentVariable> environment variable.</para>
+<environmentVariable>SHFBROOT</environmentVariable> environment variable.</para>
       </content>
     </section>
 

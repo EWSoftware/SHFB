@@ -18,12 +18,9 @@
     <OutputPath>.\Help\</OutputPath>
     <HtmlHelpName>Documentation</HtmlHelpName>
     <DocumentationSources>
-      <DocumentationSource sourceFile="$(SHFBROOT)\BuildAssemblerLibrary.dll" />
-      <DocumentationSource sourceFile="$(SHFBROOT)\BuildComponents.dll" />
-      <DocumentationSource sourceFile="$(SHFBROOT)\BuildComponents.Targets.dll" />
-      <DocumentationSource sourceFile="$(SHFBROOT)\ICSharpCode.TextEditor.dll" />
-      <DocumentationSource sourceFile="$(SHFBROOT)\ColorizerLibrary.dll" />
-      <DocumentationSource sourceFile="$(SHFBROOT)\WeifenLuo.WinFormsUI.Docking.dll" />
+      <DocumentationSource sourceFile="..\..\SHFB\Deploy\ColorizerLibrary.dll" />
+      <DocumentationSource sourceFile="..\..\SHFB\Deploy\ICSharpCode.TextEditor.dll" />
+      <DocumentationSource sourceFile="..\..\SHFB\Deploy\WeifenLuo.WinFormsUI.Docking.dll" />
     </DocumentationSources>
     <CppCommentsFixup>False</CppCommentsFixup>
     <FrameworkVersion>.NET Framework 4.0</FrameworkVersion>

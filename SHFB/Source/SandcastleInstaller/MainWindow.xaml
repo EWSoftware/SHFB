@@ -15,7 +15,7 @@
         <ColumnDefinition Width="6*" />
         <ColumnDefinition />
       </Grid.ColumnDefinitions>
-      <Label Name="lblTitle" Grid.Column="0" Content="Sandcastle Guided Installation ({0} {1})"
+      <Label Name="lblTitle" Grid.Column="0" Content="Sandcastle Guided Installation ({0})"
         FontWeight="Bold" FontSize="16" VerticalAlignment="Center" Width="Auto" />
       <Image Grid.Column="1" Source="Resources/SandcastleLogo.jpg" Height="45" Width="45" HorizontalAlignment="Right" />
     </Grid>

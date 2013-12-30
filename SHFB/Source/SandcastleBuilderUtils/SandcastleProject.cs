@@ -2578,8 +2578,9 @@ namespace SandcastleBuilder.Utils
 
             try
             {
-                // Ensure that we use the correct build engine for the project
-                if(msBuildProject.ToolsVersion != "4.0")
+                // Ensure that we use the correct build engine for the project.  On VS 2013,
+                // msBuildProject.ToolsVersion is "12.0" but the Xml.ToolsVersion is "4.0" which is okay.
+                if(msBuildProject.ToolsVersion != "4.0" && msBuildProject.Xml.ToolsVersion != "4.0")
                     msBuildProject.Xml.ToolsVersion = "4.0";
 
                 loadingProperties = true;

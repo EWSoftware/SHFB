@@ -31,17 +31,19 @@ additional tools not included in the guided installation that you may find usefu
 
 <section address="Requirements">
   <title>Requirements</title>
-  <content><para>The latest version of the Sandcastle tools can always be found at the <token>SHFB</token>
-CodePlex project site.  In addition, you will need the following:</para>
-
-<list class="bullet">
-    <listItem>
-		<para>The <externalLink><linkText>.NET Framework 4.0</linkText>
-  <linkUri>http://www.microsoft.com/downloads/en/details.aspx?FamilyID=9CFB2D51-5FF4-4491-B0E5-B386F32C0992</linkUri>
-  <linkTarget>_blank</linkTarget>
-</externalLink>.</para>
-	</listItem>
-</list>
+  <content>
+		<para>The latest version of the Sandcastle Help File Builder and Tools can always be found at the
+<token>SHFB</token> CodePlex project site (<token>SandcastleVersion</token> when this help file was produced).
+The <externalLink><linkText>.NET Framework 4.0</linkText>
+<linkUri>http://www.microsoft.com/downloads/en/details.aspx?FamilyID=9CFB2D51-5FF4-4491-B0E5-B386F32C0992</linkUri>
+<linkTarget>_blank</linkTarget></externalLink> is required to run the tools.</para>
+			
+		<alert class="note">
+  		<para>The underlying Sandcastle tools were originally created by Microsoft.  The help file builder uses
+them to produce the help file topics.  Microsoft officially discontinued development in October 2012.  The
+Sandcastle tools have been merged with the <token>SHFB</token> project and are developed and supported there
+now as part of that project.</para>
+		</alert>
 
 	<para>In order to use the Sandcastle tools, the following additional tools are required based on the types
 of help files that you want to produce.  Each must be installed prior to building a help file of that particular
@@ -76,32 +78,10 @@ help files.  These are installed as part of Visual Studio.</para>
 	</listItem>
 </list>
 
-	<para>The tools can be installed in any order.  However, be aware that if installing the Visual Studio 2005
-or 2008 SDK to obtain the Help 2 compiler that both contain outdated versions of Sandcastle.  This can cause the
-<environmentVariable>DXROOT</environmentVariable> environment variable used to locate the Sandcastle tools to be
-incorrect.  After installing either SDK, do the following:</para>
-
-<list class="ordered">
-    <listItem>
-		<para>Check the <legacyUnderline>user</legacyUnderline> environment variables.  If you see a copy of the
-<environmentVariable>DXROOT</environmentVariable> environment variable there, delete it.</para>
-	</listItem>
-
-	<listItem>
-		<para>If there is a <legacyUnderline>user</legacyUnderline> copy of the <environmentVariable>PATH</environmentVariable>
-environment variable, remove any path to the SDK version of Sandcastle that it contains.  If that is all it
-contains, it can be deleted.</para>
-	</listItem>
-
-    <listItem>
-		<para>Check the <legacyUnderline>system</legacyUnderline> environment variables to ensure that a
-<environmentVariable>DXROOT</environmentVariable> environment variable does exist and that it points to the
-correct location of the Microsoft Sandcastle tools (<legacyBold>not</legacyBold> the help file builder).
-Usually this will be <localUri>C:\Program Files (x86)\Sandcastle</localUri> unless you installed it in an
-alternate location.</para>
-	</listItem>
-
-</list>
+	<para>The tools can be installed in any order.  Be aware that if installing the Visual Studio 2005 or 2008 SDK
+to obtain the Help 2 compiler that both contain outdated versions of the Sandcastle tools.  This old release can
+be ignored and should not cause any issues since the latest tools are installed in the same folder as the
+help file builder and it only looks there for them.</para>
 
 <alert class="note">
   <para>You may need to reboot the system in order for any environment variable changes to take effect.</para>

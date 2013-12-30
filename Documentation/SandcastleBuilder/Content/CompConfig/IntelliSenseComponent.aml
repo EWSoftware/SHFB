@@ -22,8 +22,7 @@ missing documentation items as well.</para>
 <code language="xml" title="Example Configuration">
 &lt;!-- IntelliSense component configuration.  This must appear
      before the TransformComponent. --&gt;
-&lt;component type="Microsoft.Ddue.Tools.IntelliSenseComponent"
-	assembly="{@SandcastlePath}ProductionTools\BuildComponents.dll"&gt;
+&lt;component id="IntelliSense Component"&gt;
  &lt;!-- Output options (optional)
       Attributes:
          Include Namespaces (false by default)
@@ -35,10 +34,9 @@ missing documentation items as well.</para>
 </code>
 
 				<para>The example given above is taken from the Sandcastle Help File Builder's configuration file.  When
-used with it, the replacement tags <codeInline>{@SandcastlePath}</codeInline> and <codeInline>{@OutputFolder}</codeInline>
-are used to insert the Sandcastle tools folder and the project's output folder in the file paths.  These are
-replaced at build time with the appropriate values.  If using the component in your own build scripts, replace
-the tags with a relative or absolute path to the component assembly and output folder respectively.</para>
+used with it, the replacement tag <codeInline>{@OutputFolder}</codeInline> is used to insert the project's output
+folder in the file path.  This is replaced at build time with the appropriate value.  If using the component in
+your own build scripts, replace the tag with a relative or absolute path to the output folder.</para>
 
 				<para>The <codeInline>folder</codeInline> attribute identifies the folder in which to place the
 IntelliSense files.  One file is created for each assembly.  If set to true, the <codeInline>includeNamespaces</codeInline>

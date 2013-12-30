@@ -1,4 +1,4 @@
-﻿namespace VersionBuilder
+﻿namespace Microsoft.Ddue.Tools
 {
     internal class VersionInfo
     {

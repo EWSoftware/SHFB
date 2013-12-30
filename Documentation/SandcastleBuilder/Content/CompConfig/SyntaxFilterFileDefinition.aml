@@ -19,8 +19,9 @@ The custom syntax generator assembly, configuration file, and any supporting fil
 syntax filter definition files must use the extension <localUri>.filters</localUri>.  The default syntax filters
 file is shown below:</para>
 
-<code language="xml" title="Default Syntax Filters Definition File"
-  source="..\..\SHFB\Source\SandcastleComponents\SandcastleBuilder.filters" />
+<code language="xml" title="Default Syntax Filters Definition File">
+	TODO: This topic will be removed.  Syntax filters are discovered via MEF.
+</code>
 
   </content>
 </section>

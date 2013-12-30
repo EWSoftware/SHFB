@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+	<?include Product.wxi ?>
+
+	<Fragment>
+		<DirectoryRef Id="INSTALLDIR">
+			<Component Id="StartMenuEntries" Guid="{5053DDFA-5A63-40e5-8DBA-76F1F8FFBEB5}">
+				<CreateFolder Directory="INSTALLDIR" />
+				<RemoveFolder Id="RemoveShfbStartMenu" Directory="ShfbProgramMenuDir" On="uninstall" />
+			</Component>
+			<Component Id="WriteSHFBEnvironmentPath" Guid="{084B0D20-A299-4865-AE32-F3A9A7473BF2}">
+				<Environment Id="SetSHFBRoot" Name="SHFBROOT" Value="[INSTALLDIR]" Action="set" System="yes" />
+				<CreateFolder Directory="INSTALLDIR" />
+			</Component>
+			<Component Id="License.txt" Guid="{2029F775-623C-4838-B5AC-D815A3358856}">
+				<File Id="License.txt" KeyPath="yes" Source="$(var.SolutionDir)License.txt" />
+			</Component>
+			<Component Id="SHFB.url" Guid="{037C04FF-D961-4F5A-BB88-9AC5B7E2F5B7}">
+				<File Id="SHFB.url" KeyPath="yes" Source="$(var.SolutionDir)SHFB.url">
+					<Shortcut Id="SHFB.url"
+						Directory="ShfbProgramMenuDir"
+						Icon="HtmlDocument.ico"
+						Name="Sandcastle Help File Builder"
+						Description="SHFB project site"
+						Advertise="yes" />
+				</File>
+			</Component>
+		</DirectoryRef>
+
+		<ComponentGroup Id="Environment">
+			<ComponentRef Id="StartMenuEntries" />
+			<ComponentRef Id="WriteSHFBEnvironmentPath" />
+			<ComponentRef Id="License.txt" />
+			<ComponentRef Id="SHFB.url" />
+		</ComponentGroup>
+	</Fragment>
+</Wix>

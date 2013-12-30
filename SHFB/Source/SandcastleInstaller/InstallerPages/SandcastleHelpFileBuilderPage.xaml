@@ -14,18 +14,18 @@
     </Grid.RowDefinitions>
     <FlowDocumentScrollViewer Grid.Row="0">
       <FlowDocument Name="fdDocument" FontFamily="Verdana" FontSize="11" PagePadding="10,15" TextAlignment="Left">
-        <Paragraph><Bold FontSize="16">Sandcastle Help File Builder</Bold></Paragraph>
+        <Paragraph><Bold FontSize="16">Sandcastle Help File Builder and Tools</Bold></Paragraph>
 
         <Paragraph>The Sandcastle Help File Builder (SHFB) was created to provide project managment
 features, add the missing NDoc-like features that are used most often, and provide graphical and command
-line based tools to build a help file in an automated fashion using Sandcastle.  The most recent version
-can always be found at the <Hyperlink NavigateUri="http://SHFB.CodePlex.com">Sandcastle Help File Builder</Hyperlink>
-project on CodePlex.</Paragraph>
+line based tools to build a help file in an automated fashion using the Sandcastle Tools.  The most recent
+version of both can always be found at the <Hyperlink NavigateUri="http://SHFB.CodePlex.com">Sandcastle Help
+File Builder</Hyperlink> project on CodePlex.</Paragraph>
 
-        <Paragraph>This will install the core build engine and the standalone GUI project management system.
-A Visual Studio package is also available that will allow you to create, manage, and build help file
-projects from within Visual Studio.  It is installed separately.  The core build engine is required for it
-to work correctly and must be installed first.</Paragraph>
+        <Paragraph>This will install the core tools and build engine and the standalone GUI project management
+system.  A Visual Studio package is also available that will allow you to create, manage, and build help file
+projects from within Visual Studio.  It is installed separately.  The core tools and build engine are required
+for it to work correctly and must be installed first.</Paragraph>
 
         <Paragraph Margin="20" Padding="10" Background="#FFFFCC" BorderThickness="1" BorderBrush="Black">
 See the topics in the <Bold>Getting Started</Bold> section of the Sandcastle Help File Builder help file for
@@ -38,7 +38,7 @@ information on additional tools that you may find useful and how to create your 
     <StackPanel Grid.Row="1" Name="pnlControls" Orientation="Horizontal"
       Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}">
       <Button Name="btnInstallSHFB" Content="_Install SHFB" Padding="10,3" Margin="10"
-        ToolTip="Install the Sandcastle Help File Builder" Click="btnInstallSHFB_Click" />
+        ToolTip="Install the Sandcastle Help File Builder and Tools" Click="btnInstallSHFB_Click" />
       <Image Name="imgSpinner" Source="../Resources/Spinner.gif" Height="20"
         scBehaviors:SupportAnimatedGIFBehavior.SupportAnimatedGif="True" />
       <Label Name="lblPleaseWait" Content="Installing.  Please wait..."

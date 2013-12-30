@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Components
 // File    : ShowMissingComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/24/2013
+// Updated : 12/28/2013
 // Note    : Copyright 2007-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -334,7 +334,7 @@ namespace Microsoft.Ddue.Tools
             }
 
             // Don't bother if there is nothing to add
-            if(!isEnabled || key[0] == 'R' || key[1] != ':' || (key[0] == 'N' && !showMissingNamespaces))
+            if(!isEnabled || key[0] == 'R' || key[1] != ':' || ((key[0] == 'G' || key[0] == 'N') && !showMissingNamespaces))
                 return;
 
             try
@@ -354,8 +354,8 @@ namespace Microsoft.Ddue.Tools
                 if(showMissingIncludeTargets)
                     this.CheckForMissingIncludeTarget(comments, key);
 
-                // All elements can have remarks except namespaces
-                if(showMissingRemarks && key[0] != 'N')
+                // All elements can have remarks except namespaces and namespace groups
+                if(showMissingRemarks && key[0] != 'G' && key[0] != 'N')
                     this.CheckForMissingText(comments, key, "remarks");
 
                 // If it's a property, check for a missing <value> tag

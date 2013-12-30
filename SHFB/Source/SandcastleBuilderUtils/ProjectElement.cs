@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : ProjectElement.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 09/27/2013
+// Updated : 12/29/2013
 // Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -48,6 +48,8 @@ namespace SandcastleBuilder.Utils
         public const string ProjectGuid = "Project";
         /// <summary>Project name item</summary>
         public const string Name = "Name";
+        /// <summary>Reference output assembly item</summary>
+        public const string ReferenceOutputAssembly = "ReferenceOutputAssembly";
 
         /// <summary>Project COM object's GUID</summary>
         public const string Guid = "Guid";

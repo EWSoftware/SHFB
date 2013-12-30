@@ -6,7 +6,8 @@
 // Change history:
 // 02/16/2012 - EFW - Added support for setting a verbosity level.  Messages with a log level below
 // the current verbosity level are ignored.
-// 01/12/2013 - EFW - Moved the execution code into the BuildAssembler class to allow for parallel execution.
+// 01/12/2013 - EFW - Moved the execution code into the BuildAssembler class to allow for parallel execution
+// 12/28/2013 - EFW - Added MSBuild task support
 
 using System;
 using System.ComponentModel.Composition;
@@ -97,8 +98,8 @@ namespace Microsoft.Ddue.Tools
             }
             #endregion
 
-            // Create a build assembler instance to do the work.  Messages are logged to the console.
-            BuildAssembler = new BuildAssemblerCore(s => Console.WriteLine(s));
+            // Create a build assembler instance to do the work.  Messages are logged to the console logger.
+            BuildAssembler = new BuildAssemblerCore((lvl, msg) => ConsoleApplication.WriteMessage(lvl, msg));
 
             try
             {

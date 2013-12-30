@@ -41,8 +41,6 @@
     <ComponentConfigurations>
     </ComponentConfigurations>
     <DocumentationSources>
-      <DocumentationSource sourceFile="$(SHFBROOT)\BuildAssemblerLibrary.xml" />
-      <DocumentationSource sourceFile="$(SHFBROOT)\BuildComponents.xml" />
       <DocumentationSource sourceFile="..\..\SHFB\Source\SandcastleBuilder.sln" />
     </DocumentationSources>
     <NamespaceSummaries>
@@ -93,7 +91,35 @@
           </targets>
         </configuration>
       </PlugInConfig>
-<PlugInConfig id="Output Deployment" enabled="True"><configuration deleteAfterDeploy="false"><deploymentLocation id="help1x" location="..\..\SHFB\Deploy\Help\"><userCredentials useDefault="true" userName="" password="" /><proxyCredentials useProxy="false" proxyServer=""><userCredentials useDefault="true" userName="" password="" /></proxyCredentials></deploymentLocation><deploymentLocation id="help2x" location=""><userCredentials useDefault="true" userName="" password="" /><proxyCredentials useProxy="false" proxyServer=""><userCredentials useDefault="true" userName="" password="" /></proxyCredentials></deploymentLocation><deploymentLocation id="helpViewer" location="" renameMSHA="false"><userCredentials useDefault="true" userName="" password="" /><proxyCredentials useProxy="false" proxyServer=""><userCredentials useDefault="true" userName="" password="" /></proxyCredentials></deploymentLocation><deploymentLocation id="website" location=""><userCredentials useDefault="true" userName="" password="" /><proxyCredentials useProxy="false" proxyServer=""><userCredentials useDefault="true" userName="" password="" /></proxyCredentials></deploymentLocation></configuration></PlugInConfig></PlugInConfigurations>
+      <PlugInConfig id="Output Deployment" enabled="True">
+        <configuration deleteAfterDeploy="false">
+          <deploymentLocation id="help1x" location="..\..\SHFB\Deploy\Help\">
+            <userCredentials useDefault="true" userName="" password="" />
+            <proxyCredentials useProxy="false" proxyServer="">
+              <userCredentials useDefault="true" userName="" password="" />
+            </proxyCredentials>
+          </deploymentLocation>
+          <deploymentLocation id="help2x" location="">
+            <userCredentials useDefault="true" userName="" password="" />
+            <proxyCredentials useProxy="false" proxyServer="">
+              <userCredentials useDefault="true" userName="" password="" />
+            </proxyCredentials>
+          </deploymentLocation>
+          <deploymentLocation id="helpViewer" location="" renameMSHA="false">
+            <userCredentials useDefault="true" userName="" password="" />
+            <proxyCredentials useProxy="false" proxyServer="">
+              <userCredentials useDefault="true" userName="" password="" />
+            </proxyCredentials>
+          </deploymentLocation>
+          <deploymentLocation id="website" location="">
+            <userCredentials useDefault="true" userName="" password="" />
+            <proxyCredentials useProxy="false" proxyServer="">
+              <userCredentials useDefault="true" userName="" password="" />
+            </proxyCredentials>
+          </deploymentLocation>
+        </configuration>
+      </PlugInConfig>
+    </PlugInConfigurations>
     <Preliminary>False</Preliminary>
     <HelpAttributes>
       <HelpAttribute name="DocSet" value="{@HtmlHelpName}" />
@@ -254,17 +280,10 @@
     <None Include="Content\ErrorsAndWarnings\PlugIns\ARL0003.aml" />
     <None Include="Content\ErrorsAndWarnings\PlugIns\ARL0002.aml" />
     <None Include="Content\ErrorsAndWarnings\PlugIns\ARL0001.aml" />
-    <None Include="Content\ErrorsAndWarnings\MSBuildTasks\XTT0003.aml" />
-    <None Include="Content\ErrorsAndWarnings\MSBuildTasks\XTT0002.aml" />
-    <None Include="Content\ErrorsAndWarnings\MSBuildTasks\XTT0001.aml" />
-    <None Include="Content\ErrorsAndWarnings\MSBuildTasks\MBT0002.aml" />
-    <None Include="Content\ErrorsAndWarnings\MSBuildTasks\MBT0001.aml" />
     <None Include="Content\ErrorsAndWarnings\MSBuildTasks\CT0001.aml" />
     <None Include="Content\ErrorsAndWarnings\MSBuildTasks\BHT0003.aml" />
     <None Include="Content\ErrorsAndWarnings\MSBuildTasks\BHT0002.aml" />
     <None Include="Content\ErrorsAndWarnings\MSBuildTasks\BHT0001.aml" />
-    <None Include="Content\ErrorsAndWarnings\MSBuildTasks\BAT0002.aml" />
-    <None Include="Content\ErrorsAndWarnings\MSBuildTasks\BAT0001.aml" />
     <None Include="Content\ErrorsAndWarnings\MSBuildTasks\B2X0002.aml" />
     <None Include="Content\ErrorsAndWarnings\MSBuildTasks\B2X0001.aml" />
     <None Include="Content\ErrorsAndWarnings\MSBuildTasks\B1X0002.aml" />
@@ -314,9 +333,6 @@
     <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0039.aml" />
     <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0038.aml" />
     <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0037.aml" />
-    <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0004.aml" />
-    <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0036.aml" />
-    <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0035.aml" />
     <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0034.aml" />
     <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0033.aml" />
     <None Include="Content\ErrorsAndWarnings\BuildEngine\BE0003.aml" />

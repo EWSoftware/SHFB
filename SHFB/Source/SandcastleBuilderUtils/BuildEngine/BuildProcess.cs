@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/17/2013
+// Updated : 12/29/2013
 // Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -57,6 +57,7 @@
 //                           settings if needed by calling the ApplyVisibilityProperties() method.  Added
 //                           support for namespace grouping based on changes submitted by Stazzz.
 //          12/17/2013  EFW  Removed the SandcastlePath property and all references to it
+//          12/29/2013  EFW  Added support for the ReferenceOutputAssembly project reference metadata item
 //===============================================================================================================
 
 using System;
@@ -1168,7 +1169,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         scriptFile = this.TransformTemplate("BuildConceptualTopics.proj", templateFolder, workingFolder);
 
                         this.ExecutePlugIns(ExecutionBehaviors.Before);
-                        this.RunProcess(msBuildExePath, "/nologo /clp:NoSummary /v:m BuildConceptualTopics.proj");
+                        this.RunProcess(msBuildExePath, "/nologo /clp:NoSummary /v:n BuildConceptualTopics.proj");
                         this.ExecutePlugIns(ExecutionBehaviors.After);
                     }
 
@@ -1183,7 +1184,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     scriptFile = this.TransformTemplate("BuildReferenceTopics.proj", templateFolder, workingFolder);
 
                     this.ExecutePlugIns(ExecutionBehaviors.Before);
-                    this.RunProcess(msBuildExePath, "/nologo /clp:NoSummary /v:m BuildReferenceTopics.proj");
+                    this.RunProcess(msBuildExePath, "/nologo /clp:NoSummary /v:n BuildReferenceTopics.proj");
                     this.ExecutePlugIns(ExecutionBehaviors.After);
                 }
 
@@ -2127,6 +2128,16 @@ AllDone:
             // references get built and we may not have enough info for that to happen successfully.  As such,
             // we'll assume the project has already been built and that its target exists.
             foreach(ProjectItem reference in project.MSBuildProject.GetItems("ProjectReference"))
+            {
+                // Ignore references used only for MSBuild dependency determination
+                if(reference.GetMetadata(ProjectElement.ReferenceOutputAssembly).EvaluatedValue.Equals("false",
+                  StringComparison.OrdinalIgnoreCase))
+                {
+                    this.ReportProgress("Ignoring reference to '{0}' which is only used for MSBuild dependency " +
+                        "determination", reference.EvaluatedInclude);
+                    continue;
+                }
+
                 using(projRef = new MSBuildProject(reference.EvaluatedInclude))
                 {
                     projRef.SetConfiguration(project.Configuration, project.Platform, project.MSBuildOutDir);
@@ -2135,6 +2146,7 @@ AllDone:
                         Path.GetFileNameWithoutExtension(projRef.AssemblyName),
                         (new [] { new KeyValuePair<string, string>("HintPath", projRef.AssemblyName) }).ToList()));
                 }
+            }
 
             try
             {

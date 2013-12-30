@@ -1,33 +1,30 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder Utilities
 // File    : ProjectReferenceItem.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/16/2008
-// Note    : Copyright 2008, Eric Woodruff, All rights reserved
+// Updated : 12/29/2013
+// Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains a class representing a project reference item that can be
-// used by MRefBuilder to locate assembly dependencies for the assemblies being
-// documented.
+// This file contains a class representing a project reference item that can be used by MRefBuilder to locate
+// assembly dependencies for the assemblies being documented.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.1.0.0  08/23/2006  EFW  Created the code
 // 1.8.0.0  06/30/2008  EFW  Rewrote to support the MSBuild project format
-//=============================================================================
+// -------  12/29/2013  EFW  Added support for the ReferenceOutputAssembly metadata item
+//===============================================================================================================
 
 using System;
 using System.ComponentModel;
 using System.Drawing.Design;
-using System.Globalization;
 using System.IO;
-using System.Xml;
 
 using SandcastleBuilder.Utils.Design;
 using SandcastleBuilder.Utils.MSBuild;
@@ -35,9 +32,8 @@ using SandcastleBuilder.Utils.MSBuild;
 namespace SandcastleBuilder.Utils
 {
     /// <summary>
-    /// This represents a project reference item that can be used by
-    /// <b>MRefBuilder</b> to locate assembly dependencies for the assemblies
-    /// being documented.
+    /// This represents a project reference item that can be used by <b>MRefBuilder</b> to locate assembly
+    /// dependencies for the assemblies being documented.
     /// </summary>
     public class ProjectReferenceItem : ReferenceItem
     {
@@ -56,26 +52,22 @@ namespace SandcastleBuilder.Utils
         [Category("Metadata"), Description("The path to the referenced project."),
           Editor(typeof(FilePathObjectEditor), typeof(UITypeEditor)),
           RefreshProperties(RefreshProperties.All), MergableProperty(false),
-          FileDialog("Select the reference project",
-            "Visual Studio Projects (*.*proj)|*.*proj|" +
+          FileDialog("Select the reference project", "Visual Studio Projects (*.*proj)|*.*proj|" +
             "All Files (*.*)|*.*", FileDialogType.FileOpen)]
         public FilePath ProjectPath
         {
             get { return projectPath; }
             set
             {
-                if(value == null || value.Path.Length == 0 ||
-                  value.Path.IndexOfAny(new char[] { '*', '?' }) != -1)
-                    throw new ArgumentException("A project path must be " +
-                        "specified and cannot contain wildcards (* or ?)",
-                        "value");
+                if(value == null || value.Path.Length == 0 || value.Path.IndexOfAny(new char[] { '*', '?' }) != -1)
+                    throw new ArgumentException("A project path must be specified and cannot contain wildcards " +
+                        "(* or ?)", "value");
 
                 // Do this first in case the project isn't editable
                 base.ProjectElement.Include = value.PersistablePath;
 
                 projectPath = value;
-                projectPath.PersistablePathChanging += new EventHandler(
-                    projectPath_PersistablePathChanging);
+                projectPath.PersistablePathChanging += projectPath_PersistablePathChanging;
                 this.GetProjectMetadata(true);
             }
         }
@@ -107,8 +99,7 @@ namespace SandcastleBuilder.Utils
         {
             get
             {
-                return base.ProjectElement.GetMetadata(
-                    ProjectElement.ProjectGuid);
+                return base.ProjectElement.GetMetadata(ProjectElement.ProjectGuid);
             }
         }
 
@@ -121,6 +112,31 @@ namespace SandcastleBuilder.Utils
             get
             {
                 return base.ProjectElement.GetMetadata(ProjectElement.Name);
+            }
+        }
+
+        /// <summary>
+        /// This is used to get or set whether or not to use the project as a reference or just for MSBuild
+        /// dependency determination.
+        /// </summary>
+        [Category("Metadata"), Description("True to reference the output assembly or false to only use it for " +
+          "MSBuild dependency determination"), DefaultValue(true)]
+        public bool ReferenceOutputAssembly
+        {
+            get
+            {
+                bool value;
+
+                // If not present or valid, default to true
+                if(!Boolean.TryParse(base.ProjectElement.GetMetadata(ProjectElement.ReferenceOutputAssembly), out value))
+                    value = true;
+
+                return value;
+            }
+            set
+            {
+                base.ProjectElement.SetMetadata(ProjectElement.ReferenceOutputAssembly,
+                    value.ToString().ToLowerInvariant());
             }
         }
         #endregion
