@@ -67,6 +67,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BuildAssembler\BuildAssemblerCore.cs" />
@@ -92,6 +93,7 @@
     <Compile Include="BuildAssembler\SyntaxGenerator\SyntaxGeneratorExportAttribute.cs" />
     <Compile Include="BuildAssembler\SyntaxGenerator\SyntaxGeneratorTemplate.cs" />
     <Compile Include="BuildAssembler\SyntaxGenerator\SyntaxWriter.cs" />
+    <Compile Include="ComponentUtilities.cs" />
     <Compile Include="CommandLine\BaseOption.cs" />
     <Compile Include="CommandLine\BooleanOption.cs" />
     <Compile Include="CommandLine\ListOption.cs" />
@@ -101,7 +103,28 @@
     <Compile Include="CommandLine\StringOption.cs" />
     <Compile Include="CommandLine\SwitchOption.cs" />
     <Compile Include="ConsoleApplication.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="Frameworks\AssemblyDetails.cs" />
+    <Compile Include="Frameworks\AssemblyLocation.cs" />
+    <Compile Include="Frameworks\FrameworkDictionary.cs" />
+    <Compile Include="Frameworks\FrameworkSettings.cs" />
+    <Compile Include="Frameworks\PlatformType.cs" />
+    <Compile Include="HelpFileFormats.cs" />
     <Compile Include="LogLevel.cs" />
+    <Compile Include="PresentationStyle\ContentFiles.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PresentationStyle\IPresentationStyleMetadata.cs" />
+    <Compile Include="PresentationStyle\PresentationStyleExportAttribute.cs" />
+    <Compile Include="PresentationStyle\PresentationStyleSettings.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PresentationStyle\TransformationFile.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PresentationStyle\TransformComponentArgument.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI\ConfigurationEditorDlg.cs">
       <SubType>Form</SubType>

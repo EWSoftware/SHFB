@@ -88,7 +88,9 @@ the tooltip.</para>
 					<content>
 <code language="xml" title=" ">
 &lt;see langword="null | Nothing | nullptr | static | shared | virtual |
-    Overridable | true | True | false | False | abstract | MustInherit" /&gt;
+    Overridable | true | True | false | False | abstract | MustInherit |
+    async | await | async/await | Async | Await | Async/Await | let! |
+    async/let!" /&gt;
 </code>
 
 						<para>The language keyword formatting form uses a <codeInline>langword</codeInline> attribute to

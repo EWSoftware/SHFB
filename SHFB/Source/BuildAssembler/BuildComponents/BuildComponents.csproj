@@ -153,14 +153,12 @@
     <ProjectReference Include="..\..\SandcastleCore\Sandcastle.Core.csproj">
       <Project>{399E78F8-4954-409E-991A-37DA9D0579CC}</Project>
       <Name>Sandcastle.Core</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\BuildComponentTargets\BuildComponentTargets.csproj">
       <Project>{84F8BE08-B5A3-4E5E-BC99-8E5C2351EF62}</Project>
       <Name>BuildComponentTargets</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SyntaxComponents\SyntaxComponents.csproj">
-      <Project>{CEAEC85B-973A-4414-8668-723EB65E5088}</Project>
-      <Name>SyntaxComponents</Name>
+      <Private>True</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

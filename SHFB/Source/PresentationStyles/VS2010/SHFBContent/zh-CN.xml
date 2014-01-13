@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<content xml:space="preserve">
+    <!-- NOTE: This file must appear LAST in the list of content files so that these items override the matching
+               items in the stock content files! -->
+
+	<!-- Note that the copyright item in the shared content is not used. The following items are used instead. -->
+	<item id="copyright_info">{@CopyrightInfo}</item>
+	<item id="copyright_link">{@CopyrightHref}</item>
+	<item id="copyright_text">{@CopyrightText}</item>
+
+	<item id="header"><span class="introStyle">{@HeaderText}</span> {@Preliminary}</item>
+	<item id="footer_text">{@FooterText}</item>
+
+	<item id="fb_alias">{@FeedbackEMailAddress}</item>
+  <item id="fb_product">{@ScriptHelpTitle}</item>
+  <item id="fb_topic">{0}</item>
+	<item id="fb_text">Send Feedback</item>
+  <item id="fb_footer_to">{@HtmlEncFeedbackEMailAddress}</item>
+  <item id="fb_footer_text">on this topic.</item>
+  <item id="fb_footer_text_to">on this topic to {@HtmlEncFeedbackEMailAddress}.</item>
+	<item id="fb_body">Your feedback is used to improve the documentation and the product. Your e-mail address will not be used for any other purpose and is disposed of after the issue you report is resolved. While working to resolve the issue that you report, you may be contacted via e-mail to get further details or clarification on the feedback you sent. After the issue you report has been addressed, you may receive an e-mail to let you know that your feedback has been addressed.</item>
+
+    <!-- reference_content.xml overrides -->
+    <item id="rootTopicTitle">{@RootNamespaceTitle}</item>
+    <item id="rootTopicTitleLocalized">命名空间</item>
+    <item id="productTitle">{@HtmlEncHelpTitle}</item>
+    <item id="runningHeaderText">{@HtmlEncHelpTitle}</item>
+
+    <!-- shared_content.xml overrides -->
+    <item id="locale">{@Locale}</item>
+
+    <item id="preliminary"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[本文档仅为初稿，以后可能会有变更。]</p></item>
+
+    <item id="comments"><p/>有关这个主题的评论请发邮件到
+        <a id="HT_MailLink" href="mailto:{@UrlEncFeedbackEMailAddress}?Subject={@UrlEncHelpTitle}">{@HtmlEncFeedbackEMailAddress}</a>
+        <script type="text/javascript">
+        var HT_mailLink = document.getElementById("HT_MailLink");
+        var HT_mailLinkText = HT_mailLink.innerHTML;
+        HT_mailLink.href += ": " + document.title;
+        HT_mailLink.innerHTML = HT_mailLinkText;
+        </script></item>
+
+    <!-- To format the copyright HREF and/or copyright text into a message of your choosing, you can specify
+         @HtmlEncCopyrightHref and/or @HtmlEncCopyrightText in braces -->
+    <item id="copyright">{@HtmlEncCopyrightInfo}</item>
+</content>

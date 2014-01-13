@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : AjaxDocPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/17/2013
-// Note    : Copyright 2007-2013, Eric Woodruff, All rights reserved
+// Updated : 01/11/2014
+// Note    : Copyright 2007-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a plug-in designed to generate XML comments and reflection file information for Atlas
@@ -225,7 +225,7 @@ namespace SandcastleBuilder.PlugIns
             {
                 builder.ReportProgress("Removing version information items from shared content file");
 
-                sharedContentFilename = builder.WorkingFolder + "SharedBuilderContent.xml";
+                sharedContentFilename = builder.WorkingFolder + "SHFBContent.xml";
 
                 sharedContent = new XmlDocument();
                 sharedContent.Load(sharedContentFilename);

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : PreviewTopicWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/18/2012
-// Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
+// Updated : 01/02/2014
+// Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the form used to preview a topic.
@@ -27,6 +27,8 @@ using System.IO;
 using System.Windows.Forms;
 using System.Windows.Input;
 using WinFormsMessageBox = System.Windows.Forms.MessageBox;
+
+using Sandcastle.Core;
 
 using SandcastleBuilder.Utils;
 using SandcastleBuilder.Utils.ConceptualContent;

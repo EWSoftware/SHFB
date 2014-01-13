@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : DeploymentPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/17/2013
-// Note    : Copyright 2007-2013, Eric Woodruff, All rights reserved
+// Updated : 01/04/2014
+// Note    : Copyright 2007-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a plug-in that can be used to deploy the resulting help file output to a location other
@@ -33,6 +33,8 @@ using System.Net;
 using System.Net.Cache;
 using System.Windows.Forms;
 using System.Xml.XPath;
+
+using Sandcastle.Core;
 
 using SandcastleBuilder.Utils;
 using SandcastleBuilder.Utils.BuildComponent;
@@ -153,22 +155,22 @@ namespace SandcastleBuilder.PlugIns
             // Issue a warning if the deployment location is null and the
             // associated help file format is active.
             if(deployHelp1.Location == null &&
-              (builder.CurrentProject.HelpFileFormat & HelpFileFormat.HtmlHelp1) != 0)
+              (builder.CurrentProject.HelpFileFormat & HelpFileFormats.HtmlHelp1) != 0)
                 builder.ReportWarning("ODP0003", "HTML Help 1 will be generated but not deployed due to " +
                     "missing deployment location information");
 
             if(deployHelp2.Location == null &&
-              (builder.CurrentProject.HelpFileFormat & HelpFileFormat.MSHelp2) != 0)
+              (builder.CurrentProject.HelpFileFormat & HelpFileFormats.MSHelp2) != 0)
                 builder.ReportWarning("ODP0003", "MS Help 2 will be generated but not deployed due to " +
                     "missing deployment location information");
 
             if(deployHelpViewer.Location == null &&
-              (builder.CurrentProject.HelpFileFormat & HelpFileFormat.MSHelpViewer) != 0)
+              (builder.CurrentProject.HelpFileFormat & HelpFileFormats.MSHelpViewer) != 0)
                 builder.ReportWarning("ODP0003", "MS Help Viewer will be generated but not deployed due " +
                     "to missing deployment location information");
 
             if(deployWebsite.Location == null &&
-              (builder.CurrentProject.HelpFileFormat & HelpFileFormat.Website) != 0)
+              (builder.CurrentProject.HelpFileFormat & HelpFileFormats.Website) != 0)
                 builder.ReportWarning("ODP0003", "Website will be generated but not deployed due to " +
                     "missing deployment location information");
         }
@@ -180,25 +182,25 @@ namespace SandcastleBuilder.PlugIns
         public void Execute(ExecutionContext context)
         {
             // Deploy each of the selected help file formats
-            if(builder.CurrentFormat == HelpFileFormat.HtmlHelp1)
+            if(builder.CurrentFormat == HelpFileFormats.HtmlHelp1)
             {
                 builder.ReportProgress("Deploying HTML Help 1 file");
                 this.DeployOutput(builder.Help1Files, deployHelp1);
             }
 
-            if(builder.CurrentFormat == HelpFileFormat.MSHelp2)
+            if(builder.CurrentFormat == HelpFileFormats.MSHelp2)
             {
                 builder.ReportProgress("Deploying MS Help 2 files");
                 this.DeployOutput(builder.Help2Files, deployHelp2);
             }
 
-            if(builder.CurrentFormat == HelpFileFormat.MSHelpViewer)
+            if(builder.CurrentFormat == HelpFileFormats.MSHelpViewer)
             {
                 builder.ReportProgress("Deploying MS Help Viewer files");
                 this.DeployOutput(builder.HelpViewerFiles, deployHelpViewer);
             }
 
-            if(builder.CurrentFormat == HelpFileFormat.Website)
+            if(builder.CurrentFormat == HelpFileFormats.Website)
             {
                 builder.ReportProgress("Deploying website files");
                 this.DeployOutput(builder.WebsiteFiles, deployWebsite);

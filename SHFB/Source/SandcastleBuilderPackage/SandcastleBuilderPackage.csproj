@@ -44,7 +44,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
     <DocumentationFile>bin\Release\SandcastleBuilder.Package.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
@@ -303,11 +303,6 @@
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <Resource Include="Button Bitmaps\LogFile.bmp" />
-    <Content Include="..\SandcastleBuilderGUI\StandardStyles.presentation">
-      <Link>StandardStyles.presentation</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
     <None Include="Images\MoveDown.bmp" />
     <None Include="Images\MoveUp.bmp" />
     <None Include="Images\Properties.bmp" />

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SandcastleBuilderProjectNode.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/16/2013
-// Note    : Copyright 2011-2013, Eric Woodruff, All rights reserved
+// Updated : 01/10/2014
+// Note    : Copyright 2011-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the class that represents a project node in a Sandcastle Help File Builder Visual Studio
@@ -19,6 +19,8 @@
 // 1.9.3.0  03/22/2011  EFW  Created the code
 // 1.9.3.3  11/19/2011  EFW  Added support for drag and drop from Explorer
 // 1.9.6.0  10/22/2012  EFW  Updated to support .winmd documentation sources
+// -------  01/10/2014  EFW  Added code to set SHFBROOT if defined locally in the project which allows it to
+//                           override the environment variable setting.
 //===============================================================================================================
 
 using System;
@@ -710,11 +712,46 @@ namespace SandcastleBuilder.Package.Nodes
         }
 
         /// <summary>
-        /// This is overridden as a convenient place to create and load the
-        /// project properties and documentation sources node.
+        /// This is overridden as a convenient place to create and load the project properties and documentation
+        /// sources node.  It is also used to set the SHFBROOT environment variable if overridden locally.
         /// </summary>
         protected internal override void LoadNonBuildInformation()
         {
+            try
+            {
+                var prop = this.ProjectMgr.BuildProject.GetProperty("SHFBROOT");
+
+                // This will remain in effect for the duration of the process including for projects loaded
+                // after this one that don't override it locally.  A restart will reset it.
+                if(prop != null && !prop.IsEnvironmentProperty && !prop.IsGlobalProperty)
+                {
+                    string path = prop.EvaluatedValue;
+
+                    if(!Path.IsPathRooted(path))
+                        path = Path.Combine(Path.GetDirectoryName(this.ProjectMgr.BuildProject.FullPath), path);
+
+                    Environment.SetEnvironmentVariable("SHFBROOT", path);
+                }
+
+                // Unlike the standalone GUI we can't figure out where SHFBROOT should point so we'll make the
+                // user take care of it.
+                if(String.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("SHFBROOT")))
+                    Utility.ShowMessageBox(OLEMSGICON.OLEMSGICON_INFO, "The SHFBROOT system environment " +
+                        "variable was not found.  This variable is usually created during installation and " +
+                        "may require a reboot.  It may also be defined locally within the project.  Since " +
+                        "it has not been set, the project properties may not be editable nor may the project " +
+                        "be built properly.  Please ensure the variable is defined and reload the project.");
+            }
+            catch
+            {
+                // Ignore errors.  If we can't set SHFBROOT, let the project load anyway.
+                Utility.ShowMessageBox(OLEMSGICON.OLEMSGICON_INFO, "The SHFBROOT system environment variable " +
+                    "was not found and could not be set.  This variable is usually created during installation " +
+                    "and may require a reboot.  It may also be defined locally within the project.  Since it " +
+                    "has not been set, the project properties may not be editable nor may the project be built " +
+                    "properly.  Please ensure the variable is defined and reload the project.");
+            }
+
             ProjectPropertiesContainerNode projProps = this.FindChild(
                 ProjectPropertiesContainerNode.PropertiesNodeVirtualName)
                 as ProjectPropertiesContainerNode;

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : ConvertFromNDoc.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/30/2013
-// Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
+// Updated : 01/04/2014
+// Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class used to convert NDoc 1.x project files to the MSBuild format project files used by
@@ -27,7 +27,7 @@ using System.IO;
 using System.Xml;
 using System.Xml.XPath;
 
-using SandcastleBuilder.Utils.Frameworks;
+using Sandcastle.Core;
 
 namespace SandcastleBuilder.Utils.Conversion
 {
@@ -404,13 +404,13 @@ namespace SandcastleBuilder.Utils.Conversion
                                 value = child.GetAttribute("value", String.Empty);
 
                                 if(value == "HtmlHelp")
-                                    project.HelpFileFormat = HelpFileFormat.HtmlHelp1;
+                                    project.HelpFileFormat = HelpFileFormats.HtmlHelp1;
                                 else
                                     if(value == "Web")
-                                        project.HelpFileFormat = HelpFileFormat.Website;
+                                        project.HelpFileFormat = HelpFileFormats.Website;
                                     else
-                                        project.HelpFileFormat = HelpFileFormat.HtmlHelp1 |
-                                            HelpFileFormat.Website;
+                                        project.HelpFileFormat = HelpFileFormats.HtmlHelp1 |
+                                            HelpFileFormats.Website;
                                 break;
                             
                             case "SdkDocLanguage":
@@ -420,7 +420,7 @@ namespace SandcastleBuilder.Utils.Conversion
 
                             case "SdkDocVersion":
                                 value = child.GetAttribute("value", String.Empty).Substring(5).Replace('_', '.');
-                                project.FrameworkVersion = FrameworkDictionary.ConvertFromOldValue(value);
+                                project.FrameworkVersion = Utility.ConvertFromOldValue(value);
                                 break;
 
                             case "SdkLinksOnWeb":

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/29/2013
-// Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
+// Updated : 01/12/2014
+// Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the thread class that handles all aspects of the build process.
@@ -58,6 +58,9 @@
 //                           support for namespace grouping based on changes submitted by Stazzz.
 //          12/17/2013  EFW  Removed the SandcastlePath property and all references to it
 //          12/29/2013  EFW  Added support for the ReferenceOutputAssembly project reference metadata item
+//          01/09/2014  EFW  Removed copying of branding files.  They are part of the presentation style now.
+//          01/11/2014  EFW  Updated where shared content and stop word lists are copied from.  These files are
+//                           part of each presentation style now.
 //===============================================================================================================
 
 using System;
@@ -76,14 +79,15 @@ using System.Web;
 using System.Xml;
 using System.Xml.XPath;
 
+using Sandcastle.Core;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 using Sandcastle.Core.BuildAssembler.SyntaxGenerator;
+using Sandcastle.Core.Frameworks;
+using Sandcastle.Core.PresentationStyle;
 
 using SandcastleBuilder.Utils.BuildComponent;
 using SandcastleBuilder.Utils.ConceptualContent;
-using SandcastleBuilder.Utils.Frameworks;
 using SandcastleBuilder.Utils.MSBuild;
-using SandcastleBuilder.Utils.PresentationStyle;
 
 using Microsoft.Build.Evaluation;
 
@@ -142,7 +146,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         private PresentationStyleSettings presentationStyle;    // The presentation style settings
 
         // The current help file format being generated
-        private HelpFileFormat currentFormat;
+        private HelpFileFormats currentFormat;
 
         // The current reflection information file used in various steps
         private XmlDocument reflectionInfo;
@@ -290,7 +294,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// <b>GenerateHelpProject</b>, and <b>CompilingHelpFile</b> steps will run once for each help file
         /// format selected.  This property allows a plug-in to determine which files it may need to work with
         /// during those steps or to skip processing if it is not relevant.</remarks>
-        public HelpFileFormat CurrentFormat
+        public HelpFileFormats CurrentFormat
         {
             get { return currentFormat; }
         }
@@ -571,7 +575,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     t => t.ToolsVersion == project.MSBuildProject.ToolsVersion).ToolsPath, "MSBuild.exe");
 
                 // Get the location of the template files
-                templateFolder = BuildComponentManager.HelpFileBuilderFolder + @"Templates\";
+                templateFolder = ComponentUtilities.ToolsFolder + @"Templates\";
 
                 // Make sure we start out in the project's output folder in case the output folder is relative
                 // to it.
@@ -616,7 +620,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 else
                     workingFolder = project.WorkingPath;
 
-                if((project.HelpFileFormat & HelpFileFormat.Website) != 0)
+                if((project.HelpFileFormat & HelpFileFormats.Website) != 0)
                     BuildProcess.VerifySafePath("OutputPath", outputFolder, projectFolder);
 
                 // The output folder and the working folder cannot be the same
@@ -625,12 +629,12 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         "set to the same path");
 
                 // For MS Help 2, the HTML Help Name cannot contain spaces
-                if((project.HelpFileFormat & HelpFileFormat.MSHelp2) != 0 && this.ResolvedHtmlHelpName.IndexOf(' ') != -1)
+                if((project.HelpFileFormat & HelpFileFormats.MSHelp2) != 0 && this.ResolvedHtmlHelpName.IndexOf(' ') != -1)
                     throw new BuilderException("BE0031", "For MS Help 2 builds, the HtmlHelpName property " +
                         "cannot contain spaces as they are not valid in the collection name.");
 
                 // For MS Help Viewer, the HTML Help Name cannot contain periods, ampersands, or pound signs
-                if((project.HelpFileFormat & HelpFileFormat.MSHelpViewer) != 0 &&
+                if((project.HelpFileFormat & HelpFileFormats.MSHelpViewer) != 0 &&
                   this.ResolvedHtmlHelpName.IndexOfAny(new[] { '.', '#', '&' }) != -1)
                     throw new BuilderException("BE0075", "For MS Help Viewer builds, the HtmlHelpName property " +
                         "cannot contain periods, ampersands, or pound signs as they are not valid in the " +
@@ -650,12 +654,12 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     this.ReportProgress("The SHFBROOT system environment variable was not found.  This " +
                         "variable is usually created during installation and may require a reboot.  It has " +
                         "been defined temporarily for this process as: SHFBROOT={0}",
-                        BuildComponentManager.HelpFileBuilderFolder);
+                        ComponentUtilities.ToolsFolder);
 
-                    Environment.SetEnvironmentVariable("SHFBROOT", BuildComponentManager.HelpFileBuilderFolder);
+                    Environment.SetEnvironmentVariable("SHFBROOT", ComponentUtilities.ToolsFolder);
                 }
 
-                if(!Directory.Exists(BuildComponentManager.HelpFileBuilderFolder + @"Data\Reflection"))
+                if(!Directory.Exists(ComponentUtilities.ToolsFolder + @"Data\Reflection"))
                     throw new BuilderException("BE0032", "Reflection data files do not exist yet");
 
                 // Get the framework settings to use for the build
@@ -673,25 +677,42 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         "redirected and will use '{1}' instead.", project.FrameworkVersion,
                         frameworkSettings.Title);
 
-                // Figure out which presentation style to use
-                if(!PresentationStyleDictionary.AllStyles.TryGetValue(project.PresentationStyle, out presentationStyle))
-                    throw new BuilderException("BE0001", "The PresentationStyle property value of '" +
-                        project.PresentationStyle + "' is not recognized as a valid presentation style definition.");
-
-                // If the presentation style does not support any of the selected help file formats, stop now
-                if((project.HelpFileFormat & ~presentationStyle.HelpFileFormats) != 0)
-                    throw new BuilderException("BE0074", String.Format(CultureInfo.CurrentCulture,
-                        "The selected presentation style ({0}) does not support one or more of the selected " +
-                        "help file formats.  Supported formats: {1}", presentationStyle.Id,
-                        presentationStyle.HelpFileFormats));
-
                 // Get the composition container used to find build components in the rest of the build process 
-                componentContainer = BuildComponentManager.GetComponentContainer(project);
+                componentContainer = ComponentUtilities.CreateComponentContainer(new[] { project.ComponentPath,
+                    Path.GetDirectoryName(project.Filename) });
 
                 syntaxGenerators = componentContainer.GetExports<ISyntaxGeneratorFactory,
                     ISyntaxGeneratorMetadata>().Select(sf => sf.Metadata).ToList();
                 buildComponents = componentContainer.GetExports<BuildComponentFactory,
                     IBuildComponentMetadata>().ToDictionary(key => key.Metadata.Id, value => value.Value);
+
+                // Figure out which presentation style to use
+                var style = componentContainer.GetExports<PresentationStyleSettings,
+                    IPresentationStyleMetadata>().FirstOrDefault(s => s.Metadata.Id.Equals(
+                        project.PresentationStyle, StringComparison.OrdinalIgnoreCase));
+
+                if(style == null)
+                    throw new BuilderException("BE0001", "The PresentationStyle property value of '" +
+                        project.PresentationStyle + "' is not recognized as a valid presentation style definition");
+
+                presentationStyle = style.Value;
+
+                this.ReportProgress("Using presentation style '{0}' located in '{1}'", style.Metadata.Id,
+                    Path.Combine(presentationStyle.Location, presentationStyle.BasePath));
+
+                var psErrors = presentationStyle.CheckForErrors();
+
+                if(psErrors.Any())
+                    throw new BuilderException("BE0004", String.Format(CultureInfo.CurrentCulture,
+                        "The selected presentation style ({0}) is not valid.  Reason(s):\r\n{1}",
+                        style.Metadata.Id, String.Join("\r\n", psErrors)));
+
+                // If the presentation style does not support any of the selected help file formats, stop now
+                if((project.HelpFileFormat & ~presentationStyle.SupportedFormats) != 0)
+                    throw new BuilderException("BE0074", String.Format(CultureInfo.CurrentCulture,
+                        "The selected presentation style ({0}) does not support one or more of the selected " +
+                        "help file formats.  Supported formats: {1}", style.Metadata.Id,
+                        presentationStyle.SupportedFormats));
 
                 // Load the plug-ins
                 if(project.PlugInConfigurations.Count != 0)
@@ -734,20 +755,20 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     // get too far into it.
                     helpFile = outputFolder + this.ResolvedHtmlHelpName + ".chm";
 
-                    if((project.HelpFileFormat & HelpFileFormat.HtmlHelp1) != 0 && File.Exists(helpFile))
+                    if((project.HelpFileFormat & HelpFileFormats.HtmlHelp1) != 0 && File.Exists(helpFile))
                         File.Delete(helpFile);
 
                     helpFile = Path.ChangeExtension(helpFile, ".hxs");
 
-                    if((project.HelpFileFormat & HelpFileFormat.MSHelp2) != 0 && File.Exists(helpFile))
+                    if((project.HelpFileFormat & HelpFileFormats.MSHelp2) != 0 && File.Exists(helpFile))
                         File.Delete(helpFile);
 
                     helpFile = Path.ChangeExtension(helpFile, ".mshc");
 
-                    if((project.HelpFileFormat & HelpFileFormat.MSHelpViewer) != 0 && File.Exists(helpFile))
+                    if((project.HelpFileFormat & HelpFileFormats.MSHelpViewer) != 0 && File.Exists(helpFile))
                         File.Delete(helpFile);
 
-                    if((project.HelpFileFormat & HelpFileFormat.Website) != 0)
+                    if((project.HelpFileFormat & HelpFileFormats.Website) != 0)
                     {
                         helpFile = outputFolder + "Index.aspx";
 
@@ -797,17 +818,19 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 // Transform the shared builder content files
                 language = project.Language;
-                languageFile = "SharedBuilderContent_" + language.Name + ".xml";
+                languageFile = Path.Combine(presentationStyle.ResolvePath(presentationStyle.ToolResourceItemsPath),
+                    language.Name + ".xml");
 
                 this.ReportProgress(BuildStep.GenerateSharedContent, "Generating shared content files ({0}, {1})...",
                     language.Name, language.DisplayName);
 
-                if(!File.Exists(templateFolder + @"..\SharedContent\" + languageFile))
+                if(!File.Exists(languageFile))
                 {
-                    languageFile = "SharedBuilderContent_en-US.xml";
+                    languageFile = Path.Combine(presentationStyle.ResolvePath(presentationStyle.ToolResourceItemsPath),
+                        "en-US.xml");
 
                     // Warn the user about the default being used
-                    this.ReportWarning("BE0002", "Shared builder content for the '{0}, {1}' language could " +
+                    this.ReportWarning("BE0002", "Help file builder content for the '{0}, {1}' language could " +
                         "not be found.  Using 'en-US, English (US)' defaults.", language.Name, language.DisplayName);
                 }
 
@@ -833,22 +856,14 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 {
                     this.ExecutePlugIns(ExecutionBehaviors.Before);
 
-                    this.TransformTemplate(languageFile, templateFolder + @"..\SharedContent\", workingFolder);
-                    File.Move(workingFolder + languageFile, workingFolder + "SharedBuilderContent.xml");
-
-                    // Presentation-style specific shared content
-                    languageFile = String.Format(CultureInfo.InvariantCulture, "{0}BuilderContent_{1}.xml",
-                        presentationStyle.Id, language.Name);
-
-                    this.TransformTemplate(languageFile,
-                        presentationStyle.ResolvePath(presentationStyle.ToolResourceItemsPath), workingFolder);
-                    File.Move(workingFolder + languageFile, workingFolder + "PresentationStyleBuilderContent.xml");
+                    this.TransformTemplate(Path.GetFileName(languageFile), Path.GetDirectoryName(languageFile),
+                        workingFolder);
+                    File.Move(workingFolder + Path.GetFileName(languageFile), workingFolder + "SHFBContent.xml");
 
                     // Copy the stop word list
-                    languageFile = Path.ChangeExtension(languageFile.Replace(presentationStyle.Id +
-                        "BuilderContent", "StopWordList"), ".txt");
-                    File.Copy(templateFolder + @"..\SharedContent\" + languageFile, workingFolder +
-                        "StopWordList.txt");
+                    languageFile = Path.Combine(ComponentUtilities.ToolsFolder, @"PresentationStyles\Shared\" +
+                        @"StopWordList\" + Path.GetFileNameWithoutExtension(languageFile) +".txt");
+                    File.Copy(languageFile, workingFolder + "StopWordList.txt");
                     File.SetAttributes(workingFolder + "StopWordList.txt", FileAttributes.Normal);
 
                     this.ExecutePlugIns(ExecutionBehaviors.After);
@@ -1005,10 +1020,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 this.EnsureOutputFoldersExist("html");
 
-                // Add the branding folder if present in the presentation style.  This will eventually go away.
-                foreach(string baseFolder in this.HelpFormatOutputFolders)
-                    this.CopyHelpBranding(baseFolder);
-
                 // Copy conceptual content files if there are topics or tokens.  Tokens can be replaced in
                 // XML comments files so we check for them too.
                 if(conceptualContent == null)
@@ -1066,7 +1077,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     {
                         this.ReportProgress("Generating conceptual content intermediate TOC file...");
 
-                        toc.SaveToIntermediateTocFile((project.HelpFileFormat & HelpFileFormat.MSHelpViewer) != 0 ?
+                        toc.SaveToIntermediateTocFile((project.HelpFileFormat & HelpFileFormats.MSHelpViewer) != 0 ?
                             this.RootContentContainerId : null, project.TocOrder, workingFolder + "_ConceptualTOC_.xml");
                     }
 
@@ -1097,7 +1108,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 // These are all of the valid namespaces we are interested in.  This prevents the methods below
                 // from returning nested types as potential namespaces since they can't tell the difference.
                 HashSet<string> validNamespaces = new HashSet<string>(Directory.EnumerateFiles(Path.Combine(
-                    BuildComponentManager.HelpFileBuilderFolder, @"Data\Reflection"), "*.xml",
+                    ComponentUtilities.ToolsFolder, @"Data\Reflection"), "*.xml",
                     SearchOption.AllDirectories).Select(f => Path.GetFileNameWithoutExtension(f)));
 
                 // Get namespaces referenced in the XML comments of the documentation sources
@@ -1113,6 +1124,15 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 // references for stuff like designer and support classes not directly referenced anywhere else.
                 foreach(string n in frameworkSettings.GetReferencedNamespaces(language, rn, validNamespaces).ToList())
                     rn.Add(n);
+
+                // If F# syntax is being generated, add some of the F# namespaces as the syntax sections generate
+                // references to types that may not be there in non-F# projects.
+                if(ComponentUtilities.SyntaxFiltersFrom(syntaxGenerators, project.SyntaxFilters).Any(
+                  f => f.Id == "FSharp"))
+                {
+                    rn.Add("Microsoft.FSharp.Core");
+                    rn.Add("Microsoft.FSharp.Control");
+                }
 
                 // If there are no referenced namespaces, add System as a default to prevent the build components
                 // from loading the entire set.
@@ -1192,7 +1212,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 this.CombineIntermediateTocFiles();
 
                 // The last part differs based on the help file format
-                if((project.HelpFileFormat & HelpFileFormat.Website) != 0)
+                if((project.HelpFileFormat & HelpFileFormats.Website) != 0)
                 {
                     this.ReportProgress("\r\nClearing any prior web output");
 
@@ -1237,7 +1257,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         }
                 }
 
-                if((project.HelpFileFormat & (HelpFileFormat.HtmlHelp1 | HelpFileFormat.Website)) != 0)
+                if((project.HelpFileFormat & (HelpFileFormats.HtmlHelp1 | HelpFileFormats.Website)) != 0)
                 {
                     this.ReportProgress(BuildStep.ExtractingHtmlInfo,
                         "Extracting HTML info for HTML Help 1 and/or website...");
@@ -1257,13 +1277,13 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 // point, we should have everything we could possibly need.
                 this.CopyStandardHelpContent();
 
-                if((project.HelpFileFormat & HelpFileFormat.HtmlHelp1) != 0)
+                if((project.HelpFileFormat & HelpFileFormats.HtmlHelp1) != 0)
                 {
                     // Generate the table of contents and set the default topic
                     this.ReportProgress(BuildStep.GenerateHelpFormatTableOfContents,
                         "Generating HTML Help 1 table of contents file...");
 
-                    currentFormat = HelpFileFormat.HtmlHelp1;
+                    currentFormat = HelpFileFormats.HtmlHelp1;
 
                     if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
                     {
@@ -1312,13 +1332,13 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     }
                 }
 
-                if((project.HelpFileFormat & HelpFileFormat.MSHelp2) != 0)
+                if((project.HelpFileFormat & HelpFileFormats.MSHelp2) != 0)
                 {
                     // Generate the table of contents and set the default topic
                     this.ReportProgress(BuildStep.GenerateHelpFormatTableOfContents,
                         "Generating MS Help 2 table of contents file...");
 
-                    currentFormat = HelpFileFormat.MSHelp2;
+                    currentFormat = HelpFileFormats.MSHelp2;
 
                     if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
                     {
@@ -1360,7 +1380,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     }
                 }
 
-                if((project.HelpFileFormat & HelpFileFormat.MSHelpViewer) != 0)
+                if((project.HelpFileFormat & HelpFileFormats.MSHelpViewer) != 0)
                 {
                     // The following build steps are executed to allow plug-ins to handle any necessary processing
                     // but nothing actually happens here:
@@ -1378,7 +1398,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         "Executing informational Generate Table of Contents " +
                         "build step for plug-ins (not used for MS Help Viewer)");
 
-                    currentFormat = HelpFileFormat.MSHelpViewer;
+                    currentFormat = HelpFileFormats.MSHelpViewer;
 
                     if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
                     {
@@ -1415,7 +1435,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         File.Move(workingFolder + "RemoveMSHC.bat", workingFolder + "Remove_" + this.ResolvedHtmlHelpName + ".bat");
 
                         // Copy the launcher utility
-                        File.Copy(BuildComponentManager.HelpFileBuilderFolder + "HelpLibraryManagerLauncher.exe",
+                        File.Copy(ComponentUtilities.ToolsFolder + "HelpLibraryManagerLauncher.exe",
                             workingFolder + "HelpLibraryManagerLauncher.exe");
                         File.SetAttributes(workingFolder + "HelpLibraryManagerLauncher.exe", FileAttributes.Normal);
 
@@ -1429,13 +1449,13 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     }
                 }
 
-                if((project.HelpFileFormat & HelpFileFormat.Website) != 0)
+                if((project.HelpFileFormat & HelpFileFormats.Website) != 0)
                 {
                     // Generate the table of contents and set the default topic
                     this.ReportProgress(BuildStep.GenerateHelpFormatTableOfContents,
                         "Generating website table of contents file...");
 
-                    currentFormat = HelpFileFormat.Website;
+                    currentFormat = HelpFileFormats.Website;
 
                     if(!this.ExecutePlugIns(ExecutionBehaviors.InsteadOf))
                     {
@@ -1881,16 +1901,16 @@ AllDone:
 
             switch(currentFormat)
             {
-                case HelpFileFormat.HtmlHelp1:
+                case HelpFileFormats.HtmlHelp1:
                     patterns[0] = this.ResolvedHtmlHelpName + "*.chm";
                     break;
 
-                case HelpFileFormat.MSHelp2:
+                case HelpFileFormats.MSHelp2:
                     patterns[0] = this.ResolvedHtmlHelpName + "*.Hx?";
                     patterns[1] = this.ResolvedHtmlHelpName + "*.ini";
                     break;
 
-                case HelpFileFormat.MSHelpViewer:
+                case HelpFileFormats.MSHelpViewer:
                     patterns[0] = this.ResolvedHtmlHelpName + "*.msh?";
                     patterns[1] = "Install_" + this.ResolvedHtmlHelpName + "*.bat";
                     patterns[2] = "Remove_" + this.ResolvedHtmlHelpName + "*.bat";
@@ -1915,15 +1935,15 @@ AllDone:
 
                     switch(currentFormat)
                     {
-                        case HelpFileFormat.HtmlHelp1:
+                        case HelpFileFormats.HtmlHelp1:
                             help1Files.Add(file);
                             break;
 
-                        case HelpFileFormat.MSHelp2:
+                        case HelpFileFormats.MSHelp2:
                             help2Files.Add(file);
                             break;
 
-                        case HelpFileFormat.MSHelpViewer:
+                        case HelpFileFormats.MSHelpViewer:
                             helpViewerFiles.Add(file);
                             break;
 
@@ -1950,14 +1970,13 @@ AllDone:
             this.ReportProgress("Finding tools...");
             this.ExecutePlugIns(ExecutionBehaviors.Before);
 
-            this.ReportProgress("The Sandcastle tools are located in '{0}'",
-                BuildComponentManager.HelpFileBuilderFolder);
+            this.ReportProgress("The Sandcastle tools are located in '{0}'", ComponentUtilities.ToolsFolder);
 
             // Find the help compilers by looking on all fixed drives.  We don't need them if the result is only
             // a website.
-            if((project.HelpFileFormat & ~HelpFileFormat.Website) != 0)
+            if((project.HelpFileFormat & ~HelpFileFormats.Website) != 0)
             {
-                if((project.HelpFileFormat & HelpFileFormat.HtmlHelp1) != 0)
+                if((project.HelpFileFormat & HelpFileFormats.HtmlHelp1) != 0)
                 {
                     hhcFolder = project.HtmlHelp1xCompilerPath;
 
@@ -1977,7 +1996,7 @@ AllDone:
                     this.ReportProgress("Found HTML Help 1 compiler in '{0}'", hhcFolder);
                 }
 
-                if((project.HelpFileFormat & HelpFileFormat.MSHelp2) != 0)
+                if((project.HelpFileFormat & HelpFileFormats.MSHelp2) != 0)
                 {
                     hxcompFolder = project.HtmlHelp2xCompilerPath;
 

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Components
 // File    : ESentTargetDictionary.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/14/2013
-// Note    : Copyright 2013, Eric Woodruff, All rights reserved
+// Updated : 01/09/2014
+// Note    : Copyright 2013-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a target dictionary backed by a Managed ESENT PersistentDictionary<TKey, TValue> instance.
@@ -41,7 +41,6 @@ namespace SandcastleBuilder.Components.Targets
     /// initial use will create the database slowing down initialization on first use.  Subsequent uses will not
     /// need to recreate it.  The trade off is that it can use much less memory at the expense of some build
     /// speed for each topic.  The speed difference is offset somewhat by the shorter initialization time.</remarks>
-    [Serializable]
     public sealed class ESentTargetDictionary : TargetDictionary
     {
         #region Private data members
@@ -128,7 +127,9 @@ namespace SandcastleBuilder.Components.Targets
         {
             if(!base.IsDisposed)
             {
-                index.Dispose();
+                if(index != null)
+                    index.Dispose();
+
                 base.Dispose(disposing);
             }
         }
@@ -197,7 +198,6 @@ namespace SandcastleBuilder.Components.Targets
                 index[key] = value;
             }
         }
-
         #endregion
 
         #region ICollection<KeyValuePair<string,Target>> Members
@@ -233,7 +233,6 @@ namespace SandcastleBuilder.Components.Targets
         {
             get { return index.Count; }
         }
-
         #endregion
 
         #region IEnumerable<KeyValuePair<string,Target>> Members

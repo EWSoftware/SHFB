@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : AdditionalReferenceLinksPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/27/2013
-// Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
+// Updated : 01/04/2014
+// Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a plug-in designed to add additional reference link targets to the Reflection Index Data
@@ -33,6 +33,8 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.XPath;
+
+using Sandcastle.Core;
 
 using SandcastleBuilder.Utils;
 using SandcastleBuilder.Utils.BuildComponent;
@@ -202,7 +204,7 @@ namespace SandcastleBuilder.PlugIns
                 var rn = builder.ReferencedNamespaces;
 
                 HashSet<string> validNamespaces = new HashSet<string>(Directory.EnumerateFiles(Path.Combine(
-                  BuildComponentManager.HelpFileBuilderFolder, @"Data\Reflection"), "*.xml",
+                  ComponentUtilities.ToolsFolder, @"Data\Reflection"), "*.xml",
                   SearchOption.AllDirectories).Select(f => Path.GetFileNameWithoutExtension(f)));
 
                 foreach(ReferenceLinkSettings vs in otherLinks)
@@ -271,7 +273,7 @@ namespace SandcastleBuilder.PlugIns
             XmlAttribute attr;
             XmlNodeList matchingComponents;
             XmlNode component, target;
-            HelpFileFormat helpFormat;
+            HelpFileFormats helpFormat;
 
             builder.ReportProgress("\r\nAdding references to {0}...", configFilename);
             configFile = new XmlDocument();
@@ -331,20 +333,20 @@ namespace SandcastleBuilder.PlugIns
 
                         attr = configFile.CreateAttribute("type");
 
-                        helpFormat = (HelpFileFormat)Enum.Parse(typeof(HelpFileFormat),
+                        helpFormat = (HelpFileFormats)Enum.Parse(typeof(HelpFileFormats),
                             match.ParentNode.Attributes["format"].Value, true);
 
                         switch(helpFormat)
                         {
-                            case HelpFileFormat.HtmlHelp1:
+                            case HelpFileFormats.HtmlHelp1:
                                 attr.Value = vs.HtmlSdkLinkType.ToString();
                                 break;
 
-                            case HelpFileFormat.MSHelp2:
+                            case HelpFileFormats.MSHelp2:
                                 attr.Value = vs.MSHelp2SdkLinkType.ToString();
                                 break;
 
-                            case HelpFileFormat.MSHelpViewer:
+                            case HelpFileFormats.MSHelpViewer:
                                 attr.Value = vs.MSHelpViewerSdkLinkType.ToString();
                                 break;
 

@@ -55,6 +55,7 @@ namespace Sandcastle.Core.BuildAssembler
 
         private CompositionContainer componentContainer;
         private List<Lazy<BuildComponentFactory, IBuildComponentMetadata>> allBuildComponents;
+        private HashSet<string> componentFolders;
 
         private MessageLevel verbosityLevel;
         private Action<LogLevel, string> messageLogger;
@@ -126,6 +127,10 @@ namespace Sandcastle.Core.BuildAssembler
             this.messageLogger = messageLogger;
 
             tokenSource = new CancellationTokenSource();
+
+            // When ran as an MSBuild task, it won't always find dependent assemblies so we must find them
+            // manually.
+            AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
         }
         #endregion
 
@@ -148,6 +153,8 @@ namespace Sandcastle.Core.BuildAssembler
         {
             if(disposing)
             {
+                AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomain_AssemblyResolve;
+
                 this.ClearComponents();
 
                 if(messageLog != null)
@@ -344,6 +351,37 @@ namespace Sandcastle.Core.BuildAssembler
         //=====================================================================
 
         /// <summary>
+        /// This is handled to resolve dependent assemblies and load them when necessary
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="args">The event arguments</param>
+        /// <returns>The loaded assembly or null if not found</returns>
+        private Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            string[] nameInfo = args.Name.Split(new char[] { ',' });
+            string resolveName = nameInfo[0];
+
+            // See if it has already been loaded
+            Assembly asm = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.FullName == args.Name);
+
+            // If not already loaded, check for dependency assemblies in the component folders
+            if(asm == null)
+                foreach(string folder in componentFolders)
+                {
+                    resolveName = Directory.EnumerateFiles(folder, "*.dll").FirstOrDefault(
+                        f => resolveName == Path.GetFileNameWithoutExtension(f));
+
+                    if(resolveName != null)
+                    {
+                        asm = Assembly.LoadFile(resolveName);
+                        break;
+                    }
+                }
+
+            return asm;
+        }
+
+        /// <summary>
         /// Add a set of components based on the given configuration
         /// </summary>
         /// <param name="configuration">The configuration containing the component definitions</param>
@@ -441,20 +479,20 @@ namespace Sandcastle.Core.BuildAssembler
                 allBuildComponents = null;
             }
 
-            // Create an aggregate catalog that combines directory catalogs for all of the possible component
+            componentFolders = new HashSet<string>();
+
+            // Create an aggregate catalog that combines assembly catalogs for all of the possible component
             // locations.
             var catalog = new AggregateCatalog();
 
             if(componentLocations != null)
                 foreach(XPathNavigator location in componentLocations.Select("location/@folder"))
                     if(!String.IsNullOrWhiteSpace(location.Value) && Directory.Exists(location.Value))
-                        AddDirectoryCatalogs(catalog, location.Value);
-
-            string toolsFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                        AddAssemblyCatalogs(catalog, location.Value, componentFolders);
 
             // Always include the tools folder
-            if(!catalog.Catalogs.OfType<DirectoryCatalog>().Any(c => c.FullPath == toolsFolder))
-                AddDirectoryCatalogs(catalog, toolsFolder);
+            AddAssemblyCatalogs(catalog, Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                componentFolders);
 
             componentContainer = new CompositionContainer(catalog);
 
@@ -465,20 +503,62 @@ namespace Sandcastle.Core.BuildAssembler
         }
 
         /// <summary>
-        /// This adds a directory catalog to the given aggregate catalog for the given folder and all of its
+        /// This adds assembly catalogs to the given aggregate catalog for the given folder and all of its
         /// subfolders recursively.
         /// </summary>
-        /// <param name="catalog">The aggregate catalog to which the directory catalogs are added</param>
-        /// <param name="folder">The root folder to search.  It and all subfolders recursively will be added
-        /// to the aggregate catalog if they contain assemblies.</param>
-        private static void AddDirectoryCatalogs(AggregateCatalog catalog, string folder)
+        /// <param name="catalog">The aggregate catalog to which the assembly catalogs are added.</param>
+        /// <param name="folder">The root folder to search.  It and all subfolders recursively will be searched
+        /// for assemblies to add to the aggregate catalog.</param>
+        /// <param name="searchedFolders">A hash set of folders that have already been searched and added.</param>
+        /// <remarks>It is done this way to prevent a single assembly that would normally be discovered via a
+        /// directory catalog from preventing all assemblies from loading if it cannot be examined when the parts
+        /// are composed (i.e. trying to load a Windows Store assembly on Windows 7).</remarks>
+        private static void AddAssemblyCatalogs(AggregateCatalog catalog, string folder,
+          HashSet<string> searchedFolders)
         {
-            if(Directory.EnumerateFiles(folder, "*.dll").Any())
-                catalog.Catalogs.Add(new DirectoryCatalog(folder));
+            if(!String.IsNullOrWhiteSpace(folder) && Directory.Exists(folder) && !searchedFolders.Contains(folder))
+            {
+                foreach(var file in Directory.EnumerateFiles(folder, "*.dll"))
+                {
+                    try
+                    {
+                        var asmCat = new AssemblyCatalog(file);
 
-            foreach(string subfolder in Directory.EnumerateDirectories(folder, "*", SearchOption.AllDirectories))
-                if(Directory.EnumerateFiles(subfolder, "*.dll").Any())
-                    catalog.Catalogs.Add(new DirectoryCatalog(subfolder));
+                        // Force MEF to load the assembly and figure out if there are any exports.  Valid
+                        // assemblies won't throw any exceptions and will contain parts and will be added to
+                        // the catalog.  Use Count() rather than Any() to ensure it touches all parts in case
+                        // that makes a difference.
+                        if(asmCat.Parts.Count() > 0)
+                            catalog.Catalogs.Add(asmCat);
+                        else
+                            asmCat.Dispose();
+                    }
+                    catch(FileNotFoundException ex)
+                    {
+                        // Ignore the errors we may expect to see but log them for debugging purposes
+                        System.Diagnostics.Debug.WriteLine(ex);
+                    }
+                    catch(FileLoadException ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine(ex);
+                    }
+                    catch(BadImageFormatException ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine(ex);
+                    }
+                    catch(ReflectionTypeLoadException ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine(ex);
+
+                        foreach(var lex in ex.LoaderExceptions)
+                            System.Diagnostics.Debug.WriteLine(lex);
+                    }
+                }
+
+                // Enumerate subfolders separately so that we can skip future requests for the same folder
+                foreach(string subfolder in Directory.EnumerateDirectories(folder, "*", SearchOption.AllDirectories))
+                    AddAssemblyCatalogs(catalog, subfolder, searchedFolders);
+            }
         }
         #endregion
 

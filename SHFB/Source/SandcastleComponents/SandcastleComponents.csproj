@@ -68,9 +68,6 @@
     <Compile Include="..\SandcastleBuilderGUI\Properties\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
-    <Compile Include="..\SandcastleBuilderUtils\Constants.cs">
-      <Link>Constants.cs</Link>
-    </Compile>
     <Compile Include="CodeBlockComponent.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -135,10 +132,12 @@
     <ProjectReference Include="..\BuildAssembler\BuildComponents\BuildComponents.csproj">
       <Project>{30773718-BC7C-4FCC-A9C2-7EE61DF4EC41}</Project>
       <Name>BuildComponents</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\BuildAssembler\BuildComponentTargets\BuildComponentTargets.csproj">
       <Project>{84F8BE08-B5A3-4E5E-BC99-8E5C2351EF62}</Project>
       <Name>BuildComponentTargets</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\CodeColorizer\ColorizerLibrary\ColorizerLibrary.csproj">
       <Project>{72331A21-C452-4BE4-BFDB-B8029A6BC1C0}</Project>
@@ -148,6 +147,7 @@
     <ProjectReference Include="..\SandcastleCore\Sandcastle.Core.csproj">
       <Project>{399E78F8-4954-409E-991A-37DA9D0579CC}</Project>
       <Name>Sandcastle.Core</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

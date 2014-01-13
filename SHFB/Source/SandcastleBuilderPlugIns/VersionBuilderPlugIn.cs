@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : VersionBuilderPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/28/2013
-// Note    : Copyright 2007-2013, Eric Woodruff, All rights reserved
+// Updated : 01/11/2014
+// Note    : Copyright 2007-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a plug-in designed to generate version information for assemblies in the current project
@@ -154,9 +154,12 @@ namespace SandcastleBuilder.PlugIns
             if(String.IsNullOrEmpty(currentVersion.FrameworkLabel))
                 currentVersion.FrameworkLabel = " ";
 
-            if(node == null || allVersions.Count == 1)
-                throw new BuilderException("VBP0002", "A version value and at least one prior version are " +
-                    "required for the Version Builder plug-in.");
+            if(node == null)
+                throw new BuilderException("VBP0002", "A version value is required for the Version Builder plug-in");
+
+            if(allVersions.Count == 1)
+                builder.ReportProgress("No other version information was supplied.  Only version information " +
+                    "for the documented assemblies will be included.");
 
             foreach(VersionSettings vs in allVersions)
                 if(!uniqueLabels.Contains(vs.FrameworkLabel))
@@ -262,7 +265,7 @@ namespace SandcastleBuilder.PlugIns
 
             builder.ReportProgress("Removing standard version information items from shared content file");
 
-            sharedContentFilename = builder.WorkingFolder + "SharedBuilderContent.xml";
+            sharedContentFilename = builder.WorkingFolder + "SHFBContent.xml";
             sharedContent = new XmlDocument();
             sharedContent.Load(sharedContentFilename);
 

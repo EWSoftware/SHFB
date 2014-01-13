@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Components
 // File    : SqlResolveReferenceLinksConfigDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/15/2013
-// Note    : Copyright 2013, Eric Woodruff, All rights reserved
+// Updated : 01/02/2014
+// Note    : Copyright 2013-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a form that is used to configure the settings for the SQL Resolve Reference Links
@@ -25,7 +25,7 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Linq;
 
-using SandcastleBuilder.Utils;
+using Sandcastle.Core;
 
 namespace SandcastleBuilder.Components.UI
 {

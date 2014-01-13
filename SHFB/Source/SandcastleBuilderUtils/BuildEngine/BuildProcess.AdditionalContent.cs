@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.AdditionalContent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/17/2013
-// Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
+// Updated : 01/11/2014
+// Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the code used to merge the additional content into the working folder and build the table
@@ -47,6 +47,7 @@ using System.Xml.Xsl;
 
 using ColorizerLibrary;
 
+using Sandcastle.Core;
 using SandcastleBuilder.Utils.BuildComponent;
 using SandcastleBuilder.Utils.ConceptualContent;
 
@@ -125,11 +126,10 @@ namespace SandcastleBuilder.Utils.BuildEngine
         #endregion
 
         /// <summary>
-        /// This is called to copy the additional content files and build a
-        /// list of them for the help file project.
+        /// This is called to copy the additional content files and build a list of them for the help file
+        /// project.
         /// </summary>
-        /// <remarks>Note that for wildcard content items, the folders are
-        /// copied recursively.</remarks>
+        /// <remarks>Note that for wildcard content items, the folders are copied recursively.</remarks>
         private void CopyAdditionalContent()
         {
             Dictionary<string, TocEntryCollection> tocItems = new Dictionary<string, TocEntryCollection>();
@@ -462,29 +462,27 @@ namespace SandcastleBuilder.Utils.BuildEngine
         }
 
         /// <summary>
-        /// This is called to load an additional content file, resolve links
-        /// to namespace content and copy it to the output folder.
+        /// This is called to load an additional content file, resolve links to namespace content and copy it to
+        /// the output folder.
         /// </summary>
         /// <param name="sourceFile">The source filename to copy</param>
         /// <param name="destFile">The destination filename</param>
         /// <param name="entry">The entry being resolved.</param>
-        internal void ResolveLinksAndCopy(string sourceFile, string destFile,
-          TocEntry entry)
+        internal void ResolveLinksAndCopy(string sourceFile, string destFile, TocEntry entry)
         {
             Encoding enc = Encoding.Default;
             string content, script, syntaxFile;
             int pos;
 
-            // For topics, change the extension back to ".topic".  It's
-            // ".html" in the TOC as that's what it ends up as after
-            // transformation.
+            // For topics, change the extension back to ".topic".  It's ".html" in the TOC as that's what it ends
+            // up as after transformation.
             if(sourceFile.EndsWith(".topic", StringComparison.OrdinalIgnoreCase))
                 destFile = Path.ChangeExtension(destFile, ".topic");
 
             this.ReportProgress("{0} -> {1}", sourceFile, destFile);
 
-            // When reading the file, use the default encoding but detect the
-            // encoding if byte order marks are present.
+            // When reading the file, use the default encoding but detect the encoding if byte order marks are
+            // present.
             content = BuildProcess.ReadWithEncoding(sourceFile, ref enc);
 
             // Expand <code> tags if necessary
@@ -496,23 +494,20 @@ namespace SandcastleBuilder.Utils.BuildEngine
             {
                 // Initialize code colorizer on first use
                 if(codeColorizer == null)
-                    codeColorizer = new CodeColorizer(BuildComponentManager.HelpFileBuilderFolder +
-                        @"Colorizer\highlight.xml", BuildComponentManager.HelpFileBuilderFolder +
-                        @"Colorizer\highlight.xsl");
+                    codeColorizer = new CodeColorizer(ComponentUtilities.ToolsFolder + @"Colorizer\highlight.xml",
+                        ComponentUtilities.ToolsFolder + @"Colorizer\highlight.xsl");
 
                 // Set the path the "Copy" image
                 codeColorizer.CopyImageUrl = pathToRoot + "icons/CopyCode.gif";
 
-                // Colorize it and replace the "Copy" literal text with the
-                // shared content include item so that it gets localized.
+                // Colorize it and replace the "Copy" literal text with the shared content include item so that
+                // it gets localized.
                 content = codeColorizer.ProcessAndHighlightText(content);
-                content = content.Replace(codeColorizer.CopyText + "</span",
-                    "<include item=\"copyCode\"/></span");
+                content = content.Replace(codeColorizer.CopyText + "</span", "<include item=\"copyCode\"/></span");
                 entry.HasProjectTags = true;
 
-                // Add the links to the colorizer style sheet and script files
-                // unless it's going to be transformed.  In which case, the
-                // links should be in the XSL style sheet.
+                // Add the links to the colorizer style sheet and script files unless it's going to be
+                // transformed.  In which case, the links should be in the XSL style sheet.
                 if(!sourceFile.EndsWith(".topic", StringComparison.OrdinalIgnoreCase) &&
                   !sourceFile.EndsWith(".xsl", StringComparison.OrdinalIgnoreCase))
                 {
@@ -546,17 +541,15 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     if(!File.Exists(baseFolder + @"styles\highlight.css"))
                     {
                         syntaxFile = baseFolder + @"styles\highlight.css";
-                        File.Copy(BuildComponentManager.HelpFileBuilderFolder + @"Colorizer\highlight.css",
-                            syntaxFile);
+                        File.Copy(ComponentUtilities.ToolsFolder + @"Colorizer\highlight.css", syntaxFile);
                         File.SetAttributes(syntaxFile, FileAttributes.Normal);
 
                         syntaxFile = baseFolder + @"scripts\highlight_ac.js";
-                        File.Copy(BuildComponentManager.HelpFileBuilderFolder + @"Colorizer\highlight_ac.js",
-                            syntaxFile);
+                        File.Copy(ComponentUtilities.ToolsFolder + @"Colorizer\highlight_ac.js", syntaxFile);
                         File.SetAttributes(syntaxFile, FileAttributes.Normal);
 
-                        // Always copy the image files, they may be different.  Also, delete the
-                        // destination file first if it exists as the filename casing may be different.
+                        // Always copy the image files, they may be different.  Also, delete the destination file
+                        // first if it exists as the filename casing may be different.
                         syntaxFile = baseFolder + @"icons\CopyCode.gif";
 
                         if(File.Exists(syntaxFile))
@@ -565,8 +558,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                             File.Delete(syntaxFile);
                         }
 
-                        File.Copy(BuildComponentManager.HelpFileBuilderFolder + @"Colorizer\CopyCode.gif",
-                            syntaxFile);
+                        File.Copy(ComponentUtilities.ToolsFolder + @"Colorizer\CopyCode.gif", syntaxFile);
                         File.SetAttributes(syntaxFile, FileAttributes.Normal);
 
                         syntaxFile = baseFolder + @"icons\CopyCode_h.gif";
@@ -577,16 +569,14 @@ namespace SandcastleBuilder.Utils.BuildEngine
                             File.Delete(syntaxFile);
                         }
 
-                        File.Copy(BuildComponentManager.HelpFileBuilderFolder + @"Colorizer\CopyCode_h.gif",
-                            syntaxFile);
+                        File.Copy(ComponentUtilities.ToolsFolder + @"Colorizer\CopyCode_h.gif", syntaxFile);
                         File.SetAttributes(syntaxFile, FileAttributes.Normal);
                     }
             }
 
-            // Use a regular expression to find and replace all tags with
-            // cref attributes with a link to the help file content.  This
-            // needs to happen after the code block processing as they
-            // may contain <see> tags that need to be resolved.
+            // Use a regular expression to find and replace all tags with cref attributes with a link to the help
+            // file content.  This needs to happen after the code block processing as they may contain <see> tags
+            // that need to be resolved.
             if(entry.HasLinks || entry.HasCodeBlocks)
                 content = reResolveLinks.Replace(content, linkMatchEval);
 
@@ -720,11 +710,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
             {
                 sharedContent = new List<XPathNavigator>();
 
-                // Give preference to the help file builder's shared content files
-                sharedContent.Add(new XPathDocument(workingFolder + "SharedBuilderContent.xml").CreateNavigator());
-
-                sharedContent.Add(new XPathDocument(workingFolder +
-                    "PresentationStyleBuilderContent.xml").CreateNavigator());
+                // Give preference to the help file builder's shared content file
+                sharedContent.Add(new XPathDocument(workingFolder + "SHFBContent.xml").CreateNavigator());
 
                 // Load the presentation style shared content files
                 foreach(string contentFile in Directory.EnumerateFiles(presentationStyle.ResolvePath(
@@ -864,8 +851,8 @@ namespace SandcastleBuilder.Utils.BuildEngine
         }
 
         /// <summary>
-        /// This is used to transform a *.topic file into a *.html file using
-        /// an XSLT transformation based on the presentation style.
+        /// This is used to transform a *.topic file into a *.html file using an XSLT transformation based on the
+        /// presentation style.
         /// </summary>
         /// <param name="sourceFile">The source topic filename</param>
         private void XslTransform(string sourceFile)
@@ -896,29 +883,27 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     if(transforms.Count != 0)
                     {
                         if(transforms.Count > 1)
-                            this.ReportWarning("BE0011", "Multiple topic " +
-                                "transformations found.  Using '{0}'",
+                            this.ReportWarning("BE0011", "Multiple topic transformations found.  Using '{0}'",
                                 transforms[0].FullPath);
 
                         sourceStylesheet = transforms[0].FullPath;
                     }
                     else
-                        sourceStylesheet = templateFolder + presentationStyle.Id + ".xsl";
+                        sourceStylesheet = templateFolder + project.PresentationStyle + ".xsl";
 
                     xslStylesheet = workingFolder + Path.GetFileName(sourceStylesheet);
                     tocInfo = BuildProcess.GetTocInfo(sourceStylesheet);
 
-                    // The style sheet may contain shared content items so we
-                    // must resolve it this way rather than using
-                    // TransformTemplate.
+                    // The style sheet may contain shared content items so we must resolve it this way rather
+                    // than using TransformTemplate.
                     this.ResolveLinksAndCopy(sourceStylesheet, xslStylesheet, tocInfo);
 
                     xslTransform = new XslCompiledTransform();
                     settings = new XsltSettings(true, true);
                     xslArguments = new XsltArgumentList();
 
-                    xslTransform.Load(XmlReader.Create(xslStylesheet,
-                        readerSettings), settings, new XmlUrlResolver());
+                    xslTransform.Load(XmlReader.Create(xslStylesheet, readerSettings), settings,
+                        new XmlUrlResolver());
                 }
 
                 this.ReportProgress("Applying XSL transformation '{0}' to '{1}'.", xslStylesheet, sourceFile);
@@ -936,13 +921,10 @@ namespace SandcastleBuilder.Utils.BuildEngine
             }
             catch(Exception ex)
             {
-                throw new BuilderException("BE0017", String.Format(
-                    CultureInfo.InvariantCulture, "Unexpected error " +
-                    "using '{0}' to transform additional content file '{1}' " +
-                    "to '{2}'.  The error is: {3}\r\n{4}", xslStylesheet,
-                    sourceFile, destFile, ex.Message,
-                    (ex.InnerException == null) ? String.Empty :
-                        ex.InnerException.Message));
+                throw new BuilderException("BE0017", String.Format(CultureInfo.InvariantCulture,
+                    "Unexpected error using '{0}' to transform additional content file '{1}' to '{2}'.  The " +
+                    "error is: {3}\r\n{4}", xslStylesheet, sourceFile, destFile, ex.Message,
+                    (ex.InnerException == null) ? String.Empty : ex.InnerException.Message));
             }
             finally
             {
@@ -956,19 +938,17 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 }
             }
 
-            // The source topic file is deleted as the transformed file
-            // takes its place.
+            // The source topic file is deleted as the transformed file takes its place
             File.Delete(sourceFile);
 
-            // <span> and <script> tags cannot be self-closing if empty.
-            // The template may contain them correctly but when written out
-            // as XML, they get converted to self-closing tags which breaks
-            // them.  To fix them, convert them to full start and close tags.
+            // <span> and <script> tags cannot be self-closing if empty.  The template may contain them correctly
+            // but when written out as XML, they get converted to self-closing tags which breaks them.  To fix
+            // them, convert them to full start and close tags.
             content = BuildProcess.ReadWithEncoding(destFile, ref enc);
             content = reSpanScript.Replace(content, "<$1$2></$1>");
 
-            // An XSL transform might have added tags and include items that
-            // need replacing so run it through those options if needed.
+            // An XSL transform might have added tags and include items that need replacing so run it through
+            // those options if needed.
             tocInfo = BuildProcess.GetTocInfo(destFile);
 
             // Expand <code> tags if necessary
@@ -980,25 +960,22 @@ namespace SandcastleBuilder.Utils.BuildEngine
             {
                 // Initialize code colorizer on first use
                 if(codeColorizer == null)
-                    codeColorizer = new CodeColorizer(BuildComponentManager.HelpFileBuilderFolder +
-                        @"Colorizer\highlight.xml", BuildComponentManager.HelpFileBuilderFolder +
-                        @"Colorizer\highlight.xsl");
+                    codeColorizer = new CodeColorizer(ComponentUtilities.ToolsFolder + @"Colorizer\highlight.xml",
+                        ComponentUtilities.ToolsFolder + @"Colorizer\highlight.xsl");
 
                 // Set the path the "Copy" image
                 codeColorizer.CopyImageUrl = pathToRoot + "icons/CopyCode.gif";
 
-                // Colorize it and replace the "Copy" literal text with the
-                // shared content include item so that it gets localized.
+                // Colorize it and replace the "Copy" literal text with the shared content include item so that
+                // it gets localized.
                 content = codeColorizer.ProcessAndHighlightText(content);
-                content = content.Replace(codeColorizer.CopyText + "</span",
-                    "<include item=\"copyCode\"/></span");
+                content = content.Replace(codeColorizer.CopyText + "</span", "<include item=\"copyCode\"/></span");
                 tocInfo.HasProjectTags = true;
             }
 
-            // Use a regular expression to find and replace all tags with
-            // cref attributes with a link to the help file content.  This
-            // needs to happen after the code block processing as they
-            // may contain <see> tags that need to be resolved.
+            // Use a regular expression to find and replace all tags with cref attributes with a link to the help
+            // file content.  This needs to happen after the code block processing as they may contain <see> tags
+            // that need to be resolved.
             if(tocInfo.HasLinks || tocInfo.HasCodeBlocks)
                 content = reResolveLinks.Replace(content, linkMatchEval);
 

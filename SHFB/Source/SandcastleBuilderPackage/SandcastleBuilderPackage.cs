@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SandcastleBuilderPackage.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/01/2013
-// Note    : Copyright 2011-2013, Eric Woodruff, All rights reserved
+// Updated : 01/09/2014
+// Note    : Copyright 2011-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the class that defines the Sandcastle Help File Builder Visual Studio package
@@ -34,6 +34,8 @@ using EnvDTE;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+
+using Sandcastle.Core;
 
 using SandcastleBuilder.MicrosoftHelpViewer;
 using SandcastleBuilder.Package.Editors;
@@ -270,7 +272,7 @@ namespace SandcastleBuilder.Package
         /// </summary>
         /// <param name="command">The command object</param>
         /// <param name="format">The help file format</param>
-        private static void SetViewHelpCommandState(OleMenuCommand command, HelpFileFormat? format)
+        private static void SetViewHelpCommandState(OleMenuCommand command, HelpFileFormats? format)
         {
             Array activeProjects = null;
             DTE dte = Utility.GetServiceFromPackage<DTE, DTE>(false);
@@ -308,7 +310,7 @@ namespace SandcastleBuilder.Package
                             {
                                 SandcastleBuilderProjectNode pn = (SandcastleBuilderProjectNode)p.Object;
                                 string projectHelpFormat = (pn.GetProjectProperty("HelpFileFormat") ??
-                                    HelpFileFormat.HtmlHelp1.ToString());
+                                    HelpFileFormats.HtmlHelp1.ToString());
 
                                 enabled = (!pn.BuildInProgress && (format == null || projectHelpFormat.IndexOf(
                                     format.ToString(), StringComparison.OrdinalIgnoreCase) != -1));
@@ -335,13 +337,13 @@ namespace SandcastleBuilder.Package
                 if(project == null)
                     return;
 
-                if((project.HelpFileFormat & HelpFileFormat.HtmlHelp1) != 0)
+                if((project.HelpFileFormat & HelpFileFormats.HtmlHelp1) != 0)
                     this.ViewBuiltHelpFile(project, PkgCmdIDList.ViewHtmlHelp);
                 else
-                    if((project.HelpFileFormat & HelpFileFormat.MSHelp2) != 0)
+                    if((project.HelpFileFormat & HelpFileFormats.MSHelp2) != 0)
                         this.ViewBuiltHelpFile(project, PkgCmdIDList.ViewHxSHelp);
                     else
-                        if((project.HelpFileFormat & HelpFileFormat.Website) != 0)
+                        if((project.HelpFileFormat & HelpFileFormats.Website) != 0)
                             Utility.OpenUrl(projectNode.StartWebServerInstance());
                         else
                         {
@@ -512,7 +514,7 @@ namespace SandcastleBuilder.Package
         /// <param name="e">The event arguments</param>
         protected override void ViewHtmlHelpQueryStatusHandler(object sender, EventArgs e)
         {
-            SetViewHelpCommandState((OleMenuCommand)sender, HelpFileFormat.HtmlHelp1);
+            SetViewHelpCommandState((OleMenuCommand)sender, HelpFileFormats.HtmlHelp1);
         }
 
         /// <summary>
@@ -532,7 +534,7 @@ namespace SandcastleBuilder.Package
         /// <param name="e">The event arguments</param>
         protected override void ViewHxSHelpQueryStatusHandler(object sender, EventArgs e)
         {
-            SetViewHelpCommandState((OleMenuCommand)sender, HelpFileFormat.MSHelp2);
+            SetViewHelpCommandState((OleMenuCommand)sender, HelpFileFormats.MSHelp2);
         }
 
         /// <summary>
@@ -552,7 +554,7 @@ namespace SandcastleBuilder.Package
         /// <param name="e">The event arguments</param>
         protected override void ViewMshcHelpQueryStatusHandler(object sender, EventArgs e)
         {
-            SetViewHelpCommandState((OleMenuCommand)sender, HelpFileFormat.MSHelpViewer);
+            SetViewHelpCommandState((OleMenuCommand)sender, HelpFileFormats.MSHelpViewer);
         }
 
         /// <summary>
@@ -613,7 +615,7 @@ namespace SandcastleBuilder.Package
         }
 
         /// <summary>
-        /// Set the state of the Launch Help Viewer 2.0 Content Manager command
+        /// Set the state of the Launch Help Viewer 2.x Content Manager command
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
@@ -623,19 +625,27 @@ namespace SandcastleBuilder.Package
         }
 
         /// <summary>
-        /// Launch the Help Library Manager 1.0 for interactive use based on the current project's settings
+        /// Launch the Launch Help Viewer 2.x Content Manager for interactive use based on the current project's
+        /// settings.
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
         protected override void LaunchContentMgrExecuteHandler(object sender, EventArgs e)
         {
+            Version version;
+
             try
             {
                 SandcastleProject project = CurrentSandcastleProject;
 
                 if(project != null)
                 {
-                    HelpLibraryManager hlm = new HelpLibraryManager(new Version(2, 0));
+                    if(project.CatalogName == "VisualStudio11")
+                        version = new Version(2, 0);
+                    else
+                        version = new Version(2, 1);
+
+                    HelpLibraryManager hlm = new HelpLibraryManager(version);
 
                     hlm.LaunchInteractive(String.Format(CultureInfo.InvariantCulture,
                         "/catalogName \"{0}\" /locale {1} /manage", project.CatalogName, project.Language.Name));
@@ -644,8 +654,9 @@ namespace SandcastleBuilder.Package
             catch(Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
-                Utility.ShowMessageBox(OLEMSGICON.OLEMSGICON_CRITICAL,
-                    "Unable to launch Help Viewer 2.0 Content Manager.  Reason:\r\n{0}", ex.Message);
+                Utility.ShowMessageBox(OLEMSGICON.OLEMSGICON_CRITICAL, "Unable to launch Help Viewer 2.x " +
+                    "Content Manager.  Reason:\r\n{0}\r\n\r\nIs the catalog name correct in the project?",
+                    ex.Message);
             }
         }
 
@@ -656,7 +667,7 @@ namespace SandcastleBuilder.Package
         /// <param name="e">The event arguments</param>
         protected override void ViewAspNetWebsiteQueryStatusHandler(object sender, EventArgs e)
         {
-            SetViewHelpCommandState((OleMenuCommand)sender, HelpFileFormat.Website);
+            SetViewHelpCommandState((OleMenuCommand)sender, HelpFileFormats.Website);
         }
 
         /// <summary>
@@ -679,7 +690,7 @@ namespace SandcastleBuilder.Package
         /// <param name="e">The event arguments</param>
         protected override void ViewHtmlWebsiteQueryStatusHandler(object sender, EventArgs e)
         {
-            SetViewHelpCommandState((OleMenuCommand)sender, HelpFileFormat.Website);
+            SetViewHelpCommandState((OleMenuCommand)sender, HelpFileFormats.Website);
         }
 
         /// <summary>

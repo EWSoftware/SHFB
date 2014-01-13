@@ -30,7 +30,7 @@
     <BuildLogFile>
     </BuildLogFile>
     <FrameworkVersion>.NET Framework 4.0</FrameworkVersion>
-    <IndentHtml>False</IndentHtml>
+    <IndentHtml>True</IndentHtml>
     <RootNamespaceContainer>True</RootNamespaceContainer>
     <RootNamespaceTitle>Test Root Namespace Title</RootNamespaceTitle>
     <CopyrightHref>http://www.EWoodruff.us</CopyrightHref>
@@ -180,6 +180,7 @@
       <Argument Key="logoAltText" Value="Test logo" />
       <Argument Key="logoPlacement" Value="left" />
       <Argument Key="logoAlignment" Value="left" />
+      <Argument Key="maxVersionParts" Value="" />
     </TransformComponentArguments>
     <MaximumGroupParts>2</MaximumGroupParts>
     <NamespaceGrouping>True</NamespaceGrouping>

@@ -1,27 +1,26 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder Utilities
 // File    : Topic.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/29/2011
-// Note    : Copyright 2008-2011, Eric Woodruff, All rights reserved
+// Updated : 01/04/2014
+// Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class representing a conceptual content topic.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.6.0.7  04/24/2008  EFW  Created the code
 // 1.8.0.0  08/07/2008  EFW  Modified for use with the new project format
 // 1.9.0.0  06/06/2010  EFW  Added support for MS Help Viewer output
 // 1.9.0.0  07/01/2010  EFW  Added support for API parent mode setting
 // 1.9.3.3  12/15/2011  EFW  Updated for use with the new content layout editor
-//=============================================================================
+//===============================================================================================================
 
 using System;
 using System.ComponentModel;
@@ -31,6 +30,8 @@ using System.Text;
 using System.Web;
 using System.Xml;
 
+using Sandcastle.Core;
+
 using SandcastleBuilder.Utils.BuildEngine;
 
 namespace SandcastleBuilder.Utils.ConceptualContent
@@ -38,8 +39,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
     /// <summary>
     /// This represents a conceptual content topic.
     /// </summary>
-    /// <remarks>This class is serializable so that it can be copied to the
-    /// clipboard.</remarks>
+    /// <remarks>This class is serializable so that it can be copied to the clipboard</remarks>
     [DefaultProperty("Title")]
     public class Topic : INotifyPropertyChanged
     {
@@ -757,7 +757,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
 
             // MS Help Viewer doesn't support empty place holders so we automatically
             // generate a dummy place holder file for them.
-            if(!noFile || (builder.CurrentProject.HelpFileFormat & HelpFileFormat.MSHelpViewer) != 0)
+            if(!noFile || (builder.CurrentProject.HelpFileFormat & HelpFileFormats.MSHelpViewer) != 0)
             {
                 // Link text is optional
                 if(!String.IsNullOrEmpty(linkText))
@@ -795,7 +795,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         {
             // MS Help Viewer doesn't support empty place holders so we automatically
             // generate a dummy place holder file for them.
-            if(!noFile || (builder.CurrentProject.HelpFileFormat & HelpFileFormat.MSHelpViewer) != 0)
+            if(!noFile || (builder.CurrentProject.HelpFileFormat & HelpFileFormats.MSHelpViewer) != 0)
             {
                 writer.WriteStartElement("topic");
                 writer.WriteAttributeString("id", this.Id);
@@ -908,7 +908,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
             // generate a dummy place holder file for them.  Don't add an entry for
             // raw HTML files.
             if((!noFile && topicFile.DocumentType != DocumentType.Html) ||
-              (noFile && (builder.CurrentProject.HelpFileFormat & HelpFileFormat.MSHelpViewer) != 0))
+              (noFile && (builder.CurrentProject.HelpFileFormat & HelpFileFormats.MSHelpViewer) != 0))
             {
                 writer.WriteStartElement("topic");
                 writer.WriteAttributeString("id", this.Id);

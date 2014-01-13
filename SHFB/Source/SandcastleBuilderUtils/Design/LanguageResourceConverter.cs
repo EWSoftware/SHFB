@@ -1,25 +1,24 @@
-//=============================================================================
+//===============================================================================================================
 // System  : EWSoftware Design Time Attributes and Editors
 // File    : LanguageResourceConverter.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/20/2011
-// Note    : Copyright 2006-2011, Eric Woodruff, All rights reserved
+// Updated : 01/11/2014
+// Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains a type converter that allows you to select a culture
-// from a list representing a set of available language resource files.
+// This file contains a type converter that allows you to select a culture from a list representing a set of
+// available language resource files.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.3.0.0  09/15/2006  EFW  Created the code
 // 1.5.0.2  07/12/2007  EFW  Reworked support for language resource files
-//=============================================================================
+//===============================================================================================================
 
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -28,13 +27,13 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-using SandcastleBuilder.Utils.BuildComponent;
+using Sandcastle.Core;
 
 namespace SandcastleBuilder.Utils.Design
 {
     /// <summary>
-    /// This type converter allows you to select a culture from a list
-    /// representing a set of available language resource folders.
+    /// This type converter allows you to select a culture from a list representing a set of available language
+    /// resource folders.
     /// </summary>
     public sealed class LanguageResourceConverter : CultureInfoConverter
     {
@@ -96,21 +95,16 @@ namespace SandcastleBuilder.Utils.Design
         //=====================================================================
 
         /// <summary>
-        /// This is used to get the standard values by searching for the
-        /// language-specific help file builder shared content files.
+        /// This is used to get the standard values by searching for the language-specific stop word list files
         /// </summary>
         private static StandardValuesCollection InitializeStandardValues()
         {
-            // Find the available language resources
-            string name = Path.Combine(BuildComponentManager.HelpFileBuilderFolder, @"SharedContent");
+            // Determine the available language resources by see what stop word list translations are available
+            string name = Path.Combine(ComponentUtilities.ToolsFolder, @"PresentationStyles\Shared\StopWordList");
 
-            return new StandardValuesCollection(
-                Directory.EnumerateFiles(name, "SharedBuilderContent_*.xml").Select(c =>
-                {
-                    name = Path.GetFileNameWithoutExtension(c);
-                    name = name.Substring(name.LastIndexOf('_') + 1);
-                    return new CultureInfo(name);
-                }).OrderBy(c => c, new CultureInfoComparer()).ToArray());
+            return new StandardValuesCollection(Directory.EnumerateFiles(name, "*.txt").Select(
+                f => new CultureInfo(Path.GetFileNameWithoutExtension(f))).OrderBy(
+                    c => c, new CultureInfoComparer()).ToArray());
         }
         #endregion
 

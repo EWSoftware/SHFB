@@ -1,30 +1,30 @@
-﻿//=============================================================================
+﻿//===============================================================================================================
 // System  : Sandcastle Help File Builder
 // File    : TokenEditorWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/29/2011
-// Note    : Copyright 2008-2011, Eric Woodruff, All rights reserved
+// Updated : 01/02/2014
+// Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the form used to edit the token files.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.8.0.0  10/15/2008  EFW  Created the code
-// 1.9.3.3  12/21/2011  EFW  Rewrote to use the shared WPF Token File Editor
-//                           user control.
-//=============================================================================
+// 1.9.3.3  12/21/2011  EFW  Rewrote to use the shared WPF Token File Editor user control
+//===============================================================================================================
 
 using System;
 using System.ComponentModel;
 using System.IO;
 using System.Windows.Forms;
+
+using Sandcastle.Core;
 
 using SandcastleBuilder.Utils;
 using SandcastleBuilder.Utils.ConceptualContent;

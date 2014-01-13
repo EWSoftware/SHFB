@@ -1,22 +1,21 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder Utilities
 // File    : TocEntry.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 08/03/2012
-// Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
+// Updated : 01/04/2014
+// Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains a class representing a table of contents entry.  This is
-// used to build the table of contents entries for additional content items.
+// This file contains a class representing a table of contents entry.  This is used to build the table of
+// contents entries for additional content items.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.3.0.0  09/17/2006  EFW  Created the code
 // 1.3.3.1  12/08/2006  EFW  Added NeedsColorizing property
 // 1.4.0.0  03/09/2007  EFW  Added support for <code source="file" /> tags
@@ -25,7 +24,7 @@
 // 1.8.0.0  08/11/2008  EFW  Modified to support the new project format
 // 1.9.0.0  06/15/2010  EFW  Added support for MS Help Viewer TOC format
 // 1.9.3.3  12/20/2011  EFW  Updated for use with the new content layout editor
-//=============================================================================
+//===============================================================================================================
 
 using System;
 using System.ComponentModel;
@@ -35,6 +34,8 @@ using System.IO;
 using System.Text;
 using System.Web;
 using System.Xml;
+
+using Sandcastle.Core;
 
 using SandcastleBuilder.Utils.Design;
 
@@ -551,7 +552,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <returns>The entries in HTML 1.x help format</returns>
         public override string ToString()
         {
-            return this.ToString(HelpFileFormat.HtmlHelp1);
+            return this.ToString(HelpFileFormats.HtmlHelp1);
         }
 
         /// <summary>
@@ -562,7 +563,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <returns>The entries in specified help format</returns>
         /// <exception cref="ArgumentException">This is thrown if the
         /// format is not <b>HtmlHelp1</b> or <b>MSHelp2</b>.</exception>
-        public string ToString(HelpFileFormat format)
+        public string ToString(HelpFileFormats format)
         {
             StringBuilder sb = new StringBuilder(1024);
             this.ConvertToString(format, sb);
@@ -576,13 +577,13 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <param name="format">The help file format to use</param>
         /// <param name="sb">The string builder to which the information is
         /// appended.</param>
-        internal void ConvertToString(HelpFileFormat format, StringBuilder sb)
+        internal void ConvertToString(HelpFileFormats format, StringBuilder sb)
         {
             string guid, url, orderAttr, titleAttr;
 
             switch(format)
             {
-                case HelpFileFormat.HtmlHelp1:
+                case HelpFileFormats.HtmlHelp1:
                     if(children.Count == 0)
                         sb.AppendFormat("<LI><OBJECT type=\"text/sitemap\">\r\n" +
                             "<param name=\"Name\" value=\"{0}\">\r\n" +
@@ -610,9 +611,9 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                     }
                     break;
             
-                case HelpFileFormat.MSHelp2:
-                case HelpFileFormat.Website:
-                    if(!String.IsNullOrEmpty(this.DestinationFile) && format == HelpFileFormat.Website)
+                case HelpFileFormats.MSHelp2:
+                case HelpFileFormats.Website:
+                    if(!String.IsNullOrEmpty(this.DestinationFile) && format == HelpFileFormats.Website)
                         url = this.DestinationFile.Replace('\\', '/');
                     else
                         url = this.DestinationFile;
@@ -643,7 +644,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                     }
                     break;
 
-                case HelpFileFormat.MSHelpViewer:
+                case HelpFileFormats.MSHelpViewer:
                     if(String.IsNullOrEmpty(this.DestinationFile))
                     {
                         url = this.Id;

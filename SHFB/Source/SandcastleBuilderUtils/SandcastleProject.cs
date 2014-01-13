@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : SandcastleProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/20/2013
-// Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
+// Updated : 01/07/2014
+// Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the project class.
@@ -85,10 +85,12 @@ using System.Xml.Serialization;
 
 using Microsoft.Build.Evaluation;
 
+using Sandcastle.Core;
+using Sandcastle.Core.Frameworks;
+using Sandcastle.Core.PresentationStyle;
+
 using SandcastleBuilder.Utils.BuildComponent;
 using SandcastleBuilder.Utils.Design;
-using SandcastleBuilder.Utils.Frameworks;
-using SandcastleBuilder.Utils.PresentationStyle;
 
 namespace SandcastleBuilder.Utils
 {
@@ -164,7 +166,7 @@ namespace SandcastleBuilder.Utils
         private bool cleanIntermediates, keepLogFile, cppCommentsFixup, disableCodeBlockComponent,
             namespaceGrouping;
         private int maximumGroupParts;
-        private HelpFileFormat helpFileFormat;
+        private HelpFileFormats helpFileFormat;
         private BuildAssemblerVerbosity buildAssemblerVerbosity;
 
         // Help file properties
@@ -761,9 +763,9 @@ namespace SandcastleBuilder.Utils
         [Category("Build"), Description("Specify the type of help produced (HTML Help 1 built with HHC.EXE, " +
           "MS Help 2 built with HXCOMP.EXE, MS Help Viewer which is a compressed container file, and/or a web " +
           "site.  WARNING: When building a web site, the prior content of the output folder will be erased " +
-          "without warning before copying the new content to it!"), DefaultValue(HelpFileFormat.HtmlHelp1),
+          "without warning before copying the new content to it!"), DefaultValue(HelpFileFormats.HtmlHelp1),
           Editor(typeof(FlagsEnumEditor), typeof(UITypeEditor))]
-        public HelpFileFormat HelpFileFormat
+        public HelpFileFormats HelpFileFormat
         {
             get { return helpFileFormat; }
             set
@@ -830,7 +832,7 @@ namespace SandcastleBuilder.Utils
                 // Let bad values through.  The property pages or the build engine will catch bad values if
                 // necessary.
                 if(value == null)
-                    value = FrameworkDictionary.DefaultFrameworkInternal;
+                    value = FrameworkDictionary.DefaultFrameworkTitle;
 
                 this.SetProjectProperty("FrameworkVersion", value);
                 frameworkVersion = value;
@@ -1251,8 +1253,10 @@ namespace SandcastleBuilder.Utils
             get { return presentationStyle; }
             set
             {
-                if(value == null || !PresentationStyleDictionary.AllStyles.ContainsKey(value))
-                    value = PresentationStyleDictionary.DefaultStyle;
+                // Let bad values through.  The property pages or the build engine will catch bad values if
+                // necessary.
+                if(String.IsNullOrWhiteSpace(value))
+                    value = Constants.DefaultPresentationStyle;
 
                 this.SetProjectProperty("PresentationStyle", value);
                 presentationStyle = value;
@@ -2660,8 +2664,7 @@ namespace SandcastleBuilder.Utils
                             if(schemaVersion.Major == 1 && (schemaVersion.Minor < 9 ||
                               (schemaVersion.Minor == 9 && schemaVersion.Build < 5)))
                             {
-                                this.SetLocalProperty(prop.Name,
-                                    FrameworkDictionary.ConvertFromOldValue(prop.UnevaluatedValue));
+                                this.SetLocalProperty(prop.Name, Utility.ConvertFromOldValue(prop.UnevaluatedValue));
                                 msBuildProject.SetProperty("FrameworkVersion", this.FrameworkVersion);
                             }
                             else
@@ -2940,14 +2943,14 @@ namespace SandcastleBuilder.Utils
                     VisibleItems.Protected | VisibleItems.ProtectedInternalAsProtected;
 
                 buildAssemblerVerbosity = BuildAssemblerVerbosity.OnlyWarningsAndErrors;
-                helpFileFormat = HelpFileFormat.HtmlHelp1;
+                helpFileFormat = HelpFileFormats.HtmlHelp1;
                 htmlSdkLinkType = websiteSdkLinkType = HtmlSdkLinkType.Msdn;
                 help2SdkLinkType = MSHelp2SdkLinkType.Msdn;
                 helpViewerSdkLinkType = MSHelpViewerSdkLinkType.Msdn;
                 sdkLinkTarget = SdkLinkTarget.Blank;
-                presentationStyle = PresentationStyleDictionary.DefaultStyle;
+                presentationStyle = Constants.DefaultPresentationStyle;
                 namingMethod = NamingMethod.Guid;
-                syntaxFilters = BuildComponentManager.DefaultSyntaxFilter;
+                syntaxFilters = ComponentUtilities.DefaultSyntaxFilter;
                 collectionTocStyle = CollectionTocStyle.Hierarchical;
                 helpFileVersion = "1.0.0.0";
                 tocOrder = -1;
@@ -2962,9 +2965,9 @@ namespace SandcastleBuilder.Utils
                     this.ProjectSummary = this.RootNamespaceTitle = this.PlugInNamespaces = this.TopicVersion =
                     this.TocParentId = this.TocParentVersion = this.CatalogProductId = this.CatalogVersion =
                     this.CatalogName = null;
+                this.FrameworkVersion = null;
 
                 language = new CultureInfo("en-US");
-                frameworkVersion = FrameworkDictionary.DefaultFrameworkInternal;
             }
             finally
             {

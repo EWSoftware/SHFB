@@ -16,6 +16,8 @@
 // 11/19/2013 - EFW - Merged common code from AllDocumentedFilter and ExternalDocumentedFilter into this class.
 // 11/20/2013 - EFW - Cleaned up the code and removed unused members.  Merged all SHFB visibility options into
 // the API filter.
+// 01/09/2013 - EFW - Added a workaround to allow documenting the compiler generated public types in WINMD
+// assemblies that actually represent user code.
 
 using System;
 using System.Collections.Generic;
@@ -455,7 +457,15 @@ namespace Microsoft.Ddue.Tools.Reflection
                     if(curType.Attributes.Any(
                       attr => attr.Type.FullName == "System.Runtime.CompilerServices.CompilerGeneratedAttribute") &&
                       (!this.IncludeNoPIATypes || !IsEmbeddedInteropType(curType)))
-                        return false;
+                    {
+                        // !EFW - Hack for WINDMD assemblies.  For these, the compiler hides the original class
+                        // as an internal class prefixed with "<CLR>" and generates a type with the public
+                        // members and tagged with a CompilerGenerated attribute.  So, is compiler generated but
+                        // has a match "<CLR>" prefixed type, let it through.
+                        if(curType.DeclaringModule != null && !curType.DeclaringModule.Types.Any(
+                          t => t.Name.Name == "<CLR>" + curType.Name.Name))
+                            return false;
+                    }
 
                     curType = curType.DeclaringType;    // Check the next parent
                 }

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : UserDefinedPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 09/27/2013
-// Note    : Copyright 2011-2013, Eric Woodruff, All rights reserved
+// Updated : 01/04/2014
+// Note    : Copyright 2011-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This user control is used to edit the User Defined category properties
@@ -36,7 +36,6 @@ using SandcastleBuilder.Package.Nodes;
 using SandcastleBuilder.Package.Properties;
 #endif
 using SandcastleBuilder.Utils;
-using SandcastleBuilder.Utils.Design;
 
 namespace SandcastleBuilder.Package.PropertyPages
 {
@@ -320,7 +319,7 @@ namespace SandcastleBuilder.Package.PropertyPages
                     Resources.PackageTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
 #else
                 MessageBox.Show("Unable to load user-defined properties.  Error " + ex.Message,
-                    Constants.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Sandcastle.Core.Constants.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
 #endif
             }
             finally

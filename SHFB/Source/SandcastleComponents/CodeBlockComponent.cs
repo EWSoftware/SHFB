@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Components
 // File    : CodeBlockComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/26/2013
-// Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
+// Updated : 01/09/2014
+// Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a build component that is used to search for <code> XML comment tags and colorize the code
@@ -509,7 +509,7 @@ namespace SandcastleBuilder.Components
             XmlAttribute attr;
             XmlNode code, preNode, refLink;
 
-            string language, title, codeBlock;
+            string language, codeBlock;
             bool nbrLines, outline, seeTags;
             int tabSize, start, end, id = 1;
             MessageLevel msgLevel;
@@ -554,7 +554,6 @@ namespace SandcastleBuilder.Components
                 outline = outliningEnabled;
                 seeTags = keepSeeTags;
                 tabSize = 0;
-                title = String.Empty;
                 msgLevel = messageLevel;
 
                 // Allow the "missing source" option to be overridden locally.  However, if false, it will
@@ -608,10 +607,6 @@ namespace SandcastleBuilder.Components
                 else
                     if(code.Attributes["language"] != null)
                         language = code.Attributes["language"].Value;
-
-                // Use the title if one is supplied
-                if(code.Attributes["title"] != null)
-                    title = WebUtility.HtmlEncode(code.Attributes["title"].Value);
 
                 // If disabled, we'll just normalize the leading whitespace and let the Sandcastle transformation
                 // handle it.  The language ID is passed to use the appropriate tab size if not overridden.
@@ -670,8 +665,8 @@ namespace SandcastleBuilder.Components
                     seeTag.ParentNode.ReplaceChild(refLink, seeTag);
                 }
 
-                // Replace the code with a placeholder ID.  The OnComponent event handler will relace it with the
-                // code from the container node.
+                // Replace the code with a placeholder ID.  The OnComponent event handler will replace it with
+                // the code from the container node.
                 code.InnerXml = "@@_SHFB_" + id.ToString(CultureInfo.InvariantCulture);
 
                 // Add the container to the code block dictionary

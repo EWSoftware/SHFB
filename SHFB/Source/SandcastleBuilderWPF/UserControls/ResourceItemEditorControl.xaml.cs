@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : ResourceItemEditorControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/18/2012
-// Note    : Copyright 2011-2012, Eric Woodruff, All rights reserved
+// Updated : 01/11/2014
+// Note    : Copyright 2011-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the WPF user control used to edit resource item files
@@ -17,11 +17,13 @@
 // ==============================================================================================================
 // 1.9.3.3  12/21/2011  EFW  Created the code
 // 1.9.6.0  10/27/2012  EFW  Updated to use the presentation style configuration file
+// -------  01/07/2014  EFW  Updated to use MEF to load presentation style information
 //===============================================================================================================
 
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -29,10 +31,11 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Xml;
 
+using Sandcastle.Core;
+using Sandcastle.Core.PresentationStyle;
+
 using SandcastleBuilder.Utils;
-using SandcastleBuilder.Utils.BuildComponent;
 using SandcastleBuilder.Utils.ConceptualContent;
-using SandcastleBuilder.Utils.PresentationStyle;
 
 namespace SandcastleBuilder.WPF.UserControls
 {
@@ -95,60 +98,84 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <param name="project">The current Sandcastle Builder project</param>
         public void LoadResourceItemsFile(string resourceItemsFile, SandcastleProject project)
         {
-            PresentationStyleSettings pss = PresentationStyleDictionary.AllStyles[project.PresentationStyle];
-            string presentationStylePath, shfbStyleContent, shfbSharedContent;
+            PresentationStyleSettings pss = null;
+            string presentationStylePath, shfbStyleContent;
 
             if(resourceItemsFile == null)
-                throw new ArgumentNullException("resourceItemsFile",
-                    "A resource items file name must be specified");
+                throw new ArgumentNullException("resourceItemsFile", "A resource items file name must be specified");
 
-            resourceItemFilename = resourceItemsFile;
+            try
+            {
+                Mouse.OverrideCursor = Cursors.Wait;
 
-            // Get the presentation style folders
-            presentationStylePath = pss.ResolvePath(pss.ResourceItemsPath);
-            shfbStyleContent = pss.ResolvePath(pss.ToolResourceItemsPath);
-            shfbSharedContent = Path.Combine(BuildComponentManager.HelpFileBuilderFolder, "SharedContent");
+                resourceItemFilename = resourceItemsFile;
 
-            shfbStyleContent = Path.Combine(shfbStyleContent, pss.Id + "BuilderContent_");
-            shfbSharedContent = Path.Combine(shfbSharedContent, "SharedBuilderContent_");
+                using(var container = ComponentUtilities.CreateComponentContainer(new[] { project.ComponentPath,
+                  Path.GetDirectoryName(project.Filename) }))
+                {
+                    var presentationStyles = container.GetExports<PresentationStyleSettings, IPresentationStyleMetadata>();
+                    var style = presentationStyles.FirstOrDefault(s => s.Metadata.Id.Equals(
+                        project.PresentationStyle, StringComparison.OrdinalIgnoreCase));
 
-            // Use the language-specific files if they are present
-            if(Directory.Exists(Path.Combine(presentationStylePath, project.Language.Name)))
-                presentationStylePath = Path.Combine(presentationStylePath, project.Language.Name);
+                    if(style == null)
+                        style = presentationStyles.FirstOrDefault(s => s.Metadata.Id.Equals(
+                            Constants.DefaultPresentationStyle, StringComparison.OrdinalIgnoreCase));
 
-            if(File.Exists(Path.Combine(shfbStyleContent, project.Language.Name + ".xml")))
-                shfbStyleContent = shfbStyleContent + project.Language.Name + ".xml";
-            else
-                shfbStyleContent = shfbStyleContent + "en-US.xml";
+                    if(style != null)
+                        pss = style.Value;
+                    else
+                    {
+                        MessageBox.Show("Unable to locate the presentation style ID " + project.PresentationStyle,
+                            "Resource Item Editor", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
+                    }
+                }
 
-            if(File.Exists(Path.Combine(shfbSharedContent, project.Language.Name + ".xml")))
-                shfbSharedContent = shfbSharedContent + project.Language.Name + ".xml";
-            else
-                shfbSharedContent = shfbSharedContent + "en-US.xml";
+                // Get the presentation style folders
+                presentationStylePath = pss.ResolvePath(pss.ResourceItemsPath);
+                shfbStyleContent = pss.ResolvePath(pss.ToolResourceItemsPath);
 
-            // Load the presentation style content files first followed by the help file builder content items
-            // and then the user's resource item file.
-            foreach(string file in Directory.EnumerateFiles(presentationStylePath, "*.xml"))
-                this.LoadItemFile(file, false);
+                // Use the language-specific files if they are present
+                if(Directory.Exists(Path.Combine(presentationStylePath, project.Language.Name)))
+                    presentationStylePath = Path.Combine(presentationStylePath, project.Language.Name);
 
-            if(File.Exists(shfbSharedContent))
-                this.LoadItemFile(shfbSharedContent, false);
+                if(File.Exists(Path.Combine(shfbStyleContent, project.Language.Name + ".xml")))
+                    shfbStyleContent = Path.Combine(shfbStyleContent, project.Language.Name + ".xml");
+                else
+                    shfbStyleContent = Path.Combine(shfbStyleContent, "en-US.xml");
 
-            if(File.Exists(shfbStyleContent))
-                this.LoadItemFile(shfbStyleContent, false);
+                // Load the presentation style content files first followed by the help file builder content
+                // items and then the user's resource item file.
+                foreach(string file in Directory.EnumerateFiles(presentationStylePath, "*.xml"))
+                    this.LoadItemFile(file, false);
 
-            this.LoadItemFile(resourceItemFilename, true);
+                if(File.Exists(shfbStyleContent))
+                    this.LoadItemFile(shfbStyleContent, false);
 
-            // Load everything into the list box
-            resourceItems = new BindingList<ResourceItem>(allItems.Values.ToArray());
-            resourceItems.ListChanged += resourceItems_ListChanged;
+                this.LoadItemFile(resourceItemFilename, true);
 
-            if(resourceItems.Count != 0)
-                resourceItems[0].IsSelected = true;
+                // Load everything into the list box
+                resourceItems = new BindingList<ResourceItem>(allItems.Values.ToArray());
+                resourceItems.ListChanged += resourceItems_ListChanged;
 
-            lbResourceItems.ItemsSource = resourceItems;
+                if(resourceItems.Count != 0)
+                    resourceItems[0].IsSelected = true;
 
-            this.resourceItems_ListChanged(this, new ListChangedEventArgs(ListChangedType.Reset, -1));
+                lbResourceItems.ItemsSource = resourceItems;
+
+                this.resourceItems_ListChanged(this, new ListChangedEventArgs(ListChangedType.Reset, -1));
+            }
+            catch(Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex);
+
+                MessageBox.Show("Unable to load resource item files: " + ex.Message, "Resource Item Editor",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally
+            {
+                Mouse.OverrideCursor = null;
+            }
         }
 
         /// <summary>
@@ -159,40 +186,40 @@ namespace SandcastleBuilder.WPF.UserControls
         private void LoadItemFile(string filename, bool containsOverrides)
         {
             ResourceItem r;
-            XmlReaderSettings settings = new XmlReaderSettings();
-            XmlReader xr = null;
+            XmlReaderSettings settings = new XmlReaderSettings { CloseInput = true };
 
             try
             {
-                settings.CloseInput = true;
-
-                xr = XmlReader.Create(filename, settings);
-                xr.MoveToContent();
-
-                while(!xr.EOF)
+                using(var xr = XmlReader.Create(filename, settings))
                 {
-                    if(xr.NodeType == XmlNodeType.Element && xr.Name == "item")
+                    xr.MoveToContent();
+
+                    while(!xr.EOF)
                     {
-                        r = new ResourceItem(filename, xr.GetAttribute("id"), xr.ReadInnerXml(),
-                            containsOverrides);
-
-                        allItems[r.Id] = r;
-
-                        // Create a clone of the original for Sandcastle items
-                        if(!containsOverrides)
+                        if(xr.NodeType == XmlNodeType.Element && xr.Name == "item")
                         {
-                            r = new ResourceItem(filename, r.Id, r.Value, false);
-                            sandcastleItems[r.Id] = r;
-                        }
-                    }
+                            r = new ResourceItem(filename, xr.GetAttribute("id"), xr.ReadInnerXml(), containsOverrides);
 
-                    xr.Read();
+                            allItems[r.Id] = r;
+
+                            // Create a clone of the original for Sandcastle items
+                            if(!containsOverrides)
+                            {
+                                r = new ResourceItem(filename, r.Id, r.Value, false);
+                                sandcastleItems[r.Id] = r;
+                            }
+                        }
+
+                        xr.Read();
+                    }
                 }
             }
-            finally
+            catch(Exception ex)
             {
-                if(xr != null)
-                    xr.Close();
+                System.Diagnostics.Debug.WriteLine(ex);
+
+                MessageBox.Show("Unable to save resource item file: " + ex.Message, "Resource Item Editor",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -214,17 +241,12 @@ namespace SandcastleBuilder.WPF.UserControls
         /// <param name="resourceItemsFile">The resource item filename</param>
         public void Save(string resourceItemsFile)
         {
-            XmlWriterSettings settings = new XmlWriterSettings();
-            XmlWriter writer = null;
+            XmlWriterSettings settings = new XmlWriterSettings { Indent = true, CloseOutput = true };
 
             this.CommitChanges();
 
-            try
+            using(var writer = XmlWriter.Create(resourceItemsFile, settings))
             {
-                settings.Indent = true;
-                settings.CloseOutput = true;
-                writer = XmlWriter.Create(resourceItemsFile, settings);
-
                 writer.WriteStartDocument();
                 writer.WriteStartElement("content");
                 writer.WriteAttributeString("xml", "space", null, "preserve");
@@ -243,11 +265,6 @@ namespace SandcastleBuilder.WPF.UserControls
 
                 writer.WriteEndElement();   // </content>
                 writer.WriteEndDocument();
-            }
-            finally
-            {
-                if(writer != null)
-                    writer.Close();
             }
         }
         #endregion

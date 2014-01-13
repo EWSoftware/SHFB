@@ -1,41 +1,38 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder
 // File    : NewFromOtherFormatDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/08/2012
-// Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
+// Updated : 01/02/2014
+// Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains the form used to convert a project in a different format
-// to the new MSBuild format used by SHFB 1.8.0.0 and later.
+// This file contains the form used to convert a project in a different format to the new MSBuild format used by
+// SHFB 1.8.0.0 and later.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.8.0.0  08/04/2008  EFW  Created the code
 // 1.9.1.0  01/09/2011  EFW  Updated for use with .NET 4.0 and MSBuild 4.0
-// 1.9.3.4  01/08/2012  EFW  Moved the form into the SandcastleBuilder.Utils
-//                           library so that it can be used from the VSPackage.
-//=============================================================================
+// 1.9.3.4  01/08/2012  EFW  Moved the form into the SandcastleBuilder.Utils library so that it can be used from
+//                           the VSPackage.
+//===============================================================================================================
 
 using System;
-using System.Globalization;
 using System.IO;
-using System.Reflection;
 using System.Windows.Forms;
 
-using SandcastleBuilder.Utils;
+using Sandcastle.Core;
 
 namespace SandcastleBuilder.Utils.Conversion
 {
     /// <summary>
-    /// This form is used to convert a project in a different format to the new
-    /// MSBuild format used by SHFB 1.8.0.0 and later.
+    /// This form is used to convert a project in a different format to the new MSBuild format used by SHFB
+    /// 1.8.0.0 and later.
     /// </summary>
     public partial class NewFromOtherFormatDlg : Form
     {
@@ -277,9 +274,8 @@ namespace SandcastleBuilder.Utils.Conversion
                 BuilderException bex = ex as BuilderException;
 
                 if(bex != null)
-                    MessageBox.Show("Unable to convert project.  Reason: Error " + bex.ErrorCode +
-                        ":" + bex.Message, Constants.AppName, MessageBoxButtons.OK,
-                        MessageBoxIcon.Exclamation);
+                    MessageBox.Show("Unable to convert project.  Reason: Error " + bex.ErrorCode + ":" +
+                        bex.Message, Constants.AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 else
                     MessageBox.Show("Unable to convert project.  Reason: " + ex.Message, Constants.AppName,
                         MessageBoxButtons.OK, MessageBoxIcon.Exclamation);

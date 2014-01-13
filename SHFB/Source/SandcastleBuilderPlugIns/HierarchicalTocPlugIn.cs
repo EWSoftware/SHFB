@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : HierarchicalTocPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/17/2013
-// Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
+// Updated : 01/04/2014
+// Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a plug-in that can be used to rearrange the table of contents such that namespaces are
@@ -32,6 +32,8 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.XPath;
+
+using Sandcastle.Core;
 
 using SandcastleBuilder.Utils;
 using SandcastleBuilder.Utils.BuildComponent;
@@ -143,7 +145,7 @@ namespace SandcastleBuilder.PlugIns
             // are generated for the namespace group entries.  As such, this plug-in is deprecated and will not
             // receive further changes.  It will available for the time being to support the older presentation
             // styles that do not support MS Help Viewer output or the namespace grouping project options.
-            if((builder.CurrentProject.HelpFileFormat & HelpFileFormat.MSHelpViewer) != 0)
+            if((builder.CurrentProject.HelpFileFormat & HelpFileFormats.MSHelpViewer) != 0)
             {
                 if(executionPoints == null)
                     executionPoints = new List<ExecutionPoint>();

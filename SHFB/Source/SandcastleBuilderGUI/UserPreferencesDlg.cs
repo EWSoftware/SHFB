@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : UserPreferencesDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/15/2013
-// Note    : Copyright 2007-2013, Eric Woodruff, All rights reserved
+// Updated : 01/02/2014
+// Note    : Copyright 2007-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This form is used to allow the user to modify help file builder preferences unrelated to projects
@@ -27,9 +27,10 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
+using Sandcastle.Core;
+
 using SandcastleBuilder.Gui.Properties;
 using SandcastleBuilder.Gui.Spelling;
-using SandcastleBuilder.Utils;
 using SandcastleBuilder.Utils.Design;
 
 namespace SandcastleBuilder.Gui

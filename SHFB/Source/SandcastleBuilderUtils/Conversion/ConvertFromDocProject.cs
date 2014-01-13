@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : ConvertFromDocProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/25/2012
-// Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
+// Updated : 01/04/2014
+// Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class used to convert project files created by DocProject to the MSBuild format project
@@ -26,6 +26,8 @@ using System.Globalization;
 using System.IO;
 using System.Xml;
 using System.Xml.XPath;
+
+using Sandcastle.Core;
 
 using SandcastleBuilder.Utils.ConceptualContent;
 
@@ -170,7 +172,7 @@ namespace SandcastleBuilder.Utils.Conversion
 
             if(docProject.SelectSingleNode("//prj:Project/prj:ProjectExtensions/prj:VisualStudio/" +
               "prj:FlavorProperties", nsm) != null)
-                project.HelpFileFormat |= HelpFileFormat.Website;
+                project.HelpFileFormat |= HelpFileFormats.Website;
 
             foreach(XmlAttribute attr in props.Attributes)
                 switch(attr.Name)
@@ -209,15 +211,15 @@ namespace SandcastleBuilder.Utils.Conversion
 
                     case "Sandcastle_ProduceHelp1x":
                         if(String.Compare(attr.Value, "False", StringComparison.OrdinalIgnoreCase) == 0)
-                            if(project.HelpFileFormat == HelpFileFormat.HtmlHelp1)
-                                project.HelpFileFormat = HelpFileFormat.MSHelp2;
+                            if(project.HelpFileFormat == HelpFileFormats.HtmlHelp1)
+                                project.HelpFileFormat = HelpFileFormats.MSHelp2;
                             else
-                                project.HelpFileFormat &= ~HelpFileFormat.HtmlHelp1;
+                                project.HelpFileFormat &= ~HelpFileFormats.HtmlHelp1;
                         break;
 
                     case "Sandcastle_ProduceHelp2x":
                         if(String.Compare(attr.Value, "True", StringComparison.OrdinalIgnoreCase) == 0)
-                            project.HelpFileFormat |= HelpFileFormat.MSHelp2;
+                            project.HelpFileFormat |= HelpFileFormats.MSHelp2;
                         break;
 
                     case "Sandcastle_GenerateRootApiTopic":
@@ -266,7 +268,7 @@ namespace SandcastleBuilder.Utils.Conversion
             if(String.IsNullOrEmpty(file))
                 return;
 
-            // Ignore these paths as they are most likely presenation style files
+            // Ignore these paths as they are most likely presentation style files
             if(file.StartsWith(@"Help\Icons\", StringComparison.OrdinalIgnoreCase) ||
               file.StartsWith(@"Help\Presentation\", StringComparison.OrdinalIgnoreCase) ||
               file.StartsWith(@"Help\Scripts\", StringComparison.OrdinalIgnoreCase) ||
@@ -275,7 +277,7 @@ namespace SandcastleBuilder.Utils.Conversion
                 return;
 
             // For websites, ignore these folders and files
-            if((project.HelpFileFormat & HelpFileFormat.Website) != 0)
+            if((project.HelpFileFormat & HelpFileFormats.Website) != 0)
                 if(file.StartsWith(@"App_Themes\", StringComparison.OrdinalIgnoreCase) ||
                   file.StartsWith(@"App_GlobalResources\", StringComparison.OrdinalIgnoreCase) ||
                   file.StartsWith(@"App_LocalResources\", StringComparison.OrdinalIgnoreCase) ||

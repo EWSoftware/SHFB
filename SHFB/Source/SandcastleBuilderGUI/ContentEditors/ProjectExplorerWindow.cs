@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : ProjectExplorerWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/03/2013
-// Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
+// Updated : 01/02/2014
+// Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the form used to manage the project items and files.
@@ -37,6 +37,8 @@ using System.Xml.XPath;
 
 using Microsoft.Build.Evaluation;
 
+using Sandcastle.Core;
+
 using SandcastleBuilder.Utils;
 using SandcastleBuilder.Utils.ConceptualContent;
 using SandcastleBuilder.Utils.Design;
@@ -50,6 +52,23 @@ namespace SandcastleBuilder.Gui.ContentEditors
     /// </summary>
     public partial class ProjectExplorerWindow : BaseContentEditor
     {
+        #region Constants
+        //=====================================================================
+
+        /// <summary>
+        /// This folder is located under the <see cref="Environment.SpecialFolder">LocalApplicationData</see>
+        /// folder and contains user-defined item templates that can be added to a project.
+        /// </summary>
+        public const string ItemTemplates = Constants.ProgramDataFolder + "\\" + "Item Templates";
+
+        /// <summary>
+        /// This folder is located under the <see cref="Environment.SpecialFolder">LocalApplicationData</see>
+        /// folder and contains user-defined conceptual content topic templates that can be added to a project.
+        /// </summary>
+        public const string ConceptualTemplates = Constants.ProgramDataFolder + "\\" + "Conceptual Templates";
+
+        #endregion
+
         #region Private data members
         //=====================================================================
 
@@ -403,7 +422,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             string name;
 
             name = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                Constants.ItemTemplates);
+                ItemTemplates);
 
             if(Directory.Exists(name))
             {
@@ -422,7 +441,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             }
 
             name = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                Constants.ConceptualTemplates);
+                ConceptualTemplates);
 
             if(Directory.Exists(name))
             {

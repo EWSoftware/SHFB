@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<content xml:space="preserve">
+    <!-- NOTE: This file must appear LAST in the list of content files so that these items override the matching
+         items in the stock content files! -->
+
+    <item id="header"><span style="color: DarkGray">{@HeaderText} {@Preliminary}</span></item>
+
+    <!-- NOTE: The feedback area MUST appear first or it won't show up! -->
+    <item id="footer"><A NAME="feedback"></A><span id="fb" class="feedbackcss"> </span>
+{@FooterText}{@Comments} {@Copyright}</item>
+
+    <item id="fb_alias">{@FeedbackEMailAddress}</item>
+    <item id="fb_product">{@ScriptHelpTitle}</item>
+    <item id="fb_body">%0\dYour%20feedback%20is%20used%20to%20improve%20the%20documentation%20and%20the%20product.%20Your%20e-mail%20address%20will%20not%20be%20used%20for%20any%20other%20purpose%20and%20is%20disposed%20of%20after%20the%20issue%20you%20report%20is%20resolved.%20%20While%20working%20to%20resolve%20the%20issue%20that%20you%20report,%20you%20may%20be%20contacted%20via%20e-mail%20to%20get%20further%20details%20or%20clarification%20on%20the%20feedback%20you%20sent.%20After%20the%20issue%20you%20report%20has%20been%20addressed,%20you%20may%20receive%20an%20e-mail%20to%20let%20you%20know%20that%20your%20feedback%20has%20been%20addressed.%0\A%0\d</item>
+    <item id="fb_send">Send</item>
+    <item id="fb_feedBack">feedback</item>
+    <item id="fb_feedBackText"> on this topic.</item>
+    <item id="fb_headerFeedBack">Send Feedback</item>
+
+    <item id="feedback_alias">{@FeedbackEMailAddress}</item>
+    <item id="feedback_product">{@HtmlEncHelpTitle}</item>
+    <item id="feedback_body">%0\dYour%20feedback%20is%20used%20to%20improve%20the%20documentation%20and%20the%20product.%20Your%20e-mail%20address%20will%20not%20be%20used%20for%20any%20other%20purpose%20and%20is%20disposed%20of%20after%20the%20issue%20you%20report%20is%20resolved.%20%20While%20working%20to%20resolve%20the%20issue%20that%20you%20report,%20you%20may%20be%20contacted%20via%20e-mail%20to%20get%20further%20details%20or%20clarification%20on%20the%20feedback%20you%20sent.%20After%20the%20issue%20you%20report%20has%20been%20addressed,%20you%20may%20receive%20an%20e-mail%20to%20let%20you%20know%20that%20your%20feedback%20has%20been%20addressed.%0\A%0\d</item>
+    <item id="feedback_feedBackText"> on this topic.</item>
+    <item id="feedback_ratings">false</item>
+
+    <item id="feedback_script_block"><script type="text/javascript">
+    var feedb = new FeedBack('<include item="fb_alias"/>', '<include item="fb_product"/>',
+        '', '', '', fb, '<include item="feedback_body"/>');
+    feedb.HeadFeedBack(headfb, '<include item="fb_headerFeedBack"/>',
+    '<include item="feedback_ratings"/>');
+    feedb.StartRatingsFeedBack(fb);</script></item>
+
+    <!-- reference_content.xml overrides -->
+    <item id="rootTopicTitle">{@RootNamespaceTitle}</item>
+    <item id="rootTopicTitleLocalized">네임스페이스</item>
+    <item id="productTitle">{@HtmlEncHelpTitle}</item>
+    <item id="runningHeaderText">{@HtmlEncHelpTitle}</item>
+
+    <!-- shared_content.xml overrides -->
+    <item id="locale">{@Locale}</item>
+
+    <item id="preliminary"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[This is preliminary documentation and is subject to change.]</p></item>
+
+    <item id="comments"><p/>내용에 문의사항이 있는 경우 우측의 메일 주소로 연락 바랍니다.
+        <a id="HT_MailLink" href="mailto:{@UrlEncFeedbackEMailAddress}?Subject={@UrlEncHelpTitle}">{@HtmlEncFeedbackEMailAddress}</a>
+        <script type="text/javascript">
+        var HT_mailLink = document.getElementById("HT_MailLink");
+        var HT_mailLinkText = HT_mailLink.innerHTML;
+        HT_mailLink.href += ": " + document.title;
+        HT_mailLink.innerHTML = HT_mailLinkText;
+        </script></item>
+
+    <!-- To format the copyright HREF and/or copyright text into a message of your choosing, you can specify
+         @HtmlEncCopyrightHref and/or @HtmlEncCopyrightText in braces -->
+    <item id="copyright">{@HtmlEncCopyrightInfo}</item>
+</content>

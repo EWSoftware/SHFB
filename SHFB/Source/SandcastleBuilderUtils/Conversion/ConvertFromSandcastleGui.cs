@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : ConvertFromSandcastleGui.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/17/2012
-// Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
+// Updated : 01/04/2014
+// Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class used to convert project files created by Stephan Smetsers Sandcastle GUI to the
@@ -26,7 +26,7 @@ using System.Globalization;
 using System.IO;
 using System.Xml;
 
-using SandcastleBuilder.Utils.Design;
+using Sandcastle.Core;
 
 namespace SandcastleBuilder.Utils.Conversion
 {
@@ -138,7 +138,7 @@ namespace SandcastleBuilder.Utils.Conversion
 
                             case "outputtype":
                                 if(value.IndexOf("website", StringComparison.OrdinalIgnoreCase) != -1)
-                                    project.HelpFileFormat = HelpFileFormat.HtmlHelp1 | HelpFileFormat.Website;
+                                    project.HelpFileFormat = HelpFileFormats.HtmlHelp1 | HelpFileFormats.Website;
                                 break;
 
                             case "friendlyfilenames":

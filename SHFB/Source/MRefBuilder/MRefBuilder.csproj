@@ -85,11 +85,6 @@
     <Compile Include="ExtensionMethodAddIn.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Frameworks\AssemblyDetails.cs" />
-    <Compile Include="Frameworks\AssemblyLocation.cs" />
-    <Compile Include="Frameworks\FrameworkDictionary.cs" />
-    <Compile Include="Frameworks\FrameworkSettings.cs" />
-    <Compile Include="Frameworks\PlatformType.cs" />
     <Compile Include="MemberDictionary.cs" />
     <Compile Include="MRefBuilder.cs" />
     <Compile Include="MRefBuilderCore.cs" />

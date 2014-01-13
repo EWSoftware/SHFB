@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : TopicCollection.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/17/2013
-// Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
+// Updated : 01/02/2014
+// Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a collection class used to hold the conceptual content topics for a project.
@@ -34,7 +34,8 @@ using System.Xml;
 
 using Microsoft.Build.Evaluation;
 
-using SandcastleBuilder.Utils.BuildComponent;
+using Sandcastle.Core;
+
 using SandcastleBuilder.Utils.BuildEngine;
 
 namespace SandcastleBuilder.Utils.ConceptualContent
@@ -446,7 +447,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                     // No file, it's just a container node.  However, MS Help view does not
                     // support empty container nodes so we must generate a dummy file to
                     // serve as its content.
-                    if((builder.CurrentProject.HelpFileFormat & HelpFileFormat.MSHelpViewer) != 0)
+                    if((builder.CurrentProject.HelpFileFormat & HelpFileFormats.MSHelpViewer) != 0)
                     {
                         enc = Encoding.Default;
 
@@ -502,7 +503,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                     var rn = builder.ReferencedNamespaces;
 
                     foreach(string ns in t.TopicFile.GetReferencedNamespaces(Path.Combine(
-                      BuildComponentManager.HelpFileBuilderFolder, @"Data\Reflection")))
+                      ComponentUtilities.ToolsFolder, @"Data\Reflection")))
                         rn.Add(ns);
                 }
                 else

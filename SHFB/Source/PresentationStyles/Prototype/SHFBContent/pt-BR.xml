@@ -1,0 +1,33 @@
+ï»¿<?xml version="1.0" encoding="utf-8"?>
+<content xml:space="preserve">
+    <!-- NOTE: This file must appear LAST in the list of content files so that these items override the matching
+         items in the stock content files! -->
+
+    <item id="rootLink"><referenceLink target="{@ProjectNodeName}">{@RootNamespaceTitle}</referenceLink></item>
+    <item id="header"><span style="color: DarkGray">{@HeaderText} {@Preliminary}</span></item>
+    <item id="footer"><div id="footer">{@FooterText}{@Comments} {@Copyright}</div></item>
+
+    <!-- reference_content.xml overrides -->
+    <item id="rootTopicTitle">{@RootNamespaceTitle}</item>
+    <item id="rootTopicTitleLocalized">Espaços de Nome</item>
+    <item id="productTitle">{@HtmlEncHelpTitle}</item>
+    <item id="runningHeaderText">{@HtmlEncHelpTitle}</item>
+
+    <!-- shared_content.xml overrides -->
+    <item id="locale">{@Locale}</item>
+
+    <item id="preliminary"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Esta é uma documentação preliminar e está sujeita a alterações.]</p></item>
+
+    <item id="comments"><p/>Envie comentários sobre este tópico para
+        <a id="HT_MailLink" href="mailto:{@UrlEncFeedbackEMailAddress}?Subject={@UrlEncHelpTitle}">{@HtmlEncFeedbackEMailAddress}</a>
+        <script type="text/javascript">
+        var HT_mailLink = document.getElementById("HT_MailLink");
+        var HT_mailLinkText = HT_mailLink.innerHTML;
+        HT_mailLink.href += ": " + document.title;
+        HT_mailLink.innerHTML = HT_mailLinkText;
+        </script></item>
+
+    <!-- To format the copyright HREF and/or copyright text into a message of your choosing, you can specify
+         @HtmlEncCopyrightHref and/or @HtmlEncCopyrightText in braces -->
+    <item id="copyright">{@HtmlEncCopyrightInfo}</item>
+</content>

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : BuildPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 12/16/2013
-// Note    : Copyright 2011-2013, Eric Woodruff, All rights reserved
+// Updated : 01/04/2014
+// Note    : Copyright 2011-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This user control is used to edit the Build category properties.
@@ -28,13 +28,15 @@ using System.Windows.Forms;
 
 using Microsoft.Build.Evaluation;
 
+using Sandcastle.Core;
+using Sandcastle.Core.Frameworks;
+
+using SandcastleBuilder.Utils;
+
 #if !STANDALONEGUI
 using SandcastleBuilder.Package.Nodes;
 using SandcastleBuilder.Package.Properties;
 #endif
-
-using SandcastleBuilder.Utils;
-using SandcastleBuilder.Utils.Frameworks;
 
 namespace SandcastleBuilder.Package.PropertyPages
 {
@@ -48,12 +50,12 @@ namespace SandcastleBuilder.Package.PropertyPages
         //=====================================================================
 
         /// <summary>
-        /// This is used to create a checked listbox entry
+        /// This is used to create a checked list box entry
         /// </summary>
         private class HelpFileFormatItem
         {
             /// <summary>The help file format</summary>
-            public HelpFileFormat Format { get; set; }
+            public HelpFileFormats Format { get; set; }
 
             /// <summary>The description</summary>
             public string Description { get; set; }
@@ -87,10 +89,10 @@ namespace SandcastleBuilder.Package.PropertyPages
 
             cblHelpFileFormat.Items.AddRange(new []
             {
-                new HelpFileFormatItem { Format = HelpFileFormat.HtmlHelp1, Description = "HTML Help 1 (CHM)" },
-                new HelpFileFormatItem { Format = HelpFileFormat.MSHelp2, Description = "MS Help 2 (HxS)" },
-                new HelpFileFormatItem { Format = HelpFileFormat.MSHelpViewer, Description = "MS Help Viewer (MSHC)" },
-                new HelpFileFormatItem { Format = HelpFileFormat.Website, Description = "Website (HTML/ASP.NET)" }
+                new HelpFileFormatItem { Format = HelpFileFormats.HtmlHelp1, Description = "HTML Help 1 (CHM)" },
+                new HelpFileFormatItem { Format = HelpFileFormats.MSHelp2, Description = "MS Help 2 (HxS)" },
+                new HelpFileFormatItem { Format = HelpFileFormats.MSHelpViewer, Description = "MS Help Viewer (MSHC)" },
+                new HelpFileFormatItem { Format = HelpFileFormats.Website, Description = "Website (HTML/ASP.NET)" }
             });
 
             cboBuildAssemblerVerbosity.DisplayMember = "Value";
@@ -142,7 +144,7 @@ namespace SandcastleBuilder.Package.PropertyPages
         protected override bool BindControlValue(System.Windows.Forms.Control control)
         {
             ProjectProperty projProp;
-            HelpFileFormat format;
+            HelpFileFormats format;
             int idx;
 
             // Load the framework versions of first use so that we have a chance to set the Sandcastle tools
@@ -152,7 +154,7 @@ namespace SandcastleBuilder.Package.PropertyPages
                 try
                 {
                     cboFrameworkVersion.Items.AddRange(FrameworkDictionary.AllFrameworks.Keys.ToArray());
-                    cboFrameworkVersion.SelectedItem = FrameworkDictionary.DefaultFramework;
+                    cboFrameworkVersion.SelectedItem = FrameworkDictionary.DefaultFrameworkTitle;
                 }
                 catch(Exception ex)
                 {
@@ -163,7 +165,7 @@ namespace SandcastleBuilder.Package.PropertyPages
 #else
                     MessageBox.Show("Unable to determine framework versions:\r\n\r\n" + ex.Message +
                         "\r\n\r\nYou may need to set the Sandcastle Path project property first.",
-                        Constants.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        Sandcastle.Core.Constants.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
 #endif
                     return true;
                 }
@@ -183,8 +185,8 @@ namespace SandcastleBuilder.Package.PropertyPages
                 projProp = this.CurrentProject.MSBuildProject.GetProperty("HelpFileFormat");
 #endif
 
-                if(projProp == null || !Enum.TryParse<HelpFileFormat>(projProp.UnevaluatedValue, out format))
-                    format = HelpFileFormat.HtmlHelp1;
+                if(projProp == null || !Enum.TryParse<HelpFileFormats>(projProp.UnevaluatedValue, out format))
+                    format = HelpFileFormats.HtmlHelp1;
 
                 for(idx = 0; idx < cblHelpFileFormat.Items.Count; idx++)
                     cblHelpFileFormat.SetItemChecked(idx, false);

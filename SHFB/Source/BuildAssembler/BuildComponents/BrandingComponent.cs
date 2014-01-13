@@ -36,7 +36,7 @@ namespace Microsoft.Ddue.Tools
     /// </code>
     /// <code lang="xml" title="Example configuration - MS Help Viewer - custom catalog">
     ///    &lt;data self-branded="false"
-    ///       branding-content="branding"           The relative path of the branding package transforms
+    ///       branding-content="branding"           The full or relative path to the branding package transforms
     ///       help-output="MSHelpViewer"
     ///       vendor-name="VendorName"              The custom catalog vendor name
     ///       -- Optional elements - leave blank to use the default --
@@ -48,7 +48,7 @@ namespace Microsoft.Ddue.Tools
     /// </code>
     /// <code lang="xml" title="Example configuration - other targets">
     ///    &lt;data self-branded="true"
-    ///       branding-content="branding"           The relative path of the branding package transforms
+    ///       branding-content="branding"           The full or relative path to the branding package transforms
     ///       help-output="other" /&gt;
     /// </code>
     /// </example>
@@ -136,7 +136,8 @@ namespace Microsoft.Ddue.Tools
 
             if(v_configData != null)
             {
-                m_brandingContent = v_configData.GetAttribute(s_configBrandingContent, String.Empty);
+                m_brandingContent = Path.GetFullPath(Environment.ExpandEnvironmentVariables(
+                    v_configData.GetAttribute(s_configBrandingContent, String.Empty)));
 
                 if(!String.IsNullOrEmpty(v_configValue = v_configData.GetAttribute(s_configLocale, String.Empty)))
                 {
@@ -244,7 +245,7 @@ namespace Microsoft.Ddue.Tools
 #if DEBUG//_NOT
                     try
                     {
-                        String v_tempPath = Path.GetFullPath(Path.Combine(m_brandingContent, @"..\PreBranding"));
+                        String v_tempPath = Path.GetFullPath("PreBranding");
                         if(!Directory.Exists(v_tempPath))
                         {
                             Directory.CreateDirectory(v_tempPath);
@@ -255,7 +256,7 @@ namespace Microsoft.Ddue.Tools
                     catch { }
 #endif
 #if DEBUG_NOT
-                    String v_tempBrandingPath = Path.GetFullPath (Path.Combine (m_brandingContent, @"..\TempBranding"));
+                    String v_tempBrandingPath = Path.GetFullPath("TempBranding");
                     if (!Directory.Exists (v_tempBrandingPath))
                     {
                         Directory.CreateDirectory (v_tempBrandingPath);
@@ -294,7 +295,7 @@ namespace Microsoft.Ddue.Tools
 #if DEBUG//_NOT
                             try
                             {
-                                String v_tempPath = Path.GetFullPath(Path.Combine(m_brandingContent, @"..\PostBranding"));
+                                String v_tempPath = Path.GetFullPath("PostBranding");
                                 if(!Directory.Exists(v_tempPath))
                                 {
                                     Directory.CreateDirectory(v_tempPath);
@@ -447,15 +448,9 @@ namespace Microsoft.Ddue.Tools
         {
             try
             {
-                String v_brandingContentBase = null;
-
                 if(!String.IsNullOrEmpty(m_brandingContent))
                 {
-                    v_brandingContentBase = Path.GetFullPath(Environment.ExpandEnvironmentVariables(m_brandingContent));
-                }
-                if(!String.IsNullOrEmpty(v_brandingContentBase))
-                {
-                    if(Directory.Exists(v_brandingContentBase))
+                    if(Directory.Exists(m_brandingContent))
                     {
                         try
                         {
@@ -467,7 +462,7 @@ namespace Microsoft.Ddue.Tools
 
                             m_transformArguments = new XsltArgumentList();
                             m_transformArguments.XsltMessageEncountered += new XsltMessageEncounteredEventHandler(OnTransformMessageEncountered);
-                            LoadBrandingConfig(Path.Combine(v_brandingContentBase, "branding.xml"), ref v_brandingTransformName);
+                            LoadBrandingConfig(Path.Combine(m_brandingContent, "branding.xml"), ref v_brandingTransformName);
 
                             PutTransformParam("catalogProductFamily", m_catalogProductId);
                             PutTransformParam("catalogProductVersion", m_catalogVersion);
@@ -501,8 +496,8 @@ namespace Microsoft.Ddue.Tools
                                 PutTransformParam(s_codeRemoveClass, m_codeRemoveClass);
                             }
 
-                            WriteMessage(MessageLevel.Info, "Branding Transform \"{0}\" catalogProductFamily={1} catalogProductVersion={2} catalogLocale={3}", Path.Combine(v_brandingContentBase, v_brandingTransformName), m_catalogProductId, m_catalogVersion, m_locale);
-                            v_brandingTransform.Load(Path.Combine(v_brandingContentBase, v_brandingTransformName), XsltSettings.TrustedXslt, v_resolver);
+                            WriteMessage(MessageLevel.Info, "Branding Transform \"{0}\" catalogProductFamily={1} catalogProductVersion={2} catalogLocale={3}", Path.Combine(m_brandingContent, v_brandingTransformName), m_catalogProductId, m_catalogVersion, m_locale);
+                            v_brandingTransform.Load(Path.Combine(m_brandingContent, v_brandingTransformName), XsltSettings.TrustedXslt, v_resolver);
                             m_brandingTransform = v_brandingTransform;
                         }
                         catch(XsltException exp)

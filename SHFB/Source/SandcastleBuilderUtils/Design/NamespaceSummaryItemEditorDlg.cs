@@ -2,8 +2,8 @@
 // System  : EWSoftware Design Time Attributes and Editors
 // File    : NamespaceSummaryItemEditorDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/13/2013
-// Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
+// Updated : 01/02/2014
+// Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the form used to edit namespace summaries and to indicate which namespaces should appear
@@ -32,6 +32,8 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
 using System.Xml.XPath;
+
+using Sandcastle.Core;
 
 using SandcastleBuilder.Utils.BuildEngine;
 

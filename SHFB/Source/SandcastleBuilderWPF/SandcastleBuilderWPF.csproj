@@ -49,6 +49,7 @@
   <ItemGroup>
     <Reference Include="PresentationFramework.Luna" />
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -178,6 +179,10 @@
     <ProjectReference Include="..\SandcastleBuilderUtils\SandcastleBuilderUtils.csproj">
       <Project>{330DADF7-3AB1-49A0-B3C6-A69D2C4F06A6}</Project>
       <Name>SandcastleBuilderUtils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SandcastleCore\Sandcastle.Core.csproj">
+      <Project>{399E78F8-4954-409E-991A-37DA9D0579CC}</Project>
+      <Name>Sandcastle.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

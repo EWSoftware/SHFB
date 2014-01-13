@@ -1,28 +1,26 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder Utilities
 // File    : TocEntryCollection.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/06/2012
-// Note    : Copyright 2006-2012, Eric Woodruff, All rights reserved
+// Updated : 01/04/2014
+// Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains a collection class used to hold the table of contents
-// entries for additional content items.
+// This file contains a collection class used to hold the table of contents entries for additional content items
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.3.0.0  09/17/2006  EFW  Created the code
 // 1.5.0.2  07/03/2007  EFW  Added support for saving as a site map file
 // 1.8.0.0  08/11/2008  EFW  Modified to support the new project format
 // 1.9.0.0  06/15/2010  EFW  Added support for MS Help Viewer TOC format
 // 1.9.3.3  12/20/2011  EFW  Updated for use with the new content layout editor
-//=============================================================================
+//===============================================================================================================
 
 using System;
 using System.Collections.Generic;
@@ -33,11 +31,12 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 
+using Sandcastle.Core;
+
 namespace SandcastleBuilder.Utils.ConceptualContent
 {
     /// <summary>
-    /// This collection class is used to hold the table of contents entries for
-    /// additional content items.
+    /// This collection class is used to hold the table of contents entries for additional content items
     /// </summary>
     public class TocEntryCollection : BindingList<TocEntry>, ITableOfContents
     {
@@ -280,7 +279,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <returns>The entries in HTML 1.x help format</returns>
         public override string ToString()
         {
-            return this.ToString(HelpFileFormat.HtmlHelp1);
+            return this.ToString(HelpFileFormats.HtmlHelp1);
         }
 
         /// <summary>
@@ -289,7 +288,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// </summary>
         /// <param name="format">The help file format to use</param>
         /// <returns>The entries in the specified help format</returns>
-        public string ToString(HelpFileFormat format)
+        public string ToString(HelpFileFormats format)
         {
             StringBuilder sb = new StringBuilder(1024);
             this.ConvertToString(format, sb);
@@ -303,7 +302,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
         /// <param name="format">The help file format to use</param>
         /// <param name="sb">The string builder to which the information is
         /// appended.</param>
-        internal void ConvertToString(HelpFileFormat format, StringBuilder sb)
+        internal void ConvertToString(HelpFileFormats format, StringBuilder sb)
         {
             foreach(TocEntry te in this)
                 te.ConvertToString(format, sb);
@@ -331,7 +330,7 @@ namespace SandcastleBuilder.Utils.ConceptualContent
                     sw.WriteLine("<topic id=\"{0}\" file=\"{0}\" sortOrder=\"{1}\">",
                         rootContainerId, rootOrder);
 
-                sw.WriteLine(this.ToString(HelpFileFormat.MSHelpViewer));
+                sw.WriteLine(this.ToString(HelpFileFormats.MSHelpViewer));
 
                 if(!String.IsNullOrEmpty(rootContainerId))
                     sw.WriteLine("</topic>");

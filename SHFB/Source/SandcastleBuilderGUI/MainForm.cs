@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : MainForm.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/16/2013
-// Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
+// Updated : 01/09/2014
+// Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the main form for the application.
@@ -44,20 +44,23 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
 
 using Microsoft.Build.Exceptions;
 
-using SandcastleBuilder.Gui.ContentEditors;
-using SandcastleBuilder.Gui.Properties;
+using Sandcastle.Core;
+
 using SandcastleBuilder.MicrosoftHelpViewer;
 using SandcastleBuilder.Utils;
 using SandcastleBuilder.Utils.BuildEngine;
-using SandcastleBuilder.Utils.BuildComponent;
 using SandcastleBuilder.Utils.Conversion;
 using SandcastleBuilder.Utils.Controls;
 using SandcastleBuilder.Utils.Design;
+
+using SandcastleBuilder.Gui.ContentEditors;
+using SandcastleBuilder.Gui.Properties;
 
 using WeifenLuo.WinFormsUI.Docking;
 
@@ -86,6 +89,9 @@ namespace SandcastleBuilder.Gui
         private string excludedOutputFolder, excludedWorkingFolder;
 
         private static MainForm mainForm;
+
+        private static Regex reWarning = new Regex(@"(Warn|Warning( HXC\d+)?):|" +
+            @"SHFB\s*:\s*(W|w)arning\s.*?:|.*?(\(\d*,\d*\))?:\s*(W|w)arning\s.*?:");
         #endregion
 
         #region Properties
@@ -974,6 +980,13 @@ namespace SandcastleBuilder.Gui
 
                 if(Settings.Default.VerboseLogging || e.BuildStep == BuildStep.Failed)
                     outputWindow.AppendText(e.Message);
+                else
+                {
+                    // If not doing verbose logging, show warnings and let MSBuild filter them out if not
+                    // wanted.  Errors will kill the build so we don't have to deal with them here.
+                    if(reWarning.IsMatch(e.Message))
+                        outputWindow.AppendText(e.Message);
+                }
             }
         }
 
@@ -1437,11 +1450,11 @@ namespace SandcastleBuilder.Gui
         /// <param name="e">The event arguments</param>
         private void ctxViewHelpMenu_Opening(object sender, CancelEventArgs e)
         {
-            miViewHtmlHelp1.Enabled = ((project.HelpFileFormat & HelpFileFormat.HtmlHelp1) != 0);
-            miViewMSHelp2.Enabled = ((project.HelpFileFormat & HelpFileFormat.MSHelp2) != 0);
-            miViewMSHelpViewer.Enabled = ((project.HelpFileFormat & HelpFileFormat.MSHelpViewer) != 0);
+            miViewHtmlHelp1.Enabled = ((project.HelpFileFormat & HelpFileFormats.HtmlHelp1) != 0);
+            miViewMSHelp2.Enabled = ((project.HelpFileFormat & HelpFileFormats.MSHelp2) != 0);
+            miViewMSHelpViewer.Enabled = ((project.HelpFileFormat & HelpFileFormats.MSHelpViewer) != 0);
             miViewAspNetWebsite.Enabled = miViewHtmlWebsite.Enabled =
-                ((project.HelpFileFormat & HelpFileFormat.Website) != 0);
+                ((project.HelpFileFormat & HelpFileFormats.Website) != 0);
             miOpenHelpAfterBuild.Checked = Settings.Default.OpenHelpAfterBuild;
         }
 
@@ -1455,13 +1468,13 @@ namespace SandcastleBuilder.Gui
             if(project == null)
                 return;
 
-            if((project.HelpFileFormat & HelpFileFormat.HtmlHelp1) != 0)
+            if((project.HelpFileFormat & HelpFileFormats.HtmlHelp1) != 0)
                 miViewBuiltHelpFile_Click(miViewHtmlHelp1, e);
             else
-                if((project.HelpFileFormat & HelpFileFormat.MSHelp2) != 0)
+                if((project.HelpFileFormat & HelpFileFormats.MSHelp2) != 0)
                     miViewBuiltHelpFile_Click(miViewMSHelp2, e);
                 else
-                    if((project.HelpFileFormat & HelpFileFormat.MSHelpViewer) != 0)
+                    if((project.HelpFileFormat & HelpFileFormats.MSHelpViewer) != 0)
                         miViewMSHelpViewer_Click(sender, e);
                     else
                         miViewAspNetWebsite_Click(sender, e);
@@ -1665,10 +1678,19 @@ namespace SandcastleBuilder.Gui
         /// <param name="e">The event arguments</param>
         private void miLaunchHlm_Click(object sender, EventArgs e)
         {
+            Version version;
+
             try
             {
-                HelpLibraryManager hlm = new HelpLibraryManager(sender == miLaunchHlm ? new Version(1, 0) :
-                    new Version(2, 0));
+                if(sender == miLaunchHlm)
+                    version = new Version(1, 0);
+                else
+                    if(project.CatalogName == "VisualStudio11")
+                        version = new Version(2, 0);
+                    else
+                        version = new Version(2, 1);
+
+                HelpLibraryManager hlm = new HelpLibraryManager(version);
 
                 if(sender == miLaunchHlm)
                     hlm.LaunchInteractive(String.Format(CultureInfo.InvariantCulture,
@@ -1682,8 +1704,8 @@ namespace SandcastleBuilder.Gui
             {
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
 
-                MessageBox.Show(String.Format(CultureInfo.CurrentCulture,
-                    "Unable to launch help library content manager.  Reason:\r\n{0}",
+                MessageBox.Show(String.Format(CultureInfo.CurrentCulture, "Unable to launch help library " +
+                    "content manager.  Reason:\r\n{0}\r\n\r\nIs the catalog name correct in the project?",
                     ex.Message), Constants.AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }

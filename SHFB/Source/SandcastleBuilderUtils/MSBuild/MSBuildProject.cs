@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : MSBuildProject.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/08/2013
-// Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
+// Updated : 01/02/2014
+// Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains an MSBuild project wrapper used by the Sandcastle Help File builder during the build
@@ -33,13 +33,13 @@ using System.Text.RegularExpressions;
 using Microsoft.Build.Evaluation;
 using Microsoft.Build.Exceptions;
 
-using SandcastleBuilder.Utils.Frameworks;
+using Sandcastle.Core.Frameworks;
 
 namespace SandcastleBuilder.Utils.MSBuild
 {
     /// <summary>
-    /// This is a simple wrapper around an MSBuild project that is used to
-    /// extract information from it during a help file build.
+    /// This is a simple wrapper around an MSBuild project that is used to extract information from it during a
+    /// help file build.
     /// </summary>
     public class MSBuildProject : IDisposable
     {

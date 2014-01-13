@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : ComponentPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 12/27/2013
-// Note    : Copyright 2011-2013, Eric Woodruff, All rights reserved
+// Updated : 01/07/2014
+// Note    : Copyright 2011-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This user control is used to edit the Components category properties
@@ -29,6 +29,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
+using Sandcastle.Core;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 
 using Microsoft.Build.Evaluation;
@@ -36,10 +37,9 @@ using Microsoft.Build.Evaluation;
 #if !STANDALONEGUI
 using SandcastleBuilder.Package.Nodes;
 using SandcastleBuilder.Package.Properties;
-
-using SandcastleBuilder.Utils;
 #endif
 
+using SandcastleBuilder.Utils;
 using SandcastleBuilder.Utils.BuildComponent;
 
 namespace SandcastleBuilder.Package.PropertyPages
@@ -72,7 +72,7 @@ namespace SandcastleBuilder.Package.PropertyPages
 #if !STANDALONEGUI
             messageBoxTitle = Resources.PackageTitle;
 #else
-            messageBoxTitle = SandcastleBuilder.Utils.Constants.AppName;
+            messageBoxTitle = Constants.AppName;
 #endif
             this.Title = "Components";
             this.HelpKeyword = "d1ec47f6-b611-41cf-a78c-f68e01d6ae9e";
@@ -88,6 +88,7 @@ namespace SandcastleBuilder.Package.PropertyPages
         /// <returns>True on success, false on failure or if no project is loaded</returns>
         private void LoadAvailableBuildComponentMetadata()
         {
+            SandcastleProject currentProject = null;
             HashSet<string> componentIds = new HashSet<string>();
 
             try
@@ -102,14 +103,19 @@ namespace SandcastleBuilder.Package.PropertyPages
                 }
 
 #if !STANDALONEGUI
-                SandcastleProject currentProject = ((SandcastleBuilderProjectNode)base.ProjectMgr).SandcastleProject;
-
-                lastProjectName = currentProject == null ? null : currentProject.Filename;
-                componentContainer = BuildComponentManager.GetComponentContainer(currentProject);
+                if(base.ProjectMgr != null)
+                    currentProject = ((SandcastleBuilderProjectNode)base.ProjectMgr).SandcastleProject;
 #else
-                lastProjectName = base.CurrentProject == null ? null : base.CurrentProject.Filename;
-                componentContainer = BuildComponentManager.GetComponentContainer(base.CurrentProject);
+                currentProject = base.CurrentProject;
 #endif
+                lastProjectName = currentProject == null ? null : currentProject.Filename;
+
+                if(currentProject != null)
+                    componentContainer = ComponentUtilities.CreateComponentContainer(new[] {
+                        currentProject.ComponentPath, Path.GetDirectoryName(currentProject.Filename) });
+                else
+                    componentContainer = ComponentUtilities.CreateComponentContainer(new string[] { });
+
                 lbProjectComponents.Items.Clear();
 
                 availableComponents = componentContainer.GetExports<BuildComponentFactory, IBuildComponentMetadata>().ToList();

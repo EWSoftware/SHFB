@@ -98,11 +98,9 @@
     <Compile Include="BaseBuildItem.cs" />
     <Compile Include="BuildAssemblerVerbosity.cs" />
     <Compile Include="BuildComponent\BuildComponentConfiguration.cs" />
-    <Compile Include="BuildComponent\BuildComponentManager.cs" />
     <Compile Include="BuildComponent\HelpFileBuilderPlugInExportAttribute.cs" />
-    <Compile Include="BuildComponent\IPlugInMetaData.cs" />
+    <Compile Include="BuildComponent\IPlugInMetadata.cs" />
     <Compile Include="BuildEngine\FrameworkCommentsFileLocation.cs" />
-    <Compile Include="BuildEngine\MSHCPackage.cs" />
     <Compile Include="BuildEngine\PartialBuildType.cs" />
     <Compile Include="BuilderException.cs" />
     <Compile Include="BuildEngine\BuildProcess.HelpFileUtils.cs" />
@@ -173,11 +171,6 @@
     <Compile Include="FilePath.cs" />
     <Compile Include="FolderPath.cs" />
     <Compile Include="BuildEngine\FullTextIndex.cs" />
-    <Compile Include="Frameworks\AssemblyDetails.cs" />
-    <Compile Include="Frameworks\AssemblyLocation.cs" />
-    <Compile Include="Frameworks\FrameworkDictionary.cs" />
-    <Compile Include="Frameworks\FrameworkSettings.cs" />
-    <Compile Include="Frameworks\PlatformType.cs" />
     <Compile Include="Gac\GacApi.cs" />
     <Compile Include="Gac\GacEnumerator.cs" />
     <Compile Include="IBasePathProvider.cs" />
@@ -191,7 +184,6 @@
     <Compile Include="MSBuild\MSBuildProject.cs" />
     <Compile Include="MSHelpAttr.cs" />
     <Compile Include="MSHelpAttrCollection.cs" />
-    <Compile Include="HelpFileFormat.cs" />
     <Compile Include="ApiFilter.cs" />
     <Compile Include="ApiFilterCollection.cs" />
     <Compile Include="MSHelpKeyword.cs" />
@@ -202,11 +194,6 @@
     <Compile Include="BuildComponent\IPlugIn.cs" />
     <Compile Include="BuildComponent\PlugInConfiguration.cs" />
     <Compile Include="BuildComponent\PlugInConfigurationDictionary.cs" />
-    <Compile Include="PresentationStyle\ContentFiles.cs" />
-    <Compile Include="PresentationStyle\PresentationStyleDictionary.cs" />
-    <Compile Include="PresentationStyle\PresentationStyleSettings.cs" />
-    <Compile Include="PresentationStyle\TransformationFile.cs" />
-    <Compile Include="PresentationStyle\TransformComponentArgument.cs" />
     <Compile Include="ProjectElement.cs" />
     <Compile Include="ProjectPropertyChangedEventArgs.cs" />
     <Compile Include="ProjectReferenceItem.cs" />
@@ -375,7 +362,6 @@
     <Compile Include="ConceptualContent\ITableOfContents.cs" />
     <Compile Include="ConceptualContent\ResourceItem.cs" />
     <Compile Include="ConceptualContent\TopicFile.cs" />
-    <Compile Include="Constants.cs" />
     <Compile Include="Conversion\ConvertConceptualContent.cs" />
     <Compile Include="Conversion\ConvertFromDocProject.cs" />
     <Compile Include="Conversion\ConvertFromMSExampleGui.cs" />

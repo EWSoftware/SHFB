@@ -268,12 +268,10 @@ namespace SandcastleBuilder.Utils.Conversion
 
                             case "HelpFileFormat":
                                 // The enum value names changed in v1.8.0.3
-                                helpFileFormat = xr.ReadString().ToUpper(
-                                    CultureInfo.InvariantCulture);
+                                helpFileFormat = xr.ReadString().ToUpper(CultureInfo.InvariantCulture);
 
                                 foreach(string key in translateFormat.Keys)
-                                    helpFileFormat = helpFileFormat.Replace(key,
-                                        translateFormat[key]);
+                                    helpFileFormat = helpFileFormat.Replace(key, translateFormat[key]);
 
                                 base.SetProperty(propName, helpFileFormat);
                                 break;

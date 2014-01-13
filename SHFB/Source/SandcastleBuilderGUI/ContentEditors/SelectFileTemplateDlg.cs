@@ -1,24 +1,22 @@
-﻿//=============================================================================
+﻿//===============================================================================================================
 // System  : Sandcastle Help File Builder
 // File    : SelectFileTemplateDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/29/2011
-// Note    : Copyright 2011, Eric Woodruff, All rights reserved
+// Updated : 01/02/2014
+// Note    : Copyright 2011-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains the form used to select a template file to use as a new
-// topic.
+// This file contains the form used to select a template file to use as a new topic
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.9.3.3  12/24/2011  EFW  Created the code
-//=============================================================================
+//===============================================================================================================
 
 using System;
 using System.Globalization;
@@ -27,7 +25,7 @@ using System.Reflection;
 using System.Xml;
 using System.Windows.Forms;
 
-using SandcastleBuilder.Utils;
+using Sandcastle.Core;
 
 namespace SandcastleBuilder.Gui.ContentEditors
 {
@@ -117,7 +115,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             root = tvTemplates.Nodes.Add("Custom Templates");
 
             name = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                Constants.ConceptualTemplates);
+                ProjectExplorerWindow.ConceptualTemplates);
 
             if(Directory.Exists(name))
                 foreach(string file in Directory.EnumerateFiles(name, "*.aml"))
@@ -166,7 +164,7 @@ namespace SandcastleBuilder.Gui.ContentEditors
             root = tvTemplates.Nodes.Add("Custom Templates");
 
             name = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                Constants.ItemTemplates);
+                ProjectExplorerWindow.ItemTemplates);
 
             if(Directory.Exists(name))
                 foreach(string file in Directory.EnumerateFiles(name, "*.htm?"))

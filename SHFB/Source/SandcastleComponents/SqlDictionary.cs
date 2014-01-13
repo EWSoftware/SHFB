@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Components
 // File    : SqlDictionary.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/15/2013
-// Note    : Copyright 2013, Eric Woodruff, All rights reserved
+// Updated : 01/09/2014
+// Note    : Copyright 2013-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a dictionary backed by a SQL Server table.  An optional group ID can be used to segregate
@@ -165,7 +165,7 @@ namespace SandcastleBuilder.Components
         #region Private data members
         //=====================================================================
 
-        private string connectionString, tableName, groupIdFieldName, groupId, keyFieldName, valueFieldName;
+        private string tableName, groupIdFieldName, groupId, keyFieldName, valueFieldName;
 
         private Dictionary<string, TValue> localCache;
         private int localCacheSize, localCacheFlushCount;
@@ -266,7 +266,6 @@ namespace SandcastleBuilder.Components
             if(String.IsNullOrWhiteSpace(valueFieldName))
                 throw new ArgumentException("A valid value field name is required", valueFieldName);
 
-            this.connectionString = connectionString;
             this.tableName = tableName;
             this.keyFieldName = keyFieldName;
             this.valueFieldName = valueFieldName;

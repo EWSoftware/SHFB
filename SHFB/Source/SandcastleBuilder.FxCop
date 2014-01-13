@@ -19,11 +19,11 @@
   <SearchGlobalAssemblyCache>False</SearchGlobalAssemblyCache>
   <DeadlockDetectionTimeout>120</DeadlockDetectionTimeout>
   <IgnoreGeneratedCode>False</IgnoreGeneratedCode>
-  <TargetFrameworkVersion>0.0</TargetFrameworkVersion>
  </ProjectOptions>
  <Targets>
   <Target Name="$(ProjectDir)/../Deploy/GenerateInheritedDocs.exe" Analyze="True" AnalyzeAllChildren="True" />
   <Target Name="$(ProjectDir)/../Deploy/HelpLibraryManagerLauncher.exe" Analyze="True" AnalyzeAllChildren="True" />
+  <Target Name="$(ProjectDir)/../Deploy/SandcastleBuilder.Components.dll" Analyze="True" AnalyzeAllChildren="True" />
   <Target Name="$(ProjectDir)/../Deploy/SandcastleBuilder.PlugIns.dll" Analyze="True" AnalyzeAllChildren="True" />
   <Target Name="$(ProjectDir)/../Deploy/SandcastleBuilder.Utils.dll" Analyze="True" AnalyzeAllChildren="True" />
   <Target Name="$(ProjectDir)/../Deploy/SandcastleBuilder.WPF.dll" Analyze="True" AnalyzeAllChildren="True" />
@@ -58,6 +58,34 @@
  </Rules>
  <FxCopReport Version="10.0">
   <Namespaces>
+   <Namespace Name="SandcastleBuilder.Components.Commands">
+    <Messages>
+     <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Status="Excluded" Created="2014-01-09 18:45:57Z">
+      <Issue>
+       <Item>SandcastleBuilder.Components.Commands</Item>
+      </Issue>
+      <Notes>
+       <User Name="EWOODRUFF">
+        <Note Id="56" />
+       </User>
+      </Notes>
+     </Message>
+    </Messages>
+   </Namespace>
+   <Namespace Name="SandcastleBuilder.Components.Targets">
+    <Messages>
+     <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Status="Excluded" Created="2014-01-09 18:45:57Z">
+      <Issue>
+       <Item>SandcastleBuilder.Components.Targets</Item>
+      </Issue>
+      <Notes>
+       <User Name="EWOODRUFF">
+        <Note Id="56" />
+       </User>
+      </Notes>
+     </Message>
+    </Messages>
+   </Namespace>
    <Namespace Name="SandcastleBuilder.Utils.Controls">
     <Messages>
      <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Status="Excluded" Created="2006-08-10 20:24:55Z">
@@ -487,6 +515,513 @@
         </Types>
        </Namespace>
       </Namespaces>
+     </Module>
+    </Modules>
+   </Target>
+   <Target Name="$(ProjectDir)/../Deploy/SandcastleBuilder.Components.dll">
+    <Modules>
+     <Module Name="sandcastlebuilder.components.dll">
+      <Namespaces>
+       <Namespace Name="SandcastleBuilder.Components">
+        <Types>
+         <Type Name="CodeBlockComponent+Factory">
+          <Messages>
+           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2014-01-09 18:45:57Z">
+            <Issue>
+             <Item>'CodeBlockComponent.Factory'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="48" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="ESentCopyFromIndexComponent+ESentCommentsIndexDataComponentFactory">
+          <Messages>
+           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2014-01-09 18:45:57Z">
+            <Issue>
+             <Item>'ESentCopyFromIndexComponent.ESentCommentsIndexDataComponentFactory'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="48" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="ESentCopyFromIndexComponent+ESentReflectionIndexDataComponentFactory">
+          <Messages>
+           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2014-01-09 18:45:57Z">
+            <Issue>
+             <Item>'ESentCopyFromIndexComponent.ESentReflectionIndexDataComponentFactory'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="48" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="ESentResolveReferenceLinksComponent">
+          <Members>
+           <Member Name="#CreateTargetDictionary(System.Xml.XPath.XPathNavigator)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2014-01-09 18:45:57Z">
+              <Issue>
+               <Item>'ESentResolveReferenceLinksComponent.CreateTargetDictionary(XPathNavigator)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="54" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="ESentResolveReferenceLinksComponent+ESentResolveReferenceLinksComponentFactory">
+          <Messages>
+           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2014-01-09 18:45:57Z">
+            <Issue>
+             <Item>'ESentResolveReferenceLinksComponent.ESentResolveReferenceLinksComponentFactory'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="48" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="MultiFormatOutputComponent">
+          <Messages>
+           <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2014-01-09 18:45:57Z">
+            <Issue Name="Type">
+             <Item>Multi</Item>
+             <Item>'MultiFormatOutputComponent'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="50" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="MultiFormatOutputComponent+Factory">
+          <Messages>
+           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2014-01-09 18:45:57Z">
+            <Issue>
+             <Item>'MultiFormatOutputComponent.Factory'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="48" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="SqlCopyFromIndexComponent+SqlCommentsIndexDataComponentFactory">
+          <Messages>
+           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2014-01-09 18:45:57Z">
+            <Issue>
+             <Item>'SqlCopyFromIndexComponent.SqlCommentsIndexDataComponentFactory'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="48" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="SqlCopyFromIndexComponent+SqlReflectionIndexDataComponentFactory">
+          <Messages>
+           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2014-01-09 18:45:57Z">
+            <Issue>
+             <Item>'SqlCopyFromIndexComponent.SqlReflectionIndexDataComponentFactory'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="48" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="SqlDictionary`1">
+          <Members>
+           <Member Name="#Keys">
+            <Accessors>
+             <Accessor Name="#get_Keys()">
+              <Messages>
+               <Message TypeName="DoNotRaiseExceptionsInUnexpectedLocations" Category="Microsoft.Design" CheckId="CA1065" Status="Excluded" Created="2014-01-09 18:45:57Z" FixCategory="Breaking">
+                <Issue Name="PropertyGetter" Level="Warning">
+                 <Item>'SqlDictionary&lt;TValue&gt;.Keys.get()'</Item>
+                 <Item>'NotImplementedException'</Item>
+                </Issue>
+                <Notes>
+                 <User Name="EWOODRUFF">
+                  <Note Id="53" />
+                 </User>
+                </Notes>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+           <Member Name="#Values">
+            <Accessors>
+             <Accessor Name="#get_Values()">
+              <Messages>
+               <Message TypeName="DoNotRaiseExceptionsInUnexpectedLocations" Category="Microsoft.Design" CheckId="CA1065" Status="Excluded" Created="2014-01-09 18:45:57Z" FixCategory="Breaking">
+                <Issue Name="PropertyGetter" Level="Warning">
+                 <Item>'SqlDictionary&lt;TValue&gt;.Values.get()'</Item>
+                 <Item>'NotImplementedException'</Item>
+                </Issue>
+                <Notes>
+                 <User Name="EWOODRUFF">
+                  <Note Id="53" />
+                 </User>
+                </Notes>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="SqlResolveReferenceLinksComponent">
+          <Members>
+           <Member Name="#CreateTargetDictionary(System.Xml.XPath.XPathNavigator)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2014-01-09 18:45:57Z">
+              <Issue>
+               <Item>'SqlResolveReferenceLinksComponent.CreateTargetDictionary(XPathNavigator)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="54" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="SqlResolveReferenceLinksComponent+SqlResolveReferenceLinksComponentFactory">
+          <Messages>
+           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2014-01-09 18:45:57Z">
+            <Issue>
+             <Item>'SqlResolveReferenceLinksComponent.SqlResolveReferenceLinksComponentFactory'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="48" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+        </Types>
+       </Namespace>
+       <Namespace Name="SandcastleBuilder.Components.UI">
+        <Types>
+         <Type Name="CodeBlockConfigDlg">
+          <Members>
+           <Member Name="#lnkCodePlexSHFB_LinkClicked(System.Object,System.Windows.Forms.LinkLabelLinkClickedEventArgs)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2014-01-09 18:45:57Z">
+              <Issue>
+               <Item>'CodeBlockConfigDlg.lnkCodePlexSHFB_LinkClicked(object, LinkLabelLinkClickedEventArgs)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="54" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="ESentCommentsIndexConfigDlg">
+          <Members>
+           <Member Name="#lnkCodePlexSHFB_LinkClicked(System.Object,System.Windows.Forms.LinkLabelLinkClickedEventArgs)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2014-01-09 18:45:57Z">
+              <Issue>
+               <Item>'ESentCommentsIndexConfigDlg.lnkCodePlexSHFB_LinkClicked(object, LinkLabelLinkClickedEventArgs)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="54" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="ESentReflectionIndexConfigDlg">
+          <Members>
+           <Member Name="#lnkCodePlexSHFB_LinkClicked(System.Object,System.Windows.Forms.LinkLabelLinkClickedEventArgs)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2014-01-09 18:45:57Z">
+              <Issue>
+               <Item>'ESentReflectionIndexConfigDlg.lnkCodePlexSHFB_LinkClicked(object, LinkLabelLinkClickedEventArgs)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="54" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="ESentResolveReferenceLinksConfigDlg">
+          <Members>
+           <Member Name="#lnkCodePlexSHFB_LinkClicked(System.Object,System.Windows.Forms.LinkLabelLinkClickedEventArgs)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2014-01-09 18:45:57Z">
+              <Issue>
+               <Item>'ESentResolveReferenceLinksConfigDlg.lnkCodePlexSHFB_LinkClicked(object, LinkLabelLinkClickedEventArgs)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="54" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="SqlCopyFromIndexConfigDlg">
+          <Members>
+           <Member Name="#lnkCodePlexSHFB_LinkClicked(System.Object,System.Windows.Forms.LinkLabelLinkClickedEventArgs)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2014-01-09 18:45:57Z">
+              <Issue>
+               <Item>'SqlCopyFromIndexConfigDlg.lnkCodePlexSHFB_LinkClicked(object, LinkLabelLinkClickedEventArgs)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="54" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="SqlResolveReferenceLinksConfigDlg">
+          <Members>
+           <Member Name="#lnkCodePlexSHFB_LinkClicked(System.Object,System.Windows.Forms.LinkLabelLinkClickedEventArgs)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2014-01-09 18:45:57Z">
+              <Issue>
+               <Item>'SqlResolveReferenceLinksConfigDlg.lnkCodePlexSHFB_LinkClicked(object, LinkLabelLinkClickedEventArgs)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="54" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+      </Namespaces>
+      <Resources>
+       <Resource Name="SandcastleBuilder.Components.Properties.Resources.resources">
+        <Messages>
+         <Message Id="N'Sandcastle" TypeName="ResourceStringsShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1703" Status="Excluded" Created="2014-01-09 18:45:57Z">
+          <Issue Name="StringResource">
+           <Item>'SandcastleBuilder.Components.Properties.Resources.resx'</Item>
+           <Item>CreateSandcastleDB</Item>
+           <Item>N'Sandcastle</Item>
+           <Item>-- NOTE: Change the file locations if necessary&#xD;&#xA;CREATE DATABASE [Sandcastle]&#xD;&#xA; ON  PRIMARY&#xD;&#xA;( NAME = N'Sandcastle', FILENAME = N'C:\Databases\Sandcastle.mdf' )&#xD;&#xA; LOG ON&#xD;&#xA;( NAME = N'Sandcastle_log', FILENAME = N'C:\Databases\Sandcastle_log.ldf' )&#xD;&#xA;GO&#xD;&#xA;&#xD;&#xA;USE [Sandcastle]&#xD;&#xA;GO&#xD;&#xA;&#xD;&#xA;-- MSDN content IDs ta...</Item>
+          </Issue>
+          <Notes>
+           <User Name="EWOODRUFF">
+            <Note Id="47" />
+           </User>
+          </Notes>
+         </Message>
+         <Message Id="N'Sandcastlelog" TypeName="ResourceStringsShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1703" Status="Excluded" Created="2014-01-09 18:45:57Z">
+          <Issue Name="StringResource">
+           <Item>'SandcastleBuilder.Components.Properties.Resources.resx'</Item>
+           <Item>CreateSandcastleDB</Item>
+           <Item>N'Sandcastlelog</Item>
+           <Item>-- NOTE: Change the file locations if necessary&#xD;&#xA;CREATE DATABASE [Sandcastle]&#xD;&#xA; ON  PRIMARY&#xD;&#xA;( NAME = N'Sandcastle', FILENAME = N'C:\Databases\Sandcastle.mdf' )&#xD;&#xA; LOG ON&#xD;&#xA;( NAME = N'Sandcastle_log', FILENAME = N'C:\Databases\Sandcastle_log.ldf' )&#xD;&#xA;GO&#xD;&#xA;&#xD;&#xA;USE [Sandcastle]&#xD;&#xA;GO&#xD;&#xA;&#xD;&#xA;-- MSDN content IDs ta...</Item>
+          </Issue>
+          <Notes>
+           <User Name="EWOODRUFF">
+            <Note Id="47" />
+           </User>
+          </Notes>
+         </Message>
+         <Message Id="Sandcastlelog" TypeName="ResourceStringsShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1703" Status="Excluded" Created="2014-01-09 18:45:57Z">
+          <Issue Name="StringResource">
+           <Item>'SandcastleBuilder.Components.Properties.Resources.resx'</Item>
+           <Item>CreateSandcastleDB</Item>
+           <Item>Sandcastlelog</Item>
+           <Item>-- NOTE: Change the file locations if necessary&#xD;&#xA;CREATE DATABASE [Sandcastle]&#xD;&#xA; ON  PRIMARY&#xD;&#xA;( NAME = N'Sandcastle', FILENAME = N'C:\Databases\Sandcastle.mdf' )&#xD;&#xA; LOG ON&#xD;&#xA;( NAME = N'Sandcastle_log', FILENAME = N'C:\Databases\Sandcastle_log.ldf' )&#xD;&#xA;GO&#xD;&#xA;&#xD;&#xA;USE [Sandcastle]&#xD;&#xA;GO&#xD;&#xA;&#xD;&#xA;-- MSDN content IDs ta...</Item>
+          </Issue>
+          <Notes>
+           <User Name="EWOODRUFF">
+            <Note Id="47" />
+           </User>
+          </Notes>
+         </Message>
+         <Message Id="dbo" TypeName="ResourceStringsShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1703" Status="Excluded" Created="2014-01-09 18:45:57Z">
+          <Issue Name="StringResource">
+           <Item>'SandcastleBuilder.Components.Properties.Resources.resx'</Item>
+           <Item>CreateSandcastleDB</Item>
+           <Item>dbo</Item>
+           <Item>-- NOTE: Change the file locations if necessary&#xD;&#xA;CREATE DATABASE [Sandcastle]&#xD;&#xA; ON  PRIMARY&#xD;&#xA;( NAME = N'Sandcastle', FILENAME = N'C:\Databases\Sandcastle.mdf' )&#xD;&#xA; LOG ON&#xD;&#xA;( NAME = N'Sandcastle_log', FILENAME = N'C:\Databases\Sandcastle_log.ldf' )&#xD;&#xA;GO&#xD;&#xA;&#xD;&#xA;USE [Sandcastle]&#xD;&#xA;GO&#xD;&#xA;&#xD;&#xA;-- MSDN content IDs ta...</Item>
+          </Issue>
+          <Issue Name="StringResource">
+           <Item>'SandcastleBuilder.Components.Properties.Resources.resx'</Item>
+           <Item>CreateSandcastleDB</Item>
+           <Item>dbo</Item>
+           <Item>-- NOTE: Change the file locations if necessary&#xD;&#xA;CREATE DATABASE [Sandcastle]&#xD;&#xA; ON  PRIMARY&#xD;&#xA;( NAME = N'Sandcastle', FILENAME = N'C:\Databases\Sandcastle.mdf' )&#xD;&#xA; LOG ON&#xD;&#xA;( NAME = N'Sandcastle_log', FILENAME = N'C:\Databases\Sandcastle_log.ldf' )&#xD;&#xA;GO&#xD;&#xA;&#xD;&#xA;USE [Sandcastle]&#xD;&#xA;GO&#xD;&#xA;&#xD;&#xA;-- MSDN content IDs ta...</Item>
+          </Issue>
+          <Issue Name="StringResource">
+           <Item>'SandcastleBuilder.Components.Properties.Resources.resx'</Item>
+           <Item>CreateSandcastleDB</Item>
+           <Item>dbo</Item>
+           <Item>-- NOTE: Change the file locations if necessary&#xD;&#xA;CREATE DATABASE [Sandcastle]&#xD;&#xA; ON  PRIMARY&#xD;&#xA;( NAME = N'Sandcastle', FILENAME = N'C:\Databases\Sandcastle.mdf' )&#xD;&#xA; LOG ON&#xD;&#xA;( NAME = N'Sandcastle_log', FILENAME = N'C:\Databases\Sandcastle_log.ldf' )&#xD;&#xA;GO&#xD;&#xA;&#xD;&#xA;USE [Sandcastle]&#xD;&#xA;GO&#xD;&#xA;&#xD;&#xA;-- MSDN content IDs ta...</Item>
+          </Issue>
+          <Issue Name="StringResource">
+           <Item>'SandcastleBuilder.Components.Properties.Resources.resx'</Item>
+           <Item>CreateSandcastleDB</Item>
+           <Item>dbo</Item>
+           <Item>-- NOTE: Change the file locations if necessary&#xD;&#xA;CREATE DATABASE [Sandcastle]&#xD;&#xA; ON  PRIMARY&#xD;&#xA;( NAME = N'Sandcastle', FILENAME = N'C:\Databases\Sandcastle.mdf' )&#xD;&#xA; LOG ON&#xD;&#xA;( NAME = N'Sandcastle_log', FILENAME = N'C:\Databases\Sandcastle_log.ldf' )&#xD;&#xA;GO&#xD;&#xA;&#xD;&#xA;USE [Sandcastle]&#xD;&#xA;GO&#xD;&#xA;&#xD;&#xA;-- MSDN content IDs ta...</Item>
+          </Issue>
+          <Issue Name="StringResource">
+           <Item>'SandcastleBuilder.Components.Properties.Resources.resx'</Item>
+           <Item>CreateSandcastleDB</Item>
+           <Item>dbo</Item>
+           <Item>-- NOTE: Change the file locations if necessary&#xD;&#xA;CREATE DATABASE [Sandcastle]&#xD;&#xA; ON  PRIMARY&#xD;&#xA;( NAME = N'Sandcastle', FILENAME = N'C:\Databases\Sandcastle.mdf' )&#xD;&#xA; LOG ON&#xD;&#xA;( NAME = N'Sandcastle_log', FILENAME = N'C:\Databases\Sandcastle_log.ldf' )&#xD;&#xA;GO&#xD;&#xA;&#xD;&#xA;USE [Sandcastle]&#xD;&#xA;GO&#xD;&#xA;&#xD;&#xA;-- MSDN content IDs ta...</Item>
+          </Issue>
+          <Notes>
+           <User Name="EWOODRUFF">
+            <Note Id="47" />
+           </User>
+          </Notes>
+         </Message>
+         <Message Id="ldf" TypeName="ResourceStringsShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1703" Status="Excluded" Created="2014-01-09 18:45:57Z">
+          <Issue Name="StringResource">
+           <Item>'SandcastleBuilder.Components.Properties.Resources.resx'</Item>
+           <Item>CreateSandcastleDB</Item>
+           <Item>ldf</Item>
+           <Item>-- NOTE: Change the file locations if necessary&#xD;&#xA;CREATE DATABASE [Sandcastle]&#xD;&#xA; ON  PRIMARY&#xD;&#xA;( NAME = N'Sandcastle', FILENAME = N'C:\Databases\Sandcastle.mdf' )&#xD;&#xA; LOG ON&#xD;&#xA;( NAME = N'Sandcastle_log', FILENAME = N'C:\Databases\Sandcastle_log.ldf' )&#xD;&#xA;GO&#xD;&#xA;&#xD;&#xA;USE [Sandcastle]&#xD;&#xA;GO&#xD;&#xA;&#xD;&#xA;-- MSDN content IDs ta...</Item>
+          </Issue>
+          <Notes>
+           <User Name="EWOODRUFF">
+            <Note Id="47" />
+           </User>
+          </Notes>
+         </Message>
+         <Message Id="mdf" TypeName="ResourceStringsShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1703" Status="Excluded" Created="2014-01-09 18:45:57Z">
+          <Issue Name="StringResource">
+           <Item>'SandcastleBuilder.Components.Properties.Resources.resx'</Item>
+           <Item>CreateSandcastleDB</Item>
+           <Item>mdf</Item>
+           <Item>-- NOTE: Change the file locations if necessary&#xD;&#xA;CREATE DATABASE [Sandcastle]&#xD;&#xA; ON  PRIMARY&#xD;&#xA;( NAME = N'Sandcastle', FILENAME = N'C:\Databases\Sandcastle.mdf' )&#xD;&#xA; LOG ON&#xD;&#xA;( NAME = N'Sandcastle_log', FILENAME = N'C:\Databases\Sandcastle_log.ldf' )&#xD;&#xA;GO&#xD;&#xA;&#xD;&#xA;USE [Sandcastle]&#xD;&#xA;GO&#xD;&#xA;&#xD;&#xA;-- MSDN content IDs ta...</Item>
+          </Issue>
+          <Notes>
+           <User Name="EWOODRUFF">
+            <Note Id="47" />
+           </User>
+          </Notes>
+         </Message>
+         <Message Id="varbinary" TypeName="ResourceStringsShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1703" Status="Excluded" Created="2014-01-09 18:45:57Z">
+          <Issue Name="StringResource">
+           <Item>'SandcastleBuilder.Components.Properties.Resources.resx'</Item>
+           <Item>CreateSandcastleDB</Item>
+           <Item>varbinary</Item>
+           <Item>-- NOTE: Change the file locations if necessary&#xD;&#xA;CREATE DATABASE [Sandcastle]&#xD;&#xA; ON  PRIMARY&#xD;&#xA;( NAME = N'Sandcastle', FILENAME = N'C:\Databases\Sandcastle.mdf' )&#xD;&#xA; LOG ON&#xD;&#xA;( NAME = N'Sandcastle_log', FILENAME = N'C:\Databases\Sandcastle_log.ldf' )&#xD;&#xA;GO&#xD;&#xA;&#xD;&#xA;USE [Sandcastle]&#xD;&#xA;GO&#xD;&#xA;&#xD;&#xA;-- MSDN content IDs ta...</Item>
+          </Issue>
+          <Notes>
+           <User Name="EWOODRUFF">
+            <Note Id="47" />
+           </User>
+          </Notes>
+         </Message>
+         <Message Id="varchar" TypeName="ResourceStringsShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1703" Status="Excluded" Created="2014-01-09 18:45:57Z">
+          <Issue Name="StringResource">
+           <Item>'SandcastleBuilder.Components.Properties.Resources.resx'</Item>
+           <Item>CreateSandcastleDB</Item>
+           <Item>varchar</Item>
+           <Item>-- NOTE: Change the file locations if necessary&#xD;&#xA;CREATE DATABASE [Sandcastle]&#xD;&#xA; ON  PRIMARY&#xD;&#xA;( NAME = N'Sandcastle', FILENAME = N'C:\Databases\Sandcastle.mdf' )&#xD;&#xA; LOG ON&#xD;&#xA;( NAME = N'Sandcastle_log', FILENAME = N'C:\Databases\Sandcastle_log.ldf' )&#xD;&#xA;GO&#xD;&#xA;&#xD;&#xA;USE [Sandcastle]&#xD;&#xA;GO&#xD;&#xA;&#xD;&#xA;-- MSDN content IDs ta...</Item>
+          </Issue>
+          <Issue Name="StringResource">
+           <Item>'SandcastleBuilder.Components.Properties.Resources.resx'</Item>
+           <Item>CreateSandcastleDB</Item>
+           <Item>varchar</Item>
+           <Item>-- NOTE: Change the file locations if necessary&#xD;&#xA;CREATE DATABASE [Sandcastle]&#xD;&#xA; ON  PRIMARY&#xD;&#xA;( NAME = N'Sandcastle', FILENAME = N'C:\Databases\Sandcastle.mdf' )&#xD;&#xA; LOG ON&#xD;&#xA;( NAME = N'Sandcastle_log', FILENAME = N'C:\Databases\Sandcastle_log.ldf' )&#xD;&#xA;GO&#xD;&#xA;&#xD;&#xA;USE [Sandcastle]&#xD;&#xA;GO&#xD;&#xA;&#xD;&#xA;-- MSDN content IDs ta...</Item>
+          </Issue>
+          <Issue Name="StringResource">
+           <Item>'SandcastleBuilder.Components.Properties.Resources.resx'</Item>
+           <Item>CreateSandcastleDB</Item>
+           <Item>varchar</Item>
+           <Item>-- NOTE: Change the file locations if necessary&#xD;&#xA;CREATE DATABASE [Sandcastle]&#xD;&#xA; ON  PRIMARY&#xD;&#xA;( NAME = N'Sandcastle', FILENAME = N'C:\Databases\Sandcastle.mdf' )&#xD;&#xA; LOG ON&#xD;&#xA;( NAME = N'Sandcastle_log', FILENAME = N'C:\Databases\Sandcastle_log.ldf' )&#xD;&#xA;GO&#xD;&#xA;&#xD;&#xA;USE [Sandcastle]&#xD;&#xA;GO&#xD;&#xA;&#xD;&#xA;-- MSDN content IDs ta...</Item>
+          </Issue>
+          <Issue Name="StringResource">
+           <Item>'SandcastleBuilder.Components.Properties.Resources.resx'</Item>
+           <Item>CreateSandcastleDB</Item>
+           <Item>varchar</Item>
+           <Item>-- NOTE: Change the file locations if necessary&#xD;&#xA;CREATE DATABASE [Sandcastle]&#xD;&#xA; ON  PRIMARY&#xD;&#xA;( NAME = N'Sandcastle', FILENAME = N'C:\Databases\Sandcastle.mdf' )&#xD;&#xA; LOG ON&#xD;&#xA;( NAME = N'Sandcastle_log', FILENAME = N'C:\Databases\Sandcastle_log.ldf' )&#xD;&#xA;GO&#xD;&#xA;&#xD;&#xA;USE [Sandcastle]&#xD;&#xA;GO&#xD;&#xA;&#xD;&#xA;-- MSDN content IDs ta...</Item>
+          </Issue>
+          <Issue Name="StringResource">
+           <Item>'SandcastleBuilder.Components.Properties.Resources.resx'</Item>
+           <Item>CreateSandcastleDB</Item>
+           <Item>varchar</Item>
+           <Item>-- NOTE: Change the file locations if necessary&#xD;&#xA;CREATE DATABASE [Sandcastle]&#xD;&#xA; ON  PRIMARY&#xD;&#xA;( NAME = N'Sandcastle', FILENAME = N'C:\Databases\Sandcastle.mdf' )&#xD;&#xA; LOG ON&#xD;&#xA;( NAME = N'Sandcastle_log', FILENAME = N'C:\Databases\Sandcastle_log.ldf' )&#xD;&#xA;GO&#xD;&#xA;&#xD;&#xA;USE [Sandcastle]&#xD;&#xA;GO&#xD;&#xA;&#xD;&#xA;-- MSDN content IDs ta...</Item>
+          </Issue>
+          <Issue Name="StringResource">
+           <Item>'SandcastleBuilder.Components.Properties.Resources.resx'</Item>
+           <Item>CreateSandcastleDB</Item>
+           <Item>varchar</Item>
+           <Item>-- NOTE: Change the file locations if necessary&#xD;&#xA;CREATE DATABASE [Sandcastle]&#xD;&#xA; ON  PRIMARY&#xD;&#xA;( NAME = N'Sandcastle', FILENAME = N'C:\Databases\Sandcastle.mdf' )&#xD;&#xA; LOG ON&#xD;&#xA;( NAME = N'Sandcastle_log', FILENAME = N'C:\Databases\Sandcastle_log.ldf' )&#xD;&#xA;GO&#xD;&#xA;&#xD;&#xA;USE [Sandcastle]&#xD;&#xA;GO&#xD;&#xA;&#xD;&#xA;-- MSDN content IDs ta...</Item>
+          </Issue>
+          <Issue Name="StringResource">
+           <Item>'SandcastleBuilder.Components.Properties.Resources.resx'</Item>
+           <Item>CreateSandcastleDB</Item>
+           <Item>varchar</Item>
+           <Item>-- NOTE: Change the file locations if necessary&#xD;&#xA;CREATE DATABASE [Sandcastle]&#xD;&#xA; ON  PRIMARY&#xD;&#xA;( NAME = N'Sandcastle', FILENAME = N'C:\Databases\Sandcastle.mdf' )&#xD;&#xA; LOG ON&#xD;&#xA;( NAME = N'Sandcastle_log', FILENAME = N'C:\Databases\Sandcastle_log.ldf' )&#xD;&#xA;GO&#xD;&#xA;&#xD;&#xA;USE [Sandcastle]&#xD;&#xA;GO&#xD;&#xA;&#xD;&#xA;-- MSDN content IDs ta...</Item>
+          </Issue>
+          <Notes>
+           <User Name="EWOODRUFF">
+            <Note Id="47" />
+           </User>
+          </Notes>
+         </Message>
+        </Messages>
+       </Resource>
+      </Resources>
      </Module>
     </Modules>
    </Target>
@@ -1613,20 +2148,6 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="HelpFileFormat">
-          <Messages>
-           <Message TypeName="FlagsEnumsShouldHavePluralNames" Category="Microsoft.Naming" CheckId="CA1714" Status="Excluded" Created="2006-09-21 15:45:41Z">
-            <Issue>
-             <Item>'HelpFileFormat'</Item>
-            </Issue>
-            <Notes>
-             <User Name="EWOODRUFF">
-              <Note Id="23" />
-             </User>
-            </Notes>
-           </Message>
-          </Messages>
-         </Type>
          <Type Name="MissingTags">
           <Members>
            <Member Name="#AutoDocumentCtors">
@@ -2210,33 +2731,6 @@
        </Namespace>
        <Namespace Name="SandcastleBuilder.Utils.BuildComponent">
         <Types>
-         <Type Name="BuildComponentManager">
-          <Members>
-           <Member Name="#SyntaxFiltersFrom(System.Collections.Generic.IEnumerable`1&lt;Sandcastle.Core.BuildAssembler.SyntaxGenerator.ISyntaxGeneratorMetadata&gt;,System.String)">
-            <Messages>
-             <Message TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308" Status="Excluded" Created="2013-12-28 20:32:19Z">
-              <Issue Name="ToUpperInvariant">
-               <Item>'BuildComponentManager.SyntaxFiltersFrom(IEnumerable&lt;ISyntaxGeneratorMetadata&gt;, string)'</Item>
-               <Item>'string.ToLowerInvariant()'</Item>
-              </Issue>
-              <Issue Name="ToUpperInvariant">
-               <Item>'BuildComponentManager.SyntaxFiltersFrom(IEnumerable&lt;ISyntaxGeneratorMetadata&gt;, string)'</Item>
-               <Item>'string.ToLowerInvariant()'</Item>
-              </Issue>
-              <Issue Name="ToUpperInvariant">
-               <Item>'BuildComponentManager.SyntaxFiltersFrom(IEnumerable&lt;ISyntaxGeneratorMetadata&gt;, string)'</Item>
-               <Item>'string.ToLowerInvariant()'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="40" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
          <Type Name="ComponentConfigurationDictionary">
           <Messages>
            <Message TypeName="ImplementISerializableCorrectly" Category="Microsoft.Usage" CheckId="CA2240" Status="Excluded" Created="2007-11-05 21:59:28Z">
@@ -4324,43 +4818,6 @@
          </Type>
         </Types>
        </Namespace>
-       <Namespace Name="SandcastleBuilder.Utils.Frameworks">
-        <Types>
-         <Type Name="AssemblyDetails">
-          <Members>
-           <Member Name="#FromAssemblyName(System.Reflection.AssemblyName)">
-            <Messages>
-             <Message TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308" Status="Excluded" Created="2012-11-18 23:04:29Z">
-              <Issue Name="ToUpperInvariant">
-               <Item>'AssemblyDetails.FromAssemblyName(AssemblyName)'</Item>
-               <Item>'string.ToLowerInvariant()'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="158" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="FrameworkDictionary">
-          <Messages>
-           <Message TypeName="MarkISerializableTypesWithSerializable" Category="Microsoft.Usage" CheckId="CA2237" Status="Excluded" Created="2012-11-18 23:04:29Z">
-            <Issue>
-             <Item>'FrameworkDictionary'</Item>
-            </Issue>
-            <Notes>
-             <User Name="EWOODRUFF">
-              <Note Id="157" />
-             </User>
-            </Notes>
-           </Message>
-          </Messages>
-         </Type>
-        </Types>
-       </Namespace>
        <Namespace Name="SandcastleBuilder.Utils.Gac">
         <Types>
          <Type Name="GacEnumerator">
@@ -4506,49 +4963,6 @@
             </Messages>
            </Member>
           </Members>
-         </Type>
-        </Types>
-       </Namespace>
-       <Namespace Name="SandcastleBuilder.Utils.PresentationStyle">
-        <Types>
-         <Type Name="PresentationStyleDictionary">
-          <Messages>
-           <Message TypeName="MarkISerializableTypesWithSerializable" Category="Microsoft.Usage" CheckId="CA2237" Status="Excluded" Created="2012-11-18 23:04:29Z">
-            <Issue>
-             <Item>'PresentationStyleDictionary'</Item>
-            </Issue>
-            <Notes>
-             <User Name="EWOODRUFF">
-              <Note Id="157" />
-             </User>
-            </Notes>
-           </Message>
-          </Messages>
-         </Type>
-         <Type Name="TransformationFile">
-          <Messages>
-           <Message TypeName="IdentifiersShouldHaveCorrectSuffix" Category="Microsoft.Naming" CheckId="CA1710" Status="Excluded" Created="2012-11-18 23:04:29Z">
-            <Issue>
-             <Item>'TransformationFile'</Item>
-             <Item>Dictionary</Item>
-            </Issue>
-            <Notes>
-             <User Name="EWOODRUFF">
-              <Note Id="154" />
-             </User>
-            </Notes>
-           </Message>
-           <Message TypeName="MarkISerializableTypesWithSerializable" Category="Microsoft.Usage" CheckId="CA2237" Status="Excluded" Created="2012-11-18 23:04:29Z">
-            <Issue>
-             <Item>'TransformationFile'</Item>
-            </Issue>
-            <Notes>
-             <User Name="EWOODRUFF">
-              <Note Id="157" />
-             </User>
-            </Notes>
-           </Message>
-          </Messages>
          </Type>
         </Types>
        </Namespace>
@@ -5995,6 +6409,36 @@
               <Notes>
                <User Name="EWOODRUFF">
                 <Note Id="96" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#LoadItemFile(System.String,System.Boolean)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2014-01-09 18:41:20Z">
+              <Issue>
+               <Item>'ResourceItemEditorControl.LoadItemFile(string, bool)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="44" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#LoadResourceItemsFile(System.String,SandcastleBuilder.Utils.SandcastleProject)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2014-01-09 18:41:20Z">
+              <Issue>
+               <Item>'ResourceItemEditorControl.LoadResourceItemsFile(string, SandcastleProject)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="44" />
                </User>
               </Notes>
              </Message>
@@ -8759,16 +9203,16 @@
          </Type>
          <Type Name="HelpFilePropertiesPageControl">
           <Members>
-           <Member Name="#LoadAvailableSyntaxGenerators()">
+           <Member Name="#LoadAvailableSyntaxGeneratorsAndPresentationStyles()">
             <Messages>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2013-12-28 20:32:19Z">
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2014-01-09 18:41:20Z">
               <Issue>
-               <Item>'HelpFilePropertiesPageControl.LoadAvailableSyntaxGenerators()'</Item>
+               <Item>'HelpFilePropertiesPageControl.LoadAvailableSyntaxGeneratorsAndPresentationStyles()'</Item>
                <Item>'Exception'</Item>
               </Issue>
               <Notes>
                <User Name="EWOODRUFF">
-                <Note Id="18" />
+                <Note Id="44" />
                </User>
               </Notes>
              </Message>
@@ -8837,6 +9281,21 @@
               <Notes>
                <User Name="EWOODRUFF">
                 <Note Id="149" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#LoadAvailablePresentationStyles()">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2014-01-09 18:41:20Z">
+              <Issue>
+               <Item>'TransformArgumentsPageControl.LoadAvailablePresentationStyles()'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="EWOODRUFF">
+                <Note Id="44" />
                </User>
               </Notes>
              </Message>
@@ -9251,7 +9710,6 @@
     <Note Id="20" Modified="2008-02-20 17:07:55Z">The error is reported</Note>
     <Note Id="21" Modified="2008-11-19 16:39:10Z">Okay as is</Note>
     <Note Id="22" Modified="2008-09-19 23:11:26Z">It's there to force implementation of the property which is an override of the base class property.</Note>
-    <Note Id="23" Modified="2006-09-21 16:10:45Z">It's fine as it is</Note>
     <Note Id="24" Modified="2008-09-19 23:13:11Z">Okay as is</Note>
     <Note Id="25" Modified="2008-09-19 23:21:33Z">Using the given type is appropriate here</Note>
     <Note Id="26" Modified="2013-12-28 20:45:22Z">Okay as is</Note>
@@ -9268,16 +9726,22 @@
     <Note Id="37" Modified="2008-09-20 02:26:16Z">Okay as is</Note>
     <Note Id="38" Modified="2013-12-28 21:09:11Z">Lowercase is required</Note>
     <Note Id="39" Modified="2006-12-09 05:43:09Z">Okay as is</Note>
-    <Note Id="40" Modified="2013-12-28 21:12:02Z">Lowercase is preferred</Note>
     <Note Id="41" Modified="2006-12-27 23:40:43Z">Called via Reflection when loading a project</Note>
     <Note Id="42" Modified="2006-12-27 23:40:55Z">Called via Reflection when loading a project</Note>
     <Note Id="43" Modified="2007-10-08 22:01:59Z">They're fine as they are</Note>
+    <Note Id="44" Modified="2014-01-09 18:42:06Z">The error is reported</Note>
     <Note Id="45" Modified="2007-01-18 19:19:44Z">Allow in this case to avoid any potential problems with null values.</Note>
     <Note Id="46" Modified="2008-06-01 22:47:17Z">I like it spelled the way it is.</Note>
+    <Note Id="47" Modified="2014-01-09 18:46:54Z">Okay as is</Note>
+    <Note Id="48" Modified="2014-01-09 18:52:27Z">Nested factory class.  Okay as is.</Note>
     <Note Id="49" Modified="2008-02-29 20:38:41Z">Okay as is</Note>
+    <Note Id="50" Modified="2014-01-09 18:53:22Z">Okay as is</Note>
     <Note Id="51" Modified="2011-02-28 01:05:23Z">Okay as is</Note>
     <Note Id="52" Modified="2013-10-03 21:46:01Z">The exception is intentionally ignored.</Note>
+    <Note Id="53" Modified="2014-01-09 18:53:50Z">Not implemented exception so okay as is</Note>
+    <Note Id="54" Modified="2014-01-09 18:54:33Z">The error is reported.</Note>
     <Note Id="55" Modified="2008-09-20 02:55:19Z">Lowercase is preferred</Note>
+    <Note Id="56" Modified="2014-01-09 18:54:48Z">Okay as is</Note>
     <Note Id="57" Modified="2007-08-03 18:01:40Z">It's fine</Note>
     <Note Id="58" Modified="2007-08-03 18:07:22Z">Not applicable in this case</Note>
     <Note Id="59" Modified="2007-08-03 18:08:01Z">The error is reported</Note>
@@ -9363,10 +9827,8 @@
     <Note Id="151" Modified="2012-11-18 23:15:41Z">Okay as is</Note>
     <Note Id="152" Modified="2012-11-18 23:16:12Z">Okay as is</Note>
     <Note Id="153" Modified="2012-11-18 23:18:31Z">The MSHCPackage class will eventually go away so I'm ignoring errors in it.</Note>
-    <Note Id="154" Modified="2012-11-18 23:21:44Z">The dictionary is secondary to its primary purpose which is to get the transformation filename.</Note>
     <Note Id="155" Modified="2012-11-18 23:22:05Z">There is no reason for a default constructor.</Note>
     <Note Id="156" Modified="2012-11-18 23:22:34Z">Compiler generated code</Note>
-    <Note Id="157" Modified="2012-11-18 23:24:09Z">Not intended to be used with ISerializable.</Note>
     <Note Id="158" Modified="2012-11-18 23:25:04Z">Lowercase is required in this case</Note>
     <Note Id="159" Modified="2012-11-18 23:28:15Z">No security issues found</Note>
     <Note Id="160" Modified="2012-11-18 23:29:04Z">The parameter is used when compiled for use in the VSPackage.</Note>
@@ -9444,9 +9906,6 @@
    <Rule TypeName="DoNotRaiseExceptionsInUnexpectedLocations" Category="Microsoft.Design" CheckId="CA1065">
     <Resolution Name="PropertyGetter">{0} creates an exception of type {1}, an exception type that should not be raised in a property. If this exception instance might be raised, use a different exception type, convert this property into a method, or change this property's logic so that it no longer raises an exception.</Resolution>
    </Rule>
-   <Rule TypeName="FlagsEnumsShouldHavePluralNames" Category="Microsoft.Naming" CheckId="CA1714">
-    <Resolution Name="Default">If enumeration name {0} is singular, change it to a plural form.</Resolution>
-   </Rule>
    <Rule TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709">
     <Resolution Name="Assembly">Correct the casing of '{0}' in assembly name {1} by changing it to '{2}'.</Resolution>
     <Resolution Name="Member">Correct the casing of '{0}' in member name {1} by changing it to '{2}'.</Resolution>
@@ -9487,6 +9946,9 @@
    <Rule TypeName="MembersShouldNotExposeCertainConcreteTypes" Category="Microsoft.Design" CheckId="CA1059">
     <Resolution Name="Xml">Modify member {0} so that it no longer exposes the concrete type {1}. Use IXPathNavigable to represent XML data sources.</Resolution>
    </Rule>
+   <Rule TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034">
+    <Resolution Name="Default">Do not nest type {0}. Alternatively, change its accessibility so that it is not externally visible.</Resolution>
+   </Rule>
    <Rule TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308">
     <Resolution Name="ToUpperInvariant">In method {0}, replace the call to {1} with String.ToUpperInvariant().</Resolution>
    </Rule>
@@ -9509,6 +9971,9 @@
    </Rule>
    <Rule TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804">
     <Resolution Name="Default">{0} declares a variable, {1}, of type {2}, which is never used or is only assigned to. Use this variable or remove it.</Resolution>
+   </Rule>
+   <Rule TypeName="ResourceStringsShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1703">
+    <Resolution Name="StringResource">In resource {0}, referenced by name '{1}', correct the spelling of '{2}' in string value '{3}'.</Resolution>
    </Rule>
    <Rule TypeName="ReviewSuppressUnmanagedCodeSecurityUsage" Category="Microsoft.Security" CheckId="CA2118">
     <Resolution Name="PlatformInvokeStack">Review declarative security for {0} and its callers for potential vulnerabilities. The following call stack might expose a way to circumvent security protection: {1}</Resolution>

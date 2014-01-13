@@ -32,11 +32,38 @@
       <PlugInConfig id="Additional Content Only" enabled="True">
         <configuration />
       </PlugInConfig>
-<PlugInConfig id="Output Deployment" enabled="True"><configuration deleteAfterDeploy="false"><deploymentLocation id="help1x" location="..\..\SHFB\Deploy\Help\"><userCredentials useDefault="true" userName="" password="" /><proxyCredentials useProxy="false" proxyServer=""><userCredentials useDefault="true" userName="" password="" /></proxyCredentials></deploymentLocation><deploymentLocation id="help2x" location=""><userCredentials useDefault="true" userName="" password="" /><proxyCredentials useProxy="false" proxyServer=""><userCredentials useDefault="true" userName="" password="" /></proxyCredentials></deploymentLocation><deploymentLocation id="helpViewer" location="" renameMSHA="false"><userCredentials useDefault="true" userName="" password="" /><proxyCredentials useProxy="false" proxyServer=""><userCredentials useDefault="true" userName="" password="" /></proxyCredentials></deploymentLocation><deploymentLocation id="website" location=""><userCredentials useDefault="true" userName="" password="" /><proxyCredentials useProxy="false" proxyServer=""><userCredentials useDefault="true" userName="" password="" /></proxyCredentials></deploymentLocation></configuration></PlugInConfig></PlugInConfigurations>
+      <PlugInConfig id="Output Deployment" enabled="True">
+        <configuration deleteAfterDeploy="false">
+          <deploymentLocation id="help1x" location="..\..\SHFB\Deploy\Help\">
+            <userCredentials useDefault="true" userName="" password="" />
+            <proxyCredentials useProxy="false" proxyServer="">
+              <userCredentials useDefault="true" userName="" password="" />
+            </proxyCredentials>
+          </deploymentLocation>
+          <deploymentLocation id="help2x" location="">
+            <userCredentials useDefault="true" userName="" password="" />
+            <proxyCredentials useProxy="false" proxyServer="">
+              <userCredentials useDefault="true" userName="" password="" />
+            </proxyCredentials>
+          </deploymentLocation>
+          <deploymentLocation id="helpViewer" location="" renameMSHA="false">
+            <userCredentials useDefault="true" userName="" password="" />
+            <proxyCredentials useProxy="false" proxyServer="">
+              <userCredentials useDefault="true" userName="" password="" />
+            </proxyCredentials>
+          </deploymentLocation>
+          <deploymentLocation id="website" location="">
+            <userCredentials useDefault="true" userName="" password="" />
+            <proxyCredentials useProxy="false" proxyServer="">
+              <userCredentials useDefault="true" userName="" password="" />
+            </proxyCredentials>
+          </deploymentLocation>
+        </configuration>
+      </PlugInConfig>
+    </PlugInConfigurations>
     <BuildLogFile />
     <HtmlHelp1xCompilerPath />
     <HtmlHelp2xCompilerPath />
-    <SandcastlePath />
     <WorkingPath />
     <CatalogName>VisualStudio11</CatalogName>
     <TocParentId>-1</TocParentId>
@@ -53,11 +80,11 @@
     <CollectionTocStyle>Hierarchical</CollectionTocStyle>
     <MSHelp2SdkLinkType>Msdn</MSHelp2SdkLinkType>
     <IncludeStopWordList>True</IncludeStopWordList>
-    <SyntaxFilters>Standard</SyntaxFilters>
+    <SyntaxFilters>CSharp, VisualBasic, CPlusPlus</SyntaxFilters>
     <SdkLinkTarget>Blank</SdkLinkTarget>
     <RootNamespaceContainer>False</RootNamespaceContainer>
     <PresentationStyle>VS2005</PresentationStyle>
-    <Preliminary>True</Preliminary>
+    <Preliminary>False</Preliminary>
     <NamingMethod>Guid</NamingMethod>
     <HelpTitle>Sandcastle Tools</HelpTitle>
     <FeedbackEMailAddress>Eric%40EWoodruff.us</FeedbackEMailAddress>
@@ -85,6 +112,8 @@
       <Argument Key="logoAlignment" Value="left" xmlns="" />
     </TransformComponentArguments>
     <VisibleItems>InheritedMembers, InheritedFrameworkMembers, Protected, ProtectedInternalAsProtected</VisibleItems>
+    <MaximumGroupParts>2</MaximumGroupParts>
+    <NamespaceGrouping>True</NamespaceGrouping>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in
        order for Visual Studio to perform the build.  The others are optional

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : PlugInPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 12/27/2013
-// Note    : Copyright 2011-2013, Eric Woodruff, All rights reserved
+// Updated : 01/07/2014
+// Note    : Copyright 2011-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This user control is used to edit the Plug-Ins category properties
@@ -34,10 +34,11 @@ using Microsoft.Build.Evaluation;
 #if !STANDALONEGUI
 using SandcastleBuilder.Package.Nodes;
 using SandcastleBuilder.Package.Properties;
-
-using SandcastleBuilder.Utils;
 #endif
 
+using Sandcastle.Core;
+
+using SandcastleBuilder.Utils;
 using SandcastleBuilder.Utils.BuildComponent;
 
 namespace SandcastleBuilder.Package.PropertyPages
@@ -70,7 +71,7 @@ namespace SandcastleBuilder.Package.PropertyPages
 #if !STANDALONEGUI
             messageBoxTitle = Resources.PackageTitle;
 #else
-            messageBoxTitle = SandcastleBuilder.Utils.Constants.AppName;
+            messageBoxTitle = Constants.AppName;
 #endif
             this.Title = "Plug-Ins";
             this.HelpKeyword = "be2b5b09-cf5f-4fc3-be8c-f6d8a27c3691";
@@ -86,6 +87,7 @@ namespace SandcastleBuilder.Package.PropertyPages
         /// <returns>True on success, false on failure or if no project is loaded</returns>
         private void LoadAvailablePlugInMetadata()
         {
+            SandcastleProject currentProject = null;
             HashSet<string> plugInIds = new HashSet<string>();
 
             try
@@ -100,14 +102,19 @@ namespace SandcastleBuilder.Package.PropertyPages
                 }
 
 #if !STANDALONEGUI
-                SandcastleProject currentProject = ((SandcastleBuilderProjectNode)base.ProjectMgr).SandcastleProject;
-
-                lastProjectName = currentProject == null ? null : currentProject.Filename;
-                componentContainer = BuildComponentManager.GetComponentContainer(currentProject);
+                if(base.ProjectMgr != null)
+                    currentProject = ((SandcastleBuilderProjectNode)base.ProjectMgr).SandcastleProject;
 #else
-                lastProjectName = base.CurrentProject == null ? null : base.CurrentProject.Filename;
-                componentContainer = BuildComponentManager.GetComponentContainer(base.CurrentProject);
+                currentProject = base.CurrentProject;
 #endif
+                lastProjectName = currentProject == null ? null : currentProject.Filename;
+
+                if(currentProject != null)
+                    componentContainer = ComponentUtilities.CreateComponentContainer(new[] {
+                        currentProject.ComponentPath, Path.GetDirectoryName(currentProject.Filename) });
+                else
+                    componentContainer = ComponentUtilities.CreateComponentContainer(new string[] { });
+
                 lbProjectPlugIns.Items.Clear();
 
                 availablePlugIns = componentContainer.GetExports<IPlugIn, IPlugInMetadata>().ToList();

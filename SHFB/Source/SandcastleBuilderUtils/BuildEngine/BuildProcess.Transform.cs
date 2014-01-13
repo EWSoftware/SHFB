@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.Transform.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/27/2013
-// Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
+// Updated : 01/12/2014
+// Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the code used to transform and generate the files used to define and compile the help file.
@@ -62,10 +62,11 @@ using System.Xml.XPath;
 
 using Microsoft.Build.Evaluation;
 
+using Sandcastle.Core;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
+using Sandcastle.Core.Frameworks;
 
 using SandcastleBuilder.Utils.BuildComponent;
-using SandcastleBuilder.Utils.Frameworks;
 
 namespace SandcastleBuilder.Utils.BuildEngine
 {
@@ -264,11 +265,11 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     break;
 
                 case "shfbfolder":
-                    replaceWith = BuildComponentManager.HelpFileBuilderFolder;
+                    replaceWith = ComponentUtilities.ToolsFolder;
                     break;
 
                 case "componentsfolder":
-                    replaceWith = BuildComponentManager.BuildComponentsFolder;
+                    replaceWith = ComponentUtilities.ComponentsFolder;
                     break;
 
                 case "projectfolder":
@@ -614,12 +615,12 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 case "help1xprojectfiles":
                     replaceWith = this.HelpProjectFileList(String.Format(CultureInfo.InvariantCulture,
-                        @"{0}Output\{1}", workingFolder, HelpFileFormat.HtmlHelp1), HelpFileFormat.HtmlHelp1);
+                        @"{0}Output\{1}", workingFolder, HelpFileFormats.HtmlHelp1), HelpFileFormats.HtmlHelp1);
                     break;
 
                 case "help2xprojectfiles":
                     replaceWith = this.HelpProjectFileList(String.Format(CultureInfo.InvariantCulture,
-                        @"{0}Output\{1}", workingFolder, HelpFileFormat.MSHelp2), HelpFileFormat.MSHelp2);
+                        @"{0}Output\{1}", workingFolder, HelpFileFormats.MSHelp2), HelpFileFormats.MSHelp2);
                     break;
 
                 case "htmlsdklinktype":
@@ -647,14 +648,14 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     break;
 
                 case "syntaxfilters":
-                    replaceWith = BuildComponentManager.SyntaxFilterGeneratorsFrom(syntaxGenerators,
+                    replaceWith = ComponentUtilities.SyntaxFilterGeneratorsFrom(syntaxGenerators,
                         project.SyntaxFilters);
                     break;
 
                 case "syntaxfiltersdropdown":
                     // Note that we can't remove the dropdown box if only a single language is selected as
                     // script still depends on it.
-                    replaceWith = BuildComponentManager.SyntaxFilterLanguagesFrom(syntaxGenerators,
+                    replaceWith = ComponentUtilities.SyntaxFilterLanguagesFrom(syntaxGenerators,
                         project.SyntaxFilters);
                     break;
 
@@ -788,15 +789,15 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     break;
 
                 case "help1folder":
-                    if((project.HelpFileFormat & HelpFileFormat.HtmlHelp1) != 0)
-                        replaceWith = @"Output\" + HelpFileFormat.HtmlHelp1.ToString();
+                    if((project.HelpFileFormat & HelpFileFormats.HtmlHelp1) != 0)
+                        replaceWith = @"Output\" + HelpFileFormats.HtmlHelp1.ToString();
                     else
                         replaceWith = String.Empty;
                     break;
 
                 case "websitefolder":
-                    if((project.HelpFileFormat & HelpFileFormat.Website) != 0)
-                        replaceWith = @"Output\" + HelpFileFormat.Website.ToString();
+                    if((project.HelpFileFormat & HelpFileFormats.Website) != 0)
+                        replaceWith = @"Output\" + HelpFileFormats.Website.ToString();
                     else
                         replaceWith = String.Empty;
                     break;
@@ -922,7 +923,14 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     break;
 
                 case "componentlocations":
-                    replaceWith = this.FormatComponentLocations();
+                    if(String.IsNullOrWhiteSpace(project.ComponentPath))
+                        replaceWith = String.Empty;
+                    else
+                        replaceWith = String.Format(CultureInfo.InvariantCulture, "<location folder=\"{0}\" />\r\n",
+                            project.ComponentPath);
+
+                    replaceWith += String.Format(CultureInfo.InvariantCulture, "<location folder=\"{0}\" />",
+                        Path.GetDirectoryName(project.Filename));
                     break;
 
                 case "helpfileformat":
@@ -1005,7 +1013,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 case "addxamlsyntaxdata":
                     // If the XAML syntax generator is present, add XAML syntax data to the reflection file
-                    if(BuildComponentManager.SyntaxFiltersFrom(syntaxGenerators, project.SyntaxFilters).Any(
+                    if(ComponentUtilities.SyntaxFiltersFrom(syntaxGenerators, project.SyntaxFilters).Any(
                       s => s.Id == "XamlUsage"))
                         replaceWith = @";~\ProductionTransforms\AddXamlSyntaxData.xsl";
                     else
@@ -1042,6 +1050,12 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                     replaceWith = (project.Filename + "_" + replaceWith).GetHashCode().ToString("X",
                         CultureInfo.InvariantCulture);
+                    break;
+
+                case "sandcastlepath":
+                    // This is obsolete but will still appear in the older component and plug-in configurations.
+                    // We'll ignore it and return an empty string as it won't be used anyway.
+                    replaceWith = String.Empty;
                     break;
 
                 default:
@@ -1109,33 +1123,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
                     sb.AppendFormat(CultureInfo.InvariantCulture, "<import path=\"{0}\" file=\"{1}\" " +
                         "recurse=\"false\" />\r\n", folder, wildcard);
             }
-
-            return sb.ToString();
-        }
-
-        /// <summary>
-        /// This is used to format the component locations for BuildAssembler configuration files
-        /// </summary>
-        /// <returns>A string containing the component location elements</returns>
-        private string FormatComponentLocations()
-        {
-            FolderPath projectFolder,
-                componentsFolder = new FolderPath(BuildComponentManager.BuildComponentsFolder, null),
-                helpFileBuilderFolder = new FolderPath(BuildComponentManager.HelpFileBuilderFolder, null);
-            StringBuilder sb = new StringBuilder(2048);
-
-            if(project.ComponentPath.Path.Length != 0)
-                projectFolder = project.ComponentPath;
-            else
-                projectFolder = new FolderPath(Path.GetDirectoryName(project.Filename), null);
-
-            if(Directory.Exists(projectFolder))
-                sb.AppendFormat("<location folder=\"{0}\" />", projectFolder);
-
-            if(componentsFolder.Path.Length != 0 && Directory.Exists(componentsFolder))
-                sb.AppendFormat("<location folder=\"{0}\" />", componentsFolder);
-
-            sb.AppendFormat("<location folder=\"{0}\" />", helpFileBuilderFolder);
 
             return sb.ToString();
         }

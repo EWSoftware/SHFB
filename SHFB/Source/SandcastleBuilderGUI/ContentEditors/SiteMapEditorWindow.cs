@@ -1,28 +1,26 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder
 // File    : SiteMapEditorWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/25/2012
-// Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
+// Updated : 01/02/2014
+// Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains the form used to edit site map files that defines the
-// table of contents layout for additional content items.
+// This file contains the form used to edit site map files that defines the table of contents layout for
+// additional content items.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.5.0.2  07/03/2007  EFW  Created the code
 // 1.6.0.7  04/12/2008  EFW  Added support for splitting the table of contents
 // 1.8.0.0  09/04/2008  EFW  Reworked for use with the new project format
-// 1.9.3.3  12/21/2011  EFW  Rewrote to use the shared WPF Site Map Editor
-//                           user control.
-//=============================================================================
+// 1.9.3.3  12/21/2011  EFW  Rewrote to use the shared WPF Site Map Editor user control
+//===============================================================================================================
 
 using System;
 using System.Globalization;
@@ -33,6 +31,8 @@ using System.Windows.Input;
 using MouseCursor = System.Windows.Forms.Cursor;
 using MouseCursors = System.Windows.Forms.Cursors;
 using WinFormsMessageBox = System.Windows.Forms.MessageBox;
+
+using Sandcastle.Core;
 
 using SandcastleBuilder.Utils;
 using SandcastleBuilder.Utils.ConceptualContent;
@@ -45,8 +45,8 @@ using WeifenLuo.WinFormsUI.Docking;
 namespace SandcastleBuilder.Gui.ContentEditors
 {
     /// <summary>
-    /// This form is used to edit site map files that defines the table of
-    /// contents layout for additional content items.
+    /// This form is used to edit site map files that defines the table of contents layout for additional content
+    /// items.
     /// </summary>
     public partial class SiteMapEditorWindow : BaseContentEditor
     {

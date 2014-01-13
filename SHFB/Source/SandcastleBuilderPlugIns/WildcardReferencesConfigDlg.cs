@@ -1,43 +1,37 @@
-//=============================================================================
+//===============================================================================================================
 // System  : EWSoftware Design Time Attributes and Editors
 // File    : WildcardReferencesConfigDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/17/2011
-// Note    : Copyright 2011, Eric Woodruff, All rights reserved
+// Updated : 01/02/2014
+// Note    : Copyright 2011-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains the form used to edit the wildcard references plug-in
-// configuration.
+// This file contains the form used to edit the wildcard references plug-in configuration
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.9.2.0  01/17/2011  EFW  Created the code
-//=============================================================================
+//===============================================================================================================
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Globalization;
 using System.IO;
-using System.Reflection;
 using System.Windows.Forms;
-using System.Xml;
 using System.Xml.Linq;
-using System.Xml.XPath;
+
+using Sandcastle.Core;
 
 using SandcastleBuilder.Utils;
 
 namespace SandcastleBuilder.PlugIns
 {
     /// <summary>
-    /// This form is used to edit the <see cref="WildcardReferencesPlugIn"/>
-    /// configuration.
+    /// This form is used to edit the <see cref="WildcardReferencesPlugIn"/> configuration
     /// </summary>
     internal partial class WildcardReferencesConfigDlg : Form
     {
@@ -244,8 +238,7 @@ namespace SandcastleBuilder.PlugIns
             catch(Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
-                MessageBox.Show("Unable to launch link target.  " +
-                    "Reason: " + ex.Message, Constants.AppName,
+                MessageBox.Show("Unable to launch link target.  Reason: " + ex.Message, Constants.AppName,
                     MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }

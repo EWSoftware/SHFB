@@ -1,41 +1,35 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : DbcsFixConfigDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/01/2008
-// Note    : Copyright 2008, Eric Woodruff, All rights reserved
+// Updated : 01/02/2014
+// Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains a form that is used to configure the settings for the
-// DBCS Fix plug-in.
+// This file contains a form that is used to configure the settings for the DBCS Fix plug-in
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.6.0.5  02/18/2008  EFW  Created the code
-//=============================================================================
+//===============================================================================================================
 
 using System;
-using System.Collections;
-using System.ComponentModel;
-using System.Globalization;
 using System.IO;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.XPath;
 
-using SandcastleBuilder.Utils;
+using Sandcastle.Core;
 
 namespace SandcastleBuilder.PlugIns
 {
     /// <summary>
-    /// This form is used to configure the settings for the
-    /// <see cref="DbcsFixPlugIn"/>.
+    /// This form is used to configure the settings for the <see cref="DbcsFixPlugIn"/>
     /// </summary>
     internal partial class DbcsFixConfigDlg : Form
     {
@@ -52,8 +46,7 @@ namespace SandcastleBuilder.PlugIns
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="currentConfig">The current XML configuration
-        /// XML fragment</param>
+        /// <param name="currentConfig">The current XML configuration XML fragment</param>
         public DbcsFixConfigDlg(string currentConfig)
         {
             XPathNavigator navigator, root, node;
@@ -103,8 +96,8 @@ namespace SandcastleBuilder.PlugIns
             catch(Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
-                MessageBox.Show("Unable to launch link target.  " +
-                    "Reason: " + ex.Message, Constants.AppName,
+
+                MessageBox.Show("Unable to launch link target.  Reason: " + ex.Message, Constants.AppName,
                     MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
@@ -146,8 +139,7 @@ namespace SandcastleBuilder.PlugIns
             if(txtSBAppLocalePath.Text.Length == 0)
             {
                 epErrors.SetIconPadding(txtSBAppLocalePath, 35);
-                epErrors.SetError(txtSBAppLocalePath,
-                    "The path to the tool is required");
+                epErrors.SetError(txtSBAppLocalePath, "The path to the tool is required");
                 isValid = false;
             }
 
@@ -160,8 +152,7 @@ namespace SandcastleBuilder.PlugIns
             node = root.SelectSingleNode("sbAppLocale");
             if(node == null)
             {
-                node = config.CreateNode(XmlNodeType.Element,
-                    "sbAppLocale", null);
+                node = config.CreateNode(XmlNodeType.Element, "sbAppLocale", null);
                 root.AppendChild(node);
 
                 attr = config.CreateAttribute("path");

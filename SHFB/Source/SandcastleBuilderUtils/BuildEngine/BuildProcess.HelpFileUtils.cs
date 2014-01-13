@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.HelpFileUtils.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/02/2013
-// Note    : Copyright 2006-2013, Eric Woodruff, All rights reserved
+// Updated : 01/09/2014
+// Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the code used to modify the help file project files to create a better table of contents
@@ -32,6 +32,7 @@
 // 1.9.6.0  10/25/2012  EFW  Updated to use the new presentation style definition files
 // 1.9.8.0  06/21/2013  EFW  Added support for format-specific help content files.  Removed
 //                           ModifyHelpTopicFilenames() as naming is now handled entirely by AddFilenames.xsl.
+// -------  01/09/2013  EFW  Removed copying of branding files.  They are part of the presentation style now.
 //===============================================================================================================
 
 using System;
@@ -42,6 +43,8 @@ using System.Text;
 using System.Xml;
 using System.Xml.XPath;
 using System.Web;
+
+using Sandcastle.Core;
 
 using SandcastleBuilder.Utils.BuildComponent;
 using SandcastleBuilder.Utils.ConceptualContent;
@@ -100,7 +103,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
 
                 // If building MS Help Viewer output, ensure that the root container ID is valid
                 // and not visible in the TOC if defined.
-                if((project.HelpFileFormat & HelpFileFormat.MSHelpViewer) != 0 &&
+                if((project.HelpFileFormat & HelpFileFormats.MSHelpViewer) != 0 &&
                   !String.IsNullOrEmpty(this.RootContentContainerId) && toc[this.RootContentContainerId] != null)
                     throw new BuilderException("BE0069", String.Format(CultureInfo.CurrentCulture,
                         "The project's root content container topic (ID={0}) must be have its Visible property " +
@@ -230,7 +233,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
             if(conceptualXml != null)
             {
                 // Remove the root content container if present as we don't need it for the other formats
-                if((project.HelpFileFormat & HelpFileFormat.MSHelpViewer) != 0 &&
+                if((project.HelpFileFormat & HelpFileFormats.MSHelpViewer) != 0 &&
                   !String.IsNullOrEmpty(this.RootContentContainerId))
                 {
                     docElement = conceptualXml.DocumentElement;
@@ -390,7 +393,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
             this.ExecutePlugIns(ExecutionBehaviors.Before);
             this.EnsureOutputFoldersExist("html");
 
-            foreach(HelpFileFormat value in Enum.GetValues(typeof(HelpFileFormat)))
+            foreach(HelpFileFormats value in Enum.GetValues(typeof(HelpFileFormats)))
                 if((project.HelpFileFormat & value) != 0)
                 {
                     // EnsureOutputFoldersExist adds the folders to HelpFormatOutputFolders in the same order as
@@ -401,129 +404,6 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 }
 
             this.ExecutePlugIns(ExecutionBehaviors.After);
-        }
-
-        /// <summary>
-        /// For presentation styles designed for MS Help Viewer, the branding files are copied from the branding
-        /// subfolder to the working folder.
-        /// </summary>
-        /// <param name="helpFormatOutputFolder">The working folder for the current HelpFormat.</param>
-        /// <remarks>The existence of the branding subfolder indicates that the presentation style is designed
-        /// for MS Help Viewer.
-        /// <para>The branding subfolder must contain a file named <b>branding.manifest</b> that specifies the
-        /// files to copy (in MSBuild project format).</para>
-        /// <para>The branding files that are copied and their target folder depends on the current contents of
-        /// <b>branding.manifest</b> and the current HelpFormat.</para>
-        /// <para>The <b>branding.manifest</b> can also contain a reference to a <i>.mshc</i> package that is
-        /// used as the basis for the presentation style branding.  If so, its contents are also extracted.</para>
-        /// </remarks>
-        private void CopyHelpBranding(string helpFormatOutputFolder)
-        {
-            MSHCPackage brandingPackage;
-            string brandingSource = Path.Combine(this.PresentationStyleFolder, "branding");
-
-            if(Directory.Exists(brandingSource))
-            {
-                string brandingTarget = Path.Combine(helpFormatOutputFolder, "branding"),
-                    brandingTransformsTarget = Path.Combine(WorkingFolder, "branding"),
-                    brandingIconsTarget = Path.Combine(helpFormatOutputFolder, "icons"),
-                    brandingManifest = Path.Combine(brandingSource, "branding.manifest");
-
-                this.ReportProgress("Copying help branding files...");
-
-                if(!File.Exists(brandingManifest))
-                    throw (new BuilderException(String.Format(CultureInfo.InvariantCulture,
-                        "Branding manifest \"{0}\" not found.", brandingManifest)));
-
-                if(helpFormatOutputFolder.Contains(HelpFileFormat.MSHelpViewer.ToString()))
-                    brandingTarget = Path.Combine(helpFormatOutputFolder, @"..\" +
-                        HelpFileFormat.MSHelpViewer.ToString() + "_Branding");
-
-                brandingTarget = Path.GetFullPath(brandingTarget) + @"\";
-
-                foreach(string manifest in Directory.EnumerateFiles(brandingSource, "*.manifest"))
-                {
-                    // Don't use the specified manifest
-                    if(manifest.Equals(brandingManifest, StringComparison.OrdinalIgnoreCase))
-                        continue;
-
-                    brandingPackage = new MSHCPackage(Path.ChangeExtension(manifest, ".mshc"), FileMode.Open);
-
-                    if(brandingPackage.IsOpen)
-                    {
-                        brandingPackage.ManifestProperties.Add(ManifestPropertyHelpOutput,
-                            Path.GetFileNameWithoutExtension(helpFormatOutputFolder));
-                        brandingPackage.ManifestProperties.Add(ManifestPropertyPreBranding, "true");
-
-                        if(!helpFormatOutputFolder.Contains(HelpFileFormat.MSHelpViewer.ToString()))
-                            brandingPackage.ManifestProperties.Add(ManifestPropertyNoTransforms, Boolean.TrueString);
-
-                        brandingPackage.LoggingTarget = swLog;
-                        brandingPackage.LoggingPrefix = "  ";
-
-                        this.ReportProgress("{0} -> {1}", brandingPackage.PackagePath, brandingTarget);
-
-                        brandingPackage.GetTheseParts(brandingTarget, manifest, true);
-
-                        if(helpFormatOutputFolder.Contains(HelpFileFormat.MSHelpViewer.ToString()))
-                        {
-                            brandingPackage.ManifestProperties.Add(ManifestPropertyOnlyIcons, Boolean.TrueString);
-
-                            this.ReportProgress("{0} -> {1}", brandingPackage.PackagePath, brandingIconsTarget);
-                            brandingPackage.GetTheseParts(brandingIconsTarget, manifest, true);
-                        }
-                        else
-                        {
-                            brandingPackage.ManifestProperties.Remove(ManifestPropertyNoTransforms);
-                            brandingPackage.ManifestProperties.Add(ManifestPropertyOnlyTransforms, Boolean.TrueString);
-
-                            this.ReportProgress("{0} -> {1}", brandingPackage.PackagePath, brandingTransformsTarget);
-                            brandingPackage.GetTheseParts(brandingTransformsTarget, manifest, true);
-                        }
-                    }
-                }
-
-                brandingPackage = new MSHCPackage(brandingTarget);
-                brandingPackage.ManifestProperties.Add(ManifestPropertyHelpOutput,
-                    Path.GetFileNameWithoutExtension(helpFormatOutputFolder));
-                brandingPackage.ManifestProperties.Add(ManifestPropertyPreBranding, "true");
-
-                if(!helpFormatOutputFolder.Contains(HelpFileFormat.MSHelpViewer.ToString()))
-                    brandingPackage.ManifestProperties.Add(ManifestPropertyNoTransforms, Boolean.TrueString);
-
-                brandingPackage.LoggingTarget = swLog;
-                brandingPackage.LoggingPrefix = "  ";
-
-                this.ReportProgress("{0} -> {1}", brandingSource, brandingTarget);
-                brandingPackage.CopyTheseParts(brandingManifest, true);
-
-                if(helpFormatOutputFolder.Contains(HelpFileFormat.MSHelpViewer.ToString()))
-                {
-                    brandingPackage = new MSHCPackage(brandingIconsTarget);
-                    brandingPackage.ManifestProperties.Add(ManifestPropertyHelpOutput,
-                        Path.GetFileNameWithoutExtension(helpFormatOutputFolder));
-                    brandingPackage.ManifestProperties.Add(ManifestPropertyPreBranding, "true");
-                    brandingPackage.ManifestProperties.Add(ManifestPropertyOnlyIcons, Boolean.TrueString);
-                    brandingPackage.LoggingTarget = swLog;
-                    brandingPackage.LoggingPrefix = "  ";
-
-                    this.ReportProgress("{0} -> {1}", brandingSource, brandingIconsTarget);
-                    brandingPackage.CopyTheseParts(brandingManifest, true);
-                }
-                else
-                {
-                    brandingPackage = new MSHCPackage(brandingTransformsTarget);
-                    brandingPackage.ManifestProperties.Add(ManifestPropertyHelpOutput,
-                        Path.GetFileNameWithoutExtension(helpFormatOutputFolder));
-                    brandingPackage.ManifestProperties.Add(ManifestPropertyPreBranding, "true");
-                    brandingPackage.ManifestProperties.Add(ManifestPropertyOnlyTransforms, Boolean.TrueString);
-                    brandingPackage.LoggingTarget = swLog;
-                    brandingPackage.LoggingPrefix = "  ";
-
-                    this.ReportProgress("{0} -> {1}", brandingSource, brandingTransformsTarget);
-                    brandingPackage.CopyTheseParts(brandingManifest, true);
-                }
-            }
         }
 
         /// <summary>
@@ -594,7 +474,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         /// nested subfolders.  The <b>format</b> parameter determines the format of the returned file list.  For
         /// HTML Help 1, it returns a list of the filenames.  For MS Help 2, it returns the list formatted with
         /// the necessary XML markup.</remarks>
-        private string HelpProjectFileList(string folder, HelpFileFormat format)
+        private string HelpProjectFileList(string folder, HelpFileFormats format)
         {
             StringBuilder sb = new StringBuilder(10240);
             string itemFormat, filename, checkName, sourceFolder = folder;
@@ -606,7 +486,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
             if(folder.Length != 0 && folder[folder.Length - 1] != '\\')
                 folder += @"\";
 
-            if((format & HelpFileFormat.HtmlHelp1) != 0)
+            if((format & HelpFileFormats.HtmlHelp1) != 0)
             {
                 if(folder.IndexOf(',') != -1 || folder.IndexOf(".h", StringComparison.OrdinalIgnoreCase) != -1)
                     this.ReportWarning("BE0060", "The file path '{0}' contains a comma or '.h' which may " +
@@ -657,7 +537,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         private void GenerateWebsite()
         {
             string webWorkingFolder = String.Format(CultureInfo.InvariantCulture, "{0}Output\\{1}",
-                workingFolder, HelpFileFormat.Website);
+                workingFolder, HelpFileFormats.Website);
             int fileCount = 0;
 
             // Generate the full-text index for the ASP.NET search option
@@ -793,7 +673,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
         {
             if(this.HelpFormatOutputFolders.Count == 0)
             {
-                foreach(HelpFileFormat value in Enum.GetValues(typeof(HelpFileFormat)))
+                foreach(HelpFileFormats value in Enum.GetValues(typeof(HelpFileFormats)))
                     if((project.HelpFileFormat & value) != 0)
                         this.HelpFormatOutputFolders.Add(String.Format(CultureInfo.InvariantCulture,
                             @"{0}Output\{1}\", workingFolder, value));

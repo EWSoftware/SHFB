@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : SpellCheckerConfiguration.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/16/2013
-// Note    : Copyright 2013, Eric Woodruff, All rights reserved
+// Updated : 01/02/2014
+// Note    : Copyright 2013-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the class used to contain the spell checker's configuration settings
@@ -25,7 +25,7 @@ using System.Globalization;
 using System.Linq;
 using System.Xml.Linq;
 
-using SandcastleBuilder.Utils;
+using Sandcastle.Core;
 
 namespace SandcastleBuilder.Gui.Spelling
 {

@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : DbcsFixPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 06/18/2013
-// Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
+// Updated : 01/04/2014
+// Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a plug-in designed to modify the HTML files and alter the build so as to overcome the
@@ -29,6 +29,8 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.XPath;
+
+using Sandcastle.Core;
 
 using SandcastleBuilder.Utils;
 using SandcastleBuilder.Utils.BuildComponent;
@@ -137,7 +139,7 @@ namespace SandcastleBuilder.PlugIns
                 throw new BuilderException("DFP0003", "Unable to locate SBAppLocale tool at " + sbAppLocalePath);
 
             // If not building HTML Help 1, there's nothing to do
-            if((builder.CurrentProject.HelpFileFormat & HelpFileFormat.HtmlHelp1) == 0)
+            if((builder.CurrentProject.HelpFileFormat & HelpFileFormats.HtmlHelp1) == 0)
             {
                 executionPoints.Clear();
                 builder.ReportWarning("DFP0007", "An HTML Help 1 file is not being built.  This plug-in will " +
@@ -178,7 +180,7 @@ namespace SandcastleBuilder.PlugIns
                 return;
             }
 
-            if(builder.CurrentFormat != HelpFileFormat.HtmlHelp1)
+            if(builder.CurrentFormat != HelpFileFormats.HtmlHelp1)
                 return;
 
             builder.ReportProgress("Adding localization options to build task");

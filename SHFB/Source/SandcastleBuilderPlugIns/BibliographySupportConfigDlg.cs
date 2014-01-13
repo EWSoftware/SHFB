@@ -1,41 +1,35 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : BibliographySupportConfigDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 11/07/2008
-// Note    : Copyright 2008, Eric Woodruff, All rights reserved
+// Updated : 01/02/2014
+// Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
-// This file contains a form that is used to configure the settings for the
-// bibliography support plug-in.
+// This file contains a form that is used to configure the settings for the bibliography support plug-in
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.6.0.5  02/18/2008  EFW  Created the code
-//=============================================================================
+//===============================================================================================================
 
 using System;
-using System.Collections;
-using System.ComponentModel;
-using System.Globalization;
 using System.IO;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.XPath;
 
-using SandcastleBuilder.Utils;
+using Sandcastle.Core;
 
 namespace SandcastleBuilder.PlugIns
 {
     /// <summary>
-    /// This form is used to configure the settings for the
-    /// <see cref="BibliographySupportPlugIn"/>.
+    /// This form is used to configure the settings for the <see cref="BibliographySupportPlugIn"/>
     /// </summary>
     internal partial class BibliographySupportConfigDlg : Form
     {
@@ -52,8 +46,7 @@ namespace SandcastleBuilder.PlugIns
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="currentConfig">The current XML configuration
-        /// XML fragment</param>
+        /// <param name="currentConfig">The current XML configuration XML fragment</param>
         public BibliographySupportConfigDlg(string currentConfig)
         {
             XPathNavigator navigator, root, node;
@@ -73,6 +66,7 @@ namespace SandcastleBuilder.PlugIns
                 return;
 
             node = root.SelectSingleNode("bibliography");
+
             if(node != null)
                 txtBibliographyFile.Text = node.GetAttribute("path", String.Empty);
         }
@@ -92,8 +86,7 @@ namespace SandcastleBuilder.PlugIns
         /// </summary>
         /// <param name="sender">The sender of the event</param>
         /// <param name="e">The event arguments</param>
-        private void project_LinkClicked(object sender,
-          LinkLabelLinkClickedEventArgs e)
+        private void project_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             try
             {
@@ -102,8 +95,8 @@ namespace SandcastleBuilder.PlugIns
             catch(Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
-                MessageBox.Show("Unable to launch link target.  " +
-                    "Reason: " + ex.Message, Constants.AppName,
+
+                MessageBox.Show("Unable to launch link target.  Reason: " + ex.Message, Constants.AppName,
                     MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
@@ -145,8 +138,7 @@ namespace SandcastleBuilder.PlugIns
             if(txtBibliographyFile.Text.Length == 0)
             {
                 epErrors.SetIconPadding(txtBibliographyFile, 35);
-                epErrors.SetError(txtBibliographyFile,
-                    "The path to the bibliography XML file is required");
+                epErrors.SetError(txtBibliographyFile, "The path to the bibliography XML file is required");
                 isValid = false;
             }
 
@@ -157,10 +149,10 @@ namespace SandcastleBuilder.PlugIns
             root = config.SelectSingleNode("configuration");
 
             node = root.SelectSingleNode("bibliography");
+
             if(node == null)
             {
-                node = config.CreateNode(XmlNodeType.Element,
-                    "bibliography", null);
+                node = config.CreateNode(XmlNodeType.Element, "bibliography", null);
                 root.AppendChild(node);
 
                 attr = config.CreateAttribute("path");

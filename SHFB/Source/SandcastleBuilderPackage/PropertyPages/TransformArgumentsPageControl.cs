@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : TransformArgumentsPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 11/21/2012
-// Note    : Copyright 2012, Eric Woodruff, All rights reserved
+// Updated : 01/09/2014
+// Note    : Copyright 2012-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This user control is used to edit the Transform Arguments category properties
@@ -16,10 +16,14 @@
 // Version     Date     Who  Comments
 // ==============================================================================================================
 // 1.9.6.0  11/14/2012  EFW  Created the code
+//          01/07/2014  EFW  Updated to use MEF for loading the presentation styles
 // ==============================================================================================================
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition.Hosting;
+using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Xml;
@@ -27,12 +31,15 @@ using System.Xml.Linq;
 
 using Microsoft.Build.Evaluation;
 
-#if !STANDALONEGUI
-using SandcastleBuilder.Package.Properties;
-#endif
+using Sandcastle.Core;
+using Sandcastle.Core.PresentationStyle;
 
 using SandcastleBuilder.Utils;
-using SandcastleBuilder.Utils.PresentationStyle;
+
+#if !STANDALONEGUI
+using SandcastleBuilder.Package.Properties;
+using SandcastleBuilder.Package.Nodes;
+#endif
 
 namespace SandcastleBuilder.Package.PropertyPages
 {
@@ -46,7 +53,10 @@ namespace SandcastleBuilder.Package.PropertyPages
         //=====================================================================
 
         private bool changingArg;
-        private string lastStyle;
+        private string lastStyle, messageBoxTitle, lastProjectName;
+
+        private CompositionContainer componentContainer;
+        private List<Lazy<PresentationStyleSettings, IPresentationStyleMetadata>> presentationStyles;
         #endregion
 
         #region Constructor
@@ -59,6 +69,11 @@ namespace SandcastleBuilder.Package.PropertyPages
         {
             InitializeComponent();
 
+#if !STANDALONEGUI
+            messageBoxTitle = Resources.PackageTitle;
+#else
+            messageBoxTitle = Constants.AppName;
+#endif
             // Since we are dependent on the arguments from the selected presentation style, we'll refresh the
             // available arguments when necessary whenever one of the controls gains the focus.  There doesn't
             // seem to be a way to do it when the page gains focus or is made visible in Visual Studio.
@@ -67,6 +82,72 @@ namespace SandcastleBuilder.Package.PropertyPages
 
             this.Title = "Transform Args";
             this.HelpKeyword = "c584509f-0b18-49a8-ab06-114b0058a739";
+        }
+        #endregion
+
+        #region Helper methods
+        //=====================================================================
+
+        /// <summary>
+        /// Try to load information about all available presentation styles so that their arguments can be loaded
+        /// for use in the project.
+        /// </summary>
+        /// <returns>True on success, false on failure or if no project is loaded</returns>
+        private void LoadAvailablePresentationStyles()
+        {
+            SandcastleProject currentProject = null;
+            HashSet<string> presentationStyleIds = new HashSet<string>();
+            string[] searchFolders;
+
+            try
+            {
+                Cursor.Current = Cursors.WaitCursor;
+
+                if(componentContainer != null)
+                {
+                    componentContainer.Dispose();
+                    componentContainer = null;
+                }
+
+                presentationStyles = new List<Lazy<PresentationStyleSettings, IPresentationStyleMetadata>>();
+
+#if !STANDALONEGUI
+                if(base.ProjectMgr != null)
+                    currentProject = ((SandcastleBuilderProjectNode)base.ProjectMgr).SandcastleProject;
+#else
+                currentProject = base.CurrentProject;
+#endif
+                lastProjectName = currentProject == null ? null : currentProject.Filename;
+
+                if(currentProject != null)
+                    searchFolders = new[] { currentProject.ComponentPath, Path.GetDirectoryName(currentProject.Filename) };
+                else
+                    searchFolders = new string[] { };
+
+                componentContainer = ComponentUtilities.CreateComponentContainer(searchFolders);
+
+                // There may be duplicate presentation style IDs across the assemblies found.  See
+                // BuildComponentManger.GetComponentContainer() for the folder search precedence.  Only the
+                // first component for a unique ID will be used.
+                foreach(var style in componentContainer.GetExports<PresentationStyleSettings,
+                  IPresentationStyleMetadata>())
+                    if(!presentationStyleIds.Contains(style.Metadata.Id))
+                    {
+                        presentationStyles.Add(style);
+                        presentationStyleIds.Add(style.Metadata.Id);
+                    }
+            }
+            catch(Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.ToString());
+
+                MessageBox.Show("Unexpected error loading presentation styles: " + ex.Message, messageBoxTitle,
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                Cursor.Current = Cursors.Default;
+            }
         }
         #endregion
 
@@ -95,14 +176,31 @@ namespace SandcastleBuilder.Package.PropertyPages
             TreeNode t;
 
 #if !STANDALONEGUI
-            if(this.ProjectMgr == null)
+            SandcastleProject currentProject = null;
+
+            if(base.ProjectMgr != null)
+                currentProject = ((SandcastleBuilderProjectNode)base.ProjectMgr).SandcastleProject;
+
+            if(presentationStyles == null || currentProject == null || currentProject.Filename != lastProjectName)
+                this.LoadAvailablePresentationStyles();
+
+            if(base.ProjectMgr == null || currentProject == null)
+            {
+                tvArguments.Nodes.Clear();
                 return false;
+            }
 
             argsProp = this.ProjectMgr.BuildProject.GetProperty("TransformComponentArguments");
             styleProp = this.ProjectMgr.BuildProject.GetProperty("PresentationStyle");
 #else
+            if(presentationStyles == null || base.CurrentProject == null || base.CurrentProject.Filename != lastProjectName)
+                this.LoadAvailablePresentationStyles();
+
             if(this.CurrentProject == null)
+            {
+                tvArguments.Nodes.Clear();
                 return false;
+            }
 
             argsProp = this.CurrentProject.MSBuildProject.GetProperty("TransformComponentArguments");
             styleProp = this.CurrentProject.MSBuildProject.GetProperty("PresentationStyle");
@@ -112,9 +210,9 @@ namespace SandcastleBuilder.Package.PropertyPages
               styleProp.UnevaluatedValue.Equals(lastStyle, StringComparison.OrdinalIgnoreCase)))
                 return true;
 
-            var transformComponentArgs = new Dictionary<string, TransformComponentArgument>();
-
             tvArguments.Nodes.Clear();
+
+            var transformComponentArgs = new Dictionary<string, TransformComponentArgument>();
 
             try
             {
@@ -133,11 +231,27 @@ namespace SandcastleBuilder.Package.PropertyPages
                     }
                 }
 
-                if(styleProp == null || String.IsNullOrEmpty(styleProp.UnevaluatedValue) ||
-                  !PresentationStyleDictionary.AllStyles.TryGetValue(styleProp.UnevaluatedValue, out pss))
-                    pss = PresentationStyleDictionary.AllStyles[PresentationStyleDictionary.DefaultStyle];
+                if(styleProp != null && !String.IsNullOrWhiteSpace(styleProp.UnevaluatedValue))
+                {
+                    var style = presentationStyles.FirstOrDefault(s => s.Metadata.Id.Equals(
+                        styleProp.UnevaluatedValue, StringComparison.OrdinalIgnoreCase));
 
-                lastStyle = pss.Id;
+                    if(style != null)
+                        pss = style.Value;
+                }
+
+                if(pss == null)
+                {
+                    var style = presentationStyles.FirstOrDefault(s => s.Metadata.Id.Equals(
+                        Constants.DefaultPresentationStyle, StringComparison.OrdinalIgnoreCase));
+
+                    if(style != null)
+                        pss = style.Value;
+                    else
+                        pss = presentationStyles.First().Value;
+                }
+
+                lastStyle = (styleProp != null) ? styleProp.UnevaluatedValue : Constants.DefaultPresentationStyle;
 
                 // Create an entry for each transform component argument in the presentation style
                 foreach(var arg in pss.TransformComponentArguments)
@@ -160,7 +274,7 @@ namespace SandcastleBuilder.Package.PropertyPages
                     Resources.PackageTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
 #else
                 MessageBox.Show("Unable to load transform component arguments.  Error " + ex.Message,
-                    Constants.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Sandcastle.Core.Constants.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
 #endif
             }
 
@@ -221,14 +335,14 @@ namespace SandcastleBuilder.Package.PropertyPages
 
             var arg = (TransformComponentArgument)tvArguments.SelectedNode.Tag;
 
-            if(arg.Value != null)
+            if(arg.Value != null || arg.Content == null)
                 arg.Value = txtValue.Text;
             else
             {
                 // Ensure the content is valid XML
                 try
                 {
-                    XElement.Parse("<Content>" + txtValue.Text + "</Content>");
+                    arg.Content = XElement.Parse("<Content>" + txtValue.Text + "</Content>");
                 }
                 catch(XmlException ex)
                 {
@@ -236,14 +350,12 @@ namespace SandcastleBuilder.Package.PropertyPages
                     MessageBox.Show("The value does not appear to be valid XML.  Error " + ex.Message,
                         Resources.PackageTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
 #else
-                    MessageBox.Show("The value does not appear to be valid XML.  Error " + ex.Message,
-                        Constants.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("The value does not appear to be valid XML.  Error: " + ex.Message,
+                        Sandcastle.Core.Constants.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
 #endif
                     e.Cancel = true;
                     return;
                 }
-
-                arg.Content = txtValue.Text;
             }
         }
 
@@ -265,7 +377,7 @@ namespace SandcastleBuilder.Package.PropertyPages
 
             changingArg = true;
 
-            if(arg.Value != null)
+            if(arg.Value != null || arg.Content == null)
             {
                 txtValue.Multiline = false;
                 txtValue.ScrollBars = ScrollBars.None;
@@ -276,7 +388,10 @@ namespace SandcastleBuilder.Package.PropertyPages
                 txtValue.Multiline = true;
                 txtValue.Height = this.Height - txtValue.Top - 5;
                 txtValue.ScrollBars = ScrollBars.Vertical;
-                txtValue.Text = arg.Content;
+
+                var reader = arg.Content.CreateReader();
+                reader.MoveToContent();
+                txtValue.Text = reader.ReadInnerXml();
             }
 
             changingArg = false;

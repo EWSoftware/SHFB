@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder MSBuild Tasks
 // File    : BuildHelp.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/21/2013
-// Note    : Copyright 2008-2012, Eric Woodruff, All rights reserved
+// Updated : 01/08/2014
+// Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the MSBuild task used to build help file output using the Sandcastle Help File Builder
@@ -37,6 +37,8 @@ using Microsoft.Build.Execution;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 
+using Sandcastle.Core;
+
 using SandcastleBuilder.Utils.BuildEngine;
 
 namespace SandcastleBuilder.Utils.MSBuild
@@ -54,6 +56,9 @@ namespace SandcastleBuilder.Utils.MSBuild
 
         private static Regex reParseMessage = new Regex(@"^(\w{2,}):\s*(.*?)\s*" +
             @"\W(warning|error)\W\s*(\w+?\d*?):\s*(.*)", RegexOptions.IgnoreCase | RegexOptions.Multiline);
+
+        private static Regex reWarning = new Regex(@"(Warn|Warning( HXC\d+)?):|" +
+            @"SHFB\s*:\s*(W|w)arning\s.*?:|.*?(\(\d*,\d*\))?:\s*(W|w)arning\s.*?:");
 
         private SandcastleProject sandcastleProject;
         private BuildProcess buildProcess;
@@ -479,15 +484,15 @@ namespace SandcastleBuilder.Utils.MSBuild
 
                     switch(sandcastleProject.HelpFileFormat)
                     {
-                        case HelpFileFormat.HtmlHelp1:
+                        case HelpFileFormats.HtmlHelp1:
                             outputPath += ".chm";
                             break;
 
-                        case HelpFileFormat.MSHelp2:
+                        case HelpFileFormats.MSHelp2:
                             outputPath += ".hxs";
                             break;
 
-                        case HelpFileFormat.MSHelpViewer:
+                        case HelpFileFormats.MSHelpViewer:
                             outputPath += ".mshc";
                             break;
 
@@ -534,6 +539,13 @@ namespace SandcastleBuilder.Utils.MSBuild
             else
                 if(this.Verbose)
                     Log.LogMessage(MessageImportance.High, e.Message);
+                else
+                {
+                    // If not doing verbose logging, show warnings and let MSBuild filter them out if not
+                    // wanted.  Errors will kill the build so we don't have to deal with them here.
+                    if(reWarning.IsMatch(e.Message))
+                        Log.LogWarning(e.Message);
+                }
         }
         #endregion
 

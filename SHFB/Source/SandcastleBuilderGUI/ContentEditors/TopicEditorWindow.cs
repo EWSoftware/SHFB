@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : TopicEditorWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 10/11/2013
-// Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
+// Updated : 01/02/2014
+// Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the form used to edit the conceptual topic files.
@@ -30,8 +30,9 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
+using Sandcastle.Core;
+
 using SandcastleBuilder.Gui.Properties;
-using SandcastleBuilder.Utils;
 using SandcastleBuilder.Utils.ConceptualContent;
 
 using ICSharpCode.TextEditor;

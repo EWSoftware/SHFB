@@ -30,7 +30,7 @@
     </NamespaceSummaries>
     <HelpTitle>HTML to MAML Converter</HelpTitle>
     <CopyrightHref>http://Sandcastle.CodePlex.com</CopyrightHref>
-    <CopyrightText>Copyright \xA9 2008-2012, Eric Woodruff, All rights reserved</CopyrightText>
+    <CopyrightText>Copyright \xA9 2008-2014, Eric Woodruff, All rights reserved</CopyrightText>
     <FeedbackEMailAddress>Eric%40EWoodruff.us</FeedbackEMailAddress>
     <SyntaxFilters>CSharp, VisualBasic</SyntaxFilters>
     <HelpAttributes>
@@ -74,7 +74,6 @@
     <BuildLogFile />
     <HtmlHelp1xCompilerPath />
     <HtmlHelp2xCompilerPath />
-    <SandcastlePath />
     <WorkingPath />
     <BuildAssemblerVerbosity>AllMessages</BuildAssemblerVerbosity>
     <HelpFileFormat>HtmlHelp1</HelpFileFormat>
@@ -84,7 +83,7 @@
     <CppCommentsFixup>False</CppCommentsFixup>
     <SdkLinkTarget>Blank</SdkLinkTarget>
     <RootNamespaceContainer>False</RootNamespaceContainer>
-    <PresentationStyle>vs2005</PresentationStyle>
+    <PresentationStyle>VS2005</PresentationStyle>
     <Preliminary>False</Preliminary>
     <NamingMethod>Guid</NamingMethod>
     <Language>en-US</Language>
@@ -97,6 +96,9 @@
     <SccProvider>SAK</SccProvider>
     <SccAuxPath>SAK</SccAuxPath>
     <SccLocalPath>SAK</SccLocalPath>
+    <VisibleItems>InheritedMembers, InheritedFrameworkMembers, Protected, ProtectedInternalAsProtected</VisibleItems>
+    <MaximumGroupParts>2</MaximumGroupParts>
+    <NamespaceGrouping>False</NamespaceGrouping>
   </PropertyGroup>
   <!-- There are no properties for these two groups but they need to appear in
        order for Visual Studio to perform the build. -->

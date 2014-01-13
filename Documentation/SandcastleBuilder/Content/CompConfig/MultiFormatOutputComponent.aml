@@ -15,7 +15,7 @@ as the last component in the configuration file.  All subsequent components are 
 elements, one set for each possible help file format.</para>
 
 <code language="xml" title="Example Configuration"
-    source="..\..\SHFB\Source\SandcastleBuilderGUI\Templates\VS2005.config"
+    source="..\..\SHFB\Source\PresentationStyles\VS2005\Configuration\SHFBReference.config"
     region="Multi-format output component" />
 
 	<para>The example given above is taken from the Sandcastle Help File Builder's configuration template file.

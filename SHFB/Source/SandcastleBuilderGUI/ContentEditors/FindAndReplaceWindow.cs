@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder
 // File    : FindAndReplaceWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/11/2013
-// Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
+// Updated : 01/02/2014
+// Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the form used to handle search and replace in the text editor windows
@@ -21,7 +21,7 @@
 using System;
 using System.Windows.Forms;
 
-using SandcastleBuilder.Utils;
+using Sandcastle.Core;
 
 using WeifenLuo.WinFormsUI.Docking;
 

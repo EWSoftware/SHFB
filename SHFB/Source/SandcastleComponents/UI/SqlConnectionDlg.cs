@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Components
 // File    : SqlConnectionDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/14/2013
-// Note    : Copyright 2013, Eric Woodruff, All rights reserved
+// Updated : 01/02/2014
+// Note    : Copyright 2013-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a form that is used to specify the SQL Server connection string and set up the database
@@ -23,8 +23,8 @@ using System.Data.SqlClient;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
+using Sandcastle.Core;
 using SandcastleBuilder.Components.Properties;
-using SandcastleBuilder.Utils;
 
 namespace SandcastleBuilder.Components.UI
 {

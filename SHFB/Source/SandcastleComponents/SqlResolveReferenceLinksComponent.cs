@@ -258,13 +258,13 @@ namespace SandcastleBuilder.Components
             connectionString = cache.GetAttribute("connectionString", String.Empty);
 
             attrValue = cache.GetAttribute("frameworkLocalCacheSize", String.Empty);
-            frameworkCacheSize = Convert.ToInt32(attrValue);
+            frameworkCacheSize = Convert.ToInt32(attrValue, CultureInfo.InvariantCulture);
 
             attrValue = cache.GetAttribute("projectLocalCacheSize", String.Empty);
-            projectCacheSize = Convert.ToInt32(attrValue);
+            projectCacheSize = Convert.ToInt32(attrValue, CultureInfo.InvariantCulture);
 
             attrValue = cache.GetAttribute("cacheProject", String.Empty);
-            cacheProject = Convert.ToBoolean(attrValue);
+            cacheProject = Convert.ToBoolean(attrValue, CultureInfo.InvariantCulture);
 
             groupId = configuration.GetAttribute("groupId", String.Empty);
             isProjectData = groupId.StartsWith("Project_", StringComparison.OrdinalIgnoreCase);

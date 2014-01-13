@@ -19,36 +19,37 @@
     <HtmlHelpName>EWSoftware.CodeDom</HtmlHelpName>
     <ProjectSummary>Web Project Code Providers.  Written by Eric Woodruff %28&amp;lt%3ba href=&amp;quot%3bmailto:Eric%40EWoodruff.us%3fSubject=Web Code Providers&amp;quot%3b&amp;gt%3bEric%40EWoodruff.us&amp;lt%3b/a&amp;gt%3b%29.  For the latest version visit &amp;lt%3ba href=&amp;quot%3bhttp://Sandcastle.CodePlex.com&amp;quot%3b target=&amp;quot%3b_blank&amp;quot%3b&amp;gt%3bhttp://Sandcastle.CodePlex.com&amp;lt%3b/a&amp;gt%3b.</ProjectSummary>
     <MissingTags>Summary, Parameter, Returns, AutoDocumentCtors, Namespace, TypeParameter, AutoDocumentDispose</MissingTags>
-    <VisibleItems>InheritedMembers, InheritedFrameworkMembers, Protected, SealedProtected</VisibleItems>
+    <VisibleItems>InheritedMembers, InheritedFrameworkMembers, Protected, ProtectedInternalAsProtected</VisibleItems>
     <HtmlHelp1xCompilerPath>
     </HtmlHelp1xCompilerPath>
     <HtmlHelp2xCompilerPath>
     </HtmlHelp2xCompilerPath>
-    <SandcastlePath>
-    </SandcastlePath>
     <WorkingPath>
     </WorkingPath>
     <BuildLogFile>
     </BuildLogFile>
-    <FrameworkVersion>.NET Framework 2.0</FrameworkVersion>
+    <FrameworkVersion>.NET Framework 4.0</FrameworkVersion>
     <HelpTitle>EWSoftware.CodeDom Namespace Documentation</HelpTitle>
     <CopyrightHref>http://Sandcastle.CodePlex.com</CopyrightHref>
-    <CopyrightText>Copyright \xA9 2008-2012, Eric Woodruff, All rights reserved</CopyrightText>
+    <CopyrightText>Copyright \xA9 2008-2014, Eric Woodruff, All rights reserved</CopyrightText>
     <FeedbackEMailAddress>Eric%40EWoodruff.us</FeedbackEMailAddress>
-    <PresentationStyle>vs2005</PresentationStyle>
+    <PresentationStyle>VS2005</PresentationStyle>
     <HelpFileVersion>1.1.0.0</HelpFileVersion>
     <ComponentConfigurations>
     </ComponentConfigurations>
     <DocumentationSources>
-      <DocumentationSource sourceFile="..\WebCodeProviders.csproj" />
+      <DocumentationSource sourceFile="..\..\..\Deploy\Extras\EWSoftware.CodeDom.dll" />
+      <DocumentationSource sourceFile="..\..\..\Deploy\Extras\EWSoftware.CodeDom.xml" />
     </DocumentationSources>
     <HelpAttributes>
       <HelpAttribute name="DocSet" value="{@HtmlHelpName}" />
-<HelpAttribute name="DocSet" value="NetFramework" />
-<HelpAttribute name="TargetOS" value="Windows" /></HelpAttributes>
+      <HelpAttribute name="DocSet" value="NetFramework" />
+      <HelpAttribute name="TargetOS" value="Windows" />
+    </HelpAttributes>
     <NamespaceSummaries>
       <NamespaceSummaryItem name="(global)" isDocumented="False" />
-<NamespaceSummaryItem name="EWSoftware.CodeDom" isDocumented="True">Custom code providers for website projects that can generate XML comments files for all code in the project.</NamespaceSummaryItem></NamespaceSummaries>
+      <NamespaceSummaryItem name="EWSoftware.CodeDom" isDocumented="True">Custom code providers for website projects that can generate XML comments files for all code in the project.</NamespaceSummaryItem>
+    </NamespaceSummaries>
     <ApiFilter />
     <PlugInConfigurations>
       <PlugInConfig id="Output Deployment" enabled="True">
@@ -93,11 +94,13 @@
     <KeepLogFile>True</KeepLogFile>
     <DisableCodeBlockComponent>False</DisableCodeBlockComponent>
     <CppCommentsFixup>False</CppCommentsFixup>
-    <CleanIntermediates>True</CleanIntermediates>
+    <CleanIntermediates>False</CleanIntermediates>
     <SccProjectName>SAK</SccProjectName>
     <SccProvider>SAK</SccProvider>
     <SccAuxPath>SAK</SccAuxPath>
     <SccLocalPath>SAK</SccLocalPath>
+    <MaximumGroupParts>2</MaximumGroupParts>
+    <NamespaceGrouping>False</NamespaceGrouping>
   </PropertyGroup>
   <!-- There are no properties for these two groups but they need to appear in
        order for Visual Studio to perform the build. -->

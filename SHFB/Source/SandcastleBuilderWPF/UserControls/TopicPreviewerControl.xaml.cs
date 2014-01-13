@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : TopicPreviewerControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/12/2013
-// Note    : Copyright 2012-2013, Eric Woodruff, All rights reserved
+// Updated : 01/02/2014
+// Note    : Copyright 2012-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the class used to preview MAML topic files.
@@ -33,6 +33,8 @@ using System.Windows.Media;
 using System.Xml.Linq;
 
 using ColorizerLibrary;
+
+using Sandcastle.Core;
 
 using SandcastleBuilder.Utils;
 using SandcastleBuilder.Utils.BuildComponent;
@@ -138,7 +140,7 @@ namespace SandcastleBuilder.WPF.UserControls
             if(MamlToFlowDocumentConverter.CodeColorizer == null)
                 try
                 {
-                    string colorizerPath = Path.Combine(BuildComponentManager.HelpFileBuilderFolder, "Colorizer");
+                    string colorizerPath = Path.Combine(ComponentUtilities.ToolsFolder, "Colorizer");
 
                     MamlToFlowDocumentConverter.CodeColorizer = new CodeColorizer(Path.Combine(colorizerPath,
                       "highlight.xml"), Path.Combine(colorizerPath, "highlight_flowDoc.xsl"))

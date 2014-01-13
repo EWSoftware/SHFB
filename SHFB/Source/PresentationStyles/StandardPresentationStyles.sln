@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StandardPresentationStyles", "StandardPresentationStyles.csproj", "{70CFBFC8-F047-4FFD-A999-98CC3EB39BD9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandcastle.Core", "..\SandcastleCore\Sandcastle.Core.csproj", "{399E78F8-4954-409E-991A-37DA9D0579CC}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 3
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs01
+		SccProjectUniqueName0 = ..\\SandcastleCore\\Sandcastle.Core.csproj
+		SccProjectName0 = ../SandcastleCore
+		SccLocalPath0 = ..\\SandcastleCore
+		SccLocalPath1 = .
+		SccProjectUniqueName2 = StandardPresentationStyles.csproj
+		SccLocalPath2 = .
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{70CFBFC8-F047-4FFD-A999-98CC3EB39BD9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70CFBFC8-F047-4FFD-A999-98CC3EB39BD9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70CFBFC8-F047-4FFD-A999-98CC3EB39BD9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70CFBFC8-F047-4FFD-A999-98CC3EB39BD9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{399E78F8-4954-409E-991A-37DA9D0579CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{399E78F8-4954-409E-991A-37DA9D0579CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{399E78F8-4954-409E-991A-37DA9D0579CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{399E78F8-4954-409E-991A-37DA9D0579CC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

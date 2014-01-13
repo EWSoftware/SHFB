@@ -426,9 +426,8 @@ namespace System.Compiler
         /// <param name="version">The framework version</param>
         public static void SetFrameworkInformation(string platformType, string version)
         {
-            var fd = Microsoft.Ddue.Tools.Frameworks.FrameworkDictionary.LoadSandcastleFrameworkDictionary();
-
-            var fs = fd.FrameworkMatching(platformType, new Version(version), true);
+            var fs = Sandcastle.Core.Frameworks.FrameworkDictionary.AllFrameworks.FrameworkMatching(
+                platformType, new Version(version), true);
 
             if(fs == null)
                 throw new InvalidOperationException(String.Format("Unable to locate information for the " +

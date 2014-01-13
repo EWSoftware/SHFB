@@ -17,8 +17,10 @@ are safe for use in multi-threaded scenarios.</para>
 
 				<para>The <codeInline>static</codeInline> attribute specifies whether static members of the class or 
 structure are safe for use in multi-threaded operations.  The <codeInline>instance</codeInline> attribute
-specifies whether instance members of the class or structure are safe for use in multi-threaded operations.</para>
-				
+specifies whether instance members of the class or structure are safe for use in multi-threaded operations.  If
+neither attribute is specified, it is the same as setting <codeInline>static</codeInline> to true and
+<codeInline>instance</codeInline> to false.</para>
+
 				<alert class="note">
 					<para>This is a custom XML comments element implemented by Sandcastle.  It will not appear in the list
 of valid elements for XML comments IntelliSense.</para>

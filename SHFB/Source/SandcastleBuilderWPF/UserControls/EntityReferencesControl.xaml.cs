@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : EntityReferencesControl.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 05/10/2013
-// Note    : Copyright 2011-2013, Eric Woodruff, All rights reserved
+// Updated : 01/02/2014
+// Note    : Copyright 2011-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the WPF user control used to look up code entity references, code snippets, tokens, images,
@@ -32,9 +32,10 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Xml.XPath;
 
+using Sandcastle.Core.Frameworks;
+
 using SandcastleBuilder.Utils;
 using SandcastleBuilder.Utils.ConceptualContent;
-using SandcastleBuilder.Utils.Frameworks;
 using SandcastleBuilder.Utils.InheritedDocumentation;
 using SandcastleBuilder.Utils.MSBuild;
 

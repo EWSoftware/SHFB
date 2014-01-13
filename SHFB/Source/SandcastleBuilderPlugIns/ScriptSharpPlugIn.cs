@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Plug-Ins
 // File    : ScriptSharpPlugIn.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/17/2013
-// Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
+// Updated : 01/02/2014
+// Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a plug-in designed to modify the reflection information file produced after running
@@ -30,6 +30,8 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.XPath;
+
+using Sandcastle.Core;
 
 using SandcastleBuilder.Utils;
 using SandcastleBuilder.Utils.BuildComponent;
@@ -298,7 +300,7 @@ namespace SandcastleBuilder.PlugIns
             task.Attributes.Append(attr);
 
             attr = project.CreateAttribute("Transformations");
-            attr.Value = Path.Combine(BuildComponentManager.HelpFileBuilderFolder,
+            attr.Value = Path.Combine(ComponentUtilities.ToolsFolder,
                 @"~\ProductionTransforms\FixScriptSharp.xsl");
             task.Attributes.Append(attr);
 

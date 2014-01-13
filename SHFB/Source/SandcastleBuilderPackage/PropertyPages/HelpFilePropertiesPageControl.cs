@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : HelpFilePropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 12/21/2013
-// Note    : Copyright 2011-2013, Eric Woodruff, All rights reserved
+// Updated : 01/09/2014
+// Note    : Copyright 2011-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This user control is used to edit the Help File category properties.
@@ -19,24 +19,25 @@
 // 1.9.6.0  10/27/2012  EFW  Added support for the new presentation style definition file
 // -------  12/13/2013  EFW  Added support for namespace grouping
 //          12/21/2013  EFW  Updated to use MEF for loading the syntax generators
+//          01/05/2014  EFW  Updated to use MEF for loading the presentation styles
 //===============================================================================================================
 
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 using Microsoft.Build.Evaluation;
 
+using Sandcastle.Core;
 using Sandcastle.Core.BuildAssembler.SyntaxGenerator;
+using Sandcastle.Core.PresentationStyle;
 
 using SandcastleBuilder.Utils;
-using SandcastleBuilder.Utils.BuildComponent;
 using SandcastleBuilder.Utils.Design;
-using SandcastleBuilder.Utils.PresentationStyle;
-
 
 #if !STANDALONEGUI
 using SandcastleBuilder.Package.Nodes;
@@ -55,6 +56,7 @@ namespace SandcastleBuilder.Package.PropertyPages
         //=====================================================================
 
         private List<ISyntaxGeneratorMetadata> syntaxGenerators;
+        private List<IPresentationStyleMetadata> presentationStyles;
         private string messageBoxTitle, lastProjectName;
         #endregion
 
@@ -71,7 +73,7 @@ namespace SandcastleBuilder.Package.PropertyPages
 #if !STANDALONEGUI
             messageBoxTitle = Resources.PackageTitle;
 #else
-            messageBoxTitle = SandcastleBuilder.Utils.Constants.AppName;
+            messageBoxTitle = Constants.AppName;
 #endif
             // Set the maximum size to prevent an unnecessary vertical scrollbar
             this.MaximumSize = new System.Drawing.Size(2048, this.Height);
@@ -91,9 +93,9 @@ namespace SandcastleBuilder.Package.PropertyPages
                 { NamingMethod.MemberName.ToString(), "Member name" },
                 { NamingMethod.HashedMemberName.ToString(), "Hashed member name" } }).ToList();
 
+            // The presentation style data source is loaded when needed
             cboPresentationStyle.DisplayMember = "Title";
             cboPresentationStyle.ValueMember = "Id";
-            cboPresentationStyle.DataSource = PresentationStyleDictionary.AllStyles.Values.ToList();
 
             cboSdkLinkTarget.Items.AddRange(Enum.GetNames(typeof(SdkLinkTarget)).OfType<Object>().ToArray());
             cboSdkLinkTarget.SelectedItem = SdkLinkTarget.Blank.ToString();
@@ -113,25 +115,33 @@ namespace SandcastleBuilder.Package.PropertyPages
         /// in the project.
         /// </summary>
         /// <returns>True on success, false on failure or if no project is loaded</returns>
-        private void LoadAvailableSyntaxGenerators()
+        private void LoadAvailableSyntaxGeneratorsAndPresentationStyles()
         {
-            SandcastleProject currentProject;
-            HashSet<string> generatorIds = new HashSet<string>();
+            SandcastleProject currentProject = null;
+            HashSet<string> generatorIds = new HashSet<string>(), presentationStyleIds = new HashSet<string>();
+            string[] searchFolders;
 
             try
             {
                 Cursor.Current = Cursors.WaitCursor;
 
                 syntaxGenerators = new List<ISyntaxGeneratorMetadata>();
+                presentationStyles = new List<IPresentationStyleMetadata>();
 
 #if !STANDALONEGUI
-                currentProject = ((SandcastleBuilderProjectNode)base.ProjectMgr).SandcastleProject;
+                if(base.ProjectMgr != null)
+                    currentProject = ((SandcastleBuilderProjectNode)base.ProjectMgr).SandcastleProject;
 #else
                 currentProject = base.CurrentProject;
 #endif
                 lastProjectName = currentProject == null ? null : currentProject.Filename;
 
-                using(var componentContainer = BuildComponentManager.GetComponentContainer(currentProject))
+                if(currentProject != null)
+                    searchFolders = new[] { currentProject.ComponentPath, Path.GetDirectoryName(currentProject.Filename) };
+                else
+                    searchFolders = new string[] { };
+
+                using(var componentContainer = ComponentUtilities.CreateComponentContainer(searchFolders))
                 {
                     cblSyntaxFilters.Items.Clear();
 
@@ -147,9 +157,24 @@ namespace SandcastleBuilder.Package.PropertyPages
                             syntaxGenerators.Add(generator);
                             generatorIds.Add(generator.Id);
                         }
+
+                    cboPresentationStyle.DataSource = null;
+
+                    var styles = componentContainer.GetExports<PresentationStyleSettings,
+                        IPresentationStyleMetadata>().Select(g => g.Metadata).ToList();
+
+                    // As above for duplicates
+                    foreach(var style in styles)
+                        if(!presentationStyleIds.Contains(style.Id))
+                        {
+                            presentationStyles.Add(style);
+                            presentationStyleIds.Add(style.Id);
+                        }
                 }
 
                 cblSyntaxFilters.Items.AddRange(syntaxGenerators.Select(f => f.Id).OrderBy(f => f).ToArray());
+                cboPresentationStyle.DataSource = presentationStyles.OrderBy(s => s.Id).ToList();
+                cboPresentationStyle.SelectedValue = Constants.DefaultPresentationStyle;
 
                 // Resize the syntax filter columns to the widest entry
                 int width, maxWidth = 0;
@@ -168,8 +193,8 @@ namespace SandcastleBuilder.Package.PropertyPages
             {
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
 
-                MessageBox.Show("Unexpected error loading plug-ins: " + ex.Message, messageBoxTitle,
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Unexpected error loading syntax generators and presentation styles: " +
+                    ex.Message, messageBoxTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {
@@ -180,6 +205,10 @@ namespace SandcastleBuilder.Package.PropertyPages
                 cblSyntaxFilters.SelectedIndex = 0;
             else
                 MessageBox.Show("No valid syntax generators found", messageBoxTitle, MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+
+            if(cboPresentationStyle.Items.Count == 0)
+                MessageBox.Show("No valid presentation styles found", messageBoxTitle, MessageBoxButtons.OK,
                     MessageBoxIcon.Information);
         }
 
@@ -276,7 +305,7 @@ namespace SandcastleBuilder.Package.PropertyPages
         /// <inheritdoc />
         protected override bool BindControlValue(Control control)
         {
-            ProjectProperty projProp;
+            ProjectProperty projProp = null;
             List<string> allFilters;
             int idx;
 
@@ -316,25 +345,28 @@ namespace SandcastleBuilder.Package.PropertyPages
                 if(base.ProjectMgr != null)
                     currentProject = ((SandcastleBuilderProjectNode)base.ProjectMgr).SandcastleProject;
 
-                if(syntaxGenerators == null || currentProject == null || currentProject.Filename != lastProjectName)
-                    this.LoadAvailableSyntaxGenerators();
+                if(syntaxGenerators == null || presentationStyles == null || currentProject == null ||
+                  currentProject.Filename != lastProjectName)
+                    this.LoadAvailableSyntaxGeneratorsAndPresentationStyles();
 
-                projProp = this.ProjectMgr.BuildProject.GetProperty("SyntaxFilters");
+                if(base.ProjectMgr != null)
+                    projProp = base.ProjectMgr.BuildProject.GetProperty("SyntaxFilters");
 #else
-                if(syntaxGenerators == null || base.CurrentProject == null ||
+                if(syntaxGenerators == null || presentationStyles == null || base.CurrentProject == null ||
                   base.CurrentProject.Filename != lastProjectName)
-                    this.LoadAvailableSyntaxGenerators();
+                    this.LoadAvailableSyntaxGeneratorsAndPresentationStyles();
 
-                projProp = this.CurrentProject.MSBuildProject.GetProperty("SyntaxFilters");
+                if(base.CurrentProject != null)
+                    projProp = base.CurrentProject.MSBuildProject.GetProperty("SyntaxFilters");
 #endif
 
                 if(projProp != null)
                 {
-                    allFilters = BuildComponentManager.SyntaxFiltersFrom(syntaxGenerators,
+                    allFilters = ComponentUtilities.SyntaxFiltersFrom(syntaxGenerators,
                         projProp.UnevaluatedValue).Select(f => f.Id).ToList();
                 }
                 else
-                    allFilters = BuildComponentManager.SyntaxFiltersFrom(syntaxGenerators, "Standard").Select(
+                    allFilters = ComponentUtilities.SyntaxFiltersFrom(syntaxGenerators, "Standard").Select(
                         f => f.Id).ToList();
 
                 foreach(string s in allFilters)
@@ -366,11 +398,11 @@ namespace SandcastleBuilder.Package.PropertyPages
             {
 #if !STANDALONEGUI
                 this.ProjectMgr.SetProjectProperty("SyntaxFilters",
-                    BuildComponentManager.ToRecognizedSyntaxFilterIds(syntaxGenerators, String.Join(", ",
+                    ComponentUtilities.ToRecognizedSyntaxFilterIds(syntaxGenerators, String.Join(", ",
                         cblSyntaxFilters.CheckedItems.Cast<string>().ToArray())));
 #else
                 this.CurrentProject.MSBuildProject.SetProperty("SyntaxFilters",
-                    BuildComponentManager.ToRecognizedSyntaxFilterIds(syntaxGenerators, String.Join(", ",
+                    ComponentUtilities.ToRecognizedSyntaxFilterIds(syntaxGenerators, String.Join(", ",
                         cblSyntaxFilters.CheckedItems.Cast<string>().ToArray())));
 #endif
                 return true;
@@ -404,7 +436,7 @@ namespace SandcastleBuilder.Package.PropertyPages
         /// <param name="e">The event arguments</param>
         private void cboPresentationStyle_SelectedIndexChanged(object sender, EventArgs e)
         {
-            PresentationStyleSettings pss;
+            IPresentationStyleMetadata pss;
 
             // If the presentation style wasn't recognized, it may not have matched by case
             if(cboPresentationStyle.SelectedIndex == -1)
@@ -415,7 +447,9 @@ namespace SandcastleBuilder.Package.PropertyPages
                 string prop = base.CurrentProject.MSBuildProject.GetPropertyValue("PresentationStyle");
 #endif
                 // Try to get it based on the current setting.  If still not found, use the first one.
-                if(!PresentationStyleDictionary.AllStyles.TryGetValue(prop, out pss))
+                pss = presentationStyles.FirstOrDefault(s => s.Id.Equals(prop, StringComparison.OrdinalIgnoreCase));
+
+                if(pss == null)
                     cboPresentationStyle.SelectedIndex = 0;
                 else
                     cboPresentationStyle.SelectedValue = pss.Id;
@@ -423,9 +457,10 @@ namespace SandcastleBuilder.Package.PropertyPages
                 return;
             }
 
-            pss = (PresentationStyleSettings)cboPresentationStyle.Items[cboPresentationStyle.SelectedIndex];
+            pss = (IPresentationStyleMetadata)cboPresentationStyle.Items[cboPresentationStyle.SelectedIndex];
 
-            epNotes.SetError(cboPresentationStyle, pss.Description);
+            epNotes.SetError(cboPresentationStyle, String.Format(CultureInfo.InvariantCulture,
+                "{0}\r\n\r\nVersion {1}\r\n{2}", pss.Description, pss.Version, pss.Copyright));
         }
         #endregion
     }

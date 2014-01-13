@@ -21,6 +21,10 @@
       <DocumentationSource sourceFile="..\..\SHFB\Deploy\ColorizerLibrary.dll" />
       <DocumentationSource sourceFile="..\..\SHFB\Deploy\ICSharpCode.TextEditor.dll" />
       <DocumentationSource sourceFile="..\..\SHFB\Deploy\WeifenLuo.WinFormsUI.Docking.dll" />
+      <DocumentationSource sourceFile="..\..\SHFB\Source\BuildAssembler\BuildComponents\BuildComponents.csproj" />
+      <DocumentationSource sourceFile="..\..\SHFB\Source\BuildAssembler\BuildComponentTargets\BuildComponentTargets.csproj" />
+      <DocumentationSource sourceFile="..\..\SHFB\Source\SandcastleCore\Sandcastle.Core.csproj" />
+      <DocumentationSource sourceFile="..\..\SHFB\Source\CodeColorizer\ColorizerLibrary\ColorizerLibrary.csproj" />
     </DocumentationSources>
     <CppCommentsFixup>False</CppCommentsFixup>
     <FrameworkVersion>.NET Framework 4.0</FrameworkVersion>
@@ -36,7 +40,6 @@
     <BuildLogFile />
     <HtmlHelp1xCompilerPath />
     <HtmlHelp2xCompilerPath />
-    <SandcastlePath />
     <WorkingPath />
     <BuildAssemblerVerbosity>AllMessages</BuildAssemblerVerbosity>
     <HelpFileFormat>HtmlHelp1</HelpFileFormat>
