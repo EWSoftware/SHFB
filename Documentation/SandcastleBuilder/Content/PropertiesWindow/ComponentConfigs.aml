@@ -38,26 +38,21 @@ set to true, the code colorization features of the component will be disabled.</
 		</section>
 
 		<section address="ThirdPartyComps">
-			<title>Making Third-Party Build Components Available</title>
+			<title>Adding Third-Party Build Components</title>
 			<content>
-				<para>Third-party build components can also be made available on this property page by copying their
-assembly, configuration file, and any supporting files to the <localUri>.\Components and Plug-Ins</localUri>
+
+				<para>Custom build components can be made available on this property page by creating a
+<application>BuildAssembler</application> Managed Extensibility Framework (MEF) component.  Copy the
+build component's assembly and any supporting files to the <localUri>.\Components and Plug-Ins</localUri>
 folder or a subfolder beneath it in the help file builder's <legacyBold>Common Application Data</legacyBold>
-folder.  See the <link xlink:href="a24489fb-45d6-46f4-9eaa-9a9c4e0919b2#BuildComponents" /> topic for more
-information.  Refer to the component's documentation for information about its features and configuration
-options.  See the <link xlink:href="e6d18448-2459-46f1-bbdc-a7db415f2bda" /> topic for information on creating a
-configuration file for a third-party component that does not have one or to allow configuration of a stock
-Sandcastle build component.  For a list of current third-party build components, see the
+folder.  If project specific, the components can be located in the help file builder project's folder or in a
+folder referred to in its <codeInline>Component Path</codeInline> property.  See the
+<link xlink:href="a24489fb-45d6-46f4-9eaa-9a9c4e0919b2#BuildComponents" /> topic for more information.  Refer to
+the build component's documentation for information about its features and configuration options.  See the
+<link xlink:href="e6d18448-2459-46f1-bbdc-a7db415f2bda" /> topic for information on creating a third-party
+build component.  For a list of current third-party build components, see the
 <link xlink:href="c18d6cb6-e4e4-4944-84ee-f867aa6cfb0d" /> topic.</para>
 
-				<para>For information on writing your own custom build components, see the Code Project article
-					<externalLink>
-						<linkText>Creating Custom Build Components for Sandcastle</linkText>
-						<linkUri>http://www.codeproject.com/Articles/16740/Creating-Custom-Build-Components-for-Sandcastle</linkUri>
-						<linkTarget>_blank</linkTarget>
-					</externalLink>.
-				</para>
-				
 			</content>
 		</section>
 

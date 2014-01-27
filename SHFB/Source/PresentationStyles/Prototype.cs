@@ -30,7 +30,7 @@ namespace Sandcastle.PresentationStyles
     /// <summary>
     /// This contains the definition for the Prototype presentation style
     /// </summary>
-    [PresentationStyleExport("Prototype", "Prototype (Deprecated)", Version = AssemblyInfo.Version,
+    [PresentationStyleExport("Prototype", "Prototype (Deprecated)", Version = AssemblyInfo.ProductVersion,
       Copyright = AssemblyInfo.Copyright, Description = "This style has been deprecated and is no longer " +
       "supported.  It was the first style provided with Sandcastle.")]
     public sealed class Prototype : PresentationStyleSettings

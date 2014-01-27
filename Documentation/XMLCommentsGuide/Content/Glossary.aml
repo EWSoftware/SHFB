@@ -50,7 +50,6 @@ conceptual content topics and their related files.</para>
 walkthroughs, tutorials, etc. to a help file.  Conceptual topics use MAML rather than HTML to define their
 content.</para>
         </definition>
-        <relatedEntry termId="AdditionalContent" />
         <relatedEntry termId="MAML" />
       </glossaryEntry>
 

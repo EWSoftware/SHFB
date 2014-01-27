@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : ComponentUtilities.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/10/2014
+// Updated : 01/18/2014
 // Note    : Copyright 2007-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -36,6 +36,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 
 using Sandcastle.Core.BuildAssembler.SyntaxGenerator;
 
@@ -51,6 +52,8 @@ namespace Sandcastle.Core
         //=====================================================================
 
         private static string toolsFolder, componentsFolder;
+
+        private static Regex reSyntaxSplitter = new Regex(",\\s*");
 
         #endregion
 
@@ -152,13 +155,13 @@ namespace Sandcastle.Core
             HashSet<string> searchedFolders = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
             foreach(string folder in folders)
-                AddAssemblyCatalogs(catalog, folder, searchedFolders);
+                AddAssemblyCatalogs(catalog, folder, searchedFolders, true);
 
-            AddAssemblyCatalogs(catalog, ComponentsFolder, searchedFolders);
+            AddAssemblyCatalogs(catalog, ComponentsFolder, searchedFolders, true);
 
             // As noted in the comments above, the root SHFB folder is always searched first due to how MEF
             // uses directory catalogs.  This will add components from subfolders beneath it too.
-            AddAssemblyCatalogs(catalog, ToolsFolder, searchedFolders);
+            AddAssemblyCatalogs(catalog, ToolsFolder, searchedFolders, true);
 
             return new CompositionContainer(catalog);
         }
@@ -171,11 +174,13 @@ namespace Sandcastle.Core
         /// <param name="folder">The root folder to search.  It and all subfolders recursively will be searched
         /// for assemblies to add to the aggregate catalog.</param>
         /// <param name="searchedFolders">A hash set of folders that have already been searched and added.</param>
+        /// <param name="includeSubfolders">True to search subfolders recursively, false to only search the given
+        /// folder.</param>
         /// <remarks>It is done this way to prevent a single assembly that would normally be discovered via a
         /// directory catalog from preventing all assemblies from loading if it cannot be examined when the parts
         /// are composed (i.e. trying to load a Windows Store assembly on Windows 7).</remarks>
         private static void AddAssemblyCatalogs(AggregateCatalog catalog, string folder,
-          HashSet<string> searchedFolders)
+          HashSet<string> searchedFolders, bool includeSubfolders)
         {
             if(!String.IsNullOrWhiteSpace(folder) && Directory.Exists(folder) && !searchedFolders.Contains(folder))
             {
@@ -217,8 +222,9 @@ namespace Sandcastle.Core
                 }
 
                 // Enumerate subfolders separately so that we can skip future requests for the same folder
-                foreach(string subfolder in Directory.EnumerateDirectories(folder, "*", SearchOption.AllDirectories))
-                    AddAssemblyCatalogs(catalog, subfolder, searchedFolders);
+                if(includeSubfolders)
+                    foreach(string subfolder in Directory.EnumerateDirectories(folder, "*", SearchOption.AllDirectories))
+                        AddAssemblyCatalogs(catalog, subfolder, searchedFolders, false);
             }
         }
         #endregion
@@ -253,8 +259,8 @@ namespace Sandcastle.Core
                       StringComparison.OrdinalIgnoreCase) == -1))
                         filterIds = "AllButUsage";
                     else
-                        if(definedCount == 4 && (definedFilters.All(df => df.Id == "CSharp" ||
-                          df.Id == "VisualBasic" || df.Id == "CPlusPlus" || df.Id == "FSharp")))
+                        if(definedCount == 4 && (definedFilters.All(df => df.Id == "C#" ||
+                          df.Id == "Visual Basic" || df.Id == "Managed C++" || df.Id == "F#")))
                             filterIds = "Standard";
                         else
                             filterIds = String.Join(", ", definedFilters.Select(f => f.Id).ToArray());
@@ -282,15 +288,15 @@ namespace Sandcastle.Core
             if(filterIds == null)
                 filterIds = String.Empty;
 
-            foreach(string id in filterIds.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries))
+            foreach(string id in reSyntaxSplitter.Split(filterIds).Where(f => f.Length != 0))
             {
                 // IDs are matched in lowercase
                 syntaxId = id.ToLowerInvariant();
 
                 // Translate from some common alternate names if necessary
                 foreach(var sf in allFilters)
-                    if(sf.AlternateIds.ToLowerInvariant().Split(new[] { ',', ' ' },
-                      StringSplitOptions.RemoveEmptyEntries).Contains(syntaxId))
+                    if(reSyntaxSplitter.Split((sf.AlternateIds ?? String.Empty).ToLowerInvariant()).Where(
+                      f => f.Length != 0).Contains(syntaxId))
                     {
                         syntaxId = sf.Id.ToLowerInvariant();
                         break;
@@ -317,10 +323,10 @@ namespace Sandcastle.Core
 
                     case "standard":    // Standard syntax filters
                         filters.AddRange(allFilters.Where(sf =>
-                            sf.Id.Equals("CSharp", StringComparison.OrdinalIgnoreCase) ||
-                            sf.Id.Equals("VisualBasic", StringComparison.OrdinalIgnoreCase) ||
-                            sf.Id.Equals("CPlusPlus", StringComparison.OrdinalIgnoreCase) ||
-                            sf.Id.Equals("FSharp", StringComparison.OrdinalIgnoreCase)));
+                            sf.Id.Equals("C#", StringComparison.OrdinalIgnoreCase) ||
+                            sf.Id.Equals("Visual Basic", StringComparison.OrdinalIgnoreCase) ||
+                            sf.Id.Equals("Managed C++", StringComparison.OrdinalIgnoreCase) ||
+                            sf.Id.Equals("F#", StringComparison.OrdinalIgnoreCase)));
                         break;
 
                     default:

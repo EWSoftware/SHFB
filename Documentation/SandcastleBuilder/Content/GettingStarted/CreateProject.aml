@@ -129,6 +129,13 @@ or later.  You can alter the settings used for it via the <link xlink:href="2152
           </steps>
         </procedure>
 
+				<para>If you created the project using the Visual Studio template, the project will contain a content
+layout file, logo image, and some default conceptual topics (a welcome page and simple version history).  See the
+welcome topic for some general information on adding and managing conceptual content.  See the
+<link xlink:href="3d4edd2d-7883-4508-b9d2-bd7b4d848b0d" /> topic and its subtopics for more specific information
+on conceptual content.  See the <legacyBold>Sandcastle MAML Guide</legacyBold> help file for more information on
+the MAML elements that are used to create conceptual topic files.</para>
+
         <para>If you have been using a different documentation tool, you may be able to create a Sandcastle Help File
 Builder project based on the other tool's project file.</para>
 

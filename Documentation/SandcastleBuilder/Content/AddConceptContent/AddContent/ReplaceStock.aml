@@ -7,9 +7,9 @@
     <introduction>
       <para>A benefit of the additional content implementation is that it is possible to replace the stock
 content that appears in each help file.  The stock content is copied from a presentation style sub-folder which
-can be found under the <localUri>.\Presentation</localUri> folder of the main Sandcastle installation folder.
-Each presentation style has its own folder such as <localUri>.\VS2005</localUri>, <localUri>.\VS2010</localUri>,
-<localUri>.\Prototype</localUri>, and <localUri>.\Hana</localUri>.</para>
+can be found under the <localUri>.\PresentationStyles</localUri> folder of the root help file builder
+installation folder.  Each presentation style has its own folder such as <localUri>.\VS2005</localUri>,
+<localUri>.\VS2010</localUri>, <localUri>.\Prototype</localUri>, and <localUri>.\Hana</localUri>.</para>
     </introduction>
 
 <section>

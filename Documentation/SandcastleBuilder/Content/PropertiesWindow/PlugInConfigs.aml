@@ -27,19 +27,20 @@ the project so that it will work as expected.  </para>
 		</section>
 
 		<section address="ThirdPartyPlugIns">
-			<title>Making Third-Party Plug-Ins Available</title>
+			<title>Adding Third-Party Build Process Plug-Ins</title>
 			<content>
-				<para>Third-party plug-ins can also be made available on this property page by copying their assembly
-and any supporting files to the <localUri>.\Components and Plug-Ins</localUri> folder or a subfolder beneath it
-in the help file builder's <legacyBold>Common Application Data</legacyBold> folder.  See the
-<link xlink:href="a24489fb-45d6-46f4-9eaa-9a9c4e0919b2#PlugIns" /> topic for more information.  Refer to the
-plug-in's documentation for information about its features and configuration options.  For a list of current
-third-party plug-ins, see the <link xlink:href="c18d6cb6-e4e4-4944-84ee-f867aa6cfb0d#ThirdParty" /> topic.
-				</para>
-
-				<para>For information on creating your own build process plug-ins, see the
-<link xlink:href="a14e026e-642f-4ce6-9506-341e57cc3d1f" /> topic.
-				</para>
+				
+				<para>Custom build process plug-ins can be made available on this property page by creating a
+help file builder plug-in Managed Extensibility Framework (MEF) component.  Copy the plug-in's assembly and any
+supporting files to the <localUri>.\Components and Plug-Ins</localUri> folder or a subfolder beneath it in the
+help file builder's <legacyBold>Common Application Data</legacyBold> folder.  If project specific, the components
+can be located in the help file builder project's folder or in a folder referred to in its
+<codeInline>Component Path</codeInline> property.  See the
+<link xlink:href="a24489fb-45d6-46f4-9eaa-9a9c4e0919b2#PlugIns" /> topic for more information.  Refer to
+the build component's documentation for information about its features and configuration options.  See the
+<link xlink:href="a14e026e-642f-4ce6-9506-341e57cc3d1f" /> topic for information on creating a third-party
+build component.  For a list of current third-party build components, see the
+<link xlink:href="c18d6cb6-e4e4-4944-84ee-f867aa6cfb0d" /> topic.</para>
 			</content>
 		</section>
 

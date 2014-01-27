@@ -36,7 +36,8 @@ This saves you from having to annotate every single class and member with this e
 
 				<alert class="note">
 					<para>This is a custom XML comments element implemented by Sandcastle.  It will not appear in the list
-of valid elements for XML comments IntelliSense.</para>
+of valid elements for XML comments IntelliSense.  If applied to a type, the preliminary message will be
+propagated to all members of the type and will appear in their topics as well.</para>
 				</alert>
 			</content>
 		</section>

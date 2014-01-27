@@ -105,8 +105,8 @@ files so that their information is cached in the same group within the table dat
 &lt;!-- This should replace the standard ResolveReferenceLinksComponent2 build
      component. --&gt;
 &lt;component id="Resolve Reference Links (SQL Cache)"&gt;
-	&lt;locale="{@Locale}" /&gt;
-	&lt;linkTarget="{@SdkLinkTarget}" /&gt;
+  &lt;locale value="{@Locale}" /&gt;
+  &lt;linkTarget value="{@SdkLinkTarget}" /&gt;
   &lt;sqlCache connectionString="Data Source=(localdb)\v11.0;Initial Catalog=Sandcastle"
     msdnLocalCacheSize="2500" frameworkLocalCacheSize="2500"
     projectLocalCacheSize="2500" cacheProject="false" /&gt;

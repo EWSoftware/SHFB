@@ -26,7 +26,7 @@ namespace Sandcastle.Core.BuildAssembler.SyntaxGenerator
     public interface ISyntaxGeneratorMetadata
     {
         /// <summary>
-        /// This read-only property returns the ID for the syntax generator
+        /// This read-only property returns the ID for the syntax generator (typically the language name)
         /// </summary>
         string Id { get; }
 
@@ -45,7 +45,7 @@ namespace Sandcastle.Core.BuildAssembler.SyntaxGenerator
         /// <summary>
         /// This read-only property returns true if the syntax generator is configurable or false if it is not
         /// </summary>
-        /// <value>TODO: Configuration implementation to be determined.</value>
+        /// <value>Configuration is handled by the <c>SyntaxComponent</c> build component.</value>
         bool IsConfigurable { get; }
 
         /// <summary>

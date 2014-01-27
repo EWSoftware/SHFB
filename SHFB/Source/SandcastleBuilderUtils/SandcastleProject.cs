@@ -22,7 +22,7 @@
 // 1.3.1.0  09/26/2006  EFW  Added the ShowMissing* properties
 // 1.3.1.0  10/02/2006  EFW  Added support for the September CTP and the the Document* properties
 // 1.3.2.0  11/03/2006  EFW  Added the NamingMethod property
-// 1.3.3.1  11/24/2006  EFW  Added the SyntaxFilters property, support for build component confurations, and
+// 1.3.3.1  11/24/2006  EFW  Added the SyntaxFilters property, support for build component configurations, and
 //                           other stuff.
 // 1.3.4.0  12/24/2006  EFW  Added WorkingPath project property.  Reworked the load and save code to use
 //                           reflection for most properties to simplify the code and support setting them via the

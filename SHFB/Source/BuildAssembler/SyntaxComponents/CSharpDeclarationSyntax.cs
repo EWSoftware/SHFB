@@ -29,8 +29,8 @@ namespace Microsoft.Ddue.Tools
         /// <summary>
         /// This is used to create a new instance of the syntax generator
         /// </summary>
-        [SyntaxGeneratorExport("CSharp", "CSharp", "cs", AlternateIds = "cs, c#", SortOrder = 10,
-          Version = AssemblyInfo.Version, Copyright = AssemblyInfo.Copyright,
+        [SyntaxGeneratorExport("C#", "CSharp", "cs", AlternateIds = "CSharp, cs", SortOrder = 10,
+          Version = AssemblyInfo.ProductVersion, Copyright = AssemblyInfo.Copyright,
           Description = "Generates C# declaration syntax sections")]
         public sealed class Factory : ISyntaxGeneratorFactory
         {

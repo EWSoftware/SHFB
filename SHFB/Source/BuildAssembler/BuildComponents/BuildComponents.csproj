@@ -64,13 +64,15 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\MRefBuilder\Properties\AssemblyInfoShared.cs">
+    <Compile Include="..\..\SandcastleCore\Properties\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
     <Compile Include="Commands\CopyCommand.cs" />
@@ -142,6 +144,12 @@
     <Compile Include="UI\IntelliSenseConfigDlg.designer.cs">
       <DependentUpon>IntelliSenseConfigDlg.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\SyntaxComponentConfigDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\SyntaxComponentConfigDlg.Designer.cs">
+      <DependentUpon>SyntaxComponentConfigDlg.cs</DependentUpon>
+    </Compile>
     <Compile Include="ValidateComponent.cs" />
     <Compile Include="Web References\MtpsContentService\Reference.cs">
       <AutoGen>True</AutoGen>
@@ -159,6 +167,10 @@
       <Project>{84F8BE08-B5A3-4E5E-BC99-8E5C2351EF62}</Project>
       <Name>BuildComponentTargets</Name>
       <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\SyntaxComponents\SyntaxComponents.csproj">
+      <Project>{CEAEC85B-973A-4414-8668-723EB65E5088}</Project>
+      <Name>SyntaxComponents</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -192,6 +204,9 @@
     <EmbeddedResource Include="UI\IntelliSenseConfigDlg.resx">
       <DependentUpon>IntelliSenseConfigDlg.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\SyntaxComponentConfigDlg.resx">
+      <DependentUpon>SyntaxComponentConfigDlg.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

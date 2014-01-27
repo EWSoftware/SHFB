@@ -250,7 +250,9 @@ namespace Microsoft.Ddue.Tools
 
                 if(!targets.TryGetValue(targetId, out target, out type))
                 {
-                    base.WriteMessage(key, MessageLevel.Warn, "Unknown reference link target '{0}'.", targetId);
+                    // If not being rendered as a link, don't report a warning
+                    if(link.RenderAsLink && targetId != key)
+                        base.WriteMessage(key, MessageLevel.Warn, "Unknown reference link target '{0}'.", targetId);
 
                     // !EFW - Turn off the Show Parameters option for unresolved elements except methods.  If
                     // not, it outputs an empty "()" after the member name which looks odd.

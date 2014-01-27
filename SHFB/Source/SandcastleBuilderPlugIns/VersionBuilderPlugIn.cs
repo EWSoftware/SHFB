@@ -44,7 +44,7 @@ namespace SandcastleBuilder.PlugIns
     /// others related to the same product that can be merged into the current project's help file topics.
     /// </summary>
     [HelpFileBuilderPlugInExport("Version Builder", IsConfigurable = true, RunsInPartialBuild = true,
-      Version = AssemblyInfo.Version, Copyright = AssemblyInfo.Copyright,
+      Version = AssemblyInfo.ProductVersion, Copyright = AssemblyInfo.Copyright,
       Description = "This plug-in is used to generate version information for the current project and others " +
         "related to the same product and merge that information into a single help file for all of them.")]
     public sealed class VersionBuilderPlugIn : IPlugIn

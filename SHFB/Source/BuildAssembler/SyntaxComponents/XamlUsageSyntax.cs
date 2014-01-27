@@ -31,10 +31,10 @@ namespace Microsoft.Ddue.Tools
         /// <summary>
         /// This is used to create a new instance of the syntax generator
         /// </summary>
-        [SyntaxGeneratorExport("XamlUsage", "XAML", "cs", AlternateIds = "xml", SortOrder = 90,
-          Version = AssemblyInfo.Version, Copyright = AssemblyInfo.Copyright,
+        [SyntaxGeneratorExport("XAML Usage", "XAML", "cs", AlternateIds = "XamlUsage, xml", SortOrder = 90,
+          Version = AssemblyInfo.ProductVersion, Copyright = AssemblyInfo.Copyright,
           Description = "Generates XAML usage syntax sections",
-          DefaultConfiguration="<filter files=\"{@SHFBFolder}Presentation\\Shared\\configuration\\xamlSyntax.config\" />\r\n" +
+          DefaultConfiguration="<filter files=\"{@SHFBFolder}PresentationStyles\\Shared\\configuration\\xamlSyntax.config\" />\r\n" +
 			"{@XamlConfigFiles}")]
         public sealed class Factory : ISyntaxGeneratorFactory
         {

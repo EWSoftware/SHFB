@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - XML Comments Example
 // File    : AssemblyInfo.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/05/2012
-// Note    : Copyright 2012, Eric Woodruff, All rights reserved
+// Updated : 01/26/2014
+// Note    : Copyright 2012-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // XML Comments Examples assembly attributes.
@@ -26,32 +26,25 @@ using System.Runtime.InteropServices;
 // Resources contained within the assembly are English
 [assembly: NeutralResourcesLanguageAttribute("en")]
 
-//
-// General Information about an assembly is controlled through the following
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-//
+// General assembly info
 [assembly: AssemblyProduct("Sandcastle Tools - XML Comments Examples")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyTitle("XMLCommentsExamples")]
 [assembly: AssemblyDescription("This is used to demonstrate the various XML comments elements and serves " +
     "no other useful purpose.")]
 [assembly: AssemblyCompany("Eric Woodruff")]
-[assembly: AssemblyCopyright("Copyright \xA9 2012, Eric Woodruff, All Rights Reserved")]
+[assembly: AssemblyCopyright("Copyright \xA9 2012-2014, Eric Woodruff, All Rights Reserved")]
 [assembly: AssemblyTrademark("Eric Woodruff, All Rights Reserved")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
 [assembly: CLSCompliant(true)]
 
+// Version information for an assembly consists of the following four values based on the current date:
 //
-// Version information for an assembly consists of the following four values:
+//      Year of release     4 digit year
+//      Month of release    1 or 2 digit month
+//      Day of release      1 or 2 digit day
+//      Revision            Typically zero unless multiple releases are made on the same day.  In such cases,
+//                          increment the revision by one with each same day release.
 //
-//      Major Version
-//      Minor Version
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Revision and Build Numbers
-// by using the '*' as shown below:
-
-[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyVersion("2014.1.26.0")]

@@ -3,10 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Setup", "Setup\Setup.wixproj", "{F54FD6CB-9F8D-4A86-84D4-EF27AD510C80}"
 	ProjectSection(ProjectDependencies) = postProject
+		{8478ED2D-DE3C-4114-BD59-937429912F05} = {8478ED2D-DE3C-4114-BD59-937429912F05}
 		{DADDD872-05C0-4B12-82C2-6B186EF3C751} = {DADDD872-05C0-4B12-82C2-6B186EF3C751}
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SHFBProjectLauncher", "SHFBProjectLauncher\SHFBProjectLauncher.csproj", "{DADDD872-05C0-4B12-82C2-6B186EF3C751}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SandcastleInstaller", "SandcastleInstaller\SandcastleInstaller.csproj", "{8478ED2D-DE3C-4114-BD59-937429912F05}"
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
@@ -43,6 +46,14 @@ Global
 		{DADDD872-05C0-4B12-82C2-6B186EF3C751}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DADDD872-05C0-4B12-82C2-6B186EF3C751}.Release|x86.ActiveCfg = Release|x86
 		{DADDD872-05C0-4B12-82C2-6B186EF3C751}.Release|x86.Build.0 = Release|x86
+		{8478ED2D-DE3C-4114-BD59-937429912F05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8478ED2D-DE3C-4114-BD59-937429912F05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8478ED2D-DE3C-4114-BD59-937429912F05}.Debug|x86.ActiveCfg = Debug|x86
+		{8478ED2D-DE3C-4114-BD59-937429912F05}.Debug|x86.Build.0 = Debug|x86
+		{8478ED2D-DE3C-4114-BD59-937429912F05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8478ED2D-DE3C-4114-BD59-937429912F05}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8478ED2D-DE3C-4114-BD59-937429912F05}.Release|x86.ActiveCfg = Release|x86
+		{8478ED2D-DE3C-4114-BD59-937429912F05}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

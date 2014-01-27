@@ -37,7 +37,7 @@ namespace SandcastleBuilder.PlugIns
     /// This plug-in class is used to add bibliography support to the topics
     /// </summary>
     [HelpFileBuilderPlugInExport("Bibliography Support", IsConfigurable = true,
-      Version = AssemblyInfo.Version, Copyright = AssemblyInfo.Copyright,
+      Version = AssemblyInfo.ProductVersion, Copyright = AssemblyInfo.Copyright,
       Description = "This plug in is used to add bibliography support to the help file topics.")]
     public sealed class BibliographySupportPlugIn : SandcastleBuilder.Utils.BuildComponent.IPlugIn
     {

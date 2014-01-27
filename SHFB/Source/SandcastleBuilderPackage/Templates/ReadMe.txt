@@ -9,7 +9,7 @@ for installation, the following modifications must be made to the project file m
 
   <PropertyGroup>
     <!-- These are needed to properly build the project and item templates and include them in the VSIX
-         container ready for installation.  Deployment is suppresssed since we are using VSTemplate files. -->
+         container ready for installation.  Deployment is suppressed since we are using VSTemplate files. -->
     <VsTemplateLanguage>SHFBProject</VsTemplateLanguage>
     <GetVsixSourceItemsDependsOn>$(GetVsixSourceItemsDependsOn);GetVsixTemplateItems</GetVsixSourceItemsDependsOn>
     <DeployVSTemplates>false</DeployVSTemplates>
@@ -35,9 +35,22 @@ for installation, the following modifications must be made to the project file m
    type).  Item templates go in the .\Templates\ProjectItems folder (one subfolder beneath it for each item
    type).  You can further group the files into subfolders beneath them.
 
-4. If you want to group the item templates into categories, you must manually edit the .csproj file and add an
+4. If project templates contain files in subfolders, you must add the RootPath property to each ZipProject element
+   as shown in the example below so that the project files are grouped properly.  You must do this whenever you add
+   project template files to the project.
+
+    <!-- Each ZipProject must contain a RootPath element to define the root path used to group the project files
+         into the same template archive. -->
+    <ZipProject Include="Templates\Projects\SandcastleBuilderProject\SandcastleBuilder.shfbproj">
+        <RootPath>Templates\Projects\SandcastleBuilderProject</RootPath>
+    </ZipProject>
+    <ZipProject Include="Templates\Projects\SandcastleBuilderProject\Content\Welcome.aml">
+        <RootPath>Templates\Projects\SandcastleBuilderProject</RootPath>
+    </ZipProject>
+
+5. If you want to group the item templates into categories, you must manually edit the .csproj file and add an
    OutputSubPath property to each ZipItem element related to the added template files as shown in the example
-   below.  You must do this whenver you add item templates to the project.  The value becomes the title of the
+   below.  You must do this whenever you add item templates to the project.  The value becomes the title of the
    category in the Add New Item dialog.
 
     <!-- Each ZipItem must contain an OutputSubPath element to define the category into which it is grouped
@@ -51,7 +64,7 @@ for installation, the following modifications must be made to the project file m
 
    This does not apply to project templates unless you have more than one and want to categorize them.
 
-5. Add the following two lines to the <content> section of the source.extension.vsixmanifest file:
+6. Add the following two lines to the <content> section of the source.extension.vsixmanifest file:
 
     <ProjectTemplate>ProjectTemplates</ProjectTemplate>
     <ItemTemplate>ItemTemplates</ItemTemplate>

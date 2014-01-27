@@ -58,7 +58,7 @@ to their installed location.</para>
 			<listItem>
 				<para>Execute <localUri>H2Reg.exe</localUri> with the following syntax:</para>
 
-<code language="none">
+<code language="none" title=" ">
 H2Reg -r "CmdFile=&lt;Path to the configuration file&gt;"
 </code>
 			</listItem>
@@ -67,7 +67,7 @@ H2Reg -r "CmdFile=&lt;Path to the configuration file&gt;"
 				<para>During uninstallation, before the help files are removed, execute <localUri>H2Reg.exe</localUri>
 with the following syntax:</para>
 
-<code language="none">
+<code language="none" title=" ">
 H2Reg -u "CmdFile=&lt;Path to the configuration file&gt;"
 </code>
 			</listItem>

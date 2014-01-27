@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Components
 // File    : CodeBlockComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/09/2014
+// Updated : 01/24/2014
 // Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -41,6 +41,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition.Hosting;
 using System.Configuration;
 using System.Diagnostics;
 using System.IO;
@@ -158,10 +159,10 @@ namespace SandcastleBuilder.Components
         //=====================================================================
 
         /// <summary>
-        /// This is used to create a new instance of the build component used for API token resolution
+        /// This is used to create a new instance of the build component used to colorize code blocks
         /// </summary>
-        [BuildComponentExport("Code Block Component", DesignerVisible = true, IsConfigurable = true,
-          Version = AssemblyInfo.Version, Copyright = AssemblyInfo.Copyright,
+        [BuildComponentExport("Code Block Component", IsVisible = true, IsConfigurable = true,
+          Version = AssemblyInfo.ProductVersion, Copyright = AssemblyInfo.Copyright,
           Description = "This build component is used to search for <code> elements within reference XML " +
             "comments and conceptual content topics and colorize the code within them.  It can also include " +
             "code from an external file or a region within the file.")]
@@ -227,7 +228,7 @@ namespace SandcastleBuilder.Components
             }
 
             /// <inheritdoc />
-            public override string ConfigureComponent(string currentConfiguration)
+            public override string ConfigureComponent(string currentConfiguration, CompositionContainer container)
             {
                 using(CodeBlockConfigDlg dlg = new CodeBlockConfigDlg(currentConfiguration))
                 {

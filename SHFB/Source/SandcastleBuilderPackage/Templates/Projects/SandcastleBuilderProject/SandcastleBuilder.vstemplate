@@ -1,15 +1,28 @@
 ﻿<VSTemplate Version="3.0.0" Type="Project" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005">
-  <TemplateData>
-    <Name Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="113" />
-    <Description Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="114" />
-    <Icon Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="400" />
-    <ProjectType>SHFBProject</ProjectType>
-    <CreateNewFolder>true</CreateNewFolder>
-    <DefaultName>Documentation</DefaultName>
-    <SortOrder>10</SortOrder>
-    <ProvideDefaultName>true</ProvideDefaultName>
-  </TemplateData>
-  <TemplateContent>
-    <Project File="SandcastleBuilder.shfbproj" ReplaceParameters="true" />
-  </TemplateContent>
+	<TemplateData>
+		<Name Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="113" />
+		<Description Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="114" />
+		<Icon Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="400" />
+		<ProjectType>SHFBProject</ProjectType>
+		<CreateNewFolder>true</CreateNewFolder>
+		<DefaultName>Documentation</DefaultName>
+		<SortOrder>10</SortOrder>
+		<ProvideDefaultName>true</ProvideDefaultName>
+	</TemplateData>
+	<TemplateContent>
+		<Project File="SandcastleBuilder.shfbproj" ReplaceParameters="true">
+			<Folder Name="Content" TargetFolderName="Content">
+				<ProjectItem TargetFileName="Welcome.aml" ReplaceParameters="true" OpenInEditor="true">Welcome.aml</ProjectItem>
+				<Folder Name="VersionHistory" TargetFolderName="VersionHistory">
+					<ProjectItem TargetFileName="v1.0.0.0.aml" ReplaceParameters="true">v1.0.0.0.aml</ProjectItem>
+					<ProjectItem TargetFileName="VersionHistory.aml" ReplaceParameters="true">VersionHistory.aml</ProjectItem>
+				</Folder>
+			</Folder>
+			<Folder Name="icons" TargetFolderName="icons">
+				<ProjectItem TargetFileName="Help.png" ReplaceParameters="false">Help.png</ProjectItem>
+			</Folder>
+			<Folder Name="Media" TargetFolderName="Media" />
+			<ProjectItem TargetFileName="ContentLayout.content" ReplaceParameters="true">ContentLayout.content</ProjectItem>
+		</Project>
+	</TemplateContent>
 </VSTemplate>

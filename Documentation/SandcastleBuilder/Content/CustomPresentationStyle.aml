@@ -2,120 +2,313 @@
 <topic id="baf1dcbc-e9cf-4d71-a770-621e6eaf10a7" revisionNumber="1">
 	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
 		<introduction>
-			<para>Sandcastle comes with some standard presentation styles.  Rather than make changes directly to the
-Sandcastle presentation styles, you can clone them to create modified versions for yourself.  In addition, you
-can create entirely new presentation styles.  The help file builder supports custom presentation styles and will
-make them available via the <codeInline>Presentation Style</codeInline> property.</para>
+			<para>Sandcastle comes with some standard presentation styles used to apply formatting and layout to each
+generated topic.  Rather than make changes directly to the Sandcastle presentation styles, you can clone them to
+create modified versions for yourself.  In addition, you can create entirely new presentation styles.  The help
+file builder supports custom presentation styles and will make them available via the <codeInline>Presentation
+Style</codeInline> property.  This topic will walk you through the creation of a presentation style project.</para>
 
-			<autoOutline lead="none">1</autoOutline>
+			<autoOutline lead="none" excludeRelatedTopics="true">1</autoOutline>
 
-			<para>See the <link xlink:href="81f38cdc-8859-441b-a249-b67b03e492ed">custom presentation style walkthrough</link>
-for more information on creating a custom presentation style.</para>
 		</introduction>
 
-		<section address="ConfigFile">
-			<title>Presentation Style Configuration File</title>
+		<section address="CreateProject">
+			<title>Creating the Project</title>
 			<content>
-				<para>To be found and used, the custom presentation styles must be described using a configuration file
-located in the <localUri>.\Presentation Styles</localUri> folder or a subfolder beneath it in the help file
-builder's <legacyBold>Common Application Data</legacyBold> folder.  See the
-<link xlink:href="a24489fb-45d6-46f4-9eaa-9a9c4e0919b2#PresentationStyles" /> topic for more information.</para>
+				<para>This section describes how to create and configure the presentation style project.  It will
+describe the process for a C# project but the steps should be fairly similar for a VB.NET project with a few
+differences in the configuration option titles.</para>
 
-				<para>The presentation style configuration file is an XML file with an extension of
-<localUri>.presentation</localUri>.  It can contain the information for one or more custom presentation styles.
-The following sections describe the elements that it contains.
-				</para>
+				<procedure>
+					<title>Create the Presentation Style Project</title>
+					<steps class="ordered">
+						<step>
+							<content>
+								<para>In Visual Studio, select the <ui>New Project</ui> option.  In the <ui>New Project</ui>
+dialog box, select the C# or VB.NET language, and then select the <ui>Documentation</ui> subcategory.  Select the
+<ui>Sandcastle Presentation Style Component</ui> template, give it a name and click <ui>OK</ui> to create it.
+Once it has been created, right click on the project and select <ui>Properties</ui>.</para>
+							</content>
+						</step>
+						<step>
+							<content>
+								<para>In the <ui>Application</ui> tab, set the assembly name and default namespace as you see
+fit.</para>
+							</content>
+						</step>
+						<step>
+							<content>
+								<para>On the <ui>Debug</ui> tab, set the <ui>Start Action</ui> to "Start external program" and
+enter the path to the <localUri>SandcastleBuilderGUI.exe</localUri> program.  If you installed the help file
+builder in the default location, this will be <localUri>%ProgramFiles(x86)%\EWSoftware\Sandcastle Help File
+Builder\</localUri>.  If not, substitute your path as appropriate.</para>
+
+								<alert class="tip">
+									<para>Using the standalone GUI as the host is easier than using Visual Studio as the package
+locks the assemblies once the help file builder project has loaded them for use and you will not be able to
+rebuild them.  Shutting down the standalone GUI frees the assemblies so that you can rebuild them and start a new
+debugging session.</para>
+
+									<para>In the help file builder project that you use to test your presentation style, set the
+project's <codeInline>Component Path</codeInline> property to the folder containing your presentation style's
+assembly.  If you have opened the project's <ui>Help File</ui> property page before setting the component path,
+you may need to close and reopen the project in order for it to discover your presentation style assembly.</para>
+								</alert>
+							</content>
+						</step>
+						<step>
+							<content>
+								<para>Optionally, select the <ui>Signing</ui> tab and check the "Sign the assembly" checkbox.
+Select "&lt;New...&gt;" from the "Choose a strong name key file" dropdown, enter a filename, and click OK to
+create the key file.  You can protect the key file with a password if you like or uncheck the option to create
+one without a password.</para>
+							</content>
+						</step>
+					</steps>
+				</procedure>
+
+			</content>
+		</section>
+
+		<section address="Template">
+			<title>The Presentation Style Template Class</title>
+			<content>
+				<para>You are now ready to edit the presentation style class itself.  See the comments in the template
+class for information on how to get started.  Some general information is given below.  Note that multiple
+presentation styles can reside within the same assembly.  Add new class files to the project and implement the
+necessary methods as described below and as shown in the template class.  You should separate each presentation
+style out into its own subfolder and use the <codeInline>BasePath</codeInline> property to tell the presentation
+style where it can find its files.</para>
+
+				<para>The presentation style is derived from the
+<codeInline>Sandcastle.Core.PresentationStyle.PresentationStyleSettings</codeInline> class and consists of
+several properties that you must set to define the content used by it.  These are described below.
+Review the code for "<codeInline>TODO:</codeInline>" comments to find sections that need attention such as
+setting the presentation style's ID, defining the content, etc.  If you followed the steps in the
+<legacyBold>Creating the Project</legacyBold> section, you can run the project and debug it by setting
+breakpoints in the presentation style's code.  As noted above, set the test project's <codeInline>Component
+Path</codeInline> property to the folder containing the presentation style assembly first.  If necessary, close
+and reopen the test project so that it can discover the presentation style.</para>
+
+			</content>
+		</section>
+
+		<section address="Metadata">
+			<title>The Export Attribute Metadata</title>
+			<content>
+				<para>The presentation style is a Managed Extensibility Framework (MEF) component.  The
+<codeInline>Sandcastle.Core.PresentationStyle.PresentationStyleExportAttribute</codeInline> is used to define the
+necessary metadata that enables the help file builder to load and use the component.</para>
 			</content>
 
 			<sections>
-				<section address="PresentationStyles">
-					<title>PresentationStyles</title>
+				<section address="MetadataId">
+					<title>Id</title>
 					<content>
-						<para>This is the root element.  Each <codeInline>PresentationStyle</codeInline> element is nested
-within this one.</para>
+						<para>The <codeInline>Id</codeInline> parameter is required and is used to uniquely identify the
+presentation style.</para>
 					</content>
 				</section>
 
-				<section address="PresentationStyle">
-					<title>PresentationStyle</title>
+				<section address="MetadataTitle">
+					<title>Title</title>
 					<content>
-						<para>This defines a single presentation style.  All of the following elements are nested within it.
-The following attributes are required:</para>
-
-						<list class="bullet">
-							<listItem>
-								<para><codeInline>ID</codeInline> - This attribute uniquely identifies the presentation style.</para>
-							</listItem>
-
-							<listItem>
-								<para><codeInline>Title</codeInline> - This attribute defines a friendly name that can be used in
-development tools rather than the ID.</para>
-							</listItem>
-
-							<listItem>
-								<para><codeInline>BasePath</codeInline> - This attribute defines the base base folder location
-for the presentation style's files.</para>
-							</listItem>
-						</list>
-
-						<para>Throughout the configuration file, all file and folder path values support environment
-variables which will be expanded at runtime.  If relative, the <codeInline>BasePath</codeInline> value will be
-considered relative to the presentation style file's location.  Relative paths within a presentation style
-element are considered to be relative to the presentation style's base path.</para>
-
-						<para>Attribute values in the form "<codeInline>{@Name}</codeInline>" will be replaced at build time
-with the named project property value or replacement tag value by the build engine.</para>
-
+						<para>The <codeInline>Title</codeInline> parameter is required and is used to provide a friendly name
+that can be used in development tools rather than the ID.</para>
 					</content>
 				</section>
 
-				<section address="Description">
+				<section address="MetadataVersion">
+					<title>Version</title>
+					<content>
+						<para>The <codeInline>Version</codeInline> property is optional and allows you to define the
+presentation style version displayed in the help file builder property page when the presentation style is
+selected.</para>
+					</content>
+				</section>
+
+				<section address="MetadataCopyright">
+					<title>Copyright</title>
+					<content>
+						<para>The <codeInline>Copyright</codeInline> property is optional and allows you to define the
+presentation style copyright displayed in the help file builder property page when the presentation style is
+selected.</para>
+					</content>
+				</section>
+
+				<section address="MetadataDescription">
 					<title>Description</title>
 					<content>
-						<para>This element provides a description of the presentation style.  Build tools can display this to
-provide more details about the selected presentation style.</para>
+						<para>The <codeInline>Description</codeInline> property is optional and allows you to define the
+presentation style description displayed in the help file builder property page when the presentation style is
+selected.</para>
+					</content>
+				</section>
+
+			</sections>
+		</section>
+
+		<section address="PresentationStyleClass">
+			<title>The Presentation Style Class</title>
+			<content>
+				<para>The derived class consists of one property and a constructor that you must implement.  The
+properties in the base class are used to define the content and its locations.</para>
+			</content>
+
+			<sections>
+				<section address="Location">
+					<title>Location</title>
+					<content>
+						<para>The <codeInline>Location</codeInline> property is used to provide the location of the
+presentation style component.  This is used as the root path to which all other base and content path values are
+relative.  The default implementation in the template project returns the path of the executing assembly which is
+typically sufficient.</para>
+
+					</content>
+				</section>
+
+				<section address="Constructor">
+					<title>Constructor</title>
+					<content>
+						<para>Use the constructor to initialize all of the other properties.  The template class contains
+examples for all of the properties and mimics the settings for the existing VS2005 and VS2010 presentation
+styles.</para>
+
+					</content>
+				</section>
+
+				<section address="BasePath">
+					<title>BasePath</title>
+					<content>
+						<para>This property defines the base path of the presentation style files relative to the assembly's
+location.  If your assembly will reside in the same folder as the presentation style content, you can remove this
+property setting.  If adding multiple presentation styles to the assembly, set this to the name of the subfolder
+that contains the presentation style content folders.  All file and folder path values support environment
+variables which will be expanded at runtime.  Other relative paths within a presentation style are considered to
+be relative to the presentation style's base path.</para>
+
 					</content>
 				</section>
 
 				<section address="SupportedFormats">
 					<title>SupportedFormats</title>
 					<content>
-						<para>This defines the help file formats supported by this presentation style.  The content of this
-element is one or more <codeInline>Format</codeInline> elements with a required <codeInline>Type</codeInline>
-attribute that defines one of the help file formats supported by the presentation style.  The format type values
-are:</para>
+						<para>This defines the help file formats supported by this presentation style.  The
+<codeInline>HelpFileFormats</codeInline> values are:</para>
 
 						<list class="bullet">
 							<listItem>
-								<para><codeInline>HtmlHelp1</codeInline> - HTML Help 1 (CHM)</para>
+								<para>
+									<codeInline>HtmlHelp1</codeInline> - HTML Help 1 (CHM)
+								</para>
 							</listItem>
 							<listItem>
-								<para><codeInline>MSHelp2</codeInline> - MS Help 2 (HxS)</para>
+								<para>
+									<codeInline>MSHelp2</codeInline> - MS Help 2 (HxS)
+								</para>
 							</listItem>
 							<listItem>
-								<para><codeInline>MSHelpViewer</codeInline> - MS Help Viewer (MSHC)</para>
+								<para>
+									<codeInline>MSHelpViewer</codeInline> - MS Help Viewer (MSHC)
+								</para>
 							</listItem>
 							<listItem>
-								<para><codeInline>Website</codeInline> - Website output</para>
+								<para>
+									<codeInline>Website</codeInline> - Website output
+								</para>
 							</listItem>
 						</list>
 
 						<para>If a presentation style does not support a particular help format, it can be omitted.</para>
+
 					</content>
 				</section>
 
-				<section address="HelpContent">
-					<title>HelpContent</title>
+				<section address="NamespaceGrouping">
+					<title>SupportsNamespaceGrouping</title>
 					<content>
-						<para>This defines the content from the presentation style that should be embedded in the compiled
-help file such as images, style sheets, and scripts.  The content of this element consists of one or more
-<codeInline>Files</codeInline> elements.  These define the files to copy and their destination in the compiled
-help file.  The required <codeInline>Source</codeInline> attribute defines the source location relative to the
-presentation style base path.  The optional <codeInline>Destination</codeInline> attribute, if specified, defines
-the relative location of the files in the compiled help file.  If omitted, the files are copied to a like-named
-folder relative to the root of the compiled help file.  If the <codeInline>Destination</codeInline> attribute is
-set to an empty string, the files are copied to the root of the compiled help file.  Unlike all other path
-values, the <codeInline>Destination</codeInline> value must always be a relative path.</para>
+						<para>Set this property to true if the presentation style supports namespace grouping.  When enabled,
+it indicates that namespaces with a common root will be grouped in the table of contents.</para>
+
+					</content>
+				</section>
+
+				<section address="ResourceItems">
+					<title>ResourceItemsPath</title>
+					<content>
+						<para>This defines the path to the shared content resource items.  These files contain the
+localizable elements such as messages, section titles, language element names, etc.  The files in the indicated
+folder will be passed as parameters to the content resolution components used by the <application>BuildAssembler</application>
+tool.</para>
+
+					</content>
+				</section>
+
+				<section address="ToolResourceItems">
+					<title>ToolResourceItemsPath</title>
+					<content>
+						<para>This defines the path to the tool-specific shared content resource items.  These are used to
+override the default resource items from the presentation style in order to do such things as insert project
+properties into the values using tag substitution.  Files in the tool-specific resource items folder are expected
+to be named using the language they represent plus a <localUri>.xml</localUri> extension
+(<localUri>en-US.xml</localUri> for example).</para>
+
+					</content>
+				</section>
+
+				<section address="DocumentModelTransformation">
+					<title>DocumentModelTransformation</title>
+					<content>
+						<para>This defines the document model XSL transformation to use on the reflection data to prepare it
+for use with <application>BuildAssembler</application> in order to generate topics.  The first parameter
+specifies the path to the XSL transformation.</para>
+
+						<para>The document model XSL transformation typically has parameters that can be passed to it to
+modify how it works.  You can define these parameters with appropriate defaults or substitution tags that will be
+filled in at build time using the optional second constructor parameter.  The parameters are in the form of a
+dictionary containing key/value pairs.</para>
+					</content>
+				</section>
+
+				<section address="IntermediateTocTransformation">
+					<title>IntermediateToCTransformation</title>
+					<content>
+						<para>This defines the XSL transformation to use on the reflection data to generate the intermediate
+table of contents XML file used by help formats that require a table of contents.  As above, parameters can be
+specified if necessary to define any parameters required by the transformation file.</para>
+					</content>
+				</section>
+
+				<section address="ConceptualBuildConfiguration">
+					<title>ConceptualBuildConfiguration</title>
+					<content>
+						<para>This defines the <application>BuildAssembler</application> configuration file to use for
+conceptual content builds.</para>
+					</content>
+				</section>
+
+				<section address="ReferenceBuildConfiguration">
+					<title>ReferenceBuildConfiguration</title>
+					<content>
+						<para>This defines the <application>BuildAssembler</application> configuration file to use for
+reference content (API) builds.</para>
+					</content>
+				</section>
+
+				<section address="ContentFiles">
+					<title>ContentFiles</title>
+					<content>
+						<para>This collection property is used to defines the content from the presentation style that should
+be embedded in the compiled help file such as images, style sheets, and scripts.  Add one or more
+<codeInline>ContentFiles</codeInline> instances that define the content files that should be copied and their
+destination in the compiled help file.  The help file format parameter defines which format types the content
+applies to.  Typically, this is the same as the <codeInline>SupportedFormats</codeInline> property.  However, it
+is possible to have format-specific content such as for websites only as shown in the template class.  The
+source parameter defines the source location relative to the presentation style base path.  The optional
+destination parameter, if specified, defines the relative location of the files in the compiled help file.
+If omitted, the files are copied to a like-named folder relative to the root of the compiled help file.  If the
+destination parameter is set to an empty string, the files are copied to the root of the compiled help file.
+Unlike all other path values, the destination value must always be a relative path.</para>
 
 						<alert class="note">
 							<para>UNIX based web servers may be case-sensitive with regard to folder and filenames so match the
@@ -125,107 +318,44 @@ case of the folder and filenames in the elements to their actual casing on the f
 					</content>
 				</section>
 
-				<section address="ResourceItems">
-					<title>ResourceItems</title>
-					<content>
-						<para>This defines the path to the shared content resource items.  These files contain the localizable
-elements such as messages, section titles, language element names, etc.  The required <codeInline>Path</codeInline>
-element is used to specify the location of the resource item files.  The files in the indicated folder will be
-passed as parameters to the content resolution components used by the <application>BuildAssembler</application>
-tool.</para>
-
-						<para>The Sandcastle Help File Builder will look for a child element named
-<codeInline>ToolResourceItems</codeInline>.  If found, the required <codeInline>Path</codeInline> attribute will
-be used to locate tool-specific resource item files.  These are used to override the default resource items from
-the presentation style in order to do such things as insert project properties into the values using tag
-substitution.</para>
-
-						<para>Files in the tool resource items folder should be named using the format
-<localUri>[ID]BuilderContent_[Language].xml</localUri> where <localUri>ID</localUri> is the presentation style ID
-and <localUri>Language</localUri> is the language code for the resources (i.e.
-<localUri>VS2005BuilderContent_en-US.xml</localUri>).
-						</para>
-					</content>
-				</section>
-
-				<section address="DocumentModelTransformation">
-					<title>DocumentModelTransformation</title>
-					<content>
-						<para>This defines the document model XSL transformation to use on the reflection data to prepare it
-for use with <application>BuildAssembler</application> in order to generate topics.  The required
-<codeInline>File</codeInline> attribute specifies the path to the XSL transformation.</para>
-
-						<para>The document model XSL transformation typically has parameters that can be passed to it to
-modify how it works.  You can define these parameters with appropriate defaults or substitution tags that will be
-filled in at build time using optional <codeInline>Parameter</codeInline> elements nested within the
-<codeInline>DocumentModelTransformation</codeInline> element.  The parameter elements have a required
-<codeInline>Name</codeInline> and <codeInline>Value</codeInline> attribute that define the parameter's name and
-value.</para>
-					</content>
-				</section>
-
-				<section address="IntermediateTOCTransformation">
-					<title>IntermediateTOCTransformation</title>
-					<content>
-						<para>This defines the XSL transformation to use on the reflection data to generate the intermediate
-table of contents XML file used by help formats that require a table of contents.  As above, parameter elements
-can be specified if necessary to define any parameters required by the transformation file.</para>
-					</content>
-				</section>
-
-				<section address="ConceptualBuildConfiguration">
-					<title>ConceptualBuildConfiguration</title>
-					<content>
-						<para>This defines the <application>BuildAssembler</application> configuration file to use for
-conceptual content builds.  The required <codeInline>File</codeInline> attribute specified the path to the file.</para>
-					</content>
-				</section>
-
-				<section address="ReferenceBuildConfiguration">
-					<title>ReferenceBuildConfiguration</title>
-					<content>
-						<para>This defines the <application>BuildAssembler</application> configuration file to use for
-reference content (API) builds.  The required <codeInline>File</codeInline> attribute specified the path to the
-file.</para>
-					</content>
-				</section>
-
 				<section address="TransformComponentArguments">
 					<title>TransformComponentArguments</title>
 					<content>
 						<para>The XSL transformations used by <application>BuildAssembler</application>'s
-<codeInline>TransformComponent</codeInline> typically have a set of parameters that can be used to alter
-aspects of their processing such as inserting a logo image into the topic headers.  This element can be used by
+<codeInline>TransformComponent</codeInline> typically have a set of parameters that can be used to alter aspects
+of their processing such as inserting a logo image into the topic headers.  This property can be used by
 third-party build tools such as the Sandcastle Help File Builder to modify them for the build.  It is up to
 the build tool to insert the modified values into the appropriate configuration file at build time.</para>
 
-						<para>The content of this element consists of a set of <codeInline>Argument</codeInline> elements
-with the following attributes:</para>
+						<para>Add one or more <codeInline>TransformComponentArgument</codeInline> instances to define the
+parameters.  Each one has the following properties, most of which can be set in the constructor.</para>
 
 						<list class="bullet">
 							<listItem>
-								<para><codeInline>Key</codeInline> - This required attribute defines the argument key name.</para>
+								<para><codeInline>Key</codeInline> - This property defines the argument key name.</para>
 							</listItem>
 							<listItem>
-								<para><codeInline>ForConceptualBuild</codeInline> - This required attribute specifies whether or
-not to include the parameter in the conceptual build.</para>
+								<para><codeInline>IsForConceptualBuild</codeInline> - This property specifies whether or not to
+include the parameter in the conceptual build.</para>
 							</listItem>
 							<listItem>
-								<para><codeInline>ForReferenceBuild</codeInline> - This required attribute specifies whether or
-not to include the parameter in the reference (API) build.</para>
+								<para><codeInline>IsForReferenceBuild</codeInline> - This property specifies whether or not to
+include the parameter in the reference (API) build.</para>
 							</listItem>
 							<listItem>
-								<para><codeInline>Description</codeInline> - This required attribute provides a description of
-the parameter that can be displayed by build tools.  It can be used to provide usage notes, information on the
-set of valid values, and information about what happens if a value is not specified.</para>
+								<para><codeInline>Description</codeInline> - This property provides a description of the
+parameter that can be displayed by build tools.  It can be used to provide usage notes, information on the set of
+valid values, and information about what happens if a value is not specified.</para>
 							</listItem>
 							<listItem>
-								<para><codeInline>Value</codeInline> - This attribute is optional.  It allows you to specify a
-simple value to use for the default.   If present, any argument element content is ignored.  If a
-<codeInline>Value</codeInline> attribute is missing, it is assumed that the element content will serve as the
-value.  This allows for complex values such as XML to be used (i.e. the syntax filter language definitions).
-To restrict the argument to a simple value with no specific default value, specify the <codeInline>Value</codeInline>
-attribute and set it to an empty string.</para>
+								<para><codeInline>Value</codeInline> or <codeInline>Content</codeInline>- These properties are
+optional.  The <codeInline>Value</codeInline> property allows you to specify a simple value to use for the
+default.   If present, the <codeInline>Content</codeInline> property value is ignored.  If a
+<codeInline>Value</codeInline> is not set, it is assumed that the <codeInline>Content</codeInline> value will
+serve as the value.  The <codeInline>Content</codeInline> property allows for complex values such as XML to be
+used (i.e. the syntax filter language definitions).  To restrict the argument to a simple value with no specific
+default value, set the <codeInline>Value</codeInline> property to an empty string or leave both properties set
+to null.</para>
 							</listItem>
 						</list>
 					</content>
@@ -234,10 +364,8 @@ attribute and set it to an empty string.</para>
 			</sections>
 		</section>
 
-		
 		<relatedTopics>
 			<link xlink:href="a24489fb-45d6-46f4-9eaa-9a9c4e0919b2" />
-			<link xlink:href="81f38cdc-8859-441b-a249-b67b03e492ed" />
 		</relatedTopics>
 	</developerConceptualDocument>
 </topic>

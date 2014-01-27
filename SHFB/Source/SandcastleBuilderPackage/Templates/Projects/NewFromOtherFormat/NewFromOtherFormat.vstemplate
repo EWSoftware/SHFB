@@ -1,17 +1,17 @@
 ﻿<VSTemplate Version="3.0.0" Type="Project" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005">
-  <TemplateData>
-    <Name Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="175" />
-    <Description Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="176" />
-    <Icon Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="400" />
-    <ProjectType>SHFBProject</ProjectType>
-    <CreateNewFolder>true</CreateNewFolder>
-    <DefaultName>Documentation</DefaultName>
-    <SortOrder>20</SortOrder>
-    <ProvideDefaultName>true</ProvideDefaultName>
-  </TemplateData>
-  <TemplateContent>
-    <Project File="NewFromOtherFormat.shfbproj" ReplaceParameters="true" />
-  </TemplateContent>
+	<TemplateData>
+		<Name Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="175" />
+		<Description Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="176" />
+		<Icon Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="400" />
+		<ProjectType>SHFBProject</ProjectType>
+		<CreateNewFolder>true</CreateNewFolder>
+		<DefaultName>Documentation</DefaultName>
+		<SortOrder>20</SortOrder>
+		<ProvideDefaultName>true</ProvideDefaultName>
+	</TemplateData>
+	<TemplateContent>
+		<Project File="NewFromOtherFormat.shfbproj" ReplaceParameters="true" />
+	</TemplateContent>
 	<WizardExtension>
 		<Assembly>SandcastleBuilder.Package</Assembly>
 		<FullClassName>SandcastleBuilder.Package.Wizards.NewFromOtherFormatWizard</FullClassName>

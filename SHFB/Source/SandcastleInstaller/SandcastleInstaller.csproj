@@ -246,7 +246,7 @@
   <PropertyGroup>
     <PostBuildEvent>REM Use a post-build event to copy the executable to the deployment folder so that we don't overwrite
 REM the actual installation configuration file with the test version in the project.
-IF '$(ConfigurationName)'=='Release' COPY /Y "$(TargetPath)" ..\..\..\..\..\Deployment\
+IF '$(ConfigurationName)'=='Release' COPY /Y "$(TargetPath)" "$(SolutionDir)..\..\Deployment\"
 </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

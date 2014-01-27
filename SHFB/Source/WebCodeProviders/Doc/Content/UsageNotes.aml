@@ -55,9 +55,9 @@ per assembly.  Below are instructions for documenting each type of web project a
 the code providers work.</para>
 
 			<alert class="note">
-				<para>The code providers assembly can be found in the <localUri>.\Extras\WebCodeProviders</localUri>
-folder under the main Sandcastle installation folder (typically <localUri>C:\Program Files
-(x86)\Sandcastle</localUri>).</para>
+				<para>The code providers assembly can be found in the <localUri>.\Extras</localUri> folder under the
+root help file builder installation folder (typically <localUri>C:\Program Files (x86)\EWSoftware\Sandcastle
+Help File Builder</localUri>).</para>
 			</alert>
     </introduction>
 

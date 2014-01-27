@@ -11,7 +11,7 @@
     <RootNamespace>SandcastleBuilder.PlugIns</RootNamespace>
     <AssemblyName>SandcastleBuilder.PlugIns</AssemblyName>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>SandcastleBuilderPlugIns.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\SandcastleTools.snk</AssemblyOriginatorKeyFile>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
@@ -73,7 +73,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\SandcastleBuilderGUI\Properties\AssemblyInfoShared.cs">
+    <Compile Include="..\SandcastleBuilderUtils\Properties\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
     <Compile Include="AdditionalContentOnlyPlugIn.cs" />
@@ -137,7 +137,6 @@
     <Compile Include="ReferenceLinkSettings.cs" />
     <Compile Include="ReferenceLinkSettingsCollection.cs" />
     <Compile Include="ScriptSharpPlugIn.cs" />
-    <Compile Include="TestPlugIn.cs" />
     <Compile Include="TocExcludePlugIn.cs" />
     <Compile Include="VersionBuilderConfigDlg.cs">
       <SubType>Form</SubType>
@@ -190,9 +189,6 @@
       <Name>Sandcastle.Core</Name>
       <Private>False</Private>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="SandcastleBuilderPlugIns.snk" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="AdditionalReferenceLinksConfigDlg.resx">

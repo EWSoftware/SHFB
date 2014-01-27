@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Components
 // File    : ESentResolveReferenceLinksComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/26/2013
+// Updated : 01/24/2014
 // Compiler: Microsoft Visual C#
 //
 // This is a version of the ResolveReferenceLinksComponent that stores the MSDN content IDs and the framework
@@ -21,6 +21,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition.Hosting;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -51,10 +52,10 @@ namespace SandcastleBuilder.Components
         //=====================================================================
 
         /// <summary>
-        /// This is used to create a new instance of the build component used for API token resolution
+        /// This is used to create a new instance of the build component used to resolve reference links
         /// </summary>
-        [BuildComponentExport("Resolve Reference Links (ESENT Cache)", DesignerVisible = true, IsConfigurable = true,
-          Version = AssemblyInfo.Version, Copyright = AssemblyInfo.Copyright,
+        [BuildComponentExport("Resolve Reference Links (ESENT Cache)", IsVisible = true, IsConfigurable = true,
+          Version = AssemblyInfo.ProductVersion, Copyright = AssemblyInfo.Copyright,
           Description = "This component is used to resolve reference links in topics.  It uses ESENT " +
             "databases to cache MSDN content IDs and .NET Framework reference link targets.  This speeds up " +
             "initialization and conserves memory at the expense of some build time in larger projects.  For " +
@@ -131,7 +132,7 @@ namespace SandcastleBuilder.Components
             }
 
             /// <inheritdoc />
-            public override string ConfigureComponent(string currentConfiguration)
+            public override string ConfigureComponent(string currentConfiguration, CompositionContainer container)
             {
                 using(var dlg = new ESentResolveReferenceLinksConfigDlg(currentConfiguration))
                 {

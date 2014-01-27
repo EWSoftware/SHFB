@@ -75,7 +75,7 @@
     <MSHelpViewerSdkLinkType>Msdn</MSHelpViewerSdkLinkType>
     <CatalogVersion>100</CatalogVersion>
     <CatalogProductId>VS</CatalogProductId>
-    <HelpFileVersion>2.7.4.0</HelpFileVersion>
+    <HelpFileVersion>2014.1.26.0</HelpFileVersion>
     <PlugInNamespaces>ms.vsipcc+, ms.vsexpresscc+</PlugInNamespaces>
     <CollectionTocStyle>Hierarchical</CollectionTocStyle>
     <MSHelp2SdkLinkType>Msdn</MSHelp2SdkLinkType>
@@ -139,7 +139,7 @@
     <Folder Include="Content\GettingStarted" />
     <Folder Include="Content\SandcastleTools" />
     <Folder Include="Content\VersionHistory" />
-    <Folder Include="Icons\" />
+    <Folder Include="icons\" />
     <Folder Include="Media" />
   </ItemGroup>
   <ItemGroup>
@@ -164,6 +164,7 @@
     <None Include="Content\VersionHistory\v2.7.3.0.aml" />
     <None Include="Content\VersionHistory\v2.7.4.0.aml" />
     <None Include="Content\VersionHistory\VersionHistory.aml" />
+    <None Include="Content\VersionHistory\v2014.1.26.0.aml" />
     <None Include="Content\Welcome.aml" />
   </ItemGroup>
   <ItemGroup>
@@ -172,7 +173,7 @@
       <AlternateText>Pay Pal</AlternateText>
       <CopyToMedia>True</CopyToMedia>
     </Content>
-    <Content Include="Icons\Sandcastle.jpg">
+    <Content Include="icons\Sandcastle.jpg">
       <ImageId>Sandcastle</ImageId>
       <AlternateText>Sandcastle</AlternateText>
     </Content>

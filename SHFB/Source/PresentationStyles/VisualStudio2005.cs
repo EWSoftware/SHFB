@@ -30,7 +30,7 @@ namespace Sandcastle.PresentationStyles
     /// <summary>
     /// This contains the definition for the Visual Studio 2005 presentation style
     /// </summary>
-    [PresentationStyleExport("VS2005", "VS2005", Version = AssemblyInfo.Version,
+    [PresentationStyleExport("VS2005", "VS2005", Version = AssemblyInfo.ProductVersion,
       Copyright = AssemblyInfo.Copyright, Description = "This is the style used by Visual Studio 2005 and " +
       "Visual Studio 2008.")]
     public sealed class VisualStudio2005 : PresentationStyleSettings

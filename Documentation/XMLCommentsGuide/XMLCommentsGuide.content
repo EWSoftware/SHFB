@@ -28,6 +28,12 @@
       <HelpKeyword index="K" term="usage notes" />
     </HelpKeywords>
   </Topic>
+  <Topic id="ee5d612e-914f-411f-bd95-23478b15e4de" visible="True" title="Member ID Strings">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="member ID strings" />
+      <HelpKeyword index="K" term="ID string" />
+    </HelpKeywords>
+  </Topic>
   <Topic id="BD91FAD4-188D-4697-A654-7C07FD47EF31" visible="True" title="Namespace Comments">
     <HelpKeywords>
       <HelpKeyword index="K" term="namespace comments, managing" />
@@ -163,7 +169,7 @@
       </HelpKeywords>
     </Topic>
   </Topic>
-  <Topic id="9341fdc8-1571-405c-8e61-6a6b9b601b46" visible="True" isExpanded="true" title="Miscellaneous Elements">
+  <Topic id="9341fdc8-1571-405c-8e61-6a6b9b601b46" visible="True" title="Miscellaneous Elements">
     <HelpKeywords>
       <HelpKeyword index="K" term="element categories, miscellaneous" />
     </HelpKeywords>
@@ -175,6 +181,16 @@
     <Topic id="c0346d23-f376-4948-8f9a-d17b2f1acef3" visible="True" title="AttachedPropertyComments">
       <HelpKeywords>
         <HelpKeyword index="K" term="miscellaneous elements, AttachedPropertyComments" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="6e76ff26-d4f8-491e-ae81-b06086ecf902" visible="True" title="Code Contract Elements">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="miscellaneous elements, code contracts" />
+        <HelpKeyword index="K" term="miscellaneous elements, ensures" />
+        <HelpKeyword index="K" term="miscellaneous elements, ensuresOnThrow" />
+        <HelpKeyword index="K" term="miscellaneous elements, invariant" />
+        <HelpKeyword index="K" term="miscellaneous elements, pure" />
+        <HelpKeyword index="K" term="miscellaneous elements, requires" />
       </HelpKeywords>
     </Topic>
     <Topic id="db2703b4-12bc-4cf5-8642-544b41002809" visible="True" title="conceptualLink">
@@ -197,7 +213,7 @@
         <HelpKeyword index="K" term="miscellaneous elements, include" />
       </HelpKeywords>
     </Topic>
-    <Topic id="86453FFB-B978-4A2A-9EB5-70E118CA8073" visible="True" isSelected="true" title="inheritdoc">
+    <Topic id="86453FFB-B978-4A2A-9EB5-70E118CA8073" visible="True" title="inheritdoc">
       <HelpKeywords>
         <HelpKeyword index="K" term="miscellaneous elements, inheritdoc" />
       </HelpKeywords>
@@ -230,10 +246,15 @@
       <HelpKeyword index="K" term="support, donate" />
     </HelpKeywords>
   </Topic>
-  <Topic id="0999CAAA-4992-4352-9ED2-965892040176" visible="True" title="Version History">
+  <Topic id="0999CAAA-4992-4352-9ED2-965892040176" visible="True" isExpanded="true" title="Version History">
     <HelpKeywords>
       <HelpKeyword index="K" term="version history" />
     </HelpKeywords>
+    <Topic id="a5108a60-fdf8-412a-bd74-c182cd2832ec" visible="True" isSelected="true" title="Version 2014.1.26.0">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 2014.1.26.0" />
+      </HelpKeywords>
+    </Topic>
     <Topic id="40c5a184-aae2-4296-bc55-949e65e9909a" visible="True" title="Version 1.0.0.0">
       <HelpKeywords>
         <HelpKeyword index="K" term="versions, 1.0.0.0" />

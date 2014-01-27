@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<VSTemplate Version="3.0.0" Type="Project" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005">
+	<TemplateData>
+		<Name Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="206" />
+		<Description Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="207" />
+		<Icon Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="412" />
+		<ProjectType>VisualBasic</ProjectType>
+		<RequiredFrameworkVersion>4.0</RequiredFrameworkVersion>
+		<CreateNewFolder>true</CreateNewFolder>
+		<DefaultName>PlugIn</DefaultName>
+		<SortOrder>1000</SortOrder>
+		<ProvideDefaultName>true</ProvideDefaultName>
+		<NumberOfParentCategoriesToRollUp>1</NumberOfParentCategoriesToRollUp>
+	</TemplateData>
+	<TemplateContent>
+		<Project File="PlugIn.vbproj" ReplaceParameters="true">
+			<ProjectItem TargetFileName="$projectname$PlugIn.vb" ReplaceParameters="true" OpenInEditor="true">PlugIn.vb</ProjectItem>
+			<Folder Name="My Project" TargetFolderName="My Project">
+				<ProjectItem TargetFileName="AssemblyInfo.vb" ReplaceParameters="true">AssemblyInfo.vb</ProjectItem>
+			</Folder>
+		</Project>
+	</TemplateContent>
+</VSTemplate>

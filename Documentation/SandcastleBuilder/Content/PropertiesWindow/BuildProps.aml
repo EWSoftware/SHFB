@@ -8,8 +8,8 @@
       <autoOutline lead="The Build category properties control the build process." excludeRelatedTopics="true" />
     </introduction>
 
-<section address="HelpFileFormat">
-  <title>Help File Formats (HelpFileFormat)</title>
+<section address="HelpFileFormats">
+  <title>Help file formats (HelpFileFormats)</title>
   <content>
 		<para>This property lets you specify the type of help file to build (HTML Help 1, MS Help 2, MS Help Viewer,
 a website, or various combinations of these options).  The default is to produce an HTML Help 1 format file.  To
@@ -100,7 +100,7 @@ when doing a search.</para>
 </section>
 
 <section address="FrmwkVer">
-  <title>Framework Version (FrameworkVersion)</title>
+  <title>Framework version (FrameworkVersion)</title>
   <content>
 		<para>This property allows you to specify against which .NET Framework version the documentation assemblies
 where compiled.  This affects how the <application>MRefBuilder</application> tool produces the reflection
@@ -128,7 +128,7 @@ one help file if necessary.</para>
 </section>
 
 <section address="BuildLogFile">
-  <title>Build Log Filename (BuildLogFile)</title>
+  <title>Build log filename (BuildLogFile)</title>
   <content>
 		<para>This property is used to specify the location and name of the build log file.  If not specified, a
 default name of <localUri>LastBuild.log</localUri> is used and the log file is stored in the same folder as the

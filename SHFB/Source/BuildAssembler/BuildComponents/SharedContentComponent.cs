@@ -53,8 +53,8 @@ namespace Microsoft.Ddue.Tools
         /// <summary>
         /// This is used to create a new instance of the build component used for API token resolution
         /// </summary>
-        [BuildComponentExport("API Token Resolution", DesignerVisible = true,
-          Version = AssemblyInfo.Version, Copyright = AssemblyInfo.Copyright,
+        [BuildComponentExport("API Token Resolution", IsVisible = true,
+          Version = AssemblyInfo.ProductVersion, Copyright = AssemblyInfo.Copyright,
           Description = "This build component is used to resolve tokens in XML comments files.")]
         public sealed class ApiTokenResolutionComponentFactory : BuildComponentFactory
         {

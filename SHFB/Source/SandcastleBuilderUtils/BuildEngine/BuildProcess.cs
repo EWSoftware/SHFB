@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : BuildProcess.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/12/2014
+// Updated : 01/13/2014
 // Note    : Copyright 2006-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -678,13 +678,16 @@ namespace SandcastleBuilder.Utils.BuildEngine
                         frameworkSettings.Title);
 
                 // Get the composition container used to find build components in the rest of the build process 
+                this.ReportProgress("Locating components...");
+
                 componentContainer = ComponentUtilities.CreateComponentContainer(new[] { project.ComponentPath,
                     Path.GetDirectoryName(project.Filename) });
 
                 syntaxGenerators = componentContainer.GetExports<ISyntaxGeneratorFactory,
                     ISyntaxGeneratorMetadata>().Select(sf => sf.Metadata).ToList();
                 buildComponents = componentContainer.GetExports<BuildComponentFactory,
-                    IBuildComponentMetadata>().ToDictionary(key => key.Metadata.Id, value => value.Value);
+                    IBuildComponentMetadata>().GroupBy(c => c.Metadata.Id).Select(g => g.First()).ToDictionary(
+                        key => key.Metadata.Id, value => value.Value);
 
                 // Figure out which presentation style to use
                 var style = componentContainer.GetExports<PresentationStyleSettings,
@@ -1581,7 +1584,7 @@ AllDone:
                     if(message != null)
                         message += "\r\n";
 
-                    message += ex.Message;
+                    message += ex.Message + "\r\n" + ex.StackTrace;
                     ex = ex.InnerException;
 
                 } while(ex != null);
@@ -2149,8 +2152,9 @@ AllDone:
             foreach(ProjectItem reference in project.MSBuildProject.GetItems("ProjectReference"))
             {
                 // Ignore references used only for MSBuild dependency determination
-                if(reference.GetMetadata(ProjectElement.ReferenceOutputAssembly).EvaluatedValue.Equals("false",
-                  StringComparison.OrdinalIgnoreCase))
+                var refOutput = reference.GetMetadata(ProjectElement.ReferenceOutputAssembly);
+
+                if(refOutput != null && refOutput.EvaluatedValue.Equals("false", StringComparison.OrdinalIgnoreCase))
                 {
                     this.ReportProgress("Ignoring reference to '{0}' which is only used for MSBuild dependency " +
                         "determination", reference.EvaluatedInclude);

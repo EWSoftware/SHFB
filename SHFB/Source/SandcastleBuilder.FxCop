@@ -19,6 +19,7 @@
   <SearchGlobalAssemblyCache>False</SearchGlobalAssemblyCache>
   <DeadlockDetectionTimeout>120</DeadlockDetectionTimeout>
   <IgnoreGeneratedCode>False</IgnoreGeneratedCode>
+  <TargetFrameworkVersion>0.0</TargetFrameworkVersion>
  </ProjectOptions>
  <Targets>
   <Target Name="$(ProjectDir)/../Deploy/GenerateInheritedDocs.exe" Analyze="True" AnalyzeAllChildren="True" />
@@ -299,20 +300,6 @@
      </Message>
     </Messages>
    </Namespace>
-   <Namespace Name="Test.PlugIns">
-    <Messages>
-     <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Status="Excluded" Created="2008-03-24 05:12:57Z">
-      <Issue>
-       <Item>Test.PlugIns</Item>
-      </Issue>
-      <Notes>
-       <User Name="EWOODRUFF">
-        <Note Id="68" />
-       </User>
-      </Notes>
-     </Message>
-    </Messages>
-   </Namespace>
    <Namespace Name="XamlGeneratedNamespace">
     <Messages>
      <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Status="Excluded" Created="2011-12-31 23:40:53Z">
@@ -332,6 +319,21 @@
    <Target Name="$(ProjectDir)/../Deploy/GenerateInheritedDocs.exe">
     <Modules>
      <Module Name="generateinheriteddocs.exe">
+      <Messages>
+       <Message TypeName="AttributeStringLiteralsShouldParseCorrectly" Category="Microsoft.Usage" CheckId="CA2243" Status="Excluded" Created="2014-01-26 23:19:02Z">
+        <Issue>
+         <Item>'AssemblyInformationalVersionAttribute'</Item>
+         <Item>'informationalVersion'</Item>
+         <Item>2014.1.16.0 Beta</Item>
+         <Item>'Version'</Item>
+        </Issue>
+        <Notes>
+         <User Name="EWOODRUFF">
+          <Note Id="23" />
+         </User>
+        </Notes>
+       </Message>
+      </Messages>
       <Namespaces>
        <Namespace Name="SandcastleBuilder.InheritedDocumentation">
         <Types>
@@ -403,6 +405,21 @@
    <Target Name="$(ProjectDir)/../Deploy/HelpLibraryManagerLauncher.exe">
     <Modules>
      <Module Name="helplibrarymanagerlauncher.exe">
+      <Messages>
+       <Message TypeName="AttributeStringLiteralsShouldParseCorrectly" Category="Microsoft.Usage" CheckId="CA2243" Status="Excluded" Created="2014-01-26 23:19:02Z">
+        <Issue>
+         <Item>'AssemblyInformationalVersionAttribute'</Item>
+         <Item>'informationalVersion'</Item>
+         <Item>2014.1.16.0 Beta</Item>
+         <Item>'Version'</Item>
+        </Issue>
+        <Notes>
+         <User Name="EWOODRUFF">
+          <Note Id="23" />
+         </User>
+        </Notes>
+       </Message>
+      </Messages>
       <Namespaces>
        <Namespace Name="SandcastleBuilder.MicrosoftHelpViewer">
         <Types>
@@ -521,11 +538,39 @@
    <Target Name="$(ProjectDir)/../Deploy/SandcastleBuilder.Components.dll">
     <Modules>
      <Module Name="sandcastlebuilder.components.dll">
+      <Messages>
+       <Message TypeName="AttributeStringLiteralsShouldParseCorrectly" Category="Microsoft.Usage" CheckId="CA2243" Status="Excluded" Created="2014-01-26 23:19:02Z">
+        <Issue>
+         <Item>'AssemblyInformationalVersionAttribute'</Item>
+         <Item>'informationalVersion'</Item>
+         <Item>2014.1.16.0 Beta</Item>
+         <Item>'Version'</Item>
+        </Issue>
+        <Notes>
+         <User Name="EWOODRUFF">
+          <Note Id="23" />
+         </User>
+        </Notes>
+       </Message>
+      </Messages>
       <Namespaces>
        <Namespace Name="SandcastleBuilder.Components">
         <Types>
          <Type Name="CodeBlockComponent+Factory">
           <Messages>
+           <Message TypeName="AttributeStringLiteralsShouldParseCorrectly" Category="Microsoft.Usage" CheckId="CA2243" Status="Excluded" Created="2014-01-26 23:19:02Z">
+            <Issue>
+             <Item>'BuildComponentExportAttribute'</Item>
+             <Item>'BuildComponentExportAttribute.Version'</Item>
+             <Item>2014.1.16.0 Beta</Item>
+             <Item>'Version'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="23" />
+             </User>
+            </Notes>
+           </Message>
            <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2014-01-09 18:45:57Z">
             <Issue>
              <Item>'CodeBlockComponent.Factory'</Item>
@@ -540,6 +585,19 @@
          </Type>
          <Type Name="ESentCopyFromIndexComponent+ESentCommentsIndexDataComponentFactory">
           <Messages>
+           <Message TypeName="AttributeStringLiteralsShouldParseCorrectly" Category="Microsoft.Usage" CheckId="CA2243" Status="Excluded" Created="2014-01-26 23:19:02Z">
+            <Issue>
+             <Item>'BuildComponentExportAttribute'</Item>
+             <Item>'BuildComponentExportAttribute.Version'</Item>
+             <Item>2014.1.16.0 Beta</Item>
+             <Item>'Version'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="23" />
+             </User>
+            </Notes>
+           </Message>
            <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2014-01-09 18:45:57Z">
             <Issue>
              <Item>'ESentCopyFromIndexComponent.ESentCommentsIndexDataComponentFactory'</Item>
@@ -554,6 +612,19 @@
          </Type>
          <Type Name="ESentCopyFromIndexComponent+ESentReflectionIndexDataComponentFactory">
           <Messages>
+           <Message TypeName="AttributeStringLiteralsShouldParseCorrectly" Category="Microsoft.Usage" CheckId="CA2243" Status="Excluded" Created="2014-01-26 23:19:02Z">
+            <Issue>
+             <Item>'BuildComponentExportAttribute'</Item>
+             <Item>'BuildComponentExportAttribute.Version'</Item>
+             <Item>2014.1.16.0 Beta</Item>
+             <Item>'Version'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="23" />
+             </User>
+            </Notes>
+           </Message>
            <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2014-01-09 18:45:57Z">
             <Issue>
              <Item>'ESentCopyFromIndexComponent.ESentReflectionIndexDataComponentFactory'</Item>
@@ -587,6 +658,19 @@
          </Type>
          <Type Name="ESentResolveReferenceLinksComponent+ESentResolveReferenceLinksComponentFactory">
           <Messages>
+           <Message TypeName="AttributeStringLiteralsShouldParseCorrectly" Category="Microsoft.Usage" CheckId="CA2243" Status="Excluded" Created="2014-01-26 23:19:02Z">
+            <Issue>
+             <Item>'BuildComponentExportAttribute'</Item>
+             <Item>'BuildComponentExportAttribute.Version'</Item>
+             <Item>2014.1.16.0 Beta</Item>
+             <Item>'Version'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="23" />
+             </User>
+            </Notes>
+           </Message>
            <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2014-01-09 18:45:57Z">
             <Issue>
              <Item>'ESentResolveReferenceLinksComponent.ESentResolveReferenceLinksComponentFactory'</Item>
@@ -630,6 +714,19 @@
          </Type>
          <Type Name="SqlCopyFromIndexComponent+SqlCommentsIndexDataComponentFactory">
           <Messages>
+           <Message TypeName="AttributeStringLiteralsShouldParseCorrectly" Category="Microsoft.Usage" CheckId="CA2243" Status="Excluded" Created="2014-01-26 23:19:02Z">
+            <Issue>
+             <Item>'BuildComponentExportAttribute'</Item>
+             <Item>'BuildComponentExportAttribute.Version'</Item>
+             <Item>2014.1.16.0 Beta</Item>
+             <Item>'Version'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="23" />
+             </User>
+            </Notes>
+           </Message>
            <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2014-01-09 18:45:57Z">
             <Issue>
              <Item>'SqlCopyFromIndexComponent.SqlCommentsIndexDataComponentFactory'</Item>
@@ -644,6 +741,19 @@
          </Type>
          <Type Name="SqlCopyFromIndexComponent+SqlReflectionIndexDataComponentFactory">
           <Messages>
+           <Message TypeName="AttributeStringLiteralsShouldParseCorrectly" Category="Microsoft.Usage" CheckId="CA2243" Status="Excluded" Created="2014-01-26 23:19:02Z">
+            <Issue>
+             <Item>'BuildComponentExportAttribute'</Item>
+             <Item>'BuildComponentExportAttribute.Version'</Item>
+             <Item>2014.1.16.0 Beta</Item>
+             <Item>'Version'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="23" />
+             </User>
+            </Notes>
+           </Message>
            <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2014-01-09 18:45:57Z">
             <Issue>
              <Item>'SqlCopyFromIndexComponent.SqlReflectionIndexDataComponentFactory'</Item>
@@ -719,6 +829,19 @@
          </Type>
          <Type Name="SqlResolveReferenceLinksComponent+SqlResolveReferenceLinksComponentFactory">
           <Messages>
+           <Message TypeName="AttributeStringLiteralsShouldParseCorrectly" Category="Microsoft.Usage" CheckId="CA2243" Status="Excluded" Created="2014-01-26 23:19:02Z">
+            <Issue>
+             <Item>'BuildComponentExportAttribute'</Item>
+             <Item>'BuildComponentExportAttribute.Version'</Item>
+             <Item>2014.1.16.0 Beta</Item>
+             <Item>'Version'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="23" />
+             </User>
+            </Notes>
+           </Message>
            <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2014-01-09 18:45:57Z">
             <Issue>
              <Item>'SqlResolveReferenceLinksComponent.SqlResolveReferenceLinksComponentFactory'</Item>
@@ -1028,9 +1151,41 @@
    <Target Name="$(ProjectDir)/../Deploy/SandcastleBuilder.PlugIns.dll">
     <Modules>
      <Module Name="sandcastlebuilder.plugins.dll">
+      <Messages>
+       <Message TypeName="AttributeStringLiteralsShouldParseCorrectly" Category="Microsoft.Usage" CheckId="CA2243" Status="Excluded" Created="2014-01-26 23:19:02Z">
+        <Issue>
+         <Item>'AssemblyInformationalVersionAttribute'</Item>
+         <Item>'informationalVersion'</Item>
+         <Item>2014.1.16.0 Beta</Item>
+         <Item>'Version'</Item>
+        </Issue>
+        <Notes>
+         <User Name="EWOODRUFF">
+          <Note Id="23" />
+         </User>
+        </Notes>
+       </Message>
+      </Messages>
       <Namespaces>
        <Namespace Name="SandcastleBuilder.PlugIns">
         <Types>
+         <Type Name="AdditionalContentOnlyPlugIn">
+          <Messages>
+           <Message TypeName="AttributeStringLiteralsShouldParseCorrectly" Category="Microsoft.Usage" CheckId="CA2243" Status="Excluded" Created="2014-01-26 23:19:02Z">
+            <Issue>
+             <Item>'HelpFileBuilderPlugInExportAttribute'</Item>
+             <Item>'HelpFileBuilderPlugInExportAttribute.Version'</Item>
+             <Item>2014.1.16.0 Beta</Item>
+             <Item>'Version'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="23" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
          <Type Name="AdditionalReferenceLinksConfigDlg">
           <Members>
            <Member Name="#lnkCodePlexSHFB_LinkClicked(System.Object,System.Windows.Forms.LinkLabelLinkClickedEventArgs)">
@@ -1049,6 +1204,23 @@
             </Messages>
            </Member>
           </Members>
+         </Type>
+         <Type Name="AdditionalReferenceLinksPlugIn">
+          <Messages>
+           <Message TypeName="AttributeStringLiteralsShouldParseCorrectly" Category="Microsoft.Usage" CheckId="CA2243" Status="Excluded" Created="2014-01-26 23:19:02Z">
+            <Issue>
+             <Item>'HelpFileBuilderPlugInExportAttribute'</Item>
+             <Item>'HelpFileBuilderPlugInExportAttribute.Version'</Item>
+             <Item>2014.1.16.0 Beta</Item>
+             <Item>'Version'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="23" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
          </Type>
          <Type Name="AjaxDocConfigDlg">
           <Members>
@@ -1084,6 +1256,23 @@
            </Member>
           </Members>
          </Type>
+         <Type Name="AjaxDocPlugIn">
+          <Messages>
+           <Message TypeName="AttributeStringLiteralsShouldParseCorrectly" Category="Microsoft.Usage" CheckId="CA2243" Status="Excluded" Created="2014-01-26 23:19:02Z">
+            <Issue>
+             <Item>'HelpFileBuilderPlugInExportAttribute'</Item>
+             <Item>'HelpFileBuilderPlugInExportAttribute.Version'</Item>
+             <Item>2014.1.16.0 Beta</Item>
+             <Item>'Version'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="23" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
          <Type Name="BibliographySupportConfigDlg">
           <Members>
            <Member Name="#project_LinkClicked(System.Object,System.Windows.Forms.LinkLabelLinkClickedEventArgs)">
@@ -1102,6 +1291,23 @@
             </Messages>
            </Member>
           </Members>
+         </Type>
+         <Type Name="BibliographySupportPlugIn">
+          <Messages>
+           <Message TypeName="AttributeStringLiteralsShouldParseCorrectly" Category="Microsoft.Usage" CheckId="CA2243" Status="Excluded" Created="2014-01-26 23:19:02Z">
+            <Issue>
+             <Item>'HelpFileBuilderPlugInExportAttribute'</Item>
+             <Item>'HelpFileBuilderPlugInExportAttribute.Version'</Item>
+             <Item>2014.1.16.0 Beta</Item>
+             <Item>'Version'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="23" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
          </Type>
          <Type Name="BindingRedirectResolverConfigDlg">
           <Members>
@@ -1138,6 +1344,21 @@
           </Members>
          </Type>
          <Type Name="BindingRedirectResolverPlugIn">
+          <Messages>
+           <Message TypeName="AttributeStringLiteralsShouldParseCorrectly" Category="Microsoft.Usage" CheckId="CA2243" Status="Excluded" Created="2014-01-26 23:19:02Z">
+            <Issue>
+             <Item>'HelpFileBuilderPlugInExportAttribute'</Item>
+             <Item>'HelpFileBuilderPlugInExportAttribute.Version'</Item>
+             <Item>2014.1.16.0 Beta</Item>
+             <Item>'Version'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="23" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
           <Members>
            <Member Name="#Execute(SandcastleBuilder.Utils.BuildComponent.ExecutionContext)">
             <Messages>
@@ -1245,6 +1466,21 @@
           </Members>
          </Type>
          <Type Name="CompletionNotificationPlugIn">
+          <Messages>
+           <Message TypeName="AttributeStringLiteralsShouldParseCorrectly" Category="Microsoft.Usage" CheckId="CA2243" Status="Excluded" Created="2014-01-26 23:19:02Z">
+            <Issue>
+             <Item>'HelpFileBuilderPlugInExportAttribute'</Item>
+             <Item>'HelpFileBuilderPlugInExportAttribute.Version'</Item>
+             <Item>2014.1.16.0 Beta</Item>
+             <Item>'Version'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="23" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
           <Members>
            <Member Name="#TransformLogFile()">
             <Messages>
@@ -1284,6 +1520,19 @@
          </Type>
          <Type Name="DbcsFixPlugIn">
           <Messages>
+           <Message TypeName="AttributeStringLiteralsShouldParseCorrectly" Category="Microsoft.Usage" CheckId="CA2243" Status="Excluded" Created="2014-01-26 23:19:02Z">
+            <Issue>
+             <Item>'HelpFileBuilderPlugInExportAttribute'</Item>
+             <Item>'HelpFileBuilderPlugInExportAttribute.Version'</Item>
+             <Item>2014.1.16.0 Beta</Item>
+             <Item>'Version'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="23" />
+             </User>
+            </Notes>
+           </Message>
            <Message Id="Dbcs" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2013-12-28 20:32:19Z">
             <Issue Name="Type">
              <Item>Dbcs</Item>
@@ -1362,6 +1611,23 @@
            </Member>
           </Members>
          </Type>
+         <Type Name="DeploymentPlugIn">
+          <Messages>
+           <Message TypeName="AttributeStringLiteralsShouldParseCorrectly" Category="Microsoft.Usage" CheckId="CA2243" Status="Excluded" Created="2014-01-26 23:19:02Z">
+            <Issue>
+             <Item>'HelpFileBuilderPlugInExportAttribute'</Item>
+             <Item>'HelpFileBuilderPlugInExportAttribute.Version'</Item>
+             <Item>2014.1.16.0 Beta</Item>
+             <Item>'Version'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="23" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
          <Type Name="HierarchicalTocConfigDlg">
           <Members>
            <Member Name="#project_LinkClicked(System.Object,System.Windows.Forms.LinkLabelLinkClickedEventArgs)">
@@ -1380,6 +1646,23 @@
             </Messages>
            </Member>
           </Members>
+         </Type>
+         <Type Name="HierarchicalTocPlugIn">
+          <Messages>
+           <Message TypeName="AttributeStringLiteralsShouldParseCorrectly" Category="Microsoft.Usage" CheckId="CA2243" Status="Excluded" Created="2014-01-26 23:19:02Z">
+            <Issue>
+             <Item>'HelpFileBuilderPlugInExportAttribute'</Item>
+             <Item>'HelpFileBuilderPlugInExportAttribute.Version'</Item>
+             <Item>2014.1.16.0 Beta</Item>
+             <Item>'Version'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="23" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
          </Type>
          <Type Name="ProxyCredentials">
           <Members>
@@ -1469,6 +1752,40 @@
            </Member>
           </Members>
          </Type>
+         <Type Name="ScriptSharpPlugIn">
+          <Messages>
+           <Message TypeName="AttributeStringLiteralsShouldParseCorrectly" Category="Microsoft.Usage" CheckId="CA2243" Status="Excluded" Created="2014-01-26 23:19:02Z">
+            <Issue>
+             <Item>'HelpFileBuilderPlugInExportAttribute'</Item>
+             <Item>'HelpFileBuilderPlugInExportAttribute.Version'</Item>
+             <Item>2014.1.16.0 Beta</Item>
+             <Item>'Version'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="23" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="TocExcludePlugIn">
+          <Messages>
+           <Message TypeName="AttributeStringLiteralsShouldParseCorrectly" Category="Microsoft.Usage" CheckId="CA2243" Status="Excluded" Created="2014-01-26 23:19:02Z">
+            <Issue>
+             <Item>'HelpFileBuilderPlugInExportAttribute'</Item>
+             <Item>'HelpFileBuilderPlugInExportAttribute.Version'</Item>
+             <Item>2014.1.16.0 Beta</Item>
+             <Item>'Version'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="23" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
          <Type Name="UserCredentials">
           <Members>
            <Member Name="#ToXml(System.Xml.XmlDocument,System.Xml.XmlNode)">
@@ -1527,6 +1844,21 @@
           </Members>
          </Type>
          <Type Name="VersionBuilderPlugIn">
+          <Messages>
+           <Message TypeName="AttributeStringLiteralsShouldParseCorrectly" Category="Microsoft.Usage" CheckId="CA2243" Status="Excluded" Created="2014-01-26 23:19:02Z">
+            <Issue>
+             <Item>'HelpFileBuilderPlugInExportAttribute'</Item>
+             <Item>'HelpFileBuilderPlugInExportAttribute.Version'</Item>
+             <Item>2014.1.16.0 Beta</Item>
+             <Item>'Version'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="23" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
           <Members>
            <Member Name="#ModifyTransformManifestProject()">
             <Messages>
@@ -1652,6 +1984,23 @@
            </Member>
           </Members>
          </Type>
+         <Type Name="WildcardReferencesPlugIn">
+          <Messages>
+           <Message TypeName="AttributeStringLiteralsShouldParseCorrectly" Category="Microsoft.Usage" CheckId="CA2243" Status="Excluded" Created="2014-01-26 23:19:02Z">
+            <Issue>
+             <Item>'HelpFileBuilderPlugInExportAttribute'</Item>
+             <Item>'HelpFileBuilderPlugInExportAttribute.Version'</Item>
+             <Item>2014.1.16.0 Beta</Item>
+             <Item>'Version'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="23" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
          <Type Name="XPathReflectionFileFilterConfigDlg">
           <Members>
            <Member Name="#lnkCodePlexSHFB_LinkClicked(System.Object,System.Windows.Forms.LinkLabelLinkClickedEventArgs)">
@@ -1686,6 +2035,23 @@
            </Member>
           </Members>
          </Type>
+         <Type Name="XPathReflectionFileFilterPlugIn">
+          <Messages>
+           <Message TypeName="AttributeStringLiteralsShouldParseCorrectly" Category="Microsoft.Usage" CheckId="CA2243" Status="Excluded" Created="2014-01-26 23:19:02Z">
+            <Issue>
+             <Item>'HelpFileBuilderPlugInExportAttribute'</Item>
+             <Item>'HelpFileBuilderPlugInExportAttribute.Version'</Item>
+             <Item>2014.1.16.0 Beta</Item>
+             <Item>'Version'</Item>
+            </Issue>
+            <Notes>
+             <User Name="EWOODRUFF">
+              <Note Id="23" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
         </Types>
        </Namespace>
       </Namespaces>
@@ -1695,6 +2061,21 @@
    <Target Name="$(ProjectDir)/../Deploy/SandcastleBuilder.Utils.dll">
     <Modules>
      <Module Name="sandcastlebuilder.utils.dll">
+      <Messages>
+       <Message TypeName="AttributeStringLiteralsShouldParseCorrectly" Category="Microsoft.Usage" CheckId="CA2243" Status="Excluded" Created="2014-01-26 23:19:02Z">
+        <Issue>
+         <Item>'AssemblyInformationalVersionAttribute'</Item>
+         <Item>'informationalVersion'</Item>
+         <Item>2014.1.16.0 Beta</Item>
+         <Item>'Version'</Item>
+        </Issue>
+        <Notes>
+         <User Name="EWOODRUFF">
+          <Note Id="23" />
+         </User>
+        </Notes>
+       </Message>
+      </Messages>
       <Namespaces>
        <Namespace Name="SandcastleBuilder.MicrosoftHelpViewer">
         <Types>
@@ -3255,498 +3636,6 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="MSHCPackage">
-          <Messages>
-           <Message Id="MSHC" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Status="Excluded" Created="2012-11-18 23:04:29Z">
-            <Issue Name="Type">
-             <Item>MSHC</Item>
-             <Item>'MSHCPackage'</Item>
-             <Item>Mshc</Item>
-            </Issue>
-            <Notes>
-             <User Name="EWOODRUFF">
-              <Note Id="152" />
-             </User>
-            </Notes>
-           </Message>
-          </Messages>
-          <Members>
-           <Member Name="#Compression">
-            <Accessors>
-             <Accessor Name="#set_Compression(System.IO.Packaging.CompressionOption)">
-              <Messages>
-               <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Status="Excluded" Created="2012-11-18 23:04:29Z">
-                <Issue>
-                 <Item>'MSHCPackage.Compression.set(CompressionOption)'</Item>
-                </Issue>
-                <Notes>
-                 <User Name="EWOODRUFF">
-                  <Note Id="153" />
-                 </User>
-                </Notes>
-               </Message>
-              </Messages>
-             </Accessor>
-            </Accessors>
-           </Member>
-           <Member Name="#CopyTheseParts(SandcastleBuilder.Utils.BuildEngine.MSHCPackage+PackageManifest)">
-            <Messages>
-             <Message Id="System.Xml.XmlNode" TypeName="MembersShouldNotExposeCertainConcreteTypes" Category="Microsoft.Design" CheckId="CA1059" Status="Excluded" Created="2012-11-18 23:04:29Z">
-              <Issue Name="Xml">
-               <Item>'MSHCPackage.CopyTheseParts(MSHCPackage.PackageManifest)'</Item>
-               <Item>'MSHCPackage.PackageManifest'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="153" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#CopyTheseParts(SandcastleBuilder.Utils.BuildEngine.MSHCPackage+PackageManifest,System.Boolean)">
-            <Messages>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2012-11-18 23:04:29Z">
-              <Issue>
-               <Item>'MSHCPackage.CopyTheseParts(MSHCPackage.PackageManifest, bool)'</Item>
-               <Item>'Exception'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="153" />
-               </User>
-              </Notes>
-             </Message>
-             <Message Id="System.Xml.XmlNode" TypeName="MembersShouldNotExposeCertainConcreteTypes" Category="Microsoft.Design" CheckId="CA1059" Status="Excluded" Created="2012-11-18 23:04:29Z">
-              <Issue Name="Xml">
-               <Item>'MSHCPackage.CopyTheseParts(MSHCPackage.PackageManifest, bool)'</Item>
-               <Item>'MSHCPackage.PackageManifest'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="153" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#DefaultPartType(System.String)">
-            <Messages>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2012-11-18 23:04:29Z">
-              <Issue>
-               <Item>'MSHCPackage.DefaultPartType(string)'</Item>
-               <Item>'Exception'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="153" />
-               </User>
-              </Notes>
-             </Message>
-             <Message Id="System.String.ToLower" TypeName="SpecifyCultureInfo" Category="Microsoft.Globalization" CheckId="CA1304" Status="Excluded" Created="2012-11-18 23:04:29Z">
-              <Issue>
-               <Item>'string.ToLower()'</Item>
-               <Item>'MSHCPackage.DefaultPartType(string)'</Item>
-               <Item>'string.ToLower(CultureInfo)'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="153" />
-               </User>
-              </Notes>
-             </Message>
-             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Status="Excluded" Created="2012-11-18 23:04:29Z">
-              <Issue Name="IFormatProviderAlternateString">
-               <Item>'string.Format(string, object)'</Item>
-               <Item>'MSHCPackage.DefaultPartType(string)'</Item>
-               <Item>'string.Format(IFormatProvider, string, params object[])'</Item>
-               <Item>'CultureInfo.CurrentCulture'</Item>
-               <Item>'CultureInfo.InvariantCulture'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="153" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#Dispose(System.Boolean)">
-            <Messages>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2012-11-18 23:04:29Z">
-              <Issue>
-               <Item>'MSHCPackage.Dispose(bool)'</Item>
-               <Item>'Exception'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="153" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#GetAllParts(System.String,System.Boolean)">
-            <Messages>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2012-11-18 23:04:29Z">
-              <Issue>
-               <Item>'MSHCPackage.GetAllParts(string, bool)'</Item>
-               <Item>'object'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="153" />
-               </User>
-              </Notes>
-             </Message>
-             <Message TypeName="PassSystemUriObjectsInsteadOfStrings" Category="Microsoft.Usage" CheckId="CA2234" Status="Excluded" Created="2012-11-18 23:04:29Z">
-              <Issue>
-               <Item>'MSHCPackage.GetAllParts(string, bool)'</Item>
-               <Item>'Uri.Uri(Uri, Uri)'</Item>
-               <Item>'Uri.Uri(Uri, string)'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="153" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#GetPart(System.String,System.IO.Stream)">
-            <Messages>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2012-11-18 23:04:29Z">
-              <Issue>
-               <Item>'MSHCPackage.GetPart(string, Stream)'</Item>
-               <Item>'object'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="153" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#GetPart(System.String,System.String,System.Boolean)">
-            <Messages>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2012-11-18 23:04:29Z">
-              <Issue>
-               <Item>'MSHCPackage.GetPart(string, string, bool)'</Item>
-               <Item>'object'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="153" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#GetTheseParts(System.String,SandcastleBuilder.Utils.BuildEngine.MSHCPackage+PackageManifest)">
-            <Messages>
-             <Message Id="System.Xml.XmlNode" TypeName="MembersShouldNotExposeCertainConcreteTypes" Category="Microsoft.Design" CheckId="CA1059" Status="Excluded" Created="2012-11-18 23:04:29Z">
-              <Issue Name="Xml">
-               <Item>'MSHCPackage.GetTheseParts(string, MSHCPackage.PackageManifest)'</Item>
-               <Item>'MSHCPackage.PackageManifest'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="153" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#GetTheseParts(System.String,SandcastleBuilder.Utils.BuildEngine.MSHCPackage+PackageManifest,System.Boolean)">
-            <Messages>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2012-11-18 23:04:29Z">
-              <Issue>
-               <Item>'MSHCPackage.GetTheseParts(string, MSHCPackage.PackageManifest, bool)'</Item>
-               <Item>'object'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="153" />
-               </User>
-              </Notes>
-             </Message>
-             <Message Id="System.Xml.XmlNode" TypeName="MembersShouldNotExposeCertainConcreteTypes" Category="Microsoft.Design" CheckId="CA1059" Status="Excluded" Created="2012-11-18 23:04:29Z">
-              <Issue Name="Xml">
-               <Item>'MSHCPackage.GetTheseParts(string, MSHCPackage.PackageManifest, bool)'</Item>
-               <Item>'MSHCPackage.PackageManifest'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="153" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#PutAllParts(System.String,System.Boolean,System.Boolean,System.String)">
-            <Messages>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2012-11-18 23:04:29Z">
-              <Issue>
-               <Item>'MSHCPackage.PutAllParts(string, bool, bool, string)'</Item>
-               <Item>'object'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="153" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#PutPart(System.String,System.IO.Stream,System.Boolean,System.String)">
-            <Messages>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2012-11-18 23:04:29Z">
-              <Issue>
-               <Item>'MSHCPackage.PutPart(string, Stream, bool, string)'</Item>
-               <Item>'object'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="153" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#PutPart(System.String,System.String,System.Boolean,System.String)">
-            <Messages>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2012-11-18 23:04:29Z">
-              <Issue>
-               <Item>'MSHCPackage.PutPart(string, string, bool, string)'</Item>
-               <Item>'object'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="153" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#PutTheseParts(SandcastleBuilder.Utils.BuildEngine.MSHCPackage+PackageManifest)">
-            <Messages>
-             <Message Id="System.Xml.XmlNode" TypeName="MembersShouldNotExposeCertainConcreteTypes" Category="Microsoft.Design" CheckId="CA1059" Status="Excluded" Created="2012-11-18 23:04:29Z">
-              <Issue Name="Xml">
-               <Item>'MSHCPackage.PutTheseParts(MSHCPackage.PackageManifest)'</Item>
-               <Item>'MSHCPackage.PackageManifest'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="153" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#PutTheseParts(SandcastleBuilder.Utils.BuildEngine.MSHCPackage+PackageManifest,System.Boolean)">
-            <Messages>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2012-11-18 23:04:29Z">
-              <Issue>
-               <Item>'MSHCPackage.PutTheseParts(MSHCPackage.PackageManifest, bool)'</Item>
-               <Item>'object'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="153" />
-               </User>
-              </Notes>
-             </Message>
-             <Message Id="System.Xml.XmlNode" TypeName="MembersShouldNotExposeCertainConcreteTypes" Category="Microsoft.Design" CheckId="CA1059" Status="Excluded" Created="2012-11-18 23:04:29Z">
-              <Issue Name="Xml">
-               <Item>'MSHCPackage.PutTheseParts(MSHCPackage.PackageManifest, bool)'</Item>
-               <Item>'MSHCPackage.PackageManifest'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="153" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="MSHCPackage+PackageManifest">
-          <Messages>
-           <Message TypeName="CollectionsShouldImplementGenericInterface" Category="Microsoft.Design" CheckId="CA1010" Status="Excluded" Created="2012-11-18 23:04:29Z">
-            <Issue Certainty="60">
-             <Item>'MSHCPackage.PackageManifest'</Item>
-             <Item>IEnumerable</Item>
-            </Issue>
-            <Notes>
-             <User Name="EWOODRUFF">
-              <Note Id="153" />
-             </User>
-            </Notes>
-           </Message>
-           <Message TypeName="IdentifiersShouldHaveCorrectSuffix" Category="Microsoft.Naming" CheckId="CA1710" Status="Excluded" Created="2012-11-18 23:04:29Z">
-            <Issue>
-             <Item>'MSHCPackage.PackageManifest'</Item>
-             <Item>Collection</Item>
-            </Issue>
-            <Notes>
-             <User Name="EWOODRUFF">
-              <Note Id="153" />
-             </User>
-            </Notes>
-           </Message>
-           <Message TypeName="TypesShouldNotExtendCertainBaseTypes" Category="Microsoft.Design" CheckId="CA1058" Status="Excluded" Created="2012-11-18 23:04:29Z">
-            <Issue Name="System.Xml.XmlDocument">
-             <Item>'MSHCPackage.PackageManifest'</Item>
-             <Item>'XmlDocument'</Item>
-            </Issue>
-            <Notes>
-             <User Name="EWOODRUFF">
-              <Note Id="153" />
-             </User>
-            </Notes>
-           </Message>
-          </Messages>
-          <Members>
-           <Member Name="#Evaluate(System.Collections.Generic.Dictionary`2&lt;System.String,System.String&gt;,System.String[])">
-            <Messages>
-             <Message Id="System.String.ToLower" TypeName="SpecifyCultureInfo" Category="Microsoft.Globalization" CheckId="CA1304" Status="Excluded" Created="2012-11-18 23:04:29Z">
-              <Issue>
-               <Item>'string.ToLower()'</Item>
-               <Item>'MSHCPackage.PackageManifest.Evaluate(Dictionary&lt;string, string&gt;, string[])'</Item>
-               <Item>'string.ToLower(CultureInfo)'</Item>
-              </Issue>
-              <Issue>
-               <Item>'string.ToLower()'</Item>
-               <Item>'MSHCPackage.PackageManifest.Evaluate(Dictionary&lt;string, string&gt;, string[])'</Item>
-               <Item>'string.ToLower(CultureInfo)'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="153" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#EvaluateCondition(System.Xml.XmlNode,System.Collections.Generic.Dictionary`2&lt;System.String,System.String&gt;)">
-            <Messages>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2012-11-18 23:04:29Z">
-              <Issue>
-               <Item>'MSHCPackage.PackageManifest.EvaluateCondition(XmlNode, Dictionary&lt;string, string&gt;)'</Item>
-               <Item>'object'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="153" />
-               </User>
-              </Notes>
-             </Message>
-             <Message Id="System.String.ToLower" TypeName="SpecifyCultureInfo" Category="Microsoft.Globalization" CheckId="CA1304" Status="Excluded" Created="2012-11-18 23:04:29Z">
-              <Issue>
-               <Item>'string.ToLower()'</Item>
-               <Item>'MSHCPackage.PackageManifest.EvaluateCondition(XmlNode, Dictionary&lt;string, string&gt;)'</Item>
-               <Item>'string.ToLower(CultureInfo)'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="153" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#Items">
-            <Messages>
-             <Message TypeName="CollectionPropertiesShouldBeReadOnly" Category="Microsoft.Usage" CheckId="CA2227" Status="Excluded" Created="2012-11-18 23:04:29Z">
-              <Issue>
-               <Item>'MSHCPackage.PackageManifest.Items'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="153" />
-               </User>
-              </Notes>
-             </Message>
-             <Message TypeName="DoNotExposeGenericLists" Category="Microsoft.Design" CheckId="CA1002" Status="Excluded" Created="2012-11-18 23:04:29Z">
-              <Issue>
-               <Item>'List&lt;MSHCPackage.PackageManifestItem&gt;'</Item>
-               <Item>'MSHCPackage.PackageManifest.Items'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="153" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="MSHCPackage+PackageManifestItem">
-          <Messages>
-           <Message TypeName="IdentifiersShouldHaveCorrectSuffix" Category="Microsoft.Naming" CheckId="CA1710" Status="Excluded" Created="2012-11-18 23:04:29Z">
-            <Issue>
-             <Item>'MSHCPackage.PackageManifestItem'</Item>
-             <Item>Collection</Item>
-            </Issue>
-            <Notes>
-             <User Name="EWOODRUFF">
-              <Note Id="153" />
-             </User>
-            </Notes>
-           </Message>
-          </Messages>
-          <Members>
-           <Member Name="#.ctor(System.Xml.XmlNode)">
-            <Messages>
-             <Message Id="System.Xml.XmlNode" TypeName="MembersShouldNotExposeCertainConcreteTypes" Category="Microsoft.Design" CheckId="CA1059" Status="Excluded" Created="2012-11-18 23:04:29Z">
-              <Issue Name="Xml">
-               <Item>'MSHCPackage.PackageManifestItem.PackageManifestItem(XmlNode)'</Item>
-               <Item>'XmlNode'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="153" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#Node">
-            <Messages>
-             <Message Id="System.Xml.XmlNode" TypeName="MembersShouldNotExposeCertainConcreteTypes" Category="Microsoft.Design" CheckId="CA1059" Status="Excluded" Created="2012-11-18 23:04:29Z">
-              <Issue Name="Xml">
-               <Item>'MSHCPackage.PackageManifestItem.Node'</Item>
-               <Item>'XmlNode'</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="153" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#SubType">
-            <Messages>
-             <Message Id="SubType" TypeName="CompoundWordsShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1702" Status="Excluded" Created="2012-11-18 23:04:29Z">
-              <Issue Name="MemberShouldBeDiscreteTerm">
-               <Item>SubType</Item>
-               <Item>'MSHCPackage.PackageManifestItem.SubType'</Item>
-               <Item>Subtype</Item>
-              </Issue>
-              <Notes>
-               <User Name="EWOODRUFF">
-                <Note Id="153" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
          <Type Name="XmlCommentsFile">
           <Members>
            <Member Name="#.ctor(System.String)">
@@ -5004,6 +4893,19 @@
     <Modules>
      <Module Name="sandcastlebuilder.wpf.dll">
       <Messages>
+       <Message TypeName="AttributeStringLiteralsShouldParseCorrectly" Category="Microsoft.Usage" CheckId="CA2243" Status="Excluded" Created="2014-01-26 23:19:02Z">
+        <Issue>
+         <Item>'AssemblyInformationalVersionAttribute'</Item>
+         <Item>'informationalVersion'</Item>
+         <Item>2014.1.16.0 Beta</Item>
+         <Item>'Version'</Item>
+        </Issue>
+        <Notes>
+         <User Name="EWOODRUFF">
+          <Note Id="23" />
+         </User>
+        </Notes>
+       </Message>
        <Message Id="WPF" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Status="Excluded" Created="2011-12-31 23:40:53Z">
         <Issue Name="Assembly">
          <Item>WPF</Item>
@@ -7656,6 +7558,19 @@
     <Modules>
      <Module Name="sandcastlebuildergui.exe">
       <Messages>
+       <Message TypeName="AttributeStringLiteralsShouldParseCorrectly" Category="Microsoft.Usage" CheckId="CA2243" Status="Excluded" Created="2014-01-26 23:19:02Z">
+        <Issue>
+         <Item>'AssemblyInformationalVersionAttribute'</Item>
+         <Item>'informationalVersion'</Item>
+         <Item>2014.1.16.0 Beta</Item>
+         <Item>'Version'</Item>
+        </Issue>
+        <Notes>
+         <User Name="EWOODRUFF">
+          <Note Id="23" />
+         </User>
+        </Notes>
+       </Message>
        <Message Id="GUI" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Status="Excluded" Created="2008-01-12 21:28:57Z">
         <Issue Name="Assembly">
          <Item>GUI</Item>
@@ -9422,6 +9337,21 @@
    <Target Name="$(ProjectDir)/../Deploy/SandcastleHtmlExtract.exe">
     <Modules>
      <Module Name="sandcastlehtmlextract.exe">
+      <Messages>
+       <Message TypeName="AttributeStringLiteralsShouldParseCorrectly" Category="Microsoft.Usage" CheckId="CA2243" Status="Excluded" Created="2014-01-26 23:19:02Z">
+        <Issue>
+         <Item>'AssemblyInformationalVersionAttribute'</Item>
+         <Item>'informationalVersion'</Item>
+         <Item>2014.1.16.0 Beta</Item>
+         <Item>'Version'</Item>
+        </Issue>
+        <Notes>
+         <User Name="EWOODRUFF">
+          <Note Id="40" />
+         </User>
+        </Notes>
+       </Message>
+      </Messages>
       <Namespaces>
        <Namespace Name="SandcastleBuilder.HtmlExtract">
         <Types>
@@ -9628,6 +9558,19 @@
     <Modules>
      <Module Name="shfbprojectlauncher.exe">
       <Messages>
+       <Message TypeName="AttributeStringLiteralsShouldParseCorrectly" Category="Microsoft.Usage" CheckId="CA2243" Status="Excluded" Created="2014-01-26 23:19:02Z">
+        <Issue>
+         <Item>'AssemblyInformationalVersionAttribute'</Item>
+         <Item>'informationalVersion'</Item>
+         <Item>2014.1.16.0 Beta</Item>
+         <Item>'Version'</Item>
+        </Issue>
+        <Notes>
+         <User Name="EWOODRUFF">
+          <Note Id="23" />
+         </User>
+        </Notes>
+       </Message>
        <Message Id="SHFB" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Status="Excluded" Created="2012-01-01 02:17:49Z">
         <Issue Name="Assembly">
          <Item>SHFB</Item>
@@ -9710,6 +9653,7 @@
     <Note Id="20" Modified="2008-02-20 17:07:55Z">The error is reported</Note>
     <Note Id="21" Modified="2008-11-19 16:39:10Z">Okay as is</Note>
     <Note Id="22" Modified="2008-09-19 23:11:26Z">It's there to force implementation of the property which is an override of the base class property.</Note>
+    <Note Id="23" Modified="2014-01-26 23:21:20Z">Okay as is</Note>
     <Note Id="24" Modified="2008-09-19 23:13:11Z">Okay as is</Note>
     <Note Id="25" Modified="2008-09-19 23:21:33Z">Using the given type is appropriate here</Note>
     <Note Id="26" Modified="2013-12-28 20:45:22Z">Okay as is</Note>
@@ -9726,6 +9670,7 @@
     <Note Id="37" Modified="2008-09-20 02:26:16Z">Okay as is</Note>
     <Note Id="38" Modified="2013-12-28 21:09:11Z">Lowercase is required</Note>
     <Note Id="39" Modified="2006-12-09 05:43:09Z">Okay as is</Note>
+    <Note Id="40" Modified="2014-01-26 23:21:30Z">Okay as is</Note>
     <Note Id="41" Modified="2006-12-27 23:40:43Z">Called via Reflection when loading a project</Note>
     <Note Id="42" Modified="2006-12-27 23:40:55Z">Called via Reflection when loading a project</Note>
     <Note Id="43" Modified="2007-10-08 22:01:59Z">They're fine as they are</Note>
@@ -9752,7 +9697,6 @@
     <Note Id="65" Modified="2008-09-20 03:02:24Z">Lowercase is preferred</Note>
     <Note Id="66" Modified="2007-10-08 22:04:38Z">The error is reported</Note>
     <Note Id="67" Modified="2008-09-20 03:04:51Z">Lowercase is preferred</Note>
-    <Note Id="68" Modified="2008-03-24 05:13:24Z">This is just in the debug build to verify the code for the help file</Note>
     <Note Id="71" Modified="2011-02-28 01:05:49Z">No security issues found</Note>
     <Note Id="73" Modified="2011-03-07 01:03:02Z">Lowercase is needed here.</Note>
     <Note Id="74" Modified="2011-03-07 01:03:16Z">The error is reported</Note>
@@ -9826,7 +9770,6 @@
     <Note Id="150" Modified="2012-11-18 23:15:00Z">Okay as is</Note>
     <Note Id="151" Modified="2012-11-18 23:15:41Z">Okay as is</Note>
     <Note Id="152" Modified="2012-11-18 23:16:12Z">Okay as is</Note>
-    <Note Id="153" Modified="2012-11-18 23:18:31Z">The MSHCPackage class will eventually go away so I'm ignoring errors in it.</Note>
     <Note Id="155" Modified="2012-11-18 23:22:05Z">There is no reason for a default constructor.</Note>
     <Note Id="156" Modified="2012-11-18 23:22:34Z">Compiler generated code</Note>
     <Note Id="158" Modified="2012-11-18 23:25:04Z">Lowercase is required in this case</Note>
@@ -9850,6 +9793,9 @@
    </User>
   </Notes>
   <Rules>
+   <Rule TypeName="AttributeStringLiteralsShouldParseCorrectly" Category="Microsoft.Usage" CheckId="CA2243">
+    <Resolution Name="Default">In the constructor of {0}, change the value of argument {1}, which is currently "{2}", to something that can be correctly parsed as {3}.</Resolution>
+   </Rule>
    <Rule TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020">
     <Resolution Name="Default">Consider merging the types defined in '{0}' with another namespace.</Resolution>
    </Rule>
@@ -9887,9 +9833,6 @@
    </Rule>
    <Rule TypeName="DoNotDeclareVisibleInstanceFields" Category="Microsoft.Design" CheckId="CA1051">
     <Resolution Name="Default">Because field {0} is visible outside of its declaring type, change its accessibility to private and add a property, with the same accessibility as the field has currently, to provide access to it.</Resolution>
-   </Rule>
-   <Rule TypeName="DoNotExposeGenericLists" Category="Microsoft.Design" CheckId="CA1002">
-    <Resolution Name="Default">Change {0} in {1} to use Collection&lt;T&gt;, ReadOnlyCollection&lt;T&gt; or KeyedCollection&lt;K,V&gt;</Resolution>
    </Rule>
    <Rule TypeName="DoNotIgnoreMethodResults" Category="Microsoft.Usage" CheckId="CA1806">
     <Resolution Name="HResultOrErrorCode">{0} calls {1} but does not use the HRESULT or error code that the method returns. This could lead to unexpected behavior in error conditions or low-resource situations. Use the result in a conditional statement, assign the result to a variable, or pass it as an argument to another method.</Resolution>
@@ -9963,9 +9906,6 @@
     <Resolution Name="Equals">{0} should override Equals since it implements IComparable.</Resolution>
     <Resolution Name="Operator">{0} should define operator '{1}' since it implements IComparable.</Resolution>
    </Rule>
-   <Rule TypeName="PassSystemUriObjectsInsteadOfStrings" Category="Microsoft.Usage" CheckId="CA2234">
-    <Resolution Name="Default">Modify {0} to call {1} instead of {2}.</Resolution>
-   </Rule>
    <Rule TypeName="PropertyNamesShouldNotMatchGetMethods" Category="Microsoft.Naming" CheckId="CA1721">
     <Resolution Name="SameType">The property name {0} is confusing given the existence of method {1}. Rename or remove one of these members.</Resolution>
    </Rule>
@@ -9983,12 +9923,6 @@
    </Rule>
    <Rule TypeName="SpecifyCultureInfo" Category="Microsoft.Globalization" CheckId="CA1304">
     <Resolution Name="Default">Because the behavior of {0} could vary based on the current user's locale settings, replace this call in {1} with a call to {2}. If the result of {2} will be displayed to the user, specify 'CultureInfo.CurrentCulture' as the 'CultureInfo' parameter. Otherwise, if the result will be stored and accessed by software, such as when it is persisted to disk or to a database, specify 'CultureInfo.InvariantCulture'.</Resolution>
-   </Rule>
-   <Rule TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305">
-    <Resolution Name="IFormatProviderAlternateString">Because the behavior of {0} could vary based on the current user's locale settings, replace this call in {1} with a call to {2}. If the result of {2} will be displayed to the user, specify {3} as the 'IFormatProvider' parameter. Otherwise, if the result will be stored and accessed by software, such as when it is persisted to disk or to a database, specify {4}.</Resolution>
-   </Rule>
-   <Rule TypeName="TypesShouldNotExtendCertainBaseTypes" Category="Microsoft.Design" CheckId="CA1058">
-    <Resolution Name="System.Xml.XmlDocument">Change the base type of {0} so that it no longer extends {1}. The preferred design is to decouple the underlying XmlDocument representation from the type's interface by using containment instead of inheritance.</Resolution>
    </Rule>
    <Rule TypeName="TypesThatOwnDisposableFieldsShouldBeDisposable" Category="Microsoft.Design" CheckId="CA1001">
     <Resolution Name="DependsOnFix">Implement IDisposable on {0} because it creates members of the following IDisposable types: {1}. If {0} has previously shipped, adding new members that implement IDisposable to this type is considered a breaking change to existing consumers.</Resolution>

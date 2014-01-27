@@ -12,8 +12,8 @@ topics.</para>
         <step>
           <content>
             <para>The converter is a console mode application.  As such, open a command prompt in order to
-run it.  The utility is located in the <localUri>.\Extras\HtmlToMaml</localUri> folder under the main
-Sandcastle installation folder (typically <localUri>C:\Program Files (x86)\Sandcastle</localUri>).</para>
+run it.  The utility is located in the <localUri>.\Extras</localUri> folder under the root help file builder
+installation folder (typically <localUri>C:\Program Files (x86)\EWSoftware\Sandcastle Help File Builder</localUri>).</para>
 
 <alert class="note">
   <para>The converter uses an XML file that contains the

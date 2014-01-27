@@ -29,8 +29,9 @@ namespace Microsoft.Ddue.Tools
         /// <summary>
         /// This is used to create a new instance of the syntax generator
         /// </summary>
-        [SyntaxGeneratorExport("VisualBasicUsage", "VisualBasicUsage", "vb", AlternateIds = "vbusage, vbnetusage",
-          IsConfigurable = true, SortOrder = 30, Version = AssemblyInfo.Version, Copyright = AssemblyInfo.Copyright,
+        [SyntaxGeneratorExport("Visual Basic Usage", "VisualBasicUsage", "vb",
+          AlternateIds = "VisualBasicUsage, vbusage, vbnetusage", IsConfigurable = true, SortOrder = 30,
+          Version = AssemblyInfo.ProductVersion, Copyright = AssemblyInfo.Copyright,
           Description = "Generates Visual Basic usage syntax sections",
           DefaultConfiguration = "<includeLineContinuation value=\"false\" />")]
         public sealed class Factory : ISyntaxGeneratorFactory
@@ -52,7 +53,7 @@ namespace Microsoft.Ddue.Tools
 
             var lineCont = configuration.SelectSingleNode("includeLineContinuation/@value");
 
-            if(lineCont != null || !Boolean.TryParse(lineCont.Value, out includeLineContinuation))
+            if(lineCont == null || !Boolean.TryParse(lineCont.Value, out includeLineContinuation))
                 includeLineContinuation = false;
         }
 

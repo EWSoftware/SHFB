@@ -30,7 +30,7 @@ namespace Sandcastle.PresentationStyles
     /// <summary>
     /// This contains the definition for the Visual Studio 2010 presentation style
     /// </summary>
-    [PresentationStyleExport("VS2010", "VS2010", Version = AssemblyInfo.Version,
+    [PresentationStyleExport("VS2010", "VS2010", Version = AssemblyInfo.ProductVersion,
       Copyright = AssemblyInfo.Copyright, Description = "This is the style used by Visual Studio 2010 and " +
       "later in the Microsoft Help Viewer.")]
     public sealed class VisualStudio2010 : PresentationStyleSettings

@@ -43,12 +43,12 @@ namespace SandcastleBuilder.Package
         }
 
         /////////////////////////////////////////////////////////////////////////////
-        // Overriden Package Implementation
+        // Overridden Package Implementation
         #region Package Members
 
         /// <summary>
         /// Initialization of the package; this method is called right after the package is sited, so this is the place
-        /// where you can put all the initilaization code that rely on services provided by VisualStudio.
+        /// where you can put all the initialization code that rely on services provided by VisualStudio.
         /// </summary>
         protected override void Initialize()
         {
@@ -401,7 +401,7 @@ namespace SandcastleBuilder.Package
             ToolWindowPane window = this.FindToolWindow(typeof(BuildLogToolWindow), 0, true);
             if ((null == window) || (null == window.Frame))
             {
-                throw new NotSupportedException(String.Format("Can not create Toolwindow: BuildLog"));
+                throw new NotSupportedException("Cannot create Toolwindow: BuildLog");
             }
             IVsWindowFrame windowFrame = (IVsWindowFrame)window.Frame;
             Microsoft.VisualStudio.ErrorHandler.ThrowOnFailure(windowFrame.Show());
@@ -420,7 +420,7 @@ namespace SandcastleBuilder.Package
             ToolWindowPane window = this.FindToolWindow(typeof(EntityReferencesToolWindow), 0, true);
             if ((null == window) || (null == window.Frame))
             {
-                throw new NotSupportedException(String.Format("Can not create Toolwindow: EntityReferences"));
+                throw new NotSupportedException("Cannot create Toolwindow: EntityReferences");
             }
             IVsWindowFrame windowFrame = (IVsWindowFrame)window.Frame;
             Microsoft.VisualStudio.ErrorHandler.ThrowOnFailure(windowFrame.Show());
@@ -439,7 +439,7 @@ namespace SandcastleBuilder.Package
             ToolWindowPane window = this.FindToolWindow(typeof(TopicPreviewerToolWindow), 0, true);
             if ((null == window) || (null == window.Frame))
             {
-                throw new NotSupportedException(String.Format("Can not create Toolwindow: TopicPreviewer"));
+                throw new NotSupportedException("Cannot create Toolwindow: TopicPreviewer");
             }
             IVsWindowFrame windowFrame = (IVsWindowFrame)window.Frame;
             Microsoft.VisualStudio.ErrorHandler.ThrowOnFailure(windowFrame.Show());

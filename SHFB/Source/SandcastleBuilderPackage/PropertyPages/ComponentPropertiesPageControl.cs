@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : ComponentPropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 01/07/2014
+// Updated : 01/24/2014
 // Note    : Copyright 2011-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -120,11 +120,12 @@ namespace SandcastleBuilder.Package.PropertyPages
 
                 availableComponents = componentContainer.GetExports<BuildComponentFactory, IBuildComponentMetadata>().ToList();
 
-                // Only load those that indicate that they are visible to the designer.  There may be duplicate
-                // component IDs across the assemblies found.  See BuildComponentManger.GetComponentContainer()
-                // for the folder search precedence.  Only the first component for a unique ID will be used.
+                // Only load those that indicate that they are visible to the property page.  There may be
+                // duplicate component IDs across the assemblies found.  See
+                // BuildComponentManger.GetComponentContainer() for the folder search precedence.  Only the first
+                // component for a unique ID will be used.
                 foreach(var component in availableComponents)
-                    if(!componentIds.Contains(component.Metadata.Id) && component.Metadata.DesignerVisible)
+                    if(!componentIds.Contains(component.Metadata.Id) && component.Metadata.IsVisible)
                     {
                         lbAvailableComponents.Items.Add(component.Metadata.Id);
                         componentIds.Add(component.Metadata.Id);
@@ -356,7 +357,7 @@ namespace SandcastleBuilder.Package.PropertyPages
 
                     try
                     {
-                        newConfig = component.Value.ConfigureComponent(currentConfig);
+                        newConfig = component.Value.ConfigureComponent(currentConfig, componentContainer);
 
                         // Only store it if new or if it changed
                         if(currentConfig != newConfig)

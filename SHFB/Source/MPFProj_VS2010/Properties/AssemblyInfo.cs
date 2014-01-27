@@ -2,8 +2,8 @@
 // System  : Microsoft Managed Package Framework for Projects (MPFProj)
 // File    : AssemblyInfo.cs
 // Author  : Microsoft Corporation
-// Updated : 03/06/2013
-// Note    : Copyright 2009-2013, Microsoft Corporation, All rights reserved
+// Updated : 01/16/2014
+// Note    : Copyright 2009-2014, Microsoft Corporation, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // Managed Package Framework for Projects assembly attributes.
@@ -29,19 +29,19 @@ using System.Runtime.InteropServices;
 // Resources contained within the assembly are English
 [assembly: NeutralResourcesLanguageAttribute("en")]
 
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
+// General assembly information
 [assembly: AssemblyProduct("Microsoft Managed Package Framework for Projects")]
 [assembly: AssemblyTitle("Microsoft Managed Package Framework for Projects")]
-[assembly: AssemblyDescription("The base managed package framework used to create packages for " +
-    "Visual Studio Integration")]
+[assembly: AssemblyDescription("The base managed package framework used to create packages for Visual Studio " +
+    "Integration")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Microsoft Corporation")]
-[assembly: AssemblyCopyright("Copyright \xA9 2008-2013, Microsoft Corporation, All Rights Reserved")]
+[assembly: AssemblyCopyright("Copyright \xA9 2008-2014, Microsoft Corporation, All Rights Reserved")]
 [assembly: AssemblyTrademark("Microsoft Corporation, All Rights Reserved")]
 [assembly: AssemblyCulture("")]
+
 [assembly: CLSCompliant(false)]
+
 [assembly: ComVisible(false)]
 
 [assembly: Guid("084954ec-af04-4ea3-b166-b1fced604dc8")]
@@ -50,9 +50,15 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyFileVersion("1.1.0.0")]
 
 // Expose the internal members to the types in the SandcastleBuilder.Package assembly
+//
+// sn.exe -p SandcastleTools.snk PublicKey.key
+// sn.exe -tp PublicKey.key
+//
+// Cut and paste the public key below.
+//
 [assembly: InternalsVisibleTo("SandcastleBuilder.Package, PublicKey=" +
-    "002400000480000094000000060200000024000052534131000400000100010091ab9" +
-    "bc23e07d4fb7404041ec4d81193cfa9d661e0e24bd2c03182e0e7fc75b265a092a3f8" +
-    "53c672895e55b95611684ea090e787497b0d11b902b1eccd9bc9ea3c9a56740ecda8e" +
-    "961c93c3960136eefcdf106855a4eb8fff2a97f66049cd0228854b24709c0c945b499" +
-    "403d29a2801a39d4c4c30bab653ebc8bf604f5840c88")]
+    "00240000048000009400000006020000002400005253413100040000010001002f5b57e5c28270" +
+    "f49518ff41c8842759d9262f1cb9f50adf4d89a9fbcbffd17201be3da944edb7e8cf3bdc19b5fa" +
+    "0de57f4f3231b1fa861124c6bbea5bc1216b5e361bfaa0c0fde01c9302d06146543d7e2477a740" +
+    "e5279dd8fa7d0e5afe6acb0a2e552e770b63847cf68b47f49dff68375a38791e4cabe0639516df" +
+    "e2ce348d")]

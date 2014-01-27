@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : TopicPreviewerToolWindow.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/09/2012
-// Note    : Copyright 2012, Eric Woodruff, All rights reserved
+// Updated : 01/18/2014
+// Note    : Copyright 2012-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the class used to implement the Topic Previewer tool window
@@ -41,7 +41,7 @@ namespace SandcastleBuilder.Package.ToolWindows
     /// This is used to preview conceptual content topics in the project.
     /// </summary>
     [Guid("3764ef30-ce37-4240-a79e-a9cb33073846")]
-    public class TopicPreviewerToolWindow : TopicPreviewerToolWindowBase, IVsSelectionEvents
+    public sealed class TopicPreviewerToolWindow : TopicPreviewerToolWindowBase, IVsSelectionEvents
     {
         #region Private data members
         //=====================================================================
@@ -79,16 +79,16 @@ namespace SandcastleBuilder.Package.ToolWindows
         /// Load the conceptual content information and preview the topics
         /// </summary>
         /// <param name="project">The current project</param>
-        /// <param name="previewTopic">The filename of the topic to show as the starting topic or null for the
-        /// first topic.</param>
-        public void PreviewTopic(SandcastleProject project, string previewTopic)
+        /// <param name="previewTopicFilename">The filename of the topic to show as the starting topic or null
+        /// for the first topic.</param>
+        public void PreviewTopic(SandcastleProject project, string previewTopicFilename)
         {
             if(project == null || ucTopicPreviewer.CurrentProject == null ||
               ucTopicPreviewer.CurrentProject.Filename != project.Filename)
                 ucTopicPreviewer.CurrentProject = project;
 
             ucTopicPreviewer.Refresh(false);
-            ucTopicPreviewer.FindAndDisplay(previewTopic);
+            ucTopicPreviewer.FindAndDisplay(previewTopicFilename);
         }
         #endregion
 

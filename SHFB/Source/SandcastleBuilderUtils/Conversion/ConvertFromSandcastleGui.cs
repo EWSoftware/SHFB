@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : ConvertFromSandcastleGui.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/04/2014
+// Updated : 01/26/2014
 // Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -74,7 +74,7 @@ namespace SandcastleBuilder.Utils.Conversion
         {
             SandcastleProject project = base.Project;
             FileItem fileItem;
-            List<string> syntaxFilters = new List<string> { "CSharp", "VisualBasic", "CPlusPlus" };
+            List<string> syntaxFilters = new List<string> { "C#", "Visual Basic", "Managed C++" };
             string option, lastProperty = null, value;
             int pos;
 
@@ -157,17 +157,17 @@ namespace SandcastleBuilder.Utils.Conversion
 
                             case "cssyntaxdeclaration":
                                 if(String.Compare(value, "false", StringComparison.OrdinalIgnoreCase) == 0)
-                                    syntaxFilters.Remove("CSharp");
+                                    syntaxFilters.Remove("C#");
                                 break;
 
                             case "vbsyntaxdeclaration":
                                 if(String.Compare(value, "false", StringComparison.OrdinalIgnoreCase) == 0)
-                                    syntaxFilters.Remove("VisualBasic");
+                                    syntaxFilters.Remove("Visual Basic");
                                 break;
 
                             case "cppsyntaxdeclaration":
                                 if(String.Compare(value, "false", StringComparison.OrdinalIgnoreCase) == 0)
-                                    syntaxFilters.Remove("CPlusPlus");
+                                    syntaxFilters.Remove("Managed C++");
                                 break;
 
                             case "javascriptsyntaxdeclaration":

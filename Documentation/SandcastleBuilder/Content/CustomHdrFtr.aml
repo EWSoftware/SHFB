@@ -8,8 +8,7 @@
 			<para>The text that appears in the header, footer, and copyright notice can be specified using the standard
 project properties.  If you need to modify the format or style of these items, the preliminary documentation
 warning, or the feedback e-mail note, you can modify the related entries in the help file builder shared content
-files.  These are found in the <localUri>.\SharedContent</localUri> folder under the help file builder
-installation folder.</para>
+files.  These are found in the <localUri>.\SHFBContent</localUri> folder under each presentation style's folder.</para>
 
 			<alert class="note">
 				<para>The resource files are language and presentation style specific.  You will need to modify the

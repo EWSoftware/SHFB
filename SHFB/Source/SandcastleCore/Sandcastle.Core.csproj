@@ -126,6 +126,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\AssemblyInfoShared.cs" />
     <Compile Include="UI\ConfigurationEditorDlg.cs">
       <SubType>Form</SubType>
     </Compile>

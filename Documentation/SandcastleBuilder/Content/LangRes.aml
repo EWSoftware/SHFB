@@ -8,13 +8,14 @@
 			<para>Sandcastle uses a set of resource files to contain text such as table of contents item titles, common
 topic element titles, messages, etc.  Copies of the resource files are located in a <localUri>.\Content</localUri>
 subfolder beneath each presentation style folder.  The presentation style folders are located in the
-<localUri>.\Presentation</localUri> folder in the main Sandcastle installation folder.</para>
+<localUri>.\PresentationStyles</localUri> folder in the root help file builder installation folder.</para>
 		</introduction>
 
 		<section>
 			<title>The Resource Files</title>
 			<content>
-				<para>The following files contain the resources:</para>
+				<para>The actual content files and their names may vary by presentation style but typically include the
+following:</para>
 
 				<list class="bullet">
 					<listItem>
@@ -51,20 +52,18 @@ builder overrides many of these using its own content file.</para>
 				<para>The supplied files are all in English but can be translated into other languages for use in your
 help files.  The help file builder includes its own shared content files which are used to override elements in
 the above files for such things as the help title, header and footer text, preliminary documentation message,
-etc. There are several copies of the shared content files, each representing a different language.  You can find
-the files in the <localUri>.\SharedContent</localUri> folder under the Sandcastle Help File Builder installation
-folder.  The files all start with <legacyBold>SharedBuilderContent_</legacyBold> or
-<legacyBold>XXXBuilderContent_</legacyBold> where "XXX" is a presentation style name and all are suffixed with a
-language ID based on the value returned by the <codeInline>CultureInfo.Name</codeInline> property (i.e. en-US,
-fr-FR, de-DE).  Each file has a "<localUri>.xml</localUri>" extension.</para>
+etc.  There are several copies of the shared content files, each representing a different language.  You can find
+the files in the <localUri>.\SHFBContent</localUri> folder under the presentation style folder.  Each file is
+named after the language for which it contains resource items.  The name is the language ID based on the value
+returned by the <codeInline>CultureInfo.Name</codeInline> property (i.e. en-US, fr-FR, de-DE).  Each file has a
+<localUri>.xml</localUri> extension.</para>
 
-				<para>A set of stop word list files also exists in the help file builder's shared content folder that are
-used when creating the full text index for the website build and for the MS Help 2 file.  The files contain a
-list of common words that are excluded from the full-text index.  This prevents the index files from getting too
-large and containing useless information.  You can add additional words to these files as needed.  The files all
-start with <legacyBold>StopWordList_</legacyBold> and are suffixed with a language ID based on the value returned
-by the <codeInline>CultureInfo.Name</codeInline> property (i.e. en-US, fr-FR, de-DE).  Each file has a
-<localUri>.txt</localUri> extension.</para>
+				<para>A set of stop word list files also exists in the <localUri>.\PresentationStyles\Shared\StopWordList</localUri>
+folder that are used when creating the full text index for the website build and for the MS Help 2 file.  The
+files contain a list of common words that are excluded from the full-text index.  This prevents the index files
+from getting too large and containing useless information.  You can add additional words to these files as
+needed.  The files all named using the language ID based on the value returned by the <codeInline>CultureInfo.Name</codeInline>
+property (i.e. en-US, fr-FR, de-DE).  Each file has a<localUri>.txt</localUri> extension.</para>
 
 			</content>
 		</section>
@@ -77,8 +76,8 @@ change the name to use the culture name's ID as described above.  If you are not
 filename, go to the <externalLink><linkText>Locale Identifier Constants and Strings</linkText>
 <linkUri>http://msdn.microsoft.com/en-us/library/dd318693.aspx</linkUri><linkTarget>_blank</linkTarget>
 </externalLink> MSDN topic and locate the locale that you need.  The primary language and sublanguage columns
-contain the ID values in parentheses.  Combine the two values in parentheses from those columns separated by an
-underscore for the ID to use in the filename.  Edit the new file and translate the text to the selected language.
+contain the ID values in parentheses.  Combine the two values in parentheses from those columns separated by a
+dash for the ID to use in the filename.  Edit the new file and translate the text to the selected language.
 If people are kind enough to supply additional translated files, they will be added to later releases.</para>
 
 				<para>Due to the number of presentation styles and the number of files that would be created, it is not

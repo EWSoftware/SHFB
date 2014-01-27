@@ -2,10 +2,10 @@
 <topic id="a24489fb-45d6-46f4-9eaa-9a9c4e0919b2" revisionNumber="1">
 	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
 		<introduction>
-			<para>The help file builder has the ability to utilize third-party custom build components, plug-ins, and
-presentation styles.  In addition, the project system allows you to add files based on user-defined template
-files.  Build components and plug-ins can also create configuration or cache files to use across builds if
-needed.  In order to work correctly, each type of file must be located in the correct place.</para>
+			<para>The help file builder has the ability to utilize third-party custom build components, plug-ins,
+syntax generators, and presentation styles.  In addition, the project system allows you to add files based on
+user-defined template files.  Build components and plug-ins can also create configuration or cache files to use
+across builds if needed.  In order to work correctly, each type of file must be located in the correct place.</para>
 
 			<autoOutline lead="none" excludeRelatedTopics="true" />
 
@@ -13,6 +13,11 @@ needed.  In order to work correctly, each type of file must be located in the co
 				<para>None of the folders mentioned below exist by default so you will need to create them yourself.
 The exception is the root local application data folder.  It will be created on first use by the help file
 builder if referenced by a build component or a plug-in configuration.</para>
+
+				<para>Project-specific build components, plug-ins, syntax generators, and presentation styles are also
+supported.  To utilize project-specific components either place the components in the project folder or a
+subfolder beneath it or point to the component location using the project's <codeInline>Component Path</codeInline>
+property.</para>
 			</alert>
 
 		</introduction>
@@ -103,9 +108,7 @@ system:</para>
 				</table>
 
 				<para>Put the build components and any of their required configuration and supporting files within the
-noted folder or a subfolder beneath it.  These will be shared by all users on the same computer.  All component
-configuration filenames must have <localUri>.components</localUri> as their extension.  All syntax filter
-generator definition files must have <localUri>.filters</localUri> as their extension.</para>
+noted folder or a subfolder beneath it.  These will be shared by all users on the same computer.</para>
 
 			</content>
 		</section>
@@ -148,8 +151,7 @@ system:</para>
 				</table>
 
 				<para>Put the plug-ins and any of their required configuration and supporting files within the noted
-folder or a subfolder beneath it.  These will be shared by all users on the same computer.  All plug-in assembly
-filenames must have <localUri>.plugins</localUri> as their extension.</para>
+folder or a subfolder beneath it.  These will be shared by all users on the same computer.</para>
 
 			</content>
 		</section>
@@ -177,7 +179,7 @@ Data</legacyBold> folder.  This equates to one of the following folders based on
 							<para>Windows Vista or later</para>
 						</entry>
 						<entry>
-							<para><localUri>%ProgramData%\EWSoftware\Sandcastle Help File Builder\Presentation Styles</localUri></para>
+							<para><localUri>%ProgramData%\EWSoftware\Sandcastle Help File Builder\Components and Plug-Ins</localUri></para>
 						</entry>
 					</row>
 					<row>
@@ -185,14 +187,13 @@ Data</legacyBold> folder.  This equates to one of the following folders based on
 							<para>Windows XP</para>
 						</entry>
 						<entry>
-							<para><localUri>%ALLUSERSPROFILE%\Application Data\EWSoftware\Sandcastle Help File Builder\Presentation Styles</localUri></para>
+							<para><localUri>%ALLUSERSPROFILE%\Application Data\EWSoftware\Sandcastle Help File Builder\Components and Plug-Ins</localUri></para>
 						</entry>
 					</row>
 				</table>
 
 				<para>Put the presentation styles and any of their required configuration and supporting files within the
-noted folder or a subfolder beneath it.  These will be shared by all users on the same computer.  All presentation
-style definition files must have <localUri>.presentation</localUri> as their extension.</para>
+noted folder or a subfolder beneath it.  These will be shared by all users on the same computer.</para>
 
 			</content>
 		</section>
@@ -300,42 +301,12 @@ package, see the <link xlink:href="ece3a395-589f-45c3-9f0e-2a25b8b6c537" /> topi
 			</content>
 		</section>
 
-		<section address="XCopyDeployment">
-			<title>XCOPY/Build Server Deployment</title>
-			<content>
-				<para>For use in a build server environment the Sandcastle Help File Builder also supports simple XCOPY
-deployment.  As long as the <environmentVariable>SHFBROOT</environmentVariable> environment variable points to
-the location of the help file builder assemblies, it will be able to find everything it needs at build time.  In
-such situations, custom build components and plug-ins may also be copied to the help file builder folder or a
-sub-folder beneath it.  When searching for custom build components and plug-ins the following search order is
-used:</para>
-
-				<list class="bullet">
-					<listItem>
-						<para>If a <codeInline>ComponentPath</codeInline> project property value is set, the folder it refers
-to is searched first.  If the property contains no value, the actual project folder is searched first.</para>
-					</listItem>
-					<listItem>
-						<para>Next, the common application data folders noted above are searched.</para>
-					</listItem>
-					<listItem>
-						<para>Finally, the help file builder installation folder (<environmentVariable>SHFBROOT</environmentVariable>)
-is searched.</para>
-					</listItem>
-				</list>
-
-				<para>If any duplicate components or plug-ins are encountered, the first one loaded based on the above
-search order will be used.  Custom presentation styles can also be located in the help file builder installation
-folder.</para>
-
-			</content>
-		</section>
-
 		<relatedTopics>
 			<link xlink:href="b772e00e-1705-4062-adb6-774826ce6700" />
 			<link xlink:href="3d4edd2d-7883-4508-b9d2-bd7b4d848b0d" />
 			<link xlink:href="e031b14e-42f0-47e1-af4c-9fed2b88cbc7" />
 			<link xlink:href="8dcbb69b-7a1a-4049-8e6b-2bf344efbbc9" />
+			<link xlink:href="50ad2c8c-5004-4b4c-a77f-97b8c403c9f2" />
 		</relatedTopics>
 	</developerConceptualDocument>
 </topic>

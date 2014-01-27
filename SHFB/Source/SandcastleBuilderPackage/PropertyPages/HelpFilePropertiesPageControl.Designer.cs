@@ -40,6 +40,7 @@
             this.txtRootNamespaceTitle = new System.Windows.Forms.TextBox();
             this.cboPresentationStyle = new System.Windows.Forms.ComboBox();
             this.chkNamespaceGrouping = new System.Windows.Forms.CheckBox();
+            this.udcMaximumGroupParts = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.txtCopyrightHref = new System.Windows.Forms.TextBox();
@@ -64,7 +65,6 @@
             this.label14 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.cblSyntaxFilters = new System.Windows.Forms.CheckedListBox();
-            this.udcMaximumGroupParts = new System.Windows.Forms.NumericUpDown();
             this.label16 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.epNotes)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.udcMaximumGroupParts)).BeginInit();
@@ -189,6 +189,32 @@
             this.chkNamespaceGrouping.Tag = "NamespaceGrouping";
             this.chkNamespaceGrouping.Text = "Enable namespace grouping if supported";
             this.chkNamespaceGrouping.UseVisualStyleBackColor = true;
+            // 
+            // udcMaximumGroupParts
+            // 
+            this.epNotes.SetError(this.udcMaximumGroupParts, "A higher value results in more namespace groups");
+            this.epNotes.SetIconPadding(this.udcMaximumGroupParts, 5);
+            this.udcMaximumGroupParts.Location = new System.Drawing.Point(254, 282);
+            this.udcMaximumGroupParts.Maximum = new decimal(new int[] {
+            2147483647,
+            0,
+            0,
+            0});
+            this.udcMaximumGroupParts.Minimum = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            this.udcMaximumGroupParts.Name = "udcMaximumGroupParts";
+            this.udcMaximumGroupParts.Size = new System.Drawing.Size(106, 27);
+            this.udcMaximumGroupParts.TabIndex = 17;
+            this.udcMaximumGroupParts.Tag = "MaximumGroupParts";
+            this.udcMaximumGroupParts.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.udcMaximumGroupParts.Value = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
             // 
             // label2
             // 
@@ -399,7 +425,7 @@
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(128, 23);
             this.label14.TabIndex = 31;
-            this.label14.Text = "SDK Link Target";
+            this.label14.Text = "SDK link target";
             this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label15
@@ -408,7 +434,7 @@
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(114, 23);
             this.label15.TabIndex = 33;
-            this.label15.Text = "Syntax &Filters";
+            this.label15.Text = "Syntax &filters";
             this.label15.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // cblSyntaxFilters
@@ -422,32 +448,7 @@
             this.cblSyntaxFilters.Size = new System.Drawing.Size(346, 114);
             this.cblSyntaxFilters.TabIndex = 34;
             this.cblSyntaxFilters.Tag = "SyntaxFilters";
-            // 
-            // udcMaximumGroupParts
-            // 
-            this.epNotes.SetError(this.udcMaximumGroupParts, "A higher value results in more namespace groups");
-            this.epNotes.SetIconPadding(this.udcMaximumGroupParts, 5);
-            this.udcMaximumGroupParts.Location = new System.Drawing.Point(254, 282);
-            this.udcMaximumGroupParts.Maximum = new decimal(new int[] {
-            2147483647,
-            0,
-            0,
-            0});
-            this.udcMaximumGroupParts.Minimum = new decimal(new int[] {
-            2,
-            0,
-            0,
-            0});
-            this.udcMaximumGroupParts.Name = "udcMaximumGroupParts";
-            this.udcMaximumGroupParts.Size = new System.Drawing.Size(106, 27);
-            this.udcMaximumGroupParts.TabIndex = 17;
-            this.udcMaximumGroupParts.Tag = "MaximumGroupParts";
-            this.udcMaximumGroupParts.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.udcMaximumGroupParts.Value = new decimal(new int[] {
-            2,
-            0,
-            0,
-            0});
+            this.cblSyntaxFilters.SelectedIndexChanged += new System.EventHandler(this.cblSyntaxFilters_SelectedIndexChanged);
             // 
             // label16
             // 
@@ -455,7 +456,7 @@
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(175, 23);
             this.label16.TabIndex = 16;
-            this.label16.Text = "Maximum Group Parts";
+            this.label16.Text = "Maximum group parts";
             this.label16.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // HelpFilePropertiesPageControl

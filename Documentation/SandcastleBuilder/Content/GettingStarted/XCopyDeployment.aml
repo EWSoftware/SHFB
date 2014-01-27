@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="50ad2c8c-5004-4b4c-a77f-97b8c403c9f2" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>For use in a build server environment, the Sandcastle Help File Builder and Tools also support simple
+XCOPY deployment.  As long as the <environmentVariable>SHFBROOT</environmentVariable> system environment variable
+points to the location of the help file builder assemblies, it will be able to find everything it needs at build
+time.  In such situations, custom build components, plug-ins, syntax generators, and presentation styles may also
+be copied to the help file builder folder or a sub-folder beneath it.</para>
+		</introduction>
+
+		<section address="XCopyDeployment">
+			<content>
+				<para>When searching for custom components, the following search order is used:</para>
+
+				<list class="bullet">
+					<listItem>
+						<para>If a <codeInline>ComponentPath</codeInline> project property value is set, the folder it refers
+to is searched first and then the actual project folder is searched.  If the property contains no value, the
+actual project folder is searched first.</para>
+					</listItem>
+					<listItem>
+						<para>Next, the common application data folders noted in the
+<link xlink:href="a24489fb-45d6-46f4-9eaa-9a9c4e0919b2" /> topic are searched.</para>
+					</listItem>
+					<listItem>
+						<para>Finally, the help file builder installation folder (<environmentVariable>SHFBROOT</environmentVariable>)
+is searched.</para>
+					</listItem>
+				</list>
+
+				<para>If any duplicate components are encountered, the first one loaded based on the above search order
+will be used.</para>
+
+				<para>It is possible to build a project without defining the <codeInline>SHFBROOT</codeInline>
+environment variable.  To do this, a conditional <codeInline>SHFBROOT</codeInline> property must be added to each
+help file builder project as a child of the main <codeInline>PropertyGroup</codeInline> element.  An example is
+shown below:</para>
+
+<code language="xml" title=" ">
+&lt;PropertyGroup&gt;
+	&lt;SHFBROOT Condition=" '$(SHFBROOT)' == '' "&gt;..\..\RelativePath\ToSHFB\Adjust As Needed&lt;/SHFBROOT&gt;
+	
+	... other SHFB project properties ...
+
+&lt;/PropertyGroup&gt;
+</code>
+
+				<para>By making it conditional, you can work with the project on your local machine with the available
+tools where the environment variable is defined but still allow it to be built on a server using a simple XCOPY
+deployment.</para>
+
+			</content>
+		</section>
+
+
+		<relatedTopics>
+			<link xlink:href="b772e00e-1705-4062-adb6-774826ce6700" />
+			<link xlink:href="a24489fb-45d6-46f4-9eaa-9a9c4e0919b2" />
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

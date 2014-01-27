@@ -39,7 +39,7 @@ namespace SandcastleBuilder.PlugIns
     /// file.
     /// </summary>
     [HelpFileBuilderPlugInExport("Assembly Binding Redirection", IsConfigurable = true, RunsInPartialBuild = true,
-      Version = AssemblyInfo.Version, Copyright = AssemblyInfo.Copyright,
+      Version = AssemblyInfo.ProductVersion, Copyright = AssemblyInfo.Copyright,
       Description = "This plug in is used to add assembly binding redirection support to the MRefBuilder " +
         "configuration file.")]
     public sealed class BindingRedirectResolverPlugIn : SandcastleBuilder.Utils.BuildComponent.IPlugIn

@@ -1,0 +1,361 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="e6d18448-2459-46f1-bbdc-a7db415f2bda" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+			<autoOutline lead="This topic will walk you through the creation of a build component project."
+				excludeRelatedTopics="true">1</autoOutline>
+    </introduction>
+
+		<section address="DefineConfig">
+			<title>Defining the Build Component Configuration</title>
+			<content>
+				<para>The first step is to determine what items will appear in the build component configuration.  The
+configuration is stored as an XML fragment in the help file builder project file.  The root node is always
+<codeInline>component</codeInline>.  Define your own elements to contain the build component configuration that
+will be nested within the root element.  It is possible that a build component will have no configurable
+elements.  In that case, there is nothing to add to the default configuration.  Below is an example of a
+configuration that is passed to a build component.</para>
+
+<code language="xml" title="Example Build Component Configuration">
+&lt;component id="Copy From Index Component"&gt;
+	&lt;index name="reflection" value="/reflection/apis/api" key="@id" cache="15"&gt;
+		&lt;data base="{@SHFBFolder}Data\Reflection" recurse="true" files="*.xml" duplicateWarning="false" /&gt;
+		&lt;data files="reflection.xml" /&gt;
+	&lt;/index&gt;
+	&lt;copy name="reflection" source="*" target="/document/reference" /&gt;
+&lt;/component&gt;
+</code>
+
+			</content>
+		</section>
+
+		<section address="CreateProject">
+			<title>Creating the Project</title>
+			<content>
+				<para>This section describes how to create and configure the build component project.  It will describe
+the process for a C# project but the steps should be fairly similar for a VB.NET project with a few differences
+in the configuration option titles.</para>
+
+				<procedure>
+					<title>Create the Build Component Project</title>
+					<steps class="ordered">
+						<step>
+							<content>
+								<para>In Visual Studio, select the <ui>New Project</ui> option.  In the <ui>New Project</ui>
+dialog box, select the C# or VB.NET language, and then select the <ui>Documentation</ui> subcategory.  Select
+the <ui>BuildAssembler Build Component</ui> template, give it a name and click <ui>OK</ui> to create it.
+Once it has been created, right click on the project and select <ui>Properties</ui>.</para>
+							</content>
+						</step>
+						<step>
+							<content>
+								<para>In the <ui>Application</ui> tab, set the assembly name and default namespace as you see fit.</para>
+							</content>
+						</step>
+						<step>
+							<content>
+								<para>On the <ui>Debug</ui> tab, set the <ui>Start Action</ui> to "Start external program" and
+enter the path to the <localUri>SandcastleBuilderGUI.exe</localUri> program.  If you installed the help file
+builder in the default location, this will be <localUri>%ProgramFiles(x86)%\EWSoftware\Sandcastle Help File
+Builder\</localUri>.  If not, substitute your path as appropriate.</para>
+
+								<alert class="tip">
+									<para>Using the standalone GUI as the host is easier than using Visual Studio as the package
+locks the assemblies once the help file builder project has loaded them for use and you will not be able to
+rebuild them.  Shutting down the standalone GUI frees the assemblies so that you can rebuild them and start a new
+debugging session.</para>
+
+									<para>In the help file builder project that you use to test your build component, set the
+project's <codeInline>Component Path</codeInline> property to the folder containing your build component's
+assembly.  If you have opened the project's <ui>Components</ui> property page before setting the component path,
+you may need to close and reopen the project in order for it to discover your build component assembly.</para>
+								</alert>
+							</content>
+						</step>
+						<step>
+							<content>
+								<para>Optionally, select the <ui>Signing</ui> tab and check the "Sign the assembly" checkbox.
+Select "&lt;New...&gt;" from the "Choose a strong name key file" dropdown, enter a filename, and click OK to
+create the key file.  You can protect the key file with a password if you like or uncheck the option to create
+one without a password.</para>
+							</content>
+						</step>
+					</steps>
+				</procedure>
+
+				<para>You are now ready to edit the build component class itself.  See the comments in the template class
+for information on how to get started.  Some general information is given below.  Note that multiple build
+components can reside within the same assembly.  Add new class files to the project and implement the necessary
+methods as described below and as shown in the template class.</para>
+
+				<para>The build component is derived from the
+<codeInline>Sandcastle.Core.BuildAssembler.BuildComponent.BuildComponentCore</codeInline> class and consists of a
+few methods that you must implement along with a nested Managed Extensibility Framework (MEF) factory class that
+describes the component, creates instances, and allows interaction with the design tools and build engine.
+These are described below.  Review the code for "<codeInline>TODO:</codeInline>" comments to find sections that
+need attention such as setting the build component's ID, the configuration file insertion points, the default
+configuration, etc.  If you followed the steps in the <legacyBold>Creating the Project</legacyBold> section, you
+can run the project and debug it by setting breakpoints in the build component's code.  As noted above, set the
+test project's <codeInline>Component Path</codeInline> property to the folder containing the build component
+assembly first.  If necessary, close and reopen the test project so that it can discover the build component.</para>
+				
+			</content>
+		</section>
+
+		<section address="Metadata">
+			<title>The Export Attribute Metadata</title>
+			<content>
+				<para>The nested factory class is a MEF component.  The <codeInline>BuildComponentExportAttribute</codeInline>
+is used to define the necessary metadata that enables the help file builder to load and use the component.</para>
+			</content>
+
+			<sections>
+				<section address="MetadataId">
+					<title>Id</title>
+					<content>
+						<para>The <codeInline>Id</codeInline> parameter is required and is used to uniquely identify the
+build component.</para>
+					</content>
+				</section>
+
+				<section address="MetadataVersion">
+					<title>Version</title>
+					<content>
+						<para>The <codeInline>Version</codeInline> property is optional and allows you to define the build
+component version displayed in the help file builder property page when the build component is selected.</para>
+					</content>
+				</section>
+
+				<section address="MetadataCopyright">
+					<title>Copyright</title>
+					<content>
+						<para>The <codeInline>Copyright</codeInline> property is optional and allows you to define the
+build component copyright displayed in the help file builder property page when the build component is selected.</para>
+					</content>
+				</section>
+
+				<section address="MetadataDescription">
+					<title>Description</title>
+					<content>
+						<para>The <codeInline>Description</codeInline> property is optional and allows you to define the
+build component description displayed in the help file builder property page when the build component is
+selected.</para>
+					</content>
+				</section>
+
+				<section address="MetadataIsVisible">
+					<title>IsVisible</title>
+					<content>
+						<para>The <codeInline>IsVisible</codeInline> property is optional and allows you to define
+whether or not the build component should be visible in the help file builder's property page.  The default if
+omitted is false and the build component will not show up in the list of build components that can be added to
+the project.  It will only be included in a project if referenced as a dependency in another build component.</para>
+					</content>
+				</section>
+
+				<section address="MetadataIsConfigurable">
+					<title>IsConfigurable</title>
+					<content>
+						<para>The <codeInline>IsConfigurable</codeInline> property is optional and allows you to define
+whether or not the build component supports interactive editing of its configuration.  If false, the default, the
+build component will not be configurable from the property page.  If true, the property page will call the
+<codeInline>ConfigureComponent</codeInline> method on the factory class so that it can invoke a dialog box to
+edit the configuration.</para>
+					</content>
+				</section>
+			</sections>
+		</section>
+
+		<section address="FactoryClass">
+			<title>The Factory Class</title>
+			<content>
+				<para>The factory class is derived from
+<codeInline>Sandcastle.Core.BuildAssembler.BuildComponent.BuildComponentFactory</codeInline> and contains the
+following properties and methods.</para>
+			</content>
+
+			<sections>
+				<section address="Constructor">
+					<title>Constructor</title>
+					<content>
+						<para>In the constructor, set the <codeInline>ReferenceBuildPlacement</codeInline> and
+<codeInline>ConceptualBuildPlacement</codeInline> properties which describe how to place the component in the
+<application>BuildAssembler</application> configuration file.  Each uses a <codeInline>ComponentPlacement</codeInline>
+instance to describe how they component should be inserted.  Placement is defined using a required placement
+action value, a required component ID, and an optional component instance value.  If a component is not usable
+in either a reference or conceptual build, the corresponding property can be omitted.</para>
+
+						<list class="bullet">
+							<listItem>
+								<para>The <codeInline>PlacementAction</codeInline> parameter defines where to insert the
+configuration relative to the indicated component ID where relevant.  It can have one of the following values:
+								</para>
+
+								<list class="bullet">
+									<listItem>
+										<para><codeInline>Start</codeInline> - The configuration is inserted at the start of the
+configuration file ahead of all others.  If multiple build components use this option they are all inserted at
+the start in no particular order.  The component ID is ignored with this option.</para>
+									</listItem>
+
+									<listItem>
+										<para><codeInline>End</codeInline> - The configuration is inserted at the end of the
+configuration file after all others.  If multiple build components use this option they are all inserted at the
+end in no particular order.  The component ID is ignored with this option.</para>
+									</listItem>
+
+									<listItem>
+										<para><codeInline>Before</codeInline> - The configuration is inserted before the component
+indicated by the required ID and optional instance parameters.</para>
+									</listItem>
+
+									<listItem>
+										<para><codeInline>After</codeInline> - The configuration is inserted after the component
+indicated by the required ID and optional instance parameters.</para>
+									</listItem>
+
+									<listItem>
+										<para><codeInline>Replace</codeInline> - The configuration for the custom component replaces
+an existing component indicated by the required ID and optional instance parameters.</para>
+									</listItem>
+
+								</list>
+
+								<alert class="note">
+									<para>If a component already exists in the configuration file with a matching ID attribute it
+is assumed to be the same component in the correct location and is automatically replaced with the custom
+configuration.</para>
+								</alert>
+							</listItem>
+
+							<listItem>
+								<para>The ID parameter can be used to identify another component in the configuration file by ID.</para>
+							</listItem>
+
+							<listItem>
+								<para>The instance parameter can be used to identify a specific instance of a build component in
+the configuration file.  For example, the <codeInline>Copy From Index</codeInline> component appears multiple
+times in the standard configuration file.  If you need to merge a custom build component before or after one of
+these occurrences or replace one, you can use this attribute to specify which one.  If omitted, the first
+instance is assumed.</para>
+							</listItem>
+
+						</list>
+
+					</content>
+				</section>
+
+				<section address="Dependencies">
+					<title>Dependencies</title>
+					<content>
+						<para>Override this property to specify an enumerable list of component IDs on which the current
+component depends.  If the indicated components do not exist in the project settings or in the configuration
+file template already, they will be added automatically with their default configuration at build time.  This
+property does not need to be overridden if there are no dependencies.  Dependent configurations are merged prior
+to project settings.  As such, it is not required that a dependent component appear in the project as well.  If
+it does, the project settings will override the default configuration.</para>
+
+					</content>
+				</section>
+
+				<section address="DefaultConfig">
+					<title>DefaultConfiguration</title>
+					<content>
+						<para>Override this property to specify the default configuration for a custom build component.  This
+information is used when the component is added as a dependency and when the component is added to the project
+and the user does not modify it.  You can use the various replacement tags as attribute values.  These will be
+replaced at build time with the appropriate project values.  The default if not overridden is an empty string.</para>
+
+					</content>
+				</section>
+
+				<section address="Create">
+					<title>Create</title>
+					<content>
+						<para>This method must be implemented to create an instance of the build component.  Simply create
+the component instance and return it.</para>
+
+					</content>
+				</section>
+
+				<section address="ConfigureComponent">
+					<title>ConfigureComponent</title>
+					<content>
+						<para>If the <codeInline>IsConfigurable</codeInline> export attribute is set to true, override this
+method to invoke the configuration dialog and return the edited configuration.  The current configuration is
+passed to the method as an XML fragment in a string.  If not overridden, a default editor dialog is used that
+allows the user to modify the XML fragment in a text box.  A MEF composition container is also passed to the
+method so that the dialog can locate other components if necessary.  For example, the
+<codeInline>SyntaxComponent</codeInline>'s configuration dialog uses it to locate the syntax generators so that
+their configurations can be edited.</para>
+
+					</content>
+				</section>
+
+			</sections>
+		</section>
+
+		<section address="Template">
+			<title>The Build Component Template Class</title>
+			<content>
+				<para>In its simplest form, the only two methods you need to implement are the <codeInline>Initialize</codeInline>
+and <codeInline>Apply</codeInline> methods.  A few supporting properties and methods in the base class are also
+available for use.</para>
+			</content>
+
+			<sections>
+				<section address="Initialize">
+					<title>Initialize</title>
+					<content>
+						<para>This method is implemented to initialize the component.  It is passed an XML navigator that
+contains the configuration information.</para>
+
+					</content>
+				</section>
+
+				<section address="Apply">
+					<title>Apply</title>
+					<content>
+						<para>This method is implemented to apply the component's changes to the document.  It is passed
+an XML document containing the current document and a key that identifies it (the API member in reference builds
+or the topic ID in conceptual builds.</para>
+
+					</content>
+				</section>
+
+				<section address="WriteMessage">
+					<title>WriteMessage</title>
+					<content>
+						<para>This method is used to output a message from the component.  The message level parameter
+indicates the severity of the message.  If <codeInline>Error</codeInline> is used, it will stop the build.
+An overload is supplied to which you can pass the key.  This can help associate a message with a particular
+topic or member ID to make the problem easier to find and fix.</para>
+
+					</content>
+				</section>
+
+				<section address="OnComponentEvent">
+					<title>OnComponentEvent</title>
+					<content>
+						<para>This method is used to invoke the <codeInline>ComponentEvent</codeInline> event on the
+<codeInline>BuildAssembler</codeInline> instance.  This is a way to communicate information between components.
+To use it, the receiving component attaches an event handler to the <codeInline>BuildAssembler.ComponentEvent</codeInline>
+event.  The sending component invokes this method and passes an event argument instance containing any data
+relevant to the event.  It is up to the receiving event handler to cast the event argument parameter to a
+particular type that it is interested in to see if it should handle the event.</para>
+
+					</content>
+				</section>
+				
+			</sections>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="8dcbb69b-7a1a-4049-8e6b-2bf344efbbc9" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

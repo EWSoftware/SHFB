@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="c8258d52-6664-4e96-86cd-6f75a854a69c" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>In addition to the help file builder project templates, component project templates are provided
+to create custom build components, plug-ins, syntax generators, and presentation styles.  Templates are provided
+for C# and VB.NET.  The templates appear in the given language categories in the <ui>Documentation</ui>
+subcategory.</para>
+		</introduction>
+
+		<section address="Section1">
+			<content>
+				<para>The following component project templates are available:</para>
+
+				<list class="bullet">
+					<listItem>
+						<para><legacyBold>Sandcastle Help File Builder Plug-In</legacyBold> - Create a build process plug-in
+used to extend or alter the help file builder build process.</para>
+					</listItem>
+
+					<listItem>
+						<para><legacyBold>BuildAssembler Build Component</legacyBold> - Create a build component for use with
+the <application>BuildAssembler</application> tool that can alter the topics in some way as they are being
+generated.</para>
+					</listItem>
+
+					<listItem>
+						<para><legacyBold>BuildAssembler Syntax Generator</legacyBold> - Create a syntax generator for use
+with the <application>BuildAssembler</application>&#160;<codeInline>SyntaxComponent</codeInline> used to create
+declaration or usage syntax sections within topics.</para>
+					</listItem>
+
+					<listItem>
+						<para><legacyBold>Sandcastle Presentation Style Component</legacyBold> - Create a presentation style
+component to add a new presentation style used to format the topics.  This template provides a shell into which
+you can copy the content files from an existing presentation style or start from scratch and add all new content.</para>
+					</listItem>
+				</list>
+
+				<para>Once the project has been created, see the comments in the template source code file for things
+to do to implement the given component.</para>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="b128ad2a-787e-48c7-b946-f6953080c386" />
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

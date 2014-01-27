@@ -24,8 +24,8 @@ namespace Microsoft.Ddue.Tools
         /// <summary>
         /// This is used to create a new instance of the syntax generator
         /// </summary>
-        [SyntaxGeneratorExport("AspNet", "AspNet", "cs", AlternateIds = "asp, asp.net", SortOrder = 100,
-          Version = AssemblyInfo.Version, Copyright = AssemblyInfo.Copyright,
+        [SyntaxGeneratorExport("ASP.NET", "AspNet", "cs", AlternateIds = "AspNet, asp", SortOrder = 100,
+          Version = AssemblyInfo.ProductVersion, Copyright = AssemblyInfo.Copyright,
           Description = "Generates ASP.NET declaration syntax sections")]
         public sealed class Factory : ISyntaxGeneratorFactory
         {

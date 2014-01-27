@@ -48,7 +48,7 @@ namespace SandcastleBuilder.PlugIns
     /// script libraries using AjaxDoc.
     /// </summary>
     [HelpFileBuilderPlugInExport("AjaxDoc Builder", IsConfigurable = true, RunsInPartialBuild = true,
-      Version = AssemblyInfo.Version, Copyright = AssemblyInfo.Copyright + "\r\nAjaxDoc is Copyright \xA9 " +
+      Version = AssemblyInfo.ProductVersion, Copyright = AssemblyInfo.Copyright + "\r\nAjaxDoc is Copyright \xA9 " +
       "2006-2013 Bertrand Le Roy, All Rights Reserved",
       Description = "This plug-in is used to generate XML comments and reflection information for Atlas " +
         "client script libraries using AjaxDoc that can then be used by the Sandcastle Help File " +

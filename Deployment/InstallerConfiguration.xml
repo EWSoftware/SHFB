@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <configuration>
 	<!-- This indicates the version of Sandcastle with which this installer is associated.-->
-	<sandcastle version="v2013.12.29.0" />
+	<sandcastle version="v2014.1.26.0 Beta" />
 
 	<!-- Define the installer pages.  Third-party build tool and component providers can add new pages that
 			 they have created to install their own products as well. -->
@@ -12,10 +12,10 @@
 				 executing installer. -->
 		<page type="Sandcastle.Installer.InstallerPages.WelcomePage" />
 		<page type="Sandcastle.Installer.InstallerPages.WhatsNewPage">
-			<whatsNew url="http://www.ewoodruff.us/sandcastletools/?topic=html/655dc2f6-9e3c-45b1-8d7f-472ddd6eac1f.htm"
-				description="Sandcastle v2.7.4.0 Release Notes" />
-			<whatsNew url="http://www.ewoodruff.us/shfbdocs/?topic=html/f4c5d176-8da1-4500-b070-e3b1e9e2c65c.htm"
-				description="Sandcastle Help File Builder v1.9.8.0 Release Notes" />
+			<whatsNew url="http://www.ewoodruff.us/sandcastletools/?topic=html/0fdc9909-5233-4ebb-b9e7-a9e48f662222.htm"
+				description="Sandcastle v2014.1.26.0 Beta Release Notes" />
+			<whatsNew url="http://www.ewoodruff.us/shfbdocs/?topic=html/1139ca15-af64-48a2-9187-ccc1aec389d4.htm"
+				description="Sandcastle Help File Builder v2014.1.26.0 Beta Release Notes" />
 		</page>
 		<page type="Sandcastle.Installer.InstallerPages.RequiredFrameworkPage" />
 		<page type="Sandcastle.Installer.InstallerPages.HelpFileFormatsPage">
@@ -25,10 +25,10 @@
 
 		<!-- Sandcastle Help File Builder and Tools installer pages -->
 		<page type="Sandcastle.Installer.InstallerPages.SandcastleHelpFileBuilderPage"
-			frameworkVersion="4.0" shfbVersion="2013.12.29.0" installerName="SandcastleHelpFileBuilder_2013.12.29.0.msi"/>
+			frameworkVersion="4.0" shfbVersion="2014.1.26.0" installerName="SandcastleHelpFileBuilder.msi"/>
 		<page type="Sandcastle.Installer.InstallerPages.SHFBVisualStudioPackagePage"
 			frameworkVersion="4.0" packageGuid="c997d569-ee8e-4947-a46f-9a0717ce39a0"
-			installerName="SHFBVisualStudioPackage_2013.12.29.0.vsix">
+			installerName="SHFBVisualStudioPackage.vsix">
 			<!-- These paths can be adjusted if you installed Visual Studio in a non-standard location.  They must
 					 be in version order from earliest to most recent. -->
 			<visualStudio version="10.0" name="Visual Studio 2010 Professional/Premium/Ultimate"

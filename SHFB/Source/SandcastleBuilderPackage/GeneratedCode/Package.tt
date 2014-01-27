@@ -104,12 +104,12 @@ namespace SandcastleBuilder.Package
         }
 
         /////////////////////////////////////////////////////////////////////////////
-        // Overriden Package Implementation
+        // Overridden Package Implementation
         #region Package Members
 
         /// <summary>
         /// Initialization of the package; this method is called right after the package is sited, so this is the place
-        /// where you can put all the initilaization code that rely on services provided by VisualStudio.
+        /// where you can put all the initialization code that rely on services provided by VisualStudio.
         /// </summary>
         protected override void Initialize()
         {
@@ -245,7 +245,7 @@ namespace SandcastleBuilder.Package
 
                 if (vOut != IntPtr.Zero && newChoice != null)
                 {
-                    throw (new ArgumentException("Both in and out parameters can not be NULL")); // force an exception to be thrown
+                    throw (new ArgumentException("Both in and out parameters cannot be NULL")); // force an exception to be thrown
                 }
                 else if (vOut != IntPtr.Zero)
                 {
@@ -271,7 +271,7 @@ namespace SandcastleBuilder.Package
                     if (validInput)
                     {
                         this.current<#= combo.Name #>Choice = <#= combo.Name #>Choices[indexInput];
-                        ShowMessage(String.Format("<#= combo.Name #>: {0}", this.current<#= combo.Name #>Choice));
+                        ShowMessage(String.Format(CultureInfo.CurrentCulture, "<#= combo.Name #>: {0}", this.current<#= combo.Name #>Choice));
                     }
                     else
                     {
@@ -281,7 +281,7 @@ namespace SandcastleBuilder.Package
                 else
                 {
                     // We should never get here
-                    throw (new ArgumentException("Both in and out parameters can not be NULL")); // force an exception to be thrown
+                    throw (new ArgumentException("Both in and out parameters cannot be NULL")); // force an exception to be thrown
                 }
             }
             else
@@ -325,7 +325,7 @@ namespace SandcastleBuilder.Package
                     if (!string.IsNullOrEmpty(newChoice))
                     {
                         this.current<#= combo.Name #>Choice = newChoice;
-                        ShowMessage(String.Format("<#= combo.Name #>: {0}", this.current<#= combo.Name #>Choice));
+                        ShowMessage(String.Format(CultureInfo.CurrentCulture, "<#= combo.Name #>: {0}", this.current<#= combo.Name #>Choice));
                     }
                     else
                     {
@@ -388,12 +388,12 @@ namespace SandcastleBuilder.Package
                     if (inputString.Equals("ZoomToFit") || inputString.Equals("Zoom To Fit"))
                     {
                         <#= combo.Name #>ZoomFactor = 0;
-						ShowMessage(String.Format("<#= combo.Name #>: {0}", this.current<#= combo.Name #>Choice, "Zoom to Fit"));
+						ShowMessage(String.Format(CultureInfo.CurrentCulture, "<#= combo.Name #>: {0}", this.current<#= combo.Name #>Choice, "Zoom to Fit"));
                     }
                     else
                     {
                         // There doesn't appear to be any percent-parsing routines in the framework (even though you can create
-                        // a localized percentage in a string!).  So, we need to remove any occurence of the localized Percent 
+                        // a localized percentage in a string!).  So, we need to remove any occurrence of the localized Percent 
                         // symbol, then parse the value that's left
                         try
                         {
@@ -407,7 +407,7 @@ namespace SandcastleBuilder.Package
 
                             <#= combo.Name #>ZoomFactor = newZoom / (float)100.0;
 
-							ShowMessage(String.Format("<#= combo.Name #>: {0}, {1}", this.current<#= combo.Name #>Choice, newZoom.ToString(CultureInfo.CurrentCulture)));
+							ShowMessage(String.Format(CultureInfo.CurrentCulture, "<#= combo.Name #>: {0}, {1}", this.current<#= combo.Name #>Choice, newZoom.ToString(CultureInfo.CurrentCulture)));
                         }
                         catch (FormatException)
                         {
@@ -496,7 +496,7 @@ namespace SandcastleBuilder.Package
                     if (newChoice != -1)
                     {
                         this.current<#= combo.Name #>Choice = newChoice;
-                        ShowMessage(String.Format("<#= combo.Name #>, {0}", this.current<#= combo.Name #>Choice.ToString(CultureInfo.CurrentCulture)));
+                        ShowMessage(String.Format(CultureInfo.CurrentCulture, "<#= combo.Name #>, {0}", this.current<#= combo.Name #>Choice.ToString(CultureInfo.CurrentCulture)));
                     }
                     else
                     {
@@ -563,7 +563,7 @@ namespace SandcastleBuilder.Package
                 }
                 else
                 {
-                    throw (new ArgumentException("Out parameter can not be NULL")); // force an exception to be thrown
+                    throw (new ArgumentException("Out parameter cannot be NULL")); // force an exception to be thrown
                 }
             }
 <#
@@ -612,7 +612,7 @@ namespace SandcastleBuilder.Package
                 }
                 else
                 {
-                    throw (new ArgumentException("Out parameter can not be NULL")); // force an exception to be thrown
+                    throw (new ArgumentException("Out parameter cannot be NULL")); // force an exception to be thrown
                 }
             }
 <#
@@ -651,7 +651,7 @@ namespace SandcastleBuilder.Package
             ToolWindowPane window = this.FindToolWindow(typeof(<#= toolWindow.Name #>ToolWindow), 0, true);
             if ((null == window) || (null == window.Frame))
             {
-                throw new NotSupportedException(String.Format("Can not create Toolwindow: <#= toolWindow.Name #>"));
+                throw new NotSupportedException("Cannot create Toolwindow: <#= toolWindow.Name #>");
             }
             IVsWindowFrame windowFrame = (IVsWindowFrame)window.Frame;
             Microsoft.VisualStudio.ErrorHandler.ThrowOnFailure(windowFrame.Show());

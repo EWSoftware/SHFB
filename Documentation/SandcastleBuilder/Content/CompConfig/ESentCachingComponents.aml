@@ -107,8 +107,8 @@ files so that their information is cached in the same database.</para>
 &lt;!-- This should replace the standard ResolveReferenceLinksComponent2 build
      component. --&gt;
 &lt;component id="Resolve Reference Links (ESENT Cache)"&gt;
-	&lt;locale="{@Locale}" /&gt;
-	&lt;linkTarget="{@SdkLinkTarget}" /&gt;
+  &lt;locale value="{@Locale}" /&gt;
+  &lt;linkTarget value="{@SdkLinkTarget}" /&gt;
   &lt;msdnContentIdCache path="{@LocalDataFolder}Cache\MsdnContentId.cache"
     cachePath="{@LocalDataFolder}Cache\ESentMsdnContentIdCache" localCacheSize="2500" /&gt;
   &lt;targets base="{@SHFBFolder}Data\Reflection" recurse="true" files="*.xml" type="{@SdkLinkType}"

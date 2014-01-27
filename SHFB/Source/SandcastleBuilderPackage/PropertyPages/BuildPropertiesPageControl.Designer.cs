@@ -53,7 +53,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(145, 23);
             this.label1.TabIndex = 4;
-            this.label1.Text = "B&uild Log Filename";
+            this.label1.Text = "B&uild log filename";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // chkCleanIntermediates
@@ -111,11 +111,11 @@
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(146, 23);
             this.label2.TabIndex = 2;
-            this.label2.Text = "F&ramework Version";
+            this.label2.Text = "F&ramework version";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
+            //
             // cboFrameworkVersion
-            // 
+            //
             this.cboFrameworkVersion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboFrameworkVersion.FormattingEnabled = true;
             this.cboFrameworkVersion.Location = new System.Drawing.Point(431, 12);
@@ -124,15 +124,15 @@
             this.cboFrameworkVersion.Size = new System.Drawing.Size(330, 28);
             this.cboFrameworkVersion.TabIndex = 3;
             this.cboFrameworkVersion.Tag = "FrameworkVersion";
-            // 
+            //
             // epNotes
-            // 
+            //
             this.epNotes.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink;
             this.epNotes.ContainerControl = this;
             this.epNotes.Icon = ((System.Drawing.Icon)(resources.GetObject("epNotes.Icon")));
-            // 
+            //
             // chkIndentHtml
-            // 
+            //
             this.chkIndentHtml.AutoSize = true;
             this.epNotes.SetError(this.chkIndentHtml, "Build component debugging aid.  Leave this unchecked for normal builds\nto produce" +
         " more compact HTML");

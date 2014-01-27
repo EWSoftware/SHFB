@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="a5108a60-fdf8-412a-bd74-c182cd2832ec" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>Release notes for version 2014.1.26.0</para>
+		</introduction>
+
+		<section>
+			<title>Changes in This Release</title>
+			<content>
+
+				<list class="bullet">
+					<listItem>
+						<para>Switched to the new date-based version numbering scheme.</para>
+					</listItem>
+					<listItem>
+						<para>Added information on the member ID prefix codes from the .NET Documentation Guidelines
+document.</para>
+					</listItem>
+					<listItem>
+						<para>Added brief information on the <link xlink:href="6e76ff26-d4f8-491e-ae81-b06086ecf902">code
+contracts elements</link> from the Code Contracts User Manual.</para>
+					</listItem>
+					<listItem>
+						<para>Added <codeInline>async</codeInline>, <codeInline>Async</codeInline>, <codeInline>await</codeInline>,
+<codeInline>Await</codeInline>, <codeInline>let!</codeInline>, <codeInline>async/await</codeInline>,
+<codeInline>Async/Await</codeInline>, and <codeInline>async/let!</codeInline> as possible
+<codeInline>langword</codeInline> attribute values on the <codeInline>see</codeInline> element.</para>
+					</listItem>
+				</list>
+
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="0999CAAA-4992-4352-9ED2-965892040176" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

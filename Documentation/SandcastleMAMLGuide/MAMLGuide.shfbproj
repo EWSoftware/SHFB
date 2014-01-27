@@ -142,7 +142,7 @@
     <Folder Include="Icons" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Icons\Sandcastle.jpg">
+    <Content Include="icons\Sandcastle.jpg">
       <ImageId>Sandcastle</ImageId>
       <AlternateText>Sandcastle</AlternateText>
     </Content>

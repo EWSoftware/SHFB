@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<VSTemplate Version="3.0.0" Type="Project" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005">
+	<TemplateData>
+		<Name Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="206" />
+		<Description Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="207" />
+		<Icon Package="{c997d569-ee8e-4947-a46f-9a0717ce39a0}" ID="412" />
+		<ProjectType>CSharp</ProjectType>
+		<RequiredFrameworkVersion>4.0</RequiredFrameworkVersion>
+		<CreateNewFolder>true</CreateNewFolder>
+		<DefaultName>PlugIn</DefaultName>
+		<SortOrder>1000</SortOrder>
+		<ProvideDefaultName>true</ProvideDefaultName>
+		<NumberOfParentCategoriesToRollUp>1</NumberOfParentCategoriesToRollUp>
+	</TemplateData>
+	<TemplateContent>
+		<Project File="PlugIn.csproj" ReplaceParameters="true">
+			<ProjectItem TargetFileName="$projectname$PlugIn.cs" ReplaceParameters="true" OpenInEditor="true">PlugIn.cs</ProjectItem>
+			<Folder Name="Properties" TargetFolderName="Properties">
+				<ProjectItem TargetFileName="AssemblyInfo.cs" ReplaceParameters="true">AssemblyInfo.cs</ProjectItem>
+			</Folder>
+		</Project>
+	</TemplateContent>
+</VSTemplate>

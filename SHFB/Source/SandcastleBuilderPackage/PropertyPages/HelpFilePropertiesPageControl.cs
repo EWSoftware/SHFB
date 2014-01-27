@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : HelpFilePropertiesPageControl.cs
 // Author  : Eric Woodruff
-// Updated : 01/09/2014
+// Updated : 01/26/2014
 // Note    : Copyright 2011-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -461,6 +461,26 @@ namespace SandcastleBuilder.Package.PropertyPages
 
             epNotes.SetError(cboPresentationStyle, String.Format(CultureInfo.InvariantCulture,
                 "{0}\r\n\r\nVersion {1}\r\n{2}", pss.Description, pss.Version, pss.Copyright));
+        }
+
+        /// <summary>
+        /// Update the info provider text when the syntax filter selection changes
+        /// </summary>
+        /// <param name="sender">The sender of the event</param>
+        /// <param name="e">The event arguments</param>
+        private void cblSyntaxFilters_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if(cblSyntaxFilters.SelectedIndex != -1)
+            {
+                var generator = syntaxGenerators.FirstOrDefault(sf => sf.Id.Equals(cblSyntaxFilters.SelectedItem));
+
+                if(generator == null)
+                    epNotes.SetError(cblSyntaxFilters, String.Empty);
+                else
+                    epNotes.SetError(cblSyntaxFilters, String.Format(CultureInfo.InvariantCulture,
+                        "{0}\r\n\r\nVersion {1}\r\n{2}", generator.Description, generator.Version,
+                        generator.Copyright));
+            }
         }
         #endregion
     }

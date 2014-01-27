@@ -34,9 +34,9 @@ message stating that it could not be found.</para>
 			<title>Project-specific components path (ComponentPath)</title>
 			<content>
 				<para>This property lets you specify the path where the help file builder can find custom build
-components and plug-ins specific to the project.  If left blank, the project's folder is searched instead.  This
-is useful for XCOPY deployments or when developing build components so that they don't have to be installed in
-the standard location (the common application data folder).</para>
+components, plug-ins, syntax generators, and presentation styles specific to the project.  If left blank, the
+project's folder is searched instead.  This is useful for XCOPY deployments or when developing build components
+so that they don't have to be installed in the standard location (the common application data folder).</para>
 
 			</content>
 		</section>

@@ -1,0 +1,279 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="1139ca15-af64-48a2-9187-ccc1aec389d4" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<autoOutline excludeRelatedTopics="true" lead="Release notes for version 2014.1.26.0 Beta" />
+		</introduction>
+
+		<section address="BreakingChanges">
+			<title>Breaking Changes</title>
+			<content>
+				<alert class="important">
+					<para>The Sandcastle tools are now installed as part of the Sandcastle Help File Builder and there is
+no longer a separate installer for them.  As such, you will need to manually remove the prior release of the
+Sandcastle tools.  Leaving them installed will not cause any issues as the new release is located in a different
+folder.  However, removing them will avoid any confusion in the future.</para>
+				</alert>
+
+				<para>The majority of the following changes will only affect those that have created custom build
+components, syntax generators, plug-ins, and presentation styles.  If you have, carefully read the following
+items as you will need to update your components to work with the new Managed Extensibility Framework based
+implementation.</para>
+
+				<list class="bullet">
+					<listItem>
+						<para>Consolidated the Sandcastle Help File Builder and Sandcastle tools under a single, common
+folder structure.  These changes were necessary in order to simplify deployment and support changes to the
+component model.</para>
+					</listItem>
+
+					<listItem>
+						<para>Since the tools have been consolidated under a single folder, the <environmentVariable>DXROOT</environmentVariable>
+environment variable is no longer needed.  All tools now use the common <environmentVariable>SHFBROOT</environmentVariable>
+environment variable instead where needed.</para>
+					</listItem>
+
+					<listItem>
+						<para>Removed support for the <environmentVariable>SHFBCOMPONENTROOT</environmentVariable>
+environment variable as its functionality is handled by the new <codeInline>ComponentPath</codeInline> project
+property.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated all build components, syntax generators, plug-ins, and presentation styles so that they
+are implemented using the Manged Extensibility Framework (MEF).  A lot of code was moved into a new
+<localUri>Sandcastle.Core</localUri> library that holds the base classes and MEF implementation classes common to
+all of the other projects in the tool set.  This change allows for dynamic discoverability of components at
+runtime without the need for special configuration files or file naming conventions.  It also allows for the use
+of project-specific components located within a help file project's folder or one that it refers to through the
+new <codeInline>ComponentPath</codeInline> property.</para>
+					</listItem>
+
+					<listItem>
+						<para>Changed the syntax generator IDs to their actual language names so that they are displayed
+using the language name in the help file builder.  This should be transparent to most projects but if you have
+<application>BuildAssember</application> configuration files you will need to update the syntax generator IDs in
+them.</para>
+					</listItem>
+
+					<listItem>
+						<para>Switched to a date-based version numbering scheme (YYYY.MM.DD.RR) and updated all tools to use
+a common version number.  Changes were also made to the versioning attributes to minimize the need to rebuild
+third party components with each new release of the tools.  In future, it should only be necessary to rebuild
+third party components if a breaking changes was made requiring an update to the version number used in the
+strong name of the dependency assemblies.</para>
+					</listItem>
+
+					<listItem>
+						<para>Removed the <codeInline>SandcastlePath</codeInline> project property and all references to it
+as it is no longer needed.  It may show up in the <ui>User Defined Properties</ui> property page.  If so, it can
+be removed from there.</para>
+					</listItem>
+
+					<listItem>
+						<para>The help file builder presentation style resource item files have been moved into each
+presentation style so that the presentation styles are self-contained.</para>
+					</listItem>
+
+					<listItem>
+						<para>The help file builder stop word list files have been moved into the
+<localUri>Shared\StopWordList</localUri> folder under the presentation style folder so that the localizable
+resources are all in one common location.</para>
+					</listItem>
+
+					<listItem>
+						<para>Removed the <codeInline>ApplyVisibilityProperties</codeInline> build step as visibility
+properties are applied to the reflection information by <application>MRefBuilder</application> now. The
+<codeInline>ApplyVisibilityProperties()</codeInline> method was modified to take a filename so that plug-ins can
+use it to remove members from reflection files generated by other means.</para>
+					</listItem>
+
+					<listItem>
+						<para>Moved the <codeInline>TransformReflectionInfo</codeInline> build step to run ahead of the
+<codeInline>GenerateNamespaceSummaries</codeInline> build step to allow generation of group topics for use in
+the namespace summary editor dialog in a partial build.</para>
+					</listItem>
+
+					<listItem>
+						<para>Redefined the partial build in the build engine to allow stopping it after generating
+reflection information or after the document model XSL transformation and grouping options have been applied.</para>
+					</listItem>
+
+					<listItem>
+						<para>The following obsolete and deprecated help file builder build components have been deleted so
+that they did not have to updated for use with MEF.  If you still have them in older projects, they will need to
+be removed, re-added, and re-configured as needed:</para>
+
+						<list class="bullet">
+							<listItem>
+								<para><codeInline>CachedCopyFromIndexComponent</codeInline> - Superseded by the base components
+and the ESent/SQL caching components.</para>
+							</listItem>
+
+							<listItem>
+								<para><codeInline>CachedResolveReferenceLinksComponent</codeInline> - Superseded by the base
+components and the ESent/SQL caching components.</para>
+							</listItem>
+
+							<listItem>
+								<para><codeInline>IntelliSenseComponent</codeInline> - Moved to the <application>BuildAssembler</application>
+components project.</para>
+							</listItem>
+
+							<listItem>
+								<para><codeInline>MSHelpAttrComponent</codeInline> - Moved to the <application>BuildAssembler</application>
+components project.</para>
+							</listItem>
+
+							<listItem>
+								<para><codeInline>PostTransformComponent</codeInline> - Code block handling moved to the code
+block component and logo support moved to the XSL transformations.</para>
+							</listItem>
+
+							<listItem>
+								<para><codeInline>ShowMissingComponent</codeInline> - Moved to the <application>BuildAssembler</application>
+components project.</para>
+							</listItem>
+
+						</list>
+
+						<para>See the prior version release notes for more details.</para>
+
+					</listItem>
+
+				</list>
+
+			</content>
+		</section>
+
+		<section address="OtherChanges">
+			<title>Other Changes Made in This Release</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para>Fixed the project class so that it does not incorrectly try to update the tools version and
+mark the project as dirty under Visual Studio 2013.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the <codeInline>BuildHelp</codeInline> task and standalone GUI so that all warnings
+regardless of format are output to the console when verbose logging is disabled.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the framework XML comments file enumerator method so that it ignores folders that exist
+but contain no XML comments files.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the Sandcastle HTML extract tool so that it finds the <localUri>HxLink.css</localUri>
+reference regardless of the element's attribute order.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the Version Builder plug-in so that it finds the correct XML comments file when the
+<codeInline>GenerateProjectSpecificOutputFolder</codeInline> MSBuild option is used.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the standalone GUI so that it loads per project user state properly.</para>
+					</listItem>
+
+					<listItem>
+						<para>Fixed the build log viewer so that it transforms the log correctly under Visual Studio.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added support for installing and removing MS Help Viewer content in Help Viewer 2.1 from the
+standalone GUI and VSPackage.  Updated the example scripts to show how to do it as well.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated the standalone GUI to use the evaluated output path value if it contains MSBuild
+variables.  This allows it to clean and display the output under such conditions.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated the build engine to run the Sandcastle tools as MSBuild tasks.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added support for a <codeInline>ComponentPath</codeInline> project property used to specify the
+location of project-specific build components, syntax generators, plug-ins, and presentation styles.  If not
+specified, the project's folder alone is used.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added support for the "No-PIA embedded interop types" visibility option.</para>
+					</listItem>
+
+					<listItem>
+						<para>Exposed the <codeInline>ReferenceOutputAssembly</codeInline> property on project references.
+If set to false, the project reference will only be used for MSBuild dependency determination and will not be
+used as a reference for <application>MRefBuilder</application>.  This allows MSBuild to determine the correct
+project build order when building projects in a solution in parallel.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added F# to the standard set of syntax filters to match MSDN.  Note that if you have been
+using the standard set (C#, VB.NET, C++), you will gain F# by default. Turn it off in the <codeInline>Syntax
+Filters</codeInline> property on the <ui>Help File</ui> properties page if you do not want it included in the
+topics.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added namespace grouping support in the form of two new properties located on the <ui>Help
+File</ui> property page: <codeInline>NamespaceGrouping</codeInline> and <codeInline>MaximumGroupParts</codeInline>.
+Note that the selected presentation style must support namespace grouping for these properties to be effective.
+Only the VS2005 and VS2010 styles support namespace grouping in this release.</para>
+					</listItem>
+
+					<listItem>
+						<para>Updated the <ui>Namespace Summaries</ui> dialog to allow editing of namespace group summaries.</para>
+					</listItem>
+
+					<listItem>
+						<para>Deprecated the <ui>Hierarchical TOC</ui> plug-in as its functionality has been replaced by the
+namespace grouping options.  It is still available for presentation styles that do not support MS Help Viewer
+output or namespace grouping (Prototype and Hana).</para>
+					</listItem>
+
+					<listItem>
+						<para>Removed the <ui>Expand All</ui> button from the website index pages as it was not very useful
+and could cause a heavy load on the web server.</para>
+					</listItem>
+
+					<listItem>
+						<para>Applied changes to the web table of contents style from Sam Harwell.</para>
+					</listItem>
+
+					<listItem>
+						<para>Minimized the use of the <environmentVariable>SHFBROOT</environmentVariable> environment
+variable where possible.  It is still needed in some places to allow for XCOPY deployment of the tools.  It is
+possible to run without it defined if you create a <codeInline>SHFBROOT</codeInline> project property that points
+to the tools.  See the <link xlink:href="50ad2c8c-5004-4b4c-a77f-97b8c403c9f2" /> topic for details.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added code the VSPackage to allow using a locally defined <codeInline>SHFBROOT</codeInline>
+project variable to set the <environmentVariable>SHFBROOT</environmentVariable> environment variable if it does
+not exist.  This allows using it without the <environmentVariable>SHFBROOT</environmentVariable> environment
+variable  defined.</para>
+					</listItem>
+
+					<listItem>
+						<para>Added template projects for C# and VB.NET in the <ui>Documentation</ui> subcategory used to
+create plug-ins, build components, syntax generators, and presentation style components.  The template code
+contains the necessary MEF attribute and/or factory class to produce a valid component.</para>
+					</listItem>
+
+				</list>
+			</content>
+		</section>
+		
+		<relatedTopics>
+			<link xlink:href="078cc1c7-7995-431e-bf9c-8813becbe8df" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

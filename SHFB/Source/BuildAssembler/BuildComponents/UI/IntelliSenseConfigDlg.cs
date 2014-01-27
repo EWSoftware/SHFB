@@ -122,7 +122,7 @@ namespace Microsoft.Ddue.Tools.UI
             {
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
                 MessageBox.Show("Unable to launch link target.  Reason: " + ex.Message,
-                    "Sandcastle Help File Builder", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    "IntelliSense Component", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
 

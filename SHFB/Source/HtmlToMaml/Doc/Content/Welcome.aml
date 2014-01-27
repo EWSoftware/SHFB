@@ -4,11 +4,11 @@
     <introduction>
       <para>Welcome to the HTML to MAML Converter.  This utility is used to convert HTML files to Microsoft
 Assistance Markup Language (MAML) topic files so that they can be compiled into help files using
-<token>Sandcastle</token> with the selected presentation style's look and feel.  The utility is located in
-the <localUri>.\Extras\HtmlToMaml</localUri> folder under the main Sandcastle installation folder (typically
-<localUri>C:\Program Files (x86)\Sandcastle</localUri>).</para>
+<token>Sandcastle</token> with the selected presentation style's look and feel.  The utility is located in the
+<localUri>.\Extras</localUri> folder under the root help file builder installation folder (typically
+<localUri>C:\Program Files (x86)\EWSoftware\Sandcastle Help File Builder</localUri>).</para>
     </introduction>
-    
+
   <section>
     <title>What is Conceptual Content?</title>
     <content>

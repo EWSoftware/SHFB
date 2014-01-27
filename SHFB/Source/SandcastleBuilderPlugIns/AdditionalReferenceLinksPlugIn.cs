@@ -48,7 +48,7 @@ namespace SandcastleBuilder.PlugIns
     /// party help in Help 2/MS Help Viewer collections or additional online MSDN content.
     /// </summary>
     [HelpFileBuilderPlugInExport("Additional Reference Links", IsConfigurable = true,
-      Version = AssemblyInfo.Version, Copyright = AssemblyInfo.Copyright,
+      Version = AssemblyInfo.ProductVersion, Copyright = AssemblyInfo.Copyright,
       Description = "This plug-in is used to add additional reference link targets to the Reflection Index " +
         "Data and Resolve Reference Links build component so that links can be created to other third " +
         "party help in a Help 2 collection, MS Help Viewer collection, or additional online MSDN content.")]

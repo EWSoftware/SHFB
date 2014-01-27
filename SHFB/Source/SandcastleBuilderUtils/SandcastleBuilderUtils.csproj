@@ -11,7 +11,7 @@
     <RootNamespace>SandcastleBuilder.Utils</RootNamespace>
     <AssemblyName>SandcastleBuilder.Utils</AssemblyName>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>SandcastleBuilderUtils.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\SandcastleTools.snk</AssemblyOriginatorKeyFile>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
@@ -197,6 +197,7 @@
     <Compile Include="ProjectElement.cs" />
     <Compile Include="ProjectPropertyChangedEventArgs.cs" />
     <Compile Include="ProjectReferenceItem.cs" />
+    <Compile Include="Properties\AssemblyInfoShared.cs" />
     <Compile Include="PropertyBasedCollectionItem.cs" />
     <Compile Include="Utility.cs" />
     <Compile Include="XPath\MatchesRegexFunction.cs" />
@@ -240,7 +241,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="SandcastleBuilderUtils.snk" />
     <Content Include="SandcastleHelpFileBuilder.targets">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

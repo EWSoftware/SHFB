@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("EWSoftware")]
 [assembly: AssemblyProduct("TestDoc")]
-[assembly: AssemblyCopyright("Copyright \xA9 Eric Woodruff 2006-2011")]
+[assembly: AssemblyCopyright("Copyright \xA9 Eric Woodruff 2006-2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -28,5 +28,6 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
+//[assembly: AssemblyInformationalVersion("4.0 RC1")]
 [assembly: AssemblyVersion("4.0.0.0")]
-[assembly: AssemblyFileVersion("4.0.0.0")]
+[assembly: AssemblyFileVersion("4.0.0.1")]

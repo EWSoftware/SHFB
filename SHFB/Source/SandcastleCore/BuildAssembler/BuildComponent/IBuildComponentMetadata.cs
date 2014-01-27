@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : IBuildComponentMetadata.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/23/2013
-// Note    : Copyright 2013, Eric Woodruff, All rights reserved
+// Updated : 01/23/2014
+// Note    : Copyright 2013-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a class that defines the metadata for a BuildAssembler build component
@@ -31,12 +31,11 @@ namespace Sandcastle.Core.BuildAssembler.BuildComponent
         string Id { get; }
 
         /// <summary>
-        /// This read-only property returns true if the build component is visible to designers and other
-        /// configuration tools.
+        /// This read-only property returns true if the build component is visible to configuration tools
         /// </summary>
-        /// <remarks>Designers and configuration tools can use this to exclude components that should not appear
-        /// for the user to select.</remarks>
-        bool DesignerVisible { get; }
+        /// <remarks>Configuration tools can use this to exclude components that should not appear for the user
+        /// to select.</remarks>
+        bool IsVisible { get; }
 
         /// <summary>
         /// This read-only property returns true if the build component is configurable or false if it is not

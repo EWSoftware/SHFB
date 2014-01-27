@@ -43,7 +43,7 @@ namespace SandcastleBuilder.PlugIns
     /// This plug-in class can be used to build a help file consisting of nothing but additional content items.
     /// It is also useful for proofreading your additional content without having to build all the API topics.
     /// </summary>
-    [HelpFileBuilderPlugInExport("Additional Content Only", Version = AssemblyInfo.Version,
+    [HelpFileBuilderPlugInExport("Additional Content Only", Version = AssemblyInfo.ProductVersion,
       Copyright = AssemblyInfo.Copyright, Description = "This plug-in can be used to build a help file " +
       "consisting of nothing but conceptual content and/or additional content items.  It is also useful for " +
       "proofreading your conceptual and/or additional content without having to build all the API topics.")]

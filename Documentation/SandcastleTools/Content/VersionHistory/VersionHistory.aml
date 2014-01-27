@@ -11,7 +11,11 @@ the project.
 			<title>Version History</title>
 			<content>
 				<para>Select a version below to see a description of its changes.</para>
+				
 				<list class="bullet">
+					<listItem>
+						<para><link xlink:href="0fdc9909-5233-4ebb-b9e7-a9e48f662222" /></para>
+					</listItem>
 					<listItem>
 						<para><link xlink:href="655dc2f6-9e3c-45b1-8d7f-472ddd6eac1f" /></para>
 					</listItem>

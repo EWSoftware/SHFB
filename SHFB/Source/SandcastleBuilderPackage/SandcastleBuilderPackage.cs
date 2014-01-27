@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Visual Studio Package
 // File    : SandcastleBuilderPackage.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/09/2014
+// Updated : 01/26/2014
 // Note    : Copyright 2011-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -14,7 +14,7 @@
 // and source files.
 //
 // Version     Date     Who  Comments
-// ============================================================================
+// ==============================================================================================================
 // 1.9.3.0  03/18/2011  EFW  Created the code
 // 1.9.3.3  12/11/2011  EFW  Added support for Entity References tool window
 // 1.9.3.3  12/26/2011  EFW  Added support for the SHFB file editors
@@ -126,12 +126,11 @@ namespace SandcastleBuilder.Package
         /// </summary>
         internal static SandcastleBuilderPackage Instance { get; private set; }
 
-        // TODO: Is my assumption correct here?
         /// <summary>
         /// This returns the project type for the Framework Retargeting dialog
         /// </summary>
-        /// <remarks>My assumption is that this should return the same value as
-        /// the SandcastleBuilderProjectNode.ProjectType property.</remarks>
+        /// <remarks>My assumption, which appears to be correct, is that this should return the same value as the
+        /// <c>SandcastleBuilderProjectNode.ProjectType</c> property.</remarks>
         public override string ProductUserContext
         {
             get { return "SHFBProject"; }

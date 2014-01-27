@@ -1,31 +1,25 @@
-//=============================================================================
+//===============================================================================================================
 // System  : Sandcastle Help File Builder
 // File    : AboutDlg.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/04/2011
-// Note    : Copyright 2011, Eric Woodruff, All rights reserved
+// Updated : 01/16/2014
+// Note    : Copyright 2011-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This form is used to display application version information.
 //
-// This code is published under the Microsoft Public License (Ms-PL).  A copy
-// of the license should be distributed with the code.  It can also be found
-// at the project website: http://SHFB.CodePlex.com.   This notice, the
-// author's name, and all copyright notices must remain intact in all
-// applications, documentation, and source files.
+// This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
+// distributed with the code.  It can also be found at the project website: http://SHFB.CodePlex.com.  This
+// notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
+// and source files.
 //
-// Version     Date     Who  Comments
-// ============================================================================
-// 1.9.3.0  04/04/2011  EFW  Created the code
-//=============================================================================
+//    Date     Who  Comments
+// ==============================================================================================================
+// 04/04/2011  EFW  Created the code
+//===============================================================================================================
 
 using System;
-using System.Collections;
-using System.ComponentModel;
-using System.Configuration;
 using System.Diagnostics;
-using System.Drawing;
-using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
 
@@ -63,17 +57,15 @@ namespace SandcastleBuilder.Package.UI
 			// Get assembly information not available from the application object
             Assembly asm = Assembly.GetExecutingAssembly();
 			AssemblyDescriptionAttribute aDescr = (AssemblyDescriptionAttribute)
-				AssemblyDescriptionAttribute.GetCustomAttribute(asm,
-				typeof(AssemblyDescriptionAttribute));
+				AssemblyDescriptionAttribute.GetCustomAttribute(asm, typeof(AssemblyDescriptionAttribute));
             AssemblyCopyrightAttribute aCopyright = (AssemblyCopyrightAttribute)
-                AssemblyCopyrightAttribute.GetCustomAttribute(asm,
-                typeof(AssemblyCopyrightAttribute));
+                AssemblyCopyrightAttribute.GetCustomAttribute(asm, typeof(AssemblyCopyrightAttribute));
             FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(asm.Location);
 
 			// Set the labels
             this.Text = "About " + Resources.PackageTitle;
             lblName.Text = Resources.PackageTitle;
-			lblVersion.Text = "Version: " + fvi.FileVersion;
+			lblVersion.Text = "Version: " + fvi.ProductVersion;
 			lblDescription.Text = aDescr.Description;
             lblCopyright.Text = aCopyright.Copyright;
             lnkHelp.Text = Resources.AuthorEMailAddress;
@@ -112,6 +104,7 @@ namespace SandcastleBuilder.Package.UI
 			catch(Exception ex)
 			{
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
+
                 MessageBox.Show("Unable to launch system information viewer.  Reason: " + ex.Message,
                     Resources.PackageTitle, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
@@ -127,15 +120,15 @@ namespace SandcastleBuilder.Package.UI
         {
 			try
 			{
-				// Launch the e-mail URL, this will fail if user does not
-                // have an association for e-mail URLs.
+				// Launch the e-mail URL, this will fail if user does not have an association for e-mail URLs
 				System.Diagnostics.Process.Start((string)e.Link.LinkData);
 			}
 			catch(Exception ex)
 			{
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
-                MessageBox.Show("Unable to launch link target.  Reason: " + ex.Message,
-                    Resources.PackageTitle, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+
+                MessageBox.Show("Unable to launch link target.  Reason: " + ex.Message, Resources.PackageTitle,
+                    MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
         #endregion

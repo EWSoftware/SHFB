@@ -2,8 +2,8 @@
 // System  : Sandcastle Tools - Sandcastle Tools Core Class Library
 // File    : BuildComponentExportAttribute.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/23/2013
-// Note    : Copyright 2013, Eric Woodruff, All rights reserved
+// Updated : 01/23/2014
+// Note    : Copyright 2013-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a custom version of the ExportAttribute that contains metadata for the BuildAssembler
@@ -40,12 +40,11 @@ namespace Sandcastle.Core.BuildAssembler.BuildComponent
         public string Id { get; private set; }
 
         /// <summary>
-        /// This is used to get or set whether or not the component is visible to designers and configuration
-        /// tools.
+        /// This is used to get or set whether or not the component is visible to configuration tools
         /// </summary>
-        /// <remarks>Designers and configuration tools can use this to exclude components that should not appear
-        /// for the user to select.  It is false by default.</remarks>
-        public bool DesignerVisible { get; set; }
+        /// <remarks>Configuration tools can use this to exclude components that should not appear for the user
+        /// to select.  It is false by default.</remarks>
+        public bool IsVisible { get; set; }
 
         /// <summary>
         /// This is used to get or set whether or not the build component is configurable

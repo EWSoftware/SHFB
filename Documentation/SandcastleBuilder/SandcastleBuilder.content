@@ -145,6 +145,12 @@
         <HelpKeyword index="K" term="Getting started, websites and web projects" />
       </HelpKeywords>
     </Topic>
+    <Topic id="50ad2c8c-5004-4b4c-a77f-97b8c403c9f2" visible="True" title="XCOPY/Build Server Deployment">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="deployment, xcopy" />
+        <HelpKeyword index="K" term="deployment, build server" />
+      </HelpKeywords>
+    </Topic>
     <Topic id="8ffc0d37-0215-4609-b6f8-dba53a6c5063" visible="True" title="Building Projects Outside the GUI">
       <HelpKeywords>
         <HelpKeyword index="K" term="console mode, build tool" />
@@ -176,6 +182,11 @@
       <HelpKeywords>
         <HelpKeyword index="K" term="Visual Studio, custom item file templates" />
         <HelpKeyword index="K" term="Visual Studio, item file templates" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="c8258d52-6664-4e96-86cd-6f75a854a69c" visible="True" title="Component Project Templates">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="Visual Studio, component project templates" />
       </HelpKeywords>
     </Topic>
     <Topic id="7cbf7f9b-d456-430a-8f85-9e30ed250cfa" visible="True" title="Visual Studio Text Editor">
@@ -624,7 +635,7 @@
         <HelpKeyword index="K" term="plug-ins, creating a plug-in" />
         <HelpKeyword index="K" term="plug-ins, execution notes" />
         <HelpKeyword index="K" term="plug-ins, plug-in documentation" />
-        <HelpKeyword index="K" term="plug-ins, skeleton class" />
+        <HelpKeyword index="K" term="plug-ins, template class" />
       </HelpKeywords>
     </Topic>
   </Topic>
@@ -658,7 +669,7 @@
         <HelpKeyword index="K" term="MultiFormatOutputComponent, configuration options" />
       </HelpKeywords>
     </Topic>
-    <Topic id="3a1c4bf1-8ecf-4ab3-8010-277bed8d3819" visible="True" isExpanded="true" title="Data Caching Build Components">
+    <Topic id="3a1c4bf1-8ecf-4ab3-8010-277bed8d3819" visible="True" title="Data Caching Build Components">
       <HelpKeywords>
         <HelpKeyword index="K" term="build components, data caching" />
       </HelpKeywords>
@@ -677,20 +688,20 @@
         </HelpKeywords>
       </Topic>
     </Topic>
-    <Topic id="e6d18448-2459-46f1-bbdc-a7db415f2bda" visible="True" title="Creating a Component Configuration File">
+    <Topic id="e6d18448-2459-46f1-bbdc-a7db415f2bda" visible="True" title="Creating a BuildAssembler Build Component">
       <HelpKeywords>
-        <HelpKeyword index="K" term="build components, add third-party build component" />
-        <HelpKeyword index="K" term="build components, component configuration file" />
+        <HelpKeyword index="K" term="build components, creating a build component" />
+        <HelpKeyword index="K" term="build components, build component template class" />
       </HelpKeywords>
     </Topic>
-    <Topic id="5e80d139-811c-48ed-9b52-dcd8a3f5aef3" visible="True" title="Creating a Syntax Filter Generator Definition File">
+    <Topic id="5e80d139-811c-48ed-9b52-dcd8a3f5aef3" visible="True" title="Creating a Syntax Filter Generator Component">
       <HelpKeywords>
-        <HelpKeyword index="K" term="build components, add third-party syntax filter generator" />
-        <HelpKeyword index="K" term="build components, syntax filter generator" />
+        <HelpKeyword index="K" term="build components, creating a syntax filter generator" />
+        <HelpKeyword index="K" term="build components, syntax generator template class" />
       </HelpKeywords>
     </Topic>
   </Topic>
-  <Topic id="46d1f76e-a97e-4ee6-971c-fdeab725ff09" visible="True" isExpanded="true" title="Errors and Warnings">
+  <Topic id="46d1f76e-a97e-4ee6-971c-fdeab725ff09" visible="True" title="Errors and Warnings">
     <HelpKeywords>
       <HelpKeyword index="K" term="error list" />
       <HelpKeyword index="K" term="warning list" />
@@ -709,6 +720,11 @@
       <Topic id="7f4054ff-9490-452e-b842-5b783f31a8af" visible="True" title="BE0003: Sandcastle shared content for the '[langId]' language could not be found">
         <HelpKeywords>
           <HelpKeyword index="K" term="warnings, BE0003" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="adc7136a-8918-4be3-bdc7-35bac0b125a0" visible="True" title="BE0004: The selected presentation style ([styleName]) is not valid.  Reason(s): [reasons]">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="errors, BE0004" />
         </HelpKeywords>
       </Topic>
       <Topic id="ed7661b1-f675-4a8d-a0a2-6eed59cd3720" visible="True" title="BE0005: File '[file]' does not contain a 'doc/members' node">
@@ -1118,7 +1134,7 @@
         </HelpKeywords>
       </Topic>
     </Topic>
-    <Topic id="5d8bf748-a38f-422c-bae7-9ae5f210347c" visible="True" noFile="true" isExpanded="true" isSelected="true" title="MSBuild Tasks">
+    <Topic id="5d8bf748-a38f-422c-bae7-9ae5f210347c" visible="True" noFile="true" title="MSBuild Tasks">
       <Topic id="e4b1c387-d296-42ed-9458-7c6b460b5c35" visible="True" title="B1X0001: A help compiler path must be specified">
         <HelpKeywords>
           <HelpKeyword index="K" term="errors, B1X0001" />
@@ -1294,15 +1310,11 @@
       <HelpKeyword index="K" term="customize, build tags" />
     </HelpKeywords>
   </Topic>
-  <Topic id="baf1dcbc-e9cf-4d71-a770-621e6eaf10a7" visible="True" title="Custom Presentation Style Definition File">
+  <Topic id="baf1dcbc-e9cf-4d71-a770-621e6eaf10a7" visible="True" title="Creating a Presentation Style Component">
     <HelpKeywords>
-      <HelpKeyword index="K" term="customize, presentation style definition file" />
+      <HelpKeyword index="K" term="build components, creating a presentation style" />
+      <HelpKeyword index="K" term="build components, presentation style template class" />
     </HelpKeywords>
-    <Topic id="81f38cdc-8859-441b-a249-b67b03e492ed" visible="True" title="Walkthrough: Creating a Custom Presentation Style">
-      <HelpKeywords>
-        <HelpKeyword index="K" term="customize, custom presentation style walkthrough" />
-      </HelpKeywords>
-    </Topic>
   </Topic>
   <Topic id="1aea789d-b226-4b39-b534-4c97c256fac8" visible="True" title="Frequently Asked Questions (FAQ)" linkText="FAQ">
     <HelpKeywords>
@@ -1339,35 +1351,40 @@
       <HelpKeyword index="K" term="History" />
       <HelpKeyword index="K" term="Version History" />
     </HelpKeywords>
-    <Topic id="f4c5d176-8da1-4500-b070-e3b1e9e2c65c" visible="True" title="Version 1.9.8.0">
+    <Topic id="1139ca15-af64-48a2-9187-ccc1aec389d4" visible="True" isSelected="true" title="Version 2014.1.26.0 Beta">
       <HelpKeywords>
-        <HelpKeyword index="K" term="versions, 1.9.8.0" />
+        <HelpKeyword index="K" term="versions, 2014.1.26.0" />
       </HelpKeywords>
     </Topic>
-    <Topic id="fef9e0ed-864b-42f9-8747-af4d156a7c0e" visible="True" title="Version 1.9.7.0">
+    <Topic id="22c82423-a322-4857-9bf8-6d1f1c2fba68" visible="True" title="Versions 1.8.0.0 through 1.9.8.0">
       <HelpKeywords>
-        <HelpKeyword index="K" term="versions, 1.9.7.0" />
+        <HelpKeyword index="K" term="prior versions, v1.8.0.0 to v1.9.8.0" />
       </HelpKeywords>
-    </Topic>
-    <Topic id="4bc61ac3-ac19-4c8b-9ff9-95aaefa0b18e" visible="True" title="Version 1.9.6.0">
-      <HelpKeywords>
-        <HelpKeyword index="K" term="versions, 1.9.6.0" />
-      </HelpKeywords>
-    </Topic>
-    <Topic id="9fee3feb-46b6-4935-aac2-01c0045d3e19" visible="True" title="Version 1.9.5.0">
-      <HelpKeywords>
-        <HelpKeyword index="K" term="versions, 1.9.5.0" />
-      </HelpKeywords>
-    </Topic>
-    <Topic id="c7f2f7d3-9386-4e1e-9337-9795f42720c6" visible="True" title="Version 1.9.4.0">
-      <HelpKeywords>
-        <HelpKeyword index="K" term="versions, 1.9.4.0" />
-      </HelpKeywords>
-    </Topic>
-    <Topic id="22c82423-a322-4857-9bf8-6d1f1c2fba68" visible="True" title="Versions 1.8.0.0 through 1.9.3.4">
-      <HelpKeywords>
-        <HelpKeyword index="K" term="prior versions, v1.8 to v1.9.3.4" />
-      </HelpKeywords>
+      <Topic id="f4c5d176-8da1-4500-b070-e3b1e9e2c65c" visible="True" title="Version 1.9.8.0">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="versions, 1.9.8.0" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="fef9e0ed-864b-42f9-8747-af4d156a7c0e" visible="True" title="Version 1.9.7.0">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="versions, 1.9.7.0" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="4bc61ac3-ac19-4c8b-9ff9-95aaefa0b18e" visible="True" title="Version 1.9.6.0">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="versions, 1.9.6.0" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="9fee3feb-46b6-4935-aac2-01c0045d3e19" visible="True" title="Version 1.9.5.0">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="versions, 1.9.5.0" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="c7f2f7d3-9386-4e1e-9337-9795f42720c6" visible="True" title="Version 1.9.4.0">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="versions, 1.9.4.0" />
+        </HelpKeywords>
+      </Topic>
       <Topic id="8c11654c-f6f5-4cd3-acd0-86890ecb242d" visible="True" title="Version 1.9.3.4 (Beta 2)">
         <HelpKeywords>
           <HelpKeyword index="K" term="versions, 1.9.3.4" />
@@ -1421,7 +1438,7 @@
     </Topic>
     <Topic id="6110ac54-04d8-4624-8a2b-2a58af63c20d" visible="True" title="Versions 1.0.0.0 through 1.7.0.0">
       <HelpKeywords>
-        <HelpKeyword index="K" term="prior versions, v1.0 to v1.7" />
+        <HelpKeyword index="K" term="prior versions, v1.0.0.0 to v1.7.0.0" />
       </HelpKeywords>
       <Topic id="a44fe561-efb9-40ac-84eb-b1a00a4a9596" visible="True" title="Version 1.7.0.0">
         <HelpKeywords>

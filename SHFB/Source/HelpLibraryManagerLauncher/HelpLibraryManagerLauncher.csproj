@@ -14,7 +14,7 @@
     <FileAlignment>512</FileAlignment>
     <StartupObject>SandcastleBuilder.MicrosoftHelpViewer.HelpLibraryManagerLauncher</StartupObject>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>HelpLibraryManagerLauncher.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\SandcastleTools.snk</AssemblyOriginatorKeyFile>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
@@ -64,7 +64,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\SandcastleBuilderGUI\Properties\AssemblyInfoShared.cs">
+    <Compile Include="..\SandcastleBuilderUtils\Properties\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
     <Compile Include="CommandLineArgument.cs" />
@@ -73,9 +73,6 @@
     <Compile Include="HelpLibraryManagerLauncher.cs" />
     <Compile Include="HelpLibraryManagerUnsafeNativeMethods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="HelpLibraryManagerLauncher.snk" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

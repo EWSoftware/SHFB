@@ -354,15 +354,31 @@ and they are always placed in the <localUri>html/</localUri> folder.</para>
 		<para>This property is used to choose the presentation style that determines the layout and appearance of
 the help topics.  Sandcastle comes with four styles: <codeInline>VS2005</codeInline> (the default),
 <codeInline>VS2010</codeInline>, <codeInline>Prototype</codeInline>, and <codeInline>Hana</codeInline>.  The
-files for each style are located in the <localUri>.\Presentation</localUri> folder under the main Sandcastle
-installation folder.</para>
+files for each style are located in the <localUri>.\PresentationStyles</localUri> folder under the main
+help file builder installation folder.</para>
 
-<alert class="tip">
-  <para>The help file builder also supports custom presentation styles that you may have created.  See the
-<link xlink:href="baf1dcbc-e9cf-4d71-a770-621e6eaf10a7" /> topic for more information.</para>
-</alert>
+	</content>
 
-  </content>
+	<sections>
+		<section address="CustomStyles">
+			<title>Adding Third-Party Presentation Styles</title>
+			<content>
+				<para>Custom presentation styles can be made available via the project's <codeInline>Presentation Style</codeInline>
+property by creating a presentation style Managed Extensibility Framework (MEF) component.  Copy the
+presentation style's assembly and all supporting files to the <localUri>.\Components and Plug-Ins</localUri>
+folder or a subfolder beneath it in the help file builder's <legacyBold>Common Application Data</legacyBold>
+folder.  If project specific, the components can be located in the help file builder project's folder or in a
+folder referred to in its <codeInline>Component Path</codeInline> property.  See the
+<link xlink:href="a24489fb-45d6-46f4-9eaa-9a9c4e0919b2#PresentationStyles" /> topic for more information.  Refer
+to the presentation style's documentation for information about its features and configuration options.  See the
+<link xlink:href="baf1dcbc-e9cf-4d71-a770-621e6eaf10a7" /> topic for information on creating a third-party
+presentation style.  For a list of current third-party build components, see the
+<link xlink:href="c18d6cb6-e4e4-4944-84ee-f867aa6cfb0d" /> topic.</para>
+
+			</content>
+		</section>
+	</sections>
+
 </section>
 
 <section address="ContentPlacement">
@@ -396,7 +412,43 @@ enter the new name in the <codeInline>Root Namespace Title</codeInline> property
   </content>
 </section>
 
-<section address="Preliminary">
+		<section address="NSGrouping">
+			<title>Enable namespace grouping if supported (NamespaceGrouping) and Maximum group parts (MaximumGroupParts)</title>
+			<content>
+				<para>If enabled, the <codeInline>NamespaceGrouping</codeInline> option will cause namespaces with a
+common number of root parts (specified by <codeInline>MaximumGroupParts</codeInline>) to be consolidated under
+a common group topic in the table of contents.  Increasing the number of maximum parts to consider will create
+more subgroups below the main groups as needed.  Consider the following namespaces each of which contains at
+least one type:</para>
+
+				<list class="bullet">
+					<listItem>
+						<para>MyCompany.MyProduct</para>
+					</listItem>
+					<listItem>
+						<para>MyCompany.MyProduct.Web.Controls</para>
+					</listItem>
+					<listItem>
+						<para>MyCompany.MyProduct.Web.Design</para>
+					</listItem>
+					<listItem>
+						<para>MyCompany.MyProduct.Windows.Forms</para>
+					</listItem>
+				</list>
+
+				<para>If left at the default maximum group setting of two, a group container for
+<codeInline>MyCompany.MyProduct</codeInline> would be created with child entries for each of the namespaces
+including its namesake because it contains types.  If the maximum is increased to three, a new subgroup would be
+created below it for <codeInline>MyCompany.MyProduct.Web</codeInline> to contain the controls and design
+namespaces beneath it.  Since no types appear in the group's namesake an child entry is not added for it.</para>
+
+				<para>The group topics are similar in nature to namespace topics in that you can add comments to them
+using the <ui>Namespace Summaries</ui> option in the <ui>Summaries</ui> project property category.</para>
+
+			</content>
+		</section>
+
+		<section address="Preliminary">
   <title>Include "preliminary documentation" warning (Preliminary)</title>
   <content>
 		<para>When this property is set to True, it will mark all topics in the help file with a large, red message
@@ -462,7 +514,7 @@ plus the title of the page in which the link appears.</para>
 </section>
 
 <section address="SdkLinkTarget">
-  <title>SDK Link Target (SdkLinkTarget)</title>
+  <title>SDK link target (SdkLinkTarget)</title>
   <content>
 		<para>When an SDK link type property is set to <codeInline>MSDN</codeInline>, the
 <codeInline>SDK Link Target</codeInline> property is used to define where the MSDN links will open in the browser.
@@ -477,7 +529,7 @@ page.</para>
 </section>
 
 <section address="SyntaxFilters">
-  <title>Syntax Filters (SyntaxFilters)</title>
+  <title>Syntax filters (SyntaxFilters)</title>
   <content>
 		<para>This property lets you specify which languages appear in the <legacyBold>Syntax</legacyBold> section of
 the help topics and the languages that will appear in the language filter dropdown.  It can be set to one
@@ -493,15 +545,16 @@ syntax filter that you wanted included in the API topics.</para>
 			<title>Adding Third-Party Syntax Filter Generators</title>
 			<content>
 				<para>Custom language syntax filter generators can be made available via the project's
-<codeInline>Syntax Filters</codeInline> property by creating a syntax filter generator definition file.  Copy the
-syntax filter generator's assembly, configuration file, and any supporting files to the
+<codeInline>Syntax Filters</codeInline> property by creating a syntax filter generator Managed Extensibility
+Framework (MEF) component.  Copy the syntax filter generator's assembly and any supporting files to the
 <localUri>.\Components and Plug-Ins</localUri> folder or a subfolder beneath it in the help file builder's
-<legacyBold>Common Application Data</legacyBold> folder.  See the
-<link xlink:href="a24489fb-45d6-46f4-9eaa-9a9c4e0919b2#BuildComponents" /> topic for more information.  Refer to
-the component's documentation for information about its features and configuration options.  See the
-<link xlink:href="5e80d139-811c-48ed-9b52-dcd8a3f5aef3" /> topic for information on creating a configuration file
-for a third-party syntax generator that does not have one.  For a list of current third-party build components,
-see the <link xlink:href="c18d6cb6-e4e4-4944-84ee-f867aa6cfb0d" /> topic.</para>
+<legacyBold>Common Application Data</legacyBold> folder.  If project specific, the components can be located in
+the help file builder project's folder or in a folder referred to in its <codeInline>Component Path</codeInline>
+property.  See the <link xlink:href="a24489fb-45d6-46f4-9eaa-9a9c4e0919b2#BuildComponents" /> topic for more
+information.  Refer to the component's documentation for information about its features and configuration
+options.  See the <link xlink:href="5e80d139-811c-48ed-9b52-dcd8a3f5aef3" /> topic for information on creating a
+third-party syntax generator.  For a list of current third-party build components, see the
+<link xlink:href="c18d6cb6-e4e4-4944-84ee-f867aa6cfb0d" /> topic.</para>
 
 			</content>
 		</section>

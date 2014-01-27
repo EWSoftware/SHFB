@@ -505,9 +505,8 @@ to online SDK content.  For the MS Help 2 and MS Help Viewer formats, the noted 
 local help content when merged with the collection.</para>
 
 			<para>It has been reported that creating a <localUri>BuildAssembler.exe.config</localUri> file in the same
-folder as <application>BuildAssembler.exe</application> (the <localUri>.\ProductionTools</localUri> folder under
-the Sandcastle installation folder) and putting one of the following in it may allow it to work with the proxy
-server:</para>
+folder as <application>BuildAssembler.exe</application> (the root help file builder installation folder) and
+putting one of the following in it may allow it to work with the proxy server:</para>
 
 <code language="xml" title="Method 1 (this works most often so try it first):">
 &lt;configuration&gt;
@@ -606,7 +605,7 @@ to copy it to the failing system and register it.  This can be done by running
 the following command from a command prompt.  Adjust the path to the DLL as
 necessary based on its location on your system.</para>
 
-<code language="none">
+<code language="none" title=" ">
 regsvr32 C:\Windows\System\itcc.dll
 </code></definition>
 
@@ -909,15 +908,11 @@ custom build components supplied with the help file builder?</definedTerm>
 Build Components</link> help topic for more information and links to details
 about each component.</definition>
 
-    <definedTerm address="CreateComp">How can I create my own custom build
-components?</definedTerm>
-    <definition>For information on writing your own custom build components,
-see the Code Project article
-<externalLink>
-  <linkText>Creating Custom Build Components for Sandcastle</linkText>
-  <linkUri>http://www.codeproject.com/KB/cs/SandcastleComponents.aspx</linkUri>
-  <linkTarget>_blank</linkTarget>
-</externalLink>.</definition>
+    <definedTerm address="CreateComp">How can I create my own custom build components?</definedTerm>
+    <definition>
+			<para>For information on writing your own custom build components, see the
+<link xlink:href="e6d18448-2459-46f1-bbdc-a7db415f2bda" /> topic.</para>
+		</definition>
 </definitionTable>
 
   </content>

@@ -54,7 +54,7 @@ namespace Microsoft.Ddue.Tools
         /// This is used to create a new instance of the syntax generator
         /// </summary>
         [SyntaxGeneratorExport("JavaScript", "JavaScript", "cs", AlternateIds = "js, ecmascript", SortOrder = 80,
-          Version = AssemblyInfo.Version, Copyright = AssemblyInfo.Copyright,
+          Version = AssemblyInfo.ProductVersion, Copyright = AssemblyInfo.Copyright,
           Description = "Generates JavaScript declaration syntax sections")]
         public sealed class Factory : ISyntaxGeneratorFactory
         {

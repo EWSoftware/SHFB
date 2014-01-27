@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Utilities
 // File    : ConvertFromNDoc.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/04/2014
+// Updated : 01/26/2014
 // Note    : Copyright 2008-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -79,7 +79,7 @@ namespace SandcastleBuilder.Utils.Conversion
             SearchOption searchOpts;
             SandcastleProject project = base.Project;
             FileItem fileItem;
-            List<string> syntaxFilters = new List<string> { "CSharp", "VisualBasic", "CPlusPlus" };
+            List<string> syntaxFilters = new List<string> { "C#", "Visual Basic", "Managed C++" };
             string assemblyName, commentsName, folderName, value, destFile,
                 propName = null;
             string[] list;
@@ -355,7 +355,7 @@ namespace SandcastleBuilder.Utils.Conversion
 
                             case "ShowVisualBasic":
                                 if(child.GetAttribute("value", String.Empty) == "False")
-                                    syntaxFilters.Remove("VisualBasic");
+                                    syntaxFilters.Remove("Visual Basic");
                                 break;
 
                             case "AboutPageIconPage":

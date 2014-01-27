@@ -249,7 +249,7 @@ file format.  The help file builder supplies the following custom build componen
 					<listItem>
 						<para>A code block component that extends the <codeInline>&lt;code&gt;</codeInline> XML comment tag
 with file inclusion, syntax highlighting, line numbering, collapsible <codeInline>#region</codeInline> and
-<codeInline>#if/#else/#endif</codeInline> sections.  This is useable in both reference and conceptual content.</para>
+<codeInline>#if/#else/#endif</codeInline> sections.  This is usable in both reference and conceptual content.</para>
 					</listItem>
 
 					<listItem>
@@ -284,10 +284,10 @@ index information, and MSDN URLs across builds in order to speed them up.</para>
 				</list>
 
 				<para>The custom build components can also be used outside of the help file builder in other custom build
-scripts and third-party tools as well.  The help file builder utilizes configuration files that allow you to
-define third-party build components so that they can be selected for inclusion in your projects.  There is also
-support for defining additional language syntax generators used to generate the syntax sections in the API
-reference topics.  See the <link xlink:href="8dcbb69b-7a1a-4049-8e6b-2bf344efbbc9" /> topic for more information.</para>
+scripts and third-party tools as well.  All build components are Managed Extensibility Framework (MEF) components
+and can be selected for inclusion in your projects.  There is also support for defining additional language
+syntax generators used to generate the syntax sections in the API reference topics.  See the
+<link xlink:href="8dcbb69b-7a1a-4049-8e6b-2bf344efbbc9" /> topic for more information.</para>
 			</content>
 		</section>
 
@@ -296,9 +296,10 @@ reference topics.  See the <link xlink:href="8dcbb69b-7a1a-4049-8e6b-2bf344efbbc
 			<content>
 				<para>Sandcastle comes with some standard presentation styles.  You can use them as-is or clone them to
 make modifications to suit your needs.  You can also create brand new presentation styles.  As with plug-ins and
-build components, the help file builder allows you to define additional presentation styles that it can use by
-creating a configuration file that describes the various parts and how to use them.  When found, these additional
-presentation styles are made available to you in the project's property pages.</para>
+build components, the help file builder allows you to create additional presentation styles that it can use by
+creating new Managed Extensibility Framework (MEF) components that describes the various parts and how to use
+them.  When found, these additional presentation styles are made available to you in the project's property
+pages.</para>
 			</content>
 		</section>
 		

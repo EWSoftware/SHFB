@@ -102,7 +102,7 @@
     <CopyrightText>[v{%40HelpFileVersion}] Sandcastle XML Comments Guide</CopyrightText>
     <CopyrightHref>http://SHFB.CodePlex.com</CopyrightHref>
     <ContentPlacement>AboveNamespaces</ContentPlacement>
-    <HelpFileVersion>1.0.0.0</HelpFileVersion>
+    <HelpFileVersion>2014.1.26.1</HelpFileVersion>
     <PlugInNamespaces>ms.vsipcc+, ms.vsexpresscc+</PlugInNamespaces>
     <CollectionTocStyle>Hierarchical</CollectionTocStyle>
     <MSHelp2SdkLinkType>Msdn</MSHelp2SdkLinkType>
@@ -166,15 +166,17 @@
     <Folder Include="Content\MiscElements" />
     <Folder Include="Content\SectionElements" />
     <Folder Include="Content\VersionHistory" />
-    <Folder Include="Icons\" />
+    <Folder Include="icons\" />
     <Folder Include="Media" />
   </ItemGroup>
   <ItemGroup>
     <ContentLayout Include="XMLCommentsGuide.content" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Content\IdStrings.aml" />
     <None Include="Content\MiscElements\AttachedEventComments.aml" />
     <None Include="Content\MiscElements\AttachedPropertyComments.aml" />
+    <None Include="Content\MiscElements\CodeContracts.aml" />
     <None Include="Content\MiscElements\conceptualLink.aml" />
     <None Include="Content\MiscElements\exclude.aml" />
     <None Include="Content\MiscElements\filterpriority.aml" />
@@ -220,6 +222,7 @@
     <None Include="Content\UsageNotes.aml" />
     <None Include="Content\VersionHistory\v1.0.0.0.aml" />
     <None Include="Content\VersionHistory\VersionHistory.aml" />
+    <None Include="Content\VersionHistory\v2014.1.26.0.aml" />
     <None Include="Content\Welcome.aml" />
   </ItemGroup>
   <ItemGroup>
@@ -235,7 +238,7 @@
     </Tokens>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Icons\Sandcastle.jpg">
+    <Content Include="icons\Sandcastle.jpg">
       <ImageId>Sandcastle</ImageId>
       <AlternateText>Sandcastle</AlternateText>
     </Content>

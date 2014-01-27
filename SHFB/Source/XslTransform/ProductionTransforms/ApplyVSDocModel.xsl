@@ -260,6 +260,10 @@
 				<assemblydata>
 					<xsl:attribute name="version">
 						<xsl:choose>
+							<!-- If AssemblyInformationalVersionAttribute is present, use it alone -->
+							<xsl:when test="attributes/attribute[type/@api='T:System.Reflection.AssemblyInformationalVersionAttribute']/argument/value">
+								<xsl:value-of select="attributes/attribute[type/@api='T:System.Reflection.AssemblyInformationalVersionAttribute']/argument/value"/>
+							</xsl:when>
 							<!-- If AssemblyFileVersionAttribute is present, include its value.  Otherwise, just use the assembly version. -->
 							<xsl:when test="attributes/attribute[type/@api='T:System.Reflection.AssemblyFileVersionAttribute']/argument/value">
 								<xsl:value-of select="assemblydata/@version"/>

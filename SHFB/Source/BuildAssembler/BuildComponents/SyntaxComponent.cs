@@ -9,20 +9,25 @@
 // the Apply method to skip group, project, and namespace pages in which a syntax section is of no use.
 // 12/22/2013 - EFW - Updated to use MEF to load the syntax generators
 // 12/24/2013 - EFW - Updated the build component to be discoverable via MEF
+// 01/24/2014 - EFW - Updated the component to be configurable so that the syntax generator configurations can
+// be edited.
 
 using System;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.Collections.Generic;
 using System.Configuration;
-using System.IO;
 using System.Linq;
+using System.Windows.Forms;
 using System.Xml;
+using System.Xml.Linq;
 using System.Xml.XPath;
 
 using Sandcastle.Core.BuildAssembler;
 using Sandcastle.Core.BuildAssembler.BuildComponent;
 using Sandcastle.Core.BuildAssembler.SyntaxGenerator;
+
+using Microsoft.Ddue.Tools.UI;
 
 namespace Microsoft.Ddue.Tools
 {
@@ -37,20 +42,54 @@ namespace Microsoft.Ddue.Tools
         /// <summary>
         /// This is used to create a new instance of the build component
         /// </summary>
-        [BuildComponentExport("Syntax Component")]
+        [BuildComponentExport("Syntax Component", IsVisible = true, IsConfigurable = true,
+          Version = AssemblyInfo.ProductVersion, Copyright = AssemblyInfo.Copyright,
+          Description = "This build component is used to create syntax sections in topics using the syntax " +
+            "filter languages selected in the project.")]
         public sealed class Factory : BuildComponentFactory
         {
-            /// <summary>
-            /// This is used to import the list of syntax generator factories that is passed to the build
-            /// component when it is created.
-            /// </summary>
+            // This is used to import the list of syntax generator factories that is passed to the build
+            // component when it is created.
             [ImportMany(typeof(ISyntaxGeneratorFactory))]
             private List<Lazy<ISyntaxGeneratorFactory, ISyntaxGeneratorMetadata>> SyntaxGenerators { get; set; }
+
+            /// <summary>
+            /// Constructor
+            /// </summary>
+            public Factory()
+            {
+                // Replace the existing instance
+                base.ReferenceBuildPlacement = new ComponentPlacement(PlacementAction.Replace, "Syntax Component");
+            }
 
             /// <inheritdoc />
             public override BuildComponentCore Create()
             {
                 return new SyntaxComponent(base.BuildAssembler, this.SyntaxGenerators);
+            }
+
+            /// <inheritdoc />
+            public override string DefaultConfiguration
+            {
+                get
+                {
+                    return @"<syntax input=""/document/reference"" output=""/document/syntax"" renderReferenceLinks=""false"" />
+<generators>
+    {@SyntaxFilters}
+</generators>";
+                }
+            }
+
+            /// <inheritdoc />
+            public override string ConfigureComponent(string currentConfiguration, CompositionContainer container)
+            {
+                using(var dlg = new SyntaxComponentConfigDlg(currentConfiguration, container))
+                {
+                    if(dlg.ShowDialog() == DialogResult.OK)
+                        currentConfiguration = dlg.Configuration;
+                }
+
+                return currentConfiguration;
             }
         }
         #endregion
@@ -108,6 +147,10 @@ namespace Microsoft.Ddue.Tools
 
             XPathNodeIterator generatorNodes = configuration.Select("generators/generator");
 
+            // Configuration changes are stored separately since the actual generators may be added to the
+            // configuration file at build time.  Substitution of the edited configuration is easier to do here.
+            var generatorConfigs = configuration.SelectSingleNode("configurations");
+
             foreach(XPathNavigator generatorNode in generatorNodes)
             {
                 // Get the ID of the syntax generator
@@ -124,8 +167,27 @@ namespace Microsoft.Ddue.Tools
                 try
                 {
                     var generator = generatorFactory.Value.Create();
+                    var configNode = generatorNode.Clone();
 
-                    generator.Initialize(generatorNode.Clone());
+                    if(generatorConfigs != null)
+                    {
+                        var alternateConfig = generatorConfigs.SelectSingleNode("generator[@id='" + id + "']");
+
+                        if(alternateConfig != null)
+                        {
+                            // Since there may be custom attributes on the generator node, we'll make a copy and
+                            // substitute the child elements that make up the configuration.
+                            var alternate = XElement.Parse(alternateConfig.OuterXml);
+                            var genNode = XElement.Parse(configNode.OuterXml);
+
+                            genNode.RemoveNodes();
+                            genNode.Add(alternate.Elements());
+
+                            configNode = genNode.CreateNavigator();
+                        }
+                    }
+
+                    generator.Initialize(configNode);
                     generators.Add(generator);
                 }
                 catch(Exception ex)

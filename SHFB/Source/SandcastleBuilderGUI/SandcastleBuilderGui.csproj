@@ -13,7 +13,7 @@
     <ApplicationIcon>Images\SandcastleBuilder.ico</ApplicationIcon>
     <StartupObject>SandcastleBuilder.Gui.StartUp</StartupObject>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>SandcastleBuilderGui.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\SandcastleTools.snk</AssemblyOriginatorKeyFile>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
@@ -90,7 +90,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="UIAutomationProvider" />
-    <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=2.2.3199.27942, Culture=neutral, PublicKeyToken=7c3444e32642107f, processorArchitecture=MSIL">
+    <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=2.8.0.1, Culture=neutral, PublicKeyToken=5cded1a1a0a7b481, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\ReferenceAssemblies\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
     </Reference>
@@ -201,6 +201,9 @@
     <Compile Include="..\SandcastleBuilderPackage\PropertyPages\VisibilityPropertiesPageControl.designer.cs">
       <Link>PropertyPages\VisibilityPropertiesPageControl.designer.cs</Link>
       <DependentUpon>VisibilityPropertiesPageControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\SandcastleBuilderUtils\Properties\AssemblyInfoShared.cs">
+      <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
     <Compile Include="AboutDlg.cs">
       <SubType>Form</SubType>
@@ -324,7 +327,6 @@
     <Compile Include="PromptToSaveDlg.Designer.cs">
       <DependentUpon>PromptToSaveDlg.cs</DependentUpon>
     </Compile>
-    <Compile Include="Properties\AssemblyInfoShared.cs" />
     <Compile Include="PropertyPages\BasePropertyPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -552,7 +554,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Images\SandcastleBuilder.ico" />
-    <None Include="SandcastleBuilderGui.snk" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SandcastleBuilderUtils\SandcastleBuilderUtils.csproj">

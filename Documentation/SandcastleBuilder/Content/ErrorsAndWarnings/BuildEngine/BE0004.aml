@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="adc7136a-8918-4be3-bdc7-35bac0b125a0" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>BE0004: The selected presentation style (<legacyItalic>[styleName]</legacyItalic>) is not valid.
+Reason(s): <legacyItalic>[reasons]</legacyItalic></para>
+		</introduction>
+
+		<section>
+			<title>Cause</title>
+			<content>
+				<para>The selected presentation style reported that it was not valid for the given reasons.</para>
+			</content>
+		</section>
+
+		<section>
+			<title>Solution</title>
+			<content>
+				<para>This error will occur while developing a custom presentation style if it does not pass all of the
+required validation checks.  To correct the problem, fix the custom presentation style based on the reported
+reasons that are currently making it invalid.</para>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="46d1f76e-a97e-4ee6-971c-fdeab725ff09" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

@@ -471,9 +471,7 @@ are case-sensitive.</para>
 <code language="xml" title="Example Configuration">
 &lt;!-- Code block component configuration.  This must appear before the
      TransformComponent. --&gt;
-&lt;component type="SandcastleBuilder.Components.CodeBlockComponent"
-  assembly="{@SHFBFolder}SandcastleBuilder.Components.dll"
-  id="Code Block Component"&gt;
+&lt;component id="Code Block Component"&gt;
     &lt;!-- Base path for relative filenames in source attributes
          (optional) --&gt;
     &lt;basePath value="{@HtmlEncProjectFolder}" /&gt;
@@ -509,11 +507,11 @@ are case-sensitive.</para>
            Use language name as default title (optional) --&gt;
     &lt;colorizer syntaxFile="{@SHFBFolder}Colorizer\highlight.xml"
       styleFile="{@SHFBFolder}Colorizer\highlight.xsl"
-      style sheet="{@SHFBFolder}Colorizer\highlight.css"
+      stylesheet="{@SHFBFolder}Colorizer\highlight.css"
       scriptFile="{@SHFBFolder}Colorizer\highlight.js"
       disabled="{@DisableCodeBlockComponent}" language="cs" numberLines="false"
       outlining="false" keepSeeTags="false" tabSize="0" defaultTitle="true" /&gt;
-	&lt;/component&gt;
+&lt;/component&gt;
 </code>
 
 		<para>The example given above is taken from the Sandcastle Help File Builder's configuration file.  When used

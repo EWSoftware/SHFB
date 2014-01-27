@@ -45,7 +45,7 @@ namespace SandcastleBuilder.PlugIns
     /// producing a help file.
     /// </summary>
     [HelpFileBuilderPlugInExport("Script# Reflection File Fixer", RunsInPartialBuild = true,
-      Version = AssemblyInfo.Version, Copyright = AssemblyInfo.Copyright + "\r\nScript# is Copyright \xA9 " +
+      Version = AssemblyInfo.ProductVersion, Copyright = AssemblyInfo.Copyright + "\r\nScript# is Copyright \xA9 " +
       "2007-2013 Nikhil Kothari, All Rights Reserved",
       Description = "This plug-in is used to modify the reflection information file produced after running " +
       "MRefBuilder on assemblies produced by the Script# compiler so that it is suitable for use in producing " +

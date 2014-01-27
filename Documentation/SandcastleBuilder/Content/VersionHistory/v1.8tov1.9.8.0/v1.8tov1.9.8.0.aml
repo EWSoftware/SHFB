@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="22c82423-a322-4857-9bf8-6d1f1c2fba68" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>The topics in this section describe the various changes made to the Sandcastle Help File Builder for
+versions 1.8.0.0 through 1.9.8.0.</para>
+		</introduction>
+
+		<section>
+			<title>Version History</title>
+			<content>
+				<para>Select a version below to see a description of its changes.</para>
+
+				<list class="bullet">
+					<listItem>
+						<para><link xlink:href="f4c5d176-8da1-4500-b070-e3b1e9e2c65c" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="fef9e0ed-864b-42f9-8747-af4d156a7c0e" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="4bc61ac3-ac19-4c8b-9ff9-95aaefa0b18e" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="9fee3feb-46b6-4935-aac2-01c0045d3e19" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="c7f2f7d3-9386-4e1e-9337-9795f42720c6" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="8c11654c-f6f5-4cd3-acd0-86890ecb242d" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="54250029-bcfa-4c03-8cf0-b230867a8613" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="e6285aea-8caa-4ff3-86d2-d9623dcc8a49" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="798c4fef-9162-4fe6-98ca-02ee4aa7f6bc" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="230a8032-011a-4a61-b2a4-2b644018986c" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="ef1dba5d-bb3b-4d27-9ccf-6f1ec8d1e793" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="2bba4e09-e9bd-4ef4-9bf4-800af246e97d" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="9f1a5c32-7c10-47e1-bbea-319ee0866e3d" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="95c85ec6-9f23-426a-b0ad-6b10a0453eaf" /></para>
+					</listItem>
+					<listItem>
+						<para><link xlink:href="5a484e94-6940-4c97-940c-3f46fb8736d2" /></para>
+					</listItem>
+				</list>
+
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="078cc1c7-7995-431e-bf9c-8813becbe8df" />
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

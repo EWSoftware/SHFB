@@ -2,7 +2,7 @@
 // System  : Sandcastle Help File Builder Components
 // File    : SqlCopyFromIndexComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/26/2013
+// Updated : 01/24/2014
 // Compiler: Microsoft Visual C#
 //
 // This is a version of the CopyFromIndexComponent that stores the index data in a persistent SQL database.
@@ -19,6 +19,7 @@
 //===============================================================================================================
 
 using System;
+using System.ComponentModel.Composition.Hosting;
 using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
@@ -48,8 +49,8 @@ namespace SandcastleBuilder.Components
         /// <summary>
         /// This is used to create a new instance of the build component used for reflection index data
         /// </summary>
-        [BuildComponentExport("Reflection Index Data (SQL Cache)", DesignerVisible = true, IsConfigurable = true,
-          Version = AssemblyInfo.Version, Copyright = AssemblyInfo.Copyright,
+        [BuildComponentExport("Reflection Index Data (SQL Cache)", IsVisible = true, IsConfigurable = true,
+          Version = AssemblyInfo.ProductVersion, Copyright = AssemblyInfo.Copyright,
           Description = "This component is used to index reflection data for copying into topics.  It uses a " +
             "Microsoft SQL Server database to cache the .NET Framework reflection data.  This speeds up " +
             "initialization and conserves memory at the expense of some build time in larger projects.  For " +
@@ -91,7 +92,7 @@ namespace SandcastleBuilder.Components
             }
 
             /// <inheritdoc />
-            public override string ConfigureComponent(string currentConfiguration)
+            public override string ConfigureComponent(string currentConfiguration, CompositionContainer container)
             {
                 using(var dlg = new SqlCopyFromIndexConfigDlg(currentConfiguration))
                 {
@@ -110,8 +111,8 @@ namespace SandcastleBuilder.Components
         /// <summary>
         /// This is used to create a new instance of the build component used for comments index data
         /// </summary>
-        [BuildComponentExport("Comments Index Data (SQL Cache)", DesignerVisible = true, IsConfigurable = true,
-          Version = AssemblyInfo.Version, Copyright = AssemblyInfo.Copyright,
+        [BuildComponentExport("Comments Index Data (SQL Cache)", IsVisible = true, IsConfigurable = true,
+          Version = AssemblyInfo.ProductVersion, Copyright = AssemblyInfo.Copyright,
           Description = "This component is used to index framework comments for copying into topics.  It " +
             "uses a Microsoft SQL Server database to cache the .NET Framework comments.  This speeds up " +
             "initialization and conserves memory at the expense of some build time in larger projects.  For " +
@@ -150,7 +151,7 @@ namespace SandcastleBuilder.Components
             }
 
             /// <inheritdoc />
-            public override string ConfigureComponent(string currentConfiguration)
+            public override string ConfigureComponent(string currentConfiguration, CompositionContainer container)
             {
                 using(var dlg = new SqlCopyFromIndexConfigDlg(currentConfiguration))
                 {

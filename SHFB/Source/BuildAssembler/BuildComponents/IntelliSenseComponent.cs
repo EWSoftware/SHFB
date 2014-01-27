@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder Components
 // File    : IntelliSenseComponent.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 12/23/2013
-// Note    : Copyright 2007-2013, Eric Woodruff, All rights reserved
+// Updated : 01/24/2014
+// Note    : Copyright 2007-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains a build component that is used to extract the XML comments into files that can be used for
@@ -27,6 +27,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition.Hosting;
 using System.Configuration;
 using System.Diagnostics;
 using System.IO;
@@ -72,8 +73,8 @@ namespace Microsoft.Ddue.Tools
         /// <summary>
         /// This is used to create a new instance of the build component
         /// </summary>
-        [BuildComponentExport("IntelliSense Component", DesignerVisible = true, IsConfigurable = true,
-          Version = AssemblyInfo.Version, Copyright = AssemblyInfo.Copyright,
+        [BuildComponentExport("IntelliSense Component", IsVisible = true, IsConfigurable = true,
+          Version = AssemblyInfo.ProductVersion, Copyright = AssemblyInfo.Copyright,
           Description = "This build component is used to extract the XML comments into files that can be used " +
             "for IntelliSense.  Only the basic set of tags needed for IntelliSense are exported and only for " +
             "documented API members.")]
@@ -95,7 +96,7 @@ namespace Microsoft.Ddue.Tools
             }
 
             /// <inheritdoc />
-            public override string ConfigureComponent(string currentConfiguration)
+            public override string ConfigureComponent(string currentConfiguration, CompositionContainer container)
             {
                 using(IntelliSenseConfigDlg dlg = new IntelliSenseConfigDlg(currentConfiguration))
                 {

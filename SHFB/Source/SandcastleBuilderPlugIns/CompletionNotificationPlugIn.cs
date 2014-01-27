@@ -46,7 +46,7 @@ namespace SandcastleBuilder.PlugIns
     /// status via e-mail.  The log file can be sent as an attachment.
     /// </summary>
     [HelpFileBuilderPlugInExport("Completion Notification", IsConfigurable = true,
-      Version = AssemblyInfo.Version, Copyright = AssemblyInfo.Copyright,
+      Version = AssemblyInfo.ProductVersion, Copyright = AssemblyInfo.Copyright,
       Description = "This plug-in is used to send notification of the build completion status via e-mail.  " +
         "The log file can be sent as an attachment.")]
     public sealed class CompletionNotificationPlugIn : IPlugIn

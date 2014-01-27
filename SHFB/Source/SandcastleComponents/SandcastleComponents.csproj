@@ -11,7 +11,7 @@
     <RootNamespace>SandcastleBuilder.Components</RootNamespace>
     <AssemblyName>SandcastleBuilder.Components</AssemblyName>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>SandcastleBuilderComponents.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\SandcastleTools.snk</AssemblyOriginatorKeyFile>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
@@ -65,7 +65,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\SandcastleBuilderGUI\Properties\AssemblyInfoShared.cs">
+    <Compile Include="..\SandcastleBuilderUtils\Properties\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
     <Compile Include="CodeBlockComponent.cs" />
@@ -152,7 +152,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\CreateSandcastleDB.sql" />
-    <None Include="SandcastleBuilderComponents.snk" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

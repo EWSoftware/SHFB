@@ -488,11 +488,11 @@ namespace Sandcastle.Core.BuildAssembler
             if(componentLocations != null)
                 foreach(XPathNavigator location in componentLocations.Select("location/@folder"))
                     if(!String.IsNullOrWhiteSpace(location.Value) && Directory.Exists(location.Value))
-                        AddAssemblyCatalogs(catalog, location.Value, componentFolders);
+                        AddAssemblyCatalogs(catalog, location.Value, componentFolders, true);
 
             // Always include the tools folder
             AddAssemblyCatalogs(catalog, Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                componentFolders);
+                componentFolders, true);
 
             componentContainer = new CompositionContainer(catalog);
 
@@ -510,11 +510,13 @@ namespace Sandcastle.Core.BuildAssembler
         /// <param name="folder">The root folder to search.  It and all subfolders recursively will be searched
         /// for assemblies to add to the aggregate catalog.</param>
         /// <param name="searchedFolders">A hash set of folders that have already been searched and added.</param>
+        /// <param name="includeSubfolders">True to search subfolders recursively, false to only search the given
+        /// folder.</param>
         /// <remarks>It is done this way to prevent a single assembly that would normally be discovered via a
         /// directory catalog from preventing all assemblies from loading if it cannot be examined when the parts
         /// are composed (i.e. trying to load a Windows Store assembly on Windows 7).</remarks>
         private static void AddAssemblyCatalogs(AggregateCatalog catalog, string folder,
-          HashSet<string> searchedFolders)
+          HashSet<string> searchedFolders, bool includeSubfolders)
         {
             if(!String.IsNullOrWhiteSpace(folder) && Directory.Exists(folder) && !searchedFolders.Contains(folder))
             {
@@ -556,8 +558,9 @@ namespace Sandcastle.Core.BuildAssembler
                 }
 
                 // Enumerate subfolders separately so that we can skip future requests for the same folder
-                foreach(string subfolder in Directory.EnumerateDirectories(folder, "*", SearchOption.AllDirectories))
-                    AddAssemblyCatalogs(catalog, subfolder, searchedFolders);
+                if(includeSubfolders)
+                    foreach(string subfolder in Directory.EnumerateDirectories(folder, "*", SearchOption.AllDirectories))
+                        AddAssemblyCatalogs(catalog, subfolder, searchedFolders, false);
             }
         }
         #endregion

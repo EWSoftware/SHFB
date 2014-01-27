@@ -342,6 +342,31 @@ http://SHFB.CodePlex.com</value>
   <data name="203" xml:space="preserve">
     <value>A XAML syntax configuration file for use with the BuildAssembler tool</value>
   </data>
+  <data name="204" xml:space="preserve">
+    <value>Sandcastle Presentation Style Component</value>
+    <comment>Component projects</comment>
+  </data>
+  <data name="205" xml:space="preserve">
+    <value>Create a custom presentation style component for use with the Sandcastle Help File Builder and Tools</value>
+  </data>
+  <data name="206" xml:space="preserve">
+    <value>Sandcastle Help File Builder Plug-In</value>
+  </data>
+  <data name="207" xml:space="preserve">
+    <value>Create a build process plug-in for use with the Sandcastle Help File Builder</value>
+  </data>
+  <data name="208" xml:space="preserve">
+    <value>BuildAssembler Build Component</value>
+  </data>
+  <data name="209" xml:space="preserve">
+    <value>Create a build component for use with BuildAssembler</value>
+  </data>
+  <data name="210" xml:space="preserve">
+    <value>Build Assembler Syntax Generator</value>
+  </data>
+  <data name="211" xml:space="preserve">
+    <value>Create a syntax generator for use with the SyntaxComponent in BuildAssembler</value>
+  </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="400" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\Package.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -378,5 +403,8 @@ http://SHFB.CodePlex.com</value>
   </data>
   <data name="411" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\CodeSnippets.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="412" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\Component.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

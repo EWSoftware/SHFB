@@ -362,7 +362,9 @@ function getDevLangFromCodeSnippet(lang)
       tagSet = "cs";
     if ((temp.indexOf("cplusplus") != -1) || (temp.indexOf("visualc++") != -1))
       tagSet = "cpp";
-  }
+    if((temp.indexOf("fsharp") != -1) || (temp.indexOf("f#") != -1))
+        tagSet = "fs";
+}
   return tagSet;
 }
 // Cookie functionality

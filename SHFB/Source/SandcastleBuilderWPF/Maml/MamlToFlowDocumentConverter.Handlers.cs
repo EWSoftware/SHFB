@@ -2,8 +2,8 @@
 // System  : Sandcastle Help File Builder WPF Controls
 // File    : MamlToFlowDocumentConverter.Handlers.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 04/28/2013
-// Note    : Copyright 2012-2013, Eric Woodruff, All rights reserved
+// Updated : 01/13/2014
+// Note    : Copyright 2012-2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the element handler methods for the MAML to flow document converter class
@@ -1661,12 +1661,13 @@ namespace SandcastleBuilder.WPF.Maml
                             else
                                 p.Inlines.Add(new Run(", "));
 
-                            var related = entries.SelectMany(e => e.Terms).First(t => t.Value == r);
+                            var related = entries.SelectMany(e => e.Terms).FirstOrDefault(t => t.Value == r);
 
-                            p.Inlines.Add(new Hyperlink(new Run(related.Key))
-                            {
-                                NavigateUri = new Uri("link://#" + r)
-                            });
+                            if(related.Key != null)
+                                p.Inlines.Add(new Hyperlink(new Run(related.Key))
+                                {
+                                    NavigateUri = new Uri("link://#" + r)
+                                });
                         }
 
                         p.Inlines.Add(new LineBreak());
