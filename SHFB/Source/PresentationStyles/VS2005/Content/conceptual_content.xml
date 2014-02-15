@@ -46,12 +46,8 @@
   <item id="viewSampleSource">View Source</item>
 
   <!-- autoOutline boilerplate -->
-  <item id="autoOutlineTopLevelIntro">
-		<p>This topic contains the following sections.</p>
-	</item>
-	<item id="autoOutlineSubsectionIntro">
-		<p>This section contains the following subsections.</p>
-	</item>
+  <item id="autoOutlineTopLevelIntro">This topic contains the following sections.</item>
+	<item id="autoOutlineSubsectionIntro">This section contains the following subsections.</item>
 	<item id="RelatedTopicsLinkText">See Also</item>
 
   <!-- resolve the autoOutline token -->

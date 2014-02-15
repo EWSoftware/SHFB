@@ -187,11 +187,11 @@ namespace Sandcastle.Core.PresentationStyle
             {
                 rootPath = ResolveEnvironmentVariables(this.BasePath);
 
-                if(path.Equals(rootPath, StringComparison.OrdinalIgnoreCase))
+                if(path == null || path.Equals(rootPath, StringComparison.OrdinalIgnoreCase))
                     path = String.Empty;
 
                 if(!Path.IsPathRooted(rootPath))
-                    rootPath = Path.Combine(this.Location, rootPath);
+                    rootPath = Path.Combine(this.Location, rootPath ?? String.Empty);
 
                 path = Path.Combine(rootPath, path);
             }

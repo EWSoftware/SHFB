@@ -701,7 +701,7 @@ namespace SandcastleBuilder.Utils.BuildEngine
                 presentationStyle = style.Value;
 
                 this.ReportProgress("Using presentation style '{0}' located in '{1}'", style.Metadata.Id,
-                    Path.Combine(presentationStyle.Location, presentationStyle.BasePath));
+                    Path.Combine(presentationStyle.Location, presentationStyle.BasePath ?? String.Empty));
 
                 var psErrors = presentationStyle.CheckForErrors();
 

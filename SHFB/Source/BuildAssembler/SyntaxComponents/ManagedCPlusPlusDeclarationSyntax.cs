@@ -455,7 +455,7 @@ namespace Microsoft.Ddue.Tools
                 // !EFW - Added support for getter/setter attributes
                 XPathNavigator getter = reflection.SelectSingleNode(apiGetterExpression);
 
-                if(!getter.HasChildren)
+                if(getter != null && !getter.HasChildren)
                     writer.WriteString("\t");
 
                 // write the get visibility
@@ -472,7 +472,7 @@ namespace Microsoft.Ddue.Tools
                         writer.WriteLine();
                 }
 
-                if(getter.HasChildren)
+                if(getter != null && getter.HasChildren)
                 {
                     writer.WriteString("\t");
                     this.WriteAttributes(getter, writer, "\t");
@@ -515,7 +515,7 @@ namespace Microsoft.Ddue.Tools
                 // !EFW - Added support for getter/setter attributes
                 XPathNavigator setter = reflection.SelectSingleNode(apiSetterExpression);
 
-                if(!setter.HasChildren)
+                if(setter != null && !setter.HasChildren)
                     writer.WriteString("\t");
 
                 // Write the set visibility
@@ -532,7 +532,7 @@ namespace Microsoft.Ddue.Tools
                         writer.WriteLine();
                 }
 
-                if(setter.HasChildren)
+                if(setter != null && setter.HasChildren)
                 {
                     writer.WriteString("\t");
                     this.WriteAttributes(setter, writer, "\t");
@@ -545,35 +545,36 @@ namespace Microsoft.Ddue.Tools
                 writer.WriteString(" ");
 
                 writer.WriteString("(");
+
                 if(parameters.Count > 0)
                 {
                     WriteParameters(parameters.Clone(), false, writer);
                     writer.WriteString(", ");
                 }
+
                 WriteReturnValue(reflection, writer);
                 writer.WriteString(" ");
                 writer.WriteParameter("value");
                 writer.WriteString(")");
 
                 WritePostfixProcedureModifiers(reflection, writer);
+
                 if(isExplicit)
                 {
                     XPathNavigator implement = reflection.SelectSingleNode(apiImplementedMembersExpression);
                     XPathNavigator contract = implement.SelectSingleNode(memberDeclaringTypeExpression);
-                    //string id = (string) implement.GetAttribute("api", String.Empty);
 
                     writer.WriteString(" = ");
                     WriteTypeReference(contract, false, writer);
                     writer.WriteString("::");
                     WriteMemberReference(implement, writer);
-                    //writer.WriteReferenceLink(id);
                     writer.WriteString("::");
                     writer.WriteKeyword("set");
                 }
+
                 writer.WriteString(";");
                 writer.WriteLine();
             }
-
 
             writer.WriteString("}");
         }

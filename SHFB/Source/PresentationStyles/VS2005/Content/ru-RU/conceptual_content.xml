@@ -48,12 +48,8 @@
   <item id="viewSampleSource">Просмотреть исходный код</item>
 
   <!-- autoOutline boilerplate -->
-  <item id="autoOutlineTopLevelIntro">
-    <p>Эта тема содержит следующие разделы.</p>
-  </item>
-  <item id="autoOutlineSubsectionIntro">
-    <p>В этом разделе содержатся следующие подразделы.</p>
-  </item>
+  <item id="autoOutlineTopLevelIntro">Эта тема содержит следующие разделы.</item>
+  <item id="autoOutlineSubsectionIntro">В этом разделе содержатся следующие подразделы.</item>
   <item id="RelatedTopicsLinkText">См. также</item>
 
   <!-- resolve the autoOutline token -->

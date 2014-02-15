@@ -391,7 +391,7 @@ namespace Microsoft.Ddue.Tools
                     // !EFW - Added support for getter/setter attributes
                     XPathNavigator getter = reflection.SelectSingleNode(apiGetterExpression);
 
-                    if(getter.HasChildren)
+                    if(getter != null && getter.HasChildren)
                     {
                         writer.WriteLine();
                         writer.WriteString("\t");
@@ -417,7 +417,7 @@ namespace Microsoft.Ddue.Tools
                     // !EFW - Added support for getter/setter attributes
                     XPathNavigator setter = reflection.SelectSingleNode(apiSetterExpression);
 
-                    if(setter.HasChildren)
+                    if(setter != null && setter.HasChildren)
                     {
                         writer.WriteLine();
                         writer.WriteString("\t");

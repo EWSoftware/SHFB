@@ -854,66 +854,28 @@
 	Lists
 	============================================================================================= -->
 
-	<xsl:template match="list[@type='nobullet' or @type='']"
-								name="t_plainList">
-		<ul style="list-style-type:none;">
-			<xsl:for-each select="item">
-				<xsl:apply-templates select="."
-														 mode="plain"/>
-			</xsl:for-each>
-		</ul>
-	</xsl:template>
-
-	<xsl:template match="item"
-								mode="plain"
-								name="t_plainListItem">
-		<li>
-			<xsl:choose>
-				<xsl:when test="term or description">
-					<xsl:if test="term">
-						<xsl:apply-templates select="term"/>
-						<br/>
-					</xsl:if>
-					<xsl:apply-templates select="description"/>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:apply-templates/>
-				</xsl:otherwise>
-			</xsl:choose>
-		</li>
-	</xsl:template>
-
-	<xsl:template match="list[@type='bullet']"
-								name="t_bulletList">
+	<xsl:template match="list[@type='bullet' or @type='']" name="t_bulletList">
 		<ul>
 			<xsl:for-each select="item">
-				<xsl:apply-templates select="."
-														 mode="bullet"/>
+				<li>
+					<xsl:choose>
+						<xsl:when test="term or description">
+							<xsl:if test="term">
+								<strong><xsl:apply-templates select="term" /></strong>
+								<xsl:text> - </xsl:text>
+							</xsl:if>
+							<xsl:apply-templates select="description" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:apply-templates />
+						</xsl:otherwise>
+					</xsl:choose>
+				</li>
 			</xsl:for-each>
 		</ul>
 	</xsl:template>
 
-	<xsl:template match="item"
-								mode="bullet"
-								name="t_bulletListItem">
-		<li>
-			<xsl:choose>
-				<xsl:when test="term or description">
-					<xsl:if test="term">
-						<xsl:apply-templates select="term"/>
-						<br/>
-					</xsl:if>
-					<xsl:apply-templates select="description"/>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:apply-templates/>
-				</xsl:otherwise>
-			</xsl:choose>
-		</li>
-	</xsl:template>
-
-	<xsl:template match="list[@type='number']"
-								name="t_numberList">
+	<xsl:template match="list[@type='number']" name="t_numberList">
 		<ol>
 			<xsl:if test="@start">
 				<xsl:attribute name="start">
@@ -921,33 +883,25 @@
 				</xsl:attribute>
 			</xsl:if>
 			<xsl:for-each select="item">
-				<xsl:apply-templates select="."
-														 mode="number"/>
+				<li>
+					<xsl:choose>
+						<xsl:when test="term or description">
+							<xsl:if test="term">
+								<strong><xsl:apply-templates select="term" /></strong>
+								<xsl:text> - </xsl:text>
+							</xsl:if>
+							<xsl:apply-templates select="description" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:apply-templates />
+						</xsl:otherwise>
+					</xsl:choose>
+				</li>
 			</xsl:for-each>
 		</ol>
 	</xsl:template>
 
-	<xsl:template match="item"
-								mode="number"
-								name="t_numberListItem">
-		<li>
-			<xsl:choose>
-				<xsl:when test="term or description">
-					<xsl:if test="term">
-						<xsl:apply-templates select="term"/>
-						<br/>
-					</xsl:if>
-					<xsl:apply-templates select="description"/>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:apply-templates/>
-				</xsl:otherwise>
-			</xsl:choose>
-		</li>
-	</xsl:template>
-
-	<xsl:template match="list[@type='table']"
-								name="t_tableList">
+	<xsl:template match="list[@type='table']" name="t_tableList">
 		<div class="tableSection">
 			<table>
 				<xsl:for-each select="listheader">
@@ -960,31 +914,27 @@
 					</tr>
 				</xsl:for-each>
 				<xsl:for-each select="item">
-					<xsl:apply-templates select="."
-															 mode="table"/>
+					<tr>
+						<xsl:for-each select="*">
+							<td>
+								<xsl:apply-templates/>
+							</td>
+						</xsl:for-each>
+					</tr>
 				</xsl:for-each>
 			</table>
 		</div>
 	</xsl:template>
 
-	<xsl:template match="item"
-								mode="table"
-								name="t_tableListItem">
-		<tr>
-			<xsl:for-each select="*">
-				<td>
-					<xsl:apply-templates/>
-				</td>
-			</xsl:for-each>
-		</tr>
-	</xsl:template>
-
-	<xsl:template match="list[@type='definition']"
-								name="t_definitionList">
+	<xsl:template match="list[@type='definition']" name="t_definitionList">
 		<dl class="authored">
 			<xsl:for-each select="item">
-				<xsl:apply-templates select="."
-														 mode="definition"/>
+				<dt>
+					<xsl:apply-templates select="term"/>
+				</dt>
+				<dd>
+					<xsl:apply-templates select="description"/>
+				</dd>
 			</xsl:for-each>
 		</dl>
 	</xsl:template>
@@ -992,12 +942,6 @@
 	<xsl:template match="item"
 								mode="definition"
 								name="t_definitionListItem">
-		<dt>
-			<xsl:apply-templates select="term"/>
-		</dt>
-		<dd>
-			<xsl:apply-templates select="description"/>
-		</dd>
 	</xsl:template>
 
 	<!-- ======================================================================================== -->

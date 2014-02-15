@@ -37,12 +37,8 @@
   <item id="title_example">Пример</item>
 
   <!-- autoOutline boilerplate -->
-  <item id="boilerplate_autoOutlineTopLevelIntro">
-		<p>Эта тема содержит следующие разделы.</p>
-	</item>
-	<item id="boilerplate_autoOutlineSubsectionIntro">
-		<p>В этом разделе содержатся следующие подразделы.</p>
-	</item>
+  <item id="boilerplate_autoOutlineTopLevelIntro">Эта тема содержит следующие разделы.</item>
+	<item id="boilerplate_autoOutlineSubsectionIntro">В этом разделе содержатся следующие подразделы.</item>
 
   <!-- resolve the autoOutline token -->
   <item id="autoOutline">

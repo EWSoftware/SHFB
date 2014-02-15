@@ -906,10 +906,8 @@
 
 	</xsl:template>
 
-	<xsl:template match="elements"
-								mode="type"
-								name="t_typeElements">
-
+	<xsl:template match="elements" mode="type" name="t_typeElements">
+		<xsl:apply-templates select="." mode="member"/>
 	</xsl:template>
 
 	<xsl:template match="elements"

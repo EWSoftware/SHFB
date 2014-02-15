@@ -1346,14 +1346,19 @@
       <HelpKeyword index="K" term="support, donate" />
     </HelpKeywords>
   </Topic>
-  <Topic id="078cc1c7-7995-431e-bf9c-8813becbe8df" visible="True" isExpanded="true" title="Version History">
+  <Topic id="078cc1c7-7995-431e-bf9c-8813becbe8df" visible="True" isExpanded="true" isSelected="true" title="Version History">
     <HelpKeywords>
       <HelpKeyword index="K" term="History" />
       <HelpKeyword index="K" term="Version History" />
     </HelpKeywords>
-    <Topic id="1139ca15-af64-48a2-9187-ccc1aec389d4" visible="True" isSelected="true" title="Version 2014.1.26.0 Beta">
+    <Topic id="8f7fa83f-c989-426f-b8b1-c42c333a4d0a" visible="True" title="Version 2014.2.15.0 Beta">
       <HelpKeywords>
-        <HelpKeyword index="K" term="versions, 2014.1.26.0" />
+        <HelpKeyword index="K" term="versions, 2014.2.15.0 Beta" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="1139ca15-af64-48a2-9187-ccc1aec389d4" visible="True" title="Version 2014.1.26.0 Beta">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 2014.1.26.0 Beta" />
       </HelpKeywords>
     </Topic>
     <Topic id="22c82423-a322-4857-9bf8-6d1f1c2fba68" visible="True" title="Versions 1.8.0.0 through 1.9.8.0">

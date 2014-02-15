@@ -35,7 +35,7 @@
     <FeedbackEMailAddress>Eric%40EWoodruff.us</FeedbackEMailAddress>
     <PresentationStyle>VS2005</PresentationStyle>
     <SyntaxFilters>CSharp, VisualBasic</SyntaxFilters>
-    <HelpFileVersion>2014.1.26.0</HelpFileVersion>
+    <HelpFileVersion>2014.2.15.0</HelpFileVersion>
     <ComponentConfigurations>
     </ComponentConfigurations>
     <DocumentationSources>
@@ -257,6 +257,7 @@
     <None Include="Content\VersionHistory\v1.8tov1.9.8.0\v1.9.7.0.aml" />
     <None Include="Content\VersionHistory\v1.8tov1.9.8.0\v1.9.8.0.aml" />
     <None Include="Content\VersionHistory\v2014.1.26.0.aml" />
+    <None Include="Content\VersionHistory\v2014.2.15.0.aml" />
     <None Include="Content\VisualStudio\ItemFileTemplates.aml" />
     <None Include="Content\VisualStudio\FeatureComparison.aml" />
     <None Include="Content\VisualStudio\ProjectTemplates.aml" />

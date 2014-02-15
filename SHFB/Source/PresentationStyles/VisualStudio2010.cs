@@ -2,7 +2,7 @@
 // System  : Sandcastle Tools Standard Presentation Styles
 // File    : VisualStudi2010.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 01/11/2014
+// Updated : 02/15/2014
 // Note    : Copyright 2014, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
@@ -61,7 +61,7 @@ namespace Sandcastle.PresentationStyles
             this.DocumentModelTransformation = new TransformationFile(
                 @"%SHFBROOT%\ProductionTransforms\ApplyVSDocModel.xsl", new Dictionary<string, string>
                 {
-                    { "IncludeAllMembersTopic", "true" },
+                    { "IncludeAllMembersTopic", "false" },
                     { "IncludeInheritedOverloadTopics", "false" },
                     { "project", "{@ProjectNodeIDOptional}" }
                 });

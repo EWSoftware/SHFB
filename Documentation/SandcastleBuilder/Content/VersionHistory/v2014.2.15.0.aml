@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="8f7fa83f-c989-426f-b8b1-c42c333a4d0a" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>Release notes for version 2014.2.15.0 Beta.</para>
+		</introduction>
+
+		<section>
+			<title>Changes in This Release</title>
+			<content>
+				<para>No changes were made to the help file builder or Visual Studio package in this release.  See the
+<link xlink:href="1139ca15-af64-48a2-9187-ccc1aec389d4" /> release notes for important information on breaking
+changes made to the help file builder and tools for these beta releases.</para>
+
+				<para>See the Sandcastle Tools release notes for changes made to them and the presentation styles in this
+release.</para>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="078cc1c7-7995-431e-bf9c-8813becbe8df" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

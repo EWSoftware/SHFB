@@ -37,12 +37,8 @@
   <item id="title_example">Beispiel</item>
 
   <!-- autoOutline boilerplate -->
-  <item id="boilerplate_autoOutlineTopLevelIntro">
-		<p>Dieses Thema enthält die folgenden Abschnitte.</p>
-	</item>
-	<item id="boilerplate_autoOutlineSubsectionIntro">
-		<p>Dieser Abschnitt enthält die folgenden Unterabschnitte.</p>
-	</item>
+  <item id="boilerplate_autoOutlineTopLevelIntro">Dieses Thema enthält die folgenden Abschnitte.</item>
+	<item id="boilerplate_autoOutlineSubsectionIntro">Dieser Abschnitt enthält die folgenden Unterabschnitte.</item>
 
   <!-- resolve the autoOutline token -->
   <item id="autoOutline">

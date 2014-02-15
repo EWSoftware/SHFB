@@ -25,7 +25,7 @@ used based on the need.</para>
 	
 or
 
-&lt;seealso cref="member"&gt;inner text&lt;/see&gt;
+&lt;seealso cref="member"&gt;inner text&lt;/seealso&gt;
 </code>
 
 						<para>The code reference form uses a <codeInline>cref</codeInline> attribute to specify the
@@ -61,7 +61,7 @@ the <link xlink:href="#Examples">Method Overload Examples</link> below for detai
 or
 
 &lt;seealso href="url" [target="_blank | _self | _parent | _top"]
-    [alt="alternate text"]&gt;inner text&lt;/see&gt;
+    [alt="alternate text"]&gt;inner text&lt;/seealso&gt;
 </code>
 
 						<para>The external reference form is a customization implemented by Sandcastle.  It uses an

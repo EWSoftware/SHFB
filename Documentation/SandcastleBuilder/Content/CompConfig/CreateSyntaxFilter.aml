@@ -57,20 +57,23 @@ fit.</para>
 						<step>
 							<content>
 								<para>On the <ui>Debug</ui> tab, set the <ui>Start Action</ui> to "Start external program" and
-enter the path to the <localUri>SandcastleBuilderGUI.exe</localUri> program.  If you installed the help file
+enter the path to the <localUri>BuildAssembler.exe</localUri> program.  If you installed the help file
 builder in the default location, this will be <localUri>%ProgramFiles(x86)%\EWSoftware\Sandcastle Help File
-Builder\</localUri>.  If not, substitute your path as appropriate.</para>
+Builder\</localUri>.  If not, substitute your path as appropriate.  Set the working directory to the working
+folder of a project that contains the build component.  Note that you will need to perform one build of the
+project with the <ui>Clean intermediate files</ui> option turned off so that you can test the build component
+using the temporary build files.</para>
 
 								<alert class="tip">
-									<para>Using the standalone GUI as the host is easier than using Visual Studio as the package
-locks the assemblies once the help file builder project has loaded them for use and you will not be able to
-rebuild them.  Shutting down the standalone GUI frees the assemblies so that you can rebuild them and start a new
-debugging session.</para>
+									<para>Using the BuildAssembler tool as the host is easier than using Visual Studio as the
+package locks the assemblies once the help file builder project has loaded them for use and you will not be able
+to rebuild them.  Shutting down BuildAssembler frees the assemblies so that you can rebuild them and start a
+new debugging session.</para>
 
-									<para>In the help file builder project that you use to test your syntax generator, set the
-project's <codeInline>Component Path</codeInline> property to the folder containing your syntax generator's
+									<para>In the help file builder project that you use to test your build component, set the
+project's <codeInline>Component Path</codeInline> property to the folder containing your build component's
 assembly.  If you have opened the project's <ui>Components</ui> property page before setting the component path,
-you may need to close and reopen the project in order for it to discover your syntax generator assembly.</para>
+you may need to close and reopen the project in order for it to discover your build component assembly.</para>
 								</alert>
 							</content>
 						</step>

@@ -85,10 +85,9 @@ namespace Microsoft.Ddue.Tools
                     if(!mrw.ApiFilter.IsExposedType(type))
                         continue;
 
-                    MemberList members = type.Members;
-
-                    // Go through the members looking for fields signaling extension methods
-                    foreach(Member member in members)
+                    // Go through the members looking for fields signaling extension methods.  Members may be
+                    // added so convert to a list first to avoid enumeration issues.
+                    foreach(Member member in type.Members.ToList())
                     {
                         Method method = member as Method;
 

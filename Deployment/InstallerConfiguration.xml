@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <configuration>
 	<!-- This indicates the version of Sandcastle with which this installer is associated.-->
-	<sandcastle version="v2014.1.26.0 Beta" />
+	<sandcastle version="v2014.2.15.0 Beta" />
 
 	<!-- Define the installer pages.  Third-party build tool and component providers can add new pages that
 			 they have created to install their own products as well. -->
@@ -12,10 +12,10 @@
 				 executing installer. -->
 		<page type="Sandcastle.Installer.InstallerPages.WelcomePage" />
 		<page type="Sandcastle.Installer.InstallerPages.WhatsNewPage">
-			<whatsNew url="http://www.ewoodruff.us/sandcastletools/?topic=html/0fdc9909-5233-4ebb-b9e7-a9e48f662222.htm"
-				description="Sandcastle v2014.1.26.0 Beta Release Notes" />
-			<whatsNew url="http://www.ewoodruff.us/shfbdocs/?topic=html/1139ca15-af64-48a2-9187-ccc1aec389d4.htm"
-				description="Sandcastle Help File Builder v2014.1.26.0 Beta Release Notes" />
+			<whatsNew url="http://www.ewoodruff.us/sandcastletools/?topic=html/5bff64cb-768e-452e-b5fd-df84753f3f4a.htm"
+				description="Sandcastle v2014.2.15.0 Beta Release Notes" />
+			<whatsNew url="http://www.ewoodruff.us/shfbdocs/?topic=html/8f7fa83f-c989-426f-b8b1-c42c333a4d0a.htm"
+				description="Sandcastle Help File Builder v2014.2.15.0 Beta Release Notes" />
 		</page>
 		<page type="Sandcastle.Installer.InstallerPages.RequiredFrameworkPage" />
 		<page type="Sandcastle.Installer.InstallerPages.HelpFileFormatsPage">
@@ -25,7 +25,7 @@
 
 		<!-- Sandcastle Help File Builder and Tools installer pages -->
 		<page type="Sandcastle.Installer.InstallerPages.SandcastleHelpFileBuilderPage"
-			frameworkVersion="4.0" shfbVersion="2014.1.26.0" installerName="SandcastleHelpFileBuilder.msi"/>
+			frameworkVersion="4.0" shfbVersion="2014.2.15.0" installerName="SandcastleHelpFileBuilder.msi"/>
 		<page type="Sandcastle.Installer.InstallerPages.SHFBVisualStudioPackagePage"
 			frameworkVersion="4.0" packageGuid="c997d569-ee8e-4947-a46f-9a0717ce39a0"
 			installerName="SHFBVisualStudioPackage.vsix">

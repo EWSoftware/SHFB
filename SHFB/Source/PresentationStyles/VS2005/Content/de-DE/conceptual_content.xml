@@ -48,12 +48,8 @@
   <item id="viewSampleSource">Source Code anzeigen</item>
 
   <!-- autoOutline boilerplate -->
-  <item id="autoOutlineTopLevelIntro">
-		<p>Dieses Thema enthält die folgenden Abschnitte.</p>
-	</item>
-	<item id="autoOutlineSubsectionIntro">
-		<p>Dieser Abschnitt enthält die folgenden Unterabschnitte.</p>
-	</item>
+  <item id="autoOutlineTopLevelIntro">Dieses Thema enthält die folgenden Abschnitte.</item>
+	<item id="autoOutlineSubsectionIntro">Dieser Abschnitt enthält die folgenden Unterabschnitte.</item>
 	<item id="RelatedTopicsLinkText">Verwandte Themen</item>
   <!-- resolve the autoOutline token -->
   <item id="autoOutline">
