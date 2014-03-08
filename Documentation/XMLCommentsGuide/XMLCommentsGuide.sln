@@ -6,7 +6,7 @@ Project("{7CF6DF6D-3B04-46F8-A40B-537D21BCA0B4}") = "XMLCommentsGuide", "XMLComm
 		{46157C34-C925-4733-8682-957F3D97345A} = {46157C34-C925-4733-8682-957F3D97345A}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XMLCommentsExamples", "..\..\Sandcastle\Examples\XMLCommentsExamples\XMLCommentsExamples.csproj", "{46157C34-C925-4733-8682-957F3D97345A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XMLCommentsExamples", "..\..\SHFB\Source\XMLCommentsExamples\XMLCommentsExamples.csproj", "{46157C34-C925-4733-8682-957F3D97345A}"
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
@@ -15,9 +15,9 @@ Global
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs01
 		SccProjectUniqueName0 = XMLCommentsGuide.shfbproj
 		SccLocalPath0 = .
-		SccProjectUniqueName1 = ..\\..\\Sandcastle\\Examples\\XMLCommentsExamples\\XMLCommentsExamples.csproj
-		SccProjectName1 = ../../Sandcastle/Examples/XMLCommentsExamples
-		SccLocalPath1 = ..\\..\\Sandcastle\\Examples\\XMLCommentsExamples
+		SccProjectUniqueName1 = ..\\..\\SHFB\\Source\\XMLCommentsExamples\\XMLCommentsExamples.csproj
+		SccProjectName1 = ../../SHFB/Source/XMLCommentsExamples
+		SccLocalPath1 = ..\\..\\SHFB\\Source\\XMLCommentsExamples
 		SccLocalPath2 = .
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

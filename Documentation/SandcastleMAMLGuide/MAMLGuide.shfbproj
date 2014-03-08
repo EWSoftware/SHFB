@@ -139,7 +139,7 @@
     <Folder Include="Content\MiscElements\" />
     <Folder Include="Media\" />
     <Folder Include="Content\" />
-    <Folder Include="Icons" />
+    <Folder Include="icons\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="icons\Sandcastle.jpg">
